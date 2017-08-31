@@ -176,11 +176,11 @@ var rectOption = {
 		zoomType: 'none'
 	},
 	colorAxis: {
-        tickPositions: [0, 50, 100, 200],
+        tickPositions: [0, 15, 45, 75],
         stops: [
             [0, '#81B4E1'],
-            [0.25, '#81B4E1'],
-            [0.25, '#F79620'],
+            [0.2, '#81B4E1'],
+            [0.2, '#F79620'],
             [1, '#EF3623']
         ],
         labels: {
@@ -275,15 +275,19 @@ function hideTooltip(){
 }
 
 function sortDataByType(){
-	for(var i in arSummaryCallBackData){
-		if(arSummaryCallBackData[i]["TYPE"] == "BU"){
-			buByType.push(arSummaryCallBackData[i]);
-		}
-		else{
-			csdByType.push(arSummaryCallBackData[i]);
+	for(var i = 0; i < arSummaryCallBackData.length; i++){
+		for(var j = 0; j < araUserAuthorityCallBackData.length; j++){
+			if(arSummaryCallBackData[i]["FACILITY"] == araUserAuthorityCallBackData[j]["FACILITY"]){
+				if(arSummaryCallBackData[i]["TYPE"] == "BU"){
+					buByType.push(arSummaryCallBackData[i]);
+				}
+				else if(arSummaryCallBackData[i]["TYPE"] == "CSD"){
+					csdByType.push(arSummaryCallBackData[i]);
+				}
+			}
 		}
 	}
-	//console.log(buByType);
+
 }
 
 function simplifyData(){
@@ -440,8 +444,6 @@ $('#viewMain').pagecontainer({
 			if(localStorage.getItem("arSummaryData") === null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
-		    		//console.log(arSummaryCallBackData);
-		    		
 		    		//先按TYPE分组,分成BU和CSD
 		    		sortDataByType();	
 		    		//简化数据
@@ -464,7 +466,6 @@ $('#viewMain').pagecontainer({
 			else{
 				arSummaryData = JSON.parse(localStorage.getItem("arSummaryData"))[0];
 				arSummaryCallBackData = arSummaryData["Content"];
-				//console.log(arSummaryCallBackData);
 				sortDataByType();
 				simplifyData();
 				mergeDataByFacility();
@@ -480,8 +481,40 @@ $('#viewMain').pagecontainer({
 		};
 		
 		window.AraUserAuthority = function() {
-			this.successCallback = function(data) {
-				araUserAuthorityCallBackData = data["Content"];
+			if(localStorage.getItem("araUserAuthorityData") === null){
+				this.successCallback = function(data) {
+					araUserAuthorityCallBackData = data["Content"];
+					
+					facilityList = '<a id="ALL">ALL</a>';
+					var firstFacilityFlag = true;
+					for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
+						facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
+						if(firstFacilityFlag){
+							//firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+							firstFacilityFlag = false;
+						}
+					}
+					$(".Facility").html("");
+	                $(".Facility").append(facilityList).enhanceWithin();
+	                $(".Facility #ALL").addClass('hover');
+	                ARSummary();
+	                loadingMask("hide");
+	                
+	                localStorage.setItem("araUserAuthorityData", JSON.stringify([data, nowTime]));
+				};
+				
+				this.failCallback = function(data) {
+		    		console.log("api misconnected");
+		    	};
+		    	
+		    	var _construct = function() {
+					CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
+				}();
+			}
+			else{
+				araUserAuthorityData = JSON.parse(localStorage.getItem("araUserAuthorityData"))[0];
+				araUserAuthorityCallBackData = araUserAuthorityData["Content"];
+				
 				facilityList = '<a id="ALL">ALL</a>';
 				var firstFacilityFlag = true;
 				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
@@ -494,18 +527,16 @@ $('#viewMain').pagecontainer({
 				$(".Facility").html("");
                 $(".Facility").append(facilityList).enhanceWithin();
                 $(".Facility #ALL").addClass('hover');
+                ARSummary();
                 loadingMask("hide");
-			};
-			
-			this.failCallback = function(data) {
-	    		console.log("api misconnected");
-	    	};
-	    	
-	    	var _construct = function() {
-				CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
-			}();
-			
-			
+                
+                var lastTime = JSON.parse(localStorage.getItem("araUserAuthorityData"))[1];
+                if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+                    localStorage.removeItem("araUserAuthorityData");
+                    AraUserAuthority();
+                }
+				
+			}
 		};
 		
 		
@@ -549,7 +580,6 @@ $('#viewMain').pagecontainer({
 				//调用第二页API
 				OverdueDetail();
 			}
-			
 			loadingMask("hide");
 		});
 		

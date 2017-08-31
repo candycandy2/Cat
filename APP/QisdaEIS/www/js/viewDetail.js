@@ -21,17 +21,20 @@ var columnData5 = [-44, -36, -24, -87, -86, -45];
 var columnData6 = [-55, -52, -64, -48, -63, -42];
 var columnData7 = [-87, -49, -63, -36, -54, -66];
 var columnData8 = [-58, -71, -89, -36, -36, -46];
-var columnData8 = [0, 0, 0, 0, 0, 0];
+var columnData9 = [0, 0, 0, 0, 0, 0];
 
 //var categoriesMonth = ['60天', '70天', '80天', '90天'];
 //var categoriesWeek = ['W21', 'W22', 'W23', 'W24', 'W25', 'W26']; 动态获取，由timeAxis代替
 var companyName = ['66558 东森电视股份有限公司', '67326 飞利浦股份有限公司', '69410 AAAA股份有限公司'];
 var userName = "Alan Chen";
 var startDate, endDate;
+/*var startDate = "07/05";
+var endDate = "08/25";*/
 var buColumnCheckAll = false;
 var csdColumnCheckAll = false;
 var buOutstandDetailTotal = 0;
 var csdOutstandDetailTotal = 0;
+var week0 = [];
 var timeAxis = [];
 var otherBuOverdueDetail = [];
 var otherCsdOverdueDetail = [];
@@ -208,10 +211,11 @@ var columnOption = {
 	        return s;
 	    },*/
 	   	formatter: function () {
-	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] + '</b>';
-	        $.each(this.points, function () {
-	           s += '<br/> ' + this.series.name + ':USD$' + formatNumber(this.y.toFixed(2));
-	        });
+	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] +
+	        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+	        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+	        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+	        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
 	        return s;
 	    },
 	    followPointer: false,
@@ -253,10 +257,69 @@ function getLandscapeColumn(isInit, type) {
 	else {
 		if(type == "BU") {
 			if(switchState == false){
-				chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
-				chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
-				chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
-				chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+				if(facility == "ALL"){
+					chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+					chartColumnLandscape.update({ 
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Total AR and Overdue Amount',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: buOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + buOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						},
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}
+				else{
+					chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+					chartColumnLandscape.update({ 
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Total AR and Overdue Amount',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: otherBuOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherBuOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						},
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}
+				
 			}
 			else{
 				chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
@@ -283,16 +346,95 @@ function getLandscapeColumn(isInit, type) {
 			        color: '#ED3824',
 			        data: buColumnSeries[buArrIndex][7]
 				}, false, false, false);
+				chartColumnLandscape.update({
+					chart: {
+						marginTop: 70
+					},
+					title: {
+						text: 'Overdue Trend in Last 6 weeks'
+					},
+					subtitle: {
+						text: ''
+					},
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				chartColumnLandscape.redraw(false);
 			}
 			
 		}
 		else if(type == "CSD"){
 			if(switchState == false){
-				chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
-				chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
-				chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
-				chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+				if(facility == "ALL"){
+					chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+					chartColumnLandscape.update({ 
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Total AR and Overdue Amount',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: csdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + csdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						},
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}
+				else{
+					chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+					chartColumnLandscape.update({ 
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Total AR and Overdue Amount',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: otherCsdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherCsdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						},
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}	
 			}
 			else{
 				chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
@@ -319,34 +461,32 @@ function getLandscapeColumn(isInit, type) {
 			        color: '#ED3824',
 			        data: csdColumnSeries[csdArrIndex][7]
 				}, false, false, false);
+				chartColumnLandscape.update({
+					chart: {
+						marginTop: 70
+					},
+					title: {
+						text: 'Overdue Trend in Last 6 weeks'
+					},
+					subtitle: {
+						text: ''
+					},
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				chartColumnLandscape.redraw(false);
 			}
 		}		
 		
-		if(switchState == false){
-			chartColumnLandscape.update({ 
-				chart: {
-					marginTop: 90
-				},
-				title: {
-					text: 'Total AR and Overdue Amount',
-					style: {
-						fontWidth: 'bold'
-					}
-				},
-				subtitle: {
-					text: companyName[0] + '<br>' + 'Owner:' + userName + ' ' +  'Date:' + startDate + '-' + endDate
-				}
-			});
-		}
-		else{
-			chartColumnLandscape.update({
-				title: {
-					text: 'Overdue Trend in Last 6 weeks'
-				}
-			});
-		}
-		
+
 	}
 }
 
@@ -359,7 +499,14 @@ function buSingleListBtn(){
 			self.attr('src', 'img/list_up.png');
 			self.parent().parent().parent().next().show();
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
-			buOverdueDetail[index]["Header"]["SPREAD"] = 1;
+			if(facility == "ALL"){
+				buOverdueDetail[index]["Header"]["SPREAD"] = 1;
+			}
+			else{
+				otherBuOverdueDetail[index]["Header"]["SPREAD"] = 1;
+			}
+			buArrIndex = index;
+			buIndexMarginTop = $('#buShowList'+buArrIndex).offset().top;
 			
 			if(buColumnCheckAll == false){
 				setSingleColumnData(index, 'bu');
@@ -369,11 +516,17 @@ function buSingleListBtn(){
 			self.attr('src', 'img/list_down.png');
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
-			buOverdueDetail[index]["Header"]["SPREAD"] = 0;
-			
-			if(index == buArrIndex){
-				buArrIndex = null;
+			if(facility == "ALL"){
+				buOverdueDetail[index]["Header"]["SPREAD"] = 0;
 			}
+			else{
+				otherBuOverdueDetail[index]["Header"]["SPREAD"] = 0;
+			}
+			buArrIndex = null;
+			
+			/*if(index == buArrIndex){
+				buArrIndex = null;
+			}*/
 			
 		}
 		
@@ -384,8 +537,9 @@ function buSingleListBtn(){
 		if($('.buSingleListBtn[src="img/list_up.png"]').length === buAreaSeriesINV.length){
 			$('#buAllListBtn').attr('src', 'img/all_list_up.png');
 		}
-
+		
 	});
+	
 }
 
 //csdSingleListBtn
@@ -397,7 +551,14 @@ function csdSingleListBtn(){
 			self.attr('src', 'img/list_up.png');
 			self.parent().parent().parent().next().show();
 			self.parent().parent().parent().css('border-bottom', '1px solid white');
-			csdOverdueDetail[index]["Header"]["SPREAD"] = 1;
+			if(facility == "ALL"){
+				csdOverdueDetail[index]["Header"]["SPREAD"] = 1;
+			}
+			else{
+				otherCsdOverdueDetail[index]["Header"]["SPREAD"] = 1;
+			}
+			csdArrIndex = index;
+			csdIndexMarginTop = $('#csdShowList'+csdArrIndex).offset().top;
 			
 			if(csdColumnCheckAll == false){
 				setSingleColumnData(index, 'csd');
@@ -407,11 +568,17 @@ function csdSingleListBtn(){
 			self.attr('src', 'img/list_down.png');
 			self.parent().parent().parent().next().hide();
 			self.parent().parent().parent().css('border-bottom', '1px solid #D6D6D6');
-			csdOverdueDetail[index]["Header"]["SPREAD"] = 0;
-			
-			if(index == csdArrIndex){
-				csdArrIndex = null;
+			if(facility == "ALL"){
+				csdOverdueDetail[index]["Header"]["SPREAD"] = 0;
 			}
+			else{
+				otherCsdOverdueDetail[index]["Header"]["SPREAD"] = 0;
+			}
+			csdArrIndex = null;
+			
+			/*if(index == csdArrIndex){
+				csdArrIndex = null;
+			}*/
 			
 		}
 
@@ -427,35 +594,60 @@ function csdSingleListBtn(){
 
 
 function getOverdueDetailData(){
-	buCustomerArr = [];
-	csdCustomerArr = [];
-	
-	//get time axis on area and column
-	for(var i in overdueDetailCallBackData[0]["Detail"]){
-		timeAxis.push(overdueDetailCallBackData[0]["Detail"][i]["WEEK"]);
+	//get week timeAxis
+	for(var i in overdueDetailCallBackData){
+		if(overdueDetailCallBackData[i]["Detail"].length === 6){
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][0]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][1]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][2]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][3]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][4]["WEEK"]);
+			timeAxis.push(overdueDetailCallBackData[i]["Detail"][5]["WEEK"]);
+			
+			var startDay = overdueDetailCallBackData[i]["Detail"][0]["AGED_DATE"];
+			var endDay = overdueDetailCallBackData[i]["Detail"][5]["AGED_DATE"];
+			break;
+		}
 	}
-	
-	//get start day and end day
-	var startDay = overdueDetailCallBackData[0]["Detail"][0]["AGED_DATE"];
-	var endDay = overdueDetailCallBackData[0]["Detail"][5]["AGED_DATE"];
+	//get startDate and endDate
 	startDate = startDay.substring(5, 10);
 	endDate = endDay.substring(5, 10);
 	
 	$.each(overdueDetailCallBackData, function(i, item) {
-		//添加属性spread,及展开详情,默认为0,展开为1
-		item["Header"]["SPREAD"] = 0;
-		if(item["Header"]["TYPE"] == "BU"){
-			buOverdueDetail.push(item);
-			buCustomerArr.push(item["Header"]["CUSTOMER"]);
-		}
-		else{
-			csdOverdueDetail.push(item);
-			csdCustomerArr.push(item["Header"]["CUSTOMER"]);
+		for(var j = 0; j < araUserAuthorityCallBackData.length; j++){
+			if(item["Header"]["FACILITY"] == araUserAuthorityCallBackData[j]["FACILITY"]){
+				//添加属性spread,即展开详情,默认为0,展开为1
+				item["Header"]["SPREAD"] = 0;
+				//添加属性total,用来排序
+				var totalLength = item["Detail"].length;
+				item["Header"]["TOTAL_INV"] = parseFloat(item["Detail"][totalLength-1]["OVER_1_15_INV"]) +
+											  parseFloat(item["Detail"][totalLength-1]["OVER_16_45_INV"]) +
+											  parseFloat(item["Detail"][totalLength-1]["OVER_46_75_INV"]) +
+											  parseFloat(item["Detail"][totalLength-1]["OVER_76_INV"]);
+											  
+				item["Header"]["TOTAL_CM"] = parseFloat(item["Detail"][totalLength-1]["OVER_1_15_INV"]) + 
+											 parseFloat(item["Detail"][totalLength-1]["OVER_1_15_CM"]) +
+											 parseFloat(item["Detail"][totalLength-1]["OVER_16_45_INV"]) + 
+											 parseFloat(item["Detail"][totalLength-1]["OVER_16_45_CM"]) +
+											 parseFloat(item["Detail"][totalLength-1]["OVER_46_75_INV"]) + 
+											 parseFloat(item["Detail"][totalLength-1]["OVER_46_75_CM"]) +
+											 parseFloat(item["Detail"][totalLength-1]["OVER_76_INV"]) + 
+											 parseFloat(item["Detail"][totalLength-1]["OVER_76_CM"]);
+												 
+				if(item["Header"]["TYPE"] == "BU"){
+					buOverdueDetail.push(item);
+				}
+				else{
+					csdOverdueDetail.push(item);
+				}
+			}
 		}
 	});
 	
-	//console.log(buOverdueDetail);
-	//console.log(csdOverdueDetail);	
+	//默认按total降序排序
+	buOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
+	csdOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
+	
 }
 
 function setBuOverdueDetailData(fac){
@@ -463,22 +655,30 @@ function setBuOverdueDetailData(fac){
 	buAreaSeriesINV = [];
 	buAreaSeriesCM = [];
 	buColumnSeries = [];
+	buCustomerArr = [];
 	var buOverdueDetailTotalINV = 0;
 	var buOverdueDetailTotalCM = 0;
 	
 	if(fac == "ALL"){
-		$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
 		$.each(buOverdueDetail, function(i, item) {
+			//获取detail有几周数据
+			var detailLength = item["Detail"].length;
+			//获取图表相关信息
+			buCustomerArr.push({
+				"CUSTOMER": item["Header"]["CUSTOMER"], 
+				"OWNER": item["Header"]["OWNER"],
+				"TOTAL_INV": item["Header"]["TOTAL_INV"],
+				"TOTAL_CM": item["Header"]["TOTAL_CM"]
+			});
 			/********** switchOff data **********/
 			//table
-			var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
-			var inv16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
-			var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
-			var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+			var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+			var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+			var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+			var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
-			item["Header"]["TOTAL_INV"] = overdueDetailTotalINV;
 			
-			//total number
+			//bu总数total
 			buOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
 			
 			//area highchart
@@ -489,14 +689,13 @@ function setBuOverdueDetailData(fac){
 			
 			/********** switchOn data **********/
 			//table
-			var cm1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
-			var cm16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
-			var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
-			var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+			var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+			var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+			var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+			var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
-			item["Header"]["TOTAL_CM"] = overdueDetailTotalCM;
 			
-			//total
+			//bu总数total
 			buOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
 			
 			//area highchart
@@ -509,7 +708,7 @@ function setBuOverdueDetailData(fac){
 			var columnArr = getColumnData(item);
 			
 			buColumnSeries.push(columnArr);
-				
+			
 			
 			/**************** append html ****************/
 			if(switchState == false){
@@ -523,7 +722,7 @@ function setBuOverdueDetailData(fac){
 														'</div>' +
 													'</li>' +
 													'<li>' +
-														'<span class="font-style7 font-localString">' + overdueDetailTotalINV.toFixed(2) + '</span>' +
+														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
 													'</li>' +
 													'<li>' +
 														'<div id="buArea' + i + '"></div>' +
@@ -555,10 +754,10 @@ function setBuOverdueDetailData(fac){
 														'<div><span>Over 75 Days</span></div>' +
 													'</div>' +
 													'<div class="overdue-tab2 font-style13">' +
-														'<div><span>' + inv1.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv16.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv46.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv76.toFixed(2) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
 													'</div>' +
 												'</div>' +
 												'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
@@ -576,7 +775,7 @@ function setBuOverdueDetailData(fac){
 														'</div>' +
 													'</li>' +
 													'<li>' +
-														'<span class="font-style7 font-localString">' + overdueDetailTotalCM.toFixed(2) + '</span>' +
+														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
 													'</li>' +
 													'<li>' +
 														'<div id="buArea' + i + '"></div>' +
@@ -608,10 +807,10 @@ function setBuOverdueDetailData(fac){
 														'<div><span>Over 75 Days</span></div>' +
 													'</div>' +
 													'<div class="overdue-tab2 font-style13">' +
-														'<div><span>' + cm1.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm16.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm46.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm76.toFixed(2) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
 													'</div>' +
 												'</div>' +
 												'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
@@ -635,16 +834,22 @@ function setBuOverdueDetailData(fac){
 		}
 		
 		if(otherBuOverdueDetail.length > 0){
-			$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
 			$.each(otherBuOverdueDetail, function(i, item) {
+				//获取detail有几周数据
+				var detailLength = item["Detail"].length;
+				buCustomerArr.push({
+					"CUSTOMER": item["Header"]["CUSTOMER"], 
+					"OWNER": item["Header"]["OWNER"],
+					"TOTAL_INV": item["Header"]["TOTAL_INV"],
+					"TOTAL_CM": item["Header"]["TOTAL_CM"]
+				});
 				/********** switchOff data **********/
 				//table
-				var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
-				var inv16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
-				var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
-				var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+				var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+				var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+				var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
 				var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
-				item["Header"]["TOTAL_INV"] = overdueDetailTotalINV;
 				
 				//total number
 				buOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
@@ -657,12 +862,11 @@ function setBuOverdueDetailData(fac){
 				
 				/********** switchOn data **********/
 				//table
-				var cm1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
-				var cm16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
-				var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
-				var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+				var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+				var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+				var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
 				var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
-				item["Header"]["TOTAL_CM"] = overdueDetailTotalCM;
 				
 				//total
 				buOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
@@ -691,7 +895,7 @@ function setBuOverdueDetailData(fac){
 															'</div>' +
 														'</li>' +
 														'<li>' +
-															'<span class="font-style7 font-localString">' + overdueDetailTotalINV.toFixed(2) + '</span>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
 														'</li>' +
 														'<li>' +
 															'<div id="buArea' + i + '"></div>' +
@@ -723,10 +927,10 @@ function setBuOverdueDetailData(fac){
 															'<div><span>Over 75 Days</span></div>' +
 														'</div>' +
 														'<div class="overdue-tab2 font-style13">' +
-															'<div><span>' + inv1.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv16.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv46.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv76.toFixed(2) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
 														'</div>' +
 													'</div>' +
 													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
@@ -744,7 +948,7 @@ function setBuOverdueDetailData(fac){
 															'</div>' +
 														'</li>' +
 														'<li>' +
-															'<span class="font-style7 font-localString">' + overdueDetailTotalCM.toFixed(2) + '</span>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
 														'</li>' +
 														'<li>' +
 															'<div id="buArea' + i + '"></div>' +
@@ -776,10 +980,10 @@ function setBuOverdueDetailData(fac){
 															'<div><span>Over 75 Days</span></div>' +
 														'</div>' +
 														'<div class="overdue-tab2 font-style13">' +
-															'<div><span>' + cm1.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm16.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm46.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm76.toFixed(2) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
 														'</div>' +
 													'</div>' +
 													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
@@ -800,6 +1004,8 @@ function setBuOverdueDetailData(fac){
 			$('.overdueDetail-bu').append(noneDataFourTotal);
 		}	
 	}
+	
+	changeColorByNum();
 }
 
 function setCsdOverdueDetailData(fac){
@@ -807,20 +1013,27 @@ function setCsdOverdueDetailData(fac){
 	csdAreaSeriesINV = [];
 	csdAreaSeriesCM = [];
 	csdColumnSeries = [];
+	csdCustomerArr = [];
 	var csdOverdueDetailTotalINV = 0;
 	var csdOverdueDetailTotalCM = 0;
 	
 	if(fac == "ALL"){
-		$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
 		$.each(csdOverdueDetail, function(i, item) {
+			//获取detail有几周数据
+			var detailLength = item["Detail"].length;
+			csdCustomerArr.push({
+				"CUSTOMER": item["Header"]["CUSTOMER"], 
+				"OWNER": item["Header"]["OWNER"],
+				"TOTAL_INV": item["Header"]["TOTAL_INV"],
+				"TOTAL_CM": item["Header"]["TOTAL_CM"]
+			});
 			/********** switchOff data **********/
 			//table
-			var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
-			var inv16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
-			var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
-			var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+			var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+			var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+			var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+			var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
-			item["Header"]["TOTAL_INV"] = overdueDetailTotalINV;
 			
 			//total number
 			csdOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
@@ -833,12 +1046,11 @@ function setCsdOverdueDetailData(fac){
 			
 			/********** switchOn data **********/
 			//table
-			var cm1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
-			var cm16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
-			var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
-			var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+			var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+			var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+			var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+			var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
-			item["Header"]["TOTAL_CM"] = overdueDetailTotalCM;
 			
 			//total
 			csdOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
@@ -867,7 +1079,7 @@ function setCsdOverdueDetailData(fac){
 														'</div>' +
 													'</li>' +
 													'<li>' +
-														'<span class="font-style7 font-localString">' + overdueDetailTotalINV.toFixed(2) + '</span>' +
+														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
 													'</li>' +
 													'<li>' +
 														'<div id="csdArea' + i + '"></div>' +
@@ -899,10 +1111,10 @@ function setCsdOverdueDetailData(fac){
 														'<div><span>Over 75 Days</span></div>' +
 													'</div>' +
 													'<div class="overdue-tab2 font-style13">' +
-														'<div><span>' + inv1.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv16.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv46.toFixed(2) + '</span></div>' +
-														'<div><span>' + inv76.toFixed(2) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
 													'</div>' +
 												'</div>' +
 												'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
@@ -920,7 +1132,7 @@ function setCsdOverdueDetailData(fac){
 														'</div>' +
 													'</li>' +
 													'<li>' +
-														'<span class="font-style7 font-localString">' + overdueDetailTotalCM.toFixed(2) + '</span>' +
+														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
 													'</li>' +
 													'<li>' +
 														'<div id="csdArea' + i + '"></div>' +
@@ -952,10 +1164,10 @@ function setCsdOverdueDetailData(fac){
 														'<div><span>Over 75 Days</span></div>' +
 													'</div>' +
 													'<div class="overdue-tab2 font-style13">' +
-														'<div><span>' + cm1.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm16.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm46.toFixed(2) + '</span></div>' +
-														'<div><span>' + cm76.toFixed(2) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+														'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
 													'</div>' +
 												'</div>' +
 												'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
@@ -979,16 +1191,22 @@ function setCsdOverdueDetailData(fac){
 		}
 		
 		if(otherCsdOverdueDetail.length > 0){
-			$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
 			$.each(otherCsdOverdueDetail, function(i, item) {
+				//获取detail有几周数据
+				var detailLength = item["Detail"].length;
+				csdCustomerArr.push({
+					"CUSTOMER": item["Header"]["CUSTOMER"], 
+					"OWNER": item["Header"]["OWNER"],
+					"TOTAL_INV": item["Header"]["TOTAL_INV"],
+					"TOTAL_CM": item["Header"]["TOTAL_CM"]
+				});
 				/********** switchOff data **********/
 				//table
-				var inv1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]);
-				var inv16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]);
-				var inv46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]);
-				var inv76 = parseFloat(item["Detail"][5]["OVER_76_INV"]);
+				var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+				var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+				var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+				var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
 				var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
-				item["Header"]["TOTAL_INV"] = overdueDetailTotalINV;
 				
 				//total number
 				csdOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
@@ -1001,12 +1219,11 @@ function setCsdOverdueDetailData(fac){
 				
 				/********** switchOn data **********/
 				//table
-				var cm1 = parseFloat(item["Detail"][5]["OVER_1_15_INV"]) + parseFloat(item["Detail"][5]["OVER_1_15_CM"]);
-				var cm16 = parseFloat(item["Detail"][5]["OVER_16_45_INV"]) + parseFloat(item["Detail"][5]["OVER_16_45_CM"]);
-				var cm46 = parseFloat(item["Detail"][5]["OVER_46_75_INV"]) + parseFloat(item["Detail"][5]["OVER_46_75_CM"]);
-				var cm76 = parseFloat(item["Detail"][5]["OVER_76_INV"]) + parseFloat(item["Detail"][5]["OVER_76_CM"]);
+				var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+				var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+				var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+				var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
 				var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
-				item["Header"]["TOTAL_CM"] = overdueDetailTotalCM;
 				
 				//total
 				csdOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
@@ -1035,7 +1252,7 @@ function setCsdOverdueDetailData(fac){
 															'</div>' +
 														'</li>' +
 														'<li>' +
-															'<span class="font-style7 font-localString">' + overdueDetailTotalINV.toFixed(2) + '</span>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
 														'</li>' +
 														'<li>' +
 															'<div id="csdArea' + i + '"></div>' +
@@ -1067,10 +1284,10 @@ function setCsdOverdueDetailData(fac){
 															'<div><span>Over 75 Days</span></div>' +
 														'</div>' +
 														'<div class="overdue-tab2 font-style13">' +
-															'<div><span>' + inv1.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv16.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv46.toFixed(2) + '</span></div>' +
-															'<div><span>' + inv76.toFixed(2) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
 														'</div>' +
 													'</div>' +
 													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
@@ -1088,7 +1305,7 @@ function setCsdOverdueDetailData(fac){
 															'</div>' +
 														'</li>' +
 														'<li>' +
-															'<span class="font-style7 font-localString">' + overdueDetailTotalCM.toFixed(2) + '</span>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
 														'</li>' +
 														'<li>' +
 															'<div id="csdArea' + i + '"></div>' +
@@ -1120,10 +1337,10 @@ function setCsdOverdueDetailData(fac){
 															'<div><span>Over 75 Days</span></div>' +
 														'</div>' +
 														'<div class="overdue-tab2 font-style13">' +
-															'<div><span>' + cm1.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm16.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm46.toFixed(2) + '</span></div>' +
-															'<div><span>' + cm76.toFixed(2) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
 														'</div>' +
 													'</div>' +
 													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
@@ -1144,7 +1361,10 @@ function setCsdOverdueDetailData(fac){
 			$('.overdueDetail-csd').append(noneDataFourColumn);
 			$('.overdueDetail-csd').append(noneDataFourTotal);
 		}
-	}	
+	}
+	
+	changeColorByNum();
+	
 }
 
 
@@ -1152,125 +1372,125 @@ function setCsdOverdueDetailData(fac){
 function getColumnData(arr){
 	var columnSeries = [];
 	
-	var column0 = parseFloat(arr["Detail"][0]["OVER_1_15_INV"]);
-	var column1 = parseFloat(arr["Detail"][1]["OVER_1_15_INV"]);
-	var column2 = parseFloat(arr["Detail"][2]["OVER_1_15_INV"]);
-	var column3 = parseFloat(arr["Detail"][3]["OVER_1_15_INV"]);
-	var column4 = parseFloat(arr["Detail"][4]["OVER_1_15_INV"]);
-	var column5 = parseFloat(arr["Detail"][5]["OVER_1_15_INV"]);
-	
-	var column6 = parseFloat(arr["Detail"][0]["OVER_16_45_INV"]);
-	var column7 = parseFloat(arr["Detail"][1]["OVER_16_45_INV"]);
-	var column8 = parseFloat(arr["Detail"][2]["OVER_16_45_INV"]);
-	var column9 = parseFloat(arr["Detail"][3]["OVER_16_45_INV"]);
-	var column10 = parseFloat(arr["Detail"][4]["OVER_16_45_INV"]);
-	var column11 = parseFloat(arr["Detail"][5]["OVER_16_45_INV"]);
-	
-	var column12 = parseFloat(arr["Detail"][0]["OVER_46_75_INV"]);
-	var column13 = parseFloat(arr["Detail"][1]["OVER_46_75_INV"]);
-	var column14 = parseFloat(arr["Detail"][2]["OVER_46_75_INV"]);
-	var column15 = parseFloat(arr["Detail"][3]["OVER_46_75_INV"]);
-	var column16 = parseFloat(arr["Detail"][4]["OVER_46_75_INV"]);
-	var column17 = parseFloat(arr["Detail"][5]["OVER_46_75_INV"]);
-	
-	var column18 = parseFloat(arr["Detail"][0]["OVER_76_INV"]);
-	var column19 = parseFloat(arr["Detail"][1]["OVER_76_INV"]);
-	var column20 = parseFloat(arr["Detail"][2]["OVER_76_INV"]);
-	var column21 = parseFloat(arr["Detail"][3]["OVER_76_INV"]);
-	var column22 = parseFloat(arr["Detail"][4]["OVER_76_INV"]);
-	var column23 = parseFloat(arr["Detail"][5]["OVER_76_INV"]);
-	
-	var columnCM0 = parseFloat(arr["Detail"][0]["OVER_1_15_CM"]);
-	var columnCM1 = parseFloat(arr["Detail"][1]["OVER_1_15_CM"]);
-	var columnCM2 = parseFloat(arr["Detail"][2]["OVER_1_15_CM"]);
-	var columnCM3 = parseFloat(arr["Detail"][3]["OVER_1_15_CM"]);
-	var columnCM4 = parseFloat(arr["Detail"][4]["OVER_1_15_CM"]);
-	var columnCM5 = parseFloat(arr["Detail"][5]["OVER_1_15_CM"]);
-	
-	var columnCM6 = parseFloat(arr["Detail"][0]["OVER_16_45_CM"]);
-	var columnCM7 = parseFloat(arr["Detail"][1]["OVER_16_45_CM"]);
-	var columnCM8 = parseFloat(arr["Detail"][2]["OVER_16_45_CM"]);
-	var columnCM9 = parseFloat(arr["Detail"][3]["OVER_16_45_CM"]);
-	var columnCM10 = parseFloat(arr["Detail"][4]["OVER_16_45_CM"]);
-	var columnCM11 = parseFloat(arr["Detail"][5]["OVER_16_45_CM"]);
-	
-	var columnCM12 = parseFloat(arr["Detail"][0]["OVER_46_75_CM"]);
-	var columnCM13 = parseFloat(arr["Detail"][1]["OVER_46_75_CM"]);
-	var columnCM14 = parseFloat(arr["Detail"][2]["OVER_46_75_CM"]);
-	var columnCM15 = parseFloat(arr["Detail"][3]["OVER_46_75_CM"]);
-	var columnCM16 = parseFloat(arr["Detail"][4]["OVER_46_75_CM"]);
-	var columnCM17 = parseFloat(arr["Detail"][5]["OVER_46_75_CM"]);
-	
-	var columnCM18 = parseFloat(arr["Detail"][0]["OVER_76_CM"]);
-	var columnCM19 = parseFloat(arr["Detail"][1]["OVER_76_CM"]);
-	var columnCM20 = parseFloat(arr["Detail"][2]["OVER_76_CM"]);
-	var columnCM21 = parseFloat(arr["Detail"][3]["OVER_76_CM"]);
-	var columnCM22 = parseFloat(arr["Detail"][4]["OVER_76_CM"]);
-	var columnCM23 = parseFloat(arr["Detail"][5]["OVER_76_CM"]);
-	
-	var columnSeries1 = [];
-	columnSeries1.push(column0);
-	columnSeries1.push(column1);
-	columnSeries1.push(column2);
-	columnSeries1.push(column3);
-	columnSeries1.push(column4);
-	columnSeries1.push(column5);
+	var columnSeries1 = [];	
+	for(var i = 0; i < timeAxis.length; i++){
+		var found1 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries1.push(parseFloat(arr["Detail"][j]["OVER_1_15_INV"]));			
+				found1 = true;
+				break;
+			}	
+		}
+		if(found1 == false){
+			columnSeries1.push(0);
+		}
+	}
 	
 	var columnSeries2 = [];
-	columnSeries2.push(column6);
-	columnSeries2.push(column7);
-	columnSeries2.push(column8);				
-	columnSeries2.push(column9);				
-	columnSeries2.push(column10);				
-	columnSeries2.push(column11);
+	for(var i = 0; i < timeAxis.length; i++){
+		var found2 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries2.push(parseFloat(arr["Detail"][j]["OVER_16_45_INV"]));
+				found2 = true;
+				break;
+			}		
+		}
+		if(found2 == false){
+			columnSeries2.push(0);
+		}
+	}
 	
-	var columnSeries3 = [];				
-	columnSeries3.push(column12);				
-	columnSeries3.push(column13);				
-	columnSeries3.push(column14);				
-	columnSeries3.push(column15);				
-	columnSeries3.push(column16);				
-	columnSeries3.push(column17);
+	var columnSeries3 = [];	
+	for(var i = 0; i < timeAxis.length; i++){
+		var found3 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries3.push(parseFloat(arr["Detail"][j]["OVER_46_75_INV"]));
+				found3 = true;
+				break;
+			}
+		}
+		if(found3 == false){
+			columnSeries3.push(0);
+		}
+	}
 	
-	var columnSeries4 = [];				
-	columnSeries4.push(column18);				
-	columnSeries4.push(column19);				
-	columnSeries4.push(column20);				
-	columnSeries4.push(column21);				
-	columnSeries4.push(column22);				
-	columnSeries4.push(column23);
+	var columnSeries4 = [];
+	for(var i = 0; i < timeAxis.length; i++){
+		var found4 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries4.push(parseFloat(arr["Detail"][j]["OVER_76_INV"]));
+				found4 = true;
+				break;
+			}
+		}
+		if(found4 == false){
+			columnSeries4.push(0);
+		}
+	}
 	
-	var columnSeries5 = [];
-	columnSeries5.push(columnCM0);
-	columnSeries5.push(columnCM1);
-	columnSeries5.push(columnCM2);
-	columnSeries5.push(columnCM3);
-	columnSeries5.push(columnCM4);
-	columnSeries5.push(columnCM5);
+	var columnSeries5 = [];	
+	for(var i = 0; i < timeAxis.length; i++){
+		var found5 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries5.push(parseFloat(arr["Detail"][j]["OVER_1_15_CM"]));
+				found5 = true;
+				break;
+			}	
+		}
+		if(found5 == false){
+			columnSeries5.push(0);
+		}
+	}
 	
 	var columnSeries6 = [];
-	columnSeries6.push(columnCM6);
-	columnSeries6.push(columnCM7);
-	columnSeries6.push(columnCM8);				
-	columnSeries6.push(columnCM9);				
-	columnSeries6.push(columnCM10);				
-	columnSeries6.push(columnCM11);
+	for(var i = 0; i < timeAxis.length; i++){
+		var found6 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries6.push(parseFloat(arr["Detail"][j]["OVER_16_45_CM"]));
+				found6 = true;
+				break;
+			}
+		}
+		if(found6 == false){
+			columnSeries6.push(0);
+		}
+	}
 	
-	var columnSeries7 = [];				
-	columnSeries7.push(columnCM12);				
-	columnSeries7.push(columnCM13);				
-	columnSeries7.push(columnCM14);				
-	columnSeries7.push(columnCM15);				
-	columnSeries7.push(columnCM16);				
-	columnSeries7.push(columnCM17);
+	var columnSeries7 = [];
+	for(var i = 0; i < timeAxis.length; i++){
+		var found7 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries7.push(parseFloat(arr["Detail"][j]["OVER_46_75_CM"]));
+				found7 = true;
+				break;
+			}
+		}
+		if(found7 == false){
+			columnSeries7.push(0);
+		}
+	}
 	
-	var columnSeries8 = [];				
-	columnSeries8.push(columnCM18);				
-	columnSeries8.push(columnCM19);				
-	columnSeries8.push(columnCM20);				
-	columnSeries8.push(columnCM21);				
-	columnSeries8.push(columnCM22);				
-	columnSeries8.push(columnCM23);
+	var columnSeries8 = [];	
+	for(var i = 0; i < timeAxis.length; i++){
+		var found8 = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				columnSeries8.push(parseFloat(arr["Detail"][j]["OVER_76_CM"]));		
+				found8 = true;
+				break;
+			}
+		}
+		if(found8 == false){
+			columnSeries8.push(0);
+		}
+	}
 	
 	columnSeries.push(columnSeries1);
 	columnSeries.push(columnSeries2);					
@@ -1282,78 +1502,53 @@ function getColumnData(arr){
 	columnSeries.push(columnSeries8);
 	
 	return columnSeries;
+	
 }
 
 function getAreaDataSwitchOff(arr){
 	var areaSeriesINV = [];
-		
-	var areaWeekINV0 = parseFloat(arr["Detail"][0]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][0]["OVER_16_45_INV"]) +
-		    		   parseFloat(arr["Detail"][0]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][0]["OVER_76_INV"]);
-
-	var areaWeekINV1 = parseFloat(arr["Detail"][1]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][1]["OVER_16_45_INV"]) +
-			    	   parseFloat(arr["Detail"][1]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][1]["OVER_76_INV"]);
 	
-	var areaWeekINV2 = parseFloat(arr["Detail"][2]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][2]["OVER_16_45_INV"]) +
-			    	   parseFloat(arr["Detail"][2]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][2]["OVER_76_INV"]);
+	for(var i = 0; i < timeAxis.length; i++){
+		var found = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				areaSeriesINV.push(
+					parseFloat(arr["Detail"][j]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][j]["OVER_16_45_INV"]) +
+		    		parseFloat(arr["Detail"][j]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][j]["OVER_76_INV"])
+				);
+				found = true;
+				break;
+			}
+		}
+		if(found == false){
+			areaSeriesINV.push(0);
+		}	
+	}
 	
-	var areaWeekINV3 = parseFloat(arr["Detail"][3]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][3]["OVER_16_45_INV"]) +
-			   	 	   parseFloat(arr["Detail"][3]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][3]["OVER_76_INV"]);
-	
-	var areaWeekINV4 = parseFloat(arr["Detail"][4]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][4]["OVER_16_45_INV"]) +
-			    	   parseFloat(arr["Detail"][4]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][4]["OVER_76_INV"]);
-	
-	var areaWeekINV5 = parseFloat(arr["Detail"][5]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][5]["OVER_16_45_INV"]) +
-			    	   parseFloat(arr["Detail"][5]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][5]["OVER_76_INV"]);
-	
-	areaSeriesINV.push(areaWeekINV0);
-	areaSeriesINV.push(areaWeekINV1);
-	areaSeriesINV.push(areaWeekINV2);
-	areaSeriesINV.push(areaWeekINV3);
-	areaSeriesINV.push(areaWeekINV4);
-	areaSeriesINV.push(areaWeekINV5);
-		
 	return areaSeriesINV;
 }
 
 function getAreaDataSwitchOn(arr){
 	var areaSeriesCM = [];
-		
-	var areaWeekCM0 = parseFloat(arr["Detail"][0]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][0]["OVER_16_45_INV"]) +
-		    		parseFloat(arr["Detail"][0]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][0]["OVER_76_INV"]) +
-		    		parseFloat(arr["Detail"][0]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][0]["OVER_16_45_CM"]) +
-		    		parseFloat(arr["Detail"][0]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][0]["OVER_76_CM"]);
 	
-	var areaWeekCM1 = parseFloat(arr["Detail"][1]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][1]["OVER_16_45_INV"]) +
-			    	parseFloat(arr["Detail"][1]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][1]["OVER_76_INV"]) +
-			    	parseFloat(arr["Detail"][1]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][1]["OVER_16_45_CM"]) +
-			    	parseFloat(arr["Detail"][1]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][1]["OVER_76_CM"]);
-	
-	var areaWeekCM2 = parseFloat(arr["Detail"][2]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][2]["OVER_16_45_INV"]) +
-			    	parseFloat(arr["Detail"][2]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][2]["OVER_76_INV"]) +
-			    	parseFloat(arr["Detail"][2]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][2]["OVER_16_45_CM"]) +
-			    	parseFloat(arr["Detail"][2]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][2]["OVER_76_CM"]);
-	
-	var areaWeekCM3 = parseFloat(arr["Detail"][3]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][3]["OVER_16_45_INV"]) +
-			   		parseFloat(arr["Detail"][3]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][3]["OVER_76_INV"]) +
-			   		parseFloat(arr["Detail"][3]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][3]["OVER_16_45_CM"]) +
-			   		parseFloat(arr["Detail"][3]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][3]["OVER_76_CM"]);
-	
-	var areaWeekCM4 = parseFloat(arr["Detail"][4]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][4]["OVER_16_45_INV"]) +
-			    	parseFloat(arr["Detail"][4]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][4]["OVER_76_INV"]) +
-			    	parseFloat(arr["Detail"][4]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][4]["OVER_16_45_CM"]) +
-			    	parseFloat(arr["Detail"][4]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][4]["OVER_76_CM"]);
-	
-	var areaWeekCM5 = parseFloat(arr["Detail"][5]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][5]["OVER_16_45_INV"]) +
-			    	parseFloat(arr["Detail"][5]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][5]["OVER_76_INV"]) +
-			    	parseFloat(arr["Detail"][5]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][5]["OVER_16_45_CM"]) +
-			    	parseFloat(arr["Detail"][5]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][5]["OVER_76_CM"]);
-	
-	areaSeriesCM.push(areaWeekCM0);
-	areaSeriesCM.push(areaWeekCM1);
-	areaSeriesCM.push(areaWeekCM2);
-	areaSeriesCM.push(areaWeekCM3);
-	areaSeriesCM.push(areaWeekCM4);
-	areaSeriesCM.push(areaWeekCM5);
+	for(var i = 0; i < 6; i++){
+		var found = false;
+		for(var j = 0; j < arr["Detail"].length; j++){
+			if(timeAxis[i] == arr["Detail"][j]["WEEK"]){
+				areaSeriesCM.push(
+					parseFloat(arr["Detail"][j]["OVER_1_15_INV"]) + parseFloat(arr["Detail"][j]["OVER_16_45_INV"]) +
+		    		parseFloat(arr["Detail"][j]["OVER_46_75_INV"]) + parseFloat(arr["Detail"][j]["OVER_76_INV"]) +
+		    		parseFloat(arr["Detail"][j]["OVER_1_15_CM"]) + parseFloat(arr["Detail"][j]["OVER_16_45_CM"]) +
+		    		parseFloat(arr["Detail"][j]["OVER_46_75_CM"]) + parseFloat(arr["Detail"][j]["OVER_76_CM"])
+				);
+				found = true;
+				break;
+			}			
+		}
+		if(found == false){
+			areaSeriesCM.push(0);
+		}
+	}
 	
 	return areaSeriesCM;
 }
@@ -1437,6 +1632,18 @@ function setSingleColumnData(i, type) {
 			buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
 			buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
 			buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+			buColumn.update({
+				tooltip: {
+					formatter: function () {
+				        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+				        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+				        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+				        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+				        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+				        return s;
+				    }
+				}
+			});
 			buColumn.redraw(false);
 		}
 		else{
@@ -1465,6 +1672,18 @@ function setSingleColumnData(i, type) {
 		        color: '#ED3824',
 		        data: buColumnSeries[i][7]
 			}, false, false, false);
+			buColumn.update({
+				tooltip: {
+					formatter: function () {
+				        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+				        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+				        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+				        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+				        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+				        return s;
+				    }
+				}
+			});
 			buColumn.redraw(false);
 		}
 		
@@ -1476,6 +1695,18 @@ function setSingleColumnData(i, type) {
 			csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
 			csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
 			csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+			csdColumn.update({
+				tooltip: {
+					formatter: function () {
+				        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+				        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+				        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+				        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+				        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+				        return s;
+				    }
+				}
+			});
 			csdColumn.redraw(false);
 		}
 		else{
@@ -1504,6 +1735,18 @@ function setSingleColumnData(i, type) {
 		        color: '#ED3824',
 		        data: csdColumnSeries[i][7]
 			}, false, false, false);
+			csdColumn.update({
+				tooltip: {
+					formatter: function () {
+				        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+				        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+				        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+				        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+				        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+				        return s;
+				    }
+				}
+			});
 			csdColumn.redraw(false);
 			
 		}
@@ -1511,94 +1754,6 @@ function setSingleColumnData(i, type) {
 	}	
 }
 
-function setAllColumnData(type){
-	if(type == 'bu'){
-		$('.buColumnHc').html("");
-		if(switchState == false){
-			for(var i = 0 ; i < buColumnSeries.length; i++){
-				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-				buColumn.redraw(false);
-			}
-		}
-		else{
-			for(var i = 0 ; i < buColumnSeries.length; i++){
-				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-				buColumn.addSeries({
-					name: '1-15 Days',
-			        color: '#81B4E1',
-			        data: buColumnSeries[i][4]
-				}, false, false, false);
-				buColumn.addSeries({
-					name: '16-45 Days',
-			        color: '#F79620',
-			        data: buColumnSeries[i][5]
-				}, false, false, false);
-				buColumn.addSeries({
-					name: '46-75 Days',
-			        color: '#F36D21',
-			        data: buColumnSeries[i][6]
-				}, false, false, false);
-				buColumn.addSeries({
-					name: 'Over 75 Days',
-			        color: '#ED3824',
-			        data: buColumnSeries[i][7]
-				}, false, false, false);
-				buColumn.redraw(false);
-			}
-		}
-	}
-	else{
-		$('.csdColumnHc').html("");
-		if(switchState == false){
-			for(var i = 0 ; i < csdColumnSeries.length; i++){
-				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
-				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
-				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
-				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
-				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
-				csdColumn.redraw(false);
-			}
-		}
-		else{
-			for(var i = 0 ; i < csdColumnSeries.length; i++){
-				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
-				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
-				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
-				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
-				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
-				csdColumn.addSeries({
-					name: '1-15 Days',
-			        color: '#81B4E1',
-			        data: csdColumnSeries[i][4]
-				}, false, false, false);
-				csdColumn.addSeries({
-					name: '16-45 Days',
-			        color: '#F79620',
-			        data: csdColumnSeries[i][5]
-				}, false, false, false);
-				csdColumn.addSeries({
-					name: '46-75 Days',
-			        color: '#F36D21',
-			        data: csdColumnSeries[i][6]
-				}, false, false, false);
-				csdColumn.addSeries({
-					name: 'Over 75 Days',
-			        color: '#ED3824',
-			        data: csdColumnSeries[i][7]
-				}, false, false, false);
-				csdColumn.redraw(false);
-			}
-		}
-	}
-}
 
 function setBuPartOfColumnData(){
 	if(switchState == false){
@@ -1609,6 +1764,18 @@ function setBuPartOfColumnData(){
 				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
 				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
 				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				buColumn.redraw(false);
 			}
 		}
@@ -1619,6 +1786,18 @@ function setBuPartOfColumnData(){
 				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
 				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
 				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				buColumn.redraw(false);
 			}
 		}
@@ -1651,6 +1830,18 @@ function setBuPartOfColumnData(){
 			        color: '#ED3824',
 			        data: buColumnSeries[i][7]
 				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				buColumn.redraw(false);
 			}
 		}
@@ -1681,6 +1872,18 @@ function setBuPartOfColumnData(){
 			        color: '#ED3824',
 			        data: buColumnSeries[i][7]
 				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				buColumn.redraw(false);
 			}
 		}
@@ -1696,6 +1899,18 @@ function setCsdPartOfColumnData(){
 				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
 				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
 				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+				csdColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				csdColumn.redraw(false);
 			}
 		}
@@ -1706,6 +1921,18 @@ function setCsdPartOfColumnData(){
 				csdColumn.series[1].setData(csdColumnSeries[i][1], false, false, false);
 				csdColumn.series[2].setData(csdColumnSeries[i][2], false, false, false);
 				csdColumn.series[3].setData(csdColumnSeries[i][3], false, false, false);
+				csdColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				csdColumn.redraw(false);
 			}
 		}
@@ -1738,6 +1965,18 @@ function setCsdPartOfColumnData(){
 			        color: '#ED3824',
 			        data: csdColumnSeries[i][7]
 				}, false, false, false);
+				csdColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				csdColumn.redraw(false);
 			}
 		}
@@ -1768,6 +2007,18 @@ function setCsdPartOfColumnData(){
 			        color: '#ED3824',
 			        data: csdColumnSeries[i][7]
 				}, false, false, false);
+				csdColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
 				csdColumn.redraw(false);
 			}
 		}
@@ -1788,7 +2039,7 @@ function setTotalHtml(type, inv, cm){
 													'</div>' +
 												'</li>' +
 												'<li>' +
-													'<span class="font-style7 font-localString">' + inv.toFixed(2) + '</span>' +
+													'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
 												'</li>' +
 												'<li>' +
 													'<div id="buArea"></div>' +
@@ -1809,7 +2060,7 @@ function setTotalHtml(type, inv, cm){
 													'</div>' +
 												'</li>' +
 												'<li>' +
-													'<span class="font-style7 font-localString">' + cm.toFixed(2) + '</span>' +
+													'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
 												'</li>' +
 												'<li>' +
 													'<div id="buArea"></div>' +
@@ -1833,7 +2084,7 @@ function setTotalHtml(type, inv, cm){
 													'</div>' +
 												'</li>' +
 												'<li>' +
-													'<span class="font-style7 font-localString">' + inv.toFixed(2) + '</span>' +
+													'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
 												'</li>' +
 												'<li>' +
 													'<div id="csdArea"></div>' +
@@ -1854,7 +2105,7 @@ function setTotalHtml(type, inv, cm){
 													'</div>' +
 												'</li>' +
 												'<li>' +
-													'<span class="font-style7 font-localString">' + cm.toFixed(2) + '</span>' +
+													'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
 												'</li>' +
 												'<li>' +
 													'<div id="csdArea"></div>' +
@@ -1875,11 +2126,15 @@ function getOverdueSoonData(fac){
 	
 	if(fac == "ALL"){
 		for(var i in outstandDetailCallBackData){
-			if(outstandDetailCallBackData[i]["TYPE"] == "BU"){
-				buOutstand.push(outstandDetailCallBackData[i]);
-			}
-			else if(outstandDetailCallBackData[i]["TYPE"] == "CSD"){
-				csdOutstand.push(outstandDetailCallBackData[i]);
+			for(var j in araUserAuthorityCallBackData){
+				if(outstandDetailCallBackData[i]["FACILITY"] == araUserAuthorityCallBackData[j]["FACILITY"]){
+					if(outstandDetailCallBackData[i]["TYPE"] == "BU"){
+						buOutstand.push(outstandDetailCallBackData[i]);
+					}
+					else if(outstandDetailCallBackData[i]["TYPE"] == "CSD"){
+						csdOutstand.push(outstandDetailCallBackData[i]);
+					}
+				}
 			}
 		}
 	}
@@ -1894,7 +2149,10 @@ function getOverdueSoonData(fac){
 		}
 	}
 	
-	//console.log(buOutstand);
+	//默认按Total降序排序
+	buOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+	csdOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+	
 }
 
 function setOverdueSoonData(){
@@ -1904,7 +2162,8 @@ function setOverdueSoonData(){
 	$('.overduesoon-csd').html("");
 	
 	if(buOutstand.length > 0){
-		$('.overduesoon-bu-header .priority-img').attr('src', 'img/priority_up.png');
+		$('.overduesoon-bu-header .bu-customer .priority-img').attr('src', 'img/priority_up.png');
+		$('.overduesoon-bu-header .bu-totaloverdue .priority-img').attr('src', 'img/priority_down.png');
 		for(var i in buOutstand){
 			var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
@@ -1913,7 +2172,7 @@ function setOverdueSoonData(){
 												'</div>' +
 											'</div>' +
 											'<div class="font-style7">' +
-												'<span>' + parseFloat(buOutstand[i]["DUE_SOON_INV"]).toFixed(2) + '</span>' +
+												'<span>' + formatNumber(parseFloat(buOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
 			$('.overduesoon-bu').append(buOutstandDetailContent);
@@ -1927,7 +2186,7 @@ function setOverdueSoonData(){
 													'<span>Total</span>' +
 												'</div>' +
 												'<div class="font-style7">' +
-													'<span>' + buOutstandDetailTotal.toFixed(2) + '</span>' +
+													'<span>' + formatNumber(buOutstandDetailTotal.toFixed(2)) + '</span>' +
 												'</div>' +
 											'</li>';
 		
@@ -1940,7 +2199,8 @@ function setOverdueSoonData(){
 	}
 	
 	if(csdOutstand.length > 0){
-		$('.overduesoon-csd-header .priority-img').attr('src', 'img/priority_up.png');
+		$('.overduesoon-csd-header .csd-customer .priority-img').attr('src', 'img/priority_up.png');
+		$('.overduesoon-csd-header .csd-totaloverdue .priority-img').attr('src', 'img/priority_down.png');
 		for(var i in csdOutstand){
 			var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
@@ -1949,7 +2209,7 @@ function setOverdueSoonData(){
 												'</div>' +
 											'</div>' +
 											'<div class="font-style7">' +
-												'<span>' + parseFloat(csdOutstand[i]["DUE_SOON_INV"]).toFixed(2) + '</span>' +
+												'<span>' + formatNumber(parseFloat(csdOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
 			$('.overduesoon-csd').append(csdOutstandDetailContent);
@@ -1962,7 +2222,7 @@ function setOverdueSoonData(){
 													'<span>Total</span>' +
 												'</div>' +
 												'<div class="font-style7">' +
-													'<span>' + csdOutstandDetailTotal.toFixed(2) + '</span>' +
+													'<span>' + formatNumber(csdOutstandDetailTotal.toFixed(2)) + '</span>' +
 												'</div>' +
 											'</li>';
 		
@@ -1981,7 +2241,11 @@ function getExpiredSoonData(fac) {
 	
 	if(fac == "ALL"){
 		for(var i in creditExpiredSoonCallBackData){
-			expiredSoon.push(creditExpiredSoonCallBackData[i]);
+			for(var j in araUserAuthorityCallBackData){
+				if(creditExpiredSoonCallBackData[i]["FACILITY"] ==araUserAuthorityCallBackData[j]["FACILITY"]){
+					expiredSoon.push(creditExpiredSoonCallBackData[i]);
+				}
+			}
 		}	
 	}
 	else{
@@ -2011,7 +2275,7 @@ function setExpiredSoonData(){
 											'<span>' + expiredSoon[i]["EXPIRED_DATE"] + '</span>' +
 										'</div>' +
 										'<div class="font-style7">' +
-											'<span>' + parseFloat(expiredSoon[i]["CREDIT_LIIMIT"]).toFixed(2) + '</span>' +
+											'<span>' + formatNumber(parseFloat(expiredSoon[i]["CREDIT_LIIMIT"]).toFixed(2)) + '</span>' +
 										'</div>' +
 									'</li>';
 			
@@ -2171,9 +2435,8 @@ $('#viewDetail').pagecontainer({
 				//API
 				OutstandDetail();
 				CreditExpiredSoon();
-				//横屏图表
-				//getLandscapeColumn(true);
-				//zoomInChartByColumn();
+				//改变颜色
+				changeColorByNum();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
@@ -2226,6 +2489,8 @@ $('#viewDetail').pagecontainer({
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
 			facilityInit = true;
+			/*//切换facility时回到顶部,防止数据过多,返回到中间,数据不显示
+			$('body,html').animate({scrollTop:0},300);*/
 			
 			buCountNum = 1;
 			buPageEnd = buShowNum * buCountNum;
@@ -2233,14 +2498,20 @@ $('#viewDetail').pagecontainer({
 			csdCountNum = 1;
 			csdPageEnd = csdShowNum * csdCountNum;
 			csdPageStart = csdPageEnd - csdShowNum;
+			buColumnCount = 1;
+			buColumnPageEnd = buColumnShow * buColumnCount;
+			buColumnPageStart = buColumnPageEnd - buColumnShow;
+			csdColumnCount = 1;
+			csdColumnPageEnd = csdColumnShow * csdColumnCount;
+			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
+			setBuPartOfColumnData();
 			buSingleListBtn();
 			setCsdOverdueDetailData(facility);
-			if(buAreaSeriesINV.length > 0 && buAreaSeriesINV.length <= buShowNum){
-				setCsdAreaData();
-			}
+			setCsdAreaData();
+			setCsdPartOfColumnData();
 			csdSingleListBtn();
 			
 			overdueInit = false;
@@ -2253,11 +2524,15 @@ $('#viewDetail').pagecontainer({
 			setExpiredSoonData();
 			expiredSoonInit = false;
 			
+			buArrIndex = null;
+    		csdArrIndex = null;
 			buColumnCheckAll = false;
     		csdColumnCheckAll = false;
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     		
+    		changeColorByNum();
+    		console.log(buCustomerArr);
     		
         });
 		

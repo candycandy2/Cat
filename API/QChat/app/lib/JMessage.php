@@ -84,32 +84,24 @@ class JMessage {
     public function getMessageAndFile($beginTime, $endTime, $count){
         $this->clearData();
         $result =  $this->getMessageWithDateTime($beginTime, $endTime, $count);
-        //首次取得資料時發生time out,重新使用datetime呼叫API，重試三次後斷開
-        if(isset($result->error) && $result->error == 28 && $this->retry <3 ){
-            $this->retry ++;
-            Log::info('retry cursor: '.$this->retry);
-            $this->getMessageAndFile($beginTime, $endTime, $count);
-        }
-        if(isset($result->error)){
-            return $result;
-        }
-
-        //整理使用dateime呼叫的資料
-        $this->arrangeMessageData($result);
-        //如果有回傳cursor，持續使用cursor取資料
-        while(isset($result->cursor)){
-            $result = $this->getMessageWithCursor($result, $count);
-            //取得cursor 時發生time out,重新使用datetime呼叫API，重試三次後斷開
-            if($result['Content']){
-                $this->retry =0;
+         if(isset($result->error)){
+            //首次取得資料時發生time out,重新使用datetime呼叫API，重試三次後斷開
+            if($result->error == 28 && $this->retry <3){
+                $this->retry ++;
+                Log::info('datetime time out,retry: '.$this->retry);
+                $this->getMessageAndFile($beginTime, $endTime, $count);
             }else{
-                if(isset($result->error) && $result->error == 28 && $this->retry <3 ){
-                    $this->retry ++;
-                    Log::info('retry cursor: '.$this->retry);
-                    $this->getMessageAndFile($beginTime, $endTime, $count);
-                }
+                return $result;
             }
-        }
+         }else{
+            $this->retry =0;
+            Log::info($beginTime.' ~ '.$endTime.'，共'.$result->total.'筆資料');
+             //整理使用dateime呼叫的資料
+            $this->arrangeMessageData($result);
+            if(isset($result->cursor)){
+                $result = $this->getMessageWithCursor($result, $count, $beginTime, $endTime);
+            }
+         }
         $rs = $this->getData();
         return $rs;
     }
@@ -128,14 +120,33 @@ class JMessage {
 
     /**
      * 依cursor取得訊息
-     * @param  json  $result  Jmessage回傳的訊息資料
+     * @param  json  $result    Jmessage回傳的訊息資料
      * @param  int   $count     每次抓取的訊息筆數
+     * @param  string $beginTime 本次的開始時間 (重跑用)
+     * @param  string $endTime   本次的結束時間 (重跑用)
      * @return json
      */
-    public function getMessageWithCursor($result, $count){
+    public function getMessageWithCursor($result, $count, $beginTime, $endTime){
+        if(!isset($result->cursor)){
+            Log::info('cursor end 1:'.json_encode($result));
+            return;
+        }
         $this->cursorUrl = self::API_V2_URL.'messages?count='.$count.'&cursor='.$result->cursor;
         $res = $this->callJmessageAPI('GET', $this->cursorUrl );
-        $this->arrangeMessageData($res);
+        if(isset($res->error)){
+                //使用cursor取資料時發生錯誤,回到使用datetime呼叫API
+                Log::info('cursor time out ,back to retry datetime');
+                $this->getMessageAndFile($beginTime, $endTime, $count);
+        }else{
+             //整理使用dateime呼叫的資料
+            $this->arrangeMessageData($res);
+            if(isset($res->cursor)){
+                $this->getMessageWithCursor($res, $count, $beginTime, $endTime);
+            }else{
+                 Log::info('cursor end 2:'.json_encode($res));
+                return;
+            }
+        }
     }
 
     /**
@@ -164,7 +175,7 @@ class JMessage {
         }
         $result = json_decode($result);
         $result->requestUrl=$url;
-        Log::info('Result get!');
+        //Log::info('Result get!');
         return $result;
     }
 
@@ -177,6 +188,7 @@ class JMessage {
         if(isset($result->error)){
             return $result;
         }
+        $retry = 0;
         foreach ($result->messages as $message) {
             $history = [];
             $history['msg_id'] = $message->msgid;
@@ -192,7 +204,14 @@ class JMessage {
             //檔案類型寫入 qm_message_file
             if($message->msg_type == 'image'){
                 $historyFile = [];
+                $media = [];
                 $media = $this->getMedia($message->msg_body->media_id);
+                if(!isset($media->url) && $retry < 3){
+                    $retry ++;
+                    Log::info('get image error,retry: '.$retry);
+                    Log::info('get image error,content: '.json_encode($media));
+                    $media = $this->getMedia($message->msg_body->media_id);
+                }
                 $file = $this->downloadFile($media->url);
                 $historyFile['msg_id'] = $message->msgid;
                 $historyFile['fname'] =  $file['fname'];
@@ -201,7 +220,7 @@ class JMessage {
                 $historyFile['npath'] = $message->msg_body->media_id;
                 $historyFile['lpath'] = $file['lpath'];
                 $historyFile['spath'] = $file['spath'];
-                 $this->historyFileData[] = $historyFile;
+                $this->historyFileData[] = $historyFile;
             }
         }
     }
@@ -272,7 +291,7 @@ class JMessage {
         }
         curl_close($curl);
         fclose($headerBuff);
-        Log::info('檔案下載完成: '.$result['fname'].'.'.$result['format']);
+        //Log::info('檔案下載完成: '.$result['fname'].'.'.$result['format']);
         return $result;
     }
 }
