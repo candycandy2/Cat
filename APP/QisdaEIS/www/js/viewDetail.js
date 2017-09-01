@@ -322,52 +322,108 @@ function getLandscapeColumn(isInit, type) {
 				
 			}
 			else{
-				chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
-				chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
-				chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
-				chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
-				chartColumnLandscape.addSeries({
-					name: '1-15 Days',
-			        color: '#81B4E1',
-			        data: buColumnSeries[buArrIndex][4]
-				}, false, false, false);
-				chartColumnLandscape.addSeries({
-					name: '16-45 Days',
-			        color: '#F79620',
-			        data: buColumnSeries[buArrIndex][5]
-				}, false, false, false);
-				chartColumnLandscape.addSeries({
-					name: '46-75 Days',
-			        color: '#F36D21',
-			        data: buColumnSeries[buArrIndex][6]
-				}, false, false, false);
-				chartColumnLandscape.addSeries({
-					name: 'Over 75 Days',
-			        color: '#ED3824',
-			        data: buColumnSeries[buArrIndex][7]
-				}, false, false, false);
-				chartColumnLandscape.update({
-					chart: {
-						marginTop: 70
-					},
-					title: {
-						text: 'Overdue Trend in Last 6 weeks'
-					},
-					subtitle: {
-						text: ''
-					},
-					tooltip: {
-						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
-					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
-					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
-					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
-					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
-					        return s;
-					    }
-					}
-				});
-				chartColumnLandscape.redraw(false);
+				if(facility == "ALL"){
+					chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '1-15 Days',
+				        color: '#81B4E1',
+				        data: buColumnSeries[buArrIndex][4]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '16-45 Days',
+				        color: '#F79620',
+				        data: buColumnSeries[buArrIndex][5]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '46-75 Days',
+				        color: '#F36D21',
+				        data: buColumnSeries[buArrIndex][6]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: 'Over 75 Days',
+				        color: '#ED3824',
+				        data: buColumnSeries[buArrIndex][7]
+					}, false, false, false);
+					chartColumnLandscape.update({
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Overdue Trend in Last 6 weeks',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: buOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + buOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						},
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}
+				else{
+					chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '1-15 Days',
+				        color: '#81B4E1',
+				        data: buColumnSeries[buArrIndex][4]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '16-45 Days',
+				        color: '#F79620',
+				        data: buColumnSeries[buArrIndex][5]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '46-75 Days',
+				        color: '#F36D21',
+				        data: buColumnSeries[buArrIndex][6]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: 'Over 75 Days',
+				        color: '#ED3824',
+				        data: buColumnSeries[buArrIndex][7]
+					}, false, false, false);
+					chartColumnLandscape.update({
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Overdue Trend in Last 6 weeks',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: otherBuOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherBuOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						},
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}
 			}
 			
 		}
@@ -437,52 +493,109 @@ function getLandscapeColumn(isInit, type) {
 				}	
 			}
 			else{
-				chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
-				chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
-				chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
-				chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
-				chartColumnLandscape.addSeries({
-					name: '1-15 Days',
-			        color: '#81B4E1',
-			        data: csdColumnSeries[csdArrIndex][4]
-				}, false, false, false);
-				chartColumnLandscape.addSeries({
-					name: '16-45 Days',
-			        color: '#F79620',
-			        data: csdColumnSeries[csdArrIndex][5]
-				}, false, false, false);
-				chartColumnLandscape.addSeries({
-					name: '46-75 Days',
-			        color: '#F36D21',
-			        data: csdColumnSeries[csdArrIndex][6]
-				}, false, false, false);
-				chartColumnLandscape.addSeries({
-					name: 'Over 75 Days',
-			        color: '#ED3824',
-			        data: csdColumnSeries[csdArrIndex][7]
-				}, false, false, false);
-				chartColumnLandscape.update({
-					chart: {
-						marginTop: 70
-					},
-					title: {
-						text: 'Overdue Trend in Last 6 weeks'
-					},
-					subtitle: {
-						text: ''
-					},
-					tooltip: {
-						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
-					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
-					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
-					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
-					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
-					        return s;
-					    }
-					}
-				});
-				chartColumnLandscape.redraw(false);
+				if(facility == "ALL"){
+					chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '1-15 Days',
+				        color: '#81B4E1',
+				        data: csdColumnSeries[csdArrIndex][4]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '16-45 Days',
+				        color: '#F79620',
+				        data: csdColumnSeries[csdArrIndex][5]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '46-75 Days',
+				        color: '#F36D21',
+				        data: csdColumnSeries[csdArrIndex][6]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: 'Over 75 Days',
+				        color: '#ED3824',
+				        data: csdColumnSeries[csdArrIndex][7]
+					}, false, false, false);
+					chartColumnLandscape.update({
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Overdue Trend in Last 6 weeks',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: csdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + csdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						},
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}
+				else{
+					chartColumnLandscape.series[0].setData(csdColumnSeries[csdArrIndex][0], false, false, false);
+					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
+					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
+					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '1-15 Days',
+				        color: '#81B4E1',
+				        data: csdColumnSeries[csdArrIndex][4]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '16-45 Days',
+				        color: '#F79620',
+				        data: csdColumnSeries[csdArrIndex][5]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: '46-75 Days',
+				        color: '#F36D21',
+				        data: csdColumnSeries[csdArrIndex][6]
+					}, false, false, false);
+					chartColumnLandscape.addSeries({
+						name: 'Over 75 Days',
+				        color: '#ED3824',
+				        data: csdColumnSeries[csdArrIndex][7]
+					}, false, false, false);
+					chartColumnLandscape.update({
+						chart: {
+							marginTop: 90
+						},
+						title: {
+							text: 'Overdue Trend in Last 6 weeks',
+							style: {
+								fontWidth: 'bold'
+							}
+						},
+						subtitle: {
+							text: otherCsdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherCsdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+						},
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					chartColumnLandscape.redraw(false);
+				}
+				
 			}
 		}		
 		
@@ -645,13 +758,14 @@ function getOverdueDetailData(){
 	});
 	
 	//默认按total降序排序
-	buOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
-	csdOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
+	buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+	csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
 	
 }
 
 function setBuOverdueDetailData(fac){
 	$('.overdueDetail-bu').html("");
+	$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
 	buAreaSeriesINV = [];
 	buAreaSeriesCM = [];
 	buColumnSeries = [];
@@ -672,10 +786,25 @@ function setBuOverdueDetailData(fac){
 			});
 			/********** switchOff data **********/
 			//table
-			var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
-			var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
-			var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
-			var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
+			for(var k in item["Detail"]){
+				var foundSwitchOff = false;
+				for(var j in timeAxis){
+					if(item["Detail"][k]["WEEK"] == timeAxis[j]){
+						var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+						var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+						var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+						var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
+						foundSwitchOff = true;
+						break;
+					}
+				}
+				if(foundSwitchOff == false){
+					var inv1 = parseFloat("0");
+					var inv16 = parseFloat("0");
+					var inv46 = parseFloat("0");
+					var inv76 = parseFloat("0");
+				}
+			}
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 			
 			//bu总数total
@@ -689,10 +818,25 @@ function setBuOverdueDetailData(fac){
 			
 			/********** switchOn data **********/
 			//table
-			var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
-			var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
-			var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
-			var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
+			for(var k in item["Detail"]){
+				var foundSwitchOn = false;
+				for(var j in timeAxis){
+					if(item["Detail"][k]["WEEK"] == timeAxis[j]){
+						var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+						var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+						var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+						var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
+						foundSwitchOn = true;
+						break;
+					}
+				}
+				if(foundSwitchOn == false){
+					var cm1 = parseFloat("0");
+					var cm16 = parseFloat("0");
+					var cm46 = parseFloat("0");
+					var cm76 = parseFloat("0");
+				}
+			}
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 			
 			//bu总数total
@@ -845,10 +989,25 @@ function setBuOverdueDetailData(fac){
 				});
 				/********** switchOff data **********/
 				//table
-				var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
-				var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
-				var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
-				var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
+				for(var k in item["Detail"]){
+					var foundSwitchOff = false;
+					for(var j in timeAxis){
+						if(item["Detail"][k]["WEEK"] == timeAxis[j]){
+							var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+							var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+							var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+							var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
+							foundSwitchOff = true;
+							break;
+						}
+					}
+					if(foundSwitchOff == false){
+						var inv1 = parseFloat("0");
+						var inv16 = parseFloat("0");
+						var inv46 = parseFloat("0");
+						var inv76 = parseFloat("0");
+					}
+				}
 				var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 				
 				//total number
@@ -862,10 +1021,25 @@ function setBuOverdueDetailData(fac){
 				
 				/********** switchOn data **********/
 				//table
-				var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
-				var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
-				var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
-				var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
+				for(var k in item["Detail"]){
+					var foundSwitchOn = false;
+					for(var j in timeAxis){
+						if(item["Detail"][k]["WEEK"] == timeAxis[j]){
+							var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+							var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+							var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+							var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
+							foundSwitchOn = true;
+							break;
+						}
+					}
+					if(foundSwitchOn == false){
+						var cm1 = parseFloat("0");
+						var cm16 = parseFloat("0");
+						var cm46 = parseFloat("0");
+						var cm76 = parseFloat("0");
+					}
+				}
 				var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 				
 				//total
@@ -1010,6 +1184,7 @@ function setBuOverdueDetailData(fac){
 
 function setCsdOverdueDetailData(fac){
 	$('.overdueDetail-csd').html("");
+	$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
 	csdAreaSeriesINV = [];
 	csdAreaSeriesCM = [];
 	csdColumnSeries = [];
@@ -1029,10 +1204,25 @@ function setCsdOverdueDetailData(fac){
 			});
 			/********** switchOff data **********/
 			//table
-			var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
-			var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
-			var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
-			var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
+			for(var k in item["Detail"]){
+				var foundSwitchOff = false;
+				for(var j in timeAxis){
+					if(item["Detail"][k]["WEEK"] == timeAxis[j]){
+						var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+						var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+						var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+						var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
+						foundSwitchOff = true;
+						break;
+					}
+				}
+				if(foundSwitchOff == false){
+					var inv1 = parseFloat("0");
+					var inv16 = parseFloat("0");
+					var inv46 = parseFloat("0");
+					var inv76 = parseFloat("0");
+				}
+			}
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 			
 			//total number
@@ -1046,10 +1236,25 @@ function setCsdOverdueDetailData(fac){
 			
 			/********** switchOn data **********/
 			//table
-			var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
-			var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
-			var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
-			var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
+			for(var k in item["Detail"]){
+				var foundSwitchOn = false;
+				for(var j in timeAxis){
+					if(item["Detail"][k]["WEEK"] == timeAxis[j]){
+						var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+						var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+						var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+						var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
+						foundSwitchOn = true;
+						break;
+					}
+				}
+				if(foundSwitchOn == false){
+					var cm1 = parseFloat("0");
+					var cm16 = parseFloat("0");
+					var cm46 = parseFloat("0");
+					var cm76 = parseFloat("0");
+				}
+			}		
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 			
 			//total
@@ -1202,10 +1407,25 @@ function setCsdOverdueDetailData(fac){
 				});
 				/********** switchOff data **********/
 				//table
-				var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
-				var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
-				var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
-				var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
+				for(var k in item["Detail"]){
+					var foundSwitchOff = false;
+					for(var j in timeAxis){
+						if(item["Detail"][k]["WEEK"] == timeAxis[j]){
+							var inv1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]);
+							var inv16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]);
+							var inv46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]);
+							var inv76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]);
+							foundSwitchOff = true;
+							break;
+						}
+					}
+					if(foundSwitchOff == false){
+						var inv1 = parseFloat("0");
+						var inv16 = parseFloat("0");
+						var inv46 = parseFloat("0");
+						var inv76 = parseFloat("0");
+					}
+				}
 				var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 				
 				//total number
@@ -1219,10 +1439,25 @@ function setCsdOverdueDetailData(fac){
 				
 				/********** switchOn data **********/
 				//table
-				var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
-				var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
-				var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
-				var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
+				for(var k in item["Detail"]){
+					var foundSwitchOn = false;
+					for(var j in timeAxis){
+						if(item["Detail"][k]["WEEK"] == timeAxis[j]){
+							var cm1 = parseFloat(item["Detail"][detailLength-1]["OVER_1_15_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_1_15_CM"]);
+							var cm16 = parseFloat(item["Detail"][detailLength-1]["OVER_16_45_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_16_45_CM"]);
+							var cm46 = parseFloat(item["Detail"][detailLength-1]["OVER_46_75_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_46_75_CM"]);
+							var cm76 = parseFloat(item["Detail"][detailLength-1]["OVER_76_INV"]) + parseFloat(item["Detail"][detailLength-1]["OVER_76_CM"]);
+							foundSwitchOn = true;
+							break;
+						}
+					}
+					if(foundSwitchOn == false){
+						var cm1 = parseFloat("0");
+						var cm16 = parseFloat("0");
+						var cm46 = parseFloat("0");
+						var cm76 = parseFloat("0");
+					}
+				}
 				var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 				
 				//total
@@ -2171,7 +2406,7 @@ function setOverdueSoonData(){
 													'<span>' + buOutstand[i]["CUSTOMER"] + '</span>' +
 												'</div>' +
 											'</div>' +
-											'<div class="font-style7">' +
+											'<div class="font-style7 font-color-blue">' +
 												'<span>' + formatNumber(parseFloat(buOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
@@ -2185,7 +2420,7 @@ function setOverdueSoonData(){
 												'<div class="font-style7">' +
 													'<span>Total</span>' +
 												'</div>' +
-												'<div class="font-style7">' +
+												'<div class="font-style7 font-color-blue">' +
 													'<span>' + formatNumber(buOutstandDetailTotal.toFixed(2)) + '</span>' +
 												'</div>' +
 											'</li>';
@@ -2208,7 +2443,7 @@ function setOverdueSoonData(){
 													'<span>' + csdOutstand[i]["CUSTOMER"] + '</span>' +
 												'</div>' +
 											'</div>' +
-											'<div class="font-style7">' +
+											'<div class="font-style7 font-color-blue">' +
 												'<span>' + formatNumber(parseFloat(csdOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
@@ -2221,7 +2456,7 @@ function setOverdueSoonData(){
 												'<div class="font-style7">' +
 													'<span>Total</span>' +
 												'</div>' +
-												'<div class="font-style7">' +
+												'<div class="font-style7 font-color-blue">' +
 													'<span>' + formatNumber(csdOutstandDetailTotal.toFixed(2)) + '</span>' +
 												'</div>' +
 											'</li>';
@@ -2257,6 +2492,9 @@ function getExpiredSoonData(fac) {
 	}
 	
 	//console.log(expiredSoon);
+	
+	//默认按day升序排序
+	expiredSoon.sort(compareSmallOverdueSoon("EXPIRED_DATE"));
 }
 
 function setExpiredSoonData(){
@@ -2436,7 +2674,6 @@ $('#viewDetail').pagecontainer({
 				OutstandDetail();
 				CreditExpiredSoon();
 				//改变颜色
-				changeColorByNum();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
@@ -2531,9 +2768,7 @@ $('#viewDetail').pagecontainer({
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     		
-    		changeColorByNum();
-    		console.log(buCustomerArr);
-    		
+    		console.log(buOverdueDetail);
         });
 		
 	}
