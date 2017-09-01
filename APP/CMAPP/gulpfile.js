@@ -21,7 +21,7 @@ var less = require('gulp-less');
 var shell = require('gulp-shell');
 var env = require('gulp-env');
 
-env.set({APP_NAME: "CM"});
+env.set({APP_NAME: "CMSOP2"});
 
 var requireDir = require('require-dir');
 var gulpTask = requireDir('../component/gulpTask/');
