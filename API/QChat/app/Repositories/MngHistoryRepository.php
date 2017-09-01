@@ -35,7 +35,9 @@ class MngHistoryRepository
      * @param  Array $historyData  歷史訊息資料 
      */
     public function insertHistory($historyData){
-        $this->history->insert($historyData);
+        if(count($historyData) > 0){
+            $this->history->insert($historyData);
+        }
     }
 
     /**
@@ -43,6 +45,8 @@ class MngHistoryRepository
      * @param  Array $historyFileData 歷史訊息檔案資料
      */
     public function insertHistoryFile($historyFileData){
-        $this->historyFile->insert($historyFileData);
+        if(count($historyFileData) > 0){
+            $this->historyFile->insert($historyFileData);
+        }
     }
 }

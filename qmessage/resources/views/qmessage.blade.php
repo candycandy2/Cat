@@ -39,7 +39,13 @@
         .meaasge-box-title-date{
             float:right;
         }
-        #input-message,#input-message-image,#login-box,.ui-input-text{
+        #input-message,
+        #input-message-image,
+        #input-message-image-count,
+        #input-image-count,
+        #history-count,
+        #login-box,
+        .ui-input-text{
             float:left;
             width:75%;
         }
@@ -49,7 +55,12 @@
         #drpGroup{
             width:50vw;
         }
-        #btnQMessageSend,#btnQMessageImageSend{
+        #btnQMessageSend,
+        #btnQMessageImageSend,
+        #btnQMessageFileSend,
+        #btnHistory,
+        #btnQMessageMultiSend,
+        #btnQMessageImageMultiSend{
             margin: 0.5em 0 0 1vh;
             padding: .4em 1em;
             float: right;
@@ -73,6 +84,10 @@
     <body>
     <div data-role="main" class="ui-content">
         <div id="message-box">
+            <h2>QMessage Web Demo</h2>
+            <div>
+                <p>Please select id to login first,then choice group use drop down memnu.</p>
+            </div>
             <div id="login-bar">
                 <select id="login-box">
                     <option value="Sammi.Yao">Sammi.Yao</option>
@@ -91,13 +106,25 @@
             </table>
         </div>
         <div id="input-box">
-            <input type="file" name="input-message-image" id="input-message-image" class="ui-btn-inline">
-            <a href="javascript:void(0);" id="btnQMessageImageSend" data-role="button" data-inline="true">Send</a>
-            <a href="javascript:void(0);" id="btnQMessageFileSend" data-role="button" data-inline="true">File Send</a>
-            <input type="text" name="input-message" id="input-message" class="ui-btn-inline">
-            <a href="javascript:void(0);" id="btnQMessageSend" data-role="button" data-inline="true">Send</a>
-            <input type="text" name="history-count" id="history-count" class="ui-btn-inline">
-            <a href="javascript:void(0);" id="btnHistory" data-role="button" data-inline="true">History</a>
+            <table bgcolor="#f2f3f4 ">
+                <tr>
+                    <td><input type="file" name="input-message-image" id="input-message-image" class="ui-btn-inline"></td>
+                    <td><a href="javascript:void(0);" id="btnQMessageImageSend" data-role="button" data-inline="true">IMage Send</a></td>
+                <td><a href="javascript:void(0);" id="btnQMessageFileSend" data-role="button" data-inline="true">File Send</a></td>
+                 <td bgcolor="#e4717a"><input type="text" name="input-image-count" id="input-image-count" class="ui-btn-inline" placeholder="number to send"></td>
+                 <td bgcolor="#e4717a"><a href="javascript:void(0);" id="btnQMessageImageMultiSend" data-role="button" data-inline="true">Image Multi Send</a></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="input-message" id="input-message" class="ui-btn-inline" placeholder="message"></td>
+                    <td><a href="javascript:void(0);" id="btnQMessageSend" data-role="button" data-inline="true">Send</a></td>
+                    <td bgcolor="#e4717a"><input type="text" name="input-message-count" id="input-message-count" class="ui-btn-inline" placeholder="number to send"></td>
+                    <td bgcolor="#e4717a"><a href="javascript:void(0);" id="btnQMessageMultiSend" data-role="button" data-inline="true">Multi Send</a></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="history-count" id="history-count" class="ui-btn-inline" placeholder="amount to get"></td>
+                    <td><a href="javascript:void(0);" id="btnHistory" data-role="button" data-inline="true">History</a></td>
+                </tr>
+            </table>
         </div>
     </div>
     <script src="{{ asset('/js/qmessage.js') }}"></script>
@@ -107,6 +134,8 @@
            $("#btnQMessageSend").on("click",clickHandler);
             $("#btnQMessageImageSend").on("click",imageClickHandler);
             $("#btnQMessageFileSend").on("click",fileClickHandler);
+            $("#btnQMessageMultiSend").on("click",multiSendClickHandler);
+            $("#btnQMessageImageMultiSend").on("click",imageMultiSendClickHandler);
             $("#btnLogin").on("click",login);
             $("#btnHistory").on("click",getHistory);
         });
@@ -170,6 +199,53 @@
             var  gname= $('#drpGroup > option:selected').text();
             var  gid = $('#drpGroup > option:selected').val();
             sendFile(gid,gname,"input-message-image");
+        }
+        function imageMultiSendClickHandler(){
+            var  gname= $('#drpGroup > option:selected').text();
+            var  gid = $('#drpGroup > option:selected').val();
+            var num = parseInt($("#input-image-count").val());
+            if(isNaN(num)){
+                alert("please imput the number to send!");
+                $("#input-message-count").focus();
+                return false;
+            }
+            var result = confirm("System will send " + num + " images to group, confirm to send?");
+            var i=1;
+            if (result == true) {
+                var timer = setInterval(function(){
+                    console.log(i);
+                    sendPic(gid,gname,"input-message-image");
+                    if(i >= num){
+                        clearInterval(timer);
+                        return false;
+                    }
+                    i++;
+                }, 2000);
+            }
+        }
+        function multiSendClickHandler(){
+            var  gname= $('#drpGroup > option:selected').text();
+            var  gid = $('#drpGroup > option:selected').val();
+            var text = $("#input-message").val();
+            var num = parseInt($("#input-message-count").val());
+            text = $.trim(text);
+            if(isNaN(num)){
+                alert("please imput the number to send!");
+                $("#input-message-count").focus();
+                return false;
+            }
+            var result = confirm("System will send " + num + " messages to group, confirm to send?");
+            var i=1;
+            if (result == true) {
+                var timer = setInterval(function(){
+                    sendText(gid,gname,text + '(' + i + ')');
+                    if(i >= num){
+                        clearInterval(timer);
+                        return false;
+                    }
+                    i++;
+                }, 1000);
+            }
         }
         function eventHandler(data){
 
