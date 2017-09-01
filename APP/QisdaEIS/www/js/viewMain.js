@@ -114,9 +114,6 @@ var bubbleOption = {
             	events: {
             		click: function(event){
             			var facility = this.facility;
-            			buTreemap = [];
-            			csdTreemap = [];
-            			
             			getTreemapSeriesByFacility(facility);
             			
             			showTreemap();
@@ -188,18 +185,19 @@ var rectOption = {
         	align: 'left',
         	overflow: 'justify',
         	formatter: function(){
-        		if(this.value == 400){
-        			return this.value + '(Days)';
+        		if(this.value == 75){
+        			var s = this.value + '(Days)';
         		}
         		else{
-        			return this.value;
+        			var s = this.value;
         		}
+        		return s;
         	},
         	style: {
-        		color: '#323232'
+        		"color": "#323232",
+        		"fontSize": "11px"
         	}
-        },
-        endOntick: false
+        }
    	},
    	tooltip: {
         useHTML: true,
@@ -209,13 +207,6 @@ var rectOption = {
         borderWidth: 1,
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
-        headerFormat: '<table class="fontTooltip">',
-        /*pointFormat: '<tr><td><strong>{point.customer}</strong></td></tr>' +
-        '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
-        '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
-        '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
-        '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
-        footerFormat: '</table>',*/
         formatter: function () {
 	        var s = '<b>' + this.point.customer + '</b><br/>' + 
 	        		'<span>1-15 Days:USD$' + formatNumber(this.point.day1.toFixed(2)) + '</span><br/>' +
@@ -233,8 +224,8 @@ var rectOption = {
 	        dataLabels: {
 	            enabled: true,  
 	            useHTML: true,
-	            crop: false,
-	            overflow: 'none',
+	            crop: true,
+	            overflow: 'justify',
 	            inside: true,
 	            style: {
 	            	"color": "#ffffff",
@@ -406,6 +397,9 @@ function mergeDataByFacility(){
 }
 
 function getTreemapSeriesByFacility(fac) {
+	buTreemap = [];
+    csdTreemap = [];
+	
 	$.each(buSimplify, function(i, item) {
 		if(item.facility == fac){
 			buTreemap.push({
@@ -444,6 +438,7 @@ $('#viewMain').pagecontainer({
 			if(localStorage.getItem("arSummaryData") === null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
+					console.log(arSummaryCallBackData);
 		    		//先按TYPE分组,分成BU和CSD
 		    		sortDataByType();	
 		    		//简化数据
@@ -466,6 +461,7 @@ $('#viewMain').pagecontainer({
 			else{
 				arSummaryData = JSON.parse(localStorage.getItem("arSummaryData"))[0];
 				arSummaryCallBackData = arSummaryData["Content"];
+				console.log(arSummaryCallBackData);
 				sortDataByType();
 				simplifyData();
 				mergeDataByFacility();

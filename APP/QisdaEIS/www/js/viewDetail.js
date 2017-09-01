@@ -7,6 +7,7 @@ var overdueInit = false;
 var overdueSoonInit = false;
 var expiredSoonInit = false;
 var facilityInit = false;
+var columnLandscapeInit = false;
 //get BU & CSD series
 var companySeries1 = [10, 20, 30, 40, 50, 60];
 var companySeries2 = [31, 26, 58, 43, 59, 64];
@@ -199,17 +200,6 @@ var columnOption = {
 	    borderWidth: 1,
 	    borderColor: 'gray',
 	    backgroundColor:　'#ffffff',
-	    /*headerFormat: '<table class="fontTooltip"><tr><td>{point.x}</td></tr>' +
-	     '<tr><td class="customerName">' + companyName[0] + '</td></tr>',
-        pointFormat: '<tr><td>{series.name}:USD${point.y}</td></tr>',
-        footerFormat: '</table>',*/
-	   	/*formatter: function () {
-	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] + '</b>';
-	        $.each(this.points, function () {
-	           s += '<br/> ' + this.series.name + ':USD$' + formatNumber(this.y.toFixed(2));
-	        });
-	        return s;
-	    },*/
 	   	formatter: function () {
 	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] +
 	        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
@@ -327,26 +317,38 @@ function getLandscapeColumn(isInit, type) {
 					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
 					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
 					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[buArrIndex][4]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[buArrIndex][5]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[buArrIndex][6]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[buArrIndex][7]
-					}, false, false, false);
+					//只有第一次才addSeries 4组数据,之后只需要setData 4组数据
+					if(columnLandscapeInit == false){
+						chartColumnLandscape.addSeries({
+							name: '1-15 Days',
+					        color: '#81B4E1',
+					        data: buColumnSeries[buArrIndex][4]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: '16-45 Days',
+					        color: '#F79620',
+					        data: buColumnSeries[buArrIndex][5]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: '46-75 Days',
+					        color: '#F36D21',
+					        data: buColumnSeries[buArrIndex][6]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: 'Over 75 Days',
+					        color: '#ED3824',
+					        data: buColumnSeries[buArrIndex][7]
+						}, false, false, false);
+						
+						columnLandscapeInit = true;
+					}
+					//第二次只需要setData 4组数据
+					else{
+						chartColumnLandscape.series[4].setData(buColumnSeries[buArrIndex][4], false, false, false);
+						chartColumnLandscape.series[5].setData(buColumnSeries[buArrIndex][5], false, false, false);
+						chartColumnLandscape.series[6].setData(buColumnSeries[buArrIndex][6], false, false, false);
+						chartColumnLandscape.series[7].setData(buColumnSeries[buArrIndex][7], false, false, false);	
+					}
 					chartColumnLandscape.update({
 						chart: {
 							marginTop: 90
@@ -372,32 +374,43 @@ function getLandscapeColumn(isInit, type) {
 						}
 					});
 					chartColumnLandscape.redraw(false);
+					
 				}
 				else{
 					chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
 					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
 					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
 					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[buArrIndex][4]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[buArrIndex][5]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[buArrIndex][6]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[buArrIndex][7]
-					}, false, false, false);
+					if(columnLandscapeInit == false){
+						chartColumnLandscape.addSeries({
+							name: '1-15 Days',
+					        color: '#81B4E1',
+					        data: buColumnSeries[buArrIndex][4]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: '16-45 Days',
+					        color: '#F79620',
+					        data: buColumnSeries[buArrIndex][5]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: '46-75 Days',
+					        color: '#F36D21',
+					        data: buColumnSeries[buArrIndex][6]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: 'Over 75 Days',
+					        color: '#ED3824',
+					        data: buColumnSeries[buArrIndex][7]
+						}, false, false, false);
+						
+						columnLandscapeInit = true;
+					}
+					else{
+						chartColumnLandscape.series[4].setData(buColumnSeries[buArrIndex][4], false, false, false);
+						chartColumnLandscape.series[5].setData(buColumnSeries[buArrIndex][5], false, false, false);
+						chartColumnLandscape.series[6].setData(buColumnSeries[buArrIndex][6], false, false, false);
+						chartColumnLandscape.series[7].setData(buColumnSeries[buArrIndex][7], false, false, false);
+					}
 					chartColumnLandscape.update({
 						chart: {
 							marginTop: 90
@@ -498,26 +511,36 @@ function getLandscapeColumn(isInit, type) {
 					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
 					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
 					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: csdColumnSeries[csdArrIndex][4]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: csdColumnSeries[csdArrIndex][5]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: csdColumnSeries[csdArrIndex][6]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: csdColumnSeries[csdArrIndex][7]
-					}, false, false, false);
+					if(columnLandscapeInit == false){
+						chartColumnLandscape.addSeries({
+							name: '1-15 Days',
+					        color: '#81B4E1',
+					        data: csdColumnSeries[csdArrIndex][4]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: '16-45 Days',
+					        color: '#F79620',
+					        data: csdColumnSeries[csdArrIndex][5]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: '46-75 Days',
+					        color: '#F36D21',
+					        data: csdColumnSeries[csdArrIndex][6]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: 'Over 75 Days',
+					        color: '#ED3824',
+					        data: csdColumnSeries[csdArrIndex][7]
+						}, false, false, false);
+						
+						columnLandscapeInit = true;
+					}
+					else{
+						chartColumnLandscape.series[4].setData(csdColumnSeries[csdArrIndex][4], false, false, false);
+						chartColumnLandscape.series[5].setData(csdColumnSeries[csdArrIndex][5], false, false, false);
+						chartColumnLandscape.series[6].setData(csdColumnSeries[csdArrIndex][6], false, false, false);
+						chartColumnLandscape.series[7].setData(csdColumnSeries[csdArrIndex][7], false, false, false);
+					}
 					chartColumnLandscape.update({
 						chart: {
 							marginTop: 90
@@ -549,26 +572,36 @@ function getLandscapeColumn(isInit, type) {
 					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
 					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
 					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: csdColumnSeries[csdArrIndex][4]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: csdColumnSeries[csdArrIndex][5]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: csdColumnSeries[csdArrIndex][6]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: csdColumnSeries[csdArrIndex][7]
-					}, false, false, false);
+					if(columnLandscapeInit == false){
+						chartColumnLandscape.addSeries({
+							name: '1-15 Days',
+					        color: '#81B4E1',
+					        data: csdColumnSeries[csdArrIndex][4]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: '16-45 Days',
+					        color: '#F79620',
+					        data: csdColumnSeries[csdArrIndex][5]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: '46-75 Days',
+					        color: '#F36D21',
+					        data: csdColumnSeries[csdArrIndex][6]
+						}, false, false, false);
+						chartColumnLandscape.addSeries({
+							name: 'Over 75 Days',
+					        color: '#ED3824',
+					        data: csdColumnSeries[csdArrIndex][7]
+						}, false, false, false);
+						
+						columnLandscapeInit = true;
+					}
+					else{
+						chartColumnLandscape.series[4].setData(csdColumnSeries[csdArrIndex][4], false, false, false);
+						chartColumnLandscape.series[5].setData(csdColumnSeries[csdArrIndex][5], false, false, false);
+						chartColumnLandscape.series[6].setData(csdColumnSeries[csdArrIndex][6], false, false, false);
+						chartColumnLandscape.series[7].setData(csdColumnSeries[csdArrIndex][7], false, false, false);
+					}
 					chartColumnLandscape.update({
 						chart: {
 							marginTop: 90
@@ -595,11 +628,8 @@ function getLandscapeColumn(isInit, type) {
 					});
 					chartColumnLandscape.redraw(false);
 				}
-				
 			}
 		}		
-		
-
 	}
 }
 
@@ -2390,11 +2420,9 @@ function getOverdueSoonData(fac){
 	
 }
 
-function setOverdueSoonData(){
+function setBuOverdueSoonData(){
 	buOutstandDetailTotal = 0;
-	csdOutstandDetailTotal = 0;
 	$('.overduesoon-bu').html("");
-	$('.overduesoon-csd').html("");
 	
 	if(buOutstand.length > 0){
 		$('.overduesoon-bu-header .bu-customer .priority-img').attr('src', 'img/priority_up.png');
@@ -2432,6 +2460,11 @@ function setOverdueSoonData(){
 		$('.overduesoon-bu').append(noneDataTwoColumn);
 		$('.overduesoon-bu').append(noneDataTwoTotal);
 	}
+}
+
+function setCsdOverdueSoonData(){
+	csdOutstandDetailTotal = 0;
+	$('.overduesoon-csd').html("");
 	
 	if(csdOutstand.length > 0){
 		$('.overduesoon-csd-header .csd-customer .priority-img').attr('src', 'img/priority_up.png');
@@ -2468,8 +2501,8 @@ function setOverdueSoonData(){
 		$('.overduesoon-csd').append(noneDataTwoColumn);
 		$('.overduesoon-csd').append(noneDataTwoTotal);
 	}
-	
 }
+
 
 function getExpiredSoonData(fac) {
 	expiredSoon = [];
@@ -2625,6 +2658,7 @@ $('#viewDetail').pagecontainer({
 			if(localStorage.getItem("creditExpiredSoonData") === null){
 				this.successCallback = function(data) {
 					creditExpiredSoonCallBackData = data["Content"];
+					console.log(creditExpiredSoonCallBackData);
 					getExpiredSoonData(facility);
 					
 					localStorage.setItem("creditExpiredSoonData", JSON.stringify([data, nowTime]));
@@ -2641,6 +2675,7 @@ $('#viewDetail').pagecontainer({
 			else{
 				creditExpiredSoonData = JSON.parse(localStorage.getItem("creditExpiredSoonData"))[0];
 				creditExpiredSoonCallBackData = creditExpiredSoonData["Content"];
+				console.log(creditExpiredSoonCallBackData);
 				getExpiredSoonData(facility);
 				
 				var lastTime = JSON.parse(localStorage.getItem("creditExpiredSoonData"))[1];
@@ -2673,6 +2708,9 @@ $('#viewDetail').pagecontainer({
 				//API
 				OutstandDetail();
 				CreditExpiredSoon();
+				//Highchart
+				getLandscapeColumn(true, "");
+    			zoomInChartByColumn();
 				//改变颜色
 				viewDetailInit = true;
 			}
@@ -2699,7 +2737,8 @@ $('#viewDetail').pagecontainer({
 		
 		$(".page-tabs #viewDetail-tab-2").on("click", function(){
 			if(overdueSoonInit == false){
-				setOverdueSoonData();
+				setBuOverdueSoonData();
+				setCsdOverdueSoonData();
 				overdueSoonInit = true;
 			}
 			$('#overdue').hide();
@@ -2742,6 +2781,15 @@ $('#viewDetail').pagecontainer({
 			csdColumnPageEnd = csdColumnShow * csdColumnCount;
 			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 			
+			//overdue切换facility恢复默认排序
+			buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+			csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+			//overdueSoon切换facility恢复默认排序
+			buOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+			csdOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+			//expiredSoon切换facility恢复默认排序
+			expiredSoon.sort(compareSmallOverdueSoon("EXPIRED_DATE"));
+			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
 			setBuPartOfColumnData();
@@ -2754,7 +2802,8 @@ $('#viewDetail').pagecontainer({
 			overdueInit = false;
 			
 			getOverdueSoonData(facility);
-			setOverdueSoonData();
+			setBuOverdueSoonData();
+			setCsdOverdueSoonData();
 			overdueSoonInit = false;
 			
 			getExpiredSoonData(facility);
@@ -2765,6 +2814,7 @@ $('#viewDetail').pagecontainer({
     		csdArrIndex = null;
 			buColumnCheckAll = false;
     		csdColumnCheckAll = false;
+    		columnLandscapeInit = false;
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     		

@@ -815,7 +815,8 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
 }
-#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape{
+#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape,
+#viewDetail #viewDetail-hc-column-landscape-switch{
 	display: none;
 }
 
@@ -840,7 +841,8 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 	#viewDetail #overdue, #viewDetail #overdueSoon, #viewDetail #expiredSoon{
 		display: none;
 	}*/
-	#viewDetail #viewDetail-hc-column-landscape {
+	#viewDetail #viewDetail-hc-column-landscape,
+	#viewDetail #viewDetail-hc-column-landscape-switch {
 		/*display: block;*/
 		display: none;
 	}
