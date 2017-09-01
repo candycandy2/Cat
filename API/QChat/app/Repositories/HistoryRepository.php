@@ -43,10 +43,12 @@ class HistoryRepository
      * @param  Array $historyData  歷史訊息資料 
      */
     public function upsertHistory($historyData){
-        $this->upsertData(self::$db,
+        if(count($historyData) > 0){
+            $this->upsertData(self::$db,
                           self::$historyTable,
                           self::$historyColumn,
                           $historyData);
+        }
     }
 
     /**
@@ -54,10 +56,32 @@ class HistoryRepository
      * @param  Array $historyFileData 歷史訊息檔案資料
      */
     public function upsertHistoryFile($historyFileData){
-        $this->upsertData(self::$db,
+        if(count($historyFileData) > 0){
+            $this->upsertData(self::$db,
                           self::$historyFileTable,
                           self::$historyFileColumn,
                           $historyFileData);
+        }
+    }
+
+    /**
+     * 寫入歷史訊息
+     * @param  Array $historyData  歷史訊息資料 
+     */
+    public function insertHistory($historyData){
+        if(count($historyData) > 0){
+         $this->history->insert($historyData);
+        }
+    }
+
+    /**
+     * 寫入歷史訊息檔案資訊
+     * @param  Array $historyFileData 歷史訊息檔案資料
+     */
+    public function insertHistoryFile($historyFileData){
+        if(count($historyFileData) > 0){
+         $this->historyFile->insert($historyFileData);
+        }
     }
 
     /**

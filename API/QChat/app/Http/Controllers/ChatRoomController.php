@@ -8,7 +8,8 @@ use App\lib\CommonUtil;
 use App\lib\Logger;
 use App\lib\JMessage;
 use App\Repositories\ParameterRepository;
-use App\Services\HistoryService;
+use App\Repositories\HistoryRepository;
+use App\Repositories\MngHistoryRepository;
 use Illuminate\Support\Facades\Log;
 
 class ChatRoomController extends Controller
@@ -22,10 +23,13 @@ class ChatRoomController extends Controller
      * @param ParameterRepository $parameterRepository
      * @param HistoryServices $historyServices
      */
-    public function __construct(ParameterRepository $parameterRepository, HistoryService $historyServices)
+    public function __construct(ParameterRepository $parameterRepository,
+                                HistoryRepository $historyRepository,
+                                MngHistoryRepository $mngHistoryRepository)
     {
         $this->parameterRepository = $parameterRepository;
-        $this->historyServices = $historyServices;
+        $this->historyRepository = $historyRepository;
+        $this->mngHistoryRepository = $mngHistoryRepository;
     }
     
     /**
@@ -56,7 +60,8 @@ class ChatRoomController extends Controller
         $beginTime = $lastEndTime;
         $endTime = $lastEndTime;
         $interval = 7; //批次執行區間
-        $count = 100;
+        $count = 500;
+
         date_default_timezone_set('Asia/Taipei');
         $now = date("Y-m-d H:i:s");
         if($endTime == $now){
@@ -70,11 +75,14 @@ class ChatRoomController extends Controller
         $i=0;
 
         //每7天為一單位，一直執行到今天為止
+        
         \DB::connection('mysql_qmessage')->beginTransaction();
         \DB::connection('mysql_ens')->beginTransaction();
 
        try {
             do{
+                $historyData =[];
+                $historyFileData = [];
                 $beginTime = date('Y-m-d H:i:s', strtotime($endTime));
                 $tmpEndTime = date('Y-m-d H:i:s', strtotime($beginTime . ' +'.$interval.' day'));
                 $diffNow = CommonUtil::dateDiff($now,$tmpEndTime);
@@ -94,23 +102,23 @@ class ChatRoomController extends Controller
                     return response()->json($result);
                 }
                 $historyData = $resData['historyData'];
-                $historyFileData = $resData['historyFileData']; 
-                if(count($historyData) > 0 ){
-                    Log::info('開始寫入History');
-                    $this->historyServices->upsertHistory($historyData);
-                    Log::info('History寫入完成，共'.count($historyData).'筆');
-                }
-                if(count($historyFileData) > 0){
-                    Log::info('開始寫入HistoryFile');
-                    $this->historyServices->upsertHistoryFile($historyFileData);
-                    Log::info('HistoryFile，寫入完成，共'.count($historyFileData)."筆");
-                }
-                 $this->parameterRepository->updateLastQueryTime($endTime);
+                $historyFileData = $resData['historyFileData'];
+                
+                $this->historyRepository->insertHistory($historyData);
+                Log::info('History預計寫入，共'.count($historyData).'筆');
+                $this->historyRepository->insertHistoryFile($historyFileData);
+                Log::info('HistoryFile，預計寫入，共'.count($historyFileData)."筆");
+                //更新結束時間
+                $this->parameterRepository->updateLastQueryTime($endTime);
+
+                \DB::connection('mysql_qmessage')->commit();
+                \DB::connection('mysql_ens')->commit();
+                //MySql寫入後才寫入mongo，確保資料不會被多寫入
+                $this->mngHistoryRepository->insertHistory($historyData);
+                $this->mngHistoryRepository->insertHistoryFile($historyFileData);
+                 
            } while ($endTime != $now);
-
-            \DB::connection('mysql_qmessage')->commit();
-            \DB::connection('mysql_ens')->commit();
-
+            
             $result = ['ResultCode'=>ResultCode::_025901_reponseSuccessful,'Message'=>'Sync Success!'];
             Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
             return response()->json($result);
@@ -124,8 +132,7 @@ class ChatRoomController extends Controller
              Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
              Log::info('Sync Fail!' . json_encode($result));
             return response()->json($result);
-
-         }
+         } 
      }
 
 }
