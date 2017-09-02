@@ -55,20 +55,7 @@ var panel = htmlContent
 var time = new Date(Date.now());
 var nowTime = new Date();
 
-window.initialSuccess = function() {
-	/*currentYear = time.getFullYear();
-    currentDate = time.getDate();
-    currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
-    if(currentDate == 1) {
-        currentMonth = currentMonth - 1;
-    }
-    ARSummaryQueryData =   "<LayoutHeader><StartYearMonth>"
-                        + (currentYear - 3) + "/01"
-                        + "</StartYearMonth><EndYearMonth>"
-                        + currentYear + "/" + currentMonth
-                        + "</EndYearMonth></LayoutHeader>";                   
-    console.log(ARSummaryQueryData);*/
-    
+window.initialSuccess = function() {    
     var loginName = loginData["loginid"];
     AraUserAuthorityQueryData = "<LayoutHeader><Account>" + loginName + "</Account></LayoutHeader>";
     console.log(AraUserAuthorityQueryData);
@@ -126,13 +113,13 @@ $(document).one('pagebeforeshow', function(){
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
-			setBuPartOfColumnData();
 			buSingleListBtn();
 			setCsdOverdueDetailData(facility);
 			setCsdAreaData();
-			setCsdPartOfColumnData();
 			csdSingleListBtn();
 			
+			//开关打开并转横屏后，column-hc数据由4组增加到8组
+			changeSeriesBySwitch();
     	}
     	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
@@ -153,18 +140,17 @@ $(document).one('pagebeforeshow', function(){
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
-			setBuPartOfColumnData();
 			buSingleListBtn();
 			setCsdOverdueDetailData(facility);
 			setCsdAreaData();
-			setCsdPartOfColumnData();
 			csdSingleListBtn();
 			
+			//开关关闭并转横屏后，column-hc数据由8组删除到4组
+			changeSeriesBySwitch();
     	}
     	
     	buColumnCheckAll = false;
     	csdColumnCheckAll = false;
-    	columnLandscapeInit = false;
     	buArrIndex = null;
     	csdArrIndex = null;
 		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
@@ -182,10 +168,10 @@ $(document).one('pagebeforeshow', function(){
     		$('.bu-single-list').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
     		
-    		buColumnCount = 1;
+    		/*buColumnCount = 0;
 			buColumnPageEnd = buColumnShow * buColumnCount;
-			buColumnPageStart = buColumnPageEnd - buColumnShow;
-    		
+			buColumnPageStart = buColumnPageEnd - buColumnShow;*/
+    		   		
     		if(facility == "ALL"){
     			for(var i in buOverdueDetail){
 	    			buOverdueDetail[i]["Header"]["SPREAD"] = 1;	
@@ -198,10 +184,34 @@ $(document).one('pagebeforeshow', function(){
     		}
     		
     		
-    		if(buColumnCheckAll == false){				
+    		if(buColumnCheckAll == false){	
+    			if(buCustomerINV.length >= 4){
+    				for(var j = 0; j < 4; j++){
+    					var buColumn = new Highcharts.Chart('buColumn' + j, columnOption);
+						buColumn.series[0].setData(buColumnSeriesINV[j][0], false, false, false);
+						buColumn.series[1].setData(buColumnSeriesINV[j][1], false, false, false);
+						buColumn.series[2].setData(buColumnSeriesINV[j][2], false, false, false);
+						buColumn.series[3].setData(buColumnSeriesINV[j][3], false, false, false);
+						buColumn.update({
+							tooltip: {
+								formatter: function () {
+							        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerINV[j]["CUSTOMER"] +
+							        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+							        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+							        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+							        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+							        return s;
+							    }
+							}
+						});
+						buColumn.redraw(false);
+    				}
+    				
+    			}
     			buColumnCheckAll = true;
     		}
     		
+    		//setBuPartOfColumnData();
 
     	}else{
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
@@ -233,9 +243,9 @@ $(document).one('pagebeforeshow', function(){
     		$('.csd-single-list').show();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
     		
-    		csdColumnCount = 1;
+    		/*csdColumnCount = 0;
 			csdColumnPageEnd = csdColumnShow * csdColumnCount;
-			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
+			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;*/
     		
     		if(facility == "ALL"){
     			for(var i in csdOverdueDetail){
@@ -252,6 +262,7 @@ $(document).one('pagebeforeshow', function(){
     			csdColumnCheckAll = true;
     		}
     		
+    		//setCsdPartOfColumnData();
 
     	}else{
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
@@ -285,7 +296,13 @@ $(document).one('pagebeforeshow', function(){
 		
 		if($(this).attr('src') == 'img/priority_up.png'){
 			buOverdueDetail.sort(compareLargeOverdue("Header", "CUSTOMER"));
-			buCustomerArr.sort(compareLargeOverdueSoon("CUSTOMER"));
+			if(switchState == false){
+				buCustomerINV.sort(compareLargeOverdueSoon("CUSTOMER"));
+			}
+			else{
+				buCustomerCM.sort(compareLargeOverdueSoon("CUSTOMER"));
+			}
+			
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
@@ -296,7 +313,13 @@ $(document).one('pagebeforeshow', function(){
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
 			buOverdueDetail.sort(compareSmallOverdue("Header" ,"CUSTOMER"));
-			buCustomerArr.sort(compareSmallOverdueSoon("CUSTOMER"));
+			if(switchState == false){
+				buCustomerINV.sort(compareSmallOverdueSoon("CUSTOMER"));
+			}
+			else{
+				buCustomerCM.sort(compareSmallOverdueSoon("CUSTOMER"));
+			}
+			
 			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
@@ -320,11 +343,11 @@ $(document).one('pagebeforeshow', function(){
 		if($(this).attr('src') == 'img/priority_down.png'){
 			if(switchState == false){
 				buOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_INV"));
-				buCustomerArr.sort(compareSmallOverdueSoon("TOTAL_INV"));
+				buCustomerINV.sort(compareSmallOverdueSoon("TOTAL_INV"));
 			}
 			else{
 				buOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
-				buCustomerArr.sort(compareSmallOverdueSoon("TOTAL_CM"));
+				buCustomerCM.sort(compareSmallOverdueSoon("TOTAL_CM"));
 			}
 			
 			setBuOverdueDetailData(facility);
@@ -337,11 +360,11 @@ $(document).one('pagebeforeshow', function(){
 		else if($(this).attr('src') == 'img/priority_up.png'){
 			if(switchState == false){
 				buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
-				buCustomerArr.sort(compareLargeOverdueSoon("TOTAL_INV"));
+				buCustomerINV.sort(compareLargeOverdueSoon("TOTAL_INV"));
 			}
 			else{
 				buOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
-				buCustomerArr.sort(compareLargeOverdueSoon("TOTAL_CM"));
+				buCustomerCM.sort(compareLargeOverdueSoon("TOTAL_CM"));
 			}
 			
 			setBuOverdueDetailData(facility);
@@ -366,22 +389,33 @@ $(document).one('pagebeforeshow', function(){
 		
 		if($(this).attr('src') == 'img/priority_up.png'){
 			csdOverdueDetail.sort(compareLargeOverdue("Header", "CUSTOMER"));
-			csdCustomerArr.sort(compareLargeOverdueSoon("CUSTOMER"));
+			if(switchState == false){
+				csdCustomerINV.sort(compareLargeOverdueSoon("CUSTOMER"));
+			}
+			else{
+				csdCustomerCM.sort(compareLargeOverdueSoon("CUSTOMER"));
+			}
+			
 			
 			setCsdOverdueDetailData(facility);
 			setCsdAreaData();
-			setCsdPartOfColumnData();
+			csdSingleListBtn();
 			
 			$(this).attr('src', 'img/priority_down.png');
 				
 		}
 		else if($(this).attr('src') == 'img/priority_down.png'){
 			csdOverdueDetail.sort(compareSmallOverdue("Header" ,"CUSTOMER"));
-			csdCustomerArr.sort(compareSmallOverdueSoon("CUSTOMER"));
+			if(switchState == false){
+				csdCustomerINV.sort(compareSmallOverdueSoon("CUSTOMER"));
+			}
+			else{
+				csdCustomerCM.sort(compareSmallOverdueSoon("CUSTOMER"));
+			}
 			
 			setCsdOverdueDetailData(facility);
 			setCsdAreaData();
-			setCsdPartOfColumnData();
+			csdSingleListBtn();
 			
 			$(this).attr('src', 'img/priority_up.png');
 				
@@ -401,16 +435,16 @@ $(document).one('pagebeforeshow', function(){
 		if($(this).attr('src') == 'img/priority_down.png'){
 			if(switchState == false){
 				csdOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_INV"));
-				csdCustomerArr.sort(compareSmallOverdueSoon("TOTAL_INV"));
+				csdCustomerINV.sort(compareSmallOverdueSoon("TOTAL_INV"));
 			}
 			else{
 				csdOverdueDetail.sort(compareSmallOverdue("Header", "TOTAL_CM"));
-				csdCustomerArr.sort(compareSmallOverdueSoon("TOTAL_CM"));
+				csdCustomerCM.sort(compareSmallOverdueSoon("TOTAL_CM"));
 			}
 			
 			setCsdOverdueDetailData(facility);
 			setCsdAreaData();
-			setCsdPartOfColumnData();
+			csdSingleListBtn();
 			
 			$(this).attr('src', 'img/priority_up.png');
 				
@@ -418,16 +452,16 @@ $(document).one('pagebeforeshow', function(){
 		else if($(this).attr('src') == 'img/priority_up.png'){
 			if(switchState == false){
 				csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_INV"));
-				csdCustomerArr.sort(compareLargeOverdueSoon("TOTAL_INV"));
+				csdCustomerINV.sort(compareLargeOverdueSoon("TOTAL_INV"));
 			}
 			else{
 				csdOverdueDetail.sort(compareLargeOverdue("Header" ,"TOTAL_CM"));
-				csdCustomerArr.sort(compareLargeOverdueSoon("TOTAL_CM"));
+				csdCustomerCM.sort(compareLargeOverdueSoon("TOTAL_CM"));
 			}
 			
 			setCsdOverdueDetailData(facility);
 			setCsdAreaData();
-			setCsdPartOfColumnData();
+			csdSingleListBtn();
 			
 			$(this).attr('src', 'img/priority_down.png');
 				
@@ -713,7 +747,7 @@ $(document).one('pagebeforeshow', function(){
 		});
 		
 		
-		$(window).on('scroll', function(){
+		/*$(window).on('scroll', function(){
 			//页面可视区域的范围
 		   	var visibleTop = document.body.scrollTop;
 		   	var visibleHeight = document.body.clientHeight;
@@ -763,7 +797,7 @@ $(document).one('pagebeforeshow', function(){
 		   			setCsdPartOfColumnData();
 		   		}
 		   	}
-		});
+		});*/
 		
 	}
 	
@@ -832,7 +866,6 @@ function checkVisible(){
 	   	}
 	}
 	
-   	console.log(buArrIndex+" ,"+csdArrIndex);
 }
 
 var compareSmallOverdue = function (prop1, prop2) {
@@ -1007,7 +1040,7 @@ function changeColorByNum(){
 			}
 		}catch(e){
 			// handle the exception
-			//console.log(i);
+			
 		}
 	}
 	
@@ -1022,7 +1055,7 @@ function changeColorByNum(){
 			}
 		}catch(e){
 			// handle the exception
-			//console.log(i)
+			
 		}
 	}
 	
@@ -1106,21 +1139,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     			$('#viewDetail #expiredSoon').show();
     		}
     		
-    		//chartColumnLandscape.destroy();
-    		/*for(var i in chartColumnLandscape){
-    			if(chartColumnLandscape.series.length > 0){
-    				chartColumnLandscape.series[0].remove();
-    			}
-    		}*/
-    		/*if(chartColumnLandscape !== null){
-    			chartColumnLandscape.destroy();
-    			console.log("有图表，已删除");
-    		}*/
-    		
-    		
-    		
     	}
-
     }
     if(window.orientation === 90 || window.orientation === -90 ) {
         if($.mobile.activePage[0].id === 'viewMain'){
@@ -1128,6 +1147,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
+        	console.log(buArrIndex+" ,"+csdArrIndex);
         	getLandscapeColumn(true, "");
     		if(viewDetailTab == "overdue" && buArrIndex !== null){
         		getLandscapeColumn(false, "BU");

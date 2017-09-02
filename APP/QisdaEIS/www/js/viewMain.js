@@ -313,7 +313,7 @@ function simplifyData(){
 			"group": item.BUSINESS_GROUP
 		});
 	});
-	//console.log(buSimplify);
+	
 }
 
 function mergeDataByFacility(){
@@ -393,7 +393,7 @@ function mergeDataByFacility(){
 			csdBubbleData.push(csdBubbleObj[fac]);
 		}
 	});
-	//console.log(buBubbleData);
+	
 }
 
 function getTreemapSeriesByFacility(fac) {
@@ -438,7 +438,6 @@ $('#viewMain').pagecontainer({
 			if(localStorage.getItem("arSummaryData") === null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
-					console.log(arSummaryCallBackData);
 		    		//先按TYPE分组,分成BU和CSD
 		    		sortDataByType();	
 		    		//简化数据
@@ -461,7 +460,6 @@ $('#viewMain').pagecontainer({
 			else{
 				arSummaryData = JSON.parse(localStorage.getItem("arSummaryData"))[0];
 				arSummaryCallBackData = arSummaryData["Content"];
-				console.log(arSummaryCallBackData);
 				sortDataByType();
 				simplifyData();
 				mergeDataByFacility();
