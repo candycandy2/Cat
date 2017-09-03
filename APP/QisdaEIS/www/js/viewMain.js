@@ -53,6 +53,7 @@ var treemapSeries2 = [
 var bubbleOption = {
 	chart: {
         type: 'bubble',
+        animation: false,
         marginTop: 5,
         plotBorderWidth: 0,
         zoomType: 'none'
@@ -548,7 +549,37 @@ $('#viewMain').pagecontainer({
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
 			/* global PullToRefresh */
-			
+			PullToRefresh.init({
+                mainElement: '.page-date',
+                onRefresh: function() {
+                    if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewMain") {
+                        buByType = [];
+						csdByType = [];
+						buSimplify = [];
+						csdSimplify = [];
+						buBubbleData = [];
+						buBubbleObj = {};
+						csdBubbleData = [];
+						csdBubbleObj = {};
+						buTreemap = [];
+						csdTreemap = [];
+                        $('#overview-hc-bubble').html("");
+                        $('#overview-hc-bubble-landscape').html("");
+                        $('#overview-hc-rectangle').html("");
+                        $('#overview-hc-rectangle-landscape').html("");
+                        showBubble();
+                        showTreemap();
+                        
+                        window.localStorage.removeItem("arSummaryData");
+                        ARSummary();
+                        
+                        chartbubble.redraw(true);
+                        chartLandscapebubble.redraw(true);
+                        chartRect.redraw(true);
+                        chartLandscapeRect.redraw(true);
+                    }
+                }
+            });
 			
 		});
 		
