@@ -267,6 +267,9 @@ function hideTooltip(){
 }
 
 function sortDataByType(){
+	buByType = [];
+	csdByType = [];
+	
 	for(var i = 0; i < arSummaryCallBackData.length; i++){
 		for(var j = 0; j < araUserAuthorityCallBackData.length; j++){
 			if(arSummaryCallBackData[i]["FACILITY"] == araUserAuthorityCallBackData[j]["FACILITY"]){
@@ -283,6 +286,9 @@ function sortDataByType(){
 }
 
 function simplifyData(){
+	buSimplify = [];
+	csdSimplify = [];
+	
 	$.each(buByType, function(i, item) {
 		buSimplify.push({
 			"day": parseInt(item.MAX_DUE_DAYS_INV),
@@ -318,6 +324,11 @@ function simplifyData(){
 }
 
 function mergeDataByFacility(){
+	buBubbleData = []
+	csdBubbleData = [];
+	buBubbleObj = {};
+	csdBubbleObj = {};
+	
 	$.each(buSimplify, function(i, item) {
 		var fac = item.facility;
 		var total = item.total;
@@ -354,6 +365,7 @@ function mergeDataByFacility(){
 				buBubbleObj[fac].color = "#AC8BC0";
 			}
 			buBubbleData.push(buBubbleObj[fac]);
+			console.log(buBubbleData);
 		}
 	});
 	$.each(csdSimplify, function(i, item) {
@@ -394,6 +406,7 @@ function mergeDataByFacility(){
 			csdBubbleData.push(csdBubbleObj[fac]);
 		}
 	});
+	
 	
 }
 
@@ -436,15 +449,24 @@ $('#viewMain').pagecontainer({
 	create: function (event, ui){	
 		
 		window.ARSummary = function() {
-			if(localStorage.getItem("arSummaryData") === null){
+			if(localStorage.getItem("arSummaryData") == null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
+					console.log("进来了");
 		    		//先按TYPE分组,分成BU和CSD
 		    		sortDataByType();	
 		    		//简化数据
 		    		simplifyData();
 		    		//相同facility合并
 		    		mergeDataByFacility();
+		    		switch(viewMainTab) {
+                        case "bu" :
+                            $("input[id=viewMain-tab-1]").trigger('click');   
+                            break;
+                        case "csd" :
+                            $("input[id=viewMain-tab-2]").trigger('click');   
+                            break;
+                    }
 					loadingMask("hide");
 		    		
 		    		localStorage.setItem("arSummaryData", JSON.stringify([data, nowTime]));
@@ -553,26 +575,11 @@ $('#viewMain').pagecontainer({
                 mainElement: '.page-date',
                 onRefresh: function() {
                     if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewMain") {
-                        buByType = [];
-						csdByType = [];
-						buSimplify = [];
-						csdSimplify = [];
-						buBubbleData = [];
-						buBubbleObj = {};
-						csdBubbleData = [];
-						csdBubbleObj = {};
-						buTreemap = [];
-						csdTreemap = [];
-                        $('#overview-hc-bubble').html("");
-                        $('#overview-hc-bubble-landscape').html("");
-                        $('#overview-hc-rectangle').html("");
-                        $('#overview-hc-rectangle-landscape').html("");
+                       	window.localStorage.removeItem("arSummaryData");
+                        ARSummary(); 
                         showBubble();
                         
-                        window.localStorage.removeItem("arSummaryData");
-                        ARSummary();
-                        
-    					/*if(viewMainTab == "bu"){
+    					if(viewMainTab == "bu"){
             				chartbubble.series[0].setData(buBubbleData, true, true, false);         
             				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
             				
@@ -581,11 +588,11 @@ $('#viewMain').pagecontainer({
             				chartbubble.series[0].setData(buBubbleData, true, true, false);         
             				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
             				
-                        }*/
+                        }
         				
                         chartbubble.redraw();
                 		chartLandscapebubble.redraw();
-                             
+                        
                     }
                 }
             });
