@@ -174,52 +174,155 @@ $(document).one('pagebeforeshow', function(){
     		$('.buSingleListBtn').attr('src', 'img/list_up.png');
     		$('.bu-single-list').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
+    		buArrIndex = 0;
     		buColumnCheckAll = true;
     		
     		if(facility == "ALL"){
     			for(var i in buOverdueDetail){
 	    			buOverdueDetail[i]["Header"]["SPREAD"] = 1;	
 	    		}
+    			if(switchState == false){
+    				var buColumn = new Highcharts.Chart('buColumn0', columnOption);
+    				buColumn.series[0].setData(buColumnSeries[0][0], false, false, false);
+					buColumn.series[1].setData(buColumnSeries[0][1], false, false, false);
+					buColumn.series[2].setData(buColumnSeries[0][2], false, false, false);
+					buColumn.series[3].setData(buColumnSeries[0][3], false, false, false);
+					buColumn.update({
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[0]["Header"]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					buColumn.redraw(false);
+    			}
+    			else{
+    				var buColumn = new Highcharts.Chart('buColumn0', columnOption);
+					buColumn.series[0].setData(buColumnSeries[0][0], false, false, false);
+					buColumn.series[1].setData(buColumnSeries[0][1], false, false, false);
+					buColumn.series[2].setData(buColumnSeries[0][2], false, false, false);
+					buColumn.series[3].setData(buColumnSeries[0][3], false, false, false);
+					buColumn.addSeries({
+						name: '1-15 Days',
+				        color: '#81B4E1',
+				        data: buColumnSeries[0][4]
+					}, false, false, false);
+					buColumn.addSeries({
+						name: '16-45 Days',
+				        color: '#F79620',
+				        data: buColumnSeries[0][5]
+					}, false, false, false);
+					buColumn.addSeries({
+						name: '46-75 Days',
+				        color: '#F36D21',
+				        data: buColumnSeries[0][6]
+					}, false, false, false);
+					buColumn.addSeries({
+						name: 'Over 75 Days',
+				        color: '#ED3824',
+				        data: buColumnSeries[0][7]
+					}, false, false, false);
+					buColumn.update({
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[0]["Header"]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					buColumn.redraw(false);
+    			}
+    			
+    			
     		}
     		else{
     			for(var i in otherBuOverdueDetail){
     				otherBuOverdueDetail[i]["Header"]["SPREAD"] = 1;
     			}
+    			
+    			if(switchState == false){
+    				var buColumn = new Highcharts.Chart('buColumn0', columnOption);
+    				buColumn.series[0].setData(buColumnSeries[0][0], false, false, false);
+					buColumn.series[1].setData(buColumnSeries[0][1], false, false, false);
+					buColumn.series[2].setData(buColumnSeries[0][2], false, false, false);
+					buColumn.series[3].setData(buColumnSeries[0][3], false, false, false);
+					buColumn.update({
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[0]["Header"]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					buColumn.redraw(false);
+    			}
+    			else{
+    				var buColumn = new Highcharts.Chart('buColumn0', columnOption);
+					buColumn.series[0].setData(buColumnSeries[0][0], false, false, false);
+					buColumn.series[1].setData(buColumnSeries[0][1], false, false, false);
+					buColumn.series[2].setData(buColumnSeries[0][2], false, false, false);
+					buColumn.series[3].setData(buColumnSeries[0][3], false, false, false);
+					buColumn.addSeries({
+						name: '1-15 Days',
+				        color: '#81B4E1',
+				        data: buColumnSeries[0][4]
+					}, false, false, false);
+					buColumn.addSeries({
+						name: '16-45 Days',
+				        color: '#F79620',
+				        data: buColumnSeries[0][5]
+					}, false, false, false);
+					buColumn.addSeries({
+						name: '46-75 Days',
+				        color: '#F36D21',
+				        data: buColumnSeries[0][6]
+					}, false, false, false);
+					buColumn.addSeries({
+						name: 'Over 75 Days',
+				        color: '#ED3824',
+				        data: buColumnSeries[0][7]
+					}, false, false, false);
+					buColumn.update({
+						tooltip: {
+							formatter: function () {
+						        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[0]["Header"]["CUSTOMER"] +
+						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+						        return s;
+						    }
+						}
+					});
+					buColumn.redraw(false);
+    			}
     		}
     		
-    		/*buColumnCount = 1;
-			buColumnPageEnd = buColumnShow * buColumnCount;
-			buColumnPageStart = buColumnPageEnd - buColumnShow;*/
-    		console.log(buColumnPageStart+" ,"+buColumnPageEnd);
-    		setBuPartOfColumnData();
     		
-    		
-    		/*if(buColumnCheckAll == false){	
-    			if(buCustomer.length >= 4){
-    				for(var j = 0; j < 4; j++){
-    					var buColumn = new Highcharts.Chart('buColumn' + j, columnOption);
-						buColumn.series[0].setData(buColumnSeries[j][0], false, false, false);
-						buColumn.series[1].setData(buColumnSeries[j][1], false, false, false);
-						buColumn.series[2].setData(buColumnSeries[j][2], false, false, false);
-						buColumn.series[3].setData(buColumnSeries[j][3], false, false, false);
-						buColumn.update({
-							tooltip: {
-								formatter: function () {
-							        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[j]["CUSTOMER"] +
-							        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
-							        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
-							        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
-							        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
-							        return s;
-							    }
-							}
-						});
-						buColumn.redraw(false);
-    				}
-    				
-    			}
-    			buColumnCheckAll = true;
-    		}*/
+    		//BU展开全部处罚滚屏事件
+    		$(window).on('scroll', function() {
+    			//获取页面可视区域的范围
+			   	var visibleTop = document.body.scrollTop;
+			   	var visibleHeight = document.body.clientHeight;
+			   	var visibleBottom = document.body.clientHeight + visibleTop; 
+			   	
+			   	
+    			
+    			
+    		});
     		
     		
 
@@ -228,6 +331,7 @@ $(document).one('pagebeforeshow', function(){
     		$('.buSingleListBtn').attr('src', 'img/list_down.png');
     		$('.bu-single-list').hide();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
+    		buArrIndex = null;
     		
     		if(facility == "ALL"){
     			for(var i in buOverdueDetail){
@@ -252,6 +356,7 @@ $(document).one('pagebeforeshow', function(){
     		$('.csdSingleListBtn').attr('src', 'img/list_up.png');
     		$('.csd-single-list').show();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
+    		csdArrIndex = 0;
     		csdColumnCheckAll = true;
     		
     		/*csdColumnCount = 1;
@@ -280,6 +385,7 @@ $(document).one('pagebeforeshow', function(){
     		$('.csdSingleListBtn').attr('src', 'img/list_down.png');
     		$('.csd-single-list').hide();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid #D6D6D6');
+    		csdArrIndex = null;
     		
     		if(facility == "ALL"){
     			for(var i in csdOverdueDetail){
@@ -603,12 +709,15 @@ $(document).one('pagebeforeshow', function(){
 		   	
 		   	timoutScrollEvent = setTimeout(function(){
 		   		//do some thing
-		   		
 		   		checkIndexVisible();
+		   		
+		   		onScrollSetAllAreaData();
+		   		
+		   		
 		   	}, 500);
 		   	
 			
-		   	var buArrLength = buAreaSeriesINV.length;
+		   	/*var buArrLength = buAreaSeriesINV.length;
 		   	var csdArrLength = csdAreaSeriesINV.length;
 		   	
 		   	buPageEnd = buShowNum * buCountNum;
@@ -650,7 +759,9 @@ $(document).one('pagebeforeshow', function(){
 					setCsdAreaData();
 					
 				}
-		   	} 	
+		   	}*/ 
+		   	
+		   	
 		});
 		
 	}	
@@ -702,7 +813,7 @@ $(document).one('pagebeforeshow', function(){
 	
 		   	
 	
-	if(csdColumnCheckAll == true){
+	/*if(csdColumnCheckAll == true){
 		$(window).on('scroll', function(){
 			//页面可视区域的范围
 		   	var visibleTop = document.body.scrollTop;
@@ -735,7 +846,7 @@ $(document).one('pagebeforeshow', function(){
 		   	}
 			
 		});
-	}
+	}*/
 		   	
 	
 	
@@ -852,6 +963,54 @@ function checkIndexVisible(){
    	//console.log(buArrIndex+" ,"+csdArrIndex);
 	
 }
+
+function onScrollSetAllAreaData() {
+	var buArrLength = buAreaSeriesINV.length;
+   	var csdArrLength = csdAreaSeriesINV.length;
+   	
+   	buPageEnd = buShowNum * buCountNum;
+    buPageStart = buPageEnd - buShowNum;
+   	
+   	//先从BU-Area开始
+   	if(buArrLength > buPageEnd){
+		var top12 = $('#buShowList' + (buPageEnd - 1)).offset().top;
+		var top13 = $('#buShowList' + buPageEnd).offset().top;
+		
+		if((top12 - visibleBottom) < 200){
+			buCountNum++;
+			return false;		
+		}
+		setBuAreaData();
+	   	
+	}
+   	else{
+   		buPageEnd = buArrLength;
+   		setBuAreaData();
+   		
+   		//buArea加载完成之后再加载CSD-Area
+   		csdPageEnd = csdShowNum * csdCountNum;
+		csdPageStart = csdPageEnd - csdShowNum;
+		
+		if(csdArrLength > csdPageEnd){
+			var csdTop12 = $('#csdShowList' + (csdPageEnd - 1)).offset().top;
+			
+			if((csdTop12 - visibleBottom) < 200){
+				csdCountNum++;
+				return false;
+			}
+			
+			setCsdAreaData();
+			
+		}
+		else{
+			csdPageEnd = csdArrLength;
+			setCsdAreaData();
+			
+		}
+   	}
+	
+}
+
 
 var compareSmallOverdue = function (prop1, prop2) {
     return function (obj1, obj2) {
