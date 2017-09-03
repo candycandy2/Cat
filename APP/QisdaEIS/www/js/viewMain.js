@@ -152,8 +152,8 @@ var bubbleOption = {
         }
     },
     series: [{		    	
-        data: buBubbleSeries
-        //data: buBubbleData
+        //data: buBubbleSeries
+        data: buBubbleData
     }],
     exporting: {
         enabled: false
@@ -568,15 +568,24 @@ $('#viewMain').pagecontainer({
                         $('#overview-hc-rectangle').html("");
                         $('#overview-hc-rectangle-landscape').html("");
                         showBubble();
-                        showTreemap();
                         
                         window.localStorage.removeItem("arSummaryData");
                         ARSummary();
                         
-                        chartbubble.redraw(true);
-                        chartLandscapebubble.redraw(true);
-                        chartRect.redraw(true);
-                        chartLandscapeRect.redraw(true);
+    					/*if(viewMainTab == "bu"){
+            				chartbubble.series[0].setData(buBubbleData, true, true, false);         
+            				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            				
+                        }
+                        else{
+            				chartbubble.series[0].setData(buBubbleData, true, true, false);         
+            				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            				
+                        }*/
+        				
+                        chartbubble.redraw();
+                		chartLandscapebubble.redraw();
+                             
                     }
                 }
             });
@@ -592,12 +601,12 @@ $('#viewMain').pagecontainer({
 			    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
 			    
 			    $('#overview-hc-rectangle').hide();
-			    
-			    chartbubble.series[0].setData(buBubbleData, false, false, false);
+			        
+		    	chartbubble.series[0].setData(buBubbleData, false, false, false);
 			    chartbubble.redraw(true);
 				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);
 				chartLandscapebubble.redraw(true);
-	            
+			    
 				if (window.orientation === 90 || window.orientation === -90 ) {
 	                zoomInChart();
 	           	}

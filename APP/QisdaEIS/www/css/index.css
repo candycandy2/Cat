@@ -848,9 +848,9 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 		/*display: block;*/
 		display: none;
 	}
-	/*#viewDetail{
+	#viewDetail{
 		padding-top: 0 !important;
-	}*/
+	}
 }
 
 @media all and (orientation: portrait) {
