@@ -1929,275 +1929,136 @@ function setSingleColumnData(i, type) {
 
 function setBuPartOfColumnData(){
 	if(switchState == false){
-		if(facility == "ALL"){
-			if(buColumnSeries.length > buColumnShow){
-				for(var i = buColumnPageStart; i < buColumnPageEnd; i++){
-					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-					buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[i]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-					console.log(buOverdueDetail[i]["Header"]["CUSTOMER"]);
-				}
-			}
-			else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
-				for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
-					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-					buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[i]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-				}
+		if(buColumnSeries.length > buColumnShow){
+			for(var i = buColumnPageStart; i < buColumnPageEnd; i ++){
+				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
 			}
 		}
-		else{
-			if(buColumnSeries.length > buColumnShow){
-				for(var i = buColumnPageStart; i < buColumnPageEnd; i++){
-					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-					buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[i]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-				}
-			}
-			else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
-				for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
-					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-					buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[i]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-				}
+		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
+			for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
+				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
 			}
 		}
-		
 	}
 	else{
-		if(facility == "ALL"){
-			if(buColumnSeries.length > buColumnShow){
-				for(var i = buColumnPageStart; i < buColumnPageEnd; i++){
-					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-					buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-					buColumn.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[i][4]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[i][5]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[i][6]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[i][7]
-					}, false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[i]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-				}
-			}
-			else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
-				for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
-					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-					buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-					buColumn.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[i][4]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[i][5]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[i][6]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[i][7]
-					}, false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[i]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-				}
+		if(buColumnSeries.length > buColumnShow){
+			for(var i = buColumnPageStart; i < buColumnPageEnd; i++){
+				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[i][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[i][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[i][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[i][7]
+				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
 			}
 		}
-		else{
-			if(buColumnSeries.length > buColumnShow){
-				for(var i = buColumnPageStart; i < buColumnPageEnd; i++){
-					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-					buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-					buColumn.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[i][4]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[i][5]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[i][6]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[i][7]
-					}, false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[i]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-				}
-			}
-			else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
-				for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
-					var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
-					buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
-					buColumn.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[i][4]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[i][5]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[i][6]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[i][7]
-					}, false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[i]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-				}
+		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
+			for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
+				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[i][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[i][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[i][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[i][7]
+				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
 			}
 		}
-		
 	}
 }
 
@@ -2331,6 +2192,143 @@ function setCsdPartOfColumnData(){
 					}
 				});
 				csdColumn.redraw(false);
+			}
+		}
+	}
+}
+
+function setAllBuColumnData() {
+	if(facility == "ALL"){
+		if(switchState == false){
+			for(var i in buOverdueDetail){
+				var buColumn = new Highcharts.Chart('buColumn'+i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[i]["Header"]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
+			}
+		}
+		else{
+			for(var i in buOverdueDetail){
+				var buColumn = new Highcharts.Chart('buColumn'+i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[i][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[i][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[i][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[i][7]
+				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[i]["Header"]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
+			}
+			
+		}
+		
+	}
+	else{
+		if(switchState == false){
+			for(var i in otherBuOverdueDetail){
+				var buColumn = new Highcharts.Chart('buColumn'+i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[i]["Header"]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
+			}
+		}
+		else{
+			for(var i in otherBuOverdueDetail){
+				var buColumn = new Highcharts.Chart('buColumn'+i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[i][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[i][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[i][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[i][7]
+				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[i]["Header"]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
 			}
 		}
 	}
