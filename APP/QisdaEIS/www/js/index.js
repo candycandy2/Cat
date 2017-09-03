@@ -181,136 +181,12 @@ $(document).one('pagebeforeshow', function(){
     			for(var i in buOverdueDetail){
 	    			buOverdueDetail[i]["Header"]["SPREAD"] = 1;	
 	    		}
-    			if(switchState == false){
-    				var buColumn = new Highcharts.Chart('buColumn0', columnOption);
-    				buColumn.series[0].setData(buColumnSeries[0][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[0][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[0][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[0][3], false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[0]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-    			}
-    			else{
-    				var buColumn = new Highcharts.Chart('buColumn0', columnOption);
-					buColumn.series[0].setData(buColumnSeries[0][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[0][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[0][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[0][3], false, false, false);
-					buColumn.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[0][4]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[0][5]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[0][6]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[0][7]
-					}, false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[0]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-    			}
-    			
-    			
     		}
     		else{
     			for(var i in otherBuOverdueDetail){
     				otherBuOverdueDetail[i]["Header"]["SPREAD"] = 1;
     			}
-    			
-    			if(switchState == false){
-    				var buColumn = new Highcharts.Chart('buColumn0', columnOption);
-    				buColumn.series[0].setData(buColumnSeries[0][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[0][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[0][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[0][3], false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[0]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-    			}
-    			else{
-    				var buColumn = new Highcharts.Chart('buColumn0', columnOption);
-					buColumn.series[0].setData(buColumnSeries[0][0], false, false, false);
-					buColumn.series[1].setData(buColumnSeries[0][1], false, false, false);
-					buColumn.series[2].setData(buColumnSeries[0][2], false, false, false);
-					buColumn.series[3].setData(buColumnSeries[0][3], false, false, false);
-					buColumn.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[0][4]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[0][5]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[0][6]
-					}, false, false, false);
-					buColumn.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[0][7]
-					}, false, false, false);
-					buColumn.update({
-						tooltip: {
-							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[0]["Header"]["CUSTOMER"] +
-						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
-						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
-						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
-						        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
-						        return s;
-						    }
-						}
-					});
-					buColumn.redraw(false);
-    			}
     		}
-    		
     		
     		//BU展开全部处罚滚屏事件
     		$(window).on('scroll', function() {
@@ -318,15 +194,39 @@ $(document).one('pagebeforeshow', function(){
 			   	var visibleTop = document.body.scrollTop;
 			   	var visibleHeight = document.body.clientHeight;
 			   	var visibleBottom = document.body.clientHeight + visibleTop; 
+			   	 
+			   	/*if(facility == "ALL"){
+			   		for(var i = 1; i < buOverdueDetail.length;){
+			   			i = setAllColumnByOne(i, visibleTop, visibleBottom);
+			   		}
+			   	}*/
+			   	var buColumnArrLength = buColumnSeries.length;
 			   	
+			   	buColumnPageEnd = buColumnShow * buColumnCount;
+				buColumnPageStart = buColumnPageEnd - buColumnShow;
+				
 			   	
-    			
-    			
+		   		if(buColumnArrLength > buColumnPageEnd){
+		   			var top4 = $('#buShowList' + (buColumnPageEnd - 1)).offset().top;
+		   			
+		   			if((top4 - visibleBottom) < 300){
+		   				buColumnCount++;
+		   				return false;
+		   			}
+		   			setBuPartOfColumnData();
+		   			
+		   		}
+		   		else{
+		   			buColumnPageEnd = buColumnArrLength;
+		   			setBuPartOfColumnData();
+		   		}
+			   	
     		});
     		
     		
 
-    	}else{
+    	}
+    	else{
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     		$('.buSingleListBtn').attr('src', 'img/list_down.png');
     		$('.bu-single-list').hide();
@@ -359,10 +259,6 @@ $(document).one('pagebeforeshow', function(){
     		csdArrIndex = 0;
     		csdColumnCheckAll = true;
     		
-    		/*csdColumnCount = 1;
-			csdColumnPageEnd = csdColumnShow * csdColumnCount;
-			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;*/
-    		
     		if(facility == "ALL"){
     			for(var i in csdOverdueDetail){
 	    			csdOverdueDetail[i]["Header"]["SPREAD"] = 1;	
@@ -374,11 +270,35 @@ $(document).one('pagebeforeshow', function(){
     			}
     		}
     		
-    		if(csdColumnCheckAll == false){
-    			
-    		}
-    		
-    		//setCsdPartOfColumnData();
+    		//CSD展开全部处罚滚屏事件
+    		$(window).on('scroll', function() {
+    			//获取页面可视区域的范围
+			   	var visibleTop = document.body.scrollTop;
+			   	var visibleHeight = document.body.clientHeight;
+			   	var visibleBottom = document.body.clientHeight + visibleTop; 
+			   	
+			   	var csdColumnArrLength = csdColumnSeries.length;
+			   	
+			   	csdColumnPageEnd = csdColumnShow * csdColumnCount;
+				csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
+				
+			   	
+		   		if(csdColumnArrLength > csdColumnPageEnd){
+		   			var top4 = $('#csdShowList' + (csdColumnPageEnd - 1)).offset().top;
+		   			
+		   			if((top4 - visibleBottom) < 300){
+		   				csdColumnCount++;
+		   				return false;
+		   			}
+		   			setCsdPartOfColumnData();
+		   			
+		   		}
+		   		else{
+		   			csdColumnPageEnd = csdColumnArrLength;
+		   			setCsdPartOfColumnData();
+		   		}
+			   	
+    		});
 
     	}else{
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
@@ -696,159 +616,29 @@ $(document).one('pagebeforeshow', function(){
 	
 	if(viewDetailTab == "overdue"){
 		//监听屏幕滚动事件
-		$(window).on('scroll', function(){
-			//获取页面可视区域的范围
-		   	var visibleTop = document.body.scrollTop;
-		   	var visibleHeight = document.body.clientHeight;
-		   	var visibleBottom = document.body.clientHeight + visibleTop;  	
-		   	
+		$(window).on('scroll', function(){			   	
 		   	if(timoutScrollEvent !== null){
 		   		clearTimeout(timoutScrollEvent);
 		   		timoutScrollEvent = null;
 		   	}
 		   	
 		   	timoutScrollEvent = setTimeout(function(){
-		   		//do some thing
+		   		//check areaIndex in visible
 		   		checkIndexVisible();
-		   		
-		   		onScrollSetAllAreaData();
-		   		
+		   			
 		   		
 		   	}, 500);
 		   	
+		   	//setArea-hc
+		   	onScrollSetAllAreaData();
 			
-		   	/*var buArrLength = buAreaSeriesINV.length;
-		   	var csdArrLength = csdAreaSeriesINV.length;
-		   	
-		   	buPageEnd = buShowNum * buCountNum;
-	        buPageStart = buPageEnd - buShowNum;
-		   	
-		   	//先从BU-Area开始
-		   	if(buArrLength > buPageEnd){
-				var top12 = $('#buShowList' + (buPageEnd - 1)).offset().top;
-				var top13 = $('#buShowList' + buPageEnd).offset().top;
-				
-				if((top12 - visibleBottom) < 200){
-					buCountNum++;
-					return false;		
-				}
-				setBuAreaData();
-			   	
-			}
-		   	else{
-		   		buPageEnd = buArrLength;
-		   		setBuAreaData();
-		   		
-		   		//buArea加载完成之后再加载CSD-Area
-		   		csdPageEnd = csdShowNum * csdCountNum;
-				csdPageStart = csdPageEnd - csdShowNum;
-				
-				if(csdArrLength > csdPageEnd){
-					var csdTop12 = $('#csdShowList' + (csdPageEnd - 1)).offset().top;
-					
-					if((csdTop12 - visibleBottom) < 200){
-						csdCountNum++;
-						return false;
-					}
-					
-					setCsdAreaData();
-					
-				}
-				else{
-					csdPageEnd = csdArrLength;
-					setCsdAreaData();
-					
-				}
-		   	}*/ 
-		   	
-		   	
+			
+			
 		});
 		
 	}	
 	
-	
-	
-	/*$(window).on('scroll', function(){
-		//console.log("展开BU");
-		//console.log(buColumnCheckAll);
-		//页面可视区域的范围
-	   	var visibleTop = document.body.scrollTop;
-	   	var visibleHeight = document.body.clientHeight;
-	   	var visibleBottom = document.body.clientHeight + visibleTop;
-		
-		//点击展开全部BU-column
-		if(facility == "ALL"){
-			var buColumnArrLength = buColumnSeries.length;
-		}
-		else{
-			var buColumnArrLength = buColumnSeries.length;
-		}
-	   	
-	   	if(buColumnCheckAll == true){
-	   		if(buColumnArrLength > buColumnPageEnd){
-	   			var top4 = $('#buShowList' + (buColumnPageEnd - 1)).offset().top;
-	   			
-	   			var buColumnCount = 1;
-	   			buColumnPageEnd = buColumnShow * buColumnCount;
-				buColumnPageStart = buColumnPageEnd - buColumnShow;
-	   			
-	   			if((top4 - visibleBottom) < 300){
-	   				buColumnCount++;
-	   				console.log(buColumnCount);
-	   				return false;
-	   			}
-	   			
-	   			
-	   			console.log(buColumnCount+" ,"+buColumnPageStart+" ,"+buColumnPageEnd);
-	   			setBuPartOfColumnData();
-	   			
-	   		}
-	   		else{
-	   			buColumnPageEnd = buColumnArrLength;
-	   			setBuPartOfColumnData();
-	   		}
-	   	}
-	   	
-	});*/
-	
 		   	
-	
-	/*if(csdColumnCheckAll == true){
-		$(window).on('scroll', function(){
-			//页面可视区域的范围
-		   	var visibleTop = document.body.scrollTop;
-		   	var visibleHeight = document.body.clientHeight;
-		   	var visibleBottom = document.body.clientHeight + visibleTop;
-			
-			//点击展开全部CSD-column
-		   	if(facility == "ALL"){
-		   		var csdColumnArrLength = csdColumnSeries.length;
-		   	}
-		   	else{
-		   		var csdColumnArrLength = csdColumnSeries.length;
-		   	}
-		   	
-		   	if(csdColumnCheckAll == true){
-		   		if(csdColumnArrLength > csdColumnPageEnd){
-		   			var top4 = $('#csdShowList' + (csdColumnPageEnd - 1)).offset().top;
-		   			
-		   			if((top4 - visibleBottom) < 300){
-		   				csdColumnCount++;
-		   				return false;
-		   			}
-		   			
-		   			setCsdPartOfColumnData();
-		   		}
-		   		else{
-		   			csdColumnPageEnd = csdColumnArrLength;
-		   			setCsdPartOfColumnData();
-		   		}
-		   	}
-			
-		});
-	}*/
-		   	
-	
 	
 	
 });
@@ -869,7 +659,7 @@ function checkIndexVisible(){
 	
 	if(facility == "ALL"){
 		//当BU在可视区域内，才判断column-hc是否在可视区域内
-		if(buOverdueAreaBottom > visibleTop){
+		if(buOverdueAreaBottom > visibleTop && buOverdueDetail.length > 0){
 			for(var i in buOverdueDetail){
 		   		if(buOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
 		   			var top1 = $('#buShowList'+i).offset().top;
@@ -880,7 +670,7 @@ function checkIndexVisible(){
 		   				buArrIndex = null;
 		   			}
 		   			else{
-		   				buArrIndex = i;
+		   				buArrIndex = Number(i);
 		   				buIndexMarginTop = $('#buShowList'+i).offset().top;
 		   				break;
 		   			}
@@ -891,7 +681,7 @@ function checkIndexVisible(){
 		    }
 		}
 		//当CSD在可视区域内，才判断column-hc是否在可视区域内
-		else if(visibleTop > buOverdueAreaBottom && csdOverdueAreaBottom >= visibleTop){
+		else if((visibleTop > buOverdueAreaBottom && csdOverdueAreaBottom >= visibleTop) || buOverdueDetail.length == 0){
 			for(var i in csdOverdueDetail){
 		   		if(csdOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
 		   			var top1 = $('#csdShowList'+i).offset().top;
@@ -902,7 +692,7 @@ function checkIndexVisible(){
 		   				csdArrIndex = null;
 		   			}
 		   			else{
-		   				csdArrIndex = i;
+		   				csdArrIndex = Number(i);
 		   				csdIndexMarginTop = $('#csdShowList'+i).offset().top;
 		   				break;
 		   			}
@@ -915,7 +705,7 @@ function checkIndexVisible(){
 	}
 	else{
 		//当BU在可视区域内，才判断column-hc是否在可视区域内
-		if(buOverdueAreaBottom > visibleTop){
+		if(buOverdueAreaBottom > visibleTop && otherBuOverdueDetail.length > 0){
 			for(var i in otherBuOverdueDetail){
 		   		if(otherBuOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
 		   			var top1 = $('#buShowList'+i).offset().top;
@@ -926,7 +716,7 @@ function checkIndexVisible(){
 		   				buArrIndex = null;
 		   			}
 		   			else{
-		   				buArrIndex = i;
+		   				buArrIndex = Number(i);
 		   				buIndexMarginTop = $('#buShowList'+i).offset().top;
 		   				break;
 		   			}
@@ -937,9 +727,9 @@ function checkIndexVisible(){
 		    }
 		}
 		//当CSD在可视区域内，才判断column-hc是否在可视区域内
-		else if(visibleTop > buOverdueAreaBottom && csdOverdueAreaBottom >= visibleTop){
+		else if((visibleTop > buOverdueAreaBottom && csdOverdueAreaBottom >= visibleTop) || otherBuOverdueDetail.length == 0){
 			for(var i in otherCsdOverdueDetail){
-		   		if(otherCsdOverdueDetaill[i]["Header"]["SPREAD"] == 1){	   	
+		   		if(otherCsdOverdueDetail[i]["Header"]["SPREAD"] == 1){	   	
 		   			var top1 = $('#csdShowList'+i).offset().top;
 			   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
 			   		
@@ -948,7 +738,7 @@ function checkIndexVisible(){
 		   				csdArrIndex = null;
 		   			}
 		   			else{
-		   				csdArrIndex = i;
+		   				csdArrIndex = Number(i);
 		   				csdIndexMarginTop = $('#csdShowList'+i).offset().top;
 		   				break;
 		   			}
@@ -965,6 +755,11 @@ function checkIndexVisible(){
 }
 
 function onScrollSetAllAreaData() {
+	//获取页面可视区域的范围
+   	var visibleTop = document.body.scrollTop;
+   	var visibleHeight = document.body.clientHeight;
+   	var visibleBottom = document.body.clientHeight + visibleTop;
+	
 	var buArrLength = buAreaSeriesINV.length;
    	var csdArrLength = csdAreaSeriesINV.length;
    	
@@ -1009,6 +804,37 @@ function onScrollSetAllAreaData() {
 		}
    	}
 	
+}
+
+function setAllColumnByOne(i, visibleTop, visibleBottom){
+	var top1 = $('#buShowList'+i).offset().top;
+	var bottom1 = $('#buShowList'+i).offset().top + $('#buShowList'+i).height();
+	var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+	
+	if(top1 > visibleTop && bottom1 < visibleBottom){
+		buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+		buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+		buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+		buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+		buColumn.update({
+			tooltip: {
+				formatter: function () {
+			        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[i]["Header"]["CUSTOMER"] +
+			        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+			        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+			        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+			        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+			        return s;
+			    }
+			}
+		});
+		buColumn.redraw(false);
+		
+		i++;
+		return i;
+	}
+	
+	setAllColumnByOne(i, visibleTop, visibleBottom);
 }
 
 
