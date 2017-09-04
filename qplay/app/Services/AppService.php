@@ -8,7 +8,7 @@ namespace App\Services;
 use App\Repositories\AppRepository;
 use App\Repositories\AppLineRepository;
 use App\Repositories\AppVersionRepository;
-
+use App\lib\FilePath;
 use \DB;
 
 class AppService
@@ -136,8 +136,72 @@ class AppService
         return $this->appRepository->getAppBasicIfnoByAppId($appId);
     }
 
+    /**
+     * 取得App排序
+     * @param  int $categoryId qp_app_category.row_id
+     * @return int
+     */
     public function getNewAppSequence($categoryId){
         return $this->appRepository->getMaxAppSequenceByCategory($categoryId) + 1;
+    }
+
+    /**
+     * 上傳icon檔案
+     * @param  int  $appId qp_app.row_id
+     * @param  file $icon  icon 圖片檔案
+     */
+    public function uploadIcon($appId,$icon){
+        
+        //delete icon file
+        $this->deleteIconFile($appId);
+        //upload file
+        $fileName = $this->uploadIconFie($appId, $icon);
+        //update DB
+        $this->appRepository->updateAppInfoById($appId, ['icon_url'=>$fileName]);
+    }
+
+    /**
+     * 刪除icon檔案
+     * @param  int $appId qp_app.row_id
+     */
+    public function deleteIcon($appId){
+        // delete file
+        $this->deleteIconFile($appId);
+        // delete DB
+        $this->appRepository->updateAppInfoById($appId, ['icon_url'=>'']);
+    }
+
+    /**
+     * 上傳icon檔案
+     * @param  int    $appId qp_app.row_id
+     * @param  file   $icon  icon file
+     * @return String        上傳後的實體檔案名稱
+     */
+    public function uploadIconFie($appId, $icon){
+        $iconUploadPath =  FilePath::getIconUploadPath($appId);
+
+        if (!file_exists($iconUploadPath)) {
+            mkdir($iconUploadPath, 0755, true);
+        }
+        $fileName = time();
+        $icon->move($iconUploadPath,$fileName);
+        return $fileName;
+    }
+
+    /**
+     * 刪除icon 檔案
+     * @param  int      $appId    qp_app.row_id
+     * @return mixed             成功:刪除的檔案名稱 | 失敗:null
+     */
+    public function deleteIconFile($appId){
+        $deleteRes = null;
+        $oriIcon = $this->appRepository->getAppBasicIfnoByAppId($appId);              
+        $oriIconFile = FilePath::getIconUploadPath($appId).$oriIcon->icon_url;
+        if($oriIcon->icon_url!="" && file_exists($oriIconFile)){
+            unlink($oriIconFile);
+            $deleteRes  = $oriIcon->icon_url;
+        }
+        return $deleteRes;
     }
 
 }
