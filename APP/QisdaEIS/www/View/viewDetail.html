@@ -107,21 +107,21 @@
 		<div id="overdueSoon">
 			<!-- bu -->
 			<div class="overduesoon-bu-title">
-				<span class="font-style11">BU Overdue A/R</span>
-				<span class="font-style12">(Will be due 4 days)</span>
+				<span class="font-style11">BU Outstanding A/R</span>
+				<span class="font-style12">(Will be due 14 days)</span>
 			</div>
 			<div class="overduesoon-bu-header">
-				<div class="font-style7">
+				<div class="font-style7 bu-customer">
 					<span>Customer</span>
 					<img src="img/priority_up.png" class="priority-img" id="buOverdueSoonSortByCustomer" style="margin-left: 3.2VW;" />
 				</div>
-				<div>
+				<div class="bu-totaloverdue">
 					<div class="font-style7">
 						<span>Total Overdue</span>
 						<span>(USD)</span>
 					</div>
 					<div>
-						<img src="img/priority_up.png" class="priority-img" id="buOverdueSoonSortByTotal" />
+						<img src="img/priority_down.png" class="priority-img" id="buOverdueSoonSortByTotal" />
 					</div>
 				</div>
 			</div>
@@ -132,21 +132,21 @@
 			</div>
 			<!-- csd -->
 			<div class="overduesoon-csd-title">
-				<span class="font-style11">CSD Overdue A/R</span>
-				<span class="font-style12">(Will be due 4 days)</span>
+				<span class="font-style11">CSD Outstanding A/R</span>
+				<span class="font-style12">(Will be due 14 days)</span>
 			</div>
 			<div class="overduesoon-csd-header">
-				<div class="font-style7">
+				<div class="font-style7 csd-customer">
 					<span>Customer</span>
 					<img src="img/priority_up.png" class="priority-img" id="csdOverdueSoonSortByCustomer" style="margin-left: 3.2VW;" />
 				</div>
-				<div>
+				<div class="csd-totaloverdue">
 					<div class="font-style7">
 						<span>Total Overdue</span>
 						<span>(USD)</span>
 					</div>
 					<div>
-						<img src="img/priority_up.png" class="priority-img" id="csdOverdueSoonSortByTotal" />
+						<img src="img/priority_down.png" class="priority-img" id="csdOverdueSoonSortByTotal" />
 					</div>
 				</div>
 			</div>
@@ -163,15 +163,15 @@
 				<span class="font-style12">(Will be expired in 60 days)</span>
 			</div>
 			<div class="expiredsoon-bu-header">
-				<div class="font-style7">
+				<div class="font-style7 sort-customer">
 					<span>Customer</span>
 					<img src="img/priority_up.png" class="priority-img" id="expiredSoonSortByCustomer" style="margin-left: 3.2VW;" />
 				</div>
-				<div class="font-style7">
+				<div class="font-style7 sort-day">
 					<span>Expired Day</span>
 					<img src="img/priority_up.png" class="priority-img" id="expiredSoonSortByDay" style="margin-left: 3.2VW;" />
 				</div>
-				<div>
+				<div class="sort-credit">
 					<div class="font-style7">
 						<span>Current Credit</span>
 						<span>Limit</span>
@@ -189,11 +189,10 @@
 		</div>
 		<!-- column highcharts -->
 		<div id="viewDetail-hc-column-landscape"></div>
+		<div id="viewDetail-hc-column-landscape-switch"></div>
 	</div>
 	
 	<!-- scrollmenu -->
-	<div data-role="footer" data-position="fixed" data-tap-toggle="false">
-        <div class="scrollmenu Facility" style="overflow: auto;">
-        </div>
+	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="scrollmenu Facility" style="overflow: auto;">
 	</div>
 </div>

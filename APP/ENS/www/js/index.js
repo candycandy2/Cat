@@ -105,7 +105,10 @@ var chatRoom = {
                     var localDataLength = chatRoom.Messages[chatRoom.nowChatRoomID].length
                     var localDataLatestCTime = chatRoom.Messages[chatRoom.nowChatRoomID][localDataLength - 1]["ctime"];
 
-                    if (messageTimestamp > localDataLatestCTime) {
+                    if (messageTimestamp == localDataLatestCTime) {
+                        chatRoom.Messages[chatRoom.nowChatRoomID].pop();
+                        chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
+                    } else if (messageTimestamp > localDataLatestCTime) {
                         chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
                     }
                 }

@@ -62,13 +62,14 @@
 	padding: 0px;
 }
 
+/* pull refresh */
 .page-main .page-date{
 	font-family: Arial;
-	height: 3VH;
+	height: 3VW;
 	color: #0f0f0f;
 	text-align:center;
 	width: 80%;
-	margin: 2VH auto 0;
+	margin: 1VH auto 0;
 }
 
 .page-main .YTD-Str {
@@ -94,6 +95,7 @@ a{
 	overflow: initial !important;
 }
 
+
 /* excludeLabel */
 #excludeLabel span{
 	color: #666666;
@@ -105,11 +107,14 @@ a{
 	font-size: 14px !important;
 	font-family: arial !important;
 }
-.font-color-black{
+.font-color-black {
 	color: black;
 }
-.font-color-red{
+.font-color-red {
 	color: red;
+}
+.font-color-blue {
+	color: blue;
 }
 .font-companyName{
 	width: 17VW;
@@ -119,6 +124,7 @@ a{
 	-webkit-box-orient:vertical;
 	-webkit-line-clamp:2; 
 	white-space: normal;
+	z-index: 2;
 }
 
 /* img */
@@ -403,6 +409,7 @@ a{
 	height: 16.98VW;
 }
 
+/* column highcharts */
 .bu-single-list > div:nth-child(4),
 .csd-single-list > div:nth-child(4){
 	width: 92.58VW;
@@ -811,18 +818,19 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
 }
-#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape{
+#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape,
+#viewDetail #viewDetail-hc-column-landscape-switch{
 	display: none;
 }
 
 /********************************************** highcharts landscape *********************************************/
 @media all and (orientation: landscape) {
 	/*******************overview highcharts*********************/
-	#viewMain .page-header, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn,
-	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape{
+	#viewMain .page-header, #viewMain .page-date, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn,
+	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape {
 		display: none;
 	}
-	#viewMain{
+	#viewMain {
 		padding-top: 0 !important;
 	}
 	.viewIndex.ui-page {
@@ -832,13 +840,15 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 		display: block;
 	}
 	/*#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, 
-	#viewDetail .bu-title, #viewDetail .bu-header, #viewDetail .bu-main, #viewDetail .scrollmenu,
+	#viewDetail .bu-title, #viewDetail .bu-title, #viewDetail .bu-main, #viewDetail .scrollmenu,
 	#viewDetail #overdue, #viewDetail #overdueSoon, #viewDetail #expiredSoon{
 		display: none;
-	}
-	#viewDetail #viewDetail-hc-column-landscape {
-		display: block;
 	}*/
+	#viewDetail #viewDetail-hc-column-landscape,
+	#viewDetail #viewDetail-hc-column-landscape-switch {
+		/*display: block;*/
+		display: none;
+	}
 	#viewDetail{
 		padding-top: 0 !important;
 	}

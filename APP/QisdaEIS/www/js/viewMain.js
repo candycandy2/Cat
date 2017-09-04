@@ -1,6 +1,7 @@
 //get BU & CSD series
 var viewMainTab = "bu";
-var facilityList,firstFacility;
+var facilityList = "";
+var firstFacility;
 var viewMainInit = false;
 var mainQisdaEisData = {};
 var userAuthority = [];
@@ -24,14 +25,7 @@ var buBubbleSeries = [
     { x: 82, y: 5037846, facility: 'FS' },
     { x: 88, y: 7345442, facility: 'TY' }
 ];
-var csdBubbleSeries = [
-	{ x: 74, y: 36, name: 'TE',  color: '#99CC33' },
-    { x: 82, y: 45, name: 'TF',  color: '#40C1C7' },
-    { x: 66, y: 60, name: 'TN',  color: '#FFCC66' },			            
-    { x: 88, y: 73, name: 'FL',  color: '#5AAEE1' },
-    { x: 63, y: 28, name: 'FS',  color: '#948078' },
-    { x: 91, y: 57, name: 'TY',  color: '#AC8BC0' }
-];
+
 var treemapSeries1 = [
 	{ customer: '66588 东森电视股份有限公司', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
 	{ customer: '60324 飞利浦股份有限公司', value: 9, colorValue: 30, day1: 738, day16: 456, day46: 1024, day76: 2586 }, 
@@ -40,19 +34,12 @@ var treemapSeries1 = [
 	{ customer: '63201 CCCC股份有限公司', value: 4, colorValue: 60, day1: 985, day16: 2246, day46: 409, day76: 4587 }, 
 	{ customer: '64885 DDDD股份有限公司', value: 4, colorValue: 70, day1: 441, day16: 798, day46: 1059, day76: 3062 }
 ];
-var treemapSeries2 = [
-	{ customer: '60586 EEEE股份有限公司', value: 7, colorValue: 10, day1: 785, day16: 464, day46: 3560, day76: 2557 }, 
-	{ customer: '61273 FFFF股份有限公司有限公司', value: 10, colorValue: 20, day1: 524, day16: 1674, day46: 897, day76: 1356 }, 
-	{ customer: '65792 GGGG股份有限公司', value: 5, colorValue: 45, day1: 747, day16: 1654, day46: 5647, day76: 2441 }, 
-	{ customer: '63496 HHHH股份有限公司', value: 5, colorValue: 55, day1: 1242, day16: 344, day46: 3684, day76: 687 }, 
-	{ customer: '65068 IIII股份有限公司', value: 8, colorValue: 65, day1: 2364, day16: 841, day46: 653, day76: 457 }, 
-	{ customer: '69876 JJJJ股份有限公司', value: 8, colorValue: 75, day1: 1254, day16: 2503, day46: 486, day76: 698 }
-];
 
 //bubble highcharts option
 var bubbleOption = {
 	chart: {
         type: 'bubble',
+        animation: false,
         marginTop: 5,
         plotBorderWidth: 0,
         zoomType: 'none'
@@ -114,9 +101,6 @@ var bubbleOption = {
             	events: {
             		click: function(event){
             			var facility = this.facility;
-            			buTreemap = [];
-            			csdTreemap = [];
-            			
             			getTreemapSeriesByFacility(facility);
             			
             			showTreemap();
@@ -154,8 +138,8 @@ var bubbleOption = {
         }
     },
     series: [{		    	
-        data: buBubbleSeries
-        //data: buBubbleData
+        //data: buBubbleSeries
+        data: buBubbleData
     }],
     exporting: {
         enabled: false
@@ -176,11 +160,11 @@ var rectOption = {
 		zoomType: 'none'
 	},
 	colorAxis: {
-        tickPositions: [0, 50, 100, 200],
+        tickPositions: [0, 15, 45, 75],
         stops: [
             [0, '#81B4E1'],
-            [0.25, '#81B4E1'],
-            [0.25, '#F79620'],
+            [0.2, '#81B4E1'],
+            [0.2, '#F79620'],
             [1, '#EF3623']
         ],
         labels: {
@@ -188,18 +172,19 @@ var rectOption = {
         	align: 'left',
         	overflow: 'justify',
         	formatter: function(){
-        		if(this.value == 400){
-        			return this.value + '(Days)';
+        		if(this.value == 75){
+        			var s = this.value + '(Days)';
         		}
         		else{
-        			return this.value;
+        			var s = this.value;
         		}
+        		return s;
         	},
         	style: {
-        		color: '#323232'
+        		"color": "#323232",
+        		"fontSize": "11px"
         	}
-        },
-        endOntick: false
+        }
    	},
    	tooltip: {
         useHTML: true,
@@ -209,13 +194,6 @@ var rectOption = {
         borderWidth: 1,
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
-        headerFormat: '<table class="fontTooltip">',
-        /*pointFormat: '<tr><td><strong>{point.customer}</strong></td></tr>' +
-        '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
-        '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
-        '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
-        '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
-        footerFormat: '</table>',*/
         formatter: function () {
 	        var s = '<b>' + this.point.customer + '</b><br/>' + 
 	        		'<span>1-15 Days:USD$' + formatNumber(this.point.day1.toFixed(2)) + '</span><br/>' +
@@ -233,9 +211,10 @@ var rectOption = {
 	        dataLabels: {
 	            enabled: true,  
 	            useHTML: true,
-	            crop: false,
-	            overflow: 'none',
+	            crop: true,
+	            overflow: 'justify',
 	            inside: true,
+	            /*zIndex: 2,*/
 	            style: {
 	            	"color": "#ffffff",
 	            	"fontSize": "11px",
@@ -243,6 +222,7 @@ var rectOption = {
 	            	"textOutline": "2px 2px black"
 	            },
 	            format: '<div class="font-companyName">{point.customer}</div>'
+	            /*format: '{point.customer}'*/
 	        }
     	}
     },
@@ -275,18 +255,28 @@ function hideTooltip(){
 }
 
 function sortDataByType(){
-	for(var i in arSummaryCallBackData){
-		if(arSummaryCallBackData[i]["TYPE"] == "BU"){
-			buByType.push(arSummaryCallBackData[i]);
-		}
-		else{
-			csdByType.push(arSummaryCallBackData[i]);
+	buByType = [];
+	csdByType = [];
+	
+	for(var i = 0; i < arSummaryCallBackData.length; i++){
+		for(var j = 0; j < araUserAuthorityCallBackData.length; j++){
+			if(arSummaryCallBackData[i]["FACILITY"] == araUserAuthorityCallBackData[j]["FACILITY"]){
+				if(arSummaryCallBackData[i]["TYPE"] == "BU"){
+					buByType.push(arSummaryCallBackData[i]);
+				}
+				else if(arSummaryCallBackData[i]["TYPE"] == "CSD"){
+					csdByType.push(arSummaryCallBackData[i]);
+				}
+			}
 		}
 	}
-	//console.log(buByType);
+	
 }
 
 function simplifyData(){
+	buSimplify = [];
+	csdSimplify = [];
+	
 	$.each(buByType, function(i, item) {
 		buSimplify.push({
 			"day": parseInt(item.MAX_DUE_DAYS_INV),
@@ -318,10 +308,14 @@ function simplifyData(){
 			"group": item.BUSINESS_GROUP
 		});
 	});
-	//console.log(buSimplify);
 }
 
 function mergeDataByFacility(){
+	buBubbleData = []
+	csdBubbleData = [];
+	buBubbleObj = {};
+	csdBubbleObj = {};
+	
 	$.each(buSimplify, function(i, item) {
 		var fac = item.facility;
 		var total = item.total;
@@ -360,6 +354,7 @@ function mergeDataByFacility(){
 			buBubbleData.push(buBubbleObj[fac]);
 		}
 	});
+	
 	$.each(csdSimplify, function(i, item) {
 		var fac = item.facility;
 		var total = item.total;
@@ -398,10 +393,14 @@ function mergeDataByFacility(){
 			csdBubbleData.push(csdBubbleObj[fac]);
 		}
 	});
-	//console.log(buBubbleData);
+	
+	
 }
 
 function getTreemapSeriesByFacility(fac) {
+	buTreemap = [];
+    csdTreemap = [];
+	
 	$.each(buSimplify, function(i, item) {
 		if(item.facility == fac){
 			buTreemap.push({
@@ -437,17 +436,20 @@ $('#viewMain').pagecontainer({
 	create: function (event, ui){	
 		
 		window.ARSummary = function() {
-			if(localStorage.getItem("arSummaryData") === null){
+			if(localStorage.getItem("arSummaryData") == null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
-		    		//console.log(arSummaryCallBackData);
-		    		
-		    		//先按TYPE分组,分成BU和CSD
 		    		sortDataByType();	
-		    		//简化数据
 		    		simplifyData();
-		    		//相同facility合并
 		    		mergeDataByFacility();
+		    		switch(viewMainTab) {
+                        case "bu" :
+                            $("input[id=viewMain-tab-1]").trigger('click');   
+                            break;
+                        case "csd" :
+                            $("input[id=viewMain-tab-2]").trigger('click');   
+                            break;
+                    }
 					loadingMask("hide");
 		    		
 		    		localStorage.setItem("arSummaryData", JSON.stringify([data, nowTime]));
@@ -464,7 +466,6 @@ $('#viewMain').pagecontainer({
 			else{
 				arSummaryData = JSON.parse(localStorage.getItem("arSummaryData"))[0];
 				arSummaryCallBackData = arSummaryData["Content"];
-				//console.log(arSummaryCallBackData);
 				sortDataByType();
 				simplifyData();
 				mergeDataByFacility();
@@ -480,32 +481,63 @@ $('#viewMain').pagecontainer({
 		};
 		
 		window.AraUserAuthority = function() {
-			this.successCallback = function(data) {
-				araUserAuthorityCallBackData = data["Content"];
-				facilityList = '<a id="ALL">ALL</a>';
+			if(localStorage.getItem("araUserAuthorityData") === null){
+				this.successCallback = function(data) {
+					araUserAuthorityCallBackData = data["Content"];
+					
+					//facilityList = '<a id="ALL">ALL</a>';
+					var firstFacilityFlag = true;
+					for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
+						facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
+						if(firstFacilityFlag){
+							firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+							firstFacilityFlag = false;
+						}
+					}
+					$(".Facility").html("");
+	                $(".Facility").append(facilityList).enhanceWithin();
+	                /*$(".Facility #ALL").addClass('hover');*/
+	               	$(".Facility #" + firstFacility).addClass('hover');
+	                ARSummary();
+	                loadingMask("hide");
+	                
+	                localStorage.setItem("araUserAuthorityData", JSON.stringify([data, nowTime]));
+				};
+				
+				this.failCallback = function(data) {
+		    		console.log("api misconnected");
+		    	};
+		    	
+		    	var _construct = function() {
+					CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
+				}();
+			}
+			else{
+				araUserAuthorityData = JSON.parse(localStorage.getItem("araUserAuthorityData"))[0];
+				araUserAuthorityCallBackData = araUserAuthorityData["Content"];
+				
+				/*facilityList = '<a id="ALL">ALL</a>';*/
 				var firstFacilityFlag = true;
 				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
 					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
 					if(firstFacilityFlag){
-						//firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+						firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
 						firstFacilityFlag = false;
 					}
 				}
 				$(".Facility").html("");
                 $(".Facility").append(facilityList).enhanceWithin();
-                $(".Facility #ALL").addClass('hover');
+                $(".Facility #" + firstFacility).addClass('hover');
+                ARSummary();
                 loadingMask("hide");
-			};
-			
-			this.failCallback = function(data) {
-	    		console.log("api misconnected");
-	    	};
-	    	
-	    	var _construct = function() {
-				CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
-			}();
-			
-			
+                
+                var lastTime = JSON.parse(localStorage.getItem("araUserAuthorityData"))[1];
+                if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+                    localStorage.removeItem("araUserAuthorityData");
+                    AraUserAuthority();
+                }
+				
+			}
 		};
 		
 		
@@ -523,7 +555,52 @@ $('#viewMain').pagecontainer({
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
 			/* global PullToRefresh */
-			
+			PullToRefresh.init({
+                mainElement: '.page-date',
+                onRefresh: function() {
+                    if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewMain") {
+                       	//销毁hc
+                       	chartbubble.destroy();
+                        chartLandscapebubble.destroy();
+                        if(chartRect !== null){
+                        	chartRect.destroy();
+                        }
+                        if(chartLandscapeRect !== null){
+                        	chartLandscapeRect.destroy();
+                        }
+                       	
+                       	//重新调用API
+                       	window.localStorage.removeItem("arSummaryData");
+                        ARSummary();
+                        
+                        //viewDetail API
+                        window.localStorage.removeItem("overdueDetailData");
+                    	OverdueDetail();
+                    	window.localStorage.removeItem("outstandDetailData");
+                   		OutstandDetail();
+                   		window.localStorage.removeItem("creditExpiredSoonData");
+                    	CreditExpiredSoon();
+                    	
+                    	//恢复初始状态
+                        viewDetailInit = false;
+                          
+                        showBubble();
+                        
+    					if(viewMainTab == "bu"){
+            				chartbubble.series[0].setData(buBubbleData, true, true, false);         
+            				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            				
+                        }
+                        else{
+            				chartbubble.series[0].setData(csdBubbleData, true, true, false);         
+            				chartLandscapebubble.series[0].setData(csdBubbleData, true, true, false);
+            				
+                        }
+        				  
+                        
+                    }
+                }
+            });
 			
 		});
 		
@@ -536,12 +613,12 @@ $('#viewMain').pagecontainer({
 			    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
 			    
 			    $('#overview-hc-rectangle').hide();
-			    
-			    chartbubble.series[0].setData(buBubbleData, false, false, false);
+			        
+		    	chartbubble.series[0].setData(buBubbleData, false, false, false);
 			    chartbubble.redraw(true);
 				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);
 				chartLandscapebubble.redraw(true);
-	            
+			    
 				if (window.orientation === 90 || window.orientation === -90 ) {
 	                zoomInChart();
 	           	}
@@ -549,7 +626,6 @@ $('#viewMain').pagecontainer({
 				//调用第二页API
 				OverdueDetail();
 			}
-			
 			loadingMask("hide");
 		});
 		

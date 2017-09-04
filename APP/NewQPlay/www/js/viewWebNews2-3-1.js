@@ -7,7 +7,7 @@
         // 2. strip Word generated HTML comments
         var commentSripper = new RegExp('<!--(.*?)-->', 'g');
         var output = output.replace(commentSripper, '');
-        var tagStripper = new RegExp('<(/)*(meta|link|span|table|tbody|td|tr|body|div|strong|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
+        var tagStripper = new RegExp('<(/)*(meta|link|span|table|tbody|td|tr|body|div|strong|\\?xml:|st1:|o:)(.*?)>', 'gi');
         // 3. remove tags leave content if any
         output = output.replace(tagStripper, '');
         // 4. Remove everything in between and including tags '<style(.)style(.)>'
