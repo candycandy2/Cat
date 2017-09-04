@@ -288,10 +288,11 @@ $("#viewEventContent").pagecontainer({
                         } else {
                             //messageList.find(".image img").prop("src", "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"]);
                             var dataArray = messages[i]["msg_body"]["media_id"].split("/");
-                            photoData[dataArray[3]] = "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"];
+                            var idArray = dataArray[3].split(".");
+                            photoData[idArray[0]] = "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"];
 
                             messageList.find(".image img").prop("src", "img/component/ajax-loader.gif");
-                            messageList.find(".image img").prop("id", dataArray[3]);
+                            messageList.find(".image img").prop("id", idArray[0]);
                             //messageList.find(".image img").prop("src", "https://dl.im.jiguang.cn/qiniu/image/j/54BAF99DD8326F50087B260036BFE6A9");
                         }
 

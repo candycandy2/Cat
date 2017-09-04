@@ -7,29 +7,12 @@ var overdueInit = false;
 var overdueSoonInit = false;
 var expiredSoonInit = false;
 var facilityInit = false;
+var customerName;
 //get BU & CSD series
-var companySeries1 = [10, 20, 30, 40, 50, 60];
-var companySeries2 = [31, 26, 58, 43, 59, 64];
-var companySeries3 = [46, 38, 21, 47, 21, 33];
-var companySeries4 = [58, 37, 76, 51, 42, 27];
-
-var columnData1 = [44, 36, 24, 87, 66, 45];
-var columnData2 = [55, 54, 64, 48, 63, 42];
-var columnData3 = [84, 43, 54, 36, 54, 66];
-var columnData4 = [55, 76, 59, 46, 36, 46];
-var columnData5 = [-44, -36, -24, -87, -86, -45];
-var columnData6 = [-55, -52, -64, -48, -63, -42];
-var columnData7 = [-87, -49, -63, -36, -54, -66];
-var columnData8 = [-58, -71, -89, -36, -36, -46];
-var columnData9 = [0, 0, 0, 0, 0, 0];
-
-//var categoriesMonth = ['60天', '70天', '80天', '90天'];
-//var categoriesWeek = ['W21', 'W22', 'W23', 'W24', 'W25', 'W26']; 动态获取，由timeAxis代替
+var companySeriesInit = [10, 20, 30, 40, 50, 60];
+var columnDataInit = [0, 0, 0, 0, 0, 0];
 var companyName = ['66558 东森电视股份有限公司', '67326 飞利浦股份有限公司', '69410 AAAA股份有限公司'];
-var userName = "Alan Chen";
 var startDate, endDate;
-/*var startDate = "07/05";
-var endDate = "08/25";*/
 var buColumnCheckAll = false;
 var csdColumnCheckAll = false;
 var buOutstandDetailTotal = 0;
@@ -155,7 +138,7 @@ var areaOption = {
         enabled: false
     },
     series: [{
-        data: companySeries1
+        data: companySeriesInit
     }]
 };
 
@@ -222,19 +205,19 @@ var columnOption = {
     series: [{
         name: '1-15 Days',
         color: '#81B4E1',
-        data: columnData1
+        data: columnDataInit
     }, {
         name: '16-45 Days',
         color: '#F79620',
-        data: columnData2
+        data: columnDataInit
     }, {
         name: '46-75 Days',
         color: '#F36D21',
-        data: columnData3
+        data: columnDataInit
     }, {
         name: 'Over 75 Days',
         color: '#ED3824',
-        data: columnData4
+        data: columnDataInit
     }]	
 };
 
@@ -243,22 +226,22 @@ function changeSeriesBySwitch(){
 		chartColumnLandscape.addSeries({
 			name: '1-15 Days',
 	        color: '#81B4E1',
-	        data: columnData9
+	        data: columnDataInit
 		}, false, false, false);
 		chartColumnLandscape.addSeries({
 			name: '16-45 Days',
 	        color: '#F79620',
-	        data: columnData9
+	        data: columnDataInit
 		}, false, false, false);
 		chartColumnLandscape.addSeries({
 			name: '46-75 Days',
 	        color: '#F36D21',
-	        data: columnData9
+	        data: columnDataInit
 		}, false, false, false);
 		chartColumnLandscape.addSeries({
 			name: 'Over 75 Days',
 	        color: '#ED3824',
-	        data: columnData9
+	        data: columnDataInit
 		}, false, false, false);
 	}
 	//删除series,由8组变为4组
@@ -651,6 +634,10 @@ function csdSingleListBtn(){
 
 
 function getOverdueDetailData(){
+	timeAxis = [];
+	buOverdueDetail = [];
+	csdOverdueDetail = [];
+	
 	//get week timeAxis
 	for(var i in overdueDetailCallBackData){
 		if(overdueDetailCallBackData[i]["Detail"].length == 6){
@@ -1932,6 +1919,7 @@ function setBuPartOfColumnData(){
 		if(buColumnSeries.length > buColumnShow){
 			for(var i = buColumnPageStart; i < buColumnPageEnd; i ++){
 				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				customerName = buCustomer[i]["CUSTOMER"];
 				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
 				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
 				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
@@ -1939,7 +1927,7 @@ function setBuPartOfColumnData(){
 				buColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + customerName +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +

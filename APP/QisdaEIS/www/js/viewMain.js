@@ -24,14 +24,7 @@ var buBubbleSeries = [
     { x: 82, y: 5037846, facility: 'FS' },
     { x: 88, y: 7345442, facility: 'TY' }
 ];
-var csdBubbleSeries = [
-	{ x: 74, y: 36, name: 'TE',  color: '#99CC33' },
-    { x: 82, y: 45, name: 'TF',  color: '#40C1C7' },
-    { x: 66, y: 60, name: 'TN',  color: '#FFCC66' },			            
-    { x: 88, y: 73, name: 'FL',  color: '#5AAEE1' },
-    { x: 63, y: 28, name: 'FS',  color: '#948078' },
-    { x: 91, y: 57, name: 'TY',  color: '#AC8BC0' }
-];
+
 var treemapSeries1 = [
 	{ customer: '66588 东森电视股份有限公司', value: 10, colorValue: 10, day1: 2256, day16: 876, day46: 432, day76: 1258 }, 
 	{ customer: '60324 飞利浦股份有限公司', value: 9, colorValue: 30, day1: 738, day16: 456, day46: 1024, day76: 2586 }, 
@@ -39,14 +32,6 @@ var treemapSeries1 = [
 	{ customer: '62406 BBBB股份有限公司', value: 6, colorValue: 50, day1: 207, day16: 1078, day46: 567, day76: 2963 }, 
 	{ customer: '63201 CCCC股份有限公司', value: 4, colorValue: 60, day1: 985, day16: 2246, day46: 409, day76: 4587 }, 
 	{ customer: '64885 DDDD股份有限公司', value: 4, colorValue: 70, day1: 441, day16: 798, day46: 1059, day76: 3062 }
-];
-var treemapSeries2 = [
-	{ customer: '60586 EEEE股份有限公司', value: 7, colorValue: 10, day1: 785, day16: 464, day46: 3560, day76: 2557 }, 
-	{ customer: '61273 FFFF股份有限公司有限公司', value: 10, colorValue: 20, day1: 524, day16: 1674, day46: 897, day76: 1356 }, 
-	{ customer: '65792 GGGG股份有限公司', value: 5, colorValue: 45, day1: 747, day16: 1654, day46: 5647, day76: 2441 }, 
-	{ customer: '63496 HHHH股份有限公司', value: 5, colorValue: 55, day1: 1242, day16: 344, day46: 3684, day76: 687 }, 
-	{ customer: '65068 IIII股份有限公司', value: 8, colorValue: 65, day1: 2364, day16: 841, day46: 653, day76: 457 }, 
-	{ customer: '69876 JJJJ股份有限公司', value: 8, colorValue: 75, day1: 1254, day16: 2503, day46: 486, day76: 698 }
 ];
 
 //bubble highcharts option
@@ -365,7 +350,6 @@ function mergeDataByFacility(){
 				buBubbleObj[fac].color = "#AC8BC0";
 			}
 			buBubbleData.push(buBubbleObj[fac]);
-			console.log(buBubbleData);
 		}
 	});
 	$.each(csdSimplify, function(i, item) {
@@ -452,21 +436,20 @@ $('#viewMain').pagecontainer({
 			if(localStorage.getItem("arSummaryData") == null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
-					console.log("进来了");
 		    		//先按TYPE分组,分成BU和CSD
 		    		sortDataByType();	
 		    		//简化数据
 		    		simplifyData();
 		    		//相同facility合并
 		    		mergeDataByFacility();
-		    		switch(viewMainTab) {
+		    		/*switch(viewMainTab) {
                         case "bu" :
                             $("input[id=viewMain-tab-1]").trigger('click');   
                             break;
                         case "csd" :
                             $("input[id=viewMain-tab-2]").trigger('click');   
                             break;
-                    }
+                    }*/
 					loadingMask("hide");
 		    		
 		    		localStorage.setItem("arSummaryData", JSON.stringify([data, nowTime]));
@@ -585,13 +568,23 @@ $('#viewMain').pagecontainer({
             				
                         }
                         else{
-            				chartbubble.series[0].setData(buBubbleData, true, true, false);         
-            				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            				chartbubble.series[0].setData(csdBubbleData, true, true, false);         
+            				chartLandscapebubble.series[0].setData(csdBubbleData, true, true, false);
             				
                         }
         				
-                        chartbubble.redraw();
-                		chartLandscapebubble.redraw();
+        				//viewDetail API
+                        window.localStorage.removeItem("overdueDetailData");
+                    	OverdueDetail();
+                    	window.localStorage.removeItem("outstandDetailData");
+                   		OutstandDetail();
+                   		window.localStorage.removeItem("creditExpiredSoonData");
+                    	CreditExpiredSoon();
+        				
+                        chartbubble.redraw(true);
+                		chartLandscapebubble.redraw(true);
+                        
+                        
                         
                     }
                 }
