@@ -12,13 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Model\QP_App_Head;
 use App\Model\QP_App_Line;
-use App\Model\QP_App_Pic;
 use App\Model\QP_App_Custom_Api;
 use App\Model\QP_Role_App;
 use App\Model\QP_User_App;
 use App\Model\QP_White_List;
 use App\Services\AppVersionService;
 use App\Services\AppService;
+use App\Services\AppPicService;
 use DB;
 use File;
 
@@ -27,14 +27,17 @@ class AppMaintainController extends Controller
 
     protected $appService;
     protected $appVersionService;
+    protected $appPicService;
     /**
      * 建構子，初始化引入相關服務
-     * @param AppVersionService $appVersionService 地點基本資訊服務
      */
-    public function __construct(AppService $appService, AppVersionService $appVersionService)
+    public function __construct(AppService $appService,
+                                AppVersionService $appVersionService,
+                                AppPicService $appPicService)
     {
         $this->appService = $appService;
         $this->appVersionService = $appVersionService;
+        $this->appPicService = $appPicService;
     }
 
     public function getBlockList(){
@@ -400,20 +403,22 @@ class AppMaintainController extends Controller
                     'message'=>$validator->messages()
                 ]);
             }
+
             $appId = $input['appId'];
             $appkey = $input['appKey'];
             parse_str($input['mainInfoForm'],$mainInfoData);
             $this->saveAppMainInfo($appId, $mainInfoData);
 
+            //icon
             if(isset($input['fileIconUpload'])){
-                $icon = $input['fileIconUpload'];
-                $this->uploadIcon($appId, $icon);
+                $this->appService->uploadIcon($appId,$input['fileIconUpload']);
             }elseif($input['icon']=="undefined"){
-                $this->deleteIcon($appId); 
+                $this->appService->deleteIcon($appId);
             }
+
+            //app basic info
             $ori = QP_App_Head::where('row_id', $appId)
                             ->first(['security_level']);
-
             $chkCompany = (isset($input['chkCompany']))?implode(";",$input['chkCompany']):null;
             $sequence = $this->appService->getNewAppSequence($input['categoryId']);
             $dataArr = array(
@@ -428,15 +433,18 @@ class AppMaintainController extends Controller
                 $dataArr['security_updated_at'] = time(); 
             }
             $this->updateAppHeadById($appId, $dataArr);
-                
-            $this->saveAppScreenShot($appId, $input);
+            
+            //app screen shot
+            $this->appPicService->saveAppScreenShot($appId, $input);
 
+            //app user
             $aooRoleList = (isset($input['appRoleList']))?$input['appRoleList']:array();
             $this->saveAppRole($appId,$aooRoleList);
 
             $appUserList = (isset($input['appUserList']))?$input['appUserList']:array();
             $this->saveAppUser($appId,$appUserList);
 
+            //api error code
             if(isset($input['errorCodeFile'])){
                 $result = $this->saveErrorCode($appId,$appkey,$input['errorCodeFile']);
                 if($result['result_code']!= ResultCode::_1_reponseSuccessful){
@@ -447,6 +455,8 @@ class AppMaintainController extends Controller
                     $this->deleteErrorCode($appId);
                 }
             }
+
+            //app version
             if(isset($input['delVersionArr'])){
                 $this->appVersionService->deleteAppVersion($appId,explode(',',$input['delVersionArr']));
             }
@@ -457,6 +467,7 @@ class AppMaintainController extends Controller
             }
             $this->appVersionService->saveAppVersionList($appkey, $appId, $versionList);
             
+            //custom api
             $customApiList = array();
             if(isset($input['customApiList']) && is_array($input['customApiList'])){
                 $customApiList = $input['customApiList'];
@@ -464,6 +475,7 @@ class AppMaintainController extends Controller
             $customApideleteList = $input['customApiDeleteList'];
             $this->saveCustomApi($appkey, $appId, $customApiList, $customApideleteList);
            
+            //white list
             $whiteList = array();
             if(isset($input['whiteList']) && is_array($input['whiteList'])){
                 $whiteList = $input['whiteList'];
@@ -487,105 +499,6 @@ class AppMaintainController extends Controller
         if(\Session::has('lang') && \Session::get("lang") != "") {
             \App::setLocale(\Session::get("lang"));
         }
-    } 
-    private function uploadIcon($appId,$icon){
-        $iconUploadPath =  FilePath::getIconUploadPath($appId);
-
-        if (!file_exists($iconUploadPath)) {
-            mkdir($iconUploadPath, 0755, true);
-        }
-        $icon->move($iconUploadPath,$icon->getClientOriginalName());
-
-        $qpAppHead = QP_App_Head::find($appId);
-        $qpAppHead->icon_url=$icon->getClientOriginalName();
-        $qpAppHead->save();
-    }
-
-    private function deleteIcon($appId){
-        $oriIcon = QP_App_Head::where('row_id', $appId)
-                        ->first(['icon_url']);
-        $oriIconFile = FilePath::getIconUploadPath($appId).$oriIcon->icon_url;
-        if($oriIcon->icon_url!="" && file_exists($oriIconFile)){
-            unlink($oriIconFile);
-        }
-        $qpAppHead = QP_App_Head::find($appId);
-        $qpAppHead->icon_url="";
-        $qpAppHead->save();
-    }
-
-    /**
-     * save App Screenshot
-     * @param  int    $appId     qpp id
-     * @param  Array  $input     form post data
-     */
-    private function saveAppScreenShot($appId, $input){
-      
-            $delPic = (isset($input['delPic']))?$input['delPic']:"";
-            $insPic  =(isset($input['insPic']))?$input['insPic']:array() ;
-            $objGetPattern = array(
-                            'android'=>"/^androidScreenUpload_/",
-                            'ios'=>"/^iosScreenUpload_/"
-                            );
-            $sreenShot = null;
-            foreach ($objGetPattern as $deviceType => $regx) {
-                $fileList = $this->getArrayByKeyRegex($regx, $input);
-                foreach($fileList as $filesKey => $files) { 
-                    foreach ($files as $file) {
-                        $sreenShot[$deviceType]=$fileList;
-                    }
-                }
-            }
-
-            $delPicArr = explode(',',$delPic);
-            foreach($delPicArr as $picId){
-                $appPic = QP_App_Pic::find($picId);
-                if(isset($appPic)){
-                    $picName = $appPic->pic_url;
-                    $langRowId = $appPic->lang_row_id;
-                    $deviceType = explode('_',$appPic->pic_type)[0];
-                    $screenshotFile = FilePath::getScreenShotUploadPath($appId,$langRowId,$deviceType).$picName;
-                    if (file_exists($screenshotFile)){
-                        unlink($screenshotFile);
-                    }
-                }
-            }
-
-            //2.Upload new svreenshot image file
-            if(isset($sreenShot)){
-                foreach ($sreenShot as $deviceType =>$languagePic) {
-                    foreach ($languagePic as $langPic => $picArr) {
-                        $langId = explode('_',$langPic)[1];  
-                        foreach ( $picArr as  $pic) {
-                            $picName = $pic->getClientOriginalName();
-                            $screenshotUploadPath =  FilePath::getScreenShotUploadPath($appId,$langId,$deviceType);
-                            $pic->move($screenshotUploadPath,$picName);
-                        }
-                    }
-                }
-            }
-
-            //3.Modify database
-            $deletePicRows = QP_App_Pic::where('app_row_id', $appId)
-                    ->delete();
-            $insertArray = array();
-            $now = date('Y-m-d H:i:s',time());
-            foreach ($insPic as $seq => $item) {
-                $picItem = explode('-',$item);
-                $data = array(
-                        'app_row_id'=>$appId,
-                        'lang_row_id'=>$picItem[0],
-                        'pic_type'=>$picItem[1].'_screenshot',
-                        'sequence_by_type'=>$seq+1,
-                        'pic_url'=>$picItem[2],
-                        'created_user'=>\Auth::user()->row_id,
-                        'updated_user'=>\Auth::user()->row_id,
-                        'created_at'=>$now,
-                        'updated_at'=>$now
-                    );
-                $insertArray[]=$data;
-            }
-            QP_App_Pic::insert($insertArray);
-        
     }
 
     /**
@@ -598,6 +511,7 @@ class AppMaintainController extends Controller
         //1.Create or Update the record
         $operateLanAry = [];
         $inputLanAry = [];
+        $deviceAry = ['ios','android'];
         foreach ($data as $key => $value) {
            $keyArr = explode('_',$key);
            $lanId = null;
@@ -632,9 +546,18 @@ class AppMaintainController extends Controller
                                         ->whereIn('lang_row_id',$diffLangAry)
                                         ->delete(); 
             //3.2 Delete screenshot use same langId
-            $deletePicRows = QP_App_Pic::where('app_row_id', $appId)
-                        ->whereIn('lang_row_id',$diffLangAry)
-                        ->delete(); 
+            $deletePicRows = $this->appPicService->delAllPicByLangId($appId, $diffLangAry);
+            //刪除語言所有實體檔案
+            foreach ($diffLangAry as $langRowId) {
+                foreach ($deviceAry  as $deviceType) {
+                    $files = glob(FilePath::getScreenShotUploadPath($appId,$langRowId,$deviceType).'*'); // get all file names
+                    foreach($files as $file){ // iterate files
+                      if(is_file($file))
+                        unlink($file); // delete file
+                    }
+                }
+                
+            }
         }
 
 
@@ -699,26 +622,6 @@ class AppMaintainController extends Controller
 
         return $contents ;
            
-    }
-
-    /**
-     * Find array by key match the pattern
-     * @param  String  $pattern The pattern to search for, as a string.
-     * @param  Array  $input   The input array.
-     * @param  integer $flags   If set to PREG_GREP_INVERT, this function returns the elements of the input array that do
-     *                          not match the given pattern.
-     * @return Array           Returns an array indexed using the keys from the input array.
-     * @author Cleo.W.Chan
-     */
-    private function getArrayByKeyRegex( $pattern, $input, $flags = 0 )
-    {
-        $keys = preg_grep( $pattern, array_keys( $input ), $flags );
-        $vals = array();
-        foreach ( $keys as $key )
-        {
-            $vals[$key] = $input[$key];
-        }
-        return $vals;
     }
 
     /**

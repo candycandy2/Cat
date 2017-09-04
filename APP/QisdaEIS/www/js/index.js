@@ -1,5 +1,6 @@
 /*******************global variable function*****************/
-var chartbubble,chartLandscapebubble,chartRect,chartLandscapeRect;
+var chartbubble,chartLandscapebubble;
+var chartRect = null,chartLandscapeRect = null;
 var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
 var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
 var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
@@ -15,11 +16,11 @@ var expiredTime = 1;
 var buArrIndex = null;
 var csdArrIndex = null;
 var buCountNum = 1;
-var buShowNum = 12;
+var buShowNum = 50;
 var buPageEnd = buShowNum * buCountNum;
 var buPageStart = buPageEnd - buShowNum;
 var csdCountNum = 1;
-var csdShowNum = 12;
+var csdShowNum = 50;
 var csdPageEnd = csdShowNum * csdCountNum;
 var csdPageStart = csdPageEnd - csdShowNum;
 var buColumnCount = 1;
