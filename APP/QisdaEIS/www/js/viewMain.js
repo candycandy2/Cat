@@ -1,6 +1,7 @@
 //get BU & CSD series
 var viewMainTab = "bu";
-var facilityList,firstFacility;
+var facilityList = "";
+var firstFacility;
 var viewMainInit = false;
 var mainQisdaEisData = {};
 var userAuthority = [];
@@ -213,7 +214,7 @@ var rectOption = {
 	            crop: true,
 	            overflow: 'justify',
 	            inside: true,
-	            zIndex: -10,
+	            /*zIndex: 2,*/
 	            style: {
 	            	"color": "#ffffff",
 	            	"fontSize": "11px",
@@ -221,6 +222,7 @@ var rectOption = {
 	            	"textOutline": "2px 2px black"
 	            },
 	            format: '<div class="font-companyName">{point.customer}</div>'
+	            /*format: '{point.customer}'*/
 	        }
     	}
     },
@@ -353,8 +355,6 @@ function mergeDataByFacility(){
 		}
 	});
 	
-	console.log(buBubbleData);
-	
 	$.each(csdSimplify, function(i, item) {
 		var fac = item.facility;
 		var total = item.total;
@@ -439,7 +439,6 @@ $('#viewMain').pagecontainer({
 			if(localStorage.getItem("arSummaryData") == null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
-					console.log("ARSummary");
 		    		sortDataByType();	
 		    		simplifyData();
 		    		mergeDataByFacility();
@@ -486,18 +485,19 @@ $('#viewMain').pagecontainer({
 				this.successCallback = function(data) {
 					araUserAuthorityCallBackData = data["Content"];
 					
-					facilityList = '<a id="ALL">ALL</a>';
+					//facilityList = '<a id="ALL">ALL</a>';
 					var firstFacilityFlag = true;
 					for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
 						facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
 						if(firstFacilityFlag){
-							//firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+							firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
 							firstFacilityFlag = false;
 						}
 					}
 					$(".Facility").html("");
 	                $(".Facility").append(facilityList).enhanceWithin();
-	                $(".Facility #ALL").addClass('hover');
+	                /*$(".Facility #ALL").addClass('hover');*/
+	               	$(".Facility #" + firstFacility).addClass('hover');
 	                ARSummary();
 	                loadingMask("hide");
 	                
@@ -516,18 +516,18 @@ $('#viewMain').pagecontainer({
 				araUserAuthorityData = JSON.parse(localStorage.getItem("araUserAuthorityData"))[0];
 				araUserAuthorityCallBackData = araUserAuthorityData["Content"];
 				
-				facilityList = '<a id="ALL">ALL</a>';
+				/*facilityList = '<a id="ALL">ALL</a>';*/
 				var firstFacilityFlag = true;
 				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
 					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
 					if(firstFacilityFlag){
-						//firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+						firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
 						firstFacilityFlag = false;
 					}
 				}
 				$(".Facility").html("");
                 $(".Facility").append(facilityList).enhanceWithin();
-                $(".Facility #ALL").addClass('hover');
+                $(".Facility #" + firstFacility).addClass('hover');
                 ARSummary();
                 loadingMask("hide");
                 
@@ -582,12 +582,7 @@ $('#viewMain').pagecontainer({
                     	CreditExpiredSoon();
                     	
                     	//恢复初始状态
-                    	switchState = false;
                         viewDetailInit = false;
-                        facility = "ALL";
-                        $(".Facility #" + facility).parent('.scrollmenu').find('.hover').removeClass('hover');
-					    $(".Facility #ALL").removeClass('disableHover');
-					    $(".Facility #ALL").addClass('hover');
                           
                         showBubble();
                         

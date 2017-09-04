@@ -1,6 +1,7 @@
 /********************/
 var viewDetailTab = "overdue";
-var facility = "ALL";
+/*var facility = "ALL";*/
+var facility;
 var viewDetailInit = false;
 var csdDataInit = false;
 var overdueInit = false;
@@ -656,6 +657,7 @@ function getOverdueDetailData(){
 	//get startDate and endDate
 	startDate = startDay.substring(5, 10);
 	endDate = endDay.substring(5, 10);
+	console.log(timeAxis);
 	
 	$.each(overdueDetailCallBackData, function(i, item) {
 		for(var j = 0; j < araUserAuthorityCallBackData.length; j++){
@@ -2600,10 +2602,36 @@ function changePageInitViewDetail(){
 	$('#expiredSoon').hide();
 	$('#overdue').show();
 	
-	facility = "ALL";
+	switchState = false;
+	/*facility = "ALL";
     $(".Facility #" + facility).parent('.scrollmenu').find('.hover').removeClass('hover');
     $(".Facility #ALL").removeClass('disableHover');
-    $(".Facility #ALL").addClass('hover');
+    $(".Facility #ALL").addClass('hover');*/
+    
+    $(".Facility #" + facility).parent('.scrollmenu').find('.hover').removeClass('hover');
+    $(".Facility #" + firstFacility).removeClass('disableHover');
+    $(".Facility #" + firstFacility).addClass('hover');
+    facility = firstFacility;
+    
+    buArrIndex = null;
+	csdArrIndex = null;
+	buColumnCheckAll = false;
+	csdColumnCheckAll = false;
+    
+    buCountNum = 1;
+	buPageEnd = buShowNum * buCountNum;
+	buPageStart = buPageEnd - buShowNum;
+	csdCountNum = 1;
+	csdPageEnd = csdShowNum * csdCountNum;
+	csdPageStart = csdPageEnd - csdShowNum;
+	buColumnCount = 1;
+	buColumnPageEnd = buColumnShow * buColumnCount;
+	buColumnPageStart = buColumnPageEnd - buColumnShow;
+	csdColumnCount = 1;
+	csdColumnPageEnd = csdColumnShow * csdColumnCount;
+	csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
+     
+    console.log("init");
 }
 
 
@@ -2616,6 +2644,7 @@ $('#viewDetail').pagecontainer({
 				this.successCallback = function(data) {
 					overdueDetailCallBackData = data["Content"];
 					getOverdueDetailData();
+					//console.log(timeAxis);
 					loadingMask("hide");
 					
 					localStorage.setItem("overdueDetailData", JSON.stringify([data, nowTime]));				
@@ -2635,6 +2664,7 @@ $('#viewDetail').pagecontainer({
 				overdueDetailData = JSON.parse(localStorage.getItem("overdueDetailData"))[0];
 				overdueDetailCallBackData = overdueDetailData["Content"];
 				getOverdueDetailData();
+				//console.log(timeAxis);
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("overdueDetailData"))[1];
@@ -2733,7 +2763,6 @@ $('#viewDetail').pagecontainer({
 				//Highchart
 				getLandscapeColumn(true, "");
     			zoomInChartByColumn();
-				//改变颜色
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
@@ -2787,8 +2816,6 @@ $('#viewDetail').pagecontainer({
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
 			facilityInit = true;
-			/*//切换facility时回到顶部,防止数据过多,返回到中间,数据不显示
-			$('body,html').animate({scrollTop:0},300);*/
 			
 			buCountNum = 1;
 			buPageEnd = buShowNum * buCountNum;
@@ -2895,9 +2922,6 @@ $('#viewDetail').pagecontainer({
 				$('.expiredsoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
 			}
 			
-    		
-    		
-    		console.log(buArrIndex+" ,"+csdArrIndex);
     		
     		
         });

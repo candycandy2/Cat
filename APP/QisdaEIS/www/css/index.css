@@ -124,6 +124,7 @@ a{
 	-webkit-box-orient:vertical;
 	-webkit-line-clamp:2; 
 	white-space: normal;
+	z-index: 2;
 }
 
 /* img */
