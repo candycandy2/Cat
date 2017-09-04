@@ -2763,18 +2763,21 @@ $('#viewDetail').pagecontainer({
 				//Highchart
 				getLandscapeColumn(true, "");
     			zoomInChartByColumn();
+    			//设置CSD数据
+				setCsdOverdueDetailData(facility);
+				csdSingleListBtn();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
 			
-			if(csdDataInit == false){
+			/*if(csdDataInit == false){
 				setTimeout(function(){
 					//设置CSD数据
 					setCsdOverdueDetailData(facility);
 					csdSingleListBtn();
 				}, 300);
 				csdDataInit = true;
-			}
+			}*/
 			
 			
 		});
