@@ -442,14 +442,14 @@ $('#viewMain').pagecontainer({
 		    		simplifyData();
 		    		//相同facility合并
 		    		mergeDataByFacility();
-		    		switch(viewMainTab) {
+		    		/*switch(viewMainTab) {
                         case "bu" :
                             $("input[id=viewMain-tab-1]").trigger('click');   
                             break;
                         case "csd" :
                             $("input[id=viewMain-tab-2]").trigger('click');   
                             break;
-                    }
+                    }*/
 					loadingMask("hide");
 		    		
 		    		localStorage.setItem("arSummaryData", JSON.stringify([data, nowTime]));
@@ -568,8 +568,8 @@ $('#viewMain').pagecontainer({
             				
                         }
                         else{
-            				chartbubble.series[0].setData(buBubbleData, true, true, false);         
-            				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            				chartbubble.series[0].setData(csdBubbleData, true, true, false);         
+            				chartLandscapebubble.series[0].setData(csdBubbleData, true, true, false);
             				
                         }
         				
