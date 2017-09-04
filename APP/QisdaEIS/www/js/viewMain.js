@@ -573,16 +573,18 @@ $('#viewMain').pagecontainer({
             				
                         }
         				
-                        chartbubble.redraw();
-                		chartLandscapebubble.redraw();
-                        
-                        //viewDetail API
+        				//viewDetail API
                         window.localStorage.removeItem("overdueDetailData");
                     	OverdueDetail();
                     	window.localStorage.removeItem("outstandDetailData");
                    		OutstandDetail();
                    		window.localStorage.removeItem("creditExpiredSoonData");
                     	CreditExpiredSoon();
+        				
+                        chartbubble.redraw(true);
+                		chartLandscapebubble.redraw(true);
+                        
+                        
                         
                     }
                 }
