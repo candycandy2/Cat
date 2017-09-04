@@ -2991,4 +2991,80 @@ SQL;
             return response()->json($result);
         }
     }
+
+    /**
+     * 進行APP下載時, 可以透過此API回傳下載時的資訊
+     */
+    public function addDownloadHit()
+    {
+        $Verify = new Verify();
+        $verifyResult = $Verify->verifyCustom(false);
+
+        $input = Input::get();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
+
+        //For Log
+        $ACTION = 'addDownloadHit';
+
+        //通用api參數判斷
+        if(!array_key_exists('package_name', $input) || !array_key_exists('uuid', $input) || !array_key_exists('login_id', $input)
+        || trim($input["package_name"]) == "" || trim($input['uuid']) == "" || trim($input['login_id']) == "")
+        {
+            $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
+                'content'=>''];
+
+            CommonUtil::logApi("", $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return response()->json($result);
+        }
+
+        $package_name = $input["package_name"];
+        $uuid = $input['uuid'];
+        $login_id = $input['login_id'];
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+            try{
+
+                $now = date('Y-m-d H:i:s',time());
+                \DB::table("qp_app_download_hit")
+                -> insert([
+                    'login_id'=>$login_id,
+                    'uuid'=>$uuid,
+                    'package_name'=>$package_name,
+                    'created_at'=>$now,
+                ]);
+
+                $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
+                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
+                'content'=>array('uuid'=>$uuid,'login_id'=>$login_id)
+                ];
+
+                CommonUtil::logApi(0, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return response()->json($result);
+            
+            } catch (\Exception $e) {
+                $result = ['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
+                    'content'=>''];
+                CommonUtil::logApi(0, $ACTION,
+                    response()->json(apache_response_headers()), $result);
+                return response()->json($result);
+            }
+            
+        }
+        else
+        {
+            $result = ['result_code'=>$verifyResult["code"],
+                'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
+                'content'=>''];
+            CommonUtil::logApi("", $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return response()->json($result);
+        }
+    }
 }
