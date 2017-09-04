@@ -442,6 +442,7 @@ $('#viewMain').pagecontainer({
 		    		sortDataByType();	
 		    		simplifyData();
 		    		mergeDataByFacility();
+		    		OverdueDetail();
 		    		switch(viewMainTab) {
                         case "bu" :
                             $("input[id=viewMain-tab-1]").trigger('click');   
@@ -469,6 +470,7 @@ $('#viewMain').pagecontainer({
 				sortDataByType();
 				simplifyData();
 				mergeDataByFacility();
+				OverdueDetail();
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("arSummaryData"))[1];
@@ -624,7 +626,7 @@ $('#viewMain').pagecontainer({
 	           	}
 				
 				//调用第二页API
-				OverdueDetail();
+				//OverdueDetail();
 			}
 			loadingMask("hide");
 		});

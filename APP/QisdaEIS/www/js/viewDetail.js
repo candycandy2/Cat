@@ -635,7 +635,7 @@ function csdSingleListBtn(){
 
 
 function getOverdueDetailData(){
-	timeAxis = [];
+	timeAxis.splice(0, timeAxis.length);
 	buOverdueDetail = [];
 	csdOverdueDetail = [];
 	
@@ -1716,6 +1716,7 @@ function getAreaDataSwitchOn(arr){
 
 
 function setBuAreaData() {	
+	console.log(timeAxis);
 	if(switchState == false){
 		if(buAreaSeriesINV.length > buShowNum){
 			for(var i = buPageStart; i < buPageEnd; i ++){
@@ -2631,7 +2632,7 @@ function changePageInitViewDetail(){
 	csdColumnPageEnd = csdColumnShow * csdColumnCount;
 	csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
      
-    console.log("init");
+    //console.log("init");
 }
 
 
@@ -2643,8 +2644,9 @@ $('#viewDetail').pagecontainer({
 			if(localStorage.getItem("overdueDetailData") === null){
 				this.successCallback = function(data) {
 					overdueDetailCallBackData = data["Content"];
+					console.log(timeAxis);
 					getOverdueDetailData();
-					//console.log(timeAxis);
+					console.log(timeAxis);
 					loadingMask("hide");
 					
 					localStorage.setItem("overdueDetailData", JSON.stringify([data, nowTime]));				
@@ -2663,8 +2665,9 @@ $('#viewDetail').pagecontainer({
 			else{
 				overdueDetailData = JSON.parse(localStorage.getItem("overdueDetailData"))[0];
 				overdueDetailCallBackData = overdueDetailData["Content"];
+				console.log(timeAxis);
 				getOverdueDetailData();
-				//console.log(timeAxis);
+				console.log(timeAxis);
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("overdueDetailData"))[1];
