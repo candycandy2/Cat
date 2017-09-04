@@ -7,7 +7,7 @@ var overdueInit = false;
 var overdueSoonInit = false;
 var expiredSoonInit = false;
 var facilityInit = false;
-
+var customerName;
 //get BU & CSD series
 var companySeriesInit = [10, 20, 30, 40, 50, 60];
 var columnDataInit = [0, 0, 0, 0, 0, 0];
@@ -634,6 +634,10 @@ function csdSingleListBtn(){
 
 
 function getOverdueDetailData(){
+	timeAxis = [];
+	buOverdueDetail = [];
+	csdOverdueDetail = [];
+	
 	//get week timeAxis
 	for(var i in overdueDetailCallBackData){
 		if(overdueDetailCallBackData[i]["Detail"].length == 6){
@@ -1915,6 +1919,7 @@ function setBuPartOfColumnData(){
 		if(buColumnSeries.length > buColumnShow){
 			for(var i = buColumnPageStart; i < buColumnPageEnd; i ++){
 				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
+				customerName = buCustomer[i]["CUSTOMER"];
 				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
 				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
 				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
@@ -1922,7 +1927,7 @@ function setBuPartOfColumnData(){
 				buColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + customerName +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
