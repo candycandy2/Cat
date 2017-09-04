@@ -47,28 +47,34 @@ $(function (){
         for(var i = 0; i< input.files.length; i++)
         {
             if (input.files && input.files[i]) {
+                input.files[i].uploadName = Date.now();
                 screenShotfileQueue[$(input).attr('id')].push(input.files[i]);
-                var reader = new FileReader();
-                reader.fileName = input.files[i].name;
-                reader.langId = langId;
-                reader.deviceType = deviceType;
-                reader.onload = function (e,name) {
-                    validImageSize(768,1024,e.target.result,function(valisRes){
-                    if(valisRes!=""){
-                        showMessageDialog(Messages.ERROR,valisRes);
-                        $("#"+$(input).attr('id')).val('');
-                        return false;
-                    }else{
-                        $('#'+ uplBtnId).before('<li class="imgLi" data-url="'+e.target.fileName+'" data-lang="'+e.target.langId+'" data-device="'+deviceType+'"><img src="'+e.target.result+'" class="screen-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/></li>');
-                        var imgCount = $('#'+ uplBtnId).parent('ul').find('li .screen-preview').length;
-                        if(imgCount >= 5){
-                            $('#'+ uplBtnId).parent('ul').find('.screen-upl-btn').hide();
-                        }
-                        $('#'+ uplBtnId).next('label.error').remove();
-                        }
-                    });
+                if(window.FileReader) {
+                    var reader = new FileReader();
+                    reader.fileName = input.files[i].uploadName; //input.files[i].name;
+                    reader.langId = langId;
+                    reader.deviceType = deviceType;
+                    reader.onload = function (e,name) {
+                        validImageSize(768,1024,e.target.result,function(valisRes){
+                        if(valisRes!=""){
+                            showMessageDialog(Messages.ERROR,valisRes);
+                            $("#"+$(input).attr('id')).val('');
+                            screenShotfileQueue[$(input).attr('id')].pop();
+                            return false;
+                        }else{
+                            $('#'+ uplBtnId).before('<li class="imgLi" data-url="'+e.target.fileName+'" data-lang="'+e.target.langId+'" data-device="'+deviceType+'"><img src="'+e.target.result+'" class="screen-preview"><img src="css/images/close_red.png" class="delete img-circle" style="display:none" data-source="screenshot"/></li>');
+                            var imgCount = $('#'+ uplBtnId).parent('ul').find('li .screen-preview').length;
+                            if(imgCount >= 5){
+                                $('#'+ uplBtnId).parent('ul').find('.screen-upl-btn').hide();
+                            }
+                            $('#'+ uplBtnId).next('label.error').remove();
+                            }
+                        });
+                    }
+                    reader.readAsDataURL(input.files[i]);
+                }else{
+                    alert('browser not support !');
                 }
-                reader.readAsDataURL(input.files[i]);
             }
         }
         $("#"+$(input).attr('id')).val('');
@@ -95,8 +101,9 @@ $(function (){
     }
 
     function deleteScreenShotQueue(find,target){
+
         $.each( screenShotfileQueue[target], function(i, file) {
-            if(typeof file!= "undefined" && file.name == find){
+            if(typeof file!= "undefined" &&  file.uploadName == find){
               screenShotfileQueue[target].splice(i,1)
             }
         });
