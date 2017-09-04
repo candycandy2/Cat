@@ -697,6 +697,7 @@ function getOverdueDetailData(){
 	
 }
 
+//review by alan
 function setBuOverdueDetailData(fac){
 	$('.overdueDetail-bu').html("");
 	buAreaSeriesINV = [];
@@ -1786,6 +1787,7 @@ function setCsdAreaData(){
 	}
 }
 
+//review by alan
 function setSingleColumnData(i, type) {
 	if(type == 'bu'){
 		if(switchState == false){
@@ -1869,7 +1871,6 @@ function setSingleColumnData(i, type) {
 				    }
 				}
 			});
-			csdColumn.redraw(false);
 		}
 		else{
 			var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
@@ -1909,7 +1910,6 @@ function setSingleColumnData(i, type) {
 				    }
 				}
 			});
-			csdColumn.redraw(false);
 			
 		}
 		
@@ -1939,7 +1939,6 @@ function setBuPartOfColumnData(){
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
@@ -1961,7 +1960,6 @@ function setBuPartOfColumnData(){
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 	}
@@ -2005,7 +2003,6 @@ function setBuPartOfColumnData(){
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
@@ -2047,7 +2044,6 @@ function setBuPartOfColumnData(){
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 	}
@@ -2096,7 +2092,6 @@ function setCsdPartOfColumnData(){
 					    }
 					}
 				});
-				csdColumn.redraw(false);
 			}
 		}
 	}
@@ -2140,7 +2135,6 @@ function setCsdPartOfColumnData(){
 					    }
 					}
 				});
-				csdColumn.redraw(false);
 			}
 		}
 		else if(csdColumnSeries.length > 0 && csdColumnSeries.length <= csdColumnShow){
@@ -2182,7 +2176,6 @@ function setCsdPartOfColumnData(){
 					    }
 					}
 				});
-				csdColumn.redraw(false);
 			}
 		}
 	}
@@ -2209,7 +2202,6 @@ function setAllBuColumnData() {
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 		else{
@@ -2251,7 +2243,6 @@ function setAllBuColumnData() {
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 			
 		}
@@ -2277,7 +2268,6 @@ function setAllBuColumnData() {
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 		else{
@@ -2319,7 +2309,6 @@ function setAllBuColumnData() {
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 	}
