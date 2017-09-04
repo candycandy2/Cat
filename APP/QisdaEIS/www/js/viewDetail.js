@@ -38,17 +38,19 @@ var week0 = [];
 var timeAxis = [];
 var otherBuOverdueDetail = [];
 var otherCsdOverdueDetail = [];
-var buCustomerArr = [];
-var csdCustomerArr = [];
+var buCustomer = [];
+var csdCustomer = [];
 var buAreaSeriesINV = [];
 var buAreaSeriesCM = [];
-var buColumnSeries = [];
+var buColumnSeries = []
 var csdAreaSeriesINV = [];
 var csdAreaSeriesCM = [];
 var csdColumnSeries = [];
 var overdueDetailData = {};
 var outstandDetailData = {};
 var creditExpiredSoonData = {};
+var buOverdueArr = [];
+var csdOverdueArr = [];
 var buOverdueDetail = [];
 var csdOverdueDetail = [];
 var buOutstand = [];
@@ -199,17 +201,6 @@ var columnOption = {
 	    borderWidth: 1,
 	    borderColor: 'gray',
 	    backgroundColor:　'#ffffff',
-	    /*headerFormat: '<table class="fontTooltip"><tr><td>{point.x}</td></tr>' +
-	     '<tr><td class="customerName">' + companyName[0] + '</td></tr>',
-        pointFormat: '<tr><td>{series.name}:USD${point.y}</td></tr>',
-        footerFormat: '</table>',*/
-	   	/*formatter: function () {
-	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] + '</b>';
-	        $.each(this.points, function () {
-	           s += '<br/> ' + this.series.name + ':USD$' + formatNumber(this.y.toFixed(2));
-	        });
-	        return s;
-	    },*/
 	   	formatter: function () {
 	        var s = '<b>' + this.x + '</b><br/><b>' + companyName[0] +
 	        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
@@ -247,6 +238,37 @@ var columnOption = {
     }]	
 };
 
+function changeSeriesBySwitch(){
+	if(switchState == true){
+		chartColumnLandscape.addSeries({
+			name: '1-15 Days',
+	        color: '#81B4E1',
+	        data: columnData9
+		}, false, false, false);
+		chartColumnLandscape.addSeries({
+			name: '16-45 Days',
+	        color: '#F79620',
+	        data: columnData9
+		}, false, false, false);
+		chartColumnLandscape.addSeries({
+			name: '46-75 Days',
+	        color: '#F36D21',
+	        data: columnData9
+		}, false, false, false);
+		chartColumnLandscape.addSeries({
+			name: 'Over 75 Days',
+	        color: '#ED3824',
+	        data: columnData9
+		}, false, false, false);
+	}
+	//删除series,由8组变为4组
+	else{
+		for(var i = 0; i < 4; i++){
+			chartColumnLandscape.series[4].remove();
+		}
+	}
+}
+
 
 function getLandscapeColumn(isInit, type) {
 	if(isInit) {
@@ -273,11 +295,11 @@ function getLandscapeColumn(isInit, type) {
 							}
 						},
 						subtitle: {
-							text: buOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + buOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+							text: buCustomer[buArrIndex]["CUSTOMER"] + '<br>' + 'Owner:' + buCustomer[buArrIndex]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						},
 						tooltip: {
 							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
+						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[buArrIndex]["CUSTOMER"] +
 						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -304,11 +326,11 @@ function getLandscapeColumn(isInit, type) {
 							}
 						},
 						subtitle: {
-							text: otherBuOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherBuOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+							text: buCustomer[buArrIndex]["CUSTOMER"] + '<br>' + 'Owner:' + buCustomer[buArrIndex]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						},
 						tooltip: {
 							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
+						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[buArrIndex]["CUSTOMER"] +
 						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -327,26 +349,10 @@ function getLandscapeColumn(isInit, type) {
 					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
 					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
 					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[buArrIndex][4]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[buArrIndex][5]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[buArrIndex][6]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[buArrIndex][7]
-					}, false, false, false);
+					chartColumnLandscape.series[4].setData(buColumnSeries[buArrIndex][4], false, false, false);
+					chartColumnLandscape.series[5].setData(buColumnSeries[buArrIndex][5], false, false, false);
+					chartColumnLandscape.series[6].setData(buColumnSeries[buArrIndex][6], false, false, false);
+					chartColumnLandscape.series[7].setData(buColumnSeries[buArrIndex][7], false, false, false);	
 					chartColumnLandscape.update({
 						chart: {
 							marginTop: 90
@@ -358,11 +364,11 @@ function getLandscapeColumn(isInit, type) {
 							}
 						},
 						subtitle: {
-							text: buOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + buOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+							text: buCustomer[buArrIndex]["CUSTOMER"] + '<br>' + 'Owner:' + buCustomer[buArrIndex]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						},
 						tooltip: {
 							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
+						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[buArrIndex]["CUSTOMER"] +
 						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -372,32 +378,17 @@ function getLandscapeColumn(isInit, type) {
 						}
 					});
 					chartColumnLandscape.redraw(false);
+					
 				}
 				else{
 					chartColumnLandscape.series[0].setData(buColumnSeries[buArrIndex][0], false, false, false);
 					chartColumnLandscape.series[1].setData(buColumnSeries[buArrIndex][1], false, false, false);
 					chartColumnLandscape.series[2].setData(buColumnSeries[buArrIndex][2], false, false, false);
 					chartColumnLandscape.series[3].setData(buColumnSeries[buArrIndex][3], false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: buColumnSeries[buArrIndex][4]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: buColumnSeries[buArrIndex][5]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: buColumnSeries[buArrIndex][6]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: buColumnSeries[buArrIndex][7]
-					}, false, false, false);
+					chartColumnLandscape.series[4].setData(buColumnSeries[buArrIndex][4], false, false, false);
+					chartColumnLandscape.series[5].setData(buColumnSeries[buArrIndex][5], false, false, false);
+					chartColumnLandscape.series[6].setData(buColumnSeries[buArrIndex][6], false, false, false);
+					chartColumnLandscape.series[7].setData(buColumnSeries[buArrIndex][7], false, false, false);
 					chartColumnLandscape.update({
 						chart: {
 							marginTop: 90
@@ -409,11 +400,11 @@ function getLandscapeColumn(isInit, type) {
 							}
 						},
 						subtitle: {
-							text: otherBuOverdueDetail[buArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherBuOverdueDetail[buArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+							text: buCustomer[buArrIndex]["CUSTOMER"] + '<br>' + 'Owner:' + buCustomer[buArrIndex]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						},
 						tooltip: {
 							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[buArrIndex]["CUSTOMER"] +
+						        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[buArrIndex]["CUSTOMER"] +
 						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -445,11 +436,11 @@ function getLandscapeColumn(isInit, type) {
 							}
 						},
 						subtitle: {
-							text: csdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + csdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+							text: csdCustomer[csdArrIndex]["CUSTOMER"] + '<br>' + 'Owner:' + csdCustomer[csdArrIndex]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						},
 						tooltip: {
 							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
+						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[csdArrIndex]["CUSTOMER"] +
 						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -476,11 +467,11 @@ function getLandscapeColumn(isInit, type) {
 							}
 						},
 						subtitle: {
-							text: otherCsdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherCsdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+							text: csdCustomer[csdArrIndex]["CUSTOMER"] + '<br>' + 'Owner:' + csdCustomer[csdArrIndex]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						},
 						tooltip: {
 							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
+						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[csdArrIndex]["CUSTOMER"] +
 						        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 						        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 						        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -498,26 +489,10 @@ function getLandscapeColumn(isInit, type) {
 					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
 					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
 					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: csdColumnSeries[csdArrIndex][4]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: csdColumnSeries[csdArrIndex][5]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: csdColumnSeries[csdArrIndex][6]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: csdColumnSeries[csdArrIndex][7]
-					}, false, false, false);
+					chartColumnLandscape.series[4].setData(csdColumnSeries[csdArrIndex][4], false, false, false);
+					chartColumnLandscape.series[5].setData(csdColumnSeries[csdArrIndex][5], false, false, false);
+					chartColumnLandscape.series[6].setData(csdColumnSeries[csdArrIndex][6], false, false, false);
+					chartColumnLandscape.series[7].setData(csdColumnSeries[csdArrIndex][7], false, false, false);
 					chartColumnLandscape.update({
 						chart: {
 							marginTop: 90
@@ -529,11 +504,11 @@ function getLandscapeColumn(isInit, type) {
 							}
 						},
 						subtitle: {
-							text: csdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + csdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+							text: csdCustomer[csdArrIndex]["CUSTOMER"] + '<br>' + 'Owner:' + csdCustomer[csdArrIndex]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						},
 						tooltip: {
 							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
+						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[csdArrIndex]["CUSTOMER"] +
 						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -549,26 +524,10 @@ function getLandscapeColumn(isInit, type) {
 					chartColumnLandscape.series[1].setData(csdColumnSeries[csdArrIndex][1], false, false, false);
 					chartColumnLandscape.series[2].setData(csdColumnSeries[csdArrIndex][2], false, false, false);
 					chartColumnLandscape.series[3].setData(csdColumnSeries[csdArrIndex][3], false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '1-15 Days',
-				        color: '#81B4E1',
-				        data: csdColumnSeries[csdArrIndex][4]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '16-45 Days',
-				        color: '#F79620',
-				        data: csdColumnSeries[csdArrIndex][5]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: '46-75 Days',
-				        color: '#F36D21',
-				        data: csdColumnSeries[csdArrIndex][6]
-					}, false, false, false);
-					chartColumnLandscape.addSeries({
-						name: 'Over 75 Days',
-				        color: '#ED3824',
-				        data: csdColumnSeries[csdArrIndex][7]
-					}, false, false, false);
+					chartColumnLandscape.series[4].setData(csdColumnSeries[csdArrIndex][4], false, false, false);
+					chartColumnLandscape.series[5].setData(csdColumnSeries[csdArrIndex][5], false, false, false);
+					chartColumnLandscape.series[6].setData(csdColumnSeries[csdArrIndex][6], false, false, false);
+					chartColumnLandscape.series[7].setData(csdColumnSeries[csdArrIndex][7], false, false, false);
 					chartColumnLandscape.update({
 						chart: {
 							marginTop: 90
@@ -580,11 +539,11 @@ function getLandscapeColumn(isInit, type) {
 							}
 						},
 						subtitle: {
-							text: otherCsdOverdueDetail[csdArrIndex]["Header"]["CUSTOMER"] + '<br>' + 'Owner:' + otherCsdOverdueDetail[csdArrIndex]["Header"]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
+							text: csdCustomer[csdArrIndex]["CUSTOMER"] + '<br>' + 'Owner:' + csdCustomer[csdArrIndex]["OWNER"] + ' ' +  'Date:' + startDate + '-' + endDate
 						},
 						tooltip: {
 							formatter: function () {
-						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[csdArrIndex]["CUSTOMER"] +
+						        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[csdArrIndex]["CUSTOMER"] +
 						        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 						        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 						        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -595,11 +554,8 @@ function getLandscapeColumn(isInit, type) {
 					});
 					chartColumnLandscape.redraw(false);
 				}
-				
 			}
 		}		
-		
-
 	}
 }
 
@@ -621,9 +577,7 @@ function buSingleListBtn(){
 			buArrIndex = index;
 			buIndexMarginTop = $('#buShowList'+buArrIndex).offset().top;
 			
-			if(buColumnCheckAll == false){
-				setSingleColumnData(index, 'bu');
-			}
+			setSingleColumnData(index, 'bu');
 			
 		}else{
 			self.attr('src', 'img/list_down.png');
@@ -636,10 +590,6 @@ function buSingleListBtn(){
 				otherBuOverdueDetail[index]["Header"]["SPREAD"] = 0;
 			}
 			buArrIndex = null;
-			
-			/*if(index == buArrIndex){
-				buArrIndex = null;
-			}*/
 			
 		}
 		
@@ -673,9 +623,7 @@ function csdSingleListBtn(){
 			csdArrIndex = index;
 			csdIndexMarginTop = $('#csdShowList'+csdArrIndex).offset().top;
 			
-			if(csdColumnCheckAll == false){
-				setSingleColumnData(index, 'csd');
-			}
+			setSingleColumnData(index, 'csd');
 			
 		}else{
 			self.attr('src', 'img/list_down.png');
@@ -688,10 +636,6 @@ function csdSingleListBtn(){
 				otherCsdOverdueDetail[index]["Header"]["SPREAD"] = 0;
 			}
 			csdArrIndex = null;
-			
-			/*if(index == csdArrIndex){
-				csdArrIndex = null;
-			}*/
 			
 		}
 
@@ -709,7 +653,7 @@ function csdSingleListBtn(){
 function getOverdueDetailData(){
 	//get week timeAxis
 	for(var i in overdueDetailCallBackData){
-		if(overdueDetailCallBackData[i]["Detail"].length === 6){
+		if(overdueDetailCallBackData[i]["Detail"].length == 6){
 			timeAxis.push(overdueDetailCallBackData[i]["Detail"][0]["WEEK"]);
 			timeAxis.push(overdueDetailCallBackData[i]["Detail"][1]["WEEK"]);
 			timeAxis.push(overdueDetailCallBackData[i]["Detail"][2]["WEEK"]);
@@ -757,6 +701,7 @@ function getOverdueDetailData(){
 		}
 	});
 	
+	
 	//默认按total降序排序
 	buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
 	csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
@@ -765,11 +710,10 @@ function getOverdueDetailData(){
 
 function setBuOverdueDetailData(fac){
 	$('.overdueDetail-bu').html("");
-	$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
 	buAreaSeriesINV = [];
 	buAreaSeriesCM = [];
 	buColumnSeries = [];
-	buCustomerArr = [];
+	buCustomer = [];
 	var buOverdueDetailTotalINV = 0;
 	var buOverdueDetailTotalCM = 0;
 	
@@ -777,8 +721,8 @@ function setBuOverdueDetailData(fac){
 		$.each(buOverdueDetail, function(i, item) {
 			//获取detail有几周数据
 			var detailLength = item["Detail"].length;
-			//获取图表相关信息
-			buCustomerArr.push({
+			//获取横屏图表相关信息
+			buCustomer.push({
 				"CUSTOMER": item["Header"]["CUSTOMER"], 
 				"OWNER": item["Header"]["OWNER"],
 				"TOTAL_INV": item["Header"]["TOTAL_INV"],
@@ -807,12 +751,11 @@ function setBuOverdueDetailData(fac){
 			}
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 			
-			//bu总数total
+			//bu总数total-inv
 			buOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
 			
-			//area highchart
+			//area-inv hc
 			var areaArrINV = getAreaDataSwitchOff(item);
-			
 			buAreaSeriesINV.push(areaArrINV);
 			
 			
@@ -839,18 +782,15 @@ function setBuOverdueDetailData(fac){
 			}
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 			
-			//bu总数total
+			//bu总数total-cm
 			buOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
 			
-			//area highchart
+			//area-cm hc
 			var areaArrCM = getAreaDataSwitchOn(item);
-			
 			buAreaSeriesCM.push(areaArrCM);
-			
-			
-			/********** common column highchart **********/
+
+			//column-hc
 			var columnArr = getColumnData(item);
-			
 			buColumnSeries.push(columnArr);
 			
 			
@@ -907,8 +847,9 @@ function setBuOverdueDetailData(fac){
 												'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
 											'</li>';
 				
+				
 			}
-			else{
+			else if(switchState == true){
 				var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
 												'<ul>' +
 													'<li>' +
@@ -959,11 +900,12 @@ function setBuOverdueDetailData(fac){
 												'</div>' +
 												'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
 											'</li>';
+				
 					
 			}
-				
+			
 			$('.overdueDetail-bu').append(overdueDetailContent);
-		
+			
 		});
 		
 		//BU total HTML
@@ -981,7 +923,8 @@ function setBuOverdueDetailData(fac){
 			$.each(otherBuOverdueDetail, function(i, item) {
 				//获取detail有几周数据
 				var detailLength = item["Detail"].length;
-				buCustomerArr.push({
+				//获取横屏图表相关信息
+				buCustomer.push({
 					"CUSTOMER": item["Header"]["CUSTOMER"], 
 					"OWNER": item["Header"]["OWNER"],
 					"TOTAL_INV": item["Header"]["TOTAL_INV"],
@@ -1010,12 +953,11 @@ function setBuOverdueDetailData(fac){
 				}
 				var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 				
-				//total number
+				//total-inv
 				buOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
 				
-				//area highchart
+				//area hc	
 				var areaArrINV = getAreaDataSwitchOff(item);
-				
 				buAreaSeriesINV.push(areaArrINV);
 				
 				
@@ -1042,20 +984,17 @@ function setBuOverdueDetailData(fac){
 				}
 				var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 				
-				//total
+				//total-cm
 				buOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
 				
 				//area highchart
 				var areaArrCM = getAreaDataSwitchOn(item);
-				
 				buAreaSeriesCM.push(areaArrCM);
 				
 				
-				/********** common column highchart **********/
+				//column-hc
 				var columnArr = getColumnData(item);
-				
 				buColumnSeries.push(columnArr);
-					
 				
 				/**************** append html ****************/
 				if(switchState == false){
@@ -1109,9 +1048,9 @@ function setBuOverdueDetailData(fac){
 													'</div>' +
 													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
 												'</li>';
-					
+												
 				}
-				else{
+				else if(switchState == true){
 					var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
 													'<ul>' +
 														'<li>' +
@@ -1162,11 +1101,11 @@ function setBuOverdueDetailData(fac){
 													'</div>' +
 													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
 												'</li>';
-						
+													
 				}
-					
-				$('.overdueDetail-bu').append(overdueDetailContent);
 				
+				$('.overdueDetail-bu').append(overdueDetailContent);
+					
 			});
 			
 			//BU total HTML
@@ -1184,11 +1123,10 @@ function setBuOverdueDetailData(fac){
 
 function setCsdOverdueDetailData(fac){
 	$('.overdueDetail-csd').html("");
-	$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
 	csdAreaSeriesINV = [];
 	csdAreaSeriesCM = [];
 	csdColumnSeries = [];
-	csdCustomerArr = [];
+	csdCustomer = [];
 	var csdOverdueDetailTotalINV = 0;
 	var csdOverdueDetailTotalCM = 0;
 	
@@ -1196,7 +1134,8 @@ function setCsdOverdueDetailData(fac){
 		$.each(csdOverdueDetail, function(i, item) {
 			//获取detail有几周数据
 			var detailLength = item["Detail"].length;
-			csdCustomerArr.push({
+			//获取横屏图表数据
+			csdCustomer.push({
 				"CUSTOMER": item["Header"]["CUSTOMER"], 
 				"OWNER": item["Header"]["OWNER"],
 				"TOTAL_INV": item["Header"]["TOTAL_INV"],
@@ -1225,12 +1164,11 @@ function setCsdOverdueDetailData(fac){
 			}
 			var overdueDetailTotalINV = inv1 + inv16 + inv46 + inv76;
 			
-			//total number
+			//total-inv
 			csdOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
 			
-			//area highchart
+			//area hc	
 			var areaArrINV = getAreaDataSwitchOff(item);
-			
 			csdAreaSeriesINV.push(areaArrINV);
 			
 			
@@ -1257,18 +1195,15 @@ function setCsdOverdueDetailData(fac){
 			}		
 			var overdueDetailTotalCM = cm1 + cm16 + cm46 + cm76;
 			
-			//total
+			//total-cm
 			csdOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
 			
-			//area highchart
+			//area highchart	
 			var areaArrCM = getAreaDataSwitchOn(item);
-			
 			csdAreaSeriesCM.push(areaArrCM);
 			
-			
-			/********** common column highchart **********/
+			//column hc			
 			var columnArr = getColumnData(item);
-			
 			csdColumnSeries.push(columnArr);
 			
 			
@@ -1325,8 +1260,9 @@ function setCsdOverdueDetailData(fac){
 												'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
 											'</li>';
 				
+				
 			}
-			else{
+			else if(switchState == true){
 				var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
 												'<ul>' +
 													'<li>' +
@@ -1377,7 +1313,7 @@ function setCsdOverdueDetailData(fac){
 												'</div>' +
 												'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
 											'</li>';
-					
+												
 			}
 			
 			$('.overdueDetail-csd').append(overdueDetailContent);
@@ -1399,7 +1335,8 @@ function setCsdOverdueDetailData(fac){
 			$.each(otherCsdOverdueDetail, function(i, item) {
 				//获取detail有几周数据
 				var detailLength = item["Detail"].length;
-				csdCustomerArr.push({
+				//获取横屏图表数据
+				csdCustomer.push({
 					"CUSTOMER": item["Header"]["CUSTOMER"], 
 					"OWNER": item["Header"]["OWNER"],
 					"TOTAL_INV": item["Header"]["TOTAL_INV"],
@@ -1431,9 +1368,8 @@ function setCsdOverdueDetailData(fac){
 				//total number
 				csdOverdueDetailTotalINV += parseFloat(overdueDetailTotalINV);
 				
-				//area highchart
+				//area hc		
 				var areaArrINV = getAreaDataSwitchOff(item);
-				
 				csdAreaSeriesINV.push(areaArrINV);
 				
 				
@@ -1463,15 +1399,12 @@ function setCsdOverdueDetailData(fac){
 				//total
 				csdOverdueDetailTotalCM += parseFloat(overdueDetailTotalCM);
 				
-				//area highchart
+				//area highchart		
 				var areaArrCM = getAreaDataSwitchOn(item);
-				
 				csdAreaSeriesCM.push(areaArrCM);
 				
-				
-				/********** common column highchart **********/
+				//column hc			
 				var columnArr = getColumnData(item);
-				
 				csdColumnSeries.push(columnArr);
 				
 				
@@ -1527,9 +1460,10 @@ function setCsdOverdueDetailData(fac){
 													'</div>' +
 													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
 												'</li>';
+												
 					
 				}
-				else{
+				else if(switchState == true){
 					var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
 													'<ul>' +
 														'<li>' +
@@ -1580,11 +1514,13 @@ function setCsdOverdueDetailData(fac){
 													'</div>' +
 													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
 												'</li>';
+												
+					
 						
 				}
 				
 				$('.overdueDetail-csd').append(overdueDetailContent);
-			
+					
 			});
 			
 			//CSD total HTML
@@ -1761,6 +1697,7 @@ function getAreaDataSwitchOff(arr){
 	}
 	
 	return areaSeriesINV;
+	
 }
 
 function getAreaDataSwitchOn(arr){
@@ -1870,7 +1807,7 @@ function setSingleColumnData(i, type) {
 			buColumn.update({
 				tooltip: {
 					formatter: function () {
-				        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+				        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
 				        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 				        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 				        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -1910,7 +1847,7 @@ function setSingleColumnData(i, type) {
 			buColumn.update({
 				tooltip: {
 					formatter: function () {
-				        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+				        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
 				        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 				        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 				        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -1933,7 +1870,7 @@ function setSingleColumnData(i, type) {
 			csdColumn.update({
 				tooltip: {
 					formatter: function () {
-				        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+				        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[i]["CUSTOMER"] +
 				        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 				        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 				        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -1973,7 +1910,7 @@ function setSingleColumnData(i, type) {
 			csdColumn.update({
 				tooltip: {
 					formatter: function () {
-				        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+				        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[i]["CUSTOMER"] +
 				        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 				        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 				        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -1993,7 +1930,7 @@ function setSingleColumnData(i, type) {
 function setBuPartOfColumnData(){
 	if(switchState == false){
 		if(buColumnSeries.length > buColumnShow){
-			for(var i = buColumnPageStart; i < buColumnPageEnd; i++){
+			for(var i = buColumnPageStart; i < buColumnPageEnd; i ++){
 				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
 				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
 				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
@@ -2002,7 +1939,7 @@ function setBuPartOfColumnData(){
 				buColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -2014,7 +1951,7 @@ function setBuPartOfColumnData(){
 				buColumn.redraw(false);
 			}
 		}
-		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnPageEnd){
+		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
 			for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
 				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
 				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
@@ -2024,7 +1961,7 @@ function setBuPartOfColumnData(){
 				buColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -2068,7 +2005,7 @@ function setBuPartOfColumnData(){
 				buColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -2080,7 +2017,7 @@ function setBuPartOfColumnData(){
 				buColumn.redraw(false);
 			}
 		}
-		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnPageEnd){
+		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
 			for(var i = buColumnPageStart; i < buColumnSeries.length; i++){
 				var buColumn = new Highcharts.Chart('buColumn' + i, columnOption);
 				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
@@ -2110,7 +2047,7 @@ function setBuPartOfColumnData(){
 				buColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomerArr[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + buCustomer[i]["CUSTOMER"] +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -2137,7 +2074,7 @@ function setCsdPartOfColumnData(){
 				csdColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[i]["CUSTOMER"] +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -2149,7 +2086,7 @@ function setCsdPartOfColumnData(){
 				csdColumn.redraw(false);
 			}
 		}
-		else if(csdColumnSeries.length > 0 && csdColumnSeries.length <= csdColumnPageEnd){
+		else if(csdColumnSeries.length > 0 && csdColumnSeries.length <= csdColumnShow){
 			for(var i = csdColumnPageStart; i < csdColumnSeries.length; i++){
 				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
 				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
@@ -2159,7 +2096,7 @@ function setCsdPartOfColumnData(){
 				csdColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[i]["CUSTOMER"] +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
@@ -2203,7 +2140,7 @@ function setCsdPartOfColumnData(){
 				csdColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[i]["CUSTOMER"] +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -2215,7 +2152,7 @@ function setCsdPartOfColumnData(){
 				csdColumn.redraw(false);
 			}
 		}
-		else if(csdColumnSeries.length > 0 && csdColumnSeries.length <= csdColumnPageEnd){
+		else if(csdColumnSeries.length > 0 && csdColumnSeries.length <= csdColumnShow){
 			for(var i = csdColumnPageStart; i < csdColumnSeries.length; i++){
 				var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
 				csdColumn.series[0].setData(csdColumnSeries[i][0], false, false, false);
@@ -2245,7 +2182,7 @@ function setCsdPartOfColumnData(){
 				csdColumn.update({
 					tooltip: {
 						formatter: function () {
-					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomerArr[i]["CUSTOMER"] +
+					        var s = '<b>' + this.x + '</b><br/><b>' + csdCustomer[i]["CUSTOMER"] +
 					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
 					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
 					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
@@ -2255,6 +2192,143 @@ function setCsdPartOfColumnData(){
 					}
 				});
 				csdColumn.redraw(false);
+			}
+		}
+	}
+}
+
+function setAllBuColumnData() {
+	if(facility == "ALL"){
+		if(switchState == false){
+			for(var i in buOverdueDetail){
+				var buColumn = new Highcharts.Chart('buColumn'+i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[i]["Header"]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
+			}
+		}
+		else{
+			for(var i in buOverdueDetail){
+				var buColumn = new Highcharts.Chart('buColumn'+i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[i][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[i][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[i][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[i][7]
+				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + buOverdueDetail[i]["Header"]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
+			}
+			
+		}
+		
+	}
+	else{
+		if(switchState == false){
+			for(var i in otherBuOverdueDetail){
+				var buColumn = new Highcharts.Chart('buColumn'+i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[i]["Header"]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber(this.points[0].y.toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber(this.points[1].y.toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber(this.points[2].y.toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber(this.points[3].y.toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
+			}
+		}
+		else{
+			for(var i in otherBuOverdueDetail){
+				var buColumn = new Highcharts.Chart('buColumn'+i, columnOption);
+				buColumn.series[0].setData(buColumnSeries[i][0], false, false, false);
+				buColumn.series[1].setData(buColumnSeries[i][1], false, false, false);
+				buColumn.series[2].setData(buColumnSeries[i][2], false, false, false);
+				buColumn.series[3].setData(buColumnSeries[i][3], false, false, false);
+				buColumn.addSeries({
+					name: '1-15 Days',
+			        color: '#81B4E1',
+			        data: buColumnSeries[i][4]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '16-45 Days',
+			        color: '#F79620',
+			        data: buColumnSeries[i][5]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: '46-75 Days',
+			        color: '#F36D21',
+			        data: buColumnSeries[i][6]
+				}, false, false, false);
+				buColumn.addSeries({
+					name: 'Over 75 Days',
+			        color: '#ED3824',
+			        data: buColumnSeries[i][7]
+				}, false, false, false);
+				buColumn.update({
+					tooltip: {
+						formatter: function () {
+					        var s = '<b>' + this.x + '</b><br/><b>' + otherBuOverdueDetail[i]["Header"]["CUSTOMER"] +
+					        		'</b><br/>1-15 Days:USD$' + formatNumber((this.points[0].y + this.points[4].y).toFixed(2)) +
+					        	 	'<br/>16-45 Days:USD$' + formatNumber((this.points[1].y + this.points[5].y).toFixed(2)) +
+					        	 	'<br/>46-75 Days:USD$' + formatNumber((this.points[2].y + this.points[6].y).toFixed(2)) +
+					        	 	'<br/>Over 75 Days:USD$' + formatNumber((this.points[3].y + this.points[7].y).toFixed(2));
+					        return s;
+					    }
+					}
+				});
+				buColumn.redraw(false);
 			}
 		}
 	}
@@ -2390,15 +2464,11 @@ function getOverdueSoonData(fac){
 	
 }
 
-function setOverdueSoonData(){
+function setBuOverdueSoonData(){
 	buOutstandDetailTotal = 0;
-	csdOutstandDetailTotal = 0;
 	$('.overduesoon-bu').html("");
-	$('.overduesoon-csd').html("");
 	
 	if(buOutstand.length > 0){
-		$('.overduesoon-bu-header .bu-customer .priority-img').attr('src', 'img/priority_up.png');
-		$('.overduesoon-bu-header .bu-totaloverdue .priority-img').attr('src', 'img/priority_down.png');
 		for(var i in buOutstand){
 			var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
@@ -2432,10 +2502,13 @@ function setOverdueSoonData(){
 		$('.overduesoon-bu').append(noneDataTwoColumn);
 		$('.overduesoon-bu').append(noneDataTwoTotal);
 	}
+}
+
+function setCsdOverdueSoonData(){
+	csdOutstandDetailTotal = 0;
+	$('.overduesoon-csd').html("");
 	
 	if(csdOutstand.length > 0){
-		$('.overduesoon-csd-header .csd-customer .priority-img').attr('src', 'img/priority_up.png');
-		$('.overduesoon-csd-header .csd-totaloverdue .priority-img').attr('src', 'img/priority_down.png');
 		for(var i in csdOutstand){
 			var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
@@ -2468,8 +2541,8 @@ function setOverdueSoonData(){
 		$('.overduesoon-csd').append(noneDataTwoColumn);
 		$('.overduesoon-csd').append(noneDataTwoTotal);
 	}
-	
 }
+
 
 function getExpiredSoonData(fac) {
 	expiredSoon = [];
@@ -2491,8 +2564,6 @@ function getExpiredSoonData(fac) {
 		}
 	}
 	
-	//console.log(expiredSoon);
-	
 	//默认按day升序排序
 	expiredSoon.sort(compareSmallOverdueSoon("EXPIRED_DATE"));
 }
@@ -2501,7 +2572,6 @@ function setExpiredSoonData(){
 	$('.expiredsoon').html("");
 	
 	if(expiredSoon.length > 0){
-		$('.expiredsoon-bu-header .priority-img').attr('src', 'img/priority_up.png');
 		for(var i in expiredSoon) {
 			var expiredSoonContent = '<li class="data-list-expiredsoon">' +
 										'<div>' +
@@ -2521,7 +2591,6 @@ function setExpiredSoonData(){
 		}
 	}
 	else{
-		$('.expiredsoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
 		$('.expiredsoon').append(noneDataThreeColumn);
 	}
 }
@@ -2673,6 +2742,9 @@ $('#viewDetail').pagecontainer({
 				//API
 				OutstandDetail();
 				CreditExpiredSoon();
+				//Highchart
+				getLandscapeColumn(true, "");
+    			zoomInChartByColumn();
 				//改变颜色
 				viewDetailInit = true;
 			}
@@ -2699,7 +2771,8 @@ $('#viewDetail').pagecontainer({
 		
 		$(".page-tabs #viewDetail-tab-2").on("click", function(){
 			if(overdueSoonInit == false){
-				setOverdueSoonData();
+				setBuOverdueSoonData();
+				setCsdOverdueSoonData();
 				overdueSoonInit = true;
 			}
 			$('#overdue').hide();
@@ -2742,19 +2815,27 @@ $('#viewDetail').pagecontainer({
 			csdColumnPageEnd = csdColumnShow * csdColumnCount;
 			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 			
+			//overdue切换facility恢复默认排序
+			buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+			csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+			//overdueSoon切换facility恢复默认排序
+			buOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+			csdOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
+			//expiredSoon切换facility恢复默认排序
+			expiredSoon.sort(compareSmallOverdueSoon("EXPIRED_DATE"));
+			
 			setBuOverdueDetailData(facility);
 			setBuAreaData();
-			setBuPartOfColumnData();
 			buSingleListBtn();
 			setCsdOverdueDetailData(facility);
 			setCsdAreaData();
-			setCsdPartOfColumnData();
 			csdSingleListBtn();
 			
 			overdueInit = false;
 			
 			getOverdueSoonData(facility);
-			setOverdueSoonData();
+			setBuOverdueSoonData();
+			setCsdOverdueSoonData();
 			overdueSoonInit = false;
 			
 			getExpiredSoonData(facility);
@@ -2767,8 +2848,70 @@ $('#viewDetail').pagecontainer({
     		csdColumnCheckAll = false;
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+    		if(facility == "ALL"){
+    			if(buOverdueDetail.length > 0){
+    				$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
+    			}
+    			else{
+    				$('.bu-header .priority-img').attr('src', 'img/priority_dis.png');
+    			}
+    		}
+    		else{
+    			if(otherBuOverdueDetail.length > 0){
+    				$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
+    			}
+    			else{
+    				$('.bu-header .priority-img').attr('src', 'img/priority_dis.png');
+    			}
+    		}
     		
-    		console.log(buOverdueDetail);
+    		if(facility == "ALL"){
+    			if(csdOverdueDetail.length > 0){
+    				$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
+    			}
+    			else{
+    				$('.csd-header .priority-img').attr('src', 'img/priority_dis.png');
+    			}
+    		}
+    		else{
+    			if(otherCsdOverdueDetail.length > 0){
+    				$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
+    			}
+    			else{
+    				$('.csd-header .priority-img').attr('src', 'img/priority_dis.png');
+    			}
+    		}
+    		
+    		if(buOutstand.length > 0){
+    			$('.overduesoon-bu-header .bu-customer .priority-img').attr('src', 'img/priority_up.png');
+				$('.overduesoon-bu-header .bu-totaloverdue .priority-img').attr('src', 'img/priority_down.png');
+    		}
+    		else{
+    			$('.overduesoon-bu-header .bu-customer .priority-img').attr('src', 'img/priority_dis.png');
+				$('.overduesoon-bu-header .bu-totaloverdue .priority-img').attr('src', 'img/priority_dis.png');
+    		}
+    		
+    		if(csdOutstand.length > 0){
+    			$('.overduesoon-csd-header .csd-customer .priority-img').attr('src', 'img/priority_up.png');
+				$('.overduesoon-csd-header .csd-totaloverdue .priority-img').attr('src', 'img/priority_down.png');
+    		}
+    		else{
+    			$('.overduesoon-csd-header .csd-customer .priority-img').attr('src', 'img/priority_dis.png');
+				$('.overduesoon-csd-header .csd-totaloverdue .priority-img').attr('src', 'img/priority_dis.png');
+    		}
+    		
+			if(expiredSoon.length > 0){
+				$('.expiredsoon-bu-header .priority-img').attr('src', 'img/priority_up.png');
+			}
+			else{
+				$('.expiredsoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
+			}
+			
+    		
+    		
+    		console.log(buArrIndex+" ,"+csdArrIndex);
+    		
+    		
         });
 		
 	}
