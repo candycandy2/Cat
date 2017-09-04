@@ -62,13 +62,14 @@
 	padding: 0px;
 }
 
+/* pull refresh */
 .page-main .page-date{
 	font-family: Arial;
-	height: 3VH;
+	height: 3VW;
 	color: #0f0f0f;
 	text-align:center;
 	width: 80%;
-	margin: 2VH auto 0;
+	margin: 1VH auto 0;
 }
 
 .page-main .YTD-Str {
@@ -93,6 +94,7 @@ a{
 	color: #FFFFFF;
 	overflow: initial !important;
 }
+
 
 /* excludeLabel */
 #excludeLabel span{
@@ -815,18 +817,19 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
 }
-#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape{
+#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape,
+#viewDetail #viewDetail-hc-column-landscape-switch{
 	display: none;
 }
 
 /********************************************** highcharts landscape *********************************************/
 @media all and (orientation: landscape) {
 	/*******************overview highcharts*********************/
-	#viewMain .page-header, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn,
-	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape{
+	#viewMain .page-header, #viewMain .page-date, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn,
+	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape {
 		display: none;
 	}
-	#viewMain{
+	#viewMain {
 		padding-top: 0 !important;
 	}
 	.viewIndex.ui-page {
@@ -840,7 +843,8 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 	#viewDetail #overdue, #viewDetail #overdueSoon, #viewDetail #expiredSoon{
 		display: none;
 	}*/
-	#viewDetail #viewDetail-hc-column-landscape {
+	#viewDetail #viewDetail-hc-column-landscape,
+	#viewDetail #viewDetail-hc-column-landscape-switch {
 		/*display: block;*/
 		display: none;
 	}

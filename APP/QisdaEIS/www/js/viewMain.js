@@ -53,6 +53,7 @@ var treemapSeries2 = [
 var bubbleOption = {
 	chart: {
         type: 'bubble',
+        animation: false,
         marginTop: 5,
         plotBorderWidth: 0,
         zoomType: 'none'
@@ -114,9 +115,6 @@ var bubbleOption = {
             	events: {
             		click: function(event){
             			var facility = this.facility;
-            			buTreemap = [];
-            			csdTreemap = [];
-            			
             			getTreemapSeriesByFacility(facility);
             			
             			showTreemap();
@@ -154,8 +152,8 @@ var bubbleOption = {
         }
     },
     series: [{		    	
-        data: buBubbleSeries
-        //data: buBubbleData
+        //data: buBubbleSeries
+        data: buBubbleData
     }],
     exporting: {
         enabled: false
@@ -188,18 +186,19 @@ var rectOption = {
         	align: 'left',
         	overflow: 'justify',
         	formatter: function(){
-        		if(this.value == 400){
-        			return this.value + '(Days)';
+        		if(this.value == 75){
+        			var s = this.value + '(Days)';
         		}
         		else{
-        			return this.value;
+        			var s = this.value;
         		}
+        		return s;
         	},
         	style: {
-        		color: '#323232'
+        		"color": "#323232",
+        		"fontSize": "11px"
         	}
-        },
-        endOntick: false
+        }
    	},
    	tooltip: {
         useHTML: true,
@@ -209,13 +208,6 @@ var rectOption = {
         borderWidth: 1,
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
-        headerFormat: '<table class="fontTooltip">',
-        /*pointFormat: '<tr><td><strong>{point.customer}</strong></td></tr>' +
-        '<tr><td>1-15 Days:USD${point.day1}</td></tr>' +
-        '<tr><td>16-45 Days:USD${point.day16}</td></tr>' +
-        '<tr><td>46-75 Days:USD${point.day46}</td></tr>' +
-        '<tr><td>Over 75 Days:USD${point.day76}</td></tr>' ,
-        footerFormat: '</table>',*/
         formatter: function () {
 	        var s = '<b>' + this.point.customer + '</b><br/>' + 
 	        		'<span>1-15 Days:USD$' + formatNumber(this.point.day1.toFixed(2)) + '</span><br/>' +
@@ -233,8 +225,8 @@ var rectOption = {
 	        dataLabels: {
 	            enabled: true,  
 	            useHTML: true,
-	            crop: false,
-	            overflow: 'none',
+	            crop: true,
+	            overflow: 'justify',
 	            inside: true,
 	            style: {
 	            	"color": "#ffffff",
@@ -275,6 +267,9 @@ function hideTooltip(){
 }
 
 function sortDataByType(){
+	buByType = [];
+	csdByType = [];
+	
 	for(var i = 0; i < arSummaryCallBackData.length; i++){
 		for(var j = 0; j < araUserAuthorityCallBackData.length; j++){
 			if(arSummaryCallBackData[i]["FACILITY"] == araUserAuthorityCallBackData[j]["FACILITY"]){
@@ -291,6 +286,9 @@ function sortDataByType(){
 }
 
 function simplifyData(){
+	buSimplify = [];
+	csdSimplify = [];
+	
 	$.each(buByType, function(i, item) {
 		buSimplify.push({
 			"day": parseInt(item.MAX_DUE_DAYS_INV),
@@ -322,10 +320,15 @@ function simplifyData(){
 			"group": item.BUSINESS_GROUP
 		});
 	});
-	//console.log(buSimplify);
+	
 }
 
 function mergeDataByFacility(){
+	buBubbleData = []
+	csdBubbleData = [];
+	buBubbleObj = {};
+	csdBubbleObj = {};
+	
 	$.each(buSimplify, function(i, item) {
 		var fac = item.facility;
 		var total = item.total;
@@ -362,6 +365,7 @@ function mergeDataByFacility(){
 				buBubbleObj[fac].color = "#AC8BC0";
 			}
 			buBubbleData.push(buBubbleObj[fac]);
+			console.log(buBubbleData);
 		}
 	});
 	$.each(csdSimplify, function(i, item) {
@@ -402,10 +406,14 @@ function mergeDataByFacility(){
 			csdBubbleData.push(csdBubbleObj[fac]);
 		}
 	});
-	//console.log(buBubbleData);
+	
+	
 }
 
 function getTreemapSeriesByFacility(fac) {
+	buTreemap = [];
+    csdTreemap = [];
+	
 	$.each(buSimplify, function(i, item) {
 		if(item.facility == fac){
 			buTreemap.push({
@@ -441,15 +449,24 @@ $('#viewMain').pagecontainer({
 	create: function (event, ui){	
 		
 		window.ARSummary = function() {
-			if(localStorage.getItem("arSummaryData") === null){
+			if(localStorage.getItem("arSummaryData") == null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
+					console.log("进来了");
 		    		//先按TYPE分组,分成BU和CSD
 		    		sortDataByType();	
 		    		//简化数据
 		    		simplifyData();
 		    		//相同facility合并
 		    		mergeDataByFacility();
+		    		switch(viewMainTab) {
+                        case "bu" :
+                            $("input[id=viewMain-tab-1]").trigger('click');   
+                            break;
+                        case "csd" :
+                            $("input[id=viewMain-tab-2]").trigger('click');   
+                            break;
+                    }
 					loadingMask("hide");
 		    		
 		    		localStorage.setItem("arSummaryData", JSON.stringify([data, nowTime]));
@@ -554,7 +571,31 @@ $('#viewMain').pagecontainer({
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
 			/* global PullToRefresh */
-			
+			PullToRefresh.init({
+                mainElement: '.page-date',
+                onRefresh: function() {
+                    if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewMain") {
+                       	window.localStorage.removeItem("arSummaryData");
+                        ARSummary(); 
+                        showBubble();
+                        
+    					if(viewMainTab == "bu"){
+            				chartbubble.series[0].setData(buBubbleData, true, true, false);         
+            				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            				
+                        }
+                        else{
+            				chartbubble.series[0].setData(buBubbleData, true, true, false);         
+            				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            				
+                        }
+        				
+                        chartbubble.redraw();
+                		chartLandscapebubble.redraw();
+                        
+                    }
+                }
+            });
 			
 		});
 		
@@ -567,12 +608,12 @@ $('#viewMain').pagecontainer({
 			    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
 			    
 			    $('#overview-hc-rectangle').hide();
-			    
-			    chartbubble.series[0].setData(buBubbleData, false, false, false);
+			        
+		    	chartbubble.series[0].setData(buBubbleData, false, false, false);
 			    chartbubble.redraw(true);
 				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);
 				chartLandscapebubble.redraw(true);
-	            
+			    
 				if (window.orientation === 90 || window.orientation === -90 ) {
 	                zoomInChart();
 	           	}
