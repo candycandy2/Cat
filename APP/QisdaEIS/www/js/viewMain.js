@@ -213,6 +213,7 @@ var rectOption = {
 	            crop: true,
 	            overflow: 'justify',
 	            inside: true,
+	            zIndex: -10,
 	            style: {
 	            	"color": "#ffffff",
 	            	"fontSize": "11px",
@@ -267,7 +268,7 @@ function sortDataByType(){
 			}
 		}
 	}
-
+	
 }
 
 function simplifyData(){
@@ -305,7 +306,6 @@ function simplifyData(){
 			"group": item.BUSINESS_GROUP
 		});
 	});
-	
 }
 
 function mergeDataByFacility(){
@@ -352,6 +352,9 @@ function mergeDataByFacility(){
 			buBubbleData.push(buBubbleObj[fac]);
 		}
 	});
+	
+	console.log(buBubbleData);
+	
 	$.each(csdSimplify, function(i, item) {
 		var fac = item.facility;
 		var total = item.total;
@@ -436,20 +439,18 @@ $('#viewMain').pagecontainer({
 			if(localStorage.getItem("arSummaryData") == null){
 				this.successCallback = function(data) {
 					arSummaryCallBackData = data["Content"];
-		    		//先按TYPE分组,分成BU和CSD
+					console.log("ARSummary");
 		    		sortDataByType();	
-		    		//简化数据
 		    		simplifyData();
-		    		//相同facility合并
 		    		mergeDataByFacility();
-		    		/*switch(viewMainTab) {
+		    		switch(viewMainTab) {
                         case "bu" :
                             $("input[id=viewMain-tab-1]").trigger('click');   
                             break;
                         case "csd" :
                             $("input[id=viewMain-tab-2]").trigger('click');   
                             break;
-                    }*/
+                    }
 					loadingMask("hide");
 		    		
 		    		localStorage.setItem("arSummaryData", JSON.stringify([data, nowTime]));
@@ -558,8 +559,36 @@ $('#viewMain').pagecontainer({
                 mainElement: '.page-date',
                 onRefresh: function() {
                     if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewMain") {
+                       	//销毁hc
+                       	chartbubble.destroy();
+                        chartLandscapebubble.destroy();
+                        if(chartRect !== null){
+                        	chartRect.destroy();
+                        }
+                        if(chartLandscapeRect !== null){
+                        	chartLandscapeRect.destroy();
+                        }
+                       	
+                       	//重新调用API
                        	window.localStorage.removeItem("arSummaryData");
-                        ARSummary(); 
+                        ARSummary();
+                        
+                        //viewDetail API
+                        window.localStorage.removeItem("overdueDetailData");
+                    	OverdueDetail();
+                    	window.localStorage.removeItem("outstandDetailData");
+                   		OutstandDetail();
+                   		window.localStorage.removeItem("creditExpiredSoonData");
+                    	CreditExpiredSoon();
+                    	
+                    	//恢复初始状态
+                    	switchState = false;
+                        viewDetailInit = false;
+                        facility = "ALL";
+                        $(".Facility #" + facility).parent('.scrollmenu').find('.hover').removeClass('hover');
+					    $(".Facility #ALL").removeClass('disableHover');
+					    $(".Facility #ALL").addClass('hover');
+                          
                         showBubble();
                         
     					if(viewMainTab == "bu"){
@@ -572,19 +601,7 @@ $('#viewMain').pagecontainer({
             				chartLandscapebubble.series[0].setData(csdBubbleData, true, true, false);
             				
                         }
-        				
-        				//viewDetail API
-                        window.localStorage.removeItem("overdueDetailData");
-                    	OverdueDetail();
-                    	window.localStorage.removeItem("outstandDetailData");
-                   		OutstandDetail();
-                   		window.localStorage.removeItem("creditExpiredSoonData");
-                    	CreditExpiredSoon();
-        				
-                        chartbubble.redraw(true);
-                		chartLandscapebubble.redraw(true);
-                        
-                        
+        				  
                         
                     }
                 }
