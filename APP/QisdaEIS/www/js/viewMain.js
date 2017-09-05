@@ -1,6 +1,8 @@
 //get BU & CSD series
 var viewMainTab = "bu";
 var facilityList = "";
+/*var facility = "ALL";*/
+var facility;
 var firstFacility;
 var viewMainInit = false;
 var mainQisdaEisData = {};
@@ -493,6 +495,7 @@ $('#viewMain').pagecontainer({
 						facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
 						if(firstFacilityFlag){
 							firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+							facility = firstFacility;
 							firstFacilityFlag = false;
 						}
 					}
@@ -524,6 +527,7 @@ $('#viewMain').pagecontainer({
 					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
 					if(firstFacilityFlag){
 						firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+						facility = firstFacility;
 						firstFacilityFlag = false;
 					}
 				}
@@ -630,7 +634,6 @@ $('#viewMain').pagecontainer({
 			}
 			loadingMask("hide");
 		});
-		
 		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
 			chartbubble.tooltip.hide();
