@@ -1,5 +1,6 @@
 /*******************global variable function*****************/
-var chartbubble,chartLandscapebubble,chartRect,chartLandscapeRect;
+var chartbubble,chartLandscapebubble;
+var chartRect = null,chartLandscapeRect = null;
 var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
 var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
 var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;
@@ -15,11 +16,11 @@ var expiredTime = 1;
 var buArrIndex = null;
 var csdArrIndex = null;
 var buCountNum = 1;
-var buShowNum = 12;
+var buShowNum = 50;
 var buPageEnd = buShowNum * buCountNum;
 var buPageStart = buPageEnd - buShowNum;
 var csdCountNum = 1;
-var csdShowNum = 12;
+var csdShowNum = 50;
 var csdPageEnd = csdShowNum * csdCountNum;
 var csdPageStart = csdPageEnd - csdShowNum;
 var buColumnCount = 1;
@@ -168,6 +169,7 @@ $(document).one('pagebeforeshow', function(){
 
     //BU allList btn
     $('#buAllListBtn').on('click', function(){
+    	//review by alan
     	var flag = $('#buAllListBtn').attr('src');
     	if(flag == 'img/all_list_down.png'){
     		$('#buAllListBtn').attr('src', 'img/all_list_up.png');
@@ -185,46 +187,10 @@ $(document).one('pagebeforeshow', function(){
     		else{
     			for(var i in otherBuOverdueDetail){
     				otherBuOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    				setSingleColumnData(i, 'bu');
     			}
     		}
     		
-    		//BU展开全部处罚滚屏事件
-    		$(window).on('scroll', function() {
-    			//获取页面可视区域的范围
-			   	var visibleTop = document.body.scrollTop;
-			   	var visibleHeight = document.body.clientHeight;
-			   	var visibleBottom = document.body.clientHeight + visibleTop; 
-			   	 
-			   	/*if(facility == "ALL"){
-			   		for(var i = 1; i < buOverdueDetail.length;){
-			   			i = setAllColumnByOne(i, visibleTop, visibleBottom);
-			   		}
-			   	}*/
-			   	var buColumnArrLength = buColumnSeries.length;
-			   	
-			   	buColumnPageEnd = buColumnShow * buColumnCount;
-				buColumnPageStart = buColumnPageEnd - buColumnShow;
-				
-			   	
-		   		if(buColumnArrLength > buColumnPageEnd){
-		   			var top4 = $('#buShowList' + (buColumnPageEnd - 1)).offset().top;
-		   			
-		   			if((top4 - visibleBottom) < 300){
-		   				buColumnCount++;
-		   				return false;
-		   			}
-		   			setBuPartOfColumnData();
-		   			
-		   		}
-		   		else{
-		   			buColumnPageEnd = buColumnArrLength;
-		   			setBuPartOfColumnData();
-		   		}
-			   	
-    		});
-    		
-    		
-
     	}
     	else{
     		$('#buAllListBtn').attr('src', 'img/all_list_down.png');
@@ -250,6 +216,7 @@ $(document).one('pagebeforeshow', function(){
 
     //CSD allList btn
     $('#csdAllListBtn').on('click', function(){
+    	//review by alan
     	var flag = $('#csdAllListBtn').attr('src');
     	if(flag === 'img/all_list_down.png'){
     		$('#csdAllListBtn').attr('src', 'img/all_list_up.png');
@@ -267,38 +234,9 @@ $(document).one('pagebeforeshow', function(){
     		else{
     			for(var i in otherCsdOverdueDetail){
     				otherCsdOverdueDetail[i]["Header"]["SPREAD"] = 1;
+    				setSingleColumnData(i, 'csd');
     			}
     		}
-    		
-    		//CSD展开全部处罚滚屏事件
-    		$(window).on('scroll', function() {
-    			//获取页面可视区域的范围
-			   	var visibleTop = document.body.scrollTop;
-			   	var visibleHeight = document.body.clientHeight;
-			   	var visibleBottom = document.body.clientHeight + visibleTop; 
-			   	
-			   	var csdColumnArrLength = csdColumnSeries.length;
-			   	
-			   	csdColumnPageEnd = csdColumnShow * csdColumnCount;
-				csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
-				
-			   	
-		   		if(csdColumnArrLength > csdColumnPageEnd){
-		   			var top4 = $('#csdShowList' + (csdColumnPageEnd - 1)).offset().top;
-		   			
-		   			if((top4 - visibleBottom) < 300){
-		   				csdColumnCount++;
-		   				return false;
-		   			}
-		   			setCsdPartOfColumnData();
-		   			
-		   		}
-		   		else{
-		   			csdColumnPageEnd = csdColumnArrLength;
-		   			setCsdPartOfColumnData();
-		   		}
-			   	
-    		});
 
     	}else{
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
