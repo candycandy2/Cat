@@ -97,71 +97,16 @@ $(document).one('pagebeforeshow', function(){
     $('#memoBtn').on('click', function(){
     	if(switchState == false){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
-			buArrIndex = null;
-	    	csdArrIndex = null;
-			
     		switchState = true;
-			buCountNum = 1;
-			buPageEnd = buShowNum * buCountNum;
-			buPageStart = buPageEnd - buShowNum;
-			csdCountNum = 1;
-			csdPageEnd = csdShowNum * csdCountNum;
-			csdPageStart = csdPageEnd - csdShowNum;
-			buColumnCount = 1;
-			buColumnPageEnd = buColumnShow * buColumnCount;
-			buColumnPageStart = buColumnPageEnd - buColumnShow;
-			csdColumnCount = 1;
-			csdColumnPageEnd = csdColumnShow * csdColumnCount;
-			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
+    		
+			changeSwitchInit();
 			
-			setBuOverdueDetailData(facility);
-			setBuAreaData();
-			buSingleListBtn();
-			setCsdOverdueDetailData(facility);
-			setCsdAreaData();
-			csdSingleListBtn();
-			
-			//开关打开并转横屏后，column-hc数据由4组增加到8组
-			changeSeriesBySwitch();			
-			buColumnCheckAll = false;
-	    	csdColumnCheckAll = false;
-	    	
-			$('#buAllListBtn').attr('src', 'img/all_list_down.png');
-	    	$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     	}
     	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
-    		buArrIndex = null;
-	    	csdArrIndex = null;
+    		switchState = false;
     		
-			switchState = false;
-			buCountNum = 1;
-			buPageEnd = buShowNum * buCountNum;
-			buPageStart = buPageEnd - buShowNum;
-			csdCountNum = 1;
-			csdPageEnd = csdShowNum * csdCountNum;
-			csdPageStart = csdPageEnd - csdShowNum;
-			buColumnCount = 1;
-			buColumnPageEnd = buColumnShow * buColumnCount;
-			buColumnPageStart = buColumnPageEnd - buColumnShow;
-			csdColumnCount = 1;
-			csdColumnPageEnd = csdColumnShow * csdColumnCount;
-			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
-			
-			setBuOverdueDetailData(facility);
-			setBuAreaData();
-			buSingleListBtn();
-			setCsdOverdueDetailData(facility);
-			setCsdAreaData();
-			csdSingleListBtn();
-			
-			//开关关闭并转横屏后，column-hc数据由8组删除到4组
-			changeSeriesBySwitch();
-			
-			buColumnCheckAll = false;
-	    	csdColumnCheckAll = false;
-			$('#buAllListBtn').attr('src', 'img/all_list_down.png');
-	    	$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+    		changeSwitchInit();
 	    	
     	}
     	
@@ -188,6 +133,7 @@ $(document).one('pagebeforeshow', function(){
     			for(var i in otherBuOverdueDetail){
     				otherBuOverdueDetail[i]["Header"]["SPREAD"] = 1;
     				setSingleColumnData(i, 'bu');
+    				
     			}
     		}
     		
@@ -225,7 +171,7 @@ $(document).one('pagebeforeshow', function(){
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
     		csdArrIndex = 0;
     		csdColumnCheckAll = true;
-    		
+    		   		
     		if(facility == "ALL"){
     			for(var i in csdOverdueDetail){
 	    			csdOverdueDetail[i]["Header"]["SPREAD"] = 1;	
@@ -235,6 +181,7 @@ $(document).one('pagebeforeshow', function(){
     			for(var i in otherCsdOverdueDetail){
     				otherCsdOverdueDetail[i]["Header"]["SPREAD"] = 1;
     				setSingleColumnData(i, 'csd');
+    				
     			}
     		}
 
@@ -562,15 +509,11 @@ $(document).one('pagebeforeshow', function(){
 		   	
 		   	timoutScrollEvent = setTimeout(function(){
 		   		//check areaIndex in visible
-		   		checkIndexVisible();
-		   			
-		   		
+		   		checkIndexVisible();	
 		   	}, 500);
 		   	
 		   	//setArea-hc
 		   	onScrollSetAllAreaData();
-			
-			
 			
 		});
 		
@@ -743,6 +686,40 @@ function onScrollSetAllAreaData() {
    	}
 	
 }
+
+function changeSwitchInit(){
+	buArrIndex = null;
+	csdArrIndex = null;
+	
+	buCountNum = 1;
+	buPageEnd = buShowNum * buCountNum;
+	buPageStart = buPageEnd - buShowNum;
+	csdCountNum = 1;
+	csdPageEnd = csdShowNum * csdCountNum;
+	csdPageStart = csdPageEnd - csdShowNum;
+	buColumnCount = 1;
+	buColumnPageEnd = buColumnShow * buColumnCount;
+	buColumnPageStart = buColumnPageEnd - buColumnShow;
+	csdColumnCount = 1;
+	csdColumnPageEnd = csdColumnShow * csdColumnCount;
+	csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
+	
+	setBuOverdueDetailData(facility);
+	setBuAreaData();
+	buSingleListBtn();
+	setCsdOverdueDetailData(facility);
+	setCsdAreaData();
+	csdSingleListBtn();
+	
+	//开关关闭并转横屏后，column-hc数据由8组删除到4组
+	changeSeriesBySwitch();
+	
+	buColumnCheckAll = false;
+	csdColumnCheckAll = false;
+	$('#buAllListBtn').attr('src', 'img/all_list_down.png');
+	$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
+}
+
 
 function setAllColumnByOne(i, visibleTop, visibleBottom){
 	var top1 = $('#buShowList'+i).offset().top;

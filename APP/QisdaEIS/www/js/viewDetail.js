@@ -563,6 +563,7 @@ function buSingleListBtn(){
 			
 			setSingleColumnData(index, 'bu');
 			
+			
 		}else{
 			self.attr('src', 'img/list_down.png');
 			self.parent().parent().parent().next().hide();
@@ -608,6 +609,7 @@ function csdSingleListBtn(){
 			csdIndexMarginTop = $('#csdShowList'+csdArrIndex).offset().top;
 			
 			setSingleColumnData(index, 'csd');
+			
 			
 		}else{
 			self.attr('src', 'img/list_down.png');
@@ -657,7 +659,6 @@ function getOverdueDetailData(){
 	//get startDate and endDate
 	startDate = startDay.substring(5, 10);
 	endDate = endDay.substring(5, 10);
-	console.log(timeAxis);
 	
 	$.each(overdueDetailCallBackData, function(i, item) {
 		for(var j = 0; j < araUserAuthorityCallBackData.length; j++){
@@ -2633,9 +2634,7 @@ $('#viewDetail').pagecontainer({
 			if(localStorage.getItem("overdueDetailData") === null){
 				this.successCallback = function(data) {
 					overdueDetailCallBackData = data["Content"];
-					console.log(timeAxis);
 					getOverdueDetailData();
-					console.log(timeAxis);
 					loadingMask("hide");
 					
 					localStorage.setItem("overdueDetailData", JSON.stringify([data, nowTime]));				
@@ -2654,9 +2653,7 @@ $('#viewDetail').pagecontainer({
 			else{
 				overdueDetailData = JSON.parse(localStorage.getItem("overdueDetailData"))[0];
 				overdueDetailCallBackData = overdueDetailData["Content"];
-				console.log(timeAxis);
 				getOverdueDetailData();
-				console.log(timeAxis);
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("overdueDetailData"))[1];
@@ -2747,6 +2744,10 @@ $('#viewDetail').pagecontainer({
 				setBuOverdueDetailData(facility);
 				setBuAreaData();
 				buSingleListBtn();
+				//设置CSD数据
+				setCsdOverdueDetailData(facility);
+				setCsdAreaData();
+				csdSingleListBtn();
 				//页面初始化
 				changePageInitViewDetail();
 				//API
@@ -2755,23 +2756,10 @@ $('#viewDetail').pagecontainer({
 				//Highchart
 				getLandscapeColumn(true, "");
     			zoomInChartByColumn();
-    			//设置CSD数据
-				setCsdOverdueDetailData(facility);
-				csdSingleListBtn();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
-			
-			/*if(csdDataInit == false){
-				setTimeout(function(){
-					//设置CSD数据
-					setCsdOverdueDetailData(facility);
-					csdSingleListBtn();
-				}, 300);
-				csdDataInit = true;
-			}*/
-			
-			
+					
 		});
 		
 		$(".page-tabs #viewDetail-tab-1").on("click", function(){
