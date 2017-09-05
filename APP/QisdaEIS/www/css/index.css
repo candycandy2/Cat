@@ -848,7 +848,11 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 }
 
 /*************************************viewMain highcharts*******************************************/
-#viewMain #overview-hc-rectangle, #viewMain #overview-hc-bubble-landscape, 
+/*#viewMain #overview-hc-rectangle, #viewMain #overview-hc-bubble-landscape, 
+#viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
+	display: none;
+}*/
+#viewMain #overview-hc-bubble-landscape, 
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
 }
