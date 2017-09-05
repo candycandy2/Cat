@@ -40,7 +40,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             'Apache Cordova Team' +
                         '</author>' +
                         '<content src="index.html" />' +
-                        '<preference name="Orientation" value="portrait" />' +
+                        '<preference name="orientation" value="portrait" />' +
                         '<access origin="*" />' +
                         '<access origin="tel:*" launch-external="yes" />' +
                         '<allow-navigation href="*" />' +
