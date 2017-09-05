@@ -122,6 +122,7 @@ $(document).one('pagebeforeshow', function(){
     		$('.bu-single-list').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
     		buArrIndex = 0;
+    		buColumnCheckAll = true;
     		
     		if(facility == "ALL"){
     			for(var i in buOverdueDetail){
@@ -131,10 +132,7 @@ $(document).one('pagebeforeshow', function(){
     		else{
     			for(var i in otherBuOverdueDetail){
     				otherBuOverdueDetail[i]["Header"]["SPREAD"] = 1;
-    				if(buColumnCheckAll == false){
-    					setSingleColumnData(i, 'bu');
-    					buColumnCheckAll = true;
-    				}
+    				setSingleColumnData(i, 'bu');
     				
     			}
     		}
@@ -172,6 +170,7 @@ $(document).one('pagebeforeshow', function(){
     		$('.csd-single-list').show();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
     		csdArrIndex = 0;
+    		csdColumnCheckAll = true;
     		   		
     		if(facility == "ALL"){
     			for(var i in csdOverdueDetail){
@@ -181,10 +180,7 @@ $(document).one('pagebeforeshow', function(){
     		else{
     			for(var i in otherCsdOverdueDetail){
     				otherCsdOverdueDetail[i]["Header"]["SPREAD"] = 1;
-    				if(csdColumnCheckAll == false){
-    					setSingleColumnData(i, 'csd');
-    					csdColumnCheckAll = true;
-    				}
+    				setSingleColumnData(i, 'csd');
     				
     			}
     		}

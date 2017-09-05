@@ -561,9 +561,7 @@ function buSingleListBtn(){
 			buArrIndex = index;
 			buIndexMarginTop = $('#buShowList'+buArrIndex).offset().top;
 			
-			if(buColumnCheckAll == false){
-				setSingleColumnData(index, 'bu');
-			}
+			setSingleColumnData(index, 'bu');
 			
 			
 		}else{
@@ -610,9 +608,7 @@ function csdSingleListBtn(){
 			csdArrIndex = index;
 			csdIndexMarginTop = $('#csdShowList'+csdArrIndex).offset().top;
 			
-			if(csdColumnCheckAll == false){
-				setSingleColumnData(index, 'csd');
-			}
+			setSingleColumnData(index, 'csd');
 			
 			
 		}else{
@@ -2748,6 +2744,10 @@ $('#viewDetail').pagecontainer({
 				setBuOverdueDetailData(facility);
 				setBuAreaData();
 				buSingleListBtn();
+				//设置CSD数据
+				setCsdOverdueDetailData(facility);
+				setCsdAreaData();
+				csdSingleListBtn();
 				//页面初始化
 				changePageInitViewDetail();
 				//API
@@ -2756,10 +2756,6 @@ $('#viewDetail').pagecontainer({
 				//Highchart
 				getLandscapeColumn(true, "");
     			zoomInChartByColumn();
-    			//设置CSD数据
-				setCsdOverdueDetailData(facility);
-				setCsdAreaData();
-				csdSingleListBtn();
 				viewDetailInit = true;
 			}
 			loadingMask("hide");
