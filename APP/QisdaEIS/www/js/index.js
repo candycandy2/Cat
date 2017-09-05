@@ -119,7 +119,7 @@ $(document).one('pagebeforeshow', function(){
     	if(flag == 'img/all_list_down.png'){
     		$('#buAllListBtn').attr('src', 'img/all_list_up.png');
     		$('.buSingleListBtn').attr('src', 'img/list_up.png');
-    		$('.bu-single-list').show();
+    		$('.bu-single-list[data-bu="show"]').show();
     		$('.bu-single-list').prev().css('border-bottom', '1px solid white');
     		buArrIndex = 0;
     		buColumnCheckAll = true;
@@ -167,7 +167,7 @@ $(document).one('pagebeforeshow', function(){
     	if(flag === 'img/all_list_down.png'){
     		$('#csdAllListBtn').attr('src', 'img/all_list_up.png');
     		$('.csdSingleListBtn').attr('src', 'img/list_up.png');
-    		$('.csd-single-list').show();
+    		$('.csd-single-list[data-csd="show"]').show();
     		$('.csd-single-list').prev().css('border-bottom', '1px solid white');
     		csdArrIndex = 0;
     		csdColumnCheckAll = true;

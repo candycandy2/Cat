@@ -150,6 +150,10 @@ a{
 	height: 65VW;
 }
 /****************************************** viewDetail *********************************************/
+.overdue-list-hide {
+	display: none;
+}
+
 .include-label{
 	width: 100VW;
 }
