@@ -106,7 +106,7 @@ $("#viewDetailInfo").pagecontainer({
             $("#detial-name-title #eName").html(dataContent[0].Name_EN);
             $("#detial-name-title #cName").html(dataContent[0].Name_CH);
             $("#detail-data #companyName").html(dataContent[0].Company);
-            $("#detail-data #employeeID").html(dataContent[0].EmployeeID);
+            //$("#detail-data #employeeID").html(dataContent[0].EmployeeID);
             $("#detail-data #sideCode").html(dataContent[0].SiteCode);
             $("#detail-data #dept").html(dataContent[0].Dept);
             $("#detail-data #deptCode").html(dataContent[0].DeptCode);

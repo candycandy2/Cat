@@ -54,7 +54,8 @@
 
 .page-main .tabs-title{
 	height: 5VH;
-	font-size: 2.5VH;
+	/*font-size: 2.5VH;*/
+	font-size: 3.768VW;
 	font-family: Arial;
 	font-weight: 500;
 	line-height: 5.6VH;
@@ -327,11 +328,13 @@ a{
 .csd-data-list > ul > li:nth-child(2){
 	width: 30.377VW;
 	line-height: 15.538VW;
+	text-align: right;
 }
 
 .bu-data-list > ul > li:nth-child(2) span,
 .csd-data-list > ul > li:nth-child(2) span{
-	margin-left: 6VW;
+	margin-right: 2.5VW;
+	
 }
 
 .bu-data-list > ul > li:nth-child(3),
@@ -559,9 +562,11 @@ a{
 
 .data-list-overduesoon > div:nth-child(2){
 	line-height: 15.538VW;
-	text-align: center;
+	text-align: right;
 }
-
+.data-list-overduesoon > div:nth-child(2) > span {
+	margin-right: 8VW;
+}
 .overduesoon-total{
 	width: 92.58VW;
 	height: 15.538VW;
@@ -572,8 +577,19 @@ a{
 	width: 46.29VW;
 	height: 15.538VW;
 	line-height: 15.538VW;
-	text-align: center;
 	float: left;
+}
+
+.overduesoon-total div:nth-child(1) {
+	text-align: center;
+}
+
+.overduesoon-total div:nth-child(2) {
+	text-align: right;
+}
+
+.overduesoon-total div:nth-child(2) span {
+	margin-right: 8VW;
 }
 
 .overduesoon-csd-title{
@@ -666,11 +682,20 @@ a{
 	-webkit-line-clamp:2;
 }
 
-.data-list-expiredsoon > div:nth-child(2),
-.data-list-expiredsoon > div:nth-child(3){
+.data-list-expiredsoon > div:nth-child(2) {
 	line-height: 15.538VW;
 	text-align: center;
 }
+
+.data-list-expiredsoon > div:nth-child(3) {
+	line-height: 15.538VW;
+	text-align: right;
+}
+
+.data-list-expiredsoon > div:nth-child(3) span {
+	margin-right: 5VW;
+}
+
 
 /*nono of data-list for 2cloumn 3cloumn 4cloumn*/
 .data-list-none-twoColumn,

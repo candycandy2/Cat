@@ -588,8 +588,10 @@ $('#viewMain').pagecontainer({
                     	CreditExpiredSoon();
                     	
                     	//恢复初始状态
+                    	switchState = false;
+                    	facility = firstFacility;
                         viewDetailInit = false;
-                          
+                       	
                         showBubble();
                         
     					if(viewMainTab == "bu"){
