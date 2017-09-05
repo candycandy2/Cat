@@ -1,6 +1,7 @@
 /*******************global variable function*****************/
 var chartbubble,chartLandscapebubble;
 var chartRect = null,chartLandscapeRect = null;
+var chartTreemap = null,chartTreemapLandscape = null;
 var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
 var csdChartArea1,csdChartArea2,csdChartArea3,csdChartArea4;
 var buChartColumn1,buChartColumn2,buChartColumn3,buChartColumn4;

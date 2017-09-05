@@ -18,6 +18,8 @@ var csdBubbleData = [];
 var csdBubbleObj = {};
 var buTreemap = [];
 var csdTreemap = [];
+var buBubbleToTreemap = [];
+var csdBubbleToTreemap = [];
 
 var buBubbleSeries = [
 	{ x: 60, y: 2586476, facility: 'TE' },
@@ -104,6 +106,12 @@ var bubbleOption = {
             		click: function(event){
             			var facility = this.facility;
             			getTreemapSeriesByFacility(facility);
+            			
+            			//销毁原来的facility-treemap
+            			if(chartTreemap !== null){
+            				chartTreemap.destroy();
+            				chartTreemap = null;
+            			}
             			
             			showTreemap();
             			
@@ -242,6 +250,98 @@ var rectOption = {
     }
 };
 
+var treemapOption = {
+	chart: {
+		type: "treemap",
+		animation: false,
+		marginTop: 40,
+		marginBottom: 70,
+		backgroundColor: '#F8FCFB',
+		zoomType: 'none'
+	},
+	colorAxis: {
+        tickPositions: [0, 15, 45, 75],
+        stops: [
+            [0, '#81B4E1'],
+            [0.2, '#81B4E1'],
+            [0.2, '#F79620'],
+            [1, '#EF3623']
+        ],
+        labels: {
+        	enabled: true,
+        	align: 'left',
+        	overflow: 'justify',
+        	formatter: function(){
+        		if(this.value == 75){
+        			var s = this.value + '(Days)';
+        		}
+        		else{
+        			var s = this.value;
+        		}
+        		return s;
+        	},
+        	style: {
+        		"color": "#323232",
+        		"fontSize": "11px"
+        	}
+        }
+   	},
+   	tooltip: {
+   		enabled: false,
+        useHTML: true,
+        animation: false,
+        hideDelay: 0,
+        shadow: false,
+        borderWidth: 1,
+        borderColor: 'gray',
+        backgroundColor:　'#ffffff',
+        /*formatter: function () {
+	        var s = '<b>' + this.point.customer + '</b><br/>' + 
+	        		'<span>1-15 Days:USD$' + formatNumber(this.point.day1.toFixed(2)) + '</span><br/>' +
+	        		'<span>16-45 Days:USD$' + formatNumber(this.point.day16.toFixed(2)) + '</span><br/>' +
+	        		'<span>46-75 Days:USD$' + formatNumber(this.point.day46.toFixed(2)) + '</span><br/>' +
+	        		'<span>Over 75 Days:USD$' + formatNumber(this.point.day76.toFixed(2)) + '</span><br/>';
+	        return s;
+	    },*/
+        followPointer: false,
+        followTouchMove: false
+    },
+    plotOptions: {
+    	series: {
+	        layoutAlgorithm: 'squarified',
+	        dataLabels: {
+	            enabled: true,  
+	            useHTML: true,
+	            crop: true,
+	            overflow: 'justify',
+	            inside: true,
+	            /*zIndex: 2,*/
+	            style: {
+	            	"color": "#ffffff",
+	            	"fontSize": "11px",
+	            	"fontWeight": "bold",
+	            	"textOutline": "2px 2px black"
+	            },
+	            format: '<div class="font-companyName">{point.facility}</div>'
+	            /*format: '{point.facility}'*/
+	        }
+    	}
+    },
+    series: [{
+    	data: buBubbleToTreemap
+    }],
+    exporting: {
+        enabled: false
+    },
+    title: {
+        text: null
+    },
+    credits: {
+    	enabled: false
+    }
+};
+
+
 function showTreemap(){
 	rectOption.chart.renderTo = 'overview-hc-rectangle';
 	chartRect = new Highcharts.Chart(rectOption);
@@ -273,6 +373,7 @@ function sortDataByType(){
 		}
 	}
 	
+	//console.log(buByType);
 }
 
 function simplifyData(){
@@ -310,6 +411,8 @@ function simplifyData(){
 			"group": item.BUSINESS_GROUP
 		});
 	});
+	
+	//console.log(buSimplify);
 }
 
 function mergeDataByFacility(){
@@ -396,7 +499,30 @@ function mergeDataByFacility(){
 		}
 	});
 	
+	//console.log(buBubbleData);
+}
+
+function getTreemapFromBubble(){
+	buBubbleToTreemap = [];
+	csdBubbleToTreemap = [];
 	
+	$.each(buBubbleData, function(i, item) {
+		buBubbleToTreemap.push({
+			"facility": item["facility"],
+			"colorValue": item["x"],
+			"value": item["y"]
+		});
+	});
+	
+	$.each(csdBubbleData, function(i, item) {
+		csdBubbleToTreemap.push({
+			"facility": item["facility"],
+			"colorValue": item["x"],
+			"value": item["y"]
+		});
+	});
+	
+	//console.log(buBubbleToTreemap);
 }
 
 function getTreemapSeriesByFacility(fac) {
@@ -432,6 +558,9 @@ function getTreemapSeriesByFacility(fac) {
 	});
 }
 
+function showTreemapByBubble(){
+	chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
+}
 
 /*****************************************************************/
 $('#viewMain').pagecontainer({
@@ -444,6 +573,7 @@ $('#viewMain').pagecontainer({
 		    		sortDataByType();	
 		    		simplifyData();
 		    		mergeDataByFacility();
+		    		getTreemapFromBubble();
 		    		OverdueDetail();
 		    		switch(viewMainTab) {
                         case "bu" :
@@ -472,6 +602,7 @@ $('#viewMain').pagecontainer({
 				sortDataByType();
 				simplifyData();
 				mergeDataByFacility();
+				getTreemapFromBubble();
 				OverdueDetail();
 				loadingMask("hide");
 				
@@ -593,15 +724,18 @@ $('#viewMain').pagecontainer({
                         viewDetailInit = false;
                        	
                         showBubble();
+                        showTreemapByBubble();
                         
     					if(viewMainTab == "bu"){
             				chartbubble.series[0].setData(buBubbleData, true, true, false);         
             				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            				chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false);
             				
                         }
                         else{
             				chartbubble.series[0].setData(csdBubbleData, true, true, false);         
             				chartLandscapebubble.series[0].setData(csdBubbleData, true, true, false);
+            				chartTreemap.series[0].setData(csdBubbleToTreemap, true, true, false);
             				
                         }
         				  
@@ -616,16 +750,20 @@ $('#viewMain').pagecontainer({
 			if(viewMainInit == false) {
 				viewMainInit = true;
 				showBubble();
+				showTreemapByBubble();
 				
 				$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
 			    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
 			    
-			    $('#overview-hc-rectangle').hide();
+			    //$('#overview-hc-rectangle').hide();
 			        
 		    	chartbubble.series[0].setData(buBubbleData, false, false, false);
 			    chartbubble.redraw(true);
 				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);
 				chartLandscapebubble.redraw(true);
+			    
+			    chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false);
+			    chartTreemap.redraw(true);
 			    
 				if (window.orientation === 90 || window.orientation === -90 ) {
 	                zoomInChart();
@@ -642,7 +780,13 @@ $('#viewMain').pagecontainer({
 			chartbubble.series[0].setData(buBubbleData, true, true, false);         
             chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
             
-            $('#overview-hc-rectangle').hide();
+            //chartTreemap.tooltip.hide();
+            if(chartTreemap !== null){
+            	chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false); 
+            }
+             
+            
+            //$('#overview-hc-rectangle').hide();
             viewMainTab = 'bu';
         });
         
@@ -651,7 +795,12 @@ $('#viewMain').pagecontainer({
 			chartbubble.series[0].setData(csdBubbleData, true, true, false);          
             chartLandscapebubble.series[0].setData(csdBubbleData, true, true, false);
             
-            $('#overview-hc-rectangle').hide();
+            //chartTreemap.tooltip.hide();
+            if(chartTreemap !== null){
+            	chartTreemap.series[0].setData(csdBubbleToTreemap, true, true, false); 
+            } 
+            
+            //$('#overview-hc-rectangle').hide();
             viewMainTab = 'csd';
         });
 		
