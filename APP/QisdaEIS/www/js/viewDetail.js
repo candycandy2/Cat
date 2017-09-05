@@ -691,8 +691,8 @@ function getOverdueDetailData(){
 	
 	
 	//默认按total降序排序
-	buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
-	csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+	buOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
+	csdOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
 	
 }
 
@@ -3239,8 +3239,8 @@ $('#viewDetail').pagecontainer({
 			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 			
 			//overdue切换facility恢复默认排序
-			buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
-			csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+			buOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
+			csdOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
 			//overdueSoon切换facility恢复默认排序
 			buOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
 			csdOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
@@ -3273,7 +3273,8 @@ $('#viewDetail').pagecontainer({
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     		if(facility == "ALL"){
     			if(buOverdueDetail.length > 0){
-    				$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
+    				$('.bu-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+    				$('.bu-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
     			}
     			else{
     				$('.bu-header .priority-img').attr('src', 'img/priority_dis.png');
@@ -3281,7 +3282,8 @@ $('#viewDetail').pagecontainer({
     		}
     		else{
     			if(otherBuOverdueDetail.length > 0){
-    				$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
+    				$('.bu-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+    				$('.bu-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
     			}
     			else{
     				$('.bu-header .priority-img').attr('src', 'img/priority_dis.png');
@@ -3290,7 +3292,8 @@ $('#viewDetail').pagecontainer({
     		
     		if(facility == "ALL"){
     			if(csdOverdueDetail.length > 0){
-    				$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
+    				$('.csd-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+    				$('.csd-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
     			}
     			else{
     				$('.csd-header .priority-img').attr('src', 'img/priority_dis.png');
@@ -3298,7 +3301,8 @@ $('#viewDetail').pagecontainer({
     		}
     		else{
     			if(otherCsdOverdueDetail.length > 0){
-    				$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
+    				$('.csd-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+    				$('.csd-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
     			}
     			else{
     				$('.csd-header .priority-img').attr('src', 'img/priority_dis.png');
