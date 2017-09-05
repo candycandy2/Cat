@@ -329,6 +329,7 @@ a{
 	width: 30.377VW;
 	line-height: 15.538VW;
 	text-align: right;
+	font-family: monospace;
 }
 
 .bu-data-list > ul > li:nth-child(2) span,
