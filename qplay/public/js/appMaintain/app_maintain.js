@@ -203,7 +203,8 @@ $(function () {
                     });
 
                     $('#screenShotForm').find('.imgLi').each(function(){
-                        formData.append('insPic[]',$(this).data('lang')+'-'+$(this).data('device')+'-'+$(this).data('url'));
+                        var picInfoArr = [$(this).data('lang'), $(this).data('device'),$(this).data('url'), $(this).data('picid')];
+                        formData.append('insPic[]',picInfoArr);
                     })
 
                     if(typeof($('#errorCodeFile')[0].files[0]) != "undefined"

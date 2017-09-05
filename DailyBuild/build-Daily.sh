@@ -81,9 +81,9 @@ cordova build android --release -- --keystore=~/keystores/android.jks --storePas
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="8042cdf3-ceae-43de-9226-3ef064ef98fc" --packageType="enterprise"
 
 pwd
-cd ../QPlayDailyBuild-CM-CMTwo/APP/CMAPP
+cd ../QPlayDailyBuild-CMSOP2-CMSOP4/APP/CMSOP2
 pwd
-# ------ build CM ------
+# ------ build CMSOP2 ------
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault --env dev
@@ -91,9 +91,9 @@ cordova build android --release -- --keystore=~/keystores/android.jks --storePas
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="66491f8c-0e78-4b99-ad36-7450acc3272e" --packageType="enterprise"
 
 pwd
-cd ../QPlayDailyBuild-CM-CMTwo/APP/CMTwo
+cd ../QPlayDailyBuild-CMSOP2-CMSOP4/APP/CMSOP4
 pwd
-# ------ build CMTwo ------
+# ------ build CMSOP4 ------
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault --env dev
@@ -193,10 +193,10 @@ cp $appfolder/Relieve/platforms/android/build/outputs/apk/android-release.apk $b
 cp $appfolder/Relieve/platforms/iOS/build/device/Relieve.ipa $binfolder/Relieve.ipa
 cp $appfolder/AccountingRate/platforms/android/build/outputs/apk/android-release.apk $binfolder/appaccountingrate.apk
 cp $appfolder/AccountingRate/platforms/iOS/build/device/Acct.Rate.ipa $binfolder/AccountingRate.ipa
-cp $appfolder/CMAPP/platforms/android/build/outputs/apk/android-release.apk $binfolder/appcm.apk
-cp $appfolder/CMAPP/platforms/iOS/build/device/CM.ipa $binfolder/CM.ipa
-cp $appfolder/CMTwo/platforms/android/build/outputs/apk/android-release.apk $binfolder/appcmtwo.apk
-cp $appfolder/CMTwo/platforms/iOS/build/device/CMTwo.ipa $binfolder/CMTwo.ipa
+cp $appfolder/CMSOP2/platforms/android/build/outputs/apk/android-release.apk $binfolder/appcmsop2.apk
+cp $appfolder/CMSOP2/platforms/iOS/build/device/CMSOP2.ipa $binfolder/CMSOP2.ipa
+cp $appfolder/CMSOP4/platforms/android/build/outputs/apk/android-release.apk $binfolder/appcmsop4.apk
+cp $appfolder/CMSOP4/platforms/iOS/build/device/CMSOP4.ipa $binfolder/CMSOP4.ipa
 cp $appfolder/Leave/platforms/android/build/outputs/apk/android-release.apk $binfolder/appleave.apk
 cp $appfolder/Leave/platforms/iOS/build/device/Leave.ipa $binfolder/Leave.ipa
 cp $appfolder/test/platforms/android/build/outputs/apk/android-release.apk $binfolder/appeagle.apk
@@ -228,8 +228,8 @@ git add EIS/config.xml
 git add ENS/config.xml
 git add Relieve/config.xml
 git add AccountingRate/config.xml
-git add CMAPP/config.xml
-git add CMTwo/config.xml
+git add CMSOP2/config.xml
+git add CMSOP4/config.xml
 git add Leave/config.xml
 git add test/config.xml
 git add Badminton/config.xml
@@ -320,26 +320,26 @@ if [ $result != 1 ]; then
     curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appaccountingratedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appaccountingrate.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-# --- cm android ---
+# --- CMSOP2 android ---
 timestamp=$(date +%s)
 mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "afa13d886116cc148780397ea9767dbe" | openssl base64)
 
-response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appcm.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appcmsop2.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
-    echo "deploy AccountingRate(android) fail!!! try again!!!"
-    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appcm.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    echo "deploy CMSOP2(android) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appcmsop2.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-# --- cmtwo android ---
+# --- CMSOP4 android ---
 timestamp=$(date +%s)
 mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "a8af829aef9dbb69bcaf740a78c45299" | openssl base64)
 
-response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmtwodev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appcmtwo.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmtwodev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appcmsop4.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
-    echo "deploy CMATwo(android) fail!!! try again!!!"
-    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmtwodev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appcmtwo.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    echo "deploy CMASOP4(android) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmtwodev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./appcmsop4.apk" -F "user_id=Samuel.Hsieh" -F "device_type=android" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
 # --- leave android ---
@@ -496,25 +496,26 @@ if [ $result != 1 ]; then
     curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appaccountingratedev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./AccountingRate.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-# --- cm ios ---
+# --- cmsop2 ios ---
 timestamp=$(date +%s)
 mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "afa13d886116cc148780397ea9767dbe" | openssl base64)
 
-response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./CM.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./CMSOP2.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
-    echo "deploy AccountingRate(iOS) fail!!! try again!!!"
-    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./CM.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    echo "deploy CMSOP2(iOS) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmdev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./CMSOP2.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
-# --- cmtwo ios ---
+# --- cmsop4 ios ---
 timestamp=$(date +%s)
 mdbase64=$(printf $timestamp | openssl dgst -binary -sha256 -hmac "a8af829aef9dbb69bcaf740a78c45299" | openssl base64)
-response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmtwodev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./CMTwo.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
+
+response=$(curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmtwodev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./CMSOP4.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion)
 result=$(echo $response | jq '.ResultCode')
 if [ $result != 1 ]; then
-    echo "deploy CMTwo(iOS) fail!!! try again!!!"
-    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmtwodev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./CMTwo.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
+    echo "deploy CMSOP4(iOS) fail!!! try again!!!"
+    curl -H "Accept: application/json" -H "Content-Type: multipart/form-data" -H "App-Key: appcmtwodev" -H "Signature-Time: $timestamp" -H "Signature: $mdbase64" -X POST -F "userfile=@./CMSOP4.ipa" -F "user_id=Samuel.Hsieh" -F "device_type=ios" -F "version_name=v1.0.0.$dailyver[Develop]" -F "version_code=$dailyver" -F "version_log=v1.0.0.$dailyver[Develop]" http://qplaydev.benq.com/qplay/public/auto/uploadAppVersion
 fi
 
 # --- leave ios ---
