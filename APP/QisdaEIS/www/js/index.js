@@ -66,7 +66,6 @@ window.initialSuccess = function() {
     loadingMask("show");
 
     AraUserAuthority();
-    //ARSummary();
     $.mobile.changePage("#viewMain");
 }
 
