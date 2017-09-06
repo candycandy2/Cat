@@ -795,9 +795,12 @@ $('#viewMain').pagecontainer({
             	chartLandscapeRect = null;
             }
             
-			chartbubble.tooltip.hide();
-			chartbubble.series[0].setData(buBubbleData, true, true, false);         
-            chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            //review by alan
+            if(chartbubble != null) {
+				chartbubble.tooltip.hide();
+				chartbubble.series[0].setData(buBubbleData, true, true, false); 
+            	chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+			}        
             
             chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
             chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false); 
