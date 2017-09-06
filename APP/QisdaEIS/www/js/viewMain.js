@@ -232,7 +232,7 @@ var rectOption = {
 	            	"textOutline": "2px 2px black"
 	            },
 	            format: '<div class="font-companyName">{point.customer}</div>'
-	            /*format: '{point.customer}'*/
+	            /*format: '{point.facility}'*/
 	        }
     	}
     },
@@ -287,7 +287,7 @@ var treemapOption = {
         }
    	},
    	tooltip: {
-   		enabled: false,
+   		/*enabled: false,*/
         useHTML: true,
         animation: false,
         hideDelay: 0,
@@ -295,14 +295,14 @@ var treemapOption = {
         borderWidth: 1,
         borderColor: 'gray',
         backgroundColor:　'#ffffff',
-        /*formatter: function () {
-	        var s = '<b>' + this.point.customer + '</b><br/>' + 
+        formatter: function () {
+	        var s = '<b>' + this.point.facility + '</b><br/>' + 
 	        		'<span>1-15 Days:USD$' + formatNumber(this.point.day1.toFixed(2)) + '</span><br/>' +
 	        		'<span>16-45 Days:USD$' + formatNumber(this.point.day16.toFixed(2)) + '</span><br/>' +
 	        		'<span>46-75 Days:USD$' + formatNumber(this.point.day46.toFixed(2)) + '</span><br/>' +
 	        		'<span>Over 75 Days:USD$' + formatNumber(this.point.day76.toFixed(2)) + '</span><br/>';
 	        return s;
-	    },*/
+	    },
         followPointer: false,
         followTouchMove: false
     },
@@ -322,8 +322,8 @@ var treemapOption = {
 	            	"fontWeight": "bold",
 	            	"textOutline": "2px 2px black"
 	            },
-	            format: '<div class="font-companyName">{point.facility}</div>'
-	            /*format: '{point.facility}'*/
+	            /*format: '<div class="font-companyName">{point.facility}</div>'*/
+	            format: '{point.facility}'
 	        }
     	}
     },
@@ -426,17 +426,31 @@ function mergeDataByFacility(){
 		var total = item.total;
 		var day = item.day;
 		var grp = item.group;
+		var over1 = item.day1;
+		var over16 = item.day16;
+		var over46 = item.day46;
+		var over76 = item.day76;
 		if(buBubbleObj[fac]) {
 			buBubbleObj[fac].y += total;
+			buBubbleObj[fac].day1 += over1;
+			buBubbleObj[fac].day16 += over16;
+			buBubbleObj[fac].day46 += over46;
+			buBubbleObj[fac].day76 += over76;
+			
 			if(day > buBubbleObj[fac].x) {
 				buBubbleObj[fac].x = day;
 			}
-		} else {
+		} 
+		else {
 			buBubbleObj[fac] = {
 				"x" : day,
 				"y" : total,
 				"facility": fac,
-				"group": grp
+				"group": grp,
+				"day1": over1,
+				"day16": over16,
+				"day46": over46,
+				"day76": over76
 			};
 			if(item.group == "BBS"){
 				buBubbleObj[fac].color = "#99CC33";
@@ -465,17 +479,31 @@ function mergeDataByFacility(){
 		var total = item.total;
 		var day = item.day;
 		var grp = item.group;
+		var over1 = item.day1;
+		var over16 = item.day16;
+		var over46 = item.day46;
+		var over76 = item.day76;
 		if(csdBubbleObj[fac]) {
 			csdBubbleObj[fac].y += total;
+			csdBubbleObj[fac].day1 += over1;
+			csdBubbleObj[fac].day16 += over16;
+			csdBubbleObj[fac].day46 += over46;
+			csdBubbleObj[fac].day76 += over76;
+			
 			if(day > csdBubbleObj[fac].x) {
 				csdBubbleObj[fac].x = day;
 			}
-		} else {
+		} 
+		else {
 			csdBubbleObj[fac] = {
 				"x" : day,
 				"y" : total,
 				"facility": fac,
-				"group": grp
+				"group": grp,
+				"day1": over1,
+				"day16": over16,
+				"day46": over46,
+				"day76": over76
 			};
 			if(item.group == "BBS"){
 				csdBubbleObj[fac].color = "#99CC33";
@@ -510,7 +538,11 @@ function getTreemapFromBubble(){
 		buBubbleToTreemap.push({
 			"facility": item["facility"],
 			"colorValue": item["x"],
-			"value": item["y"]
+			"value": item["y"],
+			"day1": item["day1"],
+			"day16": item["day16"],
+			"day46": item["day46"],
+			"day76": item["day76"]
 		});
 	});
 	
@@ -518,7 +550,11 @@ function getTreemapFromBubble(){
 		csdBubbleToTreemap.push({
 			"facility": item["facility"],
 			"colorValue": item["x"],
-			"value": item["y"]
+			"value": item["y"],
+			"day1": item["day1"],
+			"day16": item["day16"],
+			"day46": item["day46"],
+			"day76": item["day76"]
 		});
 	});
 	
@@ -558,9 +594,6 @@ function getTreemapSeriesByFacility(fac) {
 	});
 }
 
-function showTreemapByBubble(){
-	chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
-}
 
 /*****************************************************************/
 $('#viewMain').pagecontainer({
@@ -699,11 +732,17 @@ $('#viewMain').pagecontainer({
                        	//销毁hc
                        	chartbubble.destroy();
                         chartLandscapebubble.destroy();
+                        if(chartTreemap !== null){
+                        	chartTreemap.destroy();
+                        	chartTreemap = null;
+                        } 
                         if(chartRect !== null){
                         	chartRect.destroy();
+                        	chartRect = null;
                         }
                         if(chartLandscapeRect !== null){
                         	chartLandscapeRect.destroy();
+                        	chartLandscapeRect = null;
                         }
                        	
                        	//重新调用API
@@ -721,21 +760,19 @@ $('#viewMain').pagecontainer({
                     	//恢复初始状态
                     	switchState = false;
                     	facility = firstFacility;
+                    	viewMainInit = false;
                         viewDetailInit = false;
                        	
                         showBubble();
-                        showTreemapByBubble();
                         
     					if(viewMainTab == "bu"){
             				chartbubble.series[0].setData(buBubbleData, true, true, false);         
             				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
-            				chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false);
             				
                         }
                         else{
             				chartbubble.series[0].setData(csdBubbleData, true, true, false);         
             				chartLandscapebubble.series[0].setData(csdBubbleData, true, true, false);
-            				chartTreemap.series[0].setData(csdBubbleToTreemap, true, true, false);
             				
                         }
         				  
@@ -747,60 +784,72 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
+			if(chartRect !== null){
+            	chartRect.destroy();
+            	chartRect = null;
+            }
+            if(chartLandscapeRect !== null){
+            	chartLandscapeRect.destroy();
+            	chartLandscapeRect = null;
+            }           
+			
 			if(viewMainInit == false) {
-				viewMainInit = true;
-				showBubble();
-				showTreemapByBubble();
-				
 				$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
 			    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
 			    
-			    //$('#overview-hc-rectangle').hide();
-			        
-		    	chartbubble.series[0].setData(buBubbleData, false, false, false);
-			    chartbubble.redraw(true);
-				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);
-				chartLandscapebubble.redraw(true);
-			    
-			    chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false);
-			    chartTreemap.redraw(true);
+				showBubble();
+				chartbubble.series[0].setData(buBubbleData, true, true, false);
+				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+				
+				chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
+				chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false);
 			    
 				if (window.orientation === 90 || window.orientation === -90 ) {
 	                zoomInChart();
 	           	}
 				
-				//调用第二页API
-				//OverdueDetail();
+				viewMainInit = true;
 			}
 			loadingMask("hide");
 		});
 		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
+			if(chartRect !== null){
+            	chartRect.destroy();
+            	chartRect = null;
+            }
+            if(chartLandscapeRect !== null){
+            	chartLandscapeRect.destroy();
+            	chartLandscapeRect = null;
+            }
+            
 			chartbubble.tooltip.hide();
 			chartbubble.series[0].setData(buBubbleData, true, true, false);         
             chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
             
-            //chartTreemap.tooltip.hide();
-            if(chartTreemap !== null){
-            	chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false); 
-            }
-             
+            chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
+            chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false); 
             
-            //$('#overview-hc-rectangle').hide();
             viewMainTab = 'bu';
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
+        	if(chartRect !== null){
+            	chartRect.destroy();
+            	chartRect = null;
+            }
+            if(chartLandscapeRect !== null){
+            	chartLandscapeRect.destroy();
+            	chartLandscapeRect = null;
+            }
+            
         	chartbubble.tooltip.hide();
 			chartbubble.series[0].setData(csdBubbleData, true, true, false);          
             chartLandscapebubble.series[0].setData(csdBubbleData, true, true, false);
             
-            //chartTreemap.tooltip.hide();
-            if(chartTreemap !== null){
-            	chartTreemap.series[0].setData(csdBubbleToTreemap, true, true, false); 
-            } 
+            chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
+            chartTreemap.series[0].setData(csdBubbleToTreemap, true, true, false); 
             
-            //$('#overview-hc-rectangle').hide();
             viewMainTab = 'csd';
         });
 		
