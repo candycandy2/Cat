@@ -575,6 +575,7 @@ a{
 	width: 92.58VW;
 	height: 15.538VW;
 	color: #323232;
+	border-bottom: 1px solid lightgray;
 }
 
 .overduesoon-total div{
