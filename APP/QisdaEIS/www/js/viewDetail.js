@@ -3080,7 +3080,7 @@ function setExpiredSoonData(){
 		}
 	}
 	else{
-		$('#creditExpired').text("No Expired Soon Exists.");
+		$('#creditExpired').text("No Credit Expired Soon.");
 		$('.expiredsoon-bu-header').hide();
 		//$('.expiredsoon').append(noneDataThreeColumn);
 	}
