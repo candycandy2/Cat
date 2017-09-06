@@ -12,6 +12,7 @@ APP/*/www/*/component.*
 APP/*/www/css/jquery.mobile-1.4.5.min.css
 APP/*/www/js/lib
 APP/*/www/string/
+APP/*/www/font/
 APP/*/www/img/component/Logo.svg
 APP/*/www/img/component/QPlay_logo_noword.svg
 APP/*/www/img/component/QPlay_logo.svg
@@ -98,3 +99,4 @@ storage
 package-lock.json
 /qplay/.env
 /API/QChat/public/upload
+
