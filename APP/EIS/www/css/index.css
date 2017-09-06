@@ -153,7 +153,7 @@
 	padding-top: 0.7VH;
 	font-weight: 900;
 	text-align: right;
-	font-family: monospace;
+	font-family: Inconsolata-Regular;
 }
 
 #viewHitRate .total-data{
@@ -161,7 +161,7 @@
 	padding-top: 0.9VH;
 	font-weight: 900;
 	text-align: right;
-	font-family: monospace;
+	font-family: Inconsolata-Regular;
 }
 
 #viewHitRate .column{
