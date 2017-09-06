@@ -1,5 +1,5 @@
 /*******************global variable function*****************/
-var chartbubble,chartLandscapebubble;
+var chartbubble = null,chartLandscapebubble = null;
 var chartRect = null,chartLandscapeRect = null;
 var chartTreemap = null,chartTreemapLandscape = null;
 var buChartArea1,buChartArea2,buChartArea3,buChartArea4;
