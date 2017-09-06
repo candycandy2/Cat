@@ -649,43 +649,10 @@ $('#viewMain').pagecontainer({
 		};
 		
 		window.AraUserAuthority = function() {
-			if(localStorage.getItem("araUserAuthorityData") === null){
-				this.successCallback = function(data) {
-					araUserAuthorityCallBackData = data["Content"];
-					
-					//facilityList = '<a id="ALL">ALL</a>';
-					var firstFacilityFlag = true;
-					for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
-						facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
-						if(firstFacilityFlag){
-							firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
-							facility = firstFacility;
-							firstFacilityFlag = false;
-						}
-					}
-					$(".Facility").html("");
-	                $(".Facility").append(facilityList).enhanceWithin();
-	                /*$(".Facility #ALL").addClass('hover');*/
-	               	$(".Facility #" + firstFacility).addClass('hover');
-	                ARSummary();
-	                loadingMask("hide");
-	                
-	                localStorage.setItem("araUserAuthorityData", JSON.stringify([data, nowTime]));
-				};
+			this.successCallback = function(data) {
+				araUserAuthorityCallBackData = data["Content"];
 				
-				this.failCallback = function(data) {
-		    		console.log("api misconnected");
-		    	};
-		    	
-		    	var _construct = function() {
-					CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
-				}();
-			}
-			else{
-				araUserAuthorityData = JSON.parse(localStorage.getItem("araUserAuthorityData"))[0];
-				araUserAuthorityCallBackData = araUserAuthorityData["Content"];
-				
-				/*facilityList = '<a id="ALL">ALL</a>';*/
+				//facilityList = '<a id="ALL">ALL</a>';
 				var firstFacilityFlag = true;
 				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
 					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
@@ -697,17 +664,22 @@ $('#viewMain').pagecontainer({
 				}
 				$(".Facility").html("");
                 $(".Facility").append(facilityList).enhanceWithin();
-                $(".Facility #" + firstFacility).addClass('hover');
+                /*$(".Facility #ALL").addClass('hover');*/
+               	$(".Facility #" + firstFacility).addClass('hover');
                 ARSummary();
                 loadingMask("hide");
-                
-                var lastTime = JSON.parse(localStorage.getItem("araUserAuthorityData"))[1];
-                if (checkDataExpired(lastTime, expiredTime, 'dd')) {
-                    localStorage.removeItem("araUserAuthorityData");
-                    AraUserAuthority();
-                }
-				
-			}
+                    
+			};
+			
+			this.failCallback = function(data) {
+	    		console.log("api misconnected");
+	    	};
+	    	
+	    	var _construct = function() {
+				CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
+			}();
+			
+			
 		};
 		
 		
@@ -823,9 +795,12 @@ $('#viewMain').pagecontainer({
             	chartLandscapeRect = null;
             }
             
-			chartbubble.tooltip.hide();
-			chartbubble.series[0].setData(buBubbleData, true, true, false);         
-            chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+            //review by alan
+            if(chartbubble != null) {
+				chartbubble.tooltip.hide();
+				chartbubble.series[0].setData(buBubbleData, true, true, false); 
+            	chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+			}        
             
             chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
             chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false); 
