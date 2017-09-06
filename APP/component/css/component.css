@@ -527,3 +527,8 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     color: #38c !important;
     text-decoration: underline !important;
 }
+
+@font-face {
+    font-family: Inconsolata-Regular;
+    src: url(../font/inconsolata/Inconsolata-Regular.ttf);
+}
