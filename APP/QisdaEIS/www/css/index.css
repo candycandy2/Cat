@@ -329,7 +329,7 @@ a{
 	width: 30.377VW;
 	line-height: 15.538VW;
 	text-align: right;
-	font-family: monospace;
+	font-family: Inconsolata-Regular;
 }
 
 .bu-data-list > ul > li:nth-child(2) span,
@@ -395,7 +395,7 @@ a{
 	width: 30%;
 	color: #666666;
 	text-align: right;
-	font-family:monospace;
+	font-family:Inconsolata-Regular;
 }
 
 .bu-single-list > div:nth-child(2),
@@ -565,7 +565,7 @@ a{
 .data-list-overduesoon > div:nth-child(2){
 	line-height: 15.538VW;
 	text-align: right;
-	font-family: monospace;
+	font-family: Inconsolata-Regular;
 }
 .data-list-overduesoon > div:nth-child(2) > span {
 	margin-right: 8VW;
@@ -589,7 +589,7 @@ a{
 
 .overduesoon-total div:nth-child(2) {
 	text-align: right;
-	font-family:monospace;
+	font-family:Inconsolata-Regular;
 }
 
 .overduesoon-total div:nth-child(2) span {
@@ -694,7 +694,7 @@ a{
 .data-list-expiredsoon > div:nth-child(3) {
 	line-height: 15.538VW;
 	text-align: right;
-	font-family:monospace;
+	font-family:Inconsolata-Regular;
 }
 
 .data-list-expiredsoon > div:nth-child(3) span {
