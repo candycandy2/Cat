@@ -2897,6 +2897,8 @@ function setBuOverdueSoonData(){
 	$('.overduesoon-bu').html("");
 	
 	if(buOutstand.length > 0){
+		$('.buOutstand').text("BU Outstanding A/R");
+		$('.overduesoon-bu-header').show();
 		for(var i in buOutstand){
 			var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
@@ -2926,9 +2928,11 @@ function setBuOverdueSoonData(){
 		$('.overduesoon-bu').append(buOutstandDetailContentTotal);
 	}
 	else{
-		$('.overduesoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
+		$('.buOutstand').text("No BU Outstanding A/R Exists.");
+		$('.overduesoon-bu-header').hide();
+		/*$('.overduesoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
 		$('.overduesoon-bu').append(noneDataTwoColumn);
-		$('.overduesoon-bu').append(noneDataTwoTotal);
+		$('.overduesoon-bu').append(noneDataTwoTotal);*/
 	}
 }
 
@@ -2937,6 +2941,8 @@ function setCsdOverdueSoonData(){
 	$('.overduesoon-csd').html("");
 	
 	if(csdOutstand.length > 0){
+		$('.csdOutstand').text("CSD Outstanding A/R");
+		$('.overduesoon-csd-header').show();
 		for(var i in csdOutstand){
 			var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
@@ -2965,9 +2971,11 @@ function setCsdOverdueSoonData(){
 		$('.overduesoon-csd').append(csdOutstandDetailContentTotal);
 	}
 	else{
-		$('.overduesoon-csd-header .priority-img').attr('src', 'img/priority_dis.png');
+		$('.csdOutstand').text("No CSD Outstanding A/R Exists.");
+		$('.overduesoon-csd-header').hide();
+		/*$('.overduesoon-csd-header .priority-img').attr('src', 'img/priority_dis.png');
 		$('.overduesoon-csd').append(noneDataTwoColumn);
-		$('.overduesoon-csd').append(noneDataTwoTotal);
+		$('.overduesoon-csd').append(noneDataTwoTotal);*/
 	}
 }
 
@@ -3000,6 +3008,8 @@ function setExpiredSoonData(){
 	$('.expiredsoon').html("");
 	
 	if(expiredSoon.length > 0){
+		$('#creditExpired').text("Expired Soon");
+		$('.expiredsoon-bu-header').show();
 		for(var i in expiredSoon) {
 			var expiredSoonContent = '<li class="data-list-expiredsoon">' +
 										'<div>' +
@@ -3019,7 +3029,9 @@ function setExpiredSoonData(){
 		}
 	}
 	else{
-		$('.expiredsoon').append(noneDataThreeColumn);
+		$('#creditExpired').text("No Expired Soon Exists.");
+		$('.expiredsoon-bu-header').hide();
+		//$('.expiredsoon').append(noneDataThreeColumn);
 	}
 }
 
