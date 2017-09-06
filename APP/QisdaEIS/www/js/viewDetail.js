@@ -1015,6 +1015,9 @@ function setBuOverdueDetailData(fac){
 		}
 		
 		if(otherBuOverdueDetail.length > 0){
+			$('#buTitle').text("BU Overdue A/R");
+			$('.bu-main').show();
+			$('.bu-header').show();
 			$.each(otherBuOverdueDetail, function(i, item) {
 				//获取detail有几周数据
 				var detailLength = item["Detail"].length;
@@ -1314,10 +1317,10 @@ function setBuOverdueDetailData(fac){
 			//BU total HTML
 			setTotalHtml("bu", buOverdueDetailTotalINV, buOverdueDetailTotalCM);
 		}
-		else{
-			$('.bu-header .priority-img').attr('src', 'img/priority_dis.png');
-			$('.overdueDetail-bu').append(noneDataFourColumn);
-			$('.overdueDetail-bu').append(noneDataFourTotal);
+		else if(otherBuOverdueDetail.length == 0){
+			$('#buTitle').text("No BU Overdue A/R Exists.");
+			$('.bu-main').hide();
+			$('.bu-header').hide();
 		}	
 	}
 	
@@ -1643,6 +1646,9 @@ function setCsdOverdueDetailData(fac){
 		}
 		
 		if(otherCsdOverdueDetail.length > 0){
+			$('#csdTitle').text("CSD Overdue A/R");
+			$('.csd-main').show();
+			$('.csd-header').show();
 			$.each(otherCsdOverdueDetail, function(i, item) {
 				//获取detail有几周数据
 				var detailLength = item["Detail"].length;
@@ -1944,10 +1950,10 @@ function setCsdOverdueDetailData(fac){
 			setTotalHtml("csd", csdOverdueDetailTotalINV, csdOverdueDetailTotalCM);
 			
 		}
-		else{
-			$('.csd-header .priority-img').attr('src', 'img/priority_dis.png');
-			$('.overdueDetail-csd').append(noneDataFourColumn);
-			$('.overdueDetail-csd').append(noneDataFourTotal);
+		else if(otherCsdOverdueDetail.length == 0){
+			$('#csdTitle').text("No CSD Overdue A/R Exists.");
+			$('.csd-main').hide();
+			$('.csd-header').hide();
 		}
 	}
 	
@@ -2743,94 +2749,110 @@ function setAllBuColumnData() {
 
 function setTotalHtml(type, inv, cm){
 	if(type == "bu"){
-		if(switchState == false){
-			var buOverdueDetailContentTotal = '<li class="bu-data-list">' +
-											'<ul>' +
-												'<li>' +
-													'<div style="text-align: left;text-indent: 1.5VW;">' +
-														'<div class="font-style7">' +
-															'<span>Total</span>' +
-														'</div>' +	
-													'</div>' +
-												'</li>' +
-												'<li>' +
-													'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
-												'</li>' +
-												'<li>' +
-													'<div id="buArea"></div>' +
-												'</li>' +
-												'<li>' +
-												'</li>' +
-											'</ul>' +
-										'</li>';
+		if(inv !== 0){
+			if(switchState == false){
+				var buOverdueDetailContentTotal = '<li class="bu-data-list bu-overdue-total">' +
+												'<ul>' +
+													'<li>' +
+														'<div style="text-align: left;text-indent: 1.5VW;">' +
+															'<div class="font-style7">' +
+																'<span>Total</span>' +
+															'</div>' +	
+														'</div>' +
+													'</li>' +
+													'<li>' +
+														'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
+													'</li>' +
+													'<li>' +
+														'<div id="buArea"></div>' +
+													'</li>' +
+													'<li>' +
+													'</li>' +
+												'</ul>' +
+											'</li>';
+			}
+			else{
+				var buOverdueDetailContentTotal = '<li class="bu-data-list bu-overdue-total">' +
+												'<ul>' +
+													'<li>' +
+														'<div style="text-align: left;text-indent: 1.5VW;">' +
+															'<div class="font-style7">' +
+																'<span>Total</span>' +
+															'</div>' +	
+														'</div>' +
+													'</li>' +
+													'<li>' +
+														'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
+													'</li>' +
+													'<li>' +
+														'<div id="buArea"></div>' +
+													'</li>' +
+													'<li>' +
+													'</li>' +
+												'</ul>' +
+											'</li>';
+			}
+			$('.overdueDetail-bu').append(buOverdueDetailContentTotal);
 		}
 		else{
-			var buOverdueDetailContentTotal = '<li class="bu-data-list">' +
-											'<ul>' +
-												'<li>' +
-													'<div style="text-align: left;text-indent: 1.5VW;">' +
-														'<div class="font-style7">' +
-															'<span>Total</span>' +
-														'</div>' +	
-													'</div>' +
-												'</li>' +
-												'<li>' +
-													'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
-												'</li>' +
-												'<li>' +
-													'<div id="buArea"></div>' +
-												'</li>' +
-												'<li>' +
-												'</li>' +
-											'</ul>' +
-										'</li>';
+			$('#buTitle').text("No BU Overdue A/R Exists.");
+			$('.bu-main').hide();
+			$('.bu-header').hide();
 		}
-		$('.overdueDetail-bu').append(buOverdueDetailContentTotal);
+		
 	}
 	else if(type == "csd"){
-		if(switchState == false){
-			var csdOverdueDetailContentTotal = '<li class="csd-data-list">' +
-											'<ul>' +
-												'<li>' +
-													'<div style="text-align: left;text-indent: 1.5VW;">' +
-														'<div class="font-style7">' +
-															'<span>Total</span>' +
-														'</div>' +	
-													'</div>' +
-												'</li>' +
-												'<li>' +
-													'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
-												'</li>' +
-												'<li>' +
-													'<div id="csdArea"></div>' +
-												'</li>' +
-												'<li>' +
-												'</li>' +
-											'</ul>' +
-										'</li>';
+		if(inv !== 0){
+			if(switchState == false){
+				var csdOverdueDetailContentTotal = '<li class="csd-data-list csd-overdue-total">' +
+												'<ul>' +
+													'<li>' +
+														'<div style="text-align: left;text-indent: 1.5VW;">' +
+															'<div class="font-style7">' +
+																'<span>Total</span>' +
+															'</div>' +	
+														'</div>' +
+													'</li>' +
+													'<li>' +
+														'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
+													'</li>' +
+													'<li>' +
+														'<div id="csdArea"></div>' +
+													'</li>' +
+													'<li>' +
+													'</li>' +
+												'</ul>' +
+											'</li>';
+			}
+			else{
+				var csdOverdueDetailContentTotal = '<li class="csd-data-list csd-overdue-total">' +
+												'<ul>' +
+													'<li>' +
+														'<div style="text-align: left;text-indent: 1.5VW;">' +
+															'<div class="font-style7">' +
+																'<span>Total</span>' +
+															'</div>' +	
+														'</div>' +
+													'</li>' +
+													'<li>' +
+														'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
+													'</li>' +
+													'<li>' +
+														'<div id="csdArea"></div>' +
+													'</li>' +
+													'<li>' +
+													'</li>' +
+												'</ul>' +
+											'</li>';
+			}
+			$('.overdueDetail-csd').append(csdOverdueDetailContentTotal);
 		}
 		else{
-			var csdOverdueDetailContentTotal = '<li class="csd-data-list">' +
-											'<ul>' +
-												'<li>' +
-													'<div style="text-align: left;text-indent: 1.5VW;">' +
-														'<div class="font-style7">' +
-															'<span>Total</span>' +
-														'</div>' +	
-													'</div>' +
-												'</li>' +
-												'<li>' +
-													'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
-												'</li>' +
-												'<li>' +
-													'<div id="csdArea"></div>' +
-												'</li>' +
-												'<li>' +
-												'</li>' +
-											'</ul>' +
-										'</li>';
+			$('#csdTitle').text("No CSD Overdue A/R Exists.");
+			$('.csd-main').hide();
+			$('.csd-header').hide();
 		}
-		$('.overdueDetail-csd').append(csdOverdueDetailContentTotal);
+		
 	}
 	
 }
@@ -2875,6 +2897,8 @@ function setBuOverdueSoonData(){
 	$('.overduesoon-bu').html("");
 	
 	if(buOutstand.length > 0){
+		$('.buOutstand').text("BU Outstanding A/R");
+		$('.overduesoon-bu-header').show();
 		for(var i in buOutstand){
 			var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
@@ -2904,9 +2928,11 @@ function setBuOverdueSoonData(){
 		$('.overduesoon-bu').append(buOutstandDetailContentTotal);
 	}
 	else{
-		$('.overduesoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
+		$('.buOutstand').text("No BU Outstanding A/R Exists.");
+		$('.overduesoon-bu-header').hide();
+		/*$('.overduesoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
 		$('.overduesoon-bu').append(noneDataTwoColumn);
-		$('.overduesoon-bu').append(noneDataTwoTotal);
+		$('.overduesoon-bu').append(noneDataTwoTotal);*/
 	}
 }
 
@@ -2915,6 +2941,8 @@ function setCsdOverdueSoonData(){
 	$('.overduesoon-csd').html("");
 	
 	if(csdOutstand.length > 0){
+		$('.csdOutstand').text("CSD Outstanding A/R");
+		$('.overduesoon-csd-header').show();
 		for(var i in csdOutstand){
 			var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
@@ -2943,9 +2971,11 @@ function setCsdOverdueSoonData(){
 		$('.overduesoon-csd').append(csdOutstandDetailContentTotal);
 	}
 	else{
-		$('.overduesoon-csd-header .priority-img').attr('src', 'img/priority_dis.png');
+		$('.csdOutstand').text("No CSD Outstanding A/R Exists.");
+		$('.overduesoon-csd-header').hide();
+		/*$('.overduesoon-csd-header .priority-img').attr('src', 'img/priority_dis.png');
 		$('.overduesoon-csd').append(noneDataTwoColumn);
-		$('.overduesoon-csd').append(noneDataTwoTotal);
+		$('.overduesoon-csd').append(noneDataTwoTotal);*/
 	}
 }
 
@@ -2978,6 +3008,8 @@ function setExpiredSoonData(){
 	$('.expiredsoon').html("");
 	
 	if(expiredSoon.length > 0){
+		$('#creditExpired').text("Expired Soon");
+		$('.expiredsoon-bu-header').show();
 		for(var i in expiredSoon) {
 			var expiredSoonContent = '<li class="data-list-expiredsoon">' +
 										'<div>' +
@@ -2997,7 +3029,9 @@ function setExpiredSoonData(){
 		}
 	}
 	else{
-		$('.expiredsoon').append(noneDataThreeColumn);
+		$('#creditExpired').text("No Expired Soon Exists.");
+		$('.expiredsoon-bu-header').hide();
+		//$('.expiredsoon').append(noneDataThreeColumn);
 	}
 }
 

@@ -60,6 +60,7 @@
 	font-weight: 500;
 	line-height: 5.6VH;
 	text-align: center;
+	background-color: #FFFFFF;
 	padding: 0px;
 }
 
@@ -395,7 +396,7 @@ a{
 	width: 30%;
 	color: #666666;
 	text-align: right;
-	font-family:Inconsolata-Regular;
+	/*font-family:monospace;*/
 }
 
 .bu-single-list > div:nth-child(2),
@@ -803,6 +804,7 @@ div.scrollmenu a.disableHover {
 div.scrollmenu a:active, div.scrollmenu a:hover{ 
 	color: #0f0f0f;
 }
+
 /* let scroll more smooth in iOS */
 .scrollmenu.Facility{ 
 	-webkit-overflow-scrolling: touch;
