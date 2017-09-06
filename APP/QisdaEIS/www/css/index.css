@@ -54,11 +54,13 @@
 
 .page-main .tabs-title{
 	height: 5VH;
-	font-size: 2.5VH;
+	/*font-size: 2.5VH;*/
+	font-size: 3.768VW;
 	font-family: Arial;
 	font-weight: 500;
 	line-height: 5.6VH;
 	text-align: center;
+	background-color: #FFFFFF;
 	padding: 0px;
 }
 
@@ -150,6 +152,10 @@ a{
 	height: 65VW;
 }
 /****************************************** viewDetail *********************************************/
+.overdue-list-hide {
+	display: none;
+}
+
 .include-label{
 	width: 100VW;
 }
@@ -323,11 +329,14 @@ a{
 .csd-data-list > ul > li:nth-child(2){
 	width: 30.377VW;
 	line-height: 15.538VW;
+	text-align: right;
+	font-family: Inconsolata-Regular;
 }
 
 .bu-data-list > ul > li:nth-child(2) span,
 .csd-data-list > ul > li:nth-child(2) span{
-	margin-left: 6VW;
+	margin-right: 2.5VW;
+	
 }
 
 .bu-data-list > ul > li:nth-child(3),
@@ -387,6 +396,7 @@ a{
 	width: 30%;
 	color: #666666;
 	text-align: right;
+	/*font-family:monospace;*/
 }
 
 .bu-single-list > div:nth-child(2),
@@ -555,9 +565,12 @@ a{
 
 .data-list-overduesoon > div:nth-child(2){
 	line-height: 15.538VW;
-	text-align: center;
+	text-align: right;
+	font-family: Inconsolata-Regular;
 }
-
+.data-list-overduesoon > div:nth-child(2) > span {
+	margin-right: 8VW;
+}
 .overduesoon-total{
 	width: 92.58VW;
 	height: 15.538VW;
@@ -568,8 +581,20 @@ a{
 	width: 46.29VW;
 	height: 15.538VW;
 	line-height: 15.538VW;
-	text-align: center;
 	float: left;
+}
+
+.overduesoon-total div:nth-child(1) {
+	text-align: center;
+}
+
+.overduesoon-total div:nth-child(2) {
+	text-align: right;
+	font-family:Inconsolata-Regular;
+}
+
+.overduesoon-total div:nth-child(2) span {
+	margin-right: 8VW;
 }
 
 .overduesoon-csd-title{
@@ -662,11 +687,21 @@ a{
 	-webkit-line-clamp:2;
 }
 
-.data-list-expiredsoon > div:nth-child(2),
-.data-list-expiredsoon > div:nth-child(3){
+.data-list-expiredsoon > div:nth-child(2) {
 	line-height: 15.538VW;
 	text-align: center;
 }
+
+.data-list-expiredsoon > div:nth-child(3) {
+	line-height: 15.538VW;
+	text-align: right;
+	font-family:Inconsolata-Regular;
+}
+
+.data-list-expiredsoon > div:nth-child(3) span {
+	margin-right: 5VW;
+}
+
 
 /*nono of data-list for 2cloumn 3cloumn 4cloumn*/
 .data-list-none-twoColumn,
@@ -769,8 +804,9 @@ div.scrollmenu a.disableHover {
 div.scrollmenu a:active, div.scrollmenu a:hover{ 
 	color: #0f0f0f;
 }
+
 /* let scroll more smooth in iOS */
-.scrollmenu .Facility{ 
+.scrollmenu.Facility{ 
 	-webkit-overflow-scrolling: touch;
 }
 
@@ -814,7 +850,11 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 }
 
 /*************************************viewMain highcharts*******************************************/
-#viewMain #overview-hc-rectangle, #viewMain #overview-hc-bubble-landscape, 
+/*#viewMain #overview-hc-rectangle, #viewMain #overview-hc-bubble-landscape, 
+#viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
+	display: none;
+}*/
+#viewMain #overview-hc-bubble-landscape, 
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
 }

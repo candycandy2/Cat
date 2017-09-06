@@ -149,7 +149,18 @@ gulp.task('String', ['commonString'], function() {
         .pipe(gulp.dest('www/string/'));
 });
 
-gulp.task('componentJS', ['libJS', 'appJS', 'String'], function() {
+//Process Font
+gulp.task('commonFont', function() {
+    return gulp.src('../component/font/*')
+        .pipe(gulp.dest('www/font/'));
+});
+
+gulp.task('Font', ['commonFont'], function() {
+    return gulp.src('font/*')
+        .pipe(gulp.dest('www/font/'));
+});
+
+gulp.task('componentJS', ['libJS', 'appJS', 'String', 'Font'], function() {
     fs.unlink('./function.js', (err) => {
     });
 });
