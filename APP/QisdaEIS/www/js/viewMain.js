@@ -610,10 +610,10 @@ $('#viewMain').pagecontainer({
 		    		OverdueDetail();
 		    		switch(viewMainTab) {
                         case "bu" :
-                            $("input[id=viewMain-tab-1]").trigger('click');   
+                            $("input[id=viewMain-tab-1]").trigger('click');
                             break;
                         case "csd" :
-                            $("input[id=viewMain-tab-2]").trigger('click');   
+                            $("input[id=viewMain-tab-2]").trigger('click');
                             break;
                     }
 					loadingMask("hide");
@@ -640,7 +640,7 @@ $('#viewMain').pagecontainer({
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("arSummaryData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("arSummaryData");
                     ARSummary();
                 }
