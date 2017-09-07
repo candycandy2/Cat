@@ -55,6 +55,7 @@ var bubbleOption = {
         text: null
     },
     xAxis: {
+    	allowDecimals: false,
         gridLineWidth: 0,
         title: {
             text: 'Max Overdue Days of Each Facility(Days)',
@@ -62,6 +63,7 @@ var bubbleOption = {
         }
     },
     yAxis: {
+    	allowDecimals: false,
         lineWidth: 0,
         title: {
             text: 'Overdue Amount of Each Facility(USD$)',
