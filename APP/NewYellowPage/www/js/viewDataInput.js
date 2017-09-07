@@ -109,17 +109,49 @@ $("#viewDataInput").pagecontainer({
             $("#viewDataInput input[type=text]").val("");
         }
 
-        function phoneBookListHTML(index, company, eName, cName, extNo) {
+        function phoneBookListHTML(index, company, eName, cName, extNo, mvpn) {
             // check has more than one ext num or not
             if (extNo.indexOf(';') > 0) {
-                telString = " class='chooseNumPop extNumMore'" + ' ';
+                // check has mvpn num or not
+                if (mvpn === ""){
+                    telString = " class='chooseNumPop extNumMore'"+ ' ';
+                }
+                else{
+                    if (mvpn.indexOf(';')>0){
+                        telString = "class='chooseNumPop extNumMore mvpnNumMore mvpnNum'"+ ' ';
+                        for (var i = 0; i < mvpn.match(/;/igm).length+1; i++){
+                            telString += "data-mvpnnum" + (i+1) + "='" + mvpn.split(';')[i] + "' " ;
+                        }
+                    }
+                    else{
+                        telString = "class='chooseNumPop extNumMore mvpnNum'" + " data-mvpnnum='" + mvpn + "' ";
+                    }
+                }
+
                 for (var i = 0; i < extNo.match(/;/igm).length + 1; i++) {
                     telString += "data-extnum" + (i + 1) + "='" + extNo.split(';')[i] + "' ";
                 }
                 telString += 'data-extnum="' + extNo + '"';
+                telString += 'data-mvpnnum="' + mvpn + '"';
                 extTmpNum = extNo.split(';')[0];
+
             } else {
-                telString = " href='tel:" + extNo + "'";
+                if (mvpn === ""){
+                    telString = " href='tel:" + extNo + "'"; 
+                }
+                else{
+                    if (mvpn.indexOf(';')>0){
+                        telString = "class='chooseNumPop mvpnNumMore mvpnNum'"+ ' ';
+                        for (var i = 0; i < mvpn.match(/;/igm).length+1; i++){
+                             telString += "data-mvpnnum" + (i+1) + "='" + mvpn.split(';')[i] + "' " + "' data-extnum='" + extNo + "' ";
+                        }
+                        telString += 'data-mvpnnum="' + mvpn + '" ';
+                    }
+                    else{
+                        telString = "class='chooseNumPop mvpnNum'" + " data-mvpnnum='" + mvpn + "' data-extnum='" + extNo + "' ";
+                    }
+                }
+                
                 extTmpNum = extNo;
             }
             return '<li>' + '<div class="checkbox-area">' + '<input type="checkbox" class="custom" data-mini="true" id="phoneBookList' + index + '">' + '</div>' + '<div class="name">' + '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + eName + '</a></p>' + '<p><a href="#" value="' + index.toString() + '" name="detailIndex">' + cName + '</a></p>' + '</div>' + '<div class="img-phone divvertical-center">' + '<div class="tel-num">' + '<img src = "img/phone.png">' + '<a rel="external"' + telString + '>' + extTmpNum + '</a>' + '</div>' + '</div>' + '<div class="img-info divvertical-center">' + '<div class="tel-num">' + '<p><a href="#" value="' + index.toString() + '" name="detailIndex"><img src="img/info.png"></a></p>' + '</div>' + '</div>' + '</li>';
@@ -144,10 +176,11 @@ $("#viewDataInput").pagecontainer({
                 tempData["cname"] = responsecontent[i].Name_CH;
                 tempData["extnum"] = responsecontent[i].Ext_No;
                 tempData["employeeid"] = responsecontent[i].EmployeeID;
+                tempData["mvpn"] = responsecontent[i].Mvpn;
 
                 phonebookData[i] = tempData;
 
-                var content = htmlContent + phoneBookListHTML(i, tempData["company"], tempData["ename"], tempData["cname"], tempData["extnum"]);
+                var content = htmlContent + phoneBookListHTML(i, tempData["company"], tempData["ename"], tempData["cname"], tempData["extnum"], tempData["mvpn"]);
                 htmlContent = content;
             }
 
@@ -258,7 +291,7 @@ $("#viewDataInput").pagecontainer({
             var htmlContent = "";
 
             $.map(phonebookData, function(value, key) {
-                var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname, phonebookData[key].extnum);
+                var content = htmlContent + phoneBookListHTML(key, phonebookData[key].company, phonebookData[key].ename, phonebookData[key].cname, phonebookData[key].extnum, phonebookData[key].mvpn);
                 htmlContent = content;
             });
 
@@ -491,6 +524,7 @@ $("#viewDataInput").pagecontainer({
                     tempData["cname"] = phonebookData[key].cname;
                     tempData["extnum"] = phonebookData[key].extnum;
                     tempData["employeeid"] = phonebookData[key].employeeid;
+                    tempData["mvpn"] = phonebookData[key].mvpn;
 
                     tempPhonebookData[key] = tempData;
                 }
