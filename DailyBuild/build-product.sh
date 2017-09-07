@@ -105,7 +105,7 @@ cordova build android --release -- --keystore=~/keystores/android.jks --storePas
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="9ce8a6ef-6886-4b98-b231-dbe8bdaed850" --packageType="enterprise"
 
 pwd
-cd ../QPlayProduct-QisdaEIS/APP/QisdaEIS
+cd ../QPlayProduct-QisdaEIS-Parking/APP/QisdaEIS
 pwd
 # ------ build QisdaEIS Staging ------
 gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
@@ -113,6 +113,16 @@ gulp jenkinsinstall --env test
 gulp jenkinsdefault --env test
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="a2dd89a3-82a2-4b92-b4f9-4bc931470f80" --packageType="enterprise"
+
+pwd
+cd ../QPlayProduct-QisdaEIS-Parking/APP/Parking
+pwd
+# ------ build Parking Staging ------
+gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall --env test
+gulp jenkinsdefault --env test
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="1c0ad2b9-3bdd-4267-8e4f-d6cef079756f" --packageType="enterprise"
 
 pwd
 cd ../QPlayProduct-Multijob/Production/NewQPlay
@@ -204,7 +214,7 @@ cordova build android --release -- --keystore=~/keystores/android.jks --storePas
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="7c735ea8-86d9-4285-a8e8-08c520a3433c" --packageType="enterprise"
 
 pwd
-cd ../QPlayProduct-QisdaEIS/Production/QisdaEIS
+cd ../QPlayProduct-QisdaEIS-Parking/Production/QisdaEIS
 pwd
 # ------ build QisdaEIS Production ------
 gulp config --vname 1.0.0.$dailyver --vcode $dailyver
@@ -212,6 +222,16 @@ gulp jenkinsinstall
 gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="4d10caa8-3dda-4ccf-a342-808df0fc56c4" --packageType="enterprise"
+
+pwd
+cd ../QPlayProduct-QisdaEIS-Parking/Production/Parking
+pwd
+# ------ build Parking Production ------
+gulp config --vname 1.0.0.$dailyver --vcode $dailyver
+gulp jenkinsinstall
+gulp jenkinsdefault
+cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="03587ccc-3b77-4fc9-9d1d-1471ff00a5fd" --packageType="enterprise"
 
 
 ############# Multijob #############
@@ -244,6 +264,8 @@ cp $appfolder/Massage/platforms/android/build/outputs/apk/android-release.apk $b
 cp $appfolder/Massage/platforms/iOS/build/device/Massage.ipa $binfolder/Massage.ipa
 cp $appfolder/QisdaEIS/platforms/android/build/outputs/apk/android-release.apk $binfolder/appqisdaeis.apk
 cp $appfolder/QisdaEIS/platforms/iOS/build/device/QisdaEIS.ipa $binfolder/QisdaEIS.ipa
+cp $appfolder/Parking/platforms/android/build/outputs/apk/android-release.apk $binfolder/appparking.apk
+cp $appfolder/Parking/platforms/iOS/build/device/Parking.ipa $binfolder/Parking.ipa
 
 # ------ make directory of Production for apk and ipa ------
 binfolder=~/Documents/QPlayProduct/1.0.0.$dailyver
@@ -270,6 +292,8 @@ cp $appfolder/Massage/platforms/android/build/outputs/apk/android-release.apk $b
 cp $appfolder/Massage/platforms/iOS/build/device/Massage.ipa $binfolder/Massage.ipa
 cp $appfolder/QisdaEIS/platforms/android/build/outputs/apk/android-release.apk $binfolder/appqisdaeis.apk
 cp $appfolder/QisdaEIS/platforms/iOS/build/device/QisdaEIS.ipa $binfolder/QisdaEIS.ipa
+cp $appfolder/Parking/platforms/android/build/outputs/apk/android-release.apk $binfolder/appparking.apk
+cp $appfolder/Parking/platforms/iOS/build/device/Parking.ipa $binfolder/Parking.ipa
 
 # ------ copy source code of Staging------
 rm -Rf ~/Documents/QPlayStaging/QPlayStaging/
