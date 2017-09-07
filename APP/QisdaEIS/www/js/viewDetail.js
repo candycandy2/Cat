@@ -3430,7 +3430,7 @@ $('#viewDetail').pagecontainer({
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("overdueDetailData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("overdueDetailData");
                     OverdueDetail();
                 }
@@ -3462,7 +3462,7 @@ $('#viewDetail').pagecontainer({
 				getOverdueSoonData(facility);
 				
 				var lastTime = JSON.parse(localStorage.getItem("outstandDetailData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("outstandDetailData");
                     OutstandDetail();
                 }
@@ -3493,7 +3493,7 @@ $('#viewDetail').pagecontainer({
 				getExpiredSoonData(facility);
 				
 				var lastTime = JSON.parse(localStorage.getItem("creditExpiredSoonData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("creditExpiredSoonData");
                     CreditExpiredSoon();
                 }
