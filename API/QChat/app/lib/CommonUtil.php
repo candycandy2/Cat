@@ -1,5 +1,6 @@
 <?php
 namespace App\lib;
+use Config;
 use Illuminate\Support\Facades\Log;
 
 class CommonUtil{
@@ -56,10 +57,12 @@ class CommonUtil{
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_TIMEOUT_MS, $api_max_exe_time);
         //add for Develop
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
-        curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
-        curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
+        if(Config::get('app.env') == 'dev'){
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
+            curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
+            curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
+        }
 
         if( ! $result = curl_exec($curl)) 
         { 
