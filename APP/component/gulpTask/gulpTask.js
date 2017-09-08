@@ -74,9 +74,9 @@ gulp.task('appCSS', function(){
     return gulp.src(['../component/css/component.css','../component/css/template.css'])
         //.pipe(concat('APP.css'))
         .pipe(concat('APP.min.css'))
-        .pipe(minifyCSS({
-          keepBreaks: false,
-        }))
+        //.pipe(minifyCSS({
+        //  keepBreaks: false,
+        //}))
         .pipe(gulp.dest('www/css/'));
 });
 
@@ -138,7 +138,7 @@ gulp.task('functionJS', function() {
 gulp.task('appJS', ['functionJS'], function(){
     return gulp.src(['../component/component.js','./function.js'])
         //.pipe(concat('APP.js'))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(concat('APP.min.js'))
         .pipe(gulp.dest('www/js/'));
 });
