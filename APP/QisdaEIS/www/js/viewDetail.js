@@ -16,7 +16,10 @@ var buColumnCheckAll = false;
 var csdColumnCheckAll = false;
 var buOutstandDetailTotal = 0;
 var csdOutstandDetailTotal = 0;
-var week0 = [];
+var buTotalINV = [];
+var buTotalCM = [];
+var csdTotalINV = [];
+var csdTotalCM = [];
 var timeAxis = [];
 var otherBuOverdueDetail = [];
 var otherCsdOverdueDetail = [];
@@ -641,17 +644,19 @@ function getOverdueDetailData(){
 	
 	//get week timeAxis
 	for(var i in overdueDetailCallBackData){
-		if(overdueDetailCallBackData[i]["Detail"].length == 6){
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][0]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][1]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][2]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][3]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][4]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][5]["WEEK"]);
-			
-			var startDay = overdueDetailCallBackData[i]["Detail"][0]["AGED_DATE"];
-			var endDay = overdueDetailCallBackData[i]["Detail"][5]["AGED_DATE"];
-			break;
+		if(overdueDetailCallBackData[i]["Detail"] !== null){
+			if(overdueDetailCallBackData[i]["Detail"].length === 6){
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][0]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][1]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][2]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][3]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][4]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][5]["WEEK"]);
+				
+				var startDay = overdueDetailCallBackData[i]["Detail"][0]["AGED_DATE"];
+				var endDay = overdueDetailCallBackData[i]["Detail"][5]["AGED_DATE"];
+				break;
+			}
 		}
 	}
 	//get startDate and endDate
@@ -2786,6 +2791,11 @@ function setTotalHtml(type, inv, cm){
 														'</ul>' +
 													'</li>';
 				$('.overdueDetail-bu').prepend(buOverdueDetailContentTotal);
+				
+				//total area hc
+				/*var buArea = new Highcharts.Chart('buArea', areaOption);
+				buArea.series[0].setData(buTotalINV, true, true, false);
+				buArea.redraw();*/
 			}
 			else{
 				$('#buTitle').text("No BU Overdue A/R Exists.");
@@ -2815,6 +2825,12 @@ function setTotalHtml(type, inv, cm){
 														'</ul>' +
 													'</li>';
 				$('.overdueDetail-bu').prepend(buOverdueDetailContentTotal);
+				
+				//total area hc
+				/*var buArea = new Highcharts.Chart('buArea', areaOption);
+				buArea.series[0].setData(buTotalCM, true, true, false);
+				buArea.redraw();*/
+				
 			}
 			else{
 				$('#buTitle').text("No BU Overdue A/R Exists.");
@@ -2846,6 +2862,12 @@ function setTotalHtml(type, inv, cm){
 														'</ul>' +
 													'</li>';
 				$('.overdueDetail-csd').prepend(csdOverdueDetailContentTotal);
+				
+				//total area hc
+				/*var csdArea = new Highcharts.Chart('csdArea', areaOption);
+				csdArea.series[0].setData(csdTotalINV, true, true, false);
+				csdArea.redraw();*/
+				
 			}
 			else{
 				$('#csdTitle').text("No CSD Overdue A/R Exists.");
@@ -2876,6 +2898,12 @@ function setTotalHtml(type, inv, cm){
 											'</ul>' +
 										'</li>';
 				$('.overdueDetail-csd').prepend(csdOverdueDetailContentTotal);
+				
+				//total area hc
+				/*var csdArea = new Highcharts.Chart('csdArea', areaOption);
+				csdArea.series[0].setData(csdTotalCM, true, true, false);
+				csdArea.redraw();*/
+				
 			}
 			else{
 				$('#csdTitle').text("No CSD Overdue A/R Exists.");
@@ -2928,7 +2956,9 @@ function setBuOverdueSoonData(){
 	
 	if(buOutstand.length > 0){
 		for(var i in buOutstand){
-			var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
+			var total = Number(buOutstand[i]["DUE_SOON_INV"]);
+			if(total !== 0){
+				var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
 												'<div class="font-style7">' +
 													'<span>' + buOutstand[i]["CUSTOMER"] + '</span>' +
@@ -2938,8 +2968,10 @@ function setBuOverdueSoonData(){
 												'<span>' + formatNumber(parseFloat(buOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
-			$('.overduesoon-bu').append(buOutstandDetailContent);
-
+				$('.overduesoon-bu').append(buOutstandDetailContent);
+				
+			}
+			
 			buOutstandDetailTotal +=  parseFloat(buOutstand[i]["DUE_SOON_INV"]);
 			
 		}
@@ -2970,9 +3002,7 @@ function setBuOverdueSoonData(){
 		$('#buOutstand').text("No BU Outstanding A/R Exists.");
 		$('.overduesoon-bu-header').hide();
 		$('.overduesoon-bu-main').hide();
-		/*$('.overduesoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
-		$('.overduesoon-bu').append(noneDataTwoColumn);
-		$('.overduesoon-bu').append(noneDataTwoTotal);*/
+
 	}
 }
 
@@ -2982,7 +3012,9 @@ function setCsdOverdueSoonData(){
 	
 	if(csdOutstand.length > 0){
 		for(var i in csdOutstand){
-			var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
+			var total = Number(csdOutstand[i]["DUE_SOON_INV"]);
+			if(total !== 0){
+				var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
 												'<div class="font-style7">' +
 													'<span>' + csdOutstand[i]["CUSTOMER"] + '</span>' +
@@ -2992,9 +3024,12 @@ function setCsdOverdueSoonData(){
 												'<span>' + formatNumber(parseFloat(csdOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
-			$('.overduesoon-csd').append(csdOutstandDetailContent);
-			
+				$('.overduesoon-csd').append(csdOutstandDetailContent);
+				
+			}
+						
 			csdOutstandDetailTotal += parseFloat(csdOutstand[i]["DUE_SOON_INV"]);
+			
 		}
 		
 		if(csdOutstandDetailTotal !== 0){
@@ -3024,9 +3059,7 @@ function setCsdOverdueSoonData(){
 		$('#csdOutstand').text("No CSD Outstanding A/R Exists.");
 		$('.overduesoon-csd-header').hide();
 		$('.overduesoon-csd-main').hide();
-		/*$('.overduesoon-csd-header .priority-img').attr('src', 'img/priority_dis.png');
-		$('.overduesoon-csd').append(noneDataTwoColumn);
-		$('.overduesoon-csd').append(noneDataTwoTotal);*/
+
 	}
 }
 
@@ -3082,22 +3115,39 @@ function setExpiredSoonData(){
 	else{
 		$('#creditExpired').text("No Credit Expired Soon.");
 		$('.expiredsoon-bu-header').hide();
-		//$('.expiredsoon').append(noneDataThreeColumn);
 	}
 }
 
-
-
-function getTotalSeriesByWeek(){
+function getBuTotalSeriesByWeek(){
+	buTotalINV = [];
+	buTotalCM = [];
 	var weekTotalINV0 = 0;
 	var weekTotalCM0 = 0;
+	var weekTotalINV1 = 0;
+	var weekTotalCM1 = 0;
+	var weekTotalINV2 = 0;
+	var weekTotalCM2 = 0;
+	var weekTotalINV3 = 0;
+	var weekTotalCM3 = 0;
+	var weekTotalINV4 = 0;
+	var weekTotalCM4 = 0;
+	var weekTotalINV5 = 0;
+	var weekTotalCM5 = 0;
 	var weekINV0 = 0;
 	var weekCM0 = 0;
 	var weekINV1 = 0;
 	var weekCM1 = 0;
+	var weekINV2 = 0;
+	var weekCM2 = 0;
+	var weekINV3 = 0;
+	var weekCM3 = 0;
+	var weekINV4 = 0;
+	var weekCM4 = 0;
+	var weekINV5 = 0;
+	var weekCM5 = 0;
 	for(var i in otherBuOverdueDetail){
 		for(var j in otherBuOverdueDetail[i]["Detail"]){
-			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[5]){
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[0]){
 				weekINV0 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
 				weekCM0 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
 			}else{
@@ -3105,13 +3155,44 @@ function getTotalSeriesByWeek(){
 				weekCM0 = 0;
 			}
 			
-			
 			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[1]){
-				weekINV1 = otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"];
-				weekCM1 = otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"];
+				weekINV1 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM1 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
 			}else{
 				weekINV1 = 0;
 				weekCM1 = 0;
+			}
+			
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[2]){
+				weekINV2 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM2 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV2 = 0;
+				weekCM2 = 0;
+			}
+			
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[3]){
+				weekINV3 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM3 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV3 = 0;
+				weekCM3 = 0;
+			}
+			
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[4]){
+				weekINV4 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM4 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV4 = 0;
+				weekCM4 = 0;
+			}
+			
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[5]){
+				weekINV5 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM5 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV5 = 0;
+				weekCM5 = 0;
 			}
 			
 		}
@@ -3119,11 +3200,152 @@ function getTotalSeriesByWeek(){
 		weekTotalINV0 += weekINV0;
 		weekTotalCM0 += weekCM0;
 		
-		/*weekTotalINV1 += weekINV1;
-		weekTotalCM1 += weekCM1;*/
+		weekTotalINV1 += weekINV1;
+		weekTotalCM1 += weekCM1;
+		
+		weekTotalINV2 += weekINV2;
+		weekTotalCM2 += weekCM2;
+		
+		weekTotalINV3 += weekINV3;
+		weekTotalCM3 += weekCM3;
+		
+		weekTotalINV4 += weekINV4;
+		weekTotalCM4 += weekCM4;
+		
+		weekTotalINV5 += weekINV5;
+		weekTotalCM5 += weekCM5;
 	}
 	
-	//console.log(weekTotalINV0+" ,"+weekTotalCM0);
+	buTotalINV.push(weekTotalINV0);
+	buTotalINV.push(weekTotalINV1);
+	buTotalINV.push(weekTotalINV2);
+	buTotalINV.push(weekTotalINV3);
+	buTotalINV.push(weekTotalINV4);
+	buTotalINV.push(weekTotalINV5);
+	
+	buTotalCM.push(weekTotalCM0);
+	buTotalCM.push(weekTotalCM1);
+	buTotalCM.push(weekTotalCM2);
+	buTotalCM.push(weekTotalCM3);
+	buTotalCM.push(weekTotalCM4);
+	buTotalCM.push(weekTotalCM5);
+	
+	//console.log(buTotalINV+"   **   "+buTotalCM);
+}
+
+function getCsdTotalSeriesByWeek(){
+	csdTotalINV = [];
+	csdTotalCM = [];
+	var weekTotalINV0 = 0;
+	var weekTotalCM0 = 0;
+	var weekTotalINV1 = 0;
+	var weekTotalCM1 = 0;
+	var weekTotalINV2 = 0;
+	var weekTotalCM2 = 0;
+	var weekTotalINV3 = 0;
+	var weekTotalCM3 = 0;
+	var weekTotalINV4 = 0;
+	var weekTotalCM4 = 0;
+	var weekTotalINV5 = 0;
+	var weekTotalCM5 = 0;
+	var weekINV0 = 0;
+	var weekCM0 = 0;
+	var weekINV1 = 0;
+	var weekCM1 = 0;
+	var weekINV2 = 0;
+	var weekCM2 = 0;
+	var weekINV3 = 0;
+	var weekCM3 = 0;
+	var weekINV4 = 0;
+	var weekCM4 = 0;
+	var weekINV5 = 0;
+	var weekCM5 = 0;
+	for(var i in otherCsdOverdueDetail){
+		for(var j in otherCsdOverdueDetail[i]["Detail"]){
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[0]){
+				weekINV0 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM0 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV0 = 0;
+				weekCM0 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[1]){
+				weekINV1 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM1 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV1 = 0;
+				weekCM1 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[2]){
+				weekINV2 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM2 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV2 = 0;
+				weekCM2 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[3]){
+				weekINV3 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM3 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV3 = 0;
+				weekCM3 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[4]){
+				weekINV4 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM4 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV4 = 0;
+				weekCM4 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[5]){
+				weekINV5 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM5 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV5 = 0;
+				weekCM5 = 0;
+			}
+			
+		}
+		
+		weekTotalINV0 += weekINV0;
+		weekTotalCM0 += weekCM0;
+		
+		weekTotalINV1 += weekINV1;
+		weekTotalCM1 += weekCM1;
+		
+		weekTotalINV2 += weekINV2;
+		weekTotalCM2 += weekCM2;
+		
+		weekTotalINV3 += weekINV3;
+		weekTotalCM3 += weekCM3;
+		
+		weekTotalINV4 += weekINV4;
+		weekTotalCM4 += weekCM4;
+		
+		weekTotalINV5 += weekINV5;
+		weekTotalCM5 += weekCM5;
+	}
+	
+	csdTotalINV.push(weekTotalINV0);
+	csdTotalINV.push(weekTotalINV1);
+	csdTotalINV.push(weekTotalINV2);
+	csdTotalINV.push(weekTotalINV3);
+	csdTotalINV.push(weekTotalINV4);
+	csdTotalINV.push(weekTotalINV5);
+	
+	csdTotalCM.push(weekTotalCM0);
+	csdTotalCM.push(weekTotalCM1);
+	csdTotalCM.push(weekTotalCM2);
+	csdTotalCM.push(weekTotalCM3);
+	csdTotalCM.push(weekTotalCM4);
+	csdTotalCM.push(weekTotalCM5);
+	
+	//console.log(csdTotalINV+"   **   "+csdTotalCM);
 }
 
 
@@ -3208,7 +3430,7 @@ $('#viewDetail').pagecontainer({
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("overdueDetailData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("overdueDetailData");
                     OverdueDetail();
                 }
@@ -3240,7 +3462,7 @@ $('#viewDetail').pagecontainer({
 				getOverdueSoonData(facility);
 				
 				var lastTime = JSON.parse(localStorage.getItem("outstandDetailData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("outstandDetailData");
                     OutstandDetail();
                 }
@@ -3271,7 +3493,7 @@ $('#viewDetail').pagecontainer({
 				getExpiredSoonData(facility);
 				
 				var lastTime = JSON.parse(localStorage.getItem("creditExpiredSoonData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("creditExpiredSoonData");
                     CreditExpiredSoon();
                 }
@@ -3309,7 +3531,7 @@ $('#viewDetail').pagecontainer({
     			zoomInChartByColumn();
 				viewDetailInit = true;
 				//test
-				getTotalSeriesByWeek();
+				getBuTotalSeriesByWeek();
 			}
 			viewMainInit = false;
 			loadingMask("hide");
@@ -3462,6 +3684,9 @@ $('#viewDetail').pagecontainer({
 			else{
 				$('.expiredsoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
 			}
+			
+			//test
+			getBuTotalSeriesByWeek();
 			
         });
 		
