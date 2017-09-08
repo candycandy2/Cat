@@ -1,6 +1,8 @@
 //get BU & CSD series
 var viewMainTab = "bu";
 var facilityList = "";
+/*var facility = "ALL";*/
+var facility;
 var firstFacility;
 var viewMainInit = false;
 var mainQisdaEisData = {};
@@ -16,6 +18,8 @@ var csdBubbleData = [];
 var csdBubbleObj = {};
 var buTreemap = [];
 var csdTreemap = [];
+var buBubbleToTreemap = [];
+var csdBubbleToTreemap = [];
 
 var buBubbleSeries = [
 	{ x: 60, y: 2586476, facility: 'TE' },
@@ -51,6 +55,7 @@ var bubbleOption = {
         text: null
     },
     xAxis: {
+    	allowDecimals: false,
         gridLineWidth: 0,
         title: {
             text: 'Max Overdue Days of Each Facility(Days)',
@@ -58,6 +63,7 @@ var bubbleOption = {
         }
     },
     yAxis: {
+    	allowDecimals: false,
         lineWidth: 0,
         title: {
             text: 'Overdue Amount of Each Facility(USD$)',
@@ -102,6 +108,12 @@ var bubbleOption = {
             		click: function(event){
             			var facility = this.facility;
             			getTreemapSeriesByFacility(facility);
+            			
+            			//销毁原来的facility-treemap
+            			if(chartTreemap !== null){
+            				chartTreemap.destroy();
+            				chartTreemap = null;
+            			}
             			
             			showTreemap();
             			
@@ -222,7 +234,7 @@ var rectOption = {
 	            	"textOutline": "2px 2px black"
 	            },
 	            format: '<div class="font-companyName">{point.customer}</div>'
-	            /*format: '{point.customer}'*/
+	            /*format: '{point.facility}'*/
 	        }
     	}
     },
@@ -239,6 +251,98 @@ var rectOption = {
     	enabled: false
     }
 };
+
+var treemapOption = {
+	chart: {
+		type: "treemap",
+		animation: false,
+		marginTop: 40,
+		marginBottom: 70,
+		backgroundColor: '#F8FCFB',
+		zoomType: 'none'
+	},
+	colorAxis: {
+        tickPositions: [0, 15, 45, 75],
+        stops: [
+            [0, '#81B4E1'],
+            [0.2, '#81B4E1'],
+            [0.2, '#F79620'],
+            [1, '#EF3623']
+        ],
+        labels: {
+        	enabled: true,
+        	align: 'left',
+        	overflow: 'justify',
+        	formatter: function(){
+        		if(this.value == 75){
+        			var s = this.value + '(Days)';
+        		}
+        		else{
+        			var s = this.value;
+        		}
+        		return s;
+        	},
+        	style: {
+        		"color": "#323232",
+        		"fontSize": "11px"
+        	}
+        }
+   	},
+   	tooltip: {
+   		/*enabled: false,*/
+        useHTML: true,
+        animation: false,
+        hideDelay: 0,
+        shadow: false,
+        borderWidth: 1,
+        borderColor: 'gray',
+        backgroundColor:　'#ffffff',
+        formatter: function () {
+	        var s = '<b>' + this.point.facility + '</b><br/>' + 
+	        		'<span>1-15 Days:USD$' + formatNumber(this.point.day1.toFixed(2)) + '</span><br/>' +
+	        		'<span>16-45 Days:USD$' + formatNumber(this.point.day16.toFixed(2)) + '</span><br/>' +
+	        		'<span>46-75 Days:USD$' + formatNumber(this.point.day46.toFixed(2)) + '</span><br/>' +
+	        		'<span>Over 75 Days:USD$' + formatNumber(this.point.day76.toFixed(2)) + '</span><br/>';
+	        return s;
+	    },
+        followPointer: false,
+        followTouchMove: false
+    },
+    plotOptions: {
+    	series: {
+	        layoutAlgorithm: 'squarified',
+	        dataLabels: {
+	            enabled: true,  
+	            useHTML: true,
+	            crop: true,
+	            overflow: 'justify',
+	            inside: true,
+	            /*zIndex: 2,*/
+	            style: {
+	            	"color": "#ffffff",
+	            	"fontSize": "11px",
+	            	"fontWeight": "bold",
+	            	"textOutline": "2px 2px black"
+	            },
+	            /*format: '<div class="font-companyName">{point.facility}</div>'*/
+	            format: '{point.facility}'
+	        }
+    	}
+    },
+    series: [{
+    	data: buBubbleToTreemap
+    }],
+    exporting: {
+        enabled: false
+    },
+    title: {
+        text: null
+    },
+    credits: {
+    	enabled: false
+    }
+};
+
 
 function showTreemap(){
 	rectOption.chart.renderTo = 'overview-hc-rectangle';
@@ -271,6 +375,7 @@ function sortDataByType(){
 		}
 	}
 	
+	//console.log(buByType);
 }
 
 function simplifyData(){
@@ -308,6 +413,8 @@ function simplifyData(){
 			"group": item.BUSINESS_GROUP
 		});
 	});
+	
+	//console.log(buSimplify);
 }
 
 function mergeDataByFacility(){
@@ -321,17 +428,31 @@ function mergeDataByFacility(){
 		var total = item.total;
 		var day = item.day;
 		var grp = item.group;
+		var over1 = item.day1;
+		var over16 = item.day16;
+		var over46 = item.day46;
+		var over76 = item.day76;
 		if(buBubbleObj[fac]) {
 			buBubbleObj[fac].y += total;
+			buBubbleObj[fac].day1 += over1;
+			buBubbleObj[fac].day16 += over16;
+			buBubbleObj[fac].day46 += over46;
+			buBubbleObj[fac].day76 += over76;
+			
 			if(day > buBubbleObj[fac].x) {
 				buBubbleObj[fac].x = day;
 			}
-		} else {
+		} 
+		else {
 			buBubbleObj[fac] = {
 				"x" : day,
 				"y" : total,
 				"facility": fac,
-				"group": grp
+				"group": grp,
+				"day1": over1,
+				"day16": over16,
+				"day46": over46,
+				"day76": over76
 			};
 			if(item.group == "BBS"){
 				buBubbleObj[fac].color = "#99CC33";
@@ -360,17 +481,31 @@ function mergeDataByFacility(){
 		var total = item.total;
 		var day = item.day;
 		var grp = item.group;
+		var over1 = item.day1;
+		var over16 = item.day16;
+		var over46 = item.day46;
+		var over76 = item.day76;
 		if(csdBubbleObj[fac]) {
 			csdBubbleObj[fac].y += total;
+			csdBubbleObj[fac].day1 += over1;
+			csdBubbleObj[fac].day16 += over16;
+			csdBubbleObj[fac].day46 += over46;
+			csdBubbleObj[fac].day76 += over76;
+			
 			if(day > csdBubbleObj[fac].x) {
 				csdBubbleObj[fac].x = day;
 			}
-		} else {
+		} 
+		else {
 			csdBubbleObj[fac] = {
 				"x" : day,
 				"y" : total,
 				"facility": fac,
-				"group": grp
+				"group": grp,
+				"day1": over1,
+				"day16": over16,
+				"day46": over46,
+				"day76": over76
 			};
 			if(item.group == "BBS"){
 				csdBubbleObj[fac].color = "#99CC33";
@@ -394,7 +529,38 @@ function mergeDataByFacility(){
 		}
 	});
 	
+	//console.log(buBubbleData);
+}
+
+function getTreemapFromBubble(){
+	buBubbleToTreemap = [];
+	csdBubbleToTreemap = [];
 	
+	$.each(buBubbleData, function(i, item) {
+		buBubbleToTreemap.push({
+			"facility": item["facility"],
+			"colorValue": item["x"],
+			"value": item["y"],
+			"day1": item["day1"],
+			"day16": item["day16"],
+			"day46": item["day46"],
+			"day76": item["day76"]
+		});
+	});
+	
+	$.each(csdBubbleData, function(i, item) {
+		csdBubbleToTreemap.push({
+			"facility": item["facility"],
+			"colorValue": item["x"],
+			"value": item["y"],
+			"day1": item["day1"],
+			"day16": item["day16"],
+			"day46": item["day46"],
+			"day76": item["day76"]
+		});
+	});
+	
+	//console.log(buBubbleToTreemap);
 }
 
 function getTreemapSeriesByFacility(fac) {
@@ -442,12 +608,14 @@ $('#viewMain').pagecontainer({
 		    		sortDataByType();	
 		    		simplifyData();
 		    		mergeDataByFacility();
+		    		getTreemapFromBubble();
+		    		OverdueDetail();
 		    		switch(viewMainTab) {
                         case "bu" :
-                            $("input[id=viewMain-tab-1]").trigger('click');   
+                            $("input[id=viewMain-tab-1]").trigger('click');
                             break;
                         case "csd" :
-                            $("input[id=viewMain-tab-2]").trigger('click');   
+                            $("input[id=viewMain-tab-2]").trigger('click');
                             break;
                     }
 					loadingMask("hide");
@@ -469,10 +637,12 @@ $('#viewMain').pagecontainer({
 				sortDataByType();
 				simplifyData();
 				mergeDataByFacility();
+				getTreemapFromBubble();
+				OverdueDetail();
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("arSummaryData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("arSummaryData");
                     ARSummary();
                 }
@@ -481,63 +651,37 @@ $('#viewMain').pagecontainer({
 		};
 		
 		window.AraUserAuthority = function() {
-			if(localStorage.getItem("araUserAuthorityData") === null){
-				this.successCallback = function(data) {
-					araUserAuthorityCallBackData = data["Content"];
-					
-					//facilityList = '<a id="ALL">ALL</a>';
-					var firstFacilityFlag = true;
-					for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
-						facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
-						if(firstFacilityFlag){
-							firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
-							firstFacilityFlag = false;
-						}
-					}
-					$(".Facility").html("");
-	                $(".Facility").append(facilityList).enhanceWithin();
-	                /*$(".Facility #ALL").addClass('hover');*/
-	               	$(".Facility #" + firstFacility).addClass('hover');
-	                ARSummary();
-	                loadingMask("hide");
-	                
-	                localStorage.setItem("araUserAuthorityData", JSON.stringify([data, nowTime]));
-				};
+			this.successCallback = function(data) {
+				araUserAuthorityCallBackData = data["Content"];
 				
-				this.failCallback = function(data) {
-		    		console.log("api misconnected");
-		    	};
-		    	
-		    	var _construct = function() {
-					CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
-				}();
-			}
-			else{
-				araUserAuthorityData = JSON.parse(localStorage.getItem("araUserAuthorityData"))[0];
-				araUserAuthorityCallBackData = araUserAuthorityData["Content"];
-				
-				/*facilityList = '<a id="ALL">ALL</a>';*/
+				//facilityList = '<a id="ALL">ALL</a>';
 				var firstFacilityFlag = true;
 				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
 					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
 					if(firstFacilityFlag){
 						firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+						facility = firstFacility;
 						firstFacilityFlag = false;
 					}
 				}
 				$(".Facility").html("");
                 $(".Facility").append(facilityList).enhanceWithin();
-                $(".Facility #" + firstFacility).addClass('hover');
+                /*$(".Facility #ALL").addClass('hover');*/
+               	$(".Facility #" + firstFacility).addClass('hover');
                 ARSummary();
                 loadingMask("hide");
-                
-                var lastTime = JSON.parse(localStorage.getItem("araUserAuthorityData"))[1];
-                if (checkDataExpired(lastTime, expiredTime, 'dd')) {
-                    localStorage.removeItem("araUserAuthorityData");
-                    AraUserAuthority();
-                }
-				
-			}
+                    
+			};
+			
+			this.failCallback = function(data) {
+	    		console.log("api misconnected");
+	    	};
+	    	
+	    	var _construct = function() {
+				CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
+			}();
+			
+			
 		};
 		
 		
@@ -562,11 +706,17 @@ $('#viewMain').pagecontainer({
                        	//销毁hc
                        	chartbubble.destroy();
                         chartLandscapebubble.destroy();
+                        if(chartTreemap !== null){
+                        	chartTreemap.destroy();
+                        	chartTreemap = null;
+                        } 
                         if(chartRect !== null){
                         	chartRect.destroy();
+                        	chartRect = null;
                         }
                         if(chartLandscapeRect !== null){
                         	chartLandscapeRect.destroy();
+                        	chartLandscapeRect = null;
                         }
                        	
                        	//重新调用API
@@ -582,8 +732,11 @@ $('#viewMain').pagecontainer({
                     	CreditExpiredSoon();
                     	
                     	//恢复初始状态
+                    	switchState = false;
+                    	facility = firstFacility;
+                    	viewMainInit = false;
                         viewDetailInit = false;
-                          
+                       	
                         showBubble();
                         
     					if(viewMainTab == "bu"){
@@ -605,46 +758,75 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
+			if(chartRect !== null){
+            	chartRect.destroy();
+            	chartRect = null;
+            }
+            if(chartLandscapeRect !== null){
+            	chartLandscapeRect.destroy();
+            	chartLandscapeRect = null;
+            }           
+			
 			if(viewMainInit == false) {
-				viewMainInit = true;
-				showBubble();
-				
 				$("label[for=viewMain-tab-1]").addClass('ui-btn-active');
 			    $("label[for=viewMain-tab-2]").removeClass('ui-btn-active');
 			    
-			    $('#overview-hc-rectangle').hide();
-			        
-		    	chartbubble.series[0].setData(buBubbleData, false, false, false);
-			    chartbubble.redraw(true);
-				chartLandscapebubble.series[0].setData(buBubbleData, false, false, false);
-				chartLandscapebubble.redraw(true);
+				showBubble();
+				chartbubble.series[0].setData(buBubbleData, true, true, false);
+				chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+				
+				chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
+				chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false);
 			    
 				if (window.orientation === 90 || window.orientation === -90 ) {
 	                zoomInChart();
 	           	}
 				
-				//调用第二页API
-				OverdueDetail();
+				viewMainInit = true;
 			}
 			loadingMask("hide");
 		});
 		
-		
 		$(".page-tabs #viewMain-tab-1").on("click", function() {
-			chartbubble.tooltip.hide();
-			chartbubble.series[0].setData(buBubbleData, true, true, false);         
-            chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+			if(chartRect !== null){
+            	chartRect.destroy();
+            	chartRect = null;
+            }
+            if(chartLandscapeRect !== null){
+            	chartLandscapeRect.destroy();
+            	chartLandscapeRect = null;
+            }
             
-            $('#overview-hc-rectangle').hide();
+			//review by alan
+            if(chartbubble != null) {
+				chartbubble.tooltip.hide();
+				chartbubble.series[0].setData(buBubbleData, true, true, false); 
+            	chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
+			} 
+            
+            chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
+            chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false); 
+            
             viewMainTab = 'bu';
         });
         
         $(".page-tabs #viewMain-tab-2").on("click", function() {
+        	if(chartRect !== null){
+            	chartRect.destroy();
+            	chartRect = null;
+            }
+            if(chartLandscapeRect !== null){
+            	chartLandscapeRect.destroy();
+            	chartLandscapeRect = null;
+            }
+            
         	chartbubble.tooltip.hide();
 			chartbubble.series[0].setData(csdBubbleData, true, true, false);          
             chartLandscapebubble.series[0].setData(csdBubbleData, true, true, false);
             
-            $('#overview-hc-rectangle').hide();
+            chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
+            chartTreemap.series[0].setData(csdBubbleToTreemap, true, true, false); 
+            
             viewMainTab = 'csd';
         });
 		

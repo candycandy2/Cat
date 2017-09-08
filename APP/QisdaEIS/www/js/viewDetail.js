@@ -1,7 +1,5 @@
 /********************/
 var viewDetailTab = "overdue";
-/*var facility = "ALL";*/
-var facility;
 var viewDetailInit = false;
 var csdDataInit = false;
 var overdueInit = false;
@@ -18,7 +16,10 @@ var buColumnCheckAll = false;
 var csdColumnCheckAll = false;
 var buOutstandDetailTotal = 0;
 var csdOutstandDetailTotal = 0;
-var week0 = [];
+var buTotalINV = [];
+var buTotalCM = [];
+var csdTotalINV = [];
+var csdTotalCM = [];
 var timeAxis = [];
 var otherBuOverdueDetail = [];
 var otherCsdOverdueDetail = [];
@@ -563,6 +564,7 @@ function buSingleListBtn(){
 			
 			setSingleColumnData(index, 'bu');
 			
+			
 		}else{
 			self.attr('src', 'img/list_down.png');
 			self.parent().parent().parent().next().hide();
@@ -609,6 +611,7 @@ function csdSingleListBtn(){
 			
 			setSingleColumnData(index, 'csd');
 			
+			
 		}else{
 			self.attr('src', 'img/list_down.png');
 			self.parent().parent().parent().next().hide();
@@ -635,29 +638,30 @@ function csdSingleListBtn(){
 
 
 function getOverdueDetailData(){
-	timeAxis = [];
+	timeAxis.splice(0, timeAxis.length);
 	buOverdueDetail = [];
 	csdOverdueDetail = [];
 	
 	//get week timeAxis
 	for(var i in overdueDetailCallBackData){
-		if(overdueDetailCallBackData[i]["Detail"].length == 6){
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][0]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][1]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][2]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][3]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][4]["WEEK"]);
-			timeAxis.push(overdueDetailCallBackData[i]["Detail"][5]["WEEK"]);
-			
-			var startDay = overdueDetailCallBackData[i]["Detail"][0]["AGED_DATE"];
-			var endDay = overdueDetailCallBackData[i]["Detail"][5]["AGED_DATE"];
-			break;
+		if(overdueDetailCallBackData[i]["Detail"] !== null){
+			if(overdueDetailCallBackData[i]["Detail"].length === 6){
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][0]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][1]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][2]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][3]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][4]["WEEK"]);
+				timeAxis.push(overdueDetailCallBackData[i]["Detail"][5]["WEEK"]);
+				
+				var startDay = overdueDetailCallBackData[i]["Detail"][0]["AGED_DATE"];
+				var endDay = overdueDetailCallBackData[i]["Detail"][5]["AGED_DATE"];
+				break;
+			}
 		}
 	}
 	//get startDate and endDate
 	startDate = startDay.substring(5, 10);
 	endDate = endDay.substring(5, 10);
-	console.log(timeAxis);
 	
 	$.each(overdueDetailCallBackData, function(i, item) {
 		for(var j = 0; j < araUserAuthorityCallBackData.length; j++){
@@ -680,6 +684,21 @@ function getOverdueDetailData(){
 											 parseFloat(item["Detail"][totalLength-1]["OVER_76_INV"]) + 
 											 parseFloat(item["Detail"][totalLength-1]["OVER_76_CM"]);
 												 
+				for(var k in item["Detail"]){
+					item["Detail"][k]["TOTAL_INV"] = Number(item["Detail"][k]["OVER_1_15_INV"]) +
+													Number(item["Detail"][k]["OVER_16_45_INV"]) +
+													Number(item["Detail"][k]["OVER_46_75_INV"]) +
+													Number(item["Detail"][k]["OVER_76_INV"]);
+					item["Detail"][k]["TOTAL_CM"] = Number(item["Detail"][k]["OVER_1_15_INV"]) +
+													Number(item["Detail"][k]["OVER_16_45_INV"]) +
+													Number(item["Detail"][k]["OVER_46_75_INV"]) +
+													Number(item["Detail"][k]["OVER_76_INV"]) +
+													Number(item["Detail"][k]["OVER_1_15_CM"]) +
+													Number(item["Detail"][k]["OVER_16_45_CM"]) +
+													Number(item["Detail"][k]["OVER_46_75_CM"]) +
+													Number(item["Detail"][k]["OVER_76_CM"]);
+				}
+				
 				if(item["Header"]["TYPE"] == "BU"){
 					buOverdueDetail.push(item);
 				}
@@ -692,11 +711,12 @@ function getOverdueDetailData(){
 	
 	
 	//默认按total降序排序
-	buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
-	csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+	buOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
+	csdOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
 	
 }
 
+//review by alan
 function setBuOverdueDetailData(fac){
 	$('.overdueDetail-bu').html("");
 	buAreaSeriesINV = [];
@@ -785,112 +805,218 @@ function setBuOverdueDetailData(fac){
 			
 			/**************** append html ****************/
 			if(switchState == false){
-				var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
-												'<ul>' +
-													'<li>' +
-														'<div>' +
-															'<div class="font-style7">' +
-																'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
-															'</div>' +	
+				if(overdueDetailTotalINV !== 0){
+					var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
+													'<ul>' +
+														'<li>' +
+															'<div>' +
+																'<div class="font-style7">' +
+																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="buArea' + i + '"></div>' +
+														'</li>' +
+														'<li>' +
+															'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
+														'</li>' +
+													'</ul>' +
+												'</li>' +
+												'<li class="bu-single-list" data-bu="show" id="buHideList' + i + '">' +
+													'<div>' +
+														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'<div class="font-style13">' +
+															'<span>Date:</span>' +
+															'<span>' + startDate + '</span>' +
+															'<span>-</span>' +
+															'<span>' + endDate + '</span>' +
 														'</div>' +
-													'</li>' +
-													'<li>' +
-														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
-													'</li>' +
-													'<li>' +
-														'<div id="buArea' + i + '"></div>' +
-													'</li>' +
-													'<li>' +
-														'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
-													'</li>' +
-												'</ul>' +
-											'</li>' +
-											'<li class="bu-single-list" id="buHideList' + i + '">' +
-												'<div>' +
-													'<div class="font-style12">Total AR and Overdue Amount</div>' +
+													'</div>' +
 													'<div class="font-style13">' +
-														'<span>Date:</span>' +
-														'<span>' + startDate + '</span>' +
-														'<span>-</span>' +
-														'<span>' + endDate + '</span>' +
+														'<span>' + item["Header"]["OWNER"] + '</span>' +
+														'<span>Owner:</span>' +	
 													'</div>' +
-												'</div>' +
-												'<div class="font-style13">' +
-													'<span>' + item["Header"]["OWNER"] + '</span>' +
-													'<span>Owner:</span>' +	
-												'</div>' +
-												'<div>' +
-													'<div class="overdue-tab1 font-style13">' +
-														'<div><span>1-15 Days</span></div>' +
-														'<div><span>16-45 Days</span></div>' +
-														'<div><span>46-75 Days</span></div>' +
-														'<div><span>Over 75 Days</span></div>' +
+													'<div>' +
+														'<div class="overdue-tab1 font-style13">' +
+															'<div><span>1-15 Days</span></div>' +
+															'<div><span>16-45 Days</span></div>' +
+															'<div><span>46-75 Days</span></div>' +
+															'<div><span>Over 75 Days</span></div>' +
+														'</div>' +
+														'<div class="overdue-tab2 font-style13">' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+														'</div>' +
 													'</div>' +
-													'<div class="overdue-tab2 font-style13">' +
-														'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
+												'</li>';
+				}
+				else{
+					var overdueDetailContent = '<li class="bu-data-list overdue-list-hide" id="buShowList' + i + '">' +
+													'<ul>' +
+														'<li>' +
+															'<div>' +
+																'<div class="font-style7">' +
+																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="buArea' + i + '"></div>' +
+														'</li>' +
+														'<li>' +
+															'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
+														'</li>' +
+													'</ul>' +
+												'</li>' +
+												'<li class="bu-single-list" data-bu="hide" id="buHideList' + i + '">' +
+													'<div>' +
+														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'<div class="font-style13">' +
+															'<span>Date:</span>' +
+															'<span>' + startDate + '</span>' +
+															'<span>-</span>' +
+															'<span>' + endDate + '</span>' +
+														'</div>' +
 													'</div>' +
-												'</div>' +
-												'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
-											'</li>';
+													'<div class="font-style13">' +
+														'<span>' + item["Header"]["OWNER"] + '</span>' +
+														'<span>Owner:</span>' +	
+													'</div>' +
+													'<div>' +
+														'<div class="overdue-tab1 font-style13">' +
+															'<div><span>1-15 Days</span></div>' +
+															'<div><span>16-45 Days</span></div>' +
+															'<div><span>46-75 Days</span></div>' +
+															'<div><span>Over 75 Days</span></div>' +
+														'</div>' +
+														'<div class="overdue-tab2 font-style13">' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+														'</div>' +
+													'</div>' +
+													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
+												'</li>';
+				}
 				
 				
 			}
 			else if(switchState == true){
-				var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
-												'<ul>' +
-													'<li>' +
-														'<div>' +
-															'<div class="font-style7">' +
-																'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
-															'</div>' +	
+				if(overdueDetailTotalCM !== 0){
+					var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
+													'<ul>' +
+														'<li>' +
+															'<div>' +
+																'<div class="font-style7">' +
+																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="buArea' + i + '"></div>' +
+														'</li>' +
+														'<li>' +
+															'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
+														'</li>' +
+													'</ul>' +
+												'</li>' +
+												'<li class="bu-single-list" data-bu="show" id="buHideList' + i + '">' +
+													'<div>' +
+														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'<div class="font-style13">' +
+															'<span>Date:</span>' +
+															'<span>' + startDate + '</span>' +
+															'<span>-</span>' +
+															'<span>' + endDate + '</span>' +
 														'</div>' +
-													'</li>' +
-													'<li>' +
-														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
-													'</li>' +
-													'<li>' +
-														'<div id="buArea' + i + '"></div>' +
-													'</li>' +
-													'<li>' +
-														'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
-													'</li>' +
-												'</ul>' +
-											'</li>' +
-											'<li class="bu-single-list" id="buHideList' + i + '">' +
-												'<div>' +
-													'<div class="font-style12">Total AR and Overdue Amount</div>' +
+													'</div>' +
 													'<div class="font-style13">' +
-														'<span>Date:</span>' +
-														'<span>' + startDate + '</span>' +
-														'<span>-</span>' +
-														'<span>' + endDate + '</span>' +
+														'<span>' + item["Header"]["OWNER"] + '</span>' +
+														'<span>Owner:</span>' +	
 													'</div>' +
-												'</div>' +
-												'<div class="font-style13">' +
-													'<span>' + item["Header"]["OWNER"] + '</span>' +
-													'<span>Owner:</span>' +	
-												'</div>' +
-												'<div>' +
-													'<div class="overdue-tab1 font-style13">' +
-														'<div><span>1-15 Days</span></div>' +
-														'<div><span>16-45 Days</span></div>' +
-														'<div><span>46-75 Days</span></div>' +
-														'<div><span>Over 75 Days</span></div>' +
+													'<div>' +
+														'<div class="overdue-tab1 font-style13">' +
+															'<div><span>1-15 Days</span></div>' +
+															'<div><span>16-45 Days</span></div>' +
+															'<div><span>46-75 Days</span></div>' +
+															'<div><span>Over 75 Days</span></div>' +
+														'</div>' +
+														'<div class="overdue-tab2 font-style13">' +
+															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+														'</div>' +
 													'</div>' +
-													'<div class="overdue-tab2 font-style13">' +
-														'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
+												'</li>';
+				}
+				else{
+					var overdueDetailContent = '<li class="bu-data-list overdue-list-hide" id="buShowList' + i + '">' +
+													'<ul>' +
+														'<li>' +
+															'<div>' +
+																'<div class="font-style7">' +
+																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="buArea' + i + '"></div>' +
+														'</li>' +
+														'<li>' +
+															'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
+														'</li>' +
+													'</ul>' +
+												'</li>' +
+												'<li class="bu-single-list" data-bu="hide" id="buHideList' + i + '">' +
+													'<div>' +
+														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'<div class="font-style13">' +
+															'<span>Date:</span>' +
+															'<span>' + startDate + '</span>' +
+															'<span>-</span>' +
+															'<span>' + endDate + '</span>' +
+														'</div>' +
 													'</div>' +
-												'</div>' +
-												'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
-											'</li>';
-				
-					
+													'<div class="font-style13">' +
+														'<span>' + item["Header"]["OWNER"] + '</span>' +
+														'<span>Owner:</span>' +	
+													'</div>' +
+													'<div>' +
+														'<div class="overdue-tab1 font-style13">' +
+															'<div><span>1-15 Days</span></div>' +
+															'<div><span>16-45 Days</span></div>' +
+															'<div><span>46-75 Days</span></div>' +
+															'<div><span>Over 75 Days</span></div>' +
+														'</div>' +
+														'<div class="overdue-tab2 font-style13">' +
+															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+														'</div>' +
+													'</div>' +
+													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
+												'</li>';
+				}		
 			}
 			
 			$('.overdueDetail-bu').append(overdueDetailContent);
@@ -909,6 +1035,9 @@ function setBuOverdueDetailData(fac){
 		}
 		
 		if(otherBuOverdueDetail.length > 0){
+			$('#buTitle').text("BU Overdue A/R");
+			$('.bu-main').show();
+			$('.bu-header').show();
 			$.each(otherBuOverdueDetail, function(i, item) {
 				//获取detail有几周数据
 				var detailLength = item["Detail"].length;
@@ -987,109 +1116,217 @@ function setBuOverdueDetailData(fac){
 				
 				/**************** append html ****************/
 				if(switchState == false){
-					var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
-													'<ul>' +
-														'<li>' +
-															'<div>' +
-																'<div class="font-style7">' +
-																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
-																'</div>' +	
+					if(overdueDetailTotalINV !== 0){
+						var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
+														'<ul>' +
+															'<li>' +
+																'<div>' +
+																	'<div class="font-style7">' +
+																		'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="buArea' + i + '"></div>' +
+															'</li>' +
+															'<li>' +
+																'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
+															'</li>' +
+														'</ul>' +
+													'</li>' +
+													'<li class="bu-single-list" data-bu="show" id="buHideList' + i + '">' +
+														'<div>' +
+															'<div class="font-style12">Total AR and Overdue Amount</div>' +
+															'<div class="font-style13">' +
+																'<span>Date:</span>' +
+																'<span>' + startDate + '</span>' +
+																'<span>-</span>' +
+																'<span>' + endDate + '</span>' +
 															'</div>' +
-														'</li>' +
-														'<li>' +
-															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
-														'</li>' +
-														'<li>' +
-															'<div id="buArea' + i + '"></div>' +
-														'</li>' +
-														'<li>' +
-															'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
-														'</li>' +
-													'</ul>' +
-												'</li>' +
-												'<li class="bu-single-list" id="buHideList' + i + '">' +
-													'<div>' +
-														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'</div>' +
 														'<div class="font-style13">' +
-															'<span>Date:</span>' +
-															'<span>' + startDate + '</span>' +
-															'<span>-</span>' +
-															'<span>' + endDate + '</span>' +
+															'<span>' + item["Header"]["OWNER"] + '</span>' +
+															'<span>Owner:</span>' +	
 														'</div>' +
-													'</div>' +
-													'<div class="font-style13">' +
-														'<span>' + item["Header"]["OWNER"] + '</span>' +
-														'<span>Owner:</span>' +	
-													'</div>' +
-													'<div>' +
-														'<div class="overdue-tab1 font-style13">' +
-															'<div><span>1-15 Days</span></div>' +
-															'<div><span>16-45 Days</span></div>' +
-															'<div><span>46-75 Days</span></div>' +
-															'<div><span>Over 75 Days</span></div>' +
+														'<div>' +
+															'<div class="overdue-tab1 font-style13">' +
+																'<div><span>1-15 Days</span></div>' +
+																'<div><span>16-45 Days</span></div>' +
+																'<div><span>46-75 Days</span></div>' +
+																'<div><span>Over 75 Days</span></div>' +
+															'</div>' +
+															'<div class="overdue-tab2 font-style13">' +
+																'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+															'</div>' +
 														'</div>' +
-														'<div class="overdue-tab2 font-style13">' +
-															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+														'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
+													'</li>';
+					}
+					else{
+						var overdueDetailContent = '<li class="bu-data-list overdue-list-hide" id="buShowList' + i + '">' +
+														'<ul>' +
+															'<li>' +
+																'<div>' +
+																	'<div class="font-style7">' +
+																		'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="buArea' + i + '"></div>' +
+															'</li>' +
+															'<li>' +
+																'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
+															'</li>' +
+														'</ul>' +
+													'</li>' +
+													'<li class="bu-single-list" data-bu="hide" id="buHideList' + i + '">' +
+														'<div>' +
+															'<div class="font-style12">Total AR and Overdue Amount</div>' +
+															'<div class="font-style13">' +
+																'<span>Date:</span>' +
+																'<span>' + startDate + '</span>' +
+																'<span>-</span>' +
+																'<span>' + endDate + '</span>' +
+															'</div>' +
 														'</div>' +
-													'</div>' +
-													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
-												'</li>';
+														'<div class="font-style13">' +
+															'<span>' + item["Header"]["OWNER"] + '</span>' +
+															'<span>Owner:</span>' +	
+														'</div>' +
+														'<div>' +
+															'<div class="overdue-tab1 font-style13">' +
+																'<div><span>1-15 Days</span></div>' +
+																'<div><span>16-45 Days</span></div>' +
+																'<div><span>46-75 Days</span></div>' +
+																'<div><span>Over 75 Days</span></div>' +
+															'</div>' +
+															'<div class="overdue-tab2 font-style13">' +
+																'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+															'</div>' +
+														'</div>' +
+														'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
+													'</li>';
+					}
 												
 				}
 				else if(switchState == true){
-					var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
-													'<ul>' +
-														'<li>' +
-															'<div>' +
-																'<div class="font-style7">' +
-																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
-																'</div>' +	
+					if(overdueDetailTotalCM !== 0){
+						var overdueDetailContent = '<li class="bu-data-list" id="buShowList' + i + '">' +
+														'<ul>' +
+															'<li>' +
+																'<div>' +
+																	'<div class="font-style7">' +
+																		'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="buArea' + i + '"></div>' +
+															'</li>' +
+															'<li>' +
+																'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
+															'</li>' +
+														'</ul>' +
+													'</li>' +
+													'<li class="bu-single-list" data-bu="show" id="buHideList' + i + '">' +
+														'<div>' +
+															'<div class="font-style12">Total AR and Overdue Amount</div>' +
+															'<div class="font-style13">' +
+																'<span>Date:</span>' +
+																'<span>' + startDate + '</span>' +
+																'<span>-</span>' +
+																'<span>' + endDate + '</span>' +
 															'</div>' +
-														'</li>' +
-														'<li>' +
-															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
-														'</li>' +
-														'<li>' +
-															'<div id="buArea' + i + '"></div>' +
-														'</li>' +
-														'<li>' +
-															'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
-														'</li>' +
-													'</ul>' +
-												'</li>' +
-												'<li class="bu-single-list" id="buHideList' + i + '">' +
-													'<div>' +
-														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'</div>' +
 														'<div class="font-style13">' +
-															'<span>Date:</span>' +
-															'<span>' + startDate + '</span>' +
-															'<span>-</span>' +
-															'<span>' + endDate + '</span>' +
+															'<span>' + item["Header"]["OWNER"] + '</span>' +
+															'<span>Owner:</span>' +	
 														'</div>' +
-													'</div>' +
-													'<div class="font-style13">' +
-														'<span>' + item["Header"]["OWNER"] + '</span>' +
-														'<span>Owner:</span>' +	
-													'</div>' +
-													'<div>' +
-														'<div class="overdue-tab1 font-style13">' +
-															'<div><span>1-15 Days</span></div>' +
-															'<div><span>16-45 Days</span></div>' +
-															'<div><span>46-75 Days</span></div>' +
-															'<div><span>Over 75 Days</span></div>' +
+														'<div>' +
+															'<div class="overdue-tab1 font-style13">' +
+																'<div><span>1-15 Days</span></div>' +
+																'<div><span>16-45 Days</span></div>' +
+																'<div><span>46-75 Days</span></div>' +
+																'<div><span>Over 75 Days</span></div>' +
+															'</div>' +
+															'<div class="overdue-tab2 font-style13">' +
+																'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+															'</div>' +
 														'</div>' +
-														'<div class="overdue-tab2 font-style13">' +
-															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+														'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
+													'</li>';
+					}
+					else{
+						var overdueDetailContent = '<li class="bu-data-list overdue-list-hide" id="buShowList' + i + '">' +
+														'<ul>' +
+															'<li>' +
+																'<div>' +
+																	'<div class="font-style7">' +
+																		'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="buArea' + i + '"></div>' +
+															'</li>' +
+															'<li>' +
+																'<img src="img/list_down.png" class="buSingleListBtn" id="buDetailBtn' + i + '" data-index="' + i + '" />' +
+															'</li>' +
+														'</ul>' +
+													'</li>' +
+													'<li class="bu-single-list" data-bu="hide" id="buHideList' + i + '">' +
+														'<div>' +
+															'<div class="font-style12">Total AR and Overdue Amount</div>' +
+															'<div class="font-style13">' +
+																'<span>Date:</span>' +
+																'<span>' + startDate + '</span>' +
+																'<span>-</span>' +
+																'<span>' + endDate + '</span>' +
+															'</div>' +
 														'</div>' +
-													'</div>' +
-													'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
-												'</li>';
+														'<div class="font-style13">' +
+															'<span>' + item["Header"]["OWNER"] + '</span>' +
+															'<span>Owner:</span>' +	
+														'</div>' +
+														'<div>' +
+															'<div class="overdue-tab1 font-style13">' +
+																'<div><span>1-15 Days</span></div>' +
+																'<div><span>16-45 Days</span></div>' +
+																'<div><span>46-75 Days</span></div>' +
+																'<div><span>Over 75 Days</span></div>' +
+															'</div>' +
+															'<div class="overdue-tab2 font-style13">' +
+																'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+															'</div>' +
+														'</div>' +
+														'<div class="buColumnHc" id="buColumn' + i + '"></div>' +
+													'</li>';
+					}
 													
 				}
 				
@@ -1100,10 +1337,10 @@ function setBuOverdueDetailData(fac){
 			//BU total HTML
 			setTotalHtml("bu", buOverdueDetailTotalINV, buOverdueDetailTotalCM);
 		}
-		else{
-			$('.bu-header .priority-img').attr('src', 'img/priority_dis.png');
-			$('.overdueDetail-bu').append(noneDataFourColumn);
-			$('.overdueDetail-bu').append(noneDataFourTotal);
+		else if(otherBuOverdueDetail.length == 0){
+			$('#buTitle').text("No BU Overdue A/R Exists.");
+			$('.bu-main').hide();
+			$('.bu-header').hide();
 		}	
 	}
 	
@@ -1198,110 +1435,218 @@ function setCsdOverdueDetailData(fac){
 			
 			/**************** append html ****************/
 			if(switchState == false){
-				var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
-												'<ul>' +
-													'<li>' +
-														'<div>' +
-															'<div class="font-style7">' +
-																'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
-															'</div>' +	
+				if(overdueDetailTotalINV !== 0){
+					var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
+													'<ul>' +
+														'<li>' +
+															'<div>' +
+																'<div class="font-style7">' +
+																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="csdArea' + i + '"></div>' +
+														'</li>' +
+														'<li>' +
+															'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
+														'</li>' +
+													'</ul>' +
+												'</li>' +
+												'<li class="csd-single-list" data-csd="show" id="csdHideList' + i + '">' +
+													'<div>' +
+														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'<div class="font-style13">' +
+															'<span>Date:</span>' +
+															'<span>' + startDate + '</span>' +
+															'<span>-</span>' +
+															'<span>' + endDate + '</span>' +
 														'</div>' +
-													'</li>' +
-													'<li>' +
-														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
-													'</li>' +
-													'<li>' +
-														'<div id="csdArea' + i + '"></div>' +
-													'</li>' +
-													'<li>' +
-														'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
-													'</li>' +
-												'</ul>' +
-											'</li>' +
-											'<li class="csd-single-list" id="csdHideList' + i + '">' +
-												'<div>' +
-													'<div class="font-style12">Total AR and Overdue Amount</div>' +
+													'</div>' +
 													'<div class="font-style13">' +
-														'<span>Date:</span>' +
-														'<span>' + startDate + '</span>' +
-														'<span>-</span>' +
-														'<span>' + endDate + '</span>' +
+														'<span>' + item["Header"]["OWNER"] + '</span>' +
+														'<span>Owner:</span>' +	
 													'</div>' +
-												'</div>' +
-												'<div class="font-style13">' +
-													'<span>' + item["Header"]["OWNER"] + '</span>' +
-													'<span>Owner:</span>' +	
-												'</div>' +
-												'<div>' +
-													'<div class="overdue-tab1 font-style13">' +
-														'<div><span>1-15 Days</span></div>' +
-														'<div><span>16-45 Days</span></div>' +
-														'<div><span>46-75 Days</span></div>' +
-														'<div><span>Over 75 Days</span></div>' +
+													'<div>' +
+														'<div class="overdue-tab1 font-style13">' +
+															'<div><span>1-15 Days</span></div>' +
+															'<div><span>16-45 Days</span></div>' +
+															'<div><span>46-75 Days</span></div>' +
+															'<div><span>Over 75 Days</span></div>' +
+														'</div>' +
+														'<div class="overdue-tab2 font-style13">' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+														'</div>' +
 													'</div>' +
-													'<div class="overdue-tab2 font-style13">' +
-														'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
+												'</li>';
+				}
+				else{
+					var overdueDetailContent = '<li class="csd-data-list overdue-list-hide" id="csdShowList' + i + '">' +
+													'<ul>' +
+														'<li>' +
+															'<div>' +
+																'<div class="font-style7">' +
+																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="csdArea' + i + '"></div>' +
+														'</li>' +
+														'<li>' +
+															'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
+														'</li>' +
+													'</ul>' +
+												'</li>' +
+												'<li class="csd-single-list" data-csd="hide" id="csdHideList' + i + '">' +
+													'<div>' +
+														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'<div class="font-style13">' +
+															'<span>Date:</span>' +
+															'<span>' + startDate + '</span>' +
+															'<span>-</span>' +
+															'<span>' + endDate + '</span>' +
+														'</div>' +
 													'</div>' +
-												'</div>' +
-												'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
-											'</li>';
+													'<div class="font-style13">' +
+														'<span>' + item["Header"]["OWNER"] + '</span>' +
+														'<span>Owner:</span>' +	
+													'</div>' +
+													'<div>' +
+														'<div class="overdue-tab1 font-style13">' +
+															'<div><span>1-15 Days</span></div>' +
+															'<div><span>16-45 Days</span></div>' +
+															'<div><span>46-75 Days</span></div>' +
+															'<div><span>Over 75 Days</span></div>' +
+														'</div>' +
+														'<div class="overdue-tab2 font-style13">' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+														'</div>' +
+													'</div>' +
+													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
+												'</li>';
+				}
 				
 				
 			}
 			else if(switchState == true){
-				var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
-												'<ul>' +
-													'<li>' +
-														'<div>' +
-															'<div class="font-style7">' +
-																'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
-															'</div>' +	
+				if(overdueDetailTotalCM !== 0){
+					var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
+													'<ul>' +
+														'<li>' +
+															'<div>' +
+																'<div class="font-style7">' +
+																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="csdArea' + i + '"></div>' +
+														'</li>' +
+														'<li>' +
+															'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
+														'</li>' +
+													'</ul>' +
+												'</li>' +
+												'<li class="csd-single-list" data-csd="show" id="csdHideList' + i + '">' +
+													'<div>' +
+														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'<div class="font-style13">' +
+															'<span>Date:</span>' +
+															'<span>' + startDate + '</span>' +
+															'<span>-</span>' +
+															'<span>' + endDate + '</span>' +
 														'</div>' +
-													'</li>' +
-													'<li>' +
-														'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
-													'</li>' +
-													'<li>' +
-														'<div id="csdArea' + i + '"></div>' +
-													'</li>' +
-													'<li>' +
-														'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
-													'</li>' +
-												'</ul>' +
-											'</li>' +
-											'<li class="csd-single-list" id="csdHideList' + i + '">' +
-												'<div>' +
-													'<div class="font-style12">Total AR and Overdue Amount</div>' +
+													'</div>' +
 													'<div class="font-style13">' +
-														'<span>Date:</span>' +
-														'<span>' + startDate + '</span>' +
-														'<span>-</span>' +
-														'<span>' + endDate + '</span>' +
+														'<span>' + item["Header"]["OWNER"] + '</span>' +
+														'<span>Owner:</span>' +	
 													'</div>' +
-												'</div>' +
-												'<div class="font-style13">' +
-													'<span>' + item["Header"]["OWNER"] + '</span>' +
-													'<span>Owner:</span>' +	
-												'</div>' +
-												'<div>' +
-													'<div class="overdue-tab1 font-style13">' +
-														'<div><span>1-15 Days</span></div>' +
-														'<div><span>16-45 Days</span></div>' +
-														'<div><span>46-75 Days</span></div>' +
-														'<div><span>Over 75 Days</span></div>' +
+													'<div>' +
+														'<div class="overdue-tab1 font-style13">' +
+															'<div><span>1-15 Days</span></div>' +
+															'<div><span>16-45 Days</span></div>' +
+															'<div><span>46-75 Days</span></div>' +
+															'<div><span>Over 75 Days</span></div>' +
+														'</div>' +
+														'<div class="overdue-tab2 font-style13">' +
+															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+														'</div>' +
 													'</div>' +
-													'<div class="overdue-tab2 font-style13">' +
-														'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
-														'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
+												'</li>';
+				}
+				else{
+					var overdueDetailContent = '<li class="csd-data-list overdue-list-hide" id="csdShowList' + i + '">' +
+													'<ul>' +
+														'<li>' +
+															'<div>' +
+																'<div class="font-style7">' +
+																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																'</div>' +	
+															'</div>' +
+														'</li>' +
+														'<li>' +
+															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
+														'</li>' +
+														'<li>' +
+															'<div id="csdArea' + i + '"></div>' +
+														'</li>' +
+														'<li>' +
+															'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
+														'</li>' +
+													'</ul>' +
+												'</li>' +
+												'<li class="csd-single-list" data-csd="hide" id="csdHideList' + i + '">' +
+													'<div>' +
+														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'<div class="font-style13">' +
+															'<span>Date:</span>' +
+															'<span>' + startDate + '</span>' +
+															'<span>-</span>' +
+															'<span>' + endDate + '</span>' +
+														'</div>' +
 													'</div>' +
-												'</div>' +
-												'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
-											'</li>';
+													'<div class="font-style13">' +
+														'<span>' + item["Header"]["OWNER"] + '</span>' +
+														'<span>Owner:</span>' +	
+													'</div>' +
+													'<div>' +
+														'<div class="overdue-tab1 font-style13">' +
+															'<div><span>1-15 Days</span></div>' +
+															'<div><span>16-45 Days</span></div>' +
+															'<div><span>46-75 Days</span></div>' +
+															'<div><span>Over 75 Days</span></div>' +
+														'</div>' +
+														'<div class="overdue-tab2 font-style13">' +
+															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+														'</div>' +
+													'</div>' +
+													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
+												'</li>';
+				}
 												
 			}
 			
@@ -1321,6 +1666,9 @@ function setCsdOverdueDetailData(fac){
 		}
 		
 		if(otherCsdOverdueDetail.length > 0){
+			$('#csdTitle').text("CSD Overdue A/R");
+			$('.csd-main').show();
+			$('.csd-header').show();
 			$.each(otherCsdOverdueDetail, function(i, item) {
 				//获取detail有几周数据
 				var detailLength = item["Detail"].length;
@@ -1399,113 +1747,219 @@ function setCsdOverdueDetailData(fac){
 				
 				/**************** append html ****************/
 				if(switchState == false){
-					var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
-													'<ul>' +
-														'<li>' +
-															'<div>' +
-																'<div class="font-style7">' +
-																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
-																'</div>' +	
+					if(overdueDetailTotalINV !== 0){
+						var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
+														'<ul>' +
+															'<li>' +
+																'<div>' +
+																	'<div class="font-style7">' +
+																		'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="csdArea' + i + '"></div>' +
+															'</li>' +
+															'<li>' +
+																'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
+															'</li>' +
+														'</ul>' +
+													'</li>' +
+													'<li class="csd-single-list" data-csd="show" id="csdHideList' + i + '">' +
+														'<div>' +
+															'<div class="font-style12">Total AR and Overdue Amount</div>' +
+															'<div class="font-style13">' +
+																'<span>Date:</span>' +
+																'<span>' + startDate + '</span>' +
+																'<span>-</span>' +
+																'<span>' + endDate + '</span>' +
 															'</div>' +
-														'</li>' +
-														'<li>' +
-															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
-														'</li>' +
-														'<li>' +
-															'<div id="csdArea' + i + '"></div>' +
-														'</li>' +
-														'<li>' +
-															'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
-														'</li>' +
-													'</ul>' +
-												'</li>' +
-												'<li class="csd-single-list" id="csdHideList' + i + '">' +
-													'<div>' +
-														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'</div>' +
 														'<div class="font-style13">' +
-															'<span>Date:</span>' +
-															'<span>' + startDate + '</span>' +
-															'<span>-</span>' +
-															'<span>' + endDate + '</span>' +
+															'<span>' + item["Header"]["OWNER"] + '</span>' +
+															'<span>Owner:</span>' +	
 														'</div>' +
-													'</div>' +
-													'<div class="font-style13">' +
-														'<span>' + item["Header"]["OWNER"] + '</span>' +
-														'<span>Owner:</span>' +	
-													'</div>' +
-													'<div>' +
-														'<div class="overdue-tab1 font-style13">' +
-															'<div><span>1-15 Days</span></div>' +
-															'<div><span>16-45 Days</span></div>' +
-															'<div><span>46-75 Days</span></div>' +
-															'<div><span>Over 75 Days</span></div>' +
+														'<div>' +
+															'<div class="overdue-tab1 font-style13">' +
+																'<div><span>1-15 Days</span></div>' +
+																'<div><span>16-45 Days</span></div>' +
+																'<div><span>46-75 Days</span></div>' +
+																'<div><span>Over 75 Days</span></div>' +
+															'</div>' +
+															'<div class="overdue-tab2 font-style13">' +
+																'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+															'</div>' +
 														'</div>' +
-														'<div class="overdue-tab2 font-style13">' +
-															'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+														'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
+													'</li>';
+					}
+					else{
+						var overdueDetailContent = '<li class="csd-data-list overdue-list-hide" id="csdShowList' + i + '">' +
+														'<ul>' +
+															'<li>' +
+																'<div>' +
+																	'<div class="font-style7">' +
+																		'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalINV.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="csdArea' + i + '"></div>' +
+															'</li>' +
+															'<li>' +
+																'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
+															'</li>' +
+														'</ul>' +
+													'</li>' +
+													'<li class="csd-single-list" data-csd="hide" id="csdHideList' + i + '">' +
+														'<div>' +
+															'<div class="font-style12">Total AR and Overdue Amount</div>' +
+															'<div class="font-style13">' +
+																'<span>Date:</span>' +
+																'<span>' + startDate + '</span>' +
+																'<span>-</span>' +
+																'<span>' + endDate + '</span>' +
+															'</div>' +
 														'</div>' +
-													'</div>' +
-													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
-												'</li>';
+														'<div class="font-style13">' +
+															'<span>' + item["Header"]["OWNER"] + '</span>' +
+															'<span>Owner:</span>' +	
+														'</div>' +
+														'<div>' +
+															'<div class="overdue-tab1 font-style13">' +
+																'<div><span>1-15 Days</span></div>' +
+																'<div><span>16-45 Days</span></div>' +
+																'<div><span>46-75 Days</span></div>' +
+																'<div><span>Over 75 Days</span></div>' +
+															'</div>' +
+															'<div class="overdue-tab2 font-style13">' +
+																'<div><span class="font-day-color">' + formatNumber(inv1.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv16.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv46.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(inv76.toFixed(2)) + '</span></div>' +
+															'</div>' +
+														'</div>' +
+														'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
+													'</li>';
+					}
 												
 					
 				}
 				else if(switchState == true){
-					var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
-													'<ul>' +
-														'<li>' +
-															'<div>' +
-																'<div class="font-style7">' +
-																	'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
-																'</div>' +	
+					if(overdueDetailTotalCM !== 0){
+						var overdueDetailContent = '<li class="csd-data-list" id="csdShowList' + i + '">' +
+														'<ul>' +
+															'<li>' +
+																'<div>' +
+																	'<div class="font-style7">' +
+																		'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="csdArea' + i + '"></div>' +
+															'</li>' +
+															'<li>' +
+																'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
+															'</li>' +
+														'</ul>' +
+													'</li>' +
+													'<li class="csd-single-list" data-csd="show" id="csdHideList' + i + '">' +
+														'<div>' +
+															'<div class="font-style12">Total AR and Overdue Amount</div>' +
+															'<div class="font-style13">' +
+																'<span>Date:</span>' +
+																'<span>' + startDate + '</span>' +
+																'<span>-</span>' +
+																'<span>' + endDate + '</span>' +
 															'</div>' +
-														'</li>' +
-														'<li>' +
-															'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
-														'</li>' +
-														'<li>' +
-															'<div id="csdArea' + i + '"></div>' +
-														'</li>' +
-														'<li>' +
-															'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
-														'</li>' +
-													'</ul>' +
-												'</li>' +
-												'<li class="csd-single-list" id="csdHideList' + i + '">' +
-													'<div>' +
-														'<div class="font-style12">Total AR and Overdue Amount</div>' +
+														'</div>' +
 														'<div class="font-style13">' +
-															'<span>Date:</span>' +
-															'<span>' + startDate + '</span>' +
-															'<span>-</span>' +
-															'<span>' + endDate + '</span>' +
+															'<span>' + item["Header"]["OWNER"] + '</span>' +
+															'<span>Owner:</span>' +	
 														'</div>' +
-													'</div>' +
-													'<div class="font-style13">' +
-														'<span>' + item["Header"]["OWNER"] + '</span>' +
-														'<span>Owner:</span>' +	
-													'</div>' +
-													'<div>' +
-														'<div class="overdue-tab1 font-style13">' +
-															'<div><span>1-15 Days</span></div>' +
-															'<div><span>16-45 Days</span></div>' +
-															'<div><span>46-75 Days</span></div>' +
-															'<div><span>Over 75 Days</span></div>' +
+														'<div>' +
+															'<div class="overdue-tab1 font-style13">' +
+																'<div><span>1-15 Days</span></div>' +
+																'<div><span>16-45 Days</span></div>' +
+																'<div><span>46-75 Days</span></div>' +
+																'<div><span>Over 75 Days</span></div>' +
+															'</div>' +
+															'<div class="overdue-tab2 font-style13">' +
+																'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+															'</div>' +
 														'</div>' +
-														'<div class="overdue-tab2 font-style13">' +
-															'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
-															'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+														'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
+													'</li>';
+					}
+					else{
+						var overdueDetailContent = '<li class="csd-data-list overdue-list-hide" id="csdShowList' + i + '">' +
+														'<ul>' +
+															'<li>' +
+																'<div>' +
+																	'<div class="font-style7">' +
+																		'<span>' + item["Header"]["CUSTOMER"] + '</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(overdueDetailTotalCM.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="csdArea' + i + '"></div>' +
+															'</li>' +
+															'<li>' +
+																'<img src="img/list_down.png" class="csdSingleListBtn" id="csdDetailBtn' + i + '" data-index="' + i + '" />' +
+															'</li>' +
+														'</ul>' +
+													'</li>' +
+													'<li class="csd-single-list" data-csd="hide" id="csdHideList' + i + '">' +
+														'<div>' +
+															'<div class="font-style12">Total AR and Overdue Amount</div>' +
+															'<div class="font-style13">' +
+																'<span>Date:</span>' +
+																'<span>' + startDate + '</span>' +
+																'<span>-</span>' +
+																'<span>' + endDate + '</span>' +
+															'</div>' +
 														'</div>' +
-													'</div>' +
-													'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
-												'</li>';
-												
-					
-						
+														'<div class="font-style13">' +
+															'<span>' + item["Header"]["OWNER"] + '</span>' +
+															'<span>Owner:</span>' +	
+														'</div>' +
+														'<div>' +
+															'<div class="overdue-tab1 font-style13">' +
+																'<div><span>1-15 Days</span></div>' +
+																'<div><span>16-45 Days</span></div>' +
+																'<div><span>46-75 Days</span></div>' +
+																'<div><span>Over 75 Days</span></div>' +
+															'</div>' +
+															'<div class="overdue-tab2 font-style13">' +
+																'<div><span class="font-day-color">' + formatNumber(cm1.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm16.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm46.toFixed(2)) + '</span></div>' +
+																'<div><span class="font-day-color">' + formatNumber(cm76.toFixed(2)) + '</span></div>' +
+															'</div>' +
+														'</div>' +
+														'<div class="csdColumnHc" id="csdColumn' + i + '"></div>' +
+													'</li>';
+					}
+													
 				}
 				
 				$('.overdueDetail-csd').append(overdueDetailContent);
@@ -1516,10 +1970,10 @@ function setCsdOverdueDetailData(fac){
 			setTotalHtml("csd", csdOverdueDetailTotalINV, csdOverdueDetailTotalCM);
 			
 		}
-		else{
-			$('.csd-header .priority-img').attr('src', 'img/priority_dis.png');
-			$('.overdueDetail-csd').append(noneDataFourColumn);
-			$('.overdueDetail-csd').append(noneDataFourTotal);
+		else if(otherCsdOverdueDetail.length == 0){
+			$('#csdTitle').text("No CSD Overdue A/R Exists.");
+			$('.csd-main').hide();
+			$('.csd-header').hide();
 		}
 	}
 	
@@ -1785,6 +2239,7 @@ function setCsdAreaData(){
 	}
 }
 
+//review by alan
 function setSingleColumnData(i, type) {
 	if(type == 'bu'){
 		if(switchState == false){
@@ -1868,7 +2323,6 @@ function setSingleColumnData(i, type) {
 				    }
 				}
 			});
-			csdColumn.redraw(false);
 		}
 		else{
 			var csdColumn = new Highcharts.Chart('csdColumn' + i, columnOption);
@@ -1908,7 +2362,6 @@ function setSingleColumnData(i, type) {
 				    }
 				}
 			});
-			csdColumn.redraw(false);
 			
 		}
 		
@@ -1938,7 +2391,6 @@ function setBuPartOfColumnData(){
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
@@ -1960,7 +2412,6 @@ function setBuPartOfColumnData(){
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 	}
@@ -2004,7 +2455,6 @@ function setBuPartOfColumnData(){
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 		else if(buColumnSeries.length > 0 && buColumnSeries.length <= buColumnShow){
@@ -2046,7 +2496,6 @@ function setBuPartOfColumnData(){
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 	}
@@ -2095,7 +2544,6 @@ function setCsdPartOfColumnData(){
 					    }
 					}
 				});
-				csdColumn.redraw(false);
 			}
 		}
 	}
@@ -2139,7 +2587,6 @@ function setCsdPartOfColumnData(){
 					    }
 					}
 				});
-				csdColumn.redraw(false);
 			}
 		}
 		else if(csdColumnSeries.length > 0 && csdColumnSeries.length <= csdColumnShow){
@@ -2181,7 +2628,6 @@ function setCsdPartOfColumnData(){
 					    }
 					}
 				});
-				csdColumn.redraw(false);
 			}
 		}
 	}
@@ -2208,7 +2654,6 @@ function setAllBuColumnData() {
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 		else{
@@ -2250,7 +2695,6 @@ function setAllBuColumnData() {
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 			
 		}
@@ -2276,7 +2720,6 @@ function setAllBuColumnData() {
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 		else{
@@ -2318,7 +2761,6 @@ function setAllBuColumnData() {
 					    }
 					}
 				});
-				buColumn.redraw(false);
 			}
 		}
 	}
@@ -2328,73 +2770,115 @@ function setAllBuColumnData() {
 function setTotalHtml(type, inv, cm){
 	if(type == "bu"){
 		if(switchState == false){
-			var buOverdueDetailContentTotal = '<li class="bu-data-list">' +
-											'<ul>' +
-												'<li>' +
-													'<div style="text-align: left;text-indent: 1.5VW;">' +
-														'<div class="font-style7">' +
-															'<span>Total</span>' +
-														'</div>' +	
-													'</div>' +
-												'</li>' +
-												'<li>' +
-													'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
-												'</li>' +
-												'<li>' +
-													'<div id="buArea"></div>' +
-												'</li>' +
-												'<li>' +
-												'</li>' +
-											'</ul>' +
-										'</li>';
+			if(inv !== 0){
+				var buOverdueDetailContentTotal = '<li class="bu-data-list bu-overdue-total">' +
+														'<ul>' +
+															'<li>' +
+																'<div style="text-align: left;text-indent: 1.5VW;">' +
+																	'<div class="font-style7">' +
+																		'<span>Total</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="buArea"></div>' +
+															'</li>' +
+															'<li>' +
+															'</li>' +
+														'</ul>' +
+													'</li>';
+				$('.overdueDetail-bu').prepend(buOverdueDetailContentTotal);
+				
+				//total area hc
+				/*var buArea = new Highcharts.Chart('buArea', areaOption);
+				buArea.series[0].setData(buTotalINV, true, true, false);
+				buArea.redraw();*/
+			}
+			else{
+				$('#buTitle').text("No BU Overdue A/R Exists.");
+				$('.bu-main').hide();
+				$('.bu-header').hide();
+			}
 		}
 		else{
-			var buOverdueDetailContentTotal = '<li class="bu-data-list">' +
-											'<ul>' +
-												'<li>' +
-													'<div style="text-align: left;text-indent: 1.5VW;">' +
-														'<div class="font-style7">' +
-															'<span>Total</span>' +
-														'</div>' +	
-													'</div>' +
-												'</li>' +
-												'<li>' +
-													'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
-												'</li>' +
-												'<li>' +
-													'<div id="buArea"></div>' +
-												'</li>' +
-												'<li>' +
-												'</li>' +
-											'</ul>' +
-										'</li>';
-		}
-		$('.overdueDetail-bu').append(buOverdueDetailContentTotal);
+			if(cm !== 0){
+				var buOverdueDetailContentTotal = '<li class="bu-data-list bu-overdue-total">' +
+														'<ul>' +
+															'<li>' +
+																'<div style="text-align: left;text-indent: 1.5VW;">' +
+																	'<div class="font-style7">' +
+																		'<span>Total</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(cm.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="buArea"></div>' +
+															'</li>' +
+															'<li>' +
+															'</li>' +
+														'</ul>' +
+													'</li>';
+				$('.overdueDetail-bu').prepend(buOverdueDetailContentTotal);
+				
+				//total area hc
+				/*var buArea = new Highcharts.Chart('buArea', areaOption);
+				buArea.series[0].setData(buTotalCM, true, true, false);
+				buArea.redraw();*/
+				
+			}
+			else{
+				$('#buTitle').text("No BU Overdue A/R Exists.");
+				$('.bu-main').hide();
+				$('.bu-header').hide();
+			}	
+		}		
 	}
 	else if(type == "csd"){
 		if(switchState == false){
-			var csdOverdueDetailContentTotal = '<li class="csd-data-list">' +
-											'<ul>' +
-												'<li>' +
-													'<div style="text-align: left;text-indent: 1.5VW;">' +
-														'<div class="font-style7">' +
-															'<span>Total</span>' +
-														'</div>' +	
-													'</div>' +
-												'</li>' +
-												'<li>' +
-													'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
-												'</li>' +
-												'<li>' +
-													'<div id="csdArea"></div>' +
-												'</li>' +
-												'<li>' +
-												'</li>' +
-											'</ul>' +
-										'</li>';
+			if(inv !== 0){
+				var csdOverdueDetailContentTotal = '<li class="csd-data-list csd-overdue-total">' +
+														'<ul>' +
+															'<li>' +
+																'<div style="text-align: left;text-indent: 1.5VW;">' +
+																	'<div class="font-style7">' +
+																		'<span>Total</span>' +
+																	'</div>' +	
+																'</div>' +
+															'</li>' +
+															'<li>' +
+																'<span class="font-style7 font-localString">' + formatNumber(inv.toFixed(2)) + '</span>' +
+															'</li>' +
+															'<li>' +
+																'<div id="csdArea"></div>' +
+															'</li>' +
+															'<li>' +
+															'</li>' +
+														'</ul>' +
+													'</li>';
+				$('.overdueDetail-csd').prepend(csdOverdueDetailContentTotal);
+				
+				//total area hc
+				/*var csdArea = new Highcharts.Chart('csdArea', areaOption);
+				csdArea.series[0].setData(csdTotalINV, true, true, false);
+				csdArea.redraw();*/
+				
+			}
+			else{
+				$('#csdTitle').text("No CSD Overdue A/R Exists.");
+				$('.csd-main').hide();
+				$('.csd-header').hide();
+			}
+			
 		}
 		else{
-			var csdOverdueDetailContentTotal = '<li class="csd-data-list">' +
+			if(cm !== 0){
+				var csdOverdueDetailContentTotal = '<li class="csd-data-list csd-overdue-total">' +
 											'<ul>' +
 												'<li>' +
 													'<div style="text-align: left;text-indent: 1.5VW;">' +
@@ -2413,8 +2897,20 @@ function setTotalHtml(type, inv, cm){
 												'</li>' +
 											'</ul>' +
 										'</li>';
-		}
-		$('.overdueDetail-csd').append(csdOverdueDetailContentTotal);
+				$('.overdueDetail-csd').prepend(csdOverdueDetailContentTotal);
+				
+				//total area hc
+				/*var csdArea = new Highcharts.Chart('csdArea', areaOption);
+				csdArea.series[0].setData(csdTotalCM, true, true, false);
+				csdArea.redraw();*/
+				
+			}
+			else{
+				$('#csdTitle').text("No CSD Overdue A/R Exists.");
+				$('.csd-main').hide();
+				$('.csd-header').hide();
+			}
+		}	
 	}
 	
 }
@@ -2460,7 +2956,9 @@ function setBuOverdueSoonData(){
 	
 	if(buOutstand.length > 0){
 		for(var i in buOutstand){
-			var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
+			var total = Number(buOutstand[i]["DUE_SOON_INV"]);
+			if(total !== 0){
+				var buOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
 												'<div class="font-style7">' +
 													'<span>' + buOutstand[i]["CUSTOMER"] + '</span>' +
@@ -2470,13 +2968,20 @@ function setBuOverdueSoonData(){
 												'<span>' + formatNumber(parseFloat(buOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
-			$('.overduesoon-bu').append(buOutstandDetailContent);
-
+				$('.overduesoon-bu').append(buOutstandDetailContent);
+				
+			}
+			
 			buOutstandDetailTotal +=  parseFloat(buOutstand[i]["DUE_SOON_INV"]);
 			
 		}
 		
-		var buOutstandDetailContentTotal = '<li class="overduesoon-total">' +
+		if(buOutstandDetailTotal !== 0){
+			$('#buOutstand').text("BU Outstanding A/R");
+			$('.overduesoon-bu-header').show();
+			$('.overduesoon-bu-main').show();
+			
+			var buOutstandDetailContentTotal = '<li class="overduesoon-total">' +
 												'<div class="font-style7">' +
 													'<span>Total</span>' +
 												'</div>' +
@@ -2485,12 +2990,19 @@ function setBuOverdueSoonData(){
 												'</div>' +
 											'</li>';
 		
-		$('.overduesoon-bu').append(buOutstandDetailContentTotal);
+			$('.overduesoon-bu').prepend(buOutstandDetailContentTotal);
+		}
+		else{
+			$('#buOutstand').text("No BU Outstanding A/R Exists.");
+			$('.overduesoon-bu-header').hide();
+			$('.overduesoon-bu-main').hide();
+		}
 	}
 	else{
-		$('.overduesoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
-		$('.overduesoon-bu').append(noneDataTwoColumn);
-		$('.overduesoon-bu').append(noneDataTwoTotal);
+		$('#buOutstand').text("No BU Outstanding A/R Exists.");
+		$('.overduesoon-bu-header').hide();
+		$('.overduesoon-bu-main').hide();
+
 	}
 }
 
@@ -2500,7 +3012,9 @@ function setCsdOverdueSoonData(){
 	
 	if(csdOutstand.length > 0){
 		for(var i in csdOutstand){
-			var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
+			var total = Number(csdOutstand[i]["DUE_SOON_INV"]);
+			if(total !== 0){
+				var csdOutstandDetailContent = '<li class="data-list-overduesoon">' +
 											'<div>' +
 												'<div class="font-style7">' +
 													'<span>' + csdOutstand[i]["CUSTOMER"] + '</span>' +
@@ -2510,12 +3024,20 @@ function setCsdOverdueSoonData(){
 												'<span>' + formatNumber(parseFloat(csdOutstand[i]["DUE_SOON_INV"]).toFixed(2)) + '</span>' +
 											'</div>' +
 										'</li>';
-			$('.overduesoon-csd').append(csdOutstandDetailContent);
-			
+				$('.overduesoon-csd').append(csdOutstandDetailContent);
+				
+			}
+						
 			csdOutstandDetailTotal += parseFloat(csdOutstand[i]["DUE_SOON_INV"]);
+			
 		}
 		
-		var csdOutstandDetailContentTotal = '<li class="overduesoon-total">' +
+		if(csdOutstandDetailTotal !== 0){
+			$('#csdOutstand').text("CSD Outstanding A/R");
+			$('.overduesoon-csd-header').show();
+			$('.overduesoon-csd-main').show();
+			
+			var csdOutstandDetailContentTotal = '<li class="overduesoon-total">' +
 												'<div class="font-style7">' +
 													'<span>Total</span>' +
 												'</div>' +
@@ -2524,12 +3046,20 @@ function setCsdOverdueSoonData(){
 												'</div>' +
 											'</li>';
 		
-		$('.overduesoon-csd').append(csdOutstandDetailContentTotal);
+			$('.overduesoon-csd').prepend(csdOutstandDetailContentTotal);
+		}
+		else{
+			$('#csdOutstand').text("No CSD Outstanding A/R Exists.");
+			$('.overduesoon-csd-header').hide();
+			$('.overduesoon-csd-main').hide();
+		}
+		
 	}
 	else{
-		$('.overduesoon-csd-header .priority-img').attr('src', 'img/priority_dis.png');
-		$('.overduesoon-csd').append(noneDataTwoColumn);
-		$('.overduesoon-csd').append(noneDataTwoTotal);
+		$('#csdOutstand').text("No CSD Outstanding A/R Exists.");
+		$('.overduesoon-csd-header').hide();
+		$('.overduesoon-csd-main').hide();
+
 	}
 }
 
@@ -2562,6 +3092,8 @@ function setExpiredSoonData(){
 	$('.expiredsoon').html("");
 	
 	if(expiredSoon.length > 0){
+		$('#creditExpired').text("Expired Soon");
+		$('.expiredsoon-bu-header').show();
 		for(var i in expiredSoon) {
 			var expiredSoonContent = '<li class="data-list-expiredsoon">' +
 										'<div>' +
@@ -2581,9 +3113,241 @@ function setExpiredSoonData(){
 		}
 	}
 	else{
-		$('.expiredsoon').append(noneDataThreeColumn);
+		$('#creditExpired').text("No Credit Expired Soon.");
+		$('.expiredsoon-bu-header').hide();
 	}
 }
+
+function getBuTotalSeriesByWeek(){
+	buTotalINV = [];
+	buTotalCM = [];
+	var weekTotalINV0 = 0;
+	var weekTotalCM0 = 0;
+	var weekTotalINV1 = 0;
+	var weekTotalCM1 = 0;
+	var weekTotalINV2 = 0;
+	var weekTotalCM2 = 0;
+	var weekTotalINV3 = 0;
+	var weekTotalCM3 = 0;
+	var weekTotalINV4 = 0;
+	var weekTotalCM4 = 0;
+	var weekTotalINV5 = 0;
+	var weekTotalCM5 = 0;
+	var weekINV0 = 0;
+	var weekCM0 = 0;
+	var weekINV1 = 0;
+	var weekCM1 = 0;
+	var weekINV2 = 0;
+	var weekCM2 = 0;
+	var weekINV3 = 0;
+	var weekCM3 = 0;
+	var weekINV4 = 0;
+	var weekCM4 = 0;
+	var weekINV5 = 0;
+	var weekCM5 = 0;
+	for(var i in otherBuOverdueDetail){
+		for(var j in otherBuOverdueDetail[i]["Detail"]){
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[0]){
+				weekINV0 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM0 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV0 = 0;
+				weekCM0 = 0;
+			}
+			
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[1]){
+				weekINV1 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM1 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV1 = 0;
+				weekCM1 = 0;
+			}
+			
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[2]){
+				weekINV2 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM2 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV2 = 0;
+				weekCM2 = 0;
+			}
+			
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[3]){
+				weekINV3 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM3 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV3 = 0;
+				weekCM3 = 0;
+			}
+			
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[4]){
+				weekINV4 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM4 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV4 = 0;
+				weekCM4 = 0;
+			}
+			
+			if(otherBuOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[5]){
+				weekINV5 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM5 = Number(otherBuOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV5 = 0;
+				weekCM5 = 0;
+			}
+			
+		}
+		
+		weekTotalINV0 += weekINV0;
+		weekTotalCM0 += weekCM0;
+		
+		weekTotalINV1 += weekINV1;
+		weekTotalCM1 += weekCM1;
+		
+		weekTotalINV2 += weekINV2;
+		weekTotalCM2 += weekCM2;
+		
+		weekTotalINV3 += weekINV3;
+		weekTotalCM3 += weekCM3;
+		
+		weekTotalINV4 += weekINV4;
+		weekTotalCM4 += weekCM4;
+		
+		weekTotalINV5 += weekINV5;
+		weekTotalCM5 += weekCM5;
+	}
+	
+	buTotalINV.push(weekTotalINV0);
+	buTotalINV.push(weekTotalINV1);
+	buTotalINV.push(weekTotalINV2);
+	buTotalINV.push(weekTotalINV3);
+	buTotalINV.push(weekTotalINV4);
+	buTotalINV.push(weekTotalINV5);
+	
+	buTotalCM.push(weekTotalCM0);
+	buTotalCM.push(weekTotalCM1);
+	buTotalCM.push(weekTotalCM2);
+	buTotalCM.push(weekTotalCM3);
+	buTotalCM.push(weekTotalCM4);
+	buTotalCM.push(weekTotalCM5);
+	
+	//console.log(buTotalINV+"   **   "+buTotalCM);
+}
+
+function getCsdTotalSeriesByWeek(){
+	csdTotalINV = [];
+	csdTotalCM = [];
+	var weekTotalINV0 = 0;
+	var weekTotalCM0 = 0;
+	var weekTotalINV1 = 0;
+	var weekTotalCM1 = 0;
+	var weekTotalINV2 = 0;
+	var weekTotalCM2 = 0;
+	var weekTotalINV3 = 0;
+	var weekTotalCM3 = 0;
+	var weekTotalINV4 = 0;
+	var weekTotalCM4 = 0;
+	var weekTotalINV5 = 0;
+	var weekTotalCM5 = 0;
+	var weekINV0 = 0;
+	var weekCM0 = 0;
+	var weekINV1 = 0;
+	var weekCM1 = 0;
+	var weekINV2 = 0;
+	var weekCM2 = 0;
+	var weekINV3 = 0;
+	var weekCM3 = 0;
+	var weekINV4 = 0;
+	var weekCM4 = 0;
+	var weekINV5 = 0;
+	var weekCM5 = 0;
+	for(var i in otherCsdOverdueDetail){
+		for(var j in otherCsdOverdueDetail[i]["Detail"]){
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[0]){
+				weekINV0 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM0 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV0 = 0;
+				weekCM0 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[1]){
+				weekINV1 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM1 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV1 = 0;
+				weekCM1 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[2]){
+				weekINV2 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM2 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV2 = 0;
+				weekCM2 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[3]){
+				weekINV3 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM3 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV3 = 0;
+				weekCM3 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[4]){
+				weekINV4 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM4 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV4 = 0;
+				weekCM4 = 0;
+			}
+			
+			if(otherCsdOverdueDetail[i]["Detail"][j]["WEEK"] == timeAxis[5]){
+				weekINV5 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_INV"]);
+				weekCM5 = Number(otherCsdOverdueDetail[i]["Detail"][j]["TOTAL_CM"]);
+			}else{
+				weekINV5 = 0;
+				weekCM5 = 0;
+			}
+			
+		}
+		
+		weekTotalINV0 += weekINV0;
+		weekTotalCM0 += weekCM0;
+		
+		weekTotalINV1 += weekINV1;
+		weekTotalCM1 += weekCM1;
+		
+		weekTotalINV2 += weekINV2;
+		weekTotalCM2 += weekCM2;
+		
+		weekTotalINV3 += weekINV3;
+		weekTotalCM3 += weekCM3;
+		
+		weekTotalINV4 += weekINV4;
+		weekTotalCM4 += weekCM4;
+		
+		weekTotalINV5 += weekINV5;
+		weekTotalCM5 += weekCM5;
+	}
+	
+	csdTotalINV.push(weekTotalINV0);
+	csdTotalINV.push(weekTotalINV1);
+	csdTotalINV.push(weekTotalINV2);
+	csdTotalINV.push(weekTotalINV3);
+	csdTotalINV.push(weekTotalINV4);
+	csdTotalINV.push(weekTotalINV5);
+	
+	csdTotalCM.push(weekTotalCM0);
+	csdTotalCM.push(weekTotalCM1);
+	csdTotalCM.push(weekTotalCM2);
+	csdTotalCM.push(weekTotalCM3);
+	csdTotalCM.push(weekTotalCM4);
+	csdTotalCM.push(weekTotalCM5);
+	
+	//console.log(csdTotalINV+"   **   "+csdTotalCM);
+}
+
 
 function changePageInitViewDetail(){
 	$("label[for=viewDetail-tab-1]").addClass('ui-btn-active');
@@ -2631,7 +3395,7 @@ function changePageInitViewDetail(){
 	csdColumnPageEnd = csdColumnShow * csdColumnCount;
 	csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
      
-    console.log("init");
+    //console.log("init");
 }
 
 
@@ -2644,7 +3408,6 @@ $('#viewDetail').pagecontainer({
 				this.successCallback = function(data) {
 					overdueDetailCallBackData = data["Content"];
 					getOverdueDetailData();
-					//console.log(timeAxis);
 					loadingMask("hide");
 					
 					localStorage.setItem("overdueDetailData", JSON.stringify([data, nowTime]));				
@@ -2664,11 +3427,10 @@ $('#viewDetail').pagecontainer({
 				overdueDetailData = JSON.parse(localStorage.getItem("overdueDetailData"))[0];
 				overdueDetailCallBackData = overdueDetailData["Content"];
 				getOverdueDetailData();
-				//console.log(timeAxis);
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("overdueDetailData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("overdueDetailData");
                     OverdueDetail();
                 }
@@ -2700,7 +3462,7 @@ $('#viewDetail').pagecontainer({
 				getOverdueSoonData(facility);
 				
 				var lastTime = JSON.parse(localStorage.getItem("outstandDetailData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("outstandDetailData");
                     OutstandDetail();
                 }
@@ -2731,7 +3493,7 @@ $('#viewDetail').pagecontainer({
 				getExpiredSoonData(facility);
 				
 				var lastTime = JSON.parse(localStorage.getItem("creditExpiredSoonData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("creditExpiredSoonData");
                     CreditExpiredSoon();
                 }
@@ -2755,6 +3517,10 @@ $('#viewDetail').pagecontainer({
 				setBuOverdueDetailData(facility);
 				setBuAreaData();
 				buSingleListBtn();
+				//设置CSD数据
+				setCsdOverdueDetailData(facility);
+				setCsdAreaData();
+				csdSingleListBtn();
 				//页面初始化
 				changePageInitViewDetail();
 				//API
@@ -2763,23 +3529,13 @@ $('#viewDetail').pagecontainer({
 				//Highchart
 				getLandscapeColumn(true, "");
     			zoomInChartByColumn();
-    			//设置CSD数据
-				setCsdOverdueDetailData(facility);
-				csdSingleListBtn();
 				viewDetailInit = true;
+				//test
+				getBuTotalSeriesByWeek();
 			}
+			viewMainInit = false;
 			loadingMask("hide");
-			
-			/*if(csdDataInit == false){
-				setTimeout(function(){
-					//设置CSD数据
-					setCsdOverdueDetailData(facility);
-					csdSingleListBtn();
-				}, 300);
-				csdDataInit = true;
-			}*/
-			
-			
+					
 		});
 		
 		$(".page-tabs #viewDetail-tab-1").on("click", function(){
@@ -2834,8 +3590,8 @@ $('#viewDetail').pagecontainer({
 			csdColumnPageStart = csdColumnPageEnd - csdColumnShow;
 			
 			//overdue切换facility恢复默认排序
-			buOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
-			csdOverdueDetail.sort(compareSmallOverdue("Header", "CUSTOMER"));
+			buOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
+			csdOverdueDetail.sort(compareLargeOverdue("Header", "TOTAL_INV"));
 			//overdueSoon切换facility恢复默认排序
 			buOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
 			csdOutstand.sort(compareLargeOverdueSoon("DUE_SOON_INV"));
@@ -2868,7 +3624,8 @@ $('#viewDetail').pagecontainer({
     		$('#csdAllListBtn').attr('src', 'img/all_list_down.png');
     		if(facility == "ALL"){
     			if(buOverdueDetail.length > 0){
-    				$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
+    				$('.bu-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+    				$('.bu-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
     			}
     			else{
     				$('.bu-header .priority-img').attr('src', 'img/priority_dis.png');
@@ -2876,7 +3633,8 @@ $('#viewDetail').pagecontainer({
     		}
     		else{
     			if(otherBuOverdueDetail.length > 0){
-    				$('.bu-header .priority-img').attr('src', 'img/priority_up.png');
+    				$('.bu-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+    				$('.bu-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
     			}
     			else{
     				$('.bu-header .priority-img').attr('src', 'img/priority_dis.png');
@@ -2885,7 +3643,8 @@ $('#viewDetail').pagecontainer({
     		
     		if(facility == "ALL"){
     			if(csdOverdueDetail.length > 0){
-    				$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
+    				$('.csd-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+    				$('.csd-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
     			}
     			else{
     				$('.csd-header .priority-img').attr('src', 'img/priority_dis.png');
@@ -2893,7 +3652,8 @@ $('#viewDetail').pagecontainer({
     		}
     		else{
     			if(otherCsdOverdueDetail.length > 0){
-    				$('.csd-header .priority-img').attr('src', 'img/priority_up.png');
+    				$('.csd-header .detail-customer .priority-img').attr('src', 'img/priority_up.png');
+    				$('.csd-header .detail-total .priority-img').attr('src', 'img/priority_down.png');
     			}
     			else{
     				$('.csd-header .priority-img').attr('src', 'img/priority_dis.png');
@@ -2925,8 +3685,9 @@ $('#viewDetail').pagecontainer({
 				$('.expiredsoon-bu-header .priority-img').attr('src', 'img/priority_dis.png');
 			}
 			
-    		
-    		
+			//test
+			getBuTotalSeriesByWeek();
+			
         });
 		
 	}
