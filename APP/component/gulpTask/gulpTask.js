@@ -7,6 +7,7 @@ var concat = require('gulp-concat');
 var less = require('gulp-less');
 var shell = require('gulp-shell');
 var env = require('gulp-env');
+var minifyCSS = require('gulp-minify-css');
 
 //Read parameter in command line
 function getArg(key) {
@@ -40,7 +41,7 @@ if (process.env.env === "test") {
     env.set({apiServerURL: "https://qplaydev.benq.com/"});
     env.set({QPushAPPKey: "e343504d536ebce16b70167e"});
     env.set({patchFolder: "patchDev"});
-} else { 
+} else {
     // production case
     env.set({productionextra: "1"});
 }
@@ -71,7 +72,11 @@ gulp.task('build', shell.task([
 //Process CSS
 gulp.task('appCSS', function(){
     return gulp.src(['../component/css/component.css','../component/css/template.css'])
-        .pipe(concat('APP.css'))
+        //.pipe(concat('APP.css'))
+        .pipe(concat('APP.min.css'))
+        .pipe(minifyCSS({
+          keepBreaks: false,
+        }))
         .pipe(gulp.dest('www/css/'));
 });
 
@@ -132,9 +137,9 @@ gulp.task('functionJS', function() {
 
 gulp.task('appJS', ['functionJS'], function(){
     return gulp.src(['../component/component.js','./function.js'])
-        //.pipe(uglify())
-        //.pipe(concat('app.min.js'))
-        .pipe(concat('APP.js'))
+        //.pipe(concat('APP.js'))
+        .pipe(uglify())
+        .pipe(concat('APP.min.js'))
         .pipe(gulp.dest('www/js/'));
 });
 

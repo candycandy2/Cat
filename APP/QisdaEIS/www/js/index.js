@@ -66,6 +66,7 @@ window.initialSuccess = function() {
     loadingMask("show");
 
     AraUserAuthority();
+    
     $.mobile.changePage("#viewMain");
 }
 
@@ -915,14 +916,14 @@ function formatNumber(n) {
 
 //改变负值的字体颜色
 function changeColorByNum(){
-	var fontArr = document.getElementsByClassName("font-localString");
-	for(var i in fontArr){
+	var fontArray = document.getElementsByClassName("font-localString");
+	for(var i in fontArray){
 		try{
-			if(parseFloat(fontArr[i].innerText) > 0){
-				$(fontArr[i]).addClass("font-color-red");
+			if(parseFloat(fontArray[i].innerText) > 0){
+				$(fontArray[i]).addClass("font-color-red");
 			}
 			else{
-				$(fontArr[i]).addClass("font-color-black");
+				$(fontArray[i]).addClass("font-color-black");
 			}
 		}catch(e){
 			// handle the exception

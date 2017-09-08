@@ -55,6 +55,7 @@ var bubbleOption = {
         text: null
     },
     xAxis: {
+    	allowDecimals: false,
         gridLineWidth: 0,
         title: {
             text: 'Max Overdue Days of Each Facility(Days)',
@@ -62,6 +63,7 @@ var bubbleOption = {
         }
     },
     yAxis: {
+    	allowDecimals: false,
         lineWidth: 0,
         title: {
             text: 'Overdue Amount of Each Facility(USD$)',
@@ -610,10 +612,10 @@ $('#viewMain').pagecontainer({
 		    		OverdueDetail();
 		    		switch(viewMainTab) {
                         case "bu" :
-                            $("input[id=viewMain-tab-1]").trigger('click');   
+                            $("input[id=viewMain-tab-1]").trigger('click');
                             break;
                         case "csd" :
-                            $("input[id=viewMain-tab-2]").trigger('click');   
+                            $("input[id=viewMain-tab-2]").trigger('click');
                             break;
                     }
 					loadingMask("hide");
@@ -640,7 +642,7 @@ $('#viewMain').pagecontainer({
 				loadingMask("hide");
 				
 				var lastTime = JSON.parse(localStorage.getItem("arSummaryData"))[1];
-				if (checkDataExpired(lastTime, expiredTime, 'dd')) {
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
                     localStorage.removeItem("arSummaryData");
                     ARSummary();
                 }
@@ -795,12 +797,12 @@ $('#viewMain').pagecontainer({
             	chartLandscapeRect = null;
             }
             
-            //review by alan
+			//review by alan
             if(chartbubble != null) {
 				chartbubble.tooltip.hide();
 				chartbubble.series[0].setData(buBubbleData, true, true, false); 
             	chartLandscapebubble.series[0].setData(buBubbleData, true, true, false);
-			}        
+			} 
             
             chartTreemap = new Highcharts.Chart('overview-hc-rectangle', treemapOption);
             chartTreemap.series[0].setData(buBubbleToTreemap, true, true, false); 
