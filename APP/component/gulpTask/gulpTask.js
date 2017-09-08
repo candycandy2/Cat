@@ -71,13 +71,19 @@ gulp.task('build', shell.task([
 
 //Process CSS
 gulp.task('appCSS', function(){
-    return gulp.src(['../component/css/component.css','../component/css/template.css'])
-        //.pipe(concat('APP.css'))
-        .pipe(concat('APP.min.css'))
-        //.pipe(minifyCSS({
-        //  keepBreaks: false,
-        //}))
-        .pipe(gulp.dest('www/css/'));
+    if (process.env.env === "dev") {
+      return gulp.src(['../component/css/component.css','../component/css/template.css'])
+          .pipe(concat('APP.min.css'))
+          .pipe(gulp.dest('www/css/'));
+    }
+    else {
+      return gulp.src(['../component/css/component.css','../component/css/template.css'])
+          .pipe(concat('APP.min.css'))
+          .pipe(minifyCSS({
+            keepBreaks: false,
+          }))
+          .pipe(gulp.dest('www/css/'));
+    }
 });
 
 gulp.task('componentCSS', ['appCSS'], function() {
@@ -136,11 +142,17 @@ gulp.task('functionJS', function() {
 });
 
 gulp.task('appJS', ['functionJS'], function(){
-    return gulp.src(['../component/component.js','./function.js'])
-        //.pipe(concat('APP.js'))
-        //.pipe(uglify())
-        .pipe(concat('APP.min.js'))
-        .pipe(gulp.dest('www/js/'));
+    if (process.env.env === "dev") {
+      return gulp.src(['../component/component.js','./function.js'])
+          .pipe(concat('APP.min.js'))
+          .pipe(gulp.dest('www/js/'));
+    }
+    else {
+      return gulp.src(['../component/component.js','./function.js'])
+          .pipe(concat('APP.min.js'))
+          .pipe(uglify())
+          .pipe(gulp.dest('www/js/'));
+    }
 });
 
 //Process String
