@@ -96,7 +96,7 @@ class ChatRoomController extends Controller
                 $resData = $jmessage->getMessageAndFile($beginTime, $endTime, $count);
                 if(isset($resData->error)){
                     $result = ['ResultCode'=> ResultCode::_025925_callAPIFailedOrErrorOccurs,
-                                 'Message'=> $resData->error->code.':'.$resData->error->message,
+                                 'Message'=> 'Call JMessage Error : ['.$resData->error.']'.$resData->message,
                                  'Content'=> $resData->requestUrl];
                     Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
                     return response()->json($result);
