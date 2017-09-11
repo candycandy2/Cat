@@ -985,6 +985,63 @@ class qplayController extends Controller
         return response()->json($result);
     }
 
+    /**
+     * 確認APP是否需要更新版本(內網)
+     * 內網回傳內網App路徑
+     * @return json
+     */
+    public function checkAppVersionIntra()
+    {
+        $Verify = new Verify();
+        $verifyResult = $Verify->verifyCustom(false);
+
+        $input = Input::get();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
+
+        //For Log
+        $ACTION = 'checkAppVersionIntra';
+        $intra = true; //是否為內網使用method
+
+        //通用api參數判斷
+        if(!array_key_exists('package_name', $input) || !array_key_exists('device_type', $input) || !array_key_exists('version_code', $input)
+        || trim($input["package_name"]) == "" || trim($input['device_type']) == "" || trim($input['version_code']) == "")
+        {
+            $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
+                'content'=>''];
+
+            CommonUtil::logApi("", $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return response()->json($result);
+        }
+
+        $package_name = $input["package_name"];
+        $device_type = $input['device_type'];
+        $version_code = $input['version_code'];
+
+        if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
+        {
+
+            return $this->checkMyAppVersion($ACTION, $package_name, $device_type, $version_code, $intra);
+        }
+        else
+        {
+            $result = ['result_code'=>$verifyResult["code"],
+                'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
+                'content'=>''];
+            CommonUtil::logApi("", $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return response()->json($result);
+        }
+    }
+
+    /**
+     * 確認APP是否需要更新版本(外網)
+     * 回傳外網App路徑
+     * @return json
+     */
     public function checkAppVersion()
     {
         $Verify = new Verify();
@@ -1017,7 +1074,31 @@ class qplayController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $appRowIdList = \DB::table("qp_app_head")
+            return $this->checkMyAppVersion($ACTION, $package_name, $device_type, $version_code);
+        }
+        else
+        {
+            $result = ['result_code'=>$verifyResult["code"],
+                'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
+                'content'=>''];
+            CommonUtil::logApi("", $ACTION,
+                response()->json(apache_response_headers()), $result);
+            return response()->json($result);
+        }
+    }
+
+    /**
+     * 確認APP是否需要更新版本
+     * @param  String $action       內網或外網呼叫，傳入method name
+     * @param  String $package_name package_name
+     * @param  String $device_type  裝置類型: ios|android
+     * @param  int $version_code    目前版本號
+     * @param  boolean $intra       呼叫端是否為內網
+     * @return json
+     */
+    private function checkMyAppVersion($action, $package_name, $device_type, $version_code, $intra=false){
+
+        $appRowIdList = \DB::table("qp_app_head")
                 -> where('package_name', "=", $package_name)
                 -> select('row_id')->get();
             if(count($appRowIdList) < 1) {
@@ -1025,7 +1106,7 @@ class qplayController extends Controller
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000915_packageNotExist),
                     'content'=>''];
 
-                CommonUtil::logApi("", $ACTION,
+                CommonUtil::logApi("", $action,
                     response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
@@ -1040,7 +1121,7 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_999015_haveNoAppVersion,
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999015_haveNoAppVersion),
                     'content'=>''];
-                CommonUtil::logApi("", $ACTION,
+                CommonUtil::logApi("", $action,
                     response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
@@ -1056,7 +1137,7 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_999012_appOffTheShelf,
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999012_appOffTheShelf),
                     'content'=>''];
-                CommonUtil::logApi("", $ACTION,
+                CommonUtil::logApi("", $action,
                     response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
@@ -1066,7 +1147,7 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
                     'content'=>''];
-                CommonUtil::logApi("", $ACTION,
+                CommonUtil::logApi("", $action,
                     response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
@@ -1077,7 +1158,7 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_000913_NotNeedUpdate,
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000913_NotNeedUpdate),
                     'content'=>''];
-                CommonUtil::logApi("", $ACTION,
+                CommonUtil::logApi("", $action,
                     response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
@@ -1086,21 +1167,12 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>trans("messages.MSG_NEED_TO_UPDATE"),
                     'content'=>array("version_code"=>$versionLine->version_code,
-                        'download_url'=>FilePath::getApkDownloadUrl($app_row_id, $device_type, $versionLine->version_code, $versionLine->url,true))];
-                CommonUtil::logApi("", $ACTION,
+                    'download_url'=>FilePath::getApkDownloadUrl($app_row_id, $device_type, $versionLine->version_code, $versionLine->url,$intra))];
+                CommonUtil::logApi("", $action,
                     response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
-        }
-        else
-        {
-            $result = ['result_code'=>$verifyResult["code"],
-                'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
-                'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
-            return response()->json($result);
-        }
+
     }
 
     public function getAppList()
@@ -1236,8 +1308,6 @@ SQL;
                             ':id3'=>$userInfo->row_id]
                     );
                 }
-
-
 
                 //test return response()->json(['result_code'=>count($appDataList),'type'=>$device_type, 'id'=>$userInfo->row_id]);
 
