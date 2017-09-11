@@ -194,10 +194,10 @@ return [
 
     /*
     |-------------------------------------------------------------------------
-    | QMessage Api Server
+    | QPlay Api Server
     |--------------------------------------------------------------------------
     |
-    | Here you may configure the qMessage api server settings for your application.
+    | Here you may configure the QPlay api server settings for your application.
     |
     */
    

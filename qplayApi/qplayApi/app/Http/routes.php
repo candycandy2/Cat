@@ -30,6 +30,7 @@ Route::any('/v101/qplay/unregister', 'qplayController@unregister');
 Route::any('/v101/qplay/isRegister', 'qplayController@isRegister');
 Route::any('/v101/qplay/login', 'qplayController@login');
 Route::any('/v101/qplay/logout', 'qplayController@logout');
+Route::any('/v101/qplay/checkAppVersionIntra', 'qplayController@checkAppVersionIntra');
 Route::any('/v101/qplay/checkAppVersion', 'qplayController@checkAppVersion');
 Route::any('/v101/qplay/getAppList', 'qplayController@getAppList');
 Route::any('/v101/qplay/getMessageList', 'qplayController@getMessageList');
@@ -54,6 +55,12 @@ Route::any('/{api_version}/custom/{app_key}/{function}', 'customController@proce
 
 //MongoTest
 Route::any('/mongo', 'mongoController@Test');
+
+//OTA
+Route::any('/v101/qplay/deleteAppFile', 'appVersionController@deleteAppFile');
+Route::any('/v101/qplay/deleteAppFileFromPublish', 'appVersionController@deleteAppFileFromPublish');
+Route::any('/v101/qplay/uploadAppFile', 'appVersionController@uploadAppFile');
+Route::any('/v101/qplay/copyAppFileToPublish', 'appVersionController@copyAppFileToPublish');
 
 //YellowPage
 /*Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');
