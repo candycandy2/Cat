@@ -1,4 +1,6 @@
 
+var closeInfoMsgInit = false; // let closeInfoMsg click event init once
+
 /********************************** Corodva APP initial *************************************/
 var app = {
     // Application Constructor
@@ -90,7 +92,8 @@ $(document).one("pagebeforecreate", function() {
         }
 
         adjustPageMarginTop();
-
+        //call initialSuccess
+        initialSuccess();
         // tab title, open version, uuid window
         $(".ui-title").on("taphold", function() {
             //Set for iOS, control text select
