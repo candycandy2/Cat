@@ -752,6 +752,24 @@ a{
 .data-list-none-fourColumn > div:nth-child(4){
 	width: 11.367VW;
 }
+
+/************************************* transform ****************************************/
+.body-transform-rotate-cm90{
+	transform: rotate(90deg) scale(1.2);
+    -webkit-transform: rotate(90deg) scale(1.2);
+    -moz-transform: rotate(90deg) scale(1.2);
+    -o-transform: rotate(90deg) scale(1.2);
+    -ms-transform: rotate(90deg) scale(1.2);
+}
+
+.body-transform-rotate-inv90{
+	transform: rotate(-90deg) scale(1.2);
+    -webkit-transform: rotate(-90deg) scale(1.2);
+    -moz-transform: rotate(-90deg) scale(1.2);
+    -o-transform: rotate(-90deg) scale(1.2);
+    -ms-transform: rotate(-90deg) scale(1.2);
+}
+
 /********************************************  *******************************************/
 
 
