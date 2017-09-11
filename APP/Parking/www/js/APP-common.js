@@ -71,15 +71,81 @@ $(document).one("pagebeforecreate", function() {
 
 
     //For APP scrolling in [Android ver:5], set CSS
+    //For font-family, set diff in iOS/Android
     $(document).on("pageshow", function() {
-        //adjustPageMarginTop();
-    });
+        if (device.platform === "Android") {
+            $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
+            $(".ui-header-fixed").css("position", "fixed");
 
+            var version = device.version.substr(0, 1);
+            if (version === "6") {
+                $(".ui-footer-fixed").css("position", "fixed");
+            }
+            $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
+        } else if (device.platform === "iOS") {
+            $('.page-header').addClass('ios-fix-overlap');
+            $('.ios-fix-overlap-div').css('display', 'block');
+            $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
+            $("body, input, select, textarea, button, .ui-btn").css("font-family", "Heiti TC");
+        }
+
+        adjustPageMarginTop();
+
+        // tab title, open version, uuid window
+        $(".ui-title").on("taphold", function() {
+            //Set for iOS, control text select
+            document.documentElement.style.webkitTouchCallout = "none";
+            document.documentElement.style.webkitUserSelect = "none";
+
+            infoMessage();
+        });
+
+        // close ifo msg init
+        if (!closeInfoMsgInit) {
+            $(document).on('click', '#infoMsg #closeInfoMsg', function() {
+                $('#infoMsg').popup('close');
+                $('#infoMsg').hide();
+            });
+            closeInfoMsgInit = true;
+        }
+    });
 
     window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
         if (window.orientation === 180 || window.orientation === 0) {
-            /*do somrthing when device is in portraint mode*/
+             /*do somrthing when device is in portraint mode*/
+            if (device.platform === "iOS") {
+                adjustPageMarginTop();
+            }
         }
     }, false);
 
 });
+/************************************************************************************************/
+/********************************** APP Process JS function *************************************/
+/************************************************************************************************/
+
+function adjustPageMarginTop() {
+    //For some APP Page, if page's header has second level [button / title],
+    //auto resize the margin-top of page-main.
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+
+    if (activePageID.length !== 0) {
+
+        var pageHeaderHeight = $("#" + activePageID + " .page-header").height();
+        var headerStyleHeight = $("#" + activePageID + " .header-style").height();
+        var mainMarginTop = parseInt(headerStyleHeight - pageHeaderHeight, 10);
+
+        if (mainMarginTop < 0) {
+            mainMarginTop = 0;
+        }
+
+        if (device.platform === "iOS") {
+            mainMarginTop = mainMarginTop + 20;
+        }
+
+        $(".page-main").css({
+            "margin-top": mainMarginTop + "px"
+        });
+    }
+}
