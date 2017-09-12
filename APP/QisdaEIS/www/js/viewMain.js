@@ -128,7 +128,7 @@ var bubbleOption = {
             			
             			//show diff chart by orientation
             			if(window.orientation === 180 || window.orientation === 0){
-            				$('#overview-hc-rectangle').show();
+            				//$('#overview-hc-rectangle').show();
             				
             			}
             			if(window.orientation === 90 || window.orientation === -90){
@@ -139,8 +139,8 @@ var bubbleOption = {
             						marginTop: 0
             					}
             				});
-            				$('#backBtn').show();
             				$('#overview-hc-bubble-landscape').hide();
+            				$('#backBtn').show();
             				$('#overview-hc-rectangle-landscape').show();
             				treemapState = true;   					
             			}       			      			
