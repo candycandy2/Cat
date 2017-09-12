@@ -34,8 +34,13 @@ class BasicInfoRepository
      */
     public function getAllBasicInfoRawData($appKey)
     {   
+        DB::connection('mysql_ens')->statement(DB::raw('set @i:=0'));
         $basicInfo =   $this->basicInfo
             ->join( 'qplay.qp_user', 'qp_user.emp_no', '=', 'en_basic_info.emp_no')
+            ->leftJoin(DB::raw('(SELECT distinct(qp_register.user_row_id) register_user_id FROM `qplay`.`qp_register`) registered'), function($join)
+            {
+                $join->on('qp_user.row_id', '=', 'registered.register_user_id');
+            })
             ->where('app_key','=',$appKey)
             ->orderBy('location','asc')
             ->orderBy('function','asc')
@@ -48,7 +53,9 @@ class BasicInfoRepository
                 'en_basic_info.emp_no as emp_no',
                 'qplay.qp_user.login_id as login_id',
                 'qplay.qp_user.status as status',
-                'qplay.qp_user.resign as resign'
+                'qplay.qp_user.resign as resign',
+                'register_user_id',
+                DB::raw('@i := @i + 1 as row_number')
                 )
             ->get();
         return $basicInfo;
