@@ -560,6 +560,8 @@ function buSingleListBtn(){
 				otherBuOverdueDetail[index]["Header"]["SPREAD"] = 1;
 			}
 			buArrIndex = index;
+			csdArrIndex = null;
+			screen.orientation.unlock();
 			buIndexMarginTop = $('#buShowList'+buArrIndex).offset().top;
 			
 			setSingleColumnData(index, 'bu');
@@ -607,6 +609,8 @@ function csdSingleListBtn(){
 				otherCsdOverdueDetail[index]["Header"]["SPREAD"] = 1;
 			}
 			csdArrIndex = index;
+			buArrIndex = null;
+			screen.orientation.unlock();
 			csdIndexMarginTop = $('#csdShowList'+csdArrIndex).offset().top;
 			
 			setSingleColumnData(index, 'csd');
@@ -3531,7 +3535,7 @@ $('#viewDetail').pagecontainer({
     			zoomInChartByColumn();
 				viewDetailInit = true;
 				//test
-				getBuTotalSeriesByWeek();
+				//getBuTotalSeriesByWeek();
 			}
 			viewMainInit = false;
 			loadingMask("hide");
@@ -3686,7 +3690,7 @@ $('#viewDetail').pagecontainer({
 			}
 			
 			//test
-			getBuTotalSeriesByWeek();
+			//getBuTotalSeriesByWeek();
 			
         });
 		

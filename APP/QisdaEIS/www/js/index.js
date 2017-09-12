@@ -9,6 +9,8 @@ var csdChartColumn1,csdChartColumn2,csdChartColumn3,csdChartColumn4;
 var chartColumnLandscape = null;
 var currentYear, currentMonth, currentDate;
 var length,thisYear,thisMonth;
+var bodyWidth = screen.width;
+var bodyHeight = screen.height;
 var ARSummaryQueryData,OverdueDetailQueryData,OutstandDetailQueryData,CreditExpiredSoonQueryData;
 var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,creditExpiredSoonCallBackData,araUserAuthorityCallBackData;
 var treemapState = false;
@@ -516,12 +518,11 @@ $(document).one('pagebeforeshow', function(){
 
 		   	//setArea-hc
 		   	onScrollSetAllAreaData();
-
+			
+			//screen.orientation.unlock();	
 		});
 
 	}
-
-
 
 
 });
@@ -633,7 +634,7 @@ function checkIndexVisible(){
 		}
 	}
 
-   	//console.log(buArrIndex+" ,"+csdArrIndex);
+   	console.log(buArrIndex+" ,"+csdArrIndex);
 
 }
 
@@ -963,9 +964,9 @@ function changePageByPanel(pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
         lastPageID = $.mobile.activePage[0].id;
-
+		
         $.mobile.changePage("#" + pageId);
-
+		
         if(firstClick){
         	firstClick = false;
         	$.mobile.defaultPageTransition = 'fade';
@@ -998,13 +999,28 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     if($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel( "close");
     }
+    
     if(window.orientation === 180 || window.orientation === 0) {
     	if($.mobile.activePage[0].id === 'viewMain'){
     		$('#overview-hc-bubble-landscape').hide();
 			$('#overview-hc-rectangle-landscape').hide();
 			$('#backBtn').hide();
     	}else{
-    		$('#viewDetail-hc-column-landscape').hide();
+    		if(viewDetailTab == "overdue"){
+    			$('#viewDetail-hc-column-landscape').hide();
+	    		$('#viewDetail .page-header').show();
+	    		$('#viewDetail .page-tabs').show();
+	    		$('#viewDetail .scrollmenu').show();
+	    		$('#viewDetail #overdue').show();
+	    		//页面返回指定位置
+    			if(buArrIndex !== null){
+	    			window.scrollTo(0, buIndexMarginTop-100);
+	    		}
+	    		else if(csdArrIndex !== null){
+	    			window.scrollTo(0, csdIndexMarginTop-100);
+	    		}
+    		}
+    		/*$('#viewDetail-hc-column-landscape').hide();
     		$('#viewDetail .page-header').show();
     		$('#viewDetail .page-tabs').show();
     		$('#viewDetail .scrollmenu').show();
@@ -1018,48 +1034,65 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 	    		else if(csdArrIndex !== null){
 	    			window.scrollTo(0, csdIndexMarginTop-100);
 	    		}
-    		}
-    		else if(viewDetailTab == "overdueSoon"){
+    		}*/
+    		/*else if(viewDetailTab == "overdueSoon"){
     			$('#viewDetail #overdueSoon').show();
     		}
     		else if(viewDetailTab == "expiredSoon"){
     			$('#viewDetail #expiredSoon').show();
-    		}
-
+    		}*/
+    		
+    		
+			//screen.orientation.lock('portrait');
+			
     	}
     }
-    if(window.orientation === 90 || window.orientation === -90 ) {
+    if(window.orientation === 90 || window.orientation === -90) {
         if($.mobile.activePage[0].id === 'viewMain'){
         	zoomInChart();
         	$('#overview-hc-rectangle').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
-        	console.log(buArrIndex+" ,"+csdArrIndex);
-        	getLandscapeColumn(true, "");
-    		if(viewDetailTab == "overdue" && buArrIndex !== null){
+        	//console.log(buArrIndex+" ,"+csdArrIndex);
+        	//getLandscapeColumn(true, "");
+    		if(viewDetailTab == "overdue" && buArrIndex !== null){  
+    			getLandscapeColumn(true, "");
         		getLandscapeColumn(false, "BU");
         		$('#viewDetail .page-header').hide();
         		$('#viewDetail .page-tabs').hide();
         		$('#viewDetail #overdue').hide();
-        		$('#viewDetail #overdueSoon').hide();
-        		$('#viewDetail #expiredSoon').hide();
+        		/*$('#viewDetail #overdueSoon').hide();
+        		$('#viewDetail #expiredSoon').hide();*/
         		$('#viewDetail .scrollmenu').hide();
         		$('#viewDetail-hc-column-landscape').show();
         	}
     		else if(viewDetailTab == "overdue" && csdArrIndex !== null){
+    			getLandscapeColumn(true, "");
         		getLandscapeColumn(false, "CSD");
         		$('#viewDetail .page-header').hide();
         		$('#viewDetail .page-tabs').hide();
         		$('#viewDetail #overdue').hide();
-        		$('#viewDetail #overdueSoon').hide();
-        		$('#viewDetail #expiredSoon').hide();
+        		/*$('#viewDetail #overdueSoon').hide();
+        		$('#viewDetail #expiredSoon').hide();*/
         		$('#viewDetail .scrollmenu').hide();
         		$('#viewDetail-hc-column-landscape').show();
     		}
-
-
-
-
+    		else{
+    			screen.orientation.lock('portrait');
+    		}
+    		
+    		
+			
         }
     }
+    
 }, false);
+
+/*screen.orientation.addEventListener('change', function(){
+    console.log(screen.orientation.type); // e.g. portrait
+});*/
+
+
+
+
+
