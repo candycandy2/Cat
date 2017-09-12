@@ -3579,6 +3579,7 @@ $('#viewDetail').pagecontainer({
             $(this).parent('.scrollmenu').find('.hover').removeClass('hover');
             $(this).addClass('hover');
 			facilityInit = true;
+			screen.orientation.lock('portrait');
 			
 			buCountNum = 1;
 			buPageEnd = buShowNum * buCountNum;
