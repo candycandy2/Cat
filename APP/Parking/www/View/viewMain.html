@@ -7,11 +7,24 @@
         </div>
     </div>
     <div data-role="main" class="page-main" style="line-height: initial !important;">
-        <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="a">
-            <li><a href="#">Listview 1<span class="ui-li-count">22</span></a></li>
-            <li><a href="#">Listview 2<span class="ui-li-count">3</span></a></li>
-            <li><a href="#">Listview 3<span class="ui-li-count">５</span></a></li>
-            <li><a href="#">Listview 4<span class="ui-li-count">7</span></a></li>
-        </ul>
+        <div class="ui-margin-public" style="text-align: center;">
+            <div id="reserveTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50w">
+                <input type="radio" name="tab" id="tab1" value="tab1" checked="checked">
+                <label for="tab1">一般預約</label>
+                <input type="radio" name="tab" id="tab2" value="tab2">
+                <label for="tab2">我的預約</label>
+                <input type="radio" name="tab" id="tab3" value="tab3">
+                <label for="tab3">注意事項</label>
+            </div>
+        </div>
+        <div class="ui-margin-public" id="pageOne">
+            <select name="reserveSite" id="reserveSite" data-role="none" class="dropdown-icon" style="margin-bottom: 1vh;">
+                <option value="92">BQT/QTT</option> 
+                <option value="111">QTY</option>
+            </select>
+            <div class="inline word-mid">
+                <div id="alertLimitRoomMsg" class="disable inline word-warp"></div>
+            </div>
+        </div>
     </div>
 </div>

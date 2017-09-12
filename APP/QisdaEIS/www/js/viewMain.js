@@ -704,8 +704,14 @@ $('#viewMain').pagecontainer({
                 onRefresh: function() {
                     if($.mobile.pageContainer.pagecontainer("getActivePage")[0].id == "viewMain") {
                        	//销毁hc
-                       	chartbubble.destroy();
-                        chartLandscapebubble.destroy();
+                       	if(chartbubble !== null){
+                       		chartbubble.destroy();
+                       		chartbubble = null;
+                       	}
+                       	if(chartLandscapebubble !== null){
+                       		chartLandscapebubble.destroy();
+                       		chartLandscapebubble = null;
+                       	}
                         if(chartTreemap !== null){
                         	chartTreemap.destroy();
                         	chartTreemap = null;
