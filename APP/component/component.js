@@ -170,7 +170,8 @@ var app = {
             if (window.orientation === 90 || window.orientation === -90)
                 $('.main-GetQPush').css('top', (screen.height - $('.main-GetQPush').height()) / 4);
 
-            if (checkTimerCount >= 30) {
+            if (checkTimerCount >= 60) {
+                stopCheck();
                 $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
                 $("#viewMaintain").addClass("ui-page ui-page-theme-a ui-page-active");
             }
@@ -580,6 +581,7 @@ function readConfig() {
                 window.stopCheck = function() {
                     if (window.checkTimer != null) {
                         clearInterval(window.checkTimer);
+                        window.checkTimer = null;
                     }
                 };
             }
