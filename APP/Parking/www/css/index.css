@@ -84,7 +84,6 @@
 
 .word-mid {
     text-align: left;
-    vertical-align: sub;
     margin-left: 3.2vw;
 }
 
@@ -146,7 +145,7 @@ div.scrollmenu a {
 
 #scrollDate a{ padding: 2.4vw 0;}
 
-#reserveRoom a {
+#reserveSpace a {
     padding: 2.894vw 0 2.567vw;
     font-weight: normal;
     width: 22%;
