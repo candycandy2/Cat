@@ -20,6 +20,35 @@ window.initialSuccess = function() {
     }
 }
 
+function getAPIListAllParkingSpace() {
+    loadingMask('show');
+    var self = this;
+    var queryData = {};
+
+    this.successCallback = function(data) {
+        if (data['ResultCode'] === "1") {
+
+            //save to local data
+            localStorage.removeItem('parkingSpaceLocalData');
+            var jsonData = {};
+            jsonData = {
+                lastUpdateTime: new Date(),
+                content: data['Content']
+            };
+            localStorage.setItem('parkingSpaceLocalData', JSON.stringify(jsonData));
+            loadingMask('hide');
+
+        } else {
+            loadingMask('hide');
+            popupMsg('reservePopupMsg', 'apiFailMsg', '', '請確認網路連線', '', false, '確定', false);
+        }
+    };
+
+    var __construct = function() {
+        CustomAPI("POST", false, "ListAllParkingSpace", self.successCallback, self.failCallback, queryData, "");
+    }();
+}
+
 function getAPIListAllManager() {
     loadingMask('show');
     var self = this;
