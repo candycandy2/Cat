@@ -903,25 +903,25 @@ function onBackKeyDown() {
 //根据横竖屏设置图表容器大小
 function zoomInChart() {
     if(screen.width < screen.height) {
-        chartLandscapebubble.setSize(screen.height, screen.width*0.9, false);
+        chartLandscapebubble.setSize(screen.height, screen.width*0.95, false);
     }else {
-        chartLandscapebubble.setSize(screen.width, screen.height*0.9, false);
+        chartLandscapebubble.setSize(screen.width, screen.height*0.95, false);
     }
 }
 
 function zoomInChartByTreemap(){
 	if(screen.width < screen.height) {
-        chartLandscapeRect.setSize(screen.height, screen.width*0.84, false);
+        chartLandscapeRect.setSize(screen.height, screen.width*0.85, false);
    	}else {
-        chartLandscapeRect.setSize(screen.width, screen.height*0.84, false);
+        chartLandscapeRect.setSize(screen.width, screen.height*0.85, false);
     }
 }
 
 function zoomInChartByColumn(){
 	if(screen.width < screen.height) {
-        chartColumnLandscape.setSize(screen.height, screen.width*0.9, false);
+        chartColumnLandscape.setSize(screen.height, screen.width*0.95, false);
    	}else {
-        chartColumnLandscape.setSize(screen.width, screen.height*0.9, false);
+        chartColumnLandscape.setSize(screen.width, screen.height*0.95, false);
     }
 }
 
@@ -1021,7 +1021,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     
     if(window.orientation === 180 || window.orientation === 0) {
     	if($.mobile.activePage[0].id === 'viewMain'){
-    		$('#overview-hc-bubble-landscape').hide();
+			$('#overview-hc-bubble-landscape').hide();
 			$('#overview-hc-rectangle-landscape').hide();
 			$('#backBtn').hide();
     	}else{
@@ -1029,18 +1029,18 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     			screen.orientation.lock('portrait');
     		}
     		else{
-    			$('#viewDetail-hc-column-landscape').hide();
+    			/*$('#viewDetail-hc-column-landscape').hide();
 	    		$('#viewDetail .page-header').show();
 	    		$('#viewDetail .page-tabs').show();
 	    		$('#viewDetail #overdue').show();
+	    		$('#viewDetail .scrollmenu').show();*/
 	    		//页面返回展开时的位置
-    			if(buArrIndex !== null){
+    			/*if(buArrIndex !== null){
 	    			window.scrollTo(0, buIndexMarginTop-100);
 	    		}
 	    		else if(csdArrIndex !== null){
 	    			window.scrollTo(0, csdIndexMarginTop-100);
-	    		}
-	    		$('#viewDetail .scrollmenu').show();	
+	    		}*/
     		}
 			
     	}
@@ -1049,30 +1049,32 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     if(window.orientation === 90 || window.orientation === -90) {
         if($.mobile.activePage[0].id === 'viewMain'){
         	zoomInChart();
-        	//$('#overview-hc-rectangle').hide();
+        	$('#backBtn').hide();
+        	$('#overview-hc-rectangle-landscape').hide();
         	$('#overview-hc-bubble-landscape').show();
         }else{
         	if(viewDetailTab == "overdue"){
+        		zoomInChartByColumn();
         		if(buArrIndex == null && csdArrIndex == null){
 	        		screen.orientation.lock('portrait');
 	        	}
 	    		else if(buArrIndex !== null){  
-	    			getLandscapeColumn(true, "");
-	        		getLandscapeColumn(false, "BU");
-	        		$('#viewDetail .page-header').hide();
+	        		/*$('#viewDetail .page-header').hide();
+	        		$('#viewDetail .scrollmenu').hide();
 	        		$('#viewDetail .page-tabs').hide();
 	        		$('#viewDetail #overdue').hide();
-	        		$('#viewDetail .scrollmenu').hide();
-	        		$('#viewDetail-hc-column-landscape').show();
+	        		$('#viewDetail-hc-column-landscape').show();*/
+	        		getLandscapeColumn(false, "BU");
+	        		
 	        	}
 	    		else if(csdArrIndex !== null){
-	    			getLandscapeColumn(true, "");
-	        		getLandscapeColumn(false, "CSD");
-	        		$('#viewDetail .page-header').hide();
+	        		/*$('#viewDetail .page-header').hide();
+	        		$('#viewDetail .scrollmenu').hide();
 	        		$('#viewDetail .page-tabs').hide();
 	        		$('#viewDetail #overdue').hide();
-	        		$('#viewDetail .scrollmenu').hide();
-	        		$('#viewDetail-hc-column-landscape').show();
+	        		$('#viewDetail-hc-column-landscape').show();*/
+	        		getLandscapeColumn(false, "CSD");
+	        		
 	    		}
         	}
         	else{

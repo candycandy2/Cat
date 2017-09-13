@@ -10,7 +10,7 @@ use App\lib\Verify;
 use App\Services\BasicInfoService;
 use App\Services\UserService;
 use DB;
-use Excel;
+use Config;
 
 class BasicInfoController extends Controller
 {
@@ -45,15 +45,21 @@ class BasicInfoController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
             $empNo = (string)$xml->emp_no[0];
-            $appKey = (string)$xml->app_key[0];
+            $project = (string)$xml->project[0];
 
-            if($appKey ==""){
+            if($project ==""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
             }
+
+            if(!in_array($project, Config::get('app.ens_project'))){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                    'Message'=>"project參數不存在",
+                    'Content'=>""]);
+            }
             
-            $resultList = $this->basicInfoService->getBasicInfo($appKey);
+            $resultList = $this->basicInfoService->getBasicInfo($project);
 
             if(count($resultList) == 0){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014908_accountNotExist,

@@ -31,6 +31,8 @@ abstract class ResultCode
     const _014918_memberNotRegistered = "014918";  //新增聊天室失敗, 成員未註冊
     const _014919_chatroomMemberInvalid = "014919";  //聊天室成員不存在
     const _014920_chatroomIdInvalid = "014920";  //傳入的聊天室編號無法識別 
-    const _014921_pushUserError = "014921";  //成員已離職或停權 
+    const _014921_pushUserError = "014921";  //成員已離職或停權
+    const _014922_projectInvalid = "014922";  //project參數不存在
+    const _014923_noAuthority = "014923";  //沒有任何專案權限
     const _014999_unknownError = "014999";  //其他未知錯誤    
 }

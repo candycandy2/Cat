@@ -38,12 +38,12 @@ class BasicInfoRepository
      * 取得basic Info基本資料
      * @return mixed
      */
-    public function getAllBasicInfoRawData($appKey)
+    public function getAllBasicInfoRawData($project)
     {   
 
         return  $this->basicInfo
             ->join( $this->userDataBaseName.'.'.$this->userTableName, $this->userTableName.'.emp_no', '=', 'en_basic_info.emp_no')
-            ->where('app_key','=',$appKey)
+            ->where('project','=',$project)
             ->orderBy('location','asc')
             ->orderBy('function','asc')
             ->orderBy('emp_no','asc')
@@ -60,16 +60,16 @@ class BasicInfoRepository
 
     /**
      * 使用location-function 取得資本資料
-     * @param  String $appKey   app-key
+     * @param  String $project   project
      * @param  String $location 地點
      * @param  String $function 分類
      * @return mixed
      */
-    public function getBasicInfoByLocatnionFunction($appKey, $location, $function){
+    public function getBasicInfoByLocatnionFunction($project, $location, $function){
 
          return  $this->basicInfo
             ->select('row_id')
-            ->where('app_key', '=', $appKey)
+            ->where('project', '=', $project)
             ->where('location', '=', $location)
             ->where('function', '=', $function)
             ->get();
@@ -77,21 +77,37 @@ class BasicInfoRepository
 
     /**
      * 使用location-function 取得所屬成員
-     * @param  String $appKey   app-key
+     * @param  String $project   project
      * @param  String $location 地點
      * @param  String $function 分類
      * @return mixed
      */
-    public function getUserByLocationFunction($appKey, $location, $function){
+    public function getUserByLocationFunction($project, $location, $function){
        
         return  $this->basicInfo
             ->join( $this->userDataBaseName.'.'.$this->userTableName, $this->userTableName.'.emp_no', '=', 'en_basic_info.emp_no')
             ->where('location', '=', $location)
             ->where('function', '=', $function)
-            ->where('app_key', '=', $appKey)
+            ->where('project', '=', $project)
             ->select('en_basic_info.emp_no as emp_no')
             ->orderBy('location','asc')
             ->orderBy('function','asc')
             ->get();
+    }
+
+    public function checkUserIsMember($project, $empNo){
+        $res =  $this->basicInfo
+            ->join( $this->userDataBaseName.'.'.$this->userTableName, $this->userTableName.'.emp_no', '=', 'en_basic_info.emp_no')
+            ->where('en_basic_info.emp_no', '=', $empNo)
+            ->where('project', '=', $project)
+            ->select('en_basic_info.emp_no as emp_no')
+            ->orderBy('project','asc')
+            ->get();
+            
+         if(count($res) > 0){
+            return true;
+         }else{
+            return false;
+         }
     }
 }

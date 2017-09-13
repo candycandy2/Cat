@@ -128,7 +128,7 @@ var bubbleOption = {
             			
             			//show diff chart by orientation
             			if(window.orientation === 180 || window.orientation === 0){
-            				$('#overview-hc-rectangle').show();
+            				//$('#overview-hc-rectangle').show();
             				
             			}
             			if(window.orientation === 90 || window.orientation === -90){
@@ -140,7 +140,7 @@ var bubbleOption = {
             					}
             				});
             				$('#backBtn').show();
-            				$('#overview-hc-bubble-landscape').hide();
+            				$('#overview-hc-bubble-landscape').hide();	
             				$('#overview-hc-rectangle-landscape').show();
             				treemapState = true;   					
             			}       			      			
@@ -764,6 +764,7 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
+			console.log(screen.width+" ,"+screen.height);
 			if(chartRect !== null){
             	chartRect.destroy();
             	chartRect = null;

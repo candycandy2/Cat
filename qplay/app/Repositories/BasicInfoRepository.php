@@ -29,10 +29,10 @@ class BasicInfoRepository
 
     /**
      * 取得basic Info基本資料
-     * @param String $appKey app-key
+     * @param String $project project
      * @return mixed
      */
-    public function getAllBasicInfoRawData($appKey)
+    public function getAllBasicInfoRawData($project)
     {   
         DB::connection('mysql_ens')->statement(DB::raw('set @i:=0'));
         $basicInfo =   $this->basicInfo
@@ -41,7 +41,7 @@ class BasicInfoRepository
             {
                 $join->on('qp_user.row_id', '=', 'registered.register_user_id');
             })
-            ->where('app_key','=',$appKey)
+            ->where('project','=',$project)
             ->orderBy('location','asc')
             ->orderBy('function','asc')
             ->orderBy('emp_no','asc')
@@ -71,12 +71,12 @@ class BasicInfoRepository
 
     /**
      * 移除舊basic_info資料
-     * @param String $appKey app-key
+     * @param String $project project
      * @return 
      */
-    public function deleteBasicInfo($appKey){
+    public function deleteBasicInfo($project){
         $this->basicInfo
-        ->where('app_key', '=', $appKey)
+        ->where('project', '=', $project)
         ->delete();
     }
 }
