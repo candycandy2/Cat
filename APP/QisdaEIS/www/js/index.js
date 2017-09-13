@@ -1021,9 +1021,9 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     
     if(window.orientation === 180 || window.orientation === 0) {
     	if($.mobile.activePage[0].id === 'viewMain'){
-    		/*$('#overview-hc-bubble-landscape').hide();
+			$('#overview-hc-bubble-landscape').hide();
 			$('#overview-hc-rectangle-landscape').hide();
-			$('#backBtn').hide();*/
+			$('#backBtn').hide();
     	}else{
     		if(viewDetailTab !== "overdue"){
     			screen.orientation.lock('portrait');
@@ -1033,6 +1033,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 	    		$('#viewDetail .page-header').show();
 	    		$('#viewDetail .page-tabs').show();
 	    		$('#viewDetail #overdue').show();
+	    		$('#viewDetail .scrollmenu').show();
 	    		//页面返回展开时的位置
     			if(buArrIndex !== null){
 	    			window.scrollTo(0, buIndexMarginTop-100);
@@ -1040,7 +1041,6 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 	    		else if(csdArrIndex !== null){
 	    			window.scrollTo(0, csdIndexMarginTop-100);
 	    		}
-	    		$('#viewDetail .scrollmenu').show();
     		}
 			
     	}
@@ -1058,22 +1058,20 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 	        		screen.orientation.lock('portrait');
 	        	}
 	    		else if(buArrIndex !== null){  
-	    			getLandscapeColumn(true, "");
-	        		getLandscapeColumn(false, "BU");
 	        		$('#viewDetail .page-header').hide();
+	        		$('#viewDetail .scrollmenu').hide();
 	        		$('#viewDetail .page-tabs').hide();
 	        		$('#viewDetail #overdue').hide();
-	        		$('#viewDetail .scrollmenu').hide();
 	        		$('#viewDetail-hc-column-landscape').show();
+	        		getLandscapeColumn(false, "BU");
 	        	}
 	    		else if(csdArrIndex !== null){
-	    			getLandscapeColumn(true, "");
-	        		getLandscapeColumn(false, "CSD");
 	        		$('#viewDetail .page-header').hide();
+	        		$('#viewDetail .scrollmenu').hide();
 	        		$('#viewDetail .page-tabs').hide();
 	        		$('#viewDetail #overdue').hide();
-	        		$('#viewDetail .scrollmenu').hide();
 	        		$('#viewDetail-hc-column-landscape').show();
+	        		getLandscapeColumn(false, "CSD");
 	    		}
         	}
         	else{
