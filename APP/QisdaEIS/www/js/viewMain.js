@@ -764,7 +764,7 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
-			console.log(screen.width+" ,"+screen.height);
+			//console.log(screen.width+" ,"+screen.height);
 			if(chartRect !== null){
             	chartRect.destroy();
             	chartRect = null;
