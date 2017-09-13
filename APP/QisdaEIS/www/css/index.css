@@ -858,6 +858,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
 }
+
 #viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape{
 	display: none;
 }
@@ -878,16 +879,18 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 	#viewMain #overview-hc-bubble-landscape {
 		display: block;
 	}
-	/*#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail .include-label, #viewDetail .bu-title, 
-	#viewDetail .bu-title, #viewDetail .bu-main, #viewDetail .scrollmenu, #viewDetail #overdue{
+	
+	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail #overdue, 
+	#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail .scrollmenu {
 		display: none;
 	}
+	
 	#viewDetail #viewDetail-hc-column-landscape {
 		display: block;
-	}*/
+	}
 	
 	#viewDetail{
-		padding-top: 0 !important;
+		padding-top: 0.1VH !important;
 	}
 }
 

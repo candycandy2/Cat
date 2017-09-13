@@ -1029,18 +1029,18 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     			screen.orientation.lock('portrait');
     		}
     		else{
-    			$('#viewDetail-hc-column-landscape').hide();
+    			/*$('#viewDetail-hc-column-landscape').hide();
 	    		$('#viewDetail .page-header').show();
 	    		$('#viewDetail .page-tabs').show();
 	    		$('#viewDetail #overdue').show();
-	    		$('#viewDetail .scrollmenu').show();
+	    		$('#viewDetail .scrollmenu').show();*/
 	    		//页面返回展开时的位置
-    			if(buArrIndex !== null){
+    			/*if(buArrIndex !== null){
 	    			window.scrollTo(0, buIndexMarginTop-100);
 	    		}
 	    		else if(csdArrIndex !== null){
 	    			window.scrollTo(0, csdIndexMarginTop-100);
-	    		}
+	    		}*/
     		}
 			
     	}
@@ -1054,24 +1054,27 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-bubble-landscape').show();
         }else{
         	if(viewDetailTab == "overdue"){
+        		zoomInChartByColumn();
         		if(buArrIndex == null && csdArrIndex == null){
 	        		screen.orientation.lock('portrait');
 	        	}
 	    		else if(buArrIndex !== null){  
-	        		$('#viewDetail .page-header').hide();
+	        		/*$('#viewDetail .page-header').hide();
 	        		$('#viewDetail .scrollmenu').hide();
 	        		$('#viewDetail .page-tabs').hide();
 	        		$('#viewDetail #overdue').hide();
-	        		$('#viewDetail-hc-column-landscape').show();
+	        		$('#viewDetail-hc-column-landscape').show();*/
 	        		getLandscapeColumn(false, "BU");
+	        		
 	        	}
 	    		else if(csdArrIndex !== null){
-	        		$('#viewDetail .page-header').hide();
+	        		/*$('#viewDetail .page-header').hide();
 	        		$('#viewDetail .scrollmenu').hide();
 	        		$('#viewDetail .page-tabs').hide();
 	        		$('#viewDetail #overdue').hide();
-	        		$('#viewDetail-hc-column-landscape').show();
+	        		$('#viewDetail-hc-column-landscape').show();*/
 	        		getLandscapeColumn(false, "CSD");
+	        		
 	    		}
         	}
         	else{
