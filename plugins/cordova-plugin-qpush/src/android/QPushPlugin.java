@@ -85,6 +85,7 @@ public class QPushPlugin extends CordovaPlugin {
 
     public QPushPlugin() {
         instance = this;
+        JPushInterface.setDebugMode(true);
 
     }
 
