@@ -139,8 +139,8 @@ var bubbleOption = {
             						marginTop: 0
             					}
             				});
-            				$('#overview-hc-bubble-landscape').hide();
             				$('#backBtn').show();
+            				$('#overview-hc-bubble-landscape').hide();	
             				$('#overview-hc-rectangle-landscape').show();
             				treemapState = true;   					
             			}       			      			
@@ -764,6 +764,7 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
+			console.log(screen.width+" ,"+screen.height);
 			if(chartRect !== null){
             	chartRect.destroy();
             	chartRect = null;
