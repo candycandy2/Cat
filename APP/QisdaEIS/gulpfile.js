@@ -95,6 +95,7 @@ gulp.task('install', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add cordova-plugin-screen-orientation',
+  'cordova plugin add phonegap-mobile-accessibility',
   'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file'
 ]));
@@ -112,6 +113,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-whitelist',
   'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add ../../plugins/cordova-plugin-screen-orientation',
+  'cordova plugin add phonegap-mobile-accessibility',
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
