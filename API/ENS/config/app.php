@@ -138,15 +138,27 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you may configure the a secret_key for your application.
-    | this secret comes from qplay project.
+    | this secret comes from ens project.
     |
     */
     
-    'secret_key' => [
-        'ens' => 'dd88f6e1eea34e77a9ab75439d327363',
-        'rm'  => '91db12b3e232474361d82eac6dd09b55'
-    ],
+    'secret_key' => 'dd88f6e1eea34e77a9ab75439d327363',
     
+    /*
+    |--------------------------------------------------------------------------
+    | ENS project
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the projects which are use ENS API.
+    | this project comes from project name
+    |
+    */
+    
+    'ens_project' => [
+        'ITS',
+        'RM'
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

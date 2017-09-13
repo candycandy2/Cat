@@ -1,6 +1,6 @@
 @php
     $eventList  = $data['eventList'];
-    $appKey = $data['appKey'];
+    $project = $data['project'];
 @endphp
 
 @extends('layouts.admin')
@@ -129,9 +129,9 @@
 </div><!-- /.modal -->
 
 <script>
-var appKey = '{{$appKey}}';
+var project = '{{$project}}';
 $(function(){
-    var mydataStr = '{"strXml":"<LayoutHeader><emp_no>1607279</emp_no><app_key>'+ appKey +'</app_key></LayoutHeader>"}';
+    var mydataStr = '{"strXml":"<LayoutHeader><emp_no>1607279</emp_no><project>'+ project +'</project></LayoutHeader>"}';
      $.ajax({
         url: "getBasicInfo",
         dataType:"json",

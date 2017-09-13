@@ -28,19 +28,18 @@ class UserRepository
     /**
      * 取得使用者所屬角色
      * @param  String $empNo 員工編號
-     * @param  String $appKey app_key
      * @return mixed
      */
-    public function getUserAuth($empNo, $appKey){
+    public function getUserAuth($empNo){
         
         $ensDataBaseName = \Config::get('database.connections.mysql.database');
         $userTableName = $this->user->getTableName();
 
         return $this->user
             ->where('en_usergroup.emp_no', '=', (string)$empNo)
-            ->where('en_usergroup.app_key', '=', (string)$appKey)
             ->join( $ensDataBaseName . '.en_usergroup as en_usergroup', $userTableName . '.emp_no', '=', 'en_usergroup.emp_no')
-            ->select('usergroup')
+            ->orderBy('project','usergroup')
+            ->select('project','usergroup')
             ->get();
 
     }
@@ -74,11 +73,12 @@ class UserRepository
 
     /**
      * 查找en_user_group表，若存在此表有特殊權限
+     * @param  String $project project
      * @return mixed
      */
-    public function getSuperUser($appKey){
+    public function getSuperUser($project){
         return $this->userGroup
-         ->where('app_key', '=', $appKey)
+         ->where('project', '=', $project)
          ->select('emp_no')
          ->get();
     }
@@ -96,9 +96,10 @@ class UserRepository
 
     /**
      * 取得管理者及主管的帳號(login_id)
+     * @param  String $project project
      * @return mixed
      */
-    public function getSuperUserLoginId($appKey){
+    public function getSuperUserLoginId($project){
 
         $ensDataBaseName = \Config::get('database.connections.mysql.database');
         $userTableName = $this->user->getTableName();
@@ -106,7 +107,7 @@ class UserRepository
         return $this->user
             ->where($userTableName . '.register_message', '=', 'N')
             ->join( $ensDataBaseName . '.en_usergroup as en_usergroup', $userTableName . '.emp_no', '=', 'en_usergroup.emp_no')
-            ->where('en_usergroup.app_key', '=', $appKey)
+            ->where('en_usergroup.project', '=', $project)
             ->distinct('login_id')->select('login_id')
             ->get();
 
