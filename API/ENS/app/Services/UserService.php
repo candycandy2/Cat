@@ -34,12 +34,6 @@ class UserService
         foreach ($groups as $value) {
             $roleList[$value->project][] = $value->usergroup;
         }
-
-        // foreach (Config::get('app.ens_project') as $project) {
-        //     if(!array_key_exists($project, $roleList)){
-        //         $roleList[$project]['usergroup'][] = 'common';
-        //     }
-        // }
         return  $roleList ;
     }
 
@@ -52,7 +46,7 @@ class UserService
     public function getUserRoleListByProject($project, $empNo){
         $roleList = $this->getUserRoleList($empNo);
         if(isset($roleList[$project])){
-            $roleList[$project];
+            return $roleList[$project];
         }else{
             return null;
         }
