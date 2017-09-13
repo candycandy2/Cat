@@ -6,6 +6,7 @@ use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use App\lib\Verify;
 use Illuminate\Support\Facades\Input;
+use Config;
 
 class TaskController extends EventController
 {
@@ -32,14 +33,20 @@ class TaskController extends EventController
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
             $data = CommonUtil::arrangeDataFromXml($xml, array('emp_no', 'task_status', 'task_row_id',
-                                                               'lang', 'need_push', 'app_key'));
+                                                               'lang', 'need_push', 'project'));
             if(!isset($data['lang'])        || $data['lang']=="" || 
                !isset($data['need_push'])   || $data['need_push']=="" || 
-               !isset($data['app_key'])     || $data['app_key']=="" || 
+               !isset($data['project'])     || $data['project']=="" || 
                !isset($data['task_status']) || $data['task_status']=="" ||
                !isset($data['task_row_id']) || $data['task_row_id'] =="" ){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
+            if(!in_array($data['project'], Config::get('app.ens_project'))){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                    'Message'=>"project參數不存在",
                     'Content'=>""]);
             }
 
@@ -49,7 +56,7 @@ class TaskController extends EventController
             $queryParam =  array(
                 'lang' => $data['lang'],
                 'need_push' =>  $data['need_push'],
-                'app_key' =>  $data['app_key']
+                'project' =>  $data['project']
             );
 
             if(trim($taskId) == "" || trim($taskStatus) == "" ){
@@ -65,7 +72,7 @@ class TaskController extends EventController
             }
 
             
-            $taskData = $this->eventService->getTaskById($data['app_key'], $taskId);
+            $taskData = $this->eventService->getTaskById($data['project'], $taskId);
             if(count($taskData) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014909_noTaskData,
                 'Message'=>"查無Task資料",
@@ -79,8 +86,8 @@ class TaskController extends EventController
             }
 
             $checkRes = $this->eventService->checkUpdateTaskAuth($taskId, $empNo);
-            $userAuthList = $this->userService->getUserRoleList($data['app_key'], $empNo);
-            if(!$checkRes && !in_array($allow_user, $userAuthList)){
+            $userAuthList = $this->userService->getUserRoleListByProject($data['project'], $empNo);
+            if(!$checkRes && (is_null($userAuthList) || !in_array($allow_user, $userAuthList))){
                   return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                 'Message'=>"權限不足",
                 'Content'=>""]);
