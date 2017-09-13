@@ -116,7 +116,7 @@ class testController extends Controller
     /**
     * 發送推播訊息給事件參與者
     * @param  int       $eventId    事件id en_event.row_id
-    * @param  Array    $queryParam  呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
+    * @param  Array    $queryParam  呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','project' => 'appens')
     * @return json
     */
    public function sendPushMessageToUser(){
@@ -125,7 +125,7 @@ class testController extends Controller
        $queryParam =  array(
                 'lang'      => 'zh-tw',
                 'need_push' => 'Y',
-                'app_key'   => 'appensdev'
+                'project'   => 'appensdev'
                 );
        $to = array("BenQ\\Cleo.W.Chan");
        $from = "BenQ\\Cleo.W.Chan";
@@ -147,7 +147,7 @@ class testController extends Controller
         $owner = "Cleo.W.Chan";
         $members = array("Steven.Yan","Sammi.Yao");
         $desc = "cleo test create chatRoom";
-        $appKey = "appensdev";
+        $project = "appensdev";
         //var_dump($messageGroupInfo);exit();
         $qMessage = new Message();
         $res = json_decode($qMessage->createChatRoom($owner, $members, $desc));
@@ -211,14 +211,13 @@ class testController extends Controller
    public function testEns(){
      $input = Input::get();
      $data = [];
-     $appKey = $input['app_key'];
-     // var_dump($appKey);exit();
+     $project = $input['project'];
      $empNo = '1607279';
      $eventType = '';
      $eventStatus = '';
-     $eventList = $this->eventService->getEventList($appKey, $empNo, $eventType, $eventStatus);
+     $eventList = $this->eventService->getEventList($project, $empNo, $eventType, $eventStatus);
      $data['eventList'] = $eventList;
-     $data['appKey'] = $appKey;
+     $data['project'] = $project;
      return \View::make('test.event_list')->with("data", $data);
    }
 }
