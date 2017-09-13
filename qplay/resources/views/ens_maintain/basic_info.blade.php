@@ -118,13 +118,13 @@ $ensProjects = \Config('app.ens_project');
             $('#pathCover').val($('#uploadBasicInfo')[0].files[0].name); 
         });
 
-        if($.trim("{{app('request')->input('app_key')}}")!=""){
-            $("#selectProject option[value={{app('request')->input('app_key')}}]").attr('selected', true);
+        if($.trim("{{app('request')->input('project')}}")!=""){
+            $("#selectProject option[value={{app('request')->input('project')}}]").attr('selected', true);
         }
         var project = $('#selectProject option:selected').val();
-        $('#basicInfoTable').bootstrapTable({ url: 'ENSMaintain/getBasicInfo?app_key=' + project});
+        $('#basicInfoTable').bootstrapTable({ url: 'ENSMaintain/getBasicInfo?project=' + project});
         $('#selectProject').on('change', function() {
-            window.location="{{asset('basicInfo')}}?app_key=" + this.value;
+            window.location="{{asset('basicInfo')}}?project=" + this.value;
         })
 
          $('#save').click(function(){
