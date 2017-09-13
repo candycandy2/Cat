@@ -74,11 +74,6 @@
 	margin: 1VH auto 0;
 }
 
-.page-main .YTD-Str {
-	display: none;
-	font-size: 3VW;
-	text-align: center;
-}
 /******************************************* viewMain ********************************************/
 /* html */
 ul{
@@ -149,7 +144,7 @@ a{
 /* highcharts */
 #overview-hc-bubble, #overview-hc-rectangle{
 	width: 100VW;
-	height: 65VW;
+	height: 68VW;
 }
 /****************************************** viewDetail *********************************************/
 .overdue-list-hide {
@@ -752,6 +747,7 @@ a{
 .data-list-none-fourColumn > div:nth-child(4){
 	width: 11.367VW;
 }
+
 /********************************************  *******************************************/
 
 
@@ -859,8 +855,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
 }
-#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape,
-#viewDetail #viewDetail-hc-column-landscape-switch{
+#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail #viewDetail-hc-column-landscape{
 	display: none;
 }
 
@@ -885,10 +880,9 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 	#viewDetail #overdue, #viewDetail #overdueSoon, #viewDetail #expiredSoon{
 		display: none;
 	}*/
-	#viewDetail #viewDetail-hc-column-landscape,
-	#viewDetail #viewDetail-hc-column-landscape-switch {
-		/*display: block;*/
-		display: none;
+	#viewDetail #viewDetail-hc-column-landscape {
+		display: block;
+		/*display: none;*/
 	}
 	#viewDetail{
 		padding-top: 0 !important;
