@@ -214,8 +214,8 @@ return [
     */
     
     'ens_project' => [
-        'ens',
-        'rm'
+        'ITS',
+        'RM'
     ],
 
     /*
