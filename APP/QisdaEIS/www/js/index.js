@@ -97,14 +97,18 @@ $(document).one('pagebeforeshow', function(){
     	if(switchState == false){
     		$('#memoBtn').attr('src', 'img/switch_b.png');
     		switchState = true;
-			
+    		visibleIndex = null;
+			visibleArea = null;
+			visibleMarginTop = 0;
 			changeSwitchInit();
 
     	}
     	else{
     		$('#memoBtn').attr('src', 'img/switch_g.png');
     		switchState = false;
-			
+    		visibleIndex = null;
+			visibleArea = null;
+			visibleMarginTop = 0;
     		changeSwitchInit();
 
     	}
@@ -514,7 +518,7 @@ $(document).one('pagebeforeshow', function(){
 		   		//check areaIndex in visible		   		
 		   		checkIndexWhetherInVisible();
 		   			   		
-		   	}, 300);
+		   	}, 200);
 
 		   	//setArea-hc
 		   	onScrollSetAllAreaData();
@@ -529,6 +533,9 @@ $(document).one('pagebeforeshow', function(){
 
 
 function checkIndexWhetherInVisible(){
+	visibleIndex = null;
+	visibleArea = null;
+	visibleMarginTop = 0;
 	//获取页面可视区域的范围
    	var visibleTop = document.body.scrollTop;
    	var visibleHeight = document.body.clientHeight;
@@ -610,7 +617,7 @@ function checkIndexWhetherInVisible(){
 		
 	}
 	
-	//console.log(visibleArea + " ," + visibleIndex + " ," + visibleMarginTop);
+	console.log(visibleArea + " ," + visibleIndex + " ," + visibleMarginTop);
 	
 }
 
@@ -951,7 +958,7 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 	    		//记录位置并返回
 	    		setTimeout(function(){
 	    			window.scrollTo(0, visibleMarginTop);
-	    		}, 100);
+	    		}, 300);
     		}
 			
     	}
@@ -982,8 +989,10 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         		$('#viewDetail .scrollmenu').hide();
         		$('#viewDetail .page-tabs').hide();
         		$('#viewDetail #overdue').hide();*/
+        		setTimeout(function(){
+        			getLandscapeColumn(false, visibleArea);
+        		}, 200);
         		
-        		getLandscapeColumn(false, visibleArea);
 	        		
         	}
 				

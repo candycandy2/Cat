@@ -799,21 +799,25 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 
 /*************************************** highcharts landscape ************************************/
 @media all and (orientation: landscape) {
-	/*******************overview highcharts*********************/
-	#viewMain .page-header, #viewMain .page-date, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn,
-	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape {
-		display: none;
-	}	
+	/******************* viewMain highcharts *********************/
 	#viewMain #overview-hc-bubble-landscape {
 		display: block;
 	}
 	
-	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail #overdue, #viewDetail .scrollmenu {
+	#viewMain .page-header, #viewMain .page-date, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn,
+	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape {
 		display: none;
 	}
+	
+	/******************* viewDetail highcharts ************************/
 	#viewDetail #viewDetail-hc-column-landscape {
 		display: block;
 	}
+	
+	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail #overdue, #viewDetail .scrollmenu {
+		display: none !important;
+	}
+	
 	
 	#viewMain, #viewDetail {
 		padding-top: 0 !important;
