@@ -817,12 +817,12 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 		display: block;
 	}
 	
-	/*#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail #overdue, #viewDetail .scrollmenu {
+	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail #overdue, #viewDetail .scrollmenu {
 		display: none;
 	}
 	#viewDetail #viewDetail-hc-column-landscape {
 		display: block;
-	}*/
+	}
 	
 	#viewDetail{
 		padding-top: 0.1VH !important;

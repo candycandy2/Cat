@@ -943,11 +943,11 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     	}
     	else{
     		if(viewDetailTab == "overdue"){
-    			$('#viewDetail .page-header').show();
+    			/*$('#viewDetail .page-header').show();
 	    		$('#viewDetail .page-tabs').show();
 	    		$('#viewDetail #overdue').show();
-	    		$('#viewDetail .scrollmenu').show();
-	    		$('#viewDetail-hc-column-landscape').hide();
+	    		$('#viewDetail .scrollmenu').show();*/
+	    		//$('#viewDetail-hc-column-landscape').hide();
 	    		//记录位置并返回
 	    		setTimeout(function(){
 	    			window.scrollTo(0, visibleMarginTop);
@@ -977,11 +977,11 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         else{
         	if(viewDetailTab == "overdue" && visibleIndex !== null && visibleArea !== null){
         		zoomInChartByColumn();
-    			$('#viewDetail-hc-column-landscape').show();
-    			$('#viewDetail .page-header').hide();
+    			//$('#viewDetail-hc-column-landscape').show();
+    			/*$('#viewDetail .page-header').hide();
         		$('#viewDetail .scrollmenu').hide();
         		$('#viewDetail .page-tabs').hide();
-        		$('#viewDetail #overdue').hide();
+        		$('#viewDetail #overdue').hide();*/
         		
         		getLandscapeColumn(false, visibleArea);
 	        		
