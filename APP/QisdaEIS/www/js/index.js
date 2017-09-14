@@ -14,6 +14,8 @@ var arSummaryCallBackData,overdueDetailCallBackData,outstandDetailCallBackData,c
 var treemapState = false;
 var switchState = false;
 var expiredTime = 1;
+var visibleIndex = null;
+var visibleArea = null;
 var buArrIndex = null;
 var csdArrIndex = null;
 var buCountNum = 1;
@@ -520,12 +522,15 @@ $(document).one('pagebeforeshow', function(){
 		   	timoutScrollEvent = setTimeout(function(){
 		   		//check areaIndex in visible
 		   		checkIndexVisible();
+		   		
+		   		checkIndexWhetherInVisible();
+		   		console.log(visibleArea + " ," + visibleIndex);
+		   		
 		   	}, 500);
 
 		   	//setArea-hc
 		   	onScrollSetAllAreaData();
 			
-			//screen.orientation.unlock();	
 		});
 
 	}
@@ -652,9 +657,90 @@ function checkIndexVisible(){
 		}
 	}
 
-   	console.log(buArrIndex+" ,"+csdArrIndex);
+   	//console.log(buArrIndex+" ,"+csdArrIndex);
 
 }
+
+
+function checkIndexWhetherInVisible(){
+	//获取页面可视区域的范围
+   	var visibleTop = document.body.scrollTop;
+   	var visibleHeight = document.body.clientHeight;
+   	var visibleBottom = visibleHeight + visibleTop;
+   	
+   	//分别获取BU区域和CSD区域
+   	var buAreaTop = $('.overdueDetail-bu').offset().top;
+   	var buAreaHeight = $('.overdueDetail-bu').height();
+   	var buAreaBottom = buAreaTop + buAreaHeight;
+   	var csdAreaTop = $('.overdueDetail-csd').offset().top;
+   	var csdAreaHeight = $('.overdueDetail-csd').height();
+   	var csdAreaBottom = csdAreaTop + csdAreaHeight;
+	
+	if(facility == "ALL"){
+		//ALL已经删除，有ALL再添加
+		
+	}
+	else{
+		//先在bu里面找
+		if(visibleTop < buAreaBottom && (buAreaBottom - visibleTop) > visibleHeight/3) {
+			for(var i in otherBuOverdueDetail) {
+				if(otherBuOverdueDetail[i]["Header"]["SPREAD"] == 1) {
+					var top1 = $('#buShowList'+i).offset().top;
+			   		var bottom1 = $('#buShowList'+i).offset().top + $('#buHideList'+i).height() + $('#buShowList'+i).height();
+			   		
+			   		if(top1 > visibleBottom || bottom1 < visibleTop) {
+			   			visibleIndex = null;
+			   			visibleArea = null;
+			   			screen.orientation.lock('portrait');
+			   		}
+			   		else{
+			   			visibleIndex = Number(i);
+			   			visibleArea = "bu";
+			   			buIndexMarginTop = $('#buShowList'+i).offset().top;
+		   				screen.orientation.unlock();
+		   				break;
+			   		}
+				}
+				else{
+					visibleIndex = null;
+					visibleArea = null;
+			   		screen.orientation.lock('portrait');
+				}
+			}
+		}	
+		else{
+			for(var i in otherCsdOverdueDetail){
+		   		if(otherCsdOverdueDetail[i]["Header"]["SPREAD"] == 1) {
+		   			var top1 = $('#csdShowList'+i).offset().top;
+			   		var bottom1 = $('#csdShowList'+i).offset().top + $('#csdHideList'+i).height() + $('#csdShowList'+i).height();
+			   		
+			   		if(top1 > visibleBottom || bottom1 < visibleTop) {
+			   			visibleIndex = null;
+			   			visibleArea = null;
+			   			screen.orientation.lock('portrait');
+			   		}
+			   		else{
+			   			visibleIndex = Number(i);
+			   			visibleArea = "csd";
+			   			csdIndexMarginTop = $('#csdShowList'+i).offset().top;
+		   				screen.orientation.unlock();		
+		   				break;
+			   		}
+			   		
+		   		}
+		   		else{
+					visibleIndex = null;
+					visibleArea = null;
+			   		screen.orientation.lock('portrait');
+				}
+		    }
+		}
+		
+		
+	}
+	
+}
+
 
 function onScrollSetAllAreaData() {
 	//获取页面可视区域的范围
@@ -1021,26 +1107,27 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
     
     if(window.orientation === 180 || window.orientation === 0) {
     	if($.mobile.activePage[0].id === 'viewMain'){
-    		/*$('#overview-hc-bubble-landscape').hide();
+			$('#overview-hc-bubble-landscape').hide();
 			$('#overview-hc-rectangle-landscape').hide();
-			$('#backBtn').hide();*/
+			$('#backBtn').hide();
     	}else{
     		if(viewDetailTab !== "overdue"){
     			screen.orientation.lock('portrait');
     		}
     		else{
-    			$('#viewDetail-hc-column-landscape').hide();
+    			/*$('#viewDetail-hc-column-landscape').hide();
 	    		$('#viewDetail .page-header').show();
 	    		$('#viewDetail .page-tabs').show();
 	    		$('#viewDetail #overdue').show();
+	    		$('#viewDetail .scrollmenu').show();*/
 	    		//页面返回展开时的位置
-    			if(buArrIndex !== null){
+    			/*if(buArrIndex !== null){
 	    			window.scrollTo(0, buIndexMarginTop-100);
 	    		}
 	    		else if(csdArrIndex !== null){
 	    			window.scrollTo(0, csdIndexMarginTop-100);
-	    		}
-	    		$('#viewDetail .scrollmenu').show();
+	    		}*/
+	    		$('#viewDetail-hc-column-landscape').hide();
     		}
 			
     	}
@@ -1054,26 +1141,27 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         	$('#overview-hc-bubble-landscape').show();
         }else{
         	if(viewDetailTab == "overdue"){
+        		zoomInChartByColumn();
         		if(buArrIndex == null && csdArrIndex == null){
 	        		screen.orientation.lock('portrait');
 	        	}
 	    		else if(buArrIndex !== null){  
-	    			getLandscapeColumn(true, "");
-	        		getLandscapeColumn(false, "BU");
-	        		$('#viewDetail .page-header').hide();
-	        		$('#viewDetail .page-tabs').hide();
-	        		$('#viewDetail #overdue').hide();
+	        		/*$('#viewDetail .page-header').hide();
 	        		$('#viewDetail .scrollmenu').hide();
+	        		$('#viewDetail .page-tabs').hide();
+	        		$('#viewDetail #overdue').hide();*/
 	        		$('#viewDetail-hc-column-landscape').show();
+	        		getLandscapeColumn(false, "BU");
+	        		
 	        	}
 	    		else if(csdArrIndex !== null){
-	    			getLandscapeColumn(true, "");
-	        		getLandscapeColumn(false, "CSD");
-	        		$('#viewDetail .page-header').hide();
-	        		$('#viewDetail .page-tabs').hide();
-	        		$('#viewDetail #overdue').hide();
+	        		/*$('#viewDetail .page-header').hide();
 	        		$('#viewDetail .scrollmenu').hide();
+	        		$('#viewDetail .page-tabs').hide();
+	        		$('#viewDetail #overdue').hide();*/
 	        		$('#viewDetail-hc-column-landscape').show();
+	        		getLandscapeColumn(false, "CSD");
+	        		
 	    		}
         	}
         	else{

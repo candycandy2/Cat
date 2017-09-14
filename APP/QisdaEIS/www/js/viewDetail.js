@@ -3532,7 +3532,7 @@ $('#viewDetail').pagecontainer({
 				CreditExpiredSoon();
 				//Highchart
 				getLandscapeColumn(true, "");
-    			zoomInChartByColumn();
+    			//zoomInChartByColumn();
 				viewDetailInit = true;
 				//test
 				//getBuTotalSeriesByWeek();
