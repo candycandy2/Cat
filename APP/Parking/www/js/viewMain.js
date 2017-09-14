@@ -1,5 +1,6 @@
 
 var defaultSiteClick = '';
+var parkingSpaceDataExample = ['車位1', '車位2', '車位3', '車位4'];
 
 $("#viewMain").pagecontainer({
     create: function(event, ui) {
@@ -23,6 +24,28 @@ $("#viewMain").pagecontainer({
             }();
 
         };
+        
+        //var MeetingRoomID = JSON.parse(localStorage.getItem('meetingRoomLocalData'))['content'][0]['MeetingRoomID']
+        function getSpaceData(siteIndex) {
+            htmlContent = '';
+            siteIndex = siteIndex == '' ? '0' : siteIndex;
+            $('#reserveSpace').find('a').remove();
+
+            /*for (var i = 0, item; item = JSON.parse(localStorage.getItem('parkingSpaceLocalData'))['content'][i]; i++) {
+                if (arrLimitRoom.indexOf(item.ParkingSpaceName) == -1 && item.ParkingSpaceSite == siteIndex) {
+                    htmlContent += '<a id=' + item.ParkingSpaceID + ' value=' + item.ParkingSpaceID + ' href="#" class="ui-link" IsReserveMulti=' + item.IsReserveMulti + '>' + item.ParkingSpaceName + '</a>';
+                }
+            }*/
+
+            for (var i=0; i <= parkingSpaceDataExample.length; i++){             
+                htmlContent += '<a id=' + i + ' value=' + i + ' href="#" class="ui-link">' + parkingSpaceDataExample[i] + '</a>';
+            }
+
+            $('#reserveSpace').append(htmlContent);
+            clickRomeId = $('#reserveSpace a:first-child').attr('id');
+            $('#reserveSpace a:first-child').addClass('hover');
+            $('#reserveSpace a:first-child').parent().data("lastClicked", $('#reserveSpace a:first-child').attr('id'));
+        }
 
         function setDateList() {
             
@@ -90,6 +113,7 @@ $("#viewMain").pagecontainer({
 
         function getInitialData() {
             $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
+            clickSiteId = $("#reserveSite option:selected").val();
         }
 
         function setInitialData() {
@@ -116,7 +140,21 @@ $("#viewMain").pagecontainer({
         $('#reserveSite').change(function() {
             localStorage.setItem('defaultSiteClick', $(this).val());
             var selectedSite = $('#reserveSite').find(":selected").val();
-            setAlertLimitSite(selectedSite);         
+            setAlertLimitSite(selectedSite);  
+            getSpaceData(clickSiteId);       
+        });
+
+        $('body').on('click', '#scrollDate .ui-link', function() {
+            clickDateId = $(this).attr('id').replaceAll('one', '');
+            if ($(this).parent().data("lastClicked")) {
+                $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
+            } else {
+                $('#scrollDate .ui-link').removeClass('hover');
+            }
+            $(this).parent().data("lastClicked", this.id);
+            $(this).addClass('hover');
+            //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+            //reserveBtnDefaultStatus();
         });
     }
 });
