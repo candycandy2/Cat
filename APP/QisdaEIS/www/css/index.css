@@ -43,9 +43,7 @@
 }
 
 .page-main .page-tabs{
-	/*margin-top: 3.99VW;*/
 	margin-top: 1.8VH;
-	/*margin-bottom: 3.71VW;*/
 	margin-bottom: 0VH;
 	margin-right: 3.71VW;
 	margin-left: 3.71VW;
@@ -54,7 +52,6 @@
 
 .page-main .tabs-title{
 	height: 5VH;
-	/*font-size: 2.5VH;*/
 	font-size: 3.768VW;
 	font-family: Arial;
 	font-weight: 500;
@@ -806,13 +803,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 	#viewMain .page-header, #viewMain .page-date, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn,
 	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape {
 		display: none;
-	}
-	#viewMain {
-		padding-top: 0 !important;
-	}
-	.viewIndex.ui-page {
-		background-color: #fff;
-	}
+	}	
 	#viewMain #overview-hc-bubble-landscape {
 		display: block;
 	}
@@ -824,9 +815,11 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 		display: block;
 	}
 	
-	#viewDetail{
-		padding-top: 0.1VH !important;
+	#viewMain, #viewDetail {
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
 	}
+	
 }
 
 @media all and (orientation: portrait) {
