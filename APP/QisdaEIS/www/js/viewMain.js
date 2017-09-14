@@ -1,11 +1,10 @@
 //get BU & CSD series
 var viewMainTab = "bu";
 var facilityList = "";
-/*var facility = "ALL";*/
+//var facility = "ALL";
 var facility;
 var firstFacility;
 var viewMainInit = false;
-var mainQisdaEisData = {};
 var userAuthority = [];
 var arSummaryData = {};
 var buByType = [];
@@ -150,7 +149,6 @@ var bubbleOption = {
         }
     },
     series: [{		    	
-        //data: buBubbleSeries
         data: buBubbleData
     }],
     exporting: {
@@ -226,7 +224,6 @@ var rectOption = {
 	            crop: true,
 	            overflow: 'justify',
 	            inside: true,
-	            /*zIndex: 2,*/
 	            style: {
 	            	"color": "#ffffff",
 	            	"fontSize": "11px",
@@ -289,7 +286,6 @@ var treemapOption = {
         }
    	},
    	tooltip: {
-   		/*enabled: false,*/
         useHTML: true,
         animation: false,
         hideDelay: 0,
@@ -317,7 +313,6 @@ var treemapOption = {
 	            crop: true,
 	            overflow: 'justify',
 	            inside: true,
-	            /*zIndex: 2,*/
 	            style: {
 	            	"color": "#ffffff",
 	            	"fontSize": "11px",
@@ -352,11 +347,6 @@ function showTreemap(){
 	chartLandscapeRect = new Highcharts.Chart(rectOption);
 }
 
-
-function hideTooltip(){
-	chartbubble.tooltip.hide();
-    chartRect.tooltip.hide();  
-}
 
 function sortDataByType(){
 	buByType = [];
@@ -597,6 +587,16 @@ function getTreemapSeriesByFacility(fac) {
 }
 
 
+function showBubble(){
+	bubbleOption.chart.renderTo = 'overview-hc-bubble';
+	chartbubble = new Highcharts.Chart(bubbleOption);
+	
+	bubbleOption.chart.renderTo = 'overview-hc-bubble-landscape';
+	chartLandscapebubble = new Highcharts.Chart(bubbleOption);
+				
+}
+
+
 /*****************************************************************/
 $('#viewMain').pagecontainer({
 	create: function (event, ui){	
@@ -685,17 +685,6 @@ $('#viewMain').pagecontainer({
 		};
 		
 		
-		
-		function showBubble(){
-			bubbleOption.chart.renderTo = 'overview-hc-bubble';
-			chartbubble = new Highcharts.Chart(bubbleOption);
-			
-			bubbleOption.chart.renderTo = 'overview-hc-bubble-landscape';
-			chartLandscapebubble = new Highcharts.Chart(bubbleOption);
-						
-		}
-		
-		
 		/********************************** page event *************************************/
 		$("#viewMain").on("pagebeforeshow", function(event, ui){
 			/* global PullToRefresh */
@@ -764,7 +753,6 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
-			//console.log(screen.width+" ,"+screen.height);
 			if(chartRect !== null){
             	chartRect.destroy();
             	chartRect = null;
