@@ -6,6 +6,38 @@ $("#viewAppDetail2-2").pagecontainer({
         var pageHeight = null;
 
         /********************************** function *************************************/
+
+
+        //review by alan
+        function addDownloadHit(appname) {
+            var self = this;
+
+            this.successCallback = function(data) {
+                var resultcode = data['result_code'];
+
+                if (resultcode == 1) {} else {
+
+                }
+            };
+
+            this.failCallback = function(data) {
+                var resultcode = data['result_code'];
+
+                if (resultcode == 1) {} else {
+
+                }
+            };
+
+            var __construct = function() {
+                var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
+                //var queryStr = "&domain=" + loginData.domain + "&loginid=" + loginData.loginid;
+                //http://qplaydev.benq.com/qplayApi/public/v101/qplay/addDownloadHit?lang=en-us
+                QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
+
+            }();
+
+        }
+
         function displayAppDetailStep1() {
 
             $("#appDetailIcon").attr("src", applist[selectAppIndex].icon_url);
@@ -158,6 +190,7 @@ $("#viewAppDetail2-2").pagecontainer({
             if (device.platform === "iOS") {
 
                 if (selectAppIndex != null) {
+                    addDownloadHit(applist[selectAppIndex].package_name);
                     window.open(applist[selectAppIndex].url, '_system'); //download app
                 }
             } else { //android
@@ -165,6 +198,7 @@ $("#viewAppDetail2-2").pagecontainer({
                 var pathArray = applist[selectAppIndex].url.split('/');
                 var protocol = pathArray[0];
                 if (protocol == "market:") {
+                    addDownloadHit(applist[selectAppIndex].package_name);
                     window.open(applist[selectAppIndex].url, '_system'); //open url
                     //cordova.InAppBrowser.open(applist[selectAppIndex].url, '_system', 'location=yes');
 
@@ -173,8 +207,7 @@ $("#viewAppDetail2-2").pagecontainer({
                     var permissions = cordova.plugins.permissions;
                     permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
                         if (status.hasPermission) {
-                            console.log("Yes :D ");
-
+                            addDownloadHit(applist[selectAppIndex].package_name);
                             var updateUrl = applist[selectAppIndex].url;
                             window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
@@ -182,7 +215,6 @@ $("#viewAppDetail2-2").pagecontainer({
 
                             function onSuccess() {}
                         } else {
-                            console.warn("No :( ");
                             permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
 
                             function error() {
@@ -191,8 +223,8 @@ $("#viewAppDetail2-2").pagecontainer({
 
                             function success(status) {
                                 if (status.hasPermission) {
-                                    console.log("Yes :D ");
 
+                                    addDownloadHit(applist[selectAppIndex].package_name);
                                     var updateUrl = applist[selectAppIndex].url;
                                     window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
@@ -219,6 +251,7 @@ $("#viewAppDetail2-2").pagecontainer({
             if (device.platform === "iOS") {
 
                 if (selectAppIndex != null) {
+                    addDownloadHit(applist[selectAppIndex].package_name);
                     window.open(applist[selectAppIndex].url, '_system'); //download app
                 }
             } else {
@@ -228,6 +261,7 @@ $("#viewAppDetail2-2").pagecontainer({
                     if (status.hasPermission) {
                         console.log("Yes :D ");
 
+                        addDownloadHit(applist[selectAppIndex].package_name);
                         var updateUrl = applist[selectAppIndex].url;
                         window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
@@ -246,6 +280,7 @@ $("#viewAppDetail2-2").pagecontainer({
                             if (status.hasPermission) {
                                 console.log("Yes :D ");
 
+                                addDownloadHit(applist[selectAppIndex].package_name);
                                 var updateUrl = applist[selectAppIndex].url;
                                 window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
