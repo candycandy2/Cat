@@ -12,6 +12,11 @@ a {
     text-decoration: none;
 }
 
+.ui-panel {
+    box-shadow: none;
+    width: 65.4vw;
+}
+
 /*override APP CSS*/
 .app-popup .ui-content .event-member-list.header .title {
     position: static;
@@ -195,7 +200,11 @@ input[type=radio]:checked + label {
 }
 
 .event-list-msg-top .normal, .event-list-msg-top .urgent,
-.event-member-list .normal, .event-member-list .urgent {
+.event-list-msg-top .rm-a-class, .event-list-msg-top .rm-b-class,
+.event-list-msg-top .rm-c-class, .event-list-msg-top .rm-prevent-event, .event-list-msg-top .rm-info-share,
+.event-member-list .normal, .event-member-list .urgent,
+.event-member-list .rm-a-class, .event-member-list .rm-b-class,
+.event-member-list .rm-c-class, .event-member-list .rm-prevent-event, .event-member-list .rm-info-share {
     position: relative;
     height: 5vw;
 }
@@ -207,12 +216,40 @@ input[type=radio]:checked + label {
     line-height: 1.2;
 }
 
-.event-list-msg-top .normal, .event-list-msg-top .urgent, .event-list-msg-top .link-event  {
+.event-list-msg-top .normal, .event-list-msg-top .urgent,
+.event-list-msg-top .rm-a-class, .event-list-msg-top .rm-b-class,
+.event-list-msg-top .rm-c-class, .event-list-msg-top .rm-prevent-event,
+.event-list-msg-top .rm-info-share,.event-list-msg-top .link-event {
     float: left;
 }
 
 .event-list-msg-top .urgent .img {
     background: url(../img/urgent.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-list-msg-top .rm-a-class .img {
+    background: url(../img/icon_a_class.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-list-msg-top .rm-b-class .img {
+    background: url(../img/icon_b_class.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-list-msg-top .rm-c-class .img {
+    background: url(../img/icon_c_class.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-list-msg-top .rm-prevent-event .img {
+    background: url(../img/icon_prevent.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-list-msg-top .rm-info-share .img {
+    background: url(../img/icon_shareinfo.png) no-repeat;
     background-size: 5vw;
 }
 
@@ -333,19 +370,53 @@ input[type=radio]:checked + label {
     margin-bottom: 0.95vh;
 }
 
-.event-member-list .normal .img-text, .event-member-list .urgent .img-text {
+.event-member-list .normal .img-text, .event-member-list .urgent .img-text,
+.event-member-list .rm-a-class .img-text, .event-member-list .rm-b-class .img-text,
+.event-member-list .rm-c-class .img-text, .event-member-list .rm-prevent-event .img-text,
+.event-member-list .rm-info-share .img-text {
     position: relative;
     height: 5vw;
     display: -webkit-inline-box;
 }
 
 .event-member-list .normal .img-text .img, .event-member-list .urgent .img-text .img,
-.event-member-list .normal .img-text .text, .event-member-list .urgent .img-text .text {
+.event-member-list .normal .img-text .text, .event-member-list .urgent .img-text .text,
+.event-member-list .rm-a-class .img-text .img, .event-member-list .rm-b-class .img-text .img,
+.event-member-list .rm-c-class .img-text .img, .event-member-list .rm-prevent-event .img-text .img,
+.event-member-list .rm-info-share .img-text .img,
+.event-member-list .rm-a-class .img-text .text, .event-member-list .rm-b-class .img-text .text,
+.event-member-list .rm-c-class .img-text .text, .event-member-list .rm-prevent-event .img-text .text,
+.event-member-list .rm-info-share .img-text .text {
     position: absolute;
 }
 
 .event-member-list .urgent .img {
     background: url(../img/urgent.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-member-list .rm-a-class .img {
+    background: url(../img/icon_a_class.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-member-list .rm-b-class .img {
+    background: url(../img/icon_b_class.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-member-list .rm-c-class .img {
+    background: url(../img/icon_c_class.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-member-list .rm-prevent-event .img {
+    background: url(../img/icon_prevent.png) no-repeat;
+    background-size: 5vw;
+}
+
+.event-member-list .rm-info-share .img {
+    background: url(../img/icon_shareinfo.png) no-repeat;
     background-size: 5vw;
 }
 
@@ -485,6 +556,48 @@ input[type=radio]:checked + label {
     color: #0f0f0f;
     text-align: center;
     margin-top: 50%;
+}
+
+#projectSelect {
+    background-color: #CECECE;
+}
+
+#projectSelect .ui-panel-inner {
+    padding: 0;
+}
+
+#projectSelect .ui-hr {
+    background-color: #666666;
+}
+
+#projectSelect div {
+    line-height: 1;
+    font-size: 3.97vw;
+    padding: 3.4vw 0 3.4vw 3.71vw;
+    background-color: #F9F9F9;
+    color: #333333;
+}
+
+#projectSelect .header {
+    background-color: #4C4C4C;
+    color: #FFFFFF;
+    padding: 3.9vw 0 3.9vw 3.71vw;
+}
+
+#projectSelect .select {
+    background-color: #503E7F;
+    color: #FFFFFF;
+}
+
+.ui-panel-background {
+    background-color: rgba(50, 50, 50, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100vh;
+    width: 100vw;
+    touch-action: none;
 }
 
 /*Event Add*/

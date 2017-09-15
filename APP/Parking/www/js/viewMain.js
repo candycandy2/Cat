@@ -32,12 +32,12 @@ $("#viewMain").pagecontainer({
             $('#reserveSpace').find('a').remove();
 
             /*for (var i = 0, item; item = JSON.parse(localStorage.getItem('parkingSpaceLocalData'))['content'][i]; i++) {
-                if (arrLimitRoom.indexOf(item.ParkingSpaceName) == -1 && item.ParkingSpaceSite == siteIndex) {
+                if (item.ParkingSpaceSite == siteIndex) {
                     htmlContent += '<a id=' + item.ParkingSpaceID + ' value=' + item.ParkingSpaceID + ' href="#" class="ui-link" IsReserveMulti=' + item.IsReserveMulti + '>' + item.ParkingSpaceName + '</a>';
                 }
             }*/
 
-            for (var i=0; i <= parkingSpaceDataExample.length; i++){             
+            for (var i = 0; i < parkingSpaceDataExample.length; i++){             
                 htmlContent += '<a id=' + i + ' value=' + i + ' href="#" class="ui-link">' + parkingSpaceDataExample[i] + '</a>';
             }
 
@@ -114,6 +114,7 @@ $("#viewMain").pagecontainer({
         function getInitialData() {
             $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
             clickSiteId = $("#reserveSite option:selected").val();
+            getSpaceData(clickSiteId);  
         }
 
         function setInitialData() {
@@ -153,6 +154,20 @@ $("#viewMain").pagecontainer({
             }
             $(this).parent().data("lastClicked", this.id);
             $(this).addClass('hover');
+            //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+            //reserveBtnDefaultStatus();
+        });
+
+        $('body').on('click', '#reserveSpace .ui-link', function() {
+            clickSpaceId = $(this).attr('id');
+            if ($(this).parent().data("lastClicked")) {
+                $('#' + $(this).parent().data("lastClicked")).removeClass('hover');
+            } else {
+                $('#reserveSpace .ui-link').removeClass('hover');
+            }
+            $(this).parent().data("lastClicked", this.id);
+            $(this).addClass('hover');
+
             //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
             //reserveBtnDefaultStatus();
         });

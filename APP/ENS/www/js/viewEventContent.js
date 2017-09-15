@@ -27,7 +27,7 @@ $("#viewEventContent").pagecontainer({
             var self = this;
             this.readAuthority = true;
             var queryData = "<LayoutHeader><event_row_id>" + eventID + "</event_row_id><emp_no>" + loginData["emp_no"] + "</emp_no>" +
-            "<app_key>" + appKey + "</app_key></LayoutHeader>";
+            "<project>" + projectName + "</project></LayoutHeader>";
 
             this.successCallback = function(data) {
 
@@ -115,15 +115,29 @@ $("#viewEventContent").pagecontainer({
                         //Event Title
                         eventListMsg.find(".event-list-msg-top .description").html(data['Content'].event_title);
 
-                        //Type: 緊急通報 / 一般通報
+                        //Type:
+                        //ITS> 緊急通報 / 一般通報
+                        //RM> A級事件 / B級事件 / C級事件 / 預警事件 / 資訊分享
                         var event_type = data['Content'].event_type;
-                        var pageTitle = "緊急";
+
+                        eventListMsg.find(".event-list-msg-top .link .icon").hide();
                         if (event_type === "一般通報") {
-                            pageTitle = "一般";
-                            eventListMsg.find(".event-list-msg-top .link .normal").show();
-                            eventListMsg.find(".event-list-msg-top .link .urgent").hide();
+                            className = "normal";
+                        } else if (event_type === "緊急通報") {
+                            className = "urgent";
+                        } else if (event_type === "A級事件") {
+                            className = "rm-a-class";
+                        } else if (event_type === "B級事件") {
+                            className = "rm-b-class";
+                        } else if (event_type === "C級事件") {
+                            className = "rm-c-class";
+                        } else if (event_type === "預警事件") {
+                            className = "rm-prevent-event";
+                        } else if (event_type === "資訊分享") {
+                            className = "rm-info-share";
                         }
-                        $("#pageTitle").html(pageTitle);
+                        eventListMsg.find(".event-list-msg-top .link ." + className).show();
+                        $("#pageTitle").html(event_type);
 
                         //Event Desc
                         var desc = "<div style='margin-top:0.98vw;'>" + data['Content'].event_desc + "</div>";
@@ -355,7 +369,7 @@ $("#viewEventContent").pagecontainer({
             var queryDataObj = {
                 lang: "zh-tw",
                 need_push: "Y",
-                app_key: appKey,
+                project: projectName,
                 event_row_id: eventRowID,
                 read_time: specificTimeStamp,
                 emp_no: loginData["emp_no"]
@@ -395,7 +409,7 @@ $("#viewEventContent").pagecontainer({
             var queryDataObj = {
                 lang: "zh-tw",
                 need_push: "Y",
-                app_key: appKey,
+                project: projectName,
                 task_row_id: taskRowID,
                 task_status: status,
                 emp_no: loginData["emp_no"]

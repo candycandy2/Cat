@@ -3,6 +3,8 @@ var month, date, trace, reserveCancelMonth, reserveCancelDate, reserveCancelID;
 var queryTime = "";
 var timeQueue = {};
 var myReserver_dirtyFlag = true;
+var PullToRefreshTab1_Reserve = null;
+var PullToRefreshTab2_MyReserve = null;
 
 $("#viewReserve").pagecontainer({
     create: function(event, ui) {
@@ -250,6 +252,13 @@ $("#viewReserve").pagecontainer({
             });
         }
 
+        function destorypullrefresh(PullToRefreshObj) {
+            if (PullToRefreshObj != null) {
+                PullToRefreshObj.destroy();
+                PullToRefreshObj = null;
+            }
+        }
+
         /********************************** page event *************************************/
         $("#viewReserve").on("pagebeforeshow", function(event, ui) {
             timeQueue = {};
@@ -258,7 +267,9 @@ $("#viewReserve").pagecontainer({
             $('#pageThree').hide();
             timeInit();
             /* global PullToRefresh */
-            PullToRefresh.init({
+            destorypullrefresh(PullToRefreshTab1_Reserve);
+            destorypullrefresh(PullToRefreshTab2_MyReserve);
+            PullToRefreshTab1_Reserve = PullToRefresh.init({
                 mainElement: '#pageOne',
                 onRefresh: function() {
                     time = new Date(Date.now());
@@ -285,7 +296,9 @@ $("#viewReserve").pagecontainer({
                 $('#pageThree').hide();
                 QueryReserveDetail();
                 /* global PullToRefresh */
-                PullToRefresh.init({
+                destorypullrefresh(PullToRefreshTab1_Reserve);
+                destorypullrefresh(PullToRefreshTab2_MyReserve);
+                PullToRefreshTab1_Reserve = PullToRefresh.init({
                     mainElement: '#pageOne',
                     onRefresh: function() {
                         time = new Date(Date.now());
@@ -305,7 +318,9 @@ $("#viewReserve").pagecontainer({
                 QueryMyReserve();
                 loadingMask("show");
                 /* global PullToRefresh */
-                PullToRefresh.init({
+                destorypullrefresh(PullToRefreshTab1_Reserve);
+                destorypullrefresh(PullToRefreshTab2_MyReserve);
+                PullToRefreshTab2_MyReserve = PullToRefresh.init({
                     mainElement: '#pageTwo',
                     onRefresh: function() {
                         QueryMyReserve();

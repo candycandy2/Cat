@@ -43,9 +43,7 @@
 }
 
 .page-main .page-tabs{
-	/*margin-top: 3.99VW;*/
 	margin-top: 1.8VH;
-	/*margin-bottom: 3.71VW;*/
 	margin-bottom: 0VH;
 	margin-right: 3.71VW;
 	margin-left: 3.71VW;
@@ -54,7 +52,6 @@
 
 .page-main .tabs-title{
 	height: 5VH;
-	/*font-size: 2.5VH;*/
 	font-size: 3.768VW;
 	font-family: Arial;
 	font-weight: 500;
@@ -702,66 +699,7 @@ a{
 }
 
 
-/*nono of data-list for 2cloumn 3cloumn 4cloumn*/
-.data-list-none-twoColumn,
-.data-list-none-threeColumn,
-.data-list-none-fourColumn{
-	width: 92.58VW;
-	height: 8.75VH;
-	color: #323232;
-	border-bottom: 1px solid #D6D6D6;
-}
-
-.data-list-none-twoColumn > div{
-	width: 46.29VW;
-	height: 8.75VH;
-	float: left;
-	text-align: center;
-	line-height: 8.75VH;
-}
-
-.data-list-none-threeColumn > div{
-	width: 30.86VW;
-	height: 8.75VH;
-	float: left;
-	text-align: center;
-	line-height: 8.75VH;
-}
-
-.data-list-none-fourColumn > div{
-	height: 8.75VH;
-	float: left;
-	text-align: center;
-	line-height: 8.75VH;
-}
-
-.data-list-none-fourColumn > div:nth-child(1){
-	width: 25.848VW;
-}
-
-.data-list-none-fourColumn > div:nth-child(2){
-	width: 30.377VW;
-}
-
-.data-list-none-fourColumn > div:nth-child(3){
-	width: 24.988VW;
-}
-
-.data-list-none-fourColumn > div:nth-child(4){
-	width: 11.367VW;
-}
-
-/********************************************  *******************************************/
-
-
-.slider {
-    width: 100VW;
-}
-
-.slick-prev:before, .slick-next:before {
-	color: black;
-}
-
+/*********************************** scroll menu ************************************/
 div.scrollmenu {
 	background-color: #fbfdfd;
 	text-align: center;
@@ -810,7 +748,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 	-webkit-overflow-scrolling: touch;
 }
 
-/********************************************** mypanel *********************************************/
+/************************************* mypanel **************************************/
 #mypanel #panel-header{
 	background-color: #4c4c4c;
 	color:#fff; 
@@ -849,11 +787,7 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
     color: #fff;
 }
 
-/*************************************viewMain highcharts*******************************************/
-/*#viewMain #overview-hc-rectangle, #viewMain #overview-hc-bubble-landscape, 
-#viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
-	display: none;
-}*/
+/***************************** viewMain & viewDetail highcharts ***********************************/
 #viewMain #overview-hc-bubble-landscape, 
 #viewMain #overview-hc-rectangle-landscape, #viewMain #backBtn{
 	display: none;
@@ -863,35 +797,32 @@ div.scrollmenu a:active, div.scrollmenu a:hover{
 	display: none;
 }
 
-/********************************************** highcharts landscape *********************************************/
+/*************************************** highcharts landscape ************************************/
 @media all and (orientation: landscape) {
-	/*******************overview highcharts*********************/
+	/******************* viewMain highcharts *********************/
 	#viewMain .page-header, #viewMain .page-date, #viewMain .page-tabs, #viewMain #excludeLabel, #viewMain #backBtn,
 	#viewMain #overview-hc-bubble, #viewMain #overview-hc-rectangle, #viewMain #overview-hc-rectangle-landscape {
 		display: none;
 	}
-	#viewMain {
-		padding-top: 0 !important;
-	}
-	.viewIndex.ui-page {
-		background-color: #fff;
-	}
+	
 	#viewMain #overview-hc-bubble-landscape {
 		display: block;
 	}
 	
-	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail #overdue, 
-	#viewDetail #overdueSoon, #viewDetail #expiredSoon, #viewDetail .scrollmenu {
-		display: none;
+	/******************* viewDetail highcharts ************************/
+	#viewDetail .page-header, #viewDetail .page-tabs, #viewDetail #overdue, #viewDetail .scrollmenu {
+		display: none !important;
 	}
 	
 	#viewDetail #viewDetail-hc-column-landscape {
-		display: inline;
+		display: block;
 	}
 	
-	#viewDetail{
-		padding-top: 0.1VH !important;
+	#viewMain, #viewDetail {
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
 	}
+	
 }
 
 @media all and (orientation: portrait) {

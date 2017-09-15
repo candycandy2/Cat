@@ -9,6 +9,12 @@ var dictDayOfWeek = {
     '6': '(六)',
     '0': '(日)'
 };
+var arrSiteCategory = ['10', '28'];
+var dictSiteCategory = {
+    '92': '10',
+    '111': '28'
+};
+
 var reserveDays = 14;
 
 window.initialSuccess = function() {
@@ -81,4 +87,11 @@ function getAPIListAllManager() {
     var __construct = function() {
         CustomAPI("POST", false, "ListAllManager", self.successCallback, self.failCallback, queryData, "");
     }();
+}
+
+//filter data
+function grepData(grepData, grepPram, grepValue) {
+    return $.grep(grepData, function(item, index) {
+        return item[grepPram] == grepValue;
+    });
 }
