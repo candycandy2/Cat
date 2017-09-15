@@ -7,6 +7,7 @@ var firstFacility;
 var viewMainInit = false;
 var userAuthority = [];
 var arSummaryData = {};
+var araUserAuthorityData = {};
 var buByType = [];
 var csdByType = [];
 var buSimplify = [];
@@ -651,10 +652,39 @@ $('#viewMain').pagecontainer({
 		};
 		
 		window.AraUserAuthority = function() {
-			this.successCallback = function(data) {
-				araUserAuthorityCallBackData = data["Content"];
+			if(localStorage.getItem("araUserAuthorityData") == null){
+				this.successCallback = function(data) {
+					araUserAuthorityCallBackData = data["Content"];	
+					var firstFacilityFlag = true;
+					for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
+						facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
+						if(firstFacilityFlag){
+							firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+							facility = firstFacility;
+							firstFacilityFlag = false;
+						}
+					}
+					$(".Facility").html("");
+	                $(".Facility").append(facilityList).enhanceWithin();
+	               	$(".Facility #" + firstFacility).addClass('hover');
+	                ARSummary();
+	                loadingMask("hide");
+	                
+	                localStorage.setItem("araUserAuthorityData", JSON.stringify([data, nowTime]));
+	                    
+				};
 				
-				//facilityList = '<a id="ALL">ALL</a>';
+				this.failCallback = function(data) {
+		    		console.log("api misconnected");
+		    	};
+		    	
+		    	var _construct = function() {
+					CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
+				}();
+			}
+			else{
+				araUserAuthorityData = JSON.parse(localStorage.getItem("araUserAuthorityData"))[0];
+				araUserAuthorityCallBackData = araUserAuthorityData["Content"];
 				var firstFacilityFlag = true;
 				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
 					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
@@ -666,21 +696,16 @@ $('#viewMain').pagecontainer({
 				}
 				$(".Facility").html("");
                 $(".Facility").append(facilityList).enhanceWithin();
-                /*$(".Facility #ALL").addClass('hover');*/
                	$(".Facility #" + firstFacility).addClass('hover');
                 ARSummary();
                 loadingMask("hide");
-                    
-			};
-			
-			this.failCallback = function(data) {
-	    		console.log("api misconnected");
-	    	};
-	    	
-	    	var _construct = function() {
-				CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
-			}();
-			
+				
+				var lastTime = JSON.parse(localStorage.getItem("araUserAuthorityData"))[1];
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
+                    localStorage.removeItem("araUserAuthorityData");
+                    AraUserAuthority();
+                }
+			}
 			
 		};
 		
