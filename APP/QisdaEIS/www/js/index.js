@@ -527,6 +527,7 @@ $(document).one('pagebeforeshow', function(){
 	   	
 	});	
 	
+	
 
 
 });
@@ -956,9 +957,15 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
 	    		$('#viewDetail .scrollmenu').show();*/
 	    		//$('#viewDetail-hc-column-landscape').hide();
 	    		//记录位置并返回
-	    		setTimeout(function(){
+	    		/*setTimeout(function(){
 	    			window.scrollTo(0, visibleMarginTop);
-	    		}, 300);
+	    		}, 300);*/
+	    		
+	    		//动画效果
+	    		setTimeout(function(){
+	    			$('html,body').animate({scrollTop: visibleMarginTop}, {duration: 10, easing: "swing"});	
+	    		}, 500);
+	    		
     		}
 			
     	}
@@ -989,9 +996,9 @@ window.addEventListener("onorientationchange" in window ? "orientationchange" : 
         		$('#viewDetail .scrollmenu').hide();
         		$('#viewDetail .page-tabs').hide();
         		$('#viewDetail #overdue').hide();*/
-        		setTimeout(function(){
-        			getLandscapeColumn(false, visibleArea);
-        		}, 200);
+        		
+        		getLandscapeColumn(false, visibleArea);
+        		
         		
 	        		
         	}
