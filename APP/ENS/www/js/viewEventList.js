@@ -770,8 +770,10 @@ $("#viewEventList").pagecontainer({
             // ITS or RM
 
             if (action === "check") {
-                if (window.localStorage.getItem("projectName") !== null) {
-                    projectName = window.localStorage.getItem("projectName");
+                if (!setProjectNameFromQPlay) {
+                    if (window.localStorage.getItem("projectName") !== null) {
+                        projectName = window.localStorage.getItem("projectName");
+                    }
                 }
             } else if (action === "setOption") {
 
