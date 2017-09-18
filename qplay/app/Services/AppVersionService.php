@@ -6,8 +6,11 @@
 namespace App\Services;
 
 use App\Repositories\AppVersionRepository;
+use App\lib\ResultCode;
 use App\lib\FilePath;
+use App\lib\QPlayApi;
 use File;
+use Config;
 
 class AppVersionService
 {   
@@ -143,11 +146,8 @@ class AppVersionService
 
         //upload File
         $this->uploadApkFile($appId, $versionData, $versionFile, $appKey);
-        
-        $destinationPath = FilePath::getApkUploadPath($appId,$versionData['device_type'],$versionData['version_code']);
-        $publishFilePath = FilePath::getApkPublishFilePath($appId,$versionData['device_type']);
-        $alsoCopyManifest = ( $versionData['device_type'] == 'ios')?true:false;
-        $this->copyApkFileToPath($versionFile->getClientOriginalName(), $destinationPath, $publishFilePath, $alsoCopyManifest);
+        $versionData['file_name'] = $versionFile->getClientOriginalName();
+        $this->copyAppFileToPublish($appId, $versionData);
         
     }
 
@@ -210,22 +210,43 @@ class AppVersionService
                     fclose($file);
                  }
             }
+            //upload app to ota folder 
+            $data = array('app_id'=>$appId,
+                         'app_key'=>$appKey,
+                         'device_type'=>$deviceType,
+                         'version_code'=>$versionCode,
+                         'version_file'=> new \CURLFile(realpath($destinationPath.$fileName))
+                         );
+            $res = QPlayApi::post('uploadAppFile',  $data, array('Content-Type: multipart/form-data'));
+            $res = json_decode($res,true);
+            if($res['result_code']!= ResultCode::_1_reponseSuccessful){
+                throw new \Exception("OTA API uploadAppFile Error");
+            }
         }
 
+       
     }
 
 
     /**
      * 將檔案複製到目的
-     * @param  string  $fileName           目標檔案名稱
-     * @param  string  $copyFromPath       來源檔案路徑
-     * @param  string  $copyToPath         目標檔案路徑
-     * @param  boolean $alsoCopyManifest 是否一併移動manifest.plist檔案                 
+     * @param  string  $appId              ap_app.row_id
+     * @param  string  $versionData        版本資訊                
      */
-    public function copyApkFileToPath($fileName, $copyFromPath, $copyToPath, $alsoCopyManifest = false){ 
-        \File::copy($copyFromPath.$fileName,$copyToPath.$fileName);
-        if($alsoCopyManifest){
-            \File::copy($copyFromPath.'manifest.plist',$copyToPath.'manifest.plist');
+    public function copyAppFileToPublish($appId, $versionData){
+        
+        $destinationPath = FilePath::getApkUploadPath($appId,$versionData['device_type'],$versionData['version_code']);
+        $publishFilePath = FilePath::getApkPublishFilePath($appId,$versionData['device_type']);
+        $fileName = $versionData['file_name'];
+        \File::copy($destinationPath.$fileName,$publishFilePath.$fileName);
+        if($versionData['device_type'] == 'ios'){
+            \File::copy($destinationPath.'manifest.plist',$publishFilePath.'manifest.plist');
+        }
+        $data = array('app_id'=>$appId, 'version_data'=>$versionData);;
+        $res = QPlayApi::post('copyAppFileToPublish', json_encode($data));
+        $res = json_decode($res,true);
+        if($res['result_code']!= ResultCode::_1_reponseSuccessful){
+            throw new \Exception("OTA API copyAppFileToPublish Error");
         }
     }
 
@@ -236,6 +257,7 @@ class AppVersionService
      * @return string   $targetFilePath the path that had been delete
      */
     public function deleteApkFileFromPublish($appId,$deviceType){
+        $data=[];
 
         $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
         $OriPublish = $this->appVersionRepository->getPublishedApp($appId,$deviceType);
@@ -251,6 +273,13 @@ class AppVersionService
                     unlink($publishFilePath.'manifest.plist');
                 }
             }
+            //remove ota
+            $data=array('app_id'=>$appId,'device_type'=>$deviceType, 'file_name'=>$OriPublish->url);
+            $res = QPlayApi::post('deleteAppFileFromPublish',  json_encode($data));
+            $res = json_decode($res,true);
+            if($res['result_code']!= ResultCode::_1_reponseSuccessful){
+                throw new \Exception("OTA API deleteAppFileFromPublish Error");
+            }
         }
     }
 
@@ -261,7 +290,8 @@ class AppVersionService
      * @return
      */
     public function deleteAppVersion(Int $appId, Array $delVersionArr){
-         $appStatus = $this->getAllPublishedAppStatus($appId);
+        $data=[];   
+        $appStatus = $this->getAllPublishedAppStatus($appId);
         foreach ($delVersionArr as  $vId) {
             $versionItem = $this->appVersionRepository->getAppVersionById($vId);
             if(!is_null($versionItem)){
@@ -269,6 +299,14 @@ class AppVersionService
                 if(($versionItem['version_code'] == $appStatus[$versionItem['device_type']]['versionCode'])){
                     $this->unPublishVersion($appId, $versionItem['device_type'], \Auth::user()->row_id);
                 }
+
+                //remove data
+                $tmpData = array('app_id'=>$appId,
+                                'device_type'=>$versionItem['device_type'],
+                                'version_code'=>$versionItem['version_code']);
+                $data[]=$tmpData;
+
+                //remove local
                 $destinationPath = FilePath::getApkUploadPath($appId,$versionItem['device_type'],$versionItem['version_code']);
                 if(file_exists($destinationPath)){
                     $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
@@ -285,7 +323,16 @@ class AppVersionService
                 }
             }
         }
+        //remove ota
         $this->appVersionRepository->deleteAppVersionById($delVersionArr);
+        if(count($data) > 0){
+            $res = QPlayApi::post('deleteAppFile', json_encode($data));
+            
+            $res = json_decode($res,true);
+            if($res['result_code']!= ResultCode::_1_reponseSuccessful){
+                throw new \Exception("OTA API deleteAppFile Error");
+            }
+        }
     }
 
     /**
@@ -401,8 +448,8 @@ class AppVersionService
         $insertArray = [];
         $updateArray = [];
         $saveId = [];
+        $uploadFiledata = [];
         $now = date('Y-m-d H:i:s',time());
-        
 
         foreach ($versionList as $deviceType => $versionItems) {
            
@@ -436,20 +483,8 @@ class AppVersionService
                      $updateArray[] = $data;
                      $saveId[] = $value['row_id'];
                 }else{//new
-                    if($value['external_app']==0){//file upload
-                        
-                        $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
-                        if(isset($value['version_file'])){
-                            $value['version_file']->move($destinationPath,$value['url']);
-                            if($deviceType == 'ios'){
-                                $manifestContent = $this->getManifest($appId, $appKey, $deviceType, $value['version_code'],$value['url']);
-                                 if(isset($manifestContent)){
-                                    $file = fopen($destinationPath."manifest.plist","w"); 
-                                    fwrite($file,$manifestContent );
-                                    fclose($file);
-                                 }
-                            }
-                        }
+                    if($value['external_app']==0){//file upload  
+                        $this->uploadApkFile($appId, $data, $value['version_file'], $appKey);
                     }
                     //arrange data
                     $data['size'] =(!isset($value['size']) || $value['size'] == 'null')?0:$value['size'];
@@ -457,25 +492,26 @@ class AppVersionService
                     $data['created_at'] = $value['created_at'];
                     $insertArray[]=$data;
                 }
-                
+              
                 if($value['status'] == 'ready' && $value['external_app'] == 0){
                     $deletePublishFile = false;
-                    $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
-                    $destinationPath = FilePath::getApkUploadPath($appId,$deviceType,$value['version_code']);
-                    $alsoCopyManifest = ($deviceType == 'ios')?true:false;
+                    $versionData['device_type'] = $deviceType;
+                    $versionData['version_code'] = $value['version_code'];
+                    $versionData['file_name'] = $value['url'];
                     $this->deleteApkFileFromPublish($appId, $deviceType);
-                    $this->copyApkFileToPath($value['url'], $destinationPath, $publishFilePath, $alsoCopyManifest);
+                    $this->copyAppFileToPublish($appId, $versionData);
                 }
             }
-            
+           
+           
             if($deletePublishFile){
                 $this->deleteApkFileFromPublish($appId, $deviceType);
             }
         }
-        
+      
         $this->updateVersion($updateArray);
         $this->insertVersion($insertArray);
 
-        
+         
     }
 }

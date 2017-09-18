@@ -42,6 +42,8 @@ return [
     'url' => env('APP_URL'),
     'app_file_server'=>env('APP_FILE_SERVER'),
     'app_file_path'=>env('APP_FILE_PATH'),
+    'upload_folder' => env('APP_UPLOAD_FOLDER', 'app'),
+    'upload_path' => env('APP_UPLOAD_PATH'),
 
     /*
     |--------------------------------------------------------------------------
@@ -138,6 +140,17 @@ return [
      *MONGODB:mongodb
      * */
     'log_mode' => env('LOG_MODE','All'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | App Package Prefix Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the app pacakge prefix settings for your application. 
+    | 
+    */
+    'app_package' => 'com.qplay',
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

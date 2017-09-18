@@ -24,13 +24,14 @@ class EnUserGroupRepository
 
     /**
      * 取得尚未註冊Qmessage的管理者及主管的帳號(login_id)
+     * @param String $project project
      * @return mixed
      */
-    public function getSuperUserLoginIdNotRegister($appKey){
+    public function getSuperUserLoginIdNotRegister($project){
         return $this->userGroup
             ->LeftJoin( 'qplay.qp_user as qp_user', 'qp_user.emp_no', '=', 'ens.en_usergroup.emp_no')
             ->where('qp_user.register_message', '=', 'N')
-            ->where('ens.en_usergroup.app_key', '=', $appKey)
+            ->where('ens.en_usergroup.project', '=', $project)
             ->distinct('login_id')->select('login_id')
             ->get();
     }

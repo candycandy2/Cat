@@ -8,19 +8,24 @@ use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use App\lib\Verify;
 use App\Services\UserService;
+use App\Services\BasicInfoService;
 use DB;
+use Config;
 
 class UserController extends Controller
 {
     protected $userService;
+    protected $basicInfoService;
 
     /**
      * 建構子，初始化引入相關服務
      * @param UserService      $userService      用戶服務
+     * @param BasicInfoService      $basicInfoService      成員資訊
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, BasicInfoService $basicInfoService)
     {
         $this->userService = $userService;
+        $this->basicInfoService = $basicInfoService;
     }
 
     /**
@@ -42,17 +47,32 @@ class UserController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
             $empNo = (string)$xml->emp_no[0];
-            $appKey = (string)$xml->app_key[0];
-
-            if($appKey ==""){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                    'Message'=>"必填欄位缺失",
-                    'Content'=>""]);
+            $result = [];
+            //先檢查basic info
+            foreach ( Config::get('app.ens_project') as $project) {
+                $rs = $this->basicInfoService->checkUserIsMember($project, $empNo);
+                if($rs){
+                    $tmpResult = [];
+                    $tmpResult['Project'] = $project;
+                    $tmpResult['RoleList'][] = 'common';
+                    array_push($result,$tmpResult);
+                }
             }
-
-            $roleList = $this->userService->getUserRoleList($appKey, $empNo);
+            //再檢查usergroup
+            $roleList = $this->userService->getUserRoleList($empNo);
+            foreach ($result as  &$value) {
+                if(isset($roleList[$value['Project']])){
+                    $value['RoleList'] = $roleList[$value['Project']];
+                }
+            }
+           unset($value);
+           if(count($result) == 0){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014923_noAuthority,
+                    'Message'=>"沒有任何專案權限",
+                    'Content'=>""]);
+           }
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                    'Content'=>array("RoleList"=>$roleList)]);
+                    'Content'=>$result]);
 
         } catch (\Exception $e){
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,

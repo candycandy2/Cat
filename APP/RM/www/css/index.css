@@ -1,0 +1,798 @@
+/********************************** override jQuery Mobile *************************************/
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #d4d4d4;
+    color: #d4d4d4/* IE6 */
+}
+
+h1 {
+    font-size: 5.5vw;
+}
+
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.ui-header-fixed{ position: absolute; z-index: 990;}
+.ui-header-fixed.ui-fixed-hidden{ top: -1px;}
+
+.hidden {
+    visibility: hidden;
+    position: absolute;
+    display: block;
+}
+
+.ui-header-fixed {
+    padding-top: initial !important;
+}
+
+.ui-btn {
+    text-overflow: initial;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+
+#myReserve .ui-block-a {
+    text-align: left;
+}
+
+#myReserve .ui-block-a span,
+#myReserve .ui-block-b span {
+    display: inline-table;
+    margin-bottom: 5px;
+}
+
+#navbar ul li a {
+    line-height: 90%;
+}
+
+.ui-btn-active, #newSettingFloor div.ui-btn-active{
+    background-color: #0db6b7;
+    color: white !important;
+    border-color: #ddd !important;
+}
+
+.ui-controlgroup-controls label.ui-btn-active {
+    background-color: #0db6b7 !important;
+}
+
+#viewNewSetting .ui-controlgroup-controls {
+    width: 100%;
+}
+
+.ui-radio label {
+    text-align: center !important;
+    font-size: 4.18vw;
+    padding: 2.8vw 0 2.6vw;
+}
+
+#reserveDateSelect div.ui-bar-a {
+    background-color: initial;
+}
+
+#reserveDateSelect .ui-bar>div:nth-of-type(1){ padding-top: 1.692vw; height: 4VH;}
+
+.ui-radio-30 div.ui-radio {
+    width: 33%;
+}
+
+.ui-radio-50 div.ui-radio {
+    width: 50%;
+}
+
+#reserveSettingArea a:link {
+    text-decoration: none;
+    color: black;
+}
+
+#reserveTab > div > div.ui-radio label {
+    line-height: 1;
+    border: 1px solid #2a88bc !important;
+    border-left-width: 0 !important;
+    background-color: #fff !important;
+}
+
+#reserveTab > div > div.ui-radio:nth-of-type(1) label{
+    border-left-width: 1px !important;
+}
+
+#reserveTab > div > div.ui-radio label.ui-btn-active {
+    background-color: #2a88bc !important;
+    color: white !important;
+}
+
+#reserveTab.ui-radio-50w div.ui-radio {
+    width: 30.6vw !important;
+}
+
+#pageThree, #pageTwo, #pageOne{ margin-top: 4.3vw !important;}
+#pageTwo{ margin-left: 0 !important; margin-right: 0 !important;}
+
+#pageOne div.ui-select {
+    width: 30vw !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    display: inline-block;
+}
+
+#pageTwo div.ui-select {
+    width: 45vw !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 3vh 0 3vh 0;
+}
+
+#reserveDateSelect div.ui-bar {
+    text-align: left;
+    border-style: solid;
+    border-color: #d6d6d6;
+    border-width: 0px 1px 1px 0px;
+    padding: 0 1.3vw 0 2vw;
+    height: 8.5VH;
+}
+
+#reserveDateSelect > div.ui-grid-c {
+    border-style: solid;
+    border-color: #d6d6d6;
+    border-width: 1px 0px 0px 1px;
+    background-color: #fff;
+}
+
+#reserveDateSelect div.ui-bar div:nth-child(2) {
+    font-size: 3.14vw;
+    margin-top: 1vw;
+}
+
+#reserveDateSelect div.ui-bar div:nth-child(2):not(.timeRemind){ padding-bottom: 1.021vw;}
+
+.ui-mobile .ui-page-active{ min-height: 100vh !important;}
+
+.ui-header .ui-title{ padding: 3.238vw 0; font-size: 4.39vw; font-weight: normal;}
+.ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
+#reserveTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
+#reserveBtn{ margin: 4.3vw auto 0 !important; padding: 1.8vw 0; height: auto;}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  font: 15px / 1.15 Helvetica, Arial, sans-serif;
+}
+.wrap {
+  max-width: 800px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+header {
+  background: #33c;
+  color: #fff;
+  padding: 20px 0;
+  position: relative;
+  z-index: 1;
+}
+header h1 {
+  margin: 0;
+}
+pre {
+  background: rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  overflow: auto;
+  padding: 5px;
+}
+#relieveInfo {
+  flex: 1;
+  padding-top: 20px;
+  transition: transform .3s;
+}
+.trigger {
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  float: right;
+  display: block;
+  border: 1px solid white;
+}
+.links a ~ a {
+  margin-left: 1em;
+}
+#footer {
+  background: #eef;
+  /*padding: 10px 0;*/
+}
+
+/* reserve info */
+.reserveInfo{ overflow: hidden; padding: 4vw 6.71vw 3vw; display: flex; align-items: center; position: relative;}
+.reserveInfo:after{ content: ''; display: block; width: 92.58%; height: 1px; background-color: #d6d6d6; position: absolute; bottom: 0; left: 3.71%;}
+.reserveInfo:nth-last-of-type(1):after{ display: none;}
+.reserveInfo-area{ float: left; vertical-align: middle; display: inline-block;}
+.reserveInfo-area-left{ width: 70%}
+.reserveInfo-area-right{ width: 30%;}
+.reserveInfo-area-time{ margin: 0 0 2.14vw 3.71vw;}
+.reserve-area-time{ margin: 0 0 2.14vw 3.71vw;}
+.btn-area{ text-align: right;}
+.btn-area a{ font-weight: normal; display: inline-block; width: 20%;}
+.btn-area img{ width: 100%; height: auto;}
+.reserveInfo-company, .reserveInfo-time{ display: inline-block;}
+.reserveInfo-company{ margin-right: 4.5vw;}
+#today-reserve-area{ margin-bottom: 6.44vw;}
+#today-reserve-area .reserveInfo{ background-color: #fff;}
+#later-reserve-area{ color: #666;}
+#later-reserve-area .reserveInfo{ background-color: #f6f6f6;}
+
+/********************************** public area *************************************/
+*{ box-sizing: border-box;}
+.hide{ display: none;}
+
+.table{ display: table; width: 100%; border: 1px solid #d6d6d6; text-align: center; padding: 0 3.71vw; color: #323232; background-color: #fff;}
+.tr{ display: table-row;}
+.td{ display: table-cell; border-bottom: 1px solid #dfdfdf; padding: 3.71vw 0;}
+.tr:nth-last-of-type(1) .td{ border-bottom-width: 0;}
+.tr:nth-of-type(1) .td{ padding: 4.3vw 0 3vw; border-color: #989898;}
+
+.ui-title-btn {
+    text-shadow: none !important;
+    font-size: 4.39vw !important;
+    border: 0;
+    padding-top: 3.238vw;
+}
+
+.ui-margin-10 {
+    margin: 3% !important;
+}
+
+.ui-padding-8 {
+    padding-left: 8%;
+}
+
+.ui-hasBtn h2 {
+    display: inline-block;
+    float: left;
+}
+
+.app-font {
+    font-size: 2.8vh;
+}
+
+.app-font-small {
+    font-size: 2.5vh;
+}
+
+.disable {
+    display: none !important;
+}
+
+.inline {
+    display: inline-block;
+    vertical-align: sub;
+    color: #0f0f0f;
+    font-size: 3.349vw;
+}
+
+div.square {
+    width: 3vw;
+    height: 1.5vw;
+}
+
+.square.ui-color-reserve{ background-color: #d4d4d4 !important;}
+.square.ui-color-myreserve{ background-color: #b3d6d1 !important;}
+#reserveColorDiagram > div{ vertical-align: middle;}
+
+.ui-margin-public {
+    margin: 1.8vw 3.71vw 0 !important;
+    font-size: 4.18vw;
+}
+
+#viewNewSetting .ui-margin-public{ margin-top: 5.97vw !important;}
+#newSettingFloor{ font-size: 4.18vw;}
+#pageOne .scrollmenu{ margin-bottom: 0.99vw;}
+
+.title-icon {
+    height: 5.957vw;
+}
+
+.radius-btn {
+    border-radius: 40px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border: 0px;
+    background-color: #2a88bc;
+    color: white;
+    width: 64vw;
+    height: 5vh;
+    text-align: center;
+    padding-top: 1.5vh;
+    font-size: 4.5vw;
+}
+
+.circleIcon {
+    width: 4.83vw;
+    height: 4.83vw;
+    position: absolute;
+    bottom: 1.021vw;
+    right: 1.3vw;
+}
+
+.iconSelect {
+    background: url(../img/circle1.png);
+    background-size: 4.8vw auto;
+    background-repeat: no-repeat;
+}
+
+.iconSelected {
+    background: url(../img/circle2.png);
+    background-size: 4.8vw auto;
+    background-repeat: no-repeat;
+}
+
+.timeRemind{ font-size: 3.14vw; margin-top: 1vw !important; opacity: 0; padding-bottom: 1.021vw;}
+.timeRemind.timeShow{ opacity: 1;}
+
+.btn-border {
+    background-color: white !important;
+    color: black !important;
+    border-width: 1px;
+    border-color: #2a88bc !important;
+    border-style: solid !important;
+}
+
+.btn-myreserve {
+    border-radius: 40px;
+    border-radius: 40px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    color: white;
+    width: 22vw;
+    height: 4.5vh;
+    line-height: 5vh;
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    border-width: 1px;
+    border-color: white;
+    border-style: solid;
+    display: inline-block;
+}
+
+.myreserve-margin {
+    font-size: 2.8vh;
+    margin: 1.7vh 4.8vw;
+}
+
+.myreserve-height {
+    height: 10.7vh;
+    line-height: 10.7vh;
+}
+
+.setting-delete {
+    position: absolute;
+    right: 6vw;
+    display: inline-block;
+    width: 22vw;
+    height: 4vh;
+    line-height: 4.5vh;
+    margin-top: -0.5vh;
+}
+
+.setting-img {
+    height: 2.5vh;
+    margin-left: 2vw;
+}
+
+.div-radius {
+    border-radius: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.quick-reserve-margin {
+    text-align: center;
+    margin: 4.5vh auto 3vh auto;
+}
+
+.quick-reserve-msg-icon {
+    background: url(../img/select.png) no-repeat;
+    width: 5vw;
+    height: 3vh;
+    background-size: 5vw 3vh;
+}
+
+.quick-reserve-warn-icon {
+    background: url(../img/warn_icon.png) no-repeat;
+    width: 5vw;
+    height: 3vh;
+    background-size: 5vw 3vh;
+}
+
+.quick-reserve-setting-icon {
+    background: url(../img/setting.png) no-repeat;
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.quick-reserve-setting-icon {
+    background: url(../img/setting.png) no-repeat;
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.cntIcon {
+    width: 5.4vw;
+    height: 5.4vw;
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: center;
+    line-height: 6vw;
+    background-color: #142433 !important;
+    font-size: 3.55vw;
+}
+
+.setting-icon {
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw 4.2vh;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.setting-back-icon {
+    background: url(../img/back_nav.png) no-repeat;
+}
+
+.setting-save-icon {
+    background: url(../img/save_nav.png) no-repeat;
+}
+
+.setting-add-icon {
+    background: url(../img/add_nav.png) no-repeat;
+}
+
+.min-height-100 {
+    min-height: 100% !important;
+}
+
+
+/*.loader{
+    margin-top: 100vh !important;
+}*/
+
+.word-mid {
+    text-align: left;
+    vertical-align: sub;
+    margin-left: 3.3vw;
+}
+
+.word-warp {
+    white-space: pre-line;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 20px;
+    max-height: 40px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    vertical-align: middle;
+    color: #666;
+    font-size: 3.14vw;
+}
+
+.settingArea {
+    border-radius: 3px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 3px;
+    font-size: 2.8vh;
+    text-align: left;
+    padding: 1.5vh 2.4vw;
+    border: 1px solid #aaa;
+    margin-top: 3.2vh;
+    margin-bottom: 5.6vh;
+}
+
+.dropdown-icon {
+    outline: none;
+    font-size: 4.18vw;
+    border: 0;
+    background: url('../img/dropdown.png') 100% 45% transparent;
+    background-size: 3.54vw auto;
+    background-repeat: no-repeat;
+    -webkit-appearance: none;
+    margin-bottom: 2.14vw !important;
+    padding-right: 6.74vw;
+}
+
+
+/********************************** color setting *************************************/
+
+.ui-color-lightblue {
+    background-color: #2a88bc;
+}
+
+.ui-color-white {
+    background-color: white;
+}
+
+hr.ui-color-white {
+    border: 0 !important;
+    height: 1px !important;
+    background-color: white !important;
+    border-color: white !important;
+}
+
+hr.ui-color-green {
+    background-color: #6bbfcf;
+}
+
+.btn-enable {
+    background-color: #2a88bc !important;
+    color: white !important;
+}
+
+.ui-benq-color {
+    color: #471e86;
+}
+
+.btn-disable {
+    background-color: #ddd !important;
+    color: #666 !important;
+}
+
+.btn-otherday {
+    background-color: #ddd !important;
+    color: #666 !important;
+}
+
+.btn-otherday h1,
+#defaultToday h1 {
+    font-size: 5.5vw !important;
+}
+
+.ui-color-reserve {
+    background-color: #eaeaea !important;
+}
+
+.ui-color-disable {
+    background-color: #eaeaea !important;
+}
+
+.ui-color-myreserve {
+    background-color: #CBF1EC !important;
+}
+
+.ui-color-myreserve .timeRemind, .ui-color-reserve .timeRemind { display: none;}
+
+.ui-linear-gradient-gary {
+    background: -webkit-linear-gradient(#a1a3a5, #747679);
+    background: -o-linear-gradient(#a1a3a5, #747679);
+    background: -moz-linear-gradient(#a1a3a5, #747679);
+    background: linear-gradient(#a1a3a5, #747679);
+    color: white !important;
+}
+
+.ui-linear-gradient-green {
+    background: -webkit-linear-gradient(#009cb5, #056c92);
+    background: -o-linear-gradient(#009cb5, #056c92);
+    background: -moz-linear-gradient(#009cb5, #056c92);
+    background: linear-gradient(#009cb5, #056c92);
+    color: white !important;
+}
+
+
+/********************************** scrollmenu *************************************/
+
+div.scrollmenu {
+    background-color: #fff;
+    overflow: auto;
+    white-space: nowrap;
+    /*display: flex;*/
+    border-style: solid;
+    border-width: 1px 0px 1px 1px;
+    border-color: #d6d6d6 !important;
+    margin: 0 -3.6vw 0 0 !important;
+    -webkit-overflow-scrolling: touch
+}
+
+div.scrollmenu a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    border-style: solid;
+    border-width: 0px 1px 0px 0px;
+    border-color: #d6d6d6 !important;
+}
+
+#scrollDate a,
+#quickReserveScrollDate a {
+    padding: 3vw 0;
+    width:30%;
+    font-weight: normal;
+}
+
+#scrollDate a{ padding: 2.894vw 0 2.567vw; margin-left: -4px;}
+#scrollDate a:nth-of-type(1){ margin-left: 0;}
+
+#reserveRoom a {
+    padding: 3vw 0;
+    font-weight: normal;
+    width: 22%;
+}
+
+.hover {
+    background-color: #0db6b7;
+    color: white !important;
+}
+
+
+/********************************** new header *************************************/
+
+#container {
+    width: 100%;
+    text-align: center;
+}
+
+#container a:link,
+#container span {
+    text-decoration: none;
+    color: white;
+    line-height: 20px;
+    letter-spacing: 1px;
+    font-weight: normal;
+}
+
+#left {
+    float: left;
+    margin: 0 5%;
+}
+
+#center {
+    display: inline-block;
+    margin: 0 auto !important;
+}
+
+#right {
+    float: right;
+    margin: 0 5%;
+}
+
+
+/********************************** column width *************************************/
+
+.col-95 {
+    width: 95% !important;
+}
+
+.col-9 {
+    width: 90% !important;
+}
+
+.col-8 {
+    width: 80% !important;
+}
+
+.col-7 {
+    width: 70% !important;
+}
+
+.col-6 {
+    width: 60% !important;
+}
+
+.col-5 {
+    width: 50% !important;
+}
+
+.col-4 {
+    width: 40% !important;
+}
+
+.col-3 {
+    width: 30% !important;
+}
+
+.col-2 {
+    width: 20% !important;
+}
+
+.col-1 {
+    width: 10% !important;
+}
+
+
+/********************************** popup msg *************************************/
+
+#reservePopupSchemeMsg-popup,
+#reservePopupSchemeMsg,
+#newSettingTimePickerPopup-popup,
+#newSettingTimePickerPopup {
+    width: initial !important;
+    border-width: 0px !important;
+    border-style: initial !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+}
+
+#reservePopupSchemeMsg #msgContent {
+    margin: 0 auto;
+}
+
+.popup-msg a {
+    background: transparent;
+    border: none;
+    color: #1678E5 !important;
+    height: 3rem;
+    line-height: 3rem;
+    font-size: 1rem;
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    font-weight: 100;
+}
+
+.popup-msg a:nth-of-type(1) {
+    left: initial;
+    height: 4vh;
+    width: 6vw;
+}
+
+.popup-msg a:nth-of-type(2) {
+    border-top: 1px solid #d4d4d4;
+    border-right: 1px solid #d4d4d4;
+    left: 0;
+    border-radius: 0 0 0 10px;
+}
+
+.popup-msg a:nth-of-type(3) {
+    border-top: 1px solid #d4d4d4;
+    right: 0;
+    border-radius: 0 0 10px 0;
+}
+
+.DetailInfo > .ui-content{
+    padding: 0 !important;
+}
+
+.DetailInfo .ui-content > .header {
+    margin-top: 10%;
+}
+/********************************** timepicker *************************************/
+
+.timepicker-icon {
+    width: 10vw;
+    height: 4vh;
+    line-height: 4vh;
+    border: 0.6vw solid #ddd;
+    border-radius: 7px;
+    padding: 1vh 0 0 0;
+}
+
+.timepicker-icon-up {
+    background: url(../img/up.png) no-repeat;
+    background-size: 10vw 5vh;
+}
+
+.timepicker-icon-down {
+    background: url(../img/down.png) no-repeat;
+    background-size: 10vw 5vh;
+}
+
+.timepicker-warn-icon {
+    background: url(../img/warn_icon.png) no-repeat;
+    width: 6vw;
+    height: 3vh;
+    background-size: 6vw 3vh;
+    background-repeat: no-repeat;
+}
