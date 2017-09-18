@@ -661,6 +661,8 @@ $("#viewEventList").pagecontainer({
             //Only [admin] can Add New Event
             if (checkAuthority("admin")) {
                 $("#addEvent").show();
+            } else {
+                $("#addEvent").hide();
             }
         }
 
@@ -815,6 +817,8 @@ $("#viewEventList").pagecontainer({
                     } else {
                         memberListView("location", projectName);
                     }
+
+                    showEventAdd();
                 }
             }
 
