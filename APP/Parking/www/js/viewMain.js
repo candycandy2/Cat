@@ -1,5 +1,7 @@
 
 var defaultSiteClick = '';
+var clickSiteId = '';
+var siteCategoryID = '';
 var parkingSpaceDataExample = ['車位1', '車位2', '車位3', '車位4'];
 
 $("#viewMain").pagecontainer({
@@ -94,6 +96,83 @@ $("#viewMain").pagecontainer({
             
         }
        
+        function getMettingStatus() {
+            htmlContent = '';
+            $('#defaultTimeSelectId').nextAll().remove();
+            var arrClass = ['a', 'b', 'c', 'd'];
+            var originItem = ['defaultTimeSelectId', 'reserveTimeSelect', '[eName]', 'ui-block-a', 'disable', 'reserve', 'circle-icon', '[msg]', '[ext]', '[email]', '[traceID]'];
+            var j = 0;
+
+            var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
+
+            for (var item in filterTimeBlock) {
+                var classId = arrClass[j % 4];
+                var reserveClass = 'ui-color-noreserve';
+                var reserveIconClass = 'circleIcon iconSelect';
+                var msg = '',
+                    eName = '',
+                    ext = '',
+                    email = '',
+                    traceID = '';
+                var bTime = filterTimeBlock[item].time;
+                var timeID = filterTimeBlock[item].timeID;
+                var roomName = $('#reserveRoom .hover').text();
+
+                for (var i = 0, arr; arr = arrReserve[i]; i++) {
+                    if (arr.detailInfo['bTime'] == bTime) {
+                        if (arr.detailInfo['eName'] == loginData['loginid']) {
+                            reserveClass = 'ui-color-myreserve';
+                        } else {
+                            reserveClass = 'ui-color-reserve';
+                        }
+                        reserveIconClass = '';
+                        eName = arr.detailInfo['eName'];
+                        ext = arr.detailInfo['ext'];
+                        email = arr.detailInfo['email'];
+                        traceID = arr.detailInfo['traceID'];
+                        msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(arr.detailInfo['bTime']) + ',' + eName
+
+                        //to do 
+                        //array pop data
+                        //arrReserve.pop(arr);
+                    }
+                }
+                var replaceItem = ['time-' + timeID, bTime.trim(), eName, 'ui-block-' + classId, '', reserveClass, reserveIconClass, msg, ext, email, traceID];
+
+                htmlContent
+                    += replaceStr($('#defaultTimeSelectId').get(0).outerHTML, originItem, replaceItem);
+
+                msg = '';
+                j++;
+            } 
+
+            $('#reserveDateSelect > div').append(htmlContent);
+        }
+
+        function getReserveData(roomId, date, data, type) {
+            loadingMask("show");
+            arrReserve = [];
+            for (var i = 0, item; item = data[i]; i++) {
+                var newReserve = new reserveObj(roomId, date);
+                newReserve.addDetail('traceID', item.ReserveTraceID);
+                newReserve.addDetail('eName', item.EMail.substring(0, item.EMail.indexOf('@')));
+                newReserve.addDetail('bTime', item.BTime);
+                newReserve.addDetail('ext', item.Ext_No.replace('-', ''));
+                newReserve.addDetail('email', item.EMail);
+                arrReserve.push(newReserve);
+            }
+
+            if (type === 'dataNotExist') {
+                //save to local data
+                var reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
+                var newReserveLocalDataObj = new reserveLocalDataObj(roomId, date, data);
+                reserveDetailLocalData.push(newReserveLocalDataObj);
+                localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
+            }
+
+            getMettingStatus();
+            loadingMask("hide");
+        }
 
         function checkLocalDataExpired() {
             defaultSiteClick = localStorage.getItem('defaultSiteClick');
@@ -114,6 +193,7 @@ $("#viewMain").pagecontainer({
         function getInitialData() {
             $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
             clickSiteId = $("#reserveSite option:selected").val();
+            siteCategoryID = dictSiteCategory[defaultSiteClick];
             getSpaceData(clickSiteId);  
         }
 
@@ -140,6 +220,8 @@ $("#viewMain").pagecontainer({
 
         $('#reserveSite').change(function() {
             localStorage.setItem('defaultSiteClick', $(this).val());
+            siteCategoryID = dictSiteCategory[$(this).val()];
+            clickSiteId = $("#reserveSite option:selected").val();
             var selectedSite = $('#reserveSite').find(":selected").val();
             setAlertLimitSite(selectedSite);  
             getSpaceData(clickSiteId);       
