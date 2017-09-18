@@ -1,13 +1,13 @@
 //get BU & CSD series
 var viewMainTab = "bu";
 var facilityList = "";
-/*var facility = "ALL";*/
+//var facility = "ALL";
 var facility;
 var firstFacility;
 var viewMainInit = false;
-var mainQisdaEisData = {};
 var userAuthority = [];
 var arSummaryData = {};
+var araUserAuthorityData = {};
 var buByType = [];
 var csdByType = [];
 var buSimplify = [];
@@ -150,7 +150,6 @@ var bubbleOption = {
         }
     },
     series: [{		    	
-        //data: buBubbleSeries
         data: buBubbleData
     }],
     exporting: {
@@ -226,7 +225,6 @@ var rectOption = {
 	            crop: true,
 	            overflow: 'justify',
 	            inside: true,
-	            /*zIndex: 2,*/
 	            style: {
 	            	"color": "#ffffff",
 	            	"fontSize": "11px",
@@ -289,7 +287,6 @@ var treemapOption = {
         }
    	},
    	tooltip: {
-   		/*enabled: false,*/
         useHTML: true,
         animation: false,
         hideDelay: 0,
@@ -317,7 +314,6 @@ var treemapOption = {
 	            crop: true,
 	            overflow: 'justify',
 	            inside: true,
-	            /*zIndex: 2,*/
 	            style: {
 	            	"color": "#ffffff",
 	            	"fontSize": "11px",
@@ -352,11 +348,6 @@ function showTreemap(){
 	chartLandscapeRect = new Highcharts.Chart(rectOption);
 }
 
-
-function hideTooltip(){
-	chartbubble.tooltip.hide();
-    chartRect.tooltip.hide();  
-}
 
 function sortDataByType(){
 	buByType = [];
@@ -597,6 +588,16 @@ function getTreemapSeriesByFacility(fac) {
 }
 
 
+function showBubble(){
+	bubbleOption.chart.renderTo = 'overview-hc-bubble';
+	chartbubble = new Highcharts.Chart(bubbleOption);
+	
+	bubbleOption.chart.renderTo = 'overview-hc-bubble-landscape';
+	chartLandscapebubble = new Highcharts.Chart(bubbleOption);
+				
+}
+
+
 /*****************************************************************/
 $('#viewMain').pagecontainer({
 	create: function (event, ui){	
@@ -651,10 +652,39 @@ $('#viewMain').pagecontainer({
 		};
 		
 		window.AraUserAuthority = function() {
-			this.successCallback = function(data) {
-				araUserAuthorityCallBackData = data["Content"];
+			if(localStorage.getItem("araUserAuthorityData") == null){
+				this.successCallback = function(data) {
+					araUserAuthorityCallBackData = data["Content"];	
+					var firstFacilityFlag = true;
+					for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
+						facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
+						if(firstFacilityFlag){
+							firstFacility = araUserAuthorityCallBackData[i]["FACILITY"];
+							facility = firstFacility;
+							firstFacilityFlag = false;
+						}
+					}
+					$(".Facility").html("");
+	                $(".Facility").append(facilityList).enhanceWithin();
+	               	$(".Facility #" + firstFacility).addClass('hover');
+	                ARSummary();
+	                loadingMask("hide");
+	                
+	                localStorage.setItem("araUserAuthorityData", JSON.stringify([data, nowTime]));
+	                    
+				};
 				
-				//facilityList = '<a id="ALL">ALL</a>';
+				this.failCallback = function(data) {
+		    		console.log("api misconnected");
+		    	};
+		    	
+		    	var _construct = function() {
+					CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
+				}();
+			}
+			else{
+				araUserAuthorityData = JSON.parse(localStorage.getItem("araUserAuthorityData"))[0];
+				araUserAuthorityCallBackData = araUserAuthorityData["Content"];
 				var firstFacilityFlag = true;
 				for(var i = 0; i < araUserAuthorityCallBackData.length; i++){
 					facilityList += '<a id="' + araUserAuthorityCallBackData[i]["FACILITY"] + '">' + araUserAuthorityCallBackData[i]["FACILITY"] + '</a>';
@@ -666,34 +696,18 @@ $('#viewMain').pagecontainer({
 				}
 				$(".Facility").html("");
                 $(".Facility").append(facilityList).enhanceWithin();
-                /*$(".Facility #ALL").addClass('hover');*/
                	$(".Facility #" + firstFacility).addClass('hover');
                 ARSummary();
                 loadingMask("hide");
-                    
-			};
-			
-			this.failCallback = function(data) {
-	    		console.log("api misconnected");
-	    	};
-	    	
-	    	var _construct = function() {
-				CustomAPI("POST", true, "AraUserAuthority", self.successCallback, self.failCallback, AraUserAuthorityQueryData, "");
-			}();
-			
+				
+				var lastTime = JSON.parse(localStorage.getItem("araUserAuthorityData"))[1];
+				if (checkDataExpired(lastTime, expiredTime, 'hh')) {
+                    localStorage.removeItem("araUserAuthorityData");
+                    AraUserAuthority();
+                }
+			}
 			
 		};
-		
-		
-		
-		function showBubble(){
-			bubbleOption.chart.renderTo = 'overview-hc-bubble';
-			chartbubble = new Highcharts.Chart(bubbleOption);
-			
-			bubbleOption.chart.renderTo = 'overview-hc-bubble-landscape';
-			chartLandscapebubble = new Highcharts.Chart(bubbleOption);
-						
-		}
 		
 		
 		/********************************** page event *************************************/
@@ -764,7 +778,6 @@ $('#viewMain').pagecontainer({
 		});
 		
 		$('#viewMain').on('pageshow', function(event, ui){
-			console.log(screen.width+" ,"+screen.height);
 			if(chartRect !== null){
             	chartRect.destroy();
             	chartRect = null;
