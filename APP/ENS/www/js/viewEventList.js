@@ -105,7 +105,9 @@ $("#viewEventList").pagecontainer({
                 //value:5 [C Class Event] > <event_type_parameter_value>5</event_type_parameter_value><emp_no>0407731</emp_no>
                 //value:6 [prevent Event] > <event_type_parameter_value>6</event_type_parameter_value><emp_no>0407731</emp_no>
                 //value:7 [info share] >    <event_type_parameter_value>7</event_type_parameter_value><emp_no>0407731</emp_no>
-                eventTypeParameterValue = eventType;
+                if (eventType !== "0" && eventType !== "1" && eventType !== "2") {
+                    eventTypeParameterValue = eventType;
+                }
             }
 
             if (eventTypeParameterValue != 0) {
@@ -183,13 +185,13 @@ $("#viewEventList").pagecontainer({
                     for (var i=0; i<dataContent.length; i++) {
 
                         //Function
-                        var functionName = dataContent[i].function.trim();
+                        var functionName = dataContent[i].function.toString().trim();
                         if (loginData["BasicInfo"][project]["function"][functionName] == undefined) {
                             loginData["BasicInfo"][project]["function"][functionName] = [];
                         }
 
                         //Location
-                        var locationName = dataContent[i].location.trim();
+                        var locationName = dataContent[i].location.toString().trim();
                         if (loginData["BasicInfo"][project]["location"][locationName] == undefined) {
                             loginData["BasicInfo"][project]["location"][locationName] = [];
                         }
