@@ -15,7 +15,7 @@ $("#viewEventList").pagecontainer({
             var self = this;
             //Data Life-Cycle: none
             var dataLifeCycle = 0;
-            var queryData = '<LayoutHeader><emp_no>' + loginData["emp_no"] + '</emp_no><app_key>' + appKey + '</app_key></LayoutHeader>';
+            var queryData = '<LayoutHeader><emp_no>' + loginData["emp_no"] + '</emp_no></LayoutHeader>';
 
             this.successCallback = function(data, dataExist) {
                 dataExist = dataExist || false;
@@ -28,23 +28,36 @@ $("#viewEventList").pagecontainer({
                         processLocalData.storeData("getAuthority", dataLifeCycle, data);
                     }
 
-                    var dataContent = data["Content"];
-                    var RoleList = dataContent["RoleList"];
-                    loginData["RoleList"] = [];
+                    loginData["RoleList"] = {};
 
-                    for (var i=0; i<RoleList.length; i++) {
-                        loginData["RoleList"].push(RoleList[i]);
+                    for (var i=0; i<data["Content"].length; i++) {
+                        loginData["RoleList"][data["Content"][i].Project] = [];
+
+                        for (var j=0; j<data["Content"][i].RoleList.length; j++) {
+                            loginData["RoleList"][data["Content"][i].Project].push(data["Content"][i].RoleList[j]);
+                        }
+
+                        var basicInfo = new getBasicInfo(data["Content"][i].Project);
+                    }
+
+                    if (data["Content"].length === 1) {
+                        //If count RoleList == 1, hide dropdown-list projectType
+                        $("#projectType").hide();
+                    } else {
+                        //If count RoleList > 1, set option of projectSelect
+                        changeProject("setOption");
                     }
 
                     //Set Event Type Selected Option
-                    if (window.localStorage.getItem("eventType") !== null) {
-                        var EventList = new getEventList(window.localStorage.getItem("eventType"));
+                    if (window.localStorage.getItem("eventType" + projectName) !== null) {
+                        var EventList = new getEventList(window.localStorage.getItem("eventType" + projectName));
                     } else {
                         var EventList = new getEventList("1");
                     }
-                    var basicInfo = new getBasicInfo();
 
                     showEventAdd();
+                } else if (resultCode === 014923) {
+                    $("#noUseAuthorityPopup").popup("open");
                 }
             };
 
@@ -66,24 +79,40 @@ $("#viewEventList").pagecontainer({
             var self = this;
 
             //queryData Type: (According to Dropdown List [Event Type])
-            //value:0 [All Event] >       <emp_no>0407731</emp_no>
-            //value:1 [undone Event] >    <event_status>0</event_status><emp_no>0407731</emp_no>
-            //value:2 [done Event] >      <event_status>1</event_status><emp_no>0407731</emp_no>
-            //value:3 [emergency Event] > <event_type_parameter_value>1</event_type_parameter_value><emp_no>0407731</emp_no>
-            //value:4 [normal Event] >    <event_type_parameter_value>2</event_type_parameter_value><emp_no>0407731</emp_no>
+            //value:0 [All Event] >    <emp_no>0407731</emp_no>
+            //value:1 [undone Event] > <event_status>0</event_status><emp_no>0407731</emp_no>
+            //value:2 [done Event] >   <event_status>1</event_status><emp_no>0407731</emp_no>
             var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
+            var eventTypeParameterValue = 0;
 
             if (eventType === "1") {
                 queryDataParameter = "<event_status>0</event_status>" + queryDataParameter;
             } else if (eventType === "2") {
                 queryDataParameter = "<event_status>1</event_status>" + queryDataParameter;
-            } else if (eventType === "3") {
-                queryDataParameter = "<event_type_parameter_value>1</event_type_parameter_value>" + queryDataParameter;
-            } else if (eventType === "4") {
-                queryDataParameter = "<event_type_parameter_value>2</event_type_parameter_value>" + queryDataParameter;
             }
 
-            var queryData = "<LayoutHeader>" + queryDataParameter + "<app_key>" + appKey + "</app_key></LayoutHeader>";
+            if (projectName === "ITS") {
+                //value:3 [emergency Event] > <event_type_parameter_value>1</event_type_parameter_value><emp_no>0407731</emp_no>
+                //value:4 [normal Event] >    <event_type_parameter_value>2</event_type_parameter_value><emp_no>0407731</emp_no>
+                if (eventType === "3") {
+                    eventTypeParameterValue = 1;
+                } else if (eventType === "4") {
+                    eventTypeParameterValue = 2;
+                }
+            } else if (projectName === "RM") {
+                //value:3 [A Class Event] > <event_type_parameter_value>3</event_type_parameter_value><emp_no>0407731</emp_no>
+                //value:4 [B Class Event] > <event_type_parameter_value>4</event_type_parameter_value><emp_no>0407731</emp_no>
+                //value:5 [C Class Event] > <event_type_parameter_value>5</event_type_parameter_value><emp_no>0407731</emp_no>
+                //value:6 [prevent Event] > <event_type_parameter_value>6</event_type_parameter_value><emp_no>0407731</emp_no>
+                //value:7 [info share] >    <event_type_parameter_value>7</event_type_parameter_value><emp_no>0407731</emp_no>
+                eventTypeParameterValue = eventType;
+            }
+
+            if (eventTypeParameterValue != 0) {
+                queryDataParameter = "<event_type_parameter_value>" + eventTypeParameterValue + "</event_type_parameter_value>" + queryDataParameter;
+            }
+
+            var queryData = "<LayoutHeader>" + queryDataParameter + "<project>" + projectName + "</project></LayoutHeader>";
 
             this.successCallback = function(data) {
 
@@ -123,23 +152,27 @@ $("#viewEventList").pagecontainer({
 
         }
 
-        function getBasicInfo() {
+        function getBasicInfo(project) {
 
             var self = this;
 
             var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
-            var queryData = "<LayoutHeader>" + queryDataParameter + "<app_key>" + appKey + "</app_key></LayoutHeader>";
+            var queryData = "<LayoutHeader>" + queryDataParameter + "<project>" + project + "</project></LayoutHeader>";
 
             this.successCallback = function(data) {
 
                 var resultCode = data['ResultCode'];
 
                 if (resultCode === 1) {
-                    callBasicInfo = true;
+                    //callBasicInfo = true;
 
                     var dataContent = data["Content"];
 
-                    loginData["BasicInfo"] = {
+                    if (loginData["BasicInfo"] == undefined) {
+                        loginData["BasicInfo"] = {};
+                    }
+
+                    loginData["BasicInfo"][project] = {
                         user: [],
                         userDetail: {},
                         function: {},
@@ -151,47 +184,47 @@ $("#viewEventList").pagecontainer({
 
                         //Function
                         var functionName = dataContent[i].function.trim();
-                        if (loginData["BasicInfo"]["function"][functionName] == undefined) {
-                            loginData["BasicInfo"]["function"][functionName] = [];
+                        if (loginData["BasicInfo"][project]["function"][functionName] == undefined) {
+                            loginData["BasicInfo"][project]["function"][functionName] = [];
                         }
 
                         //Location
                         var locationName = dataContent[i].location.trim();
-                        if (loginData["BasicInfo"]["location"][locationName] == undefined) {
-                            loginData["BasicInfo"]["location"][locationName] = [];
+                        if (loginData["BasicInfo"][project]["location"][locationName] == undefined) {
+                            loginData["BasicInfo"][project]["location"][locationName] = [];
                         }
 
                         //LocationFunciton
-                        if (loginData["BasicInfo"]["locationFunction"][locationName] == undefined) {
-                            loginData["BasicInfo"]["locationFunction"][locationName] = [];
+                        if (loginData["BasicInfo"][project]["locationFunction"][locationName] == undefined) {
+                            loginData["BasicInfo"][project]["locationFunction"][locationName] = [];
                         }
 
                         for (var j=0; j<dataContent[i].user_list.length; j++) {
                             //All User
-                            if (loginData["BasicInfo"]["user"].indexOf(dataContent[i].user_list[j].login_id) == -1) {
-                                loginData["BasicInfo"]["user"].push(dataContent[i].user_list[j].login_id);
-                                loginData["BasicInfo"]["userDetail"][dataContent[i].user_list[j].login_id] = dataContent[i].user_list[j];
+                            if (loginData["BasicInfo"][project]["user"].indexOf(dataContent[i].user_list[j].login_id) == -1) {
+                                loginData["BasicInfo"][project]["user"].push(dataContent[i].user_list[j].login_id);
+                                loginData["BasicInfo"][project]["userDetail"][dataContent[i].user_list[j].login_id] = dataContent[i].user_list[j];
                             }
 
                             //All Functon
-                            if (loginData["BasicInfo"]["function"][functionName].indexOf(dataContent[i].user_list[j].login_id) == -1) {
-                                loginData["BasicInfo"]["function"][functionName].push(dataContent[i].user_list[j].login_id);
+                            if (loginData["BasicInfo"][project]["function"][functionName].indexOf(dataContent[i].user_list[j].login_id) == -1) {
+                                loginData["BasicInfo"][project]["function"][functionName].push(dataContent[i].user_list[j].login_id);
                             }
 
                             //All Location
-                            if (loginData["BasicInfo"]["location"][locationName].indexOf(dataContent[i].user_list[j].login_id) == -1) {
-                                loginData["BasicInfo"]["location"][locationName].push(dataContent[i].user_list[j].login_id);
+                            if (loginData["BasicInfo"][project]["location"][locationName].indexOf(dataContent[i].user_list[j].login_id) == -1) {
+                                loginData["BasicInfo"][project]["location"][locationName].push(dataContent[i].user_list[j].login_id);
                             }
                         }
 
                         //All LocationFunciton
-                        if (loginData["BasicInfo"]["locationFunction"][locationName].indexOf(dataContent[i].function) == -1) {
-                            loginData["BasicInfo"]["locationFunction"][locationName].push(dataContent[i].function);
+                        if (loginData["BasicInfo"][project]["locationFunction"][locationName].indexOf(dataContent[i].function) == -1) {
+                            loginData["BasicInfo"][project]["locationFunction"][locationName].push(dataContent[i].function);
                         }
 
                         //Sort User ID
-                        loginData["BasicInfo"]["function"][functionName].sort();
-                        loginData["BasicInfo"]["location"][locationName].sort();
+                        loginData["BasicInfo"][project]["function"][functionName].sort();
+                        loginData["BasicInfo"][project]["location"][locationName].sort();
 
                     }
 
@@ -199,26 +232,26 @@ $("#viewEventList").pagecontainer({
                     var tempArr = [];
                     var tempObj = {};
 
-                    $.each(loginData["BasicInfo"]["function"], function(key, user) {
+                    $.each(loginData["BasicInfo"][project]["function"], function(key, user) {
                         tempArr.push(key);
                     });
 
                     tempArr.sort();
 
                     for (var i=0; i<tempArr.length; i++) {
-                        tempObj[tempArr[i]] = loginData["BasicInfo"]["function"][tempArr[i]];
+                        tempObj[tempArr[i]] = loginData["BasicInfo"][project]["function"][tempArr[i]];
                     }
 
-                    loginData["BasicInfo"]["function"] = tempObj;
+                    loginData["BasicInfo"][project]["function"] = tempObj;
 
                     //Sort User ID
-                    loginData["BasicInfo"]["user"].sort();
+                    loginData["BasicInfo"][project]["user"].sort();
 
                     //Event Member Sort Type
                     if (window.localStorage.getItem("eventMemberType") !== null) {
-                        memberListView(window.localStorage.getItem("eventMemberType"));
+                        memberListView(window.localStorage.getItem("eventMemberType"), project);
                     } else {
-                        memberListView("location");
+                        memberListView("location", project);
                     }
 
                 }
@@ -228,9 +261,9 @@ $("#viewEventList").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                if (!callBasicInfo) {
+                //if (!callBasicInfo) {
                     CustomAPI("POST", true, "getBasicInfo", self.successCallback, self.failCallback, queryData, "");
-                }
+                //}
             }();
 
         }
@@ -327,12 +360,28 @@ $("#viewEventList").pagecontainer({
                 //Event Title
                 eventListMsg.find(".event-list-msg-top .description").html(eventListData[i].event_title);
 
-                //Type: 緊急通報 / 一般通報
+                //Type:
+                //ITS> 緊急通報 / 一般通報
+                //RM> A級事件 / B級事件 / C級事件 / 預警事件 / 資訊分享
                 var event_type = eventListData[i].event_type;
+                var className;
+                eventListMsg.find(".event-list-msg-top .link .icon").hide();
                 if (event_type === "一般通報") {
-                    eventListMsg.find(".event-list-msg-top .link .normal").show();
-                    eventListMsg.find(".event-list-msg-top .link .urgent").hide();
+                    className = "normal";
+                } else if (event_type === "緊急通報") {
+                    className = "urgent";
+                } else if (event_type === "A級事件") {
+                    className = "rm-a-class";
+                } else if (event_type === "B級事件") {
+                    className = "rm-b-class";
+                } else if (event_type === "C級事件") {
+                    className = "rm-c-class";
+                } else if (event_type === "預警事件") {
+                    className = "rm-prevent-event";
+                } else if (event_type === "資訊分享") {
+                    className = "rm-info-share";
                 }
+                eventListMsg.find(".event-list-msg-top .link ." + className).show();
 
                 //Event Related Link
                 if (eventListData[i].related_event_row_id !== 0) {
@@ -384,20 +433,23 @@ $("#viewEventList").pagecontainer({
             //Scroll to the specific Event List position
             if (typeof eventRowID != 'undefined') {
                 if (eventRowID != null) {
-                    var headerHeight = $("#viewEventList .page-header").height();
-                    var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
-                    if (device.platform === "iOS") {
-                        scrollPageTop -= 20;
-                    }
+                    //If Project changed, eventRowID will not exist
+                    if ($("#event-list-msg-" + eventRowID).length != 0) {
+                        var headerHeight = $("#viewEventList .page-header").height();
+                        var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
+                        if (device.platform === "iOS") {
+                            scrollPageTop -= 20;
+                        }
 
-                    $('html, body').animate({
-                        scrollTop: scrollPageTop
-                    }, 0);
+                        $('html, body').animate({
+                            scrollTop: scrollPageTop
+                        }, 0);
+                    }
                 }
             }
         }
 
-        function memberListView(sortType) {
+        function memberListView(sortType, project) {
 
             var eventMemberDataListHTML = $("template#tplEventMemberDataList").html();
             $("#eventMemberTypeContent").siblings().remove();
@@ -409,14 +461,14 @@ $("#viewEventList").pagecontainer({
                 var eventMemberDataListView = eventMemberDataList.find("ul");
                 var eventMemberData = "";
 
-                for (var i=0; i<loginData["BasicInfo"][sortType].length; i++) {
-                   eventMemberData += "<li>" + loginData["BasicInfo"][sortType][i] + "</li>"; 
+                for (var i=0; i<loginData["BasicInfo"][project][sortType].length; i++) {
+                   eventMemberData += "<li>" + loginData["BasicInfo"][project][sortType][i] + "</li>";
                 }
 
                 eventMemberDataListView.html(eventMemberData);
                 $("#memberDiv").append(eventMemberDataList);
             } else {
-                $.each(loginData["BasicInfo"][sortType], function(key, user) {
+                $.each(loginData["BasicInfo"][project][sortType], function(key, user) {
                     var eventMemberDataList = $(eventMemberDataListHTML);
                     eventMemberDataList.find(".title").html(key);
 
@@ -442,14 +494,29 @@ $("#viewEventList").pagecontainer({
             var eventMemberListHTML = $("template#tplEventMemberList").html();
             var eventMemberList = $(eventMemberListHTML);
 
-            //Type: 緊急通報 / 一般通報
+            //Type:
+            //ITS> 緊急通報 / 一般通報
+            //RM> A級事件 / B級事件 / C級事件 / 預警事件 / 資訊分享
             var event_type = data.event_type;
-            var className = "urgent";
+            var className;
+
+            eventMemberList.siblings(".header").find(".number .icon").hide();
             if (event_type === "一般通報") {
-                eventMemberList.siblings(".header").find(".number .normal").show();
-                eventMemberList.siblings(".header").find(".number .urgent").hide();
                 className = "normal";
+            } else if (event_type === "緊急通報") {
+                className = "urgent";
+            } else if (event_type === "A級事件") {
+                className = "rm-a-class";
+            } else if (event_type === "B級事件") {
+                className = "rm-b-class";
+            } else if (event_type === "C級事件") {
+                className = "rm-c-class";
+            } else if (event_type === "預警事件") {
+                className = "rm-prevent-event";
+            } else if (event_type === "資訊分享") {
+                className = "rm-info-share";
             }
+            eventMemberList.siblings(".header").find(".number ." + className).show();
 
             //Event ID Number
             eventMemberList.siblings(".header").find(".number .text").html(data.event_row_id);
@@ -508,12 +575,25 @@ $("#viewEventList").pagecontainer({
 
             //Type: 緊急通報 / 一般通報
             var event_type = data.event_type;
-            var className = "urgent";
+            var className;
+
+            eventFunctionList.siblings(".header").find(".number .icon").hide();
             if (event_type === "一般通報") {
-                eventFunctionList.siblings(".header").find(".number .normal").show();
-                eventFunctionList.siblings(".header").find(".number .urgent").hide();
                 className = "normal";
+            } else if (event_type === "緊急通報") {
+                className = "urgent";
+            } else if (event_type === "A級事件") {
+                className = "rm-a-class";
+            } else if (event_type === "B級事件") {
+                className = "rm-b-class";
+            } else if (event_type === "C級事件") {
+                className = "rm-c-class";
+            } else if (event_type === "預警事件") {
+                className = "rm-prevent-event";
+            } else if (event_type === "資訊分享") {
+                className = "rm-info-share";
             }
+            eventFunctionList.siblings(".header").find(".number ." + className).show();
 
             //Event ID Number
             eventFunctionList.siblings(".header").find(".number .text").html(data.event_row_id);
@@ -635,7 +715,7 @@ $("#viewEventList").pagecontainer({
         function contactPopup(userID) {
             var memberDataExist = false;
 
-            $.each(loginData["BasicInfo"]["userDetail"], function(user, detail) {
+            $.each(loginData["BasicInfo"][projectName]["userDetail"], function(user, detail) {
                 if (user === userID) {
                     memberDataExist = true;
 
@@ -680,6 +760,64 @@ $("#viewEventList").pagecontainer({
             }
         }
 
+        //Cehck User Project
+        window.changeProject = function(action, val) {
+            val = val || null;
+            // ITS or RM
+
+            if (action === "check") {
+                if (window.localStorage.getItem("projectName") !== null) {
+                    projectName = window.localStorage.getItem("projectName");
+                }
+            } else if (action === "setOption") {
+
+                //projectSelect option
+                $("#projectSelect .item").removeClass("select");
+                $("#" + projectName).addClass("select");
+
+                //Dropdown list
+                $(".event-type").hide();
+
+                if (projectName === "ITS") {
+                    $("#eventTypeITS").show();
+                } else if (projectName === "RM") {
+                    $("#eventTypeRM").show();
+                }
+
+                //Page Title
+                $("#viewEventList .ui-title").html(projectName);
+
+            } else if (action === "change") {
+                if (val !== projectName) {
+
+                    //Update local storage
+                    projectName = val;
+                    window.localStorage.setItem("projectName", projectName);
+
+                    changeProject("setOption");
+
+                    if (window.localStorage.getItem("eventType" + projectName) !== null) {
+                        var EventList = new getEventList(window.localStorage.getItem("eventType" + projectName));
+                    } else {
+                        var EventList = new getEventList("1");
+                    }
+
+                    //Set Active Tab
+                    $("#tabEventList a:eq(0)").addClass("ui-btn-active");
+                    $("#tabEventList a:eq(1)").removeClass("ui-btn-active");
+                    $("#tabEventList").tabs({ active: 0 });
+
+                    //Refresh Member List
+                    if (window.localStorage.getItem("eventMemberType") !== null) {
+                        memberListView(window.localStorage.getItem("eventMemberType"), projectName);
+                    } else {
+                        memberListView("location", projectName);
+                    }
+                }
+            }
+
+        };
+
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
 
@@ -706,15 +844,15 @@ $("#viewEventList").pagecontainer({
 
             tplJS.Tab("viewEventList", "contentEventList", "append", tabData);
 
-            //UI Dropdown List : Event Type
-            if (window.localStorage.getItem("eventType") !== null) {
-                var eventTypeDefaultVal = window.localStorage.getItem("eventType");
+            //UI Dropdown List : Event Type for ITS
+            if (window.localStorage.getItem("eventTypeITS") !== null) {
+                var eventTypeDefaultVal = window.localStorage.getItem("eventTypeITS");
             } else {
                 var eventTypeDefaultVal = "1";
             }
 
             var eventTypeData = {
-                id: "eventType",
+                id: "eventTypeITS",
                 option: [{
                     value: "0",
                     text: "全部"
@@ -731,10 +869,55 @@ $("#viewEventList").pagecontainer({
                     value: "4",
                     text: "一般通報"
                 }],
-                defaultValue: eventTypeDefaultVal
+                defaultValue: eventTypeDefaultVal,
+                attr: {
+                    class: "event-type"
+                }
             };
 
             $("#reportDiv").append('<div id="eventTypeContent"></div>');
+            tplJS.DropdownList("viewEventList", "eventTypeContent", "append", "typeA", eventTypeData);
+
+            //UI Dropdown List : Event Type for RM
+            if (window.localStorage.getItem("eventTypeRM") !== null) {
+                var eventTypeDefaultVal = window.localStorage.getItem("eventTypeRM");
+            } else {
+                var eventTypeDefaultVal = "1";
+            }
+
+            var eventTypeData = {
+                id: "eventTypeRM",
+                option: [{
+                    value: "0",
+                    text: "全部"
+                }, {
+                    value: "1",
+                    text: "未完成"
+                }, {
+                    value: "2",
+                    text: "完成"
+                }, {
+                    value: "3",
+                    text: "A級事件"
+                }, {
+                    value: "4",
+                    text: "B級事件"
+                }, {
+                    value: "5",
+                    text: "C級事件"
+                }, {
+                    value: "6",
+                    text: "預警事件"
+                }, {
+                    value: "7",
+                    text: "資訊分享"
+                }],
+                defaultValue: eventTypeDefaultVal,
+                attr: {
+                    class: "event-type"
+                }
+            };
+
             tplJS.DropdownList("viewEventList", "eventTypeContent", "append", "typeA", eventTypeData);
 
             //UI Dropdown List : Event Member Type
@@ -792,6 +975,47 @@ $("#viewEventList").pagecontainer({
 
             tplJS.Popup(null, null, "append", contactUserPopupData);
 
+            //No Use Authority Popup
+            var noUseAuthorityPopupData = {
+                id: "noUseAuthorityPopup",
+                content: $("template#tplNoUseAuthorityPopup").html()
+            };
+
+            tplJS.Popup(null, null, "append", noUseAuthorityPopupData);
+
+            //Project Select Panel
+            $("#projectSelect").panel({
+                display: "overlay",
+                swipeClose: false,
+                dismissible: false,
+                open: function() {
+                    $(".ui-panel").css({
+                        "min-height": "100vh",
+                        "max-height": "100vh",
+                        "touch-action": "none"
+                    });
+
+                    $("<div class='ui-panel-background'></div>").appendTo("body");
+
+                    if (device.platform === "iOS") {
+                        var heightView = parseInt(document.documentElement.clientHeight * 100 / 100, 10);
+                        var heightPanel = heightView - 20;
+
+                        $("#projectSelect").css({
+                            'min-height': heightPanel + 'px',
+                            'max-height': heightPanel + 'px',
+                            'margin-top': '20px'
+                        });
+                    }
+
+                    tplJS.preventPageScroll();
+                },
+                close: function() {
+                    $(".ui-panel-background").remove();
+                    tplJS.recoveryPageScroll();
+                }
+            });
+
         });
 
         $("#viewEventList").on("pageshow", function(event, ui) {
@@ -808,12 +1032,14 @@ $("#viewEventList").pagecontainer({
                 loadingMask("show");
 
                 //Set Event Type Selected Option
-                if (window.localStorage.getItem("eventType") !== null) {
-                    var EventList = new getEventList(window.localStorage.getItem("eventType"));
+                if (window.localStorage.getItem("eventType" + projectName) !== null) {
+                    var EventList = new getEventList(window.localStorage.getItem("eventType" + projectName));
                 } else {
                     var EventList = new getEventList("1");
                 }
             }
+
+            changeProject("setOption");
 
             footerFixed();
 
@@ -838,14 +1064,16 @@ $("#viewEventList").pagecontainer({
         });
 
         //Event Type
-        $(document).on("change", "#eventType", function() {
+        $(document).on("change", ".event-type", function() {
             $(".event-list-no-data").hide();
             loadingMask("show");
 
-            var EventList = new getEventList($(this).val());
+            var eventType = $("#eventType" + projectName).val();
+
+            var EventList = new getEventList(eventType);
 
             //Remember Event Type
-            window.localStorage.setItem("eventType", $(this).val());
+            window.localStorage.setItem("eventType" + projectName, eventType);
         });
 
         //Event Member List Popup - Member List & View List
@@ -915,7 +1143,7 @@ $("#viewEventList").pagecontainer({
 
         //Event Member List - Sort Type
         $(document).on("change", "#eventMemberType", function() {
-            memberListView($(this).val());
+            memberListView($(this).val(), projectName);
 
             //Remember Event Member Sort Type
             window.localStorage.setItem("eventMemberType", $(this).val());
@@ -940,6 +1168,17 @@ $("#viewEventList").pagecontainer({
                 $("#tabEventList a:eq(1)").addClass("ui-btn-active");
                 $("#tabEventList").tabs({ active: 1 });
             }
+        });
+
+        //Change project
+        $(document).on("click", "#projectType", function() {
+            $("#projectSelect").panel("open");
+        });
+
+        $(document).on("click", "#projectSelect .item", function() {
+            var val = $(this).html();
+            changeProject("change", val);
+            $("#projectSelect").panel("close");
         });
     }
 });
