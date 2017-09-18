@@ -9,6 +9,7 @@ var appSecretKey = "dd88f6e1eea34e77a9ab75439d327363";
 
 var prevPageID;
 var openEventFromQPlay = false;
+var setProjectNameFromQPlay = false;
 var getEventListFinish = false;
 //ITS or RM
 var projectName = "ITS";
@@ -113,7 +114,33 @@ var chatRoom = {
                         chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
                     } else if (messageTimestamp > localDataLatestCTime) {
                         chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
+                    } else {
+
+                        var dataIndex = 0;
+                        var pushData = true;
+                        var tempData = [];
+
+                        for (var j=0; j<localDataLength; j++) {
+                            var localCTime = chatRoom.Messages[chatRoom.nowChatRoomID][j]["ctime"];
+
+                            if (localCTime < messageTimestamp) {
+                                tempData.push(chatRoom.Messages[chatRoom.nowChatRoomID][j]);
+                                dataIndex = j;
+                            } else if (localCTime == messageTimestamp) {
+                                pushData = false;
+                            } else if (localCTime == messageTimestamp) {
+                                tempData.push(chatRoom.Messages[chatRoom.nowChatRoomID][j]);
+                            }
+                        }
+
+                        if (pushData) {
+                            dataIndex = dataIndex + 1;
+                            tempData.splice(dataIndex, 0, objData);
+                        }
+
+                        chatRoom.Messages[chatRoom.nowChatRoomID] = tempData;
                     }
+
                 }
             }
 
@@ -604,6 +631,8 @@ function onBackKeyDown() {
 function handleOpenByScheme(queryData) {
     if (queryData["callbackApp"] === qplayAppKey && queryData["action"] === "openevent") {
         eventRowID = queryData["eventID"];
+        projectName = queryData["project"];
+        setProjectNameFromQPlay = true;
 
         if (getEventListFinish) {
             $.mobile.changePage('#viewEventContent');
