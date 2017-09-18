@@ -996,9 +996,23 @@ $("#viewEventList").pagecontainer({
                     });
 
                     $("<div class='ui-panel-background'></div>").appendTo("body");
+
+                    if (device.platform === "iOS") {
+                        var heightView = parseInt(document.documentElement.clientHeight * 100 / 100, 10);
+                        var heightPanel = heightView - 20;
+
+                        $("#projectSelect").css({
+                            'min-height': heightPanel + 'px',
+                            'max-height': heightPanel + 'px',
+                            'margin-top': '20px'
+                        });
+                    }
+
+                    tplJS.preventPageScroll();
                 },
                 close: function() {
                     $(".ui-panel-background").remove();
+                    tplJS.recoveryPageScroll();
                 }
             });
 
@@ -1034,9 +1048,6 @@ $("#viewEventList").pagecontainer({
             $("#viewEventList").css("padding-bottom", paddingBottom + "px");
 
             chatRoom.resetBadge();
-
-            $( "#mypanel" ).panel( "open" );
-
         });
 
         /********************************** dom event *************************************/
