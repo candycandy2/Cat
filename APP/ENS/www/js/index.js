@@ -77,7 +77,7 @@ var chatRoom = {
                 chatRoomListView();
                 return;
             }
-console.log(data);
+
             for (var i=0; i<data.messages.length; i++) {
 
                 if (device.platform === "iOS") {
