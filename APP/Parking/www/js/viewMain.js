@@ -1,7 +1,18 @@
 
 var defaultSiteClick = '';
 var clickSiteId = '';
+var selectedSite = '';
 var siteCategoryID = '';
+var clickDateId = '';
+var clickRomeId = '';
+var clickTraceID = '';
+var quickReserveClickDateID = '';
+var quickRserveCallBackData = {};
+var timeClick = [];
+var timeNameClick = [];
+var selectMyReserveTime = '';
+var reserveDetailLocalData = [];
+var bReserveCancelConfirm = false;
 var parkingSpaceDataExample = ['車位1', '車位2', '車位3', '車位4'];
 
 $("#viewMain").pagecontainer({
@@ -187,14 +198,19 @@ $("#viewMain").pagecontainer({
             if (site == '92') { //BQT/QTT
                 $("#alertLimitSiteMsg").removeClass('disable');
                 $("#alertLimitSiteMsg").html('*僅開放關係企業同仁停車');
-            } 
+                $("#reserveDateSelect").find('.QTY').addClass('disable');
+                $("#reserveDateSelect").find('.BQT').removeClass('disable');
+            }else if (site == '111') {
+                $("#reserveDateSelect").find('.BQT').addClass('disable');
+                $("#reserveDateSelect").find('.QTY').removeClass('disable');
+            }
         }
 
         function getInitialData() {
             $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
-            clickSiteId = $("#reserveSite option:selected").val();
+            selectedSite = $('#reserveSite').find(":selected").val();
             siteCategoryID = dictSiteCategory[defaultSiteClick];
-            getSpaceData(clickSiteId);  
+            getSpaceData(selectedSite);  
         }
 
         function setInitialData() {
@@ -221,10 +237,9 @@ $("#viewMain").pagecontainer({
         $('#reserveSite').change(function() {
             localStorage.setItem('defaultSiteClick', $(this).val());
             siteCategoryID = dictSiteCategory[$(this).val()];
-            clickSiteId = $("#reserveSite option:selected").val();
-            var selectedSite = $('#reserveSite').find(":selected").val();
+            selectedSite = $('#reserveSite').find(":selected").val();
             setAlertLimitSite(selectedSite);  
-            getSpaceData(clickSiteId);       
+            getSpaceData(selectedSite);       
         });
 
         $('body').on('click', '#scrollDate .ui-link', function() {
@@ -252,6 +267,74 @@ $("#viewMain").pagecontainer({
 
             //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
             //reserveBtnDefaultStatus();
+        });
+
+        $('body').on('click', 'div[id^=time]', function() {
+            var bMyReserve = $(this).hasClass('ui-color-myreserve');
+            var bReserve = $(this).hasClass('ui-color-reserve');
+            var bNoReserve = $(this).hasClass('ui-color-noreserve');
+            var bReserveSelect = $(this).find('div:nth-child(2)').hasClass('iconSelected');
+
+            if (bMyReserve || bReserve) {
+
+                var tempEname = $(this).attr('ename');
+                var arrMsgValue = $(this).attr('msg').split(',');
+                var arrCutString = cutStringToArray(arrMsgValue[0], ['4', '2', '2']);
+                var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
+                var msgContent = strDate + '&nbsp;&nbsp;' + arrMsgValue[2] + '</div>';
+
+                if (bMyReserve) {
+                    traceID = $(this).attr('traceID');
+                    selectMyReserveTime = $(this).find('div > div:nth-child(1)').text();
+                    //popupMsg('myReserveMsg', tempEname + ' 已預約 ' + arrMsgValue[1], msgContent, '關閉', true, '取消預約', 'select.png');
+                } else {
+                    //ex: 會議室協調_12/01 T01 15:00-15:30
+                    var tempMailContent = $(this).attr('email') + '?subject=會議室協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
+                    //popupSchemeMsg('reserveMsg', tempEname + ' 已預約 ' + arrMsgValue[1], msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'), 'select.png');
+                }
+
+            } else if (bNoReserve && !bReserveSelect) {
+
+                var timeBlockId = $(this).attr('id');
+                timeClick.push(timeBlockId);
+                timeNameClick.push($(this).find('div > div:nth-child(1)').text());
+
+                $(this).addClass('hover');
+                $(this).find('div:nth-child(2)').removeClass('iconSelect');
+                $(this).find('div:nth-child(2)').addClass('iconSelected');
+                $(this).find('.timeRemind').addClass('timeShow');
+                if ($(this).parents('.ui-grid-c').hasClass('BQT')){
+                    $(this).find('.timeRemind').html('~' + addThirtyMins($(this).find('div > div:nth-child(1)').text()));
+                }else if ($(this).parents('.ui-grid-c').hasClass('QTY')){
+                    $(this).find('.timeRemind').html('~' + addThirtyMins(addThirtyMins($(this).find('div > div:nth-child(1)').text())) );
+                }
+
+
+            } else if (bReserveSelect) {
+
+                var timeBlockId = $(this).attr('id');
+                var clickIndexOf = timeClick.indexOf(timeBlockId);
+                timeClick.splice(clickIndexOf, 1);
+                timeNameClick.splice(clickIndexOf, 1);
+
+                $(this).removeClass('hover');
+                $(this).find('div:nth-child(2)').removeClass('iconSelected');
+                $(this).find('.timeRemind').removeClass('timeShow');
+                $(this).find('div:nth-child(2)').addClass('iconSelect');
+
+            }
+
+            var itemCount = 0;
+            for (var item in timeClick) {
+                itemCount++;
+            }
+            if (itemCount === 0) {
+                $('#reserveBtn').removeClass('btn-benq');
+                $('#reserveBtn').addClass('btn-disable');
+            } else {
+                $('#reserveBtn').removeClass('btn-disable');
+                $('#reserveBtn').addClass('btn-benq');
+            }
         });
     }
 });

@@ -128,8 +128,12 @@ var chatRoom = {
                                 dataIndex = j;
                             } else if (localCTime == messageTimestamp) {
                                 pushData = false;
-                            } else if (localCTime == messageTimestamp) {
-                                tempData.push(chatRoom.Messages[chatRoom.nowChatRoomID][j]);
+                                tempData.push(objData);
+                            } else if (localCTime > messageTimestamp) {
+                                if (j == 0) {
+                                    tempData.push(objData);
+                                    tempData.push(chatRoom.Messages[chatRoom.nowChatRoomID][j]);
+                                }
                             }
                         }
 

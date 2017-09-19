@@ -42,11 +42,10 @@ $("#viewEventList").pagecontainer({
 
                     if (data["Content"].length === 1) {
                         //If count RoleList == 1, hide dropdown-list projectType
+                        projectName = data["Content"][0].Project;
                         $("#projectType").hide();
-                    } else {
-                        //If count RoleList > 1, set option of projectSelect
-                        changeProject("setOption");
                     }
+                    changeProject("setOption");
 
                     //Set Event Type Selected Option
                     if (window.localStorage.getItem("eventType" + projectName) !== null) {
