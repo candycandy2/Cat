@@ -126,7 +126,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appens' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add ../../plugins/cordova-plugin-whitelist',
-  //'cordova plugin add ../../plugins/cordova-plugin-proguard',
+  'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
   'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --save',
