@@ -113,7 +113,7 @@ class qmessageController extends Controller
         //2.增加Group
         $jim = CommonUtil::getJIM();
         $group = new Group($jim);
-        $response = $group->create($owner, $name, $desc, $members);
+        $response = $group->create($owner, $desc, $desc, $members);
         $result = CommonUtil::UnpackageResponse($response);
         CommonUtil::logApi("", $ACTION,response()->json(apache_response_headers()), $result);
         return response()->json($result);

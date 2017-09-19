@@ -143,13 +143,13 @@ div.square {
 }
 
 .iconSelect {
-    background: url(../img/circle1.png);
+    background: url(../img/075_checkbox_table_circlebox.png);
     background-size: 4.8vw auto;
     background-repeat: no-repeat;
 }
 
 .iconSelected {
-    background: url(../img/circle2.png);
+    background: url(../img/076_checkbox_table_circlebox_select.png);
     background-size: 4.8vw auto;
     background-repeat: no-repeat;
 }
@@ -203,6 +203,14 @@ div.square {
     -webkit-appearance: none;
     margin-bottom: 2.14vw !important;
     padding-right: 6.74vw;
+}
+
+
+/********************************** color setting *************************************/
+
+.btn-disable {
+    background-color: #d6d6d6 !important;
+    color: #999 !important;
 }
 
 /********************************** scrollmenu *************************************/
@@ -262,3 +270,4 @@ div.scrollmenu a {
     text-align: center;
     line-height: 3rem;
 }
+
