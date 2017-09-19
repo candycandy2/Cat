@@ -145,11 +145,7 @@ class CommonUtil
         {
             $oriStr = mb_substr( $str,$i,1,"utf-8");
             $uniStr = self::utf8_str_to_unicode($oriStr);
-            if($oriStr == $uniStr){
-                $ret .= rawurlencode($oriStr);
-            }else{
-                $ret .= $uniStr; 
-            }
+            $ret .= $uniStr; 
          }
         return $ret;
     }
