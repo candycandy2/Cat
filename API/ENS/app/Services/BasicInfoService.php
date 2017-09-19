@@ -43,14 +43,14 @@ class BasicInfoService
             foreach ($tmpList as $location => $functionObj) {
                
                 foreach ($functionObj as $function => $userList) {
-                    $list['location'] = $location;
-                    $list['function'] = $function;
+                    $list['location'] = (string)$location;
+                    $list['function'] = (string)$function;
                     $list['user_list']= [];
                     $userInfoList = $this->userRepository->getUserInfoByEmpNo($userList);
                    foreach ($userInfoList as $userInfo) {
-                       $user['emp_no'] = $userInfo->emp_no;
+                       $user['emp_no'] = (string)$userInfo->emp_no;
                        $user['login_id'] = $userInfo->login_id;
-                       $user['user_ext_no'] = $userInfo->ext_no;
+                       $user['user_ext_no'] = (string)$userInfo->ext_no;
                        $user['email'] = $userInfo->email;
                        $list['user_list'][]= $user;
                     }

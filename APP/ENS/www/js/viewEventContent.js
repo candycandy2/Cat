@@ -55,6 +55,7 @@ $("#viewEventContent").pagecontainer({
                         if (event_status === "完成") {
                             eventListMsg.find(".event-list-msg-top .event-status .done").show();
                             eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
+                            $("#eventEdit").hide();
 
                             eventFinish = true;
                         } else {
