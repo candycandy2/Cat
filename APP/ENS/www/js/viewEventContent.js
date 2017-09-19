@@ -172,13 +172,14 @@ $("#viewEventContent").pagecontainer({
                         $("#contentEventContent .datetime").html(completeTimeText);
 
                         //Related Event
+                        $(".ui-hr-relate-event").remove();
                         if (data['Content'].related_event_row_id === 0) {
                             //No Related Event
                             $("#contentEventContent .relate-event-content").hide();
                         } else {
                             $("#contentEventContent .relate-event").html(data['Content'].related_event_row_id);
                             $("#contentEventContent .relate-event-content").show();
-                            $('<hr class="ui-hr ui-hr-absolute">').insertAfter("#contentEventContent .relate-event-content");
+                            $('<hr class="ui-hr ui-hr-relate-event">').insertAfter("#contentEventContent .relate-event-content");
                             $("#contentEventContent .relate-event-content .event-content-data-list").css("margin-bottom", "1vw");
                         }
 
