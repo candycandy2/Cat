@@ -185,10 +185,24 @@ $("#viewMain").pagecontainer({
             loadingMask("hide");
         }
 
+        function reserveBtnDefaultStatus() {
+            $('#reserveBtn').removeClass('btn-benq');
+            $('#reserveBtn').addClass('btn-disable');
+            if ($('div[id^=time]').hasClass('hover')) {
+                $('div[id^=time]').removeClass('hover');
+                $(this).find('div:nth-child(2)').removeClass('iconSelected');
+                $(this).find('.timeRemind').removeClass('timeShow');
+                $(this).find('div:nth-child(2)').addClass('iconSelect');
+            }
+            timeClick = [];
+            timeNameClick = [];
+            bReserveCancelConfirm = false;
+        }
+
         function checkLocalDataExpired() {
             defaultSiteClick = localStorage.getItem('defaultSiteClick');
             if (defaultSiteClick === null) {
-                defaultSiteClick = 92; //default site = 92(BQT/QTT)
+                defaultSiteClick = '92'; //default site = 92(BQT/QTT)
             }
         }
 
@@ -229,17 +243,20 @@ $("#viewMain").pagecontainer({
             $('#pageTwo').hide();
         });
 
-        /********************************** dom event *************************************/
-        $('#viewMain').keypress(function(event) {
-
+        $('#viewMain').on('pagebeforeshow', function(event, ui) {
+            reserveBtnDefaultStatus();
         });
+
+
+        /********************************** dom event *************************************/
 
         $('#reserveSite').change(function() {
             localStorage.setItem('defaultSiteClick', $(this).val());
             siteCategoryID = dictSiteCategory[$(this).val()];
             selectedSite = $('#reserveSite').find(":selected").val();
             setAlertLimitSite(selectedSite);  
-            getSpaceData(selectedSite);       
+            getSpaceData(selectedSite); 
+            reserveBtnDefaultStatus();      
         });
 
         $('body').on('click', '#scrollDate .ui-link', function() {
@@ -252,7 +269,7 @@ $("#viewMain").pagecontainer({
             $(this).parent().data("lastClicked", this.id);
             $(this).addClass('hover');
             //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
-            //reserveBtnDefaultStatus();
+            reserveBtnDefaultStatus();
         });
 
         $('body').on('click', '#reserveSpace .ui-link', function() {
@@ -266,7 +283,7 @@ $("#viewMain").pagecontainer({
             $(this).addClass('hover');
 
             //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
-            //reserveBtnDefaultStatus();
+            reserveBtnDefaultStatus();
         });
 
         $('body').on('click', 'div[id^=time]', function() {
