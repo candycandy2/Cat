@@ -185,10 +185,26 @@ $("#viewMain").pagecontainer({
             loadingMask("hide");
         }
 
+        function reserveBtnDefaultStatus() {
+            $('#reserveBtn').removeClass('btn-benq');
+            $('#reserveBtn').addClass('btn-disable');
+            if ($('div[id^=time]').hasClass('hover')) {
+                $('div[id^=time]').removeClass('hover');
+                $('div[id^=time]').find('.iconSelected').addClass('iconSelect');
+                $('div[id^=time]').find('.iconSelected').removeClass('iconSelected');
+                $('div[id^=time]').find('.timeRemind').removeClass('timeShow');
+            }
+            timeClick = [];
+            timeNameClick = [];
+            bReserveCancelConfirm = false;
+        }
+
         function checkLocalDataExpired() {
-            defaultSiteClick = localStorage.getItem('defaultSiteClick');
-            if (defaultSiteClick === null) {
-                defaultSiteClick = 92; //default site = 92(BQT/QTT)
+            if(localStorage.getItem("defaultSiteClick") !== null) {
+                $("#reserveSite").val(localStorage.getItem("defaultSiteClick"));
+                defaultSiteClick = localStorage.getItem("defaultSiteClick");
+            }else if (defaultSiteClick === null) {
+                defaultSiteClick = '92';
             }
         }
 
@@ -207,7 +223,7 @@ $("#viewMain").pagecontainer({
         }
 
         function getInitialData() {
-            $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
+            //$("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
             selectedSite = $('#reserveSite').find(":selected").val();
             siteCategoryID = dictSiteCategory[defaultSiteClick];
             getSpaceData(selectedSite);  
@@ -229,17 +245,19 @@ $("#viewMain").pagecontainer({
             $('#pageTwo').hide();
         });
 
-        /********************************** dom event *************************************/
-        $('#viewMain').keypress(function(event) {
-
+        $('#viewMain').on('pagebeforeshow', function(event, ui) {
+            reserveBtnDefaultStatus();
         });
+
+        /********************************** dom event *************************************/
 
         $('#reserveSite').change(function() {
             localStorage.setItem('defaultSiteClick', $(this).val());
             siteCategoryID = dictSiteCategory[$(this).val()];
             selectedSite = $('#reserveSite').find(":selected").val();
             setAlertLimitSite(selectedSite);  
-            getSpaceData(selectedSite);       
+            getSpaceData(selectedSite); 
+            reserveBtnDefaultStatus();      
         });
 
         $('body').on('click', '#scrollDate .ui-link', function() {
@@ -252,7 +270,7 @@ $("#viewMain").pagecontainer({
             $(this).parent().data("lastClicked", this.id);
             $(this).addClass('hover');
             //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
-            //reserveBtnDefaultStatus();
+            reserveBtnDefaultStatus();
         });
 
         $('body').on('click', '#reserveSpace .ui-link', function() {
@@ -266,7 +284,7 @@ $("#viewMain").pagecontainer({
             $(this).addClass('hover');
 
             //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
-            //reserveBtnDefaultStatus();
+            reserveBtnDefaultStatus();
         });
 
         $('body').on('click', 'div[id^=time]', function() {
@@ -334,6 +352,20 @@ $("#viewMain").pagecontainer({
             } else {
                 $('#reserveBtn').removeClass('btn-disable');
                 $('#reserveBtn').addClass('btn-benq');
+            }
+        });
+
+        $("#reserveBtn").on('click', function() {
+            if ($(this).hasClass('btn-disable')) {
+                popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
+            } else {
+                var timeID = '';
+                for (var item in timeClick) {
+                    timeID += timeClick[item] + ',';
+                }
+                
+                //var doAPIReserveMeetingRoom = new getAPIReserveMeetingRoom('pageOne', clickRomeId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
+
             }
         });
     }

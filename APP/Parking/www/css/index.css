@@ -208,6 +208,34 @@ div.square {
 
 /********************************** color setting *************************************/
 
+.ui-color-lightblue {
+    background-color: #2c89bc;
+}
+
+.ui-color-white {
+    background-color: white;
+}
+
+hr.ui-color-white {
+    border: 0 !important;
+    height: 1px !important;
+    background-color: white !important;
+    border-color: white !important;
+}
+
+hr.ui-color-green {
+    background-color: #6bbfcf;
+}
+
+.btn-benq {
+    background-color: #2c89bc !important;
+    color: white !important;
+}
+
+.ui-benq-color {
+    color: #471e86;
+}
+
 .btn-disable {
     background-color: #d6d6d6 !important;
     color: #999 !important;
