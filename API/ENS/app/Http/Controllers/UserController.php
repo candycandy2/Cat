@@ -48,24 +48,26 @@ class UserController extends Controller
             $xml=simplexml_load_string($input['strXml']);
             $empNo = (string)$xml->emp_no[0];
             $result = [];
-            //先檢查basic info
+
+            $roleList = $this->userService->getUserRoleList($empNo);
+
             foreach ( Config::get('app.ens_project') as $project) {
-                $rs = $this->basicInfoService->checkUserIsMember($project, $empNo);
-                if($rs){
-                    $tmpResult = [];
+                $tmpResult = [];
+                if(isset($roleList[$project])){
                     $tmpResult['Project'] = $project;
-                    $tmpResult['RoleList'][] = 'common';
+                    $tmpResult['RoleList'] = $roleList[$project];
+                }else{
+                    $rs = $this->basicInfoService->checkUserIsMember($project, $empNo);
+                    if($rs){
+                        $tmpResult['Project'] = $project;
+                        $tmpResult['RoleList'][] = 'common';
+                    }
+                }
+                if(count($tmpResult) > 0){
                     array_push($result,$tmpResult);
                 }
             }
-            //再檢查usergroup
-            $roleList = $this->userService->getUserRoleList($empNo);
-            foreach ($result as  &$value) {
-                if(isset($roleList[$value['Project']])){
-                    $value['RoleList'] = $roleList[$value['Project']];
-                }
-            }
-           unset($value);
+
            if(count($result) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014923_noAuthority,
                     'Message'=>"沒有任何專案權限",
@@ -78,6 +80,5 @@ class UserController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
             'Content'=>""]);
         }
-
     }
 }

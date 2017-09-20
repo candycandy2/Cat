@@ -42,11 +42,10 @@ $("#viewEventList").pagecontainer({
 
                     if (data["Content"].length === 1) {
                         //If count RoleList == 1, hide dropdown-list projectType
+                        projectName = data["Content"][0].Project;
                         $("#projectType").hide();
-                    } else {
-                        //If count RoleList > 1, set option of projectSelect
-                        changeProject("setOption");
                     }
+                    changeProject("setOption");
 
                     //Set Event Type Selected Option
                     if (window.localStorage.getItem("eventType" + projectName) !== null) {
@@ -105,7 +104,9 @@ $("#viewEventList").pagecontainer({
                 //value:5 [C Class Event] > <event_type_parameter_value>5</event_type_parameter_value><emp_no>0407731</emp_no>
                 //value:6 [prevent Event] > <event_type_parameter_value>6</event_type_parameter_value><emp_no>0407731</emp_no>
                 //value:7 [info share] >    <event_type_parameter_value>7</event_type_parameter_value><emp_no>0407731</emp_no>
-                eventTypeParameterValue = eventType;
+                if (eventType !== "0" && eventType !== "1" && eventType !== "2") {
+                    eventTypeParameterValue = eventType;
+                }
             }
 
             if (eventTypeParameterValue != 0) {
@@ -183,13 +184,13 @@ $("#viewEventList").pagecontainer({
                     for (var i=0; i<dataContent.length; i++) {
 
                         //Function
-                        var functionName = dataContent[i].function.trim();
+                        var functionName = dataContent[i].function.toString().trim();
                         if (loginData["BasicInfo"][project]["function"][functionName] == undefined) {
                             loginData["BasicInfo"][project]["function"][functionName] = [];
                         }
 
                         //Location
-                        var locationName = dataContent[i].location.trim();
+                        var locationName = dataContent[i].location.toString().trim();
                         if (loginData["BasicInfo"][project]["location"][locationName] == undefined) {
                             loginData["BasicInfo"][project]["location"][locationName] = [];
                         }
@@ -659,6 +660,8 @@ $("#viewEventList").pagecontainer({
             //Only [admin] can Add New Event
             if (checkAuthority("admin")) {
                 $("#addEvent").show();
+            } else {
+                $("#addEvent").hide();
             }
         }
 
@@ -766,8 +769,10 @@ $("#viewEventList").pagecontainer({
             // ITS or RM
 
             if (action === "check") {
-                if (window.localStorage.getItem("projectName") !== null) {
-                    projectName = window.localStorage.getItem("projectName");
+                if (!setProjectNameFromQPlay) {
+                    if (window.localStorage.getItem("projectName") !== null) {
+                        projectName = window.localStorage.getItem("projectName");
+                    }
                 }
             } else if (action === "setOption") {
 
@@ -813,6 +818,8 @@ $("#viewEventList").pagecontainer({
                     } else {
                         memberListView("location", projectName);
                     }
+
+                    showEventAdd();
                 }
             }
 
@@ -996,9 +1003,23 @@ $("#viewEventList").pagecontainer({
                     });
 
                     $("<div class='ui-panel-background'></div>").appendTo("body");
+
+                    if (device.platform === "iOS") {
+                        var heightView = parseInt(document.documentElement.clientHeight * 100 / 100, 10);
+                        var heightPanel = heightView - 20;
+
+                        $("#projectSelect").css({
+                            'min-height': heightPanel + 'px',
+                            'max-height': heightPanel + 'px',
+                            'margin-top': '20px'
+                        });
+                    }
+
+                    tplJS.preventPageScroll();
                 },
                 close: function() {
                     $(".ui-panel-background").remove();
+                    tplJS.recoveryPageScroll();
                 }
             });
 
@@ -1034,9 +1055,6 @@ $("#viewEventList").pagecontainer({
             $("#viewEventList").css("padding-bottom", paddingBottom + "px");
 
             chatRoom.resetBadge();
-
-            $( "#mypanel" ).panel( "open" );
-
         });
 
         /********************************** dom event *************************************/
