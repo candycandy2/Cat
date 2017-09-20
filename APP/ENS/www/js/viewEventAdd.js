@@ -301,7 +301,11 @@ $("#viewEventAdd").pagecontainer({
                 $.each(loginData["BasicInfo"][projectName]["locationFunction"], function(location, functionData){
                     if (data.task_detail[i].task_location === location) {
 
-                        var selectedFunctionText = "All Function";
+                        if (projectName === "ITS") {
+                            var selectedFunctionText = "All Function";
+                        } else if (projectName === "RM") {
+                            var selectedFunctionText = "所有單位";
+                        }
 
                         //create new Event Location List, set new ID by count number
                         var ID = loctionFunctionID;
@@ -871,16 +875,22 @@ $("#viewEventAdd").pagecontainer({
             loctionFunctionID++;
 
             //UI Dropdown List : Event Function
+            if (projectName === "ITS") {
+                var textAll = "All Function";
+            } else if (projectName === "RM") {
+                var textAll = "所有單位";
+            }
+
             eventFunctionData = {
                 id: "eventFunction-" + ID,
-                defaultText: "All Function",
+                defaultText: textAll,
                 title: "IT Function",
                 autoResize: false,
                 multiSelect: true,
                 defaultValue: "all",
                 option: [{
                     value: "all",
-                    text: "All Function"
+                    text: textAll
                 }],
                 attr: {
                     class: "tpl-dropdown-list-icon-arrow"
