@@ -782,12 +782,10 @@ $("#viewEventList").pagecontainer({
 
                 //Dropdown list
                 $(".event-type").hide();
+                $(".member-type").hide();
 
-                if (projectName === "ITS") {
-                    $("#eventTypeITS").show();
-                } else if (projectName === "RM") {
-                    $("#eventTypeRM").show();
-                }
+                $("#eventType" + projectName).show();
+                $("#eventMemberType" + projectName).show();
 
                 //Page Title
                 $("#viewEventList .ui-title").html(projectName);
@@ -927,15 +925,15 @@ $("#viewEventList").pagecontainer({
 
             tplJS.DropdownList("viewEventList", "eventTypeContent", "append", "typeA", eventTypeData);
 
-            //UI Dropdown List : Event Member Type
-            if (window.localStorage.getItem("eventMemberType") !== null) {
-                var eventMemberTypeDefaultVal = window.localStorage.getItem("eventMemberType");
+            //UI Dropdown List : Event Member Type for ITS
+            if (window.localStorage.getItem("eventMemberTypeITS") !== null) {
+                var eventMemberTypeDefaultVal = window.localStorage.getItem("eventMemberTypeITS");
             } else {
                 var eventMemberTypeDefaultVal = "location";
             }
 
             var eventMemberTypeData = {
-                id: "eventMemberType",
+                id: "eventMemberTypeITS",
                 option: [{
                     value: "location",
                     text: "位置排序"
@@ -946,10 +944,40 @@ $("#viewEventList").pagecontainer({
                     value: "user",
                     text: "成員排序"
                 }],
-                defaultValue: eventMemberTypeDefaultVal
+                defaultValue: eventMemberTypeDefaultVal,
+                attr: {
+                    class: "member-type"
+                }
             };
 
             $("#memberDiv").append('<div id="eventMemberTypeContent"></div>');
+            tplJS.DropdownList("viewEventList", "eventMemberTypeContent", "append", "typeA", eventMemberTypeData);
+
+            //UI Dropdown List : Event Member Type for RM
+            if (window.localStorage.getItem("eventMemberTypeRM") !== null) {
+                var eventMemberTypeDefaultVal = window.localStorage.getItem("eventMemberTypeRM");
+            } else {
+                var eventMemberTypeDefaultVal = "location";
+            }
+
+            var eventMemberTypeData = {
+                id: "eventMemberTypeRM",
+                option: [{
+                    value: "location",
+                    text: "對象排序"
+                }, {
+                    value: "function",
+                    text: "單位排序"
+                }, {
+                    value: "user",
+                    text: "成員排序"
+                }],
+                defaultValue: eventMemberTypeDefaultVal,
+                attr: {
+                    class: "member-type"
+                }
+            };
+
             tplJS.DropdownList("viewEventList", "eventMemberTypeContent", "append", "typeA", eventMemberTypeData);
 
             //Event List No Data Msg
@@ -1149,11 +1177,11 @@ $("#viewEventList").pagecontainer({
         });
 
         //Event Member List - Sort Type
-        $(document).on("change", "#eventMemberType", function() {
+        $(document).on("change", ".member-type", function() {
             memberListView($(this).val(), projectName);
 
             //Remember Event Member Sort Type
-            window.localStorage.setItem("eventMemberType", $(this).val());
+            window.localStorage.setItem("eventMemberType" + projectName, $(this).val());
         });
 
         //Mail / Tel
