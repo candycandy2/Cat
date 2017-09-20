@@ -46,7 +46,7 @@ class EventController extends Controller
          $allow_user = "admin";
 
          \DB::beginTransaction();
-         //try{
+         try{
 
             $Verify = new Verify();
             $verifyResult = $Verify->verify();
@@ -196,14 +196,14 @@ class EventController extends Controller
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                 'Content'=>$createChatRoomRes->Content]);
 
-        // } catch (\Exception $e){
-        //     \DB::rollBack();
-        //     if(isset($chatroomId)){
-        //         $this->eventService->deleteChatRoom($chatroomId);
-        //     }
-        //     return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-        //     'Content'=>'']);
-        // }
+        } catch (\Exception $e){
+            \DB::rollBack();
+            if(isset($chatroomId)){
+                $this->eventService->deleteChatRoom($chatroomId);
+            }
+            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
+            'Content'=>'']);
+        }
     }
 
     /**
