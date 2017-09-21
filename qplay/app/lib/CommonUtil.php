@@ -137,7 +137,7 @@ class CommonUtil
         if(!is_null($domain)){
             $query -> where('qp_user.user_domain', '=', $domain);
         }
-         $userList= $query -> select('qp_user.row_id','emp_no','email','register_message')->get();
+         $userList= $query -> select('qp_user.row_id','emp_no','email','register_message','login_id')->get();
         if(count($userList) < 1) {
             return null;
         }

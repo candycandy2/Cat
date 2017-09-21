@@ -67,7 +67,7 @@ var chatRoom = {
         console.log(data);
 
         //For API getGroupConversationHistoryMessage
-        if (type === "group") {
+        //if (type === "group") {
             if (chatRoom.Messages[chatRoom.nowChatRoomID] === undefined) {
                 chatRoom.Messages[chatRoom.nowChatRoomID] = [];
             }
@@ -80,6 +80,7 @@ var chatRoom = {
 
             for (var i=0; i<data.messages.length; i++) {
 
+                /*
                 if (device.platform === "iOS") {
                     var messageTimestamp = data.messages[i].create_time;
                 } else if (device.platform === "Android") {
@@ -90,6 +91,8 @@ var chatRoom = {
                     messageTimestamp = messageTimestamp.toString() + "000";
                 }
                 messageTimestamp = parseInt(messageTimestamp, 10);
+                */
+                var messageTimestamp = data.messages[i].msg_ctime;
 
                 var createTime = new Date(messageTimestamp);
                 var objData = {
@@ -128,8 +131,12 @@ var chatRoom = {
                                 dataIndex = j;
                             } else if (localCTime == messageTimestamp) {
                                 pushData = false;
-                            } else if (localCTime == messageTimestamp) {
-                                tempData.push(chatRoom.Messages[chatRoom.nowChatRoomID][j]);
+                                tempData.push(objData);
+                            } else if (localCTime > messageTimestamp) {
+                                if (j == 0) {
+                                    tempData.push(objData);
+                                    tempData.push(chatRoom.Messages[chatRoom.nowChatRoomID][j]);
+                                }
                             }
                         }
 
@@ -145,9 +152,10 @@ var chatRoom = {
             }
 
             chatRoom.updateLocalStorage();
-        }
+        //}
 
         //For sendGroupTextMessage / sendGroupImageMessage
+        /*
         if (type === "single") {
             if (chatRoom.Messages[chatRoom.nowChatRoomID] === undefined) {
                 chatRoom.Messages[chatRoom.nowChatRoomID] = [];
@@ -193,6 +201,7 @@ var chatRoom = {
 
             chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
         }
+        */
 
         chatRoom.refreshMsg();
     },

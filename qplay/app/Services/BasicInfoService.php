@@ -6,18 +6,25 @@
 namespace App\Services;
 
 use App\Repositories\BasicInfoRepository;
+use App\Repositories\UserRepository;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
+use App\lib\MessageUtil;
 use Excel;
 
 class BasicInfoService
 {   
 
     protected $basicInfoRepository;
+    protected $userRepository;
+    protected $message;
 
-    public function __construct(BasicInfoRepository $basicInfoRepository)
+    public function __construct(BasicInfoRepository $basicInfoRepository,
+                                UserRepository $userRepository)
     {
         $this->basicInfoRepository = $basicInfoRepository;
+        $this->userRepository = $userRepository;
+        $this->message = new MessageUtil();
     }
 
     /**
@@ -158,7 +165,7 @@ class BasicInfoService
             $res = $this->message->register($userData->login_id);
             $resultCode = json_decode($res)->ResultCode;
             if( $resultCode  == ResultCode::_1_reponseSuccessful || $resultCode  == '998002'){
-                 $this->userRepository->updateUserByLoginId($userData->login_id, array('register_message'=>'Y'));
+                $this->userRepository->updateUserByLoginId($userData->login_id, array('register_message'=>'Y'));
             }
         }
     }
