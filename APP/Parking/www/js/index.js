@@ -1,3 +1,4 @@
+var htmlContent = '';
 var pageList = ["viewMain"];
 var htmlContent = '';
 var dictDayOfWeek = {
