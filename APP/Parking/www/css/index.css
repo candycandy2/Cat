@@ -149,7 +149,7 @@ div.square {
 }
 
 .iconSelected {
-    background: url(../img/076_checkbox_table_circlebox_select.png);
+    background: url(../img/056_icon_booked_success.png);
     background-size: 4.8vw auto;
     background-repeat: no-repeat;
 }
@@ -241,6 +241,28 @@ hr.ui-color-green {
     color: #999 !important;
 }
 
+.btn-otherday {
+    background-color: #ddd !important;
+    color: #666 !important;
+}
+
+.btn-otherday h1,
+#defaultToday h1 {
+    font-size: 5.5vw !important;
+}
+
+.ui-color-reserve {
+    background-color: #eaeaea !important;
+}
+
+.ui-color-myreserve {
+    background-color: #CBF1EC !important;
+}
+
+.ui-linear-gradient-gary {
+    color: #323232 !important;
+    background-color: #f6f6f6 !important;
+}
 /********************************** scrollmenu *************************************/
 
 div.scrollmenu {
