@@ -574,12 +574,14 @@ var JM = {
                         console.log(data);
 
                         if (typeof callback === "function") {
-                            console.log(msgData);
+                            /*
                             if (msgData === null) {
                                 callback("group", data);
                             } else {
                                 callback("single", msgData);
                             }
+                            */
+                            callback("group", data);
                         }
                     },
                     error: function(data) {

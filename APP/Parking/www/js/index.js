@@ -1,3 +1,4 @@
+var htmlContent = '';
 var pageList = ["viewMain"];
 var htmlContent = '';
 var dictDayOfWeek = {
@@ -174,4 +175,24 @@ function timeblockObj(category, time, timeID) {
     this.category = category;
     this.time = time;
     this.timeID = timeID;
+};
+
+// create reserve object 
+function reserveObj(roomId, date) {
+    this.roomId = roomId;
+    this.date = date;
+    this.detailInfo = {};
+    this.addDetail = function(key, value) {
+        this.detailInfo[key] = value;
+    };
+
+    this.addDetail();
+    return this;
+};
+
+function reserveLocalDataObj(roomId, date, data) {
+    this.lastUpdateTime = new Date();
+    this.roomId = roomId;
+    this.date = date;
+    this.data = data;
 };

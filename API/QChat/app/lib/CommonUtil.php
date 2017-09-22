@@ -56,14 +56,7 @@ class CommonUtil{
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_TIMEOUT_MS, $api_max_exe_time);
-        //add for Develop
-        if(Config::get('app.env') == 'dev'){
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
-            curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
-            curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
-        }
-
+       
         if( ! $result = curl_exec($curl)) 
         { 
             $errno = curl_errno($curl);
