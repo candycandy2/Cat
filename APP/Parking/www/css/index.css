@@ -149,7 +149,7 @@ div.square {
 }
 
 .iconSelected {
-    background: url(../img/056_icon_booked_success.png);
+    background: url(../img/076_checkbox_table_circlebox_select.png);
     background-size: 4.8vw auto;
     background-repeat: no-repeat;
 }
@@ -173,6 +173,97 @@ div.square {
     display: inline-block;
 }
 
+.myreserve-margin { font-size: 4.18vw; margin-left: 3vw;}
+
+#viewMyReserve{ box-sizing: border-box; padding-left: 3.71vw !important;}
+
+#viewMyReserve .ui-margin-public{ padding-bottom: 0 !important; position: relative; margin-left: 0 !important}
+#viewMyReserve .ui-margin-public:after{
+    content: '';
+    background-color: #989898;
+    display: block;
+    width: 92.58vw;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+#viewMyReserve .ui-margin-public > div > div{ margin: 4vw 0 3vw;}
+
+.delete-myreserve{ width: 4.186vw; height: auto;}
+
+.setting-delete {
+    position: absolute;
+    right: -4vw;
+    top: -2vw;    
+    width: 22vw;
+    height: 10vw;
+    line-height: 1;
+    padding: 3.5 0;
+}
+
+.setting-img { width: 4.5vw; height: auto; position: absolute; top: 2vw; right: 4vw;}
+
+.div-radius {
+    border-radius: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.quick-reserve-margin {
+    text-align: center;
+    margin: 6.44vw auto 0;
+}
+
+.quick-reserve-msg-icon {
+    background: url(../img/056_icon_booked_success.png) no-repeat;
+    width: 5vw;
+    height: 3vh;
+    background-size: 5vw auto;
+}
+
+.quick-reserve-warn-icon {
+    background: url(../img/068_icon_warm.png) no-repeat;
+    width: 5vw;
+    height: 3vh;
+    background-size: 5vw auto;
+}
+
+.quick-reserve-margin a{ color: #2c89bc !important;}
+
+.cntIcon {
+    width: 5.4vw;
+    height: 5.4vw;
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: center;
+    line-height: 6vw;
+    background-color: #142433 !important;
+    font-size: 3.55vw;
+}
+
+.setting-icon {
+    width: 7.2vw;
+    height: 4.2vh;
+    background-size: 7.2vw auto;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.setting-back-icon {
+    background: url(../img/002_nav_back_white.png) no-repeat;
+}
+
+.setting-add-icon {
+    background: url(../img/add_nav.png) no-repeat;
+}
+
+.min-height-100 {
+    min-height: 100% !important;
+}
 
 .word-mid {
     text-align: left;
