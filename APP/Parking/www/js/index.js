@@ -178,8 +178,8 @@ function timeblockObj(category, time, timeID) {
 };
 
 // create reserve object 
-function reserveObj(roomId, date) {
-    this.roomId = roomId;
+function reserveObj(spaceId, date) {
+    this.spaceId = spaceId;
     this.date = date;
     this.detailInfo = {};
     this.addDetail = function(key, value) {
@@ -190,9 +190,9 @@ function reserveObj(roomId, date) {
     return this;
 };
 
-function reserveLocalDataObj(roomId, date, data) {
+function reserveLocalDataObj(spaceId, date, data) {
     this.lastUpdateTime = new Date();
-    this.roomId = roomId;
+    this.spaceId = spaceId;
     this.date = date;
     this.data = data;
 };
