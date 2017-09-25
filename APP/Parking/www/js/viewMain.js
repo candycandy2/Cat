@@ -302,7 +302,7 @@ $("#viewMain").pagecontainer({
                                  + "Jennifer.Y.Wang";
                         $("#time" + timeID).attr("ename", "Jennifer.Y.Wang");
                         $("#time" + timeID).attr("msg", msg);
-                        $("#time" + timeID).attr("traceID", traceid);
+                        $("#time" + timeID).attr("traceID", timeID);
                     } 
 
                 /*  var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, date, false);
@@ -515,6 +515,14 @@ $("#viewMain").pagecontainer({
                 $('div[for=myReserveMsg]').popup('close');
                 //var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
                 //delete when connect to API
+                $('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
+                $('div[traceid=' + traceID + ']').addClass('ui-color-noreserve');
+                $('div[traceid=' + traceID + ']').find('div:nth-child(2)').text('');
+                $('div[traceid=' + traceID + ']').find('div:nth-child(2)').addClass('circleIcon');
+                $('div[traceid=' + traceID + ']').find('div:nth-child(2)').addClass('iconSelect');
+                $('div[traceid=' + traceID + ']').attr("ename", "");
+                $('div[traceid=' + traceID + ']').attr("msg", "");
+                $('div[traceid=' + traceID + ']').attr("traceID", "");
                 popupMsg('cancelSuccessMsg', '', '取消預約成功', '', false, '確定', '');
 
             } else {
@@ -531,17 +539,8 @@ $("#viewMain").pagecontainer({
         });
 
         $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
-                $('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
-                $('div[traceid=' + traceID + '] span').text('');
-                $('div[for=cancelSuccessMsg]').popup('close');
-            });
-
-        $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
-            $('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
-            //$('div[traceid=' + traceID + '] span').text('');
+            //$('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
             //delete
-            $('div[traceid=' + traceID + ']').find('div:nth-child(2)').text('');
-            $('div[traceid=' + traceID + ']').find('div:nth-child(2)').addClass('circleIcon');
             $('div[for=cancelSuccessMsg]').popup('close');
         });
 
