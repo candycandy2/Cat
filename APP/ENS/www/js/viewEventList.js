@@ -55,7 +55,7 @@ $("#viewEventList").pagecontainer({
                     }
 
                     showEventAdd();
-                } else if (resultCode === 014923) {
+                } else if (resultCode === "014923") {
                     $("#noUseAuthorityPopup").popup("open");
                 }
             };
