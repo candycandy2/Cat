@@ -35,8 +35,6 @@ class HistoryController extends Controller
         //ignore_user_abort(true);//瀏覽器關掉後也持續執行
         set_time_limit(0);//不限制time out 時間
 
-        $ACTION = 'getQGroupHistoryMessageJob';
-
         Log::info($ACTION . ' 開始執行...');
         
         //取得上次同步的最後時間
@@ -47,7 +45,6 @@ class HistoryController extends Controller
         if($dt === false || array_sum($dt->getLastErrors()) >0 ){
             $result = ['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
                                      'Message'=>'the parameter end_time error or blank!'];
-            Logger::logApi('', $ACTION,response()->json(apache_response_headers()), json_encode($result));
             return response()->json($result);
         }
         
@@ -62,7 +59,6 @@ class HistoryController extends Controller
         if($endTime == $now){
             $result = ['ResultCode'=>ResultCode::_025901_reponseSuccessful,
                       'Message'=>'Messages before '.$now.' were already been synced!'];
-            Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
         $dateDiff = CommonUtil::dateDiff($beginTime,$now);
@@ -92,7 +88,6 @@ class HistoryController extends Controller
                     $result = ['ResultCode'=> ResultCode::_025925_CallAPIFailedOrErrorOccurs,
                                  'Message'=> 'Call JMessage Error : ['.$resData->error.']'.$resData->message,
                                  'Content'=> ''];
-                    Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
                     return response()->json($result);
                 }
                 $historyData = $resData['historyData'];
@@ -112,18 +107,14 @@ class HistoryController extends Controller
               
                  
            } while ($endTime != $now);
-            
             $result = ['ResultCode'=>ResultCode::_025901_reponseSuccessful,'Message'=>'Sync Success!'];
-            Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
             return response()->json($result);
             Log::info('Sync Success!');
           }catch (\Exception $e) {
 
              \DB::connection('mysql_qmessage')->rollBack();
              \DB::connection('mysql_ens')->rollBack();
-
-            $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()];
-             Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
+             $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()];
              Log::info('Sync Fail!' . json_encode($result));
             return response()->json($result);
          } 

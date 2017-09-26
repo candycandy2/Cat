@@ -12,7 +12,7 @@
 */
 
 //API
-Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic']], function () {
+Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','log.api']], function () {
     Route::POST('/getQList','FriendController@getQList');
     // Route::POST('/getQFriend','FriendController@getQFriend');
     // Route::POST('/setQFriend','FriendController@setQFriend');
@@ -27,4 +27,7 @@ Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic']], 
 });
 
 //Job
-Route::any('v101/QChat/getQGroupHistoryMessageJob','HistoryController@getQGroupHistoryMessageJob');
+//Route::any('v101/QChat/getQGroupHistoryMessageJob','HistoryController@getQGroupHistoryMessageJob');
+Route::group(['prefix' => 'v101/QChat','middleware' => 'log.api'], function () {
+    Route::any('/getQGroupHistoryMessageJob','HistoryController@getQGroupHistoryMessageJob');
+});
