@@ -42,12 +42,12 @@ class Verify
         
         if($headerContentType == null || trim($headerContentType) != "application/json") {
             return array("code"=>ResultCode::_025915_ContentTypeParameterInvalid,
-                "message"=> "Content-Type error");
+                "message"=> "Content-Type錯誤");
         }
 
         if(count($input) == 0 || !array_key_exists('strXml', $input) || trim($input["strXml"]) == "") {
             return array("code"=>ResultCode::_025917_InputJsonFormatIsInvalid,
-                "message"=>"Input json format is invalid");
+                "message"=>"傳入的json格式錯誤, Server端無法解析");
         }
     
         libxml_use_internal_errors(true);
@@ -55,20 +55,20 @@ class Verify
 
         if ($xml === false) {
              return array("code"=>ResultCode::_025916_InputXmlFormatIsInvalid,
-            "message"=>"Input xml format is invalid");
+            "message"=>"傳入的xml格式錯誤, Server端無法解析");
         }
         $empNo = trim((string)$xml->emp_no[0]);
         if($empNo == "" ){
              return array("code"=>ResultCode::_025903_MandatoryFieldLost,
-                "message"=>"Mandatory field lost");
+                "message"=>"必填字段缺失");
         }
         if( preg_match("/^[0-9]*$/", $empNo) == 0){
               return array('code'=>ResultCode::_025905_FieldFormatError,
-                'message'=>"Field format error");
+                'message'=>"欄位格式錯誤");
         }
         if(!self::checkUserStatusByUserEmpNo($empNo)) {
             return array("code"=>ResultCode::_025908_AccountNotExist,
-                "message"=>"Account not exist");
+                "message"=>"帳號不存在");
         }
         
         return array("code"=>ResultCode::_025901_reponseSuccessful,
