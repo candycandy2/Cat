@@ -118,10 +118,24 @@ return [
     | Here you may configure the JMessage settings for your application.
     |
     */
-    'appKey'=>env('APP_ID'),
-    'masterSecret' => env('SECRET_KEY'),
-    'filePath' => env('FILE_PATH'),
+    'app_key'=>env('APP_ID'),
+    'master_secret' => env('SECRET_KEY'),
+    'file_path' => env('FILE_PATH'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Push Parameters
+    |--------------------------------------------------------------------------
+    |
+    | Parameters used in JPush Web API
+    | time_to_live:推送当前用户不在线时，为该用户保留多长时间的离线消息，以便其上线时再次推送。
+    |              默认 86400 （1 天），最长 10 天。设置为 0 表示不保留离线消息，只有推送当前在线的用户可以收到。
+    | apns_flag:如果目标平台为 iOS 平台 需要在 options 中通过 apns_production 字段来设定推送环境。
+    |           True 表示推送生产环境，False 表示要推送开发环境； 如果不指定则为推送生产环境。
+    |
+    */
+    'time_to_live' => env('TIME_TO_LIVE'),
+    'apns_flag' => env('APNS_FLAG',true),
 
     /*
     |--------------------------------------------------------------------------
