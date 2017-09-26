@@ -50,5 +50,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'csrf' => \App\Http\Middleware\VerifyCsrfToken::class,
         'verify.basic' => \App\Http\Middleware\VerifyWithBasicAuth::class,
+        'log.api' => \App\Http\Middleware\LogAferRequest::class,
     ];
 }
