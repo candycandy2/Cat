@@ -73,7 +73,7 @@ class FriendController extends Controller
 
         $userList =  $this->userService->getUserList($searchType, $friendOnly, $empNo, $searchString);
 
-        if(!isset($userList['userList']) || count($userList['userList']) == 0){
+        if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
              return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
                     'Message'=>"查無資料",
                     'Content'=>""]);
