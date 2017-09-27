@@ -231,10 +231,10 @@ $("#viewMain").pagecontainer({
             }
         }
 
-        function getAPIReserveParkingSpace(page, spaceId, date, timeID) {
+        function getAPIReserveParkingSpace(page, siteId, spaceId, date, timeID) {
             //loadingMask('show');
             var self = this;
-            //var queryData = '<LayoutHeader><MeetingRoomID>' + roomId + '</MeetingRoomID><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTimeID>' + timeID + '</ReserveTimeID></LayoutHeader>';
+            //var queryData = '<LayoutHeader><ParkingSpceSite>' + siteId + '</ParkingSpceSite><ParkingSpceID>' + spaceId + '</ParkingSpceID><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTimeID>' + timeID + '</ReserveTimeID></LayoutHeader>';
 
             //this.successCallback = function(data) {
 
@@ -252,9 +252,15 @@ $("#viewMain").pagecontainer({
                         var arrTempTime = [];
                         for (var item in timeClick) {
                             var sTime = $('div[id=' + timeClick[item] + '] > div > div:first').text();
-                            var eTime = addThirtyMins(sTime);
+                            if (siteId === '92') {
+                                var eTime = addThirtyMins(sTime);
+                            }else if (siteId === '111'){
+                                var eTime = addThirtyMins(addThirtyMins(sTime));
+                            }
                             arrTempTime.push(sTime);
                             arrTempTime.push(eTime);
+                            //delete when connect to API
+                            timeName2 += sTime + '-' + eTime + ',';
                         }
 
                         var arrUniqueTime = [];
@@ -266,12 +272,13 @@ $("#viewMain").pagecontainer({
                                 arrUniqueTime.splice(index, 1);
                             }
                         }
+                        
+                        arrUniqueTime.sort();
 
                         for (var i = 0; i < arrUniqueTime.length; i = i + 2) {
                             timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1] + '<br />';
-                            //delete when connect to API
-                            timeName2 += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1]; 
                         }
+
                     } 
 
                     var msgContent = '<div>' + strDate + '&nbsp;&nbsp;' + timeName + '</div>';
@@ -288,21 +295,23 @@ $("#viewMain").pagecontainer({
                         reserveBtnDefaultStatus();
                         //add Fake Data
                         //delete when connect to API
-                        $("#time" + timeID).removeClass("ui-color-noreserve");
-                        $("#time" + timeID).addClass("ui-color-myreserve");
-                        $("#time" + timeID).find('.circleIcon').removeClass('circleIcon');
-                        $("#time" + timeID).find('.iconSelect').removeClass('iconSelect');
-                        $("#time" + timeID + " div:nth-child(2)").text("Jennifer.Y.Wang");
-                        var msg =  date
-                                 + ","
-                                 + spaceName
-                                 + ","
-                                 + timeName2
-                                 + ","
-                                 + "Jennifer.Y.Wang";
-                        $("#time" + timeID).attr("ename", "Jennifer.Y.Wang");
-                        $("#time" + timeID).attr("msg", msg);
-                        $("#time" + timeID).attr("traceID", timeID);
+                        for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++){
+                            $("#time" + timeIDItem).removeClass("ui-color-noreserve");
+                            $("#time" + timeIDItem).addClass("ui-color-myreserve");
+                            $("#time" + timeIDItem).find('.circleIcon').removeClass('circleIcon');
+                            $("#time" + timeIDItem).find('.iconSelect').removeClass('iconSelect');
+                            $("#time" + timeIDItem + " div:nth-child(2)").text("Jennifer.Y.Wang");
+                            var msg =  date
+                                     + ","
+                                     + spaceName
+                                     + ","
+                                     + timeName2.split(',')[i]
+                                     + ","
+                                     + "Jennifer.Y.Wang";
+                            $("#time" + timeIDItem).attr("ename", "Jennifer.Y.Wang");
+                            $("#time" + timeIDItem).attr("msg", msg);
+                            $("#time" + timeIDItem).attr("traceID", timeIDItem);
+                        }
                     } 
 
                 /*  var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, date, false);
@@ -337,6 +346,77 @@ $("#viewMain").pagecontainer({
             /*var __construct = function() {
                 CustomAPI("POST", true, "ReserveParkingSpace", self.successCallback, self.failCallback, queryData, "");
             }();*/
+        }
+
+        // delete parameters when connect to API
+        function getAPIQueryMyReserve(page, siteId, spaceId, date, timeID) {
+            //loadingMask('show');
+            var self = this;
+            var today = new Date();
+            //var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
+
+            //this.successCallback = function(data) {
+                $('div[id^=def-]').remove();
+
+                // delete parameters when connect to API
+                if (timeID != null) {  
+                //if (data['ResultCode'] === "1") {  
+                    //Successful
+                    var htmlContent_today = '';
+                    var htmlContent_other = '';
+                    var originItem = ['default', '[begin]', '[end]', '[value]', '[space]', '[date]', '[dateformate]', 'disable'];
+
+                    if (page == 'pageThree') {}
+
+                    for (var i = 0, item; item = data['Content'][i]; i++) {
+
+                        // convert yyyymmdd(string) to yyyy/mm/dd
+                        var arrCutString = cutStringToArray(item.ReserveDate, ['4', '2', '2']);
+                        var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
+
+                        // convert date format to mm/dd(day of week)
+                        var d = new Date(strDate);
+                        var dateFormat = d.mmdd('/') + dictDayOfWeek[d.getDay()];
+
+                        var replaceItem = ['def-' + item.ReserveTraceAggID, item.ReserveBeginTime, item.ReserveEndTime, item.ReserveTraceAggID, parkingSpaceDataExample[spaceId], item.ReserveDate, dateFormat, ''];
+
+                        if (item.ReserveDate == new Date().yyyymmdd('')) {
+                            $('#myReserve :first-child h2').removeClass('disable');
+                            htmlContent_today
+                                += replaceStr($('#defaultToday').get(0).outerHTML, originItem, replaceItem);
+                        } else {
+                            htmlContent_other
+                                += replaceStr($('#defaultOtherDay').get(0).outerHTML, originItem, replaceItem);
+                        }
+                    }
+
+                    if (htmlContent_today == '') {
+                        $('#todayLine').addClass('disable');
+                    } else {
+                        $('#todayLine').removeClass('disable');
+                        $('#todayLine').after(htmlContent_today);
+                    }
+                    if(htmlContent_other == ''){
+                        $('#otherDayLine').addClass('disable');
+                    }
+                    else{
+                        $('#otherDayLine').removeClass('disable');
+                        $('#otherDayLine').after(htmlContent_other);
+                    }
+                // delete parameters when connect to API
+                } else
+                //} else if (data['ResultCode'] === "042901") {
+                    //Not Found Reserve Data
+                    popupMsg('noDataMsg', '', '沒有您的預約資料', '', false, '確定', '');
+                    $('#todayLine').addClass('disable');
+                    $('#otherDayLine').addClass('disable');
+                }
+            /*    loadingMask('hide');
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "");
+            }(); */
         }
 
         function checkLocalDataExpired() {
@@ -378,6 +458,7 @@ $("#viewMain").pagecontainer({
         $("#viewMain").one("pagebeforeshow", function(event, ui) {
             //get last update time check date expired
             checkLocalDataExpired();
+            //var doAPIQueryMyReserve = new getAPIQueryMyReserve();
             getInitialData();
             setInitialData();
 
@@ -502,11 +583,11 @@ $("#viewMain").pagecontainer({
                 var timeID = '';
                 for (var item in timeClick) {
                     timeID += timeClick[item] + ',';
-                }
-                
+                }                
                 //var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', clickSpaceId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
-                var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
-
+                var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', selectedSite, clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
+                //delete 
+                //var doAPIQueryMyReserve = new getAPIQueryMyReserve('pageThree', selectedSite, clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
             }
         });
 
