@@ -27,7 +27,6 @@ Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','lo
 });
 
 //Job
-//Route::any('v101/QChat/getQGroupHistoryMessageJob','HistoryController@getQGroupHistoryMessageJob');
 Route::group(['prefix' => 'v101/QChat','middleware' => 'log.api'], function () {
     Route::any('/getQGroupHistoryMessageJob','HistoryController@getQGroupHistoryMessageJob');
 });
