@@ -6,7 +6,6 @@ use App\lib\Verify;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
 use App\lib\JPush;
-use App\lib\Logger;
 use Illuminate\Support\Facades\Input;
 use App\Services\UserService;
 use App\Services\PushService;
@@ -41,8 +40,6 @@ class ChatRoomController extends Controller
     }
 
     public function newQChatroom(){
-
-        $ACTION = "newQChatroom";
 
         $required = Validator::make($this->data, [
             'emp_no' => 'required',
@@ -96,13 +93,7 @@ class ChatRoomController extends Controller
                     'Content'=>""]);
         }
         foreach ($targetUserList as $targetEmpNo) {
-            //$userExist = $verify->checkUserStatusByUserEmpNo($targetEmpNo);
             $pushToken = $this->userService->getUserPushToken($targetEmpNo);
-            if(count($pushToken) <= 0){
-                return $result = response()->json(['ResultCode'=>ResultCode::_025919_ChatroomMemberInvalid,
-                    'Message'=>"成員未安裝QChat",
-                    'Content'=>""]);
-            }
             $userStatus = $this->userService->getUserStatus($fromEmpNo, $targetEmpNo);
             if($userStatus['status'] == 'protected'){
                 return $result = response()->json(['ResultCode'=>ResultCode::_025926_CannotInviteProtectedUserWhoIsNotFriend,
@@ -142,13 +133,12 @@ class ChatRoomController extends Controller
 
             $result = response()->json(['ResultCode'=>ResultCode::_025901_reponseSuccessful,
                         'Message'=>"Success",
-                        'Content'=>""]);
+                        'Content'=>array("group_id"=>$response->gid)]);
             \DB::commit();
          }catch (\Exception $e) {
             \DB::rollBack();
             $result = response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
-         } 
-         Logger::logApi('', $ACTION,response()->json(apache_response_headers()), $result);
+         }
          return $result;
     }
 }
