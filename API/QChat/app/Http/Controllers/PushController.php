@@ -66,7 +66,7 @@ class PushController extends Controller
                                              $this->data['device_type'],
                                              $createdUder);
             \DB::commit();
-            $result = ['ResultCode'=>ResultCode::_025901_reponseSuccessful,'Message'=>''];
+            $result = ['ResultCode'=>ResultCode::_1_reponseSuccessful,'Message'=>''];
             return response()->json($result);
         }catch (\Exception $e) {
 
