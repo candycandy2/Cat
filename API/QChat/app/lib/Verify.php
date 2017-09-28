@@ -71,7 +71,7 @@ class Verify
                 "message"=>"帳號不存在");
         }
         
-        return array("code"=>ResultCode::_025901_reponseSuccessful,
+        return array("code"=>ResultCode::_1_reponseSuccessful,
             "message"=>"");
     }
 

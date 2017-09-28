@@ -10,7 +10,6 @@ abstract class ResultCode
 {   
     const _1_reponseSuccessful = "1"; //成功
     const _025901_reponseSuccessful = "025901"; //成功
-    const _025902_LocationOrFunctionNotFound = "025902"; //Location或是Function錯誤
     const _025903_MandatoryFieldLost = "025903"; //必填字段缺失
     const _025905_FieldFormatError = "025905"; //欄位格式錯誤
     const _025907_NoAuthority = "025907"; //權限不足
@@ -27,6 +26,5 @@ abstract class ResultCode
     const _025925_CallAPIFailedOrErrorOccurs = '025925'; //調用JMessage API出错
     const _025926_CannotInviteProtectedUserWhoIsNotFriend = '025926'; //保護名單必須是好友才能聊天
     const _025998_NoData = "025998";  //查無資料
-
     const _025999_UnknownError = "025999";  //其他未知錯誤  
 }

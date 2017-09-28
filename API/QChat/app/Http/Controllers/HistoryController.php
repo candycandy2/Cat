@@ -32,6 +32,7 @@ class HistoryController extends Controller
      * @return json
      */
     public function getQGroupHistoryMessageJob(){
+        $ACTION = 'getQGroupHistoryMessageJob';
         //ignore_user_abort(true);//瀏覽器關掉後也持續執行
         set_time_limit(0);//不限制time out 時間
 
@@ -57,7 +58,7 @@ class HistoryController extends Controller
         date_default_timezone_set('Asia/Taipei');
         $now = date("Y-m-d H:i:s");
         if($endTime == $now){
-            $result = ['ResultCode'=>ResultCode::_025901_reponseSuccessful,
+            $result = ['ResultCode'=>ResultCode::_1_reponseSuccessful,
                       'Message'=>'Messages before '.$now.' were already been synced!'];
             return response()->json($result);
         }
@@ -107,7 +108,7 @@ class HistoryController extends Controller
               
                  
            } while ($endTime != $now);
-            $result = ['ResultCode'=>ResultCode::_025901_reponseSuccessful,'Message'=>'Sync Success!'];
+            $result = ['ResultCode'=>ResultCode::_1_reponseSuccessful,'Message'=>'Sync Success!'];
             return response()->json($result);
             Log::info('Sync Success!');
           }catch (\Exception $e) {
