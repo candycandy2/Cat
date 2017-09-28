@@ -79,7 +79,7 @@ class FriendController extends Controller
                     'Content'=>""]);
         }
         
-        return $result = response()->json(['ResultCode'=>ResultCode::_025901_reponseSuccessful,
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                     'Message'=>"",
                     'Content'=>$userList]);
     }

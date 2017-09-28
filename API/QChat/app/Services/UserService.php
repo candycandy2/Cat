@@ -23,11 +23,12 @@ class UserService
     public function getUserList($searchType, $friendOnly, $empNo, $searchString=""){
         $userList = [];
         $userListCount  = 0;
-        $userCount = 0;       
+        $userCount = 0;
+        $limit = 10;
         $userList = $this->userRepository->getList($searchType, $friendOnly, $empNo, $searchString);
         $userCount = $this->userRepository->getCount($searchType, $friendOnly, $empNo, $searchString);
         $result['user_list'] = $userList;
-        $result['over_threshold'] = ($userCount > 0)?'Y':'N';
+        $result['over_threshold'] = ($userCount > $limit)?'Y':'N';
         return $result;
     }
 
