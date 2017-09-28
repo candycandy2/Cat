@@ -19,7 +19,7 @@ class VerifyWithBasicAuth
     {
         $Verify = new Verify();
         $verifyResult = $Verify->verify();
-        if($verifyResult["code"] != ResultCode::_025901_reponseSuccessful){
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
             return $content = response()->json(["ResultCode"=>$verifyResult["code"],
                                         "Message"=> $verifyResult["message"],
                                         "Content"=>""]);

@@ -131,7 +131,7 @@ class ChatRoomController extends Controller
                  ->setDesc($owner."邀請您加入聊天")
                  ->send();
 
-            $result = response()->json(['ResultCode'=>ResultCode::_025901_reponseSuccessful,
+            $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
                         'Content'=>array("group_id"=>$response->gid)]);
             \DB::commit();
