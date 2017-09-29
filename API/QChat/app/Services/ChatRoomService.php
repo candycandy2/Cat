@@ -34,27 +34,38 @@ class ChatRoomService
         $data =json_encode([
                     'owner_username' => $owner,
                     'name' => $chatroomName,
-                    'members' => $members,
+                    'members_username' => $members,
                     'desc' => $chatroomDesc
                 ]);
         $url = JMessage::API_V1_URL.$method;
         return $this->jmessage->exec('POST', $url, $data);
     }
 
-    public function saveChatRoom($gid, $chatroomName, $chatroomDesc, $userId){
-        $this->chatRoomRepository->saveChatRoom($gid, $chatroomName, $chatroomDesc, $userId);
+    /**
+     * 儲存聊天室資訊
+     * @param  String $isGroup      是否為群聊聊天室(Y:是|N:否)
+     * @param  String $gid          聊天室id
+     * @param  String $chatroomName 聊天室名稱
+     * @param  String $chatroomDesc 聊天室備註
+     * @param  String $fromEmpNo    聊天室建立者的員工編號
+     * @param  Array  $member       聊天室成員
+     * @param  String $userId       聊天室建立者的user_row_id
+     */
+    public function saveChatRoom($gid, $chatroomName, $chatroomDesc, $userId, $member=""){
+        $this->chatRoomRepository->saveChatRoom($gid, $chatroomName, $chatroomDesc, $userId, $member);
     }
 
     /**
-    * 發送推播訊息給事件參與者
-    * @param  int      $eventId    事件id en_event.row_id
-    * @param  Array    $queryParam 呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','project' => 'appens')
-    * @param  string   $empNo
-    * @return json
-    */
-   public function sendPushMessage($to, Array $queryParam, $from){
-       
-       
-       return $result;
+     * 取得私聊聊天室
+     * @return mixed
+     */
+    public function getPrivateGroup($member1, $member2){
+        return $this->chatRoomRepository->getPrivateGroup($member1, $member2);
+    }
+
+    public function deleteGroup($groupId){
+        $method = 'groups';
+        $url = JMessage::API_V1_URL.$method;
+        return $this->jmessage->exec('DELETE', $url);
     }
 }

@@ -28,13 +28,28 @@ class ChatRoomRepository
     * @param  String $gid          聊天室id ex :23273943
     * @param  String $chatroomName 聊天室名稱
     * @param  String $chatroomDesc 聊天室描述
-    * @param  int    $userId       [description]
+    * @param  int    $userId       建立聊天室的使用者user_row_id
+    * @param  Array  $members      聊天室成員(私聊group_message=N,實記錄聊天室成員)
     */
-    public function saveChatroom($gid, $chatroomName, $chatroomDesc, $userId){
+    public function saveChatroom($gid, $chatroomName, $chatroomDesc, $userId, $member=""){
         $this->chatroom->chatroom_id = $gid;
         $this->chatroom->chatroom_name = $chatroomName;
         $this->chatroom->chatroom_desc = $chatroomDesc;
+        if($member!=""){
+            $this->chatroom->member = $member;
+        }
         $this->chatroom->created_user = $userId;
         $this->chatroom->save();
+    }
+
+    /**
+     * 取得私聊聊天室
+     * @return mixed
+     */
+    public function getPrivateGroup($member1, $member2){
+        return $this->chatroom
+        ->whereIn('member' , array($member1.','.$member2, $member2.','.$member1))
+        ->select('chatroom_id')
+        ->first();
     }
 }
