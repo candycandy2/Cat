@@ -364,30 +364,41 @@ $("#viewMain").pagecontainer({
                     //Successful
                     var htmlContent_today = '';
                     var htmlContent_other = '';
-                    var originItem = ['default', '[begin]', '[end]', '[value]', '[space]', '[date]', '[dateformate]', 'disable'];
+                    var originItem = ['default', '[begin]', '[end]', '[value]', '[space]', '[date]', '[dateformate]', '[site]', 'disable'];
 
-                    if (page == 'pageThree') {}
+                    if (page == 'pageThree') {
 
-                    for (var i = 0, item; item = data['Content'][i]; i++) {
+                    //for (var i = 0, item; item = data['Content'][i]; i++) {
+                        for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++) {
+                            // convert yyyymmdd(string) to yyyy/mm/dd
+                            var arrCutString = cutStringToArray(date, ['4', '2', '2']);
+                            var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
 
-                        // convert yyyymmdd(string) to yyyy/mm/dd
-                        var arrCutString = cutStringToArray(item.ReserveDate, ['4', '2', '2']);
-                        var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
+                            // convert date format to mm/dd(day of week)
+                            var d = new Date(strDate);
+                            var dateFormat = d.mmdd('/') + dictDayOfWeek[d.getDay()];
+                            var sTime = $('div[id=time' + timeIDItem + '] > div > div:first').text();
 
-                        // convert date format to mm/dd(day of week)
-                        var d = new Date(strDate);
-                        var dateFormat = d.mmdd('/') + dictDayOfWeek[d.getDay()];
+                            if (siteId === '92') {
+                                var siteName = 'BQT/QTT';
+                                var eTime = addThirtyMins(sTime);
+                            }else if (siteId === '111'){
+                                var siteName = 'QTY';
+                                var eTime = addThirtyMins(addThirtyMins(sTime));
+                            }
 
-                        var replaceItem = ['def-' + item.ReserveTraceAggID, item.ReserveBeginTime, item.ReserveEndTime, item.ReserveTraceAggID, parkingSpaceDataExample[spaceId], item.ReserveDate, dateFormat, ''];
+                            var replaceItem = ['def-' + timeIDItem, sTime, eTime, timeIDItem, parkingSpaceDataExample[spaceId], date, dateFormat, siteName, ''];
 
-                        if (item.ReserveDate == new Date().yyyymmdd('')) {
-                            $('#myReserve :first-child h2').removeClass('disable');
-                            htmlContent_today
-                                += replaceStr($('#defaultToday').get(0).outerHTML, originItem, replaceItem);
-                        } else {
-                            htmlContent_other
-                                += replaceStr($('#defaultOtherDay').get(0).outerHTML, originItem, replaceItem);
+                            if (date == new Date().yyyymmdd('')) {
+                                $('#pageThree :first-child h2').removeClass('disable');
+                                htmlContent_today
+                                    += replaceStr($('#defaultToday').get(0).outerHTML, originItem, replaceItem);
+                            } else {
+                                htmlContent_other
+                                    += replaceStr($('#defaultOtherDay').get(0).outerHTML, originItem, replaceItem);
+                            }
                         }
+                    //}
                     }
 
                     if (htmlContent_today == '') {
@@ -404,7 +415,7 @@ $("#viewMain").pagecontainer({
                         $('#otherDayLine').after(htmlContent_other);
                     }
                 // delete parameters when connect to API
-                } else
+                } else {
                 //} else if (data['ResultCode'] === "042901") {
                     //Not Found Reserve Data
                     popupMsg('noDataMsg', '', '沒有您的預約資料', '', false, '確定', '');
@@ -418,6 +429,7 @@ $("#viewMain").pagecontainer({
                 CustomAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "");
             }(); */
         }
+
 
         function checkLocalDataExpired() {
             if(localStorage.getItem("defaultSiteClick") !== null) {
@@ -464,6 +476,8 @@ $("#viewMain").pagecontainer({
 
             $('#pageOne').show();
             $('#pageTwo').hide();
+            $('#pageThree').hide();
+            
         });
 
         $('#viewMain').on('pagebeforeshow', function(event, ui) {
@@ -471,6 +485,24 @@ $("#viewMain").pagecontainer({
         });
 
         /********************************** dom event *************************************/
+
+        $('#reserveTab').change(function() {
+            if ($("#reserveTab :radio:checked").val() == 'tab1') {
+                $('#pageOne').show();
+                $('#pageTwo').hide();
+                $('#pageThree').hide();
+                reserveBtnDefaultStatus();
+                //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+            } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
+                $('#pageOne').hide();
+                $('#pageTwo').show();
+                $('#pageThree').hide();
+            }else {
+                $('#pageOne').hide();
+                $('#pageTwo').hide();
+                $('#pageThree').show();
+            }
+        });
 
         $('#reserveSite').change(function() {
             localStorage.setItem('defaultSiteClick', $(this).val());
@@ -587,7 +619,7 @@ $("#viewMain").pagecontainer({
                 //var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', clickSpaceId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
                 var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', selectedSite, clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
                 //delete 
-                //var doAPIQueryMyReserve = new getAPIQueryMyReserve('pageThree', selectedSite, clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
+                var doAPIQueryMyReserve = new getAPIQueryMyReserve('pageThree', selectedSite, clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
             }
         });
 

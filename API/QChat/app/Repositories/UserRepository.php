@@ -125,7 +125,9 @@ class UserRepository
             ->Leftjoin('qp_friend_matrix','qp_friend_matrix.target_emp_no','=','qp_user.emp_no')
             ->Leftjoin('qp_qchat_user_detail','qp_user.emp_no','=','qp_qchat_user_detail.emp_no')
             ->Leftjoin('qp_protect_user','qp_user.emp_no','=','qp_protect_user.emp_no')
-            ->Leftjoin('qp_register','qp_user.row_id','=','qp_register.user_row_id');
+            ->Leftjoin('qp_register','qp_user.row_id','=','qp_register.user_row_id')
+            ->where('qp_user.resign','=','N')
+            ->where('qp_user.status','=','Y');
             if($searchType == '1' && trim($searchString)!=""){
                 $query->where('login_id','LIKE','%'.$searchString.'%');
             }else if($searchType == '2'  && trim($searchString)!=""){
@@ -142,6 +144,7 @@ class UserRepository
                 $query->where('qp_friend_matrix.from_emp_no','=',$empNo)
                       ->where('qp_friend_matrix.status','=','1');
             }
+            #
            return $query->groupBy('qp_register.user_row_id','qp_user.login_id')
                          ->select(
                                  'login_id as name',

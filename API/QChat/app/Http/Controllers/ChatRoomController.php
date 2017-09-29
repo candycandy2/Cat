@@ -94,11 +94,6 @@ class ChatRoomController extends Controller
         }
         foreach ($targetUserList as $targetEmpNo) {
             $pushToken = $this->userService->getUserPushToken($targetEmpNo);
-            if(count($pushToken) <= 0){
-                return $result = response()->json(['ResultCode'=>ResultCode::_025919_ChatroomMemberInvalid,
-                    'Message'=>"成員未安裝QChat",
-                    'Content'=>""]);
-            }
             $userStatus = $this->userService->getUserStatus($fromEmpNo, $targetEmpNo);
             if($userStatus['status'] == 'protected'){
                 return $result = response()->json(['ResultCode'=>ResultCode::_025926_CannotInviteProtectedUserWhoIsNotFriend,
@@ -136,9 +131,9 @@ class ChatRoomController extends Controller
                  ->setDesc($owner."邀請您加入聊天")
                  ->send();
 
-            $result = response()->json(['ResultCode'=>ResultCode::_025901_reponseSuccessful,
+            $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
-                        'Content'=>""]);
+                        'Content'=>array("group_id"=>$response->gid)]);
             \DB::commit();
          }catch (\Exception $e) {
             \DB::rollBack();
