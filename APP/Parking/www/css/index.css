@@ -71,25 +71,6 @@
     margin-bottom: 5px;
 }
 
-/* reserve info */
-.reserveInfo{ overflow: hidden; padding: 4vw 6.71vw 3vw; display: flex; align-items: center; position: relative;}
-.ui-linear-gradient-gary:after{ content: ''; display: block; width: 92.58%; height: 1px; background-color: #d6d6d6; position: absolute; bottom: 0; left: 3.71%;}
-.reserveInfo:nth-last-of-type(1):after{ display: none;}
-.reserveInfo-area{ float: left; vertical-align: middle; display: inline-block;}
-.reserveInfo-area-left{ width: 70%}
-.reserveInfo-area-right{ width: 30%;}
-.reserveInfo-area-time{ margin: 0 0 2.14vw 3.71vw;}
-.reserve-area-time{ margin: 0 0 2.14vw 3.71vw;}
-.btn-area{ text-align: right;}
-.btn-area a{ font-weight: normal; display: inline-block; width: 20%;}
-.btn-area img{ width: 100%; height: auto;}
-.reserveInfo-company, .reserveInfo-time{ display: inline-block;}
-.reserveInfo-company{ margin-right: 4.5vw;}
-#todayLine{ margin-bottom: 6.44vw;}
-#todayLine .defaultToday{ background-color: #fff;}
-#otherDayLine{ color: #666;}
-#otherDayLine .defaultToday{ background-color: #f6f6f6;}
-
 /********************************** public area *************************************/
 
 .ui-title-btn {
@@ -204,12 +185,12 @@ div.square {
 
 .myreserve-margin { font-size: 4.18vw; margin-left: 3vw;}
 
-#viewMyReserve{ box-sizing: border-box; padding-left: 3.71vw !important;}
+#pageThree{ box-sizing: border-box;}
 
-#viewMyReserve .ui-margin-public{ padding-bottom: 0 !important; position: relative; margin-left: 0 !important}
-#viewMyReserve .ui-margin-public:after{
+#pageThree .myReserveInfo{ padding-bottom: 0 !important; position: relative; margin-left: 0 !important}
+#pageThree .myReserveInfo:after{
     content: '';
-    background-color: #989898;
+    background-color: #d6d6d6;
     display: block;
     width: 92.58vw;
     height: 1px;
@@ -218,7 +199,7 @@ div.square {
     left: 0;
 }
 
-#viewMyReserve .ui-margin-public > div > div{ margin: 4vw 0 3vw;}
+#pageThree .myReserveInfo > div > div{ margin: 4vw 0 3vw;}
 
 .delete-myreserve{ width: 4.186vw; height: auto;}
 
@@ -362,7 +343,7 @@ hr.ui-color-green {
 }
 
 .btn-otherday {
-    background-color: #ddd !important;
+    background-color: #f6f6f6 !important;
     color: #666 !important;
 }
 
@@ -379,10 +360,8 @@ hr.ui-color-green {
     background-color: #CBF1EC !important;
 }
 
-.ui-linear-gradient-gary {
-    color: #323232 !important;
-    background-color: #f6f6f6 !important;
-}
+.myReserveInfo span, .myReserveInfo span{ margin-left: 4vw;}
+
 /********************************** scrollmenu *************************************/
 
 div.scrollmenu {
@@ -441,3 +420,44 @@ div.scrollmenu a {
     line-height: 3rem;
 }
 
+/********************************** column width *************************************/
+
+.col-95 {
+    width: 95% !important;
+}
+
+.col-9 {
+    width: 90% !important;
+}
+
+.col-8 {
+    width: 80% !important;
+}
+
+.col-7 {
+    width: 70% !important;
+}
+
+.col-6 {
+    width: 60% !important;
+}
+
+.col-5 {
+    width: 50% !important;
+}
+
+.col-4 {
+    width: 40% !important;
+}
+
+.col-3 {
+    width: 30% !important;
+}
+
+.col-2 {
+    width: 20% !important;
+}
+
+.col-1 {
+    width: 10% !important;
+}
