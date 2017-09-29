@@ -15,6 +15,72 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         $.mobile.changePage('#viewMain');
+         //Ignore the font-size setting in Mobile Device
+        if (window.MobileAccessibility) {
+            window.MobileAccessibility.usePreferredTextZoom(false);
+        }
+
+        //Add Event to Check Network Status
+        window.addEventListener("offline", function(e) {
+            //review by alan
+            //checkNetwork();
+            //delay 10 seconds and then call checkNetwork()
+            if (isOfflineEventTimeout != null) {
+                clearTimeout(isOfflineEventTimeout);
+                isOfflineEventTimeout = null;
+            }
+            isOfflineEventTimeout = setTimeout(function() {
+                if (isOfflineEventTimeout != null) {
+                    isOfflineEventTimeout = null;
+                }
+                checkNetwork();
+            }, 10000);
+        });
+
+        window.addEventListener("online", function(e) {
+            if (isOfflineEventTimeout != null) {
+                clearTimeout(isOfflineEventTimeout);
+                isOfflineEventTimeout = null;
+            }
+            checkNetwork();
+        });
+
+        //When open APP, need to check Network at first step
+        checkNetwork();
+
+        //Set openMessage at first time
+        if (window.localStorage.getItem("openMessage") === null) {
+            //check data exit in Local Storage
+            window.localStorage.setItem("openMessage", false);
+        }
+
+        //[Android] Handle the back button, set in index.js
+        document.addEventListener("backbutton", onBackKeyDown, false);
+
+        //Handle APP background event, set in index.js
+        //document.addEventListener("pause", onPause, false);
+
+        //Handle APP foreground event, set in index.js
+        //document.addEventListener("resume", onResume, false);
+
+        //[device] data ready to get on this step.
+        setTimeout(function() {
+            readConfig();
+        }, 2000);
+
+        //for touch overflow content Enabled
+        $.mobile.touchOverflowEnabled = true;
+
+        if (device.platform === "iOS") {
+            $.mobile.hashListeningEnabled = false;
+        }
+
+        //Log -
+        //get now year + month
+        var now = new Date();
+        logFileName = now.yyyymm("");
+        //console.log(cordova.file);
+        //LogFile.checkOldFile();
     },
     onOpenNotification: function(data) {
 
