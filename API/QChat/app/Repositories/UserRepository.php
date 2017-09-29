@@ -127,7 +127,8 @@ class UserRepository
             ->Leftjoin('qp_protect_user','qp_user.emp_no','=','qp_protect_user.emp_no')
             ->Leftjoin('qp_register','qp_user.row_id','=','qp_register.user_row_id')
             ->where('qp_user.resign','=','N')
-            ->where('qp_user.status','=','Y');
+            ->where('qp_user.status','=','Y')
+            ->where('qp_user.emp_no','<>',$empNo);
             if($searchType == '1' && trim($searchString)!=""){
                 $query->where('login_id','LIKE','%'.$searchString.'%');
             }else if($searchType == '2'  && trim($searchString)!=""){
