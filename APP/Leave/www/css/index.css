@@ -111,7 +111,8 @@
 
 .infoContent ul > li > div:nth-of-type(2) {
 	float: right;
-	margin-top: -3.5VH;
+	/* margin-top: -3.5VH; */
+	margin-top: -3VH;
 	margin-right: 6.71VW;
 }
 
@@ -312,7 +313,151 @@ div.scrollmenu a {
 	 margin-top: 10%;
 }
 
-/******************************************** viewHolidayCalendar ******************************************/
+/****************************************** viewLeaveSubmit *****************************************/
+.apply-container {
+	width: 93.6vw;
+	margin-left: 3.2vw;
+}
+
+.apply-date {
+	height: 7.44vw;
+	color: #666666;
+}
+
+.apply-categroy {
+	height: 13.67vw;
+	color: #0f0f0f;
+}
+
+.apply-agent {
+	height: 10.81vw;
+	color: #0f0f0f;
+	border-bottom: 1px solid #d6d6d6;
+}
+
+.apply-categroy > div:nth-of-type(1),
+.apply-agent > div:nth-of-type(1) {
+	height: 3.349vw;
+}
+
+.apply-categroy > div:nth-of-type(2),
+.apply-agent > div:nth-of-type(2) {
+	height: 4.18vw;
+	margin-top: 1.16vw;
+}
+
+.apply-categroy > div:nth-of-type(2) > span,
+.apply-agent > div:nth-of-type(2) > span {
+	display: inline-block;
+}
+
+.apply-select-img {
+	margin-left: 3.2vw;
+	margin-top: 0.5vw;
+	width: 3.542vw;
+	height: 2.125vw;
+}
+
+.apply-empty-div1 {
+	height: 4.3vw;
+}
+
+.apply-empty-div2 {
+	height: 10vw;
+}
+
+.apply-leave-date {
+	height: 18.2vw;
+	color: #0f0f0f;
+}
+
+.apply-leave-date > div:nth-of-type(1) {
+	height: 3.349vw;
+}
+
+.apply-leave-date > div:nth-of-type(2) {
+	height: 3.349vw;
+	margin-top: 1.16vw;
+}
+
+.apply-leave-date > div:nth-of-type(3) {
+	height: 4.18vw;
+	margin-top: 1.16vw;
+}
+
+.apply-leave-date > div:nth-of-type(2) > div {
+	display: inline-block;
+	width: 46vw;
+	height: 3.349vw;
+}
+
+.apply-leave-date > div:nth-of-type(3) > div {
+	display: inline-block;
+	width: 46vw;
+	height: 4.18vw;
+}
+
+.apply-leave-date > div:nth-of-type(2) > div > span,
+.apply-leave-date > div:nth-of-type(3) > div > span {
+	display: inline-block;
+}
+
+.apply-leave-count {
+	height: 10.83vw;
+	color: #0f0f0f;
+	border-bottom: 1px solid #d6d6d6;
+}
+
+.apply-leave-count > div:nth-of-type(1) {
+	height: 3.349vw;
+}
+
+.apply-leave-count > div:nth-of-type(2) {
+	height: 4.18vw;
+	margin-top: 1.16vw;	
+}
+
+.apply-leave-reason {
+	height: 19.66vw;
+	color: #0f0f0f;
+}
+
+.apply-leave-reason > div:nth-child(1) {
+	height: 3.45vw;
+}
+
+.apply-leave-reason > div:nth-child(2) {
+	height: 9.17vw;
+	margin-top: 2.14vw;
+}
+
+.reason-textarea {
+	resize: none;
+	width: 46vw;
+	height: 9.17vw;
+	border: 0;
+	-webkit-appearance: none;
+}
+
+.apply-preview-div {
+	height: 10vw;
+}
+
+.apply-leave-submit {
+	width: 64vw;
+	height: 10vw;
+	margin-left: 14.8vw;
+	background-color: #D6D6D7;
+	color: #999999;
+	border-radius: 20px;
+	text-align: center;
+	line-height: 10vw;
+}
+
+
+
+
+/**************************************** viewHolidayCalendar ***************************************/
 
 #viewHolidayCalendar .infoList ul > li {
 	margin-left: 6.71Vw;
