@@ -28,6 +28,7 @@ var panel = htmlContent
         +'</div>'
         +'<div class="page-mask" style="display: none;"></div>';
 var time = new Date(Date.now());
+
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
 var currentYear = time.getFullYear();
 var currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
@@ -37,6 +38,7 @@ var prslvsCalendar = {};
 var holidayCalendar = {};
 var myCalendarData = {};
 var myHolidayData = [];
+var applyDay = currentYear+"-"+currentMonth+"-"+currentDate;
 var dayTable = {
     "1" : "(一)",
     "2" : "(二)",
