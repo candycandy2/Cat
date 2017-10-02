@@ -2,56 +2,133 @@
 <div data-role="page" id="viewChatroom">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
-        <div class="header-style"><h1 class="ui-title">QChat</h1></div>
-        <a href="#viewIndex" data-role="none">
-            <div class="q-btn-header">
-                <img src="img/component/back_nav.png" width="100%" height="100%">
+        <a href="#" data-role="none" id="backIndex">
+            <div class="q-btn-header" style="width: 5.957vw;">
+                <svg class="header-icon">
+                    <use xlink:href="#icon-nav_back_white"></use>
+                </svg>
+            </div>
+        </a>
+        <div class="header-style">
+            <h1 class="ui-title" style="margin: 0;"><span id="chatroomTitle"></span></h1>
+        </div>
+        <a id="leaveChatroom" href="#" data-role="none" class="ui-btn-right">
+            <div class="q-btn-header" style="width: 5.957vw;">
+                <svg class="header-icon">
+                    <use xlink:href="#icon-topnav_more"></use>
+                </svg>
             </div>
         </a>
     </div>
 
     <div data-role="main" class="page-main" id="viewChatroomContent">
-        <ul data-role="listview" data-inset="true" id="messageListView">
 
-        </ul>
+        <template id="tplMsgDate">
+            <div class="msg date">
+                9/19
+            </div>
+        </template>
+
+        <template id="tplMsgEventTime">
+            <div class="msg date event">
+                <div class="msg-time">
+                    10:00
+                </div>
+                <div class="text-event">
+                    Darren 建立聊天室
+                </div>
+            </div>
+        </template>
+
+        <template id="tplMsgTextRight">
+            <div class="msg msg-right">
+                <div class="time time-right">
+                    24:59
+                </div>
+                <div class="text text-right">
+                    HI~ Hello
+                </div>
+            </div>
+        </template>
+
+        <template id="tplMsgTextLeft">
+            <div class="msg msg-left">
+                <div class="left">
+                    <svg class="msg-photo">
+                        <use xlink:href="#icon-img_default_photo"></use>
+                    </svg>
+                </div>
+                <div class="right">
+                    <div class="name">
+                        Darren
+                    </div>
+                    <div class="text text-left">
+                        HI~ Hello HI~ Hello HI~ Hello HI~ Hello HI~ Hello HI~ Hello HI~ Hello HI~ Hello HI~ Hello HI~ Hello HI~ Hello HI~ Hello
+                    </div>
+                    <div class="time time-left">
+                        24:59
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="tplMsgImgRight">
+            <div class="msg msg-right">
+                <div class="time time-right">
+                    24:59
+                </div>
+                <div class="img img-horizontal img-vertical">
+                    
+                </div>
+            </div>
+        </template>
+
+        <template id="tplMsgImgLeft">
+            <div class="msg msg-left">
+                <div class="left">
+                    <svg class="msg-photo">
+                        <use xlink:href="#icon-img_default_photo"></use>
+                    </svg>
+                </div>
+                <div class="right">
+                    <div class="name">
+                        Darren
+                    </div>
+                    <div class="img img-horizontal img-vertical">
+                    
+                    </div>
+                    <div class="time time-left">
+                        24:59
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <div id="tempImage"></div>
     </div>
 
-    <div data-role="footer" data-position="fixed">
-        <div>
-            <input name="msgText" id="msgText" type="text">
+    <div data-role="footer" class="chatroom-footer" data-position="fixed">
+        <div class="message-preview font-style7 hide">
         </div>
-        <div>
-            <a id="msgSend" href="#" data-role="button">發送聊天</a>
-            <a id="imgSend" href="#" data-role="button">發送圖片</a>
-            <a id="msgClear" href="#" data-role="button">清空訊息</a>
-            <a id="groupInfo" href="#" data-role="button">聊天室資訊</a>
-            <a id="groupMember" href="#" data-role="button">成員列表</a>
-            <a id="groupMemberAdd" href="#" data-role="button">新增成員</a>
-            <a id="groupMemberRemove" href="#" data-role="button">移除成員</a>
+        <div class="left" id="cameraButton">
+            <div class="camera-button-content">
+                <svg class="camera camera-left" id="photoCamera">
+                    <use xlink:href="#icon-btn_photo_camera"></use>
+                </svg>
+                <svg class="camera camera-right" id="photoLibrary">
+                    <use xlink:href="#icon-btn_photo_img"></use>
+                </svg>
+            </div>
+            <svg class="camera camera-open">
+                <use xlink:href="#icon-btn_photo_add"></use>
+            </svg>
+        </div>
+        <div class="right" id="msgButton">
+            傳送
+        </div>
+        <div class="center">
+            <input name="msgText" id="msgText" type="text" placeholder="請輸入訊息">
         </div>
     </div>
 
-    <template id="tplChatroomDataPopup">
-        <div class="header font-style1">
-            <div class="name"></div>
-            <div class="desc"></div>
-            <div class="owner"></div>
-        </div>
-        <div class="footer">
-            <div class="btn-one font-style8">
-                <div class="confirm">確定</div>
-            </div>
-        </div>
-    </template>
-
-    <template id="tplChatroomMemberPopup">
-        <div class="header font-style1">
-            <div class="list"></div>
-        </div>
-        <div class="footer">
-            <div class="btn-one font-style8">
-                <div class="confirm">確定</div>
-            </div>
-        </div>
-    </template>
 </div>
