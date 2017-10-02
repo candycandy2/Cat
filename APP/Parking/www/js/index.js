@@ -15,8 +15,9 @@ var dictSiteCategory = {
     '92': '10',
     '111': '28'
 };
-
 var reserveDays = 14;
+var myReserveLocalData = [];
+var isReloadPage = false;
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
@@ -168,6 +169,25 @@ function grepData(grepData, grepPram, grepValue) {
     return $.grep(grepData, function(item, index) {
         return item[grepPram] == grepValue;
     });
+}
+
+function refreshPage(data) {
+    // || data.status == 500
+    if (data.statusText == 'timeout') {
+        console.log('timeout');
+        var doAPIQueryMyReserveTime = new getAPIQueryMyReserveTime();
+        loadingMask('hide');
+        isReloadPage = true;
+        var activePage = $.mobile.activePage.attr("id");
+        $.mobile.changePage(
+            '#' + activePage, {
+                allowSamePageTransition: true,
+                transition: 'none',
+                showLoadMsg: false,
+                reloadPage: false
+            }
+        );
+    }
 }
 
 // create timeblock object 
