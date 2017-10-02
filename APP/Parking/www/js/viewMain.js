@@ -13,6 +13,10 @@ var timeNameClick = [];
 var selectMyReserveTime = '';
 var reserveDetailLocalData = [];
 var bReserveCancelConfirm = false;
+var clickAggTarceID = '';
+var clickReserveDate = '';
+var clickReserveRoom = '';
+var arrTempTimeNameClick = [];
 var parkingSpaceDataExample = ['車位1', '車位2', '車位3', '車位4'];
 
 $("#viewMain").pagecontainer({
@@ -364,7 +368,7 @@ $("#viewMain").pagecontainer({
                     //Successful
                     var htmlContent_today = '';
                     var htmlContent_other = '';
-                    var originItem = ['default', '[begin]', '[end]', '[value]', '[space]', '[date]', '[dateformate]', '[site]', 'disable'];
+                    var originItem = ['default', '[begin]', '[end]', '[value]', '[space]', '[date]', '[dateformate]', '[site]', '[PDetailName]', 'disable'];
 
                     if (page == 'pageThree') {
 
@@ -376,7 +380,7 @@ $("#viewMain").pagecontainer({
 
                             // convert date format to mm/dd(day of week)
                             var d = new Date(strDate);
-                            var dateFormat = d.mmdd('/') + dictDayOfWeek[d.getDay()];
+                            var dateFormat = d.mmdd('/');
                             var sTime = $('div[id=time' + timeIDItem + '] > div > div:first').text();
 
                             if (siteId === '92') {
@@ -387,7 +391,7 @@ $("#viewMain").pagecontainer({
                                 var eTime = addThirtyMins(addThirtyMins(sTime));
                             }
 
-                            var replaceItem = ['def-' + timeIDItem, sTime, eTime, timeIDItem, parkingSpaceDataExample[spaceId], date, dateFormat, siteName, ''];
+                            var replaceItem = ['def-' + timeIDItem, sTime, eTime, timeIDItem, parkingSpaceDataExample[spaceId], date, dateFormat, siteName, 'BenQ/Jennifer.Y.Wang', ''];
 
                             if (date == new Date().yyyymmdd('')) {
                                 $('#pageThree :first-child h2').removeClass('disable');
@@ -647,6 +651,60 @@ $("#viewMain").pagecontainer({
             }
         });
 
+        // ----------------------------pageThree function-------------------------------------- 
+       $('body').on('click', 'div[id^=def-] a', function() {
+            //$('#viewMyReserve').addClass('min-height-100');
+            clickAggTarceID = $(this).attr('value');
+            clickReserveDate = $(this).attr('date');
+            clickReserveSpace = $(this).attr('space');
+            var clickReserveTime = $(this).attr('time');
+            var arrDateString = cutStringToArray(clickReserveDate, ['4', '2', '2']);
+            var strDate = arrDateString[2] + '/' + arrDateString[3];
+
+            var sTime = clickReserveTime.split('-')[0];
+            var eTime = clickReserveTime.split('-')[1];
+            var strTime = sTime;
+            if (sTime == eTime) {
+                arrTempTimeNameClick.push(strTime);
+            } else {
+                do {
+                    arrTempTimeNameClick.push(strTime);
+                    strTime = addThirtyMins(strTime);
+                } while (strTime != eTime);
+            }
+
+            var msgContent = '<div>' + '&nbsp;&nbsp;' + strDate + '&nbsp;&nbsp;' + clickReserveTime + '</div>';
+            popupMsg('cancelMsg', '確定取消預約 ' + clickReserveSpace + '?', msgContent, '取消', true, '確定', '068_icon_warm.png');
+        });
+
+        $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
+            //var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
+            /*var searchRoomNode = searchTree(meetingRoomData, clickReserveSpace, 'MeetingRoomName');
+            var searchSiteNode = searchRoomNode.parent.parent.data;
+
+            for (var i = 0; i < myReserveLocalData.length; i++) {
+                $.each(arrTempTimeNameClick, function(index, value) {
+                    if (myReserveLocalData.length != 0 && myReserveLocalData[i].time == value && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == searchSiteNode) {
+                        myReserveLocalData.splice(i, 1);
+                        i = i - 1;
+                        i = i < 0 ? 0 : i;
+                    }
+                });
+            };*/
+
+            $('div[for=cancelMsg]').popup('close');
+        });
+
+        $('body').on('click', 'div[for=noDataMsg] #confirm, #myReserveBack', function() {
+            $.mobile.changePage('#viewReserve');
+        });
+
+        $('body').on('click', 'div[for=successMsg] #confirm, div[for=failMsg] #confirm, div[for=apiFailMsg] #confirm', function() {
+            // var msgForId = $(this).parent().parent().attr('for');
+            // $('div[for=' + msgForId + ']').popup('close');
+            $('#viewPopupMsg').popup('close');
+        });
+        // ------------------------------------------------------------------
         $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
             bReserveCancelConfirm = false;
         });
