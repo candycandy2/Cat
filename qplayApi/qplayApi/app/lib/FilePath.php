@@ -8,21 +8,21 @@ class FilePath
 
     /**
      * 取得Apk/ipa檔案下載路徑
+     * @param  String $action           來源的method name
      * @param  int    $appRowId         app_row_id
      * @param  String $deviceType       裝置類型 (ios|android) 
      * @param  int    $versionCode      版號
      * @param  String $fileName         檔案名稱
-     * @param  String $useResquestUrl   是否使用呼叫路徑
      * @return String                   下載路徑
      */
-    public static function getApkDownloadUrl($appRowId, $deviceType, $versionCode, $fileName, $useResquestUrl=false){
+    public static function getApkDownloadUrl($appRowId, $deviceType, $versionCode, $fileName, $intra = false){
        $deviceType = strtolower($deviceType);
        $url="";
         if($deviceType == 'ios'){
-             $url = self::getApkUrl($appRowId, $deviceType, $versionCode, 'manifest.plist', $useResquestUrl);
+             $url = self::getApkUrl($appRowId, $deviceType, $versionCode, 'manifest.plist', $intra);
              $url = 'itms-services://?action=download-manifest&url='. $url;
         }else{
-             $url = self::getApkUrl($appRowId, $deviceType, $versionCode, $fileName, $useResquestUrl);
+             $url = self::getApkUrl($appRowId, $deviceType, $versionCode, $fileName, $intra);
         }
 
         return $url;
@@ -72,11 +72,11 @@ class FilePath
      * @param  String $fileName    檔案名稱
      * @return String              下載路徑
      */
-    public static function getApkUrl($appRowId, $deviceType, $versionCode, $fileName, $useResquestUrl=false){
+    public static function getApkUrl($appRowId, $deviceType, $versionCode, $fileName, $intra){
        $deviceType = strtolower($deviceType);
        $appFileUrl = self::getDefaultPath();
-       if($useResquestUrl){
-            $appFileUrl =  'https://'.$_SERVER['HTTP_HOST'].\Config::get('app.app_file_path');
+       if($intra){
+              $appFileUrl =  url(\Config::get('app.upload_folder'));
        }
        return $appFileUrl.'/'.$appRowId.'/'.'apk'.'/'.$deviceType.'/'. $versionCode .'/'.$fileName;
     }
@@ -88,6 +88,29 @@ class FilePath
      */
     private static function getDefaultPath() {
        return  \Config::get('app.app_file_server').\Config::get('app.app_file_path');
+    }
+
+    /**
+    * 取得Apk/ipa檔案上傳位置
+    * @param  int    $appRowId         app_row_id
+    * @param  String $deviceType       裝置類型 (ios|android) 
+    * @param  int    $versionCode      版號
+    * @return String
+    */
+    public static function getApkUploadPath($appRowId,$deviceType,$versionCode){
+        $deviceType = strtolower($deviceType);
+         return base_path(\Config::get('app.upload_path')). DIRECTORY_SEPARATOR .$appRowId. DIRECTORY_SEPARATOR .'apk'. DIRECTORY_SEPARATOR .$deviceType. DIRECTORY_SEPARATOR . $versionCode . DIRECTORY_SEPARATOR ;
+    }
+
+    /**
+     * 取得App上架位置
+     * @param  int $appRowId        app_row_id
+     * @param  String $deviceType   裝置類型 (ios|android)
+     * @return String               App發布位置
+     */
+    public static function getApkPublishFilePath($appRowId,$deviceType){
+        $deviceType = strtolower($deviceType);
+        return base_path(\Config::get('app.upload_path')). DIRECTORY_SEPARATOR .$appRowId. DIRECTORY_SEPARATOR .'apk'. DIRECTORY_SEPARATOR .$deviceType. DIRECTORY_SEPARATOR;
     }
 
 }

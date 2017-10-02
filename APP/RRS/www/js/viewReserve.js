@@ -441,6 +441,8 @@
                                 }
                             }
 
+                            arrUniqueTime.sort();
+
                             for (var i = 0; i < arrUniqueTime.length; i = i + 2) {
                                 timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1] + '<br />';
                             }

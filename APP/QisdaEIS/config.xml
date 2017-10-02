@@ -1,1 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?><widget id="com.qplay.appqisdaeisdev" android-versionCode="141" ios-CFBundleVersion="141" version="1.0.0.141[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"><name>QisdaEIS</name><description>A sample Apache Cordova application that responds to the deviceready event.</description><author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author><content src="index.html" /><preference name="orientation" value="portrait" /><access origin="*" /><access origin="tel:*" launch-external="yes" /><allow-navigation href="*" /><allow-intent href="http://*/*" /><allow-intent href="https://*/*" /><allow-intent href="tel:*" /><allow-intent href="sms:*" /><allow-intent href="mailto:*" /><allow-intent href="geo:*" /><allow-intent href="appqplaydev:*" /><allow-intent href="*:*" /><platform name="android"><allow-intent href="market:*" /><preference name="AndroidLaunchMode" value="singleTask"/></platform><platform name="ios"><hook type="before_compile" src="hooks/xcode8.js" /><allow-intent href="itms:*" /><allow-intent href="itms-apps:*" /></platform><plugin name="cordova-connectivity-monitor" spec="~1.2.2" /></widget>
+<?xml version='1.0' encoding='utf-8'?>
+<widget android-versionCode="184" id="com.qplay.appqisdaeisdev" ios-CFBundleVersion="184" version="1.0.0.184[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>QisdaEIS</name>
+    <description>A sample Apache Cordova application that responds to the deviceready event.</description>
+    <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
+    <content src="index.html" />
+    <preference name="orientation" value="default" />
+    <access origin="*" />
+    <access launch-external="yes" origin="tel:*" />
+    <allow-navigation href="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-intent href="appqplaydev:*" />
+    <allow-intent href="*:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <preference name="AndroidLaunchMode" value="singleTask" />
+    </platform>
+    <platform name="ios">
+        <hook src="hooks/xcode8.js" type="before_compile" />
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <engine name="android" spec="~6.2.3" />
+    <engine name="ios" spec="~4.4.0" />
+    <plugin name="cordova-connectivity-monitor" spec="~1.2.2" />
+    <plugin name="cordova-plugin-android-permissions" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-android-permissions" />
+    <plugin name="cordova-plugin-app-update" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-app-update" />
+    <plugin name="cordova-plugin-customurlscheme" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-customurlscheme">
+        <variable name="URL_SCHEME" value="appqisdaeisdev" />
+        <variable name="ANDROID_SCHEME" value=" " />
+        <variable name="ANDROID_HOST" value=" " />
+        <variable name="ANDROID_PATHPREFIX" value="/" />
+    </plugin>
+    <plugin name="cordova-plugin-device" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-device" />
+    <plugin name="cordova-plugin-inappbrowser" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-inappbrowser" />
+    <plugin name="cordova-plugin-qsecurity" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-qsecurity">
+        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appqisdaeisdev&lt;/string&gt;" />
+    </plugin>
+    <plugin name="cordova-plugin-screen-orientation" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-screen-orientation" />
+    <plugin name="cordova-plugin-whitelist" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-whitelist" />
+    <plugin name="phonegap-plugin-mobile-accessibility" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/phonegap-plugin-mobile-accessibility" />
+</widget>

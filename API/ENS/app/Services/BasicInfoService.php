@@ -28,12 +28,12 @@ class BasicInfoService
 
     /**
      * 取得location-function及所屬成員
-     * @param  String    appKey
+     * @param  String    project
      * @return Array    成員分類列表
      */
-    public function getBasicInfo($appKey){
+    public function getBasicInfo($project){
 
-        $basicInfoData = $this->basicInfoRepository->getAllBasicInfoRawData($appKey);
+        $basicInfoData = $this->basicInfoRepository->getAllBasicInfoRawData($project);
         $tmpList = [];
         $functionList = [];
         if(isset($basicInfoData)){
@@ -43,14 +43,14 @@ class BasicInfoService
             foreach ($tmpList as $location => $functionObj) {
                
                 foreach ($functionObj as $function => $userList) {
-                    $list['location'] = $location;
-                    $list['function'] = $function;
+                    $list['location'] = (string)$location;
+                    $list['function'] = (string)$function;
                     $list['user_list']= [];
                     $userInfoList = $this->userRepository->getUserInfoByEmpNo($userList);
                    foreach ($userInfoList as $userInfo) {
-                       $user['emp_no'] = $userInfo->emp_no;
+                       $user['emp_no'] = (string)$userInfo->emp_no;
                        $user['login_id'] = $userInfo->login_id;
-                       $user['user_ext_no'] = $userInfo->ext_no;
+                       $user['user_ext_no'] = (string)$userInfo->ext_no;
                        $user['email'] = $userInfo->email;
                        $list['user_list'][]= $user;
                     }
@@ -66,14 +66,14 @@ class BasicInfoService
 
     /**
      * 檢查是否存在此function-location
-     * @param  String $appKey   app-key
+     * @param  String $project   project
      * @param  String $location 地點
      * @param  String $function 分類
      * @return blool           
      */
-    public function checkBasicInfo($appKey, $location, $function){
+    public function checkBasicInfo($project, $location, $function){
 
-        $res = $this->basicInfoRepository->getBasicInfoByLocatnionFunction($appKey, $location, $function);
+        $res = $this->basicInfoRepository->getBasicInfoByLocatnionFunction($project, $location, $function);
         if(!is_null($res) && count($res) > 0){
             return true;
         }else{
@@ -85,7 +85,11 @@ class BasicInfoService
      * 用funciotn-location查詢有哪些成員
      * @return Collection     query result  
      */
-    public function getUserByLocationFunction($appKey, $location, $function){
-        return $this->basicInfoRepository->getUserByLocationFunction($appKey, $location, $function);
+    public function getUserByLocationFunction($project, $location, $function){
+        return $this->basicInfoRepository->getUserByLocationFunction($project, $location, $function);
+    }
+
+    public function checkUserIsMember($project, $emoNo){
+        return $this->basicInfoRepository->checkUserIsMember($project, $emoNo);
     }
 }

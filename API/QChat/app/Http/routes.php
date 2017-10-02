@@ -12,18 +12,21 @@
 */
 
 //API
-Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic']], function () {
+Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','log.api']], function () {
     Route::POST('/getQList','FriendController@getQList');
-    Route::POST('/getQFriend','FriendController@getQFriend');
-    Route::POST('/setQFriend','FriendController@setQFriend');
-    Route::POST('/sendQInvitation','FriendController@sendQInvitation');
-    Route::POST('/sendQInstall','FriendController@sendQInstall');
-    Route::POST('/getQUserDetail','FriendController@getQUserDetail');
-    Route::POST('/removeQFriend','FriendController@removeQFriend');
-    Route::POST('/acceptQInvitation','FriendController@acceptQInvitation');
-    Route::POST('/rejectQInvitation','FriendController@rejectQInvitation');
+    // Route::POST('/getQFriend','FriendController@getQFriend');
+    // Route::POST('/setQFriend','FriendController@setQFriend');
+    // Route::POST('/sendQInvitation','FriendController@sendQInvitation');
+    // Route::POST('/sendQInstall','FriendController@sendQInstall');
+    // Route::POST('/getQUserDetail','FriendController@getQUserDetail');
+    // Route::POST('/removeQFriend','FriendController@removeQFriend');
+    // Route::POST('/acceptQInvitation','FriendController@acceptQInvitation');
+    // Route::POST('/rejectQInvitation','FriendController@rejectQInvitation');
     Route::POST('/newQChatroom','ChatRoomController@newQChatroom');
+    Route::POST('/sendPushToken','PushController@sendPushToken');
 });
 
 //Job
-Route::any('v101/QChat/getQGroupHistoryMessageJob','ChatRoomController@getQGroupHistoryMessageJob');
+Route::group(['prefix' => 'v101/QChat','middleware' => 'log.api'], function () {
+    Route::any('/getQGroupHistoryMessageJob','HistoryController@getQGroupHistoryMessageJob');
+});

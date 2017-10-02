@@ -6,18 +6,18 @@ use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\lib\ResultCode;
-use App\lib\Verify;
-use App\Model\QP_User;
+use App\Services\UserService;
 
 class FriendController extends Controller
 {
-    protected $user;
+    protected $userService;
     protected $xml;
+    protected $data;
 
-    public function __construct(QP_User $user)
+    public function __construct(UserService $userService)
     {
         $input = Input::get();
-        $this->user = $user;
+        $this->userService = $userService;
         $this->xml=simplexml_load_string($input['strXml']);
         $this->data=json_decode(json_encode($this->xml),TRUE);
     }
@@ -30,60 +30,57 @@ class FriendController extends Controller
     public function getQList(Request $request){
 
         $required = Validator::make($this->data, [
-            'search_string' => 'required',
+            'search_type' => 'required',
             'friend_only' => 'required',
+            'emp_no' => 'required',
+            'search_string' => 'required_if:search_type,==,1|
+                                required_if:search_type,==,2',
         ]);
 
         $range = Validator::make($this->data, [
             'friend_only' => 'in:Y,N',
+            'search_type' => 'in:1,2,3',
         ]);
 
         if($required->fails())
         {
             return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
-                    'Message'=>"Mandatory field lost",
+                    'Message'=>"必填字段缺失",
                     'Content'=>""]);
         }
 
         if($range->fails())
-        {
+        {      
             return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                    'Message'=>"Field format error",
+                    'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
         }
-        // $result = array(
-        //         'total',
-        //         'cursor',
-        //         'count',
-        //         'messages',
-        //         'set_from_name',
-        //         'from_platform',
-        //         'target_name',
-        //         'msg_type',
-        //         'version',
-        //         'target_id',
-        //         'sui_mtime',
-        //         'from_appkey',
-        //         'from_name',
-        //         'msg_body',
-        //         'text',
-        //         'height',
-        //         'hash',
-        //         'width',
-        //         'media_id',
-        //         'fsize',
-        //         'media_crc32',
-        //         'from_id',
-        //         'from_type',
-        //         'create_time',
-        //         'target_type',
-        //         'msgid',
-        //         'msg_ctime',
-        //         'msg_level',
+        if(is_array($this->data['search_string'])){
+            
+            if(count($this->data['search_string']) > 0){
+             return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+            }else {
+                $this->data['search_string'] = "";
+            }
+        }
 
-        //         );
-        // return $result = response()->json(['ResultCode'=>ResultCode::_025901_reponseSuccessful,
-        //             'Message'=>"",
-        //             'Content'=>$result]);
+        $searchType = $this->data['search_type'];
+        $searchString = $this->data['search_string'];
+        $friendOnly = $this->data['friend_only'];
+        $empNo = $this->data['emp_no'];
+
+        $userList =  $this->userService->getUserList($searchType, $friendOnly, $empNo, $searchString);
+
+        if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
+             return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
+                    'Message'=>"查無資料",
+                    'Content'=>""]);
+        }
+        
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                    'Message'=>"",
+                    'Content'=>$userList]);
     }
 }

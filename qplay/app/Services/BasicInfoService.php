@@ -6,27 +6,34 @@
 namespace App\Services;
 
 use App\Repositories\BasicInfoRepository;
+use App\Repositories\UserRepository;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
+use App\lib\MessageUtil;
 use Excel;
 
 class BasicInfoService
 {   
 
     protected $basicInfoRepository;
+    protected $userRepository;
+    protected $message;
 
-    public function __construct(BasicInfoRepository $basicInfoRepository)
+    public function __construct(BasicInfoRepository $basicInfoRepository,
+                                UserRepository $userRepository)
     {
         $this->basicInfoRepository = $basicInfoRepository;
+        $this->userRepository = $userRepository;
+        $this->message = new MessageUtil();
     }
 
     /**
      * 取得location-function及所屬成員
-     * @param  String    appKey
+     * @param  String    project
      * @return mixed    成員分類列表
      */
-    public function getBasicInfo($appKey){
-        return $this->basicInfoRepository->getAllBasicInfoRawData($appKey);
+    public function getBasicInfo($project){
+        return $this->basicInfoRepository->getAllBasicInfoRawData($project);
     }
 
     /**
@@ -108,15 +115,15 @@ class BasicInfoService
 
     /**
      * 匯入成員基本資料
-     * @param  String $appKey app-key
+     * @param  String $project project
      */
-    public function importBasicInfo($appKey, $file){
+    public function importBasicInfo($project, $file){
         
         $insertDataArray  = [];
-        Excel::selectSheets('Upload')->load($file, function($reader) use (&$insertDataArray, $appKey) {
+        Excel::selectSheets('Upload')->load($file, function($reader) use (&$insertDataArray, $project) {
             $data = $reader->toArray();      
             foreach ($data as $key => $uploadData) {
-                $insertDataArray[] = $this->arrangeBasicInfoData($appKey, $uploadData);
+                $insertDataArray[] = $this->arrangeBasicInfoData($project, $uploadData);
                 $userData = CommonUtil::getUserInfoJustByUserID($uploadData['pic']);
                 $this->registerToQmessage($userData);
             }
@@ -124,7 +131,7 @@ class BasicInfoService
 
         if(count($insertDataArray)>0){
             //移除舊資料
-            $this->basicInfoRepository->deleteBasicInfo($appKey);
+            $this->basicInfoRepository->deleteBasicInfo($project);
             //寫入新資料
             $result = $this->basicInfoRepository->insertBasicInfo($insertDataArray);
         }
@@ -133,14 +140,14 @@ class BasicInfoService
 
     /**
      * 將excel析出的raw data 整理成資料庫批量寫入的格式，如果有未Qmessage註冊者，一併註冊
-     * @param  String $appKey app-key
+     * @param  String $project project
      * @param  Array $data 解析檔案得到的資料陣列
      * @return Array
      */
-    private function arrangeBasicInfoData($appKey, $uploadData){
+    private function arrangeBasicInfoData($project, $uploadData){
         $nowTimestamp = time();
         $now = date('Y-m-d H:i:s',$nowTimestamp);
-        $insertData['app_key'] =  $appKey;
+        $insertData['project'] =  $project;
         $insertData['location'] = $uploadData['location'];
         $insertData['function'] = $uploadData['function'];
         $insertData['emp_no'] = $uploadData['empno'];
@@ -158,7 +165,7 @@ class BasicInfoService
             $res = $this->message->register($userData->login_id);
             $resultCode = json_decode($res)->ResultCode;
             if( $resultCode  == ResultCode::_1_reponseSuccessful || $resultCode  == '998002'){
-                 $this->userRepository->updateUserByLoginId($userData->login_id, array('register_message'=>'Y'));
+                $this->userRepository->updateUserByLoginId($userData->login_id, array('register_message'=>'Y'));
             }
         }
     }

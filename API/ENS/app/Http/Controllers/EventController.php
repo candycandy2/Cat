@@ -12,6 +12,7 @@ use App\Repositories\EventRepository;
 use App\Repositories\TaskRepository;
 use Illuminate\Support\Facades\Input;
 use DB;
+use Config;
 
 class EventController extends Controller
 {
@@ -63,7 +64,7 @@ class EventController extends Controller
 
             if(!isset($data['lang'])        || $data['lang']=="" || 
                !isset($data['need_push'])   || $data['need_push']=="" || 
-               !isset($data['app_key'])     || $data['app_key']=="" || 
+               !isset($data['project'])     || $data['project']=="" || 
                !isset($data['event_title']) || $data['event_title']=="" ||
                !isset($data['event_type_parameter_value']) || $data['event_type_parameter_value'] =="" || 
                !isset($data['estimated_complete_date'])     || $data['estimated_complete_date'] == "" ||
@@ -73,8 +74,15 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            $userAuthList = $this->userService->getUserRoleList($data['app_key'], $empNo);
-            if(!in_array($allow_user, $userAuthList)){
+            if(!in_array($data['project'], Config::get('app.ens_project'))){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                    'Message'=>"project參數不存在",
+                    'Content'=>""]);
+            }
+
+            $userAuthList = $this->userService->getUserRoleListByProject($data['project'], $empNo);
+
+            if(is_null($userAuthList) || !in_array($allow_user, $userAuthList)){
                   return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                     'Message'=>"權限不足",
                     'Content'=>""]);
@@ -102,7 +110,7 @@ class EventController extends Controller
             //has related
             if(isset($data['related_event_row_id']) && $data['related_event_row_id'] != ""){
 
-                $verifyResult = $Verify->checkRelatedEvent($data['app_key'], $data['related_event_row_id'], $this->eventService);
+                $verifyResult = $Verify->checkRelatedEvent($data['project'], $data['related_event_row_id'], $this->eventService);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
                      $result = response()->json(['ResultCode'=>$verifyResult["code"],
                         'Message'=>$verifyResult["message"],
@@ -120,7 +128,7 @@ class EventController extends Controller
                     'Content'=>""]);
                 }
 
-                if(!$this->basicInfoService->checkBasicInfo($data['app_key'], $basicInfo['location'], $basicInfo['function'])){
+                if(!$this->basicInfoService->checkBasicInfo($data['project'], $basicInfo['location'], $basicInfo['function'])){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014902_locationOrFunctionNotFound,
                     'Message'=>"Location或是Function錯誤",
                     'Content'=>""]);
@@ -128,8 +136,8 @@ class EventController extends Controller
             }
 
             //取得任務參與者
-            $eventUser = $this->getEventAndTaskUser($data['app_key'], $data['basicList'])['eventUser'];
-            $taskUserList =  $this->getEventAndTaskUser($data['app_key'], $data['basicList'])['taskUserList'];
+            $eventUser = $this->getEventAndTaskUser($data['project'], $data['basicList'])['eventUser'];
+            $taskUserList =  $this->getEventAndTaskUser($data['project'], $data['basicList'])['taskUserList'];
 
             //檢查設備管理員及主管資訊，有一個錯誤就失敗
             foreach ($eventUser as $preUserEmpNo) {
@@ -144,7 +152,7 @@ class EventController extends Controller
             $queryParam =  array(
                 'lang' => $data['lang'],
                 'need_push' =>  $data['need_push'],
-                'app_key' =>  $data['app_key']
+                'project' =>  $data['project']
                 );
             
             //Step 1. create chat room
@@ -185,7 +193,6 @@ class EventController extends Controller
 
             //Step3. send push
             $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
-            
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                 'Content'=>$createChatRoomRes->Content]);
 
@@ -201,18 +208,18 @@ class EventController extends Controller
 
     /**
      * 取得事件及任務參與者
-     * @param  String $appKey app-key
+     * @param  String $project project
      * @param  array $basicList location-function 列表
      * @return array array('eventUser'=>array(),'taskUserList'=>array());
      */
-    private function getEventAndTaskUser($appKey, $basicList){
+    private function getEventAndTaskUser($project, $basicList){
         $result = array('eventUser'=>array(),'taskUserList'=>array());
 
          $UniqueTask = $this->eventService->getUniqueTask($basicList);
             foreach ($UniqueTask as $location => $functionList) {
                 foreach ($functionList as $index =>$function) {
                     $result['taskUserList'][$location][$function] = [];
-                    $taskUser = $this->basicInfoService->getUserByLocationFunction($appKey, $location ,$function);
+                    $taskUser = $this->basicInfoService->getUserByLocationFunction($project, $location ,$function);
                    
                     if(!is_null($taskUser)){
                         foreach ($taskUser as $user) {
@@ -223,7 +230,7 @@ class EventController extends Controller
                 }
             }
             //取得事件參與者
-            $superUser = $this->userService->getSuperUser($appKey);
+            $superUser = $this->userService->getSuperUser($project);
             foreach ($superUser as $user) {
                  $result['eventUser'][] = $user->emp_no;
             }
@@ -252,11 +259,17 @@ class EventController extends Controller
             $empNo = trim((string)$xml->emp_no[0]);
             $eventType = trim((string)$xml->event_type_parameter_value[0]);
             $eventStatus = trim((string)$xml->event_status[0]);
-            $appKey = trim((string)$xml->app_key[0]);
+            $project = trim((string)$xml->project[0]);
 
-            if($appKey ==""){
+            if($project ==""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
+            if(!in_array($project, Config::get('app.ens_project'))){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                    'Message'=>"project參數不存在",
                     'Content'=>""]);
             }
 
@@ -277,7 +290,7 @@ class EventController extends Controller
                 }
             }
 
-            $eventList = $this->eventService->getEventList($appKey, $empNo, $eventType, $eventStatus);
+            $eventList = $this->eventService->getEventList($project, $empNo, $eventType, $eventStatus);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -311,11 +324,17 @@ class EventController extends Controller
             
             $empNo      = trim((string)$xml->emp_no[0]);
             $eventId    = trim((string)$xml->event_row_id[0]);
-            $appKey    = trim((string)$xml->app_key[0]);
+            $project    = trim((string)$xml->project[0]);
 
-            if($eventId == "" || $appKey == ""){
+            if($eventId == "" || $project == ""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
+                    'Content'=>""]);
+            }
+
+            if(!in_array($project, Config::get('app.ens_project'))){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                    'Message'=>"project參數不存在",
                     'Content'=>""]);
             }
 
@@ -325,7 +344,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            $eventList = $this->eventService->getEventDetail($appKey, $eventId, $empNo);
+            $eventList = $this->eventService->getEventDetail($project, $eventId, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -366,7 +385,7 @@ class EventController extends Controller
             $eventId        = trim((string)$xml->event_row_id[0]);
             $lang           = trim((string)$xml->lang[0]);
             $needPush       = trim((string)$xml->need_push[0]);
-            $appKey         = trim((string)$xml->app_key[0]);
+            $project         = trim((string)$xml->project[0]);
             $relatedId      = trim((string) $xml->related_event_row_id[0]);
             $completeDate   = trim((string) $xml->estimated_complete_date[0]);
             $eventTypeParameterValue   = trim((string) $xml->event_type_parameter_value[0]);
@@ -374,17 +393,23 @@ class EventController extends Controller
             $queryParam =  array(
                 'lang'      => $lang,
                 'need_push' => $needPush,
-                'app_key'   => $appKey
+                'project'   => $project
                 );
 
-            $userAuthList = $this->userService->getUserRoleList($appKey, $empNo);
-            if(!in_array($allow_user, $userAuthList)){
+            if(!in_array($project, Config::get('app.ens_project'))){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                    'Message'=>"project參數不存在",
+                    'Content'=>""]);
+            }
+
+            $userAuthList = $this->userService->getUserRoleListByProject($project, $empNo);
+            if(is_null($userAuthList) || !in_array($allow_user, $userAuthList)){
                   return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                     'Message'=>"權限不足",
                     'Content'=>""]);
             }
 
-            if($lang == "" || $needPush == "" || $appKey =="" || $eventId == ""){
+            if($lang == "" || $needPush == "" || $project =="" || $eventId == ""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
@@ -396,7 +421,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
             
-            $eventList = $this->eventService->getEventDetail($appKey, $eventId, $empNo);
+            $eventList = $this->eventService->getEventDetail($project, $eventId, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
@@ -427,7 +452,7 @@ class EventController extends Controller
             }
             //更新關聯事件
             if($relatedId!=""){
-                $verifyResult = $Verify->checkRelatedEvent($appKey, $relatedId, $this->eventService, $eventId);
+                $verifyResult = $Verify->checkRelatedEvent($project, $relatedId, $this->eventService, $eventId);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
                      $result = response()->json(['ResultCode'=>$verifyResult["code"],
                         'Message'=>$verifyResult["message"],
@@ -487,23 +512,29 @@ class EventController extends Controller
             $input = Input::get();
             $xml=simplexml_load_string($input['strXml']);
             $data = CommonUtil::arrangeDataFromXml($xml, array('emp_no', 'event_row_id', 'read_time','event_status',
-                                                               'lang', 'need_push', 'app_key'));
+                                                               'lang', 'need_push', 'project'));
             $empNo = $data['emp_no'];
             $eventId = $data['event_row_id'];
 
             if(!isset($eventId) || trim($eventId) == "" || 
                !isset($data['lang'])|| $data['lang']=="" || 
                !isset($data['need_push'])   || $data['need_push']=="" || 
-               !isset($data['app_key'])     || $data['app_key']==""){
+               !isset($data['project'])     || $data['project']==""){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                 'Message'=>"必填欄位缺失",
                 'Content'=>""]);
             }
 
+            if(!in_array($data['project'], Config::get('app.ens_project'))){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                    'Message'=>"project參數不存在",
+                    'Content'=>""]);
+            }
+
             $queryParam =  array(
                     'lang'      => $data['lang'],
                     'need_push' => $data['need_push'],
-                    'app_key'   => $data['app_key']
+                    'project'   => $data['project']
                     );
 
             if(preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
@@ -512,7 +543,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
             
-            $eventList = $this->eventRepository->getEventById($data['app_key'], $eventId);
+            $eventList = $this->eventRepository->getEventById($data['project'], $eventId);
 
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
@@ -531,15 +562,15 @@ class EventController extends Controller
 
                if(!isset($data['lang'])        || $data['lang']=="" || 
                !isset($data['need_push'])   || $data['need_push']=="" || 
-               !isset($data['app_key'])     || $data['app_key']==""){
+               !isset($data['project'])     || $data['project']==""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
                 }
                 $eventStatus = $data['event_status'];
                
-                $userAuthList = $this->userService->getUserRoleList($data['app_key'], $empNo);
-                if(!in_array($allow_user, $userAuthList)){
+                $userAuthList = $this->userService->getUserRoleListByProject($data['project'], $empNo);
+                if(is_null($userAuthList) || !in_array($allow_user, $userAuthList)){
                       return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                         'Message'=>"權限不足",
                         'Content'=>""]);
@@ -611,16 +642,22 @@ class EventController extends Controller
             
             $empNo = trim((string)$xml->emp_no[0]);
             $eventId = trim((string)$xml->event_row_id[0]);
-            $appKey = trim((string)$xml->app_key[0]);
+            $project = trim((string)$xml->project[0]);
 
-            if($appKey ==""){
+            if($project ==""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
             }
+
+            if(!in_array($project, Config::get('app.ens_project'))){
+                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                    'Message'=>"project參數不存在",
+                    'Content'=>""]);
+            }
             
-            $userAuthList = $this->userService->getUserRoleList($appKey, $empNo);
-            if(!in_array($allow_user, $userAuthList)){
+            $userAuthList = $this->userService->getUserRoleListByProject($project, $empNo);
+            if(is_null($userAuthList) || !in_array($allow_user, $userAuthList)){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
                     'Message'=>"權限不足",
                     'Content'=>""]);
@@ -632,7 +669,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
             
-            $eventList = $this->eventService->getUnrelatedEventList($appKey, $eventId);
+            $eventList = $this->eventService->getUnrelatedEventList($project, $eventId);
             //have no Unrelated Event
             if(count($eventList) == 0){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
@@ -654,7 +691,7 @@ class EventController extends Controller
      * @return Array
      */
     private function getInsertEventData($xml){
-        $insertfieldAry = ['lang','need_push','app_key','event_type_parameter_value',
+        $insertfieldAry = ['lang','need_push','project','event_type_parameter_value',
                             'estimated_complete_date','related_event_row_id','emp_no','event_title'
                             ];
 

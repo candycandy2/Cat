@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\lib\CommonUtil;
+use App\lib\MessageUtil;
 use App\lib\ResultCode;
 use App\Repositories\UserRepository;
 use App\Repositories\EnUserGroupRepository;
@@ -16,6 +17,7 @@ class BasicInfoController extends Controller
     protected $basicInfoService;
     protected $enUserGroupRepository;
     protected $userRepository;
+    protected $message;
 
     /**
      * 建構子，初始化引入相關服務
@@ -28,6 +30,7 @@ class BasicInfoController extends Controller
         $this->basicInfoService = $basicInfoService;
         $this->enUserGroupRepository = $enUserGroupRepository;
         $this->userRepository = $userRepository;
+        $this->message = new MessageUtil();
     }
 
     /**
@@ -36,8 +39,8 @@ class BasicInfoController extends Controller
      */
     public function getBasicInfo(){
        $input = Input::get();
-       $appKey = CommonUtil::getContextAppKey(\Config('app.env'),$input['app_key']);
-       return $this->basicInfoService->getBasicInfo($appKey);
+       $project = $input['project'];
+       return $this->basicInfoService->getBasicInfo($project);
     }
 
 
@@ -70,20 +73,19 @@ class BasicInfoController extends Controller
             }
        
             $input = $request->all();
-            $appKey = CommonUtil::getContextAppKey(\Config('app.env'), $input['project']);
+            $project = $input['project'];
             $validRes = $this->basicInfoService->validateUploadBasicInfo($input['basicInfoFile']);
             if($validRes['ResultCode'] == ResultCode::_1_reponseSuccessful){
-               $this->basicInfoService->importBasicInfo($appKey, $input['basicInfoFile']);
-               $registerManager = $this->registerSuperUserToMessage($appKey)->getData();
+               $this->basicInfoService->importBasicInfo($project, $input['basicInfoFile']);
+               $registerManager = $this->registerSuperUserToMessage($project)->getData();
                if($registerManager->ResultCode != ResultCode::_1_reponseSuccessful){
                     return $registerManager;
                }
+               \DB::commit();
                return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful]);
             }else{
                return $result = response()->json($validRes);  
             }
-            
-          \DB::commit();
         } catch (\Exception $e){
             \DB::rollBack();
             return $result = response()->json(['ResultCode'=>ResultCode::_999999_unknownError,
@@ -103,17 +105,17 @@ class BasicInfoController extends Controller
         $this->setLanguage();   
         $input = $request->all();
         
-        $appKey = CommonUtil::getContextAppKey(\Config('app.env'), $input['project']);
-        return $this->registerSuperUserToMessage($appKey);
+        $project = $input['project'];
+        return $this->registerSuperUserToMessage($project);
     }
 
     /**
      * 向QMessage註冊主管與管理員
      * @return json
      */
-    private function registerSuperUserToMessage($appKey){
+    private function registerSuperUserToMessage($project){
         
-        $users = $this->enUserGroupRepository->getSuperUserLoginIdNotRegister($appKey);
+        $users = $this->enUserGroupRepository->getSuperUserLoginIdNotRegister($project);
         if(count($users) == 0){
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                 'Message'=>trans('messages.ERR_NO_USER_TO_REGISTER'),'Content'=>'']);

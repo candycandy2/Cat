@@ -25,11 +25,13 @@ class Push
     {       
             $apiFunction = 'sendPushMessage';
             $signatureTime = time();
+            $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'ens');
+            $queryParam['app_key'] = $appKey;
             $url = Config::get('app.qplay_api_server').$apiFunction.'?'.http_build_query($queryParam);
             $header = array('Content-Type: application/json',
-                        'App-Key: '.$queryParam['app_key'],
+                        'App-Key: '.$appKey,
                         'Signature-Time: '.$signatureTime,
-                        'Signature: '.CommonUtil::getSignature($signatureTime, $queryParam['app_key']));
+                        'Signature: '.CommonUtil::getSignature($signatureTime));
             $data = array(
                         'template_id' =>'0',
                         'message_title' => $title,
@@ -37,7 +39,7 @@ class Push
                         'message_text' => $text,
                         'message_html' => '',
                         'message_url' => '',
-                        'message_source' => CommonUtil::getProjectName($queryParam['app_key']),
+                        'message_source' => CommonUtil::getProjectName($appKey),
                         'source_user_id' => $from,
                         'destination_user_id' => $to,
                         'destination_role_id' => array(
@@ -58,20 +60,20 @@ class Push
     public function getPushMessageTemplate($action, Array $event, $queryParam){
         
         $template = array('title'=>'','text'=>'');
-        $appKey = $queryParam['app_key'];
-        $peojectName = strtoupper(CommonUtil::getProjectName($appKey));
+        $project = $queryParam['project'];
         $callbackApp = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
-        $url = $appKey.'://callbackApp='.$callbackApp.'&action=openevent&eventID='.$event['event_row_id'];
+        $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'ens');
+        $url = $appKey.'://callbackApp='.$callbackApp.'&action=openevent&eventID='.$event['event_row_id'].'&project='.$project;
 
         $template['text'] =$event['event_desc'].'<br><a href="'.$url.'">查看事件詳細資料</a>';
 
         switch ($action) {
             case 'new':
             case 'update':
-                $template['title'] = '['.$peojectName.']'.'['.$event['event_title'].']';
+                $template['title'] = '['.$project.']'.'['.$event['event_title'].']';
                 break;
             case 'close':
-                $template['title'] = '['.$peojectName.']'.$event['event_row_id'].$event['event_type'].'，已完成作業';
+                $template['title'] = '['.$project.']'.$event['event_row_id'].$event['event_type'].'，已完成作業';
                 break;
         }
         return $template;

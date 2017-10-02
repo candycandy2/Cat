@@ -26,7 +26,7 @@ $("#viewEventAdd").pagecontainer({
                 var newParameter = "";
             }
             var self = this;
-            var queryData = "<LayoutHeader><emp_no>" + loginData["emp_no"] + "</emp_no>" + newParameter + "<app_key>" + appKey + "</app_key></LayoutHeader>";
+            var queryData = "<LayoutHeader><emp_no>" + loginData["emp_no"] + "</emp_no>" + newParameter + "<project>" + projectName + "</project></LayoutHeader>";
 
             this.successCallback = function(data) {
 
@@ -161,8 +161,8 @@ $("#viewEventAdd").pagecontainer({
             var queryDataObj = {
                 lang: "zh-tw",
                 need_push: "Y",
-                app_key: appKey,
-                event_type_parameter_value: $("#eventLevel").val(),
+                project: projectName,
+                event_type_parameter_value: $("#eventLevel" + projectName).val(),
                 event_title: $("#eventTemplateTextarea").val(),
                 event_desc: $("#eventDescriptionTextarea").val(),
                 estimated_complete_date: specificTimeStamp,
@@ -181,7 +181,7 @@ $("#viewEventAdd").pagecontainer({
                 for (var i=0; i<loctionFunctionData.length; i++) {
 
                     if (loctionFunctionData[i].function === "all") {
-                        $.each(loginData["BasicInfo"]["locationFunction"], function(location, functionName) {
+                        $.each(loginData["BasicInfo"][projectName]["locationFunction"], function(location, functionName) {
                             if (location === loctionFunctionData[i].location) {
                                 for (var j=0; j<functionName.length; j++) {
                                     var tempDataObj = {
@@ -237,7 +237,7 @@ $("#viewEventAdd").pagecontainer({
             var __construct = function() {
                 $("#eventAddConfirm").popup("close");
                 loadingMask("show");
-                checkEventTemplateData("update", $("#eventLevel").val(), $("#eventTemplateTextarea").val(), $("#eventDescriptionTextarea").val());
+                checkEventTemplateData("update", $("#eventLevel" + projectName).val(), $("#eventTemplateTextarea").val(), $("#eventDescriptionTextarea").val());
 
                 CustomAPI("POST", true, action, self.successCallback, self.failCallback, queryData, "");
             }();
@@ -246,11 +246,23 @@ $("#viewEventAdd").pagecontainer({
 
         function editEvent(data) {
 
-            //Type: 緊急通報 / 一般通報
-            if (data.event_type === "一般通報") {
-                $("#eventLevel").val("2");
-            } else {
-                $("#eventLevel").val("1");
+            //Type:
+            //ITS> 緊急通報 / 一般通報
+            //RM> A級事件 / B級事件 / C級事件 / 預警事件 / 資訊分享
+            if (data.event_type === "緊急通報") {
+                $("#eventLevel" + projectName).val("1");
+            } else if (data.event_type === "一般通報") {
+                $("#eventLevel" + projectName).val("2");
+            } else if (data.event_type === "A級事件") {
+                $("#eventLevel" + projectName).val("3");
+            } else if (data.event_type === "B級事件") {
+                $("#eventLevel" + projectName).val("4");
+            } else if (data.event_type === "C級事件") {
+                $("#eventLevel" + projectName).val("5");
+            } else if (data.event_type === "預警事件") {
+                $("#eventLevel" + projectName).val("6");
+            } else if (data.event_type === "資訊分享") {
+                $("#eventLevel" + projectName).val("7");
             }
 
             //Event Title
@@ -286,10 +298,14 @@ $("#viewEventAdd").pagecontainer({
             //Task List
             for (var i=0; i<data.task_detail.length; i++) {
 
-                $.each(loginData["BasicInfo"]["locationFunction"], function(location, functionData){
+                $.each(loginData["BasicInfo"][projectName]["locationFunction"], function(location, functionData){
                     if (data.task_detail[i].task_location === location) {
 
-                        var selectedFunctionText = "All Function";
+                        if (projectName === "ITS") {
+                            var selectedFunctionText = "All Function";
+                        } else if (projectName === "RM") {
+                            var selectedFunctionText = "所有單位";
+                        }
 
                         //create new Event Location List, set new ID by count number
                         var ID = loctionFunctionID;
@@ -503,10 +519,26 @@ $("#viewEventAdd").pagecontainer({
 
             //Event Level
             var eventLevelStr = "";
-            if ($("#eventLevel").val() === "1") {
-                eventLevelStr = "緊急";
-            } else {
-                eventLevelStr = "一般";
+            var eventLevel = $("#eventLevel" + projectName).val();
+
+            if (projectName === "ITS") {
+                if (eventLevel === "1") {
+                    eventLevelStr = "緊急通報";
+                } else if (eventLevel === "2") {
+                    eventLevelStr = "一般通報";
+                }
+            } else if (projectName === "RM") {
+                if (eventLevel === "3") {
+                    eventLevelStr = "A級事件";
+                } else if (eventLevel === "4") {
+                    eventLevelStr = "B級事件";
+                } else if (eventLevel === "5") {
+                    eventLevelStr = "C級事件";
+                } else if (eventLevel === "6") {
+                    eventLevelStr = "預警事件";
+                } else if (eventLevel === "7") {
+                    eventLevelStr = "資訊分享";
+                }
             }
 
             if (prevPageID === "viewEventList") {
@@ -541,15 +573,20 @@ $("#viewEventAdd").pagecontainer({
         function createTemplateDropdownList() {
             var titleData;
             var contentData;
+            var eventLevelVal = $("#eventLevel" + projectName).val();
 
-            if ($("#eventLevel").val() === "1") {
-                //urgent
+            if (eventLevelVal === "1") {
+                //ITS - urgent
                 titleData = urgentTitle;
                 contentData = urgentContent;
-            } else {
-                //normal
+            } else if (eventLevelVal === "2") {
+                //ITS - normal
                 titleData = normalTitle;
                 contentData = normalContent;
+            } else {
+                //RM
+                titleData = RMTitle;
+                contentData = RMContent;
             }
 
             //UI Dropdown List : Event Template
@@ -661,20 +698,31 @@ $("#viewEventAdd").pagecontainer({
 
         $("#viewEventAdd").on("pagebeforeshow", function(event, ui) {
 
-            //UI Dropdown List : Event Location
+            //UI Dropdown List : Event Location (ITS or RM)
             $("#eventLocationSelectContent").html("");
-            $("#eventLocation").remove();
+            $("#eventLocation" + projectName).remove();
             $(document).off("click", "#eventLocation-option");
             $("#eventLocation-option").popup("destroy").remove();
 
+            if (projectName === "ITS") {
+                var defaultText = "添加位置/IT Function";
+                var title = "請選擇-機房位置";
+            } else if (projectName === "RM") {
+                var defaultText = "添加通知對象/單位";
+                var title = "請選擇-通知對象";
+            }
+
             eventLocationData = {
-                id: "eventLocation",
-                defaultText: "添加位置/IT Function",
-                title: "請選擇-機房位置",
-                option: []
+                id: "eventLocation" + projectName,
+                defaultText: defaultText,
+                title: title,
+                option: [],
+                attr: {
+                    class: "function-select"
+                }
             };
 
-            $.each(loginData["BasicInfo"]["location"], function(key, vlaue) {
+            $.each(loginData["BasicInfo"][projectName]["location"], function(key, vlaue) {
                 var tempData = {
                     value: key,
                     text: key
@@ -685,34 +733,76 @@ $("#viewEventAdd").pagecontainer({
 
             tplJS.DropdownList("viewEventAdd", "eventLocationSelectContent", "append", "typeB", eventLocationData);
 
-            //UI Dropdown List : Event Level
+            //UI Dropdown List : Event Level (ITS or RM)
             $("#eventLevelContent").html("");
-            $("#eventLevel").remove();
+            $("#eventLevel" + projectName).remove();
             $(document).off("click", "#eventLevel-option");
             $("#eventLevel-option").popup("destroy").remove();
 
-            var defaultEventLevel = "1";
-            if (prevPageID === "viewEventContent") {
-                if (eventContentData.event_type === "一般通報") {
-                    defaultEventLevel = "2";
-                }
-            }
+            var defaultEventLevel;
+            if (projectName === "ITS") {
 
-            var eventLevelData = {
-                id: "eventLevel",
-                option: [{
+                var options = [{
                     value: "1",
                     text: "緊急通報"
                 }, {
                     value: "2",
                     text: "一般通報"
-                }],
-                defaultValue: defaultEventLevel
+                }];
+
+                defaultEventLevel = "1";
+
+                if (prevPageID === "viewEventContent") {
+                    if (eventContentData.event_type === "一般通報") {
+                        defaultEventLevel = "2";
+                    }
+                }
+            } else if (projectName === "RM") {
+
+                var options = [{
+                    value: "3",
+                    text: "A級事件"
+                }, {
+                    value: "4",
+                    text: "B級事件"
+                }, {
+                    value: "5",
+                    text: "C級事件"
+                }, {
+                    value: "6",
+                    text: "預警事件"
+                }, {
+                    value: "7",
+                    text: "資訊分享"
+                }];
+
+                defaultEventLevel = "3";
+
+                if (prevPageID === "viewEventContent") {
+                    if (eventContentData.event_type === "B級事件") {
+                        defaultEventLevel = "4";
+                    } else if (eventContentData.event_type === "C級事件") {
+                        defaultEventLevel = "5";
+                    } else if (eventContentData.event_type === "預警事件") {
+                        defaultEventLevel = "6";
+                    } else if (eventContentData.event_type === "資訊分享") {
+                        defaultEventLevel = "7";
+                    }
+                }
+            }
+
+            var eventLevelData = {
+                id: "eventLevel" + projectName,
+                option: options,
+                defaultValue: defaultEventLevel,
+                attr: {
+                    class: "event-level"
+                }
             };
 
             tplJS.DropdownList("viewEventAdd", "eventLevelContent", "append", "typeA", eventLevelData);
 
-            $(document).on("change", "#eventLevel", function() {
+            $(document).on("change", ".event-level", function() {
                 createTemplateDropdownList();
             });
 
@@ -729,7 +819,11 @@ $("#viewEventAdd").pagecontainer({
 
             if (prevPageID === "viewEventList") {
                 //Set Default
-                $("#eventLevel").val("1");
+                if (projectName === "ITS") {
+                    $("#eventLevel" + projectName).val("1");
+                } else if (projectName === "RM") {
+                    $("#eventLevel" + projectName).val("3");
+                }
                 $("#eventTemplateTextarea").val("");
                 $('#eventTemplateTextarea').prop('placeholder', "請選擇範本或輸入標題");
                 $("#eventDescriptionTextarea").val("");
@@ -756,14 +850,18 @@ $("#viewEventAdd").pagecontainer({
                 $("#eventLocationSelectContent").hide();
             }
 
+            //Function title
+            $(".function-title").hide();
+            $(".title-" + projectName).show();
+
             $("#viewEventAdd .ui-title").html(title);
             $("#viewEventAdd #sendEvent span").html(buttonText);
             footerFixed();
         });
 
         /********************************** dom event *************************************/
-        $(document).on("change", "#eventLocation", function() {
-            var selectedLocation = $(this).val();
+        $(document).on("change", ".function-select", function() {
+            var selectedLocation = $("#eventLocation" + projectName).val();
 
             //Check if this Location has Exist in Data List
             for (var i=0; i<loctionFunctionData.length; i++) {
@@ -777,26 +875,32 @@ $("#viewEventAdd").pagecontainer({
             loctionFunctionID++;
 
             //UI Dropdown List : Event Function
+            if (projectName === "ITS") {
+                var textAll = "All Function";
+            } else if (projectName === "RM") {
+                var textAll = "所有單位";
+            }
+
             eventFunctionData = {
                 id: "eventFunction-" + ID,
-                defaultText: "All Function",
+                defaultText: textAll,
                 title: "IT Function",
                 autoResize: false,
                 multiSelect: true,
                 defaultValue: "all",
                 option: [{
                     value: "all",
-                    text: "All Function"
+                    text: textAll
                 }],
                 attr: {
                     class: "tpl-dropdown-list-icon-arrow"
                 }
             };
 
-            for (var i=0; i<loginData["BasicInfo"]["locationFunction"][selectedLocation].length; i++) {
+            for (var i=0; i<loginData["BasicInfo"][projectName]["locationFunction"][selectedLocation].length; i++) {
                 var tempData = {
-                    value: loginData["BasicInfo"]["locationFunction"][selectedLocation][i],
-                    text: loginData["BasicInfo"]["locationFunction"][selectedLocation][i]
+                    value: loginData["BasicInfo"][projectName]["locationFunction"][selectedLocation][i],
+                    text: loginData["BasicInfo"][projectName]["locationFunction"][selectedLocation][i]
                 };
 
                 eventFunctionData["option"].push(tempData);

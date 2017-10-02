@@ -27,21 +27,24 @@ $ensProjects = \Config('app.ens_project');
             </div>
          </form>
     </div>
-    <table id="basicInfoTable"
-           data-toggle="table"
+    <table id="basicInfoTable" 
+           data-toggle="table" data-pagination="true"  
+           data-striped="true" data-page-size="20" data-page-list="[10,20,50]"
+           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-click-edit="false"
            data-unique-id="row_id"
            data-url="">
         <thead>
         <tr>
-            <th data-field="row_id" data-formatter="idFormatter">#</th>
-            <th data-field="location" data-editable="input">Location</th>
-            <th data-field="function" data-editable="input">Function</th>
-            <th data-field="login_id" data-editable="input">PIC</th>
-            <th data-field="emp_no"   data-editable="input">EmpNo</th>
-            <th data-field="master"   data-editable="input">Master</th>
-            <th data-field="status" data-formatter="statusFormatter">{{trans('messages.AUTH')}}</th>
-            <th data-field="resign" data-formatter="resignFormatter">{{trans('messages.RESIGN')}}</th>
+            <th data-field="row_number" data-sortable="true">#</th>
+            <th data-field="location" data-sortable="true" data-editable="input">Location</th>
+            <th data-field="function" data-sortable="true" data-editable="input">Function</th>
+            <th data-field="login_id" data-sortable="true" data-editable="input">PIC</th>
+            <th data-field="emp_no"   data-sortable="true" data-editable="input">EmpNo</th>
+            <th data-field="master"   data-sortable="true" data-editable="input">Master</th>
+            <th data-field="status" data-sortable="true" data-formatter="statusFormatter" data-search-formatter="false">{{trans('messages.AUTH')}}</th>
+            <th data-field="resign" data-sortable="true" data-formatter="resignFormatter" data-search-formatter="false">{{trans('messages.RESIGN')}}</th>
+            <th data-field="register_user_id" data-sortable="true" data-formatter="registerFormatter" data-search-formatter="false">{{trans('messages.REGISTED_QPLAY')}}</th>
         </tr>
         </thead>
     </table>
@@ -76,27 +79,29 @@ $ensProjects = \Config('app.ens_project');
 </div><!-- /.modal -->
 
 <script>
-    var id = 0;
-    function idFormatter(value, row) {
-        id ++;
-        return id;
-    };
-
     function statusFormatter(value, row) {
     
         if(value == 'Y'){
             return '<span class="glyphicon glyphicon-ok text-success" aria-hidden="true">';
         }else{
-            return '<span class="glyphicon glyphicon-remove text-danger" aria-hidden="true" title="帳號已停權"></span>';
+            return '<span class="glyphicon glyphicon-remove text-danger" aria-hidden="true" title="{{trans('messages.ERR_ACCOUNT_HAS_NO_AUTH')}}"></span>';
         }
     };
 
     function resignFormatter(value, row) {
     
         if(value == 'Y'){
-            return '<span class="glyphicon glyphicon-remove text-danger" aria-hidden="true" title="員工已離職"></span>';
+            return '<span class="glyphicon glyphicon-remove text-danger" aria-hidden="true" title="{{trans('messages.ERR_EMPLOYEE_RESIGNED')}}"></span>';
         }else{
             return '<span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>';
+        }
+    };
+
+    function registerFormatter(value, row) {
+        if($.isNumeric(value)){
+            return '<span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>';
+        }else{
+            return '<span class="glyphicon glyphicon-remove text-danger" aria-hidden="true" title="{{trans('messages.ERR_USER_NOT_REGISTERED')}}"></span>';
         }
     };
 
@@ -109,21 +114,17 @@ $ensProjects = \Config('app.ens_project');
             $('#dialog').modal('show');
         });
 
-        $('#basicInfoTable').on('refresh.bs.table', function (params) {
-           id=0;
-        });
-
         $('input[id=uploadBasicInfo]').change(function() { 
             $('#pathCover').val($('#uploadBasicInfo')[0].files[0].name); 
         });
 
-        if($.trim("{{app('request')->input('app_key')}}")!=""){
-            $("#selectProject option[value={{app('request')->input('app_key')}}]").attr('selected', true);
+        if($.trim("{{app('request')->input('project')}}")!=""){
+            $("#selectProject option[value={{app('request')->input('project')}}]").attr('selected', true);
         }
         var project = $('#selectProject option:selected').val();
-        $('#basicInfoTable').bootstrapTable({ url: 'ENSMaintain/getBasicInfo?app_key=' + project});
+        $('#basicInfoTable').bootstrapTable({ url: 'ENSMaintain/getBasicInfo?project=' + project});
         $('#selectProject').on('change', function() {
-            window.location="{{asset('basicInfo')}}?app_key=" + this.value;
+            window.location="{{asset('basicInfo')}}?project=" + this.value;
         })
 
          $('#save').click(function(){

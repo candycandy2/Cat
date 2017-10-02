@@ -82,35 +82,36 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
-        //Add Event to Check Network Status
-        if (device.platform === "iOS") {
-            window.addEventListener("offline", function(e) {
-                //review by alan
-                //checkNetwork();
-                //delay 10 seconds and then call checkNetwork()
-                if (isOfflineEventTimeout != null) {
-                    clearTimeout(isOfflineEventTimeout);
-                    isOfflineEventTimeout = null;
-                }
-                isOfflineEventTimeout = setTimeout(function() {
-                    if (isOfflineEventTimeout != null) {
-                        isOfflineEventTimeout = null;
-                    }
-                    checkNetwork();
-                }, 10000);
-            });
+        //Ignore the font-size setting in Mobile Device
+        if (window.MobileAccessibility) {
+            window.MobileAccessibility.usePreferredTextZoom(false);
+        }
 
-            window.addEventListener("online", function(e) {
+        //Add Event to Check Network Status
+        window.addEventListener("offline", function(e) {
+            //review by alan
+            //checkNetwork();
+            //delay 10 seconds and then call checkNetwork()
+            if (isOfflineEventTimeout != null) {
+                clearTimeout(isOfflineEventTimeout);
+                isOfflineEventTimeout = null;
+            }
+            isOfflineEventTimeout = setTimeout(function() {
                 if (isOfflineEventTimeout != null) {
-                    clearTimeout(isOfflineEventTimeout);
                     isOfflineEventTimeout = null;
                 }
                 checkNetwork();
-            });
-        } else {
-            var connection = navigator.connection;
-            connection.addEventListener('typechange', checkNetwork);
-        }
+            }, 10000);
+        });
+
+        window.addEventListener("online", function(e) {
+            if (isOfflineEventTimeout != null) {
+                clearTimeout(isOfflineEventTimeout);
+                isOfflineEventTimeout = null;
+            }
+            checkNetwork();
+        });
+
         //When open APP, need to check Network at first step
         checkNetwork();
 
@@ -170,7 +171,8 @@ var app = {
             if (window.orientation === 90 || window.orientation === -90)
                 $('.main-GetQPush').css('top', (screen.height - $('.main-GetQPush').height()) / 4);
 
-            if (checkTimerCount >= 30) {
+            if (checkTimerCount >= 60) {
+                stopCheck();
                 $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
                 $("#viewMaintain").addClass("ui-page ui-page-theme-a ui-page-active");
             }
@@ -580,6 +582,7 @@ function readConfig() {
                 window.stopCheck = function() {
                     if (window.checkTimer != null) {
                         clearInterval(window.checkTimer);
+                        window.checkTimer = null;
                     }
                 };
             }

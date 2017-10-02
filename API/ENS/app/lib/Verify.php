@@ -77,13 +77,13 @@ class Verify
 
     /**
      * 檢察關聯事件是否存在或已被關聯
-     * @param  String         $appKey       app_key
+     * @param  String         $project       project
      * @param  int            $relatedId    qp_event.row_id
      * @param  EventService   $eventService 傳入eventService物件
      * @param  int            $eventId      qp_event.row_id (非必填)
      * @return 
      */
-    public function checkRelatedEvent($appKey, $relatedId, EventService $eventService, $eventId=null){
+    public function checkRelatedEvent($project, $relatedId, EventService $eventService, $eventId=null){
         
         if( preg_match("/^[1-9][0-9]*$/", $relatedId) == 0){
              return array('code'=>ResultCode::_014905_fieldFormatError,
@@ -95,7 +95,7 @@ class Verify
             'message'=>"關聯事件狀態異常");
         }
         //檢查事件所屬app
-        $eventData = $eventService->getEventById($appKey, $relatedId);
+        $eventData = $eventService->getEventById($project, $relatedId);
         if(count($eventData) == 0){
             return array('code'=>ResultCode::_014911_relatedEventStatusError,
             'message'=>"關聯事件狀態異常");

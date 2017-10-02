@@ -7,11 +7,325 @@
         </div>
     </div>
     <div data-role="main" class="page-main" style="line-height: initial !important;">
-        <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="a">
-            <li><a href="#">Listview 1<span class="ui-li-count">22</span></a></li>
-            <li><a href="#">Listview 2<span class="ui-li-count">3</span></a></li>
-            <li><a href="#">Listview 3<span class="ui-li-count">５</span></a></li>
-            <li><a href="#">Listview 4<span class="ui-li-count">7</span></a></li>
-        </ul>
+        <div class="ui-margin-public" style="text-align: center;">
+            <div id="reserveTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50w">
+                <input type="radio" name="tab" id="tab1" value="tab1" checked="checked">
+                <label for="tab1">一般預約</label>
+                <input type="radio" name="tab" id="tab2" value="tab2">
+                <label for="tab2">常用車籍</label>
+                <input type="radio" name="tab" id="tab3" value="tab3">
+                <label for="tab3">我的預約</label>
+            </div>
+        </div>
+        <div class="ui-margin-public" id="pageOne">
+            <select name="reserveSite" id="reserveSite" data-role="none" class="dropdown-icon" style="margin-bottom: 2.14vw;">
+                <option value="92">BQT/QTT</option> 
+                <option value="111">QTY</option>
+            </select>
+            <div class="inline word-mid">
+                <div id="alertLimitSiteMsg" class="disable inline word-warp"></div>
+            </div>
+            <div id="scrollDate" class="scrollmenu">
+                <a id="reserveDefault" href="#" class="disable">ReserveDay&nbsp;ReserveDict</a>
+            </div>
+            <div class="inline" style="margin-top: 4.3vw; margin-bottom: 2.14vw;">可預約車位</div>
+            <div id="reserveSpace" class="scrollmenu">
+            </div>
+            <div style="margin: 6.44vw 0 2.14vw 0; font-size: 3.55vw;text-align: left;">
+                <div class="inline">開始使用時間</div>
+                <div style="display: inline-block;position: absolute;right: 4vw;">
+                    <div class="inline square ui-color-reserve"></div>
+                    <div class="inline" style="margin-right: 2vw;">不可預約</div>
+                    <div class="inline square ui-color-myreserve"></div>
+                    <div class="inline">我的預約</div>
+                </div>
+            </div>
+            <div id="reserveDateSelect">
+                <div class="ui-grid-c BQT disable">
+                    <div id="defaultTimeSelectId" class="ui-block-a disable reserve" ename="[eName]" msg="[msg]" ext="[ext]" email="[email]" traceID="[traceID]">
+                        <div class="ui-bar">
+                            <div>reserveTimeSelect</div>
+                            <div class="circle-icon">[eName]</div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB08-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div class="time">08:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB08-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div class="time">08:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB09-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div class="time">09:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB09-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>09:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB10-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>10:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB10-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>10:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB11-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>11:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB11-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>11:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB12-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>12:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB12-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>12:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB13-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>13:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB13-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>13:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB14-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>14:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB14-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>14:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB15-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>15:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB15-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>15:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB16-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>16:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB16-30" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>16:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB17-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>17:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeB17-30" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>17:30</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-grid-c QTY disable">
+                    <div id="defaultTimeSelectId" class="ui-block-a disable reserve" ename="[eName]" msg="[msg]" ext="[ext]" email="[email]" traceID="[traceID]">
+                        <div class="ui-bar">
+                            <div>reserveTimeSelect</div>
+                            <div class="circle-icon">[eName]</div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ08-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div class="time">08:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ09-00" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div class="time">09:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ10-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div class="time">10:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ11-00" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>11:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ12-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>12:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ13-00" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>13:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ14-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>14:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ15-00" class="ui-block-d ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>15:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ16-00" class="ui-block-a ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>16:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ17-00" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>17:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ18-00" class="ui-block-b ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>18:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                    <div id="timeQ19-00" class="ui-block-c ui-color-noreserve" ename="" msg="" ext="" email="" traceID="">
+                        <div class="ui-bar">
+                            <div>19:00</div>
+                            <div class="circleIcon iconSelect"></div>
+                            <div class="timeRemind"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 4.3vw auto 0;">預約</div>
+        </div>
+        <div class="ui-margin-public" id="pageTwo">
+        </div>
+        <div class="ui-margin-public" id="pageThree">
+            <div id="todayLine" style="margin: 4.3vw 0 2.14vw 0;font-size: 3.55vw;padding-top: 1vh" class="disable">本日</div>
+            <div id="defaultToday" class="myReserveInfo disable">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a col-7">
+                        <div class="myreserve-margin">[dateformate]<span>[begin] - [end]&nbsp;[site]&nbsp;[space]</span></div>
+                        <div class="myreserve-margin">[PDetailName]</div>
+                    </div>
+                    <div class="ui-block-b col-3 myreserve-height">
+                        <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">
+                            <img src="img/030_btn_delete.png" alt="" class="delete-myreserve">
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div id="otherDayLine" style="margin: 8.3vw 0 2.14vw 0;font-size: 3.55vw;padding-top: 1vh" class="disable">未來</div>
+            <div id="defaultOtherDay" class="btn-otherday myReserveInfo disable">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a col-7">
+                        <div class="myreserve-margin">[dateformate]<span>[begin] - [end]&nbsp;[site]&nbsp;[space]</span></div>
+                    </div>
+                    <div class="ui-block-b col-3 myreserve-height">
+                        <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">
+                            <img src="img/030_btn_delete.png" alt="" class="delete-myreserve">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start of viewPopupMsg -->
+    <div data-role="popup" data-history="false" id="viewPopupMsg" data-overlay-theme="b" data-dismissible="false" class="hide">
+        <div data-role="main" class="popup-msg">
+            <h1 id="msgTitle"><img id="titleImg" src="" class="hide"><span id="titleText"></span></h1>
+            <div id="msgContent"></div>
+            <button id="cancel"></button>
+            <button id="confirm"></button>
+        </div>
     </div>
 </div>

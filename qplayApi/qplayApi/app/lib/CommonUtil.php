@@ -388,6 +388,11 @@ class CommonUtil
         return null;
     }
 
+    /**
+     * 實作jacascript unescape
+     * @param  String $str javascript escape過的字串
+     * @return String
+     */
     public static function jsUnescape($str){
         $ret = '';
         $len = strlen($str);
@@ -402,8 +407,11 @@ class CommonUtil
                 $i += 5;
             }
             else if ($str[$i] == '%')
-            {
-                $ret .= urldecode(substr($str, $i, 3));
+            {   
+                $map = \Config::get('encodemap.window1251_utf8');
+                $subStr = substr($str, $i, 3);
+                $subStr = (isset($map[$subStr]))?$map[$subStr]:$subStr;
+                $ret .= urldecode($subStr);
                 $i += 2;
             }
             else $ret .= $str[$i];

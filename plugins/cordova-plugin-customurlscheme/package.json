@@ -1,7 +1,59 @@
 {
-  "name": "cordova-plugin-customurlscheme",
-  "version": "4.2.0",
-  "description": "Launch your app by using this URL:  mycoolapp://, you can add a path and even pass params like this: mycoolerapp://somepath?foo=bar",
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-customurlscheme",
+        "scope": null,
+        "escapedName": "cordova-plugin-customurlscheme",
+        "name": "cordova-plugin-customurlscheme",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/samuel.hsieh/Documents/EnterpriseAPPPlatform/APP/NewQPlay/node_modules"
+    ]
+  ],
+  "_from": "cordova-plugin-customurlscheme@latest",
+  "_id": "cordova-plugin-customurlscheme@4.3.0",
+  "_inCache": true,
+  "_location": "/cordova-plugin-customurlscheme",
+  "_nodeVersion": "6.10.3",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-plugin-customurlscheme-4.3.0.tgz_1496424665981_0.6795418069232255"
+  },
+  "_npmUser": {
+    "name": "eddyverbruggen",
+    "email": "eddyverbruggen@gmail.com"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-customurlscheme",
+    "scope": null,
+    "escapedName": "cordova-plugin-customurlscheme",
+    "name": "cordova-plugin-customurlscheme",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-customurlscheme/-/cordova-plugin-customurlscheme-4.3.0.tgz",
+  "_shasum": "02f968778b4093990eb0407f3fa1b1458d705f94",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-customurlscheme",
+  "_where": "/Users/samuel.hsieh/Documents/EnterpriseAPPPlatform/APP/NewQPlay/node_modules",
+  "author": {
+    "name": "Eddy Verbruggen",
+    "email": "eddyverbruggen@gmail.com",
+    "url": "https://github.com/EddyVerbruggen"
+  },
+  "bugs": {
+    "url": "https://github.com/EddyVerbruggen/Custom-URL-scheme/issues"
+  },
   "cordova": {
     "id": "cordova-plugin-customurlscheme",
     "platforms": [
@@ -11,10 +63,22 @@
       "windows"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EddyVerbruggen/Custom-URL-scheme.git"
+  "dependencies": {},
+  "description": "Launch your app by using this URL:  mycoolapp://, you can add a path and even pass params like this: mycoolerapp://somepath?foo=bar",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "02f968778b4093990eb0407f3fa1b1458d705f94",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-customurlscheme/-/cordova-plugin-customurlscheme-4.3.0.tgz"
   },
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "gitHead": "d220fb3769b8ddbb197b91f18b57ceb315a85f44",
+  "homepage": "https://github.com/EddyVerbruggen/Custom-URL-scheme#readme",
   "keywords": [
     "Custom URL Scheme",
     "URLscheme",
@@ -28,16 +92,20 @@
     "cordova-windows",
     "cordova-windows8"
   ],
-  "engines": [
+  "license": "MIT",
+  "maintainers": [
     {
-      "name": "cordova",
-      "version": ">=3.0.0"
+      "name": "eddyverbruggen",
+      "email": "eddyverbruggen@gmail.com"
     }
   ],
-  "author": "Eddy Verbruggen <eddyverbruggen@gmail.com> (https://github.com/EddyVerbruggen)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/EddyVerbruggen/Custom-URL-scheme/issues"
+  "name": "cordova-plugin-customurlscheme",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EddyVerbruggen/Custom-URL-scheme.git"
   },
-  "homepage": "https://github.com/EddyVerbruggen/Custom-URL-scheme#readme"
+  "scripts": {},
+  "version": "4.3.0"
 }

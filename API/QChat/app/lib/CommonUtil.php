@@ -1,5 +1,6 @@
 <?php
 namespace App\lib;
+use Config;
 use Illuminate\Support\Facades\Log;
 
 class CommonUtil{
@@ -59,7 +60,7 @@ class CommonUtil{
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
         curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
-        curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
+        curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:2');
 
         if( ! $result = curl_exec($curl)) 
         { 
@@ -69,6 +70,74 @@ class CommonUtil{
         }
         return $result;
     }
+
+     /**
+     * 根據輸入環境取得appkey
+     * @return String 
+     */
+    public static function getContextAppKey($env,$key){
+        $env = strtolower($env);
+        $key = "app".$key;
+        switch ($env)
+        {
+            case  "dev":
+                $key = $key."dev";
+                break;
+            case  "test":
+                $key = $key."test";
+                break;
+            case  "production":
+                break;
+            default :
+                break;
+        }
+        return $key;
+    }
+
+    /**
+     * 將字串做javascript escape
+     * @param  string $str Utf-8字串
+     * @return string      javascript escape 後的字串
+     */
+    public static function jsEscape($str){
+        $ret = '';
+        $len = mb_strlen($str);
+        for ($i = 0; $i < $len; $i++)
+        {
+            $oriStr = mb_substr( $str,$i,1,"utf-8");
+            $uniStr = self::utf8_str_to_unicode($oriStr);
+            $ret .= $uniStr; 
+         }
+        return $ret;
+    }
+
+    /**
+     * utf8字符轉換成Unicode字符 (%uxxxx)
+     * @param  string $utf8_str Utf-8字符
+     * @return string           Unicode字符
+     */
+    public static function utf8_str_to_unicode($utf8_str) {
+        $conv = json_encode($utf8_str);
+        $cov = preg_replace_callback("/(\\\u[0-9a-cf]{4})/i",function($conv){
+            return '%'.$conv[0];
+        },$conv); //emoji的unicode留下，其他改為%uXXXX
+        return  json_decode($conv);
+    }
+
+
+     /**
+     * 取得與QPlay Api 溝通的Signature
+     * Base64( HMAC-SHA256( SignatureTime , AppSecretKey ) )
+     * @param  timestamp $signatureTime 時間戳記
+     * @return String    加密後的字串
+     */
+    public static function getSignature($signatureTime)
+        {
+            $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, Config::get('app.secret_key'), true));
+            return $ServerSignature;
+        }
+
+
     /**
      * 取得副檔名對應的mine type
      * @return array

@@ -93,15 +93,15 @@ class EventService
 
   /**
    * 取得事件列表
-   * @param  String $appKey      app_key 
+   * @param  String $project      project
    * @param  String $empNo       員工編號
    * @param  String $eventType   1:緊急通報 | 2:一般通報 (非必填，不需要篩選時傳入空字串)
    * @param  int $eventStatus 事件狀態 1:已完成 | 0:未完成 (非必填，不需要篩選時傳入空字串)
    * @return Array              事件列表包含參與人數(user_count),seen_count(已讀人數),
    *                            task_finish_count(任務完成數),task_count(總任務數)
    */
-   public function getEventList($appKey, $empNo, $eventType, $eventStatus){
-        $oraEventList = $this->eventRepository->getEventList($appKey, $empNo, $eventType, $eventStatus);
+   public function getEventList($project, $empNo, $eventType, $eventStatus){
+        $oraEventList = $this->eventRepository->getEventList($project, $empNo, $eventType, $eventStatus);
         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
        
         $eventList = [];
@@ -119,12 +119,13 @@ class EventService
 
    /**
     * 取得尚未被關聯的事件，並格式化部分資料
+    * @param  String $project      project
     * @param  int $currentEventId 目前的事件row_id
     * @return Array
     */
-   public function getUnrelatedEventList($appKey, $currentEventId){
+   public function getUnrelatedEventList($project, $currentEventId){
     
-        $oraEventList = $this->eventRepository->getUnrelatedEventList($appKey, $currentEventId);
+        $oraEventList = $this->eventRepository->getUnrelatedEventList($project, $currentEventId);
         $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
         $eventList = [];
         foreach ($oraEventList as $event) {
@@ -135,16 +136,16 @@ class EventService
    }
    /**
     * 取得事件詳細資料
-    * @param  String $appKey app_key
+    * @param  String $project project
     * @param  int $eventId   事件row_id
     * @param  String $empNo  員工編號
     * @return Array
     */
-   public function getEventDetail($appKey, $eventId, $empNo){
+   public function getEventDetail($project, $eventId, $empNo){
         
          $eventDetail = [];
          $parameterMap = CommonUtil::getParameterMapByType(self::EVENT_TYPE);
-         $eventDetail = $this->eventRepository->getEventDetail($appKey, $eventId, $empNo);
+         $eventDetail = $this->eventRepository->getEventDetail($project, $eventId, $empNo);
          if(isset($eventDetail)){
             $eventDetail  = $this->arrangeEventList($eventDetail);
          }
@@ -304,12 +305,12 @@ class EventService
 
    /**
     * 依任務id取得任務資料
-    * @param  String $appKey app_key
+    * @param  String $project project
     * @param  int $taskId 任務id
     * @return mixed
     */
-   public function getTaskById($appKey, $taskId){
-        return $this->taskRepository->getTaskById($appKey, $taskId);
+   public function getTaskById($project, $taskId){
+        return $this->taskRepository->getTaskById($project, $taskId);
    }
    
    /**
@@ -492,7 +493,7 @@ class EventService
    /**
     * 發送推播訊息給事件參與者
     * @param  int      $eventId    事件id en_event.row_id
-    * @param  Array    $queryParam 呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','app_key' => 'appens')
+    * @param  Array    $queryParam 呼叫pushAPI時的必要參數，EX :array('lang' => 'en_us','need_push' => 'Y','project' => 'appens')
     * @param  string   $empNo
     * @param  string   $action     推播時的情境(new:新增事件|update:更新 事件|close:事件已完成)
     * @return json
@@ -503,12 +504,11 @@ class EventService
        $to = $this->getPushUserListByEvent($eventId);
 
        $from = $this->getPushUserListByEmpNoArr(array($empNo))[0];
-       $event = $this->getEventDetail($queryParam['app_key'], $eventId, $empNo);
+       $event = $this->getEventDetail($queryParam['project'], $eventId, $empNo);
        
        $template = $this->push->getPushMessageTemplate($action, $event, $queryParam);
        $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['title'])));
        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['text'])));
-      
        $pushResult = $this->push->sendPushMessage($from, $to,$title, $text, $queryParam);
 
        $result = json_decode($pushResult);
@@ -517,12 +517,12 @@ class EventService
 
     /**
      * 根據事件id取得事件資料
-     * @param  String $appKey  app_key
+     * @param  String $project  project
      * @param  int    $eventId 事件id
      * @return mixed
      */
-    public function getEventById($appKey, $eventId){
-        return $this->eventRepository->getEventById($appKey, $eventId);
+    public function getEventById($project, $eventId){
+        return $this->eventRepository->getEventById($project, $eventId);
     }
 
 }

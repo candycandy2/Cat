@@ -574,12 +574,14 @@ var JM = {
                         console.log(data);
 
                         if (typeof callback === "function") {
-                            console.log(msgData);
+                            /*
                             if (msgData === null) {
                                 callback("group", data);
                             } else {
                                 callback("single", msgData);
                             }
+                            */
+                            callback("group", data);
                         }
                     },
                     error: function(data) {
@@ -714,7 +716,8 @@ var JM = {
 
                 setTimeout(function() {
                     JM.Message.getGroupConversationHistoryMessage(callback, msgData);
-                }, 3000);
+                }, 6000);
+
             }, function(errorStr) {
                 console.log("----sendGroupTextMessage Error");
                 console.log(errorStr);
@@ -750,10 +753,10 @@ var JM = {
 
                 //After sendGroupImageMessage succeed, if call API getGroupConversationHistoryMessage immediately,
                 //JMessage cannot reutrn the URL of image, maybe JMessage need some time to process image.
-                //So, call API getGroupConversationHistoryMessage after 3 seconds.
+                //So, call API getGroupConversationHistoryMessage after 6 seconds.
                 setTimeout(function() {
                     JM.Message.getGroupConversationHistoryMessage(callback, msgData);
-                }, 3000);
+                }, 6000);
 
             }, function(errorStr) {
                 console.log("----sendGroupImageMessage Error");

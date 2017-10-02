@@ -193,6 +193,17 @@ return [
     'qmessage_api_server' => env('QMESSAGE_API_SERVER'),
 
     /*
+    |-------------------------------------------------------------------------
+    | QPlay Api Server
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the QPlay api server settings for your application.
+    |
+    */
+   
+    'qplay_api_server' => env('QPLAY_API_SERVER'),
+
+    /*
     |--------------------------------------------------------------------------
     | ENS project
     |--------------------------------------------------------------------------
@@ -203,8 +214,8 @@ return [
     */
     
     'ens_project' => [
-        'ens',
-        'rm'
+        'ITS',
+        'RM'
     ],
 
     /*
