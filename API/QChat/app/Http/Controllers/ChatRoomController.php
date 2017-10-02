@@ -47,12 +47,14 @@ class ChatRoomController extends Controller
             'need_push' => 'required',
             'app_key' => 'required',
             'chatroom_name' => 'required',
+            'chatroom_desc' => 'required',
             'member_list' => 'required',
             'member_list.destination_emp_no' => 'required'
         ]);
 
         $range = Validator::make($this->data, [
             'need_push' => 'in:Y,N',
+            'chatroom_desc'=>'regex:/^(\S*=\S*)+;*/',
         ]);
 
         if($required->fails())
@@ -69,9 +71,20 @@ class ChatRoomController extends Controller
                     'Content'=>""]);
         }
         $verify = new Verify();
+
         //check member_list
         $fromEmpNo = $this->data['emp_no'];
         $targetUserList = $this->data['member_list']['destination_emp_no'];
+        $chatRoomName = $this->data['chatroom_name'];
+        $chatroomDesc = $this->data['chatroom_desc'];
+        $descData = $this->getExtraData($chatroomDesc);
+        if( $descData['group_message'] == 'N'){
+            if(count($targetUserList) > 1){
+                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+            }
+        }
         if(is_array($targetUserList)){
             $targetUserList = array_unique($this->data['member_list']['destination_emp_no']);
             if(($key = array_search($fromEmpNo, $targetUserList)) !== false) {
@@ -84,7 +97,6 @@ class ChatRoomController extends Controller
                 $targetUserList = array($targetUserList);
             }
         }
-       
         $members=[];
         $tokens=[];
         if(count($targetUserList) == 0){
@@ -108,13 +120,25 @@ class ChatRoomController extends Controller
         }
 
         \DB::beginTransaction();
-        
+        $newGroupId = null;
         try {
-            // 1. call Jmessage to create chatroom
-            $chatRoomName = $this->data['chatroom_name'];
-            $chatroomDesc = (is_null($this->data['chatroom_desc']))?"":$this->data['chatroom_desc'];
             $ownerData = $this->userService->getUserData($fromEmpNo);
             $owner = $ownerData->login_id;
+            $member="";
+            //檢查是否已存在私聊聊天室，直接回傳既有聊天室id；不存在則繼續新增聊天室
+            if($descData['group_message'] == 'N' && count($targetUserList) == 1){
+                $privateGroup = $this->chatRoomService->getPrivateGroup($fromEmpNo,$targetUserList[0]);
+                if(isset($privateGroup->chatroom_id)){
+                    return  $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"Success",
+                        'Content'=>array("group_id"=>$privateGroup->chatroom_id,
+                                         "is_new"=>'N')]);
+                }else{
+                    $member = $fromEmpNo.','.$targetUserList[0];
+                }
+            }
+            //新增聊天室
+            // 1. call Jmessage to create chatroom
             $response = $this->chatRoomService->newChatRoom( $owner, $chatRoomName, $members, $chatroomDesc);
             if(isset($response->error)){
                 return $result = response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
@@ -123,22 +147,40 @@ class ChatRoomController extends Controller
             }
             // 2. save chatroom information to DB
             $userId = $ownerData->row_id;
-            $this->chatRoomService->saveChatroom($response->gid, $response->name, $response->desc, $userId);
-            //3. send push 
-            $push = new JPush(Config::get("app.app_key"),Config::get("app.master_secret"));
-            $push->setReceiver($tokens)
-                 ->setTitle($response->name)
-                 ->setDesc($owner."邀請您加入聊天")
-                 ->send();
+            $newGroupId = $response->gid;
+            $this->chatRoomService->saveChatroom($response->gid,
+                                                 $response->name,
+                                                 $response->desc,
+                                                 $userId,
+                                                 $member);
+            // 3. send push 
+            // $push = new JPush(Config::get("app.app_key"),Config::get("app.master_secret"));
+            // $push->setReceiver($tokens)
+            //      ->setTitle($response->name)
+            //      ->setDesc($owner."邀請您加入聊天")
+            //      ->send();
 
             $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
-                        'Content'=>array("group_id"=>$response->gid)]);
-            \DB::commit();
+                        'Content'=>array("group_id"=> $response->gid,
+                                         "is_new"=>'Y')]);
+           \DB::commit();
          }catch (\Exception $e) {
             \DB::rollBack();
-            $result = response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+            if(!is_null($newGroupId)){
+                $this->chatRoomService->deleteGroup($newGroupId);
+            }
+            $result = response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
          }
          return $result;
+    }
+
+    private function getExtraData(String $list){
+        $array = explode(';',$list);
+        $result = [];
+        foreach ($array as $item) {
+            $result[explode('=',$item)[0]] = explode('=',$item)[1];    
+        }
+        return $result;
     }
 }

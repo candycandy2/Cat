@@ -381,15 +381,15 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        // $("#infoTitle-1").on("click", function() {
-        //     if($("#infoContent-1").css("display") === "none") {
-        //         $("#infoContent-1").slideDown(500);
-        //         $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
-        //     }else if($("#infoContent-1").css("display") === "block") {
-        //         $("#infoContent-1").slideUp(500);
-        //         $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
-        //     }
-        // });
+        $("#infoTitle-1").on("click", function() {
+            if($("#infoContent-1").css("display") === "none") {
+                $("#infoContent-1").slideDown(500);
+                $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
+            }else if($("#infoContent-1").css("display") === "block") {
+                $("#infoContent-1").slideUp(500);
+                $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
+            }
+        });
 
         // $("#infoTitle-2").on("click", function() {
         //     if($("#infoContent-2").css("display") === "none") {

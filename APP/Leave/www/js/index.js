@@ -13,21 +13,22 @@ var panel = htmlContent
         +   '<div class="panel-content" id="mypanelviewPersonalLeave">'
         +       '<span class="panel-text">個人假勤</span>'
         +   '</div>'
-        // +   '<div class="panel-content" id="mypanelviewLeaveSubmit">'
-        // +       '<span class="panel-text">請假申請</span>'
-        // +   '</div>'
-        // +   '<div class="panel-content" id="mypanelviewLeaveQuery">'
-        // +       '<span class="panel-text">請假單查詢 / 銷假</span>'
-        // +   '</div>'
-        // +   '<div class="panel-content" id="mypanelviewBackLeaveQuery">'
-        // +       '<span class="panel-text">銷假單查詢</span>'
-        // +   '</div>'
+        +   '<div class="panel-content" id="mypanelviewLeaveSubmit">'
+        +       '<span class="panel-text">請假申請</span>'
+        +   '</div>'
+        +   '<div class="panel-content" id="mypanelviewLeaveQuery">'
+        +       '<span class="panel-text">請假單查詢 / 銷假</span>'
+        +   '</div>'
+        +   '<div class="panel-content" id="mypanelviewBackLeaveQuery">'
+        +       '<span class="panel-text">銷假單查詢</span>'
+        +   '</div>'
         +   '<div class="panel-content" id="mypanelviewHolidayCalendar">'
         +       '<span class="panel-text">2017 行事曆</span>'
         +   '</div>'
         +'</div>'
         +'<div class="page-mask" style="display: none;"></div>';
 var time = new Date(Date.now());
+
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
 var currentYear = time.getFullYear();
 var currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
@@ -37,6 +38,7 @@ var prslvsCalendar = {};
 var holidayCalendar = {};
 var myCalendarData = {};
 var myHolidayData = [];
+var applyDay = currentYear+"-"+currentMonth+"-"+currentDate;
 var dayTable = {
     "1" : "(一)",
     "2" : "(二)",
