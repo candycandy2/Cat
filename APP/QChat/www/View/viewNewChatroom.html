@@ -1,0 +1,124 @@
+
+
+<div data-role="page" id="viewNewChatroom">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <a href="#viewIndex" data-role="none">
+            <div class="q-btn-header" style="width: 5.957vw;">
+                <svg class="header-icon">
+                    <use xlink:href="#icon-nav_back_white"></use>
+                </svg>
+            </div>
+        </a>
+        <div class="header-style">
+            <h1 class="ui-title"><span>新增聊天室</span></h1>
+        </div>
+        <a id="createChatroom" href="#" data-role="none" class="ui-btn-right none-work">
+            <span>確定</span>
+        </a>
+    </div>
+
+    <div data-role="main" class="page-main" id="viewNewChatroomContent">
+
+        <div class="search-user-content">
+            <div class="search-user-input">
+                <input type="text" data-role="none" class="searchBar" id="searchUserInput" placeholder="搜尋用戶">
+            </div>
+            <div class="search-user-button hide" id="searchUserButton">
+                查詢
+            </div>
+            <div class="search-user-clear-content hide" id="searchUserClearContent">
+                <svg class="search-user-clear" id="searchUserClear">
+                    <use xlink:href="#icon-btn_field_clear"></use>
+                </svg>
+            </div>
+        </div>
+
+        <div class="search-user-content-background"></div>
+
+        <div class="no-data" id="msgWelcome">
+            搜尋同事加入好友吧!
+        </div>
+
+        <div class="no-data hide" id="msgNoFound">
+            搜尋的結果為0筆 ，<br>如找不到您要的用戶 ，請重新搜尋名稱 。
+        </div>
+
+        <div class="text-title hide" id="titleFriend">
+            其他用戶 :
+        </div>
+
+        <div class="data-list-content" id="userListContent">
+            <template id="tplUserList">
+                <div class="data-list user-list">
+                    <div class="left checkbox-content">
+                        <input type='checkbox' data-role='none' id='checkUser' value='1609009'>
+                        <label data-role='none' class='overlap-label-icon'></label>
+                        <label data-role='none' class='overlap-label-checkbox' for='checkUser'></label>
+                    </div>
+                    <div class="left img-content">
+                        <img class="photo hide" src="">
+                        <svg class="photo">
+                            <use xlink:href="#icon-img_default_photo"></use>
+                        </svg>
+                    </div>
+                    <div class="right data-content">
+                        <div class="left user-content">
+                            <div class="user-name user-name-only">
+                                Darren.K.Ti
+                            </div>
+                            <div class="user-info hide not-friend">
+
+                            </div>
+                            <div class="user-info hide protect">
+                                需成為好友才能開始聊天
+                            </div>
+                            <div class="user-info hide not-register">
+                                尚未安裝QPlay
+                            </div>
+                        </div>
+                        <div class="right button-content">
+                            <div class="button button-icon-content">
+                                <svg class="button-icon hide not-friend">
+                                    <use xlink:href="#icon-btn_addfriend"></use>
+                                </svg>
+                                <svg class="button-icon hide protect">
+                                    <use xlink:href="#icon-btn_addfriend"></use>
+                                </svg>
+                                <svg class="button-icon hide not-register">
+                                    <use xlink:href="#icon-btn_qplay_download"></use>
+                                </svg>
+                            </div>
+                            <div class="button button-text hide not-friend">
+                                加入好友
+                            </div>
+                            <div class="button button-text hide protect">
+                                加入好友
+                            </div>
+                            <div class="button button-text hide not-register">
+                                邀請安裝
+                            </div>
+                            <div class="button-text action-info hide">
+                                邀請已發送
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="ui-hr ui-hr-list">
+            </template>
+        </div>
+
+        <div class="no-data data-overflow hide" id="msgUserOverflow">
+            您的搜尋結果最多顯示10筆 ，<br>如找不到您要的資料 ，請在詳填用戶姓名 。
+        </div>
+
+        <div class="action-success-full-screen hide">
+            <div>
+                <span class="hide" id="actionMsg1">已將 XXX 加為好友</span>
+                <span class="hide" id="actionMsg2">已送出好友邀請</span>
+                <span class="hide" id="actionMsg3">已發送邀請給 XXX</span>
+            </div>
+        </div>
+
+    </div>
+</div>

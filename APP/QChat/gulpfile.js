@@ -76,6 +76,8 @@ gulp.task('config', function(){
 //ex: gulp install --env test
 gulp.task('install', shell.task([
   'cordova plugin remove jmessage-phonegap-plugin',
+  'cordova plugin remove jpush-phonegap-plugin',
+  'cordova plugin remove phonegap-plugin-mobile-accessibility',
   'cordova plugin remove cordova-plugin-device',
   'cordova plugin remove cordova-plugin-appversion',
   'cordova plugin remove cordova-plugin-customurlscheme',
@@ -98,7 +100,8 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-camera',
   'cordova plugin add cordova-plugin-ios-camera-permissions --save',
   'cordova plugin add phonegap-plugin-mobile-accessibility',
-  'cordova plugin add jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add jmessage-phonegap-plugin@3.0.12 --variable APP_KEY=' + process.env.QPushAPPKey,
+  'cordova plugin add jpush-phonegap-plugin@3.2.3 --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -114,7 +117,8 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --save',
   //'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',  
-  'cordova plugin add ../../plugins/jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add jmessage-phonegap-plugin@3.0.12 --variable APP_KEY=' + process.env.QPushAPPKey,
+  'cordova plugin add jpush-phonegap-plugin@3.2.3 --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
