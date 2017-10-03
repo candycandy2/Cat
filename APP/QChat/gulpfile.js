@@ -79,7 +79,8 @@ gulp.task('install', shell.task([
   'cordova plugin remove jpush-phonegap-plugin',
   'cordova plugin remove phonegap-plugin-mobile-accessibility',
   'cordova plugin remove cordova-plugin-device',
-  'cordova plugin remove cordova-plugin-appversion',
+  'cordova plugin remove cordova-plugin-app-update',
+  'cordova plugin remove cordova-plugin-android-permissions',
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
@@ -92,7 +93,8 @@ gulp.task('install', shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
-  'cordova plugin add cordova-plugin-appversion',
+  'cordova plugin add ../../plugins/cordova-plugin-app-update',
+  'cordova plugin add cordova-plugin-android-permissions',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqchat' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
@@ -100,8 +102,8 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-camera',
   'cordova plugin add cordova-plugin-ios-camera-permissions --save',
   'cordova plugin add phonegap-plugin-mobile-accessibility',
-  'cordova plugin add jmessage-phonegap-plugin@3.0.12 --variable APP_KEY=' + process.env.QPushAPPKey,
-  'cordova plugin add jpush-phonegap-plugin@3.2.3 --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add jmessage-phonegap-plugin@3.0.12 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
+  'cordova plugin add jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushQChatAPPKey
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -109,6 +111,8 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add ../../plugins/cordova-plugin-device',
+  'cordova plugin add ../../plugins/cordova-plugin-app-update',
+  'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
   'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appqchat' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add ../../plugins/cordova-plugin-whitelist',
@@ -117,8 +121,8 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --save',
   //'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',  
-  'cordova plugin add jmessage-phonegap-plugin@3.0.12 --variable APP_KEY=' + process.env.QPushAPPKey,
-  'cordova plugin add jpush-phonegap-plugin@3.2.3 --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add jmessage-phonegap-plugin@3.0.12 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
+  'cordova plugin add jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushQChatAPPKey
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 

@@ -10,6 +10,13 @@ class QP_Friend_Matrix extends Model
     protected $table = 'qp_friend_matrix';
     protected $primaryKey = 'row_id';
 
+    /**
+     * 不可被批量赋值的属性。
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
      /**
      * 取得此交友狀況的使用者。
      */
