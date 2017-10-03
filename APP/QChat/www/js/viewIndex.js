@@ -493,8 +493,8 @@ $("#viewIndex").pagecontainer({
         $("#viewIndex").on("pageshow", function(event, ui) {
 
             //Set Active Tab
-            $("#tabEventList a:eq(0)").addClass("ui-btn-active");
-            $("#tabEventList").tabs({ active: 0 });
+            $("#tabIndex a:eq(0)").addClass("ui-btn-active");
+            $("#tabIndex").tabs({ active: 0 });
 
             if (!getPWD) {
                 loadingMask("show");

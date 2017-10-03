@@ -14,8 +14,8 @@
 //API
 Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','log.api']], function () {
     Route::POST('/getQList','FriendController@getQList');
-    // Route::POST('/getQFriend','FriendController@getQFriend');
-    // Route::POST('/setQFriend','FriendController@setQFriend');
+    Route::POST('/getQFriend','FriendController@getQFriend');
+    Route::POST('/setQFriend','FriendController@setQFriend');
     // Route::POST('/sendQInvitation','FriendController@sendQInvitation');
     // Route::POST('/sendQInstall','FriendController@sendQInstall');
     // Route::POST('/getQUserDetail','FriendController@getQUserDetail');
