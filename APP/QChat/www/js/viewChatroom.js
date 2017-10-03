@@ -755,8 +755,10 @@ $("#viewChatroom").pagecontainer({
         $(document).on({
             click: function() {
 
-                sendTextMessage($("#msgText").val());
-                $("#msgText").val("");
+                if ($("#msgText").val().length > 0) {
+                    sendTextMessage($("#msgText").val());
+                    $("#msgText").val("");
+                }
 
             }
         }, "#msgButton");
