@@ -461,3 +461,24 @@ div.scrollmenu a {
 .col-1 {
     width: 10% !important;
 }
+
+/********************************** pageTwo *************************************/
+.car-list-no-data {
+    color: #666;
+    text-align: center;
+    margin-top: 50%;
+}
+
+.car-list-footer {
+    width: 17.71vw;
+    left: initial;
+    right: 6.727vw;
+    bottom: 4.3vw;
+}
+
+.car-list-add-button {
+    background: url(../img/052_btn_floating_add.png) no-repeat;
+    background-size: 17.71vw;
+    width: 17.71vw;
+    height: 17.71vw;
+}

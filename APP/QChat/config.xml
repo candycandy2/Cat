@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="181" id="com.qplay.appqchatdev" ios-CFBundleVersion="181" version="1.0.0.181[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="185" id="com.qplay.appqchatdev" ios-CFBundleVersion="185" version="1.0.0.185[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QChat</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -43,13 +43,17 @@
     <plugin name="cordova-plugin-ios-camera-permissions" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-ios-camera-permissions">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="This app needs camera access" />
         <variable name="MICROPHONE_USAGE_DESCRIPTION" value="This app needs microphone access" />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="This app needs photo library access" />
+        <variable name="PHOTOLIBRARY_ADD_USAGE_DESCRIPTION" value="This app needs write-access to photo library" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="This app needs read/write-access photo library access" />
     </plugin>
     <plugin name="cordova-plugin-qsecurity" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-qsecurity">
         <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appqchatdev&lt;/string&gt;" />
     </plugin>
     <plugin name="cordova-plugin-whitelist" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-whitelist" />
-    <plugin name="jmessage-phonegap-plugin" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/jmessage-phonegap-plugin">
+    <plugin name="jmessage-phonegap-plugin" spec="^3.0.12">
+        <variable name="APP_KEY" value="e343504d536ebce16b70167e" />
+    </plugin>
+    <plugin name="jpush-phonegap-plugin" spec="^3.2.3">
         <variable name="APP_KEY" value="e343504d536ebce16b70167e" />
     </plugin>
     <plugin name="phonegap-plugin-mobile-accessibility" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/phonegap-plugin-mobile-accessibility" />

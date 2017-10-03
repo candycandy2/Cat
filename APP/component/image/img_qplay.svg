@@ -1,0 +1,530 @@
+<svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<symbol id="icon-nav_back_black" viewBox="0 0 32 32">
+<title>nav_back_black</title>
+<path d="M22.553 1.315l1.637 1.632-13.482 13.445 13.482 13.444-1.637 1.632-15.116-15.076z"></path>
+</symbol>
+<symbol id="icon-nav_back_white" viewBox="0 0 32 32">
+<title>nav_back_white</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M22.553 1.315l1.637 1.632-13.482 13.445 13.482 13.444-1.637 1.632-15.116-15.076z"></path>
+</symbol>
+<symbol id="icon-nav_delete" viewBox="0 0 32 32">
+<title>nav_delete</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M27.572 5.805h-5.137v-2.794c0-0.74-0.602-1.342-1.342-1.342h-10.008c-0.74 0-1.342 0.602-1.342 1.342v2.794h-5.138v1.73h1.597l0.938 22.474c0 0.732 0.602 1.328 1.342 1.328h15.511c0.74 0 1.342-0.595 1.342-1.292l0.938-22.509h1.299v-1.73zM11.472 3.399h9.233v2.175h-9.233v-2.175zM23.622 29.607h-14.769l-0.921-22.071h16.611l-0.92 22.071z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M15.373 9.673h1.73v16.764h-1.73v-16.764z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M19.753 9.673h1.73v16.764h-1.73v-16.764z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M10.995 9.673h1.73v16.764h-1.73v-16.764z"></path>
+</symbol>
+<symbol id="icon-nav_home" viewBox="0 0 32 32">
+<title>nav_home</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M31.425 16.214l-15.291-14.281-15.291 14.281h4.892v14.83h6.445v-9.048h8.493v9.048h6.446v-14.83z"></path>
+</symbol>
+<symbol id="icon-nav_humb" viewBox="0 0 32 32">
+<title>nav_humb</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.405 5.622h21.994v2.374h-21.994v-2.374z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.405 24.649h21.994v2.374h-21.994v-2.374z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.405 15.135h21.994v2.374h-21.994v-2.374z"></path>
+</symbol>
+<symbol id="icon-nav_logout" viewBox="0 0 32 32">
+<title>nav_logout</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M1.806 5.186h2.148v22.288h-2.148v-22.288z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M20.676 7.132l-1.636 1.632 7.001 6.97h-16.599v2.148h16.599l-7.002 6.97 1.636 1.632 9.714-9.675z"></path>
+</symbol>
+<symbol id="icon-nav_news_n-" viewBox="0 0 32 32">
+<title>nav_news_n-</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M27.438 5.273h-25.893v20.414h2.148v-0.010h16.887l5.195 5.195 0.112-0.112v0.113h2.148v-25.6h-0.597zM21.502 23.561v-0.032h-17.809v-16.108h22.194v20.525l-4.385-4.385z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.741 10.592h12.27v2.148h-12.27v-2.148z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.741 15.821h12.27v2.148h-12.27v-2.148z"></path>
+</symbol>
+<symbol id="icon-nav_news_new" viewBox="0 0 32 32">
+<title>nav_news_new</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M1.806 5.186h2.148v22.288h-2.148v-22.288z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M2.022 5.273h25.415v2.148h-25.415v-2.148z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M1.545 23.529h19.957v2.148h-19.957v-2.148z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M25.776 30.872l-5.819-5.819 1.519-1.519 5.819 5.819-1.519 1.519z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M1.545 5.273h2.148v20.414h-2.148v-20.414z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M25.887 5.273h2.148v25.6h-2.148v-25.6z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.741 10.592h12.27v2.148h-12.27v-2.148z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.741 15.821h12.27v2.148h-12.27v-2.148z"></path>
+<path fill="#ed1f24" style="fill: var(--color2, #ed1f24)" d="M30.471 6.347c0 2.532-2.053 4.585-4.585 4.585s-4.585-2.053-4.585-4.585c0-2.532 2.053-4.585 4.585-4.585s4.585 2.053 4.585 4.585z"></path>
+</symbol>
+<symbol id="icon-nav_save_d" viewBox="0 0 32 32">
+<title>nav_save_d</title>
+<path fill="#939393" style="fill: var(--color3, #939393)" d="M31.209 31.209h-30.419v-30.419h20.729l9.69 7.87v22.549zM2.953 29.047h26.095v-19.358l-8.296-6.737h-17.799v26.095z"></path>
+<path fill="#939393" style="fill: var(--color3, #939393)" d="M25.234 31.209h-18.468v-12.977h18.468v12.977zM8.928 29.047h14.144v-8.653h-14.144v8.653z"></path>
+</symbol>
+<symbol id="icon-nav_save_n" viewBox="0 0 32 32">
+<title>nav_save_n</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M31.209 31.209h-30.419v-30.419h20.729l9.69 7.87v22.549zM2.953 29.047h26.095v-19.358l-8.296-6.737h-17.799v26.095z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M25.235 31.209h-18.468v-12.977h18.468v12.977zM8.929 29.047h14.144v-8.653h-14.144v8.653z"></path>
+</symbol>
+<symbol id="icon-topnav_album" viewBox="0 0 32 32">
+<title>topnav_album</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M24.676 31.154h-21.299c-1.223 0-2.217-0.995-2.217-2.217v-21.298c0-1.223 0.995-2.217 2.217-2.217h21.299c1.222 0 2.216 0.995 2.216 2.217v21.298c0 1.222-0.993 2.217-2.216 2.217zM3.377 7.584c-0.030 0-0.054 0.025-0.054 0.055v21.298c0 0.029 0.025 0.055 0.054 0.055h21.299c0.030 0 0.054-0.024 0.054-0.055v-21.298c0-0.030-0.025-0.055-0.054-0.055h-21.299z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M6.641 25.202l4.086-4.714 2.514 2.2 3.772-3.928 3.928 6.285z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M11.984 14.438c0 1.085-0.879 1.964-1.964 1.964s-1.964-0.879-1.964-1.964c0-1.085 0.879-1.964 1.964-1.964s1.964 0.879 1.964 1.964z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M28.762 0.846h-21.299c-1.080 0-1.96 0.831-2.059 1.885h23.358c0.106 0 0.192 0.087 0.192 0.193h0.053v23.352c1.029-0.123 1.832-0.992 1.832-2.053v-21.299c0-1.147-0.932-2.079-2.077-2.079z"></path>
+</symbol>
+<symbol id="icon-topnav_delete" viewBox="0 0 32 32">
+<title>topnav_delete</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M30.485 5.741h-7.027v-3.314c0-0.836-0.68-1.516-1.517-1.516h-11.882c-0.835 0-1.515 0.68-1.515 1.516v3.314h-7.028v1.73h1.102l1.288 22.151c0.017 0.811 0.69 1.466 1.516 1.466h21.158c0.825 0 1.499-0.655 1.515-1.466l1.29-22.151h1.101v-1.73zM10.273 2.641h11.454l-0 3.006h-11.454v-3.006zM26.377 29.359h-20.754l-1.274-21.888h23.303l-1.274 21.888z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M15.136 10.703h1.73v16.319h-1.73v-16.319z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M21.107 12.472h1.73v12.19h-1.73v-12.19z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M9.163 12.472h1.73v12.19h-1.73v-12.19z"></path>
+</symbol>
+<symbol id="icon-topnav_download" viewBox="0 0 32 32">
+<title>topnav_download</title>
+<path fill="none" stroke="#fff" stroke-width="1.7297" stroke-miterlimit="10" stroke-linecap="butt" stroke-linejoin="miter" style="stroke: var(--color1, #fff)" d="M27.23 29.592c0 0.349-0.292 0.632-0.651 0.632h-21.158c-0.359 0-0.651-0.283-0.651-0.632l-1.302-22.355c0-0.348 0.291-0.631 0.65-0.631h23.762c0.359 0 0.651 0.283 0.651 0.631l-1.302 22.355z"></path>
+<path fill="none" stroke="#fff" stroke-width="1.7297" stroke-miterlimit="10" stroke-linecap="butt" stroke-linejoin="miter" style="stroke: var(--color1, #fff)" d="M22.592 5.861c0 0.359-0.291 0.651-0.652 0.651h-11.882c-0.36 0-0.65-0.291-0.65-0.651v-3.433c0-0.359 0.29-0.651 0.65-0.651h11.882c0.361 0 0.652 0.292 0.652 0.651v3.433z"></path>
+<path fill="none" stroke="#fff" stroke-width="1.7297" stroke-miterlimit="10" stroke-linecap="butt" stroke-linejoin="miter" style="stroke: var(--color1, #fff)" d="M16.001 10.703v16.319"></path>
+<path fill="none" stroke="#fff" stroke-width="1.7297" stroke-miterlimit="10" stroke-linecap="butt" stroke-linejoin="miter" style="stroke: var(--color1, #fff)" d="M21.972 12.472v12.19"></path>
+<path fill="none" stroke="#fff" stroke-width="1.7297" stroke-miterlimit="10" stroke-linecap="butt" stroke-linejoin="miter" style="stroke: var(--color1, #fff)" d="M10.028 12.472v12.19"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M16.007 24.502l0 0 13.903-13.903-1.32-1.319-11.694 11.695 0.057-18.547-1.867-0.011-0.055 18.5-11.623-11.623-1.32 1.321 13.903 13.903z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.5 29.523l21.593 0.061 0.011-1.867-21.595-0.060z"></path>
+</symbol>
+<symbol id="icon-topnav_info" viewBox="0 0 32 32">
+<title>topnav_info</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M16 30.071c-7.759 0-14.071-6.312-14.071-14.071s6.312-14.071 14.071-14.071c7.759 0 14.071 6.312 14.071 14.071s-6.312 14.071-14.071 14.071zM16 4.092c-6.566 0-11.909 5.342-11.909 11.909s5.342 11.909 11.909 11.909c6.567 0 11.909-5.342 11.909-11.909s-5.342-11.909-11.909-11.909z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M14.971 11.768v-1.948h2.106v1.948h-2.105zM14.971 20.804v-7.957h2.106v7.957h-2.105z"></path>
+</symbol>
+<symbol id="icon-topnav_more" viewBox="0 0 32 32">
+<title>topnav_more</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M7.497 16c0 1.418-1.15 2.568-2.568 2.568s-2.568-1.15-2.568-2.568c0-1.418 1.15-2.568 2.568-2.568s2.568 1.15 2.568 2.568z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M29.639 16c0 1.418-1.15 2.568-2.568 2.568s-2.568-1.15-2.568-2.568c0-1.418 1.15-2.568 2.568-2.568s2.568 1.15 2.568 2.568z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M18.568 16c0 1.418-1.15 2.568-2.568 2.568s-2.568-1.15-2.568-2.568c0-1.418 1.15-2.568 2.568-2.568s2.568 1.15 2.568 2.568z"></path>
+</symbol>
+<symbol id="icon-topnav_photo" viewBox="0 0 32 32">
+<title>topnav_photo</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M26.649 28.001h-21.299c-0.745 0-1.352-0.606-1.352-1.352v-21.299c0-0.745 0.606-1.352 1.352-1.352h21.299c0.746 0 1.352 0.607 1.352 1.352v21.299c0 0.745-0.606 1.352-1.352 1.352zM5.351 4.431c-0.507 0-0.919 0.413-0.919 0.92v21.299c0 0.507 0.413 0.919 0.919 0.919h21.299c0.507 0 0.92-0.413 0.92-0.919v-21.299c0-0.507-0.413-0.92-0.92-0.92h-21.299z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M8.614 22.914l4.085-4.714 2.515 2.2 3.771-3.928 3.928 6.285z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M13.957 12.15c0 1.085-0.879 1.964-1.964 1.964s-1.964-0.879-1.964-1.964c0-1.085 0.879-1.964 1.964-1.964s1.964 0.879 1.964 1.964z"></path>
+</symbol>
+<symbol id="icon-topnav_rename" viewBox="0 0 32 32">
+<title>topnav_rename</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M22.83 2.947l6.143 6.142-17.988 17.991-6.143-6.142 17.988-17.991z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M9.17 29.053h-6.143v-6.143z"></path>
+</symbol>
+<symbol id="icon-topnav_save" viewBox="0 0 32 32">
+<title>topnav_save</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M24.853 1.946h-22.080c-0.457 0-0.827 0.37-0.827 0.827v26.454c0 0.457 0.37 0.827 0.827 0.827h26.455c0.456 0 0.826-0.37 0.826-0.827v-20.752l-5.201-6.53zM6.7 3.806c0-0.457 0.37-0.827 0.827-0.827h14.675c0.456 0 0.826 0.37 0.826 0.827v7.853c0 0.457-0.37 0.827-0.826 0.827h-14.675c-0.457 0-0.827-0.37-0.827-0.827v-7.853zM26.333 27.161c0 0.457-0.37 0.827-0.826 0.827h-20.254c-0.456 0-0.827-0.37-0.827-0.827v-11.161c0-0.457 0.37-0.827 0.827-0.827h20.254c0.457 0 0.826 0.37 0.826 0.827v11.161z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M18.067 5.046h3.101v5.167h-3.101v-5.167z"></path>
+</symbol>
+<symbol id="icon-bottomnav_event_n" viewBox="0 0 32 32">
+<title>bottomnav_event_n</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M31.342 32l-26.431-12.52v-6.962l26.431-12.519v32zM6.643 18.384l22.967 10.879v-26.527l-22.967 10.878v4.77z"></path>
+<path fill="#492f7f" style="fill: var(--color4, #492f7f)" d="M5.777 20.746c0 0.695-0.448 1.257-1.001 1.257h-2.251c-0.552 0-1.001-0.563-1.001-1.257v-9.432c0-0.695 0.448-1.257 1.001-1.257h2.251c0.553 0 1.001 0.562 1.001 1.257v9.432z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M4.776 22.869h-2.251c-1.029 0-1.867-0.953-1.867-2.123v-9.432c0-1.171 0.838-2.123 1.867-2.123h2.251c1.029 0 1.867 0.952 1.867 2.123v9.432c0 1.171-0.837 2.123-1.867 2.123zM4.759 10.92l-2.233 0.003c-0.028 0.017-0.135 0.158-0.135 0.391v9.432c0 0.233 0.108 0.375 0.153 0.394l2.221-0.003c0.048-0.028 0.147-0.167 0.147-0.392v-9.431c0-0.234-0.107-0.375-0.152-0.394z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M22.763 4.453h1.732v23.094h-1.732v-23.094z"></path>
+</symbol>
+<symbol id="icon-bottomnav_event_s" viewBox="0 0 32 32">
+<title>bottomnav_event_s</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M30.476 1.368l-24.699 11.698v5.866l24.699 11.7z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M31.342 32l-26.431-12.52v-6.962l26.431-12.519v32zM6.643 18.384l22.967 10.879v-26.527l-22.967 10.878v4.77z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.777 20.745c0 0.696-0.448 1.258-1.001 1.258h-2.251c-0.553 0-1.001-0.563-1.001-1.258v-9.431c0-0.695 0.448-1.257 1.001-1.257h2.251c0.553 0 1.001 0.562 1.001 1.257v9.431z"></path>
+<path fill="#492f7f" style="fill: var(--color4, #492f7f)" d="M4.776 22.869h-2.251c-1.029 0-1.867-0.953-1.867-2.124v-9.431c0-1.171 0.838-2.123 1.867-2.123h2.251c1.029 0 1.867 0.952 1.867 2.123v9.431c0 1.171-0.837 2.124-1.867 2.124zM4.759 10.92l-2.233 0.003c-0.028 0.017-0.135 0.158-0.135 0.391v9.431c0 0.233 0.108 0.376 0.153 0.395l2.221-0.003c0.048-0.028 0.146-0.168 0.146-0.392v-9.43c0-0.233-0.107-0.375-0.152-0.394z"></path>
+<path fill="#492f7f" style="fill: var(--color4, #492f7f)" d="M22.763 1.368h1.732v29.264h-1.732v-29.264z"></path>
+</symbol>
+<symbol id="icon-bottomnav_news_n" viewBox="0 0 32 32">
+<title>bottomnav_news_n</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M25.657 30.878h-21.059c-2.536 0-4.599-2.063-4.599-4.598v-23.177c0-0.44 0.076-0.892 0.231-1.382l0.19-0.6h22.358v25.158c0 1.587 1.292 2.879 2.879 2.879v1.72zM1.734 2.841c-0.010 0.089-0.015 0.176-0.015 0.262v23.176c0 1.587 1.292 2.879 2.88 2.879h17.476c-0.635-0.788-1.015-1.79-1.015-2.879v-23.439h-19.325z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M27.402 30.878h-1.744c-2.536 0-4.598-2.063-4.598-4.598v-20.049h10.941v20.048c0 2.536-2.063 4.598-4.598 4.598zM22.779 7.951v18.329c0 1.587 1.292 2.879 2.879 2.879h1.744c1.587 0 2.879-1.291 2.879-2.879v-18.329h-7.502z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M4.69 6.513h13.084v1.72h-13.084v-1.72z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M4.69 10.876h13.084v1.719h-13.084v-1.719z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M4.69 15.236h13.084v1.719h-13.084v-1.719z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M25.546 7.091h1.719v16.911h-1.719v-16.911z"></path>
+</symbol>
+<symbol id="icon-bottomnav_news_s" viewBox="0 0 32 32">
+<title>bottomnav_news_s</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M21.919 26.28v-24.299h-20.869c-0.113 0.356-0.19 0.728-0.19 1.122v23.176c0 2.065 1.674 3.738 3.739 3.738h21.059c-2.065 0-3.739-1.673-3.739-3.738z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M25.657 30.878h-21.059c-2.536 0-4.599-2.063-4.599-4.598v-23.177c0-0.44 0.076-0.892 0.231-1.382l0.19-0.6h22.358v25.158c0 1.587 1.292 2.879 2.879 2.879v1.72zM1.734 2.841c-0.010 0.089-0.015 0.176-0.015 0.262v23.176c0 1.587 1.292 2.879 2.88 2.879h17.476c-0.635-0.788-1.015-1.79-1.015-2.879v-23.439h-19.325z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M27.402 30.878h-1.744c-2.536 0-4.598-2.063-4.598-4.598v-20.049h10.941v20.048c0 2.536-2.063 4.598-4.598 4.598zM22.779 7.951v18.329c0 1.587 1.292 2.879 2.879 2.879h1.744c1.587 0 2.879-1.291 2.879-2.879v-18.329h-7.502z"></path>
+<path fill="#492f7f" style="fill: var(--color4, #492f7f)" d="M4.69 6.513h13.084v1.72h-13.084v-1.72z"></path>
+<path fill="#492f7f" style="fill: var(--color4, #492f7f)" d="M4.69 10.876h13.084v1.719h-13.084v-1.719z"></path>
+<path fill="#492f7f" style="fill: var(--color4, #492f7f)" d="M4.69 15.236h13.084v1.719h-13.084v-1.719z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M25.546 7.091h1.719v16.911h-1.719v-16.911z"></path>
+</symbol>
+<symbol id="icon-btn_add" viewBox="0 0 32 32">
+<title>btn_add</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M16 0.797c-8.397 0-15.203 6.806-15.203 15.203 0 4.026 1.567 7.682 4.12 10.401 2.774 2.956 6.711 4.803 11.083 4.803 4.371 0 8.31-1.847 11.083-4.803 2.554-2.718 4.12-6.374 4.12-10.401 0-8.397-6.806-15.203-15.203-15.203z"></path>
+<path fill="#333" style="fill: var(--color5, #333)" d="M16 32c-4.462 0-8.605-1.795-11.664-5.054-2.796-2.977-4.336-6.864-4.336-10.946 0-8.822 7.178-16 16-16s16 7.178 16 16c0 4.082-1.54 7.97-4.335 10.946-3.014 3.212-7.266 5.054-11.665 5.054zM16 1.594c-7.943 0-14.406 6.462-14.406 14.406 0 3.675 1.387 7.174 3.903 9.855 2.755 2.935 6.485 4.551 10.502 4.551 4.018 0 7.748-1.615 10.502-4.55 2.518-2.68 3.903-6.18 3.903-9.855 0.001-7.943-6.461-14.406-14.405-14.406z"></path>
+<path fill="#333" style="fill: var(--color5, #333)" d="M24.518 13.867h-6.385v-6.385h-4.267v6.385h-6.385v4.266h6.385v6.386h4.267v-6.386h6.385z"></path>
+</symbol>
+<symbol id="icon-btn_addfriend" viewBox="0 0 32 32">
+<title>btn_addfriend</title>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M22.35 11.8c0 2.099-1.701 3.8-3.8 3.8s-3.8-1.701-3.8-3.8c0-2.099 1.701-3.8 3.8-3.8s3.8 1.701 3.8 3.8z"></path>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M27.25 23.2c0-2.762-4.007-5-8.95-5s-8.95 2.238-8.95 5c0 0.282 0 0.542 0 0.8h17.892c0-0.25 0.008-0.519 0.008-0.8z"></path>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M4.75 14.8h6.6v1.6h-6.6v-1.6z"></path>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M7.25 12.3h1.6v6.6h-1.6v-6.6z"></path>
+</symbol>
+<symbol id="icon-btn_addpreference" viewBox="0 0 32 32">
+<title>btn_addpreference</title>
+<path fill="#2a8bbe" style="fill: var(--color7, #2a8bbe)" d="M0.587 13.549h30.825v4.901h-30.825v-4.901z"></path>
+<path fill="#2a8bbe" style="fill: var(--color7, #2a8bbe)" d="M13.549 0.588h4.9v30.825h-4.9v-30.825z"></path>
+</symbol>
+<symbol id="icon-btn_all_list_down" viewBox="0 0 32 32">
+<title>btn_all_list_down</title>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M0.455 5.555h17.231v2.462h-17.231v-2.462z"></path>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M0.455 10.109h13.292v2.462h-13.292v-2.462z"></path>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M0.455 15.155v2.462h8.435l-2.311-2.462z"></path>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M28.156 14.907l-7.442 7.929-7.441-7.929h-3.389l10.83 11.539 10.831-11.539z"></path>
+</symbol>
+<symbol id="icon-btn_all_list_up" viewBox="0 0 32 32">
+<title>btn_all_list_up</title>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M0.455 5.555h17.231v2.462h-17.231v-2.462z"></path>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M0.455 10.109h13.292v2.462h-13.292v-2.462z"></path>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M0.455 15.155v2.462h8.435l-2.311-2.462z"></path>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M13.273 26.445l7.442-7.928 7.441 7.928h3.389l-10.83-11.538-10.831 11.538z"></path>
+</symbol>
+<symbol id="icon-btn_change_black" viewBox="0 0 32 32">
+<title>btn_change_black</title>
+<path d="M31.024 7.38l-6.957-7.28v5.475h-16.773c-3.484 0-6.318 2.834-6.318 6.318v3.611h3.61v-3.611c0-1.493 1.215-2.708 2.708-2.708h16.773v5.476l6.957-7.282z"></path>
+<path d="M0.976 24.62l6.958 7.281v-5.476h16.773c3.483 0 6.318-2.834 6.318-6.318v-3.611h-3.61v3.611c0 1.493-1.215 2.708-2.708 2.708h-16.773v-5.476l-6.958 7.281z"></path>
+</symbol>
+<symbol id="icon-btn_change_blue" viewBox="0 0 32 32">
+<title>btn_change_blue</title>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M31.024 7.38l-6.957-7.28v5.475h-16.773c-3.484 0-6.318 2.834-6.318 6.318v3.611h3.61v-3.611c0-1.493 1.215-2.708 2.708-2.708h16.773v5.476l6.957-7.282z"></path>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M0.976 24.62l6.958 7.281v-5.476h16.773c3.483 0 6.318-2.834 6.318-6.318v-3.611h-3.61v3.611c0 1.493-1.215 2.708-2.708 2.708h-16.773v-5.476l-6.958 7.281z"></path>
+</symbol>
+<symbol id="icon-btn_delete" viewBox="0 0 32 32">
+<title>btn_delete</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M27.036 31.301h-22.074c-0.799 0-1.449-0.64-1.449-1.427l-0.742-23.298c0-0.811 0.65-1.451 1.449-1.451h23.559c0.799 0 1.449 0.64 1.449 1.426l-0.744 23.347c0.001 0.762-0.649 1.402-1.447 1.402zM5.050 29.762h21.9l0.735-23.1h-23.371l0.736 23.1z"></path>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M1.503 5.124h28.993v1.538h-28.993v-1.538z"></path>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M22.197 6.564h-12.395c-0.799 0-1.449-0.65-1.449-1.449v-2.968c0-0.799 0.65-1.449 1.449-1.449h12.395c0.799 0 1.449 0.65 1.449 1.449v2.967c0.001 0.799-0.65 1.449-1.449 1.449zM9.892 5.025h12.217v-2.788h-12.217v2.788z"></path>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M15.231 10.166h1.538v17.026h-1.538v-17.026z"></path>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M21.462 12.012h1.538v12.718h-1.538v-12.718z"></path>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M9 12.012h1.538v12.718h-1.538v-12.718z"></path>
+</symbol>
+<symbol id="icon-btn_delete_upphoto" viewBox="0 0 32 32">
+<title>btn_delete_upphoto</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M29.333 16c0 7.364-5.97 13.333-13.333 13.333s-13.333-5.97-13.333-13.333c0-7.364 5.97-13.333 13.333-13.333s13.333 5.97 13.333 13.333z"></path>
+<path fill="#989898" style="fill: var(--color10, #989898)" d="M15.999 29.867c-7.646 0-13.867-6.22-13.867-13.867s6.221-13.867 13.867-13.867c7.646 0 13.867 6.221 13.867 13.867s-6.22 13.867-13.867 13.867zM15.999 3.2c-7.058 0-12.8 5.742-12.8 12.8s5.742 12.8 12.8 12.8 12.8-5.742 12.8-12.8-5.742-12.8-12.8-12.8z"></path>
+<path fill="#989898" style="fill: var(--color10, #989898)" d="M21.39 23.466l-12.856-12.856 2.073-2.073 12.856 12.856-2.073 2.073z"></path>
+<path fill="#989898" style="fill: var(--color10, #989898)" d="M23.465 10.608l-12.856 12.856-2.074-2.074 12.856-12.856 2.074 2.074z"></path>
+</symbol>
+<symbol id="icon-btn_dropdown_n" viewBox="0 0 32 32">
+<title>btn_dropdown_n</title>
+<path d="M32 6.545l-16 18.909-16-18.909z"></path>
+</symbol>
+<symbol id="icon-btn_edit" viewBox="0 0 32 32">
+<title>btn_edit</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M32 9.474l-15.848 15.848-9.474-9.474 15.848-15.848 9.474 9.474z"></path>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M12.655 28.821l-12.655 3.179 3.18-12.654z"></path>
+</symbol>
+<symbol id="icon-btn_field_clear" viewBox="0 0 32 32">
+<title>btn_field_clear</title>
+<path fill="#999" style="fill: var(--color11, #999)" d="M16 0c-8.836 0-16 7.164-16 16s7.164 16 16 16 16-7.164 16-16c0-8.836-7.164-16-16-16zM23.919 21.657l-2.262 2.263-5.657-5.657-5.657 5.657-2.262-2.263 5.657-5.657-5.657-5.657 2.262-2.263 5.657 5.657 5.657-5.657 2.262 2.263-5.657 5.657 5.657 5.657z"></path>
+</symbol>
+<symbol id="icon-btn_info" viewBox="0 0 32 32">
+<title>btn_info</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M16 1.595c7.942 0 14.404 6.462 14.404 14.405s-6.462 14.404-14.404 14.404c-7.941 0-14.404-6.462-14.404-14.404s6.463-14.405 14.404-14.405zM16 0.343c-8.647 0-15.656 7.010-15.656 15.657s7.009 15.657 15.656 15.657 15.657-7.010 15.657-15.657-7.010-15.657-15.657-15.657zM15.776 6.838c-1.007 0-1.822 0.816-1.822 1.824s0.816 1.823 1.822 1.823c1.008 0 1.825-0.816 1.825-1.823s-0.817-1.824-1.825-1.824zM17.423 23.828v-11.386h-4.271v0.712h1.424v10.675h-1.424v0.712h5.693v-0.712h-1.423z"></path>
+</symbol>
+<symbol id="icon-btn_list_delete" viewBox="0 0 32 32">
+<title>btn_list_delete</title>
+<path fill="#ec2327" style="fill: var(--color12, #ec2327)" d="M25.423 16c0 5.204-4.219 9.423-9.423 9.423s-9.423-4.219-9.423-9.423c0-5.204 4.219-9.423 9.423-9.423s9.423 4.219 9.423 9.423z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M11.118 18.985l7.868-7.868 1.896 1.896-7.868 7.868-1.896-1.896z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M18.986 20.883l-7.869-7.869 1.897-1.897 7.869 7.869-1.897 1.897z"></path>
+</symbol>
+<symbol id="icon-btn_list_down" viewBox="0 0 32 32">
+<title>btn_list_down</title>
+<path fill="#999" style="fill: var(--color11, #999)" d="M26.993 7.477l-10.993 11.713-10.994-11.713h-5.006l16 17.046 16-17.046z"></path>
+</symbol>
+<symbol id="icon-btn_list_up" viewBox="0 0 32 32">
+<title>btn_list_up</title>
+<path fill="#999" style="fill: var(--color11, #999)" d="M5.007 24.523l10.993-11.713 10.994 11.713h5.006l-16-17.046-16 17.046z"></path>
+</symbol>
+<symbol id="icon-btn_next" viewBox="0 0 32 32">
+<title>btn_next</title>
+<path d="M8.807 7.693l14.386 8.306-14.386 8.307z"></path>
+</symbol>
+<symbol id="icon-btn_pre" viewBox="0 0 32 32">
+<title>btn_pre</title>
+<path d="M23.193 24.306l-14.386-8.306 14.386-8.307z"></path>
+</symbol>
+<symbol id="icon-btn_qplay_download" viewBox="0 0 32 32">
+<title>btn_qplay_download</title>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M15.242 7.859h1.6v15.6h-1.6v-15.6z"></path>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M15.992 24.141l-10.515-10.515 1.131-1.131 10.515 10.515-1.131 1.131z"></path>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M14.876 23.010l10.515-10.515 1.131 1.131-10.515 10.515-1.131-1.131z"></path>
+</symbol>
+<symbol id="icon-btn_upload" viewBox="0 0 32 32">
+<title>btn_upload</title>
+<path d="M16.009 2.981l13.325 13.325-1.265 1.266-13.326-13.326z"></path>
+<path d="M15.993 2.995l-13.326 13.326 1.265 1.264 13.325-13.326z"></path>
+<path d="M15.144 5.194l-0.058 18.958 1.79 0.011 0.056-18.959z"></path>
+<path d="M5.936 28.962l20.698 0.058 0.010-1.789-20.698-0.057z"></path>
+</symbol>
+<symbol id="icon-btn_windowclose" viewBox="0 0 32 32">
+<title>btn_windowclose</title>
+<path d="M9.685 20.582l10.897-10.897 1.732 1.732-10.897 10.897-1.732-1.732z"></path>
+<path d="M11.418 9.685l10.897 10.897-1.733 1.733-10.897-10.897 1.732-1.732z"></path>
+</symbol>
+<symbol id="icon-btn_priority_d" viewBox="0 0 32 32">
+<title>btn_priority_d</title>
+<path fill="#999" style="fill: var(--color11, #999)" d="M29.14 20.362l-13.141 11.857-13.14-11.857z"></path>
+<path fill="#999" style="fill: var(--color11, #999)" d="M2.859 11.638l13.14-11.857 13.141 11.857z"></path>
+</symbol>
+<symbol id="icon-btn_priority_down" viewBox="0 0 32 32">
+<title>btn_priority_down</title>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M29.14 20.362l-13.141 11.857-13.14-11.857z"></path>
+<path fill="#999" style="fill: var(--color11, #999)" d="M2.859 11.638l13.14-11.857 13.141 11.857z"></path>
+</symbol>
+<symbol id="icon-btn_priority_up" viewBox="0 0 32 32">
+<title>btn_priority_up</title>
+<path fill="#2f89bc" style="fill: var(--color6, #2f89bc)" d="M2.859 11.638l13.141-11.857 13.14 11.857z"></path>
+<path fill="#999" style="fill: var(--color11, #999)" d="M29.14 20.362l-13.14 11.857-13.141-11.857z"></path>
+</symbol>
+<symbol id="icon-btn_photo_add" viewBox="0 0 32 32">
+<title>btn_photo_add</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M3.893 14.245h24.215v3.509h-24.215v-3.509z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M14.245 3.892h3.509v24.215h-3.509v-24.215z"></path>
+</symbol>
+<symbol id="icon-btn_photo_camera" viewBox="0 0 32 32">
+<title>btn_photo_camera</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M28.525 8.468l-3.403-0.159-2.123-5.735h-14l-1.807 5.735-3.719 0.159c-1.628 0-2.947 1.319-2.947 2.947v15.063c0 1.628 1.319 2.947 2.947 2.947h25.051c1.627 0 2.947-1.32 2.947-2.947v-15.063c0-1.627-1.319-2.947-2.947-2.947zM16 25.005c-4.148 0-7.512-3.363-7.512-7.512s3.363-7.511 7.512-7.511 7.511 3.362 7.511 7.511-3.362 7.512-7.511 7.512z"></path>
+</symbol>
+<symbol id="icon-btn_photo_img" viewBox="0 0 32 32">
+<title>btn_photo_img</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M28.525 2.574h-25.051c-1.627 0-2.947 1.32-2.947 2.947v20.956c0 1.628 1.319 2.947 2.947 2.947h25.050c1.627 0 2.947-1.32 2.947-2.947v-20.956c0-1.628-1.319-2.948-2.947-2.948z"></path>
+<path fill="#2b88bb" style="fill: var(--color13, #2b88bb)" d="M3.566 25.553v-7.079l5.477-7.639 8.793 9.081 4.613-3.604 7.495 9.226z"></path>
+</symbol>
+<symbol id="icon-btn_yellowpage_favorite_d" viewBox="0 0 32 32">
+<title>btn_yellowpage_favorite_d</title>
+<path fill="none" stroke="#2e89bc" stroke-width="2.1333" stroke-miterlimit="10" stroke-linecap="butt" stroke-linejoin="miter" style="stroke: var(--color9, #2e89bc)" d="M16 3.231l4.148 8.406 9.278 1.348-6.714 6.544 1.585 9.239-8.297-4.362-8.298 4.362 1.585-9.239-6.713-6.544 9.277-1.348z"></path>
+</symbol>
+<symbol id="icon-btn_yellowpage_favorite_s" viewBox="0 0 32 32">
+<title>btn_yellowpage_favorite_s</title>
+<path fill="#2e89bc" stroke="#2e89bc" stroke-width="2.1333" stroke-miterlimit="10" stroke-linecap="butt" stroke-linejoin="miter" style="stroke: var(--color9, #2e89bc)" style="fill: var(--color9, #2e89bc)" d="M16 3.231l4.148 8.406 9.278 1.348-6.714 6.544 1.585 9.239-8.297-4.362-8.298 4.362 1.585-9.239-6.713-6.544 9.277-1.348z"></path>
+</symbol>
+<symbol id="icon-btn_floating_add" viewBox="0 0 32 32">
+<title>btn_floating_add</title>
+<path fill="#2a8bbe" style="fill: var(--color7, #2a8bbe)" d="M32 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.837 7.163-16 16-16s16 7.163 16 16z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M15.163 9.302h1.674v13.395h-1.674v-13.395z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M9.302 15.163h13.395v1.674h-13.395v-1.674z"></path>
+</symbol>
+<symbol id="icon-btn_floating_addalbum" viewBox="0 0 32 32">
+<title>btn_floating_addalbum</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M32.023 16c0 8.849-7.174 16.023-16.023 16.023s-16.023-7.174-16.023-16.023c0-8.849 7.174-16.023 16.023-16.023s16.023 7.174 16.023 16.023z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M20.15 22.614h-9.163c-0.526 0-0.954-0.428-0.954-0.954v-9.163c0-0.526 0.428-0.954 0.954-0.954h9.163c0.526 0 0.954 0.428 0.954 0.954v9.163c0 0.526-0.428 0.954-0.954 0.954zM10.987 12.473c-0.013 0-0.024 0.011-0.024 0.024v9.163c0 0.013 0.011 0.023 0.024 0.023h9.163c0.013 0 0.023-0.010 0.023-0.023v-9.163c0-0.013-0.011-0.024-0.023-0.024h-9.163z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M21.908 9.574h-9.164c-0.465 0-0.843 0.358-0.886 0.811h10.050c0.046 0 0.083 0.037 0.083 0.083h0.023v10.047c0.443-0.053 0.788-0.427 0.788-0.884v-9.163c0-0.493-0.401-0.895-0.894-0.895z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M13.046 16.779h5.022v0.728h-5.022v-0.728z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M15.193 14.632h0.728v5.022h-0.728v-5.023z"></path>
+</symbol>
+<symbol id="icon-btn_floating_addphoto" viewBox="0 0 32 32">
+<title>btn_floating_addphoto</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M32.023 16c0 8.849-7.174 16.023-16.023 16.023s-16.023-7.174-16.023-16.023c0-8.849 7.174-16.023 16.023-16.023s16.023 7.174 16.023 16.023z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M20.708 21.684h-9.163c-0.526 0-0.954-0.428-0.954-0.954v-9.163c0-0.526 0.428-0.954 0.954-0.954h9.163c0.526 0 0.954 0.428 0.954 0.954v9.163c0 0.526-0.428 0.954-0.954 0.954zM11.545 11.543c-0.013 0-0.024 0.011-0.024 0.024v9.163c0 0.013 0.011 0.023 0.024 0.023h9.163c0.013 0 0.023-0.010 0.023-0.023v-9.163c0-0.013-0.011-0.024-0.023-0.024h-9.163z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M13.604 15.849h5.022v0.728h-5.022v-0.728z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M15.751 13.702h0.728v5.023h-0.728v-5.023z"></path>
+</symbol>
+<symbol id="icon-btn_floating_chatroom" viewBox="0 0 32 32">
+<title>btn_floating_chatroom</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M32.023 16c0 8.849-7.174 16.023-16.023 16.023s-16.023-7.174-16.023-16.023c0-8.849 7.174-16.023 16.023-16.023s16.023 7.174 16.023 16.023z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M21.89 19.762c0.908-1.11 1.445-2.486 1.445-3.975 0-3.684-3.284-6.67-7.335-6.67s-7.335 2.987-7.335 6.67c0 3.684 3.284 6.671 7.335 6.671 1.191 0 2.314-0.26 3.308-0.717l3.44 1.144-0.858-3.122z"></path>
+<path fill="none" stroke="#2e89bc" stroke-width="1.1163" stroke-miterlimit="10" stroke-linecap="butt" stroke-linejoin="miter" style="stroke: var(--color9, #2e89bc)" d="M11.913 14.667h5.43"></path>
+<path fill="none" stroke="#2e89bc" stroke-width="1.1163" stroke-miterlimit="10" stroke-linecap="butt" stroke-linejoin="miter" style="stroke: var(--color9, #2e89bc)" d="M11.913 17.178h7.814"></path>
+</symbol>
+<symbol id="icon-icon_booked_success" viewBox="0 0 32 32">
+<title>icon_booked_success</title>
+<path fill="#47a447" style="fill: var(--color14, #47a447)" d="M28.254 3.668l-17.639 17.795-7.18-7.182-3.434 3.747 10.615 10.303 21.385-21.231z"></path>
+</symbol>
+<symbol id="icon-icon_chatroom_fail" viewBox="0 0 32 32">
+<title>icon_chatroom_fail</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M31.2 16c0 8.395-6.805 15.2-15.2 15.2s-15.2-6.805-15.2-15.2c0-8.395 6.805-15.2 15.2-15.2s15.2 6.805 15.2 15.2z"></path>
+<path fill="#d6d6d6" style="fill: var(--color15, #d6d6d6)" d="M16 32c-8.822 0-16-7.178-16-16s7.178-16 16-16 16 7.178 16 16-7.178 16-16 16zM16 1.6c-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4 14.4-6.46 14.4-14.4-6.46-14.4-14.4-14.4z"></path>
+<path fill="#989898" style="fill: var(--color10, #989898)" d="M14.669 22.004c0-0.357 0.126-0.659 0.378-0.907s0.545-0.372 0.881-0.372c0.328 0 0.62 0.124 0.875 0.372s0.383 0.55 0.383 0.907c0 0.335-0.121 0.627-0.362 0.875s-0.521 0.372-0.842 0.372c-0.387 0-0.702-0.124-0.946-0.372s-0.366-0.54-0.366-0.875zM16.857 6.101l-0.209 12.206h-1.498l-0.208-12.206h1.915z"></path>
+</symbol>
+<symbol id="icon-icon_favorite" viewBox="0 0 32 32">
+<title>icon_favorite</title>
+<path fill="#e6be20" style="fill: var(--color16, #e6be20)" d="M15.999 0.783l4.945 10.017 11.057 1.607-8.001 7.799 1.889 11.009-9.889-5.199-9.889 5.199 1.89-11.009-7.999-7.799 11.055-1.607z"></path>
+</symbol>
+<symbol id="icon-icon_link" viewBox="0 0 32 32">
+<title>icon_link</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M11.511 22.311h-5.469c-3.383 0-6.135-2.831-6.135-6.311s2.752-6.311 6.135-6.311h7.302c3.383 0 6.135 2.831 6.135 6.311 0 0.215-0.012 0.438-0.035 0.663-0.072 0.703-0.7 1.216-1.403 1.143s-1.216-0.7-1.143-1.403c0.014-0.133 0.021-0.267 0.021-0.402 0-2.068-1.604-3.751-3.575-3.751h-7.302c-1.972 0-3.575 1.682-3.575 3.751s1.603 3.751 3.575 3.751h5.469c0.707 0 1.28 0.573 1.28 1.28 0 0.706-0.573 1.28-1.28 1.28z"></path>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M25.958 22.311h-7.302c-3.383 0-6.135-2.831-6.135-6.311 0-0.215 0.012-0.437 0.034-0.662 0.071-0.703 0.697-1.218 1.402-1.145 0.703 0.071 1.216 0.698 1.145 1.402-0.014 0.134-0.021 0.268-0.021 0.405 0 2.068 1.604 3.751 3.575 3.751h7.302c1.972 0 3.575-1.683 3.575-3.751s-1.603-3.751-3.575-3.751h-5.469c-0.707 0-1.28-0.573-1.28-1.28s0.573-1.28 1.28-1.28h5.469c3.383 0 6.135 2.831 6.135 6.311s-2.752 6.311-6.135 6.311z"></path>
+</symbol>
+<symbol id="icon-icon_member" viewBox="0 0 32 32">
+<title>icon_member</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M20.751 10.448c0 3.024-2.127 5.475-4.751 5.475s-4.751-2.451-4.751-5.475c0-3.024 2.127-5.475 4.751-5.475s4.751 2.451 4.751 5.475z"></path>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M26.859 26.954c0-4.757-4.862-9.048-10.859-9.048s-10.859 4.291-10.859 9.048c0 0.025 0.002 0.048 0.002 0.072h21.713c0.001-0.024 0.003-0.047 0.003-0.072z"></path>
+</symbol>
+<symbol id="icon-icon_memberdone" viewBox="0 0 32 32">
+<title>icon_memberdone</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M22.437 9.523l-9.266 9.348-3.771-3.773-1.805 1.968 5.576 5.412 11.234-11.152z"></path>
+</symbol>
+<symbol id="icon-icon_phone" viewBox="0 0 32 32">
+<title>icon_phone</title>
+<path fill="#2e89bc" style="fill: var(--color9, #2e89bc)" d="M5.88 1.415c1.078 0.078 1.904 1.673 2.474 2.457 0.886 1.222 1.687 2.504 2.397 3.835 0.161 0.306 0.321 0.619 0.376 0.961 0.2 1.222-0.922 2.199-1.607 3.231-0.232 0.351-0.428 0.764-0.353 1.177 0.055 0.296 0.24 0.549 0.422 0.789 2.278 2.994 4.919 5.712 7.849 8.080 0.405 0.327 0.845 0.661 1.364 0.724 1.427 0.174 2.32-1.676 3.733-1.939 0.804-0.149 1.537 0.269 2.257 0.654 1.728 0.925 3.45 1.942 5.007 3.133 0.31 0.237 0.585 0.542 0.711 0.909 0.119 0.344 0.078 0.724-0.011 1.077-0.203 0.801-0.647 1.52-1.153 2.175-0.457 0.591-0.983 1.15-1.647 1.498-0.614 0.321-1.316 0.446-2.011 0.462-1.8 0.043-3.543-0.611-5.168-1.385-5.771-2.75-10.664-7.142-14.474-12.258-1.742-2.338-3.285-4.863-4.171-7.636-0.371-1.156-0.624-2.391-0.376-3.578 0.22-1.068 0.841-2 1.629-2.743 0.563-0.53 1.912-1.746 2.75-1.624zM5.873 0.15c-1.603 0.363-3.011 1.311-3.981 2.376-0.962 1.053-1.622 2.127-1.746 3.568-0.107 1.214 0.127 2.439 0.486 3.595 0.839 2.694 2.358 5.171 3.985 7.46 3.075 4.321 6.832 7.983 11.242 10.94 2.796 1.874 6.157 3.794 9.631 3.794 0.835 0 1.718-0.086 2.5-0.391 0.564-0.222 1.008-0.63 1.443-1.040 1.074-1.012 2.020-2.288 2.297-3.763 0.090-0.484 0.324-1.61-0.065-1.973-1.968-1.837-4.193-3.238-6.027-4.316-0.443-0.261-0.915-0.466-1.383-0.679-0.593-0.27-1.119-0.528-1.781-0.345s-1.265 0.624-1.839 0.984c-0.161 0.101-1.584 1.075-1.653 1.073-0.71-0.393-1.97-1.374-4.328-3.705-2.343-2.319-3.716-4.174-4.115-4.878 0.521-0.796 1.005-1.62 1.415-2.478 0.252-0.53 0.619-1.112 0.535-1.726-0.065-0.476-0.364-0.993-0.568-1.423-0.504-1.055-1.141-2.030-1.792-3.002-0.58-0.868-1.17-1.747-1.832-2.554-0.328-0.4-0.693-0.953-1.148-1.226-0.391-0.234-0.836-0.388-1.274-0.288z"></path>
+</symbol>
+<symbol id="icon-icon_reject" viewBox="0 0 32 32">
+<title>icon_reject</title>
+<path fill="#ed1f24" style="fill: var(--color2, #ed1f24)" d="M15.996 32c-4.274 0-8.294-1.665-11.316-4.687-6.24-6.238-6.24-16.389 0-22.628 3.023-3.022 7.042-4.686 11.316-4.686s8.294 1.664 11.316 4.686c3.023 3.022 4.687 7.040 4.687 11.314s-1.665 8.292-4.687 11.314c-3.023 3.022-7.042 4.686-11.316 4.686zM15.996 2.807c-3.525 0-6.839 1.372-9.332 3.864-5.145 5.144-5.145 13.514 0 18.658 2.493 2.492 5.807 3.864 9.332 3.864s6.839-1.372 9.33-3.864c2.493-2.492 3.866-5.805 3.866-9.329s-1.373-6.837-3.865-9.329c-2.492-2.492-5.806-3.864-9.331-3.864z"></path>
+<path fill="#ed1f24" style="fill: var(--color2, #ed1f24)" d="M6.222 4.243l21.091 21.085-1.984 1.985-21.091-21.085 1.984-1.985z"></path>
+</symbol>
+<symbol id="icon-icon_saerch" viewBox="0 0 32 32">
+<title>icon_saerch</title>
+<path fill="#999" style="fill: var(--color11, #999)" d="M20.737 6.967c-3.213-3.857-8.963-4.381-12.819-1.169-3.857 3.212-4.38 8.963-1.169 12.819 2.879 3.459 7.803 4.234 11.57 2.040l6.37 7.649 2.665-2.219-6.423-7.712c2.565-3.302 2.588-8.067-0.195-11.407zM18.182 18.121c-2.937 2.446-7.32 2.047-9.768-0.891-2.446-2.939-2.047-7.319 0.892-9.767 2.938-2.447 7.319-2.047 9.766 0.891 2.448 2.938 2.049 7.32-0.89 9.767z"></path>
+</symbol>
+<symbol id="icon-icon_urgent" viewBox="0 0 32 32">
+<title>icon_urgent</title>
+<path fill="#ec2529" style="fill: var(--color17, #ec2529)" d="M26.779 24.751l-3.366-8.459c0-0.023 0.004-0.044 0.004-0.067v-3.825c0-4.046-2.7-7.393-6.231-8.017h-2.076v-0.049c-3.676 0.484-6.527 3.906-6.527 8.066v3.825c0 0.222 0.014 0.44 0.030 0.657l-3.393 7.671 7.553 0.070c0 0.014-0.005 0.029-0.005 0.043 0 1.656 1.344 3 3 3h0.462c1.652 0 2.989-1.334 2.999-2.983l7.55 0.070z"></path>
+</symbol>
+<symbol id="icon-icon_view_blue" viewBox="0 0 32 32">
+<title>icon_view_blue</title>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M0.953 16.098c0 0 13.89-20.835 30.095-0.089-2.137 2.761-15.136 19.143-30.095 0.089z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M23.345 16c0 4.057-3.289 7.345-7.345 7.345s-7.345-3.289-7.345-7.345c0-4.057 3.289-7.345 7.345-7.345s7.345 3.289 7.345 7.345z"></path>
+<path fill="#2d89bc" style="fill: var(--color8, #2d89bc)" d="M19.428 16c0 1.893-1.535 3.428-3.428 3.428s-3.428-1.535-3.428-3.428c0-1.893 1.535-3.428 3.428-3.428s3.428 1.535 3.428 3.428z"></path>
+</symbol>
+<symbol id="icon-icon_view_gray" viewBox="0 0 32 32">
+<title>icon_view_gray</title>
+<path fill="#b0afb0" style="fill: var(--color18, #b0afb0)" d="M0.953 16.098c0 0 13.89-20.835 30.095-0.089-2.137 2.761-15.136 19.143-30.095 0.089z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M23.345 16c0 4.057-3.289 7.345-7.345 7.345s-7.345-3.289-7.345-7.345c0-4.057 3.289-7.345 7.345-7.345s7.345 3.289 7.345 7.345z"></path>
+<path fill="#b0afb0" style="fill: var(--color18, #b0afb0)" d="M19.428 16c0 1.893-1.535 3.428-3.428 3.428s-3.428-1.535-3.428-3.428c0-1.893 1.535-3.428 3.428-3.428s3.428 1.535 3.428 3.428z"></path>
+</symbol>
+<symbol id="icon-icon_warm" viewBox="0 0 32 32">
+<title>icon_warm</title>
+<path fill="#ed1f24" style="fill: var(--color2, #ed1f24)" d="M2.462 29.662c-1.743 0-2.455-1.234-1.584-2.743l13.538-23.449c0.871-1.508 2.296-1.508 3.167 0l13.538 23.449c0.871 1.509 0.159 2.743-1.585 2.743h-27.075z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M18.182 25.913c0 0.175-0.142 0.317-0.317 0.317h-3.591c-0.174 0-0.318-0.141-0.318-0.317v-3.59c0-0.175 0.143-0.318 0.318-0.318h3.591c0.175 0 0.317 0.142 0.317 0.318v3.59z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M18.112 19.647c0 0.175-0.142 0.316-0.317 0.316h-3.59c-0.175 0-0.318-0.141-0.318-0.316l-0.422-7.85c0-0.175 0.142-0.317 0.317-0.317h4.436c0.175 0 0.317 0.141 0.317 0.317l-0.423 7.85z"></path>
+</symbol>
+<symbol id="icon-icon_withdraw" viewBox="0 0 32 32">
+<title>icon_withdraw</title>
+<path fill="#278bbe" style="fill: var(--color19, #278bbe)" d="M23.119 13.030h-11.485v-8.452l-11.634 10.825 11.634 10.825v-7.686h11.485c1.858 0 3.369 1.512 3.369 3.369v5.512h5.512v-5.512c0-4.897-3.984-8.881-8.881-8.881z"></path>
+</symbol>
+<symbol id="icon-icon_reddot" viewBox="0 0 32 32">
+<title>icon_reddot</title>
+<path fill="#ee1d3a" style="fill: var(--color20, #ee1d3a)" d="M28.8 16c0 7.069-5.731 12.8-12.8 12.8s-12.8-5.731-12.8-12.8c0-7.069 5.731-12.8 12.8-12.8s12.8 5.731 12.8 12.8z"></path>
+</symbol>
+<symbol id="icon-checkbox_photo_circle_n" viewBox="0 0 32 32">
+<title>checkbox_photo_circle_n</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M15.993 29.966c-7.705 0-13.973-6.268-13.973-13.973s6.268-13.973 13.973-13.973 13.974 6.268 13.974 13.973c0 7.705-6.269 13.973-13.974 13.973zM15.993 3.030c-7.147 0-12.963 5.815-12.963 12.963s5.815 12.963 12.963 12.963c7.148 0 12.963-5.815 12.963-12.963s-5.815-12.963-12.963-12.963z"></path>
+</symbol>
+<symbol id="icon-checkbox_photo_cercle_s" viewBox="0 0 32 32">
+<title>checkbox_photo_cercle_s</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M29.461 15.993c0 7.438-6.030 13.468-13.468 13.468s-13.468-6.030-13.468-13.468c0-7.438 6.030-13.468 13.468-13.468s13.468 6.030 13.468 13.468z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M15.993 29.966c-7.705 0-13.973-6.268-13.973-13.973s6.268-13.973 13.973-13.973 13.973 6.268 13.973 13.973-6.268 13.973-13.973 13.973zM15.993 3.030c-7.148 0-12.963 5.815-12.963 12.963s5.815 12.963 12.963 12.963c7.148 0 12.963-5.815 12.963-12.963s-5.815-12.963-12.963-12.963z"></path>
+<path fill="#0eb6b6" style="fill: var(--color21, #0eb6b6)" d="M27.466 10.817l-3.556-3.556-10.37 10.37-5.45-5.45-3.556 3.556 8.98 8.981 0.005-0.006 0.026 0.026z"></path>
+</symbol>
+<symbol id="icon-checkbox_qplay_n" viewBox="0 0 32 32">
+<title>checkbox_qplay_n</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M30.263 16.105c0 7.848-6.362 14.211-14.211 14.211s-14.211-6.362-14.211-14.211c0-7.848 6.362-14.211 14.211-14.211s14.211 6.362 14.211 14.211z"></path>
+<path fill="#666766" style="fill: var(--color22, #666766)" d="M16 31.158c-8.358 0-15.158-6.8-15.158-15.158s6.8-15.158 15.158-15.158 15.158 6.8 15.158 15.158-6.8 15.158-15.158 15.158zM16 2.055c-7.69 0-13.945 6.256-13.945 13.945s6.256 13.945 13.945 13.945 13.945-6.256 13.945-13.945-6.256-13.945-13.945-13.945z"></path>
+</symbol>
+<symbol id="icon-checkbox_qplay_s" viewBox="0 0 32 32">
+<title>checkbox_qplay_s</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M30.263 16.105c0 7.848-6.362 14.211-14.211 14.211s-14.211-6.362-14.211-14.211c0-7.848 6.362-14.211 14.211-14.211s14.211 6.362 14.211 14.211z"></path>
+<path fill="#ed1f24" style="fill: var(--color2, #ed1f24)" d="M31.158 16c0 8.371-6.786 15.158-15.158 15.158s-15.158-6.786-15.158-15.158c0-8.371 6.786-15.158 15.158-15.158s15.158 6.786 15.158 15.158z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M24.361 7.561l-12.071 12.179-4.914-4.915-2.35 2.564 7.264 7.051 14.635-14.529z"></path>
+</symbol>
+<symbol id="icon-checkbox_table_circlebox" viewBox="0 0 32 32">
+<title>checkbox_table_circlebox</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M31.239 16.001c0 8.416-6.822 15.238-15.238 15.238s-15.238-6.822-15.238-15.238c0-8.416 6.822-15.238 15.238-15.238s15.238 6.822 15.238 15.238z"></path>
+<path fill="#d6d7d7" style="fill: var(--color23, #d6d7d7)" d="M16 32c-8.822 0-16-7.178-16-15.999 0-8.823 7.178-16.001 16-16.001s16 7.178 16 16.001c0 8.822-7.177 15.999-16 15.999zM16 1.524c-7.982 0-14.476 6.494-14.476 14.477s6.494 14.476 14.476 14.476c7.982 0 14.476-6.493 14.476-14.476s-6.494-14.477-14.476-14.477z"></path>
+</symbol>
+<symbol id="icon-checkbox_table_circlebox_select" viewBox="0 0 32 32">
+<title>checkbox_table_circlebox_select</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M32 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.837 7.163-16 16-16s16 7.163 16 16z"></path>
+<path fill="#0eb6b6" style="fill: var(--color21, #0eb6b6)" d="M28.755 10.235l-3.955-3.955-11.536 11.537-6.063-6.063-3.955 3.955 9.989 9.99 0.006-0.006 0.028 0.029z"></path>
+</symbol>
+<symbol id="icon-radio_blue_n" viewBox="0 0 32 32">
+<title>radio_blue_n</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M29.333 16c0 7.364-5.97 13.333-13.333 13.333s-13.333-5.97-13.333-13.333c0-7.364 5.97-13.333 13.333-13.333s13.333 5.97 13.333 13.333z"></path>
+<path fill="#39c" style="fill: var(--color24, #39c)" d="M16 30.133c-7.793 0-14.133-6.34-14.133-14.133s6.34-14.133 14.133-14.133 14.133 6.34 14.133 14.133-6.34 14.133-14.133 14.133zM16 3.467c-6.911 0-12.533 5.622-12.533 12.533s5.622 12.533 12.533 12.533 12.533-5.622 12.533-12.533-5.622-12.533-12.533-12.533z"></path>
+</symbol>
+<symbol id="icon-radio_blue_s" viewBox="0 0 32 32">
+<title>radio_blue_s</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M29.333 16c0 7.364-5.97 13.333-13.333 13.333s-13.333-5.97-13.333-13.333c0-7.364 5.97-13.333 13.333-13.333s13.333 5.97 13.333 13.333z"></path>
+<path fill="#39c" style="fill: var(--color24, #39c)" d="M16 30.133c-7.793 0-14.133-6.34-14.133-14.133s6.34-14.133 14.133-14.133 14.133 6.34 14.133 14.133-6.34 14.133-14.133 14.133zM16 3.467c-6.911 0-12.533 5.622-12.533 12.533s5.622 12.533 12.533 12.533 12.533-5.622 12.533-12.533-5.622-12.533-12.533-12.533z"></path>
+<path fill="#39c" style="fill: var(--color24, #39c)" d="M16 9.059c-3.828 0-6.941 3.114-6.941 6.941s3.114 6.942 6.941 6.942 6.942-3.114 6.942-6.942-3.114-6.941-6.942-6.941z"></path>
+</symbol>
+<symbol id="icon-radio_purple_n" viewBox="0 0 32 32">
+<title>radio_purple_n</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M29.333 16c0 7.364-5.97 13.333-13.333 13.333s-13.333-5.97-13.333-13.333c0-7.364 5.97-13.333 13.333-13.333s13.333 5.97 13.333 13.333z"></path>
+<path fill="#493080" style="fill: var(--color25, #493080)" d="M16 30.133c-7.793 0-14.133-6.34-14.133-14.133s6.34-14.133 14.133-14.133 14.133 6.34 14.133 14.133-6.34 14.133-14.133 14.133zM16 3.467c-6.911 0-12.533 5.622-12.533 12.533s5.622 12.533 12.533 12.533 12.533-5.622 12.533-12.533-5.622-12.533-12.533-12.533z"></path>
+</symbol>
+<symbol id="icon-radio_purple_s" viewBox="0 0 32 32">
+<title>radio_purple_s</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M29.333 16c0 7.364-5.97 13.333-13.333 13.333s-13.333-5.97-13.333-13.333c0-7.364 5.97-13.333 13.333-13.333s13.333 5.97 13.333 13.333z"></path>
+<path fill="#493080" style="fill: var(--color25, #493080)" d="M16 30.133c-7.793 0-14.133-6.34-14.133-14.133s6.34-14.133 14.133-14.133 14.133 6.34 14.133 14.133-6.34 14.133-14.133 14.133zM16 3.467c-6.911 0-12.533 5.622-12.533 12.533s5.622 12.533 12.533 12.533 12.533-5.622 12.533-12.533-5.622-12.533-12.533-12.533z"></path>
+<path fill="#493080" style="fill: var(--color25, #493080)" d="M21.341 16c0 2.95-2.391 5.341-5.341 5.341s-5.341-2.391-5.341-5.341c0-2.95 2.391-5.341 5.341-5.341s5.341 2.391 5.341 5.341z"></path>
+<path fill="#493080" style="fill: var(--color25, #493080)" d="M16 22.942c-3.828 0-6.941-3.114-6.941-6.942s3.114-6.941 6.941-6.941 6.942 3.114 6.942 6.941-3.114 6.942-6.942 6.942zM16 12.259c-2.063 0-3.741 1.678-3.741 3.741s1.678 3.742 3.741 3.742 3.742-1.678 3.742-3.742-1.679-3.741-3.742-3.741z"></path>
+</symbol>
+<symbol id="icon-switch_c" viewBox="0 0 32 32">
+<title>switch_c</title>
+<path fill="#989898" style="fill: var(--color10, #989898)" d="M-0.104 16c0-4.553 3.691-8.243 8.243-8.243h15.722c4.553 0 8.243 3.691 8.243 8.243v0c0 4.553-3.691 8.243-8.243 8.243h-15.722c-4.553 0-8.243-3.691-8.243-8.243v0z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M14.713 16.228c0 3.246-2.632 5.878-5.878 5.878s-5.878-2.632-5.878-5.878c0-3.246 2.632-5.878 5.878-5.878s5.878 2.632 5.878 5.878z"></path>
+</symbol>
+<symbol id="icon-switch_o" viewBox="0 0 32 32">
+<title>switch_o</title>
+<path fill="#2b8bbe" style="fill: var(--color26, #2b8bbe)" d="M32.104 16c0 4.553-3.691 8.243-8.243 8.243h-15.722c-4.553 0-8.243-3.691-8.243-8.243v0c0-4.553 3.691-8.243 8.243-8.243h15.722c4.553 0 8.243 3.691 8.243 8.243v0z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M29.043 15.772c0 3.246-2.632 5.878-5.878 5.878s-5.878-2.632-5.878-5.878c0-3.246 2.632-5.878 5.878-5.878s5.878 2.632 5.878 5.878z"></path>
+</symbol>
+<symbol id="icon-bg_event_date" viewBox="0 0 32 32">
+<title>bg_event_date</title>
+<path fill="#fdfdfe" style="fill: var(--color27, #fdfdfe)" d="M31.478 16c0 8.548-6.93 15.478-15.478 15.478s-15.478-6.93-15.478-15.478c0-8.548 6.93-15.478 15.478-15.478s15.478 6.93 15.478 15.478z"></path>
+<path fill="#00b3b4" style="fill: var(--color28, #00b3b4)" d="M16 32c-8.822 0-16-7.178-16-16s7.178-16 16-16 16 7.178 16 16-7.178 16-16 16zM16 1.043c-8.247 0-14.957 6.709-14.957 14.957s6.709 14.957 14.957 14.957c8.247 0 14.957-6.71 14.957-14.957s-6.71-14.957-14.957-14.957z"></path>
+</symbol>
+<symbol id="icon-img_default_group" viewBox="0 0 32 32">
+<title>img_default_group</title>
+<path fill="#e5e5e5" style="fill: var(--color29, #e5e5e5)" d="M32 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.837 7.163-16 16-16s16 7.163 16 16z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M18.052 15.552c1.118-0.69 1.866-1.923 1.866-3.333 0-2.164-1.754-3.918-3.918-3.918-1.333 0-2.51 0.668-3.217 1.686-0.144 0.207-0.268 0.428-0.371 0.662-0.211 0.481-0.33 1.012-0.33 1.57 0 1.243 0.582 2.347 1.486 3.064 0.122 0.097 0.247 0.187 0.38 0.269-0.349 0.113-0.686 0.257-1.007 0.423-2.064 1.071-3.492 3.191-3.583 5.655-0.003 0.083-0.010 0.164-0.010 0.247 0 0.024 0.002 0.224 0.003 0.482 0.004 0.533 0.009 1.318 0.009 1.341h13.28c0-0.638 0.012-1.19 0.012-1.822-0-2.957-1.931-5.46-4.599-6.325z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M8.671 13.229c0 0.94 0.386 1.814 1.056 2.442-1.904 0.884-3.143 2.791-3.143 4.932 0 0.034 0.004 0.514 0.005 0.902l0.004 0.853h2.302c-0.002-0.258-0.003-0.457-0.003-0.482 0-0.084 0.007-0.165 0.010-0.247h-1.583l-0.001-0.129c-0.002-0.386-0.005-0.863-0.005-0.898 0-2.049 1.31-3.85 3.26-4.482l0.75-0.244-0.671-0.413c-0.783-0.483-1.252-1.318-1.252-2.234 0-1.374 1.062-2.5 2.408-2.612v-0.732c-1.748 0.114-3.137 1.568-3.137 3.345z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M23.329 13.229c0 0.94-0.386 1.814-1.056 2.442 1.904 0.884 3.143 2.791 3.143 4.932 0 0.034-0.003 0.514-0.005 0.902l-0.004 0.853h-2.301c0.002-0.258 0.003-0.457 0.003-0.482 0-0.084-0.007-0.165-0.010-0.247h1.582l0.001-0.129c0.002-0.386 0.005-0.863 0.005-0.898 0-2.049-1.31-3.85-3.26-4.482l-0.75-0.244 0.671-0.413c0.783-0.483 1.252-1.318 1.252-2.234 0-1.374-1.062-2.5-2.408-2.612v-0.732c1.748 0.114 3.137 1.568 3.137 3.345z"></path>
+</symbol>
+<symbol id="icon-img_default_group_big-" viewBox="0 0 32 32">
+<title>img_default_group_big-</title>
+<path fill="#e5e5e5" style="fill: var(--color29, #e5e5e5)" d="M32 16c0 8.837-7.163 16-16 16s-16-7.163-16-16c0-8.837 7.163-16 16-16s16 7.163 16 16z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M18.052 15.552c1.118-0.69 1.866-1.923 1.866-3.333 0-2.164-1.754-3.918-3.918-3.918-1.333 0-2.51 0.668-3.217 1.686-0.144 0.207-0.268 0.429-0.371 0.662-0.211 0.481-0.329 1.012-0.329 1.57 0 1.243 0.582 2.347 1.486 3.064 0.122 0.097 0.248 0.187 0.381 0.269-0.349 0.113-0.686 0.256-1.007 0.423-2.064 1.071-3.492 3.191-3.583 5.655-0.003 0.082-0.010 0.164-0.010 0.247 0 0.024 0.002 0.224 0.003 0.482 0.003 0.533 0.009 1.318 0.009 1.341h13.28c0-0.638 0.012-1.19 0.012-1.822 0-2.957-1.93-5.46-4.599-6.325z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M8.671 13.229c0 0.94 0.386 1.814 1.056 2.441-1.904 0.884-3.143 2.791-3.143 4.932 0 0.034 0.003 0.514 0.006 0.902l0.004 0.854h2.302c-0.002-0.258-0.003-0.457-0.003-0.482 0-0.083 0.007-0.165 0.010-0.247h-1.583l-0.001-0.129c-0.002-0.386-0.006-0.863-0.006-0.898 0-2.049 1.31-3.85 3.26-4.482l0.75-0.243-0.671-0.414c-0.783-0.483-1.252-1.319-1.252-2.234 0-1.374 1.063-2.5 2.408-2.612v-0.732c-1.748 0.114-3.137 1.568-3.137 3.345z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M23.329 13.229c0 0.94-0.386 1.814-1.056 2.441 1.904 0.884 3.143 2.791 3.143 4.932 0 0.034-0.003 0.514-0.005 0.902l-0.004 0.854h-2.302c0.002-0.258 0.003-0.457 0.003-0.482 0-0.083-0.007-0.165-0.010-0.247h1.583l0.001-0.129c0.002-0.386 0.005-0.863 0.005-0.898 0-2.049-1.31-3.85-3.26-4.482l-0.75-0.243 0.671-0.414c0.784-0.483 1.252-1.319 1.252-2.234 0-1.374-1.063-2.5-2.408-2.612v-0.732c1.748 0.114 3.137 1.568 3.137 3.345z"></path>
+</symbol>
+<symbol id="icon-img_default_photo" viewBox="0 0 32 32">
+<title>img_default_photo</title>
+<path fill="#e5e5e5" style="fill: var(--color29, #e5e5e5)" d="M16 20.617c5.81 0 10.796 1.969 12.939 4.778 1.924-2.641 3.061-5.891 3.061-9.408 0-8.836-7.163-16-16-16s-16 7.164-16 16c0 3.517 1.138 6.767 3.061 9.408 2.143-2.808 7.128-4.777 12.939-4.777z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M16 32.013c1.125 0 2.222-0.117 3.282-0.338h-6.564c1.060 0.221 2.157 0.338 3.282 0.338z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M16 20.617c-5.81 0-10.796 1.969-12.939 4.778 2.294 3.149 5.707 5.43 9.657 6.254h6.564c3.95-0.824 7.363-3.105 9.657-6.254-2.143-2.808-7.129-4.777-12.939-4.777z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M23.089 11.684c0 3.915-3.174 7.089-7.089 7.089s-7.089-3.174-7.089-7.089c0-3.915 3.174-7.089 7.089-7.089s7.089 3.174 7.089 7.089z"></path>
+</symbol>
+<symbol id="icon-img_default_photo_big" viewBox="0 0 32 32">
+<title>img_default_photo_big</title>
+<path fill="#e5e5e5" style="fill: var(--color29, #e5e5e5)" d="M9.111 10.131c0.752-3.141 3.55-5.474 6.889-5.474s6.137 2.333 6.889 5.474c2.599-0.827 4.684-2.106 5.922-3.649-2.918-3.935-7.57-6.482-12.811-6.482s-9.892 2.546-12.81 6.481c1.238 1.543 3.323 2.823 5.922 3.65z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M16 4.657c-3.338 0-6.136 2.333-6.889 5.474 2.036 0.648 4.385 1.018 6.889 1.018s4.853-0.37 6.889-1.018c-0.753-3.141-3.551-5.474-6.889-5.474z"></path>
+<path fill="#e5e5e5" style="fill: var(--color29, #e5e5e5)" d="M16 20.851c5.699 0 10.603 1.915 12.81 4.668 1.971-2.658 3.151-5.95 3.187-9.519-0.037-3.569-1.216-6.86-3.187-9.518-1.238 1.543-3.323 2.823-5.922 3.649 0.13 0.543 0.2 1.108 0.2 1.691 0 3.957-3.175 7.165-7.090 7.165s-7.089-3.208-7.089-7.165c0-0.583 0.071-1.149 0.201-1.691-2.599-0.827-4.684-2.106-5.922-3.65-1.971 2.658-3.151 5.95-3.187 9.519 0.037 3.569 1.216 6.86 3.187 9.518 2.208-2.752 7.112-4.667 12.811-4.667z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M28.81 25.519c-2.208-2.752-7.112-4.668-12.81-4.668s-10.603 1.916-12.811 4.667c2.918 3.935 7.57 6.482 12.811 6.482s9.892-2.546 12.81-6.481z"></path>
+<path fill="#c6c6c5" style="fill: var(--color30, #c6c6c5)" d="M9.111 10.131c-0.13 0.542-0.201 1.108-0.201 1.691 0 3.957 3.174 7.165 7.089 7.165s7.090-3.208 7.090-7.165c0-0.583-0.071-1.149-0.2-1.691-2.036 0.648-4.386 1.018-6.889 1.018s-4.853-0.37-6.889-1.018z"></path>
+</symbol>
+<symbol id="icon-nav_close" viewBox="0 0 32 32">
+<title>nav_close</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M5.807 4.199l21.995 21.995-1.608 1.608-21.995-21.995 1.608-1.608z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M4.198 26.194l21.995-21.995 1.608 1.608-21.995 21.995-1.608-1.608z"></path>
+</symbol>
+<symbol id="icon-nav_dropdown" viewBox="0 0 32 32">
+<title>nav_dropdown</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M32 6.545l-16 18.909-16-18.909z"></path>
+</symbol>
+<symbol id="icon-btn_cancel_d" viewBox="0 0 32 32">
+<title>btn_cancel_d</title>
+<path fill="#666766" style="fill: var(--color22, #666766)" d="M28.631 6.833l-21.797 21.797-3.466-3.466 21.797-21.797 3.466 3.466z"></path>
+<path fill="#666766" style="fill: var(--color22, #666766)" d="M25.167 28.631l-21.797-21.797 3.465-3.465 21.797 21.797-3.465 3.465z"></path>
+</symbol>
+<symbol id="icon-btn_cancel_n" viewBox="0 0 32 32">
+<title>btn_cancel_n</title>
+<path fill="#2a8bbe" style="fill: var(--color7, #2a8bbe)" d="M28.631 6.833l-21.797 21.797-3.466-3.466 21.797-21.797 3.466 3.466z"></path>
+<path fill="#2a8bbe" style="fill: var(--color7, #2a8bbe)" d="M25.167 28.631l-21.797-21.797 3.465-3.465 21.797 21.797-3.465 3.465z"></path>
+</symbol>
+<symbol id="icon-nav_add" viewBox="0 0 32 32">
+<title>nav_add</title>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M1.115 14.919h29.77v2.162h-29.77v-2.162z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M14.919 1.115h2.162v29.77h-2.162v-29.77z"></path>
+</symbol>
+<symbol id="icon-icon_workdone_green" viewBox="0 0 32 32">
+<title>icon_workdone_green</title>
+<path fill="#45a347" style="fill: var(--color31, #45a347)" d="M25.423 16c0 5.204-4.219 9.423-9.423 9.423s-9.423-4.219-9.423-9.423c0-5.204 4.219-9.423 9.423-9.423s9.423 4.219 9.423 9.423z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M21.197 10.754l-7.504 7.571-3.055-3.056-1.461 1.594 4.516 4.383 9.098-9.032z"></path>
+</symbol>
+<symbol id="icon-icon_workdone_gray" viewBox="0 0 32 32">
+<title>icon_workdone_gray</title>
+<path fill="#b0afb0" style="fill: var(--color18, #b0afb0)" d="M25.423 16c0 5.204-4.219 9.423-9.423 9.423s-9.423-4.219-9.423-9.423c0-5.204 4.219-9.423 9.423-9.423s9.423 4.219 9.423 9.423z"></path>
+<path fill="#fff" style="fill: var(--color1, #fff)" d="M21.197 10.754l-7.504 7.571-3.055-3.056-1.461 1.594 4.516 4.383 9.098-9.032z"></path>
+</symbol>
+</defs>
+</svg>
