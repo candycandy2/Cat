@@ -64,9 +64,9 @@ var app = {
         //document.addEventListener("resume", onResume, false);
 
         //[device] data ready to get on this step.
-        setTimeout(function() {
+        /*setTimeout(function() {
             readConfig();
-        }, 2000);
+        }, 2000);*/
 
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
@@ -566,6 +566,12 @@ function adjustPageMarginTop() {
         });
     }
 }
+
+function footerFixed() {
+    $(".ui-footer").removeClass("ui-fixed-hidden");
+    $(".ui-header").removeClass("ui-fixed-hidden");
+}
+
 /*******************************************************************************************/
 /********************************** Date Ttme function *************************************/
 /*******************************************************************************************/

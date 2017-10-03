@@ -287,7 +287,9 @@
             <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 4.3vw auto 0;">預約</div>
         </div>
         <div class="ui-margin-public" id="pageTwo">
-            <div class="car-list-no-data font-style3 hide">目前無常用車籍</div>
+            <template id="tplCarListNoData">
+                <div class="car-list-no-data font-style3 hide">目前無常用車籍</div>
+            </template>
             <div data-role="footer" class="car-list-footer" data-position="fixed">
                 <div id="addCarDetail" class="car-list-add-button"></div>
             </div>
