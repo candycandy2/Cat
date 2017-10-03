@@ -747,7 +747,7 @@ $("#viewChatroom").pagecontainer({
 
         $(document).on({
             click: function() {
-                exitGroup();
+                //exitGroup();
             }
         }, "#leaveChatroom");
 

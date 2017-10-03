@@ -1,6 +1,6 @@
 <?php
 /**
- * 用戶Parameter相關資料處理
+ * 用戶相關資料處理
  * @author Cleo.W.Chan
  */
 namespace App\Repositories;
