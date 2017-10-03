@@ -1,6 +1,6 @@
 <?php
 namespace App\Services;
-
+use Config;
 use App\Repositories\UserRepository;
 use App\Repositories\FriendMatrixRepository;
 use App\lib\JPush;
