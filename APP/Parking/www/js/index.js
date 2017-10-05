@@ -1,5 +1,5 @@
 var htmlContent = '';
-var pageList = ["viewMain"];
+var pageList = ["viewMain","viewParkingDetailAdd"];
 var htmlContent = '';
 var dictDayOfWeek = {
     '1': '(一)',
@@ -169,6 +169,47 @@ function grepData(grepData, grepPram, grepValue) {
     return $.grep(grepData, function(item, index) {
         return item[grepPram] == grepValue;
     });
+}
+
+//[Android]Handle the back button
+function onBackKeyDown() {
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+
+    if (checkPopupShown()) {
+        popupClose();
+    } else {
+        if (activePageID === "viewMain") {
+
+            if ($("#reserveTab :radio:checked").val() == 'tab1') {
+                navigator.app.exitApp();
+            } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
+                $("input[id=tab1]").trigger('click');
+                $("label[for=tab1]").addClass('ui-btn-active');
+                $("label[for=tab2]").removeClass('ui-btn-active');
+                $("label[for=tab3]").removeClass('ui-btn-active');
+            }
+            else{
+                $("input[id=tab1]").trigger('click');
+                $("label[for=tab1]").addClass('ui-btn-active');
+                $("label[for=tab2]").removeClass('ui-btn-active');
+                $("label[for=tab3]").removeClass('ui-btn-active');
+            }
+
+        } else if (activePageID === "viewParkingDetailAdd") {
+
+            $.mobile.changePage('#viewMain');
+
+        } /*else if (activePageID === "viewParkingDetail") {
+
+            $.mobile.changePage('#viewMain');*/
+    }
+}
+
+//close onBackKeyDown
+function popupClose() {
+    var popupMsgID = $(".ui-popup-active")[0].children[0].id;
+    $('#' + popupMsgID).popup('close');
 }
 
 function refreshPage(data) {
