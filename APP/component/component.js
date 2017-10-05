@@ -345,7 +345,7 @@ $(document).one("pagebeforecreate", function() {
         })
         .fail(function() {
             //language string does not exist
-            browserLanguage = "zh-tw";
+            browserLanguage = "en-us";
             getLanguageString();
         });
 
@@ -776,7 +776,7 @@ function checkAppVersion() {
     }();
 }
 
-//Plugin-QSecurity 
+//Plugin-QSecurity
 function setWhiteList() {
 
     var self = this;
