@@ -1,5 +1,27 @@
 /********************************** override jQuery Mobile *************************************/
 
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #d4d4d4;
+    color: #d4d4d4/* IE6 */
+}
+
+h1 {
+    font-size: 5.5vw;
+}
+
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.ui-header-fixed.ui-fixed-hidden{ top: -1px;}
+
+.ios-fix-overlap-div {
+    display: initial !important;
+}
+
 .hidden {
     visibility: hidden;
     position: absolute;
@@ -420,6 +442,37 @@ div.scrollmenu a {
     line-height: 3rem;
 }
 
+/********************************** new header *************************************/
+
+#container {
+    width: 100%;
+    text-align: center;
+}
+
+#container a:link,
+#container span {
+    text-decoration: none;
+    color: white;
+    line-height: 20px;
+    letter-spacing: 1px;
+    font-weight: normal;
+}
+
+#left {
+    float: left;
+    margin: 0 5%;
+}
+
+#center {
+    display: inline-block;
+    margin: 0 auto !important;
+}
+
+#right {
+    float: right;
+    margin: 0 5%;
+}
+
 /********************************** column width *************************************/
 
 .col-95 {
@@ -463,11 +516,6 @@ div.scrollmenu a {
 }
 
 /********************************** pageTwo *************************************/
-.car-list-no-data {
-    color: #666;
-    text-align: center;
-    margin-top: 50%;
-}
 
 .car-list-footer {
     width: 17.71vw;
@@ -476,9 +524,21 @@ div.scrollmenu a {
     bottom: 4.3vw;
 }
 
+.car-list-no-data {
+    color: #666;
+    text-align: center;
+    margin-top: 50%;
+}
+
+
 .car-list-add-button {
     background: url(../img/052_btn_floating_add.png) no-repeat;
     background-size: 17.71vw;
     width: 17.71vw;
     height: 17.71vw;
+}
+
+.car-list-footer.ui-bar-inherit{
+    background-color: rgba(255,0,0,0);
+    border-color: rgba(255,0,0,0);
 }
