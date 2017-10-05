@@ -336,6 +336,13 @@ $("#viewChatroom").pagecontainer({
                         console.log("----getHistoryMessages--success");
                         console.log(data);
 
+                        //the message id won't return by serial number, ex: [1,2,3,4,5],
+                        //may return this type [1,2,3,5,4]; so, sort the data by id
+                        var tempData = {};
+                        for (var i=data.length - 1; i>=0; i--) {
+                            tempData[data[i].id] = data[i];
+                        }
+
                         var msgIDArray = [];
 
                         if (JM.data.chatroom_message_history[JM.chatroomID] === undefined) {
@@ -348,54 +355,47 @@ $("#viewChatroom").pagecontainer({
 
                         var lastMessageID = JM.data.chatroom[JM.chatroomID].last_message.id;
 
-                        for (var i=data.length - 1; i>=0; i--) {
-
+                        $.each(tempData, function(index, data) {
                             var pushData = false;
 
                             if (newCreate) {
-                                if (data[i].id === lastMessageID) {
+                                if (data.id === lastMessageID) {
                                     pushData = true;
                                 }
                             } else {
-                                if (sendMessage) {
-                                    if (data[i].id >= lastMessageID) {
-                                        pushData = true;
-                                    }
-                                } else {
-                                    if (msgIDArray.indexOf(data[i].id) == -1) {
-                                        pushData = true;
-                                    }
+                                if (msgIDArray.indexOf(data.id) == -1) {
+                                    pushData = true;
                                 }
                             }
 
                             if (pushData) {
 
-                                if (data[i].type === "text") {
+                                if (data.type === "text") {
                                     var tempData = {
-                                        id: data[i].id,
-                                        time: data[i].createTime,
-                                        from: data[i].from.username,
+                                        id: data.id,
+                                        time: data.createTime,
+                                        from: data.from.username,
                                         type: "text",
-                                        text: data[i].text,
+                                        text: data.text,
                                         extras: {
-                                            event: data[i].extras.event,
-                                            action: data[i].extras.action
+                                            event: data.extras.event,
+                                            action: data.extras.action
                                         }
                                     };
 
                                     JM.data.chatroom_message_history[JM.chatroomID].push(tempData);
-                                } else if (data[i].type === "image") {
+                                } else if (data.type === "image") {
                                     var tempData = {
-                                        id: data[i].id,
-                                        time: data[i].createTime,
-                                        from: data[i].from.username,
+                                        id: data.id,
+                                        time: data.createTime,
+                                        from: data.from.username,
                                         type: "image",
-                                        thumbPath: data[i].thumbPath,
+                                        thumbPath: data.thumbPath,
                                         get_download: false,
                                         download_time: null,
                                         extras: {
-                                            event: data[i].extras.event,
-                                            action: data[i].extras.action
+                                            event: data.extras.event,
+                                            action: data.extras.action
                                         }
                                     };
 
@@ -403,13 +403,14 @@ $("#viewChatroom").pagecontainer({
                                 }
 
                             }
-                        }
+                        });
 
                         resetUnreadMessageCount();
                         JM.updateLocalStorage();
                         newCreate = false;
-                        messageListView();
                         loadingMask("hide");
+
+                        messageListView();
                     }
 
                 };
@@ -640,6 +641,12 @@ $("#viewChatroom").pagecontainer({
                         console.log("==========downloadOriginalImage success");
                         console.log(data);
 
+                        //if the image msg in messageListView doesn't show up correctly,
+                        //update the src of img
+                        if ($("#" + JM.chatroomID + "-" + msgID).prop("src").length == 0) {
+                            $("#" + JM.chatroomID + "-" + msgID).prop("src", data.filePath);
+                        }
+
                         for (var i=0; i<JM.data.chatroom_message_history[JM.chatroomID].length; i++) {
                             if (msgID == JM.data.chatroom_message_history[JM.chatroomID][i].id) {
                                 var downloadTime = new Date();
@@ -648,6 +655,7 @@ $("#viewChatroom").pagecontainer({
                                 JM.data.chatroom_message_history[JM.chatroomID][i].thumbPath = data.filePath;
                                 JM.data.chatroom_message_history[JM.chatroomID][i].download_time = downloadTimeStamp;
                                 JM.data.chatroom_message_history[JM.chatroomID][i].get_download = true;
+                                JM.updateLocalStorage();
 
                                 tempImage(JM.data.chatroom_message_history[JM.chatroomID][i].thumbPath, "download");
                                 break;
