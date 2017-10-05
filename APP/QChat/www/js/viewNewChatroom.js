@@ -209,7 +209,6 @@ $("#viewNewChatroom").pagecontainer({
                             }, 2000);
 
                             //change page to chatroom
-                            loadingMask("show");
                             setTimeout(function(){
                                 $.mobile.changePage('#viewChatroom');
                             }, 5000);
@@ -384,6 +383,7 @@ $("#viewNewChatroom").pagecontainer({
                     }
 
                     //Create chatroom
+                    loadingMask("show");
                     window.newQChatroom(chatroomName, desc, empNumberArray);
 
                 }
