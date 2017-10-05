@@ -80,6 +80,11 @@ a {
 }
 
 .ui-header .ui-title{ padding: 3.238vw 0; font-size: 4.39vw; font-weight: normal;}
+#viewParkingDetailAdd .ui-margin-public span{ display: block;}
+#viewParkingDetailAdd .col-3{ width: 100% !important;}
+/*#viewParkingDetailAdd .ui-grid-a { margin-bottom: 1.16vw;} #newApplicantName{ padding-bottom: 2.14vw; }*/
+#newApplicantName, #newSettingPeople, #newSettingTime{ margin: 0 0 4.3vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
+#newSettingTitle{ height: 3.71vw; max-height: 3.71vw; font-size: 4.18vw; margin: 2.14vw 0;}
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
 #reserveTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 
@@ -91,6 +96,17 @@ a {
 #pageThree .ui-block-b span {
     display: inline-table;
     margin-bottom: 5px;
+}
+
+.ui-shadow-inset {
+    -webkit-box-shadow: none; 
+    -moz-box-shadow: none;
+    box-shadow: none; 
+}
+
+.ui-corner-all {
+    -webkit-border-radius: 0;
+    border-radius: 0;
 }
 
 /********************************** public area *************************************/
@@ -145,6 +161,8 @@ div.square {
     margin: 1.8vw 3.71vw 0 !important;
     font-size: 4.18vw;
 }
+
+#viewParkingDetailAdd .ui-margin-public{ margin-top: 5vw !important;}
 
 #pageOne .scrollmenu{ margin-bottom: 0.99vw;}
 
@@ -382,7 +400,7 @@ hr.ui-color-green {
     background-color: #CBF1EC !important;
 }
 
-.myReserveInfo span, .myReserveInfo span{ margin-left: 4vw;}
+.myReserveInfo span, .myReserveInfo span{ margin-left: 2vw;}
 
 /********************************** scrollmenu *************************************/
 
