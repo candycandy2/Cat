@@ -1,4 +1,8 @@
 var htmlContent = '';
+var initialAppName = "Parking";
+var appKeyOriginal = "appparking";
+var appKey = "appparking";
+var appSecretKey = "eaf786afb27f567a9b04803e4127cef3";
 var pageList = ["viewMain","viewParkingDetailAdd"];
 var htmlContent = '';
 var dictDayOfWeek = {
@@ -18,6 +22,7 @@ var dictSiteCategory = {
 var reserveDays = 14;
 var myReserveLocalData = [];
 var isReloadPage = false;
+var clickEditSettingID;
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
