@@ -17,8 +17,27 @@
                         <span>申請人資訊(公司名稱/姓名)</span>
                     </div>
                     <div class="ui-block-b col-3">
-                        <input name="newSettingTitle" id="newSettingTitle" type="text" placeholder="請輸入" />
+                        <input name="newSettingTitle" id="newSettingTitle" type="text"/>
                     </div>
+                </div>
+            </div>
+            <div id="newApplicantType">
+                <div class="title">
+                    <span>申請者類別</span>
+                </div>
+                <div id="newSettingType">
+                        <input type="radio" data-role="none" name="setApplicantType" id="setGuest" value='setGuest' checked="checked">
+                        <label data-role="none" class="overlap-label-icon"></label>
+                        <label data-role="none" class="overlap-label-text" for="setGuest" style=" margin-bottom: 4.3vw;">
+                            <span>貴賓</span>
+                        </label>
+
+                        <input type="radio" data-role="none" name="setApplicantType" id="setRelatedBusiness" value='setRelatedBusiness'>
+                        <label data-role="none" class="overlap-label-icon"></label>
+                        <label data-role="none" class="overlap-label-text" for="setRelatedBusiness">
+                            <span>關係企業</span>
+                            <span id="textDateTime"></span>
+                        </label>
                 </div>
             </div>
         </div>
