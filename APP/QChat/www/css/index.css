@@ -3,7 +3,7 @@ div::-webkit-scrollbar {
     width: 0;
 }
 
-/*override jQuery Mobile*/
+/*-----------------------------------------------------------------override jQuery Mobile*/
 .ui-content {
     padding: 0px;
 }
@@ -20,7 +20,7 @@ a {
     min-height: 90vh;
 }
 
-/*common class*/
+/*-----------------------------------------------------------------common class*/
 input[type=checkbox] {
     display: none;
 }
@@ -146,7 +146,7 @@ input[type=checkbox]:checked + label {
     height: 5.958vw;
 }
 
-/*Index*/
+/*-----------------------------------------------------------------Index*/
 #viewIndexContent {
     padding: 3.99vw 3.7vw 0;
 }
@@ -220,7 +220,7 @@ input[type=checkbox]:checked + label {
     margin-top: 5%;
 }
 
-/*NewChatroom*/
+/*-----------------------------------------------------------------NewChatroom*/
 #viewNewChatroomContent {
     padding: 0 3.71vw;
     padding-top: 13.99vw;
@@ -355,7 +355,64 @@ input[type=checkbox]:checked + label {
     padding: 3vw;
 }
 
-/*Chatroom*/
+.new-chatroom-footer.ui-bar-inherit {
+    background-color: rgba(86, 98, 112, 0.9);
+    height: 16.86vw;
+    padding: 1.945vw 0 0 3.71vw;
+    opacity: 0;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.new-chatroom-footer .data-list,
+.data-list.animate {
+    padding: 0;
+}
+
+.new-chatroom-footer .data-list .left {
+    width: 18.84vw;
+    position: relative;
+}
+
+.data-list.animate {
+    position: absolute;
+    z-index: 1000;
+}
+
+.data-list.last {
+    margin-right: 5.655vw;
+}
+
+.new-chatroom-footer .data-list .photo {
+    margin: 1vw 0 1.7vw 5.4vw;
+}
+
+.data-list.animate .photo {
+    margin: 0;
+}
+
+.new-chatroom-footer .data-list .delete {
+    width: 4.18vw;
+    height: 4.18vw;
+    position: absolute;
+    left: 11.3555vw;
+}
+
+.new-chatroom-footer .data-list .user-name {
+    clear: both;
+    color: #FFFFFF;
+    font-size: 3.14vw;
+    width: 14.95vw;
+    padding: 0 1.945vw;
+}
+
+.data-list.animate .user-name {
+    clear: both;
+    color: #000000;
+    font-size: 3.14vw;
+}
+
+/*-----------------------------------------------------------------Chatroom*/
 .chatroom-footer.ui-bar-inherit {
     background-color: #2C89BC;
     height: 12.88vw;
