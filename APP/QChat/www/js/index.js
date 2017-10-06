@@ -55,7 +55,7 @@ function cutString(maxViewWidth, string, fontSize, type, memberCount) {
     var displayString = string;
 
     if (stringWidthPX > maxWidthPX) {
-        //Even though get the fontSize, but the real px of [l] and [W] are diff,
+        //Even though get the fontSize, but the real px of [i] and [W] are diff,
         //need to check the real width of all string.
         for (var i=maxStringLength; i<string.length; i++) {
 
@@ -76,7 +76,13 @@ function cutString(maxViewWidth, string, fontSize, type, memberCount) {
             if (stringWidthPX > maxWidthPX) {
 
                 if (type === "number") {
-                    displayString = string.substr(0, i-2) + ".." + "(" + memberCount + ")";
+                    var cutLength = 2;
+
+                    if (memberCount > 9) {
+                        cutLength = 3;
+                    }
+
+                    displayString = string.substr(0, i-cutLength) + ".." + "(" + memberCount + ")";
                 } else {
                     displayString = string.substr(0, i-2) + "..";
                 }
