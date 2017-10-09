@@ -218,7 +218,7 @@ div.scrollmenu a {
     color: #999999 !important;
 }
 
-#searchBar {
+#searchBar, #searchAgent {
 	width: 75VW;
 	border-width: 1px;
 	border-style: solid;
@@ -324,8 +324,22 @@ div.scrollmenu a {
 	color: #666666;
 }
 
+#applyLeaveCategroy {
+	height: 3.14vw;
+	display: none;
+	color: #666666;
+}
+
+#uploadAttachment {
+	display: none;
+}
+
+#baseDate {
+	display: none;
+}
+
 .apply-categroy {
-	height: 15.67vw;
+	height: 10.67vw;
 	color: #0f0f0f;
 }
 
