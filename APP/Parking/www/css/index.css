@@ -83,8 +83,16 @@ a {
 #viewParkingDetailAdd .ui-margin-public span{ display: block;}
 #viewParkingDetailAdd .col-3{ width: 100% !important;}
 /*#viewParkingDetailAdd .ui-grid-a { margin-bottom: 1.16vw;} #newApplicantName{ padding-bottom: 2.14vw; }*/
-#newApplicantName, #newApplicantType, #newSettingTime{ margin: 0 0 4.3vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
-#newSettingTitle{ height: 10.304vw; max-height: 10.304vw; font-size: 4.18vw; padding: 2.73vw 3.71vw;}
+#newApplicantName, #newApplicantType, #newCarDetail{ margin: 0 0 4.3vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
+#newNoticeEvent{ margin: 0 0 1.11vw; border-radius: 0;}
+#newSettingTitle, #newSettingCar{ height: 10.304vw; max-height: 10.304vw; font-size: 4.18vw;}
+#newSettingNotice { height: 16.101vw; max-height: 16.101vw; font-size: 4.18vw;}
+#remark{ text-align:center; color: #666; font-size: 3.349vw;}
+
+.parking-detail-add {
+    margin: 1.8vw 3.71vw 0 !important;
+    font-size: 3.349vw;
+}
 
 #newSettingType {
     margin-top: 2.14vw;
@@ -123,6 +131,7 @@ input[type=radio]:checked + label {
     padding-top: 0.9vw;
     width: 85%;
     color: #0F0F0F;
+    font-size: 4.18vw !important;
 }
 
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
@@ -202,7 +211,7 @@ div.square {
     font-size: 4.18vw;
 }
 
-#viewParkingDetailAdd .ui-margin-public{ margin-top: 5vw !important;}
+#viewParkingDetailAdd .parking-detail-add{ margin-top: 5vw !important;}
 
 #pageOne .scrollmenu{ margin-bottom: 0.99vw;}
 

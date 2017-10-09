@@ -38,5 +38,11 @@ $("#viewParkingDetailAdd").pagecontainer({
             clickEditSettingID = '';
             $.mobile.changePage('#viewMain');
         });
+
+        // click save button
+        $('#newSettingSave').on('click', function() {
+            
+        });
+
     }
 });
