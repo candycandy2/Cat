@@ -22,7 +22,7 @@ var dictSiteCategory = {
 var reserveDays = 14;
 var myReserveLocalData = [];
 var isReloadPage = false;
-var clickEditSettingID;
+var clickEditSettingID = '';
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];

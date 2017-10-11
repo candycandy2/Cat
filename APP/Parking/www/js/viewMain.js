@@ -687,6 +687,13 @@ $("#viewMain").pagecontainer({
             }
         });
 
+        $('body').on('click', 'div[id^=set-]', function(e) {
+            if ((e.target.id != "settingDelete") && (e.target.className != "setting-img")){
+                clickEditSettingID = $(this).attr('value');
+                $.mobile.changePage('#viewParkingDetailAdd');
+            }
+        });
+
         // ----------------------------pageThree function-------------------------------------- 
        $('body').on('click', 'div[id^=def-] a', function() {
             //$('#viewMyReserve').addClass('min-height-100');
