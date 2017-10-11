@@ -98,7 +98,7 @@ class AppVersionService
     public function unPublishVersion($appId, $deviceType, $userRowId){
         
         //delete file
-        $this->deleteApkFileFromPublish($appId,$deviceType);
+        $this->deleteApkFileFromPublish($appId,$deviceType, true);
         
         //update DB
         $updateData = array(
@@ -254,9 +254,10 @@ class AppVersionService
      * 從發佈路徑中移除版本檔案
      * @param  int      $appId      app_row_id
      * @param  string   $deviceType device type android|ios
+     * @param  boolean  $deleteHistory 是否刪除歷史版本，如果未來須改為上架則不需刪除
      * @return string   $targetFilePath the path that had been delete
      */
-    public function deleteApkFileFromPublish($appId,$deviceType){
+    public function deleteApkFileFromPublish($appId, $deviceType,  $deleteHistory){
         $data=[];
 
         $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
@@ -264,21 +265,56 @@ class AppVersionService
 
         //發佈的版本不為外部連結
         if(!is_null($OriPublish) && $OriPublish->external_app == 0){
-            if($OriPublish->url!="" && file_exists($publishFilePath.$OriPublish->url)){
-                $result = unlink($publishFilePath.$OriPublish->url);
-            }
-            //ios 需多刪除 manifest.plist
-            if($deviceType == 'ios'){
-                if(file_exists($publishFilePath.'manifest.plist')){
-                    unlink($publishFilePath.'manifest.plist');
+            
+            if($OriPublish->url!=""){
+                //刪除發佈路徑檔案
+                if(file_exists($publishFilePath.$OriPublish->url)){
+                    $result = unlink($publishFilePath.$OriPublish->url);
                 }
-            }
-            //remove ota
-            $data=array('app_id'=>$appId,'device_type'=>$deviceType, 'file_name'=>$OriPublish->url);
-            $res = QPlayApi::post('deleteAppFileFromPublish',  json_encode($data));
-            $res = json_decode($res,true);
-            if($res['result_code']!= ResultCode::_1_reponseSuccessful){
-                throw new \Exception("OTA API deleteAppFileFromPublish Error");
+
+                //ios 需多刪除 manifest.plist
+                if($deviceType == 'ios'){
+                    if(file_exists($publishFilePath.'manifest.plist')){
+                        unlink($publishFilePath.'manifest.plist');
+                    }
+                }
+
+                //remove ota
+                $data=array('app_id'=>$appId,'device_type'=>$deviceType, 'file_name'=>$OriPublish->url);
+                $res = QPlayApi::post('deleteAppFileFromPublish',  json_encode($data));
+                $res = json_decode($res,true);
+                if($res['result_code']!= ResultCode::_1_reponseSuccessful){
+                    throw new \Exception("OTA API deleteAppFileFromPublish Error");
+                }
+
+                //不保留歷史檔案，刪除原始檔案
+                if( \Config::get('app.keep_history') == false &&  $deleteHistory == true){
+                    $destinationPath = FilePath::getApkUploadPath($appId,
+                                                                  $deviceType,
+                                                                  $OriPublish->version_code);
+
+                    if(file_exists($destinationPath)){
+                        $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+                        $files = new \RecursiveIteratorIterator($it,
+                                     \RecursiveIteratorIterator::CHILD_FIRST);
+                        foreach($files as $file) {
+                            if ($file->isDir()){
+                                rmdir($file->getRealPath());
+                            } else {
+                                unlink($file->getRealPath());
+                            }
+                        }
+                        rmdir($destinationPath);
+                    }
+
+                    //remove ota
+                    $tmpHistoryData =  array('app_id'=>$appId,
+                                        'device_type'=>$deviceType,
+                                        'version_code'=>$OriPublish->version_code);
+                    $historyData[] = $tmpHistoryData;
+                    $res = QPlayApi::post('deleteAppFile', json_encode($historyData));
+                    $res = json_decode($res,true);
+                }
             }
         }
     }
@@ -467,11 +503,12 @@ class AppVersionService
                     'status'=>$value['status'],
                     'device_type'=>$deviceType,
                 );
-
+                $deleteHistory = false;
                 if($value['status'] == 'ready'){
                     //首次上架
                     if(($value['version_code'] != $appStatus[$deviceType]['versionCode'])){
                         $data ['ready_date'] = time();
+                        $deleteHistory = true;
                     }
                 }else{
                     $data ['ready_date'] = NULL;
@@ -498,14 +535,14 @@ class AppVersionService
                     $versionData['device_type'] = $deviceType;
                     $versionData['version_code'] = $value['version_code'];
                     $versionData['file_name'] = $value['url'];
-                    $this->deleteApkFileFromPublish($appId, $deviceType);
+                    $this->deleteApkFileFromPublish($appId, $deviceType,  $deleteHistory);
                     $this->copyAppFileToPublish($appId, $versionData);
                 }
             }
            
            
             if($deletePublishFile){
-                $this->deleteApkFileFromPublish($appId, $deviceType);
+                $this->deleteApkFileFromPublish($appId, $deviceType, true);
             }
         }
       
