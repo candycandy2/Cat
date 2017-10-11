@@ -52,6 +52,8 @@ var LeaveList = [];
 var allLeaveList = [];
 var selectLeave;
 var leaveObj = {};
+var leaveState = false;
+var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeaveTime;
 //var selectCategroy;
 
 var categroyData = {
@@ -236,61 +238,121 @@ $("#viewLeaveSubmit").pagecontainer({
 
         $(document).on("click", "#leave-popup-option ul li", function() {
             selectLeave = $(this).html();
-            leaveObj = getLeaveObj(selectLeave);  
+            leaveObj = getLeaveObj(selectLeave);
+            leaveState = true;
         });
 
         $(document).on("popupafterclose", "#leave-popup-option", function() {
-            //check leftday
-            if(leaveObj['leftday'] > 0) {
-                for(var i in leaveAllData){
-                    if(selectLeave == leaveAllData[i]['leave']) {
-                        $("#categroy-popup").find("option[value='" + leaveAllData[i]['categroy'] + "']").attr("selected", "selected");
-                        break;
+            if(leaveState){
+                //check leftday
+                if(leaveObj['leftday'] > 0) {
+                    for(var i in leaveAllData){
+                        if(selectLeave == leaveAllData[i]['leave']) {
+                            $("#categroy-popup").find("option[value='" + leaveAllData[i]['categroy'] + "']").attr("selected", "selected");
+                            break;
+                        }
                     }
-                }
 
-                //popup
-                var leaveMsg = "剩餘" + leaveObj['leftday'] + "天" + leaveObj['leave'] + "可申請";
-                console.log(leaveMsg);
-                $('.leftDaysByLeave').find('.header-text').html(leaveMsg);
-                popupMsgInit('.leftDaysByLeave');
+                    //popup
+                    var leaveMsg = "剩餘" + leaveObj['leftday'] + "天" + leaveObj['leave'] + "可申請";
+                    //console.log(leaveMsg);
+                    $('.leftDaysByLeave').find('.header-text').html(leaveMsg);
+                    popupMsgInit('.leftDaysByLeave');
 
-                //introduce
-                var divIntroduce = "<span>*" + leaveObj['introduce'] + "</span>";
-                $('#applyLeaveCategroy').empty().append(divIntroduce).show();
-    
-                //attachment
-                if(leaveObj['attachment'] == '1') {
-                    $('#uploadAttachment').show();
+                    //introduce
+                    var divIntroduce = "<span>*" + leaveObj['introduce'] + "</span>";
+                    $('#applyLeaveCategroy').empty().append(divIntroduce).show();
+        
+                    //attachment
+                    if(leaveObj['attachment'] == '1') {
+                        $('#uploadAttachment').show();
+                    }else {
+                        $('#uploadAttachment').hide();
+                    }
+        
+                    //basedate
+                    if(leaveObj['basedate'] == '1') {
+                        $('#baseDate').show();
+                        $('#divEmpty').show();
+                    }else {
+                        $('#baseDate').hide();
+                        $('#divEmpty').hide();
+                    }
+                    
                 }else {
+                    //popup
+                    $('.leaveNotEnough').find('.main-paragraph').html("請選擇其他假別");
+                    popupMsgInit('.leaveNotEnough');
+
+                    $(document).off("change", "#leave-popup");
+                    $('#applyLeaveCategroy').hide();
                     $('#uploadAttachment').hide();
-                }
-    
-                //basedate
-                if(leaveObj['basedate'] == '1') {
-                    $('#baseDate').show();
-                    $('#divEmpty').show();
-                }else {
                     $('#baseDate').hide();
                     $('#divEmpty').hide();
                 }
-                
-            }else {
-                //popup
-                $('.leaveNotEnough').find('.main-paragraph').html("請選擇其他假別");
-                popupMsgInit('.leaveNotEnough');
-
-                $(document).off("change", "#leave-popup");
-                $('#applyLeaveCategroy').hide();
-                $('#uploadAttachment').hide();
-                $('#baseDate').hide();
-                $('#divEmpty').hide();
             }
+            
+            leaveState = false;
         });
 
-        
+        $(document).on("click", "#btnStartday", function() {
+            $("#startDate").click();
+        });
 
-        
+        $(document).on("click", "#btnEndday", function() {
+            $("#endDate").click();
+        });
+
+        $(document).on("change", "#startDate", function() {
+            startLeaveDate = $('#startDate').val().replace("T", " ");
+            startLeaveDay = parseInt($('#startDate').val().split("T")[0].replace(/-/g, ""));
+            startLeaveTime = parseInt($('#startDate').val().split("T")[1].replace(/:/g, ""));
+            console.log(startLeaveDay+" , "+startLeaveTime);
+
+            if(startLeaveDate == "") {
+                $('#startText').text("請選擇");
+            }else {
+                $('#startText').text(startLeaveDate);
+            }
+            
+        });
+
+        $(document).on("change", "#endDate", function() {
+            endLeaveDate = $('#endDate').val().replace("T", " ");
+            endLeaveDay = parseInt($('#endDate').val().split("T")[0].replace(/-/g, ""));
+            endLeaveTime = parseInt($('#endDate').val().split("T")[1].replace(/:/g, ""));
+
+            //結束時間必須大於開始時間
+            if(endLeaveDate == "") {
+                $('#endText').text("請選擇");
+            }else if(startLeaveDay > endLeaveDay) {
+                //提示錯誤信息
+                popupMsgInit('.dateTimeError');
+                $('#endText').text("請選擇");
+            }else if(startLeaveDay == endLeaveDay && startLeaveTime > endLeaveTime) {
+                //提示錯誤信息
+                popupMsgInit('.dateTimeError');
+                $('#endText').text("請選擇");
+            }else {
+                $('#endText').text(endLeaveDate);
+                //統計請假時長
+                if(endLeaveDay - startLeaveDay > 2 && endLeaveTime >= startLeaveTime) {
+                    var leaveDay = endLeaveDay - startLeaveDay;
+                    var leaveTime = endLeaveTime - startLeaveTime;
+                }else if(endLeaveDay > startLeaveDay && endLeaveTime < startLeaveTime) {
+                    var leaveDay = endLeaveDay - startLeaveDay;
+                    var leaveTime = endLeaveTime - startLeaveTime;
+                }else if(endLeaveDay == startLeaveDay) {
+                    var leaveDay = 0;
+                    var leaveTime = endLeaveTime - startLeaveTime;
+                }
+                $('#leaveDay').text(leaveDay);
+                $('#leaveTime').text(leaveTime);
+            }
+
+            
+        });
+
 
     }
 });
