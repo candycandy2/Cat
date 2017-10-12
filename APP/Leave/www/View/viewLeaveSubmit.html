@@ -5,20 +5,25 @@
             <img src="img/menu.png" style="width: 4.934VW;">
         </a>
         <div class="header-style">
-            <div class="ui-title">請假申請</div>
+            <div class="ui-title">
+                <!--請假申請-->
+                <span class="langStr" data-id="str_002"></span>
+            </div>
         </div>
     </div>
     <div data-role="main" class="page-main">
         <div class="apply-container">
             <!-- applyDate -->
             <div class="apply-date font-style12">
-                <span>申請日期：</span>
+                <!--<span>申請日期：</span>-->
+                <span class="langStr" data-id="str_080"></span>
                 <span id="applyDay"></span>
             </div>
             <!-- category -->
             <div class="apply-categroy">
                 <div class="font-style11">
-                    <span>申請類別</span>
+                    <!--<span>申請類別</span>-->
+                    <span class="langStr" data-id="str_081"></span>
                 </div>
                 <div data-role="none" id="leaveCategroy" class="font-style3">
                     <span></span>
@@ -28,7 +33,8 @@
             <div class="apply-empty-div1"></div>
             <div class="apply-categroy">
                 <div class="font-style11">
-                    <span>申請假別</span>
+                    <!--<span>申請假別</span>-->
+                    <span class="langStr" data-id="str_082"></span>
                 </div>
                 <div data-role="none" id="leaveGenre" class="font-style3">
                     <span></span>
@@ -36,13 +42,14 @@
             </div>
             <!-- introduce -->
             <div id="applyLeaveCategroy" class="font-style12">
-                
+
             </div>
             <!-- empty div -->
             <div class="apply-empty-div1"></div>
             <div class="apply-agent">
                 <div class="font-style11">
-                    <span>職務代理人</span>
+                    <!--<span>職務代理人</span>-->
+                    <span class="langStr" data-id="str_083"></span>
                 </div>
                 <div data-role="none" id="leaveAgent" class="font-style3">
                     <span></span>
@@ -53,13 +60,15 @@
             <!-- basedate -->
             <div id="baseDate">
                 <div class="font-style11">
-                    <span>基準日</span>
+                    <!--<span>基準日</span>-->
+                    <span class="langStr" data-id="str_012"></span>
                 </div>
                 <div data-role="none" id="baseTime" class="font-style3">
                     <span></span>
                 </div>
                 <div class="font-style12" style="color:#666666;">
-                    <span>*如果沒有列出您需要的基準日，請確認該請假單是否[生效]</span>
+                    <!--<span>*如果沒有列出您需要的基準日，請確認該請假單是否[生效]</span>-->
+                    <span class="langStr" data-id="str_095"></span>
                 </div>
             </div>
             <!-- empty div -->
@@ -67,22 +76,25 @@
             <!-- apply date -->
             <div class="apply-leave-date">
                 <div class="font-style11">
-                    <span>請假日期與時間</span>
+                    <!--<span>請假日期與時間</span>-->
+                    <span class="langStr" data-id="str_084"></span>
                 </div>
                 <div class="font-style11">
                     <div>
-                        <span>開始時間</span>
+                        <!--<span>開始時間</span>-->
+                        <span class="langStr" data-id="str_085"></span>
                     </div>
                     <div>
-                        <span>結束時間</span>
+                        <!--<span>結束時間</span>-->
+                        <span class="langStr" data-id="str_086"></span>
                     </div>
                 </div>
                 <div class="font-style3">
                     <div id="btnStartday">
-                        <span id="startText">請選擇</span><img src="img/dropdown.png" class="apply-select-img">
+                        <span id="startText"><!--請選擇--><span class="langStr" data-id="str_069"></span></span><img src="img/dropdown.png" class="apply-select-img">
                     </div>
                     <div id="btnEndday">
-                        <span id="endText">請選擇</span><img src="img/dropdown.png" class="apply-select-img">
+                        <span id="endText"><!--請選擇--><span class="langStr" data-id="str_069"></span></span><img src="img/dropdown.png" class="apply-select-img">
                     </div>
                 </div>
             </div>
@@ -93,26 +105,30 @@
             </div>
             <div class="apply-leave-count">
                 <div class="font-style11">
-                    <span>請假數</span>
+                    <!--<span>請假數</span>-->
+                    <span class="langStr" data-id="str_087"></span>
                 </div>
                 <div class="font-style3">
                     <span id="leaveDay">0</span>&nbsp;
-                    <span>天</span>&nbsp;
+                    <!--<span>天</span>&nbsp;-->
+                    <span class="langStr" data-id="str_071"></span>&nbsp;
                     <span id="leaveTime">0</span>&nbsp;
-                    <span>小時</span>
+                    <!--<span>小時</span>-->
+                    <span class="langStr" data-id="str_088"></span>
                 </div>
-            </div> 
+            </div>
             <!-- empty div -->
             <div class="apply-empty-div1"></div>
             <!-- attachment -->
             <div id="uploadAttachment">
                 <div class="font-style11">
-                    <span>附件</span>
+                    <!--<span>附件</span>-->
+                    <span class="langStr" data-id="str_076"></span>
                 </div>
                 <fieldset data-role="controlgroup" id="attachmentTime">
                     <input type="radio" name="radio-choice-attachment-3" id="attachment-tab-2" value="attachment-tab-2" checked>
-                    <label for="attachment-tab-2" style="border:none;background:#f9f9f9;">後補</label>&nbsp;&nbsp;
-    
+                    <label for="attachment-tab-2" style="border:none;background:#f9f9f9;"><!--後補--><span class="langStr" data-id="str_110"></span></label>&nbsp;&nbsp;
+
                     <!-- <input type="radio" name="radio-choice-attachment-3" id="attachment-tab-1" value="attachment-tab-1">
                     <label for="attachment-tab-1">上傳</label>&nbsp;&nbsp;
 
@@ -122,7 +138,8 @@
             <!-- apply reason -->
             <div class="apply-leave-reason">
                 <div class="font-style11">
-                    <span>請假理由</span>
+                    <!--<span>請假理由</span>-->
+                    <span class="langStr" data-id="str_089"></span>
                 </div>
                 <div>
                     <textarea data-role="none" class="reason-textarea" placeholder="請填寫理由"></textarea>
@@ -132,7 +149,10 @@
             <div class="apply-empty-div2"></div>
             <!-- preview btn -->
             <div class="apply-preview-div">
-                <div class="apply-leave-submit">預覽送簽</div>
+                <div class="apply-leave-submit">
+                    <!--預覽送簽-->
+                    <span class="langStr" data-id="str_091"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -141,7 +161,7 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text">假別天數不夠</span>
+                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text"><!--假別天數不夠--><span class="langStr" data-id="str_115"></span></span>
                 </div>
             </div>
             <div class="main">
@@ -149,7 +169,10 @@
             </div>
             <div class="footer">
                 <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">確定</div>
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -167,27 +190,33 @@
             </div>
             <div class="footer">
                 <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">確定</div>
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup dateTimeError" for="dateTimeError">
-            <div data-role="main" class="ui-content">
-                <div class="header">
-                    <div class="font-style3 header-title-main">
-                        <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text">請假迄止時間應大於請假開始時間</span>
-                    </div>
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text"><!--請假迄止時間應大於請假開始時間--><span class="langStr" data-id="str_116"></span></span>
                 </div>
-                <div class="main">
-                    <p class="main-paragraph font-style3"></p>
-                </div>
-                <div class="footer">
-                    <div class="btn-one font-style1 btnArea">
-                        <div class="btn-cancel">確定</div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>
