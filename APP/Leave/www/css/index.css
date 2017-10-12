@@ -25,7 +25,8 @@
 
 /********************************************common use**********************************************/
 .page-main {
-    padding-top: 3.99vw;
+	padding-top: 3.99vw;
+	padding-bottom: 0;
 }
 
 #mypanel {
