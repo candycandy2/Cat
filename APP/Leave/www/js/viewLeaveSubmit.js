@@ -54,7 +54,8 @@ var selectLeave;
 var leaveObj = {};
 var leaveState = false;
 var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeaveTime;
-//var selectCategroy;
+var selectCategroyStr = "所有類別";
+var leaveMsgStr = "請選擇";
 
 var categroyData = {
     id: "categroy-popup",
@@ -69,6 +70,17 @@ var categroyData = {
 
 var leaveData = {
     id: "leave-popup",
+    option: [],
+    title: "",
+    defaultText: "請選擇",
+    changeDefaultText : true,
+    attr: {
+        class: "tpl-dropdown-list-icon-arrow"
+    }
+};
+
+var leavecCategroyData = {
+    id: "leaveCategroy-popup",
     option: [],
     title: "",
     defaultText: "請選擇",
@@ -142,11 +154,17 @@ $("#viewLeaveSubmit").pagecontainer({
             }
 
             tplJS.DropdownList("viewLeaveSubmit", "leaveCategroy", "prepend", "typeB", categroyData);
+            var categroyStr = "<li class='tpl-option-msg-list' id='categroyAll'>" + selectCategroyStr + "</li>";
+            $('#categroy-popup-option-list').prepend(categroyStr);
+            $('#categroyAll').trigger('click');
         }
 
         //获取所有假别
         function getAllLeaveList() {
+            //數據初始化
             allLeaveList = [];
+            leaveDataInit();
+
             for(var i in leaveAllData) {
                 if (allLeaveList.indexOf(leaveAllData[i]['leave']) == -1) {
                     allLeaveList.push(leaveAllData[i]['leave']);
@@ -164,20 +182,52 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //根据类别获取假别
         function getLeaveByCategroy(categroy) {
+            //數據初始化
             leaveList = [];
-            for(var i in leaveAllData) {
-                if(categroy == leaveAllData[i]['categroy']) {
-                    leaveList.push(leaveAllData[i]['leave']);
+            leaveDataInit();
+            $("#leave-popup-option-list").empty();
+            var leaveOption = "";
+
+            //選擇所有類別還是其他..
+            if(categroy == selectCategroyStr) {
+                for(var i in leaveAllData) {
+                    if (allLeaveList.indexOf(leaveAllData[i]['leave']) == -1) {
+                        allLeaveList.push(leaveAllData[i]['leave']);
+                    }
                 }
+                
+                for(var i in allLeaveList) {
+                    leaveData["option"][i] = {};
+                    leaveData["option"][i]["value"] = allLeaveList[i];
+                    leaveData["option"][i]["text"] = allLeaveList[i];
+                    leaveOption += '<li class="tpl-option-msg-list">' + allLeaveList[i] + '</li>'; 
+                }
+            }else {
+                for(var i in leaveAllData) {
+                    if(categroy == leaveAllData[i]['categroy']) {
+                        leaveList.push(leaveAllData[i]['leave']);
+                    }
+                }
+    
+                for(var i in leaveList) {
+                    leaveData["option"][i] = {};
+                    leaveData["option"][i]["value"] = leaveList[i];
+                    leaveData["option"][i]["text"] = leaveList[i];
+                    leaveOption += '<li class="tpl-option-msg-list">' + leaveList[i] + '</li>';    
+                }
+
+                //選擇其他——提示
+                var leavePleaseStr = "<li id='leaveSelect'>" + leaveMsgStr + "</li>";
+                $("#leave-popup-option-list").prepend(leavePleaseStr);
+                $('#leaveSelect').trigger('click');
+                $('#applyLeaveCategroy').hide();
             }
 
-            for(var i in leaveList) {
-                leaveData["option"][i] = {};
-                leaveData["option"][i]["value"] = leaveList[i];
-                leaveData["option"][i]["text"] = leaveList[i];
-            }
-
-            //tplJS.DropdownList("viewLeaveSubmit", "leaveGenre", "prepend", "typeB", leaveData);
+            //update & resize
+            $("#leave-popup-option-list").append(leaveOption);
+            tplJS.reSizeDropdownList("leave-popup", "typeB");
+            resizePopup("leave-popup-option");
+            
         }
 
         //获取本部门员工——查找代理人
@@ -200,6 +250,54 @@ $("#viewLeaveSubmit").pagecontainer({
                     return leaveAllData[i];
                 }
             }
+        }
+
+        //初始化假別列表
+        function leaveDataInit() {
+            leaveData = {
+                id: "leave-popup",
+                option: [],
+                title: "",
+                defaultText: "請選擇",
+                changeDefaultText : true,
+                attr: {
+                    class: "tpl-dropdown-list-icon-arrow"
+                }
+            };
+        }
+
+        function resizePopup(popupID) {
+            var popup = $("#" + popupID);
+            var popupHeight = popup.height();
+            var popupHeaderHeight = $("#" + popupID + " .header").height();
+            var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
+
+            //ui-content paddint-top/padding-bottom:3.07vw
+            // var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 3.07 * 2 / 100, 10);
+
+            //Ul margin-top:2.17vw
+            // var ulMarginTop = parseInt(document.documentElement.clientWidth * 2.17 / 100, 10);
+            // var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
+            var popupMainHeight = "200";
+            popup.find("div[data-role='main'] .main").height(popupMainHeight);
+
+            $('#' + popupID + '-screen.in').animate({
+                'overflow-y': 'hidden',
+                'touch-action': 'none',
+                'height': $(window).height()
+            }, 0, function() {
+                var top = $('#' + popupID + '-screen.in').offset().top;
+                if (top < 0) {
+                    $('.ui-popup-screen.in').css({
+                        'top': Math.abs(top) + "px"
+                    });
+                }
+            });
+
+            var viewHeight = $(window).height();
+            var popupHeight = popup.outerHeight();
+            var top = (viewHeight - popupHeight) / 2;
+            popup.parent().css("top", top + "px");
         }
 
         /********************************** page event *************************************/
@@ -228,24 +326,33 @@ $("#viewLeaveSubmit").pagecontainer({
 
         });
 
+        //選擇類別
         $(document).on("change", "#categroy-popup", function() {
-            var selectCategroy = $(this).val();   
-            //$("#leave-popup-option-list").empty();
-            //getLeaveByCategroy(selectCategroy);
-            //tplJS.reSizeDropdownList("leave-popup", "typeB");
+            var selectCategroy = $.trim($(this).text());
+            console.log(selectCategroy);
+            getLeaveByCategroy(selectCategroy);      
             
         });
 
+        //假別彈窗打開之後——清除 "請選擇"
+        $(document).on("popupafteropen", "#leave-popup-option", function() {
+            $('#leaveSelect').remove();
+        });
+
+        //點擊假別——獲取假別對象詳細信息
         $(document).on("click", "#leave-popup-option ul li", function() {
-            selectLeave = $(this).html();
-            leaveObj = getLeaveObj(selectLeave);
+            selectLeave = $(this).text();
+            if(selectLeave !== leaveMsgStr) {
+                leaveObj = getLeaveObj(selectLeave);
+            }
             leaveState = true;
         });
 
+        //假別彈窗關閉之後——檢查剩餘天數並提示
         $(document).on("popupafterclose", "#leave-popup-option", function() {
             if(leaveState){
                 //check leftday
-                if(leaveObj['leftday'] > 0) {
+                if(selectLeave !== leaveMsgStr && leaveObj['leftday'] > 0) {
                     for(var i in leaveAllData){
                         if(selectLeave == leaveAllData[i]['leave']) {
                             $("#categroy-popup").find("option[value='" + leaveAllData[i]['categroy'] + "']").attr("selected", "selected");
@@ -279,10 +386,14 @@ $("#viewLeaveSubmit").pagecontainer({
                         $('#divEmpty').hide();
                     }
                     
-                }else {
+                }else if(selectLeave !== leaveMsgStr && leaveObj['leftday'] == 0) {
                     //popup
                     $('.leaveNotEnough').find('.main-paragraph').html("請選擇其他假別");
                     popupMsgInit('.leaveNotEnough');
+
+                    var leavePleaseStr = "<li id='leaveSelect'>" + leaveMsgStr + "</li>";
+                    $("#leave-popup-option-list").prepend(leavePleaseStr);
+                    $('#leaveSelect').trigger('click');
 
                     $(document).off("change", "#leave-popup");
                     $('#applyLeaveCategroy').hide();
@@ -307,7 +418,6 @@ $("#viewLeaveSubmit").pagecontainer({
             startLeaveDate = $('#startDate').val().replace("T", " ");
             startLeaveDay = parseInt($('#startDate').val().split("T")[0].replace(/-/g, ""));
             startLeaveTime = parseInt($('#startDate').val().split("T")[1].replace(/:/g, ""));
-            console.log(startLeaveDay+" , "+startLeaveTime);
 
             if(startLeaveDate == "") {
                 $('#startText').text("請選擇");
