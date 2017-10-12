@@ -72,6 +72,8 @@ return [
 
     'upload_path' => env('APP_UPLOAD_PATH'),
 
+    'keep_history' => env('APP_KEEP_HISTORY','true'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

@@ -382,7 +382,6 @@ div.square {
     font-size: 3.14vw;
 }
 
-
 .dropdown-icon {
     outline: none;
     font-size: 4.18vw;
@@ -450,6 +449,10 @@ hr.ui-color-green {
 }
 
 .myReserveInfo span, .myReserveInfo span{ margin-left: 2vw;}
+
+.save-disable {
+    opacity:0.4;
+}
 
 /********************************** scrollmenu *************************************/
 
