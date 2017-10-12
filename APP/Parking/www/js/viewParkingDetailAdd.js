@@ -27,6 +27,10 @@ $("#viewParkingDetailAdd").pagecontainer({
 
         });
 
+        $('#viewParkingDetailAdd').on('pagebeforeshow', function(event, ui) {
+            saveBtnDefaultStatus();
+        });
+
         $('#viewParkingDetailAdd').on('pageshow', function(event, ui) {
   			loadingMask("hide");
   			footerFixed();
@@ -38,5 +42,40 @@ $("#viewParkingDetailAdd").pagecontainer({
             clickEditSettingID = '';
             $.mobile.changePage('#viewMain');
         });
+
+        function saveBtnDefaultStatus() {
+            //en or tw both one length
+            if ( !($('#newSettingTitle').val().length == 0) && !($('#newSettingCar').val().length == 0) &&  !($('#newSettingNotice').val().length == 0))
+            {
+                $('#newSettingSave').removeClass('save-disable');
+            }else {
+                if (!$(this).hasClass('save-disable')){
+                    $('#newSettingSave').addClass('save-disable');
+                }
+            }
+        }
+
+        $(document).keyup(function(e) {
+            saveBtnDefaultStatus();
+        });
+
+        // click save button
+        $('#newSettingSave').on('click', function() {
+
+            if ($(this).hasClass('save-disable')) {
+                popupMsg('noSelectTimeMsg', '', '您尚未輸入文字', '', false, '確定', '');
+            } else {
+                var parkingSettingdata = JSON.parse(localStorage.getItem('parkingSettingData'));
+
+                if (clickEditSettingID != '') {
+                    //Edit Status, Update Local Data
+                    parkingSettingdata.content = parkingSettingdata.content.filter(function(item) {
+                        return item.id != clickEditSettingID;
+                    });
+                }
+            }
+
+        });
+
     }
 });

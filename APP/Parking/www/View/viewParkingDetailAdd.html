@@ -6,21 +6,60 @@
                 <a id="newSettingBack" href="#"><img src="img/002_nav_back_white.png" class="title-icon" /></a>
             </div>
             <div id="center" class="ui-title"><span>新增車籍</span></div>
-            <div id="right" class="ui-title-btn"><span>儲存</span></div>
+            <div id="right" class="ui-title-btn"><a id="newSettingSave" href="#" class="save-disable">儲存</a></div>
         </div>
     </div>
-    <div data-role="main" class="page-main" style="font-size: 3.349vw;">
-        <div class="ui-margin-public">
+    <div data-role="main" class="page-main">
+        <div class="parking-detail-add">
             <div id="newApplicantName">
                 <div class="ui-grid-a">
                     <div class="ui-block-a col-7">
-                        <span>申請人資訊(公司名稱/姓名)</span>
+                        <span>*申請人資訊(公司名稱/姓名)</span>
                     </div>
                     <div class="ui-block-b col-3">
-                        <input name="newSettingTitle" id="newSettingTitle" type="text" placeholder="請輸入" />
+                        <textarea id="newSettingTitle" data-autogrow="false" class="ui-input-text"></textarea>
                     </div>
                 </div>
             </div>
+            <div id="newApplicantType">
+                <div class="title">
+                    <span>*申請者類別</span>
+                </div>
+                <div id="newSettingType">
+                        <input type="radio" data-role="none" name="setApplicantType" id="setGuest" value='setGuest' checked="checked">
+                        <label data-role="none" class="overlap-label-icon"></label>
+                        <label data-role="none" class="overlap-label-text" for="setGuest" style=" margin-bottom: 4.3vw;">
+                            <span>貴賓</span>
+                        </label>
+                        <input type="radio" data-role="none" name="setApplicantType" id="setRelatedBusiness" value='setRelatedBusiness'>
+                        <label data-role="none" class="overlap-label-icon"></label>
+                        <label data-role="none" class="overlap-label-text" for="setRelatedBusiness">
+                            <span>關係企業</span>
+                            <span id="textDateTime"></span>
+                        </label>
+                </div>
+            </div>
+            <div id="newCarDetail">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a col-7">
+                        <span>*車型/車牌號碼</span>
+                    </div>
+                    <div class="ui-block-b col-3">
+                        <textarea id="newSettingCar" data-autogrow="false" class="ui-input-text"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div id="newNoticeEvent">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a col-7">
+                        <span>*相關注意事項</span>
+                    </div>
+                    <div class="ui-block-b col-3">
+                        <textarea id="newSettingNotice" data-autogrow="false" class="ui-input-text"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div id="remark">*號為必填欄位,不得為空</div>
         </div>
     </div>
 </div>

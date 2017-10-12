@@ -83,8 +83,57 @@ a {
 #viewParkingDetailAdd .ui-margin-public span{ display: block;}
 #viewParkingDetailAdd .col-3{ width: 100% !important;}
 /*#viewParkingDetailAdd .ui-grid-a { margin-bottom: 1.16vw;} #newApplicantName{ padding-bottom: 2.14vw; }*/
-#newApplicantName, #newSettingPeople, #newSettingTime{ margin: 0 0 4.3vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
-#newSettingTitle{ height: 3.71vw; max-height: 3.71vw; font-size: 4.18vw; margin: 2.14vw 0;}
+#newApplicantName, #newApplicantType, #newCarDetail{ margin: 0 0 4.3vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
+#newNoticeEvent{ margin: 0 0 1.11vw; border-radius: 0;}
+#newSettingTitle, #newSettingCar{ height: 10.304vw; max-height: 10.304vw; font-size: 4.18vw;}
+#newSettingNotice { height: 16.101vw; max-height: 16.101vw; font-size: 4.18vw;}
+#remark{ text-align:center; color: #666; font-size: 3.349vw;}
+
+.parking-detail-add {
+    margin: 1.8vw 3.71vw 0 !important;
+    font-size: 3.349vw;
+}
+
+#newSettingType {
+    margin-top: 2.14vw;
+}
+
+input[type=radio] {
+    display:none;
+}
+
+input[type=radio] + label {
+    background: url('../img/077_radio_blue_n.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=radio]:checked + label {
+    background: url('../img/078_radio_blue_s.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+.overlap-label-icon {
+    clear: both;
+    float: left;
+}
+
+.overlap-label-text {
+    line-height: 1;
+    padding-left: 8.6vw;
+    padding-top: 0.9vw;
+    width: 85%;
+    color: #0F0F0F;
+    font-size: 4.18vw !important;
+}
+
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
 #reserveTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 
@@ -162,7 +211,7 @@ div.square {
     font-size: 4.18vw;
 }
 
-#viewParkingDetailAdd .ui-margin-public{ margin-top: 5vw !important;}
+#viewParkingDetailAdd .parking-detail-add{ margin-top: 5vw !important;}
 
 #pageOne .scrollmenu{ margin-bottom: 0.99vw;}
 
@@ -333,7 +382,6 @@ div.square {
     font-size: 3.14vw;
 }
 
-
 .dropdown-icon {
     outline: none;
     font-size: 4.18vw;
@@ -401,6 +449,10 @@ hr.ui-color-green {
 }
 
 .myReserveInfo span, .myReserveInfo span{ margin-left: 2vw;}
+
+.save-disable {
+    opacity:0.4;
+}
 
 /********************************** scrollmenu *************************************/
 
@@ -533,7 +585,7 @@ div.scrollmenu a {
     width: 10% !important;
 }
 
-/********************************** pageTwo *************************************/
+/********************************** pageThree *************************************/
 
 .car-list-footer {
     width: 17.71vw;
@@ -560,3 +612,5 @@ div.scrollmenu a {
     background-color: rgba(255,0,0,0);
     border-color: rgba(255,0,0,0);
 }
+
+
