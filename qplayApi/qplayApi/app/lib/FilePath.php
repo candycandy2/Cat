@@ -76,7 +76,8 @@ class FilePath
        $deviceType = strtolower($deviceType);
        $appFileUrl = self::getDefaultPath();
        if($intra){
-              $appFileUrl =  url(\Config::get('app.upload_folder'));
+            //$appFileUrl =  url(\Config::get('app.upload_folder'));
+            return \Config::get('app.ota_app_download_url').$fileName;
        }
        return $appFileUrl.'/'.$appRowId.'/'.'apk'.'/'.$deviceType.'/'. $versionCode .'/'.$fileName;
     }

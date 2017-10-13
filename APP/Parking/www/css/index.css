@@ -272,12 +272,12 @@ div.square {
     display: inline-block;
 }
 
-.myreserve-margin { font-size: 4.18vw; margin-left: 3vw;}
+.carlist-margin, .myreserve-margin { font-size: 4.18vw; margin-left: 3vw;}
 
 #pageThree{ box-sizing: border-box;}
 
-#pageThree .myReserveInfo{ padding-bottom: 0 !important; position: relative; margin-left: 0 !important}
-#pageThree .myReserveInfo:after{
+#pageTwo .myCarList, #pageThree .myReserveInfo{ padding-bottom: 0 !important; position: relative; margin-left: 0 !important}
+#pageTwo .myCarList, #pageThree .myReserveInfo:after{
     content: '';
     background-color: #d6d6d6;
     display: block;
@@ -288,7 +288,7 @@ div.square {
     left: 0;
 }
 
-#pageThree .myReserveInfo > div > div{ margin: 4vw 0 3vw;}
+#pageTwo .myCarList, #pageThree .myReserveInfo > div > div{ margin: 4vw 0 3vw;}
 
 .delete-myreserve{ width: 4.186vw; height: auto;}
 
@@ -430,9 +430,17 @@ hr.ui-color-green {
     color: #999 !important;
 }
 
+.btn-car-list {
+    background-color: #f9f9f9 !important;
+}
+
+.btn-today {
+    background-color: #ffffff !important;
+}
+
 .btn-otherday {
     background-color: #f6f6f6 !important;
-    color: #666 !important;
+    /*color: #666 !important;*/
 }
 
 .btn-otherday h1,
@@ -448,7 +456,7 @@ hr.ui-color-green {
     background-color: #CBF1EC !important;
 }
 
-.myReserveInfo span, .myReserveInfo span{ margin-left: 2vw;}
+.myReserveInfo span { margin-left: 2vw;}
 
 .save-disable {
     opacity:0.4;

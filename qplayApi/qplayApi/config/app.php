@@ -44,6 +44,7 @@ return [
     'app_file_path'=>env('APP_FILE_PATH'),
     'upload_folder' => env('APP_UPLOAD_FOLDER', 'app'),
     'upload_path' => env('APP_UPLOAD_PATH'),
+    'ota_app_download_url' => env('OTA_APP_DOWNLOAD_URL'),
 
     /*
     |--------------------------------------------------------------------------
