@@ -281,6 +281,30 @@ var app = {
 
 app.initialize();
 
+function loadStringTable() {
+  //Browser default language, according to the mobile device language setting
+  //navigator.language: en-US / zh-CN / zh-TW
+  //note:
+  //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
+  //2. If Browser default language not exist in /string , use APP default language "zh-tw"
+  browserLanguage = navigator.language.toLowerCase();
+  var languageShortName = browserLanguage.substr(0, 2);
+
+  if (languageShortName === "en") {
+      browserLanguage = "en-us";
+  }
+
+  $.getJSON("string/" + browserLanguage + ".json", function(data) {
+          //language string exist
+          getLanguageString();
+      })
+      .fail(function() {
+          //language string does not exist
+          browserLanguage = "en-us";
+          getLanguageString();
+      });
+};
+
 /********************************** jQuery Mobile Event *************************************/
 $(document).one("pagebeforecreate", function() {
 
@@ -327,27 +351,7 @@ $(document).one("pagebeforecreate", function() {
         }(value));
     });
 
-    //Browser default language, according to the mobile device language setting
-    //navigator.language: en-US / zh-CN / zh-TW
-    //note:
-    //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
-    //2. If Browser default language not exist in /string , use APP default language "zh-tw"
-    browserLanguage = navigator.language.toLowerCase();
-    var languageShortName = browserLanguage.substr(0, 2);
-
-    if (languageShortName === "en") {
-        browserLanguage = "en-us";
-    }
-
-    $.getJSON("string/" + browserLanguage + ".json", function(data) {
-            //language string exist
-            getLanguageString();
-        })
-        .fail(function() {
-            //language string does not exist
-            browserLanguage = "en-us";
-            getLanguageString();
-        });
+    loadStringTable();
 
     //For APP scrolling in [Android ver:5], set CSS
     //For font-family, set diff in iOS/Android
