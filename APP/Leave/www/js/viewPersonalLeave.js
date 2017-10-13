@@ -254,7 +254,7 @@ $("#viewPersonalLeave").pagecontainer({
                         $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.applyLeaveFail');
                         loadingMask("hide");
-                    }
+                    }             
                 }
             };
 
