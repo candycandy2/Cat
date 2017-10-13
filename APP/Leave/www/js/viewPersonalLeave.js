@@ -9,7 +9,7 @@ var leaveTypeData = {
     id: "leaveType-popup",
     option: [],
     title: "",
-    defaultText: "請選擇",
+    defaultText: langStr["str_069"],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -20,7 +20,7 @@ var agentData = {
     id: "agent-popup",
     option: [],
     title: '<input type="search" id="searchBar" />',
-    defaultText: "請選擇",
+    defaultText: langStr["str_069"],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -254,7 +254,7 @@ $("#viewPersonalLeave").pagecontainer({
                         $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.applyLeaveFail');
                         loadingMask("hide");
-                    }             
+                    }
                 }
             };
 
