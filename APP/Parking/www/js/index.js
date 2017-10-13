@@ -176,6 +176,14 @@ function grepData(grepData, grepPram, grepValue) {
     });
 }
 
+function sortDataByKey(sortData, sortKey, asc) {
+    sortData = sortData.sort(function(a, b) {
+        var x = a[sortKey];
+        var y = b[sortKey];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
+
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
