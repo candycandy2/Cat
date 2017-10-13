@@ -10,11 +10,11 @@ var leaveAllData = [
     {id: '9', categroy: '事假', leave: '事假', introduce: '一年有14天日的事假', attachment: '0', basedate: '0', leftday: 0.5},
     {id: '10', categroy: '事假', leave: '家庭照顧假', introduce: '同事假，全年以7日爲限，併入事假計算', attachment: '0', basedate: '0', leftday: 1},
     {id: '11', categroy: '事假', leave: '特別事假', introduce: '當一年之14日事假用畢時方可申請使用', attachment: '1', basedate: '0', leftday: 2},
-    {id: '12', categroy: '婚嫁', leave: '婚嫁', introduce: '可分開請，結婚生效日前30日及後90日內請畢，基準日爲結婚登記日', attachment: '1', basedate: '1', leftday: 5},
-    {id: '13', categroy: '婚嫁', leave: '訂婚假', introduce: '訂婚當日及其前後兩日之五日內請畢', attachment: '0', basedate: '1', leftday: 1.5},
-    {id: '14', categroy: '喪家', leave: '3天喪家', introduce: '可分開請，但須與100日內請畢', attachment: '1', basedate: '1', leftday: 0},
-    {id: '15', categroy: '喪家', leave: '6天喪家', introduce: '可分開請，但須與100日內請畢', attachment: '1', basedate: '1', leftday: 0},
-    {id: '16', categroy: '喪家', leave: '8天喪家', introduce: '可分開請，但須與100日內請畢', attachment: '1', basedate: '1', leftday: 1},
+    {id: '12', categroy: '婚假', leave: '婚假', introduce: '可分開請，結婚生效日前30日及後90日內請畢，基準日爲結婚登記日', attachment: '1', basedate: '1', leftday: 5},
+    {id: '13', categroy: '婚假', leave: '訂婚假', introduce: '訂婚當日及其前後兩日之五日內請畢', attachment: '0', basedate: '1', leftday: 1.5},
+    {id: '14', categroy: '喪假', leave: '3天喪假', introduce: '可分開請，但須與100日內請畢', attachment: '1', basedate: '1', leftday: 0},
+    {id: '15', categroy: '喪假', leave: '6天喪假', introduce: '可分開請，但須與100日內請畢', attachment: '1', basedate: '1', leftday: 0},
+    {id: '16', categroy: '喪假', leave: '8天喪假', introduce: '可分開請，但須與100日內請畢', attachment: '1', basedate: '1', leftday: 1},
     {id: '17', categroy: '產假', leave: '有薪產檢假', introduce: '以懷孕日爲基準，請假以小時爲最小單位', attachment: '1', basedate: '1', leftday: 1.5},
     {id: '18', categroy: '產假', leave: '產假', introduce: '不得分開請假，應與子女出生前後一星期內辦理請假手續', attachment: '1', basedate: '1', leftday: 0},
     {id: '19', categroy: '產假', leave: '半薪產假', introduce: '到職未滿六個月以上者，以半薪計算', attachment: '1', basedate: '1', leftday: 0.5},
@@ -136,7 +136,7 @@ var endData = {
 
 $("#viewLeaveSubmit").pagecontainer({
     create: function(event, ui) {
-        
+
         /********************************** function *************************************/
         //获取所有类别
         function getLeaveCategroy() {
@@ -144,9 +144,9 @@ $("#viewLeaveSubmit").pagecontainer({
             for(var i in leaveAllData) {
                 if (categroyList.indexOf(leaveAllData[i]['categroy']) == -1) {
                     categroyList.push(leaveAllData[i]['categroy']);
-                } 
+                }
             }
-            
+
             for(var i in categroyList) {
                 categroyData["option"][i] = {};
                 categroyData["option"][i]["value"] = categroyList[i];
@@ -170,7 +170,7 @@ $("#viewLeaveSubmit").pagecontainer({
                     allLeaveList.push(leaveAllData[i]['leave']);
                 }
             }
-            
+
             for(var i in allLeaveList) {
                 leaveData["option"][i] = {};
                 leaveData["option"][i]["value"] = allLeaveList[i];
@@ -195,12 +195,12 @@ $("#viewLeaveSubmit").pagecontainer({
                         allLeaveList.push(leaveAllData[i]['leave']);
                     }
                 }
-                
+
                 for(var i in allLeaveList) {
                     leaveData["option"][i] = {};
                     leaveData["option"][i]["value"] = allLeaveList[i];
                     leaveData["option"][i]["text"] = allLeaveList[i];
-                    leaveOption += '<li class="tpl-option-msg-list">' + allLeaveList[i] + '</li>'; 
+                    leaveOption += '<li class="tpl-option-msg-list">' + allLeaveList[i] + '</li>';
                 }
             }else {
                 for(var i in leaveAllData) {
@@ -208,12 +208,12 @@ $("#viewLeaveSubmit").pagecontainer({
                         leaveList.push(leaveAllData[i]['leave']);
                     }
                 }
-    
+
                 for(var i in leaveList) {
                     leaveData["option"][i] = {};
                     leaveData["option"][i]["value"] = leaveList[i];
                     leaveData["option"][i]["text"] = leaveList[i];
-                    leaveOption += '<li class="tpl-option-msg-list">' + leaveList[i] + '</li>';    
+                    leaveOption += '<li class="tpl-option-msg-list">' + leaveList[i] + '</li>';
                 }
 
                 //選擇其他——提示
@@ -227,7 +227,7 @@ $("#viewLeaveSubmit").pagecontainer({
             $("#leave-popup-option-list").append(leaveOption);
             tplJS.reSizeDropdownList("leave-popup", "typeB");
             resizePopup("leave-popup-option");
-            
+
         }
 
         //获取本部门员工——查找代理人
@@ -317,7 +317,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         $("#viewLeaveSubmit").on("pageshow", function(event, ui) {
-            
+
             loadingMask("hide");
         });
 
@@ -330,8 +330,8 @@ $("#viewLeaveSubmit").pagecontainer({
         $(document).on("change", "#categroy-popup", function() {
             var selectCategroy = $.trim($(this).text());
             console.log(selectCategroy);
-            getLeaveByCategroy(selectCategroy);      
-            
+            getLeaveByCategroy(selectCategroy);
+
         });
 
         //假別彈窗打開之後——清除 "請選擇"
@@ -369,14 +369,14 @@ $("#viewLeaveSubmit").pagecontainer({
                     //introduce
                     var divIntroduce = "<span>*" + leaveObj['introduce'] + "</span>";
                     $('#applyLeaveCategroy').empty().append(divIntroduce).show();
-        
+
                     //attachment
                     if(leaveObj['attachment'] == '1') {
                         $('#uploadAttachment').show();
                     }else {
                         $('#uploadAttachment').hide();
                     }
-        
+
                     //basedate
                     if(leaveObj['basedate'] == '1') {
                         $('#baseDate').show();
@@ -385,7 +385,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         $('#baseDate').hide();
                         $('#divEmpty').hide();
                     }
-                    
+
                 }else if(selectLeave !== leaveMsgStr && leaveObj['leftday'] == 0) {
                     //popup
                     $('.leaveNotEnough').find('.main-paragraph').html("請選擇其他假別");
@@ -402,7 +402,7 @@ $("#viewLeaveSubmit").pagecontainer({
                     $('#divEmpty').hide();
                 }
             }
-            
+
             leaveState = false;
         });
 
@@ -424,7 +424,7 @@ $("#viewLeaveSubmit").pagecontainer({
             }else {
                 $('#startText').text(startLeaveDate);
             }
-            
+
         });
 
         $(document).on("change", "#endDate", function() {
@@ -460,7 +460,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 $('#leaveTime').text(leaveTime);
             }
 
-            
+
         });
 
 
