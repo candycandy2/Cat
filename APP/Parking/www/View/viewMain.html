@@ -287,24 +287,24 @@
             <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 4.3vw auto 0;">預約</div>
         </div>
         <div class="ui-margin-public" id="pageTwo">
-            <template id="tplCarListNoData">
-                <div class="car-list-no-data font-style3 hide">目前無常用車籍</div>
-            </template>
-            <div id="commonCarList" class="btn-car-list myCarList">
+            <div id="commonCarList" class="btn-car-list myCarList disable">
                 <div class="ui-grid-a">
                     <div class="ui-block-a col-7">
                         <div class="carlist-margin">[title]</div>
                         <div class="carlist-margin">[type]</div>
                         <div class="carlist-margin">[car]</div>
                     </div>
+                    <div class="ui-block-b col-3"></div>
                     <div class="ui-block-b col-3">
-                        <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">
+                        <a href="#" title="[title]" value="[value]" type="[type]" car="[car]" class="btn-myreserve">
                             <img src="img/030_btn_delete.png" alt="" class="delete-myreserve">
                         </a>
-
                     </div>
                 </div>
             </div>
+            <template id="tplCarListNoData">
+                <div class="car-list-no-data font-style3 hide">目前無常用車籍</div>
+            </template>
             <div data-role="footer" class="car-list-footer" data-position="fixed">
                 <div id="addCarDetail" class="car-list-add-button"></div>
             </div>
@@ -321,7 +321,6 @@
                         <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">
                             <img src="img/030_btn_delete.png" alt="" class="delete-myreserve">
                         </a>
-
                     </div>
                 </div>
             </div>

@@ -18,6 +18,7 @@ var clickReserveDate = '';
 var clickReserveRoom = '';
 var arrTempTimeNameClick = [];
 var parkingSpaceDataExample = ['車位1', '車位2', '車位3', '車位4'];
+var parkingSettingdata = {};
 
 $("#viewMain").pagecontainer({
     create: function(event, ui) {
@@ -500,6 +501,28 @@ $("#viewMain").pagecontainer({
             setDateList();
         }
 
+        function querySettingCarList() {
+            $('div[id^=commonCarList-]').remove();
+            parkingSettingData = JSON.parse(localStorage.getItem('parkingSettingData'));
+            var originItem = ['commonCarList', '[index]', '[title]', '[type]', '[car]'];
+            htmlContent = '';
+
+            if (parkingSettingData != null) {
+                sortDataByKey(parkingSettingData.content, 'id', 'asc');
+                for (var i = 0, item; item = parkingSettingData['content'][i]; i++) {
+                    var strTitle = item.title;
+                    var strType= (item.type == 'setGuest') ? '貴賓' : '關係企業';
+                    var strCar = item.car;
+                    var replaceItem = ['commonCarList-' + item.id, item.id, strTitle, strType, strCar];
+                    htmlContent += replaceStr($('#commonCarList').get(0).outerHTML, originItem, replaceItem);
+                }
+            }
+            $('#commonCarList').after(htmlContent);
+            $('div[id^=commonCarList-]').removeClass('disable');
+
+            //$('div[value=0] a').addClass('disable');
+        }
+
         /********************************** page event *************************************/
         $("#viewMain").one("pagebeforeshow", function(event, ui) {
             //get last update time check date expired
@@ -507,7 +530,7 @@ $("#viewMain").pagecontainer({
             //var doAPIQueryMyReserve = new getAPIQueryMyReserve();
             getInitialData();
             setInitialData();
-
+            querySettingCarList();
             $('#pageOne').show();
             $('#pageTwo').hide();
             $('#pageThree').hide();
@@ -516,6 +539,7 @@ $("#viewMain").pagecontainer({
 
         $('#viewMain').on('pagebeforeshow', function(event, ui) {
             reserveBtnDefaultStatus();
+            querySettingCarList();
             /*if (isReloadPage == true) {
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
                 isReloadPage = false;
