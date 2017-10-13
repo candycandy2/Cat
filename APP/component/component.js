@@ -71,6 +71,8 @@ var app = {
         }
         */
 
+        loadStringTable();
+        
         //For release
         this.bindEvents();
     },
@@ -350,8 +352,6 @@ $(document).one("pagebeforecreate", function() {
             }, "html");
         }(value));
     });
-
-    loadStringTable();
 
     //For APP scrolling in [Android ver:5], set CSS
     //For font-family, set diff in iOS/Android
