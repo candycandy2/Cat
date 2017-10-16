@@ -3,24 +3,31 @@ $("#viewParkingDetailAdd").pagecontainer({
     create: function(event, ui) {
 
     	/********************************** function *************************************/
-    	function setDefaultStatus() {
-            $('#newSettingTitle').val('');
-            var defaultSite = $("#newSettingSite option:first").val();
-            $("#newSettingSite").val(defaultSite).change();
-            $("#newSettingSite option:first").attr("selected", "selected");
-            $('#newSettingPeople input[value=0]').prop("checked", "checked");
-            $('#newSettingPeople input[id^=num-]').checkboxradio("refresh");
-            $('#newSettingTime input[id=setTime1]').prop("checked", "checked");
-            $('#newSettingTime input[id^=setTime]').checkboxradio("refresh");
-            selectTime = {};
-            $('label[for^=setTime2]').text('指定時段');
-            $('#floorDefault div').addClass('ui-btn-active');
-            $.each(seqClick, function(index, value) {
-                $('#newSettingFloor div[id=' + value + '] > div').removeClass('ui-btn-active');
+        function changeEditStatus() {
+            var parkingSettingEditdata = JSON.parse(localStorage.getItem('parkingSettingData'));
+            parkingSettingEditdata = parkingSettingEditdata.content.filter(function(item) {
+                return item.id == clickEditSettingID;
             });
-            seqClick = [];
-            $('#newSettingFloor div[id^=cntIcon]').remove();
         }
+
+        function setDefaultStatus() {
+            $('#newSettingTitle').val('');
+            $('#newSettingType input[value=setGuest]').prop("checked", "checked");
+            $('#newSettingCar').val('');
+            $('#newSettingNotice').val('');
+        }
+
+        function saveBtnDefaultStatus() {
+            if ( !($('#newSettingTitle').val().length == 0) && !($('#newSettingCar').val().length == 0) &&  !($('#newSettingNotice').val().length == 0))
+            {
+                $('#newSettingSave').removeClass('save-disable');
+            }else {
+                if (!$(this).hasClass('save-disable')){
+                    $('#newSettingSave').addClass('save-disable');
+                }
+            }
+        }
+
 
         /********************************** page event *************************************/
         $('#viewParkingDetailAdd').one('pagebeforeshow', function(event, ui) {
@@ -28,7 +35,13 @@ $("#viewParkingDetailAdd").pagecontainer({
         });
 
         $('#viewParkingDetailAdd').on('pagebeforeshow', function(event, ui) {
-            saveBtnDefaultStatus();
+            
+            if (clickEditSettingID != '') {
+                //changeEditStatus();
+            }else{
+                setDefaultStatus();
+                saveBtnDefaultStatus();
+            }
         });
 
         $('#viewParkingDetailAdd').on('pageshow', function(event, ui) {
@@ -43,28 +56,10 @@ $("#viewParkingDetailAdd").pagecontainer({
             $.mobile.changePage('#viewMain');
         });
 
-        function saveBtnDefaultStatus() {
-            //en or tw both one length
-            if ( !($('#newSettingTitle').val().length == 0) && !($('#newSettingCar').val().length == 0) &&  !($('#newSettingNotice').val().length == 0))
-            {
-                $('#newSettingSave').removeClass('save-disable');
-            }else {
-                if (!$(this).hasClass('save-disable')){
-                    $('#newSettingSave').addClass('save-disable');
-                }
-            }
-        }
 
         $(document).keyup(function(e) {
             saveBtnDefaultStatus();
         });
-
-        function setDefaultStatus() {
-            $('#newSettingTitle').val('');
-            $('#newSettingType input[value=setGuest]').prop("checked", "checked");
-            $('#newSettingCar').val('');
-            $('#newSettingNotice').val('');
-        }
 
         // click save button
         $('#newSettingSave').on('click', function() {
