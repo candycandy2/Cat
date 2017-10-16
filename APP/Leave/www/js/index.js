@@ -102,8 +102,10 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $(".menu-btn").on("click", function() {
-        $("#mypanel").panel("open");
-        $(".page-mask").show();
+        if($('#backMain').css("display") == "none") {
+            $("#mypanel").panel("open");
+            $(".page-mask").show();
+        }
     });
 
     $(document).on("swipeleft", function(event) {
