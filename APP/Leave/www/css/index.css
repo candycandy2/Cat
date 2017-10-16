@@ -333,8 +333,15 @@ div.scrollmenu a {
 
 #uploadAttachment,
 #baseDate,
-#divEmpty {
+#divEmpty,
+#baseTime {
 	display: none;
+}
+
+#baseTimeNoData {
+	display: none;
+	height: 7.8vw;
+	line-height: 7.8vw;
 }
 
 .apply-categroy {
@@ -410,7 +417,8 @@ div.scrollmenu a {
 	position: fixed;
 }
 
-.date-component input[type="datetime-local"] {	
+.date-component input[type="datetime-local"],
+.date-component input[type="date"] {	
 	opacity: 0;
 }
 
@@ -466,9 +474,12 @@ div.scrollmenu a {
 	line-height: 10vw;
 }
 
+/* popup */
 .leaveNotEnough > .ui-content,
 .leftDaysByLeave > .ui-content,
-.dateTimeError > .ui-content {
+.dateTimeError > .ui-content,
+.categroyFirst > .ui-content,
+.basedayFirst > .ui-content {
 	padding: 0 !important;
 }
 
@@ -477,8 +488,30 @@ div.scrollmenu a {
 }
 
 .leftDaysByLeave > .ui-content > .header,
-.dateTimeError > .ui-content > .header {
+.dateTimeError > .ui-content > .header,
+.categroyFirst > .ui-content > .header,
+.basedayFirst > .ui-content > .header {
 	margin-top: 12.5%;
+}
+
+.date-time-component {
+	height: 0;
+	border: none;
+}
+
+.color-gray {
+	color: #666666;
+}
+
+.leaveUploadAttach-radio-label {
+	border: none !important;
+	background: #f9f9f9 !important;
+}
+
+.apply-preview {
+	display: none;
+	width: 93.6vw;
+	margin-left: 3.2vw;
 }
 
 /**************************************** viewHolidayCalendar ***************************************/
