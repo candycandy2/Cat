@@ -68,6 +68,8 @@ var otherBaseVal,newBaseVal;
 var leftdayMsg;
 var needBaseday = false;
 var selectBaseday = false;
+var datetimeState = false;
+var leaveReason;
 
 var categroyData = {
     id: "categroy-popup",
@@ -239,7 +241,7 @@ $("#viewLeaveSubmit").pagecontainer({
             //leaveList = [];
             leaveDataInit();
             $("#leave-popup").remove();
-            //$("#leave-popup-option-list").empty();
+            //$("#leave-popup-option-list").remove();
             var leaveOption = "";
 
             //選擇所有類別還是其他..
@@ -400,7 +402,8 @@ $("#viewLeaveSubmit").pagecontainer({
         /********************************** page event *************************************/
         $("#viewLeaveSubmit").on("pagebeforeshow", function(event, ui) {
             if(!viewLeaveSubmitInit){
-            	$('#applyDay').text(applyDay);
+                $('#applyDay').text(applyDay);
+                $('#previewApplyDay').text(applyDay);
                 getLeaveCategroy();
                 //getLeaveByCategroy(selectCategroy);
                 getAllLeaveList();
@@ -426,7 +429,7 @@ $("#viewLeaveSubmit").pagecontainer({
         //選擇類別
         $(document).on("change", "#categroy-popup", function() {
             selectCategroy = $.trim($(this).text());
-            console.log(selectCategroy);
+            //console.log(selectCategroy);
             getLeaveByCategroy(selectCategroy);      
             
         });
@@ -606,7 +609,7 @@ $("#viewLeaveSubmit").pagecontainer({
                     $('#startText').text(leaveMsgStr);
                 }else {
                     $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
-                    popupMsgInit('.leftDaysByLeave');
+                    //popupMsgInit('.leftDaysByLeave');
                     //統計請假時長——會有API計算
                     if(endLeaveDay - startLeaveDay > 2 && endLeaveTime >= startLeaveTime) {
                         var leaveDay = endLeaveDay - startLeaveDay;
@@ -624,9 +627,12 @@ $("#viewLeaveSubmit").pagecontainer({
             }
 
             //展現請假統計
-            if(startLeaveDate !== "" && endLeaveDate !== "") {
+            if(startLeaveDate !== "" && endLeaveDate !== "" & startLeaveDate !== "請選擇" && endLeaveDate !== "請選擇") {
                 $('#leaveDay').text(leaveDay);
                 $('#leaveTime').text(leaveTime);
+                datetimeState = true;
+            }else {
+                datetimeState = false;
             }
             
         });
@@ -656,7 +662,7 @@ $("#viewLeaveSubmit").pagecontainer({
                     $('#endText').text(leaveMsgStr); 
                 }else {
                     $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
-                    popupMsgInit('.leftDaysByLeave');
+                    //popupMsgInit('.leftDaysByLeave');
                     //統計請假時長——會有API計算
                     if(endLeaveDay - startLeaveDay > 2 && endLeaveTime >= startLeaveTime) {
                         var leaveDay = endLeaveDay - startLeaveDay;
@@ -674,9 +680,12 @@ $("#viewLeaveSubmit").pagecontainer({
             }
 
             //展現請假統計
-            if(startLeaveDate !== "" && endLeaveDate !== "") {
+            if(startLeaveDate !== "" && endLeaveDate !== "" & startLeaveDate !== "請選擇" && endLeaveDate !== "請選擇") {
                 $('#leaveDay').text(leaveDay);
                 $('#leaveTime').text(leaveTime);
+                datetimeState = true;
+            }else {
+                datetimeState = false;
             }
             
         });
@@ -699,5 +708,52 @@ $("#viewLeaveSubmit").pagecontainer({
             $("#baseTimeNoData").find("span").text(newBaseVal);
         });
 
+        //多行文本獲取
+        // $(document).on("blur", "#leaveReason", function() {
+        //     leaveReason = $(this).val();
+        //     //console.log(leaveReason);
+
+        //     if(leaveReason !== "" && datetimeState == true) {
+        //         $('#previewBtn').addClass('leavePreview-active-btn');
+                
+        //     }else {
+        //         $('#previewBtn').removeClass('leavePreview-active-btn');
+        //     }
+
+        // });
+
+        //實時獲取多行文本值
+        $(document).on("keyup", "#leaveReason", function() {
+            leaveReason = $(this).val();
+            //console.log(leaveReason);
+
+            if(leaveReason !== "" && datetimeState == true) {
+                $('#previewBtn').addClass('leavePreview-active-btn');
+
+            }else {
+                $('#previewBtn').removeClass('leavePreview-active-btn');
+                
+            }
+        });
+        
+        //預覽送簽按鈕
+        $(document).on("click", "#previewBtn", function() {
+            if($('#previewBtn').hasClass('leavePreview-active-btn')) {
+                $('.apply-container').hide();
+                $('.apply-preview').show();
+                $('.ui-title').find("span").text("");
+                $('.leaveMenu').hide();
+                $('#backMain').show();
+            }
+        });
+
+        //返回編輯按鈕
+        $(document).on("click", "#backMain" ,function() {
+            $('.apply-preview').hide();
+            $('.apply-container').show();
+            $('.ui-title').find("span").text("請假申請");
+            $('.leaveMenu').show();
+            $('#backMain').hide();
+        });
     }
 });
