@@ -104,19 +104,22 @@ $("#viewPersonalLeave").pagecontainer({
                     var leftDays = $("leftdays", htmlDoc);
                     leftDaysData[leaveid] = $(leftDays).html();
 
-                    $("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftDaysData[leaveid] + " 天");
+                    //$("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftDaysData[leaveid] + " 天");
+                    $("#leaveType > span:nth-of-type(1)").text("* " + langStr["str_070"] + " " + leftDaysData[leaveid] + " " + langStr["str_071"]);
                     $("input[id=leaveTime-tab1]").prop("disabled", false);
                     $("input[id=leaveTime-tab1]").parent().removeClass("ui-state-disabled");
 
                     if (leftDaysData[leaveid] < 0) {
                         $("#leaveType > span:nth-of-type(1)").text("");
                     } else if (leftDaysData[leaveid] >= 0 && leftDaysData[leaveid] < 0.5) {
-                        var msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
+                        //var msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
+                        var msgContent = leaveType + langStr["str_072"] + " " + leftDaysData[leaveid] + " " + langStr["str_071"];
                         $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.leftDaysNotEnough');
 
                         $("#leaveType > span:nth-of-type(1)").text("");
-                        $("#leaveType-popup option").text("請選擇");
+                        //$("#leaveType-popup option").text("請選擇");
+                        $("#leaveType-popup option").text(langStr["str_069"]);
                         tplJS.reSizeDropdownList("leaveType-popup", "typeB");
                         leaveid = "";
                         leaveType = "";
@@ -197,7 +200,8 @@ $("#viewPersonalLeave").pagecontainer({
                         popupMsgInit('.agentNotExist');
 
                         //Clear Data
-                        var newOption = '<option hidden>請選擇</option>';
+                        //var newOption = '<option hidden>請選擇</option>';
+                        var newOption = '<option hidden>' + langStr["str_069"] + '</option>';
                         $("#agent-popup").find("option").remove().end().append(newOption);
                         agentid = "";
                         window.localStorage.removeItem('agent');
@@ -254,7 +258,7 @@ $("#viewPersonalLeave").pagecontainer({
                         $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.applyLeaveFail');
                         loadingMask("hide");
-                    }             
+                    }
                 }
             };
 
@@ -273,7 +277,8 @@ $("#viewPersonalLeave").pagecontainer({
                     var callbackData = data['Content'][0]["result"];
 
                     if (callbackData.indexOf("error") != -1) {
-                        $('.applyLeaveFail').find('.main-paragraph').html("假單送簽失敗");
+                        //$('.applyLeaveFail').find('.main-paragraph').html("假單送簽失敗");
+                        $('.applyLeaveFail').find('.main-paragraph').html(langStr["str_073"]);
                         popupMsgInit('.applyLeaveFail');
                     } else {
                         var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -415,8 +420,10 @@ $("#viewPersonalLeave").pagecontainer({
             timeArry = splitTime($(this).val());
             beginTime = timeArry[1];
             endTime = timeArry[2];
-            $("label[for=leaveTime-tab2]").text("上午");
-            $("label[for=leaveTime-tab3]").text("下午");
+            //$("label[for=leaveTime-tab2]").text("上午");
+            $("label[for=leaveTime-tab2]").text(langStr["str_074"]);
+            //$("label[for=leaveTime-tab3]").text("下午");
+            $("label[for=leaveTime-tab3]").text(langStr["str_075"]);
             leaveTimetab = "leaveTime-tab1";
         });
 
@@ -425,7 +432,8 @@ $("#viewPersonalLeave").pagecontainer({
             beginTime = timeArry[1];
             endTime = timeArry[2];
             $("label[for=leaveTime-tab2]").text("08:00-12:00");
-            $("label[for=leaveTime-tab3]").text("下午");
+            //$("label[for=leaveTime-tab3]").text("下午");
+            $("label[for=leaveTime-tab3]").text(langStr["str_075"]);
             leaveTimetab = "leaveTime-tab2";
         });
 
@@ -433,7 +441,8 @@ $("#viewPersonalLeave").pagecontainer({
             timeArry = splitTime($(this).val());
             beginTime = timeArry[1];
             endTime = timeArry[2];
-            $("label[for=leaveTime-tab2]").text("上午");
+            //$("label[for=leaveTime-tab2]").text("上午");
+            $("label[for=leaveTime-tab2]").text(langStr["str_074"]);
             $("label[for=leaveTime-tab3]").text("13:00-17:00");
             leaveTimetab = "leaveTime-tab3";
         });
