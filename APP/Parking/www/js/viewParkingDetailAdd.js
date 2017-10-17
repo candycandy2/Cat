@@ -8,6 +8,16 @@ $("#viewParkingDetailAdd").pagecontainer({
             parkingSettingEditdata = parkingSettingEditdata.content.filter(function(item) {
                 return item.id == clickEditSettingID;
             });
+            var editTitle = parkingSettingEditdata[0].title;
+            var editType = parkingSettingEditdata[0].type;
+            var editCar= parkingSettingEditdata[0].car;
+            var editNotice = parkingSettingEditdata[0].notice;
+
+            $('#newSettingTitle').val(editTitle);
+            $('#newSettingType input[id^=set]').removeAttr("checked");
+            $('#newSettingType input[value=' + editType + ']').prop("checked", "checked");
+            $('#newSettingCar').val(editCar);
+            $('#newSettingNotice').val(editNotice);
         }
 
         function setDefaultStatus() {
@@ -34,10 +44,10 @@ $("#viewParkingDetailAdd").pagecontainer({
 
         });
 
-        $('#viewParkingDetailAdd').on('pagebeforeshow', function(event, ui) {
-            
+        $('#viewParkingDetailAdd').on('pagebeforeshow', function(event, ui) {          
             if (clickEditSettingID != '') {
-                //changeEditStatus();
+                changeEditStatus();
+                saveBtnDefaultStatus();
             }else{
                 setDefaultStatus();
                 saveBtnDefaultStatus();
@@ -77,13 +87,14 @@ $("#viewParkingDetailAdd").pagecontainer({
                 }
 
                 var obj = new Object();
-                if (parkingSettingdata == null) {
-                    obj.id = '1';
+                if ( parkingSettingdata == null || parkingSettingdata.content.length == 0) {
+                    obj.id = 1 ;
                 } else if (clickEditSettingID != '') {
                     obj.id = clickEditSettingID;
 
                 } else {
-                    obj.id = parkingSettingdata['content'].length + 1;
+                    sortDataByKey(parkingSettingData.content, 'id', 'asc');
+                    obj.id = parkingSettingdata['content'][parkingSettingdata['content'].length-1].id + 1;
                 }
                 obj.title = $('#newSettingTitle').val();
                 obj.type = $("#newSettingType :radio:checked").val();
