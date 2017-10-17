@@ -125,7 +125,6 @@ class UserRepository
             ->Leftjoin('qp_friend_matrix','qp_friend_matrix.target_emp_no','=','qp_user.emp_no')
             ->Leftjoin('qp_qchat_user_detail','qp_user.emp_no','=','qp_qchat_user_detail.emp_no')
             ->Leftjoin('qp_protect_user','qp_user.emp_no','=','qp_protect_user.emp_no')
-            ->Leftjoin('qp_register','qp_user.row_id','=','qp_register.user_row_id')
             ->where('qp_user.resign','=','N')
             ->where('qp_user.status','=','Y')
             ->where('qp_user.emp_no','<>',$empNo);
@@ -145,10 +144,9 @@ class UserRepository
                 $query->where('qp_friend_matrix.from_emp_no','=',$empNo)
                       ->where('qp_friend_matrix.status','=','1');
             }
-           return $query->groupBy('qp_register.user_row_id','qp_user.login_id')
-                         ->select(
+           return $query ->select(
                                  'login_id as name',
-                                 DB::raw('IF (qp_register.uuid is NULL,"N","Y") as registered'),
+                                 'qp_user.register_message as registered',
                                  DB::raw('IF (qp_friend_matrix.status is NULL, 0, qp_friend_matrix.status) as status'),
                                  DB::raw('IF (qp_protect_user.row_id is NULL,"N","Y") as protected'),
                                  'qp_user.emp_no',
