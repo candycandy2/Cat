@@ -2,7 +2,7 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
-            <img src="img/menu.png" style="width: 4.934VW;">
+            <img src="img/menu.png" style="width: 4.934VW;" class="leaveMenu"><span id="backMain"><</span>
         </a>
         <div class="header-style">
             <div class="ui-title">
@@ -149,21 +149,91 @@
                     <span class="langStr" data-id="str_089"></span>
                 </div>
                 <div>
-                    <textarea data-role="none" class="reason-textarea" placeholder="請填寫理由"></textarea>
+                    <textarea data-role="none" id="leaveReason" class="reason-textarea" placeholder="請填寫理由"></textarea>
                 </div>
             </div>
             <!-- empty div -->
             <div class="apply-empty-div2"></div>
             <!-- preview btn -->
-            <div class="apply-preview-div">
-                <div class="apply-leave-submit">
+            <div class="apply-preview-btn">
+                <div id="previewBtn">
                     <!--預覽送簽-->
                     <span class="langStr" data-id="str_091"></span>
                 </div>
             </div>
         </div>
+        <!-- preview -->
         <div class="apply-preview">
-
+            <div class="preview-apply-date font-style12">
+                <!--申請日期-->
+                <span class="langStr" data-id="str_080"></span><span id="previewApplyDay"></span>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_081"></span>
+                </div>
+                <div class="font-style3">
+                    <span>病假</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_082"></span>
+                </div>
+                <div class="font-style3">
+                    <span>半薪病假</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_083"></span>
+                </div>
+                <div class="font-style3">
+                    <span>Mary</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_084"></span>
+                </div>
+                <div class="font-style3">
+                    <span>2017-02-14 8:00</span><span> - </span><span>2017-02-14 17:00</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_087"></span>
+                </div>
+                <div class="font-style3">
+                    <span>1天0小時</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_089"></span>
+                </div>
+                <div class="font-style3">
+                    <span>sick</span>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div2"></div>
+            <!-- apply btn -->
+            <div class="apply-submit-btn">
+                <div id="applyBtn">
+                    <!--立即預約-->
+                    <span>立即預約</span>
+                </div>
+            </div>
+            <div class="apply-preview-remove">
+                <span>x&nbsp;清除</span>
+            </div>
         </div>
     </div>
 
