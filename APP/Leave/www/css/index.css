@@ -25,7 +25,8 @@
 
 /********************************************common use**********************************************/
 .page-main {
-    padding-top: 3.99vw;
+	padding-top: 3.99vw;
+	padding-bottom: 0;
 }
 
 #mypanel {
@@ -218,7 +219,7 @@ div.scrollmenu a {
     color: #999999 !important;
 }
 
-#searchBar {
+#searchBar, #searchAgent {
 	width: 75VW;
 	border-width: 1px;
 	border-style: solid;
@@ -324,8 +325,20 @@ div.scrollmenu a {
 	color: #666666;
 }
 
+#applyLeaveCategroy {
+	height: 3.14vw;
+	display: none;
+	color: #666666;
+}
+
+#uploadAttachment,
+#baseDate,
+#divEmpty {
+	display: none;
+}
+
 .apply-categroy {
-	height: 15.67vw;
+	height: 10.67vw;
 	color: #0f0f0f;
 }
 
@@ -352,10 +365,9 @@ div.scrollmenu a {
 }
 
 .apply-select-img {
-	margin-left: 3.2vw;
-	margin-top: 0.5vw;
-	width: 3.542vw;
-	height: 2.125vw;
+	margin-left: 5vw;
+	width: 4vw;
+	height: 2.75vw;
 }
 
 .apply-empty-div1 {
@@ -367,39 +379,39 @@ div.scrollmenu a {
 }
 
 .apply-leave-date {
-	height: 18.2vw;
+	height: 19vw;
 	color: #0f0f0f;
 }
 
-.apply-leave-date > div:nth-of-type(1) {
-	height: 3.349vw;
-}
-
+.apply-leave-date > div:nth-of-type(1),
 .apply-leave-date > div:nth-of-type(2) {
-	height: 3.349vw;
-	margin-top: 1.16vw;
-}
-
-.apply-leave-date > div:nth-of-type(3) {
-	height: 4.18vw;
-	margin-top: 1.16vw;
+	height: 5vw;	
 }
 
 .apply-leave-date > div:nth-of-type(2) > div {
 	display: inline-block;
 	width: 46vw;
-	height: 3.349vw;
+	height: 5vw;
+	line-height: 5vw;
+}
+
+.apply-leave-date > div:nth-of-type(3) {
+	height: 7vw;	
 }
 
 .apply-leave-date > div:nth-of-type(3) > div {
 	display: inline-block;
 	width: 46vw;
-	height: 4.18vw;
+	height: 7vw;
+	line-height: 7vw;
 }
 
-.apply-leave-date > div:nth-of-type(2) > div > span,
-.apply-leave-date > div:nth-of-type(3) > div > span {
-	display: inline-block;
+.date-component {
+	position: fixed;
+}
+
+.date-component input[type="datetime-local"] {	
+	opacity: 0;
 }
 
 .apply-leave-count {
@@ -433,7 +445,7 @@ div.scrollmenu a {
 
 .reason-textarea {
 	resize: none;
-	width: 46vw;
+	width: 86vw;
 	height: 9.17vw;
 	border: 0;
 	-webkit-appearance: none;
@@ -454,8 +466,20 @@ div.scrollmenu a {
 	line-height: 10vw;
 }
 
+.leaveNotEnough > .ui-content,
+.leftDaysByLeave > .ui-content,
+.dateTimeError > .ui-content {
+	padding: 0 !important;
+}
 
+.leaveNotEnough > .ui-content > .header {
+	margin-top: 10%;
+}
 
+.leftDaysByLeave > .ui-content > .header,
+.dateTimeError > .ui-content > .header {
+	margin-top: 12.5%;
+}
 
 /**************************************** viewHolidayCalendar ***************************************/
 

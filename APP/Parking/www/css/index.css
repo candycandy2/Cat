@@ -1,5 +1,27 @@
 /********************************** override jQuery Mobile *************************************/
 
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #d4d4d4;
+    color: #d4d4d4/* IE6 */
+}
+
+h1 {
+    font-size: 5.5vw;
+}
+
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.ui-header-fixed.ui-fixed-hidden{ top: -1px;}
+
+.ios-fix-overlap-div {
+    display: initial !important;
+}
+
 .hidden {
     visibility: hidden;
     position: absolute;
@@ -58,6 +80,60 @@
 }
 
 .ui-header .ui-title{ padding: 3.238vw 0; font-size: 4.39vw; font-weight: normal;}
+#viewParkingDetailAdd .ui-margin-public span{ display: block;}
+#viewParkingDetailAdd .col-3{ width: 100% !important;}
+/*#viewParkingDetailAdd .ui-grid-a { margin-bottom: 1.16vw;} #newApplicantName{ padding-bottom: 2.14vw; }*/
+#newApplicantName, #newApplicantType, #newCarDetail{ margin: 0 0 4.3vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
+#newNoticeEvent{ margin: 0 0 1.11vw; border-radius: 0;}
+#newSettingTitle, #newSettingCar{ height: 10.304vw; max-height: 10.304vw; font-size: 4.18vw;}
+#newSettingNotice { height: 16.101vw; max-height: 16.101vw; font-size: 4.18vw;}
+#remark{ text-align:center; color: #666; font-size: 3.349vw;}
+
+.parking-detail-add {
+    margin: 1.8vw 3.71vw 0 !important;
+    font-size: 3.349vw;
+}
+
+#newSettingType {
+    margin-top: 2.14vw;
+}
+
+input[type=radio] {
+    display:none;
+}
+
+input[type=radio] + label {
+    background: url('../img/077_radio_blue_n.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=radio]:checked + label {
+    background: url('../img/078_radio_blue_s.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+.overlap-label-icon {
+    clear: both;
+    float: left;
+}
+
+.overlap-label-text {
+    line-height: 1;
+    padding-left: 8.6vw;
+    padding-top: 0.9vw;
+    width: 85%;
+    color: #0F0F0F;
+    font-size: 4.18vw !important;
+}
+
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
 #reserveTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 
@@ -69,6 +145,17 @@
 #pageThree .ui-block-b span {
     display: inline-table;
     margin-bottom: 5px;
+}
+
+.ui-shadow-inset {
+    -webkit-box-shadow: none; 
+    -moz-box-shadow: none;
+    box-shadow: none; 
+}
+
+.ui-corner-all {
+    -webkit-border-radius: 0;
+    border-radius: 0;
 }
 
 /********************************** public area *************************************/
@@ -123,6 +210,8 @@ div.square {
     margin: 1.8vw 3.71vw 0 !important;
     font-size: 4.18vw;
 }
+
+#viewParkingDetailAdd .parking-detail-add{ margin-top: 5vw !important;}
 
 #pageOne .scrollmenu{ margin-bottom: 0.99vw;}
 
@@ -293,7 +382,6 @@ div.square {
     font-size: 3.14vw;
 }
 
-
 .dropdown-icon {
     outline: none;
     font-size: 4.18vw;
@@ -360,7 +448,11 @@ hr.ui-color-green {
     background-color: #CBF1EC !important;
 }
 
-.myReserveInfo span, .myReserveInfo span{ margin-left: 4vw;}
+.myReserveInfo span, .myReserveInfo span{ margin-left: 2vw;}
+
+.save-disable {
+    opacity:0.4;
+}
 
 /********************************** scrollmenu *************************************/
 
@@ -420,6 +512,37 @@ div.scrollmenu a {
     line-height: 3rem;
 }
 
+/********************************** new header *************************************/
+
+#container {
+    width: 100%;
+    text-align: center;
+}
+
+#container a:link,
+#container span {
+    text-decoration: none;
+    color: white;
+    line-height: 20px;
+    letter-spacing: 1px;
+    font-weight: normal;
+}
+
+#left {
+    float: left;
+    margin: 0 5%;
+}
+
+#center {
+    display: inline-block;
+    margin: 0 auto !important;
+}
+
+#right {
+    float: right;
+    margin: 0 5%;
+}
+
 /********************************** column width *************************************/
 
 .col-95 {
@@ -462,12 +585,7 @@ div.scrollmenu a {
     width: 10% !important;
 }
 
-/********************************** pageTwo *************************************/
-.car-list-no-data {
-    color: #666;
-    text-align: center;
-    margin-top: 50%;
-}
+/********************************** pageThree *************************************/
 
 .car-list-footer {
     width: 17.71vw;
@@ -476,9 +594,23 @@ div.scrollmenu a {
     bottom: 4.3vw;
 }
 
+.car-list-no-data {
+    color: #666;
+    text-align: center;
+    margin-top: 50%;
+}
+
+
 .car-list-add-button {
     background: url(../img/052_btn_floating_add.png) no-repeat;
     background-size: 17.71vw;
     width: 17.71vw;
     height: 17.71vw;
 }
+
+.car-list-footer.ui-bar-inherit{
+    background-color: rgba(255,0,0,0);
+    border-color: rgba(255,0,0,0);
+}
+
+

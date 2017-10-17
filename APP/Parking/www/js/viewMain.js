@@ -687,6 +687,13 @@ $("#viewMain").pagecontainer({
             }
         });
 
+        $('body').on('click', 'div[id^=set-]', function(e) {
+            if ((e.target.id != "settingDelete") && (e.target.className != "setting-img")){
+                clickEditSettingID = $(this).attr('value');
+                $.mobile.changePage('#viewParkingDetailAdd');
+            }
+        });
+
         // ----------------------------pageThree function-------------------------------------- 
        $('body').on('click', 'div[id^=def-] a', function() {
             //$('#viewMyReserve').addClass('min-height-100');
@@ -736,7 +743,7 @@ $("#viewMain").pagecontainer({
             $.mobile.changePage('#viewReserve');
         });
 
-        // ------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------------
         
         $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
             bReserveCancelConfirm = false;
@@ -750,6 +757,12 @@ $("#viewMain").pagecontainer({
 
         $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm, div[for=successMsg] #confirm, div[for=failMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
+        });
+
+        $(document).on("click", "#addCarDetail", function() {
+            loadingMask("show");
+            $(".loader").css("top", "0px");
+            $.mobile.changePage('#viewParkingDetailAdd');
         });
     }
 });

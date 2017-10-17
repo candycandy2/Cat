@@ -26,6 +26,7 @@ env.set({appNameDecorate: ""});
 env.set({appVersionDecorate: "Production"});
 env.set({apiServerURL: "https://qplay.benq.com/"});
 env.set({QPushAPPKey: "1dd3ebb8bb12f1895b4a5e25"});
+env.set({QPushQChatAPPKey: "9f8e8736002966a1c4e8718e"});
 env.set({patchFolder: "patch"});
 env.set({productionextra: ""});
 
@@ -34,12 +35,14 @@ if (process.env.env === "test") {
     env.set({appVersionDecorate: "NewStaging"});
     env.set({apiServerURL: "https://qplaytest.benq.com/"});
     env.set({QPushAPPKey: "33938c8b001b601c1e647cbd"});
+    env.set({QPushQChatAPPKey: "b9f11c162bdee47456d6d871"});
     env.set({patchFolder: "patchTest"});
 } else if (process.env.env === "dev") {
     env.set({appNameDecorate: "dev"});
     env.set({appVersionDecorate: "Development"});
     env.set({apiServerURL: "https://qplaydev.benq.com/"});
     env.set({QPushAPPKey: "e343504d536ebce16b70167e"});
+    env.set({QPushQChatAPPKey: "f1007b6d14755a1e17e74195"});
     env.set({patchFolder: "patchDev"});
 } else {
     // production case
