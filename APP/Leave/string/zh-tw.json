@@ -17,7 +17,7 @@
   },
   {
     "term": "str_003",
-    "definition": "請假單查詢",
+    "definition": "請假單查詢 / 銷假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -25,7 +25,7 @@
   },
   {
     "term": "str_004",
-    "definition": "銷假",
+    "definition": "空字串",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -914,6 +914,86 @@
   {
     "term": "str_116",
     "definition": "請假迄止時間應大於請假開始時間",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_117",
+    "definition": "一",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_118",
+    "definition": "二",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_119",
+    "definition": "三",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_120",
+    "definition": "四",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_121",
+    "definition": "五",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_122",
+    "definition": "所有類別",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_123",
+    "definition": "選擇日期",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_124",
+    "definition": "剩餘",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_125",
+    "definition": "可申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_126",
+    "definition": "請選擇其他假別",
     "context": "",
     "term_plural": "",
     "reference": "",

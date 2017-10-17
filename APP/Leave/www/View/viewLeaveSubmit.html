@@ -2,7 +2,7 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
-            <img src="img/menu.png" style="width: 4.934VW;">
+            <img src="img/menu.png" style="width: 4.934VW;" class="leaveMenu"><span id="backMain"><</span>
         </a>
         <div class="header-style">
             <div class="ui-title">
@@ -66,7 +66,10 @@
                 <div data-role="none" id="baseTime" class="font-style3">
                     <span></span>
                 </div>
-                <div class="font-style12" style="color:#666666;">
+                <div id="baseTimeNoData" class="font-style3">
+                    <span class="langStr" data-id="str_069"></span><img src="img/dropdown.png" class="apply-select-img">
+                </div>
+                <div class="font-style12 color-gray">
                     <!--<span>*如果沒有列出您需要的基準日，請確認該請假單是否[生效]</span>-->
                     <span class="langStr" data-id="str_095"></span>
                 </div>
@@ -91,17 +94,21 @@
                 </div>
                 <div class="font-style3">
                     <div id="btnStartday">
-                        <span id="startText"><!--請選擇--><span class="langStr" data-id="str_069"></span></span><img src="img/dropdown.png" class="apply-select-img">
+                        <!--請選擇-->
+                        <span class="langStr" data-id="str_069" id="startText"></span><img src="img/dropdown.png" class="apply-select-img">
                     </div>
                     <div id="btnEndday">
-                        <span id="endText"><!--請選擇--><span class="langStr" data-id="str_069"></span></span><img src="img/dropdown.png" class="apply-select-img">
+                        <!--請選擇-->
+                        <span class="langStr" data-id="str_069" id="endText"></span><img src="img/dropdown.png" class="apply-select-img">
                     </div>
                 </div>
             </div>
             <!-- date component -->
             <div class="date-component">
-                <input type="datetime-local" data-role="none" name="startDate" id="startDate" style="height:0;border:none;" />
-                <input type="datetime-local" data-role="none" name="endDate" id="endDate" style="height:0;border:none;" />
+                <input type="datetime-local" data-role="none" name="startDate" id="startDate" class="date-time-component" />
+                <input type="datetime-local" data-role="none" name="endDate" id="endDate" class="date-time-component" />
+                <input type="date" data-role="none" name="hasDataBasedayComponent" id="hasDataBasedayComponent" class="date-time-component" />
+                <input type="date" data-role="none" name="noDataBasedayComponent" id="noDataBasedayComponent" class="date-time-component" />
             </div>
             <div class="apply-leave-count">
                 <div class="font-style11">
@@ -127,7 +134,7 @@
                 </div>
                 <fieldset data-role="controlgroup" id="attachmentTime">
                     <input type="radio" name="radio-choice-attachment-3" id="attachment-tab-2" value="attachment-tab-2" checked>
-                    <label for="attachment-tab-2" style="border:none;background:#f9f9f9;"><!--後補--><span class="langStr" data-id="str_110"></span></label>&nbsp;&nbsp;
+                    <label for="attachment-tab-2" class="leaveUploadAttach-radio-label"><!--後補--><span class="langStr" data-id="str_110"></span></label>&nbsp;&nbsp;
 
                     <!-- <input type="radio" name="radio-choice-attachment-3" id="attachment-tab-1" value="attachment-tab-1">
                     <label for="attachment-tab-1">上傳</label>&nbsp;&nbsp;
@@ -142,21 +149,95 @@
                     <span class="langStr" data-id="str_089"></span>
                 </div>
                 <div>
-                    <textarea data-role="none" class="reason-textarea" placeholder="請填寫理由"></textarea>
+                    <textarea data-role="none" id="leaveReason" class="reason-textarea" placeholder="請填寫理由"></textarea>
                 </div>
             </div>
             <!-- empty div -->
             <div class="apply-empty-div2"></div>
             <!-- preview btn -->
-            <div class="apply-preview-div">
-                <div class="apply-leave-submit">
+            <div class="apply-preview-btn">
+                <div id="previewBtn">
                     <!--預覽送簽-->
                     <span class="langStr" data-id="str_091"></span>
                 </div>
             </div>
         </div>
+        <!-- preview -->
+        <div class="apply-preview">
+            <div class="preview-apply-date font-style12">
+                <!--申請日期-->
+                <span class="langStr" data-id="str_080"></span><span id="previewApplyDay"></span>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_081"></span>
+                </div>
+                <div class="font-style3">
+                    <span>病假</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_082"></span>
+                </div>
+                <div class="font-style3">
+                    <span>半薪病假</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_083"></span>
+                </div>
+                <div class="font-style3">
+                    <span>Mary</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_084"></span>
+                </div>
+                <div class="font-style3">
+                    <span>2017-02-14 8:00</span><span> - </span><span>2017-02-14 17:00</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_087"></span>
+                </div>
+                <div class="font-style3">
+                    <span>1天0小時</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <span class="langStr" data-id="str_089"></span>
+                </div>
+                <div class="font-style3">
+                    <span>sick</span>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div2"></div>
+            <!-- apply btn -->
+            <div class="apply-submit-btn">
+                <div id="applyBtn">
+                    <!--立即預約-->
+                    <span>立即預約</span>
+                </div>
+            </div>
+            <div class="apply-preview-remove">
+                <span>x&nbsp;清除</span>
+            </div>
+        </div>
     </div>
 
+    <!-- 假別天數不夠 2行 -->
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup leaveNotEnough" for="leaveNotEnough">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -178,6 +259,7 @@
         </div>
     </div>
 
+    <!-- 假別剩餘天數 1行 -->
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup leftDaysByLeave" for="leftDaysByLeave">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -199,6 +281,7 @@
         </div>
     </div>
 
+    <!-- 結束時間要大於迄止時間 1行 -->
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup dateTimeError" for="dateTimeError">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -219,4 +302,49 @@
             </div>
         </div>
     </div>
+
+    <!-- 請先選擇類別與假別 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup categroyFirst" for="categroyFirst">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text">請先選擇類別與假別</span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 請先選擇基準日 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup basedayFirst" for="basedayFirst">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text">請先選擇基準日</span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
