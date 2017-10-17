@@ -35,23 +35,43 @@ class FriendMatrixRepository
                ->first();
     }
 
-    public function newInvitation($fromEmpNo, $targetEmpNo){
+    /**
+     * 建立新的友誼關係
+     * @param  String $fromEmpNo   邀請者的員工編號
+     * @param  String $targetEmpNo 受邀者的員工編號
+     * @return int                 新增筆數
+     */
+    public function newFriendShip($fromEmpNo, $targetEmpNo){
         return $this->friendMatrix
                 ->create(['from_emp_no' => $fromEmpNo,
-                                'target_emp_no'=> $targetEmpNo,
-                                'created_user' => $fromEmpNo,
-                                'status'=>2]);
+                        'target_emp_no'=> $targetEmpNo,
+                        'created_user' => $fromEmpNo,
+                        'status'=>0]);
     }
 
-    public function reInvaitation($fromEmpNo, $targetEmpNo){
+    /**
+     * 發送交友邀請給保護名單
+     * @param  String $fromEmpNo       邀請者的員工編號
+     * @param  String $targetEmpNo     受邀者的員工編號
+     * @param  String $inviationReason 邀請原因
+     * @return int                     影響筆數
+     */
+    public function sendInvaitation($fromEmpNo, $targetEmpNo, $inviationReason){
         return $this->friendMatrix
           ->where('from_emp_no','=', $fromEmpNo)
           ->where('target_emp_no','=', $targetEmpNo)
-          ->where('status', 0)
+          ->whereIn('status', array(0,3))
           ->update(['status' => 2,
+                    'invitation_reason' =>$inviationReason,
                     'updated_user'=>$fromEmpNo]);
     }
-
+    
+    /**
+     * 接受好友邀請
+     * @param  String $fromEmpNo       邀請者的員工編號
+     * @param  String $targetEmpNo     受邀者的員工編號
+     * @return int                     影響筆數
+     */
     public function acceptInvitation($fromEmpNo, $targetEmpNo){
         return $this->friendMatrix
           ->where('from_emp_no','=', $fromEmpNo)
@@ -61,14 +81,12 @@ class FriendMatrixRepository
                     'updated_user'=>$fromEmpNo]);
     }
 
-    public function newFriendShip($fromEmpNo, $targetEmpNo){
-        return $this->friendMatrix
-                ->create(['from_emp_no' => $fromEmpNo,
-                        'target_emp_no'=> $targetEmpNo,
-                        'created_user' => $fromEmpNo,
-                        'status'=>0]);
-    }
-
+    /**
+     * 設定為常用好友
+     * @param  String $fromEmpNo       邀請者的員工編號
+     * @param  String $targetEmpNo     受邀者的員工編號
+     * @return int                     影響筆數
+     */
     public function setFriend($fromEmpNo, $targetEmpNo){
         return $this->friendMatrix
           ->where('from_emp_no','=', $fromEmpNo)
@@ -77,6 +95,12 @@ class FriendMatrixRepository
                     'updated_user'=>$fromEmpNo]);
     }
 
+    /**
+     * 移除好友關係
+     * @param  String $fromEmpNo       邀請者的員工編號
+     * @param  String $targetEmpNo     受邀者的員工編號
+     * @return int                     影響筆數
+     */
     public function removeFriend($fromEmpNo, $targetEmpNo){
         return $this->friendMatrix
           ->where('from_emp_no','=', $fromEmpNo)

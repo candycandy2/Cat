@@ -45,25 +45,18 @@ class UserService
         
         if(!is_null($userData->level)){
             $friendStatus = $this->userRepository->getFriendStatus($fromEmpNo, $targetEmpNo);
-            if(!is_null($friendStatus) && $friendStatus->status == 1){
-                $result['status'] = 'friend';
+            if(!is_null($friendStatus) && $friendStatus->status > 0){
+                if($friendStatus->status == 1){
+                    $result['status'] = 'friend';
+                }else if($friendStatus->status == 2){
+                    $result['status'] = 'invitated';
+                }else if($friendStatus->status == 3){
+                    $result['status'] = 'rejected';
+                }
             }else{
                 $result['status'] = 'protected';
             }
         }
         return $result;
-    }
-
-    /**
-     * 取得用戶基本資料
-     * @param  String $empNo 員工編號
-     * @return String
-     */
-    public function getUserData($empNo){
-        return $this->userRepository->getUserData($empNo);
-    }
-
-    public function getUserPushToken($empNo){
-        return $this->userRepository->getUserPushToken($empNo);
     }
 }
