@@ -185,12 +185,12 @@ class FriendController extends Controller
             }
 
             $this->friendService->setQfriend($fromEmpNo, $targetEmpNo);
-
+            \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
                         'Content'=>""]);
 
-            \DB::commit();
+           
         }catch (\Exception $e) {
             \DB::rollBack();
             return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
@@ -268,11 +268,11 @@ class FriendController extends Controller
             }
 
             $this->friendService->sendQInvitation($fromEmpNo, $targetEmpNo, $reason);
-
+            \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
                         'Content'=>""]);
-            \DB::commit();
+            
         }catch (\Exception $e) {
             \DB::rollBack();
             return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
@@ -324,11 +324,11 @@ class FriendController extends Controller
             }
 
             $this->friendService->acceptQInvitation($empNo, $sourceEmpNo);
-
+            \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
                         'Content'=>""]);
-            \DB::commit();
+            
         }catch (\Exception $e) {
             \DB::rollBack();
             return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
@@ -392,10 +392,11 @@ class FriendController extends Controller
                         'Content'=>""]);
             }
             $this->friendService->rejectQInvitation($empNo, $sourceEmpNo, $rejectReason);
-
+            \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
                         'Content'=>""]);
+            
         }catch (\Exception $e) {
             \DB::rollBack();
             return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
