@@ -35,23 +35,23 @@ class FriendMatrixRepository
                ->first();
     }
 
-    public function newInvitation($fromEmpNo, $targetEmpNo){
+    public function newFriendShip($fromEmpNo, $targetEmpNo){
         return $this->friendMatrix
                 ->create(['from_emp_no' => $fromEmpNo,
-                                'target_emp_no'=> $targetEmpNo,
-                                'created_user' => $fromEmpNo,
-                                'status'=>2]);
+                        'target_emp_no'=> $targetEmpNo,
+                        'created_user' => $fromEmpNo,
+                        'status'=>0]);
     }
 
-    public function reInvaitation($fromEmpNo, $targetEmpNo){
+    public function sendInvaitation($fromEmpNo, $targetEmpNo, $inviationReason){
         return $this->friendMatrix
           ->where('from_emp_no','=', $fromEmpNo)
           ->where('target_emp_no','=', $targetEmpNo)
-          ->where('status', 0)
+          ->whereIn('status', array(0,3))
           ->update(['status' => 2,
                     'updated_user'=>$fromEmpNo]);
     }
-
+    
     public function acceptInvitation($fromEmpNo, $targetEmpNo){
         return $this->friendMatrix
           ->where('from_emp_no','=', $fromEmpNo)
@@ -59,14 +59,6 @@ class FriendMatrixRepository
           ->where('status', 2)
           ->update(['status' => 1,
                     'updated_user'=>$fromEmpNo]);
-    }
-
-    public function newFriendShip($fromEmpNo, $targetEmpNo){
-        return $this->friendMatrix
-                ->create(['from_emp_no' => $fromEmpNo,
-                        'target_emp_no'=> $targetEmpNo,
-                        'created_user' => $fromEmpNo,
-                        'status'=>0]);
     }
 
     public function setFriend($fromEmpNo, $targetEmpNo){

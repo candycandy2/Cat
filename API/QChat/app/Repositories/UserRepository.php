@@ -145,7 +145,6 @@ class UserRepository
                 $query->where('qp_friend_matrix.from_emp_no','=',$empNo)
                       ->where('qp_friend_matrix.status','=','1');
             }
-            #
            return $query->groupBy('qp_register.user_row_id','qp_user.login_id')
                          ->select(
                                  'login_id as name',
