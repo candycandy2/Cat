@@ -180,4 +180,123 @@ class FriendController extends Controller
                     'Content'=>""]);
     }
 
+    /**
+     * 透過此API送出交友邀請給保護名單用戶
+     * @return json
+     */
+    public function sendQInvitation(){
+        $required = Validator::make($this->data, [
+            'destination_emp_no' => 'required',
+        ]);
+
+        $range = Validator::make($this->data, [
+            'destination_emp_no' => 'numeric|different:emp_no',
+        ]);
+
+        if($required->fails())
+        {
+            return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                    'Message'=>"必填字段缺失",
+                    'Content'=>""]);
+        }
+
+        if($range->fails())
+        {      
+            return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+        }
+
+        
+        if(!isset($this->data['reason']) || 
+            count($this->data['reason']) == 0){
+            $this->data['reason'] = "";
+        }else{
+             if(count($this->data['reason']) > 1){
+             return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+            }
+        }
+
+        $fromEmpNo = $this->data['emp_no'];
+        $targetEmpNo = $this->data['destination_emp_no'];
+        $reason = $this->data['reason'];
+        
+        if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
+             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                    'Message'=>"要設定的好友工號不存在",
+                    'Content'=>""]);
+        }
+
+        $friendShip = $this->userService->getUserStatus($fromEmpNo, $targetEmpNo);
+        $status = $friendShip['status'];
+
+        if( $status  == 'common'){
+            return $result = response()->json(['ResultCode'=>ResultCode::_025922_DestinationEmployeeNumberIsProtectUser,
+                    'Message'=>"要設定的好友不是保護名單",
+                    'Content'=>""]);
+        }
+        if( $status  == 'friend'){//已經是好友
+            return $result = response()->json(['ResultCode'=>ResultCode::_025923_YouCannotSendTheInvitationToFriends,
+                    'Message'=>"要設定對象已經是好友",
+                    'Content'=>""]);
+        }
+        if( $status == 'invitated'){
+            return $result = response()->json(['ResultCode'=>ResultCode::_025927_InvitationAlreadySend,
+                    'Message'=>"好友邀請已送出",
+                    'Content'=>""]);
+        }
+
+        $this->friendService->sendQInvitation($fromEmpNo, $targetEmpNo, $reason);
+
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                    'Message'=>"",
+                    'Content'=>""]);
+    }
+
+    /**
+     * 接受交友邀請
+     * @return json
+     */
+    public function acceptQInvitation(){
+
+        $required = Validator::make($this->data, [
+            'source_emp_no' => 'required',
+        ]);
+
+        $range = Validator::make($this->data, [
+            'source_emp_no' => 'numeric|different:emp_no',
+        ]);
+
+        if($required->fails())
+        {
+            return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                    'Message'=>"必填字段缺失",
+                    'Content'=>""]);
+        }
+
+        if($range->fails())
+        {      
+            return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+        }
+
+        $fromEmpNo = $this->data['emp_no'];
+        $sourceEmpNo = $this->data['source_emp_no'];
+        
+        if(!Verify::checkUserStatusByUserEmpNo($sourceEmpNo)) {
+             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                    'Message'=>"要設定的好友工號不存在",
+                    'Content'=>""]);
+        }
+
+        $this->friendService->acceptQInvitation($fromEmpNo, $sourceEmpNo);
+
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                    'Message'=>"",
+                    'Content'=>""]);
+
+    }
 }
