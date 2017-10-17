@@ -70,6 +70,7 @@ var needBaseday = false;
 var selectBaseday = false;
 var datetimeState = false;
 var leaveReason;
+var leaveSubmitPreview = false;
 
 var categroyData = {
     id: "categroy-popup",
@@ -708,20 +709,6 @@ $("#viewLeaveSubmit").pagecontainer({
             $("#baseTimeNoData").find("span").text(newBaseVal);
         });
 
-        //多行文本獲取
-        // $(document).on("blur", "#leaveReason", function() {
-        //     leaveReason = $(this).val();
-        //     //console.log(leaveReason);
-
-        //     if(leaveReason !== "" && datetimeState == true) {
-        //         $('#previewBtn').addClass('leavePreview-active-btn');
-                
-        //     }else {
-        //         $('#previewBtn').removeClass('leavePreview-active-btn');
-        //     }
-
-        // });
-
         //實時獲取多行文本值
         $(document).on("keyup", "#leaveReason", function() {
             leaveReason = $(this).val();
@@ -741,19 +728,22 @@ $("#viewLeaveSubmit").pagecontainer({
             if($('#previewBtn').hasClass('leavePreview-active-btn')) {
                 $('.apply-container').hide();
                 $('.apply-preview').show();
-                $('.ui-title').find("span").text("");
+                //$('.ui-title').find("span").text(langStr["str_002"]);
                 $('.leaveMenu').hide();
                 $('#backMain').show();
             }
         });
 
         //返回編輯按鈕
-        $(document).on("click", "#backMain" ,function() {
+        $("#backMain").on("click", function() {
             $('.apply-preview').hide();
             $('.apply-container').show();
-            $('.ui-title').find("span").text("請假申請");
+            //$('.ui-title').find("span").text(langStr["str_002"]);
             $('.leaveMenu').show();
             $('#backMain').hide();
+            return false;
         });
+
+
     }
 });

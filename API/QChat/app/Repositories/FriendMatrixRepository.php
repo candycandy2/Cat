@@ -65,21 +65,57 @@ class FriendMatrixRepository
                     'invitation_reason' =>$inviationReason,
                     'updated_user'=>$fromEmpNo]);
     }
-    
+
     /**
-     * 接受好友邀請
+     * 取得好友邀請
      * @param  String $fromEmpNo       邀請者的員工編號
      * @param  String $targetEmpNo     受邀者的員工編號
-     * @return int                     影響筆數
+     * @return json
      */
-    public function acceptInvitation($fromEmpNo, $targetEmpNo){
+    public function getInvitation($fromEmpNo, $targetEmpNo){
         return $this->friendMatrix
           ->where('from_emp_no','=', $fromEmpNo)
           ->where('target_emp_no','=', $targetEmpNo)
+          ->where('status','=', '2')
+          ->select('status',
+                    'invitation_reason',
+                    'created_user')
+          ->get();
+    }
+    
+    /**
+     * 接受好友邀請
+     * @param  String $empNo           受邀者的員工編號
+     * @param  String $sourceEmpNo     邀請者的員工編號
+     * @return int                     影響筆數
+     */
+    public function acceptInvitation($empNo, $sourceEmpNo){
+        return $this->friendMatrix
+          ->where('from_emp_no','=', $sourceEmpNo)
+          ->where('target_emp_no','=', $empNo)
           ->where('status', 2)
           ->update(['status' => 1,
-                    'updated_user'=>$fromEmpNo]);
+                    'reject_reason'=>'',
+                    'updated_user'=>$empNo]);
     }
+
+    /**
+     * 拒絕好友邀請關係
+     * @param  String $empNo           受邀者的員工編號
+     * @param  String $sourceEmpNo     邀請者的員工編號
+     * @param  String $reason          拒絕理由
+     * @return int                     影響筆數
+     */
+    public function rejectInvitation($empNo, $sourceEmpNo, $rejectReason){
+        return $this->friendMatrix
+          ->where('from_emp_no','=', $sourceEmpNo)
+          ->where('target_emp_no','=', $empNo)
+          ->where('status','=', 2)
+          ->update(['status' => 3,
+                    'reject_reason'=>$rejectReason,
+                    'updated_user'=>$empNo]);
+    }
+
 
     /**
      * 設定為常用好友

@@ -59,10 +59,8 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $(".menu-btn").on("click", function() {
-        if($('#backMain').css("display") == "none") {
-            $("#mypanel").panel("open");
-            $(".page-mask").show();
-        }
+        $("#mypanel").panel("open");
+        $(".page-mask").show();
     });
 
     $(document).on("swipeleft", function(event) {

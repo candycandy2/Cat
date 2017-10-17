@@ -33,60 +33,66 @@ class FriendController extends Controller
      * @return json
      */
     public function getQList(Request $request){
+        try {
+            $required = Validator::make($this->data, [
+                'search_type' => 'required',
+                'friend_only' => 'required',
+                'emp_no' => 'required',
+                'search_string' => 'required_if:search_type,==,1|
+                                    required_if:search_type,==,2',
+            ]);
 
-        $required = Validator::make($this->data, [
-            'search_type' => 'required',
-            'friend_only' => 'required',
-            'emp_no' => 'required',
-            'search_string' => 'required_if:search_type,==,1|
-                                required_if:search_type,==,2',
-        ]);
+            $range = Validator::make($this->data, [
+                'friend_only' => 'in:Y,N',
+                'search_type' => 'in:1,2,3',
+            ]);
 
-        $range = Validator::make($this->data, [
-            'friend_only' => 'in:Y,N',
-            'search_type' => 'in:1,2,3',
-        ]);
-
-        if($required->fails())
-        {
-            return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
-                    'Message'=>"必填字段缺失",
-                    'Content'=>""]);
-        }
-
-        if($range->fails())
-        {      
-            return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-        }
-        if(is_array($this->data['search_string'])){
-            
-            if(count($this->data['search_string']) > 0){
-             return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-            }else {
-                $this->data['search_string'] = "";
+            if($required->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                        'Message'=>"必填字段缺失",
+                        'Content'=>""]);
             }
+
+            if($range->fails())
+            {      
+                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+            }
+            if(is_array($this->data['search_string'])){
+                
+                if(count($this->data['search_string']) > 0){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+                }else {
+                    $this->data['search_string'] = "";
+                }
+            }
+
+            $searchType = $this->data['search_type'];
+            $searchString = $this->data['search_string'];
+            $friendOnly = $this->data['friend_only'];
+            $empNo = $this->data['emp_no'];
+
+            
+            $userList =  $this->userService->getUserList($searchType, $friendOnly, $empNo, $searchString);
+
+            
+
+            if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
+                        'Message'=>"查無資料",
+                        'Content'=>""]);
+            }
+            
+            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>$userList]);
+        }catch (\Exception $e) {
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
         }
-
-        $searchType = $this->data['search_type'];
-        $searchString = $this->data['search_string'];
-        $friendOnly = $this->data['friend_only'];
-        $empNo = $this->data['emp_no'];
-
-        $userList =  $this->userService->getUserList($searchType, $friendOnly, $empNo, $searchString);
-
-        if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
-             return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
-                    'Message'=>"查無資料",
-                    'Content'=>""]);
-        }
-        
-        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                    'Message'=>"",
-                    'Content'=>$userList]);
     }
 
     /**
@@ -95,31 +101,35 @@ class FriendController extends Controller
      * @return json
      */
     public function getQFriend(Request $request){
-        if(!isset($this->data['search_string']) || 
-            count($this->data['search_string']) == 0){
-            $this->data['search_string'] = "";
-        }else{
-             if(count($this->data['search_string']) > 1){
-             return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
+        try {
+            if(!isset($this->data['search_string']) || 
+                count($this->data['search_string']) == 0){
+                $this->data['search_string'] = "";
+            }else{
+                 if(count($this->data['search_string']) > 1){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+                }
             }
+
+            $searchString = $this->data['search_string'];
+            $empNo = $this->data['emp_no'];
+
+            $userList =  $this->userService->getUserList(1, 'Y', $empNo, $searchString);
+
+            if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
+                        'Message'=>"查無資料",
+                        'Content'=>""]);
+            }
+            
+            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>$userList]);
+        }catch (\Exception $e) {
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
         }
-
-        $searchString = $this->data['search_string'];
-        $empNo = $this->data['emp_no'];
-
-        $userList =  $this->userService->getUserList(1, 'Y', $empNo, $searchString);
-
-        if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
-             return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
-                    'Message'=>"查無資料",
-                    'Content'=>""]);
-        }
-        
-        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                    'Message'=>"",
-                    'Content'=>$userList]);
     }
 
     /**
@@ -128,56 +138,63 @@ class FriendController extends Controller
      * @return json
      */
     public function setQFriend(Request $request){
+        \DB::beginTransaction();
+        try {
+            $required = Validator::make($this->data, [
+                'destination_emp_no' => 'required',
+            ]);
 
-        $required = Validator::make($this->data, [
-            'destination_emp_no' => 'required',
-        ]);
+            $range = Validator::make($this->data, [
+                'destination_emp_no' => 'numeric|different:emp_no',
+            ]);
 
-        $range = Validator::make($this->data, [
-            'destination_emp_no' => 'numeric|different:emp_no',
-        ]);
+            if($required->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                        'Message'=>"必填字段缺失",
+                        'Content'=>""]);
+            }
 
-        if($required->fails())
-        {
-            return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
-                    'Message'=>"必填字段缺失",
-                    'Content'=>""]);
-        }
+            if($range->fails())
+            {      
+                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+            }
 
-        if($range->fails())
-        {      
-            return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-        }
+            $fromEmpNo = $this->data['emp_no'];
+            $targetEmpNo = $this->data['destination_emp_no'];
+            
+            if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                        'Message'=>"要設定的好友工號不存在",
+                        'Content'=>""]);
+            }
 
-        $fromEmpNo = $this->data['emp_no'];
-        $targetEmpNo = $this->data['destination_emp_no'];
-        
-        if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
-                    'Message'=>"要設定的好友工號不存在",
-                    'Content'=>""]);
-        }
+            $friendShip = $this->userService->getUserStatus($fromEmpNo, $targetEmpNo);
 
-        $friendShip = $this->userService->getUserStatus($fromEmpNo, $targetEmpNo);
+            if($friendShip['status']  == 'protected'){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025922_DestinationEmployeeNumberIsProtectUser,
+                        'Message'=>"要設定的好友是保護名單",
+                        'Content'=>""]);
+            }
+            if($friendShip['status']  == 'friend'){//已經是好友
+                return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>""]);
+            }
 
-        if($friendShip['status']  == 'protected'){
-             return $result = response()->json(['ResultCode'=>ResultCode::_025922_DestinationEmployeeNumberIsProtectUser,
-                    'Message'=>"要設定的好友是保護名單",
-                    'Content'=>""]);
-        }
-        if($friendShip['status']  == 'friend'){//已經是好友
+            $this->friendService->setQfriend($fromEmpNo, $targetEmpNo);
+            \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                    'Message'=>"",
-                    'Content'=>""]);
+                        'Message'=>"",
+                        'Content'=>""]);
+
+           
+        }catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
         }
-
-        $this->friendService->setQfriend($fromEmpNo, $targetEmpNo);
-
-        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                    'Message'=>"",
-                    'Content'=>""]);
     }
 
     /**
@@ -185,74 +202,81 @@ class FriendController extends Controller
      * @return json
      */
     public function sendQInvitation(){
-        $required = Validator::make($this->data, [
-            'destination_emp_no' => 'required',
-        ]);
+        \DB::beginTransaction();
+        try {
+            $required = Validator::make($this->data, [
+                'destination_emp_no' => 'required',
+            ]);
 
-        $range = Validator::make($this->data, [
-            'destination_emp_no' => 'numeric|different:emp_no',
-        ]);
+            $range = Validator::make($this->data, [
+                'destination_emp_no' => 'numeric|different:emp_no',
+            ]);
 
-        if($required->fails())
-        {
-            return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
-                    'Message'=>"必填字段缺失",
-                    'Content'=>""]);
-        }
-
-        if($range->fails())
-        {      
-            return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-        }
-
-        
-        if(!isset($this->data['reason']) || 
-            count($this->data['reason']) == 0){
-            $this->data['reason'] = "";
-        }else{
-             if(count($this->data['reason']) > 1){
-             return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
+            if($required->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                        'Message'=>"必填字段缺失",
+                        'Content'=>""]);
             }
-        }
 
-        $fromEmpNo = $this->data['emp_no'];
-        $targetEmpNo = $this->data['destination_emp_no'];
-        $reason = $this->data['reason'];
-        
-        if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
-                    'Message'=>"要設定的好友工號不存在",
-                    'Content'=>""]);
-        }
+            if($range->fails())
+            {      
+                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+            }
 
-        $friendShip = $this->userService->getUserStatus($fromEmpNo, $targetEmpNo);
-        $status = $friendShip['status'];
+            
+            if(!isset($this->data['reason']) || 
+                count($this->data['reason']) == 0){
+                $this->data['reason'] = "";
+            }else{
+                 if(count($this->data['reason']) > 1){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+                }
+            }
 
-        if( $status  == 'common'){
-            return $result = response()->json(['ResultCode'=>ResultCode::_025922_DestinationEmployeeNumberIsProtectUser,
-                    'Message'=>"要設定的好友不是保護名單",
-                    'Content'=>""]);
-        }
-        if( $status  == 'friend'){//已經是好友
-            return $result = response()->json(['ResultCode'=>ResultCode::_025923_YouCannotSendTheInvitationToFriends,
-                    'Message'=>"要設定對象已經是好友",
-                    'Content'=>""]);
-        }
-        if( $status == 'invitated'){
-            return $result = response()->json(['ResultCode'=>ResultCode::_025927_InvitationAlreadySend,
-                    'Message'=>"好友邀請已送出",
-                    'Content'=>""]);
-        }
+            $fromEmpNo = $this->data['emp_no'];
+            $targetEmpNo = $this->data['destination_emp_no'];
+            $reason = $this->data['reason'];
+            
+            if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                        'Message'=>"要設定的好友工號不存在",
+                        'Content'=>""]);
+            }
 
-        $this->friendService->sendQInvitation($fromEmpNo, $targetEmpNo, $reason);
+            $friendShip = $this->userService->getUserStatus($fromEmpNo, $targetEmpNo);
+            $status = $friendShip['status'];
 
-        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                    'Message'=>"",
-                    'Content'=>""]);
+            if( $status  == 'common'){
+                return $result = response()->json(['ResultCode'=>ResultCode::_025922_DestinationEmployeeNumberIsProtectUser,
+                        'Message'=>"要設定的好友不是保護名單",
+                        'Content'=>""]);
+            }
+            if( $status  == 'friend'){//已經是好友
+                return $result = response()->json(['ResultCode'=>ResultCode::_025923_YouCannotSendTheInvitationToFriends,
+                        'Message'=>"要設定對象已經是好友",
+                        'Content'=>""]);
+            }
+            if( $status == 'invitated'){
+                return $result = response()->json(['ResultCode'=>ResultCode::_025927_InvitationAlreadySend,
+                        'Message'=>"好友邀請已送出",
+                        'Content'=>""]);
+            }
+
+            $this->friendService->sendQInvitation($fromEmpNo, $targetEmpNo, $reason);
+            \DB::commit();
+            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>""]);
+            
+        }catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+        }
     }
 
     /**
@@ -260,43 +284,122 @@ class FriendController extends Controller
      * @return json
      */
     public function acceptQInvitation(){
+        \DB::beginTransaction();
+        try {
+            $required = Validator::make($this->data, [
+                'source_emp_no' => 'required',
+            ]);
 
-        $required = Validator::make($this->data, [
-            'source_emp_no' => 'required',
-        ]);
+            $range = Validator::make($this->data, [
+                'source_emp_no' => 'numeric|different:emp_no',
+            ]);
 
-        $range = Validator::make($this->data, [
-            'source_emp_no' => 'numeric|different:emp_no',
-        ]);
+            if($required->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                        'Message'=>"必填字段缺失",
+                        'Content'=>""]);
+            }
 
-        if($required->fails())
-        {
-            return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
-                    'Message'=>"必填字段缺失",
-                    'Content'=>""]);
+            if($range->fails())
+            {      
+                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+            }
+
+            $empNo = $this->data['emp_no'];
+            $sourceEmpNo = $this->data['source_emp_no'];
+            
+            if(!Verify::checkUserStatusByUserEmpNo($sourceEmpNo)) {
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                        'Message'=>"要設定的好友工號不存在",
+                        'Content'=>""]);
+            }
+            $invitation = $this->friendService->getQInvitation($sourceEmpNo,$empNo);
+            if(count($invitation) == 0){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025928_InvitationNotExist,
+                        'Message'=>"交友邀請不存在",
+                        'Content'=>""]);
+            }
+
+            $this->friendService->acceptQInvitation($empNo, $sourceEmpNo);
+            \DB::commit();
+            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>""]);
+            
+        }catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
         }
 
-        if($range->fails())
-        {      
-            return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
+    }
+
+    /**
+     * 拒絕交友邀請
+     * @return json
+     */
+    public function rejectQInvitation(){
+        \DB::beginTransaction();
+        try {
+            $required = Validator::make($this->data, [
+                'source_emp_no' => 'required',
+            ]);
+
+            $range = Validator::make($this->data, [
+                'source_emp_no' => 'numeric|different:emp_no',
+            ]);
+
+            if($required->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                        'Message'=>"必填字段缺失",
+                        'Content'=>""]);
+            }
+
+            if($range->fails())
+            {      
+                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+            }
+
+            if(!isset($this->data['reason']) || 
+                count($this->data['reason']) == 0){
+                $this->data['reason'] = "";
+            }else{
+                 if(count($this->data['reason']) > 1){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+                }
+            }
+
+            $empNo = $this->data['emp_no'];
+            $sourceEmpNo = $this->data['source_emp_no'];
+            $rejectReason = $this->data['reason'];
+
+            if(!Verify::checkUserStatusByUserEmpNo($sourceEmpNo)) {
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                        'Message'=>"要設定的好友工號不存在",
+                        'Content'=>""]);
+            }
+            $invitation = $this->friendService->getQInvitation($sourceEmpNo,$empNo);
+            if(count($invitation) == 0){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025928_InvitationNotExist,
+                        'Message'=>"交友邀請不存在",
+                        'Content'=>""]);
+            }
+            $this->friendService->rejectQInvitation($empNo, $sourceEmpNo, $rejectReason);
+            \DB::commit();
+            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>""]);
+            
+        }catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
         }
-
-        $fromEmpNo = $this->data['emp_no'];
-        $sourceEmpNo = $this->data['source_emp_no'];
-        
-        if(!Verify::checkUserStatusByUserEmpNo($sourceEmpNo)) {
-             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
-                    'Message'=>"要設定的好友工號不存在",
-                    'Content'=>""]);
-        }
-
-        $this->friendService->acceptQInvitation($fromEmpNo, $sourceEmpNo);
-
-        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                    'Message'=>"",
-                    'Content'=>""]);
-
     }
 }

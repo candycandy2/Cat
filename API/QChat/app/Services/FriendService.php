@@ -58,23 +58,49 @@ class FriendService
              ->send();
     }
 
+    public function getQInvitation($empNo, $sourceEmpNo){
+        return $this->friendMatrixRepository->getInvitation($empNo, $sourceEmpNo);
+    }
+
     /**
      * 保護名單接受好友邀請
      * @param  string $empNo       使用者的員工編號
      * @param  string $sourceEmpNo 邀請者的員工編號
      */
     public function acceptQInvitation($empNo, $sourceEmpNo){
-        $this->friendMatrixRepository->acceptInvitation($fromEmpNo, $sourceEmpNo);
+        $this->friendMatrixRepository->acceptInvitation($empNo, $sourceEmpNo);
         
         $tokens=[];
-        $pushToken = $this->userRepository->getUserPushToken($targetEmpNo);
-        $ownerData = $this->userRepository->getUserData($fromEmpNo);
+        $pushToken = $this->userRepository->getUserPushToken($sourceEmpNo);
+        $ownerData = $this->userRepository->getUserData($empNo);
         $owner = $ownerData->login_id;
         foreach ($pushToken as $token) {
              $tokens[] = $token->push_token;
          }
         $this->push->setReceiver($tokens)
              ->setTitle($owner."接受您的好友邀請")
+             ->send();
+    }
+
+
+    /**
+     * 保護名單拒絕好友邀請
+     * @param  string $empNo       使用者的員工編號
+     * @param  string $sourceEmpNo 邀請者的員工編號
+     * @param  string $reason      拒絕理由
+     */
+    public function rejectQInvitation($empNo, $sourceEmpNo, $rejectReason){
+        $this->friendMatrixRepository->rejectInvitation($empNo, $sourceEmpNo, $rejectReason);
+        
+        $tokens=[];
+        $pushToken = $this->userRepository->getUserPushToken($sourceEmpNo);
+        $ownerData = $this->userRepository->getUserData($empNo);
+        $owner = $ownerData->login_id;
+        foreach ($pushToken as $token) {
+             $tokens[] = $token->push_token;
+         }
+        $this->push->setReceiver($tokens)
+             ->setTitle($owner."拒絕您的好友邀請")
              ->send();
     }
 
