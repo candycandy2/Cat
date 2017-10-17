@@ -95,7 +95,6 @@ $("#viewParkingDetailAdd").pagecontainer({
                 } else {
                     sortDataByKey(parkingSettingData.content, 'id', 'asc');
                     obj.id = parkingSettingdata['content'][parkingSettingdata['content'].length-1].id + 1;
-                    //obj.id = parkingSettingdata['content'].length + 1;
                 }
                 obj.title = $('#newSettingTitle').val();
                 obj.type = $("#newSettingType :radio:checked").val();
