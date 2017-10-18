@@ -59,4 +59,27 @@ class UserService
         }
         return $result;
     }
+
+    /**
+     * 檢查用戶是否為保護名單
+     * @param   String $empNo   使用者的原編
+     * @return  boolean
+     */
+    public function checkUserIsProteted($empNo){
+        $rs = $this->userRepository->getUserLevel($empNo);
+        if(count($rs) > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+     /**
+     * 取得用戶基本資料
+     * @param  String $empNo 員工編號
+     * @return mixed
+     */
+    public function getUserData($empNo){
+        return  $this->userRepository->getUserData($empNo);
+    }
 }

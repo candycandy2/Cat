@@ -17,6 +17,8 @@ class FriendController extends Controller
     protected $xml;
     protected $data;
 
+    private $userId;
+
     public function __construct(UserService $userService,
                                 FriendService $friendService)
     {
@@ -25,8 +27,14 @@ class FriendController extends Controller
         $this->friendService = $friendService;
         $this->xml=simplexml_load_string($input['strXml']);
         $this->data=json_decode(json_encode($this->xml),TRUE);
+        $this->ini();
+
     }
 
+    private function ini(){
+        $userData = $this->userService->getUserData($this->data['emp_no']);
+        $this->userId=$userData->row_id;
+    }
     /**
      * 透過此API可以獲得集團內的人員基本資料
      * @param  Request $request
@@ -184,7 +192,7 @@ class FriendController extends Controller
                         'Content'=>""]);
             }
 
-            $this->friendService->setQfriend($fromEmpNo, $targetEmpNo);
+            $this->friendService->setQfriend($fromEmpNo, $targetEmpNo, $this->userId);
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
@@ -267,7 +275,7 @@ class FriendController extends Controller
                         'Content'=>""]);
             }
 
-            $this->friendService->sendQInvitation($fromEmpNo, $targetEmpNo, $reason);
+            $this->friendService->sendQInvitation($fromEmpNo, $targetEmpNo, $this->userId, $reason);
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
@@ -323,7 +331,7 @@ class FriendController extends Controller
                         'Content'=>""]);
             }
 
-            $this->friendService->acceptQInvitation($empNo, $sourceEmpNo);
+            $this->friendService->acceptQInvitation($empNo, $sourceEmpNo, $this->userId);
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
@@ -391,7 +399,61 @@ class FriendController extends Controller
                         'Message'=>"交友邀請不存在",
                         'Content'=>""]);
             }
-            $this->friendService->rejectQInvitation($empNo, $sourceEmpNo, $rejectReason);
+            $this->friendService->rejectQInvitation($empNo, $sourceEmpNo, $this->userId, $rejectReason);
+            \DB::commit();
+            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>""]);
+            
+        }catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+        }
+    }
+
+    /**
+     * 透過此API刪除好友
+     * @return json
+     */
+    public function removeQFriend(){
+         \DB::beginTransaction();
+         try {
+            $required = Validator::make($this->data, [
+                'destination_emp_no' => 'required',
+            ]);
+
+            $range = Validator::make($this->data, [
+                'destination_emp_no' => 'numeric|different:emp_no',
+            ]);
+
+            if($required->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                        'Message'=>"必填字段缺失",
+                        'Content'=>""]);
+            }
+
+            if($range->fails())
+            {      
+                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+            }
+
+            $empNo = $this->data['emp_no'];
+            $destinationEmpNo = $this->data['destination_emp_no'];
+
+            if(!Verify::checkUserStatusByUserEmpNo($destinationEmpNo)) {
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                        'Message'=>"要設定的好友工號不存在",
+                        'Content'=>""]);
+            }
+            $isProtectedUser = $this->userService->checkUserIsProteted($empNo);
+            $this->friendService->removeQFriend($empNo, $destinationEmpNo, $empNo);
+            if( $isProtectedUser ){
+                //保護用戶需雙向解除朋友關係
+                $this->friendService->removeQFriend($destinationEmpNo, $empNo, $this->userId);
+            }
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
