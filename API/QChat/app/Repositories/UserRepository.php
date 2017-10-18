@@ -6,24 +6,23 @@
 namespace App\Repositories;
 
 use App\Model\QP_User;
-use App\Model\QP_Friend_Matrix;
+use App\Model\QP_QChat_User_Detail;
 use DB;
 
 class UserRepository
 {
 
     protected $user;
-    protected $friendMatrix;
+    protected $qChatUserDetail;
     
     /**
      * ParameterRepository constructor.
      * @param QP_User $user
-     *  @param QP_Friend_Matrix $friendMatrix
      */
-    public function __construct(QP_User $user, QP_Friend_Matrix $friendMatrix)
+    public function __construct(QP_User $user, QP_QChat_User_Detail $qChatUserDetail)
     {
         $this->user = $user;
-        $this->friendMatrix = $friendMatrix;
+        $this->qChatUserDetail = $qChatUserDetail;
     }
 
     /**
@@ -71,20 +70,6 @@ class UserRepository
                     ->where('qp_user.emp_no',$empNo)
                     ->select('login_id', 'level')
                     ->first();
-    }
-
-    /**
-     * 取得與特定用戶的交友情況
-     * @param  String $fromEmpNo   來源用戶的員工編號
-     * @param  String $targetEmpNo 目標用戶的員工編號
-     * @return mixed              
-     */
-    public function getFriendStatus($fromEmpNo, $targetEmpNo){
-        return $this->friendMatrix
-                ->where('from_emp_no',$fromEmpNo)
-                ->where('target_emp_no',$targetEmpNo)
-                ->select('status')
-                ->first();
     }
 
     /**
@@ -170,5 +155,42 @@ class UserRepository
                     ->where('qp_user.emp_no',$empNo)
                     ->select('push_token')
                     ->get();
+    }
+
+    /**
+     * 取得用戶詳細資料
+     * @param  String $empNo 使用者的emp_no
+     * @return mixed
+     */
+    public function getQUserDetail($empNo){
+        return $this->qChatUserDetail->where('emp_no','=',$empNo)->get();
+    }
+
+    /**
+     * 新增用戶詳細資料
+     * @param  String $empNo  使用者的emp_no
+     * @param  Array  $data   新增的資料內容
+     * @param  int    $userId 使用者的qp_user.row_id
+     * @return int            影響的筆數
+     */
+    public function insertUserDetail($empNo, $data, $userId){
+        $data['emp_no'] = $empNo;
+        $data['created_user'] = $userId;
+        return $this->qChatUserDetail
+                ->create($data);
+    }
+
+    /**
+     * 更新用戶詳細資料       
+     * @param  String $empNo  使用者的emp_no
+     * @param  Array  $data   更新的資料內容
+     * @param  int    $userId 使用者的qp_user.row_id
+     * @return int            影響的筆數
+     */
+    public function updateUserDetail($empNo, $data, $userId){
+       $data['updated_user'] = $userId;
+       return $this->qChatUserDetail
+          ->where('emp_no','=', $empNo)
+          ->update($data);
     }
 }

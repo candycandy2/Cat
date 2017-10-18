@@ -573,7 +573,12 @@ div.scrollmenu a {
 }
 
 /****************************************** viewLeaveQuery *****************************************/
-#backContainer {
+#leaveMenu {
+	width: 4.934VW;
+}
+
+#backContainer,
+#backPreview {
 	width: 4.934VW;
 	display: none;
 }
@@ -634,7 +639,8 @@ div.scrollmenu a {
 	color: #666666;
 }
 
-.leave-query-detail {
+.leave-query-detail,
+.leave-query-withdraw {
 	display: none;
 	width: 93.6vw;
 	margin-left: 3.2vw;
@@ -742,9 +748,13 @@ div.scrollmenu a {
 	clear: both;
 }
 
+.confirmWithdraw > .ui-content {
+	padding: 0 !important;
+}
 
-
-
+.confirmWithdraw > .ui-content > .header {
+	margin-top: 13%;
+}
 
 
 
