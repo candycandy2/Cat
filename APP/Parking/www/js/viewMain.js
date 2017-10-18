@@ -506,7 +506,7 @@ $("#viewMain").pagecontainer({
             parkingSettingData = JSON.parse(localStorage.getItem('parkingSettingData'));
             var originItem = ['commonCarList', '[index]', '[title]', '[type]', '[car]'];
             htmlContent = '';
-
+            
             if (parkingSettingData != null) {
                 $('#tplCarListNoData').addClass('disable');
                 sortDataByKey(parkingSettingData.content, 'id', 'asc');
@@ -517,7 +517,7 @@ $("#viewMain").pagecontainer({
                     var replaceItem = ['commonCarList-' + item.id, item.id, strTitle, strType, strCar];
                     htmlContent += replaceStr($('#commonCarList').get(0).outerHTML, originItem, replaceItem);
                 }
-            }else{
+            } else {
                 $('#tplCarListNoData').removeClass('disable');
             }
             $('#commonCarList').after(htmlContent);
