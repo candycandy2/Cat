@@ -2,15 +2,19 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
+use App\Repositories\FriendMatrixRepository;
 
 class UserService
 {   
 
     protected $userRepository;
+    protected $friendMatrixRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository,
+                                FriendMatrixRepository $friendMatrixRepository)
     {
         $this->userRepository = $userRepository;
+        $this->friendMatrixRepository = $friendMatrixRepository;
     }
 
     /**
@@ -44,7 +48,7 @@ class UserService
         $result['login_id'] = $userData->login_id;
         
         if(!is_null($userData->level)){
-            $friendStatus = $this->userRepository->getFriendStatus($fromEmpNo, $targetEmpNo);
+            $friendStatus = $this->friendMatrixRepository->getFriendStatus($fromEmpNo, $targetEmpNo);
             if(!is_null($friendStatus) && $friendStatus->status > 0){
                 if($friendStatus->status == 1){
                     $result['status'] = 'friend';
@@ -81,5 +85,21 @@ class UserService
      */
     public function getUserData($empNo){
         return  $this->userRepository->getUserData($empNo);
+    }
+
+    /**
+     * 設定用戶詳細資料
+     * @param String $empNo 使用者原編
+     * @param Array  $data  寫入的資料
+     */
+    public function setQUserDetail($empNo, $data, $userId){
+        $result=null;
+        $userDetail = $this->userRepository->getQUserDetail($empNo);
+        if(count($userDetail) > 0){
+            $result = $this->userRepository->updateUserDetail($empNo, $data, $userId);
+        }else{
+            $result = $this->userRepository->insertUserDetail($empNo, $data, $userId);
+        }
+        return $result;
     }
 }
