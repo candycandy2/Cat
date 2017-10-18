@@ -150,8 +150,7 @@
 	font-size: 3.74VW;
 }
 
-#leaveDate .ui-btn-active,
-#leaveTime .ui-btn-active, {
+#leaveDate .ui-btn-active, #leaveTime .ui-btn-active {
 	background-color: #0db6b7;
 	border-color: #d6d6d6;
 }
@@ -574,6 +573,11 @@ div.scrollmenu a {
 }
 
 /****************************************** viewLeaveQuery *****************************************/
+#backContainer {
+	width: 4.934VW;
+	display: none;
+}
+
 .leave-query-list {
 	width: 93.6vw;
 	height: 36.3vw;
@@ -581,13 +585,13 @@ div.scrollmenu a {
 }
 
 .leave-query-list > div:nth-of-type(1) {
-	height: 4.3vw;
-}
-
-.leave-query-list > div:nth-of-type(2) {
 	height: 32vw;
 	border:0.1vh solid #d6d6d6;
 	border-radius: 8px;
+}
+
+.leave-query-list > div:nth-of-type(2) {
+	height: 4.3vw;
 }
 
 .leave-query-state {
@@ -603,14 +607,14 @@ div.scrollmenu a {
 	color: #2e89bc;
 }
 
-.leave-query-detail {
+.leave-query-mainDetail {
 	width: 88vw;
 	height: 22vw;
 	margin-left: 2.4vw;
 	color: #323232;
 }
 
-.leave-query-detail > div {
+.leave-query-mainDetail > div {
 	width: 88vw;
 	height: 5vw;
 	margin-top: 1.8vw;
@@ -621,7 +625,6 @@ div.scrollmenu a {
 	display: inline-block;
 	width: 43vw;
 	height: 5vw;
-	/* line-height: 7vw; */
 }
 
 .leave-query-max {
@@ -630,6 +633,151 @@ div.scrollmenu a {
 	text-align: center;
 	color: #666666;
 }
+
+.leave-query-detail {
+	display: none;
+	width: 93.6vw;
+	margin-left: 3.2vw;
+}
+
+.leave-detail-date {
+	height: 4.2vw;
+	color: #666666;
+}
+
+.leave-detail-date > div {
+	display: inline-block;
+	width: 46vw;
+}
+
+.leave-detail-date > div:nth-of-type(2) {
+	text-align: right;
+}
+
+.leave-detail-state {
+	height: 15.3vw;
+	border-bottom: 0.1vh solid #d6d6d6;
+}
+
+.leave-detail-state > div:nth-of-type(1) {
+	width: 93.6vw;
+	height: 4.3vw;
+}
+
+.leave-detail-state > div:nth-of-type(2) {
+	width: 93.6vw;
+	height: 11vw;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div {
+	display: inline-block;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div:nth-of-type(1) {
+	width: 85.6vw;
+	height: 11vw;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) {
+	height: 3.2vw;
+	line-height: 3.2vw;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) {
+	height: 7.8vw;
+	line-height: 7.8vw;
+	color: #2A8ABD;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div:nth-of-type(2) {
+	width: 6vw;
+	height: 11vw;
+}
+
+.leave-detail-img {
+	width: 6vw;
+	height: 6vw;
+}
+
+.sign-list {
+	width: 75vw;
+	height: 10vw;
+	margin-top: 3vw;
+	margin-bottom: 4vw;
+}
+
+.sign-list > div {
+	height: 10vw;
+	float: left;
+}
+
+.sign-icon {
+	width: 13vw;
+}
+
+.sign-icon img {
+	width: 5vw;
+	height: 5vw;
+	margin-left: 3vw;
+}
+
+.sign-name {
+	width: 47vw;
+}
+
+.sign-name > div:nth-of-type(1) {
+	color: #323232;
+}
+
+.sign-name > div:nth-of-type(2) {
+	color: #666666;
+}
+
+.sign-state {
+	width: 15vw;
+	color: #666666;
+}
+
+.sign-state:after {
+	clear: both;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**************************************** viewHolidayCalendar ***************************************/
 
