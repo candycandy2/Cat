@@ -218,7 +218,7 @@ div.scrollmenu a {
     color: #999999 !important;
 }
 
-#searchBar {
+#searchBar, #searchAgent {
 	width: 75VW;
 	border-width: 1px;
 	border-style: solid;
@@ -324,8 +324,20 @@ div.scrollmenu a {
 	color: #666666;
 }
 
+#applyLeaveCategroy {
+	height: 3.14vw;
+	display: none;
+	color: #666666;
+}
+
+#uploadAttachment,
+#baseDate,
+#divEmpty {
+	display: none;
+}
+
 .apply-categroy {
-	height: 15.67vw;
+	height: 10.67vw;
 	color: #0f0f0f;
 }
 
@@ -367,39 +379,23 @@ div.scrollmenu a {
 }
 
 .apply-leave-date {
-	height: 18.2vw;
+	height: 19vw;
 	color: #0f0f0f;
 }
 
 .apply-leave-date > div:nth-of-type(1) {
-	height: 3.349vw;
+	height: 4.8vw;
+	line-height: 4.8vw;
 }
 
 .apply-leave-date > div:nth-of-type(2) {
-	height: 3.349vw;
-	margin-top: 1.16vw;
-}
-
-.apply-leave-date > div:nth-of-type(3) {
-	height: 4.18vw;
-	margin-top: 1.16vw;
+	height: 14.2vw;
 }
 
 .apply-leave-date > div:nth-of-type(2) > div {
 	display: inline-block;
 	width: 46vw;
-	height: 3.349vw;
-}
-
-.apply-leave-date > div:nth-of-type(3) > div {
-	display: inline-block;
-	width: 46vw;
-	height: 4.18vw;
-}
-
-.apply-leave-date > div:nth-of-type(2) > div > span,
-.apply-leave-date > div:nth-of-type(3) > div > span {
-	display: inline-block;
+	height: 14.2vw;
 }
 
 .apply-leave-count {
@@ -454,8 +450,18 @@ div.scrollmenu a {
 	line-height: 10vw;
 }
 
+.leaveNotEnough > .ui-content,
+.leftDaysByLeave > .ui-content {
+	padding: 0 !important;
+}
 
+.leaveNotEnough > .ui-content > .header {
+	margin-top: 10%;
+}
 
+.leftDaysByLeave > .ui-content > .header {
+	margin-top: 12.5%;
+}
 
 /**************************************** viewHolidayCalendar ***************************************/
 
