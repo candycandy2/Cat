@@ -998,5 +998,189 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "str_127",
+    "definition": "選擇時間",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_128",
+    "definition": "立即預約",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_129",
+    "definition": "清除",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_130",
+    "definition": "",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_131",
+    "definition": "請假單號：",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_132",
+    "definition": "撤回理由",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_133",
+    "definition": "已簽核",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_134",
+    "definition": "未簽核",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_135",
+    "definition": "已拒絕",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_136",
+    "definition": "已撤回",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_137",
+    "definition": "已生效",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_138",
+    "definition": "請假區間：",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_139",
+    "definition": "請先選擇類別與假別",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_140",
+    "definition": "請先選擇基準日",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_141",
+    "definition": "請先選擇基準日",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_142",
+    "definition": "撤回假單",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_143",
+    "definition": "撤回",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_144",
+    "definition": "假單狀況",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_145",
+    "definition": "*僅顯示近10筆假單記錄",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_146",
+    "definition": "確定撤回？",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_147",
+    "definition": "表單簽核中",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_148",
+    "definition": "表單已撤回",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_149",
+    "definition": "表單已生效",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]
