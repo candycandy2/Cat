@@ -17,8 +17,8 @@ var clickAggTarceID = '';
 var clickReserveDate = '';
 var clickReserveRoom = '';
 var arrTempTimeNameClick = [];
-var parkingSpaceDataExample = ['車位1', '車位2', '車位3', '車位4'];
 var parkingSettingdata = {};
+//var parkingSpaceDataExample = ['車位 094', '車位 095', '車位 096', '車位 251'];
 
 $("#viewMain").pagecontainer({
     create: function(event, ui) {
@@ -49,15 +49,20 @@ $("#viewMain").pagecontainer({
             siteIndex = siteIndex == '' ? '0' : siteIndex;
             $('#reserveSpace').find('a').remove();
 
-            /*for (var i = 0, item; item = JSON.parse(localStorage.getItem('parkingSpaceLocalData'))['content'][i]; i++) {
+            for (var i = 0, item; item = JSON.parse(localStorage.getItem('parkingSpaceLocalData'))['content'][i]; i++) {
                 if (item.ParkingSpaceSite == siteIndex) {
-                    htmlContent += '<a id=' + item.ParkingSpaceID + ' value=' + item.ParkingSpaceID + ' href="#" class="ui-link" IsReserveMulti=' + item.IsReserveMulti + '>' + item.ParkingSpaceName + '</a>';
+                    if (item.ParkingSpaceSite == 92) {
+                        var strParkingSpaceName = item.ParkingSpaceName.substr(2,3);
+                    } else if (item.ParkingSpaceSite == 111){
+                        var strParkingSpaceName = item.ParkingSpaceName;
+                    }
+                    htmlContent += '<a id=' + item.ParkingSpaceID + ' value=' + item.ParkingSpaceID + ' href="#" class="ui-link" IsReserveMulti=' + item.IsReserveMulti + '>' + strParkingSpaceName + '</a>';
                 }
-            }*/
-
-            for (var i = 0; i < parkingSpaceDataExample.length; i++){             
-                htmlContent += '<a id=' + i + ' value=' + i + ' href="#" class="ui-link">' + parkingSpaceDataExample[i] + '</a>';
             }
+
+            /*for (var i = 0; i < parkingSpaceDataExample.length; i++){             
+                htmlContent += '<a id=' + i + ' value=' + i + ' href="#" class="ui-link">' + parkingSpaceDataExample[i] + '</a>';
+            }*/
 
             $('#reserveSpace').append(htmlContent);
             clickSpaceId = $('#reserveSpace a:first-child').attr('id');
@@ -79,13 +84,13 @@ $("#viewMain").pagecontainer({
 
             var j = 0;
             var originItemForPageOne = ['reserveDefault', 'ReserveDay', 'ReserveDict', 'disable'];
-            /* var isSystemRole = JSON.parse(localStorage.getItem('listAllManager'));
+            var isSystemRole = JSON.parse(localStorage.getItem('listAllManager')).content;
 
-            if (isSystemRole != null) {
+            if (isSystemRole.length != 0) {
                 reserveDays = 120;
             } else {
                 reserveDays = 14;
-            }*/
+            }
 
             for (var i = 0; i < reserveDays; i++) {
                 if (i != 0) {
@@ -467,12 +472,22 @@ $("#viewMain").pagecontainer({
         }
 
         function checkLocalDataExpired() {
+            var parkingSpaceLocalData = JSON.parse(localStorage.getItem('parkingSpaceLocalData'));
+            if (parkingSpaceLocalData === null || checkDataExpired(parkingSpaceLocalData['lastUpdateTime'], 7, 'dd')) {
+                var doAPIListAllParkingSpace = new getAPIListAllParkingSpace;
+                //var doAPIListAllTime = new getAPIListAllTime();
+            }else {
+                //arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
+            }
+            var doAPIListAllManager = new getAPIListAllManager();
+
             if(localStorage.getItem("defaultSiteClick") !== null) {
                 $("#reserveSite").val(localStorage.getItem("defaultSiteClick"));
                 defaultSiteClick = localStorage.getItem("defaultSiteClick");
             }else if (defaultSiteClick === null) {
                 defaultSiteClick = '92';
             }
+
         }
 
         function setAlertLimitSite(site) {
