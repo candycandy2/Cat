@@ -18,6 +18,7 @@ var clickReserveDate = '';
 var clickReserveRoom = '';
 var arrTempTimeNameClick = [];
 var parkingSpaceDataExample = ['車位1', '車位2', '車位3', '車位4'];
+var parkingSettingdata = {};
 
 $("#viewMain").pagecontainer({
     create: function(event, ui) {
@@ -500,6 +501,30 @@ $("#viewMain").pagecontainer({
             setDateList();
         }
 
+        function querySettingCarList() {
+            $('div[id^=commonCarList-]').remove();
+            parkingSettingData = JSON.parse(localStorage.getItem('parkingSettingData'));
+            var originItem = ['commonCarList', '[index]', '[title]', '[type]', '[car]'];
+            htmlContent = '';
+            
+            if (parkingSettingData != null) {
+                $('#tplCarListNoData').addClass('disable');
+                sortDataByKey(parkingSettingData.content, 'id', 'asc');
+                for (var i = 0, item; item = parkingSettingData['content'][i]; i++) {
+                    var strTitle = item.title;
+                    var strType= (item.type == 'setGuest') ? '貴賓' : '關係企業';
+                    var strCar = item.car;
+                    var replaceItem = ['commonCarList-' + item.id, item.id, strTitle, strType, strCar];
+                    htmlContent += replaceStr($('#commonCarList').get(0).outerHTML, originItem, replaceItem);
+                }
+            } else {
+                $('#tplCarListNoData').removeClass('disable');
+            }
+            $('#commonCarList').after(htmlContent);
+            $('div[id^=commonCarList-]').removeClass('disable');
+
+        }
+
         /********************************** page event *************************************/
         $("#viewMain").one("pagebeforeshow", function(event, ui) {
             //get last update time check date expired
@@ -507,7 +532,7 @@ $("#viewMain").pagecontainer({
             //var doAPIQueryMyReserve = new getAPIQueryMyReserve();
             getInitialData();
             setInitialData();
-
+            querySettingCarList();
             $('#pageOne').show();
             $('#pageTwo').hide();
             $('#pageThree').hide();
@@ -516,6 +541,7 @@ $("#viewMain").pagecontainer({
 
         $('#viewMain').on('pagebeforeshow', function(event, ui) {
             reserveBtnDefaultStatus();
+            querySettingCarList();
             /*if (isReloadPage == true) {
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
                 isReloadPage = false;
@@ -686,6 +712,54 @@ $("#viewMain").pagecontainer({
                 bReserveCancelConfirm = true;
             }
         });
+        
+        $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
+            bReserveCancelConfirm = false;
+        });
+
+        $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
+            //$('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
+            //delete
+            $('div[for=cancelSuccessMsg]').popup('close');
+        });
+
+        $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm, div[for=successMsg] #confirm, div[for=failMsg] #confirm', function() {
+            $('#viewPopupMsg').popup('close');
+        });
+
+        // ----------------------------pageTwo function-------------------------------------- 
+        $(document).on("click", "#addCarDetail", function() {
+            loadingMask("show");
+            $(".loader").css("top", "0px");
+            $.mobile.changePage('#viewParkingDetailAdd');
+        });
+
+        $('body').on('click', '#pageTwo .btn-myreserve', function() {
+            $('#pageTwo').addClass('min-height-100');
+            clickDeleteID = $(this).attr('value');
+            var strTitle = $(this).attr('title');
+            popupMsg('deleteMsg', '確定刪除車籍資料?', strTitle, '取消', true, '確定','');
+        });
+
+        $('body').on('click', 'div[for=deleteMsg] #confirm', function() {
+            var parkingSettingdata = JSON.parse(localStorage.getItem('parkingSettingData'));
+            parkingSettingdata.content = parkingSettingdata.content.filter(function(item) {
+                return item.id != clickDeleteID;
+            });
+            localStorage.setItem('parkingSettingData', JSON.stringify(parkingSettingdata));
+
+            $('#commonCarList-' + clickDeleteID).hide('slow');
+            $('#commonCarList-' + clickDeleteID).remove();
+
+            $('div[for=deleteMsg]').popup('close');
+        });
+
+        $('body').on('click', 'div[id^=commonCarList-]', function(e) {
+            if ((e.target.id != "settingDelete") && (e.target.className != "delete-myreserve")){
+                clickEditSettingID = $(this).attr('value');
+                $.mobile.changePage('#viewParkingDetailAdd');
+            }
+        });
 
         // ----------------------------pageThree function-------------------------------------- 
        $('body').on('click', 'div[id^=def-] a', function() {
@@ -734,28 +808,6 @@ $("#viewMain").pagecontainer({
 
         $('body').on('click', 'div[for=noDataMsg] #confirm, #myReserveBack', function() {
             $.mobile.changePage('#viewReserve');
-        });
-
-        // ---------------------------------------------------------------------------------------
-        
-        $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
-            bReserveCancelConfirm = false;
-        });
-
-        $('body').on('click', 'div[for=cancelSuccessMsg] #confirm', function() {
-            //$('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
-            //delete
-            $('div[for=cancelSuccessMsg]').popup('close');
-        });
-
-        $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm, div[for=successMsg] #confirm, div[for=failMsg] #confirm', function() {
-            $('#viewPopupMsg').popup('close');
-        });
-
-        $(document).on("click", "#addCarDetail", function() {
-            loadingMask("show");
-            $(".loader").css("top", "0px");
-            $.mobile.changePage('#viewParkingDetailAdd');
         });
     }
 });

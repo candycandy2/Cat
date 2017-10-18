@@ -25,7 +25,8 @@
 
 /********************************************common use**********************************************/
 .page-main {
-    padding-top: 3.99vw;
+	padding-top: 3.99vw;
+	padding-bottom: 0;
 }
 
 #mypanel {
@@ -313,7 +314,17 @@ div.scrollmenu a {
 	 margin-top: 10%;
 }
 
+.leavePreview-active-btn {
+	background-color: #0db6b7 !important;
+	border-color: #d6d6d6 !important;
+	color: #ffffff !important;
+}
 /****************************************** viewLeaveSubmit *****************************************/
+#backMain {
+	width: 4.934VW;
+	display: none;
+}
+
 .apply-container {
 	width: 93.6vw;
 	margin-left: 3.2vw;
@@ -332,8 +343,15 @@ div.scrollmenu a {
 
 #uploadAttachment,
 #baseDate,
-#divEmpty {
+#divEmpty,
+#baseTime {
 	display: none;
+}
+
+#baseTimeNoData {
+	display: none;
+	height: 7.8vw;
+	line-height: 7.8vw;
 }
 
 .apply-categroy {
@@ -364,10 +382,9 @@ div.scrollmenu a {
 }
 
 .apply-select-img {
-	margin-left: 3.2vw;
-	margin-top: 0.5vw;
-	width: 3.542vw;
-	height: 2.125vw;
+	margin-left: 5vw;
+	width: 4vw;
+	height: 2.75vw;
 }
 
 .apply-empty-div1 {
@@ -383,19 +400,36 @@ div.scrollmenu a {
 	color: #0f0f0f;
 }
 
-.apply-leave-date > div:nth-of-type(1) {
-	height: 4.8vw;
-	line-height: 4.8vw;
-}
-
+.apply-leave-date > div:nth-of-type(1),
 .apply-leave-date > div:nth-of-type(2) {
-	height: 14.2vw;
+	height: 5vw;	
 }
 
 .apply-leave-date > div:nth-of-type(2) > div {
 	display: inline-block;
 	width: 46vw;
-	height: 14.2vw;
+	height: 5vw;
+	line-height: 5vw;
+}
+
+.apply-leave-date > div:nth-of-type(3) {
+	height: 7vw;	
+}
+
+.apply-leave-date > div:nth-of-type(3) > div {
+	display: inline-block;
+	width: 46vw;
+	height: 7vw;
+	line-height: 7vw;
+}
+
+.date-component {
+	position: fixed;
+}
+
+.date-component input[type="datetime-local"],
+.date-component input[type="date"] {	
+	opacity: 0;
 }
 
 .apply-leave-count {
@@ -429,17 +463,17 @@ div.scrollmenu a {
 
 .reason-textarea {
 	resize: none;
-	width: 46vw;
+	width: 86vw;
 	height: 9.17vw;
 	border: 0;
 	-webkit-appearance: none;
 }
 
-.apply-preview-div {
+.apply-preview-btn {
 	height: 10vw;
 }
 
-.apply-leave-submit {
+.apply-preview-btn > div {
 	width: 64vw;
 	height: 10vw;
 	margin-left: 14.8vw;
@@ -450,8 +484,35 @@ div.scrollmenu a {
 	line-height: 10vw;
 }
 
+.apply-submit-btn {
+	height: 10vw;
+}
+
+.apply-submit-btn > div {
+	width: 64vw;
+	height: 10vw;
+	margin-left: 14.8vw;
+	background-color: #2A8ABD;
+	color: #ffffff;
+	border-radius: 20px;
+	text-align: center;
+	line-height: 10vw;
+}
+
+.apply-preview-remove {
+	height: 10vw;
+	line-height: 10vw;
+	text-align: center;
+	color: #2A8ABD;
+}
+
+
+/* popup */
 .leaveNotEnough > .ui-content,
-.leftDaysByLeave > .ui-content {
+.leftDaysByLeave > .ui-content,
+.dateTimeError > .ui-content,
+.categroyFirst > .ui-content,
+.basedayFirst > .ui-content {
 	padding: 0 !important;
 }
 
@@ -459,9 +520,264 @@ div.scrollmenu a {
 	margin-top: 10%;
 }
 
-.leftDaysByLeave > .ui-content > .header {
+.leftDaysByLeave > .ui-content > .header,
+.dateTimeError > .ui-content > .header,
+.categroyFirst > .ui-content > .header,
+.basedayFirst > .ui-content > .header {
 	margin-top: 12.5%;
 }
+
+.date-time-component {
+	height: 0;
+	border: none;
+}
+
+.color-gray {
+	color: #666666;
+}
+
+.leaveUploadAttach-radio-label {
+	border: none !important;
+	background: #f9f9f9 !important;
+}
+
+.apply-preview {
+	display: none;
+	width: 93.6vw;
+	margin-left: 3.2vw;
+}
+
+.preview-apply-date {
+	height: 4.2vw;
+	color: #666666;
+}
+
+.preview-apply-categroy {
+	height: 15.3vw;
+	border-bottom: 0.1vh solid #d6d6d6;
+}
+
+.preview-apply-categroy div:nth-of-type(1) {
+	height: 4.3vw;
+}
+
+.preview-apply-categroy div:nth-of-type(2) {
+	height: 3.2vw;
+	line-height: 3.2vw;
+}
+
+.preview-apply-categroy div:nth-of-type(3) {
+	height: 7.8vw;
+	line-height: 7.8vw;
+	color: #2A8ABD;
+}
+
+/****************************************** viewLeaveQuery *****************************************/
+#backContainer {
+	width: 4.934VW;
+	display: none;
+}
+
+.leave-query-list {
+	width: 93.6vw;
+	height: 36.3vw;
+	margin-left: 3.2vw;
+}
+
+.leave-query-list > div:nth-of-type(1) {
+	height: 32vw;
+	border:0.1vh solid #d6d6d6;
+	border-radius: 8px;
+}
+
+.leave-query-list > div:nth-of-type(2) {
+	height: 4.3vw;
+}
+
+.leave-query-state {
+	width: 88vw;
+	height: 10vw;
+	line-height: 10vw;
+	margin-left: 2.4vw;
+	text-align: right;
+	border-bottom: 0.1vh solid #d6d6d6;
+}
+
+.leave-query-state > span:nth-of-type(1) {
+	color: #2e89bc;
+}
+
+.leave-query-mainDetail {
+	width: 88vw;
+	height: 22vw;
+	margin-left: 2.4vw;
+	color: #323232;
+}
+
+.leave-query-mainDetail > div {
+	width: 88vw;
+	height: 5vw;
+	margin-top: 1.8vw;
+	/* line-height: 7vw; */
+}
+
+.leave-query-categroy > div {
+	display: inline-block;
+	width: 43vw;
+	height: 5vw;
+}
+
+.leave-query-max {
+	width: 93.6vw;
+	margin-left: 3.2vw;
+	text-align: center;
+	color: #666666;
+}
+
+.leave-query-detail {
+	display: none;
+	width: 93.6vw;
+	margin-left: 3.2vw;
+}
+
+.leave-detail-date {
+	height: 4.2vw;
+	color: #666666;
+}
+
+.leave-detail-date > div {
+	display: inline-block;
+	width: 46vw;
+}
+
+.leave-detail-date > div:nth-of-type(2) {
+	text-align: right;
+}
+
+.leave-detail-state {
+	height: 15.3vw;
+	border-bottom: 0.1vh solid #d6d6d6;
+}
+
+.leave-detail-state > div:nth-of-type(1) {
+	width: 93.6vw;
+	height: 4.3vw;
+}
+
+.leave-detail-state > div:nth-of-type(2) {
+	width: 93.6vw;
+	height: 11vw;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div {
+	display: inline-block;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div:nth-of-type(1) {
+	width: 85.6vw;
+	height: 11vw;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) {
+	height: 3.2vw;
+	line-height: 3.2vw;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) {
+	height: 7.8vw;
+	line-height: 7.8vw;
+	color: #2A8ABD;
+}
+
+.leave-detail-state > div:nth-of-type(2) > div:nth-of-type(2) {
+	width: 6vw;
+	height: 11vw;
+}
+
+.leave-detail-img {
+	width: 6vw;
+	height: 6vw;
+}
+
+.sign-list {
+	width: 75vw;
+	height: 10vw;
+	margin-top: 3vw;
+	margin-bottom: 4vw;
+}
+
+.sign-list > div {
+	height: 10vw;
+	float: left;
+}
+
+.sign-icon {
+	width: 13vw;
+}
+
+.sign-icon img {
+	width: 5vw;
+	height: 5vw;
+	margin-left: 3vw;
+}
+
+.sign-name {
+	width: 47vw;
+}
+
+.sign-name > div:nth-of-type(1) {
+	color: #323232;
+}
+
+.sign-name > div:nth-of-type(2) {
+	color: #666666;
+}
+
+.sign-state {
+	width: 15vw;
+	color: #666666;
+}
+
+.sign-state:after {
+	clear: both;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**************************************** viewHolidayCalendar ***************************************/
 

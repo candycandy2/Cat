@@ -287,16 +287,31 @@
             <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 4.3vw auto 0;">預約</div>
         </div>
         <div class="ui-margin-public" id="pageTwo">
-            <template id="tplCarListNoData">
-                <div class="car-list-no-data font-style3 hide">目前無常用車籍</div>
-            </template>
+            <div id="commonCarList" value="[index]" class="btn-car-list myCarList disable">
+                <div class="ui-grid-a">
+                    <div class="ui-block-a col-7">
+                        <div class="carlist-margin">[title]</div>
+                        <div class="carlist-margin">[type]</div>
+                        <div class="carlist-margin">[car]</div>
+                    </div>
+                    <div class="ui-block-b col-3"></div>
+                    <div class="ui-block-b col-3">
+                        <a id="settingDelete" href="#" title="[title]" value="[index]" type="[type]" car="[car]" class="btn-myreserve">
+                            <img src="img/030_btn_delete.png" alt="" class="delete-myreserve">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="tplCarListNoData" class="disable">
+                <div class="car-list-no-data font-style3">目前無常用車籍</div>
+            </div>
             <div data-role="footer" class="car-list-footer" data-position="fixed">
                 <div id="addCarDetail" class="car-list-add-button"></div>
             </div>
         </div>
         <div class="ui-margin-public" id="pageThree">
             <div id="todayLine" style="margin: 4.3vw 0 2.14vw 0;font-size: 3.55vw;padding-top: 1vh" class="disable">本日</div>
-            <div id="defaultToday" class="myReserveInfo disable">
+            <div id="defaultToday" class="btn-today myReserveInfo disable">
                 <div class="ui-grid-a">
                     <div class="ui-block-a col-7">
                         <div class="myreserve-margin">[dateformate]<span>[begin] - [end]&nbsp;[site]&nbsp;[space]</span></div>
@@ -306,7 +321,6 @@
                         <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">
                             <img src="img/030_btn_delete.png" alt="" class="delete-myreserve">
                         </a>
-
                     </div>
                 </div>
             </div>
@@ -315,6 +329,7 @@
                 <div class="ui-grid-a">
                     <div class="ui-block-a col-7">
                         <div class="myreserve-margin">[dateformate]<span>[begin] - [end]&nbsp;[site]&nbsp;[space]</span></div>
+                        <div class="myreserve-margin">[PDetailName]</div>
                     </div>
                     <div class="ui-block-b col-3 myreserve-height">
                         <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">
@@ -323,15 +338,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Start of viewPopupMsg -->
-    <div data-role="popup" data-history="false" id="viewPopupMsg" data-overlay-theme="b" data-dismissible="false" class="hide">
-        <div data-role="main" class="popup-msg">
-            <h1 id="msgTitle"><img id="titleImg" src="" class="hide"><span id="titleText"></span></h1>
-            <div id="msgContent"></div>
-            <button id="cancel"></button>
-            <button id="confirm"></button>
         </div>
     </div>
 </div>

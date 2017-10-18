@@ -22,7 +22,7 @@ var dictSiteCategory = {
 var reserveDays = 14;
 var myReserveLocalData = [];
 var isReloadPage = false;
-var clickEditSettingID;
+var clickEditSettingID = '';
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
@@ -173,6 +173,14 @@ function getAPIListAllManager() {
 function grepData(grepData, grepPram, grepValue) {
     return $.grep(grepData, function(item, index) {
         return item[grepPram] == grepValue;
+    });
+}
+
+function sortDataByKey(sortData, sortKey, asc) {
+    sortData = sortData.sort(function(a, b) {
+        var x = a[sortKey];
+        var y = b[sortKey];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
 

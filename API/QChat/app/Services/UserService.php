@@ -45,8 +45,14 @@ class UserService
         
         if(!is_null($userData->level)){
             $friendStatus = $this->userRepository->getFriendStatus($fromEmpNo, $targetEmpNo);
-            if(!is_null($friendStatus) && $friendStatus->status == 1){
-                $result['status'] = 'friend';
+            if(!is_null($friendStatus) && $friendStatus->status > 0){
+                if($friendStatus->status == 1){
+                    $result['status'] = 'friend';
+                }else if($friendStatus->status == 2){
+                    $result['status'] = 'invitated';
+                }else if($friendStatus->status == 3){
+                    $result['status'] = 'rejected';
+                }
             }else{
                 $result['status'] = 'protected';
             }
@@ -55,15 +61,25 @@ class UserService
     }
 
     /**
-     * 取得用戶基本資料
-     * @param  String $empNo 員工編號
-     * @return String
+     * 檢查用戶是否為保護名單
+     * @param   String $empNo   使用者的原編
+     * @return  boolean
      */
-    public function getUserData($empNo){
-        return $this->userRepository->getUserData($empNo);
+    public function checkUserIsProteted($empNo){
+        $rs = $this->userRepository->getUserLevel($empNo);
+        if(count($rs) > 0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public function getUserPushToken($empNo){
-        return $this->userRepository->getUserPushToken($empNo);
+     /**
+     * 取得用戶基本資料
+     * @param  String $empNo 員工編號
+     * @return mixed
+     */
+    public function getUserData($empNo){
+        return  $this->userRepository->getUserData($empNo);
     }
 }
