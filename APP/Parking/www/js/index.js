@@ -14,6 +14,7 @@ var dictDayOfWeek = {
     '6': '(六)',
     '0': '(日)'
 };
+var arrSite = ['92', '111'];
 var arrSiteCategory = ['10', '28'];
 var dictSiteCategory = {
     '92': '10',
