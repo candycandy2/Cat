@@ -1,7 +1,7 @@
 [
   {
     "term": "str_001",
-    "definition": "我要查詢",
+    "definition": "我要查找",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -9,7 +9,7 @@
   },
   {
     "term": "str_002",
-    "definition": "我的電話簿",
+    "definition": "我的电话簿",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -17,7 +17,7 @@
   },
   {
     "term": "str_003",
-    "definition": "公司名稱",
+    "definition": "公司名",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -25,7 +25,7 @@
   },
   {
     "term": "str_004",
-    "definition": "中文姓名",
+    "definition": "中文名",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,7 @@
   },
   {
     "term": "str_005",
-    "definition": "英文姓名",
+    "definition": "英文名",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -41,7 +41,7 @@
   },
   {
     "term": "str_006",
-    "definition": "部門名稱",
+    "definition": "部门名",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -49,7 +49,7 @@
   },
   {
     "term": "str_007",
-    "definition": "分機號碼",
+    "definition": "分机号",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -57,7 +57,7 @@
   },
   {
     "term": "str_008",
-    "definition": "查詢",
+    "definition": "查找",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -73,7 +73,7 @@
   },
   {
     "term": "str_010",
-    "definition": "編輯",
+    "definition": "编辑",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -81,7 +81,7 @@
   },
   {
     "term": "str_011",
-    "definition": "刪除",
+    "definition": "删除",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -89,7 +89,7 @@
   },
   {
     "term": "str_012",
-    "definition": "請輸入查詢條件!!",
+    "definition": "请输入查找条件!",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -97,7 +97,7 @@
   },
   {
     "term": "str_013",
-    "definition": "是否刪除選擇的聯絡人?!",
+    "definition": "是否删除选择的联络人?!",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -105,7 +105,7 @@
   },
   {
     "term": "str_014",
-    "definition": "確認",
+    "definition": "确认",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -113,7 +113,7 @@
   },
   {
     "term": "str_015",
-    "definition": "您尚未加入任何聯絡資訊",
+    "definition": "您没有任何联系信息",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -121,7 +121,7 @@
   },
   {
     "term": "str_016",
-    "definition": "詳細資料",
+    "definition": "详细资料",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -129,7 +129,7 @@
   },
   {
     "term": "str_017",
-    "definition": "分機",
+    "definition": "分机",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -145,7 +145,7 @@
   },
   {
     "term": "str_019",
-    "definition": "部門",
+    "definition": "部门",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -153,7 +153,7 @@
   },
   {
     "term": "str_020",
-    "definition": "事業區",
+    "definition": "事业区",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -161,7 +161,7 @@
   },
   {
     "term": "str_021",
-    "definition": "確定要加到我的電話簿?!",
+    "definition": "确定要加到我的电话簿?!",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -169,7 +169,7 @@
   },
   {
     "term": "str_022",
-    "definition": "確定要從我的電話簿刪除?!",
+    "definition": "确定要从我的电话簿删除?!",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -177,7 +177,7 @@
   },
   {
     "term": "str_023",
-    "definition": "英文名字",
+    "definition": "英文名",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -185,7 +185,7 @@
   },
   {
     "term": "str_024",
-    "definition": "中文名字",
+    "definition": "中文名",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -193,7 +193,7 @@
   },
   {
     "term": "str_025",
-    "definition": "選擇全部",
+    "definition": "全选",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -209,7 +209,7 @@
   },
   {
     "term": "str_027",
-    "definition": "刪除聯絡人",
+    "definition": "删除联络人",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -217,7 +217,7 @@
   },
   {
     "term": "str_028",
-    "definition": "查詢結果",
+    "definition": "查找结果",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -225,7 +225,7 @@
   },
   {
     "term": "str_029",
-    "definition": "您搜尋的結果最多顯示",
+    "definition": "您搜寻的结果最多显示",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -233,7 +233,7 @@
   },
   {
     "term": "str_030",
-    "definition": "筆",
+    "definition": "笔",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -241,7 +241,7 @@
   },
   {
     "term": "str_031",
-    "definition": "如找不到您要的資料，請將搜尋範圍在縮小",
+    "definition": "如找不到您要的资料，请将搜寻范围再缩小",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "str_032",
-    "definition": "您搜尋的結果為0筆",
+    "definition": "您搜寻的结果为0笔",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "str_033",
-    "definition": "如找不到您要的資料，請更新搜尋條件",
+    "definition": "如找不到您要的资料，请更新搜寻条件",
     "context": "",
     "term_plural": "",
     "reference": "",
