@@ -18,7 +18,6 @@ Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','lo
     Route::POST('/setQFriend','FriendController@setQFriend');
     Route::POST('/sendQInvitation','FriendController@sendQInvitation');
     // Route::POST('/sendQInstall','FriendController@sendQInstall');
-    // Route::POST('/getQUserDetail','FriendController@getQUserDetail');
     Route::POST('/removeQFriend','FriendController@removeQFriend');
     Route::POST('/acceptQInvitation','FriendController@acceptQInvitation');
     Route::POST('/rejectQInvitation','FriendController@rejectQInvitation');
@@ -26,6 +25,8 @@ Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','lo
     //Route::POST('/newQChatroom','ChatRoomController@setQChatroom');
     //Route::POST('/newQChatroom','ChatRoomController@addQMember');
     //Route::POST('/newQChatroom','ChatRoomController@removeQMember');
+    Route::POST('/getQUserDetail','UserController@getQUserDetail');
+    Route::POST('/setQUserDetail','UserController@setQUserDetail');
     Route::POST('/sendPushToken','PushController@sendPushToken');
     //Route::POST('/sendPushToken','HistoryController@getQGroupHistoryMessage');
 });

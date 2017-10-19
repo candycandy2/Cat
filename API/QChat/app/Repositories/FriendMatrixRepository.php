@@ -151,4 +151,18 @@ class FriendMatrixRepository
           ->update(['status' => 0,
                     'updated_user'=>$userId]);
     }
+
+    /**
+     * 取得與特定用戶的交友情況
+     * @param  String $fromEmpNo   來源用戶的員工編號
+     * @param  String $targetEmpNo 目標用戶的員工編號
+     * @return mixed              
+     */
+    public function getFriendStatus($fromEmpNo, $targetEmpNo){
+        return $this->friendMatrix
+                ->where('from_emp_no',$fromEmpNo)
+                ->where('target_emp_no',$targetEmpNo)
+                ->select('status')
+                ->first();
+    }
 }
