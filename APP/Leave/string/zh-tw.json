@@ -1025,7 +1025,7 @@
   },
   {
     "term": "str_130",
-    "definition": "空字串",
+    "definition": " ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1178,6 +1178,46 @@
   {
     "term": "str_149",
     "definition": "表單已生效",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_150",
+    "definition": "表單已拒絕",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_151",
+    "definition": "刪除假單",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_152",
+    "definition": "假別：",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_153",
+    "definition": "請假數：",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_154",
+    "definition": "編輯",
     "context": "",
     "term_plural": "",
     "reference": "",
