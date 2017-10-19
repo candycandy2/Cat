@@ -728,7 +728,7 @@ $("#viewLeaveSubmit").pagecontainer({
             if($('#previewBtn').hasClass('leavePreview-active-btn')) {
                 $('.apply-container').hide();
                 $('.apply-preview').show();
-                //$('.ui-title').find("span").text(langStr["str_002"]);
+                $('.ui-title').find("span").text(langStr["str_130"]);
                 $('.leaveMenu').hide();
                 $('#backMain').show();
             }
@@ -738,7 +738,7 @@ $("#viewLeaveSubmit").pagecontainer({
         $("#backMain").on("click", function() {
             $('.apply-preview').hide();
             $('.apply-container').show();
-            //$('.ui-title').find("span").text(langStr["str_002"]);
+            $('.ui-title').find("span").text(langStr["str_002"]);
             $('.leaveMenu').show();
             $('#backMain').hide();
             return false;
