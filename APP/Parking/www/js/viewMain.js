@@ -117,11 +117,11 @@ $("#viewMain").pagecontainer({
             
         }
        
-        function getMettingStatus() {
+        function getParkingStatus() {
             htmlContent = '';
             $('#defaultTimeSelectId').nextAll().remove();
             var arrClass = ['a', 'b', 'c', 'd'];
-            var originItem = ['defaultTimeSelectId', 'reserveTimeSelect', '[eName]', 'ui-block-a', 'disable', 'reserve', 'circle-icon', '[msg]', '[ext]', '[email]', '[traceID]'];
+            var originItem = ['defaultTimeSelectId', 'reserveTimeSelect', '[eName]', 'ui-block-a', 'disable', 'reserve', 'circle-icon', '[msg]', '[ext]', '[email]', '[traceID]', '[pdName]', '[pdCategory]', '[pdRemark]', '[pdCar]'];
             var j = 0;
 
             var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
@@ -135,9 +135,14 @@ $("#viewMain").pagecontainer({
                     ext = '',
                     email = '',
                     traceID = '';
+                    pdName = '';
+                    pdCategory = '';
+                    pdRemark = '';
+                    pdCar = '';
                 var bTime = filterTimeBlock[item].time;
                 var timeID = filterTimeBlock[item].timeID;
-                var roomName = $('#reserveRoom .hover').text();
+                var category = filterTimeBlock[item].category;
+                var roomName = $('#reserveSpace .hover').text();
 
                 for (var i = 0, arr; arr = arrReserve[i]; i++) {
                     if (arr.detailInfo['bTime'] == bTime) {
@@ -151,14 +156,18 @@ $("#viewMain").pagecontainer({
                         ext = arr.detailInfo['ext'];
                         email = arr.detailInfo['email'];
                         traceID = arr.detailInfo['traceID'];
-                        msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(arr.detailInfo['bTime']) + ',' + eName
-
-                        //to do 
-                        //array pop data
-                        //arrReserve.pop(arr);
+                        pdName = arr.detailInfo['pdName'];
+                        pdCategory = arr.detailInfo['pdCategory'];
+                        pdRemark = arr.detailInfo['pdRemark'];
+                        pdCar = arr.detailInfo['pdCar'];
+                        if (category === "10") {
+                            msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(arr.detailInfo['bTime']) + ',' + eName
+                        }else if (category === "28") {
+                            msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(addThirtyMins(arr.detailInfo['bTime'])) + ',' + eName
+                        }
                     }
                 }
-                var replaceItem = ['time-' + timeID, bTime.trim(), eName, 'ui-block-' + classId, '', reserveClass, reserveIconClass, msg, ext, email, traceID];
+                var replaceItem = ['time-' + timeID, bTime.trim(), eName, 'ui-block-' + classId, '', reserveClass, reserveIconClass, msg, ext, email, traceID, pdName, pdCategory, pdRemark, pdCar];
 
                 htmlContent
                     += replaceStr($('#defaultTimeSelectId').get(0).outerHTML, originItem, replaceItem);
@@ -180,6 +189,10 @@ $("#viewMain").pagecontainer({
                 newReserve.addDetail('bTime', item.BTime);
                 newReserve.addDetail('ext', item.Ext_No.replace('-', ''));
                 newReserve.addDetail('email', item.EMail);
+                newReserve.addDetail('pdName', item.PDetailName);
+                newReserve.addDetail('pdCategory', item.PDetailCategory);
+                newReserve.addDetail('pdRemark', item.PDetailRemark);
+                newReserve.addDetail('pdCar', item.PDetailCar);
                 arrReserve.push(newReserve);
             }
 
@@ -191,7 +204,7 @@ $("#viewMain").pagecontainer({
                 localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
             }
 
-            getMettingStatus();
+            getParkingStatus();
             loadingMask("hide");
         }
 
@@ -217,7 +230,7 @@ $("#viewMain").pagecontainer({
                 for (var item in reserveDetailLocalData) {
                     var obj = reserveDetailLocalData[item];
                     if ((obj.roomId === roomId && obj.date === date) && !checkDataExpired(obj.lastUpdateTime, 1, 'mm')) {
-                        getReserveData(roomId, date, obj.data, 'dataExist');
+                        getReserveData(spaceId, date, obj.data, 'dataExist');
                         dataExist = true;
                     }
                 }
@@ -505,7 +518,7 @@ $("#viewMain").pagecontainer({
         }
 
         function getInitialData() {
-            //$("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
+            $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
             selectedSite = $('#reserveSite').find(":selected").val();
             siteCategoryID = dictSiteCategory[defaultSiteClick];
             getSpaceData(selectedSite);  
