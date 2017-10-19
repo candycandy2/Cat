@@ -193,4 +193,29 @@ class UserRepository
           ->where('emp_no','=', $empNo)
           ->update($data);
     }
+
+    /**
+     * 取得用戶詳細資料
+     * @param  String $destinationEmpNo 特定的用戶員工編號
+     * @return mixed
+     */
+    public function getUserDetailByEmpNo($destinationEmpNo){
+        $query =  $this->user
+        ->Leftjoin('qp_friend_matrix','qp_friend_matrix.target_emp_no','=','qp_user.emp_no')
+        ->Leftjoin('qp_qchat_user_detail','qp_user.emp_no','=','qp_qchat_user_detail.emp_no')
+        ->Leftjoin('qp_protect_user','qp_user.emp_no','=','qp_protect_user.emp_no')
+        ->where('qp_user.emp_no','=',$destinationEmpNo);
+       return $query ->select(
+                             'login_id as name',
+                             'qp_user.register_message as registered',
+                             DB::raw('IF (qp_friend_matrix.status is NULL, 0, qp_friend_matrix.status) as status'),
+                             DB::raw('IF (qp_protect_user.row_id is NULL,"N","Y") as protected'),
+                             'qp_user.emp_no',
+                             'user_domain as domain',
+                             'site_code',
+                             'email',
+                             'ext_no',
+                             'memo',
+                             'portrait_path')->get();
+    }
 }
