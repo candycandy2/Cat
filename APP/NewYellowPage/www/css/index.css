@@ -86,7 +86,7 @@
 }
 
 #viewDetailInfo{
-    background-color: white;   
+    background-color: white;
 }
 
 .vice-header {
@@ -214,8 +214,8 @@
 #pageOne{ margin-top: 10vw !important;}
 #pageOne h4{ font-weight: normal; margin: 0; color: #0f0f0f; font-size: 3.349vw;}
 #pageOne label, #pageOne .ui-select{ /*float: none; margin: 0;*/}
-#pageOne label{ text-align: right; width: 24%;}
-.ui-field-contain > label~[class*=ui-], .ui-select .ui-btn{ width: 61%;}
+#pageOne label{ text-align: right; width: 28%;}
+.ui-field-contain > label~[class*=ui-], .ui-select .ui-btn{ width: 57%;}
 #Company-button{ width: 100%;}
 
 /**********************  phonebook  **********************/
@@ -253,7 +253,7 @@
 .img-info img{ width:6.4vw; height:auto;}
 /*.checkbox-area, .checkbox-area div, .img-info{ float: none !important;}*/
 .checkbox-area{ margin-right: 8vw; margin-top: 4vw; width: 5vw; height: 5vw; position: relative;}
-#myPhonebookList .ui-checkbox input:after{ content: ''; width: 100%; height: 100%; position: absolute; top: 0; left: 0; 
+#myPhonebookList .ui-checkbox input:after{ content: ''; width: 100%; height: 100%; position: absolute; top: 0; left: 0;
     background: url('../img/circlebox.png') #fff no-repeat; background-size: 100% auto; z-index: 10; pointer-events: none;}
 #myPhonebookList .ui-checkbox input:checked:after{ background-image: url('../img/circlebox_select.png');}
 #myPhonebookList .ui-checkbox, #myPhonebookList .ui-checkbox input{ width: 100%; height: 100%;}
@@ -299,12 +299,12 @@
 
 #detail-data .liststyle{
     border-width:1px;
-    border-style:none; 
+    border-style:none;
     border-bottom-style:solid;
     border-bottom-color:#d6d6d6;
 }
 
-#detail-data .item-name{ 
+#detail-data .item-name{
     color: #666;
     font-size: 3.55vw;
     margin: 4.3vw 0 0;
