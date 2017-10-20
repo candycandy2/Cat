@@ -38,7 +38,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         });
 
         $("#btn6").on("click", function(){
-            $("#weeks").click();
+            $("#weeks").tap();
         });
 
 
