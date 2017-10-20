@@ -14,6 +14,7 @@ var dictDayOfWeek = {
     '6': '(六)',
     '0': '(日)'
 };
+var arrSite = ['92', '111'];
 var arrSiteCategory = ['10', '28'];
 var dictSiteCategory = {
     '92': '10',
@@ -73,14 +74,16 @@ function getAPIListAllTime() {
             var arrTimeBlock = [];
             for (var i = 0, item; item = data['Content'][i]; i++) {
                 var bTimeStr = new Date(new Date().toDateString() + ' ' + '08:00');
-                var eTimeStr = new Date(new Date().toDateString() + ' ' + '17:30');
+                if (item.TimeCategory === "10"){
+                    var eTimeStr = new Date(new Date().toDateString() + ' ' + '17:30');
+                }else if (item.TimeCategory === "28") {
+                    var eTimeStr = new Date(new Date().toDateString() + ' ' + '19:00');
+                }
                 var timeStr = new Date(new Date().toDateString() + ' ' + item.BTime);
                 var newTimeBlock = new timeblockObj(item.TimeCategory, item.BTime, item.TimeID);
                 if (timeStr >= bTimeStr && timeStr <= eTimeStr) {
                     arrTimeBlock.push(newTimeBlock);
-                } else {
-                    arrOtherTimeBlock.push(newTimeBlock);
-                }
+                } 
             }
 
             //save to local data
@@ -114,13 +117,6 @@ function getAPIListAllTime() {
 
             localStorage.setItem('allTimeLocalData', JSON.stringify(jsonData));
             arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
-
-            jsonData = {
-                lastUpdateTime: new Date(),
-                content: arrOtherTimeBlock
-            };
-            localStorage.removeItem('allOtherTimeLocalData');
-            localStorage.setItem('allOtherTimeLocalData', JSON.stringify(jsonData));
 
             loadingMask('hide');
         } else {

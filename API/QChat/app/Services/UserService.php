@@ -102,4 +102,13 @@ class UserService
         }
         return $result;
     }
+
+    /**
+     * 取得用戶詳細資料
+     * @param  String $destinationEmpNo 特定用戶員工編號
+     * @return mixed
+     */
+    public function getQUserDetail($destinationEmpNo){
+        return $this->userRepository->getUserDetailByEmpNo($destinationEmpNo);
+    }
 }

@@ -27,22 +27,34 @@ $("#viewLeaveQuery").pagecontainer({
         $("#viewLeaveQuery").keypress(function(event) {
         });
 
-        //點擊詳細——click
+        //點擊詳細，根據不同表單狀態顯示不同頁面——click
         $(".leave-query-state").on("click", function() {
             var self = $(this).next().children().find('.leave-id').text();
-            //console.log(self);
+            var leaveState = $(this).children("span").first().text();
+            //console.log(leaveState);
 
-            $("#leaveMenu").hide();
-            $(".leave-query-main").hide();
-            $("#backContainer").show();
-            $(".leave-query-detail").show();
+            if(leaveState == "表單簽核中") {
+                $("#leaveMenu").hide();
+                $(".leave-query-main").hide();
+                $("#backDetailList").show();
+                $(".leave-query-detail-sign").show();
+            }else if(leaveState =="表單已撤回" || leaveState =="表單已拒絕") {
+                $("#leaveMenu").hide();
+                $(".leave-query-main").hide();
+                $("#backDetailList").show();
+                $(".leave-query-detail-refuse").show();
+            }else if(leaveState =="表單已生效") {
+
+            }
+            
 
         });
 
         //返回假單列表——click
-        $("#backContainer").on("click", function() {
-            $("#backContainer").hide();
-            $(".leave-query-detail").hide();
+        $("#backDetailList").on("click", function() {
+            $("#backDetailList").hide();
+            $(".leave-query-detail-sign").hide();
+            $(".leave-query-detail-refuse").hide();
             $("#leaveMenu").show();
             $(".leave-query-main").show();    
             return false;
@@ -54,19 +66,19 @@ $("#viewLeaveQuery").pagecontainer({
         });
 
         //撤回按鈕——click
-        $("#withdraw").on("click", function() {
-            $(".leave-query-detail").hide();
-            $("#backContainer").hide();
+        $("#withdrawLeave").on("click", function() {
+            $(".leave-query-detail-sign").hide();
+            $("#backDetailList").hide();
             $(".leave-query-withdraw").show();
-            $("#backPreview").show();
+            $("#backSignPreview").show();
         });
 
-        //返回詳情——click
-        $("#backPreview").on("click", function() {
+        //從撤回返回詳情——click
+        $("#backSignPreview").on("click", function() {
             $(".leave-query-withdraw").hide();
-            $("#backPreview").hide();
-            $(".leave-query-detail").show();
-            $("#backContainer").show();
+            $("#backSignPreview").hide();
+            $(".leave-query-detail-sign").show();
+            $("#backDetailList").show();
             return false;
         });
 
