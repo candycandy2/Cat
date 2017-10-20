@@ -169,7 +169,7 @@ class ChatRoomController extends Controller
             return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
          }
     }
-    
+
     /**
      * 透過此API可以新增成員
      */
@@ -201,18 +201,24 @@ class ChatRoomController extends Controller
             $empNo = $this->data['emp_no'];
             $destEmpArr = array_unique($this->data['member_list']['destination_emp_no']);
             $userId = $this->userService->getUserData($empNo)->row_id;
+            
             $chatroom = $this->chatRoomService->getChatroom($groupId);
-            $member = explode(',', $chatroom->member);
-            $destEmpArr = array_diff($destEmpArr, $member);
-            $member = array_merge($member, $destEmpArr);
-           
-
-            if(count($chatroom) == 0){
+            if(is_null($chatroom) || count($chatroom) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_025920_TheChatroomIdIsInvalid,
                         'Message'=>"傳入的聊天室編號無法識別",
                         'Content'=>""]);
                 
             }
+
+            $member = explode(',', $chatroom->member);
+            if(!in_array($empNo,$member)){
+                return $result = response()->json(['ResultCode'=>ResultCode::_025907_NoAuthority,
+                        'Message'=>"權限不足",
+                        'Content'=>""]);
+            }
+
+            $destEmpArr = array_diff($destEmpArr, $member);
+            $member = array_merge($member, $destEmpArr);           
             if( $chatroom->extraData['group_message'] == 'N'){
                 return $result = response()->json(['ResultCode'=>ResultCode::_025929_PrivateChatroomCanNotAddMember,
                         'Message'=>"私聊聊天室不可新增成員",
@@ -238,10 +244,9 @@ class ChatRoomController extends Controller
             //2. call Jmessage to add group mamber
             if(count($destArr) > 0){
                 $response = $this->chatRoomService->addGroupMember($groupId, $destArr);
-            }
-
-            if(isset($response->error)){
-                throw new JMessageException($response->error->message);
+                 if( (isset($response->error->code))){
+                    throw new JMessageException($response->error->message);
+                }
             }
             \DB::commit();
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
