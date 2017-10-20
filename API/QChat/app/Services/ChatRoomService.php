@@ -56,16 +56,83 @@ class ChatRoomService
     }
 
     /**
+     * 取得聊天室資訊
+     * @param  int   $groupId 聊天室id
+     * @return mixed
+     */
+    public function getChatroom($groupId){
+        $chatroom = $this->chatRoomRepository->getChatroom($groupId);
+        if(count($chatroom) > 0 && isset($chatroom->chatroom_desc)){
+            $desc = $this->getChatroomExtraData($chatroom->chatroom_desc);
+            $chatroom->extraData =  $desc;
+        }
+        return $chatroom;
+    }
+
+    /**
      * 取得私聊聊天室
      * @return mixed
      */
     public function getPrivateGroup($member1, $member2){
-        return $this->chatRoomRepository->getPrivateGroup($member1, $member2);
+        $privateGroupId;
+        $res = $this->chatRoomRepository->getPrivateGroup($member1, $member2);
+        foreach ($res as $chatroom) {
+           $desc = $this->getChatroomExtraData(trim($chatroom->chatroom_desc));
+
+           if($desc['group_message'] == 'N'){
+                 $privateGroupId = $chatroom->chatroom_id;
+           }
+        }
+        return $privateGroupId;
     }
 
+    /**
+     * 呼叫JMessage刪除聊天室
+     * @param  int   $groupId 聊天室id
+     * @return json
+     */
     public function deleteGroup($groupId){
         $method = 'groups';
         $url = JMessage::API_V1_URL.$method;
         return $this->jmessage->exec('DELETE', $url);
+    }
+
+    /**
+     * 更新聊天室資訊
+     * @param  int    $groupId 聊天室id
+     * @param  Array  $data    更新的資料
+     * @param  int    $userId  使用者個qp_user.row_id
+     * @return int             更成功的筆數
+     */
+    public function updateChatroom($groupId, $data, $userId){
+        return $this->chatRoomRepository->updateChatroom($groupId, $data, $userId);
+    }
+
+    /**
+     * 取得聊天室備註
+     * @param  String $list 逗號隔開的string
+     * @return Array
+     */
+    public function getChatroomExtraData(String $list){
+        $array = explode(';',$list);
+        $result = [];
+        foreach ($array as $item) {
+            $result[explode('=',$item)[0]] = explode('=',$item)[1];    
+        }
+        return $result;
+    }
+
+    /**
+     * 添加聊天室成員
+     * @param int   $groupId    聊天室id
+     * @param Array $destArr    添加的特定成員login_id
+     */
+    public function addGroupMember($groupId, $destArr){
+        $method = 'groups/'.$groupId.'/members';
+        $data =json_encode([
+                     "add" => $destArr
+                ]);
+        $url = JMessage::API_V1_URL.$method;
+        return $this->jmessage->exec('POST', $url, $data);
     }
 }

@@ -19,6 +19,7 @@ abstract class ResultCode
     const _025917_InputJsonFormatIsInvalid = "025917";//傳入的json格式錯誤,Server端無法解析
     const _025918_MemberNotRegistered = "025918";//新增聊天室失敗, 成員未註冊
     const _025919_ChatroomMemberInvalid = "025919";//傳入的成員不存在
+    const _025920_TheChatroomIdIsInvalid = "025920";//傳入的聊天室編號無法識別
     const _025921_DestinationEmployeeNumberIsInvalid = "025921";//要設定的好友工號不存在
     const _025922_DestinationEmployeeNumberIsProtectUser = "025922";//要設定的好友是保護名單
     const _025923_YouCannotSendTheInvitationToFriends = "025923";//要設定對象已經是好友
@@ -27,6 +28,7 @@ abstract class ResultCode
     const _025926_CannotInviteProtectedUserWhoIsNotFriend = '025926'; //保護名單必須是好友才能聊天
     const _025927_InvitationAlreadySend = '025927'; //已發送過交友邀請
     const _025928_InvitationNotExist = '025928'; //交友邀請不存在
+    const _025929_PrivateChatroomCanNotAddMember = '025929'; //私聊聊天室不可新增成員
     const _025998_NoData = "025998";  //查無資料
     const _025999_UnknownError = "025999";  //其他未知錯誤  
 }
