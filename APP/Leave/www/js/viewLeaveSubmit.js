@@ -744,6 +744,10 @@ $("#viewLeaveSubmit").pagecontainer({
             return false;
         });
 
-
+        //立即預約，假單送簽
+        $("#applyBtn").on("click", function() {
+            changePageByPanel("viewLeaveQuery");
+            $("#sendLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
+        });
     }
 });
