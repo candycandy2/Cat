@@ -5,7 +5,7 @@
             <img src="img/menu.png" id="leaveMenu">
             <img src="img/nav_back.png" id="backDetailList">
             <img src="img/nav_back.png" id="backSignPreview">
-            <img src="img/nav_back.png" id="backRefusePreview">
+            <img src="img/nav_back.png" id="backEffectPreview">
         </a>
         <div class="header-style">
             <div class="ui-title">
@@ -157,7 +157,7 @@
                             <div>
                                 <!-- 假別 -->
                                 <span class="langStr" data-id="str_152"></span>
-                                <span>去年彈休</span>
+                                <span class="langStr" data-id="str_094"></span>
                             </div>
                         </div>
                         <div>
@@ -185,6 +185,24 @@
             <div class="leave-query-max font-style12">
                 <!-- *僅顯示近10筆假單記錄 -->
                 <span class="langStr" data-id="str_145"></span>
+            </div>
+
+            <!-- toast display:none -->
+            <div class="toast-style" id="backLeaveMsg">
+                <!-- 銷假單已銷假 -->
+                <span class="langStr" data-id="str_161"></span>
+            </div>
+            <div class="toast-style" id="withdrawLeaveMsg">
+                <!-- 假單已撤回 -->
+                <span class="langStr" data-id="str_162"></span>
+            </div>
+            <div class="toast-style" id="deleteLeaveMsg">
+                <!-- 假單已刪除 -->
+                <span class="langStr" data-id="str_163"></span>
+            </div>
+            <div class="toast-style" id="sendLeaveMsg">
+                <!-- 假單已送簽 -->
+                <span class="langStr" data-id="str_164"></span>
             </div>
         </div>
 
@@ -395,7 +413,7 @@
             <div class="apply-empty-div2"></div>
             <!-- apply btn -->
             <div class="apply-submit-btn">
-                <div id="refuseLeave">
+                <div id="deleteLeave">
                     <!-- 刪除假單 -->
                     <span class="langStr" data-id="str_151"></span>
                 </div>
@@ -404,6 +422,113 @@
                 <img src="img/edit.png" class="vice-icon">&nbsp;
                 <!-- 編輯 -->
                 <span class="langStr" data-id="str_154"></span>
+            </div>
+        </div>
+
+        <!-- 請假單詳情——已生效（可銷假） -->
+        <div class="leave-query-detail-effect">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span><span class="leaveApplyday"></span>
+                </div>
+                <div>
+                    <!-- 請假單號 -->
+                    <span class="langStr" data-id="str_131"></span><span>572003</span>
+                </div> 
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 假單狀況 -->
+                            <span class="langStr" data-id="str_144"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span class="langStr" data-id="str_149"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/info.png" class="leave-detail-img">
+                    </div>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 申請類別 -->
+                    <span class="langStr" data-id="str_081"></span>
+                </div>
+                <div class="font-style3">
+                    <span class="langStr" data-id="str_094"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 申請假別 -->
+                    <span class="langStr" data-id="str_082"></span>
+                </div>
+                <div class="font-style3">
+                    <span class="langStr" data-id="str_094"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 職務代理人 -->
+                    <span class="langStr" data-id="str_083"></span>
+                </div>
+                <div class="font-style3">
+                    <span>Jenny</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 請假日期與時間 -->
+                    <span class="langStr" data-id="str_084"></span>
+                </div>
+                <div class="font-style3">
+                    <span>2017-05-08 13:00</span>
+                    <span> - </span>
+                    <span>2017-05-08 17:00</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 請假數 -->
+                    <span class="langStr" data-id="str_087"></span>
+                </div>
+                <div class="font-style3">
+                    <span>0</span>
+                    <!-- 天 -->
+                    <span class="langStr" data-id="str_071"></span>
+                    <span>4</span>
+                    <!-- 小時 -->
+                    <span class="langStr" data-id="str_088"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 請假理由 -->
+                    <span class="langStr" data-id="str_089"></span>
+                </div>
+                <div class="font-style3">
+                    <span>marry</span>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div2"></div>
+            <!-- apply btn -->
+            <div class="apply-submit-btn">
+                <div id="dispelLeave">
+                    <!-- 銷假 -->
+                    <span class="langStr" data-id="str_156"></span>
+                </div>
             </div>
         </div>
 
@@ -441,6 +566,53 @@
                 </div>
             </div>
         </div>
+
+        <!-- 消除假單 -->
+        <div class="leave-query-dispel">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span><span class="leaveApplyday"></span>
+                </div>
+                <div>
+                    <!-- 請假單號 -->
+                    <span class="langStr" data-id="str_131"></span><span>572003</span>
+                </div> 
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div1"></div>
+            <!-- withdraw-reason textarea -->
+            <div class="apply-leave-reason">
+                <div class="font-style11">
+                    <!-- 銷假理由 -->
+                    <span class="langStr" data-id="str_158"></span>
+                </div>
+                <div>
+                    <textarea data-role="none" id="dispelReason" class="reason-textarea" placeholder="請填寫理由"></textarea>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div2"></div>
+            <div class="apply-preview-btn" id="previewDispel">
+                <div id="previewDispelBtn">
+                    <!-- 預覽送簽 -->
+                    <span class="langStr" data-id="str_091"></span>
+                </div>
+            </div>
+            <!-- display:none -->
+            <div class="apply-submit-btn" id="comfirmDispel">
+                <div id="confirmDispelBtn">
+                    <!-- 確定送簽 -->
+                    <span class="langStr" data-id="str_159"></span>
+                </div>
+            </div>
+            <div class="apply-preview-remove" id="cancelApply">
+                <img src="img/btn_cancel.png" class="vice-icon">&nbsp;
+                <!-- 取消申請 -->
+                <span class="langStr" data-id="str_160"></span>
+            </div>
+        </div>
+
     </div>
 
     <!-- leave state flow popup -->
@@ -556,7 +728,37 @@
                         <!--取消-->
                         <span class="langStr" data-id="com_023"></span>
                     </div>
+                    <div class="btn-cancel" id="comfirmWithdrawLeave">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm delete -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmDelete" for="confirmDelete">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text">
+                        <!-- 確定刪除？ -->
+                        <span class="langStr" data-id="str_155"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>
+                
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
                     <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="comfirmDeleteLeave">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
                     </div>
