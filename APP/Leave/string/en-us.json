@@ -769,7 +769,7 @@
   },
   {
     "term": "str_098",
-    "definition": "1. 加班同仁可申請「加班補休假」，相關規定請參考員工加班管理辦法及員工給假管理辦法e",
+    "definition": "1. 加班同仁可申請「加班補休假」，相關規定請參考員工加班管理辦法及員工給假管理辦法",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -777,7 +777,7 @@
   },
   {
     "term": "str_099",
-    "definition": "2. 本期特休可在失效日前申請2017年任一天工作日做為休假安排e",
+    "definition": "2. 本期特休可在失效日前申請2017年任一天工作日做為休假安排",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -785,7 +785,7 @@
   },
   {
     "term": "str_100",
-    "definition": "3. 去年特休、去年彈休可使用至2017/12/31，未使用完的時數將折算代金，併於2018年1月份薪資發放e",
+    "definition": "3. 去年特休、去年彈休可使用至2017/12/31，未使用完的時數將折算代金，併於2018年1月份薪資發放",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -793,7 +793,7 @@
   },
   {
     "term": "str_101",
-    "definition": "4. QPlay-Leave APP 目前最小請假單位為半天，將陸續建全其功能與網頁版一樣，敬請期待!e",
+    "definition": "4. QPlay-Leave APP 目前最小請假單位為半天，將陸續建全其功能與網頁版一樣，敬請期待!",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1218,6 +1218,86 @@
   {
     "term": "str_154",
     "definition": "編輯e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_155",
+    "definition": "確定刪除？e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_156",
+    "definition": "銷假e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_157",
+    "definition": "銷假申請e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_158",
+    "definition": "銷假理由e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_159",
+    "definition": "確定送簽e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_160",
+    "definition": "取消申請e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_161",
+    "definition": "銷假單已銷假e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_162",
+    "definition": "假單已撤回e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_163",
+    "definition": "假單已刪除e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_164",
+    "definition": "假單已送簽e",
     "context": "",
     "term_plural": "",
     "reference": "",

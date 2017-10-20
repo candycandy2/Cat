@@ -22,13 +22,13 @@ Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','lo
     Route::POST('/acceptQInvitation','FriendController@acceptQInvitation');
     Route::POST('/rejectQInvitation','FriendController@rejectQInvitation');
     Route::POST('/newQChatroom','ChatRoomController@newQChatroom');
-    //Route::POST('/newQChatroom','ChatRoomController@setQChatroom');
-    //Route::POST('/newQChatroom','ChatRoomController@addQMember');
-    //Route::POST('/newQChatroom','ChatRoomController@removeQMember');
+    //Route::POST('/setQChatroom','ChatRoomController@setQChatroom');
+    Route::POST('/addQMember','ChatRoomController@addQMember');
+    //Route::POST('/removeQMember','ChatRoomController@removeQMember');
     Route::POST('/getQUserDetail','UserController@getQUserDetail');
     Route::POST('/setQUserDetail','UserController@setQUserDetail');
     Route::POST('/sendPushToken','PushController@sendPushToken');
-    //Route::POST('/sendPushToken','HistoryController@getQGroupHistoryMessage');
+    //Route::POST('/getQGroupHistoryMessage','HistoryController@getQGroupHistoryMessage');
 });
 
 //Job

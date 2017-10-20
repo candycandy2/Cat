@@ -288,7 +288,8 @@ div.scrollmenu a {
 
 .toast-style {
 	background-color: #666;
-	bottom: 60VW;
+	/* bottom: 60VW; */
+	bottom: 90VW;
 	border-radius: 1.5px;
 	color: #F0F0F0;
 	font-size: 3.6VW;
@@ -315,7 +316,7 @@ div.scrollmenu a {
 }
 
 .leavePreview-active-btn {
-	background-color: #0db6b7 !important;
+	background-color: #2A8ABD !important;
 	border-color: #d6d6d6 !important;
 	color: #ffffff !important;
 }
@@ -572,6 +573,12 @@ div.scrollmenu a {
 	color: #2A8ABD;
 }
 
+.vice-icon {
+	width: 4vw;
+	height: 4vw;
+	margin-top: 3.5vw;
+}
+
 /****************************************** viewLeaveQuery *****************************************/
 #leaveMenu {
 	width: 4.934VW;
@@ -579,7 +586,7 @@ div.scrollmenu a {
 
 #backDetailList,
 #backSignPreview,
-#backRefusePreview {
+#backEffectPreview {
 	width: 4.934VW;
 	display: none;
 }
@@ -642,7 +649,9 @@ div.scrollmenu a {
 
 .leave-query-detail-sign,
 .leave-query-detail-refuse,
-.leave-query-withdraw {
+.leave-query-detail-effect,
+.leave-query-withdraw,
+.leave-query-dispel {
 	display: none;
 	width: 93.6vw;
 	margin-left: 3.2vw;
@@ -711,7 +720,7 @@ div.scrollmenu a {
 	width: 75vw;
 	height: 10vw;
 	margin-top: 3vw;
-	margin-bottom: 4vw;
+	margin-bottom: 5vw;
 }
 
 .sign-list > div {
@@ -750,18 +759,23 @@ div.scrollmenu a {
 	clear: both;
 }
 
-.confirmWithdraw > .ui-content {
+.confirmWithdraw > .ui-content,
+.confirmDelete > .ui-content {
 	padding: 0 !important;
 }
 
-.confirmWithdraw > .ui-content > .header {
+.confirmWithdraw > .ui-content > .header,
+.confirmDelete > .ui-content > .header {
 	margin-top: 13%;
 }
 
-.vice-icon {
-	width: 4vw;
-	height: 4vw;
-	margin-top: 3.5vw;
+#comfirmDispel,
+#cancelApply,
+#backLeaveMsg,
+#withdrawLeaveMsg,
+#deleteLeaveMsg,
+#sendLeaveMsg {
+	display: none;
 }
 
 
