@@ -17,8 +17,8 @@ var clickAggTarceID = '';
 var clickReserveDate = '';
 var clickReserveRoom = '';
 var arrTempTimeNameClick = [];
-var parkingSpaceDataExample = ['車位1', '車位2', '車位3', '車位4'];
 var parkingSettingdata = {};
+//var parkingSpaceDataExample = ['車位 094', '車位 095', '車位 096', '車位 251'];
 
 $("#viewMain").pagecontainer({
     create: function(event, ui) {
@@ -49,15 +49,20 @@ $("#viewMain").pagecontainer({
             siteIndex = siteIndex == '' ? '0' : siteIndex;
             $('#reserveSpace').find('a').remove();
 
-            /*for (var i = 0, item; item = JSON.parse(localStorage.getItem('parkingSpaceLocalData'))['content'][i]; i++) {
+            for (var i = 0, item; item = JSON.parse(localStorage.getItem('parkingSpaceLocalData'))['content'][i]; i++) {
                 if (item.ParkingSpaceSite == siteIndex) {
-                    htmlContent += '<a id=' + item.ParkingSpaceID + ' value=' + item.ParkingSpaceID + ' href="#" class="ui-link" IsReserveMulti=' + item.IsReserveMulti + '>' + item.ParkingSpaceName + '</a>';
+                    if (item.ParkingSpaceSite == 92) {
+                        var strParkingSpaceName = item.ParkingSpaceName.substr(2,3);
+                    } else if (item.ParkingSpaceSite == 111){
+                        var strParkingSpaceName = item.ParkingSpaceName;
+                    }
+                    htmlContent += '<a id=' + item.ParkingSpaceID + ' value=' + item.ParkingSpaceID + ' href="#" class="ui-link" IsReserveMulti=' + item.IsReserveMulti + '>' + strParkingSpaceName + '</a>';
                 }
-            }*/
-
-            for (var i = 0; i < parkingSpaceDataExample.length; i++){             
-                htmlContent += '<a id=' + i + ' value=' + i + ' href="#" class="ui-link">' + parkingSpaceDataExample[i] + '</a>';
             }
+
+            /*for (var i = 0; i < parkingSpaceDataExample.length; i++){             
+                htmlContent += '<a id=' + i + ' value=' + i + ' href="#" class="ui-link">' + parkingSpaceDataExample[i] + '</a>';
+            }*/
 
             $('#reserveSpace').append(htmlContent);
             clickSpaceId = $('#reserveSpace a:first-child').attr('id');
@@ -79,13 +84,13 @@ $("#viewMain").pagecontainer({
 
             var j = 0;
             var originItemForPageOne = ['reserveDefault', 'ReserveDay', 'ReserveDict', 'disable'];
-            /* var isSystemRole = JSON.parse(localStorage.getItem('listAllManager'));
+            var isSystemRole = JSON.parse(localStorage.getItem('listAllManager')).content;
 
-            if (isSystemRole != null) {
+            if (isSystemRole.length != 0) {
                 reserveDays = 120;
             } else {
                 reserveDays = 14;
-            }*/
+            }
 
             for (var i = 0; i < reserveDays; i++) {
                 if (i != 0) {
@@ -112,11 +117,11 @@ $("#viewMain").pagecontainer({
             
         }
        
-        function getMettingStatus() {
+        function getParkingStatus() {
             htmlContent = '';
             $('#defaultTimeSelectId').nextAll().remove();
             var arrClass = ['a', 'b', 'c', 'd'];
-            var originItem = ['defaultTimeSelectId', 'reserveTimeSelect', '[eName]', 'ui-block-a', 'disable', 'reserve', 'circle-icon', '[msg]', '[ext]', '[email]', '[traceID]'];
+            var originItem = ['defaultTimeSelectId', 'reserveTimeSelect', '[eName]', 'ui-block-a', 'disable', 'reserve', 'circle-icon', '[msg]', '[ext]', '[email]', '[traceID]', '[pdName]', '[pdCategory]', '[pdRemark]', '[pdCar]'];
             var j = 0;
 
             var filterTimeBlock = grepData(arrTimeBlockBySite, 'siteCategoryID', siteCategoryID)[0].data;
@@ -130,9 +135,14 @@ $("#viewMain").pagecontainer({
                     ext = '',
                     email = '',
                     traceID = '';
+                    pdName = '';
+                    pdCategory = '';
+                    pdRemark = '';
+                    pdCar = '';
                 var bTime = filterTimeBlock[item].time;
                 var timeID = filterTimeBlock[item].timeID;
-                var roomName = $('#reserveRoom .hover').text();
+                var category = filterTimeBlock[item].category;
+                var roomName = $('#reserveSpace .hover').text();
 
                 for (var i = 0, arr; arr = arrReserve[i]; i++) {
                     if (arr.detailInfo['bTime'] == bTime) {
@@ -146,14 +156,18 @@ $("#viewMain").pagecontainer({
                         ext = arr.detailInfo['ext'];
                         email = arr.detailInfo['email'];
                         traceID = arr.detailInfo['traceID'];
-                        msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(arr.detailInfo['bTime']) + ',' + eName
-
-                        //to do 
-                        //array pop data
-                        //arrReserve.pop(arr);
+                        pdName = arr.detailInfo['pdName'];
+                        pdCategory = arr.detailInfo['pdCategory'];
+                        pdRemark = arr.detailInfo['pdRemark'];
+                        pdCar = arr.detailInfo['pdCar'];
+                        if (category === "10") {
+                            msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(arr.detailInfo['bTime']) + ',' + eName
+                        }else if (category === "28") {
+                            msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(addThirtyMins(arr.detailInfo['bTime'])) + ',' + eName
+                        }
                     }
                 }
-                var replaceItem = ['time-' + timeID, bTime.trim(), eName, 'ui-block-' + classId, '', reserveClass, reserveIconClass, msg, ext, email, traceID];
+                var replaceItem = ['time-' + timeID, bTime.trim(), eName, 'ui-block-' + classId, '', reserveClass, reserveIconClass, msg, ext, email, traceID, pdName, pdCategory, pdRemark, pdCar];
 
                 htmlContent
                     += replaceStr($('#defaultTimeSelectId').get(0).outerHTML, originItem, replaceItem);
@@ -175,6 +189,10 @@ $("#viewMain").pagecontainer({
                 newReserve.addDetail('bTime', item.BTime);
                 newReserve.addDetail('ext', item.Ext_No.replace('-', ''));
                 newReserve.addDetail('email', item.EMail);
+                newReserve.addDetail('pdName', item.PDetailName);
+                newReserve.addDetail('pdCategory', item.PDetailCategory);
+                newReserve.addDetail('pdRemark', item.PDetailRemark);
+                newReserve.addDetail('pdCar', item.PDetailCar);
                 arrReserve.push(newReserve);
             }
 
@@ -186,7 +204,7 @@ $("#viewMain").pagecontainer({
                 localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
             }
 
-            getMettingStatus();
+            getParkingStatus();
             loadingMask("hide");
         }
 
@@ -212,7 +230,7 @@ $("#viewMain").pagecontainer({
                 for (var item in reserveDetailLocalData) {
                     var obj = reserveDetailLocalData[item];
                     if ((obj.roomId === roomId && obj.date === date) && !checkDataExpired(obj.lastUpdateTime, 1, 'mm')) {
-                        getReserveData(roomId, date, obj.data, 'dataExist');
+                        getReserveData(spaceId, date, obj.data, 'dataExist');
                         dataExist = true;
                     }
                 }
@@ -467,12 +485,22 @@ $("#viewMain").pagecontainer({
         }
 
         function checkLocalDataExpired() {
+            var parkingSpaceLocalData = JSON.parse(localStorage.getItem('parkingSpaceLocalData'));
+            if (parkingSpaceLocalData === null || checkDataExpired(parkingSpaceLocalData['lastUpdateTime'], 7, 'dd')) {
+                var doAPIListAllParkingSpace = new getAPIListAllParkingSpace;
+                //var doAPIListAllTime = new getAPIListAllTime();
+            }else {
+                //arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
+            }
+            var doAPIListAllManager = new getAPIListAllManager();
+
             if(localStorage.getItem("defaultSiteClick") !== null) {
                 $("#reserveSite").val(localStorage.getItem("defaultSiteClick"));
                 defaultSiteClick = localStorage.getItem("defaultSiteClick");
             }else if (defaultSiteClick === null) {
                 defaultSiteClick = '92';
             }
+
         }
 
         function setAlertLimitSite(site) {
@@ -490,7 +518,7 @@ $("#viewMain").pagecontainer({
         }
 
         function getInitialData() {
-            //$("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
+            $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
             selectedSite = $('#reserveSite').find(":selected").val();
             siteCategoryID = dictSiteCategory[defaultSiteClick];
             getSpaceData(selectedSite);  

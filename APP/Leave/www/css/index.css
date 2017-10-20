@@ -577,8 +577,9 @@ div.scrollmenu a {
 	width: 4.934VW;
 }
 
-#backContainer,
-#backPreview {
+#backDetailList,
+#backSignPreview,
+#backRefusePreview {
 	width: 4.934VW;
 	display: none;
 }
@@ -639,7 +640,8 @@ div.scrollmenu a {
 	color: #666666;
 }
 
-.leave-query-detail,
+.leave-query-detail-sign,
+.leave-query-detail-refuse,
 .leave-query-withdraw {
 	display: none;
 	width: 93.6vw;
@@ -756,7 +758,11 @@ div.scrollmenu a {
 	margin-top: 13%;
 }
 
-
+.vice-icon {
+	width: 4vw;
+	height: 4vw;
+	margin-top: 3.5vw;
+}
 
 
 
