@@ -50,6 +50,7 @@ class JMessage {
      */
     public function exec($method, $url, $data = false){
         $secretKey = base64_encode($this->getAuth());
+         $secretKey = "NmU1MWNmM2MxNzQ5MTBkMjQ3YWM3NmYzOjMzNWExMmY4YjRiOWQ3MWM5ZDgxM2U3ZA==";
         $header = array(
                          'Content-Type: application/json',
                          'Authorization: Basic '.$secretKey
