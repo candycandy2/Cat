@@ -68,6 +68,17 @@ class ChatRoomRepository
     }
 
     /**
+     * 刪除聊天室
+     * @param  int   $groupId 聊天室id
+     * @return int            影響的筆數
+     */
+    public function deleteChatroom($groupId){
+       return $this->chatroom
+            ->where('chatroom_id','=',$groupId)
+            ->delete();
+    }
+
+    /**
      * 取得聊天室資訊
      * @param  int   $groupId 聊天室id
      * @return mixed
