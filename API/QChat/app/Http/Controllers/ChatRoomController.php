@@ -241,6 +241,11 @@ class ChatRoomController extends Controller
             }
             
             foreach ($destEmpArr as $targetEmpNo) {
+                if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                        'Message'=>"要設定的好友工號不存在",
+                        'Content'=>""]);
+                }
                 $userStatus = $this->userService->getUserStatus($empNo, $targetEmpNo);
                 if($userStatus['status'] == 'protected'){
                     return $result = response()->json(['ResultCode'=>ResultCode::_025926_CannotInviteProtectedUserWhoIsNotFriend,
@@ -259,6 +264,103 @@ class ChatRoomController extends Controller
             //2. call Jmessage to add group mamber
             if(count($destArr) > 0){
                 $response = $this->chatRoomService->addGroupMember($groupId, $destArr);
+                 if(isset($response->error->code)){
+                    throw new JMessageException($response->error->message);
+                }
+            }
+            \DB::commit();
+            return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"Success",
+                        'Content'=>""]);
+            
+        }catch (JMessageException $e){
+            \DB::rollBack();
+             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+                        'Message'=>"Call API failed or error occurred",
+                        'Content'=>$response]);
+        }catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+        }
+    }
+
+     /**
+     * 透過此API可以新增成員
+     */
+    public function removeQMember(){
+
+        \DB::beginTransaction();
+        try {
+            $required = Validator::make($this->data, [
+                'emp_no' => 'required',
+                'lang' => 'required',
+                'need_push' => 'required',
+                'app_key' => 'required',
+                'group_id' => 'required',
+                'member_list' => 'required',
+                'member_list.destination_emp_no' => 'required',
+            ]);
+
+            if($required->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                        'Message'=>"必填字段缺失",
+                        'Content'=>""]);
+            }
+
+            $destArr = [];
+            $member = [];
+
+            $groupId = $this->data['group_id'];
+            $empNo = $this->data['emp_no'];
+            $dest = $this->data['member_list']['destination_emp_no'];
+            if(is_array($dest)){
+            $destEmpArr = array_unique($dest);
+            }else{
+                $destEmpArr = array($dest);
+            }
+
+            $userId = $this->userService->getUserData($empNo)->row_id;
+            
+            $chatroom = $this->chatRoomService->getChatroom($groupId);
+            if(is_null($chatroom) || count($chatroom) == 0){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025920_TheChatroomIdIsInvalid,
+                        'Message'=>"傳入的聊天室編號無法識別",
+                        'Content'=>""]);
+                
+            }
+
+            $member = explode(',', $chatroom->member);
+            if(!in_array($empNo,$member)){
+                return $result = response()->json(['ResultCode'=>ResultCode::_025907_NoAuthority,
+                        'Message'=>"權限不足",
+                        'Content'=>""]);
+            }
+            
+            foreach ($destEmpArr as $targetEmpNo) {
+                if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                        'Message'=>"要設定的好友工號不存在",
+                        'Content'=>""]);
+                }
+                if (($key = array_search($targetEmpNo, $member)) !== false) {
+                    unset($member[$key]);
+                    $userData = $this->userService->getUserData($targetEmpNo);
+                    $destArr[] = $userData->login_id;
+                }
+            }
+
+            //1.update chatroom infomation on DB
+            if(count($member) > 0){
+                $data=array('member'=>implode(',',$member));
+                $this->chatRoomService->updateChatroom($groupId, $data, $userId);
+            }else{
+                //沒有聊天室成員，刪除聊天室
+                 $this->chatRoomService->deleteChatroom($groupId);
+            }
+            //2. call Jmessage to remove group mamber
+            if(count($destArr) > 0){
+                $response = $this->chatRoomService->removeGroupMember($groupId, $destArr);
                  if(isset($response->error->code)){
                     throw new JMessageException($response->error->message);
                 }
