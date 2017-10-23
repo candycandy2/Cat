@@ -1,7 +1,7 @@
 [
   {
     "term": "str_001",
-    "definition": "Personal Leave",
+    "definition": "Personal Record",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -9,7 +9,7 @@
   },
   {
     "term": "str_002",
-    "definition": "Leave Application",
+    "definition": "Normal Leave Apply",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -17,7 +17,7 @@
   },
   {
     "term": "str_003",
-    "definition": "Query/Withdraw Leave Application",
+    "definition": "Query/Withdraw",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,7 @@
   },
   {
     "term": "str_005",
-    "definition": "Query Leave Cancellation",
+    "definition": "Withdraw List",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -65,7 +65,7 @@
   },
   {
     "term": "str_009",
-    "definition": "This Year Annual Leave",
+    "definition": "Accrued Annual Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -721,7 +721,7 @@
   },
   {
     "term": "str_092",
-    "definition": "Fast Leave Application",
+    "definition": "Fast Apply",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -729,7 +729,7 @@
   },
   {
     "term": "str_093",
-    "definition": "Available Holiday",
+    "definition": "Available",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -737,7 +737,7 @@
   },
   {
     "term": "str_094",
-    "definition": "Last Year Holiday Declared Working Leave",
+    "definition": "Last Year Flexible Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -753,7 +753,7 @@
   },
   {
     "term": "str_096",
-    "definition": "Unused Vacation Time",
+    "definition": "Expired Annual Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -825,7 +825,7 @@
   },
   {
     "term": "str_105",
-    "definition": "Leave Period",
+    "definition": "Leave Time",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -841,7 +841,7 @@
   },
   {
     "term": "str_107",
-    "definition": "Leave Application",
+    "definition": "Apply",
     "context": "",
     "term_plural": "",
     "reference": "",
