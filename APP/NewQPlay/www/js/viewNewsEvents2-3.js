@@ -4,13 +4,107 @@
     $("#viewNewsEvents2-3").pagecontainer({
         create: function(event, ui) {
 
-            var activeNvrBar = "";
-            var activeNvrDiv = "";
-            var inactiveNvrBar = "";
-            var inactiveNvrDiv = "";
+            window.eventType = "";
 
             /********************************** function *************************************/
-            window.QueryMessageList = function() {
+            window.QueryPortalList = function (type) {
+                (function(type) {
+
+                    //type: Announcement, Communication, CIP, CSD, ITS
+                    var queryData = "<LayoutHeader><PortalCategory>" + type + "</PortalCategory></LayoutHeader>";
+
+                    var successCallback = function(data) {
+
+                        $("#eventListContent .list-content").hide();
+                        $("#" + type + "Content").show();
+                        $("#deleteMessage").hide();
+
+                        //Update title
+                        $("#viewNewsEvents2-3 .ui-header .ui-title").html(type);
+
+                        if (data["ResultCode"] === "1") {
+
+                            if (data["Content"].length > 0) {
+                                var listviewContent = "";
+
+                                for (var i=0; i<data["Content"].length; i++) {
+                                    var content = "<li value='' class='msg-index'>" +
+                                                    "<div class='msg-del-checkbox-content'>" +
+                                                    "</div>" +
+                                                    "<div class='msg-new-reddot-content'>" +
+                                                        "<div class='reddot-list hide'></div>" +
+                                                    "</div>" +
+                                                    "<div class='msg-list-content'>" +
+                                                        "<a value=" + data["Content"][i].PortalID + " class='message-index'>" +
+                                                            "<p class='msg-list-title' style='white-space:pre-wrap; font-size:2.3vh;'>" + data["Content"][i].PortalSubject + "</p>" +
+                                                            "<p class='msg-list-time'>" + data["Content"][i].PortalDate + "</p>" +
+                                                            "<div style='position:absolute; top:0px; right:0px; width:20%; height:100%; background-color:red; z-index:10; display:none;'>" +
+                                                                "<p style='color:#FFF; text-align:center; margin:50% 0;'>Delete</p>" +
+                                                            "</div>" +
+                                                            "<input type='hidden' value='" + data["Content"][i].PortalURL + "'>" +
+                                                        "</a>" +
+                                                    "<div>" +
+                                                "</li>";
+
+                                    listviewContent += content;
+                                }
+
+                                $("#" + type + "Listview").html(listviewContent);
+                                $("#" + type + "Listview").listview('refresh');
+
+                                $('a.message-index').on("click", function(e) {
+                                    e.stopImmediatePropagation();
+                                    e.preventDefault();
+
+                                    if (eventType != "Event" && eventType != "News") {
+                                        //Communication cannot call API PortalListDetail,
+                                        //need to open link PortalURL from API PortalList
+                                        if (eventType === "Communication") {
+                                            console.log($(this).find("input").val());
+                                            portalURL = $(this).find("input").val();
+                                            $.mobile.changePage("#viewWebNews2-3-1");
+                                        } else {
+                                            messageRowId = $(this)[0].getAttribute("value");
+                                            $.mobile.changePage("#viewWebNews2-3-1");
+                                        }
+                                    }
+                                });
+
+                                //Latest Update Time
+                                var datetime = new Date();
+                                var datetimeStr = datetime.getFullYear() + "-" + padLeft(parseInt(datetime.getMonth() + 1, 10), 2) + "-" + padLeft(datetime.getUTCDate(), 2) + " " +
+                                                  addZero(datetime.getHours()) + ":" + addZero(datetime.getMinutes());
+                                $(".update-time .update-time-str").html(datetimeStr);
+
+                                $("#no" + type).hide();
+                                $("#updateTime" + type).show();
+                            } else {
+                                $("#no" + type).show();
+                                $("#updateTime" + type).hide();
+                            }
+
+                        } else if (data["ResultCode"] === "044901") {
+                            $("#no" + type).show();
+                            $("#updateTime" + type).hide();
+                        }
+
+                        if (callGetMessageList) {
+                            callGetMessageList = false;
+                        }
+
+                        loadingMask("hide");
+                    };
+
+                    var failCallback = function(data) {};
+
+                    CustomAPI("POST", true, "PortalList", successCallback, failCallback, queryData, "");
+
+                }(type));
+            };
+
+            window.QueryMessageList = function(action) {
+                action = action || null;
+
                 var self = this;
                 var queryStr = "";
                 var msgDateTo = getTimestamp();
@@ -25,6 +119,9 @@
                     var resultcode = data['result_code'];
 
                     if (resultcode === 1) {
+
+                        //$("#eventListContent .list-content").show();
+                        $("#eventListContent .list-content").hide();
 
                         var messageCount = data['content']['message_count'];
                         var messageContentIsNull = false;
@@ -84,27 +181,21 @@
                         }
 
                         //Check if there still have a unread message, then show [red star]
-                        $("#newsNav").show();
-                        $("#newsNoticeNav").hide();
-                        $("#newEvents").hide();
-                        $("#newNews").hide();
+                        $("#eventTypeSelect .left .white").removeClass("red");
 
                         for (var i=0; i<messagecontent.message_count; i++) {
                             if (messagecontent.message_list[i].read === "N") {
 
                                 if (messagecontent.message_list[i].message_type === "event") {
-                                    $("#newEvents").show();
+                                    $("#eventTypeSelect #Event .left .white").addClass("red");
                                 } else if (messagecontent.message_list[i].message_type === "news") {
-                                    $("#newNews").show();
+                                    $("#eventTypeSelect #News .left .white").addClass("red");
                                 }
 
-                                $("#newsNav").hide();
-                                $("#newsNoticeNav").show();
                             }
                         }
 
                         updateMessageList();
-
                         /*
                         //jQuery Mobile swipe setting
                         $.event.special.swipe.scrollSupressionThreshold = (screen.availWidth) / 60;
@@ -122,8 +213,6 @@
                             $("#delIndex" + i).hide();
                         } );
                         */
-                    } else {
-  
                     }
 
                     if (callGetMessageList) {
@@ -132,6 +221,15 @@
 
                     if (messagePageShow) {
                         loadingMask("hide");
+                    }
+
+                    //Call API Portal List
+                    if (action === "auto") {
+                        QueryPortalList("Announcement");
+                        QueryPortalList("Communication");
+                        QueryPortalList("CIP");
+                        QueryPortalList("CSD");
+                        QueryPortalList("ITS");
                     }
 
                     if (window.localStorage.getItem("openMessage") === "true") {
@@ -249,7 +347,10 @@
                 }
 
                 //If News or Events has no message, hide delete button
-                if (activeNvrBar === "navNews") {
+                //According to evnet type, show / hide listview
+                if (eventType === "News") {
+                    $("#NewsContent").show();
+
                     if (countNews === 0) {
                         $("#deleteMessage").hide();
                     } else {
@@ -257,7 +358,9 @@
                     }
                 }
 
-                if (activeNvrBar === "navEvents") {
+                if (eventType === "Event") {
+                    $("#EventContent").show();
+
                     if (countEvents === 0) {
                         $("#deleteMessage").hide();
                     } else {
@@ -274,56 +377,21 @@
                     e.stopImmediatePropagation();
                     e.preventDefault();
 
-                    messageRowId = $(this)[0].getAttribute("value");
-                    messageArrIndex = $(this).parent().parent().val();
+                    if (eventType === "Event" || eventType === "News") {
+                        messageRowId = $(this)[0].getAttribute("value");
+                        messageArrIndex = $(this).parent().parent().val();
 
-                    $.mobile.changePage("#viewWebNews2-3-1");
+                        $.mobile.changePage("#viewWebNews2-3-1");
+                    }
                 });
 
                 $("input.msgDelCheckbox").on("change", function() {
                     checkboxChange($(this));
                 });
 
-                $("#navMessage a").addClass("ui-btn-active");
-
-                // fix problem of somtimes can't see bottom msg in iOS (due to jQuery mobile layout setting)
-                if (device.platform === "iOS"){
-                    $('#viewNewsEvents2-3').find('.ui-tabs').css({'padding-bottom': $('#msgFooter').height()});
-                }
+                //Update title
+                $("#viewNewsEvents2-3 .ui-header .ui-title").html(eventType);
             };
-
-            function tabChange(action) {
-                action = action || null;
-
-                $("#" + activeNvrDiv).show();
-                $("#" + inactiveNvrDiv).hide();
-
-                if (action === "setActive") {
-                    $("#" + activeNvrBar).trigger("click");
-                    $("#" + activeNvrBar + " a").addClass("ui-btn-active");
-                } else {
-                    $("#" + activeNvrBar).addClass("ui-btn-active");
-                    $("#" + inactiveNvrBar).removeClass("ui-btn-active");
-                }
-
-                //Every time change tap, need to update message data
-                if (!callGetMessageList) {
-                    if (loginData["msgDateFrom"] !== null) {
-                        loadingMask("show");
-                        var messageList = new QueryMessageList();
-                    }
-                }
-
-                if (delMsgActive) {
-                    editModeChange();
-                }
-
-                //change footer image button
-                $("#" + activeNvrBar + " .active").css("display", "block");
-                $("#" + activeNvrBar + " .inactive").hide();
-                $("#" + inactiveNvrBar + " .active").hide();
-                $("#" + inactiveNvrBar + " .inactive").css("display", "block");
-            }
 
             function checkboxChange(dom) {
                 dom =  dom || null;
@@ -332,9 +400,9 @@
                 var messageType;
                 var messageTypeCount = 0;
 
-                if (activeNvrBar === "navEvents") {
+                if (eventType === "Event") {
                     messageType = "event";
-                } else if (activeNvrBar === "navNews") {
+                } else if (eventType === "News") {
                     messageType = "news";
                 }
 
@@ -369,9 +437,9 @@
                 var messageList;
                 var checked;
 
-                if (activeNvrBar === "navEvents") {
+                if (eventType === "Event") {
                     messageList = "eventlistview";
-                } else if (activeNvrBar === "navNews") {
+                } else if (eventType === "News") {
                     messageList = "newslistview";
                 }
 
@@ -416,28 +484,22 @@
                 $(".msg-del-checkbox-content").css("display", dispaly);
                 $("#deleteMessage #deleteImg").css("display", btnBackDisplay);
                 $("#deleteMessage #deleteStr").css("display", dispaly);
-                $("#messageListBack").css("display", btnBackDisplay);
 
                 checkboxChange();
             };
             /********************************** page event *************************************/
             $("#viewNewsEvents2-3").one("pagebeforeshow", function(event, ui) {
-                activeNvrBar = "navNews";
-                activeNvrDiv = "newspage2-3";
-                inactiveNvrBar = "navEvents";
-                inactiveNvrDiv = "eventspage2-3b";
-
                 var eventPopupselectMsg = {
                     id: "selectMsgDateFrom",
                     content: $("template#tplEventListNoDataPopup30").html()
                 };
-                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventPopupselectMsg);
+                tplJS.Popup("viewNewsEvents2-3", "eventListContent", "append", eventPopupselectMsg);
 
                 var eventListDataPopupHistorydelete = {
                     id: "deleteConfirm",
                     content: $("template#tplContactUserPopupdeleteConfirm").html()
                 };
-                tplJS.Popup("viewNewsEvents2-3", "appcontent2-3", "append", eventListDataPopupHistorydelete);
+                tplJS.Popup("viewNewsEvents2-3", "eventListContent", "append", eventListDataPopupHistorydelete);
             });
 
             $("#viewNewsEvents2-3").on("pageshow", function(event, ui) {
@@ -452,6 +514,8 @@
             $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {               
                 messagePageShow = true;
                 loadingMask("show");
+                $("#eventListContent .list-content").hide();
+
                 //QueryMessageList() will be called in initialSuccess(),
                 //if API is not finished after User change page into viewNewsEvents2-3, do nothing,
                 //if API is finished, than call get Messaage List again.
@@ -459,42 +523,22 @@
                     //If User first time to use QPlay, never get message data from server,
                     //need to show #selectMsgDateFrom, after User select an option, then do QueryMessageList()
                     if (loginData["msgDateFrom"] !== null) {
-                        var messageList = new QueryMessageList();
+                        if (eventType === "Event" || eventType === "News") {
+                            var messageList = new QueryMessageList();
+                        } else {
+                            QueryPortalList(eventType);
+                        }
                         callGetMessageList = true;
                     }
                 }
 
-                tabChange("setActive");
-
+                $("#navDelete").hide();
                 $("#deleteMessage #deleteImg").css("display", "block");
                 $("#deleteMessage #deleteStr").css("display", "none");
-                $("#navMessage").show();
-                $("#navDelete").hide();
             });
 
             /********************************** dom event *************************************/
-            $("#navNews").on("click", function() {
-                activeNvrBar = "navNews";
-                inactiveNvrBar = "navEvents";
-                activeNvrDiv = "newspage2-3";
-                inactiveNvrDiv = "eventspage2-3b";
-                tabChange();
-            });
-
-            $("#navEvents").on("click", function() {
-                activeNvrBar = "navEvents";
-                inactiveNvrBar = "navNews";
-                activeNvrDiv = "eventspage2-3b";
-                inactiveNvrDiv = "newspage2-3";
-                tabChange();
-
-                $("#newNews").hide();
-                $("#newEvents").hide();
-            });
-        
-
             $(document).on("click", "#selectMsgDateFromOK", function() {
-             
                 msgDateFromType = $('input[name=selectDateFrom]:checked').val();
 
                 var clientTimestamp = getTimestamp();
@@ -504,9 +548,10 @@
                 } else if (msgDateFromType === "skip") {
                     loginData["msgDateFrom"] = clientTimestamp;
                 }
-                
+
                 loadingMask("show");
-                var messageList = new QueryMessageList();
+
+                var messageList = new QueryMessageList("auto");
                 $('#selectMsgDateFrom').popup('close');
             });
 
@@ -524,8 +569,9 @@
                 checkboxChange();
             });
 
-            $(document).on("click", "#delMsgBtn", function() {         
+            $(document).on("click", "#delMsgBtn", function() {
                 if (!$("#delMsgBtn a").is(".btn-disabled")) {
+                    tplJS.preventPageScroll();
                     $('#deleteConfirm').popup('open');
                 }
             });
@@ -534,16 +580,15 @@
                 $('#deleteConfirm').popup('close');
             });
 
-   
             $(document).on("click", "#deleteConfirm #yes", function() {    
                 var messageList;
                 var msgIndex;
                 var msgIndexList;
                 var msgType;
 
-                if (activeNvrBar === "navEvents") {
+                if (eventType === "Event") {
                     messageList = "eventlistview";
-                } else if (activeNvrBar === "navNews") {
+                } else if (eventType === "News") {
                     messageList = "newslistview";
                 }
 

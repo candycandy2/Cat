@@ -30,8 +30,8 @@
 #viewNewsEvents2-3 #navDelete .ui-btn {
     background-color: #656565;
     color: #FFF;
-    font-size: 2.8vh;
-    height: 3vh;
+    font-size: 4.39vw;
+    height: 6vw;
     border-width: 0px;
     text-shadow: none;
 }
@@ -70,6 +70,11 @@
 #viewAppDetail2-2 .ui-content {
     padding: 0;
     word-wrap: break-word !important;
+}
+
+.event-list-content.ui-content .ui-listview,
+.event-list-content.ui-panel-inner>.ui-listview {
+    margin: 0;
 }
 
 /*----------------------new class----------------------*/
@@ -165,12 +170,6 @@ input[type=radio]:checked + label {
     height: 100%;
     top: 0;
     left: 0;
-}
-
-.delete-str {
-    margin-top:10%;
-    text-shadow: none;
-    font-size: 2.8vh;
 }
 
 /* app list / detail */
@@ -431,6 +430,15 @@ input[type=radio]:checked + label {
     font-family: "Gill Sans MT";
 }
 
+.portal-header {
+    position: fixed;
+    top: 13vw;
+    width: 100%;
+    height: 11.674vw;
+    background-image: url(../img/header_portal.png);
+    background-size: 100vw 11.674vw; 
+}
+
 .no-message {
     color: #989898;
     text-align: center;
@@ -488,6 +496,19 @@ input[type=radio]:checked + label {
     width: 100%;
     height: 10px;
     background-color: #000;
+}
+
+.footer-portal {
+    height: 10vw;
+    background-color: #242424;
+}
+
+.footer-portal .text {
+    color: #FFFFFF;
+    font-size: 2.576vw;
+    position: absolute;
+    top: 35%;
+    left: 18%;
 }
 
 .content-bg {
@@ -556,6 +577,10 @@ input[type=radio]:checked + label {
 .Content_Content img {
     width: 80% !important;
     height: 80% !important;
+}
+
+.PortalContent {
+    overflow-y: auto;
 }
 
 #newsDetailTitle {
@@ -659,8 +684,9 @@ input[type=radio]:checked + label {
 .update-time {
     color: #989898;
     font-size: 3.14vw;
-    height: 6vh;
     margin: 0;
+    height: 3.14vw;
+    padding: 2.4vw 3.71vw;
 }
 
 .notice-priority-high {
@@ -678,3 +704,77 @@ input[type=radio]:checked + label {
 .header-event-red {
     background-image: url(../img/header_event_red.svg);
 }
+
+.html2canvas-container {
+    width: 3000px !important;
+    height: 3000px !important;
+}
+
+/*-----------------------------------------------------------------Event Type Panel*/
+#eventTypeSelect {
+    background-color: #CECECE;
+    width: 65.395vw;
+}
+
+#eventTypeSelect .ui-panel-inner {
+    padding: 0;
+}
+
+#eventTypeSelect .ui-hr {
+    background-color: #666666;
+}
+
+#eventTypeSelect div {
+    line-height: 1;
+    font-size: 3.97vw;
+    padding: 4.05vw 0 4.05vw 3.71vw;
+    background-color: #F9F9F9;
+    color: #333333;
+}
+
+#eventTypeSelect .header {
+    background-color: #4C4C4C;
+    color: #FFFFFF;
+    padding: 4.615vw 0 4.615vw 3.71vw;
+}
+
+#eventTypeSelect .select {
+    background-color: #492f7f;
+    color: #FFFFFF;
+}
+
+#eventTypeSelect .item .left {
+    width: 1.878vw;
+    margin-right: 1.878vw;
+    float: left;
+    padding: 0;
+}
+
+#eventTypeSelect .item .white {
+    width: 1.878vw;
+    height: 1.878vw;
+    background-color: #FFFFFF;
+    margin-top: 1vw;
+    border-radius: 50%;
+    padding: 0;
+}
+
+#eventTypeSelect .item .red {
+    background-color: red;
+}
+
+.ui-panel-background {
+    background-color: rgba(50, 50, 50, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100vh;
+    width: 100vw;
+    touch-action: none;
+}
+
+.event-list-content{
+    padding: 0;
+}
+

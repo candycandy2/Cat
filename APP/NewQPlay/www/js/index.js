@@ -3,7 +3,7 @@
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
 var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1"];
-var appSecretKey = "swexuc453refebraXecujeruBraqAc4e"; // QPlay app secret key
+var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
 var appcategorylist;
@@ -53,7 +53,7 @@ window.initialSuccess = function(data) {
             //If User first time to use QPlay, never get message data from server,
             //don't call QueryMessageList() in background.
             if (loginData["msgDateFrom"] !== null) {
-                var messageList = new QueryMessageList();
+                var messageList = new QueryMessageList("auto");
                 callGetMessageList = true;
             }
 
@@ -74,7 +74,7 @@ window.initialSuccess = function(data) {
                 if (window.localStorage.getItem("msgDateFrom") === null) {
                     $.mobile.changePage('#viewNewsEvents2-3');
                 } else {
-                    var messageList = new QueryMessageList();
+                    var messageList = new QueryMessageList("auto");
                     callGetMessageList = true;
                 }
             }
@@ -274,6 +274,12 @@ function unregister() {
     }();
 }
 
+
+//Change event type
+$(document).on("click", ".event-type", function() {
+    $("#eventTypeSelect").panel("open");
+});
+
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
@@ -301,7 +307,7 @@ function onBackKeyDown() {
 
     } else if (activePageID === "viewWebNews2-3-1") {
 
-        $.mobile.changePage('#viewNewsEvents2-3');
+        goBack("goList");
 
     } else if (activePageID === "viewNotSignedIn") {
 

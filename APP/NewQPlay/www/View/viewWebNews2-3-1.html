@@ -3,12 +3,12 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="ui-header page-header">
         <div class="header-style"><h1 class="ui-title">&nbsp;</h1></div>
-        <a href="#viewNewsEvents2-3" data-role="none">
+        <a href="#" id="goList" data-role="none" class="nav-button">
             <div class="q-btn-header">
                 <img src="img/component/back_nav.png" width="100%" height="100%">
             </div>
         </a>
-        <a href="#viewMain2-1" data-role="none" class="ui-btn-right">
+        <a href="#" id="goHome" data-role="none" class="nav-button ui-btn-right">
             <div class="q-btn-header">
                 <img src="img/component/home_nav.png" width="100%" height="100%">
             </div>
@@ -16,72 +16,73 @@
     </div>
 
     <div data-role="main" class="ui-content page-main">
-        <div class="news-header">
-            <div class="header-right">
-                <div class="priority-title">Priority-
-                    <span class="priority-normal" style="display:none;">Normal</span>
-                    <span class="priority-high" style="display:none;">High</span>
+        <div id="ITSEventNewContent">
+            <div class="news-header">
+                <div class="header-right">
+                    <div class="priority-title">Priority-
+                        <span class="priority-normal" style="display:none;">Normal</span>
+                        <span class="priority-high" style="display:none;">High</span>
+                    </div>
+                    <div class="header-date" id="newsDetailCreateTime"><!--2016 / Sep 9--></div>
                 </div>
-                <div class="header-date" id="newsDetailCreateTime"><!--2016 / Sep 9--></div>
+            </div>
+            <div class="content-bg">
+                <h2>
+                    <span id="notice0" style="display:none;">Event Noice</span>
+                    <span id="notice1" style="display:none;">上線公告</span>
+                    <span id="notice2" style="display:none;">System/Function Go-Live</span>
+                    <span id="notice3" style="display:none;">維護公告</span>
+                    <span id="notice4" style="display:none;">System/Service Maintenance</span>
+                    <span id="notice5" style="display:none;">月結公告</span>
+                    <span id="notice6" style="display:none;">Month End Notice</span>
+                    <span id="notice7" style="display:none;">安全公告</span>
+                    <span id="notice8" style="display:none;">Information Security</span>
+                    <span id="notice9" style="display:none;">服務公告</span>
+                    <span id="notice10" style="display:none;">Service Notice</span>
+                    <span id="notice11" style="display:none;">重大公告!!</span>
+                    <span id="notice12" style="display:none;">(Urgent!!) Critical Notice</span>
+                    <span id="notice13" style="display:none;">緊急安全公告!!</span>
+                    <span id="notice14" style="display:none;">(Urgent!!) Information Security</span>
+                    <span id="notice15" style="display:none;">緊急服務公告!!</span>
+                    <span id="notice16" style="display:none;">(Urgent!!) Service Notice</span>
+                    <span id="notice17" style="display:none;">Event Notice</span>
+                </h2>
+                <h3 id="newsDetailTitle"><!--Network operations maintenance--></h3>
+
+                <div class="Author_Block">
+                    <div class="Author_icon"></div>
+                    <div class="Author_Content" id="newsAuthor"><!--Michael Yang &nbsp; #8700-7278--></div>
+                </div>
+                <div class="Content_Block">
+                    <div class="Content_icon"></div>
+                    <div class="Content_Content" id="eventNewsContent"></div>
+                </div>
             </div>
         </div>
-        <div class="content-bg">
-            <h2>
-                <span id="notice0" style="display:none;">Event Noice</span>
-                <span id="notice1" style="display:none;">上線公告</span>
-                <span id="notice2" style="display:none;">System/Function Go-Live</span>
-                <span id="notice3" style="display:none;">維護公告</span>
-                <span id="notice4" style="display:none;">System/Service Maintenance</span>
-                <span id="notice5" style="display:none;">月結公告</span>
-                <span id="notice6" style="display:none;">Month End Notice</span>
-                <span id="notice7" style="display:none;">安全公告</span>
-                <span id="notice8" style="display:none;">Information Security</span>
-                <span id="notice9" style="display:none;">服務公告</span>
-                <span id="notice10" style="display:none;">Service Notice</span>
-                <span id="notice11" style="display:none;">重大公告!!</span>
-                <span id="notice12" style="display:none;">(Urgent!!) Critical Notice</span>
-                <span id="notice13" style="display:none;">緊急安全公告!!</span>
-                <span id="notice14" style="display:none;">(Urgent!!) Information Security</span>
-                <span id="notice15" style="display:none;">緊急服務公告!!</span>
-                <span id="notice16" style="display:none;">(Urgent!!) Service Notice</span>
-                <span id="notice17" style="display:none;">Event Notice</span>
-            </h2>
-            <h3 id="newsDetailTitle"><!--Network operations maintenance--></h3>
+        <div id="PortalContent">
+            <div class="portal-header">
 
-            <div class="Author_Block">
-                <div class="Author_icon"></div>
-                <div class="Author_Content" id="newsAuthor"><!--Michael Yang &nbsp; #8700-7278--></div>
             </div>
-            <div class="Content_Block">
-                <div class="Content_icon"></div>
-                <div class="Content_Content" id="newsContent">
-                <!--<p>We would like to inform you that maintenance work for network equipment needbe carried out in BQT office on Saturday November 10 , 2012.</p>
-                <p>Maintenance time (GMT+8) : 10:00AM !V 12:00AM Outage duration: 30 Minutes.</p>
-                <p>Description of Maintenance: <br />
-                   Maintenance for network equipment, The impact of  the services are as follows:A.The data and VoIP connection between BQT and RO (BQA.BQC,BQE,BQL,BQP).B.Application services located in BQT office.<br />
-                   1Oracle ERP system<br />
-                   2Outlook/Mail  service<br />
-                   3FlowER system<br />
-                   4The BQT local network and Internet access service.</p>
-                <p>We appreciate your cooperation and understanding and apologized for any inconvenience. If you have any questions or remarks, please contact the followingtwo people.</p>
-                <p>Michael Yang 8700-7278<br />
-                  Allen Su 8700-7275<br />
-                </p>
-                <p>Best regards,</p>-->
-                </div>
-            </div>
+            <div id="htmlContent" style="overflow: scroll;"></div>
         </div>
     </div>
     
     <div data-role="footer" data-position="fixed">
-        <div class="footer-top">
-            <div class="footer-benq"></div>
-            <div class="footer-qisda"></div>
-            <div class="footer-text">
-                This newsletter was sent by ITS.
+        <div class="footer-news">
+            <div class="footer-top">
+                <div class="footer-benq"></div>
+                <div class="footer-qisda"></div>
+                <div class="footer-text">
+                    This newsletter was sent by ITS.
+                </div>
+            </div>
+            <div class="footer-bottom"></div>
+        </div>
+        <div class="footer-portal">
+            <div class="text">
+                Copyright@2015 Qisda Corporation. All rights reserved.
             </div>
         </div>
-        <div class="footer-bottom"></div>
     </div>
 
     <div data-role="popup" data-history="false" id="messageNotExist" class="popup-div" data-overlay-theme="b" data-dismissible="false">
