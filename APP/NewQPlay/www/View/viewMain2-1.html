@@ -5,10 +5,9 @@
         <div class="header-style">
             <h1 class="ui-title"><div>QPlay</div></h1>
         </div>
-        <a href="#" data-role="none" id="newseventspage">
-            <div class="q-btn-header">
-                <img id="newsNav" src="img/news_nav.png" width="100%" height="100%">
-                <img id="newsNoticeNav" src="img/news_notice_nav.png" width="100%" height="100%" style="display:none;">
+        <a href="#" data-role="none" class="event-type">
+            <div class="q-btn-header" style="width: 5.957vw;">
+                <img src="img/nav_humb.png" width="100%" height="100%">
             </div>
         </a>
         <a href="#" data-role="none" class="ui-btn-right" id="logout">
@@ -19,7 +18,6 @@
     </div>
 
     <div data-role="main" class="ui-content page-main" id="appcontent" style="display:none;">
-    <!--確定登出嗎？-->
         <template id="tplContactUserPopup">
             <!--header: Title or Button-->
             <div class="header font-style3">
@@ -35,6 +33,70 @@
                     <div id="confirm">
                         <span class="langStr" data-id="str_016"></span>
                     </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="tplEventTypePanel">
+            <div id="eventTypeSelect">
+                <div class="header">QPlay</div>
+                <hr class="ui-hr">
+                <div class="item" id="home">
+                    <div class="left">
+                        <div class="white"></div>
+                    </div>
+                    Home
+                </div>
+                <hr class="ui-hr">
+                <div class="header">公告</div>
+                <hr class="ui-hr">
+                <div class="item option" id="Event">
+                    <div class="left">
+                        <div class="white"></div>
+                    </div>
+                    Event
+                </div>
+                <hr class="ui-hr">
+                <div class="item option" id="News">
+                    <div class="left">
+                        <div class="white"></div>
+                    </div>
+                    News
+                </div>
+                <hr class="ui-hr">
+                <div class="item option" id="Announcement">
+                    <div class="left">
+                        <div class="white"></div>
+                    </div>
+                    Announcement
+                </div>
+                <hr class="ui-hr">
+                <div class="item option" id="Communication">
+                    <div class="left">
+                        <div class="white"></div>
+                    </div>
+                    Communication
+                </div>
+                <hr class="ui-hr">
+                <div class="item option" id="CIP">
+                    <div class="left">
+                        <div class="white"></div>
+                    </div>
+                    CIP
+                </div>
+                <hr class="ui-hr">
+                <div class="item option" id="CSD">
+                    <div class="left">
+                        <div class="white"></div>
+                    </div>
+                    CSD
+                </div>
+                <hr class="ui-hr">
+                <div class="item option" id="ITS">
+                    <div class="left">
+                        <div class="white"></div>
+                    </div>
+                    ITS
                 </div>
             </div>
         </template>
