@@ -583,7 +583,7 @@ div.scrollmenu a {
 }
 
 /****************************************** viewLeaveQuery *****************************************/
-#leaveMenu {
+.leaveMenu {
 	width: 4.934VW;
 }
 

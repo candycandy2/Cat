@@ -574,13 +574,23 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //直接選擇基準日
         $(document).on("click", "#baseTimeNoData", function() {
-            $("#noDataBasedayComponent").click();
+            if(device.platform === "iOS") {
+                $("#newBaseday").focus();
+            }else if(device.platform === "Android") {
+                $("#newBaseday").click();
+            }
+            
 
         });
 
         //選擇其他基準日
         $(document).on("click", "#otherBasedayBtn", function() {
-            $("#hasDataBasedayComponent").click();
+            if(device.platform === "iOS") {
+                $("#oldBaseday").focus();
+            }else if(device.platform === "Android") {
+                $("#oldBaseday").click();
+            }
+            
             
         });
 
@@ -692,7 +702,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //有有效基準日選擇——有問題
-        $(document).on("change", "#hasDataBasedayComponent", function() {
+        $(document).on("change", "#oldBaseday", function() {
             otherBaseVal = $(this).val();
             if(otherBaseVal !== "") {
                 selectBaseday = true;
@@ -700,8 +710,8 @@ $("#viewLeaveSubmit").pagecontainer({
             $('#basedate-popup').find("option[value='undefined']").text(otherBaseVal);
         });
 
-        //無有效基準日選擇
-        $(document).on("change", "#noDataBasedayComponent", function() {
+        //無有效基準日——選擇新基準日
+        $(document).on("change", "#newBaseday", function() {
             newBaseVal = $(this).val();
             if(newBaseVal !== "") {
                 selectBaseday = true;
@@ -727,9 +737,9 @@ $("#viewLeaveSubmit").pagecontainer({
         $(document).on("click", "#previewBtn", function() {
             if($('#previewBtn').hasClass('leavePreview-active-btn')) {
                 $('.apply-container').hide();
-                $('.apply-preview').show();
-                $('.ui-title').find("span").text(langStr["str_130"]);
                 $('.leaveMenu').hide();
+                $('.apply-preview').show();
+                //$('.ui-title').find("span").text(langStr["str_130"]);  
                 $('#backMain').show();
             }
         });
@@ -737,15 +747,17 @@ $("#viewLeaveSubmit").pagecontainer({
         //返回編輯按鈕
         $("#backMain").on("click", function() {
             $('.apply-preview').hide();
-            $('.apply-container').show();
-            $('.ui-title').find("span").text(langStr["str_002"]);
-            $('.leaveMenu').show();
             $('#backMain').hide();
+            $('.apply-container').show();
+            //$('.ui-title').find("span").text(langStr["str_002"]);
+            $('.leaveMenu').show();
+            
             return false;
         });
 
         //立即預約，假單送簽
         $("#applyBtn").on("click", function() {
+            $("#backMain").click();
             changePageByPanel("viewLeaveQuery");
             $("#sendLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
         });
