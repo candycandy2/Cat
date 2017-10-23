@@ -38,11 +38,16 @@ $("#viewLeaveQuery").pagecontainer({
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
                 $(".leave-query-detail-sign").show();
-            }else if(leaveState =="表單已撤回" || leaveState =="表單已拒絕") {
+            }else if(leaveState =="表單已拒絕") {
                 $("#leaveMenu").hide();
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
                 $(".leave-query-detail-refuse").show();
+            }else if(leaveState =="表單已撤回") {
+                $("#leaveMenu").hide();
+                $(".leave-query-main").hide();
+                $("#backDetailList").show();
+                $(".leave-query-detail-withdraw").show();
             }else if(leaveState =="表單已生效") {
                 $("#leaveMenu").hide();
                 $(".leave-query-main").hide();
@@ -58,19 +63,35 @@ $("#viewLeaveQuery").pagecontainer({
             $("#backDetailList").hide();
             $(".leave-query-detail-sign").hide();
             $(".leave-query-detail-refuse").hide();
+            $(".leave-query-detail-withdraw").hide();
             $(".leave-query-detail-effect").hide();
             $("#leaveMenu").show();
             $(".leave-query-main").show();    
             return false;
         });
 
-        //籤核狀態——click——popup
-        $(".leave-detail-img").on("click", function() {
-            popupMsgInit('.leaveStateFlow');
+        //籤核中狀態——click——popup
+        $("#signLeaveDetail").on("click", function() {
+            popupMsgInit('.signStateFlow');
+        });
+
+        //已撤回狀態——click——popup
+        $("#withdrawLeaveDetail").on("click", function() {
+            popupMsgInit('.withdrawStateFlow');
+        });
+
+        //已拒絕狀態——click——popup
+        $("#refuseLeaveDetail").on("click", function() {
+            popupMsgInit('.refuseStateFlow');
+        });
+
+        //已拒絕狀態——click——popup
+        $("#effectLeaveDetail").on("click", function() {
+            popupMsgInit('.effectStateFlow');
         });
 
         //撤回按鈕——click
-        $("#withdrawLeave").on("click", function() {
+        $("#withdrawLeaveBtn").on("click", function() {
             $(".leave-query-detail-sign").hide();
             $("#backDetailList").hide();
             $(".leave-query-withdraw").show();
@@ -110,8 +131,9 @@ $("#viewLeaveQuery").pagecontainer({
             $("#backDetailList").hide();
             $("#backSignPreview").hide();
             $("#backEffectPreview").hide();
-            $(".leave-query-detail-sign").hide();
+            $(".leave-query-detail-sign").hide();          
             $(".leave-query-detail-refuse").hide();
+            $(".leave-query-detail-withdraw").hide();
             $(".leave-query-detail-effect").hide();
             $(".leave-query-withdraw").hide();
             $(".leave-query-dispel").hide();
@@ -121,7 +143,12 @@ $("#viewLeaveQuery").pagecontainer({
         });
 
         //刪除假單彈框——popup
-        $("#deleteLeave").on("click", function() {
+        $("#deleteRefuseLeave").on("click", function() {
+            popupMsgInit(".confirmDelete");
+        });
+
+        //刪除假單彈框——popup
+        $("#deleteWithdrawLeave").on("click", function() {
             popupMsgInit(".confirmDelete");
         });
 
@@ -132,6 +159,7 @@ $("#viewLeaveQuery").pagecontainer({
             $("#backEffectPreview").hide();
             $(".leave-query-detail-sign").hide();
             $(".leave-query-detail-refuse").hide();
+            $(".leave-query-detail-withdraw").hide();
             $(".leave-query-detail-effect").hide();
             $(".leave-query-withdraw").hide();
             $(".leave-query-dispel").hide();
@@ -189,6 +217,7 @@ $("#viewLeaveQuery").pagecontainer({
             $("#backEffectPreview").hide();
             $(".leave-query-detail-sign").hide();
             $(".leave-query-detail-refuse").hide();
+            $(".leave-query-detail-withdraw").hide();
             $(".leave-query-detail-effect").hide();
             $(".leave-query-withdraw").hide();
             $(".leave-query-dispel").hide();
