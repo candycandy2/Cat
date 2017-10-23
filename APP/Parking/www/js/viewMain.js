@@ -254,14 +254,14 @@ $("#viewMain").pagecontainer({
             }
         }
 
-        function getAPIReserveParkingSpace(page, siteId, spaceId, date, timeID) {
-            //loadingMask('show');
+        function getAPIReserveParkingSpace(page, siteId, spaceId, pdName, pdCategory, pdRemark, pdCar, date, timeID) {
+            loadingMask('show');
             var self = this;
-            //var queryData = '<LayoutHeader><ParkingSpceSite>' + siteId + '</ParkingSpceSite><ParkingSpceID>' + spaceId + '</ParkingSpceID><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTimeID>' + timeID + '</ReserveTimeID></LayoutHeader>';
+            var queryData = '<LayoutHeader><ParkingSpaceSite>' + siteId + '</ParkingSpaceSite><ParkingSpaceID>' + spaceId + '</ParkingSpaceID><PDetailName>' + pdName + '</PDetailName><PDetailCategory>' + pdCategory + '</PDetailCategory><PDetailRemark>' + pdRemark + '</PDetailRemark><PDetailCar>' + pdCar + '</PDetailCar><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTimeID>' + timeID + '</ReserveTimeID></LayoutHeader>';
 
-            //this.successCallback = function(data) {
+            this.successCallback = function(data) {
 
-                //if (data['ResultCode'] === "002902") {
+                if (data['ResultCode'] === "042902") {
                     //Reservation Successful
                     var arrCutString = cutStringToArray(date, ['4', '2', '2']);
                     var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
@@ -283,7 +283,7 @@ $("#viewMain").pagecontainer({
                             arrTempTime.push(sTime);
                             arrTempTime.push(eTime);
                             //delete when connect to API
-                            timeName2 += sTime + '-' + eTime + ',';
+                            //timeName2 += sTime + '-' + eTime + ',';
                         }
 
                         var arrUniqueTime = [];
@@ -318,7 +318,7 @@ $("#viewMain").pagecontainer({
                         reserveBtnDefaultStatus();
                         //add Fake Data
                         //delete when connect to API
-                        for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++){
+                        /*for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++){
                             $("#time" + timeIDItem).removeClass("ui-color-noreserve");
                             $("#time" + timeIDItem).addClass("ui-color-myreserve");
                             $("#time" + timeIDItem).find('.circleIcon').removeClass('circleIcon');
@@ -334,12 +334,12 @@ $("#viewMain").pagecontainer({
                             $("#time" + timeIDItem).attr("ename", "Jennifer.Y.Wang");
                             $("#time" + timeIDItem).attr("msg", msg);
                             $("#time" + timeIDItem).attr("traceID", timeIDItem);
-                        }
+                        }*/
                     } 
 
-                /*  var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, date, false);
+                    var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(spaceId, date, false);
 
-                    if (isReserveMulti != 'N') {*/
+                    if (isReserveMulti != 'N') {
                         var jsonData = [];
                         $.each(arrTemp, function(index, value) {
                             jsonData = {
@@ -350,17 +350,11 @@ $("#viewMain").pagecontainer({
                             };
                             myReserveLocalData.push(jsonData);
                         });
-                /*  }
+                    }
 
-                } else if (data['ResultCode'] === "002903") {
-                    //Reservation Failed, Someone Made a Reservation
-                    reserveBtnDefaultStatus();
-                    var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, date, false);
-                    popupMsg('reserveFailMsg', '已被預約', '哇！慢了一步～已被預約', '', false, '確定', 'warn_icon.png');
-
-                } else if (data['ResultCode'] === "002904") {
+                } else if (data['ResultCode'] === "042903") {
                     //Reservation Failed, Repeated a Reservation
-                    popupMsg('reserveFailMsg', '', '預約失敗，重複預約', '', false, '確定', '');
+                    popupMsg('reserveFailMsg', '預約失敗', '已被預約', '', false, '確定', '068_icon_warm.png');
                 }
 
                 loadingMask('hide');
@@ -368,7 +362,7 @@ $("#viewMain").pagecontainer({
 
             var __construct = function() {
                 CustomAPI("POST", true, "ReserveParkingSpace", self.successCallback, self.failCallback, queryData, "");
-            }();*/
+            }();
         }
 
         // delete parameters when connect to API
@@ -486,12 +480,10 @@ $("#viewMain").pagecontainer({
 
         function checkLocalDataExpired() {
             var parkingSpaceLocalData = JSON.parse(localStorage.getItem('parkingSpaceLocalData'));
-            if (parkingSpaceLocalData === null || checkDataExpired(parkingSpaceLocalData['lastUpdateTime'], 7, 'dd')) {
+            if (parkingSpaceLocalData === null || checkDataExpired(parkingSpaceLocalData['lastUpdateTime'], 7, 'dd') ) {
                 var doAPIListAllParkingSpace = new getAPIListAllParkingSpace;
-                var doAPIListAllTime = new getAPIListAllTime();
-            }else {
-                arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
             }
+            var doAPIListAllTime = new getAPIListAllTime();
             var doAPIListAllManager = new getAPIListAllManager();
 
             if(localStorage.getItem("defaultSiteClick") !== null) {
@@ -618,7 +610,7 @@ $("#viewMain").pagecontainer({
             }
             $(this).parent().data("lastClicked", this.id);
             $(this).addClass('hover');
-            //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
+            var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
             reserveBtnDefaultStatus();
         });
 
@@ -632,7 +624,7 @@ $("#viewMain").pagecontainer({
             $(this).parent().data("lastClicked", this.id);
             $(this).addClass('hover');
 
-            //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
+            var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
             reserveBtnDefaultStatus();
         });
 
@@ -713,9 +705,9 @@ $("#viewMain").pagecontainer({
                     timeID += timeClick[item] + ',';
                 }                
                 //var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', clickSpaceId, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
-                var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', selectedSite, clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
+                var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', selectedSite, clickSpaceId, pdName, pdCategory, pdRemark, pdCar, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
                 //delete 
-                var doAPIQueryMyReserve = new getAPIQueryMyReserve('pageThree', selectedSite, clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
+                //var doAPIQueryMyReserve = new getAPIQueryMyReserve('pageThree', selectedSite, clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
             }
         });
 
@@ -753,7 +745,7 @@ $("#viewMain").pagecontainer({
             $('div[for=cancelSuccessMsg]').popup('close');
         });
 
-        $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm, div[for=successMsg] #confirm, div[for=failMsg] #confirm', function() {
+        $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=reserveFailMsg] #confirm,div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm, div[for=successMsg] #confirm, div[for=failMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
         });
 
