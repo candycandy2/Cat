@@ -74,9 +74,9 @@ function getAPIListAllTime() {
             var arrTimeBlock = [];
             for (var i = 0, item; item = data['Content'][i]; i++) {
                 var bTimeStr = new Date(new Date().toDateString() + ' ' + '08:00');
-                if (item.TimeCategory === "10"){
+                if (item.TimeCategory === 10){
                     var eTimeStr = new Date(new Date().toDateString() + ' ' + '17:30');
-                }else if (item.TimeCategory === "28") {
+                }else if (item.TimeCategory === 28) {
                     var eTimeStr = new Date(new Date().toDateString() + ' ' + '19:00');
                 }
                 var timeStr = new Date(new Date().toDateString() + ' ' + item.BTime);
@@ -163,6 +163,13 @@ function getAPIListAllManager() {
     var __construct = function() {
         CustomAPI("POST", false, "ListAllManager", self.successCallback, self.failCallback, queryData, "");
     }();
+}
+
+function setReserveDetailLocalDate() {
+    //save to local data
+    localStorage.removeItem('reserveDetailLocalData');
+    jsonData = [];
+    localStorage.setItem('reserveDetailLocalData', JSON.stringify(jsonData));
 }
 
 //filter data

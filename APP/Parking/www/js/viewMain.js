@@ -160,9 +160,9 @@ $("#viewMain").pagecontainer({
                         pdCategory = arr.detailInfo['pdCategory'];
                         pdRemark = arr.detailInfo['pdRemark'];
                         pdCar = arr.detailInfo['pdCar'];
-                        if (category === "10") {
+                        if (category === 10) {
                             msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(arr.detailInfo['bTime']) + ',' + eName
-                        }else if (category === "28") {
+                        }else if (category === 28) {
                             msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(addThirtyMins(arr.detailInfo['bTime'])) + ',' + eName
                         }
                     }
@@ -229,7 +229,7 @@ $("#viewMain").pagecontainer({
                 reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
                 for (var item in reserveDetailLocalData) {
                     var obj = reserveDetailLocalData[item];
-                    if ((obj.roomId === roomId && obj.date === date) && !checkDataExpired(obj.lastUpdateTime, 1, 'mm')) {
+                    if ((obj.spaceId === spaceId && obj.date === date) && !checkDataExpired(obj.lastUpdateTime, 1, 'mm')) {
                         getReserveData(spaceId, date, obj.data, 'dataExist');
                         dataExist = true;
                     }
@@ -239,7 +239,7 @@ $("#viewMain").pagecontainer({
             if (!dataExist) {
                 loadingMask('show');
                 var self = this;
-                var queryData = '<LayoutHeader><MeetingRoomID>' + spaceId + '</MeetingRoomID><ReserveDate>' + date + '</ReserveDate></LayoutHeader>';
+                var queryData = '<LayoutHeader><ParkingSpaceID>' + spaceId + '</ParkingSpaceID><ReserveDate>' + date + '</ReserveDate></LayoutHeader>';
 
                 this.successCallback = function(data) {
                     if (data['ResultCode'] === "1") {
@@ -488,9 +488,9 @@ $("#viewMain").pagecontainer({
             var parkingSpaceLocalData = JSON.parse(localStorage.getItem('parkingSpaceLocalData'));
             if (parkingSpaceLocalData === null || checkDataExpired(parkingSpaceLocalData['lastUpdateTime'], 7, 'dd')) {
                 var doAPIListAllParkingSpace = new getAPIListAllParkingSpace;
-                //var doAPIListAllTime = new getAPIListAllTime();
+                var doAPIListAllTime = new getAPIListAllTime();
             }else {
-                //arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
+                arrTimeBlockBySite = JSON.parse(localStorage.getItem('allTimeLocalData'))['content'];
             }
             var doAPIListAllManager = new getAPIListAllManager();
 
@@ -527,6 +527,7 @@ $("#viewMain").pagecontainer({
         function setInitialData() {
             setAlertLimitSite(defaultSiteClick);
             setDateList();
+            setReserveDetailLocalDate();
         }
 
         function querySettingCarList() {
@@ -570,12 +571,12 @@ $("#viewMain").pagecontainer({
         $('#viewMain').on('pagebeforeshow', function(event, ui) {
             reserveBtnDefaultStatus();
             querySettingCarList();
-            /*if (isReloadPage == true) {
-                var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, false);
+            if (isReloadPage == true) {
+                var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, false);
                 isReloadPage = false;
             } else {
-                var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
-            }*/
+                var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
+            }
         });
 
         /********************************** dom event *************************************/
@@ -586,7 +587,7 @@ $("#viewMain").pagecontainer({
                 $('#pageTwo').hide();
                 $('#pageThree').hide();
                 reserveBtnDefaultStatus();
-                //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
+                var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
             } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
                 $('#pageOne').hide();
                 $('#pageTwo').show();
@@ -604,6 +605,7 @@ $("#viewMain").pagecontainer({
             selectedSite = $('#reserveSite').find(":selected").val();
             setAlertLimitSite(selectedSite);  
             getSpaceData(selectedSite); 
+            var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
             reserveBtnDefaultStatus();      
         });
 
@@ -668,9 +670,9 @@ $("#viewMain").pagecontainer({
                 $(this).find('div:nth-child(2)').removeClass('iconSelect');
                 $(this).find('div:nth-child(2)').addClass('iconSelected');
                 $(this).find('.timeRemind').addClass('timeShow');
-                if ($(this).parents('.ui-grid-c').hasClass('BQT')){
+                if (siteCategoryID === "10"){
                     $(this).find('.timeRemind').html('~' + addThirtyMins($(this).find('div > div:nth-child(1)').text()));
-                }else if ($(this).parents('.ui-grid-c').hasClass('QTY')){
+                }else if (siteCategoryID === "28"){
                     $(this).find('.timeRemind').html('~' + addThirtyMins(addThirtyMins($(this).find('div > div:nth-child(1)').text())) );
                 }
 

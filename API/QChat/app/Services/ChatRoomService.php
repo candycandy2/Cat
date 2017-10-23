@@ -102,10 +102,19 @@ class ChatRoomService
      * @param  int    $groupId 聊天室id
      * @param  Array  $data    更新的資料
      * @param  int    $userId  使用者個qp_user.row_id
-     * @return int             更成功的筆數
+     * @return int             更新成功的筆數
      */
     public function updateChatroom($groupId, $data, $userId){
         return $this->chatRoomRepository->updateChatroom($groupId, $data, $userId);
+    }
+
+    /**
+     * 刪除聊天室
+     * @param  int    $groupId 聊天室id
+     * @return int             刪除成功的筆數
+     */
+    public function deleteChatroom($groupId){
+        return $this->chatRoomRepository->deleteChatroom($groupId);
     }
 
     /**
@@ -131,6 +140,20 @@ class ChatRoomService
         $method = 'groups/'.$groupId.'/members';
         $data =json_encode([
                      "add" => $destArr
+                ]);
+        $url = JMessage::API_V1_URL.$method;
+        return $this->jmessage->exec('POST', $url, $data);
+    }
+
+    /**
+     * 添加聊天室成員
+     * @param int   $groupId    聊天室id
+     * @param Array $destArr    添加的特定成員login_id
+     */
+    public function removeGroupMember($groupId, $destArr){
+        $method = 'groups/'.$groupId.'/members';
+        $data =json_encode([
+                     "remove" => $destArr
                 ]);
         $url = JMessage::API_V1_URL.$method;
         return $this->jmessage->exec('POST', $url, $data);

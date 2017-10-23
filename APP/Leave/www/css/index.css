@@ -3,7 +3,7 @@
 	padding: 0px;
 }
 
-.ui-panel-inner { 
+.ui-panel-inner {
   	padding: 0 !important;
 }
 
@@ -108,6 +108,10 @@
 
 .infoContent ul > li > div > span {
 	color: #666666;
+}
+
+.infoContent ul > li > div:nth-of-type(1) {
+	width:80%;
 }
 
 .infoContent ul > li > div:nth-of-type(2) {
@@ -288,7 +292,8 @@ div.scrollmenu a {
 
 .toast-style {
 	background-color: #666;
-	bottom: 60VW;
+	/* bottom: 60VW; */
+	bottom: 90VW;
 	border-radius: 1.5px;
 	color: #F0F0F0;
 	font-size: 3.6VW;
@@ -308,14 +313,14 @@ div.scrollmenu a {
 	padding: 0 !important;
 }
 
-.leftDaysNotEnough .ui-content > .header, 
+.leftDaysNotEnough .ui-content > .header,
 .applyLeaveFail .ui-content > .header,
 .agentNotExist > .ui-content > .header {
 	 margin-top: 10%;
 }
 
 .leavePreview-active-btn {
-	background-color: #0db6b7 !important;
+	background-color: #2A8ABD !important;
 	border-color: #d6d6d6 !important;
 	color: #ffffff !important;
 }
@@ -402,7 +407,7 @@ div.scrollmenu a {
 
 .apply-leave-date > div:nth-of-type(1),
 .apply-leave-date > div:nth-of-type(2) {
-	height: 5vw;	
+	height: 5vw;
 }
 
 .apply-leave-date > div:nth-of-type(2) > div {
@@ -413,7 +418,7 @@ div.scrollmenu a {
 }
 
 .apply-leave-date > div:nth-of-type(3) {
-	height: 7vw;	
+	height: 7vw;
 }
 
 .apply-leave-date > div:nth-of-type(3) > div {
@@ -428,7 +433,7 @@ div.scrollmenu a {
 }
 
 .date-component input[type="datetime-local"],
-.date-component input[type="date"] {	
+.date-component input[type="date"] {
 	opacity: 0;
 }
 
@@ -444,7 +449,7 @@ div.scrollmenu a {
 
 .apply-leave-count > div:nth-of-type(2) {
 	height: 4.18vw;
-	margin-top: 1.16vw;	
+	margin-top: 1.16vw;
 }
 
 .apply-leave-reason {
@@ -572,6 +577,12 @@ div.scrollmenu a {
 	color: #2A8ABD;
 }
 
+.vice-icon {
+	width: 4vw;
+	height: 4vw;
+	margin-top: 3.5vw;
+}
+
 /****************************************** viewLeaveQuery *****************************************/
 #leaveMenu {
 	width: 4.934VW;
@@ -579,7 +590,7 @@ div.scrollmenu a {
 
 #backDetailList,
 #backSignPreview,
-#backRefusePreview {
+#backEffectPreview {
 	width: 4.934VW;
 	display: none;
 }
@@ -642,7 +653,9 @@ div.scrollmenu a {
 
 .leave-query-detail-sign,
 .leave-query-detail-refuse,
-.leave-query-withdraw {
+.leave-query-detail-effect,
+.leave-query-withdraw,
+.leave-query-dispel {
 	display: none;
 	width: 93.6vw;
 	margin-left: 3.2vw;
@@ -711,7 +724,7 @@ div.scrollmenu a {
 	width: 75vw;
 	height: 10vw;
 	margin-top: 3vw;
-	margin-bottom: 4vw;
+	margin-bottom: 5vw;
 }
 
 .sign-list > div {
@@ -750,18 +763,23 @@ div.scrollmenu a {
 	clear: both;
 }
 
-.confirmWithdraw > .ui-content {
+.confirmWithdraw > .ui-content,
+.confirmDelete > .ui-content {
 	padding: 0 !important;
 }
 
-.confirmWithdraw > .ui-content > .header {
+.confirmWithdraw > .ui-content > .header,
+.confirmDelete > .ui-content > .header {
 	margin-top: 13%;
 }
 
-.vice-icon {
-	width: 4vw;
-	height: 4vw;
-	margin-top: 3.5vw;
+#comfirmDispel,
+#cancelApply,
+#backLeaveMsg,
+#withdrawLeaveMsg,
+#deleteLeaveMsg,
+#sendLeaveMsg {
+	display: none;
 }
 
 
