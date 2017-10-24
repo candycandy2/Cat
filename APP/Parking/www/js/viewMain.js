@@ -663,15 +663,6 @@ $("#viewMain").pagecontainer({
                 } else {
                     var tempMailContent = $(this).attr('email') + '?subject=停車位協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
                     popupSchemeMsg('reserveMsg', tempEname + ' 已預約 ', arrMsgValue[1] + '&nbsp;&nbsp' + msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'), 'select.png');
-                    /*headerContent = tempEname + "已預約",
-                    msgParkingContent = arrMsgValue[1] + '&nbsp;&nbsp' + msgContent;
-                    tempMailContent = $(this).attr('email') + '?subject=停車位時段協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
-                    popupMsgInit('.otherReservePopup');
-                    tplJS.preventPageScroll();
-                    $('.otherReservePopup').find('.header-text').html(headerContent);
-                    $('.otherReservePopup').find('.main-paragraph').html(msgParkingContent);
-                    $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
-                    $('.btn-tel').attr('href', 'tel:' + $(this).attr('ext'));*/
                 }
 
             } else if (bNoReserve && !bReserveSelect) {

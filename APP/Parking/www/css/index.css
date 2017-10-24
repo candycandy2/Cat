@@ -639,14 +639,6 @@ div.scrollmenu a {
 
 /********************************** popup msg *************************************/
 
-.DetailInfo > .ui-content{
-    padding: 0 !important;
-}
-
-.DetailInfo .ui-content > .header {
-    margin-top: 10%;
-}
-
 #reservePopupSchemeMsg-popup,
 #reservePopupSchemeMsg,
 #newSettingTimePickerPopup-popup,
