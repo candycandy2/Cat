@@ -34,9 +34,6 @@
 
             /********************************** function *************************************/
             function goBack(action) {
-
-                $("#htmlCanvas").panzoom("zoom", minScale, { silent: true });
-
                 if (action === "goList") {
                     $.mobile.changePage('#viewNewsEvents2-3');
                 } else if (action === "goHome") {
@@ -46,9 +43,6 @@
 
             function renderCanvas(content) {
 
-                var hideHTML = false;
-
-                $("#PortalContent canvas").remove();
                 $("#htmlContent").css({
                     top: 0,
                     left: 0
@@ -56,225 +50,220 @@
 
                 $("#htmlContent").html(content).promise().done(function() {
 
-                    if ($("#htmlContent")[0].scrollWidth == 0) {
-                        setTimeout(function(){
-                            renderCanvas(content);
-                        }, 2000);
+                    var $images = $('#htmlContent img');
+                    var loaded_images_count = 0;
+                    var loaded_finish = false;
 
-                        return;
-                    }
+                    if ($images.length > 0) {
+                        $images.load(function(){
 
-                    if ($("#htmlContent")[0].scrollHeight == 0) {
-                        setTimeout(function(){
-                            renderCanvas(content);
-                        }, 2000);
+                            loaded_images_count++;
 
-                        return;
-                    }
+                            if (loaded_images_count == $images.length) {
 
-                    $("#htmlContent").css("width", $("#htmlContent")[0].scrollWidth + "px");
-                    $("#htmlContent").css("height", $("#htmlContent")[0].scrollHeight + "px");
+                                loaded_finish = true;
 
-                    window.minScale = parseInt(document.documentElement.clientWidth * 100 / $("#htmlContent")[0].scrollWidth * 0.9, 10) / 100;
-                    var marginLeft = parseInt(document.documentElement.clientWidth * 10 / 100, 10);
+                                setTimeout(function(){
+                                    doPanZoom();
+                                }, 500);
+                            }
 
-                    if (minScale == 0.9) {
-                        setTimeout(function(){
-                            renderCanvas(content);
-                        }, 500);
-                        return;
-                    }
-
-                    if (device.platform === "iOS") {
-                        setTimeout(function(){
-                            doHTML2Canvas();
-                        }, 1000);
+                        });
 
                         setTimeout(function(){
-                            $("#PortalContent").off("scroll");
-                            $("#PortalContent canvas").remove();
-                            $("#htmlContent").show();
-                            hideHTML = true;
-                            doHTML2Canvas();
-                        }, 5000);
+                            if (!loaded_finish) {
+                                $('#messageNotExist').popup('open');
+                            }
+                        }, 10000);
                     } else {
                         setTimeout(function(){
-                            $("#PortalContent").off("scroll");
-                            $("#PortalContent canvas").remove();
-                            $("#htmlContent").show();
-                            hideHTML = true;
-                            doHTML2Canvas();
-                        }, 5000);
+                            doPanZoom();
+                        }, 500);
                     }
 
-                    window.doHTML2Canvas = function() {
-                        html2canvas($("#htmlContent"), {
-                            onrendered: function(canvas) {
+                    function doPanZoom() {
 
-                                $("#PortalContent").prepend(canvas);
-                                $("#PortalContent canvas").prop("id", "htmlCanvas");
+                        window.minScale = parseInt(document.documentElement.clientWidth * 100 / $("#htmlContent")[0].scrollWidth * 0.9, 10) / 100;
+                        var marginLeft = parseInt(document.documentElement.clientWidth * 10 / 100, 10);
 
-                                //htmlCanvas pan-zoom
-                                $("#htmlCanvas").panzoom();
-                                $("#htmlCanvas").panzoom("option", {
-                                    minScale: minScale
-                                });
+                        //Resize HtmlContent
+                        $("#htmlContent").css("width", $("#htmlContent")[0].scrollWidth + "px");
+                        $("#htmlContent").css("height", $("#htmlContent")[0].scrollHeight + "px");
 
-                                $("#htmlCanvas").panzoom("zoom", minScale, { silent: true });
+                        $("#PortalContent").off("scroll");
 
-                                var htmlCanvas = document.getElementById('htmlCanvas');
-                                var dataURL = htmlCanvas.toDataURL();
-                                console.log(dataURL);
+                        $("#htmlContent").panzoom();
+                        $("#htmlContent").panzoom("option", {
+                            minScale: minScale
+                        });
 
-                                //Resize PortalContent
-                                var screenHeight = document.documentElement.clientHeight;
-                                var screenWidth = document.documentElement.clientWidth;
-                                $("#PortalContent").css("overflow-y", "auto");
-                                $("#PortalContent").css("overflow-x", "hidden");
-                                $("#viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
-                                $("#PortalContent").css("top", "0px");
-                                var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height();
+                        $("#htmlContent").panzoom("zoom", minScale, { silent: true });
 
-                                if (eventType === "Communication") {
-                                    $("#PortalContent").css("padding-top", "0px");
-                                    var matrixNewTopY = parseInt(portalHeaderHeight, 10);
-                                } else {
-                                    $("#PortalContent").css("padding-top", portalHeaderHeight + "px");
-                                    var matrixNewTopY = parseInt(portalHeaderHeight * 2, 10);
-                                }
+                        //Resize PortalContent
+                        var screenHeight = document.documentElement.clientHeight;
+                        var screenWidth = document.documentElement.clientWidth;
+                        $("#PortalContent").css("overflow-y", "auto");
+                        $("#PortalContent").css("overflow-x", "hidden");
+                        $("#viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
+                        $("#PortalContent").css("top", "0px");
+                        var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height() + 5;
 
-                                $("#PortalContent").css("height", screenHeight + "px");
+                        if (device.platform === "iOS") {
+                            portalHeaderHeight += 20;
+                        }
+
+                        if (eventType === "Communication") {
+                            $("#PortalContent").css("padding-top", "0px");
+                            var matrixNewTopY = parseInt(portalHeaderHeight, 10);
+                        } else {
+                            $("#PortalContent").css("padding-top", portalHeaderHeight + "px");
+                            var matrixNewTopY = parseInt(portalHeaderHeight * 2, 10);
+                        }
+
+                        $("#PortalContent").css("height", screenHeight + "px");
+                        $("#PortalContent").css("width", screenWidth + "px");
+
+                        //Reset matrix of canvas
+                        var canvasHeight = $("#htmlContent").height();
+                        var canvasWidth = $("#htmlContent").width();
+                        var matrix = $("#htmlContent").panzoom("getMatrix");
+                        var matrixLeftX = document.documentElement.clientWidth - $("#htmlContent").width();
+                        var matrixNewLeftX = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
+
+                        $("#htmlContent").css({
+                            transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + "," + matrixNewLeftX + "," + matrixNewTopY + ")"
+                        });
+
+                        $("#htmlContent").offset({
+                            left: matrixNewLeftX,
+                            top: matrixNewTopY
+                        });
+
+                        loadingMask("hide");
+
+                        //panzoom start event
+                        $("#htmlContent").on('panzoomstart', function(e, panzoom, matrix, changed) {
+                            var canvasWidth = $("#htmlContent").width() * matrix[0];
+                            var screenWidth = document.documentElement.clientWidth;
+
+                            $("#viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
+                            $("#PortalContent").css({
+                                "overflow-y": "auto",
+                                "overflow-x": "auto",
+                                "top": "0px",
+                                "height": screenHeight + "px",
+                                "width": canvasWidth + "px"
+                            });
+
+                            if (device.platform === "iOS") {
                                 $("#PortalContent").css("width", screenWidth + "px");
+                            }
+                        });
 
-                                //Reset matrix of canvas
-                                var canvasHeight = $("#htmlCanvas").height();
-                                var canvasWidth = $("#htmlCanvas").width();
-                                var matrix = $("#htmlCanvas").panzoom("getMatrix");
-                                var matrixLeftX = document.documentElement.clientWidth - $("#htmlCanvas").width();
-                                var matrixNewLeftX = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
+                        //panzoom start zoom
+                        $("#htmlContent").on('panzoomzoom', function(e, panzoom, scale, opts) {
+                            $("#htmlContent").panzoom("option", {
+                                disablePan: true
+                            });
 
-                                $("#htmlCanvas").css({
-                                    transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + "," + matrixNewLeftX + "," + matrixNewTopY + ")"
+                            var matrix = $("#htmlContent").panzoom("getMatrix");
+                            var canvasWidth = $("#htmlContent").width() * matrix[0];
+
+                            $("#viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
+                            $("#PortalContent").css({
+                                "overflow-y": "auto",
+                                "overflow-x": "auto",
+                                "top": "0px",
+                                "height": screenHeight + "px",
+                                "width": canvasWidth + "px"
+                            });
+
+                            $("#htmlContent").css({
+                                transform: " matrix(" + scale + "," + matrix[1] + "," + matrix[2] + "," + scale + ", 0, " + matrix[5] + ")"
+                            });
+                        });
+
+                        //panzoom end event
+                        $("#htmlContent").on('panzoomend', function(e, panzoom, matrix, changed) {
+
+                            var matrix = $("#htmlContent").panzoom("getMatrix");
+
+                            if (matrix[0] == minScale) {
+
+                                var screenWidth = document.documentElement.clientWidth;
+                                $("#PortalContent").css({
+                                    "width": screenWidth + "px",
+                                    "overflow-x": "hidden"
                                 });
 
-                                $("#htmlCanvas").offset({
-                                    left: matrixNewLeftX,
-                                    top: matrixNewTopY
+                                var canvasWidth = $("#htmlContent").width();
+                                var canvasOffset = $("#htmlContent").offset();
+                                var canvasOffsetTop = canvasOffset.top;
+                                var left = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
+
+                                $("#htmlContent").offset({
+                                    top: canvasOffsetTop,
+                                    left: left
                                 });
 
-                                if (hideHTML) {
-                                    $("#htmlContent").hide();
-                                    loadingMask("hide");
+                            } else if (matrix[0] > minScale) {
+                                var canvasWidth = $("#htmlContent").width() * matrix[0];
+                                var screenWidth = document.documentElement.clientWidth;
+
+                                $("#viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
+                                $("#PortalContent").css({
+                                    "overflow-y": "auto",
+                                    "overflow-x": "auto",
+                                    "top": "0px",
+                                    "height": screenHeight + "px",
+                                    "width": canvasWidth + "px"
+                                });
+
+                                if (device.platform === "iOS") {
+                                    $("#PortalContent").css("width", screenWidth + "px");
                                 }
 
-                                //panzoom start event
-                                $("#htmlCanvas").on('panzoomstart', function(e, panzoom, matrix, changed) {
-                                    var canvasWidth = $("#htmlCanvas").width() * matrix[0];
-                                    var screenWidth = document.documentElement.clientWidth;
-                                    $("#PortalContent").css("overflow-y", "auto");
-                                    $("#PortalContent").css("overflow-x", "auto");
-                                    $("#viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
-                                    $("#PortalContent").css("top", "0px");
-                                    $("#PortalContent").css("height", screenHeight + "px");
-                                    $("#PortalContent").css("width", canvasWidth + "px");
-                                    if (device.platform === "iOS") {
-                                        $("#PortalContent").css("width", screenWidth + "px");
-                                    }
-
+                                $("#htmlContent").css({
+                                    top: 0,
+                                    transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + ", 0, 0)"
                                 });
 
-                                //panzoom start zoom
-                                $("#htmlCanvas").on('panzoomzoom', function(e, panzoom, scale, opts) {
-                                    $("#htmlCanvas").panzoom("option", {
-                                        disablePan: true
-                                    });
+                                var canvasOffset = $("#htmlContent").offset();
+                                var canvasOffsetTop = canvasOffset.top;
 
-                                    var matrix = $("#htmlCanvas").panzoom("getMatrix");
-                                    var canvasWidth = $("#htmlCanvas").width() * matrix[0];
-                                    $("#PortalContent").css("overflow-y", "auto");
-                                    $("#PortalContent").css("overflow-x", "auto");
-                                    $("#viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
-                                    $("#PortalContent").css("top", "0px");
-                                    $("#PortalContent").css("height", screenHeight + "px");
-                                    $("#PortalContent").css("width", canvasWidth + "px");
-
-                                    $("#htmlCanvas").css({
-                                        transform: " matrix(" + scale + "," + matrix[1] + "," + matrix[2] + "," + scale + ", 0, " + matrix[5] + ")"
-                                    });
+                                $("#htmlContent").offset({
+                                    top: canvasOffsetTop,
+                                    left: 0
                                 });
 
-                                //panzoom end event
-                                $("#htmlCanvas").on('panzoomend', function(e, panzoom, matrix, changed) {
+                            }
 
-                                    var matrix = $("#htmlCanvas").panzoom("getMatrix");
+                        });
 
-                                    if (matrix[0] == minScale) {
+                        //Set Scroll Event
+                        $("#PortalContent").on("scroll", function() {
 
-                                        var screenWidth = document.documentElement.clientWidth;
-                                        $("#PortalContent").css("width", screenWidth + "px");
-                                        $("#PortalContent").css("overflow-x", "hidden");
+                            var matrix = $("#htmlContent").panzoom("getMatrix");
+                            var canvasHeight = $("#htmlContent").height();
+                            var headerHeight = $("#viewWebNews2-3-1 .page-header").height();
+                            var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height();
+                            var scrollTop = $("#PortalContent").scrollTop();
 
-                                        var canvasWidth = $("#htmlCanvas").width();
-                                        var canvasOffset = $("#htmlCanvas").offset();
-                                        var canvasOffsetTop = canvasOffset.top;
-                                        var left = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
+                            if (device.platform === "iOS") {
+                                headerHeight += 20;
+                            }
 
-                                        $("#htmlCanvas").offset({
-                                            top: canvasOffsetTop,
-                                            left: left
-                                        })
+                            if ((canvasHeight * matrix[0] - scrollTop) < (screenHeight * 0.8 - headerHeight - portalHeaderHeight)) {
+                                $("#PortalContent").animate({
+                                    scrollTop: ((canvasHeight * matrix[0]) - (screenHeight * 0.8 - headerHeight - portalHeaderHeight))
+                                }, 0);
+                            }
 
-                                    } else if (matrix[0] > minScale) {
-                                        var canvasWidth = $("#htmlCanvas").width() * matrix[0];
-                                        var screenWidth = document.documentElement.clientWidth;
+                        });
 
-                                        $("#PortalContent").css("overflow-y", "auto");
-                                        $("#PortalContent").css("overflow-x", "auto");
-                                        $("#viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
-                                        $("#PortalContent").css("top", "0px");
-                                        $("#PortalContent").css("height", screenHeight + "px");
-                                        $("#PortalContent").css("width", canvasWidth + "px");
-
-                                        if (device.platform === "iOS") {
-                                            $("#PortalContent").css("width", screenWidth + "px");
-                                        }
-
-                                        $("#htmlCanvas").css({
-                                            top: 0,
-                                            left: 0,
-                                            transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + ", 0, 0)"
-                                        });
-                                    }
-
-                                });
-
-                                //Set Scroll Event
-                                $("#PortalContent").on("scroll", function() {
-
-                                    var matrix = $("#htmlCanvas").panzoom("getMatrix");
-                                    var headerHeight = $("#viewWebNews2-3-1 .page-header").height();
-                                    var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height();
-                                    var scrollTop = $("#PortalContent").scrollTop();
-
-                                    if (device.platform === "iOS") {
-                                        headerHeight += 20;
-                                    }
-
-                                    if ((canvasHeight * matrix[0] - scrollTop) < (screenHeight * 0.8 - headerHeight - portalHeaderHeight)) {
-                                        $("#PortalContent").animate({
-                                            scrollTop: ((canvasHeight * matrix[0]) - (screenHeight * 0.8 - headerHeight - portalHeaderHeight))
-                                        }, 0);
-                                    }
-
-                                });
-                            },
-                            useCORS: true,
-                            allowTaint: true,
-                            letterRendering: true,
-                            logging: true,
-                            taintTest: true,
-                            width: parseInt($("#htmlContent")[0].scrollWidth * 1.2, 10),
-                            height: parseInt($("#htmlContent")[0].scrollHeight * 1.8, 10)
+                        //Prevent Link Action
+                        $("#htmlContent a").on("click", function(event) {
+                            event.preventDefault();
                         });
                     }
 
@@ -538,14 +527,17 @@
                     $(".footer-portal").show();
 
                     $("#htmlContent").html("");
-                    $("#htmlContent").show();
-
-                    if (device.platform === "iOS") {
-                        var portalHeaderTop = parseInt(document.documentElement.clientWidth * 13 / 100, 10) + 20;
-                        $("#viewWebNews2-3-1 .portal-header").css("top", portalHeaderTop);
-                    }
+                    $("#htmlContent").css({
+                        "width": 0,
+                        "height": 0
+                    });
 
                     QueryPortalListDetail();
+                }
+
+                if (device.platform === "iOS") {
+                    var portalHeaderTop = parseInt(document.documentElement.clientWidth * 13 / 100, 10) + 20;
+                    $("#viewWebNews2-3-1 .portal-header").css("top", portalHeaderTop);
                 }
             });
 
