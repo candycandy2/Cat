@@ -17,29 +17,6 @@ $("#viewBackLeaveQuery").pagecontainer({
         });
 
 
-        $("#btn1").on("click", function(){
-            $("#datetimes").click();
-        });
-
-        $("#btn2").on("click", function(){
-            $("#datetime").click();
-        });
-
-        $("#btn3").on("click", function(){
-            $("#dates").click();
-        });
-
-        $("#btn4").on("click", function(){
-            $("#times").click();
-        });
-
-        $("#btn5").on("click", function(){
-            $("#months").click();
-        });
-
-        $("#btn6").on("click", function(){
-            $("#weeks").tap();
-        });
 
 
     }

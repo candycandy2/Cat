@@ -511,6 +511,11 @@ div.scrollmenu a {
 	color: #2A8ABD;
 }
 
+.apply-preview-remove > img {
+	width: 4vw;
+	height: 4vw;
+	margin-top: 3.5vw;
+}
 
 /* popup */
 .leaveNotEnough > .ui-content,
@@ -577,14 +582,8 @@ div.scrollmenu a {
 	color: #2A8ABD;
 }
 
-.vice-icon {
-	width: 4vw;
-	height: 4vw;
-	margin-top: 3.5vw;
-}
-
 /****************************************** viewLeaveQuery *****************************************/
-#leaveMenu {
+.leaveMenu {
 	width: 4.934VW;
 }
 
@@ -620,8 +619,14 @@ div.scrollmenu a {
 	border-bottom: 0.1vh solid #d6d6d6;
 }
 
-.leave-query-state > span:nth-of-type(1) {
+.leave-query-state > span {
 	color: #2e89bc;
+}
+
+.leave-query-state > img {
+	width: 5vw;
+	height: 3vw;
+	margin-left: 1vw;
 }
 
 .leave-query-mainDetail {
@@ -652,6 +657,7 @@ div.scrollmenu a {
 }
 
 .leave-query-detail-sign,
+.leave-query-detail-withdraw,
 .leave-query-detail-refuse,
 .leave-query-detail-effect,
 .leave-query-withdraw,

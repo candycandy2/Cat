@@ -13,10 +13,36 @@ $("#viewLeaveQuery").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
+        //請假單頁初始化
+        function leaveQueryInit() {
+            $("#backDetailList").hide();
+            $("#backSignPreview").hide();
+            $("#backEffectPreview").hide();
+            $(".leave-query-detail-sign").hide();          
+            $(".leave-query-detail-refuse").hide();
+            $(".leave-query-detail-withdraw").hide();
+            $(".leave-query-detail-effect").hide();
+            $(".leave-query-withdraw").hide();
+            $(".leave-query-dispel").hide();
+            $(".leaveMenu").show();
+            $(".leave-query-main").show();
+        }
+
+        //從銷假返回詳情
+        function backLeaveToDetail() {
+            $(".leave-query-dispel").hide();
+            $("#backEffectPreview").hide();
+            $("#comfirmDispel").hide();
+            $("#cancelApply").hide();
+            $(".leave-query-detail-effect").show();
+            $("#previewDispel").show();
+            $("#backDetailList").show();
+            $("#dispelReason").removeAttr("readonly");
+        }
 
         /********************************** page event *************************************/
         $("#viewLeaveQuery").on("pagebeforeshow", function(event, ui) {
-            $(".leaveApplyday").text(applyDay);
+            $(".leaveMenu").show();
         });
 
         $("#viewLeaveQuery").on("pageshow", function(event, ui) {
@@ -34,17 +60,22 @@ $("#viewLeaveQuery").pagecontainer({
             //console.log(leaveState);
 
             if(leaveState == "表單簽核中") {
-                $("#leaveMenu").hide();
+                $(".leaveMenu").hide();
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
                 $(".leave-query-detail-sign").show();
-            }else if(leaveState =="表單已撤回" || leaveState =="表單已拒絕") {
-                $("#leaveMenu").hide();
+            }else if(leaveState =="表單已拒絕") {
+                $(".leaveMenu").hide();
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
                 $(".leave-query-detail-refuse").show();
+            }else if(leaveState =="表單已撤回") {
+                $(".leaveMenu").hide();
+                $(".leave-query-main").hide();
+                $("#backDetailList").show();
+                $(".leave-query-detail-withdraw").show();
             }else if(leaveState =="表單已生效") {
-                $("#leaveMenu").hide();
+                $(".leaveMenu").hide();
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
                 $(".leave-query-detail-effect").show();
@@ -58,19 +89,35 @@ $("#viewLeaveQuery").pagecontainer({
             $("#backDetailList").hide();
             $(".leave-query-detail-sign").hide();
             $(".leave-query-detail-refuse").hide();
+            $(".leave-query-detail-withdraw").hide();
             $(".leave-query-detail-effect").hide();
-            $("#leaveMenu").show();
+            $(".leaveMenu").show();
             $(".leave-query-main").show();    
             return false;
         });
 
-        //籤核狀態——click——popup
-        $(".leave-detail-img").on("click", function() {
-            popupMsgInit('.leaveStateFlow');
+        //籤核中狀態——click——popup
+        $("#signLeaveDetail").on("click", function() {
+            popupMsgInit('.signStateFlow');
+        });
+
+        //已撤回狀態——click——popup
+        $("#withdrawLeaveDetail").on("click", function() {
+            popupMsgInit('.withdrawStateFlow');
+        });
+
+        //已拒絕狀態——click——popup
+        $("#refuseLeaveDetail").on("click", function() {
+            popupMsgInit('.refuseStateFlow');
+        });
+
+        //已拒絕狀態——click——popup
+        $("#effectLeaveDetail").on("click", function() {
+            popupMsgInit('.effectStateFlow');
         });
 
         //撤回按鈕——click
-        $("#withdrawLeave").on("click", function() {
+        $("#withdrawLeaveBtn").on("click", function() {
             $(".leave-query-detail-sign").hide();
             $("#backDetailList").hide();
             $(".leave-query-withdraw").show();
@@ -107,36 +154,23 @@ $("#viewLeaveQuery").pagecontainer({
 
         //確認撤回
         $("#comfirmWithdrawLeave").on("click", function() {
-            $("#backDetailList").hide();
-            $("#backSignPreview").hide();
-            $("#backEffectPreview").hide();
-            $(".leave-query-detail-sign").hide();
-            $(".leave-query-detail-refuse").hide();
-            $(".leave-query-detail-effect").hide();
-            $(".leave-query-withdraw").hide();
-            $(".leave-query-dispel").hide();
-            $("#leaveMenu").show();
-            $(".leave-query-main").show();
+            leaveQueryInit();
             $("#withdrawLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
         //刪除假單彈框——popup
-        $("#deleteLeave").on("click", function() {
+        $("#deleteRefuseLeave").on("click", function() {
+            popupMsgInit(".confirmDelete");
+        });
+
+        //刪除假單彈框——popup
+        $("#deleteWithdrawLeave").on("click", function() {
             popupMsgInit(".confirmDelete");
         });
 
         //確認刪除假單——click
         $("#comfirmDeleteLeave").on("click", function() {
-            $("#backDetailList").hide();
-            $("#backSignPreview").hide();
-            $("#backEffectPreview").hide();
-            $(".leave-query-detail-sign").hide();
-            $(".leave-query-detail-refuse").hide();
-            $(".leave-query-detail-effect").hide();
-            $(".leave-query-withdraw").hide();
-            $(".leave-query-dispel").hide();
-            $("#leaveMenu").show();
-            $(".leave-query-main").show();
+            leaveQueryInit();
             $("#deleteLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
@@ -150,14 +184,7 @@ $("#viewLeaveQuery").pagecontainer({
 
         //從銷假返回詳情——click
         $("#backEffectPreview").on("click", function() {
-            $(".leave-query-dispel").hide();
-            $("#backEffectPreview").hide();
-            $("#comfirmDispel").hide();
-            $("#cancelApply").hide();
-            $(".leave-query-detail-effect").show();
-            $("#previewDispel").show();
-            $("#backDetailList").show();
-            $("#dispelReason").removeAttr("readonly");
+            backLeaveToDetail();
             return false;
         });
 
@@ -184,30 +211,14 @@ $("#viewLeaveQuery").pagecontainer({
 
         //確定送簽——click
         $("#comfirmDispel").on("click", function() {
-            $("#backDetailList").hide();
-            $("#backSignPreview").hide();
-            $("#backEffectPreview").hide();
-            $(".leave-query-detail-sign").hide();
-            $(".leave-query-detail-refuse").hide();
-            $(".leave-query-detail-effect").hide();
-            $(".leave-query-withdraw").hide();
-            $(".leave-query-dispel").hide();
-            $("#leaveMenu").show();
-            $(".leave-query-main").show();
+            leaveQueryInit();
             $("#backLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
             
         });
 
         //取消申請(同返回操作一樣)——click
         $("#cancelApply").on("click", function() {
-            $(".leave-query-dispel").hide();
-            $("#backEffectPreview").hide();
-            $("#comfirmDispel").hide();
-            $("#cancelApply").hide();
-            $(".leave-query-detail-effect").show();
-            $("#previewDispel").show();
-            $("#backDetailList").show();
-            $("#dispelReason").removeAttr("readonly");
+            backLeaveToDetail();
         });
     }
 });

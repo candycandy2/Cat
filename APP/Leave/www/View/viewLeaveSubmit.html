@@ -2,7 +2,7 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
-            <img src="img/menu.png" style="width: 4.934VW;" class="leaveMenu">
+            <img src="img/menu.png" class="leaveMenu">
             <img src="img/nav_back.png" id="backMain">
         </a>
         <div class="header-style">
@@ -69,7 +69,8 @@
                 </div>
                 <div id="baseTimeNoData" class="font-style3">
                     <!-- 請選擇 -->
-                    <span class="langStr" data-id="str_069"></span><img src="img/dropdown.png" class="apply-select-img">
+                    <span class="langStr" data-id="str_069"></span>
+                    <img src="img/dropdown.png" class="apply-select-img">
                 </div>
                 <div class="font-style12 color-gray">
                     <!-- *如果沒有列出您需要的基準日，請確認該請假單是否[生效] -->
@@ -97,11 +98,13 @@
                 <div class="font-style3">
                     <div id="btnStartday">
                         <!-- 請選擇 -->
-                        <span class="langStr" data-id="str_069" id="startText"></span><img src="img/dropdown.png" class="apply-select-img">
+                        <span class="langStr" data-id="str_069" id="startText"></span>
+                        <img src="img/dropdown.png" class="apply-select-img">
                     </div>
                     <div id="btnEndday">
                         <!-- 請選擇 -->
-                        <span class="langStr" data-id="str_069" id="endText"></span><img src="img/dropdown.png" class="apply-select-img">
+                        <span class="langStr" data-id="str_069" id="endText"></span>
+                        <img src="img/dropdown.png" class="apply-select-img">
                     </div>
                 </div>
             </div>
@@ -109,8 +112,8 @@
             <div class="date-component">
                 <input type="datetime-local" data-role="none" name="startDate" id="startDate" class="date-time-component" />
                 <input type="datetime-local" data-role="none" name="endDate" id="endDate" class="date-time-component" />
-                <input type="date" data-role="none" name="hasDataBasedayComponent" id="hasDataBasedayComponent" class="date-time-component" />
-                <input type="date" data-role="none" name="noDataBasedayComponent" id="noDataBasedayComponent" class="date-time-component" />
+                <input type="date" data-role="none" name="oldBaseday" id="oldBaseday" class="date-time-component" />
+                <input type="date" data-role="none" name="newBaseday" id="newBaseday" class="date-time-component" />
             </div>
             <div class="apply-leave-count">
                 <div class="font-style11">
@@ -136,7 +139,10 @@
                 </div>
                 <fieldset data-role="controlgroup" id="attachmentTime">
                     <input type="radio" name="radio-choice-attachment-3" id="attachment-tab-2" value="attachment-tab-2" checked>
-                    <label for="attachment-tab-2" class="leaveUploadAttach-radio-label"><!--後補--><span class="langStr" data-id="str_110"></span></label>&nbsp;&nbsp;
+                    <label for="attachment-tab-2" class="leaveUploadAttach-radio-label">
+                        <!--後補-->
+                        <span class="langStr" data-id="str_110"></span>
+                    </label>
 
                     <!-- <input type="radio" name="radio-choice-attachment-3" id="attachment-tab-1" value="attachment-tab-1">
                     <label for="attachment-tab-1">上傳</label>&nbsp;&nbsp;
@@ -168,7 +174,8 @@
         <div class="apply-preview">
             <div class="preview-apply-date font-style12">
                 <!-- 申請日期： -->
-                <span class="langStr" data-id="str_080"></span><span id="previewApplyDay"></span>
+                <span class="langStr" data-id="str_080"></span>
+                <span id="previewApplyDay"></span>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
@@ -247,7 +254,7 @@
                 </div>
             </div>
             <div class="apply-preview-remove">
-                <img src="img/btn_cancel.png" class="vice-icon">&nbsp;
+                <img src="img/btn_cancel.png">&nbsp;
                 <!-- 清除 -->
                 <span class="langStr" data-id="str_129"></span>
             </div>
@@ -259,7 +266,8 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text">
+                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class="header-text">
                         <!--假別天數不夠-->
                         <span class="langStr" data-id="str_115"></span>
                     </span>
@@ -306,7 +314,8 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text">
+                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class="header-text">
                         <!--請假迄止時間應大於請假開始時間-->
                         <span class="langStr" data-id="str_116"></span>
                     </span>
@@ -331,7 +340,8 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text">
+                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class="header-text">
                         <!--請先選擇類別與假別-->
                         <span class="langStr" data-id="str_139"></span>
                     </span>
@@ -356,7 +366,8 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text">
+                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class="header-text">
                         <!--請先選擇基準日-->
                         <span class="langStr" data-id="str_140"></span>
                     </span>

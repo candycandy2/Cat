@@ -36,6 +36,8 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
+                //console
+                console.log(data);
                 myCalendarData = {};
                 myHolidayData = [];
                 var leaveFlag = "3";
