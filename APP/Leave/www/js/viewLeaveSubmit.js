@@ -76,7 +76,7 @@ var categroyData = {
     id: "categroy-popup",
     option: [],
     title: "",
-    defaultText: "請選擇",
+    defaultText: langStr["str_069"],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -87,7 +87,7 @@ var leaveData = {
     id: "leave-popup",
     option: [],
     title: "",
-    defaultText: "請選擇",
+    defaultText: langStr["str_069"],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -98,7 +98,7 @@ var leaveAgentData = {
     id: "leave-agent-popup",
     option: [],
     title: '<input type="search" id="searchAgent" />',
-    defaultText: "請選擇",
+    defaultText: langStr["str_069"],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -109,7 +109,7 @@ var baseData = {
     id: "basedate-popup",
     option: [],
     title: "",
-    defaultText: "選擇日期",
+    defaultText: langStr["str_127"],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -120,7 +120,7 @@ var startData = {
     id: "startday-popup",
     option: [],
     title: "",
-    defaultText: "請選擇",
+    defaultText: langStr["str_069"],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -131,7 +131,7 @@ var endData = {
     id: "endday-popup",
     option: [],
     title: "",
-    defaultText: "請選擇",
+    defaultText: langStr["str_069"],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -343,7 +343,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 id: "leave-popup",
                 option: [],
                 title: "",
-                defaultText: "請選擇",
+                defaultText: langStr["str_069"],
                 changeDefaultText : true,
                 attr: {
                     class: "tpl-dropdown-list-icon-arrow"
@@ -356,7 +356,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 id: "basedate-popup",
                 option: [],
                 title: "",
-                defaultText: "選擇日期",
+                defaultText: langStr["str_127"],
                 changeDefaultText : true,
                 attr: {
                     class: "tpl-dropdown-list-icon-arrow"
@@ -486,12 +486,12 @@ $("#viewLeaveSubmit").pagecontainer({
                         basedayState = checkBaseday(selectLeave);
                         if(basedayState) {
                             $('#baseTime').show();
-                            $('#baseTimeNoData').hide();
+                            $('#noBaseTime').hide();
                             getBasedayByLeave();
-                            $("#baseTimeNoData").find("span").text("請選擇");
+                            $("#noBaseTime").find("span").text("請選擇");
                             
                         }else {
-                            $('#baseTimeNoData').show();
+                            $('#noBaseTime').show();
                             $('#baseTime').hide();
                         }
                         
@@ -538,12 +538,20 @@ $("#viewLeaveSubmit").pagecontainer({
                 if(needBaseday){
                     //再判斷是否選擇基準日
                     if(selectBaseday) {
-                        $("#startDate").click();
+                        if(device.platform === "iOS") {
+                            $("#startDate").focus();
+                        }else if(device.platform === "Android") {
+                            $("#startDate").click();
+                        } 
                     }else {
                         popupMsgInit('.basedayFirst');
                     }
                 }else {
-                    $("#startDate").click();
+                    if(device.platform === "iOS") {
+                        $("#startDate").focus();
+                    }else if(device.platform === "Android") {
+                        $("#startDate").click();
+                    }            
                 }
             }
             
@@ -560,12 +568,20 @@ $("#viewLeaveSubmit").pagecontainer({
                 if(needBaseday){
                     //再判斷是否選擇基準日
                     if(selectBaseday) {
-                        $("#endDate").click();
+                        if(device.platform === "iOS") {
+                            $("#endDate").focus();
+                        }else if(device.platform === "Android") {
+                            $("#endDate").click();
+                        }
                     }else {
                         popupMsgInit('.basedayFirst');
                     }
                 }else {
-                    $("#endDate").click();
+                    if(device.platform === "iOS") {
+                        $("#endDate").focus();
+                    }else if(device.platform === "Android") {
+                        $("#endDate").click();
+                    } 
                 }
             }
             
@@ -573,7 +589,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //直接選擇基準日
-        $(document).on("click", "#baseTimeNoData", function() {
+        $(document).on("click", "#noBaseTime", function() {
             if(device.platform === "iOS") {
                 $("#newBaseday").focus();
             }else if(device.platform === "Android") {
@@ -622,16 +638,16 @@ $("#viewLeaveSubmit").pagecontainer({
                     $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
                     //popupMsgInit('.leftDaysByLeave');
                     //統計請假時長——會有API計算
-                    if(endLeaveDay - startLeaveDay > 2 && endLeaveTime >= startLeaveTime) {
-                        var leaveDay = endLeaveDay - startLeaveDay;
-                        var leaveTime = endLeaveTime - startLeaveTime;
-                    }else if(endLeaveDay > startLeaveDay && endLeaveTime < startLeaveTime) {
-                        var leaveDay = endLeaveDay - startLeaveDay;
-                        var leaveTime = endLeaveTime - startLeaveTime;
-                    }else if(endLeaveDay == startLeaveDay) {
-                        var leaveDay = 0;
-                        var leaveTime = endLeaveTime - startLeaveTime;
-                    }    
+                    // if(endLeaveDay - startLeaveDay > 2 && endLeaveTime >= startLeaveTime) {
+                    //     var leaveDay = endLeaveDay - startLeaveDay;
+                    //     var leaveTime = endLeaveTime - startLeaveTime;
+                    // }else if(endLeaveDay > startLeaveDay && endLeaveTime < startLeaveTime) {
+                    //     var leaveDay = endLeaveDay - startLeaveDay;
+                    //     var leaveTime = endLeaveTime - startLeaveTime;
+                    // }else if(endLeaveDay == startLeaveDay) {
+                    //     var leaveDay = 0;
+                    //     var leaveTime = endLeaveTime - startLeaveTime;
+                    // }
                 }
             }else {  
                 $('#startText').text(leaveMsgStr); 
@@ -675,16 +691,16 @@ $("#viewLeaveSubmit").pagecontainer({
                     $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
                     //popupMsgInit('.leftDaysByLeave');
                     //統計請假時長——會有API計算
-                    if(endLeaveDay - startLeaveDay > 2 && endLeaveTime >= startLeaveTime) {
-                        var leaveDay = endLeaveDay - startLeaveDay;
-                        var leaveTime = endLeaveTime - startLeaveTime;
-                    }else if(endLeaveDay > startLeaveDay && endLeaveTime < startLeaveTime) {
-                        var leaveDay = endLeaveDay - startLeaveDay;
-                        var leaveTime = endLeaveTime - startLeaveTime;
-                    }else if(endLeaveDay == startLeaveDay) {
-                        var leaveDay = 0;
-                        var leaveTime = endLeaveTime - startLeaveTime;
-                    }
+                    // if(endLeaveDay - startLeaveDay > 2 && endLeaveTime >= startLeaveTime) {
+                    //     var leaveDay = endLeaveDay - startLeaveDay;
+                    //     var leaveTime = endLeaveTime - startLeaveTime;
+                    // }else if(endLeaveDay > startLeaveDay && endLeaveTime < startLeaveTime) {
+                    //     var leaveDay = endLeaveDay - startLeaveDay;
+                    //     var leaveTime = endLeaveTime - startLeaveTime;
+                    // }else if(endLeaveDay == startLeaveDay) {
+                    //     var leaveDay = 0;
+                    //     var leaveTime = endLeaveTime - startLeaveTime;
+                    // }
                 }
             }else {
                 $('#endText').text(leaveMsgStr); 
@@ -716,7 +732,7 @@ $("#viewLeaveSubmit").pagecontainer({
             if(newBaseVal !== "") {
                 selectBaseday = true;
             }
-            $("#baseTimeNoData").find("span").text(newBaseVal);
+            $("#noBaseTime").find("span").text(newBaseVal);
         });
 
         //實時獲取多行文本值
@@ -757,6 +773,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //立即預約，假單送簽
         $("#applyBtn").on("click", function() {
+            //$("#backMain").tigger("click");
             $("#backMain").click();
             changePageByPanel("viewLeaveQuery");
             $("#sendLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
