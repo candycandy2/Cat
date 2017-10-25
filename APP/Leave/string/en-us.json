@@ -1033,7 +1033,7 @@
   },
   {
     "term": "str_131",
-    "definition": "請假單號：e",
+    "definition": "請假單號:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1089,7 +1089,7 @@
   },
   {
     "term": "str_138",
-    "definition": "請假區間：e",
+    "definition": "請假區間:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1201,7 +1201,7 @@
   },
   {
     "term": "str_152",
-    "definition": "假別：e",
+    "definition": "假別:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1209,7 +1209,7 @@
   },
   {
     "term": "str_153",
-    "definition": "請假數：e",
+    "definition": "請假數:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1313,7 +1313,7 @@
   },
   {
     "term": "str_166",
-    "definition": "銷假單號：e",
+    "definition": "銷假單號:",
     "context": "",
     "term_plural": "",
     "reference": "",
