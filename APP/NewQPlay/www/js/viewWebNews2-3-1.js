@@ -62,6 +62,8 @@
                             if (loaded_images_count == $images.length) {
 
                                 loaded_finish = true;
+                                $("#messageLoadErrorPopup").popup("close");
+                                $("#viewWebNews2-3-1").css("min-height", document.documentElement.clientHeight + "px");
 
                                 setTimeout(function(){
                                     doPanZoom();
@@ -72,7 +74,8 @@
 
                         setTimeout(function(){
                             if (!loaded_finish) {
-                                $('#messageNotExist').popup('open');
+                                $("#messageLoadErrorPopup").popup("open");
+                                $("#viewWebNews2-3-1").css("min-height", document.documentElement.clientHeight + "px");
                             }
                         }, 10000);
                     } else {
@@ -509,6 +512,16 @@
                 }();
             };
             /********************************** page event *************************************/
+            $("#viewWebNews2-3-1").one("pagebeforeshow", function(event, ui) {
+                //Message Load Error Popup
+                var messageLoadErrorPopupData = {
+                    id: "messageLoadErrorPopup",
+                    content: $("template#tplMessageLoadErrorPopup").html()
+                };
+
+                tplJS.Popup("viewWebNews2-3-1", "viewWebNews2-3-1Content", "append", messageLoadErrorPopupData);
+            });
+
             $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
                 if (eventType === "Event" || eventType === "News") {
                     $("#ITSEventNewContent").show();
@@ -628,6 +641,14 @@
             $(".nav-button").on("click", function(){
                 var action = $(this).prop("id");
                 goBack(action);
+            });
+
+            $(document).on("click", "#messageLoadErrorPopup #retry", function() {
+                $("#messageLoadErrorPopup").popup("close");
+            });
+
+            $(document).on("click", "#messageLoadErrorPopup #back", function() {
+                goBack("goList");
             });
         }
     });
