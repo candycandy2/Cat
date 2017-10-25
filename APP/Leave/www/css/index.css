@@ -353,7 +353,7 @@ div.scrollmenu a {
 	display: none;
 }
 
-#baseTimeNoData {
+#noBaseTime {
 	display: none;
 	height: 7.8vw;
 	line-height: 7.8vw;
@@ -589,28 +589,34 @@ div.scrollmenu a {
 
 #backDetailList,
 #backSignPreview,
-#backEffectPreview {
+#backEffectPreview,
+#backToList,
+#backToSign {
 	width: 4.934VW;
 	display: none;
 }
 
-.leave-query-list {
+.leave-query-list,
+.backLeave-query-list {
 	width: 93.6vw;
 	height: 36.3vw;
 	margin-left: 3.2vw;
 }
 
-.leave-query-list > div:nth-of-type(1) {
+.leave-query-list > div:nth-of-type(1),
+.backLeave-query-list > div:nth-of-type(1) {
 	height: 32vw;
 	border:0.1vh solid #d6d6d6;
 	border-radius: 8px;
 }
 
-.leave-query-list > div:nth-of-type(2) {
+.leave-query-list > div:nth-of-type(2),
+.backLeave-query-list > div:nth-of-type(2) {
 	height: 4.3vw;
 }
 
-.leave-query-state {
+.leave-query-state,
+.backLeave-query-state {
 	width: 88vw;
 	height: 10vw;
 	line-height: 10vw;
@@ -619,31 +625,36 @@ div.scrollmenu a {
 	border-bottom: 0.1vh solid #d6d6d6;
 }
 
-.leave-query-state > span {
+.leave-query-state > span,
+.backLeave-query-state > span {
 	color: #2e89bc;
 }
 
-.leave-query-state > img {
+.leave-query-state > img,
+.backLeave-query-state > img {
 	width: 5vw;
 	height: 3vw;
 	margin-left: 1vw;
 }
 
-.leave-query-mainDetail {
+.leave-query-base,
+.backLeave-query-base {
 	width: 88vw;
 	height: 22vw;
 	margin-left: 2.4vw;
 	color: #323232;
 }
 
-.leave-query-mainDetail > div {
+.leave-query-base > div,
+.backLeave-query-base > div {
 	width: 88vw;
 	height: 5vw;
 	margin-top: 1.8vw;
 	/* line-height: 7vw; */
 }
 
-.leave-query-categroy > div {
+.leave-query-basedata > div,
+.backLeave-query-basedata > div {
 	display: inline-block;
 	width: 43vw;
 	height: 5vw;
@@ -661,7 +672,12 @@ div.scrollmenu a {
 .leave-query-detail-refuse,
 .leave-query-detail-effect,
 .leave-query-withdraw,
-.leave-query-dispel {
+.leave-query-dispel,
+.backLeave-query-detail-sign,
+.backLeave-query-detail-withdraw,
+.backLeave-query-detail-refuse,
+.backLeave-query-detail-effect,
+.backLeave-query-sign-withdraw {
 	display: none;
 	width: 93.6vw;
 	margin-left: 3.2vw;
@@ -770,12 +786,16 @@ div.scrollmenu a {
 }
 
 .confirmWithdraw > .ui-content,
-.confirmDelete > .ui-content {
+.confirmDelete > .ui-content,
+.confirmToWithdraw > .ui-content,
+.confirmToDelete > .ui-content {
 	padding: 0 !important;
 }
 
 .confirmWithdraw > .ui-content > .header,
-.confirmDelete > .ui-content > .header {
+.confirmDelete > .ui-content > .header,
+.confirmToWithdraw > .ui-content > .header,
+.confirmToDelete > .ui-content > .header {
 	margin-top: 13%;
 }
 
@@ -784,7 +804,9 @@ div.scrollmenu a {
 #backLeaveMsg,
 #withdrawLeaveMsg,
 #deleteLeaveMsg,
-#sendLeaveMsg {
+#sendLeaveMsg,
+#withdrawBackLeaveMsg,
+#deleteBackLeaveMsg {
 	display: none;
 }
 

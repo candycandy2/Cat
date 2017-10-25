@@ -298,7 +298,7 @@
 
 		// The increment at which to zoom
 		// adds/subtracts to the scale each time zoomIn/Out is called
-		increment: 0.3,
+		increment: 0.1,
 
 		// Turns on exponential zooming
 		// If false, zooming will be incremented linearly

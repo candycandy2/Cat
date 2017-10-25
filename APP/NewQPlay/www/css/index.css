@@ -437,6 +437,7 @@ input[type=radio]:checked + label {
     height: 11.674vw;
     background-image: url(../img/header_portal.png);
     background-size: 100vw 11.674vw; 
+    z-index: 100;
 }
 
 .no-message {

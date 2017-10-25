@@ -56,7 +56,7 @@ $("#viewLeaveQuery").pagecontainer({
         //點擊詳細，根據不同表單狀態顯示不同頁面——click
         $(".leave-query-state").on("click", function() {
             var self = $(this).next().children().find('.leave-id').text();
-            var leaveState = $(this).children("span").first().text();
+            var leaveState = $(this).children("span").text();
             //console.log(leaveState);
 
             if(leaveState == "表單簽核中") {
@@ -133,7 +133,7 @@ $("#viewLeaveQuery").pagecontainer({
             return false;
         });
 
-        //輸入撤回理由——keyup
+        //輸入撤回理由——textarea
         $("#withdrawReason").on("keyup", function() {
             withdrawReason = $(this).val();
 
