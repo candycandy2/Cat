@@ -3,7 +3,7 @@ var initialAppName = "Parking";
 var appKeyOriginal = "appparking";
 var appKey = "appparking";
 var appSecretKey = "eaf786afb27f567a9b04803e4127cef3";
-var pageList = ["viewMain","viewParkingDetailAdd"];
+var pageList = ["viewMain","viewParkingDetailAdd","viewQTYParkingDetail"];
 var htmlContent = '';
 var dictDayOfWeek = {
     '1': '(一)',
