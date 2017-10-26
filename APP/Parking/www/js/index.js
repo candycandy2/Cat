@@ -24,6 +24,10 @@ var reserveDays = 14;
 var myReserveLocalData = [];
 var isReloadPage = false;
 var clickEditSettingID = '';
+var pdName = '';
+var pdCategory = '';
+var pdRemark = '';
+var pdCar = '';
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
@@ -226,6 +230,19 @@ function onBackKeyDown() {
 function popupClose() {
     var popupMsgID = $(".ui-popup-active")[0].children[0].id;
     $('#' + popupMsgID).popup('close');
+}
+
+function popupSchemeMsg(attr, title, content, href1, href2) {
+    $('#reservePopupSchemeMsg').attr('for', attr);
+    $('#reservePopupSchemeMsg #msgTitle').html(title);
+    $('#reservePopupSchemeMsg #msgContent').html(content);
+    $('#reservePopupSchemeMsg #mail').attr('href', href1);
+    $('#reservePopupSchemeMsg #tel').attr('href', href2);
+    $('#reservePopupSchemeMsg > div').css('height', '30vh');
+    $('#reservePopupSchemeMsg').removeClass();
+    $('#reservePopupSchemeMsg').popup(); //initialize the popup
+    $('#reservePopupSchemeMsg').show();
+    $('#reservePopupSchemeMsg').popup('open');
 }
 
 function refreshPage(data) {
