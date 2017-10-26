@@ -1,6 +1,7 @@
 <?php
 namespace App\lib;
 use Config;
+use Mail;
 use Illuminate\Support\Facades\Log;
 
 class CommonUtil{
@@ -251,5 +252,26 @@ class CommonUtil{
     }
   }
 
+  /**
+   * 發送email
+   * @param  string $template 信件板模
+   * @param  Array  $data     array(
+                                    'sender'      =>寄件者login_id (ex:Cleo.W.Chan),
+                                    'receiver'    =>收件者login_id (ex:Steven.Yan),
+                                    'to'          =>收件者email,
+                                    'fromName'    =>發信名稱,
+                                    'fromAddress' =>發信者email,
+                                    'subject'     =>信件標題 
+                                );
+   * @return [type]           [description]
+   */
+  public static function sendMail($template, $data){
+    Mail::send($template, $data, function ($message) use ($data){
+        $message->from($data['fromAddress'], $data['fromName']);
+        $message->to($data['to']);
+        $message->subject($data['subject']);
+        $message->getSwiftMessage();
+    });
+  }
 
 }
