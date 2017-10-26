@@ -50,6 +50,7 @@
 
                 $("#htmlContent").html(content).promise().done(function() {
 
+                    var screenWidth = document.documentElement.clientWidth;
                     var $images = $('#htmlContent img');
                     var loaded_images_count = 0;
                     var loaded_finish = false;
@@ -60,6 +61,9 @@
                             loaded_images_count++;
 
                             if (loaded_images_count == $images.length) {
+                                if ($("#htmlContent")[0].scrollWidth < screenWidth) {
+                                    $("#htmlContent").css("width", (screenWidth) + "px");
+                                }
 
                                 loaded_finish = true;
                                 $("#messageLoadErrorPopup").popup("close");
@@ -79,6 +83,10 @@
                             }
                         }, 10000);
                     } else {
+                        if ($("#htmlContent")[0].scrollWidth < screenWidth) {
+                            $("#htmlContent").css("width", (screenWidth) + "px");
+                        }
+
                         setTimeout(function(){
                             doPanZoom();
                         }, 500);
@@ -93,8 +101,13 @@
                         $("#htmlContent").css("width", $("#htmlContent")[0].scrollWidth + "px");
                         $("#htmlContent").css("height", $("#htmlContent")[0].scrollHeight + "px");
 
+                        //Remove Listener Event
                         $("#PortalContent").off("scroll");
+                        $("#htmlContent").off("panzoomstart");
+                        $("#htmlContent").off("panzoomzoom");
+                        $("#htmlContent").off("panzoomend");
 
+                        //Panzoom Initial
                         $("#htmlContent").panzoom();
                         $("#htmlContent").panzoom("option", {
                             minScale: minScale
@@ -145,7 +158,7 @@
                         loadingMask("hide");
 
                         //panzoom start event
-                        $("#htmlContent").on('panzoomstart', function(e, panzoom, matrix, changed) {
+                        $("#htmlContent").on("panzoomstart", function(e, panzoom, matrix, changed) {
                             var canvasWidth = $("#htmlContent").width() * matrix[0];
                             var screenWidth = document.documentElement.clientWidth;
 
@@ -164,7 +177,7 @@
                         });
 
                         //panzoom start zoom
-                        $("#htmlContent").on('panzoomzoom', function(e, panzoom, scale, opts) {
+                        $("#htmlContent").on("panzoomzoom", function(e, panzoom, scale, opts) {
                             $("#htmlContent").panzoom("option", {
                                 disablePan: true
                             });
@@ -187,7 +200,7 @@
                         });
 
                         //panzoom end event
-                        $("#htmlContent").on('panzoomend', function(e, panzoom, matrix, changed) {
+                        $("#htmlContent").on("panzoomend", function(e, panzoom, matrix, changed) {
 
                             var matrix = $("#htmlContent").panzoom("getMatrix");
 
@@ -204,12 +217,18 @@
                                 var canvasOffsetTop = canvasOffset.top;
                                 var left = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
 
+                                $("#htmlContent").css({
+                                    top: matrixNewTopY,
+                                    transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + ", 0, 0)"
+                                });
+
                                 $("#htmlContent").offset({
-                                    top: canvasOffsetTop,
+                                    top: matrixNewTopY,
                                     left: left
                                 });
 
                             } else if (matrix[0] > minScale) {
+
                                 var canvasWidth = $("#htmlContent").width() * matrix[0];
                                 var screenWidth = document.documentElement.clientWidth;
 
@@ -251,14 +270,15 @@
                             var headerHeight = $("#viewWebNews2-3-1 .page-header").height();
                             var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height();
                             var scrollTop = $("#PortalContent").scrollTop();
+                            var limitPercent = matrix[0];
 
                             if (device.platform === "iOS") {
                                 headerHeight += 20;
                             }
 
-                            if ((canvasHeight * matrix[0] - scrollTop) < (screenHeight * 0.8 - headerHeight - portalHeaderHeight)) {
+                            if ((canvasHeight * matrix[0] - scrollTop) < (screenHeight * limitPercent - headerHeight - portalHeaderHeight)) {
                                 $("#PortalContent").animate({
-                                    scrollTop: ((canvasHeight * matrix[0]) - (screenHeight * 0.8 - headerHeight - portalHeaderHeight))
+                                    scrollTop: ((canvasHeight * matrix[0]) - (screenHeight * limitPercent - headerHeight - portalHeaderHeight))
                                 }, 0);
                             }
 
