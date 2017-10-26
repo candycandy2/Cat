@@ -17,7 +17,7 @@ Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','lo
     Route::POST('/getQFriend','FriendController@getQFriend');
     Route::POST('/setQFriend','FriendController@setQFriend');
     Route::POST('/sendQInvitation','FriendController@sendQInvitation');
-    // Route::POST('/sendQInstall','FriendController@sendQInstall');
+    Route::POST('/sendQInstall','FriendController@sendQInstall');
     Route::POST('/removeQFriend','FriendController@removeQFriend');
     Route::POST('/acceptQInvitation','FriendController@acceptQInvitation');
     Route::POST('/rejectQInvitation','FriendController@rejectQInvitation');

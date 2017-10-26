@@ -3,10 +3,12 @@ namespace App\Http\Controllers;
 
 use DB;
 use Validator;
+use Config;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\lib\Verify;
 use App\lib\ResultCode;
+use App\lib\CommonUtil;
 use App\Services\UserService;
 use App\Services\FriendService;
 
@@ -463,5 +465,61 @@ class FriendController extends Controller
             \DB::rollBack();
             return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
         }
+    }
+
+    /**
+     * 透過此API送出安裝邀請
+     * @return json
+     */
+    public function sendQInstall(){
+        try {
+          
+            $required = Validator::make($this->data, [
+                'destination_emp_no' => 'required'
+            ]);
+
+            $empNo = $this->data['emp_no'];
+            $destEmpNo = $this->data['destination_emp_no'];
+           
+
+            if(!Verify::checkUserStatusByUserEmpNo($destEmpNo)) {
+             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                    'Message'=>"要設定的好友工號不存在",
+                    'Content'=>""]);
+            }
+            $registerMessage = $this->userService->getQMessageRegister($destEmpNo);
+            if($registerMessage->register_message == 'Y'){
+                return $result = response()->json(['ResultCode'=>ResultCode::_025924_DestinationEmployeeAlreadyRegistered,
+                'Message'=>"要邀請的好友已經註冊過QPlay",
+                'Content'=>""]);
+            }
+
+            $user = $this->userService->getUserData($empNo);
+            $destUser = $this->userService->getUserData($destEmpNo);
+            $data = array(
+                        'sender'      =>$user->login_id,
+                        'receiver'    =>$destUser->login_id,
+                        'to'          =>$destUser->email,
+                        'fromName'    =>Config::get('app.mail_name'),
+                        'fromAddress' =>Config::get('app.mail_address'),
+                        'subject'     =>$user->login_id ."邀請您使用QPlay",
+                        'sendDate'    =>time()
+                    );
+            $template = 'emails.invitation_to_install';
+            CommonUtil::sendMail($template,$data);
+
+            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>""]);
+        }catch (\Exception $e) {
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+        }
+            // Mail::send($template, $data, function ($message) use ($data){
+            //     $message->from($data['fromAddress'], $data['fromName']);
+            //     $message->to($data['mailTo']);
+            //     $message->subject($data['subject']);
+            //     $message->getSwiftMessage();
+            // });
+
     }
 }
