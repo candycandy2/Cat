@@ -472,16 +472,22 @@ class FriendController extends Controller
      * @return json
      */
     public function sendQInstall(){
-        try {
+       try {
           
             $required = Validator::make($this->data, [
                 'destination_emp_no' => 'required'
             ]);
 
+            if($required->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                        'Message'=>"必填字段缺失",
+                        'Content'=>""]);
+            }
+
             $empNo = $this->data['emp_no'];
             $destEmpNo = $this->data['destination_emp_no'];
            
-
             if(!Verify::checkUserStatusByUserEmpNo($destEmpNo)) {
              return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
                     'Message'=>"要設定的好友工號不存在",
@@ -514,12 +520,5 @@ class FriendController extends Controller
         }catch (\Exception $e) {
             return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
         }
-            // Mail::send($template, $data, function ($message) use ($data){
-            //     $message->from($data['fromAddress'], $data['fromName']);
-            //     $message->to($data['mailTo']);
-            //     $message->subject($data['subject']);
-            //     $message->getSwiftMessage();
-            // });
-
     }
 }
