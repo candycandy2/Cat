@@ -340,8 +340,7 @@ div.scrollmenu a {
 	color: #666666;
 }
 
-#applyLeaveCategroy {
-	/* height: 3.14vw; */
+#leaveIntroduce {
 	display: none;
 	color: #666666;
 }
@@ -658,6 +657,7 @@ div.scrollmenu a {
 	display: inline-block;
 	width: 43vw;
 	height: 5vw;
+	overflow: hidden;
 }
 
 .leave-query-max {
