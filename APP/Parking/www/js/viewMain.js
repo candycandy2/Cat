@@ -43,7 +43,6 @@ $("#viewMain").pagecontainer({
 
         };
         
-        //var MeetingRoomID = JSON.parse(localStorage.getItem('meetingRoomLocalData'))['content'][0]['MeetingRoomID']
         function getSpaceData(siteIndex) {
             htmlContent = '';
             siteIndex = siteIndex == '' ? '0' : siteIndex;
@@ -344,28 +343,23 @@ $("#viewMain").pagecontainer({
             }();
         }
 
-        // delete parameters when connect to API
-        function getAPIQueryMyReserve(page, siteId, spaceId, date, timeID) {
-            //loadingMask('show');
+        function getAPIQueryMyReserve(date) {
+            loadingMask('show');
             var self = this;
             var today = new Date();
-            //var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
+            var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
 
-            //this.successCallback = function(data) {
+            this.successCallback = function(data) {
                 $('div[id^=def-]').remove();
 
-                // delete parameters when connect to API
-                if (timeID != null) {  
-                //if (data['ResultCode'] === "1") {  
+                if (data['ResultCode'] === "1") {  
                     //Successful
                     var htmlContent_today = '';
                     var htmlContent_other = '';
                     var originItem = ['default', '[begin]', '[end]', '[value]', '[space]', '[date]', '[dateformate]', '[site]', '[PDetailName]', 'disable'];
 
-                    if (page == 'pageThree') {
-
-                    //for (var i = 0, item; item = data['Content'][i]; i++) {
-                        for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++) {
+                        //for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++) {
+                        for (var i = 0, item; item = data['Content'][i]; i++) {
                             // convert yyyymmdd(string) to yyyy/mm/dd
                             var arrCutString = cutStringToArray(date, ['4', '2', '2']);
                             var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
@@ -373,17 +367,18 @@ $("#viewMain").pagecontainer({
                             // convert date format to mm/dd(day of week)
                             var d = new Date(strDate);
                             var dateFormat = d.mmdd('/');
-                            var sTime = $('div[id=time' + timeIDItem + '] > div > div:first').text();
-
-                            if (siteId === '92') {
+                            //var sTime = $('div[id=time' + timeIDItem + '] > div > div:first').text();
+                            if (item.ParkingSpaceSite === 92) {
                                 var siteName = 'QTT';
-                                var eTime = addThirtyMins(sTime);
-                            }else if (siteId === '111'){
+                                var strParkingSpaceName = item.ParkingSpaceName.substr(2,3);
+                                var strReserveName = item.ReserveName;
+                            }else if (item.ParkingSpaceSite === 111){
                                 var siteName = 'QTY';
-                                var eTime = addThirtyMins(addThirtyMins(sTime));
+                                var strParkingSpaceName = item.ParkingSpaceName;
+                                var strReserveName = item.PDetailName;
                             }
 
-                            var replaceItem = ['def-' + timeIDItem, sTime, eTime, timeIDItem, parkingSpaceDataExample[spaceId], date, dateFormat, siteName, 'BenQ/Jennifer.Y.Wang', ''];
+                            var replaceItem = ['def-' + item.ReserveTraceAggID, item.ReserveBeginTime, item.ReserveEndTime, item.ReserveTraceAggID, strParkingSpaceName, item.ReserveDate, dateFormat, siteName, strReserveName, ''];
 
                             if (date == new Date().yyyymmdd('')) {
                                 $('#pageThree :first-child h2').removeClass('disable');
@@ -394,8 +389,6 @@ $("#viewMain").pagecontainer({
                                     += replaceStr($('#defaultOtherDay').get(0).outerHTML, originItem, replaceItem);
                             }
                         }
-                    //}
-                    }
 
                     if (htmlContent_today == '') {
                         $('#todayLine').addClass('disable');
@@ -410,20 +403,18 @@ $("#viewMain").pagecontainer({
                         $('#otherDayLine').removeClass('disable');
                         $('#otherDayLine').after(htmlContent_other);
                     }
-                // delete parameters when connect to API
-                } else {
-                //} else if (data['ResultCode'] === "042901") {
+                } else if (data['ResultCode'] === "042901") {
                     //Not Found Reserve Data
                     popupMsg('noDataMsg', '', '沒有您的預約資料', '', false, '確定', '');
                     $('#todayLine').addClass('disable');
                     $('#otherDayLine').addClass('disable');
                 }
-            /*    loadingMask('hide');
+                loadingMask('hide');
             };
 
             var __construct = function() {
                 CustomAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "");
-            }(); */
+            }(); 
         }
 
         function getAPIReserveCancel(date, traceID) {
@@ -462,25 +453,25 @@ $("#viewMain").pagecontainer({
         }
 
         function getAPIMyReserveCancel(date, traceID) {
-            /*loadingMask('show');
+            loadingMask('show');
             var self = this;
             var queryData = '<LayoutHeader><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTraceID></ReserveTraceID><ReserveTraceAggID>' + traceID + '</ReserveTraceAggID></LayoutHeader>';
 
             this.successCallback = function(data) {
-                if (data['ResultCode'] === "042904") {*/
+                if (data['ResultCode'] === "042904") {
                     //Cancel a Reservation Successful
                     $('div[id^=def-' + traceID + ']').hide();
 
                     //delete local data for refresh
-            /*        var reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
+                    var reserveDetailLocalData = JSON.parse(localStorage.getItem('reserveDetailLocalData'));
                     reserveDetailLocalData = reserveDetailLocalData.filter(function(item) {
                         return item.date != date;
                     });
-                    localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData)); */
+                    localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData)); 
 
                     popupMsg('successMsg', '', '取消預約成功', '', false, '確定', '');
 
-            /*  } else if (data['ResultCode'] === "042905") {
+                } else if (data['ResultCode'] === "042905") {
                     //Cancel a Reservation Failed
                     popupMsg('failMsg', '', '取消預約失敗', '', false, '確定', '');
                 }
@@ -489,7 +480,7 @@ $("#viewMain").pagecontainer({
 
             var __construct = function() {
                 CustomAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData, "");
-            }(); */
+            }(); 
         }
 
         function checkLocalDataExpired() {
@@ -564,7 +555,6 @@ $("#viewMain").pagecontainer({
         $("#viewMain").one("pagebeforeshow", function(event, ui) {
             //get last update time check date expired
             checkLocalDataExpired();
-            //var doAPIQueryMyReserve = new getAPIQueryMyReserve();
             getInitialData();
             setInitialData();
             querySettingCarList();
@@ -602,6 +592,7 @@ $("#viewMain").pagecontainer({
                 $('#pageOne').hide();
                 $('#pageTwo').hide();
                 $('#pageThree').show();
+                var doAPIQueryMyReserve = new getAPIQueryMyReserve(clickDateId);
             }
         });
 
@@ -718,8 +709,6 @@ $("#viewMain").pagecontainer({
                     timeID += timeClick[item] + ',';
                 }                
                 var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', selectedSite, clickSpaceId, pdName, pdCategory, pdRemark, pdCar, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
-                //delete 
-                //var doAPIQueryMyReserve = new getAPIQueryMyReserve('pageThree', selectedSite, clickSpaceId, clickDateId, timeID.replaceAll('time', '').replace(/,\s*$/, ""));
             }
         });
 

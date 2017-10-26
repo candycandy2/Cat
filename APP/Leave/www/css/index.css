@@ -341,7 +341,7 @@ div.scrollmenu a {
 }
 
 #applyLeaveCategroy {
-	height: 3.14vw;
+	/* height: 3.14vw; */
 	display: none;
 	color: #666666;
 }
