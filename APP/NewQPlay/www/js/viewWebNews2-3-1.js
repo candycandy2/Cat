@@ -128,7 +128,7 @@
                             portalHeaderHeight += 20;
                         }
 
-                        if (eventType === "Communication") {
+                        if (eventType === "Communication" || eventType === "ITS") {
                             $("#PortalContent").css("padding-top", "0px");
                             var matrixNewTopY = parseInt(portalHeaderHeight, 10);
                         } else {
@@ -296,32 +296,19 @@
             function QueryPortalListDetail() {
                 (function() {
 
-                    if (eventType === "Communication") {
-                        $("#htmlContent").load(portalURL, function() {
-                            $("#htmlContent").find("meta").remove();
-                            $("#htmlContent").find("title").remove();
-                            $("#htmlContent").find("base").remove();
-
-                            $("#viewWebNews2-3-1 .portal-header").hide();
-                            renderCanvas($("#htmlContent").html());
-                        });
+                    if (eventType === "Communication" || eventType === "ITS") {
+                        $("#viewWebNews2-3-1 .portal-header").hide();
                     } else {
-                        var queryData = "<LayoutHeader><PortalID>" + messageRowId + "</PortalID></LayoutHeader>";
-
-                        var successCallback = function(data) {
-                            if (data["ResultCode"] === "1") {
-                                $("#viewWebNews2-3-1 .portal-header").show();
-                                renderCanvas(data["Content"][0]["PortalContent"]);
-                            } else if (data["ResultCode"] === "044901") {
-                                //Message was be deleted in server
-                                messageExist = false;
-                            }
-                        };
-
-                        var failCallback = function(data) {};
-
-                        CustomAPI("POST", true, "PortalListDetail", successCallback, failCallback, queryData, "");
+                        $("#viewWebNews2-3-1 .portal-header").show();
                     }
+
+                    $("#htmlContent").load(portalURL, function() {
+                        $("#htmlContent").find("meta").remove();
+                        $("#htmlContent").find("title").remove();
+                        $("#htmlContent").find("base").remove();
+
+                        renderCanvas($("#htmlContent").html());
+                    });
 
                 }());
             }
