@@ -347,15 +347,8 @@ div.scrollmenu a {
 
 #uploadAttachment,
 #baseDate,
-#divEmpty,
-#baseTime {
+#divEmpty {
 	display: none;
-}
-
-#noBaseTime {
-	display: none;
-	height: 7.8vw;
-	line-height: 7.8vw;
 }
 
 .apply-categroy {

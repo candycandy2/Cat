@@ -10,11 +10,11 @@ var leaveAllData = [
     {id: '9', categroy: '事假', leave: '事假', introduce: '一年有14天日的事假', attachment: 0, basedate: 0, leftday: 0.5},
     {id: '10', categroy: '事假', leave: '家庭照顧假', introduce: '同事假，全年以7日爲限，併入事假計算', attachment: 0, basedate: 0, leftday: 1},
     {id: '11', categroy: '事假', leave: '特別事假', introduce: '當一年之14日事假用畢時方可申請使用', attachment: 1, basedate: 0, leftday: 2},
-    {id: '12', categroy: '婚嫁', leave: '婚嫁', introduce: '可分開請，結婚生效日前30日及後90日內請畢，基準日爲結婚登記日', attachment: 1, basedate: 1, leftday: 5},
-    {id: '13', categroy: '婚嫁', leave: '訂婚假', introduce: '訂婚當日及其前後兩日之五日內請畢', attachment: 0, basedate: 1, leftday: 1.5},
-    {id: '14', categroy: '喪家', leave: '3天喪家', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 0},
-    {id: '15', categroy: '喪家', leave: '6天喪家', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 0},
-    {id: '16', categroy: '喪家', leave: '8天喪家', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 1},
+    {id: '12', categroy: '婚假', leave: '婚假', introduce: '可分開請，結婚生效日前30日及後90日內請畢，基準日爲結婚登記日', attachment: 1, basedate: 1, leftday: 5},
+    {id: '13', categroy: '婚假', leave: '訂婚假', introduce: '訂婚當日及其前後兩日之五日內請畢', attachment: 0, basedate: 1, leftday: 1.5},
+    {id: '14', categroy: '喪假', leave: '3天喪假', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 0},
+    {id: '15', categroy: '喪假', leave: '6天喪假', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 0},
+    {id: '16', categroy: '喪假', leave: '8天喪假', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 1},
     {id: '17', categroy: '產假', leave: '有薪產檢假', introduce: '以懷孕日爲基準，請假以小時爲最小單位', attachment: 1, basedate: 1, leftday: 1.5},
     {id: '18', categroy: '產假', leave: '產假', introduce: '不得分開請假，應與子女出生前後一星期內辦理請假手續', attachment: 1, basedate: 1, leftday: 0},
     {id: '19', categroy: '產假', leave: '半薪產假', introduce: '到職未滿六個月以上者，以半薪計算', attachment: 1, basedate: 1, leftday: 0.5},
@@ -64,7 +64,7 @@ var selectLeave;
 var leaveObj = {};
 var leaveState = false;
 var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeaveTime;
-var basedayState;
+var basedayState = null;
 var otherBaseVal,newBaseVal;
 var leftdayMsg;
 var needBaseday = false;
@@ -208,6 +208,8 @@ $("#viewLeaveSubmit").pagecontainer({
             $('#leaveIntroduce').empty().hide();
             $('#baseDate').hide();
             $('#uploadAttachment').hide();
+            $('#divEmpty').hide();
+            basedayState = null;
         }
 
         //获取本部门员工——查找代理人
@@ -233,8 +235,8 @@ $("#viewLeaveSubmit").pagecontainer({
         }
 
         //檢查是否有已經生效的基準日
-        function checkBaseday(leave) {
-            if(leave == "婚嫁" || leave == "產假") {
+        function checkBaseday() {
+            if(selectLeave == "婚假" || selectLeave == "產假") {
                 return true;
             }else {
                 return false;
@@ -246,7 +248,7 @@ $("#viewLeaveSubmit").pagecontainer({
             baseData["option"] = [];
             $("#baseTime").empty();
             $("#basedate-popup-option-popup").remove();
-            $("#basedate-popup-option-list #otherBasedate").remove();
+            $("#otherBasedate").remove();
 
             for(var i in baseDayList) {
                 baseData["option"][i] = {};
@@ -256,11 +258,11 @@ $("#viewLeaveSubmit").pagecontainer({
 
             tplJS.DropdownList("viewLeaveSubmit", "baseTime", "prepend", "typeB", baseData);
 
-            var otherBasedayList = "<li class='tpl-option-msg-list' id='otherBasedate'>" + otherBasedayStr + "</li>";
-            $("#basedate-popup-option-list").append(otherBasedayList);
-
+            var otherBasedayList = "<div class='tpl-option-msg-list' id='otherBasedate'>" + otherBasedayStr + "</div>";
+            $("#basedate-popup-option .ui-content").append(otherBasedayList);
+            
         }
-        
+
 
         /********************************** page event *************************************/
         $("#viewLeaveSubmit").on("pagebeforeshow", function(event, ui) {
@@ -295,6 +297,7 @@ $("#viewLeaveSubmit").pagecontainer({
         //點擊假別——獲取假別對象詳細信息——list click
         $(document).on("click", "#leave-popup-option ul li", function() {
             selectLeave = $(this).text();
+            console.log(selectLeave);
             leaveObj = getLeaveObj();
             leaveState = true;
 
@@ -325,19 +328,8 @@ $("#viewLeaveSubmit").pagecontainer({
                         $('#divEmpty').show();
 
                         //檢查是否有已經生效的基準日
-                        basedayState = checkBaseday(selectLeave);
-                        getBasedayByLeave();
-
-                        //true表示有已經生效的基準日，可以從已有當中選擇
-                        if(basedayState) {
-                            $('#baseTime').show();
-                            $('#noBaseTime').hide();
-                        
-                        //false表示沒有已經生效的基準日，需要新增基準日
-                        }else {
-                            $('#noBaseTime').show();
-                            $('#baseTime').hide();
-                        }
+                        basedayState = checkBaseday();
+                        //getBasedayByLeave();
                         
                         needBaseday = true;
                     }else {
@@ -356,20 +348,7 @@ $("#viewLeaveSubmit").pagecontainer({
             }, 100);
             
         });
-
-        //點擊“選擇其他基準日”——click
-        $(document).on("click", "#otherBasedate", function() {
-            $("#basedate-popup").on("change", function(e) {
-                e.preventDefault();
-            });
-
-            // if(device.platform === "iOS") {
-            //     $("#oldBaseday").trigger("focus");
-            // }else if(device.platform === "Android") {
-            //     $("#oldBaseday").trigger("click");
-            // }
-        });
-
+        
         //從list選擇已有基準日——popup change
         $(document).on("change", "#basedate-popup", function() {
             selectBaseday = true;
@@ -394,6 +373,21 @@ $("#viewLeaveSubmit").pagecontainer({
 
             tplJS.reSizeDropdownList("basedate-popup", "typeB");
 
+        });
+
+        //選擇基準日，根據是否有有效基準日操作——click
+        $("#selectBaseday").on("click", function() {
+            if(basedayState) {
+                //popup
+                popupMsgInit('.basedayList');
+            }else {
+                //input type=datetime=local
+                if(device.platform === "iOS") {
+                    $("#newBaseday").trigger("focus");
+                }else if(device.platform === "Android") {
+                    $("#newBaseday").trigger("click");
+                }
+            }
         });
 
         //選擇新基準日——click btn
