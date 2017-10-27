@@ -203,6 +203,13 @@ class ChatRoomController extends Controller
                         'Content'=>""]);
             }
 
+            if($required->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                        'Message'=>"必填字段缺失",
+                        'Content'=>""]);
+            }
+
             $destArr = [];
             $member = [];
 
@@ -210,7 +217,7 @@ class ChatRoomController extends Controller
             $empNo = $this->data['emp_no'];
             $dest = $this->data['member_list']['destination_emp_no'];
             if(is_array($dest)){
-            $destEmpArr = array_unique($dest);
+                $destEmpArr = array_unique($dest);
             }else{
                 $destEmpArr = array($dest);
             }
@@ -370,6 +377,75 @@ class ChatRoomController extends Controller
                         'Message'=>"Success",
                         'Content'=>""]);
             
+        }catch (JMessageException $e){
+            \DB::rollBack();
+             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+                        'Message'=>"Call API failed or error occurred",
+                        'Content'=>$response]);
+        }catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+        }
+    }
+
+    /**
+     * 透過此API可以修改聊天室標題及描述
+     */
+    public function setQChatroom(){
+        \DB::beginTransaction();
+        try {
+            $required = Validator::make($this->data, [
+                    'group_id' => 'required',
+                    'attribute_exists' => 'required',
+                    'attribute_exists' => 'required'
+                ]);
+
+            $groupId = $this->data['group_id'];
+            $empNo = $this->data['emp_no'];
+            $chatRoomName = $this->data['chatroom_name'];
+            $chatRoomDesc = $this->data['chatroom_desc'];
+            $chatroom = $this->chatRoomService->getChatroom($groupId);
+
+            if(is_array($chatRoomName)){
+                $chatRoomName = NULL;
+            }
+            if(is_array($chatRoomDesc)){
+                $chatRoomDesc = NULL;
+            }
+
+            if(is_null($chatroom) || count($chatroom) == 0){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025920_TheChatroomIdIsInvalid,
+                        'Message'=>"傳入的聊天室編號無法識別",
+                        'Content'=>""]);
+                
+            }
+            
+            $member = explode(',', $chatroom->member);
+            if(!in_array($empNo,$member)){
+                return $result = response()->json(['ResultCode'=>ResultCode::_025907_NoAuthority,
+                        'Message'=>"權限不足",
+                        'Content'=>""]);
+            }
+            $dataToJMessage = [];
+            $dataToDB = [];
+            if(!is_null($chatRoomName)){
+                 $dataToJMessage['name'] = $dataToDB['chatroom_name'] = $chatRoomName;
+            }
+            if(!is_null($chatRoomDesc)){
+                 $dataToJMessage['desc'] = $dataToDB['chatroom_name'] = $chatRoomDesc;
+            }
+
+            $response =$this->chatRoomService->updateGroup($groupId, $dataToJMessage);
+            if(isset($response->error->code)){
+                throw new JMessageException($response->error->message);
+            }
+            $userId = $this->userService->getUserData($empNo)->row_id;
+            $this->chatRoomService->updateChatroom($groupId, $dataToDB, $userId);
+
+            \DB::commit();
+            return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"Success",
+                        'Content'=>""]);
         }catch (JMessageException $e){
             \DB::rollBack();
              return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,

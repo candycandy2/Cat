@@ -150,11 +150,23 @@ class ChatRoomService
      * @param int   $groupId    聊天室id
      * @param Array $destArr    添加的特定成員login_id
      */
-    public function removeGroupMember($groupId, $destArr){
+    public function removeGroupMember($groupId, Array $destArr){
         $method = 'groups/'.$groupId.'/members';
         $data =json_encode([
                      "remove" => $destArr
                 ]);
+        $url = JMessage::API_V1_URL.$method;
+        return $this->jmessage->exec('POST', $url, $data);
+    }
+
+    /**
+     * 更新聊天群組資訊
+     * @param  int    $groupId 聊天室id
+     * @param  Array  $dara    要更新的資訊
+     */
+    public function updateGroup($groupId, Array $data){
+        $method = 'groups/'.$groupId;
+        $data =json_encode($data);
         $url = JMessage::API_V1_URL.$method;
         return $this->jmessage->exec('POST', $url, $data);
     }
