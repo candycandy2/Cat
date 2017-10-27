@@ -468,6 +468,10 @@ hr.ui-color-green {
     background-color: #eaeaea !important;
 }
 
+.ui-color-disable {
+    background-color: #eaeaea !important;
+}
+
 .ui-color-myreserve {
     background-color: #CBF1EC !important;
 }
@@ -637,4 +641,52 @@ div.scrollmenu a {
     border-color: rgba(255,0,0,0);
 }
 
+/********************************** popup msg *************************************/
 
+#reservePopupSchemeMsg-popup,
+#reservePopupSchemeMsg,
+#newSettingTimePickerPopup-popup,
+#newSettingTimePickerPopup {
+    width: initial !important;
+    border-width: 0px !important;
+    border-style: initial !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+}
+
+.popup-msg{ height: auto !important; overflow: hidden;}
+
+.popup-msg a {
+    background: transparent;
+    border: none;
+    color: #1678E5 !important;
+    height: 3rem;
+    line-height: 3rem;
+    font-size: 1rem;
+    width: calc((100% - 1px) / 2 );
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    font-weight: 100;
+    float: left;
+    display: inline-block;
+}
+
+.popup-msg a:nth-of-type(1) {
+    left: initial;
+    height: 4vh;
+    width: 6vw;
+}
+
+.popup-msg a:nth-of-type(2) {
+    border-top: 1px solid #d4d4d4;
+    border-right: 1px solid #d4d4d4;
+    left: 0;
+    border-radius: 0 0 0 10px;
+}
+
+.popup-msg a:nth-of-type(3) {
+    border-top: 1px solid #d4d4d4;
+    right: 0;
+    border-radius: 0 0 10px 0;
+}

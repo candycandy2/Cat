@@ -7,8 +7,8 @@ var appKey = "appleave";
 var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var htmlContent = "";
-var time = new Date(Date.now());
 
+var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
 var currentYear = time.getFullYear();
 var currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);

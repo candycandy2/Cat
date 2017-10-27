@@ -2,7 +2,9 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
-            <img src="img/menu.png" style="width: 4.934VW;">
+            <img src="img/menu.png" class="leaveMenu">
+            <img src="img/nav_back.png" id="backToList">
+            <img src="img/nav_back.png" id="backToSign">
         </a>
         <div class="header-style">
             <div class="ui-title">
@@ -12,28 +14,908 @@
         </div>
     </div>
     <div data-role="main" class="page-main">
-        <div>
-            <label for="datetimes">datetime-local:</label>
-            <input type="datetime-local" data-role="none" name="datetimes" id="datetimes" /><br>
+        <!-- 銷假單列表 -->
+        <div class="backLeave-query-main">
+            <div class="backLeave-query-list">  
+                <div>
+                    <div class="backLeave-query-state font-style3" data-num="654000">
+                        <!-- 表單簽核中 -->
+                        <span class="langStr" data-id="str_147"></span>
+                        <img src="img/btn_nextpage.png">
+                    </div>
+                    <div class="backLeave-query-base font-style10">
+                        <div class="backLeave-query-basedata">
+                            <div>
+                                <!-- 銷假單號 -->
+                                <span class="langStr" data-id="str_166"></span>
+                                <span class="leave-id">654000</span>
+                            </div>
+                            <div>
+                                <!-- 假別 -->
+                                <span class="langStr" data-id="str_152"></span>
+                                <span class="langStr" data-id="str_094"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- 請假區間 -->
+                            <span class="langStr" data-id="str_138"></span>
+                            <span>2017/02/08 8:00</span>
+                            <span> - </span>
+                            <span>2017/02/08 17:00</span>
+                        </div>
+                        <div>
+                            <!-- 請假數 -->
+                            <span class="langStr" data-id="str_153"></span>
+                            <span>1</span>
+                            <!-- 天 -->
+                            <span class="langStr" data-id="str_071"></span>
+                            <span>0</span>
+                            <!-- 小時 -->
+                            <span class="langStr" data-id="str_088"></span>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+            <div class="backLeave-query-list">
+                <div>
+                    <div class="backLeave-query-state font-style3" data-num="654001">
+                        <!-- 表單已拒絕 -->
+                        <span class="langStr" data-id="str_150"></span>
+                        <img src="img/btn_nextpage.png">
+                    </div>
+                    <div class="backLeave-query-base font-style10">
+                        <div class="backLeave-query-basedata">
+                            <div>
+                                <!-- 銷假單號 -->
+                                <span class="langStr" data-id="str_166"></span>
+                                <span class="leave-id">654001</span>
+                            </div>
+                            <div>
+                                <!-- 假別 -->
+                                <span class="langStr" data-id="str_152"></span>
+                                <span class="langStr" data-id="str_033"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- 請假區間 -->
+                            <span class="langStr" data-id="str_138"></span>
+                            <span>2017/05/08 13:00</span>
+                            <span> - </span>
+                            <span>2017/05/09 17:00</span>
+                        </div>
+                        <div>
+                            <!-- 請假數 -->
+                            <span class="langStr" data-id="str_153"></span>
+                            <span>1</span>
+                            <!-- 天 -->
+                            <span class="langStr" data-id="str_071"></span>
+                            <span>4</span>
+                            <!-- 小時 -->
+                            <span class="langStr" data-id="str_088"></span>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+            <div class="backLeave-query-list">
+                <div>
+                    <div class="backLeave-query-state font-style3" data-num="654002">
+                        <!-- 表單已撤回 -->
+                        <span class="langStr" data-id="str_148"></span>
+                        <img src="img/btn_nextpage.png">
+                    </div>
+                    <div class="backLeave-query-base font-style10">
+                        <div class="backLeave-query-basedata">
+                            <div>
+                                <!-- 銷假單號 -->
+                                <span class="langStr" data-id="str_166"></span>
+                                <span class="leave-id">654002</span>
+                            </div>
+                            <div>
+                                <!-- 假別 -->
+                                <span class="langStr" data-id="str_152"></span>
+                                <span class="langStr" data-id="str_017"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- 請假區間 -->
+                            <span class="langStr" data-id="str_138"></span>
+                            <span>2017/08/08 8:00</span>
+                            <span> - </span>
+                            <span>2017/08/08 12:00</span>
+                        </div>
+                        <div>
+                            <!-- 請假數 -->
+                            <span class="langStr" data-id="str_153"></span>
+                            <span>0</span>
+                            <!-- 天 -->
+                            <span class="langStr" data-id="str_071"></span>
+                            <span>4</span>
+                            <!-- 小時 -->
+                            <span class="langStr" data-id="str_088"></span>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+            <div class="backLeave-query-list">
+                <div>
+                    <div class="backLeave-query-state font-style3" data-num="654003">
+                        <!-- 表單已生效 -->
+                        <span class="langStr" data-id="str_149"></span>
+                        <img src="img/btn_nextpage.png">
+                    </div>
+                    <div class="backLeave-query-base font-style10">
+                        <div class="backLeave-query-basedata">
+                            <div>
+                                <!-- 銷假單號 -->
+                                <span class="langStr" data-id="str_166"></span>
+                                <span class="leave-id">654003</span>
+                            </div>
+                            <div>
+                                <!-- 假別 -->
+                                <span class="langStr" data-id="str_152"></span>
+                                <span class="langStr" data-id="str_029"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- 請假區間 -->
+                            <span class="langStr" data-id="str_138"></span>
+                            <span>2017/10/08 8:00</span>
+                            <span> - </span>
+                            <span>2017/10/09 17:00</span>
+                        </div>
+                        <div>
+                            <!-- 請假數 -->
+                            <span class="langStr" data-id="str_153"></span>
+                            <span>2</span>
+                            <!-- 天 -->
+                            <span class="langStr" data-id="str_071"></span>
+                            <span>0</span>
+                            <!-- 小時 -->
+                            <span class="langStr" data-id="str_088"></span>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
 
-            <label for="dates">date:</label>
-            <input type="date" data-role="none" name="dates" id="dates" /><br>
+            <!-- max count msg -->
+            <div class="leave-query-max font-style12">
+                <!-- *僅顯示近10筆假單記錄 -->
+                <span class="langStr" data-id="str_145"></span>
+            </div>
 
-            <label for="times">time:</label>
-            <input type="time" data-role="none" name="times" id="times" /><br>
+            <!-- toast display:none -->
+            <div class="toast-style" id="withdrawBackLeaveMsg">
+                <!-- 銷假單已銷假 -->
+                <span class="langStr" data-id="str_161"></span>
+            </div>
+            <div class="toast-style" id="deleteBackLeaveMsg">
+                <!-- 銷假單已刪除 -->
+                <span class="langStr" data-id="str_169"></span>
+            </div>
 
-            <label for="months">month:</label>
-            <input type="month" data-role="none" name="months" id="months" /><br>
-
-            <label for="weeks">week:</label>
-            <input type="week" data-role="none" name="weeks" id="weeks" /><br>
         </div>
-        <div>
-            <div id="btn1">datetime-local</div><br>
-            <div id="btn2">date</div><br>
-            <div id="btn3">time</div><br>
-            <div id="btn4">month</div><br>
-            <div id="btn5">week</div><br>
+
+        <!-- 表單詳情（簽核中） -->
+        <div class="backLeave-query-detail-sign">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span><span>2017-02-08</span></span>
+                </div>
+                <div>
+                    <!-- 銷假單號 -->
+                    <span class="langStr" data-id="str_166"></span>
+                    <span>654000</span>
+                </div> 
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 假單狀況 -->
+                            <span class="langStr" data-id="str_144"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span class="langStr" data-id="str_147"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/info.png" class="leave-detail-img" id="backLeaveSignFlow">
+                    </div>
+                </div>
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 請假單號 -->
+                            <span class="langStr" data-id="str_165"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span>572000</span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/btn_nextpage.png" class="leave-detail-img" id="signToLeaveDetail">
+                    </div>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 銷假理由 -->
+                    <span class="langStr" data-id="str_158"></span>
+                </div>
+                <div class="font-style3">
+                    <span>本來要請，後來又沒事了，不用請假</span>
+                </div>
+            </div>
+            <div class="apply-empty-div2"></div>
+            <div class="apply-submit-btn">
+                <div id="withdrawBackLeaveBtn">
+                    <!-- 撤回 -->
+                    <span class="langStr" data-id="str_143"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 表單詳情（已拒絕） -->
+        <div class="backLeave-query-detail-refuse">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span><span>2017-05-07</span></span>
+                </div>
+                <div>
+                    <!-- 銷假單號 -->
+                    <span class="langStr" data-id="str_166"></span>
+                    <span>654001</span>
+                </div> 
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 假單狀況 -->
+                            <span class="langStr" data-id="str_144"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span class="langStr" data-id="str_150"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/info.png" class="leave-detail-img" id="backLeaveRefuseFlow">
+                    </div>
+                </div>
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 請假單號 -->
+                            <span class="langStr" data-id="str_165"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span>572001</span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/btn_nextpage.png" class="leave-detail-img" id="refuseToLeaveDetail">
+                    </div>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 銷假理由 -->
+                    <span class="langStr" data-id="str_158"></span>
+                </div>
+                <div class="font-style3">
+                    <span>本來要請，後來又沒事了，不用請假</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 表單詳情（已撤回） -->
+        <div class="backLeave-query-detail-withdraw">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span><span>2017-08-06</span></span>
+                </div>
+                <div>
+                    <!-- 銷假單號 -->
+                    <span class="langStr" data-id="str_166"></span>
+                    <span>654002</span>
+                </div> 
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 假單狀況 -->
+                            <span class="langStr" data-id="str_144"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span class="langStr" data-id="str_148"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/info.png" class="leave-detail-img" id="backLeaveWithdrawFlow">
+                    </div>
+                </div>
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 請假單號 -->
+                            <span class="langStr" data-id="str_165"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span>572002</span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/btn_nextpage.png" class="leave-detail-img" id="withdrawToLeaveDetail">
+                    </div>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 銷假理由 -->
+                    <span class="langStr" data-id="str_158"></span>
+                </div>
+                <div class="font-style3">
+                    <span>本來要請，後來又沒事了，不用請假</span>
+                </div>
+            </div>
+            <div class="apply-empty-div2"></div>
+            <div class="apply-submit-btn">
+                <div id="deleteBackLeaveBtn">
+                    <!-- 刪除銷假單 -->
+                    <span class="langStr" data-id="str_168"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 表單詳情（已生效） -->
+        <div class="backLeave-query-detail-effect">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span><span>2017-10-06</span></span>
+                </div>
+                <div>
+                    <!-- 銷假單號 -->
+                    <span class="langStr" data-id="str_166"></span>
+                    <span>654003</span>
+                </div> 
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 假單狀況 -->
+                            <span class="langStr" data-id="str_144"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span class="langStr" data-id="str_149"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/info.png" class="leave-detail-img" id="backLeaveEffectFlow">
+                    </div>
+                </div>
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 請假單號 -->
+                            <span class="langStr" data-id="str_165"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span>572003</span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/btn_nextpage.png" class="leave-detail-img" id="effectToLeaveDetail">
+                    </div>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 銷假理由 -->
+                    <span class="langStr" data-id="str_158"></span>
+                </div>
+                <div class="font-style3">
+                    <span>本來要請，後來又沒事了，不用請假</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 簽核中 —— 撤回 -->
+        <div class="backLeave-query-sign-withdraw">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span><span>2017-02-08</span></span>
+                </div>
+                <div>
+                    <!-- 銷假單號 -->
+                    <span class="langStr" data-id="str_166"></span>
+                    <span>654000</span>
+                </div> 
+            </div>
+            <div class="apply-empty-div1"></div>
+            <div class="apply-leave-reason">
+                <div class="font-style11">
+                    <!-- 撤回理由 -->
+                    <span class="langStr" data-id="str_132"></span>
+                </div>
+                <div>
+                    <textarea data-role="none" id="signTowithdrawReason" class="reason-textarea" placeholder="請填寫理由"></textarea>
+                </div>
+            </div>
+            <div class="apply-empty-div2"></div>
+            <!-- withdraw btn -->
+            <div class="apply-preview-btn">
+                <div id="signToWithdrawBtn">
+                    <!-- 撤回銷假單 -->
+                    <span class="langStr" data-id="str_167"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- sign popup -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup signIngFlow" for="signIngFlow">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <!-- <p class="main-paragraph font-style3"></p> -->
+                <ul>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Kevin.CM.Huang</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-02-08 9:00</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Paul.H.Wang</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-02-08 9:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Jack.L.Zhao</span>
+                            </div>
+                            <div class="font-style10">
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 未簽核 -->
+                            <span class="langStr" data-id="str_134"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Call.Y.Yin</span>
+                            </div>
+                            <div class="font-style10">
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 未簽核 -->
+                            <span class="langStr" data-id="str_134"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- refuse popup -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup refuseIngFlow" for="refuseIngFlow">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <!-- <p class="main-paragraph font-style3"></p> -->
+                <ul>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Kevin.CM.Huang</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-05-07 12:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Paul.H.Wang</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-05-07 13:00</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Jack.L.Zhao</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-05-07 14:00</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/reject.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Call.Y.Yin</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-05-07 15:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已拒絕 -->
+                            <span class="langStr" data-id="str_135"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- withdraw popup -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup withdrawIngFlow" for="withdrawIngFlow">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <!-- <p class="main-paragraph font-style3"></p> -->
+                <ul>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Kevin.CM.Huang</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-08-06 9:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Paul.H.Wang</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-08-06 10:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Jack.L.Zhao</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-08-06 11:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/withdraw.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Call.Y.Yin</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-08-06 12:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已撤回 -->
+                            <span class="langStr" data-id="str_136"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- effect popup -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup effectIngFlow" for="effectIngFlow">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <!-- <p class="main-paragraph font-style3"></p> -->
+                <ul>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Kevin.CM.Huang</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-10-06 12:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Paul.H.Wang</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-10-06 13:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Jack.L.Zhao</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-10-06 14:00</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                    <li class="sign-list">
+                        <div class="sign-icon">
+                            <img src="img/booked_success_icon.png">
+                        </div>
+                        <div class="sign-name">
+                            <div class="font-style3">
+                                <span>Call.Y.Yin</span>
+                            </div>
+                            <div class="font-style10">
+                                <span>2017-10-06 15:30</span>
+                            </div>
+                        </div>
+                        <div class="sign-state font-style3">
+                            <!-- 已簽核 -->
+                            <span class="langStr" data-id="str_133"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm withdraw -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmToWithdraw" for="confirmToWithdraw">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text">
+                        <!-- 確定撤回？ -->
+                        <span class="langStr" data-id="str_146"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>
+                
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="comfirmWithdrawBackLeave">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm delete -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmToDelete" for="confirmToDelete">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text">
+                        <!-- 確定刪除？ -->
+                        <span class="langStr" data-id="str_155"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>
+                
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="comfirmDeleteBackLeave">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
