@@ -3,14 +3,18 @@
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
             <div id="left" class="ui-title-btn">
-                <a id="newSettingBack" href="#"><img src="img/002_nav_back_white.png" class="title-icon" /></a>
+                <a id="QTYSettingBack" href="#"><img src="img/002_nav_back_white.png" class="title-icon" /></a>
             </div>
-            <div id="center" class="ui-title"><span>新增車籍</span></div>
-            <div id="right" class="ui-title-btn"><a id="newSettingSave" href="#" class="save-disable">儲存</a></div>
+            <div id="center" class="ui-title"><span>Parking</span></div>
+            <div id="right" class="ui-title-btn"></div>
         </div>
     </div>
     <div data-role="main" class="page-main">
         <div class="parking-detail-add">
+            <div id="QTYReserveDetail">
+                <div class="reserveSpace">預約車位: QTY [space]</div>
+                <div>預約時間: [date] [time]</div>
+            </div>
             <div id="newApplicantName">
                 <div class="ui-grid-a">
                     <div class="ui-block-a col-7">
@@ -19,8 +23,7 @@
                     <div class="ui-block-b col-3">
                         <textarea id="newSettingTitle" data-autogrow="false" class="ui-input-text"></textarea>
                     </div>
-                </div>
-            </div>
+                </div>           
             <div id="newApplicantType">
                 <div class="title">
                     <span>*申請者類別</span>

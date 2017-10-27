@@ -712,7 +712,7 @@ $("#viewMain").pagecontainer({
                 }else if (selectedSite === "111"){
                     var objReserve = new Object();
                     var timeName = '';
-                    var parkingSettingdata = JSON.parse(localStorage.getItem('parkingQTYData'));
+                    parkingQTYData = JSON.parse(localStorage.getItem('parkingQTYData'));
                     localStorage.removeItem('parkingQTYData');
                     objReserve.spaceName = $('a[id=' + clickSpaceId + ']').text();
                     objReserve.reserveDate = $('a[id=one' + clickDateId + ']').text();
@@ -741,7 +741,7 @@ $("#viewMain").pagecontainer({
 
                     objReserve.timeName = timeName;
 
-                    if (parkingSettingdata == null) {
+                    if (parkingQTYData.length == 0) {
                         jsonData = {
                             content: [objReserve]
                         };
