@@ -3,7 +3,7 @@ var initialAppName = "Parking";
 var appKeyOriginal = "appparking";
 var appKey = "appparking";
 var appSecretKey = "eaf786afb27f567a9b04803e4127cef3";
-var pageList = ["viewMain","viewParkingDetailAdd"];
+var pageList = ["viewMain","viewParkingDetailAdd","viewQTYParkingDetail"];
 var htmlContent = '';
 var dictDayOfWeek = {
     '1': '(一)',
@@ -24,6 +24,11 @@ var reserveDays = 14;
 var myReserveLocalData = [];
 var isReloadPage = false;
 var clickEditSettingID = '';
+var pdName = '';
+var pdCategory = '';
+var pdRemark = '';
+var pdCar = '';
+var parkingQTYData = [];
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
@@ -74,9 +79,9 @@ function getAPIListAllTime() {
             var arrTimeBlock = [];
             for (var i = 0, item; item = data['Content'][i]; i++) {
                 var bTimeStr = new Date(new Date().toDateString() + ' ' + '08:00');
-                if (item.TimeCategory === "10"){
+                if (item.TimeCategory === 10){
                     var eTimeStr = new Date(new Date().toDateString() + ' ' + '17:30');
-                }else if (item.TimeCategory === "28") {
+                }else if (item.TimeCategory === 28) {
                     var eTimeStr = new Date(new Date().toDateString() + ' ' + '19:00');
                 }
                 var timeStr = new Date(new Date().toDateString() + ' ' + item.BTime);
@@ -165,6 +170,13 @@ function getAPIListAllManager() {
     }();
 }
 
+function setReserveDetailLocalDate() {
+    //save to local data
+    localStorage.removeItem('reserveDetailLocalData');
+    jsonData = [];
+    localStorage.setItem('reserveDetailLocalData', JSON.stringify(jsonData));
+}
+
 //filter data
 function grepData(grepData, grepPram, grepValue) {
     return $.grep(grepData, function(item, index) {
@@ -219,6 +231,19 @@ function onBackKeyDown() {
 function popupClose() {
     var popupMsgID = $(".ui-popup-active")[0].children[0].id;
     $('#' + popupMsgID).popup('close');
+}
+
+function popupSchemeMsg(attr, title, content, href1, href2) {
+    $('#reservePopupSchemeMsg').attr('for', attr);
+    $('#reservePopupSchemeMsg #msgTitle').html(title);
+    $('#reservePopupSchemeMsg #msgContent').html(content);
+    $('#reservePopupSchemeMsg #mail').attr('href', href1);
+    $('#reservePopupSchemeMsg #tel').attr('href', href2);
+    $('#reservePopupSchemeMsg > div').css('height', '30vh');
+    $('#reservePopupSchemeMsg').removeClass();
+    $('#reservePopupSchemeMsg').popup(); //initialize the popup
+    $('#reservePopupSchemeMsg').show();
+    $('#reservePopupSchemeMsg').popup('open');
 }
 
 function refreshPage(data) {

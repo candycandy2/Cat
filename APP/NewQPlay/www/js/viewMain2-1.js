@@ -258,6 +258,74 @@ $("#viewMain2-1").pagecontainer({
                 content: $("template#tplContactUserPopup").html()
             };
             tplJS.Popup("viewMain2-1", "appcontent", "append", eventLogoutConfirmPopupData);
+
+            //Append Event Type Panel
+            var eventTypePanelHTML = $("template#tplEventTypePanel").html();
+            var eventTypePanel = $(eventTypePanelHTML);
+            $("body").append(eventTypePanel);
+
+            $("#eventTypeSelect").panel({
+                display: "overlay",
+                swipeClose: false,
+                dismissible: true,
+                beforeopen: function() {
+                    $("<div class='ui-panel-background'></div>").appendTo("body");
+
+                    $(".ui-panel").css({
+                        "min-height": "100vh",
+                        "max-height": "100vh",
+                        "touch-action": "none"
+                    });
+
+                    if (device.platform === "iOS") {
+                        var heightView = parseInt(document.documentElement.clientHeight * 100 / 100, 10);
+                        var heightPanel = heightView - 20;
+
+                        $("#eventTypeSelect").css({
+                            'min-height': heightPanel + 'px',
+                            'max-height': heightPanel + 'px',
+                            'margin-top': '20px'
+                        });
+                    }
+                },
+                open: function() {
+                    tplJS.preventPageScroll();
+                },
+                close: function() {
+                    $(".ui-panel-background").remove();
+                    tplJS.recoveryPageScroll();
+                }
+            });
+
+            //Event Type click event
+            $(document).on("click", "#eventTypeSelect .item", function() {
+                $("#eventTypeSelect").panel("close");
+            });
+
+            $(document).on("click", "#eventTypeSelect #home", function() {
+                $.mobile.changePage('#viewMain2-1');
+            });
+
+            $(document).on("click", "#eventTypeSelect .option", function() {
+                var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+                var activePageID = activePage[0].id;
+
+                eventType = $(this).prop("id");
+
+                if (eventType === "Event" || eventType === "News") {
+                    if (activePageID === "viewMain2-1") {
+                        $.mobile.changePage('#viewNewsEvents2-3');
+                    } else {
+                        var messageList = new QueryMessageList();
+                    }
+                } else {
+                    if (activePageID === "viewMain2-1") {
+                        $.mobile.changePage('#viewNewsEvents2-3');
+                    } else {
+                        QueryPortalList(eventType);
+                    }
+                }
+            });
         });
 
         $("#viewMain2-1").scroll(function() {
@@ -314,10 +382,6 @@ $("#viewMain2-1").pagecontainer({
 
         $(document).on("click", "#logoutConfirm #cancel", function() {
             $('#logoutConfirm').popup('close');
-        });
-
-        $("#newseventspage").on("click", function() {
-            $.mobile.changePage('#viewNewsEvents2-3');
         });
     }
 });
