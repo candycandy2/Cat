@@ -11,15 +11,17 @@ $("#viewQTYParkingDetail").pagecontainer({
         }
 
         function queryQTYReserveDetail() {
+            $('div[id^=parkingQTYData]').remove();
             parkingQTYData = JSON.parse(localStorage.getItem('parkingQTYData'));
-            var originItem = ['[space]', '[date]', '[time]'];
+            var originItem = ['QTYReserveDetail', '[space]', '[date]', '[time]'];
             htmlContent = '';
-            if (parkingQTYData != null) {
+            if (parkingQTYData.length != 0) {
                 var item = parkingQTYData['content'][0];
-                var replaceItem = [item.spaceName, item.reserveDate, item.timeName];
+                var replaceItem = ['parkingQTYData', item.spaceName, item.reserveDate, item.timeName];
                 htmlContent += replaceStr($('#QTYReserveDetail').get(0).outerHTML, originItem, replaceItem);               
-            }
+            }            
             $('#QTYReserveDetail').after(htmlContent);
+            $('#parkingQTYData').removeClass('disable');
         }
 
         /********************************** page event *************************************/
