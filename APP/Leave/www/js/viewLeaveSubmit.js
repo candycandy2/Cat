@@ -16,7 +16,7 @@ var leaveAllData = [
     {id: '15', categroy: '喪假', leave: '6天喪假', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 0},
     {id: '16', categroy: '喪假', leave: '8天喪假', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 1},
     {id: '17', categroy: '產假', leave: '有薪產檢假', introduce: '以懷孕日爲基準，請假以小時爲最小單位', attachment: 1, basedate: 1, leftday: 1.5},
-    {id: '18', categroy: '產假', leave: '產假', introduce: '不得分開請假，應與子女出生前後一星期內辦理請假手續', attachment: 1, basedate: 1, leftday: 0},
+    {id: '18', categroy: '產假', leave: '產假', introduce: '不得分開請假，應與子女出生前後一星期內辦理請假手續', attachment: 1, basedate: 1, leftday: 10},
     {id: '19', categroy: '產假', leave: '半薪產假', introduce: '到職未滿六個月以上者，以半薪計算', attachment: 1, basedate: 1, leftday: 0.5},
     {id: '20', categroy: '陪產假', leave: '陪產假', introduce: '分娩當日及其前後十五日，擇其中五日請假', attachment: 1, basedate: 1, leftday: 2.5},
     {id: '21', categroy: '流產假', leave: '流產假（3-6個月）', introduce: '同產假', attachment: 1, basedate: 1, leftday: 0.5},
@@ -60,7 +60,7 @@ var viewLeaveSubmitInit = false;
 var categroyList = [];
 var selectCategroy;
 var LeaveList = [];
-var selectLeave;
+var selectLeave = "";
 var leaveObj = {};
 var leaveState = false;
 var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeaveTime;
@@ -69,7 +69,7 @@ var otherBaseVal,newBaseVal;
 var leftdayMsg;
 var needBaseday = false;
 var selectBaseday = false;
-var datetimeState = false;
+var selectDatetime = false;
 var leaveReason;
 var leaveSubmitPreview = false;
 var count = 0;
@@ -209,6 +209,8 @@ $("#viewLeaveSubmit").pagecontainer({
             $('#baseDate').hide();
             $('#uploadAttachment').hide();
             $('#divEmpty').hide();
+            $("#chooseBaseday").text(selectBasedayStr);
+            selectLeave = "";
             basedayState = null;
         }
 
@@ -235,7 +237,7 @@ $("#viewLeaveSubmit").pagecontainer({
         }
 
         //檢查是否有已經生效的基準日
-        function checkBaseday() {
+        function checkBasedayList() {
             if(selectLeave == "婚假" || selectLeave == "產假") {
                 return true;
             }else {
@@ -243,30 +245,21 @@ $("#viewLeaveSubmit").pagecontainer({
             }
         }
 
-        //获取基准日列表——並新增 “選擇其他基準日” 選項
-        function getBasedayByLeave() {    
-            baseData["option"] = [];
-            $("#baseTime").empty();
-            $("#basedate-popup-option-popup").remove();
-            $("#otherBasedate").remove();
+        function checkBasedaySelected() {
+            var self = $("#chooseBaseday").text();
 
-            for(var i in baseDayList) {
-                baseData["option"][i] = {};
-                baseData["option"][i]["value"] = baseDayList[i];
-                baseData["option"][i]["text"] = baseDayList[i];
-            }
-
-            tplJS.DropdownList("viewLeaveSubmit", "baseTime", "prepend", "typeB", baseData);
-
-            var otherBasedayList = "<div class='tpl-option-msg-list' id='otherBasedate'>" + otherBasedayStr + "</div>";
-            $("#basedate-popup-option .ui-content").append(otherBasedayList);
-            
+            if(self === selectBasedayStr) {
+                return false;
+            }else {
+                return true;
+            } 
         }
 
 
         /********************************** page event *************************************/
         $("#viewLeaveSubmit").on("pagebeforeshow", function(event, ui) {
             if(!viewLeaveSubmitInit){
+                //申請日期和預覽申請日期，並且都是當天日期
                 $('#applyDay').text(applyDay);
                 $('#previewApplyDay').text(applyDay);
                 getAllLeaveCategroy();
@@ -294,10 +287,13 @@ $("#viewLeaveSubmit").pagecontainer({
             getLeaveByCategroy();
         });
 
+        
+
         //點擊假別——獲取假別對象詳細信息——list click
         $(document).on("click", "#leave-popup-option ul li", function() {
+            $("#chooseBaseday").text(selectBasedayStr);
             selectLeave = $(this).text();
-            console.log(selectLeave);
+            //console.log(selectLeave);
             leaveObj = getLeaveObj();
             leaveState = true;
 
@@ -313,7 +309,7 @@ $("#viewLeaveSubmit").pagecontainer({
                     //popup——left day
                     leftdayMsg = leftStr + leaveObj["leftday"] + dayStr + leaveObj["leave"] + canApplyStr;
                     $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
-                    popupMsgInit('.leftDaysByLeave');                    
+                    //popupMsgInit('.leftDaysByLeave');                    
         
                     //attachment
                     if(leaveObj["attachment"] === 1) {
@@ -328,8 +324,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         $('#divEmpty').show();
 
                         //檢查是否有已經生效的基準日
-                        basedayState = checkBaseday();
-                        //getBasedayByLeave();
+                        basedayState = checkBasedayList();
                         
                         needBaseday = true;
                     }else {
@@ -340,39 +335,11 @@ $("#viewLeaveSubmit").pagecontainer({
                     }
                     
                 }else {
-                    getLeaveByCategroy();
-                    $(document).off("change", "#leave-popup");  
                     popupMsgInit('.leaveNotEnough');
-                    
+                    getLeaveByCategroy();              
                 }
-            }, 100);
+            }, 50);
             
-        });
-        
-        //從list選擇已有基準日——popup change
-        $(document).on("change", "#basedate-popup", function() {
-            selectBaseday = true;
-        });
-
-        //其他基準日控件——input change
-        $(document).on("change", "#oldBaseday", function() {
-            var self = $(this).val();
-            
-            //日期值要判斷是否爲空
-            if(self !== "") {
-                //值不爲空則顯示在option當中
-                var newOption = "<option hidden>" + self + "</option>";
-                $("#basedate-popup").find("option").remove().end().append(newOption);
-
-            }else {
-                //值爲空則顯示“選擇時間”
-                var newOption = "<option hidden>" + selectBasedayStr + "</option>";
-                $("#basedate-popup").find("option").remove().end().append(newOption);
-
-            }
-
-            tplJS.reSizeDropdownList("basedate-popup", "typeB");
-
         });
 
         //選擇基準日，根據是否有有效基準日操作——click
@@ -381,7 +348,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 //popup
                 popupMsgInit('.basedayList');
             }else {
-                //input type=datetime=local
+                //input datetime-local
                 if(device.platform === "iOS") {
                     $("#newBaseday").trigger("focus");
                 }else if(device.platform === "Android") {
@@ -390,79 +357,94 @@ $("#viewLeaveSubmit").pagecontainer({
             }
         });
 
-        //選擇新基準日——click btn
-        $(document).on("click", "#noBaseTime", function() {
-            if(device.platform === "iOS") {
-                $("#newBaseday").trigger("focus");
-            }else if(device.platform === "Android") {
-                $("#newBaseday").trigger("click");
+        //其他基準日控件——datatime change
+        $(document).on("change", "#oldBaseday", function() {
+            var self = $(this).val();
+            //console.log(self);
+
+            if(self === "") {
+                $("#chooseBaseday").text(selectBasedayStr);
+            }else {
+                $("#chooseBaseday").text(self);
             }
+
         });
 
-        //直接基準日控件——input change
+        //新基準日選擇——datetime change
         $(document).on("change", "#newBaseday", function() {
-            newBaseVal = $(this).val();
-            if(newBaseVal !== "") {
-                selectBaseday = true;
+            var self = $(this).val();
+
+            if(self === "") {
+                $("#chooseBaseday").text(selectBasedayStr);
+            }else {
+                $("#chooseBaseday").text(self);
             }
-            $("#noBaseTime").find("span").text(newBaseVal);
+            
+        });
+
+        //選擇有效基準日——choose basedaylist
+        $(".basedayList .old-baseday-list div").on("click", function() {
+            var self = $(this).text();
+
+            $(".basedayList").popup("close");
+
+            //如果點擊 “選擇其他基準日” ，則彈出datetime
+            if(self === otherBasedayStr) {
+                if(device.platform === "iOS") {
+                    $("#oldBaseday").trigger("focus");
+                }else if(device.platform === "Android") {
+                    $("#oldBaseday").trigger("click");
+                }
+            }else {
+                $("#chooseBaseday").text(self);
+            } 
+        });
+        
+        //關閉有效基準日列表——popup close
+        $("#closeBasedayList").on("click", function() {
+            $(".basedayList").popup("close");
+            
+        });
+
+        //無有效基準日選擇——datetime change
+        $(document).on("change", "#oldBaseday", function() {
+            var self = $(this).val();
+            if(self === "") {
+                $("#chooseBaseday").text(selectBasedayStr);
+            }else {
+                $("#chooseBaseday").text(self);
+            }
         });
 
         //點擊開始日期
         $(document).on("click", "#btnStartday", function() {
             //選擇開始日期之前判斷假別是否選擇
-            if(selectLeave == undefined  || selectLeave == "請選擇") {
+            if(selectLeave === "") {
                 popupMsgInit('.categroyFirst');
             }else {
                 //再判斷是否需要基準日
                 if(needBaseday){
+                    selectBaseday = checkBasedaySelected();
+                    //console.log(selectBaseday);
                     //再判斷是否選擇基準日
                     if(selectBaseday) {
                         if(device.platform === "iOS") {
-                            $("#startDate").focus();
+                            $("#startDate").trigger("focus");
                         }else if(device.platform === "Android") {
-                            $("#startDate").click();
+                            $("#startDate").trigger("click");
                         } 
                     }else {
                         popupMsgInit('.basedayFirst');
                     }
                 }else {
                     if(device.platform === "iOS") {
-                        $("#startDate").focus();
+                        $("#startDate").trigger("focus");
                     }else if(device.platform === "Android") {
-                        $("#startDate").click();
-                    }            
+                        $("#startDate").trigger("click");
+                    }           
                 }
             }
         });
-
-        //點擊結束日期
-        $(document).on("click", "#btnEndday", function() {
-            //選擇結束日期之前判斷假別是否選擇
-            if(selectLeave == undefined || selectLeave == "請選擇") {
-                popupMsgInit('.categroyFirst');
-            }else {
-                //再判斷是否需要基準日
-                if(needBaseday){
-                    //再判斷是否選擇基準日
-                    if(selectBaseday) {
-                        if(device.platform === "iOS") {
-                            $("#endDate").focus();
-                        }else if(device.platform === "Android") {
-                            $("#endDate").click();
-                        }
-                    }else {
-                        popupMsgInit('.basedayFirst');
-                    }
-                }else {
-                    if(device.platform === "iOS") {
-                        $("#endDate").focus();
-                    }else if(device.platform === "Android") {
-                        $("#endDate").click();
-                    } 
-                }
-            }
-        });      
 
         //開始日期改變
         $(document).on("change", "#startDate", function() {
@@ -471,39 +453,45 @@ $("#viewLeaveSubmit").pagecontainer({
             startLeaveTime = 0;
 
             var self = $(this).val();
-            //開始時間是否被清空
+
+            //開始時間是否爲空
             if(self !== "") {
+                //android上日期格式:yyyy-MM-dd T hh:mm，ios上日期格式：yyyy-MM-dd T hh:mm:ss
                 startLeaveDate = self.replace("T", " ").substring(0, 16);
                 startLeaveDay = parseInt(self.split("T")[0].replace(/-/g, ""));
                 startLeaveTime = parseInt(self.split("T")[1].replace(/:/g, ""));
 
-                $('#startText').text(startLeaveDate);
-                
-                //結束時間必須大於開始時間
-                if(startLeaveDay > endLeaveDay) {
-                    //提示錯誤信息
-                    popupMsgInit('.dateTimeError');
-                    $('#startText').text(pleaseSelectStr);
-                }else if(startLeaveDay == endLeaveDay && startLeaveTime > endLeaveTime) {
-                    //提示錯誤信息
-                    popupMsgInit('.dateTimeError');
-                    $('#startText').text(pleaseSelectStr);
-                }else {
-                    $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
-                    //popupMsgInit('.leftDaysByLeave');
+                //開始時間必須小於 20171231
+                if(startLeaveDay <= 20171231) {
+                    $('#startText').text(startLeaveDate);
                 }
-            }else {  
-                $('#startText').text(pleaseSelectStr); 
+            }else {
+                $('#startText').text(pleaseSelectStr);
             }
 
             //展現請假統計
-            if(startLeaveDate !== "" && endLeaveDate !== "" & startLeaveDate !== "請選擇" && endLeaveDate !== "請選擇") {
-                datetimeState = true;
-            }else {
-                datetimeState = false;
-            }
+            // if($("#chooseBaseday").text() !== selectBasedayStr & startLeaveDate !== pleaseSelectStr && endLeaveDate !== pleaseSelectStr) {
+            //     selectDatetime = true;
+            // }else {
+            //     selectDatetime = false;
+            // }
             
         });
+
+        //點擊結束日期
+        $(document).on("click", "#btnEndday", function() {
+            //先判斷開始日期是否選擇
+            if($('#startText').text() === pleaseSelectStr) {
+                popupMsgInit('.startdayFirst');
+            }else {
+                if(device.platform === "iOS") {
+                    $("#endDate").trigger("focus");
+                }else if(device.platform === "Android") {
+                    $("#endDate").trigger("click");
+                } 
+            }
+
+        });      
 
         //結束日期改變
         $(document).on("change", "#endDate", function() {
@@ -517,54 +505,43 @@ $("#viewLeaveSubmit").pagecontainer({
                 endLeaveDay = parseInt(self.split("T")[0].replace(/-/g, ""));
                 endLeaveTime = parseInt(self.split("T")[1].replace(/:/g, ""));
 
-                $('#endText').text(endLeaveDate);
+                //結束時間必須小於 20171231
+                if(endLeaveDay <= 20171231) {
+                    $('#endText').text(endLeaveDate);
 
-                //結束時間必須大於開始時間
-                if(startLeaveDay > endLeaveDay) {
-                    //提示錯誤信息
-                    popupMsgInit('.dateTimeError');
-                    $('#endText').text(pleaseSelectStr); 
-                }else if(startLeaveDay == endLeaveDay && startLeaveTime > endLeaveTime) {
-                    //提示錯誤信息
-                    popupMsgInit('.dateTimeError');
-                    $('#endText').text(pleaseSelectStr); 
-                }else {
-                    $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
-                    //popupMsgInit('.leftDaysByLeave');
+                    //結束時間必須大於開始時間
+                    if(startLeaveDay > endLeaveDay || (startLeaveDay == endLeaveDay && startLeaveTime > endLeaveTime)) {
+                        //提示錯誤信息
+                        popupMsgInit('.dateTimeError');
+                        $('#endText').text(pleaseSelectStr);
+                    }else {
+                        popupMsgInit('.leftDaysByLeave');
+
+                        //如果結束日期已選擇並且請假理由已填寫，就可以提交預覽
+                        if(leaveReason !== "" && $('#endText').text() !== pleaseSelectStr) {
+                            $('#previewBtn').addClass('leavePreview-active-btn');   
+                        }else {
+                            $('#previewBtn').removeClass('leavePreview-active-btn');                         
+                        }
+
+                    }
                 }
             }else {
-                $('#endText').text(pleaseSelectStr); 
-            }
-
-            //展現請假統計
-            if(startLeaveDate !== "" && endLeaveDate !== "" & startLeaveDate !== "請選擇" && endLeaveDate !== "請選擇") {
-                datetimeState = true;
-            }else {
-                datetimeState = false;
+                $('#endText').text(pleaseSelectStr);
             }
             
         });
-
-        //有有效基準日選擇——有問題
-        $(document).on("change", "#oldBaseday", function() {
-            otherBaseVal = $(this).val();
-            if(otherBaseVal !== "") {
-                selectBaseday = true;
-            }
-            $('#basedate-popup').find("option[value='undefined']").text(otherBaseVal);
-        });       
 
         //實時獲取多行文本值
         $(document).on("keyup", "#leaveReason", function() {
             leaveReason = $(this).val();
             //console.log(leaveReason);
 
-            if(leaveReason !== "" && datetimeState == true) {
+            //如果結束日期已選擇並且請假理由已填寫，就可以提交預覽
+            if(leaveReason !== "" && $('#endText').text() !== pleaseSelectStr) {
                 $('#previewBtn').addClass('leavePreview-active-btn');
-
             }else {
-                $('#previewBtn').removeClass('leavePreview-active-btn');
-                
+                $('#previewBtn').removeClass('leavePreview-active-btn');                
             }
         });
         
@@ -574,8 +551,10 @@ $("#viewLeaveSubmit").pagecontainer({
                 $('.apply-container').hide();
                 $('.leaveMenu').hide();
                 $('.apply-preview').show();
-                //$('.ui-title').find("span").text(langStr["str_130"]);  
+                //$('.ui-title').find("span").text(langStr["str_130"]);
                 $('#backMain').show();
+
+                //傳值到夜闌頁面
             }
         });
 
@@ -592,8 +571,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //立即預約，假單送簽
         $("#applyBtn").on("click", function() {
-            //$("#backMain").tigger("click");
-            $("#backMain").click();
+            $("#backMain").tigger("click");
             changePageByPanel("viewLeaveQuery");
             $("#sendLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
         });
