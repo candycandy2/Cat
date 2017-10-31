@@ -347,15 +347,8 @@ div.scrollmenu a {
 
 #uploadAttachment,
 #baseDate,
-#divEmpty,
-#baseTime {
+#divEmpty {
 	display: none;
-}
-
-#noBaseTime {
-	display: none;
-	height: 7.8vw;
-	line-height: 7.8vw;
 }
 
 .apply-categroy {
@@ -521,7 +514,8 @@ div.scrollmenu a {
 .leftDaysByLeave > .ui-content,
 .dateTimeError > .ui-content,
 .categroyFirst > .ui-content,
-.basedayFirst > .ui-content {
+.basedayFirst > .ui-content,
+.startdayFirst > .ui-content {
 	padding: 0 !important;
 }
 
@@ -532,7 +526,8 @@ div.scrollmenu a {
 .leftDaysByLeave > .ui-content > .header,
 .dateTimeError > .ui-content > .header,
 .categroyFirst > .ui-content > .header,
-.basedayFirst > .ui-content > .header {
+.basedayFirst > .ui-content > .header,
+.startdayFirst > .ui-content > .header {
 	margin-top: 12.5%;
 }
 

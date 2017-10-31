@@ -128,13 +128,8 @@
                             portalHeaderHeight += 20;
                         }
 
-                        if (eventType === "Communication" || eventType === "ITS") {
-                            $("#PortalContent").css("padding-top", "0px");
-                            var matrixNewTopY = parseInt(portalHeaderHeight, 10);
-                        } else {
-                            $("#PortalContent").css("padding-top", portalHeaderHeight + "px");
-                            var matrixNewTopY = parseInt(portalHeaderHeight * 2, 10);
-                        }
+                        $("#PortalContent").css("padding-top", "0px");
+                        var matrixNewTopY = parseInt(portalHeaderHeight, 10);
 
                         $("#PortalContent").css("height", screenHeight + "px");
                         $("#PortalContent").css("width", screenWidth + "px");
@@ -296,11 +291,7 @@
             function QueryPortalListDetail() {
                 (function() {
 
-                    if (eventType === "Communication" || eventType === "ITS") {
-                        $("#viewWebNews2-3-1 .portal-header").hide();
-                    } else {
-                        $("#viewWebNews2-3-1 .portal-header").show();
-                    }
+                    $("#viewWebNews2-3-1 .portal-header").hide();
 
                     $("#htmlContent").load(portalURL, function() {
                         $("#htmlContent").find("meta").remove();

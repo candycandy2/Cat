@@ -82,12 +82,17 @@ a {
 .ui-header .ui-title{ padding: 3.238vw 0; font-size: 4.39vw; font-weight: normal;}
 #viewParkingDetailAdd .ui-margin-public span{ display: block;}
 #viewParkingDetailAdd .col-3{ width: 100% !important;}
-/*#viewParkingDetailAdd .ui-grid-a { margin-bottom: 1.16vw;} #newApplicantName{ padding-bottom: 2.14vw; }*/
-#newApplicantName, #newApplicantType, #newCarDetail{ margin: 0 0 4.3vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
+#parkingQTYData, #newApplicantName, #newApplicantType, #newCarDetail{ margin: 0 0 4.3vw; border-bottom: 1px solid #D6D6D6; border-radius: 0;}
 #newNoticeEvent{ margin: 0 0 1.11vw; border-radius: 0;}
 #newSettingTitle, #newSettingCar{ height: 10.304vw; max-height: 10.304vw; font-size: 4.18vw;}
 #newSettingNotice { height: 16.101vw; max-height: 16.101vw; font-size: 4.18vw;}
 #remark{ text-align:center; color: #666; font-size: 3.349vw;}
+
+#viewQTYParkingDetail .ui-margin-public span{ display: block;}
+#viewQTYParkingDetail .col-3{ width: 100% !important;}
+#viewQTYParkingDetail .reserveSpace{ margin-bottom: 1.16vw; }
+
+.addParkingTitle { color: #0F0F0F; }
 
 .parking-detail-add {
     margin: 1.8vw 3.71vw 0 !important;
@@ -158,6 +163,17 @@ input[type=radio]:checked + label {
     border-radius: 0;
 }
 
+#viewQTYParkingDetail .ui-shadow-inset {
+    -webkit-box-shadow: none; 
+    -moz-box-shadow: none;
+    box-shadow: none; 
+}
+
+#viewQTYParkingDetail .ui-corner-all {
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
 /********************************** public area *************************************/
 
 .ui-title-btn {
@@ -212,6 +228,8 @@ div.square {
 }
 
 #viewParkingDetailAdd .parking-detail-add{ margin-top: 5vw !important;}
+
+#viewQTYParkingDetail .parking-detail-add{ margin-top: 5vw !important;}
 
 #pageOne .scrollmenu{ margin-bottom: 0.99vw;}
 
@@ -410,6 +428,16 @@ div.square {
     padding-right: 6.74vw;
 }
 
+.car-list-choose-button {
+    background: url('../img/023_btn_add.png') right transparent;
+    background-size: 4vw 4vw;
+    background-repeat: no-repeat;
+    background-position-y: 45%;
+}
+
+.btn-add-icon {
+    height: 4.957vw;
+}
 
 /********************************** color setting *************************************/
 

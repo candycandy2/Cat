@@ -3,26 +3,33 @@
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
             <div id="left" class="ui-title-btn">
-                <a id="newSettingBack" href="#"><img src="img/002_nav_back_white.png" class="title-icon" /></a>
+                <a id="QTYSettingBack" href="#"><img src="img/002_nav_back_white.png" class="title-icon" /></a>
             </div>
-            <div id="center" class="ui-title"><span>新增車籍</span></div>
-            <div id="right" class="ui-title-btn"><a id="newSettingSave" href="#" class="save-disable">儲存</a></div>
+            <div id="center" class="ui-title"><span>Parking</span></div>
+            <div id="right" class="ui-title-btn"></div>
         </div>
     </div>
     <div data-role="main" class="page-main">
         <div class="parking-detail-add">
+            <div id="QTYReserveDetail" class="disable" style="font-size: 3.14vw !important;">
+                <div class="reserveSpace">預約車位: QTY [space]</div>
+                <div style=" margin-bottom: 2.14vw;">預約時間: [date] [time]</div>
+            </div>
             <div id="newApplicantName">
                 <div class="ui-grid-a">
-                    <div class="ui-block-a col-7">
+                    <div class="ui-block-a col-7 addParkingTitle" style=" margin-bottom: 1.16vw;">
                         <span>*申請人資訊(公司名稱/姓名)</span>
+                    </div>
+                    <div class="ui-block-a col-7 addParkingTitle" style="font-size: 4.18vw !important;">
+                        <span style="margin-right: 3.2vw">選擇常用車籍</span><a id="ChooseParkingDetail" href="#"><img src="img/023_btn_add.png" class="btn-add-icon"/></a> 
                     </div>
                     <div class="ui-block-b col-3">
                         <textarea id="newSettingTitle" data-autogrow="false" class="ui-input-text"></textarea>
                     </div>
-                </div>
-            </div>
+                </div> 
+            </div>          
             <div id="newApplicantType">
-                <div class="title">
+                <div class="title addParkingTitle">
                     <span>*申請者類別</span>
                 </div>
                 <div id="newSettingType">
@@ -40,7 +47,7 @@
             </div>
             <div id="newCarDetail">
                 <div class="ui-grid-a">
-                    <div class="ui-block-a col-7">
+                    <div class="ui-block-a col-7 addParkingTitle">
                         <span>*車型/車牌號碼</span>
                     </div>
                     <div class="ui-block-b col-3">
@@ -50,7 +57,7 @@
             </div>
             <div id="newNoticeEvent">
                 <div class="ui-grid-a">
-                    <div class="ui-block-a col-7">
+                    <div class="ui-block-a col-7 addParkingTitle">
                         <span>*相關注意事項</span>
                     </div>
                     <div class="ui-block-b col-3">
@@ -58,7 +65,7 @@
                     </div>
                 </div>
             </div>
-            <div id="remark">*號為必填欄位,不得為空</div>
+            <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 10vw auto 0;">預約</div>
         </div>
     </div>
 </div>
