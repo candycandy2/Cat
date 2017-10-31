@@ -20,8 +20,13 @@
                     <div class="ui-block-a col-7 addParkingTitle" style=" margin-bottom: 1.16vw;">
                         <span>*申請人資訊(公司名稱/姓名)</span>
                     </div>
+                    <!--<div class="ui-block-a col-7 addParkingTitle" style="font-size: 4.18vw !important;">
+                        <select data-role="none" class="car-list-choose-button" id="eventTemplate">
+                            <option>選擇常用車籍</option>
+                        </select>
+                    </div>-->
                     <div class="ui-block-a col-7 addParkingTitle" style="font-size: 4.18vw !important;">
-                        <span style="margin-right: 3.2vw">選擇常用車籍</span><a id="ChooseParkingDetail" href="#"><img src="img/023_btn_add.png" class="btn-add-icon"/></a> 
+                        <div id="eventTemplateSelectContent"></div>
                     </div>
                     <div class="ui-block-b col-3">
                         <textarea id="newSettingTitle" data-autogrow="false" class="ui-input-text"></textarea>
@@ -65,7 +70,9 @@
                     </div>
                 </div>
             </div>
-            <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 10vw auto 0;">預約</div>
+            <div id="remark">*號為必填欄位,不得為空</div>
+            <div id="reserveBtn" class="btn-disable radius-btn" style="margin: 3.25vw auto 0;">確定預約</div>
+            <div id="cancel"><a id="viewMainBack" href="#">取消</a></div>
         </div>
     </div>
 </div>
