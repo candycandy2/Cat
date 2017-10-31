@@ -266,7 +266,6 @@ $("#viewMain").pagecontainer({
                     var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
                     var spaceName = '';
                     var timeName = '';
-                    var timeName2 = '';
 
                     if (page == 'pageOne') {
                         spaceName = $('#reserveSpace').find('.hover').text();
@@ -361,7 +360,7 @@ $("#viewMain").pagecontainer({
                         //for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++) {
                         for (var i = 0, item; item = data['Content'][i]; i++) {
                             // convert yyyymmdd(string) to yyyy/mm/dd
-                            var arrCutString = cutStringToArray(date, ['4', '2', '2']);
+                            var arrCutString = cutStringToArray(item.ReserveDate, ['4', '2', '2']);
                             var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
 
                             // convert date format to mm/dd(day of week)
@@ -380,7 +379,7 @@ $("#viewMain").pagecontainer({
 
                             var replaceItem = ['def-' + item.ReserveTraceAggID, item.ReserveBeginTime, item.ReserveEndTime, item.ReserveTraceAggID, strParkingSpaceName, item.ReserveDate, dateFormat, siteName, strReserveName, ''];
 
-                            if (date == new Date().yyyymmdd('')) {
+                            if (item.ReserveDate == new Date().yyyymmdd('')) {
                                 $('#pageThree :first-child h2').removeClass('disable');
                                 htmlContent_today
                                     += replaceStr($('#defaultToday').get(0).outerHTML, originItem, replaceItem);
@@ -704,11 +703,59 @@ $("#viewMain").pagecontainer({
             if ($(this).hasClass('btn-disable')) {
                 popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
             } else {
-                var timeID = '';
-                for (var item in timeClick) {
-                    timeID += timeClick[item] + ',';
-                }                
-                var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', selectedSite, clickSpaceId, pdName, pdCategory, pdRemark, pdCar, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
+                if (selectedSite === "92"){
+                    var timeID = '';
+                    for (var item in timeClick) {
+                        timeID += timeClick[item] + ',';
+                    }                
+                    var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', selectedSite, clickSpaceId, pdName, pdCategory, pdRemark, pdCar, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
+                }else if (selectedSite === "111"){
+                    var objReserve = new Object();
+                    var timeName = '';
+                    parkingQTYData = JSON.parse(localStorage.getItem('parkingQTYData'));
+                    
+                    objReserve.spaceName = $('a[id=' + clickSpaceId + ']').text();
+                    objReserve.reserveDate = $('a[id=one' + clickDateId + ']').text();
+
+                    var arrTempTime = [];
+                    for (var item in timeClick) {
+                        var sTime = $('div[id=' + timeClick[item] + '] > div > div:first').text();
+                        var eTime = addThirtyMins(addThirtyMins(sTime));
+                        arrTempTime.push(sTime);
+                        arrTempTime.push(eTime);
+                    }   
+                    var arrUniqueTime = [];
+                    for (var item in arrTempTime) {
+                        var index = arrUniqueTime.indexOf(arrTempTime[item]);
+                        if (index === -1) {
+                            arrUniqueTime.push(arrTempTime[item]);
+                        } else {
+                            arrUniqueTime.splice(index, 1);
+                        }
+                    }
+                    arrUniqueTime.sort();
+
+                    for (var i = 0; i < arrUniqueTime.length; i = i + 2) {
+                        if (arrUniqueTime.length >= 4 ){
+                            timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1] + ',';
+                        }else if (arrUniqueTime.length <= 2){
+                            timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1];
+                        }
+                    }
+
+                    objReserve.timeName = timeName;
+
+                    if (parkingQTYData == null) {
+                        jsonData = {
+                            content: [objReserve]
+                        };
+                    }else if (parkingQTYData != null) {
+                        parkingQTYData = JSON.parse(localStorage.removeItem('parkingQTYData'));
+                    }
+                    localStorage.setItem('parkingQTYData', JSON.stringify(jsonData));
+           
+                    $.mobile.changePage('#viewQTYParkingDetail');
+                }
             }
         });
 

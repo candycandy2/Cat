@@ -1,36 +1,36 @@
 var leaveAllData = [
-    {id: '1', categroy: '本期特休', leave: '本期特休', introduce: '依照同仁年資天數計算', attachment: 0, basedate: '0', leftday: 5},
-    {id: '2', categroy: '去年特休', leave: '去年特休', introduce: '使用期限到2017/12/31止', attachment: 0, basedate: '0', leftday: 0.5},
-    {id: '3', categroy: '去年彈休', leave: '去年彈休', introduce: '使用期限到2017/12/31止', attachment: 0, basedate: '0', leftday: 1},
-    {id: '4', categroy: '預支特休', leave: '預支特休', introduce: '7天/年，於發放下期特休或離職時回扣', attachment: 0, basedate: '0', leftday: 0},
-    {id: '5', categroy: '病假', leave: '三天病假', introduce: '超過三日以上，須檢附醫師證明方可請假，扣薪條件如半薪病假', attachment: 1, basedate: '0', leftday: 0.5},
-    {id: '6', categroy: '病假', leave: '半薪病假', introduce: '一年有30天日的半薪病假', attachment: 0, basedate: '0', leftday: 2},
-    {id: '7', categroy: '病假', leave: '生理假', introduce: '同半薪病假', attachment: 0, basedate: '0', leftday: 1.5},
-    {id: '8', categroy: '病假', leave: '無薪病假', introduce: '一年之30日半薪病假用畢時方可使用', attachment: 1, basedate: '0', leftday: 0.5},
-    {id: '9', categroy: '事假', leave: '事假', introduce: '一年有14天日的事假', attachment: 0, basedate: '0', leftday: 0.5},
-    {id: '10', categroy: '事假', leave: '家庭照顧假', introduce: '同事假，全年以7日爲限，併入事假計算', attachment: 0, basedate: '0', leftday: 1},
-    {id: '11', categroy: '事假', leave: '特別事假', introduce: '當一年之14日事假用畢時方可申請使用', attachment: 1, basedate: '0', leftday: 2},
-    {id: '12', categroy: '婚嫁', leave: '婚嫁', introduce: '可分開請，結婚生效日前30日及後90日內請畢，基準日爲結婚登記日', attachment: 1, basedate: '1', leftday: 5},
-    {id: '13', categroy: '婚嫁', leave: '訂婚假', introduce: '訂婚當日及其前後兩日之五日內請畢', attachment: 0, basedate: '1', leftday: 1.5},
-    {id: '14', categroy: '喪家', leave: '3天喪家', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: '1', leftday: 0},
-    {id: '15', categroy: '喪家', leave: '6天喪家', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: '1', leftday: 0},
-    {id: '16', categroy: '喪家', leave: '8天喪家', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: '1', leftday: 1},
-    {id: '17', categroy: '產假', leave: '有薪產檢假', introduce: '以懷孕日爲基準，請假以小時爲最小單位', attachment: 1, basedate: '1', leftday: 1.5},
-    {id: '18', categroy: '產假', leave: '產假', introduce: '不得分開請假，應與子女出生前後一星期內辦理請假手續', attachment: 1, basedate: '1', leftday: 0},
-    {id: '19', categroy: '產假', leave: '半薪產假', introduce: '到職未滿六個月以上者，以半薪計算', attachment: 1, basedate: '1', leftday: 0.5},
-    {id: '20', categroy: '陪產假', leave: '陪產假', introduce: '分娩當日及其前後十五日，擇其中五日請假', attachment: 1, basedate: '1', leftday: 2.5},
-    {id: '21', categroy: '流產假', leave: '流產假（3-6個月）', introduce: '同產假', attachment: 1, basedate: '1', leftday: 0.5},
-    {id: '22', categroy: '流產假', leave: '半薪流產假（3-6個月）', introduce: '到職未滿六個月以上者，以半薪計算', attachment: 1, basedate: '1', leftday: 0},
-    {id: '23', categroy: '流產假', leave: '流產假（2-3個月）', introduce: '不給薪', attachment: 1, basedate: '1', leftday: 0.5},
-    {id: '24', categroy: '流產假', leave: '流產假（未滿2個月）', introduce: '不給薪', attachment: 1, basedate: '1', leftday: 1},
-    {id: '25', categroy: '公傷假', leave: '半薪公傷假', introduce: '薪資由公司代爲申請勞保傷病給付後，另補其原有薪資差額', attachment: 1, basedate: '1', leftday: 2},
-    {id: '26', categroy: '公傷假', leave: '公傷假', introduce: '薪資由公司代爲申請勞保傷病給付後，另補其原有薪資差額', attachment: 1, basedate: '1', leftday: 0.5},
-    {id: '27', categroy: '公假', leave: '公假', introduce: '因政府之召集、集會、選舉等履行其國民權利義務時', attachment: 1, basedate: '0', leftday: 0},
-    {id: '28', categroy: '曠職', leave: '曠職', introduce: '', attachment: 0, basedate: '0', leftday: 0},
-    {id: '29', categroy: '志工假', leave: '志工假', introduce: '每年給予一天', attachment: 1, basedate: '0', leftday: 1},
-    {id: '30', categroy: '派外探親假', leave: '派外探親假', introduce: '派外探親假，僅適用派外同仁申請', attachment: 0, basedate: '0', leftday: 1.5},
-    {id: '31', categroy: '派外急難假', leave: '派外急難假', introduce: '派外...重病或死亡，由Level 2以上主管核定急難假的天數', attachment: 0, basedate: '0', leftday: 0.5},
-    {id: '32', categroy: '民族祭典假', leave: '民族祭典假', introduce: '原住民依據族別不同，有不同的祭典日可請一日', attachment: 1, basedate: '1', leftday: 0.5}
+    {id: '1', categroy: '本期特休', leave: '本期特休', introduce: '依照同仁年資天數計算', attachment: 0, basedate: 0, leftday: 5},
+    {id: '2', categroy: '去年特休', leave: '去年特休', introduce: '使用期限到2017/12/31止', attachment: 0, basedate: 0, leftday: 0.5},
+    {id: '3', categroy: '去年彈休', leave: '去年彈休', introduce: '使用期限到2017/12/31止', attachment: 0, basedate: 0, leftday: 1},
+    {id: '4', categroy: '預支特休', leave: '預支特休', introduce: '7天/年，於發放下期特休或離職時回扣', attachment: 0, basedate: 0, leftday: 0},
+    {id: '5', categroy: '病假', leave: '三天病假', introduce: '超過三日以上，須檢附醫師證明方可請假，扣薪條件如半薪病假', attachment: 1, basedate: 0, leftday: 0.5},
+    {id: '6', categroy: '病假', leave: '半薪病假', introduce: '一年有30天日的半薪病假', attachment: 0, basedate: 0, leftday: 2},
+    {id: '7', categroy: '病假', leave: '生理假', introduce: '同半薪病假', attachment: 0, basedate: 0, leftday: 1.5},
+    {id: '8', categroy: '病假', leave: '無薪病假', introduce: '一年之30日半薪病假用畢時方可使用', attachment: 1, basedate: 0, leftday: 0.5},
+    {id: '9', categroy: '事假', leave: '事假', introduce: '一年有14天日的事假', attachment: 0, basedate: 0, leftday: 0.5},
+    {id: '10', categroy: '事假', leave: '家庭照顧假', introduce: '同事假，全年以7日爲限，併入事假計算', attachment: 0, basedate: 0, leftday: 1},
+    {id: '11', categroy: '事假', leave: '特別事假', introduce: '當一年之14日事假用畢時方可申請使用', attachment: 1, basedate: 0, leftday: 2},
+    {id: '12', categroy: '婚假', leave: '婚假', introduce: '可分開請，結婚生效日前30日及後90日內請畢，基準日爲結婚登記日', attachment: 1, basedate: 1, leftday: 5},
+    {id: '13', categroy: '婚假', leave: '訂婚假', introduce: '訂婚當日及其前後兩日之五日內請畢', attachment: 0, basedate: 1, leftday: 1.5},
+    {id: '14', categroy: '喪假', leave: '3天喪假', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 0},
+    {id: '15', categroy: '喪假', leave: '6天喪假', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 0},
+    {id: '16', categroy: '喪假', leave: '8天喪假', introduce: '可分開請，但須與100日內請畢', attachment: 1, basedate: 1, leftday: 1},
+    {id: '17', categroy: '產假', leave: '有薪產檢假', introduce: '以懷孕日爲基準，請假以小時爲最小單位', attachment: 1, basedate: 1, leftday: 1.5},
+    {id: '18', categroy: '產假', leave: '產假', introduce: '不得分開請假，應與子女出生前後一星期內辦理請假手續', attachment: 1, basedate: 1, leftday: 10},
+    {id: '19', categroy: '產假', leave: '半薪產假', introduce: '到職未滿六個月以上者，以半薪計算', attachment: 1, basedate: 1, leftday: 0.5},
+    {id: '20', categroy: '陪產假', leave: '陪產假', introduce: '分娩當日及其前後十五日，擇其中五日請假', attachment: 1, basedate: 1, leftday: 2.5},
+    {id: '21', categroy: '流產假', leave: '流產假（3-6個月）', introduce: '同產假', attachment: 1, basedate: 1, leftday: 0.5},
+    {id: '22', categroy: '流產假', leave: '半薪流產假（3-6個月）', introduce: '到職未滿六個月以上者，以半薪計算', attachment: 1, basedate: 1, leftday: 0},
+    {id: '23', categroy: '流產假', leave: '流產假（2-3個月）', introduce: '不給薪', attachment: 1, basedate: 1, leftday: 0.5},
+    {id: '24', categroy: '流產假', leave: '流產假（未滿2個月）', introduce: '不給薪', attachment: 1, basedate: 1, leftday: 1},
+    {id: '25', categroy: '公傷假', leave: '半薪公傷假', introduce: '薪資由公司代爲申請勞保傷病給付後，另補其原有薪資差額', attachment: 1, basedate: 1, leftday: 2},
+    {id: '26', categroy: '公傷假', leave: '公傷假', introduce: '薪資由公司代爲申請勞保傷病給付後，另補其原有薪資差額', attachment: 1, basedate: 1, leftday: 0.5},
+    {id: '27', categroy: '公假', leave: '公假', introduce: '因政府之召集、集會、選舉等履行其國民權利義務時', attachment: 1, basedate: 0, leftday: 0},
+    {id: '28', categroy: '曠職', leave: '曠職', introduce: '', attachment: 0, basedate: 0, leftday: 0},
+    {id: '29', categroy: '志工假', leave: '志工假', introduce: '每年給予一天', attachment: 1, basedate: 0, leftday: 1},
+    {id: '30', categroy: '派外探親假', leave: '派外探親假', introduce: '派外探親假，僅適用派外同仁申請', attachment: 0, basedate: 0, leftday: 1.5},
+    {id: '31', categroy: '派外急難假', leave: '派外急難假', introduce: '派外...重病或死亡，由Level 2以上主管核定急難假的天數', attachment: 0, basedate: 0, leftday: 0.5},
+    {id: '32', categroy: '民族祭典假', leave: '民族祭典假', introduce: '原住民依據族別不同，有不同的祭典日可請一日', attachment: 1, basedate: 1, leftday: 0.5}
 ];
 
 var departmentMemberList = [
@@ -46,28 +46,30 @@ var departmentMemberList = [
     {id: 'ABC14', name: 'Eirc Zhao', no: '1564681'}
 ];
 
-var baseDayList = [
-    {id: '705122', leave: '检产假', baseday: '2017-02-02'},
-    {id: '702432', leave: '检产假', baseday: '2017-06-02'}
-];
+var baseDayList = ['2017-02-02', '2017-06-02'];
 
 var allLeaveCategroyStr = langStr["str_122"];    //所有類別
 var pleaseSelectStr = langStr["str_069"];    //請選擇
+var leftStr = langStr["str_124"];    //剩餘
+var dayStr = langStr["str_071"];    //天
+var canApplyStr = langStr["str_125"];    //可申請
+var otherBasedayStr = langStr["str_141"];    //選擇其他基準日
+var selectBasedayStr = langStr["str_127"];    //選擇時間
 var basedayStr = "selectOtherBaseday";
 var viewLeaveSubmitInit = false;
 var categroyList = [];
 var selectCategroy;
 var LeaveList = [];
-var selectLeave;
+var selectLeave = "";
 var leaveObj = {};
 var leaveState = false;
 var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeaveTime;
-var basedayState;
+var basedayState = null;
 var otherBaseVal,newBaseVal;
 var leftdayMsg;
 var needBaseday = false;
 var selectBaseday = false;
-var datetimeState = false;
+var selectDatetime = false;
 var leaveReason;
 var leaveSubmitPreview = false;
 var count = 0;
@@ -202,6 +204,14 @@ $("#viewLeaveSubmit").pagecontainer({
 
             tplJS.DropdownList("viewLeaveSubmit", "leaveGenre", "prepend", "typeB", leaveData);
 
+            //假別一旦更改，除了類別的其他選項都需要恢復初始狀態
+            $('#leaveIntroduce').empty().hide();
+            $('#baseDate').hide();
+            $('#uploadAttachment').hide();
+            $('#divEmpty').hide();
+            $("#chooseBaseday").text(selectBasedayStr);
+            selectLeave = "";
+            basedayState = null;
         }
 
         //获取本部门员工——查找代理人
@@ -227,52 +237,29 @@ $("#viewLeaveSubmit").pagecontainer({
         }
 
         //檢查是否有已經生效的基準日
-        function checkBaseday(leave) {
-            if(leave == "婚嫁") {
+        function checkBasedayList() {
+            if(selectLeave == "婚假" || selectLeave == "產假") {
                 return true;
-            }else if(leave == "產假") {
-                return false;
             }else {
                 return false;
             }
         }
 
-        //获取基准日列表——真实情况下应该传参--假别
-        function getBasedayByLeave() {
-            var basedayOption = "";
-            baseDateInit();
-            $('#basedate-popup').remove();
-            $('#otherBasedayBtn').remove();
+        function checkBasedaySelected() {
+            var self = $("#chooseBaseday").text();
 
-            for(var i in baseDayList) {
-                baseData["option"][i] = {};
-                baseData["option"][i]["value"] = baseDayList[i]["baseday"];
-                baseData["option"][i]["text"] = baseDayList[i]["baseday"];
-            }
-
-            tplJS.DropdownList("viewLeaveSubmit", "baseTime", "prepend", "typeB", baseData);
-            basedayOption = '<li id="otherBasedayBtn" class="tpl-option-msg-list" value=' + basedayStr + '>選擇其他基準日</li>';
-            $('#basedate-popup-option-list').append(basedayOption);
+            if(self === selectBasedayStr) {
+                return false;
+            }else {
+                return true;
+            } 
         }
 
-        function baseDateInit() {
-            baseData = {
-                id: "basedate-popup",
-                option: [],
-                title: "",
-                defaultText: langStr["str_127"],
-                changeDefaultText : true,
-                attr: {
-                    class: "tpl-dropdown-list-icon-arrow"
-                }
-            };
-        }
-
-        
 
         /********************************** page event *************************************/
         $("#viewLeaveSubmit").on("pagebeforeshow", function(event, ui) {
             if(!viewLeaveSubmitInit){
+                //申請日期和預覽申請日期，並且都是當天日期
                 $('#applyDay').text(applyDay);
                 $('#previewApplyDay').text(applyDay);
                 getAllLeaveCategroy();
@@ -294,67 +281,50 @@ $("#viewLeaveSubmit").pagecontainer({
 
         });
 
-        //選擇類別——select
+        //選擇類別——select change
         $(document).on("change", "#categroy-popup", function() {
             selectCategroy = $(this).val();
-            //改變類別時，先顯示對應假別，介紹和基準日等信息恢復至初始狀態
             getLeaveByCategroy();
-            $('#leaveIntroduce').empty().hide();
-            $('#baseDate').hide();
         });
 
-        //點擊假別——獲取假別對象詳細信息
+        
+
+        //點擊假別——獲取假別對象詳細信息——list click
         $(document).on("click", "#leave-popup-option ul li", function() {
+            $("#chooseBaseday").text(selectBasedayStr);
             selectLeave = $(this).text();
+            //console.log(selectLeave);
             leaveObj = getLeaveObj();
             leaveState = true;
-        });
 
-        //假別彈窗關閉之後——檢查剩餘天數並提示
-        $(document).on("popupafterclose", "#leave-popup-option", function() {
-            // if(leaveState){
+            $('#leaveIntroduce').empty().hide();
+
+            setTimeout(function(){
                 //check leftday
                 if(leaveObj["leftday"] > 0) {
-                    for(var i in leaveAllData){
-                        if(selectLeave == leaveAllData[i]['leave']) {
-                            $("#categroy-popup").find("option[value=" + leaveAllData[i]['categroy'] + "]").attr("selected", "selected");
-                            break;
-                        }
-                    }
-
-                    //popup
-                    leftdayMsg = "剩餘" + leaveObj['leftday'] + "天" + leaveObj['leave'] + "可申請";
-                    $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
-                    popupMsgInit('.leftDaysByLeave');
-
                     //introduce
-                    var divIntroduce = "<span>*" + leaveObj['introduce'] + "</span>";
-                    $('#leaveIntroduce').empty().append(divIntroduce).show();
+                    var divIntroduce = "<span>*" + leaveObj["introduce"] + "</span>";
+                    $('#leaveIntroduce').append(divIntroduce).show();
+
+                    //popup——left day
+                    leftdayMsg = leftStr + leaveObj["leftday"] + dayStr + leaveObj["leave"] + canApplyStr;
+                    $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
+                    //popupMsgInit('.leftDaysByLeave');                    
         
                     //attachment
-                    if(leaveObj['attachment'] === 1) {
+                    if(leaveObj["attachment"] === 1) {
                         $('#uploadAttachment').show();
                     }else {
                         $('#uploadAttachment').hide();
                     }
         
                     //basedate
-                    if(leaveObj['basedate'] == '1') {
+                    if(leaveObj["basedate"] === 1) {
                         $('#baseDate').show();
                         $('#divEmpty').show();
 
                         //檢查是否有已經生效的基準日
-                        basedayState = checkBaseday(selectLeave);
-                        if(basedayState) {
-                            $('#baseTime').show();
-                            $('#noBaseTime').hide();
-                            getBasedayByLeave();
-                            $("#noBaseTime").find("span").text("請選擇");
-                            
-                        }else {
-                            $('#noBaseTime').show();
-                            $('#baseTime').hide();
-                        }
+                        basedayState = checkBasedayList();
                         
                         needBaseday = true;
                     }else {
@@ -365,110 +335,115 @@ $("#viewLeaveSubmit").pagecontainer({
                     }
                     
                 }else {
-                    //popup
-                    $('.leaveNotEnough').find('.main-paragraph').html("請選擇其他假別");
                     popupMsgInit('.leaveNotEnough');
-
-                    // var leavePleaseStr = "<li id='leaveSelect'>" + pleaseSelectStr + "</li>";
-                    // $("#leave-popup-option-list").prepend(leavePleaseStr);
-                    // $('#leaveSelect').trigger('click');
-
-                    $(document).off("change", "#leave-popup");
-                    $('#leaveIntroduce').empty().hide();
-                    $('#uploadAttachment').hide();
-                    $('#baseDate').hide();
-                    $('#divEmpty').hide();
+                    getLeaveByCategroy();              
                 }
-            // }
-
-            //selectBaseday = false;
-            //leaveState = false;
+            }, 50);
+            
         });
 
-        $(document).on("change", "#basedate-popup", function() {
-            selectBaseday = true;
+        //選擇基準日，根據是否有有效基準日操作——click
+        $("#selectBaseday").on("click", function() {
+            if(basedayState) {
+                //popup
+                popupMsgInit('.basedayList');
+            }else {
+                //input datetime-local
+                if(device.platform === "iOS") {
+                    $("#newBaseday").trigger("focus");
+                }else if(device.platform === "Android") {
+                    $("#newBaseday").trigger("click");
+                }
+            }
+        });
+
+        //其他基準日控件——datatime change
+        $(document).on("change", "#oldBaseday", function() {
+            var self = $(this).val();
+            //console.log(self);
+
+            if(self === "") {
+                $("#chooseBaseday").text(selectBasedayStr);
+            }else {
+                $("#chooseBaseday").text(self);
+            }
+
+        });
+
+        //新基準日選擇——datetime change
+        $(document).on("change", "#newBaseday", function() {
+            var self = $(this).val();
+
+            if(self === "") {
+                $("#chooseBaseday").text(selectBasedayStr);
+            }else {
+                $("#chooseBaseday").text(self);
+            }
+            
+        });
+
+        //選擇有效基準日——choose basedaylist
+        $(".basedayList .old-baseday-list div").on("click", function() {
+            var self = $(this).text();
+
+            $(".basedayList").popup("close");
+
+            //如果點擊 “選擇其他基準日” ，則彈出datetime
+            if(self === otherBasedayStr) {
+                if(device.platform === "iOS") {
+                    $("#oldBaseday").trigger("focus");
+                }else if(device.platform === "Android") {
+                    $("#oldBaseday").trigger("click");
+                }
+            }else {
+                $("#chooseBaseday").text(self);
+            } 
+        });
+        
+        //關閉有效基準日列表——popup close
+        $("#closeBasedayList").on("click", function() {
+            $(".basedayList").popup("close");
+            
+        });
+
+        //無有效基準日選擇——datetime change
+        $(document).on("change", "#oldBaseday", function() {
+            var self = $(this).val();
+            if(self === "") {
+                $("#chooseBaseday").text(selectBasedayStr);
+            }else {
+                $("#chooseBaseday").text(self);
+            }
         });
 
         //點擊開始日期
         $(document).on("click", "#btnStartday", function() {
             //選擇開始日期之前判斷假別是否選擇
-            if(selectLeave == undefined  || selectLeave == "請選擇") {
+            if(selectLeave === "") {
                 popupMsgInit('.categroyFirst');
             }else {
                 //再判斷是否需要基準日
                 if(needBaseday){
+                    selectBaseday = checkBasedaySelected();
+                    //console.log(selectBaseday);
                     //再判斷是否選擇基準日
                     if(selectBaseday) {
                         if(device.platform === "iOS") {
-                            $("#startDate").focus();
+                            $("#startDate").trigger("focus");
                         }else if(device.platform === "Android") {
-                            $("#startDate").click();
+                            $("#startDate").trigger("click");
                         } 
                     }else {
                         popupMsgInit('.basedayFirst');
                     }
                 }else {
                     if(device.platform === "iOS") {
-                        $("#startDate").focus();
+                        $("#startDate").trigger("focus");
                     }else if(device.platform === "Android") {
-                        $("#startDate").click();
-                    }            
+                        $("#startDate").trigger("click");
+                    }           
                 }
             }
-            
-
-        });
-
-        //點擊結束日期
-        $(document).on("click", "#btnEndday", function() {
-            //選擇結束日期之前判斷假別是否選擇
-            if(selectLeave == undefined || selectLeave == "請選擇") {
-                popupMsgInit('.categroyFirst');
-            }else {
-                //再判斷是否需要基準日
-                if(needBaseday){
-                    //再判斷是否選擇基準日
-                    if(selectBaseday) {
-                        if(device.platform === "iOS") {
-                            $("#endDate").focus();
-                        }else if(device.platform === "Android") {
-                            $("#endDate").click();
-                        }
-                    }else {
-                        popupMsgInit('.basedayFirst');
-                    }
-                }else {
-                    if(device.platform === "iOS") {
-                        $("#endDate").focus();
-                    }else if(device.platform === "Android") {
-                        $("#endDate").click();
-                    } 
-                }
-            }
-            
-
-        });
-
-        //直接選擇基準日
-        $(document).on("click", "#noBaseTime", function() {
-            if(device.platform === "iOS") {
-                $("#newBaseday").focus();
-            }else if(device.platform === "Android") {
-                $("#newBaseday").click();
-            }
-            
-
-        });
-
-        //選擇其他基準日
-        $(document).on("click", "#otherBasedayBtn", function() {
-            if(device.platform === "iOS") {
-                $("#oldBaseday").focus();
-            }else if(device.platform === "Android") {
-                $("#oldBaseday").click();
-            }
-            
-            
         });
 
         //開始日期改變
@@ -478,39 +453,45 @@ $("#viewLeaveSubmit").pagecontainer({
             startLeaveTime = 0;
 
             var self = $(this).val();
-            //開始時間是否被清空
+
+            //開始時間是否爲空
             if(self !== "") {
+                //android上日期格式:yyyy-MM-dd T hh:mm，ios上日期格式：yyyy-MM-dd T hh:mm:ss
                 startLeaveDate = self.replace("T", " ").substring(0, 16);
                 startLeaveDay = parseInt(self.split("T")[0].replace(/-/g, ""));
                 startLeaveTime = parseInt(self.split("T")[1].replace(/:/g, ""));
 
-                $('#startText').text(startLeaveDate);
-                
-                //結束時間必須大於開始時間
-                if(startLeaveDay > endLeaveDay) {
-                    //提示錯誤信息
-                    popupMsgInit('.dateTimeError');
-                    $('#startText').text(pleaseSelectStr);
-                }else if(startLeaveDay == endLeaveDay && startLeaveTime > endLeaveTime) {
-                    //提示錯誤信息
-                    popupMsgInit('.dateTimeError');
-                    $('#startText').text(pleaseSelectStr);
-                }else {
-                    $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
-                    //popupMsgInit('.leftDaysByLeave');
+                //開始時間必須小於 20171231
+                if(startLeaveDay <= 20171231) {
+                    $('#startText').text(startLeaveDate);
                 }
-            }else {  
-                $('#startText').text(pleaseSelectStr); 
+            }else {
+                $('#startText').text(pleaseSelectStr);
             }
 
             //展現請假統計
-            if(startLeaveDate !== "" && endLeaveDate !== "" & startLeaveDate !== "請選擇" && endLeaveDate !== "請選擇") {
-                datetimeState = true;
-            }else {
-                datetimeState = false;
-            }
+            // if($("#chooseBaseday").text() !== selectBasedayStr & startLeaveDate !== pleaseSelectStr && endLeaveDate !== pleaseSelectStr) {
+            //     selectDatetime = true;
+            // }else {
+            //     selectDatetime = false;
+            // }
             
         });
+
+        //點擊結束日期
+        $(document).on("click", "#btnEndday", function() {
+            //先判斷開始日期是否選擇
+            if($('#startText').text() === pleaseSelectStr) {
+                popupMsgInit('.startdayFirst');
+            }else {
+                if(device.platform === "iOS") {
+                    $("#endDate").trigger("focus");
+                }else if(device.platform === "Android") {
+                    $("#endDate").trigger("click");
+                } 
+            }
+
+        });      
 
         //結束日期改變
         $(document).on("change", "#endDate", function() {
@@ -524,50 +505,31 @@ $("#viewLeaveSubmit").pagecontainer({
                 endLeaveDay = parseInt(self.split("T")[0].replace(/-/g, ""));
                 endLeaveTime = parseInt(self.split("T")[1].replace(/:/g, ""));
 
-                $('#endText').text(endLeaveDate);
+                //結束時間必須小於 20171231
+                if(endLeaveDay <= 20171231) {
+                    $('#endText').text(endLeaveDate);
 
-                //結束時間必須大於開始時間
-                if(startLeaveDay > endLeaveDay) {
-                    //提示錯誤信息
-                    popupMsgInit('.dateTimeError');
-                    $('#endText').text(pleaseSelectStr); 
-                }else if(startLeaveDay == endLeaveDay && startLeaveTime > endLeaveTime) {
-                    //提示錯誤信息
-                    popupMsgInit('.dateTimeError');
-                    $('#endText').text(pleaseSelectStr); 
-                }else {
-                    $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
-                    //popupMsgInit('.leftDaysByLeave');
+                    //結束時間必須大於開始時間
+                    if(startLeaveDay > endLeaveDay || (startLeaveDay == endLeaveDay && startLeaveTime > endLeaveTime)) {
+                        //提示錯誤信息
+                        popupMsgInit('.dateTimeError');
+                        $('#endText').text(pleaseSelectStr);
+                    }else {
+                        popupMsgInit('.leftDaysByLeave');
+
+                        //如果結束日期已選擇並且請假理由已填寫，就可以提交預覽
+                        if(leaveReason !== "" && $('#endText').text() !== pleaseSelectStr) {
+                            $('#previewBtn').addClass('leavePreview-active-btn');   
+                        }else {
+                            $('#previewBtn').removeClass('leavePreview-active-btn');                         
+                        }
+
+                    }
                 }
             }else {
-                $('#endText').text(pleaseSelectStr); 
-            }
-
-            //展現請假統計
-            if(startLeaveDate !== "" && endLeaveDate !== "" & startLeaveDate !== "請選擇" && endLeaveDate !== "請選擇") {
-                datetimeState = true;
-            }else {
-                datetimeState = false;
+                $('#endText').text(pleaseSelectStr);
             }
             
-        });
-
-        //有有效基準日選擇——有問題
-        $(document).on("change", "#oldBaseday", function() {
-            otherBaseVal = $(this).val();
-            if(otherBaseVal !== "") {
-                selectBaseday = true;
-            }
-            $('#basedate-popup').find("option[value='undefined']").text(otherBaseVal);
-        });
-
-        //無有效基準日——選擇新基準日
-        $(document).on("change", "#newBaseday", function() {
-            newBaseVal = $(this).val();
-            if(newBaseVal !== "") {
-                selectBaseday = true;
-            }
-            $("#noBaseTime").find("span").text(newBaseVal);
         });
 
         //實時獲取多行文本值
@@ -575,12 +537,11 @@ $("#viewLeaveSubmit").pagecontainer({
             leaveReason = $(this).val();
             //console.log(leaveReason);
 
-            if(leaveReason !== "" && datetimeState == true) {
+            //如果結束日期已選擇並且請假理由已填寫，就可以提交預覽
+            if(leaveReason !== "" && $('#endText').text() !== pleaseSelectStr) {
                 $('#previewBtn').addClass('leavePreview-active-btn');
-
             }else {
-                $('#previewBtn').removeClass('leavePreview-active-btn');
-                
+                $('#previewBtn').removeClass('leavePreview-active-btn');                
             }
         });
         
@@ -590,8 +551,10 @@ $("#viewLeaveSubmit").pagecontainer({
                 $('.apply-container').hide();
                 $('.leaveMenu').hide();
                 $('.apply-preview').show();
-                //$('.ui-title').find("span").text(langStr["str_130"]);  
+                //$('.ui-title').find("span").text(langStr["str_130"]);
                 $('#backMain').show();
+
+                //傳值到夜闌頁面
             }
         });
 
@@ -608,8 +571,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //立即預約，假單送簽
         $("#applyBtn").on("click", function() {
-            //$("#backMain").tigger("click");
-            $("#backMain").click();
+            $("#backMain").tigger("click");
             changePageByPanel("viewLeaveQuery");
             $("#sendLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
         });

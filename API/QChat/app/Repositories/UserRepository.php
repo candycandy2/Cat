@@ -218,4 +218,15 @@ class UserRepository
                              'memo',
                              'portrait_path')->get();
     }
+
+    /**
+     * 取得使用這註冊QPlay狀態
+     * @return mixed
+     */
+    public function getQMessageRegister($destinationEmpNo){
+        return $this->user
+                ->where('emp_no','=', $destinationEmpNo)
+                ->select('register_message')
+                ->first();
+    }
 }

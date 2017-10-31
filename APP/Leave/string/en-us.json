@@ -1113,7 +1113,7 @@
   },
   {
     "term": "str_141",
-    "definition": "請先選擇基準日e",
+    "definition": "選擇其他基準日e",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1338,6 +1338,22 @@
   {
     "term": "str_169",
     "definition": "銷假單已刪除e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_170",
+    "definition": "",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_171",
+    "definition": "請先選擇開始時間",
     "context": "",
     "term_plural": "",
     "reference": "",

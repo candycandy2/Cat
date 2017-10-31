@@ -27,7 +27,7 @@
                     <span class="langStr" data-id="str_081"></span>
                 </div>
                 <div data-role="none" id="leaveCategroy" class="font-style3">
-                    <span></span>
+                    
                 </div>
             </div>
             <!-- empty div -->
@@ -64,12 +64,9 @@
                     <!-- 基準日 -->
                     <span class="langStr" data-id="str_012"></span>
                 </div>
-                <div data-role="none" id="baseTime" class="font-style3">
-                    <span></span>
-                </div>
-                <div id="noBaseTime" class="font-style3">
+                <div id="selectBaseday" class="font-style3">
                     <!-- 選擇日期 -->
-                    <span class="langStr" data-id="str_127"></span>
+                    <span id="chooseBaseday"></span>
                     <img src="img/dropdown.png" class="apply-select-img">
                 </div>
                 <div class="font-style12 color-gray">
@@ -268,13 +265,16 @@
                 <div class="font-style3 header-title-main">
                     <span class='header-icon'><img src="img/urgent.png"></span>
                     <span class="header-text">
-                        <!--假別天數不夠-->
+                        <!-- 假別天數不夠 -->
                         <span class="langStr" data-id="str_115"></span>
                     </span>
                 </div>
             </div>
             <div class="main">
-                <p class="main-paragraph font-style3"></p>
+                <p class="main-paragraph font-style3">
+                    <!-- 請選擇其他假別 -->
+                    <span class="langStr" data-id="str_126"></span>
+                </p>
             </div>
             <div class="footer">
                 <div class="btn-one font-style1 btnArea">
@@ -368,7 +368,7 @@
                 <div class="font-style3 header-title-main">
                     <span class='header-icon'><img src="img/urgent.png"></span>
                     <span class="header-text">
-                        <!--請先選擇基準日-->
+                        <!-- 請先選擇基準日 -->
                         <span class="langStr" data-id="str_140"></span>
                     </span>
                 </div>
@@ -384,6 +384,48 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- 請先選擇開始時間 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup startdayFirst" for="startdayFirst">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class="header-text">
+                        <!-- 請先選擇開始時間 -->
+                        <span class="langStr" data-id="str_171"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- baseday list -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup basedayList" for="basedayList">
+        <div data-role="main" class="ui-content">
+            <div class="header typeB">
+                <div class="close"><img src="img/component/close_new.png" width="100%" height="100%" id="closeBasedayList"></div>
+                <div class="title"></div>
+            </div>
+            <div class="old-baseday-list">
+                <div class="tpl-option-msg-list">2017-02-02</div>
+                <div class="tpl-option-msg-list">2017-06-02</div>
+                <div class="tpl-option-msg-list">2017-10-02</div>
+                <div class="tpl-option-msg-list">選擇其他基準日</div>
+            </div>          
         </div>
     </div>
 
