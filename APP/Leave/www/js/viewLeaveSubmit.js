@@ -33,19 +33,6 @@ var leaveAllData = [
     {id: '32', categroy: '民族祭典假', leave: '民族祭典假', introduce: '原住民依據族別不同，有不同的祭典日可請一日', attachment: 1, basedate: 1, leftday: 0.5}
 ];
 
-var departmentMemberList = [
-    {id: 'ABC10', name: 'Jack Wang', no: '1705063'},
-    {id: 'ABC10', name: 'Jane Xu', no: '1340261'},
-    {id: 'ABC11', name: 'Jerry Chen', no: '1278973'},
-    {id: 'ABC11', name: 'Sunny Lee', no: '1462850'},
-    {id: 'ABC12', name: 'Darren Ben', no: '1596874'},
-    {id: 'ABC12', name: 'Andy Liu', no: '1510627'},
-    {id: 'ABC13', name: 'Jay Zhou', no: '1663498'},
-    {id: 'ABC13', name: 'Mini Yang', no: '1725864'},
-    {id: 'ABC14', name: 'Back Wu', no: '1631145'},
-    {id: 'ABC14', name: 'Eirc Zhao', no: '1564681'}
-];
-
 var baseDayList = ['2017-02-02', '2017-06-02'];
 
 var allLeaveCategroyStr = langStr["str_122"];    //所有類別
@@ -55,7 +42,6 @@ var dayStr = langStr["str_071"];    //天
 var canApplyStr = langStr["str_125"];    //可申請
 var otherBasedayStr = langStr["str_141"];    //選擇其他基準日
 var selectBasedayStr = langStr["str_127"];    //選擇時間
-var basedayStr = "selectOtherBaseday";
 var viewLeaveSubmitInit = false;
 var categroyList = [];
 var selectCategroy;
@@ -211,7 +197,7 @@ $("#viewLeaveSubmit").pagecontainer({
             $('#divEmpty').hide();
             $("#chooseBaseday").text(selectBasedayStr);
             selectLeave = "";
-            agentName = "";
+            //agentName = "";
             basedayState = null;
         }
 
@@ -261,7 +247,9 @@ $("#viewLeaveSubmit").pagecontainer({
         function checkLeaveBeforePreview() {
             //必須符合3個條件：1.請假理由不能爲空 2.開始時間不能爲“請選擇” 3.結束時間不能爲“請選擇”
             if($("#leaveReason").val() !== "" && $("#leave-agent-popup option").text() !== pleaseSelectStr && 
-            $('#startText').text() !== pleaseSelectStr && $('#endText').text() !== pleaseSelectStr) {
+            $('#startText').text() !== pleaseSelectStr && $('#endText').text() !== pleaseSelectStr && 
+            $("#leave-popup option").text() !== pleaseSelectStr) {
+
                 $('#previewBtn').addClass('leavePreview-active-btn');
             }else {
                 $('#previewBtn').removeClass('leavePreview-active-btn');
@@ -298,13 +286,14 @@ $("#viewLeaveSubmit").pagecontainer({
         $(document).on("change", "#categroy-popup", function() {
             selectCategroy = $(this).val();
             getLeaveByCategroy();
-        });        
+            checkLeaveBeforePreview();
+        });
 
         //點擊假別——獲取假別對象詳細信息——list click
-        $(document).on("click", "#leave-popup-option ul li", function() {            
-            selectLeave = $(this).text();            
+        $(document).on("click", "#leave-popup-option ul li", function() {
+            selectLeave = $(this).text();
             leaveObj = getLeaveObj();
-            
+
             leaveState = true;
 
             $("#chooseBaseday").text(selectBasedayStr);
@@ -320,14 +309,14 @@ $("#viewLeaveSubmit").pagecontainer({
                     //popup——left day
                     leftdayMsg = leftStr + leaveObj["leftday"] + dayStr + leaveObj["leave"] + canApplyStr;
                     $('.leftDaysByLeave').find('.header-text').html(leftdayMsg);
-        
+
                     //attachment
                     if(leaveObj["attachment"] === 1) {
                         $('#uploadAttachment').show();
                     }else {
                         $('#uploadAttachment').hide();
                     }
-        
+
                     //basedate
                     if(leaveObj["basedate"] === 1) {
                         $('#baseDate').show();
@@ -335,7 +324,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
                         //檢查是否有已經生效的基準日
                         basedayState = checkBasedayList();
-                        
+
                         needBaseday = true;
                     }else {
                         $('#baseDate').hide();
@@ -343,7 +332,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
                         needBaseday = false;
                     }
-                    
+
                 }else {
                     popupMsgInit('.leaveNotEnough');
                     getLeaveByCategroy();
@@ -351,6 +340,12 @@ $("#viewLeaveSubmit").pagecontainer({
             }, 50);
         });
 
+        //點擊假別彈框關閉以後判斷是否可以預覽送簽
+        $(document).on("popupafterclose", "#leave-popup-option", function() {
+            checkLeaveBeforePreview();
+        });
+
+        //搜索代理人
         $(document).on("keyup", "#searchAgent", function(e) {
             if ($("#searchAgent").val().length == 0) {
                 $(".queryLoader").hide();
@@ -387,12 +382,14 @@ $("#viewLeaveSubmit").pagecontainer({
             }
         });
 
+        //點擊獲取代理人的姓名（去除代理人部門代碼）
         $(document).on("click", "#leave-agent-popup-option ul li", function(e) {
             agentid = $(this).attr("value");
             agentName = $(this).children("div").eq(1).children("span").text();
             console.log(agentName);
         });
 
+        //代理人列表
         $(document).on("popupafteropen", "#leave-agent-popup-option", function() {
             $("#searchAgent").val("");
             $("#leave-agent-popup-option-list").empty();
@@ -646,7 +643,7 @@ $("#viewLeaveSubmit").pagecontainer({
             return false;
         });
 
-        //立即預約，假單送簽
+        //立即預約，假單送簽，跳轉到假單茶村頁
         $("#applyBtn").on("click", function() {
             $("#backMain").click();
             changePageByPanel("viewLeaveQuery");
