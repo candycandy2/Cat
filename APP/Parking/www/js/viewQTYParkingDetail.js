@@ -24,6 +24,20 @@ $("#viewQTYParkingDetail").pagecontainer({
             $('#parkingQTYData').removeClass('disable');
         }
 
+        function createTemplateDropdownList() {
+
+            eventTemplateData = {
+                id: "eventTemplate",
+                defaultText: "選擇常用車籍",
+                title: "",
+                option: "Test"
+            };
+
+            tplJS.DropdownList("viewQTYParkingDetail", "eventTemplateSelectContent", "append", "typeB", eventTemplateData);
+            $('#eventTemplate').removeClass('tpl-dropdown-list');
+            $('#eventTemplate').addClass('add-event-border');
+        }
+
         /********************************** page event *************************************/
         $('#viewQTYParkingDetail').one('pagebeforeshow', function(event, ui) {
             queryQTYReserveDetail();
@@ -31,6 +45,7 @@ $("#viewQTYParkingDetail").pagecontainer({
 
         $('#viewQTYParkingDetail').on('pagebeforeshow', function(event, ui) {          
             queryQTYReserveDetail();
+            createTemplateDropdownList();
         });
 
         $('#viewQTYParkingDetail').on('pageshow', function(event, ui) {

@@ -712,7 +712,10 @@ $("#viewMain").pagecontainer({
                 }else if (selectedSite === "111"){
                     var objReserve = new Object();
                     var timeName = '';
-                    parkingQTYData = JSON.parse(localStorage.getItem('parkingQTYData'));
+                    parkingQTYData = JSON.parse(localStorage.getItem('parkingQTYData'));                   
+                    if (parkingQTYData != null) {
+                        parkingQTYData = null ;
+                    }
                     
                     objReserve.spaceName = $('a[id=' + clickSpaceId + ']').text();
                     objReserve.reserveDate = $('a[id=one' + clickDateId + ']').text();
@@ -736,22 +739,15 @@ $("#viewMain").pagecontainer({
                     arrUniqueTime.sort();
 
                     for (var i = 0; i < arrUniqueTime.length; i = i + 2) {
-                        if (arrUniqueTime.length >= 4 ){
-                            timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1] + ',';
-                        }else if (arrUniqueTime.length <= 2){
-                            timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1];
-                        }
+                        timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1] + '&nbsp;&nbsp;';
                     }
 
                     objReserve.timeName = timeName;
 
-                    if (parkingQTYData == null) {
-                        jsonData = {
-                            content: [objReserve]
-                        };
-                    }else if (parkingQTYData != null) {
-                        parkingQTYData = JSON.parse(localStorage.removeItem('parkingQTYData'));
-                    }
+                    jsonData = {
+                        content: [objReserve]
+                    };
+                    
                     localStorage.setItem('parkingQTYData', JSON.stringify(jsonData));
            
                     $.mobile.changePage('#viewQTYParkingDetail');

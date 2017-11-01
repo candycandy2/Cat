@@ -433,10 +433,32 @@ div.square {
     background-size: 4vw 4vw;
     background-repeat: no-repeat;
     background-position-y: 45%;
+    border: 0;
+    width: 33.2vw; 
 }
 
 .btn-add-icon {
     height: 4.957vw;
+}
+
+#newApplicantName select {
+    margin-left: -5px;
+    width: 33.2vw !important; 
+}
+
+.add-event-border {
+    border: 0;
+}
+
+#cancel {
+    margin-top: 3.8vw;
+    text-align: center;
+    font-size: 4.5vw;
+    color: #2c89bc;
+}
+
+#viewMainBack {
+    font-weight: normal;
 }
 
 /********************************** color setting *************************************/

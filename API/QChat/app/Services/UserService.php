@@ -71,7 +71,7 @@ class UserService
      */
     public function checkUserIsProteted($empNo){
         $rs = $this->userRepository->getUserLevel($empNo);
-        if(count($rs) > 0){
+        if($rs->level = null){
             return true;
         }else{
             return false;

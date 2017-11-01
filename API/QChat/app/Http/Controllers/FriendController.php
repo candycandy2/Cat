@@ -88,9 +88,7 @@ class FriendController extends Controller
 
             
             $userList =  $this->userService->getUserList($searchType, $friendOnly, $empNo, $searchString);
-
             
-
             if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
                         'Message'=>"查無資料",
@@ -451,7 +449,7 @@ class FriendController extends Controller
                         'Content'=>""]);
             }
             $isProtectedUser = $this->userService->checkUserIsProteted($empNo);
-            $this->friendService->removeQFriend($empNo, $destinationEmpNo, $empNo);
+            $this->friendService->removeQFriend($empNo, $destinationEmpNo, $this->userId);
             if( $isProtectedUser ){
                 //保護用戶需雙向解除朋友關係
                 $this->friendService->removeQFriend($destinationEmpNo, $empNo, $this->userId);
