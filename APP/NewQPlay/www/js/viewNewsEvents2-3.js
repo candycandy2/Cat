@@ -57,16 +57,9 @@
                                     e.preventDefault();
 
                                     if (eventType != "Event" && eventType != "News") {
-                                        //Communication cannot call API PortalListDetail,
-                                        //need to open link PortalURL from API PortalList
-                                        if (eventType === "Communication") {
-                                            console.log($(this).find("input").val());
-                                            portalURL = $(this).find("input").val();
-                                            $.mobile.changePage("#viewWebNews2-3-1");
-                                        } else {
-                                            messageRowId = $(this)[0].getAttribute("value");
-                                            $.mobile.changePage("#viewWebNews2-3-1");
-                                        }
+                                        console.log($(this).find("input").val());
+                                        portalURL = $(this).find("input").val();
+                                        $.mobile.changePage("#viewWebNews2-3-1");
                                     }
                                 });
 

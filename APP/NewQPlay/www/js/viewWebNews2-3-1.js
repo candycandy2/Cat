@@ -128,13 +128,8 @@
                             portalHeaderHeight += 20;
                         }
 
-                        if (eventType === "Communication") {
-                            $("#PortalContent").css("padding-top", "0px");
-                            var matrixNewTopY = parseInt(portalHeaderHeight, 10);
-                        } else {
-                            $("#PortalContent").css("padding-top", portalHeaderHeight + "px");
-                            var matrixNewTopY = parseInt(portalHeaderHeight * 2, 10);
-                        }
+                        $("#PortalContent").css("padding-top", "0px");
+                        var matrixNewTopY = parseInt(portalHeaderHeight, 10);
 
                         $("#PortalContent").css("height", screenHeight + "px");
                         $("#PortalContent").css("width", screenWidth + "px");
@@ -296,32 +291,15 @@
             function QueryPortalListDetail() {
                 (function() {
 
-                    if (eventType === "Communication") {
-                        $("#htmlContent").load(portalURL, function() {
-                            $("#htmlContent").find("meta").remove();
-                            $("#htmlContent").find("title").remove();
-                            $("#htmlContent").find("base").remove();
+                    $("#viewWebNews2-3-1 .portal-header").hide();
 
-                            $("#viewWebNews2-3-1 .portal-header").hide();
-                            renderCanvas($("#htmlContent").html());
-                        });
-                    } else {
-                        var queryData = "<LayoutHeader><PortalID>" + messageRowId + "</PortalID></LayoutHeader>";
+                    $("#htmlContent").load(portalURL, function() {
+                        $("#htmlContent").find("meta").remove();
+                        $("#htmlContent").find("title").remove();
+                        $("#htmlContent").find("base").remove();
 
-                        var successCallback = function(data) {
-                            if (data["ResultCode"] === "1") {
-                                $("#viewWebNews2-3-1 .portal-header").show();
-                                renderCanvas(data["Content"][0]["PortalContent"]);
-                            } else if (data["ResultCode"] === "044901") {
-                                //Message was be deleted in server
-                                messageExist = false;
-                            }
-                        };
-
-                        var failCallback = function(data) {};
-
-                        CustomAPI("POST", true, "PortalListDetail", successCallback, failCallback, queryData, "");
-                    }
+                        renderCanvas($("#htmlContent").html());
+                    });
 
                 }());
             }
