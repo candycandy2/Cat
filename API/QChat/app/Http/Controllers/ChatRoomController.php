@@ -53,9 +53,10 @@ class ChatRoomController extends Controller
             'member_list.destination_emp_no' => 'required'
         ]);
 
+
         $range = Validator::make($this->data, [
-            'need_push' => 'in:Y,N',
-            'chatroom_desc'=>'regex:/^(\S*=\S*)+;*/',
+            'chatroom_name'=>'byte_max:64',
+            'chatroom_desc'=>'regex:/^(\S*=\S*)+;*/'
         ]);
 
         if($required->fails())
@@ -72,12 +73,13 @@ class ChatRoomController extends Controller
                     'Content'=>""]);
         }
         $verify = new Verify();
-
+        
         //check member_list
         $fromEmpNo = $this->data['emp_no'];
         $targetUserList = $this->data['member_list']['destination_emp_no'];
         $chatRoomName = $this->data['chatroom_name'];
         $chatroomDesc = $this->data['chatroom_desc'];
+
         $descData = $this->chatRoomService->getChatroomExtraData($chatroomDesc);
         if( $descData['group_message'] == 'N'){
             if(count($targetUserList) > 1){

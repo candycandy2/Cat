@@ -32,6 +32,16 @@ class UserController extends Controller
      */
     public function setQUserDetail(){
         try {
+
+            $range = Validator::make($this->data, [
+                'memo'=>'max:200'
+             ]);
+            if($range->fails())
+            {
+                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>mb_strlen($this->data['memo'])]);
+            }
             if(!isset($this->data['memo'])){
                 $this->data['memo'] = null;
             }
