@@ -165,4 +165,20 @@ class FriendMatrixRepository
                 ->select('status')
                 ->first();
     }
+
+    /**
+     * 取得受邀人所有交友邀請
+     * @param  string $targetEmpNo 受邀人的empno
+     * @return mixed
+     */
+    public function getInviterList($targetEmpNo){
+        return $this->friendMatrix
+          ->join('qp_user','qp_user.emp_no','=','qp_friend_matrix.from_emp_no') 
+          ->where('target_emp_no','=', $targetEmpNo)
+          ->where('qp_friend_matrix.status','=', '2')
+          ->select( 'login_id as name',
+                     'qp_user.emp_no'
+                    )
+          ->get();
+    }
 }
