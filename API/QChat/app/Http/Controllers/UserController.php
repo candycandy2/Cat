@@ -40,7 +40,7 @@ class UserController extends Controller
             {
                 return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
                         'Message'=>"欄位格式錯誤",
-                        'Content'=>mb_strlen($this->data['memo'])]);
+                        'Content'=>""]);
             }
             if(!isset($this->data['memo'])){
                 $this->data['memo'] = null;
