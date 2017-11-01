@@ -47,9 +47,6 @@ class ChatRoomController extends Controller
 
         $required = Validator::make($this->data, [
             'emp_no' => 'required',
-            'lang' => 'required',
-            'need_push' => 'required',
-            'app_key' => 'required',
             'chatroom_name' => 'required',
             'chatroom_desc' => 'required',
             'member_list' => 'required',
@@ -188,9 +185,6 @@ class ChatRoomController extends Controller
         try {
             $required = Validator::make($this->data, [
                 'emp_no' => 'required',
-                'lang' => 'required',
-                'need_push' => 'required',
-                'app_key' => 'required',
                 'group_id' => 'required',
                 'member_list' => 'required',
                 'member_list.destination_emp_no' => 'required',
@@ -300,9 +294,6 @@ class ChatRoomController extends Controller
         try {
             $required = Validator::make($this->data, [
                 'emp_no' => 'required',
-                'lang' => 'required',
-                'need_push' => 'required',
-                'app_key' => 'required',
                 'group_id' => 'required',
                 'member_list' => 'required',
                 'member_list.destination_emp_no' => 'required',
