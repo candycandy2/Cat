@@ -33,15 +33,17 @@
             window.canvasChangeTop = false;
 
             /********************************** function *************************************/
-            function goBack(action) {
+            window.goBack = function(action) {
                 if (action === "goList") {
                     $.mobile.changePage('#viewNewsEvents2-3');
                 } else if (action === "goHome") {
                     $.mobile.changePage('#viewMain2-1');
                 }
-            }
+            };
 
             function renderCanvas(content) {
+
+                $("#viewWebNews2-3-1 .portal-header").hide();
 
                 $("#htmlContent").css({
                     top: 0,
@@ -291,8 +293,6 @@
             function QueryPortalListDetail() {
                 (function() {
 
-                    $("#viewWebNews2-3-1 .portal-header").hide();
-
                     $("#htmlContent").load(portalURL, function() {
                         $("#htmlContent").find("meta").remove();
                         $("#htmlContent").find("title").remove();
@@ -339,11 +339,16 @@
                             $(".footer-news").hide();
                             $(".footer-portal").show();
 
-                            $("#htmlContent").html("");
-                            $("#htmlContent").show();
-
                             $("#viewWebNews2-3-1 .page-main").css("opacity", 1);
-                            renderCanvas(content.message_text);
+                            portalURL = content.message_text;
+
+                            $("#htmlContent").html("");
+                            $("#htmlContent").css({
+                                "width": 0,
+                                "height": 0
+                            });
+
+                            QueryPortalListDetail();
                         } else {
                             if (content.message_type === "news") {
 
