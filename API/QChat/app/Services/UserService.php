@@ -32,7 +32,9 @@ class UserService
         $userList = $this->userRepository->getList($searchType, $friendOnly, $empNo, $searchString);
         $userCount = $this->userRepository->getCount($searchType, $friendOnly, $empNo, $searchString);
         $result['user_list'] = $userList;
-        $result['over_threshold'] = ($userCount > $limit)?'Y':'N';
+        if($userCount > 0){
+            $result['over_threshold'] = ($userCount > $limit)?'Y':'N';
+        }
         return $result;
     }
 

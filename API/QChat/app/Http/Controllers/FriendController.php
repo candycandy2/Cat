@@ -121,17 +121,16 @@ class FriendController extends Controller
                 }
             }
 
+            $userList = ['friend'=>[],'inviter'=>[]];
             $searchString = $this->data['search_string'];
             $empNo = $this->data['emp_no'];
 
-            $userList =  $this->userService->getUserList(1, 'Y', $empNo, $searchString);
+            $friendList =  $this->userService->getUserList(1, 'Y', $empNo, $searchString);
+            $inviterList = $this->friendService->getInviterList($empNo);
 
-            if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
-                        'Message'=>"查無資料",
-                        'Content'=>""]);
-            }
-            
+            $userList['friend'] = $friendList;
+            $userList['inviter']['user_list'] = $inviterList;
+
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
                         'Content'=>$userList]);
