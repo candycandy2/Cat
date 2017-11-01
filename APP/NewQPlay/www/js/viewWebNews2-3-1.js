@@ -33,13 +33,13 @@
             window.canvasChangeTop = false;
 
             /********************************** function *************************************/
-            function goBack(action) {
+            window.goBack = function(action) {
                 if (action === "goList") {
                     $.mobile.changePage('#viewNewsEvents2-3');
                 } else if (action === "goHome") {
                     $.mobile.changePage('#viewMain2-1');
                 }
-            }
+            };
 
             function renderCanvas(content) {
 
