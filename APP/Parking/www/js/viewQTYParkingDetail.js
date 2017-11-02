@@ -1,3 +1,13 @@
+var carListData = {
+    id: "CommonCarList-popup",
+    option: [],
+    title: "",
+    defaultText: "選擇常用車籍"
+};
+
+var carListDetailData = {
+    option: []
+};
 
 $("#viewQTYParkingDetail").pagecontainer({
     create: function(event, ui) {
@@ -24,18 +34,53 @@ $("#viewQTYParkingDetail").pagecontainer({
             $('#parkingQTYData').removeClass('disable');
         }
 
-        function createTemplateDropdownList() {
-
-            eventTemplateData = {
-                id: "eventTemplate",
-                defaultText: "選擇常用車籍",
-                title: "",
-                option: "Test"
+        function ddlObj() {
+            this.detailInfo = {};
+            this.addDetail = function(key, value) {
+                this.detailInfo[key] = value;
             };
 
-            tplJS.DropdownList("viewQTYParkingDetail", "eventTemplateSelectContent", "append", "typeB", eventTemplateData);
-            $('#eventTemplate').removeClass('tpl-dropdown-list');
-            $('#eventTemplate').addClass('add-event-border');
+            //this.addDetail();
+            return this;
+        };
+
+        function createTemplateDropdownList() {
+            $('#CommonCarList-popup').remove();
+            $('#CommonCarList-popup-option-placeholder').remove();
+
+            var parkingSettingdata = JSON.parse(localStorage.getItem('parkingSettingData'));
+            if (parkingSettingdata != null) {
+                for (var i = 0, item; item = parkingSettingData['content'][i]; i++) {
+                    carListData["option"][i] = {};
+                    carListData["option"][i]["value"] = item.id;
+                    carListData["option"][i]["text"] = item.title + '<br>' + item.car;
+
+                    carListDetailData["option"][i] = {};
+                    carListDetailData["option"][i]["id"] = item.id;
+                    carListDetailData["option"][i]["type"] = item.type;
+                    carListDetailData["option"][i]["car"] = item.car;
+                    carListDetailData["option"][i]["notice"] = item.notice;
+                    carListDetailData["option"][i]["title"] = item.title; 
+                }
+                tplJS.DropdownList("viewQTYParkingDetail", "eventTemplateSelectContent", "append", "typeB", carListData);
+                $('#CommonCarList-popup').removeClass('tpl-dropdown-list');
+                $('#CommonCarList-popup').addClass('add-event-border');
+                $('#CommonCarList-popup-optionn').removeClass('ui-corner-all');
+                $('#CommonCarList-popup-option').addClass('CommonCarList-option-corner-all');
+            }
+
+            $(document).on("change", "#CommonCarList-popup", function() {
+                var selectedValue = $(this).val();
+
+                $("#newSettingTitle").val("");
+
+                $.each(carListDetailData.option, function(key, obj) {
+                    if (obj.id == selectedValue) {
+                        $("#newSettingTitle").val(obj.title);
+                    }
+                });
+
+            });
         }
 
         /********************************** page event *************************************/
