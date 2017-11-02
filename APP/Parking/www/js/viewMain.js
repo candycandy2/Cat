@@ -8,7 +8,6 @@ var clickSpaceId = '';
 var clickTraceID = '';
 var quickReserveClickDateID = '';
 var quickRserveCallBackData = {};
-var timeClick = [];
 var timeNameClick = [];
 var selectMyReserveTime = '';
 var reserveDetailLocalData = [];
