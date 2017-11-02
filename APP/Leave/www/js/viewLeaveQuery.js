@@ -7,6 +7,10 @@ var leaveDetailList = [
     startday: "2017/08/16 8:00", endday: "2017/08/17 17:00", state: "1", agent: "Jack", leavehours: "0"},
 ];
 
+var leaveSignStr = langStr["str_147"];    //表單簽核中
+var leaveRefuseStr = langStr["str_150"];    //表單已拒絕
+var leaveWithdrawStr = langStr["str_148"];    //表單已撤回
+var leaveEffectStr = langStr["str_149"];    //表單已生效
 var withdrawReason,dispelReason;
 
 $("#viewLeaveQuery").pagecontainer({
@@ -55,26 +59,24 @@ $("#viewLeaveQuery").pagecontainer({
 
         //點擊詳細，根據不同表單狀態顯示不同頁面——click
         $(".leave-query-state").on("click", function() {
-            var self = $(this).next().children().find('.leave-id').text();
-            var leaveState = $(this).children("span").eq(0).text();
-            //console.log(leaveState);
+            var self = $(this).children("span").eq(0).text();
 
-            if(leaveState == "表單簽核中") {
+            if(self == leaveSignStr) {
                 $(".leaveMenu").hide();
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
                 $(".leave-query-detail-sign").show();
-            }else if(leaveState =="表單已拒絕") {
+            }else if(self == leaveRefuseStr) {
                 $(".leaveMenu").hide();
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
                 $(".leave-query-detail-refuse").show();
-            }else if(leaveState =="表單已撤回") {
+            }else if(self == leaveWithdrawStr) {
                 $(".leaveMenu").hide();
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
                 $(".leave-query-detail-withdraw").show();
-            }else if(leaveState =="表單已生效") {
+            }else if(self == leaveEffectStr) {
                 $(".leaveMenu").hide();
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
@@ -209,14 +211,15 @@ $("#viewLeaveQuery").pagecontainer({
             } 
         });
 
-        //確定送簽——click
+        //確定送簽——跳轉到銷假單查詢頁
         $("#comfirmDispel").on("click", function() {
             leaveQueryInit();
+            changePageByPanel("viewBackLeaveQuery");
             $("#backLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
             
         });
 
-        //取消申請(同返回操作一樣)——click
+        //取消申請(同返回操作一致)——click
         $("#cancelApply").on("click", function() {
             backLeaveToDetail();
         });

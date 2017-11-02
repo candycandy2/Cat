@@ -130,6 +130,15 @@ class FriendService
     }
 
     /**
+     * 取得邀約人列表
+     * @param $targetEmpNo 受邀人的empNo
+     * @return mixed
+     */
+    public function getInviterList($targetEmpNo){
+        return $this->friendMatrixRepository->getInviterList($targetEmpNo);
+    }
+
+    /**
      * 建立全新好友關係
      * @return int
      */
