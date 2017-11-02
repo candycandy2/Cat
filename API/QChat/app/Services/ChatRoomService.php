@@ -74,7 +74,7 @@ class ChatRoomService
      * @return mixed
      */
     public function getPrivateGroup($member1, $member2){
-        $privateGroupId;
+        $privateGroupId=null;
         $res = $this->chatRoomRepository->getPrivateGroup($member1, $member2);
         foreach ($res as $chatroom) {
            $desc = $this->getChatroomExtraData(trim($chatroom->chatroom_desc));
