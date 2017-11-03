@@ -334,6 +334,17 @@ div.square {
 
 #pageThree .myReserveInfo > div > div{ margin: 4vw 0 3vw;}
 
+.hasReservePopup > div > div.main:after{
+    content: '';
+    border-top: 0.5 dashed #d6d6d6;
+    display: block;
+    width: 92.58vw;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
 .delete-myreserve{ width: 4.186vw; height: auto;}
 
 .setting-delete {
@@ -460,7 +471,7 @@ div.square {
     border: 0;
 }
 
-#cancel {
+#cancelQTYCarList {
     margin-top: 3.8vw;
     text-align: center;
     font-size: 4.5vw;
