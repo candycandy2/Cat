@@ -29,6 +29,7 @@ var pdCategory = '';
 var pdRemark = '';
 var pdCar = '';
 var parkingQTYData = [];
+var timeClick = [];
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
