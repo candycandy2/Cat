@@ -12,7 +12,6 @@ var clickAggTarceID = '';
 var clickReserveDate = '';
 var clickReserveRoom = '';
 var arrTempTimeNameClick = [];
-var parkingSettingdata = {};
 //var parkingSpaceDataExample = ['車位 094', '車位 095', '車位 096', '車位 251'];
 
 $("#viewMain").pagecontainer({

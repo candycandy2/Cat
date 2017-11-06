@@ -43,58 +43,52 @@ $("#viewQTYParkingDetail").pagecontainer({
         }
 
         function createTemplateDropdownList() {
-            //$('#eventTemplateSelectContent').find('select').remove();
-            //$('#eventTemplateSelectContent').find('div').remove();
 
-            var parkingSettingdata = JSON.parse(localStorage.getItem('parkingSettingData'));
-            if (parkingSettingdata != null) {
-               
-                var ID = carListTemplateID;
-                var oldID = parseInt(ID) - 1;
-                carListTemplateID++;
+            parkingSettingdata = JSON.parse(localStorage.getItem('parkingSettingData'));
+                          
+            var ID = carListTemplateID;
+            var oldID = parseInt(ID) - 1;
+            carListTemplateID++;
 
-                if ($("#CommonCarList-popup" + oldID).length) {
-                    $("#CommonCarList-popup" + oldID).remove();
-                    $("#CommonCarList-popup" + oldID + "-option").popup("destroy").remove();
-                }
-
-                var carListData = {
-                    id: "CommonCarList-popup"+ ID,
-                    option: [],
-                    title: "",
-                    defaultText: "選擇常用車籍"
-                };
-
-                for (var i = 0, item; item = parkingSettingdata['content'][i]; i++) {
-                    carListData["option"][i] = {};
-                    carListData["option"][i]["value"] = item.id;
-                    carListData["option"][i]["text"] = item.title + '<br>' + item.car;
-
-                    carListDetailData["option"][i] = {};
-                    carListDetailData["option"][i]["id"] = item.id;
-                    carListDetailData["option"][i]["type"] = item.type;
-                    carListDetailData["option"][i]["car"] = item.car;
-                    carListDetailData["option"][i]["notice"] = item.notice;
-                    carListDetailData["option"][i]["title"] = item.title; 
-                }
-
-                tplJS.DropdownList("viewQTYParkingDetail", "eventTemplateSelectContent", "append", "typeB", carListData);
-                $('#CommonCarList-popup'+ID).removeClass('tpl-dropdown-list');
-                $('#CommonCarList-popup'+ID).addClass('add-event-border');
-                $('#CommonCarList-popup'+ID+'-option').removeClass('ui-corner-all');
-                $('#CommonCarList-popup'+ID+'-option').addClass('CommonCarList-option-corner-all');
+            if ($("#CommonCarList-popup" + oldID).length) {
+                $("#CommonCarList-popup" + oldID).remove();
+                $("#CommonCarList-popup" + oldID + "-option").popup("destroy").remove();
             }
+
+            var carListData = {
+                id: "CommonCarList-popup"+ ID,
+                option: [],
+                title: "",
+                defaultText: "選擇常用車籍"
+            };
+
+            for (var i = 0, item; item = parkingSettingdata['content'][i]; i++) {
+                carListData["option"][i] = {};
+                carListData["option"][i]["value"] = item.id;
+                carListData["option"][i]["text"] = item.title + '<br>' + item.car;
+
+                carListDetailData["option"][i] = {};
+                carListDetailData["option"][i]["id"] = item.id;
+                carListDetailData["option"][i]["type"] = item.type;
+                carListDetailData["option"][i]["car"] = item.car;
+                carListDetailData["option"][i]["notice"] = item.notice;
+                carListDetailData["option"][i]["title"] = item.title; 
+            }
+
+            tplJS.DropdownList("viewQTYParkingDetail", "eventTemplateSelectContent", "append", "typeB", carListData);
+            $('#CommonCarList-popup'+ID).removeClass('tpl-dropdown-list');
+            $('#CommonCarList-popup'+ID).addClass('add-event-border');
+            $('#CommonCarList-popup'+ID+'-option').removeClass('ui-corner-all');
+            $('#CommonCarList-popup'+ID+'-option').addClass('CommonCarList-option-corner-all');
 
             $(document).on("change", "#CommonCarList-popup"+ ID, function() {
                 var selectedValue = $(this).val();
-
                 $('#newSettingTitleQTY').val("");
-
                 $.each(carListDetailData.option, function(key, obj) {
                     if (obj.id == selectedValue) {
                         $('#newSettingTitleQTY').val(obj.title);
                         $('#newSettingTypeQTY input[id^=set]').removeAttr("checked");
-                        $('#newSettingTypeQTY input[value=' + obj.type + ']').prop("checked", "checked");
+                        $('#newSettingTypeQTY input[value=' + obj.type + 'QTY]').prop("checked", "checked");
                         $('#newSettingCarQTY').val(obj.car);
                         $('#newSettingNoticeQTY').val(obj.notice);
                     }
@@ -102,6 +96,7 @@ $("#viewQTYParkingDetail").pagecontainer({
                 });
 
             });
+            
         }
 
         function getAPIReserveQTYParkingSpace(siteId, spaceId, pdName, pdCategory, pdRemark, pdCar, date, timeID) {
@@ -183,9 +178,17 @@ $("#viewQTYParkingDetail").pagecontainer({
             queryQTYReserveDetail();
         });
 
-        $('#viewQTYParkingDetail').on('pagebeforeshow', function(event, ui) {          
+        $('#viewQTYParkingDetail').on('pagebeforeshow', function(event, ui) { 
+            parkingSettingdata = JSON.parse(localStorage.getItem('parkingSettingData'));         
             queryQTYReserveDetail();
-            createTemplateDropdownList();
+            if (parkingSettingdata.content.length != 0) {
+                $('#commonQTYCarList').removeClass('disable');
+                $('#nonCarList').addClass('disable');
+                createTemplateDropdownList();
+            }else {
+                $('#commonQTYCarList').addClass('disable');
+                $('#nonCarList').removeClass('disable');
+            }
             setDefaultStatus();
             reserveQTYBtnDefaultStatus();
         });
@@ -195,6 +198,10 @@ $("#viewQTYParkingDetail").pagecontainer({
         });
 
         /********************************** dom event *************************************/
+        $('#nonCarListTemplate').on("click", function() {
+            $("#nonCommonCarListMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
+        });
+
         $('#QTYSettingBack').on('click', function() {
             setDefaultStatus();
             $.mobile.changePage('#viewMain');
