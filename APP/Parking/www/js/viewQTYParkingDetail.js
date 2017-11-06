@@ -224,7 +224,7 @@ $("#viewQTYParkingDetail").pagecontainer({
                 var pdQTYRemark = $('#newSettingNoticeQTY').val();
 
                 var doAPIReserveQTYParkingSpace = new getAPIReserveQTYParkingSpace(selectedSite, clickSpaceId, pdQTYName, pdQTYCategory, pdQTYRemark, pdQTYCar, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
-   
+                isReloadPage = true;
             }
         });
 
