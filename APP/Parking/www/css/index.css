@@ -334,15 +334,33 @@ div.square {
 
 #pageThree .myReserveInfo > div > div{ margin: 4vw 0 3vw;}
 
-.hasReservePopup > div > div.main:after{
+.app-popup.lessInfo .main-QTY{ margin-bottom: 0vw;}
+
+.hasReservePopup > div > div.main-QTY:after{
     content: '';
-    border-top: 0.5 dashed #d6d6d6;
+    border-top: dashed #d6d6d6 1px;
     display: block;
-    width: 92.58vw;
+    width: 88%;
     height: 1px;
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 120px;
+    left: 17px;
+}
+
+.app-popup .ui-content-QTY {
+    padding: 5.07vw 0vw 0vw;
+    overflow-y: hidden;
+    max-height: inherit;
+    min-height: inherit;
+}
+
+p.content-paragraph {
+    padding: 0 5.36vw;
+    margin: 0 0 5.07vw;
+}
+
+.app-popup .btn-two{
+    color: #1678E5;
 }
 
 .delete-myreserve{ width: 4.186vw; height: auto;}

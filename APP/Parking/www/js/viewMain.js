@@ -652,7 +652,7 @@ $("#viewMain").pagecontainer({
                         popupMsg('myReserveMsg', tempEname + '已預約 ', arrMsgValue[1]+ '&nbsp;&nbsp;' + msgContent, '關閉', true, '取消預約', '056_icon_booked_success.png');
                     }else if (siteCategoryID === "28"){
                         var headerContent = tempEname + ' 已預約',
-                            mainContent = arrMsgValue[1]+ '&nbsp;&nbsp;' + msgContent;
+                            mainContent = arrMsgValue[1]+ '&nbsp;&nbsp;' + msgContent,
                             carListContent = '申請人:' + tempPDName + '<br>' + '申請者類別:' + tempPDCategory + '<br>' +'車型/車牌:' + tempPDCar + '<br>' + '注意事項:' + tempPDRemark;
                         popupMsgInit('.hasReservePopup');
                         tplJS.preventPageScroll();
@@ -781,8 +781,25 @@ $("#viewMain").pagecontainer({
                 bReserveCancelConfirm = true;
             }
         });
+
+        $('body').on('click', 'div[for=hasReservePopup] .btn-confirm', function() {
+            if (bReserveCancelConfirm == true) {
+                $('div[for=hasReservePopup]').popup('close');
+                var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
+            } else {
+                $('.hasReservePopup').find('.header-icon img').attr('src', 'img/068_icon_warm.png');
+                $('.hasReservePopup').find('.header-text').html('確定取消預約？');
+                $('.hasReservePopup').find('.btn-cancel').html('不取消');
+                $('.hasReservePopup').find('.btn-confirm').html('取消');
+                bReserveCancelConfirm = true;
+            }
+        });
         
         $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
+            bReserveCancelConfirm = false;
+        });
+
+        $('body').on('click', 'div[for=hasReservePopup] .btn-cancel', function() {
             bReserveCancelConfirm = false;
         });
 
