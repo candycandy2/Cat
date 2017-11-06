@@ -665,8 +665,22 @@ $("#viewMain").pagecontainer({
                     }
                     
                 } else {
-                    var tempMailContent = $(this).attr('email') + '?subject=停車位協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
-                    popupSchemeMsg('reserveMsg', tempEname + ' 已預約 ', arrMsgValue[1] + '&nbsp;&nbsp' + msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'), 'select.png');
+                    if (siteCategoryID === "10"){
+                        var tempMailContent = $(this).attr('email') + '?subject=停車位協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
+                        popupSchemeMsg('reserveMsg', tempEname + ' 已預約 ', arrMsgValue[1] + '&nbsp;&nbsp' + msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'), '056_icon_booked_success.png');
+                    }else if (siteCategoryID === "28"){
+                        var headerContent = tempEname + "已預約",
+                            mainContent = arrMsgValue[1]+ '&nbsp;&nbsp;' + msgContent,
+                            carListContent = '申請人:' + tempPDName + '<br>' + '申請者類別:' + tempPDCategory + '<br>' +'車型/車牌:' + tempPDCar + '<br>' + '注意事項:' + tempPDRemark,
+                            tempMailContent = $(this).attr('email') + '?subject=停車位協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
+                        popupMsgInit('.otherReservePopup');
+                        tplJS.preventPageScroll();
+                        $('.otherReservePopup').find('.header-text').html(headerContent);
+                        $('.otherReservePopup').find('.main-paragraph').html(mainContent);
+                        $('.otherReservePopup').find('.content-paragraph').html(carListContent);
+                        $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
+                        $('.btn-tel').attr('href', 'tel:' + $(this).attr('ext'));
+                    }    
                 }
 
             } else if (bNoReserve && !bReserveSelect) {

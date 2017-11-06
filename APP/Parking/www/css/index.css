@@ -336,7 +336,7 @@ div.square {
 
 .app-popup.lessInfo .main-QTY{ margin-bottom: 0vw;}
 
-.hasReservePopup > div > div.main-QTY:after{
+.main-QTY:after{
     content: '';
     border-top: dashed #d6d6d6 1px;
     display: block;
