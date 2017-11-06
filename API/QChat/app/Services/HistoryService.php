@@ -156,20 +156,22 @@ class HistoryService
      * @param  int $groupId      聊天室id
      * @param  int $start        開始時間 timestamp
      * @param  int $end          結束時間 timestamp
+     * @param  int $sort         0:asc | 1:desc
      * @return mixed    
      */
-    public function getHistoryByTime($groupId, $start, $end){
-        return $this->historyRepository->getHistoryByTime($groupId, $start, $end);
+    public function getHistoryByTime($groupId, $start, $end, $sort){
+        return $this->historyRepository->getHistoryByTime($groupId, $start, $end, $sort);
     }
 
     /**
      * 依指標取得歷史訊息
      * @param  int $groupId    聊天室id
      * @param  string $cursor  指標
+     * @param  int $sort         0:asc | 1:desc
      * @return mixed
      */
-    public function getHistoryByCursor($groupId, $cursor){
-        return $this->historyRepository->getHistoryByCursor($groupId, $cursor);
+    public function getHistoryByCursor($groupId, $cursor, $sort){
+        return $this->historyRepository->getHistoryByCursor($groupId, $cursor, $sort);
     }
 
     /**
