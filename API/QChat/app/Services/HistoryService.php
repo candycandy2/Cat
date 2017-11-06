@@ -152,6 +152,27 @@ class HistoryService
     }
 
     /**
+     * 依取時間得歷史訊息
+     * @param  int $groupId      聊天室id
+     * @param  int $start        開始時間 timestamp
+     * @param  int $end          結束時間 timestamp
+     * @return mixed    
+     */
+    public function getHistoryByTime($groupId, $start, $end){
+        return $this->historyRepository->getHistoryByTime($groupId, $start, $end);
+    }
+
+    /**
+     * 依指標取得歷史訊息
+     * @param  int $groupId    聊天室id
+     * @param  string $cursor  指標
+     * @return mixed
+     */
+    public function getHistoryByCursor($groupId, $cursor){
+        return $this->historyRepository->getHistoryByCursor($groupId, $cursor);
+    }
+
+    /**
      * 取得欲寫入DB的歷史資訊
      * @return Array
      */
@@ -187,6 +208,7 @@ class HistoryService
             $history['target_name'] = $message->target_name;
             $history['target_type'] = $message->target_type;
             $history['ctime']= $message->msg_ctime;
+            $history['create_time']= $message->create_time;
             $history['content']= json_encode($message->msg_body);
             $this->historyData[] = $history;
             //檔案類型寫入 qm_message_file

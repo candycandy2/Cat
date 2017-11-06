@@ -166,7 +166,7 @@ class ChatRoomController extends Controller
                                          "is_new"=>'Y')]);
         }catch (JMessageException $e){
             \DB::rollBack();
-             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
         }catch (\Exception $e) {
@@ -278,7 +278,7 @@ class ChatRoomController extends Controller
             
         }catch (JMessageException $e){
             \DB::rollBack();
-             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
         }catch (\Exception $e) {
@@ -372,7 +372,7 @@ class ChatRoomController extends Controller
             
         }catch (JMessageException $e){
             \DB::rollBack();
-             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
         }catch (\Exception $e) {
@@ -441,7 +441,7 @@ class ChatRoomController extends Controller
                         'Content'=>""]);
         }catch (JMessageException $e){
             \DB::rollBack();
-             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
         }catch (\Exception $e) {

@@ -270,7 +270,7 @@ class FriendController extends Controller
             }
             if( $status == 'invitated'){
                 return $result = response()->json(['ResultCode'=>ResultCode::_025927_InvitationAlreadySend,
-                        'Message'=>"好友邀請已送出",
+                        'Message'=>"已發送過交友邀請",
                         'Content'=>""]);
             }
 
