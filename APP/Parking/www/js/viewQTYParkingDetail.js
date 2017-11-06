@@ -11,7 +11,7 @@ $("#viewQTYParkingDetail").pagecontainer({
     	/********************************** function *************************************/
         function setDefaultStatus() {
             $('#newSettingTitleQTY').val('');
-            $('#newSettingTypeQTY input[value=setGuest]').prop("checked", "checked");
+            $('#newSettingTypeQTY input[value=setGuestQTY]').prop("checked", "checked");
             $('#newSettingCarQTY').val('');
             $('#newSettingNoticeQTY').val('');
         }
@@ -104,6 +104,80 @@ $("#viewQTYParkingDetail").pagecontainer({
             });
         }
 
+        function getAPIReserveQTYParkingSpace(siteId, spaceId, pdName, pdCategory, pdRemark, pdCar, date, timeID) {
+            loadingMask('show');
+            var self = this;
+            var queryData = '<LayoutHeader><ParkingSpaceSite>' + siteId + '</ParkingSpaceSite><ParkingSpaceID>' + spaceId + '</ParkingSpaceID><PDetailName>' + pdName + '</PDetailName><PDetailCategory>' + pdCategory + '</PDetailCategory><PDetailRemark>' + pdRemark + '</PDetailRemark><PDetailCar>' + pdCar + '</PDetailCar><ReserveDate>' + date + '</ReserveDate><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><ReserveTimeID>' + timeID + '</ReserveTimeID></LayoutHeader>';
+
+            this.successCallback = function(data) {
+                if (data['ResultCode'] === "042902") {
+                    var arrCutString = cutStringToArray(date, ['4', '2', '2']);
+                    var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
+                    var spaceName = '';
+                    var timeName = '';
+                    spaceName = $('#reserveSpace').find('.hover').text();
+                    //reserve continuous time block, display one time block  
+                    var arrTempTime = [];
+                    for (var item in timeClick) {
+                        var sTime = $('div[id=' + timeClick[item] + '] > div > div:first').text();
+                        var eTime = addThirtyMins(addThirtyMins(sTime));
+                        arrTempTime.push(sTime);
+                        arrTempTime.push(eTime);
+                    }
+
+                    var arrUniqueTime = [];
+                    for (var item in arrTempTime) {
+                        var index = arrUniqueTime.indexOf(arrTempTime[item]);
+                        if (index === -1) {
+                            arrUniqueTime.push(arrTempTime[item]);
+                        } else {
+                            arrUniqueTime.splice(index, 1);
+                        }
+                    }
+                    
+                    arrUniqueTime.sort();
+
+                    for (var i = 0; i < arrUniqueTime.length; i = i + 2) {
+                        timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1] + '<br />';
+                    }
+
+                    var msgContent = '<div>' + strDate + '&nbsp;&nbsp;' + timeName + '</div>';
+                    popupMsg('reserveQTYSuccessMsg', spaceName + ' 預約成功', msgContent, '', false, '確定', '056_icon_booked_success.png');
+
+                    var isReserveMulti = '';
+                    var selectedSite = '';
+                    var arrTemp = [];
+
+                    isReserveMulti = $('#' + spaceId).attr('IsReserveMulti');
+                    selectedSite = $('#reserveSite').find(":selected").val();
+                    arrTemp = timeNameClick;
+                    reserveQTYBtnDefaultStatus();
+
+                    //var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(spaceId, date, false);
+
+                    if (isReserveMulti != 'N') {
+                        var jsonData = [];
+                        $.each(arrTemp, function(index, value) {
+                            jsonData = {
+                                space: spaceName,
+                                site: selectedSite,
+                                date: date,
+                                time: value
+                            };
+                            myReserveLocalData.push(jsonData);
+                        });
+                    }
+
+                }else if (data['ResultCode'] === "042903") {
+                    popupMsg('reserveFailMsg', '預約失敗', '已被預約', '', false, '確定', '068_icon_warm.png');
+                }
+                loadingMask('hide');
+            };
+            var __construct = function() {
+                CustomAPI("POST", true, "ReserveParkingSpace", self.successCallback, self.failCallback, queryData, "");
+            }();
+        }
+
         /********************************** page event *************************************/
         $('#viewQTYParkingDetail').one('pagebeforeshow', function(event, ui) {
             queryQTYReserveDetail();
@@ -117,7 +191,7 @@ $("#viewQTYParkingDetail").pagecontainer({
         });
 
         $('#viewQTYParkingDetail').on('pageshow', function(event, ui) {
-
+            footerFixed();
         });
 
         /********************************** dom event *************************************/
@@ -138,21 +212,25 @@ $("#viewQTYParkingDetail").pagecontainer({
         // click save button
         $('#reserveQTYBtn').on('click', function() {
             if ($(this).hasClass('btn-disable')) {
-                popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
+                popupMsg('noSelectTimeMsg', '', '*號為必填欄位', '', false, '確定', '');
             } else {
                 var timeID = '';
                 for (var item in timeClick) {
                     timeID += timeClick[item] + ',';
                 } 
                 var pdQTYName = $('#newSettingTitleQTY').val();
-                var pdQTYCategory = ($("#newSettingTypeQTY :radio:checked").val() == 'setGuest') ? '貴賓' : '關係企業';
+                var pdQTYCategory = ($("#newSettingTypeQTY :radio:checked").val() == 'setGuestQTY') ? '貴賓' : '關係企業';
                 var pdQTYCar = $('#newSettingCarQTY').val();
                 var pdQTYRemark = $('#newSettingNoticeQTY').val();
-                //var doAPIReserveQTYParkingSpace = new getAPIReserveQTYParkingSpace('pageOne', selectedSite, clickSpaceId, pdName, pdCategory, pdRemark, pdCar, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
-                //setDefaultStatus();
-                //reserveQTYBtnDefaultStatus();    
-            }
 
+                var doAPIReserveQTYParkingSpace = new getAPIReserveQTYParkingSpace(selectedSite, clickSpaceId, pdQTYName, pdQTYCategory, pdQTYRemark, pdQTYCar, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
+                isReloadPage = true;
+            }
+        });
+
+        $('body').on('click', 'div[for=reserveQTYSuccessMsg] #confirm', function() {
+            $('#viewPopupMsg').popup('close');
+            $.mobile.changePage('#viewMain');
         });
 
     }
