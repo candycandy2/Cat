@@ -73,6 +73,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.GetDefaultSetting = function() {
 
             this.successCallback = function(data) {
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["quickleavelist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -236,6 +237,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.CountLeaveHours = function() {
 
             this.successCallback = function(data) {
+                console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
