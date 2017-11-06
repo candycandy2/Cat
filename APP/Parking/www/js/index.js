@@ -30,6 +30,10 @@ var pdRemark = '';
 var pdCar = '';
 var parkingQTYData = [];
 var timeClick = [];
+var selectedSite = '';
+var clickDateId = '';
+var clickSpaceId = '';
+var timeNameClick = [];
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
