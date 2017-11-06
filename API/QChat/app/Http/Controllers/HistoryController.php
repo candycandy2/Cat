@@ -42,11 +42,15 @@ class HistoryController extends Controller
         try {
             $required = Validator::make($this->data, [
                         'group_id' => 'required',
-                        'sort' => 'required',
                         'begin_time' => 'required_without:cursor|required_without:cursor',
                         'end_time' => 'required_without:cursor|required_without:cursor',
                         'cursor' => 'required_without:begin_time|required_without:end_time'
                     ]);
+
+            $range = Validator::make($this->data, [
+                'sort' => 'in:0,1'
+            ]);
+
 
             if($required->fails()){
                 return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
@@ -54,15 +58,23 @@ class HistoryController extends Controller
                             'Content'=>""]);
             }
 
+            if($range->fails())
+            {      
+                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                        'Message'=>"欄位格式錯誤",
+                        'Content'=>""]);
+            }
+
             $groupId = $this->data['group_id'];
             $start = $this->data['begin_time'];
             $end = $this->data['end_time'];
-            $cursor = $this->data['cursor'];
-            $sort = $this->data['sort'];
-            if(isset($cursor) && !is_array($cursor)){
-                $data = $this->historyService->getHistoryByCursor($groupId, $cursor);
+            $cursor = (isset($this->data['cursor']))?$this->data['cursor']:"";
+            $this->data['sort']  = (!isset($this->data['sort']) || is_array($this->data['sort']))?0:$this->data['sort'];  
+            $sort = ($this->data['sort']==1)?'desc':'asc';
+            if($cursor!="" && !is_array($cursor)){
+                $data = $this->historyService->getHistoryByCursor($groupId, $cursor, $sort);
             }else{
-                $data = $this->historyService->getHistoryByTime($groupId, $start, $end);
+                $data = $this->historyService->getHistoryByTime($groupId, $start, $end, $sort);
             }
             $conversation = [];
             $count = count($data);
