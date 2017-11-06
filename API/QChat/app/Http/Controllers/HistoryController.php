@@ -4,120 +4,109 @@ use DateTime;
 use Validator;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
-use App\lib\Logger;
 use App\Repositories\ParameterRepository;
 use App\Services\HistoryService;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request;
+use App\lib\Verify;
+use Config;
 
 class HistoryController extends Controller
 {
 
     protected $parameterRepository;
     protected $historyService;
+    protected $xml;
+    protected $data;
 
     /**
-     * JobController constructor.
+     * HistoryController constructor.
      * @param ParameterRepository $parameterRepository
      * @param HistoryServices $historyServices
      */
     public function __construct(ParameterRepository $parameterRepository,
                                 HistoryService $historyService)
-    {
+    {      
+        $input = Input::get();
         $this->parameterRepository = $parameterRepository;
         $this->historyService = $historyService;
+        $this->xml=simplexml_load_string($input['strXml']);
+        $this->data=json_decode(json_encode($this->xml),TRUE);
     }
     
     /**
-     * getQGroupHistoryMessageJob (後台JOB專用)
+     * 透過此API可以從QPlay端獲得單一聊天室內的歷史訊息
      * @return json
      */
-    public function getQGroupHistoryMessageJob(){
-        $ACTION = 'getQGroupHistoryMessageJob';
-        //ignore_user_abort(true);//瀏覽器關掉後也持續執行
-        set_time_limit(0);//不限制time out 時間
+    public function getQGroupHistoryMessage(){
+        try {
+            $required = Validator::make($this->data, [
+                        'group_id' => 'required',
+                        'sort' => 'required',
+                        'begin_time' => 'required_without:cursor|required_without:cursor',
+                        'end_time' => 'required_without:cursor|required_without:cursor',
+                        'cursor' => 'required_without:begin_time|required_without:end_time'
+                    ]);
 
-        Log::info($ACTION . ' 開始執行...');
-        
-        //取得上次同步的最後時間
-        $lastQueryTime = $this->parameterRepository->getLastQueryTime();
-        $lastEndTime = $lastQueryTime->parameter_value;
+            if($required->fails()){
+                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                            'Message'=>"必填字段缺失",
+                            'Content'=>""]);
+            }
 
-        $dt = DateTime::createFromFormat("Y-m-d H:i:s", $lastEndTime);
-        if($dt === false || array_sum($dt->getLastErrors()) >0 ){
-            $result = ['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
-                                     'Message'=>'the parameter end_time error or blank!'];
-            return response()->json($result);
-        }
-        
-        //init beginTime and End Time
-        $beginTime = $lastEndTime;
-        $endTime = $lastEndTime;
-        $interval = 7; //批次執行區間
-        $count = 500;
+            $groupId = $this->data['group_id'];
+            $start = $this->data['begin_time'];
+            $end = $this->data['end_time'];
+            $cursor = $this->data['cursor'];
+            $sort = $this->data['sort'];
+            if(isset($cursor) && !is_array($cursor)){
+                $data = $this->historyService->getHistoryByCursor($groupId, $cursor);
+            }else{
+                $data = $this->historyService->getHistoryByTime($groupId, $start, $end);
+            }
+            $conversation = [];
+            $count = count($data);
+            $conversation = [
+                'total'=>$count,
+                'cursor'=>($count > 0)?$data[$count-1]->create_time:"",
+                'count'=>$count,
+                'messages'=>[]
+            ];
 
-        date_default_timezone_set('Asia/Taipei');
-        $now = date("Y-m-d H:i:s");
-        if($endTime == $now){
-            $result = ['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                      'Message'=>'Messages before '.$now.' were already been synced!'];
-            return response()->json($result);
-        }
-        $dateDiff = CommonUtil::dateDiff($beginTime,$now);
-        $i=0;
+            foreach ($data as $key => $value) {
+               $messages = [
+                        'set_from_name'=>$value->from_name,
+                        'from_paltform'=>null,
+                        'target_name'=>$value->target_name,
+                        'msg_type'=>$value->target_type,
+                        'version'=>null,
+                        'target_id'=>$value->target_id,
+                        'sui_mtime'=>null,
+                        'from_appkey'=>"f1007b6d14755a1e17e74195",
+                        'from_name'=>$value->from_name,
+                        'from_id'=>$value->from_id,
+                        'from_type'=>$value->from_type,
+                        'create_time'=>$value->create_time,
+                        'target_type'=>$value->target_type,
+                        'msgid'=>$value->msg_id,
+                        'msg_ctime'=>$value->ctime,
+                        'msg_level'=>null
+                    ];
 
-        //每7天為一單位，一直執行到今天為止
-        
-        \DB::connection('mysql_qmessage')->beginTransaction();
-        \DB::connection('mysql_ens')->beginTransaction();
-
-       try {
-            do{
-                $historyData =[];
-                $historyFileData = [];
-                $beginTime = date('Y-m-d H:i:s', strtotime($endTime));
-                $tmpEndTime = date('Y-m-d H:i:s', strtotime($beginTime . ' +'.$interval.' day'));
-                $diffNow = CommonUtil::dateDiff($now,$tmpEndTime);
-                //加7天後區間大於執行當下時間，以當下時間當作endTime
-                if($diffNow  >=0 ){
-                    $endTime =  $now;
-                }else{
-                    $endTime =  $tmpEndTime;
+                $content = json_decode($value->content);
+                foreach ($content as $mKey => $mValue) {
+                      $messages['msg_body'][$mKey] = $mValue;
                 }
-                $i++;
-                $resData = $this->historyService->getMessageAndFile($beginTime, $endTime, $count);
-                if(isset($resData->error)){
-                    $result = ['ResultCode'=> ResultCode::_025925_CallAPIFailedOrErrorOccurs,
-                                 'Message'=> 'Call JMessage Error : ['.$resData->error.']'.$resData->message,
-                                 'Content'=> ''];
-                    return response()->json($result);
+                if($value->msg_type == 'image'){
+                    $messages['msg_body']['qplay_media_path'] = url($value->lpath);
+                    $messages['msg_body']['qplay_thumb_path'] = url($value->spath); 
                 }
-                $historyData = $resData['historyData'];
-                $historyFileData = $resData['historyFileData'];
-              
-                //寫入MySQL
-                $this->historyService->newMySQLHistory($historyData, $historyFileData);
-              
-                //更新結束時間
-                $this->parameterRepository->updateLastQueryTime($endTime);
-
-                \DB::connection('mysql_qmessage')->commit();
-                \DB::connection('mysql_ens')->commit();
-              
-                //MySql寫入後才寫入mongo，確保資料不會被多寫入
-                $this->historyService->newMongoHistory($historyData, $historyFileData);
-              
-                 
-           } while ($endTime != $now);
-            $result = ['ResultCode'=>ResultCode::_1_reponseSuccessful,'Message'=>'Sync Success!'];
-            return response()->json($result);
-            Log::info('Sync Success!');
-          }catch (\Exception $e) {
-
-             \DB::connection('mysql_qmessage')->rollBack();
-             \DB::connection('mysql_ens')->rollBack();
+               array_push( $conversation['messages'], $messages);
+            }
+            return response()->json($conversation);
+        }catch (\Exception $e) {
              $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()];
-             Log::info('Sync Fail!' . json_encode($result));
             return response()->json($result);
-         } 
-     }
+        } 
+    }
 }

@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class QM_History extends Model
+class QP_History extends Model
 {   
     protected $connection = 'mysql_qplay';
     protected $table = 'qp_history';
