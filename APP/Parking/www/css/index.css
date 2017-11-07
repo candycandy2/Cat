@@ -468,7 +468,7 @@ p.content-paragraph {
 }
 
 .car-list-choose-button {
-    background: url('../img/023_btn_add.png') right transparent;
+    background: url('../img/add_icon.png') right transparent;
     background-size: 4vw 4vw;
     background-repeat: no-repeat;
     background-position-y: 45%;
@@ -778,4 +778,25 @@ div.scrollmenu a {
     border-top: 1px solid #d4d4d4;
     right: 0;
     border-radius: 0 0 10px 0;
+}
+
+.toast-style {
+    background-color: #666;
+    /* bottom: 60VW; */
+    bottom: 90VW;
+    border-radius: 1.5px;
+    color: #F0F0F0;
+    font-size: 3.6VW;
+    height: 4VW;
+    margin: auto;
+    opacity: 0.9;
+    padding: 4VW 3VW 4VW 3VW;
+    position: relative;
+    text-align: center;
+    width: 28VW;
+    z-index: 2;
+}
+
+#nonCommonCarListMsg {
+    display: none;
 }

@@ -6,8 +6,8 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class MNG_History extends Eloquent
 {
-    protected $connection = 'mongodb_qmessage';
-    protected $collection = 'qm_history';
+    protected $connection = 'mongodb_qplay';
+    protected $collection = 'qp_history';
     protected $primaryKey = 'msg_id';
 
     /**

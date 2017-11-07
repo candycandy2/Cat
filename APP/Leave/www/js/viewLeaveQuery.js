@@ -212,7 +212,7 @@ $("#viewLeaveQuery").pagecontainer({
         });
 
         //確定送簽——跳轉到銷假單查詢頁
-        $("#comfirmDispel").on("click", function() {
+        $("#confirmDispelBtn").on("click", function() {
             leaveQueryInit();
             changePageByPanel("viewBackLeaveQuery");
             $("#backLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);

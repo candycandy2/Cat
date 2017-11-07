@@ -5,8 +5,8 @@
  */
 namespace App\Repositories;
 
-use App\Model\QM_History;
-use App\Model\QM_History_File;
+use App\Model\QP_History;
+use App\Model\QP_History_File;
 
 use DB;
 
@@ -18,13 +18,13 @@ class HistoryRepository
     /** @var QM_History_File Inject History repository */
     protected $historyFile;
     
-    public static $db = 'mysql_qmessage';
+    public static $db = 'mysql_qplay';
 
-    public static $historyTable = 'qm_history';
+    public static $historyTable = 'qp_history';
 
-    public static $historyFileTable = 'qm_history_file';
+    public static $historyFileTable = 'qp_history_file';
 
-    public static $historyColumn = 'msg_id, msg_type, from_id, from_type, target_id, target_name, target_type, ctime, content';
+    public static $historyColumn = 'msg_id, msg_type, from_id, from_type, target_id, target_name, target_type, ctime, create_time, content';
 
     public static $historyFileColumn = 'msg_id, fname, fsize, format, npath, lpath, spath';
     /**
@@ -32,7 +32,7 @@ class HistoryRepository
      * @param QM_History $history
      * @param QM_History_File $historyFile
      */
-    public function __construct(QM_History $history, QM_History_File $historyFile)
+    public function __construct(QP_History $history, QP_History_File $historyFile)
     {
         $this->history = $history;
         $this->historyFile = $historyFile;
@@ -84,6 +84,45 @@ class HistoryRepository
         }
     }
 
+    /**
+     * 根據開始及結束時間取得歷史訊息
+     * @param  string $groupId 聊天室id(group_id)
+     * @param  int $start   開始時間
+     * @param  int $end     結束時間
+     * @param  int $sort         0:asc | 1:desc
+     * @return mixed
+     */
+    public function getHistoryByTime($groupId, $start, $end, $sort){
+         return $this->history
+             ->leftjoin('qp_history_file','qp_history.msg_id','=','qp_history_file.msg_id')
+             ->where('target_id',$groupId)
+             ->where('create_time','>=',$start)
+             ->where('create_time','<=',$end)
+             ->orderBy('create_time',$sort)
+             ->get();
+    }
+
+    /**
+     * 根據指標取得歷史訊息
+     * @param  string $groupId 聊天室id(group_id)
+     * @param  int    $cursor  指標，這裡用來查create_time > $cursor以後的資料
+     * @param  int $sort         0:asc | 1:desc
+     * @return mixed
+     */
+    public function getHistoryByCursor($groupId, $cursor, $sort){
+            $op = '>';
+            if($sort == 'desc'){
+                $op = '<';
+            }
+         return $this->history
+             ->leftjoin('qp_history_file','qp_history.msg_id','=','qp_history_file.msg_id')
+             ->where('target_id',$groupId)
+             ->where('create_time',$op,$cursor)
+             ->orderBy('create_time',$sort)
+             ->get();
+            
+    }
+    
     /**
      * 新增或更新資料
      * @param  string $db      DB connection
