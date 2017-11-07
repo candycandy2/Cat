@@ -388,9 +388,7 @@ class ChatRoomController extends Controller
         \DB::beginTransaction();
         try {
             $required = Validator::make($this->data, [
-                    'group_id' => 'required',
-                    'attribute_exists' => 'required',
-                    'attribute_exists' => 'required'
+                    'group_id' => 'required'
                 ]);
 
             $groupId = $this->data['group_id'];
