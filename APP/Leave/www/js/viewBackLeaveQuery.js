@@ -41,8 +41,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //表單狀況詳細情況
         $(".backLeave-query-state").on("click", function() {
-            //var self = $(this).attr("data-num");
-            var self = $(this).children("span").text();
+            var self = $(this).children("span").eq(0).text();
 
             if(self === backLeaveStateSign) {
                 $(".backLeave-query-main").hide();

@@ -74,7 +74,7 @@ class ChatRoomService
      * @return mixed
      */
     public function getPrivateGroup($member1, $member2){
-        $privateGroupId;
+        $privateGroupId=null;
         $res = $this->chatRoomRepository->getPrivateGroup($member1, $member2);
         foreach ($res as $chatroom) {
            $desc = $this->getChatroomExtraData(trim($chatroom->chatroom_desc));
@@ -169,5 +169,16 @@ class ChatRoomService
         $data =json_encode($data);
         $url = JMessage::API_V1_URL.$method;
         return $this->jmessage->exec('POST', $url, $data);
+    }
+
+    /**
+     * 取得某用戶群組列表
+     * @param  string $userName 用戶名
+     * @return json
+     */
+    public function getUserGroups($userName){
+        $method = 'users/'.$userName.'/groups/';
+        $url = JMessage::API_V1_URL.$method;
+        return $this->jmessage->exec('GET', $url);
     }
 }

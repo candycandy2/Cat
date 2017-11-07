@@ -44,8 +44,12 @@ window.initialSuccess = function() {
     dateInit();
     $.mobile.changePage("#viewPersonalLeave");
     if(localStorage.getItem("agent") !== null) {
+        //viewPersonalLeave
         $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
         tplJS.reSizeDropdownList("agent-popup", "typeB");
+        //viewLeaveSubmit
+        $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
     }
     loadingMask("show");
 }

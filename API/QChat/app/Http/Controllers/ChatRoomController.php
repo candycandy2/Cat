@@ -47,18 +47,16 @@ class ChatRoomController extends Controller
 
         $required = Validator::make($this->data, [
             'emp_no' => 'required',
-            'lang' => 'required',
-            'need_push' => 'required',
-            'app_key' => 'required',
             'chatroom_name' => 'required',
             'chatroom_desc' => 'required',
             'member_list' => 'required',
             'member_list.destination_emp_no' => 'required'
         ]);
 
+
         $range = Validator::make($this->data, [
-            'need_push' => 'in:Y,N',
-            'chatroom_desc'=>'regex:/^(\S*=\S*)+;*/',
+            'chatroom_name'=>'byte_max:64',
+            'chatroom_desc'=>'regex:/^(\S*=\S*)+;*/'
         ]);
 
         if($required->fails())
@@ -75,12 +73,13 @@ class ChatRoomController extends Controller
                     'Content'=>""]);
         }
         $verify = new Verify();
-
+        
         //check member_list
         $fromEmpNo = $this->data['emp_no'];
         $targetUserList = $this->data['member_list']['destination_emp_no'];
         $chatRoomName = $this->data['chatroom_name'];
         $chatroomDesc = $this->data['chatroom_desc'];
+
         $descData = $this->chatRoomService->getChatroomExtraData($chatroomDesc);
         if( $descData['group_message'] == 'N'){
             if(count($targetUserList) > 1){
@@ -167,7 +166,7 @@ class ChatRoomController extends Controller
                                          "is_new"=>'Y')]);
         }catch (JMessageException $e){
             \DB::rollBack();
-             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
         }catch (\Exception $e) {
@@ -188,9 +187,6 @@ class ChatRoomController extends Controller
         try {
             $required = Validator::make($this->data, [
                 'emp_no' => 'required',
-                'lang' => 'required',
-                'need_push' => 'required',
-                'app_key' => 'required',
                 'group_id' => 'required',
                 'member_list' => 'required',
                 'member_list.destination_emp_no' => 'required',
@@ -282,7 +278,7 @@ class ChatRoomController extends Controller
             
         }catch (JMessageException $e){
             \DB::rollBack();
-             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
         }catch (\Exception $e) {
@@ -300,9 +296,6 @@ class ChatRoomController extends Controller
         try {
             $required = Validator::make($this->data, [
                 'emp_no' => 'required',
-                'lang' => 'required',
-                'need_push' => 'required',
-                'app_key' => 'required',
                 'group_id' => 'required',
                 'member_list' => 'required',
                 'member_list.destination_emp_no' => 'required',
@@ -379,7 +372,7 @@ class ChatRoomController extends Controller
             
         }catch (JMessageException $e){
             \DB::rollBack();
-             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
         }catch (\Exception $e) {
@@ -395,9 +388,7 @@ class ChatRoomController extends Controller
         \DB::beginTransaction();
         try {
             $required = Validator::make($this->data, [
-                    'group_id' => 'required',
-                    'attribute_exists' => 'required',
-                    'attribute_exists' => 'required'
+                    'group_id' => 'required'
                 ]);
 
             $groupId = $this->data['group_id'];
@@ -448,7 +439,33 @@ class ChatRoomController extends Controller
                         'Content'=>""]);
         }catch (JMessageException $e){
             \DB::rollBack();
-             return response()->json(['ResultCode'=>ResultCode::_025925_CallAPIFailedOrErrorOccurs,
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
+                        'Message'=>"Call API failed or error occurred",
+                        'Content'=>$response]);
+        }catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+        }
+    }
+
+    /**
+     * 取得某用戶群組列表
+     * @return json
+     */
+    public function getQUserChatroom(){
+        try {
+            $empNo = $this->data['emp_no'];
+            $userName = $this->userService->getUserData($empNo)->login_id;
+            $response =$this->chatRoomService->getUserGroups($userName);
+            if(isset($response->error->code)){
+                throw new JMessageException($response->error->message);
+            }
+             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"Success",
+                        'Content'=> $response ]);
+        }catch (JMessageException $e){
+            \DB::rollBack();
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
         }catch (\Exception $e) {

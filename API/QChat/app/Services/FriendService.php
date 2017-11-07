@@ -42,10 +42,7 @@ class FriendService
      * @param  string $inviationReason 邀請原因
      */
     public function sendQInvitation($fromEmpNo, $targetEmpNo, $userId, $inviationReason=""){
-        $friendMatrixData = $this->friendMatrixRepository->getFriendShip($fromEmpNo, $targetEmpNo);
-         if(count($friendMatrixData) == 0){
-            $this->friendMatrixRepository->newFriendShip($fromEmpNo, $targetEmpNo, $userId);
-        } 
+        $this->newFriendShip($fromEmpNo, $targetEmpNo, $userId);
         $this->friendMatrixRepository->sendInvaitation($fromEmpNo, $targetEmpNo,$userId, $inviationReason);
 
         $tokens=[];
@@ -72,13 +69,20 @@ class FriendService
 
     /**
      * 保護名單接受好友邀請
+     * 受邀人的好友名單也會加入邀請人
      * @param  string $empNo       使用者的員工編號
      * @param  string $sourceEmpNo 邀請者的員工編號
      * @param  string $userId      使者的qp_user.row_id
      */
     public function acceptQInvitation($empNo, $sourceEmpNo, $userId){
+        /*保護名單接受後即建立雙方關係*/
+        //1.接受好友邀請
         $this->friendMatrixRepository->acceptInvitation($empNo, $sourceEmpNo, $userId);
-        
+        //2.新增與邀請者的好友關係
+        $this->newFriendShip($empNo, $sourceEmpNo, $userId);
+        //3.加入邀請者為好友
+        $this->friendMatrixRepository->setFriend($empNo, $sourceEmpNo, $userId);
+
         $tokens=[];
         $pushToken = $this->userRepository->getUserPushToken($sourceEmpNo);
         $ownerData = $this->userRepository->getUserData($empNo);
@@ -125,4 +129,25 @@ class FriendService
         return $this->friendMatrixRepository->removeFriend($empNo, $destinationEmpNo, $userId);
     }
 
+    /**
+     * 取得邀約人列表
+     * @param $targetEmpNo 受邀人的empNo
+     * @return mixed
+     */
+    public function getInviterList($targetEmpNo){
+        return $this->friendMatrixRepository->getInviterList($targetEmpNo);
+    }
+
+    /**
+     * 建立全新好友關係
+     * @return int
+     */
+    private function newFriendShip($fromEmpNo, $targetEmpNo, $userId){
+        $res=null;
+        $friendMatrixData = $this->friendMatrixRepository->getFriendShip($fromEmpNo, $targetEmpNo);
+        if(count($friendMatrixData) == 0){
+            $res = $this->friendMatrixRepository->newFriendShip($fromEmpNo, $targetEmpNo, $userId);
+        }
+        return $res;
+    }
 }   

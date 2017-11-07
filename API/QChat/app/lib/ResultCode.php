@@ -24,11 +24,12 @@ abstract class ResultCode
     const _025922_DestinationEmployeeNumberIsProtectUser = "025922";//要設定的好友是保護名單
     const _025923_YouCannotSendTheInvitationToFriends = "025923";//要設定對象已經是好友
     const _025924_DestinationEmployeeAlreadyRegistered = "025924";//要邀請的好友已經註冊過QPlay
-    const _025925_CallAPIFailedOrErrorOccurs = '025925'; //調用JMessage API出错
+    const _025925_CannotModifyBsicInformationOfOtherPeople = "025925";//不得修改他人数据
     const _025926_CannotInviteProtectedUserWhoIsNotFriend = '025926'; //保護名單必須是好友才能聊天
     const _025927_InvitationAlreadySend = '025927'; //已發送過交友邀請
     const _025928_InvitationNotExist = '025928'; //交友邀請不存在
     const _025929_PrivateChatroomCanNotAddMember = '025929'; //私聊聊天室不可新增成員
+    const _025930_CallAPIFailedOrErrorOccurs = '025930'; //調用JMessage API出错
     const _025998_NoData = "025998";  //查無資料
     const _025999_UnknownError = "025999";  //其他未知錯誤  
 }
