@@ -78,9 +78,17 @@ class HistoryController extends Controller
             }
             $conversation = [];
             $count = count($data);
+            $tag ="";
+            if($count > 0){
+                if($sort == 'asc'){
+                    $tag = $data[$count-1]->create_time;
+                }else{
+                    $tag = $data[0]->create_time;
+                }
+            }
             $conversation = [
                 'total'=>$count,
-                'cursor'=>($count > 0)?$data[$count-1]->create_time:"",
+                'cursor'=>$tag ,
                 'count'=>$count,
                 'messages'=>[]
             ];
