@@ -554,6 +554,13 @@ $("#viewMain").pagecontainer({
             $('#pageOne').show();
             $('#pageTwo').hide();
             $('#pageThree').hide();
+            PullToRefresh.init({
+                mainElement: '#pageOne',
+                onRefresh: function() {
+                    time = new Date(Date.now());
+                    var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
+                }
+            });
             
         });
 
@@ -577,15 +584,34 @@ $("#viewMain").pagecontainer({
                 $('#pageThree').hide();
                 reserveBtnDefaultStatus();
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
+                PullToRefresh.init({
+                    mainElement: '#pageOne',
+                    onRefresh: function() {
+                        time = new Date(Date.now());
+                        var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
+                    }
+                });
             } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
                 $('#pageOne').hide();
                 $('#pageTwo').show();
                 $('#pageThree').hide();
+                PullToRefresh.init({
+                    mainElement: '#pageTwo',
+                    onRefresh: function() {
+                        querySettingCarList();
+                    }
+                });
             }else {
                 $('#pageOne').hide();
                 $('#pageTwo').hide();
                 $('#pageThree').show();
                 var doAPIQueryMyReserve = new getAPIQueryMyReserve(clickDateId);
+                PullToRefresh.init({
+                    mainElement: '#pageThree',
+                    onRefresh: function() {
+                        var doAPIQueryMyReserve = new getAPIQueryMyReserve(clickDateId);
+                    }
+                });
             }
         });
 
