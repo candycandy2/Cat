@@ -110,14 +110,10 @@ class HistoryRepository
      * @return mixed
      */
     public function getHistoryByCursor($groupId, $cursor, $sort){
-            $op = '>';
-            if($sort == 'desc'){
-                $op = '<';
-            }
          return $this->history
              ->leftjoin('qp_history_file','qp_history.msg_id','=','qp_history_file.msg_id')
              ->where('target_id',$groupId)
-             ->where('create_time',$op,$cursor)
+             ->where('create_time','>',$cursor)
              ->orderBy('create_time',$sort)
              ->get();
             
