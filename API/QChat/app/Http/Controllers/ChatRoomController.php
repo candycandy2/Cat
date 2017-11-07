@@ -447,6 +447,32 @@ class ChatRoomController extends Controller
             return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
         }
     }
+
+    /**
+     * 取得某用戶群組列表
+     * @return json
+     */
+    public function getQUserChatroom(){
+        try {
+            $empNo = $this->data['emp_no'];
+            $userName = $this->userService->getUserData($empNo)->login_id;
+            $response =$this->chatRoomService->getUserGroups($userName);
+            if(isset($response->error->code)){
+                throw new JMessageException($response->error->message);
+            }
+             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"Success",
+                        'Content'=> $response ]);
+        }catch (JMessageException $e){
+            \DB::rollBack();
+             return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
+                        'Message'=>"Call API failed or error occurred",
+                        'Content'=>$response]);
+        }catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+        }
+    }
 }
 
 class JMessageException extends Exception { }
