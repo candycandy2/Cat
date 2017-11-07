@@ -487,7 +487,7 @@ $("#viewMain").pagecontainer({
             if(localStorage.getItem("defaultSiteClick") !== null) {
                 $("#reserveSite").val(localStorage.getItem("defaultSiteClick"));
                 defaultSiteClick = localStorage.getItem("defaultSiteClick");
-            }else if (defaultSiteClick === null) {
+            }else if (localStorage.getItem("defaultSiteClick") === null) {
                 defaultSiteClick = '92';
             }
 
@@ -910,8 +910,11 @@ $("#viewMain").pagecontainer({
             $('div[for=cancelMsg]').popup('close');
         });
 
-        $('body').on('click', 'div[for=noDataMsg] #confirm, #myReserveBack', function() {
-            $.mobile.changePage('#viewReserve');
+        $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
+            $('div[for=noDataMsg]').popup('close');
+            $('#reserveTab input[id^=tab]').removeAttr("checked");
+            $('#reserveTab input[value=tab1]').prop("checked", "checked");
+            $('#pageOne').show();
         });
     }
 });
