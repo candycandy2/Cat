@@ -912,9 +912,13 @@ $("#viewMain").pagecontainer({
 
         $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
             $('div[for=noDataMsg]').popup('close');
-            $('#reserveTab input[id^=tab]').removeAttr("checked");
-            $('#reserveTab input[value=tab1]').prop("checked", "checked");
-            $('#pageOne').show();
+            //$('#reserveTab input[id^=tab]').removeAttr("checked");
+            //$('#reserveTab input[value=tab1]').prop("checked", "checked");
+            $("input[id=tab1]").trigger('click');
+            $("label[for=tab1]").addClass('ui-btn-active');
+            $("label[for=tab2]").removeClass('ui-btn-active');
+            $("label[for=tab3]").removeClass('ui-btn-active');
+            //$('#pageOne').show();
         });
     }
 });
