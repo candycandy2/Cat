@@ -916,7 +916,6 @@ $("#viewMain").pagecontainer({
             $("label[for=tab1]").addClass('ui-btn-active');
             $("label[for=tab2]").removeClass('ui-btn-active');
             $("label[for=tab3]").removeClass('ui-btn-active');
-            //$('#pageOne').show();
         });
     }
 });

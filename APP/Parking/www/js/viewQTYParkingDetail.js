@@ -181,13 +181,13 @@ $("#viewQTYParkingDetail").pagecontainer({
         $('#viewQTYParkingDetail').on('pagebeforeshow', function(event, ui) { 
             parkingSettingdata = JSON.parse(localStorage.getItem('parkingSettingData'));         
             queryQTYReserveDetail();
-            if (parkingSettingdata.content.length != 0) {
+            if (parkingSettingdata == null || parkingSettingdata.content.length == 0) {
+                $('#commonQTYCarList').addClass('disable');
+                $('#nonCarList').removeClass('disable');
+            }else{
                 $('#commonQTYCarList').removeClass('disable');
                 $('#nonCarList').addClass('disable');
                 createTemplateDropdownList();
-            }else {
-                $('#commonQTYCarList').addClass('disable');
-                $('#nonCarList').removeClass('disable');
             }
             setDefaultStatus();
             reserveQTYBtnDefaultStatus();
