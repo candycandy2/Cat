@@ -828,8 +828,8 @@ $("#viewMain").pagecontainer({
             } else {
                 $('.hasReservePopup').find('.header-icon img').attr('src', 'img/068_icon_warm.png');
                 $('.hasReservePopup').find('.header-text').html('確定取消預約？');
-                $('.hasReservePopup').find('.btn-cancel').html('不取消');
                 $('.hasReservePopup').find('.btn-confirm').html('取消');
+                $('.hasReservePopup').find('.btn-cancel').html('不取消');
                 bReserveCancelConfirm = true;
             }
         });
@@ -848,8 +848,13 @@ $("#viewMain").pagecontainer({
             $('div[for=cancelSuccessMsg]').popup('close');
         });
 
-        $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=cancelFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm, div[for=successMsg] #confirm, div[for=failMsg] #confirm', function() {
+        $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm, div[for=successMsg] #confirm, div[for=failMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
+        });
+
+        $('body').on('click', 'div[for=cancelFailMsg] #confirm', function() {
+            $('#viewPopupMsg').popup('close');
+            $.mobile.changePage('#viewMain');
         });
 
         $('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
@@ -921,19 +926,21 @@ $("#viewMain").pagecontainer({
             var msgContent = '<div>' + clickReserveSpace +'&nbsp;&nbsp;' + strDate + '&nbsp;&nbsp;' + clickReserveTime + '</div>';
             //popupMsg('cancelMsg', '確定取消預約 ' + clickReserveSpace + '?', msgContent, '取消', true, '確定', '068_icon_warm.png');
             if (clickSiteName === "QTT"){
-                popupMsg('cancelMsg', '確定取消預約', msgContent, '取消', true, '確定', '068_icon_warm.png');
+                popupMsg('cancelMsg', '確定取消預約?', msgContent, '取消', true, '確定', '068_icon_warm.png');
             }else if (clickSiteName === "QTY"){
-                var headerContent = '確定取消預約',
+                var headerContent = '確定取消預約?',
                     mainContent = msgContent,
                     carListContent = '申請人:' + clickPDName + '<br>' + '申請者類別:' + clickPDCategory + '<br>' +'車型/車牌:' + clickPDCar + '<br>' + '注意事項:' + clickPDRemark;
-                popupMsgInit('.hasReservePopup');
-                tplJS.preventPageScroll();
-                $('.hasReservePopup').find('.header-text').html(headerContent);
-                $('.hasReservePopup').find('.main-paragraph').html(mainContent);
-                $('.hasReservePopup').find('.content-paragraph').html(carListContent);
-                $('.hasReservePopup').find('.header-icon img').attr('src', 'img/056_icon_booked_success.png');
-                $('.hasReservePopup').find('.btn-cancel').html('不取消');
-                $('.hasReservePopup').find('.btn-confirm').html('取消');
+    
+                    popupMsgInit('.myReservePopup');
+                    tplJS.preventPageScroll();
+                    $('.myReservePopup').find('.header-icon img').attr('src', 'img/068_icon_warm.png');
+                    $('.myReservePopup').find('.header-text').html(headerContent);  
+                    $('.myReservePopup').find('.main-paragraph').html(mainContent);
+                    $('.myReservePopup').find('.content-paragraph').html(carListContent);              
+                    $('.myReservePopup').find('.btn-confirm').html('確定');
+                    $('.myReservePopup').find('.btn-cancel').html('取消');                
+         
             }
         });
 
@@ -954,6 +961,23 @@ $("#viewMain").pagecontainer({
             };
 
             $('div[for=cancelMsg]').popup('close');
+        });
+
+        $('body').on('click', 'div[for=myReservePopup] .btn-confirm', function() {
+            var doAPIMyReserveCancel = new getAPIMyReserveCancel(clickReserveDate, clickAggTarceID);
+            selectedSite = $('#reserveSite').find(":selected").val();
+
+            for (var i = 0; i < myReserveLocalData.length; i++) {
+                $.each(arrTempTimeNameClick, function(index, value) {
+                    if (myReserveLocalData.length != 0 && myReserveLocalData[i].time == value && myReserveLocalData[i].date == clickReserveDate && myReserveLocalData[i].site == selectedSite) {
+                        myReserveLocalData.splice(i, 1);
+                        i = i - 1;
+                        i = i < 0 ? 0 : i;
+                    }
+                });
+            };
+
+            $('div[for=myReservePopup]').popup('close');
         });
 
         $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
