@@ -227,9 +227,10 @@ function onBackKeyDown() {
 
             $.mobile.changePage('#viewMain');
 
-        } /*else if (activePageID === "viewParkingDetail") {
+        } else if (activePageID === "viewQTYParkingDetail") {
 
-            $.mobile.changePage('#viewMain');*/
+            $.mobile.changePage('#viewMain');
+        }
     }
 }
 

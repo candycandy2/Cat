@@ -121,7 +121,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         //確定撤回
         $("#comfirmWithdrawBackLeave").on("click", function() {
             backLeaveQueryInit();
-            $("#withdrawBackLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
+            $("#withdrawBackLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
         //已拒絕流程——popup
@@ -147,7 +147,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         //確定刪除銷假單——click
         $("#comfirmDeleteBackLeave").on("click", function() {
             backLeaveQueryInit();
-            $("#deleteBackLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
+            $("#deleteBackLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
     }

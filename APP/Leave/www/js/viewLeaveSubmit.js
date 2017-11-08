@@ -659,7 +659,7 @@ $("#viewLeaveSubmit").pagecontainer({
         $("#applyBtn").on("click", function() {
             $("#backMain").click();
             changePageByPanel("viewLeaveQuery");
-            $("#sendLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
+            $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
     }
 });
