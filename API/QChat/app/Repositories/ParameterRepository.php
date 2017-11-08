@@ -5,7 +5,7 @@
  */
 namespace App\Repositories;
 
-use App\Model\EN_Parameter_Type;
+use App\Model\QP_Parameter_Type;
 use DB;
 
 class ParameterRepository
@@ -17,7 +17,7 @@ class ParameterRepository
      * ParameterRepository constructor.
      * @param EN_Parameter_Type $parameterType
      */
-    public function __construct(EN_Parameter_Type $parameterType)
+    public function __construct(QP_Parameter_Type $parameterType)
     {
         $this->parameterType = $parameterType;
     }
@@ -27,7 +27,7 @@ class ParameterRepository
      * @return mixed
      */
     public function getLastQueryTime(){
-        return $this->parameterType::find(2)
+        return $this->parameterType->where('parameter_type_name','=','jmessage_history')->first()
                 ->parameters()
                 ->where('parameter_name', '=', 'end_time')
                 ->select('parameter_value')
@@ -40,7 +40,7 @@ class ParameterRepository
      * @return 
      */
     public function updateLastQueryTime($endTime){
-         return $this->parameterType::find(2)
+         return $this->parameterType->where('parameter_type_name','=','jmessage_history')->first()
                 ->parameters()
                 ->where('parameter_name', '=', 'end_time')
                 ->update(['parameter_value'=>$endTime]);

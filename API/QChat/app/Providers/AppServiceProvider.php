@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Validator::extend('byte_max', function($attribute, $value, $parameters, $validator) {
+            if(strlen($value) > $parameters[0]){
+                return false;
+            }else{
+                return true;
+            }
+        });
     }
 
     /**

@@ -73,6 +73,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.GetDefaultSetting = function() {
 
             this.successCallback = function(data) {
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["quickleavelist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -173,21 +174,28 @@ $("#viewPersonalLeave").pagecontainer({
                                 agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() + "" +'">'
                                            +    '<div style="width: 25VW;"><span>'
                                            +        $(DepArry[i]).html()
-                                           +    '</div></span>'
+                                           +    '</span></div>'
                                            +    '<div><span>'
                                            +        $(nameArry[i]).html()
-                                           +    '</div></span>'
+                                           +    '</span></div>'
                                            + '</li>';
                             }
                         }
                         if(agentList == "") {
                             agentNotExist = true;
                         }else {
+                            //viewPersonalLeave
                             $("#agent-popup-option-list").empty().append(agentList);
                             resizePopup("agent-popup-option");
 
                             $("#agent-popup-option-list").show();
                             $("#queryLoader").hide();
+
+                            //viewLeaveSubmit
+                            $("#leave-agent-popup-option-list").empty().append(agentList);
+                            resizePopup("leave-agent-popup-option");
+                            $("#leave-agent-popup-option-list").show();
+                            $(".queryLoader").hide();
 
                             if (callback === "CountLeaveHours") {
                                 CountLeaveHours();
@@ -202,11 +210,17 @@ $("#viewPersonalLeave").pagecontainer({
                         //Clear Data
                         //var newOption = '<option hidden>請選擇</option>';
                         var newOption = '<option hidden>' + langStr["str_069"] + '</option>';
+                        //veiwPersonalLeave
                         $("#agent-popup").find("option").remove().end().append(newOption);
+                        //viewLeaveSubmit
+                        $("#leave-agent-popup").find("option").remove().end().append(newOption);
                         agentid = "";
                         window.localStorage.removeItem('agent');
                         setTimeout(function(){
+                            //viewPersonalLeave
                             tplJS.reSizeDropdownList("agent-popup", "typeB");
+                            //viewLeaveSubmit
+                            tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
                         }, 1000);
                     }
                 }
@@ -223,6 +237,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.CountLeaveHours = function() {
 
             this.successCallback = function(data) {
+                console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -345,7 +360,10 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-1").hide();
             $("#tab-2").show();
             if(lastPageID === "viewPersonalLeave") {
+                //viewPersonalLeave
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
+                //viewLeaveSubmit
+                tplJS.DropdownList("viewLeaveSubmit", "leaveAgent", "prepend", "typeB", leaveAgentData);
             }
             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');

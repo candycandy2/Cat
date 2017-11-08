@@ -3,7 +3,7 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
-            <div id="center" class="ui-title">Parking</div>
+            <div id="center" class="ui-title">車位預約</div>
         </div>
     </div>
     <div data-role="main" class="page-main" style="line-height: initial !important;">
@@ -85,7 +85,7 @@
                         <div class="myreserve-margin">[PDetailName]</div>
                     </div>
                     <div class="ui-block-b col-3 myreserve-height">
-                        <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">
+                        <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" mrName="[mrName]" mrCategory="[mrCategory]" mrRemark="[mrRemark]" mrCar="[mrCar]" site="[site]" class="btn-myreserve">
                             <img src="img/030_btn_delete.png" alt="" class="delete-myreserve">
                         </a>
                     </div>
@@ -99,7 +99,7 @@
                         <div class="myreserve-margin">[PDetailName]</div>
                     </div>
                     <div class="ui-block-b col-3 myreserve-height">
-                        <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" class="btn-myreserve">
+                        <a href="#" space="[space]" value="[value]" date="[date]" time="[begin]-[end]" mrName="[mrName]" mrCategory="[mrCategory]" mrRemark="[mrRemark]" mrCar="[mrCar]" site="[site]" class="btn-myreserve">
                             <img src="img/030_btn_delete.png" alt="" class="delete-myreserve">
                         </a>
                     </div>
@@ -107,18 +107,45 @@
             </div>
         </div>
     </div>
-
+    <!-- has reserve popup msg -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo DetailInfo hasReservePopup" for="hasReservePopup">
+        <div data-role="main" class="ui-content-QTY">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'><img src="" alt=""></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main-QTY">
+                <p class="main-paragraph font-style3">
+                </p>
+            </div>
+            <div class="content-QTY">
+                <p class="content-paragraph font-style11">
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">關閉</div>
+                    <div class="btn-confirm">取消預約</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- other reserve popup msg -->
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo DetailInfo otherReservePopup" for="otherReservePopup">
-        <div data-role="main" class="ui-content">
+        <div data-role="main" class="ui-content-QTY">
             <div class="header header-closeX">
                 <div class="font-style3 header-title-main">
                     <span class="header-text"></span>
                 </div>
                 <div class="btn-closeX btn-cancel"></div>
             </div>
-            <div class="main">
+            <div class="main-QTY">
                 <p class="main-paragraph font-style3">
+                </p>
+            </div>
+            <div class="content-QTY">
+                <p class="content-paragraph font-style11">
                 </p>
             </div>
             <div class="footer">

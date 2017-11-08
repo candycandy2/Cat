@@ -1273,7 +1273,7 @@
   },
   {
     "term": "str_161",
-    "definition": "銷假單已銷假",
+    "definition": "銷假單已撤回",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1354,6 +1354,22 @@
   {
     "term": "str_171",
     "definition": "請先選擇開始時間",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_172",
+    "definition": "銷假單已送簽",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_173",
+    "definition": "確定銷假？",
     "context": "",
     "term_plural": "",
     "reference": "",

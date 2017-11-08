@@ -172,8 +172,8 @@
                                         <p>=====================================================</p>
                                         <p>&lt;安裝教學&gt; </p>
                                         <p class="Title">→ Step1. 開啟QPlay</p>
-                                        <p>選擇公司別後並輸入個人NT帳號及密碼，帳號處直接輸入自首為大寫的名字即可
-                                            <br /> (ex: Steven.Yan，不是BenQ\Steven.Yan，也不是Steven.Yan@benq.com，只要 Steven.Yan)</p>
+                                        <p>選擇公司別後並輸入個人NT帳號及密碼，帳號處直接輸入字首為大寫的名字即可
+                                            <br /> (ex: Alan.TP.Wang，不是BenQ\Alan.TP.Wang，也不是Alan.TP.Wang@benq.com，只要 Alan.TP.Wang)</p>
                                         <p>*若忘記密碼，請ITS協助處理 ,若帳密皆正確，但仍無法登入，請洽QPlay@BenQ.com </p>
                                         <p>
                                             <br />

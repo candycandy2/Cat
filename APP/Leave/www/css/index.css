@@ -223,6 +223,13 @@ div.scrollmenu a {
     color: #999999 !important;
 }
 
+.queryLoader {
+	width: 15;
+	height: 15;
+	margin-left:45%;
+	display:none;
+}
+
 #searchBar, #searchAgent {
 	width: 75VW;
 	border-width: 1px;
@@ -243,38 +250,45 @@ div.scrollmenu a {
     padding-top: 0.8vw;
 }
 
-#agent-popup-option-popup .header.typeB {
+#agent-popup-option-popup .header.typeB,
+#leave-agent-popup-option-popup .header.typeB {
 	height: 18.8VW;
 }
 
-#agent-popup-option-popup .header .title {
+#agent-popup-option-popup .header .title,
+#leave-agent-popup-option-popup .header .title {
 	width: 75VW;
 }
 
-#agent-popup-option-popup ul {
+#agent-popup-option-popup ul,
+#leave-agent-popup-option-popup ul {
 	margin-top: 0VW;
 }
 
-#agent-popup-option-popup ul::-webkit-scrollbar {
+#agent-popup-option-popup ul::-webkit-scrollbar,
+#leave-agent-popup-option-popup ul::-webkit-scrollbar {
     width: 3px;
     margin: 0px;
 }
 
-#agent-popup-option-popup ul::-webkit-scrollbar-track {
+#agent-popup-option-popup ul::-webkit-scrollbar-track,
+#leave-agent-popup-option-popup ul::-webkit-scrollbar-track {
     /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     -webkit-border-radius: 10px;
     border-radius: 10px;
     padding: 10px;*/
 }
 
-#agent-popup-option-popup ul::-webkit-scrollbar-thumb {
+#agent-popup-option-popup ul::-webkit-scrollbar-thumb,
+#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 15px;
     background: rgba(0,0,0,0.8);
     /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);*/
 }
 
-#agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
+#agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
+#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
     background: rgba(0,0,0,0.4);
 }
 
@@ -292,8 +306,7 @@ div.scrollmenu a {
 
 .toast-style {
 	background-color: #666;
-	/* bottom: 60VW; */
-	bottom: 90VW;
+	bottom: 60VW;
 	border-radius: 1.5px;
 	color: #F0F0F0;
 	font-size: 3.6VW;
@@ -305,6 +318,24 @@ div.scrollmenu a {
 	text-align: center;
 	width: 28VW;
 	z-index: 2;
+}
+
+.popup-msg-style {
+	background-color: #666;
+	top: 70vw;
+	left: 36vw;
+	border-radius: 1.5px;
+	color: #F0F0F0;
+	font-size: 3.6VW;
+	height: 4VW;
+	margin: auto;
+	opacity: 0.9;
+	padding: 6.2VW 1VW 6.2VW 1VW;
+	position: fixed;
+	text-align: center;
+	width: 28VW;
+	z-index: 2;
+	display: none;
 }
 
 .leftDaysNotEnough > .ui-content,
@@ -325,9 +356,17 @@ div.scrollmenu a {
 	color: #ffffff !important;
 }
 /****************************************** viewLeaveSubmit *****************************************/
+.leaveMenu {
+	width: 4.934VW;
+}
+
 #backMain {
 	width: 4.934VW;
 	display: none;
+}
+
+.overflow-hidden {
+	overflow: hidden;
 }
 
 .apply-container {
@@ -379,7 +418,7 @@ div.scrollmenu a {
 }
 
 .apply-select-img {
-	margin-left: 5vw;
+	margin-left: 3vw;
 	width: 4vw;
 	height: 2.75vw;
 }
@@ -422,6 +461,8 @@ div.scrollmenu a {
 
 .date-component {
 	position: fixed;
+	top: 0;
+	right: 0;
 }
 
 .date-component input[type="datetime-local"],
@@ -577,9 +618,6 @@ div.scrollmenu a {
 }
 
 /****************************************** viewLeaveQuery *****************************************/
-.leaveMenu {
-	width: 4.934VW;
-}
 
 #backDetailList,
 #backSignPreview,
@@ -666,6 +704,7 @@ div.scrollmenu a {
 .leave-query-detail-withdraw,
 .leave-query-detail-refuse,
 .leave-query-detail-effect,
+.leave-query-detail-back,
 .leave-query-withdraw,
 .leave-query-dispel,
 .backLeave-query-detail-sign,
@@ -675,6 +714,7 @@ div.scrollmenu a {
 .backLeave-query-sign-withdraw {
 	display: none;
 	width: 93.6vw;
+	height: 154.5vw;
 	margin-left: 3.2vw;
 }
 
@@ -782,6 +822,7 @@ div.scrollmenu a {
 
 .confirmWithdraw > .ui-content,
 .confirmDelete > .ui-content,
+.confirmRevoke > .ui-content,
 .confirmToWithdraw > .ui-content,
 .confirmToDelete > .ui-content {
 	padding: 0 !important;
@@ -789,21 +830,12 @@ div.scrollmenu a {
 
 .confirmWithdraw > .ui-content > .header,
 .confirmDelete > .ui-content > .header,
+.confirmRevoke > .ui-content > .header,
 .confirmToWithdraw > .ui-content > .header,
 .confirmToDelete > .ui-content > .header {
 	margin-top: 13%;
 }
 
-#comfirmDispel,
-#cancelApply,
-#backLeaveMsg,
-#withdrawLeaveMsg,
-#deleteLeaveMsg,
-#sendLeaveMsg,
-#withdrawBackLeaveMsg,
-#deleteBackLeaveMsg {
-	display: none;
-}
 
 
 

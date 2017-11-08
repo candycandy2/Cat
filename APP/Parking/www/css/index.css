@@ -91,6 +91,8 @@ a {
 #viewQTYParkingDetail .ui-margin-public span{ display: block;}
 #viewQTYParkingDetail .col-3{ width: 100% !important;}
 #viewQTYParkingDetail .reserveSpace{ margin-bottom: 1.16vw; }
+#newSettingTitleQTY, #newSettingCarQTY{ height: 10.304vw; max-height: 10.304vw; font-size: 4.18vw;}
+#newSettingNoticeQTY { height: 16.101vw; max-height: 16.101vw; font-size: 4.18vw;}
 
 .addParkingTitle { color: #0F0F0F; }
 
@@ -100,6 +102,10 @@ a {
 }
 
 #newSettingType {
+    margin-top: 2.14vw;
+}
+
+#newSettingTypeQTY {
     margin-top: 2.14vw;
 }
 
@@ -172,6 +178,10 @@ input[type=radio]:checked + label {
 #viewQTYParkingDetail .ui-corner-all {
     -webkit-border-radius: 0;
     border-radius: 0;
+}
+
+#viewQTYParkingDetail .CommonCarList-option-corner-all {
+    border-radius: 16px;
 }
 
 /********************************** public area *************************************/
@@ -324,6 +334,35 @@ div.square {
 
 #pageThree .myReserveInfo > div > div{ margin: 4vw 0 3vw;}
 
+.app-popup.lessInfo .main-QTY{ margin-bottom: 0vw;}
+
+.main-QTY:after{
+    content: '';
+    border-top: dashed #d6d6d6 1px;
+    display: block;
+    width: 88%;
+    height: 1px;
+    position: absolute;
+    bottom: 140px;
+    left: 17px;
+}
+
+.app-popup .ui-content-QTY {
+    padding: 5.07vw 0vw 0vw;
+    overflow-y: hidden;
+    max-height: inherit;
+    min-height: inherit;
+}
+
+p.content-paragraph {
+    padding: 0 5.36vw;
+    margin: 0 0 5.07vw;
+}
+
+.app-popup .btn-two{
+    color: #1678E5;
+}
+
 .delete-myreserve{ width: 4.186vw; height: auto;}
 
 .setting-delete {
@@ -429,14 +468,36 @@ div.square {
 }
 
 .car-list-choose-button {
-    background: url('../img/023_btn_add.png') right transparent;
+    background: url('../img/add_icon.png') right transparent;
     background-size: 4vw 4vw;
     background-repeat: no-repeat;
     background-position-y: 45%;
+    border: 0;
+    width: 33.2vw; 
 }
 
 .btn-add-icon {
     height: 4.957vw;
+}
+
+#newApplicantName select {
+    margin-left: -5px;
+    width: 33.2vw !important; 
+}
+
+.add-event-border {
+    border: 0;
+}
+
+#cancelQTYCarList {
+    margin-top: 3.8vw;
+    text-align: center;
+    font-size: 4.5vw;
+    color: #2c89bc;
+}
+
+#viewMainBack {
+    font-weight: normal;
 }
 
 /********************************** color setting *************************************/
@@ -717,4 +778,25 @@ div.scrollmenu a {
     border-top: 1px solid #d4d4d4;
     right: 0;
     border-radius: 0 0 10px 0;
+}
+
+.toast-style {
+    background-color: #666;
+    /* bottom: 60VW; */
+    bottom: 90VW;
+    border-radius: 1.5px;
+    color: #F0F0F0;
+    font-size: 3.6VW;
+    height: 4VW;
+    margin: auto;
+    opacity: 0.9;
+    padding: 4VW 3VW 4VW 3VW;
+    position: relative;
+    text-align: center;
+    width: 28VW;
+    z-index: 2;
+}
+
+#nonCommonCarListMsg {
+    display: none;
 }
