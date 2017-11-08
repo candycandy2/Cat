@@ -26,6 +26,7 @@ $("#viewLeaveQuery").pagecontainer({
             $(".leave-query-detail-refuse").hide();
             $(".leave-query-detail-withdraw").hide();
             $(".leave-query-detail-effect").hide();
+            $(".leave-query-detail-back").hide();
             $(".leave-query-withdraw").hide();
             $(".leave-query-dispel").hide();
             $(".leaveMenu").show();
@@ -36,12 +37,10 @@ $("#viewLeaveQuery").pagecontainer({
         function backLeaveToDetail() {
             $(".leave-query-dispel").hide();
             $("#backEffectPreview").hide();
-            $("#comfirmDispel").hide();
             $("#cancelApply").hide();
             $(".leave-query-detail-effect").show();
-            $("#previewDispel").show();
             $("#backDetailList").show();
-            $("#dispelReason").removeAttr("readonly");
+            //$("#dispelReason").removeAttr("readonly");
         }
 
         /********************************** page event *************************************/
@@ -59,7 +58,9 @@ $("#viewLeaveQuery").pagecontainer({
 
         //點擊詳細，根據不同表單狀態顯示不同頁面——click
         $(".leave-query-state").on("click", function() {
-            var self = $(this).children("span").eq(0).text();
+            //var self = $(this).children("span").eq(0).text();
+            var self = $.trim($(this).text());
+            //console.log(self);
 
             if(self == leaveSignStr) {
                 $(".leaveMenu").hide();
@@ -81,6 +82,11 @@ $("#viewLeaveQuery").pagecontainer({
                 $(".leave-query-main").hide();
                 $("#backDetailList").show();
                 $(".leave-query-detail-effect").show();
+            }else {
+                $(".leaveMenu").hide();
+                $(".leave-query-main").hide();
+                $("#backDetailList").show();
+                $(".leave-query-detail-back").show();
             }
             
 
@@ -93,6 +99,7 @@ $("#viewLeaveQuery").pagecontainer({
             $(".leave-query-detail-refuse").hide();
             $(".leave-query-detail-withdraw").hide();
             $(".leave-query-detail-effect").hide();
+            $(".leave-query-detail-back").hide();
             $(".leaveMenu").show();
             $(".leave-query-main").show();    
             return false;
@@ -113,8 +120,13 @@ $("#viewLeaveQuery").pagecontainer({
             popupMsgInit('.refuseStateFlow');
         });
 
-        //已拒絕狀態——click——popup
+        //已生效狀態——click——popup
         $("#effectLeaveDetail").on("click", function() {
+            popupMsgInit('.effectStateFlow');
+        });
+
+        //已銷假狀態——click——popup
+        $("#backLeaveDetail").on("click", function() {
             popupMsgInit('.effectStateFlow');
         });
 
@@ -157,7 +169,7 @@ $("#viewLeaveQuery").pagecontainer({
         //確認撤回
         $("#comfirmWithdrawLeave").on("click", function() {
             leaveQueryInit();
-            $("#withdrawLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
+            $("#withdrawLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
         //刪除假單彈框——popup
@@ -173,7 +185,7 @@ $("#viewLeaveQuery").pagecontainer({
         //確認刪除假單——click
         $("#comfirmDeleteLeave").on("click", function() {
             leaveQueryInit();
-            $("#deleteLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
+            $("#deleteLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
         //銷假申請——click
@@ -195,33 +207,30 @@ $("#viewLeaveQuery").pagecontainer({
             dispelReason = $(this).val();
 
             if(dispelReason !== "") {
-                $("#previewDispelBtn").addClass("leavePreview-active-btn");
+                $("#confirmDispelBtn").addClass("leavePreview-active-btn");
             }else {
-                $("#previewDispelBtn").removeClass("leavePreview-active-btn");
+                $("#confirmDispelBtn").removeClass("leavePreview-active-btn");
             }
         });
 
-        //預覽送簽——click
-        $("#previewDispelBtn").on("click", function() {
-            if($("#previewDispelBtn").hasClass("leavePreview-active-btn")) {
-                $("#dispelReason").attr("readonly", "readonly");
-                $("#previewDispel").hide();
-                $("#comfirmDispel").show();
-                $("#cancelApply").show();
+        //確定送簽——click
+        $("#confirmDispelBtn").on("click", function() {
+            if($("#confirmDispelBtn").hasClass("leavePreview-active-btn")) {
+                popupMsgInit(".confirmRevoke");
             } 
         });
 
-        //確定送簽——跳轉到銷假單查詢頁
-        $("#confirmDispelBtn").on("click", function() {
+        //確定銷假
+        $("#comfirmRevokeLeave").on("click", function() {
             leaveQueryInit();
             changePageByPanel("viewBackLeaveQuery");
-            $("#backLeaveMsg.toast-style").fadeIn(100).delay(2000).fadeOut(100);
-            
+            $("#backLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
         //取消申請(同返回操作一致)——click
         $("#cancelApply").on("click", function() {
             backLeaveToDetail();
         });
+        
     }
 });

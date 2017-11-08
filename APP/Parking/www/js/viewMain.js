@@ -349,7 +349,7 @@ $("#viewMain").pagecontainer({
                     //Successful
                     var htmlContent_today = '';
                     var htmlContent_other = '';
-                    var originItem = ['default', '[begin]', '[end]', '[value]', '[space]', '[date]', '[dateformate]', '[site]', '[PDetailName]', 'disable'];
+                    var originItem = ['default', '[begin]', '[end]', '[value]', '[space]', '[date]', '[dateformate]', '[site]', '[PDetailName]', '[mrName]', '[mrCategory]', '[mrRemark]', '[mrCar]', 'disable'];
 
                         //for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++) {
                         for (var i = 0, item; item = data['Content'][i]; i++) {
@@ -371,7 +371,7 @@ $("#viewMain").pagecontainer({
                                 var strReserveName = item.PDetailName;
                             }
 
-                            var replaceItem = ['def-' + item.ReserveTraceAggID, item.ReserveBeginTime, item.ReserveEndTime, item.ReserveTraceAggID, strParkingSpaceName, item.ReserveDate, dateFormat, siteName, strReserveName, ''];
+                            var replaceItem = ['def-' + item.ReserveTraceAggID, item.ReserveBeginTime, item.ReserveEndTime, item.ReserveTraceAggID, strParkingSpaceName, item.ReserveDate, dateFormat, siteName, strReserveName, item.PDetailName, item.PDetailCategory, item.PDetailRemark, item.PDetailCar, ''];
 
                             if (item.ReserveDate == new Date().yyyymmdd('')) {
                                 $('#pageThree :first-child h2').removeClass('disable');
@@ -487,7 +487,7 @@ $("#viewMain").pagecontainer({
             if(localStorage.getItem("defaultSiteClick") !== null) {
                 $("#reserveSite").val(localStorage.getItem("defaultSiteClick"));
                 defaultSiteClick = localStorage.getItem("defaultSiteClick");
-            }else if (defaultSiteClick === null) {
+            }else if (localStorage.getItem("defaultSiteClick") === null) {
                 defaultSiteClick = '92';
             }
 
@@ -554,6 +554,13 @@ $("#viewMain").pagecontainer({
             $('#pageOne').show();
             $('#pageTwo').hide();
             $('#pageThree').hide();
+            PullToRefresh.init({
+                mainElement: '#pageOne',
+                onRefresh: function() {
+                    time = new Date(Date.now());
+                    var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
+                }
+            });
             
         });
 
@@ -577,15 +584,34 @@ $("#viewMain").pagecontainer({
                 $('#pageThree').hide();
                 reserveBtnDefaultStatus();
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
+                PullToRefresh.init({
+                    mainElement: '#pageOne',
+                    onRefresh: function() {
+                        time = new Date(Date.now());
+                        var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
+                    }
+                });
             } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
                 $('#pageOne').hide();
                 $('#pageTwo').show();
                 $('#pageThree').hide();
+                PullToRefresh.init({
+                    mainElement: '#pageTwo',
+                    onRefresh: function() {
+                        querySettingCarList();
+                    }
+                });
             }else {
                 $('#pageOne').hide();
                 $('#pageTwo').hide();
                 $('#pageThree').show();
                 var doAPIQueryMyReserve = new getAPIQueryMyReserve(clickDateId);
+                PullToRefresh.init({
+                    mainElement: '#pageThree',
+                    onRefresh: function() {
+                        var doAPIQueryMyReserve = new getAPIQueryMyReserve(clickDateId);
+                    }
+                });
             }
         });
 
@@ -872,6 +898,11 @@ $("#viewMain").pagecontainer({
             clickReserveDate = $(this).attr('date');
             clickReserveSpace = $(this).attr('space');
             var clickReserveTime = $(this).attr('time');
+            var clickPDName = $(this).attr('mrName');
+            var clickPDCategory = $(this).attr('mrCategory');
+            var clickPDCar = $(this).attr('mrCar');
+            var clickPDRemark = $(this).attr('mrRemark');
+            var clickSiteName = $(this).attr('site');
             var arrDateString = cutStringToArray(clickReserveDate, ['4', '2', '2']);
             var strDate = arrDateString[2] + '/' + arrDateString[3];
 
@@ -887,8 +918,23 @@ $("#viewMain").pagecontainer({
                 } while (strTime != eTime);
             }
 
-            var msgContent = '<div>' + '&nbsp;&nbsp;' + strDate + '&nbsp;&nbsp;' + clickReserveTime + '</div>';
-            popupMsg('cancelMsg', '確定取消預約 ' + clickReserveSpace + '?', msgContent, '取消', true, '確定', '068_icon_warm.png');
+            var msgContent = '<div>' + clickReserveSpace +'&nbsp;&nbsp;' + strDate + '&nbsp;&nbsp;' + clickReserveTime + '</div>';
+            //popupMsg('cancelMsg', '確定取消預約 ' + clickReserveSpace + '?', msgContent, '取消', true, '確定', '068_icon_warm.png');
+            if (clickSiteName === "QTT"){
+                popupMsg('cancelMsg', '確定取消預約', msgContent, '取消', true, '確定', '068_icon_warm.png');
+            }else if (clickSiteName === "QTY"){
+                var headerContent = '確定取消預約',
+                    mainContent = msgContent,
+                    carListContent = '申請人:' + clickPDName + '<br>' + '申請者類別:' + clickPDCategory + '<br>' +'車型/車牌:' + clickPDCar + '<br>' + '注意事項:' + clickPDRemark;
+                popupMsgInit('.hasReservePopup');
+                tplJS.preventPageScroll();
+                $('.hasReservePopup').find('.header-text').html(headerContent);
+                $('.hasReservePopup').find('.main-paragraph').html(mainContent);
+                $('.hasReservePopup').find('.content-paragraph').html(carListContent);
+                $('.hasReservePopup').find('.header-icon img').attr('src', 'img/056_icon_booked_success.png');
+                $('.hasReservePopup').find('.btn-cancel').html('不取消');
+                $('.hasReservePopup').find('.btn-confirm').html('取消');
+            }
         });
 
         $('body').on('click', 'div[for=cancelMsg] #confirm', function() {
@@ -910,8 +956,12 @@ $("#viewMain").pagecontainer({
             $('div[for=cancelMsg]').popup('close');
         });
 
-        $('body').on('click', 'div[for=noDataMsg] #confirm, #myReserveBack', function() {
-            $.mobile.changePage('#viewReserve');
+        $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
+            $('div[for=noDataMsg]').popup('close');
+            $("input[id=tab1]").trigger('click');
+            $("label[for=tab1]").addClass('ui-btn-active');
+            $("label[for=tab2]").removeClass('ui-btn-active');
+            $("label[for=tab3]").removeClass('ui-btn-active');
         });
     }
 });
