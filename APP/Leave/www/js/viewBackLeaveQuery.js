@@ -150,5 +150,16 @@ $("#viewBackLeaveQuery").pagecontainer({
             $("#deleteBackLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
+        //根據“請假單號”跳轉到請假單詳情頁
+        $(".return-leave-detail").on("click", function() {
+            $("#backToList").trigger("click");
+            changePageByPanel("viewLeaveQuery");
+            //同viewLeaveQuery的銷假狀態
+            $(".leaveMenu").hide();
+            $(".leave-query-main").hide();
+            $("#backDetailList").show();
+            $(".leave-query-detail-back").show();
+        });
+
     }
 });
