@@ -44,7 +44,7 @@
             width: 100%
         }
         #main_table {
-            margin: 25vw 0 3.6vw 0;
+            margin: 15vh 0 3.6vw 0;
             border-collapse: collapse;
             width: 100%;
         }
@@ -120,13 +120,13 @@
          color: #0f0f0f;
          font: 3.2vw 'Arial';
          width: 80%;
-         margin: 6vw auto auto auto;
-         text-align: center;
+         margin: 3vh auto auto auto;
+         text-alig: center;
          padding-top: 0;   
         }
         #env_info {
             color: red;
-            font-size:10vw;
+            font-size:6.8vw;
             position:absolute;
             z-index: 2;
             margin-left: auto;
@@ -134,11 +134,20 @@
             left:0;
             right:0;
         }
-
+        @media screen and (orientation: portrait) {
+          #logo{
+            height:20vh;
+          }
+        }
+        @media screen and (orientation: landscape) {
+          #logo{
+            height:36vw;
+          }
+        }
     </style>
     <div data-role="page" id="pageLogin" style="font-family: 'Arial';">
-        <div role="main" class="ui-content" style="text-align: center;margin: 22vw 3.71vw 0 3.71vw;">
-            <img src="{{asset('/css/images/login_logo.png')}}" style="height:36vw;" />
+        <div role="main" class="ui-content" style="text-align: center;margin: 10vh 3.71vw 0 3.71vw;">
+            <img src="{{asset('/css/images/login_logo.png')}}" id="logo"/>
             @if (Config::get('app.env')!='production')
                 <div id="env_info">● {{Config::get('app.env')}} ●</div>
             @endif
@@ -192,7 +201,7 @@
                     </td>
                 </tr>
             </table>
-            <div style="margin-top: 10vw;">
+            <div style="margin-top: 6vh;">
                 <div id="button_cell">
                     <button id="btnLogin" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #492e80;font:4vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="tryLogin()">登入</button>
@@ -216,7 +225,7 @@
 
     <div data-role="page" id="pageRegister" style="background: linear-gradient(to bottom, #f2f2f3, #ffffff 50%, #f2f2f3);">
         <div role="main" class="ui-content" style="text-align: center;">
-            <div style="margin: 48vw auto 0 auto;">
+            <div style="margin: 3vh auto 0 auto;">
                 <img src="{{asset('/css/images/verified_img.png')}}" style="height:24vw; margin:0 2vw 4vw 9vw;" />
                 <h3 id="info_cell_verify" style="color: #0f0f0f;font:6.6vw 'Arial';margin-top:0;">帳號與設備驗證成功</h3>
                 
@@ -226,7 +235,7 @@
            
             <div style="margin: 4vw auto 0 auto;">
                 <!--background-image:url({{asset('/css/images/action_n_big_btn.png')}});background-size: cover;background-repeat: no-repeat;border-color: #fff;-->
-                <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="background-color: #492e80;font:4vw 'Arial';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
+                <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="background-color: #492e80;font:4vw 'Arial';color: #fff;line-height: 1em;width: 3vh;text-shadow: none;"
                     onclick="start()">好，我知道了</button>
             </div>
              {{-- <h4 style="color: #0f0f0f;font: 4.6vw 'Arial';margin: 0 auto;text-align: center;"><span id="info_cell_logout">若要註銷設備，請聯絡</span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></h4> --}}
