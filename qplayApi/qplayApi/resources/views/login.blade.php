@@ -111,10 +111,9 @@
             color: #666666;
         }
         .linkITS{
-            margin-left: .3em; 
-        }
-        #info_cell_logout + .linkITS{
-            font:1em "Arial";
+            margin-left: .3em;
+            font:3.2vw "Arial";
+            color: #666666; 
         }
         #info_cell{
          color: #0f0f0f;
@@ -135,19 +134,25 @@
             right:0;
         }
         @media screen and (orientation: portrait) {
-          #logo{
+          img.logo{
             height:20vh;
+          }
+          img.logo_register{
+            height:13vh;
           }
         }
         @media screen and (orientation: landscape) {
-          #logo{
+          img.logo{
             height:36vw;
+          }
+          img.logo_register{
+            height:24vw;
           }
         }
     </style>
     <div data-role="page" id="pageLogin" style="font-family: 'Arial';">
         <div role="main" class="ui-content" style="text-align: center;margin: 10vh 3.71vw 0 3.71vw;">
-            <img src="{{asset('/css/images/login_logo.png')}}" id="logo"/>
+            <img src="{{asset('/css/images/login_logo.png')}}" class="logo"/>
             @if (Config::get('app.env')!='production')
                 <div id="env_info">● {{Config::get('app.env')}} ●</div>
             @endif
@@ -222,24 +227,22 @@
             </div>
         </div>
     </div>
-
-    <div data-role="page" id="pageRegister" style="background: linear-gradient(to bottom, #f2f2f3, #ffffff 50%, #f2f2f3);">
-        <div role="main" class="ui-content" style="text-align: center;">
-            <div style="margin: 3vh auto 0 auto;">
-                <img src="{{asset('/css/images/verified_img.png')}}" style="height:24vw; margin:0 2vw 4vw 9vw;" />
-                <h3 id="info_cell_verify" style="color: #0f0f0f;font:6.6vw 'Arial';margin-top:0;">帳號與設備驗證成功</h3>
-                
-        </div>
-        </div>
-        <div style="position:fixed;bottom: 0;padding:1em 1em 13.2vw 1em;left: 0;right: 0;">
-           
-            <div style="margin: 4vw auto 0 auto;">
-                <!--background-image:url({{asset('/css/images/action_n_big_btn.png')}});background-size: cover;background-repeat: no-repeat;border-color: #fff;-->
-                <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="background-color: #492e80;font:4vw 'Arial';color: #fff;line-height: 1em;width: 3vh;text-shadow: none;"
-                    onclick="start()">好，我知道了</button>
+    <div data-role="page" id="pageRegister" style="font-family: 'Arial';">
+        <div role="main" class="ui-content" style="text-align: center;margin: 27vh 3.71vw 0 3.71vw;">
+            <img src="{{asset('/css/images/verified_img.png')}}" class="logo_register"/>
+            <h3 id="info_cell_verify" style="color: #0f0f0f;font:6.6vw 'Arial';margin-top:3vh;">帳號與設備驗證成功</h3> 
+            <table id="main_table" style="height: 10vh">
+               
+            </table>
+            <div style="margin-top: 6vh;">
+                <div id="button_cell">
+                    <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #492e80;font:4vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
+                            onclick="start()">好，我知道了</button>
+                </div>
+                <div id="info_cell">
+                    <span id="info_cell_logout" >若要註銷設備，請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a>
+                </div>
             </div>
-             {{-- <h4 style="color: #0f0f0f;font: 4.6vw 'Arial';margin: 0 auto;text-align: center;"><span id="info_cell_logout">若要註銷設備，請聯絡</span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></h4> --}}
-             <div id="info_cell"><span id="info_cell_logout" >若要註銷設備，請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></div>
         </div>
     </div>
     <script>
