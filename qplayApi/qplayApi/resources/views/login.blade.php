@@ -152,7 +152,7 @@
                             <tr>
                                 <td>
                                     <select class="login_control" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext" style="border-color: #1f1f1f; padding: .4em">
-                                        <option value=""></option>
+                                        <option value="" selected disabled></option>
                                         <option value="BENQ">BenQ</option>
                                         <option value="QGROUP">Qisda</option>
                                     </select>
