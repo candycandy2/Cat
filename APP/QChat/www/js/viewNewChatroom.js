@@ -39,48 +39,12 @@ $("#viewNewChatroom").pagecontainer({
                         for (var i=0; i<data['Content'].user_list.length; i++) {
 
                             var userData = data['Content'].user_list[i];
-                            var avator_path = "";
-                            var avator_download_time = 0;
 
-                            if (JM.data.chatroom_user[userData.name] !== undefined) {
-                                avator_path = JM.data.chatroom_user[userData.name].avator_path;
-                                avator_download_time = JM.data.chatroom_user[userData.name].avator_download_time;
-                            } else {
-                                JM.data.chatroom_user[userData.name] = {};
+                            function callback() {
+                                userListView(data['Content'].user_list.length, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, empNumberArray);
                             }
 
-                            var is_friend = false;
-                            if (userData.status === "1") {
-                                is_friend = true;
-                            }
-
-                            var is_register = false;
-                            if (userData.registered === "Y") {
-                                is_register = true;
-                            }
-
-                            var is_protect = false;
-                            if (userData.protected === "Y") {
-                                is_protect = true;
-                            }
-
-                            var tempData = {
-                                domain:                 userData.domain,
-                                emp_no:                 userData.emp_no,
-                                email:                  userData.email,
-                                ext_no:                 userData.ext_no,
-                                site_code:              userData.site_code,
-                                memo:                   userData.memo,
-                                is_friend:              is_friend,
-                                is_register:            is_register,
-                                is_protect:             is_protect,
-                                avator_path:            avator_path,
-                                avator_download_time:   avator_download_time
-                            };
-
-                            JM.data.chatroom_user[userData.name] = tempData;
-
-                            userListView(data['Content'].user_list.length, data['Content'].over_threshold, userData, i+1, nowTimestamp, empNumberArray);
+                            window.processUserData(userData, callback);
 
                         }
 
@@ -100,9 +64,59 @@ $("#viewNewChatroom").pagecontainer({
             }(type, string));
         };
 
-        function userListView(dataCount, overMaxLength, userData, dataIndex, nowTimestamp, empNumberArray) {
+        window.processUserData = function(userData, callback) {
+            callback = callback || null;
+
+            var avator_path = "";
+            var avator_download_time = 0;
+
+            if (JM.data.chatroom_user[userData.name] !== undefined) {
+                avator_path = JM.data.chatroom_user[userData.name].avator_path;
+                avator_download_time = JM.data.chatroom_user[userData.name].avator_download_time;
+            } else {
+                JM.data.chatroom_user[userData.name] = {};
+            }
+
+            var is_friend = false;
+            if (userData.status === "1") {
+                is_friend = true;
+            }
+
+            var is_register = false;
+            if (userData.registered === "Y") {
+                is_register = true;
+            }
+
+            var is_protect = false;
+            if (userData.protected === "Y") {
+                is_protect = true;
+            }
+
+            var tempData = {
+                domain:                 userData.domain,
+                emp_no:                 userData.emp_no,
+                email:                  userData.email,
+                ext_no:                 userData.ext_no,
+                site_code:              userData.site_code,
+                memo:                   userData.memo,
+                is_friend:              is_friend,
+                is_register:            is_register,
+                is_protect:             is_protect,
+                avator_path:            avator_path,
+                avator_download_time:   avator_download_time
+            };
+
+            JM.data.chatroom_user[userData.name] = tempData;
+
+            if (typeof callback === "function") {
+                callback();
+            }
+
+        };
+
+        function userListView(dataCount, overMaxLength, userName, dataIndex, nowTimestamp, empNumberArray) {
             overMaxLength = overMaxLength || null;
-            userData = userData || null;
+            userName = userName || null;
             dataIndex = dataIndex || null;
             nowTimestamp = nowTimestamp || null;
             empNumberArray = empNumberArray || null;
@@ -125,30 +139,30 @@ $("#viewNewChatroom").pagecontainer({
                 var userList = $(userListHTML);
 
                 userList.prop("id", "userList" + dataIndex);
-                userList.find("input").prop("id", "checkUser" + dataIndex).val(userData.emp_no);
+                userList.find("input").prop("id", "checkUser" + dataIndex).val(JM.data.chatroom_user[userName].emp_no);
                 userList.find(".overlap-label-checkbox").prop("for", "checkUser" + dataIndex);
 
                 //check if this user has been selected before.
                 if (empNumberArray != null) {
-                    if (empNumberArray.indexOf(userData.emp_no) != -1) {
+                    if (empNumberArray.indexOf(JM.data.chatroom_user[userName].emp_no) != -1) {
                         userList.find("input").prop("checked", true);
                     }
                 }
 
                 //name
-                userList.find(".user-name").html(userData.name);
+                userList.find(".user-name").html(userName);
 
                 //info / radio button
                 var hideRadioBtn = false;
-                if (userData.registered === "N") {
+                if (JM.data.chatroom_user[userName].is_register == false) {
                     hideRadioBtn = true;
                     userList.find(".not-register").show();
                     userList.find(".user-name").removeClass("user-name-only");
-                } else if (userData.protected === "Y") {
+                } else if (JM.data.chatroom_user[userName].is_protect == true) {
                     hideRadioBtn = true;
                     userList.find(".protect").show();
                     userList.find(".user-name").removeClass("user-name-only");
-                } else {
+                } else if (JM.data.chatroom_user[userName].is_friend == false) {
                     userList.find(".not-friend").show();
                 }
 
@@ -159,7 +173,7 @@ $("#viewNewChatroom").pagecontainer({
                     $("#checkUser" + dataIndex).prop("disabled", true);
                 }
 
-                downloadOriginalUserAvatar("userListView", userData.name, dataIndex, nowTimestamp);
+                window.downloadOriginalUserAvatar("userListView", nowTimestamp, userName, dataIndex);
 
                 //over 10 datas
                 if (dataCount == dataIndex && overMaxLength === "Y") {
@@ -169,9 +183,9 @@ $("#viewNewChatroom").pagecontainer({
 
         }
 
-        window.userListViewAvatar = function(listViewIndex, avatorPath) {
+        window.userListViewAvatar = function(listViewIndex, avatarPath) {
             $("#userList" + listViewIndex).find(".img-content svg").hide();
-            $("#userList" + listViewIndex).find(".img-content img").prop("src", avatorPath);
+            $("#userList" + listViewIndex).find(".img-content img").prop("src", avatarPath);
             $("#userList" + listViewIndex).find(".img-content img").show();
         };
 
@@ -263,16 +277,109 @@ $("#viewNewChatroom").pagecontainer({
             }
         }
 
-        function inviteFriend() {
+        window.setQFriend = function(userID) {
+            (function(userID) {
 
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    destination_emp_no: JM.data.chatroom_user[userID].emp_no,
+                    reason: ""
+                };
+
+                var queryDataParameter = createXMLDataString(queryDataObj);
+                var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+
+                        $("#actionMsg1").html("已將 " + userID + " 加為好友");
+                        $("#actionMsg1").show();
+
+                        actionButton("show");
+
+                    }
+                };
+
+                var failCallback = function() {};
+
+                CustomAPI("POST", true, "setQFriend", successCallback, failCallback, queryData, "");
+
+            }(userID));
+        };
+
+        function sendQInvitation(listViewID, userID) {
+            (function(listViewID, userID) {
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    destination_emp_no: JM.data.chatroom_user[userID].emp_no,
+                    reason: ""
+                };
+
+                var queryDataParameter = createXMLDataString(queryDataObj);
+                var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+
+                        $("#" + listViewID).find(".button-icon-content").hide();
+                        $("#" + listViewID).find(".action-info").show();
+
+                        $("#actionMsg2").show();
+
+                        actionButton("show");
+
+                    }
+                };
+
+                var failCallback = function() {};
+
+                CustomAPI("POST", true, "sendQInvitation", successCallback, failCallback, queryData, "");
+
+            }(listViewID, userID));
         }
 
-        function inviteInstall() {
-  
+        function sendQInstall(listViewID, userID) {
+            (function(listViewID, userID) {
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    destination_emp_no: JM.data.chatroom_user[userID].emp_no,
+                    reason: ""
+                };
+
+                var queryDataParameter = createXMLDataString(queryDataObj);
+                var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+
+                        $("#" + listViewID).find(".button-icon-content").hide();
+                        $("#" + listViewID).find(".action-info").show();
+
+                        $("#actionMsg3").html("已發送邀請給 " + userID);
+                        $("#actionMsg3").show();
+
+                        actionButton("show");
+
+                    }
+                };
+
+                var failCallback = function() {};
+
+                CustomAPI("POST", true, "sendQInstall", successCallback, failCallback, queryData, "");
+
+            }(listViewID, userID));
         }
 
         function actionButton(listViewID, action) {
-            //action: not-friend / not-register / protect
+            //action: not-friend / not-register / protect / show
 
             //change button / info
             $("#" + listViewID).find(".button-content ." + action).hide();
@@ -280,32 +387,19 @@ $("#viewNewChatroom").pagecontainer({
 
             //action-success-full-screen message
             if (action === "not-friend") {
-
-                $("#actionMsg1").html("已將 " + userID + " 加為好友");
-                $("#actionMsg1").show();
-
+                window.setQFriend(userID);
             } else if (action === "not-register") {
-
-                $("#" + listViewID).find(".button-icon-content").hide();
-                $("#" + listViewID).find(".action-info").show();
-
-                $("#actionMsg3").html("已發送邀請給 " + userID);
-                $("#actionMsg3").show();
-
+                sendQInstall(listViewID, userID);
             } else if (action === "protect") {
+                sendQInvitation(listViewID, userID);
+            } else {
+                $(".action-success-full-screen").show();
 
-                $("#" + listViewID).find(".button-icon-content").hide();
-                $("#" + listViewID).find(".action-info").show();
-
-                $("#actionMsg2").show();
-
+                setTimeout(function() {
+                    $(".action-success-full-screen").hide();
+                    $(".action-success-full-screen span").hide();
+                }, 3000);
             }
-
-            $(".action-success-full-screen").show();
-            setTimeout(function() {
-                $(".action-success-full-screen").hide();
-                $(".action-success-full-screen span").hide();
-            }, 3000);
 
         }
 

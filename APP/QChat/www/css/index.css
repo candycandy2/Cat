@@ -146,6 +146,11 @@ input[type=checkbox]:checked + label {
     height: 5.958vw;
 }
 
+.list-down, .list-up {
+    width: 4vw;
+    height: 4vw;
+}
+
 /*-----------------------------------------------------------------Index*/
 #viewIndexContent {
     padding: 3.99vw 3.7vw 0;
@@ -218,6 +223,95 @@ input[type=checkbox]:checked + label {
 
 .chatroom-list .number {
     margin-top: 5%;
+}
+
+.personal-title {
+    font-size: 3.340vw;
+    color: #0F0F10;
+    margin: 4.3vw 0 2.14vw 0;
+}
+
+.personal-content {
+    height: 15vw;
+    margin-bottom: 5vw;
+}
+
+.data-list .personal-photo-content {
+    height: 8vw;
+}
+
+.personal-photo {
+    width: 8.051vw;
+    height: 8.051vw;
+    border-radius: 50%;
+}
+
+.personal-name {
+    font-size: 4.18vw;
+    color: #323232;
+}
+
+.personal-status {
+    font-size: 3.349vw;
+    color: #989898;
+    margin-top: 0.5vw;
+}
+
+.friend-content {
+
+}
+
+.friend-list {
+    position: absolute;
+}
+
+.friend-list .user-name-only {
+    margin-top: 1.9335vw;
+}
+
+.friend-title {
+    font-size: 3.55vw;
+    color: #323232;
+    margin: 4.3vw 0 3vw 0;
+    width: 77vw;
+    float: left;
+}
+
+.list-switch {
+    margin-top: 4.3vw;
+    padding: 0 2vw;
+    float: left;
+}
+
+.friend-add-btn {
+    clear: both;
+    display: inline-block;
+    width: 35vw;
+    padding: 4.3vw 0 3vw 0;
+}
+
+.btn-addfriend-img {
+    width: 7vw;
+    height: 7vw;
+    margin-top: -0.8vw;
+    margin-right: 5vw;
+    float: left;
+}
+
+.btn-addfriend-text {
+    font-size: 4.18vw;
+    color: #2C89BC;
+}
+
+.ui-hr-friend-btn {
+    position: relative;
+    left: -6.71vw;
+    width: 100vw;
+    background-color: #E5E5E5;
+}
+
+.ui-hr-friend-list:last-child {
+    margin-bottom: 3vw;
 }
 
 /*-----------------------------------------------------------------NewChatroom*/
