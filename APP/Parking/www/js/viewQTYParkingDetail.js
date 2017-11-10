@@ -76,7 +76,6 @@ $("#viewQTYParkingDetail").pagecontainer({
             }
 
             tplJS.DropdownList("viewQTYParkingDetail", "eventTemplateSelectContent", "append", "typeB", carListData);
-            $('#CommonCarList-popup'+ID).removeClass('tpl-dropdown-list');
             $('#CommonCarList-popup'+ID).addClass('add-event-border');
             $('#CommonCarList-popup'+ID+'-option').removeClass('ui-corner-all');
             $('#CommonCarList-popup'+ID+'-option').addClass('CommonCarList-option-corner-all');

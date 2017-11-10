@@ -190,7 +190,7 @@ input[type=radio]:checked + label {
     text-shadow: none !important;
     font-size: 4.39vw !important;
     border: 0;
-    padding-top: 3.238vw;
+    padding-top: 3.638vw;
 }
 
 .ui-margin-10 {
@@ -484,7 +484,7 @@ p.content-paragraph {
 
 #newApplicantName select {
     margin-left: -5px;
-    width: 33.2vw !important; 
+    background-size: 6vw 6vw !important; 
 }
 
 .add-event-border {

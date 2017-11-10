@@ -36,6 +36,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
+                //console.log(data);
                 myCalendarData = {};
                 myHolidayData = [];
                 var leaveFlag = "3";
@@ -73,7 +74,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.GetDefaultSetting = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["quickleavelist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -197,7 +198,7 @@ $("#viewPersonalLeave").pagecontainer({
                             resizePopup("leave-agent-popup-option");
                             
                             $("#leave-agent-popup-option-list").show();
-                            $(".queryLoader").hide();
+                            $("#loaderQuery").hide();                            
 
                             if (callback === "CountLeaveHours") {
                                 CountLeaveHours();
