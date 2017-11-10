@@ -1,4 +1,3 @@
-
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
@@ -57,26 +56,19 @@ window.initialSuccess = function(data) {
                 callGetMessageList = true;
             }
 
-            if (window.localStorage.getItem("openMessage") !== "true") {
+            //review by alan
+            if (window.localStorage.getItem("openMessage") !== true) {
                 $.mobile.changePage('#viewMain2-1', {
-                    allowSamePageTransition : true,
-                    transition              : 'none',
-                    showLoadMsg             : false,
-                    reloadPage              : true
+                    allowSamePageTransition: true,
+                    transition: 'none',
+                    showLoadMsg: false,
+                    reloadPage: true
                 });
                 $.mobile.changePage('#viewMain2-1');
             } else {
                 //If onOpenNotification, but not login.
                 //Atfer login, do onOpenNotification again.
-                messageRowId = window.localStorage.getItem("messageRowId");
-
-                //Before open Message Detail Data, update Message List
-                if (window.localStorage.getItem("msgDateFrom") === null) {
-                    $.mobile.changePage('#viewNewsEvents2-3');
-                } else {
-                    var messageList = new QueryMessageList("auto");
-                    callGetMessageList = true;
-                }
+                openNewMessage();//refectory
             }
 
         }
@@ -123,8 +115,8 @@ function reNewToken() {
         }
 
         //if (doInitialSuccess) {
-            doInitialSuccess = false;
-            hideInitialPage();
+        doInitialSuccess = false;
+        hideInitialPage();
         //}
     };
 
@@ -147,6 +139,7 @@ function addZero(number) {
     return number;
 }
 
+//review by alan
 function openNewMessage() {
     messageRowId = window.localStorage.getItem("messageRowId");
 
@@ -208,8 +201,8 @@ function checkAPPInstalled(callback, page) {
 
     window.testAPPInstalled = setInterval(function() {
         appAvailability.check(
-            scheme,       //URI Scheme or Package Name
-            function() {  //Success callback
+            scheme, //URI Scheme or Package Name
+            function() { //Success callback
 
                 if (page === "appDetail") {
                     var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
@@ -229,7 +222,7 @@ function checkAPPInstalled(callback, page) {
                 checkAPPKeyInstalled = true;
                 stopTestAPPInstalled();
             },
-            function() {  //Error callback
+            function() { //Error callback
 
                 if (page === "appDetail") {
                     callback(false);

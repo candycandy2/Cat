@@ -139,6 +139,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             //'<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                         '<platform name="ios">' +
+                            '<preference name="BackupWebStorage" value="local"/>' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
