@@ -68,10 +68,12 @@ $("#viewLeaveQuery").pagecontainer({
             //修改開始日期
             startLeaveDate = start;
             $("#startText").text(start);
+            $("#startDate").val(start.replace(" ", "T"));
 
             //修改結束日期
             endLeaveDate = end;
             $("#endText").text(end);
+            $("#endDate").val(end.replace(" ", "T"));
 
             //修改請假理由
             leaveReason = reason;
