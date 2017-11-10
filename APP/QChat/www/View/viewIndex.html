@@ -13,10 +13,16 @@
 
         <!--template @search bar-->
         <template id="tplSearchBar">
-            <input type="text" class="searchBar" id="" placeholder="">
-            <div id="searchUserBtn" class="btn-text hide">
-                查詢
+            <div class="search-index-content">
+                <input type="text" class="searchBar" id="" placeholder="">
+                <div class="search-user-clear-content hide">
+                    <svg class="search-user-clear">
+                        <use xlink:href="#icon-btn_field_clear"></use>
+                    </svg>
+                </div>
             </div>
+
+            <div class="search-user-content-background"></div>
         </template>
 
         <!--template @no data-->
@@ -59,66 +65,13 @@
         </template>
 
         <template id="tplFriendContent">
-            <div class="personal-title">
-                個人資料
-            </div>
-            <div class="personal-content">
-                <div class="data-list-content friend-list">
-                    <div class="data-list chatroom-list">
-                        <div class="left img-content personal-photo-content">
-                            <img class="personal-photo hide" src="">
-                            <svg class="personal-photo">
-                                <use xlink:href="#icon-img_default_photo"></use>
-                            </svg>
-                        </div>
-                        <div class="right data-content">
-                            <div>
-                                <div class="group-content">
-                                    <div class="personal-name">
-                                        Darren
-                                    </div>
-                                    <div class="personal-status">
-                                        Hi~
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="friend-data-content">
+                <div class="personal-title">
+                    個人資料
                 </div>
-            </div>
-
-            <div class="friend-content">
-                <div class="data-list-content friend-list">
-                    <div>
-                        <div class="friend-title">
-                            我的好友
-                        </div>
-                        <div class="list-switch">
-                            <svg class="list-down hide">
-                                <use xlink:href="#icon-btn_list_down"></use>
-                            </svg>
-                            <svg class="list-up">
-                                <use xlink:href="#icon-btn_list_up"></use>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <div class="friend-add-btn">
-                        <svg class="btn-addfriend-img">
-                            <use xlink:href="#icon-btn_addfriend"></use>
-                        </svg>
-                        <div class="btn-addfriend-text">
-                            新增好友
-                        </div>
-                    </div>
-
-                    <hr class="ui-hr ui-hr-friend-btn">
-
-                    <div class="friend-list-content">
-                    </div>
-
-                    <template id="tplFriendDataList">
-                        <div class="data-list">
+                <div class="personal-content">
+                    <div class="data-list-content friend-list">
+                        <div class="data-list chatroom-list">
                             <div class="left img-content personal-photo-content">
                                 <img class="personal-photo hide" src="">
                                 <svg class="personal-photo">
@@ -138,9 +91,64 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <hr class="ui-hr ui-hr-friend-list">
-                    </template>
+                <div class="friend-content">
+                    <div class="data-list-content friend-list">
+                        <div>
+                            <div class="friend-title">
+                                我的好友
+                            </div>
+                            <div class="list-switch">
+                                <svg class="list-down hide">
+                                    <use xlink:href="#icon-btn_list_down"></use>
+                                </svg>
+                                <svg class="list-up">
+                                    <use xlink:href="#icon-btn_list_up"></use>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="friend-add-btn">
+                            <svg class="btn-addfriend-img">
+                                <use xlink:href="#icon-btn_addfriend"></use>
+                            </svg>
+                            <div class="btn-addfriend-text">
+                                新增好友
+                            </div>
+                        </div>
+
+                        <hr class="ui-hr ui-hr-friend-btn">
+
+                        <div class="friend-list-content">
+                        </div>
+
+                        <template id="tplFriendDataList">
+                            <div class="data-list">
+                                <div class="left img-content personal-photo-content">
+                                    <img class="personal-photo hide" src="">
+                                    <svg class="personal-photo">
+                                        <use xlink:href="#icon-img_default_photo"></use>
+                                    </svg>
+                                </div>
+                                <div class="right data-content">
+                                    <div>
+                                        <div class="group-content">
+                                            <div class="personal-name">
+                                                Darren
+                                            </div>
+                                            <div class="personal-status">
+                                                Hi~
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="ui-hr ui-hr-friend-list">
+                        </template>
+                    </div>
                 </div>
             </div>
         </template>
