@@ -5,6 +5,7 @@ $("#viewIndex").pagecontainer({
         window.getPWD = false;
         var timer;
         var groupsArray = [];
+        var tabActiveID;
 
         /********************************** function *************************************/
         window.getJmessagePassword = function() {
@@ -180,6 +181,8 @@ $("#viewIndex").pagecontainer({
                         if (data['Content'].inviter.user_list.length > 0) {
 
                         }
+
+                        JM.updateLocalStorage();
                     }
                 };
 
@@ -598,6 +601,11 @@ $("#viewIndex").pagecontainer({
             console.log(data);
         }
 
+        function recoverySearchUI() {
+            $(".searchBar").val("");
+            $(".search-user-clear-content").hide();
+        }
+
         /********************************** page event *************************************/
         $("#viewIndex").one("pagebeforeshow", function(event, ui) {
 
@@ -618,7 +626,8 @@ $("#viewIndex").pagecontainer({
                     id: "memberDiv"
                 }],
                 attr: {
-                    id: "tabIndex"
+                    id: "tabIndex",
+                    class: "index-navbar"
                 }
             };
 
@@ -627,14 +636,14 @@ $("#viewIndex").pagecontainer({
             //--------------------chatroom Div--------------------
             //search bar
             var searchBar = $($("template#tplSearchBar").html());
-            searchBar.prop({
+            searchBar.find("input").prop({
                 "id": "searchChatroom",
                 "placeholder": "搜尋聊天室"
             });
             $("#chatroomDiv").prepend(searchBar);
 
             //chatroomList Content
-            $("#chatroomDiv").append('<div class="data-list-content" id="chatroomListContent"></div>');
+            $("#chatroomDiv").append('<div class="data-list-content chatroom-list-content" id="chatroomListContent"></div>');
 
             //no data
             var noData = $($("template#tplNoData").html());
@@ -651,7 +660,7 @@ $("#viewIndex").pagecontainer({
             //--------------------chatroom Div--------------------
             //search bar
             var searchBar = $($("template#tplSearchBar").html());
-            searchBar.prop({
+            searchBar.find("input").prop({
                 "id": "searchFriend",
                 "placeholder": "搜尋成員"
             });
@@ -667,6 +676,8 @@ $("#viewIndex").pagecontainer({
             if (JM.data.sendPushToken !== undefined) {
                 getQFriend();
             }
+
+            recoverySearchUI();
         });
 
         $("#viewIndex").on("pageshow", function(event, ui) {
@@ -699,6 +710,8 @@ $("#viewIndex").pagecontainer({
                 } else {
                     $(".index-footer").show();
                 }
+
+                recoverySearchUI();
             }
         }, "#tabIndex");
 
@@ -727,7 +740,7 @@ $("#viewIndex").pagecontainer({
                             $("#chatroomHR" + chatroomID).hide();
                         } else {
                             $("#chatroomList" + chatroomID).show();
-                            $("#chatroomHR" + chatroomID).hide();
+                            $("#chatroomHR" + chatroomID).show();
                         }
                     });
 
@@ -738,6 +751,10 @@ $("#viewIndex").pagecontainer({
                     }
 
                 }, 1000);
+
+                if (text.length > 0) {
+                    $(".search-user-clear-content").show();
+                }
 
             }
         }, "#searchChatroom");
@@ -752,7 +769,7 @@ $("#viewIndex").pagecontainer({
                 $.mobile.changePage('#viewChatroom');
 
             }
-        }, ".chatroom-list");
+        }, "#chatroomDiv .chatroom-list");
 
         //Friend List Switch btn
         $(document).on({
@@ -763,14 +780,72 @@ $("#viewIndex").pagecontainer({
 
                 if ($(".friend-content .list-down").hasClass("hide")) {
                     //open
-                    $(".friend-content .friend-list-content").slideDown(500);
+                    $(".friend-content .data-list").not(".hide").fadeIn(300);
+                    $(".friend-content .friend-list-content").slideDown(350);
                 } else {
                     //close
-                    $(".friend-content .friend-list-content").slideUp(500);
+                    $(".friend-content .data-list").not(".hide").fadeOut(300);
+                    $(".friend-content .friend-list-content").slideUp(350);
                 }
+
+                $(".friend-content .data-list.hide").css("display", "");
 
             }
         }, ".friend-content .list-switch");
+
+        //Search Friend
+        $(document).on({
+            keyup: function(event) {
+
+                var text = $(this).val();
+
+                if (timer !== null) {
+                    clearTimeout(timer);
+                }
+
+                timer = setTimeout(function () {
+                    $(".friend-list-content .data-list").each(function(index, dom) {
+                        var name = $(dom).find(".personal-name").html();
+
+                        if (name.toLowerCase().indexOf(text.toLowerCase()) == -1) {
+                            $(dom).addClass("hide");
+                            $(dom).next("hr").addClass("hide");
+                        } else {
+                            $(dom).removeClass("hide");
+                            $(dom).next("hr").removeClass("hide");
+                        }
+                    });
+
+                    $(".friend-content .data-list.hide").css("display", "");
+
+                }, 1000);
+
+                if (text.length > 0) {
+                    $(".search-user-clear-content").show();
+                }
+
+            }
+        }, "#searchFriend");
+
+        //Clear Search
+        $(document).on({
+            click: function() {
+                $(".searchBar").val("");
+                $(this).hide();
+
+                if (tabActiveID === "#chatroomDiv") {
+                    $.each(JM.data.chatroom, function(chatroomID, chatroomData) {
+                        $("#chatroomList" + chatroomID).show();
+                        $("#chatroomHR" + chatroomID).show();
+                    });
+                } else if (tabActiveID === "#memberDiv") {
+                    $(".friend-list-content .data-list").each(function(index, dom) {
+                        $(dom).removeClass("hide");
+                        $(dom).next("hr").removeClass("hide");
+                    });
+                }
+            }
+        }, ".search-user-clear-content");
 
     }
 });
