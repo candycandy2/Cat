@@ -12,6 +12,7 @@ var clickAggTarceID = '';
 var clickReserveDate = '';
 var clickReserveRoom = '';
 var arrTempTimeNameClick = [];
+var parkingSpaceLocalData = {};
 //var parkingSpaceDataExample = ['車位 094', '車位 095', '車位 096', '車位 251'];
 
 $("#viewMain").pagecontainer({
@@ -477,10 +478,8 @@ $("#viewMain").pagecontainer({
         }
 
         function checkLocalDataExpired() {
-            var parkingSpaceLocalData = JSON.parse(localStorage.getItem('parkingSpaceLocalData'));
-            if (parkingSpaceLocalData === null || checkDataExpired(parkingSpaceLocalData['lastUpdateTime'], 7, 'dd') ) {
-                var doAPIListAllParkingSpace = new getAPIListAllParkingSpace;
-            }
+            parkingSpaceLocalData = JSON.parse(localStorage.getItem('parkingSpaceLocalData'));       
+            var doAPIListAllParkingSpace = new getAPIListAllParkingSpace();
             var doAPIListAllTime = new getAPIListAllTime();
             var doAPIListAllManager = new getAPIListAllManager();
 
@@ -583,11 +582,15 @@ $("#viewMain").pagecontainer({
                 $('#pageTwo').hide();
                 $('#pageThree').hide();
                 reserveBtnDefaultStatus();
+                var doAPIListAllParkingSpace = new getAPIListAllParkingSpace(); 
+                getSpaceData(selectedSite);              
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
                 PullToRefresh.init({
                     mainElement: '#pageOne',
                     onRefresh: function() {
                         time = new Date(Date.now());
+                        var doAPIListAllParkingSpace = new getAPIListAllParkingSpace();
+                        getSpaceData(selectedSite);
                         var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
                     }
                 });
@@ -621,6 +624,8 @@ $("#viewMain").pagecontainer({
             selectedSite = $('#reserveSite').find(":selected").val();
             setAlertLimitSite(selectedSite);  
             getSpaceData(selectedSite); 
+            var doAPIListAllParkingSpace = new getAPIListAllParkingSpace();
+            getSpaceData(selectedSite);
             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
             reserveBtnDefaultStatus();      
         });
@@ -690,14 +695,18 @@ $("#viewMain").pagecontainer({
                     }
                     
                 } else {
+                    var headerContent = tempEname + "已預約",
+                        mainContent = arrMsgValue[1]+ '&nbsp;&nbsp;' + msgContent,
+                        tempMailContent = $(this).attr('email') + '?subject=停車位協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
                     if (siteCategoryID === "10"){
-                        var tempMailContent = $(this).attr('email') + '?subject=停車位協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
-                        popupSchemeMsg('reserveMsg', tempEname + ' 已預約 ', arrMsgValue[1] + '&nbsp;&nbsp' + msgContent, 'mailto:' + tempMailContent, 'tel:' + $(this).attr('ext'), '056_icon_booked_success.png');
+                        popupMsgInit('.otherReservePopupQTT');
+                        tplJS.preventPageScroll();
+                        $('.otherReservePopupQTT').find('.header-text').html(headerContent);
+                        $('.otherReservePopupQTT').find('.main-paragraph').html(mainContent);
+                        $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
+                        $('.btn-tel').attr('href', 'tel:' + $(this).attr('ext'));
                     }else if (siteCategoryID === "28"){
-                        var headerContent = tempEname + "已預約",
-                            mainContent = arrMsgValue[1]+ '&nbsp;&nbsp;' + msgContent,
-                            carListContent = '申請人:' + tempPDName + '<br>' + '申請者類別:' + tempPDCategory + '<br>' +'車型/車牌:' + tempPDCar + '<br>' + '注意事項:' + tempPDRemark,
-                            tempMailContent = $(this).attr('email') + '?subject=停車位協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
+                        var carListContent = '申請人:' + tempPDName + '<br>' + '申請者類別:' + tempPDCategory + '<br>' +'車型/車牌:' + tempPDCar + '<br>' + '注意事項:' + tempPDRemark;
                         popupMsgInit('.otherReservePopup');
                         tplJS.preventPageScroll();
                         $('.otherReservePopup').find('.header-text').html(headerContent);

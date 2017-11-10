@@ -255,9 +255,9 @@ div.square {
     background-color: #2c89bc;
     color: white;
     width: 64vw;
-    height: 5vh;
+    height: 8vw;
     text-align: center;
-    padding-top: 1.5vh;
+    padding-top: 2vw;
     font-size: 4.5vw;
 }
 
@@ -335,6 +335,8 @@ div.square {
 #pageThree .myReserveInfo > div > div{ margin: 4vw 0 3vw;}
 
 .app-popup.lessInfo .main-QTY{ margin-bottom: 0vw;}
+
+.app-popup.lessInfo .main-QTT{ margin-bottom: 0vw;}
 
 .main-QTY:after{
     content: '';

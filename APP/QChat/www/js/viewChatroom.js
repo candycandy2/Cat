@@ -731,16 +731,16 @@ $("#viewChatroom").pagecontainer({
             //if new create chatroom, the JM.data.chatroom[JM.chatroomID] is empty
             if (JM.data.chatroom[JM.chatroomID] === undefined) {
                 newCreate = true;
-                getConversation(false);
+                getConversation(true);
             } else {
                 window.chatroomTitle();
+
+                //JMessage - getHistoryMessages
+                getHistoryMessages();
             }
 
             //JMessage - enter conversation
             JM.Chatroom.enterConversation();
-
-            //JMessage - getHistoryMessages
-            getHistoryMessages();
 
         });
 

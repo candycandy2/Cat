@@ -78,6 +78,115 @@ $("#viewIndex").pagecontainer({
                     window.getGroupIds();
                 }
 
+                getQUserDetail("index", loginData["emp_no"]);
+
+            }());
+        }
+
+        function getQUserDetail(action, empNO) {
+            (function() {
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    destination_emp_no: empNO
+                };
+
+                var queryDataParameter = createXMLDataString(queryDataObj);
+                var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+
+                        if (action === "index") {
+                            $(".personal-content .personal-name").html(data['Content'][0].name);
+
+                            if (data['Content'][0].memo == null) {
+                                $(".personal-content .personal-name").addClass("user-name-only");
+                                $(".personal-content .personal-status").addClass("hide");
+                            } else {
+                                $(".personal-content .personal-status").html(data['Content'][0].memo);
+                            }
+
+                            //check download time
+                            var nowDateTime = new Date();
+                            var nowTimestamp = nowDateTime.TimeStamp();
+
+                            function callback() {
+                                window.downloadOriginalUserAvatar("index", nowTimestamp, loginData["loginid"]);
+                            }
+
+                            window.processUserData(data['Content'][0], callback);
+
+                            getQFriend();
+                        }
+                    }
+                };
+
+                var failCallback = function() {};
+
+                CustomAPI("POST", true, "getQUserDetail", successCallback, failCallback, queryData, "");
+
+            }());
+        }
+
+        function getQFriend() {
+            (function() {
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"]
+                };
+
+                var queryDataParameter = createXMLDataString(queryDataObj);
+                var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+
+                        //check download time
+                        var nowDateTime = new Date();
+                        var nowTimestamp = nowDateTime.TimeStamp();
+
+                        $(".friend-content .friend-list .data-list").remove();
+                        $(".friend-content .friend-list .ui-hr-friend-list").remove();
+
+                        for (var i=0; i<data['Content'].friend.user_list.length; i++) {
+                            var friendDataListHTML = $("template#tplFriendDataList").html();
+                            var friendDataList = $(friendDataListHTML);
+
+                            friendDataList.find(".personal-photo-content").prop("id", "friendList" + i);
+                            friendDataList.find(".personal-name").html(data['Content'].friend.user_list[i].name);
+
+                            if (data['Content'].friend.user_list[i].memo == null) {
+                                friendDataList.find(".personal-name").addClass("user-name-only");
+                                friendDataList.find(".personal-status").addClass("hide");
+                            } else {
+                                friendDataList.find(".personal-status").html(data['Content'].friend.user_list[i].memo);
+                            }
+
+                            $(".friend-content .friend-list-content").append(friendDataList);
+
+                            function callback() {
+                                window.downloadOriginalUserAvatar("friendListView", nowTimestamp, data['Content'].friend.user_list[i].name, i);
+                            }
+
+                            window.processUserData(data['Content'].friend.user_list[i], callback);
+                        }
+
+                        //only show request data when the request count > 0
+                        if (data['Content'].inviter.user_list.length > 0) {
+
+                        }
+                    }
+                };
+
+                var failCallback = function() {};
+
+                CustomAPI("POST", true, "getQFriend", successCallback, failCallback, queryData, "");
+
             }());
         }
 
@@ -99,6 +208,33 @@ $("#viewIndex").pagecontainer({
             }());
         };
 
+        function getQUserChatroom() {
+            (function() {
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    device_type: device.platform.toLowerCase(),
+                    push_token: registrationID
+                };
+
+                var queryDataParameter = createXMLDataString(queryDataObj);
+                var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+
+                    }
+                };
+
+                var failCallback = function() {};
+
+                CustomAPI("POST", true, "getQUserChatroom", successCallback, failCallback, queryData, "");
+
+            }());
+        }
+
         window.getConversations = function() {
 
             (function() {
@@ -107,10 +243,14 @@ $("#viewIndex").pagecontainer({
                     if (status === "success") {
                         for (var i=0; i<data.length; i++) {
 
-                            //Check if User is still in this chatroom,
-                            //if not, ignore the chatroom data, and don't show it.
-                            if (groupsArray.indexOf(data[i].target.id.toString()) != -1) {
-                                window.processChatroomData(data[i], "getConversations", false);
+                            //For Alan, because he create a single chatroom,
+                            //so need to check chatroom type, just for the only one data.
+                            if (data[i].conversationType === "group") {
+                                //Check if User is still in this chatroom,
+                                //if not, ignore the chatroom data, and don't show it.
+                                if (groupsArray.indexOf(data[i].target.id.toString()) != -1) {
+                                    window.processChatroomData(data[i], "getConversations", false);
+                                }
                             }
 
                         }
@@ -264,9 +404,12 @@ $("#viewIndex").pagecontainer({
             }(chatroomID, userID));
         };
 
-        window.downloadOriginalUserAvatar = function(action, userID, listViewIndex, nowTimestamp) {
+        window.downloadOriginalUserAvatar = function(action, nowTimestamp, userID, listViewIndex) {
+            userID = userID || null;
+            listViewIndex = listViewIndex || null;
+
             //User Avatar will update after 3 days
-            (function(action, userID, listViewIndex, nowTimestamp) {
+            (function(action, nowTimestamp, userID, listViewIndex) {
 
                 var getAvator = false;
 
@@ -292,6 +435,10 @@ $("#viewIndex").pagecontainer({
 
                             if (action === "userListView") {
                                 userListViewAvatar(listViewIndex, data.filePath);
+                            } else if (action === "index") {
+                                indexUserAvatar(data.filePath);
+                            } else if (action === "friendListView") {
+                                friendListViewAvatar(listViewIndex, data.filePath);
                             }
                         }
                     }
@@ -306,7 +453,7 @@ $("#viewIndex").pagecontainer({
                     }
                 }
 
-            }(action, userID, listViewIndex, nowTimestamp));
+            }(action, nowTimestamp, userID, listViewIndex));
         };
 
         window.updateGroupInfo = function(chatroomID, name, desc) {
@@ -324,6 +471,18 @@ $("#viewIndex").pagecontainer({
 
             }(chatroomID, name, desc));
         };
+
+        function indexUserAvatar(avatarPath) {
+            $(".personal-content .personal-photo-content svg").hide();
+            $(".personal-content .personal-photo-content svg").prop("src", avatarPath);
+            $(".personal-content .personal-photo-content img").show();
+        }
+
+        function friendListViewAvatar(listViewIndex, avatarPath) {
+            $("#friendList" + listViewIndex).find("svg").hide();
+            $("#friendList" + listViewIndex).find("img").prop("src", avatarPath);
+            $("#friendList" + listViewIndex).find("img").show();
+        }
 
         function chatroomListView() {
 
@@ -488,6 +647,26 @@ $("#viewIndex").pagecontainer({
             noData.prop("id", "notFoundChatroom");
             noData.html("搜尋結果為0筆。");
             $("#chatroomDiv").append(noData);
+
+            //--------------------chatroom Div--------------------
+            //search bar
+            var searchBar = $($("template#tplSearchBar").html());
+            searchBar.prop({
+                "id": "searchFriend",
+                "placeholder": "搜尋成員"
+            });
+            $("#memberDiv").prepend(searchBar);
+
+            //Friend Content
+            var friendContent = $($("template#tplFriendContent").html());
+            $("#memberDiv").append(friendContent);
+
+        });
+
+        $("#viewIndex").on("pagebeforeshow", function(event, ui) {
+            if (JM.data.sendPushToken !== undefined) {
+                getQFriend();
+            }
         });
 
         $("#viewIndex").on("pageshow", function(event, ui) {
@@ -509,6 +688,19 @@ $("#viewIndex").pagecontainer({
         });
 
         /********************************** dom event *************************************/
+
+        //Tabs Change
+        $(document).on({
+            tabsactivate: function(event, ui) {
+                tabActiveID = ui.newPanel.selector;
+
+                if (ui.newPanel.selector === "#memberDiv") {
+                    $(".index-footer").hide();
+                } else {
+                    $(".index-footer").show();
+                }
+            }
+        }, "#tabIndex");
 
         //New Chatroom
         $(document).on({
@@ -561,6 +753,24 @@ $("#viewIndex").pagecontainer({
 
             }
         }, ".chatroom-list");
+
+        //Friend List Switch btn
+        $(document).on({
+            click: function() {
+
+                $(".friend-content .list-down").toggleClass("hide");
+                $(".friend-content .list-up").toggleClass("hide");
+
+                if ($(".friend-content .list-down").hasClass("hide")) {
+                    //open
+                    $(".friend-content .friend-list-content").slideDown(500);
+                } else {
+                    //close
+                    $(".friend-content .friend-list-content").slideUp(500);
+                }
+
+            }
+        }, ".friend-content .list-switch");
 
     }
 });
