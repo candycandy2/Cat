@@ -93,7 +93,7 @@ input[type=checkbox]:checked + label {
     font-size: 3.14vw;
     color: #666666;
     text-align: center;
-    margin-top: 40%;
+    margin-top: 70%;
 }
 
 .data-overflow {
@@ -177,6 +177,11 @@ input[type=checkbox]:checked + label {
     height: 13.898vw;
 }
 
+.chatroom-list-content {
+    margin-top: 22.3vw;
+    position: absolute;
+}
+
 .chatroom-list .data-content {
     width: 75vw;
 }
@@ -223,6 +228,11 @@ input[type=checkbox]:checked + label {
 
 .chatroom-list .number {
     margin-top: 5%;
+}
+
+.friend-data-content {
+    margin-top: 18.3vw;
+    position: absolute;
 }
 
 .personal-title {
@@ -312,6 +322,19 @@ input[type=checkbox]:checked + label {
 
 .ui-hr-friend-list:last-child {
     margin-bottom: 3vw;
+}
+
+.index-navbar .ui-navbar {
+    position: fixed;
+    width: 92.58vw;
+    z-index: 110;
+}
+
+.search-index-content {
+    top: 25vw;
+    margin-top: 4.3vw;
+    position: fixed;
+    z-index: 110;
 }
 
 /*-----------------------------------------------------------------NewChatroom*/
@@ -822,4 +845,8 @@ input[type=checkbox]:checked + label {
     background-color: rgba(15, 15, 15, 0.4);
     color: #f9f9f9;
     padding: 2.73vw 3.71vw;
+}
+
+.hide {
+    display: none;
 }
