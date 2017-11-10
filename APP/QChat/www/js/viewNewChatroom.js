@@ -112,6 +112,20 @@ $("#viewNewChatroom").pagecontainer({
                 callback();
             }
 
+            //Process Friend Data
+            if (is_friend) {
+                if (loginData["loginid"] != userData.name) {
+                    if (JM.data.chatroom_friend.indexOf(userData.name) == -1) {
+                        JM.data.chatroom_friend.push(userData.name);
+                    }
+                }
+            } else if (!is_friend) {
+                if (JM.data.chatroom_friend.indexOf(userData.name) != -1) {
+                    var index = JM.data.chatroom_friend.indexOf(userData.name);
+                    JM.data.chatroom_friend.splice(index, 1);
+                }
+            }
+
         };
 
         function userListView(dataCount, overMaxLength, userName, dataIndex, nowTimestamp, empNumberArray) {

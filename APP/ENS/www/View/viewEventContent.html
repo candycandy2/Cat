@@ -11,7 +11,8 @@
             <h1 class="ui-title"><span id="pageTitle"></span></h1>
         </div>
         <a id="eventEdit" href="#" data-role="none" class="ui-btn-right hide">
-            <span>編輯</span>
+            <!-- 編輯 -->
+            <span class="langStr" data-id="str_022"></span>
         </a>
     </div>
     <div data-role="main" class="page-main event-content" id="contentEventContent">
@@ -19,7 +20,8 @@
             <hr class="ui-hr">
 
         <div class="title">
-            <span>希望完成時間</span>
+            <!-- 希望完成時間 -->
+            <span class="langStr" data-id="str_008"></span>
         </div>
         <div class="event-content-data-list">
             <div class="datetime">
@@ -31,7 +33,8 @@
 
         <div class="relate-event-content hide">
             <div class="title">
-                <span>關聯事件</span>
+                <!-- 關聯事件 -->
+                <span class="langStr" data-id="str_011"></span>
             </div>
             <div class="event-content-data-list">
                 <div class="left">
@@ -46,7 +49,8 @@
             <!--<hr class="ui-hr">-->
 
         <div class="title">
-            <span>工作分配</span>
+            <!-- 工作分配 -->
+            <span class="langStr" data-id="str_023"></span>
         </div>
         <div id="eventTaskListContent" class="event-content-data-list">
             <template id="tplEventTaskListBefore">
@@ -56,7 +60,8 @@
                     </div>
                     <div class="right">
                         <div class="title font-style3">
-                            BQT 3F機房
+                            <!-- BQT 3F機房 -->
+                            <span class="langStr" data-id="str_024"></span>
                         </div>
                         <div class="function font-style3">
                             Function A
@@ -71,7 +76,8 @@
                     </div>
                     <div class="right">
                         <div class="title font-style3">
-                            BQT 3F機房
+                            <!-- BQT 3F機房 -->
+                            <span class="langStr" data-id="str_024"></span>
                         </div>
                         <div class="function font-style3">
                             Function A
@@ -89,7 +95,8 @@
 
         <div class="message-content hide">
             <div class="title">
-                <span>留言</span>
+                <!-- 留言 -->
+                <span class="langStr" data-id="str_025"></span>
             </div>
             <div id="messageContent" class="event-content-data-list">
                 <template id="tplMessageList">
@@ -130,12 +137,19 @@
         <!--template @popup content > Report Event Work Done Confirm-->
         <template id="tplEventReportWorkDoneConfirm">
             <div class="header font-style1">
-                確認回報工作完成?
+                <!-- 確認回報工作完成? -->
+                <span class="langStr" data-id="str_026"></span>
             </div>
             <div class="footer">
                 <div class="btn-two font-style8">
-                    <div class="cancel">取消</div>
-                    <div class="confirm">確認</div>
+                    <div class="cancel">
+                        <!-- 取消 -->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
                 </div>
             </div>
         </template>
@@ -143,12 +157,19 @@
         <!--template @popup content > Cancel Event Work Done Confirm-->
         <template id="tplEventCancelWorkDoneConfirm">
             <div class="header font-style1">
-                確定取消回報?
+                <!-- 確定取消回報? -->
+                <span class="langStr" data-id="str_027"></span>
             </div>
             <div class="footer">
                 <div class="btn-two font-style8">
-                    <div class="cancel">取消</div>
-                    <div class="confirm">確認</div>
+                    <div class="cancel">
+                        <!-- 取消 -->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
                 </div>
             </div>
         </template>
@@ -156,11 +177,15 @@
         <!--template @popup content > Event has finished Confirm-->
         <template id="tplEventFinishedConfirm">
             <div class="header font-style1">
-                事件已經處理完畢，無法編輯
+                <!-- 事件已經處理完畢，無法編輯 -->
+                <span class="langStr" data-id="str_028"></span>
             </div>
             <div class="footer">
                 <div class="btn-one font-style8">
-                    <div class="confirm">確認</div>
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
                 </div>
             </div>
         </template>
@@ -168,12 +193,19 @@
         <!--template @popup content > Open Camera / Photo Library-->
         <template id="tplOpenCameraPhotoLibrary">
             <div class="header font-style1">
-                請選擇上傳圖片的方式
+                <!-- 請選擇上傳圖片的方式 -->
+                <span class="langStr" data-id="str_029"></span>
             </div>
             <div class="footer">
                 <div class="btn-two font-style8">
-                    <div class="cancel">相簿</div>
-                    <div class="confirm">相機</div>
+                    <div class="cancel">
+                      <!-- 相簿 -->
+                      <span class="langStr" data-id="str_030"></span>
+                    </div>
+                    <div class="confirm">
+                      <!-- 相機 -->
+                      <span class="langStr" data-id="str_031"></span>
+                    </div>
                 </div>
             </div>
         </template>
@@ -189,7 +221,8 @@
             <input name="msgText" id="msgText" type="text">
         </div>
         <div class="right" id="msgButton">
-            留言
+            <!-- 留言 -->
+            <span class="langStr" data-id="str_025"></span>
         </div>
     </div>
 </div>
