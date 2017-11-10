@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="399" id="com.qplay.appenstest" ios-CFBundleVersion="399" version="3.0.0.399[NewStaging]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="682" id="com.qplay.appensdev" ios-CFBundleVersion="682" version="3.0.0.682[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ENS</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -14,7 +14,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <allow-intent href="appqplaytest:*" />
+    <allow-intent href="appqplaydev:*" />
     <allow-intent href="*:*" />
     <platform name="android">
         <allow-intent href="market:*" />
@@ -27,38 +27,38 @@
         <allow-intent href="itms-apps:*" />
         <preference name="iosPersistentFileLocation" value="Compatibility" />
     </platform>
+    <plugin name="cordova-connectivity-monitor" spec="~1.2.2" />
     <engine name="ios" spec="~4.5.3" />
     <engine name="android" spec="~6.3.0" />
-    <plugin name="cordova-connectivity-monitor" spec="~1.2.2" />
-    <plugin name="cordova-plugin-device" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/cordova-plugin-device" />
-    <plugin name="cordova-plugin-app-update" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/cordova-plugin-app-update" />
-    <plugin name="cordova-plugin-android-permissions" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/cordova-plugin-android-permissions" />
-    <plugin name="cordova-plugin-customurlscheme" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/cordova-plugin-customurlscheme">
-        <variable name="URL_SCHEME" value="appenstest" />
+    <plugin name="cordova-plugin-device" spec="../../plugins/cordova-plugin-device" />
+    <plugin name="cordova-plugin-app-update" spec="../../plugins/cordova-plugin-app-update" />
+    <plugin name="cordova-plugin-android-permissions" spec="../../plugins/cordova-plugin-android-permissions" />
+    <plugin name="cordova-plugin-customurlscheme" spec="../../plugins/cordova-plugin-customurlscheme">
+        <variable name="URL_SCHEME" value="appensdev" />
         <variable name="ANDROID_SCHEME" value=" " />
         <variable name="ANDROID_HOST" value=" " />
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
-    <plugin name="cordova-plugin-qsecurity" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/cordova-plugin-qsecurity">
-        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaytest&lt;/string&gt;&lt;string&gt;appenstest&lt;/string&gt;" />
+    <plugin name="cordova-plugin-qsecurity" spec="../../plugins/cordova-plugin-qsecurity">
+        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appensdev&lt;/string&gt;" />
     </plugin>
-    <plugin name="cordova-plugin-whitelist" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/cordova-plugin-whitelist" />
-    <plugin name="cordova-plugin-inappbrowser" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/cordova-plugin-inappbrowser" />
-    <plugin name="cordova-plugin-camera" spec="^2.4.1">
+    <plugin name="cordova-plugin-whitelist" spec="../../plugins/cordova-plugin-whitelist" />
+    <plugin name="cordova-plugin-inappbrowser" spec="../../plugins/cordova-plugin-inappbrowser" />
+    <plugin name="cordova-plugin-camera" spec="../../plugins/cordova-plugin-camera">
         <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
     </plugin>
-    <plugin name="cordova-plugin-ios-camera-permissions" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/cordova-plugin-ios-camera-permissions">
+    <plugin name="cordova-plugin-ios-camera-permissions" spec="../../plugins/cordova-plugin-ios-camera-permissions">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="This app needs camera access" />
         <variable name="MICROPHONE_USAGE_DESCRIPTION" value="This app needs microphone access" />
         <variable name="PHOTOLIBRARY_ADD_USAGE_DESCRIPTION" value="This app needs write-access to photo library" />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="This app needs read/write-access photo library access" />
     </plugin>
-    <plugin name="jmessage-phonegap-plugin" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/jmessage-phonegap-plugin">
-        <variable name="APP_KEY" value="1c0c758b8329f982ce27c975" />
+    <plugin name="jmessage-phonegap-plugin" spec="../../plugins/jmessage-phonegap-plugin">
+        <variable name="APP_KEY" value="6e51cf3c174910d247ac76f3" />
     </plugin>
-    <plugin name="phonegap-plugin-mobile-accessibility" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-EIS-ENS/plugins/phonegap-plugin-mobile-accessibility" />
-    <plugin name="jpush-phonegap-plugin" spec="^3.2.3">
-        <variable name="APP_KEY" value="1c0c758b8329f982ce27c975" />
+    <plugin name="phonegap-plugin-mobile-accessibility" spec="../../plugins/phonegap-plugin-mobile-accessibility" />
+    <plugin name="jpush-phonegap-plugin" spec="../../plugins/jpush-phonegap-plugin">
+        <variable name="APP_KEY" value="6e51cf3c174910d247ac76f3" />
     </plugin>
 </widget>
