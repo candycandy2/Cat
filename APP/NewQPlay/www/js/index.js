@@ -57,7 +57,7 @@ window.initialSuccess = function(data) {
             }
 
             //review by alan
-            if (window.localStorage.getItem("openMessage") !== "true") {
+            if (window.localStorage.getItem("openMessage") !== true) {
                 $.mobile.changePage('#viewMain2-1', {
                     allowSamePageTransition: true,
                     transition: 'none',

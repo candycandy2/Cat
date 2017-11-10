@@ -225,7 +225,8 @@
                         QueryPortalList("ITS");
                     }
 
-                    if (window.localStorage.getItem("openMessage") === "true") {
+                    //review by alan
+                    if (window.localStorage.getItem("openMessage") === true) {
                         $.mobile.changePage('#viewWebNews2-3-1', {
                             allowSamePageTransition : true,
                             transition              : 'none',

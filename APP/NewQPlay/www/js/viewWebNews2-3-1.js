@@ -340,6 +340,7 @@
                             $(".footer-portal").show();
 
                             $("#viewWebNews2-3-1 .page-main").css("opacity", 1);
+                            //review by alan
                             portalURL = content.message_text;
 
                             $("#htmlContent").html("");
@@ -406,7 +407,7 @@
                         updateReadDelete("all", "delete");
                     }
 
-                    if (window.localStorage.getItem("openMessage") === "true") {
+                    if (window.localStorage.getItem("openMessage") === true) {
                         loginData["openMessage"] = false;
                         window.localStorage.setItem("openMessage", false);
                     }
