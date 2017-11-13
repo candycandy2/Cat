@@ -289,10 +289,10 @@ $("#viewWebNews2-3-1").pagecontainer({
             });
         }
 
-        function QueryPortalListDetail() {
+        function QueryPortalListDetail(varURL) {
             (function() {
 
-                $("#htmlContent").load(portalURL, function() {
+                $("#htmlContent").load(varURL, function() {
                     $("#htmlContent").find("meta").remove();
                     $("#htmlContent").find("title").remove();
                     $("#htmlContent").find("base").remove();
@@ -348,7 +348,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                             "height": 0
                         });
 
-                        QueryPortalListDetail();
+                        QueryPortalListDetail(portalURL);
                     } else {
                         if (content.message_type === "news") {
 
@@ -406,9 +406,9 @@ $("#viewWebNews2-3-1").pagecontainer({
                     updateReadDelete("all", "delete");
                 }
 
-                if (window.localStorage.getItem("openMessage") === true) {
+                if (window.localStorage.getItem("openMessage") === "true") {
                     loginData["openMessage"] = false;
-                    window.localStorage.setItem("openMessage", false);
+                    window.localStorage.setItem("openMessage", "false");
                 }
             };
 
@@ -526,7 +526,7 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
-            if (eventType === "Event" || eventType === "News") {
+            if (eventType === "Event" || eventType === "News" || portalURL == "") {
                 $("#ITSEventNewContent").show();
                 $("#PortalContent").hide();
                 $(".footer-news").show();
@@ -548,7 +548,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                     "height": 0
                 });
 
-                QueryPortalListDetail();
+                QueryPortalListDetail(portalURL);
             }
 
             if (device.platform === "iOS") {
