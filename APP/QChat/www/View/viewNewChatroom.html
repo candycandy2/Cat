@@ -45,10 +45,16 @@
         </div>
 
         <div class="text-title hide" id="titleFriend">
+            我的好友 :
+        </div>
+
+        <div class="data-list-content" id="userFriendListContent"></div>
+
+        <div class="text-title hide" id="titleOtherUser">
             其他用戶 :
         </div>
 
-        <div class="data-list-content" id="userListContent">
+        <div class="data-list-content" id="userOtherListContent">
             <template id="tplUserList">
                 <div class="data-list user-list">
                     <div class="left checkbox-content">
@@ -112,13 +118,15 @@
             您的搜尋結果最多顯示10筆 ，<br>如找不到您要的資料 ，請在詳填用戶姓名 。
         </div>
 
-        <div class="action-success-full-screen hide">
-            <div>
-                <span class="hide" id="actionMsg1">已將 XXX 加為好友</span>
-                <span class="hide" id="actionMsg2">已送出好友邀請</span>
-                <span class="hide" id="actionMsg3">已發送邀請給 XXX</span>
+        <template id="tplActionMsgFullScreen">
+            <div class="action-success-full-screen hide">
+                <div>
+                    <span class="hide" id="actionMsg1">已將 XXX 加為好友</span>
+                    <span class="hide" id="actionMsg2">已送出好友邀請</span>
+                    <span class="hide" id="actionMsg3">已發送邀請給 XXX</span>
+                </div>
             </div>
-        </div>
+        </template>
 
         <template id="tplUserAnimate">
             <div class="data-list animate">
