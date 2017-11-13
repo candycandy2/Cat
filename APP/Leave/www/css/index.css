@@ -223,12 +223,12 @@ div.scrollmenu a {
     color: #999999 !important;
 }
 
-.queryLoader {
+/* .queryLoader {
 	width: 15;
 	height: 15;
 	margin-left:45%;
 	display:none;
-}
+} */
 
 #searchBar, #searchAgent {
 	width: 75VW;

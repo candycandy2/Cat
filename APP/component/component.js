@@ -181,12 +181,13 @@ var app = {
         }
     },
     onOpenNotification: function(data) {
+        //review by alan
         //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
         var doOpenMessage = false;
         //If APP not open, check message after checkAppVersion()
         getMessageID(data);
 
-        if (window.localStorage.getItem("openMessage") === "false") {
+        if (window.localStorage.getItem("openMessage") === false) {
 
             doOpenMessage = true;
 
@@ -195,7 +196,7 @@ var app = {
             window.localStorage.setItem("openMessage", true);
             window.localStorage.setItem("messageRowId", messageRowId);
 
-        } else if (window.localStorage.getItem("openMessage") === "true") {
+        } else if (window.localStorage.getItem("openMessage") === true) {
             //After onBackgoundNotification/onReceiveNotification, then do onOpenNotification
             doOpenMessage = true;
         }
@@ -222,7 +223,7 @@ var app = {
     },
     onBackgoundNotification: function(data) {
         //Plugin-QPush > 添加後台收到通知后需要執行的內容
-        if (window.localStorage.getItem("openMessage") === "false") {
+        if (window.localStorage.getItem("openMessage") === false) {
             getMessageID(data);
 
             if (window.localStorage.getItem("loginid") === null) {
@@ -235,7 +236,7 @@ var app = {
     },
     onReceiveNotification: function(data) {
         //Plugin-QPush > 添加前台收到通知后需要執行的內容
-        if (window.localStorage.getItem("openMessage") === "false") {
+        if (window.localStorage.getItem("openMessage") === false) {
             getMessageID(data);
 
             if (window.localStorage.getItem("loginid") === null) {

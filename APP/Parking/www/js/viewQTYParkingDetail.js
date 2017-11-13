@@ -76,7 +76,6 @@ $("#viewQTYParkingDetail").pagecontainer({
             }
 
             tplJS.DropdownList("viewQTYParkingDetail", "eventTemplateSelectContent", "append", "typeB", carListData);
-            $('#CommonCarList-popup'+ID).removeClass('tpl-dropdown-list');
             $('#CommonCarList-popup'+ID).addClass('add-event-border');
             $('#CommonCarList-popup'+ID+'-option').removeClass('ui-corner-all');
             $('#CommonCarList-popup'+ID+'-option').addClass('CommonCarList-option-corner-all');
@@ -236,6 +235,11 @@ $("#viewQTYParkingDetail").pagecontainer({
         });
 
         $('body').on('click', 'div[for=reserveQTYSuccessMsg] #confirm', function() {
+            $('#viewPopupMsg').popup('close');
+            $.mobile.changePage('#viewMain');
+        });
+
+        $('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
             $.mobile.changePage('#viewMain');
         });
