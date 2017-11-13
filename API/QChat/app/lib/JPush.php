@@ -80,10 +80,7 @@ class JPush
                 ),
             "notification"=>array(
                     "android" =>array(
-                            "alert"=> array(
-                                "title"=>"",
-                                "body"=>""
-                            ),
+                            "alert"=> "",
                             "title"=> "",
                             "builder_id"=>1,
                             "extras" => array(
@@ -117,7 +114,7 @@ class JPush
     }
 
     public function setTitle($title){
-        $this->pushData["notification"]["android"]["alert"]['title'] = $title;
+        $this->pushData["notification"]["android"]["alert"] = $title;
         $this->pushData["notification"]["ios"]["alert"]['title'] = $title;
         return $this;
     }
