@@ -239,5 +239,10 @@ $("#viewQTYParkingDetail").pagecontainer({
             $.mobile.changePage('#viewMain');
         });
 
+        $('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
+            $('#viewPopupMsg').popup('close');
+            $.mobile.changePage('#viewMain');
+        });
+
     }
 });
