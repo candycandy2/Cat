@@ -636,6 +636,11 @@ class Verify
         return $ServerSignature;
     }
 
+    /**
+     * 驗證客製App,可驗證非qplay專案
+     * @param  boolean $needCheckUuid 是否需正uuid及token
+     * @return json
+     */
     public static function verifyCustom($needCheckUuid) {
         $request = Request::instance();
         $input = Input::get();
@@ -654,7 +659,6 @@ class Verify
                 "message"=> CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect)
             );
         }
-
         //检查app_key是否存在
         if(!self::chkAppKeyExist($headerAppKey)) {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
@@ -729,7 +733,6 @@ class Verify
                     "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist)
                 );
             }
-
             return self::verifyToken($uuid, $token);
         } else {
             return array("code"=>ResultCode::_1_reponseSuccessful,
