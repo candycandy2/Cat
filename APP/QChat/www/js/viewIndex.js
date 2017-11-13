@@ -670,6 +670,9 @@ $("#viewIndex").pagecontainer({
             var friendContent = $($("template#tplFriendContent").html());
             $("#memberDiv").append(friendContent);
 
+            //-----------------------------------------------------
+            var actionMsgFullScreen = $($("template#tplActionMsgFullScreen").html());
+            $("body").append(actionMsgFullScreen);
         });
 
         $("#viewIndex").on("pagebeforeshow", function(event, ui) {
@@ -683,8 +686,13 @@ $("#viewIndex").pagecontainer({
         $("#viewIndex").on("pageshow", function(event, ui) {
 
             //Set Active Tab
-            $("#tabIndex a:eq(0)").addClass("ui-btn-active");
-            $("#tabIndex").tabs({ active: 0 });
+            if (prevPageID === "viewAddFriend") {
+                $("#tabIndex a:eq(1)").addClass("ui-btn-active");
+                $("#tabIndex").tabs({ active: 1 });
+            } else {
+                $("#tabIndex a:eq(0)").addClass("ui-btn-active");
+                $("#tabIndex").tabs({ active: 0 });
+            }
 
             if (!getPWD) {
                 loadingMask("show");
@@ -846,6 +854,13 @@ $("#viewIndex").pagecontainer({
                 }
             }
         }, ".search-user-clear-content");
+
+        //Add Friend
+        $(document).on({
+            click: function() {
+                $.mobile.changePage('#viewAddFriend');
+            }
+        }, ".friend-add-btn");
 
     }
 });

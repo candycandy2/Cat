@@ -751,7 +751,7 @@ $("#viewChatroom").pagecontainer({
                 window.removeEventListener("scroll", msgListViewScroll);
                 $.mobile.changePage('#viewIndex');
             }
-        }, "#backIndex");
+        }, "#backIndexChatroom");
 
         $(document).on({
             click: function() {
