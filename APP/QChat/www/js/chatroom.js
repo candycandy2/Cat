@@ -28,6 +28,10 @@ var JM = {
             JM.data.chatroom_user = {};
         }
 
+        if (JM.data.chatroom_friend === undefined) {
+            JM.data.chatroom_friend = [];
+        }
+
         window.MessageSendingOptions = {
           /**
            * 接收方是否针对此次消息发送展示通知栏通知。
