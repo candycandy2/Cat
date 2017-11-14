@@ -276,7 +276,8 @@ div.scrollmenu a {
 #leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 15px;
-    background: rgba(0,0,0,0.8);
+	background: rgba(0,0,0,0.8);
+	border-radius: 10px;
     /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);*/
 }
 
@@ -314,19 +315,19 @@ div.scrollmenu a {
 }
 
 .popup-msg-style {
-	background-color: #666;
-	top: 70vw;
-	left: 36vw;
-	border-radius: 1.5px;
-	color: #F0F0F0;
-	font-size: 3.6VW;
+	width: 28VW;
 	height: 4VW;
 	margin: auto;
 	opacity: 0.9;
 	padding: 6.2VW 1VW 6.2VW 1VW;
 	position: fixed;
-	text-align: center;
-	width: 28VW;
+	top: 70vw;
+	left: 36vw;
+	background-color: #666;
+	border-radius: 1.5px;
+	color: #F0F0F0;	
+	font-size: 3.6VW;
+	text-align: center;	
 	z-index: 2;
 	display: none;
 }
@@ -836,6 +837,7 @@ div.scrollmenu a {
 .confirmToDelete > .ui-content > .header {
 	margin-top: 13%;
 }
+
 
 
 /**************************************** viewBackLeaveApply ***************************************/

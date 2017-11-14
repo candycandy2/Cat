@@ -100,7 +100,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryLeftDaysData = function(leaveid) {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -380,8 +380,9 @@ $("#viewPersonalLeave").pagecontainer({
             agentid= "";
             beginTime = "08:00";
             endTime = "17:00";
-            beginDate = currentYear + "/" + currentMonth + "/" + currentDate;
-            endDate = currentYear + "/" + currentMonth + "/" + currentDate;
+            //modify by Allen
+            //beginDate = currentYear + "/" + currentMonth + "/" + currentDate;
+            //endDate = currentYear + "/" + currentMonth + "/" + currentDate;
             if(localStorage.getItem("agent") !== null) {
                 agentid = JSON.parse(localStorage.getItem("agent"))[1];
             }
@@ -726,6 +727,7 @@ $("#viewPersonalLeave").pagecontainer({
             $(this).addClass("hover");
 
             beginDate = endDate = $(this).data("value");
+            console.log(beginDate);
         });
 
     }
