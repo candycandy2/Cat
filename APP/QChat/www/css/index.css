@@ -847,6 +847,24 @@ input[type=checkbox]:checked + label {
     padding: 2.73vw 3.71vw;
 }
 
+/*-----------------------------------------------------------------AddFriend*/
+#viewAddFriendContent {
+    padding: 14.49vw 3.71vw 0;
+}
+
+.search-addfriend-content {
+
+}
+
+.user-list .checkbox-content-addFriend {
+    width: 0;
+    padding: 0;
+}
+
+.user-list .user-content-addFriend {
+    width: 54vw;
+}
+
 .hide {
     display: none;
 }

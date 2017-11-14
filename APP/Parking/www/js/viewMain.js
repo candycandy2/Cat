@@ -325,8 +325,13 @@ $("#viewMain").pagecontainer({
                     }
 
                 } else if (data['ResultCode'] === "042903") {
-                    //Reservation Failed, Repeated a Reservation
-                    popupMsg('reserveFailMsg', '預約失敗', '已被預約', '', false, '確定', '068_icon_warm.png');
+                    //Reservation Failed, Repeated a Reservation   
+                    var headerContent = "預約失敗";
+                        msgContent = "已被預約";
+                    $('.reserveResultPopup').find('.header-icon img').attr("src", "img/068_icon_warm.png");
+                    $('.reserveResultPopup').find('.header-text').html(headerContent);
+                    $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
+                    popupMsgInit('.reserveResultPopup');
                 }
 
                 loadingMask('hide');
@@ -866,9 +871,13 @@ $("#viewMain").pagecontainer({
             $.mobile.changePage('#viewMain');
         });
 
-        $('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
+        /*$('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, false);
             $('div[for=reserveFailMsg]').popup('close');
+        });*/
+
+        $('body').on('click', 'div[for=reserveResultPopup] .btn-cancel', function() {
+            var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, false);
         });
 
         // ----------------------------pageTwo function-------------------------------------- 

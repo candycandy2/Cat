@@ -184,6 +184,10 @@ input[type=radio]:checked + label {
     border-radius: 16px;
 }
 
+.btn-one {
+    color: #1678E5;
+}
+
 /********************************** public area *************************************/
 
 .ui-title-btn {
@@ -345,7 +349,6 @@ div.square {
     width: 88%;
     height: 1px;
     position: absolute;
-    bottom: 140px;
     left: 17px;
 }
 
@@ -500,6 +503,10 @@ p.content-paragraph {
 
 #viewMainBack {
     font-weight: normal;
+}
+
+.content-QTY {
+    margin-top: 10vw;
 }
 
 /********************************** color setting *************************************/

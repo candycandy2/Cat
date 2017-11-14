@@ -120,7 +120,7 @@ var app = {
         //Set openMessage at first time
         if (window.localStorage.getItem("openMessage") === null) {
             //check data exit in Local Storage
-            window.localStorage.setItem("openMessage", false);
+            window.localStorage.setItem("openMessage", "false");
         }
 
         //[Android] Handle the back button, set in index.js
@@ -187,18 +187,27 @@ var app = {
         //If APP not open, check message after checkAppVersion()
         getMessageID(data);
 
-        if (window.localStorage.getItem("openMessage") === false) {
+        if (window.localStorage.getItem("openMessage") === "false") {
 
             doOpenMessage = true;
 
             //remember to open Message Detail Data
             loginData["openMessage"] = true;
-            window.localStorage.setItem("openMessage", true);
+            window.localStorage.setItem("openMessage", "true");
             window.localStorage.setItem("messageRowId", messageRowId);
 
-        } else if (window.localStorage.getItem("openMessage") === true) {
+        } else if (window.localStorage.getItem("openMessage") === "true") {
             //After onBackgoundNotification/onReceiveNotification, then do onOpenNotification
             doOpenMessage = true;
+        } else {
+            //review by alan
+            //do then same when (window.localStorage.getItem("openMessage") === "false")
+            doOpenMessage = true;
+
+            //remember to open Message Detail Data
+            loginData["openMessage"] = true;
+            window.localStorage.setItem("openMessage", "true");
+            window.localStorage.setItem("messageRowId", messageRowId);
         }
 
         if (doOpenMessage) {
@@ -223,27 +232,27 @@ var app = {
     },
     onBackgoundNotification: function(data) {
         //Plugin-QPush > 添加後台收到通知后需要執行的內容
-        if (window.localStorage.getItem("openMessage") === false) {
+        if (window.localStorage.getItem("openMessage") === "false") {
             getMessageID(data);
 
             if (window.localStorage.getItem("loginid") === null) {
                 //remember to open Message Detail Data
                 loginData["openMessage"] = true;
-                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("openMessage", "true");
                 window.localStorage.setItem("messageRowId", messageRowId);
             }
         }
     },
     onReceiveNotification: function(data) {
         //Plugin-QPush > 添加前台收到通知后需要執行的內容
-        if (window.localStorage.getItem("openMessage") === false) {
+        if (window.localStorage.getItem("openMessage") === "false") {
             getMessageID(data);
 
             if (window.localStorage.getItem("loginid") === null) {
                 //remember to open Message Detail Data
 
                 loginData["openMessage"] = true;
-                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("openMessage", "true");
                 window.localStorage.setItem("messageRowId", messageRowId);
             }
 
@@ -251,7 +260,7 @@ var app = {
             //need to do it by Javscript
             if (device.platform === "iOS") {
                 loginData["openMessage"] = true;
-                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("openMessage", "true");
                 window.localStorage.setItem("messageRowId", messageRowId);
 
                 $("#newMessageTitle").html(data.aps["alert"]);
@@ -271,7 +280,7 @@ var app = {
                     $('#iOSGetNewMessage').hide();
 
                     loginData["openMessage"] = false;
-                    window.localStorage.setItem("openMessage", false);
+                    window.localStorage.setItem("openMessage", "false");
                 });
             }
         }

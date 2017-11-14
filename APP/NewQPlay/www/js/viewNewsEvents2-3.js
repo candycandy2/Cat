@@ -225,7 +225,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                 }
 
                 //review by alan
-                if (window.localStorage.getItem("openMessage") === true) {
+                if (window.localStorage.getItem("openMessage") === "true") {
                     $.mobile.changePage('#viewWebNews2-3-1', {
                         allowSamePageTransition: true,
                         transition: 'none',

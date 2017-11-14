@@ -223,13 +223,6 @@ div.scrollmenu a {
     color: #999999 !important;
 }
 
-/* .queryLoader {
-	width: 15;
-	height: 15;
-	margin-left:45%;
-	display:none;
-} */
-
 #searchBar, #searchAgent {
 	width: 75VW;
 	border-width: 1px;
@@ -691,7 +684,6 @@ div.scrollmenu a {
 	width: 88vw;
 	height: 5vw;
 	margin-top: 1.8vw;
-	/* line-height: 7vw; */
 }
 
 .leave-query-basedata > div,
