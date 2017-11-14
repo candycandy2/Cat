@@ -12,7 +12,7 @@
         <div class="header-style">
             <h1 class="ui-title" style="margin: 0;"><span id="chatroomTitle"></span></h1>
         </div>
-        <a id="leaveChatroom" href="#" data-role="none" class="ui-btn-right">
+        <a id="chatroomAction" href="#" data-role="none" class="ui-btn-right">
             <div class="q-btn-header" style="width: 5.957vw;">
                 <svg class="header-icon">
                     <use xlink:href="#icon-topnav_more"></use>
@@ -22,6 +22,21 @@
     </div>
 
     <div data-role="main" class="page-main" id="viewChatroomContent">
+
+        <div class="chatroom-action chatroom-action-content hide">
+            <div class="chatroom-info">
+                <div>
+                    <svg class="chatroom-action-icon">
+                        <use xlink:href="#icon-topnav_info"></use>
+                    </svg>
+                </div>
+                <div class="chatroom-action-text">
+                    聊天室資訊
+                </div>
+            </div>
+        </div>
+
+        <div class="chatroom-action chatroom-action-content-background hide"></div>
 
         <template id="tplMsgDate">
             <div class="msg date">

@@ -530,6 +530,40 @@ input[type=checkbox]:checked + label {
 }
 
 /*-----------------------------------------------------------------Chatroom*/
+#viewChatroom .page-header {
+    border-bottom: none;
+}
+
+.chatroom-action-content {
+    margin-top: 2.3vw;
+    margin-left: 39vw;
+    position: fixed;
+    top: 13.99vw;
+    z-index: 110;
+}
+
+.chatroom-action-icon {
+    width: 6.051vw;
+    height: 6.051vw;
+    margin-left: 4.5vw;
+}
+
+.chatroom-action-text {
+    font-size: 3.14vw;
+    color: #FFFFFF;
+}
+
+.chatroom-action-content-background {
+    position: fixed;
+    width: 100vw;
+    height: 18.79vw;
+    left: 0;
+    top: 13vw;
+    opacity: 0.9;
+    background-color: #566270;
+    z-index: 100;
+}
+
 .chatroom-footer.ui-bar-inherit {
     background-color: #2C89BC;
     height: 12.88vw;
@@ -863,6 +897,103 @@ input[type=checkbox]:checked + label {
 
 .user-list .user-content-addFriend {
     width: 54vw;
+}
+
+/*-----------------------------------------------------------------Chatroom Info*/
+.chatroom-info-list {
+    margin-left: 0;
+    padding: 2.41vw 3.71vw;
+    width: 100vw;
+    height: 25.466vw;
+}
+
+.chatroom-info-list .left, .chatroom-info-list .right {
+    float: left;
+}
+
+.chatroom-info-photo-content {
+    width: 25.466vw;
+    height: 25.466vw;
+}
+
+.chatroom-info-photo {
+    width: 25.466vw;
+    height: 25.466vw;
+}
+
+.chatroom-info-name {
+    font-size: 4.18vw;
+    color: #323232;
+    margin-top: 10.643vw;
+    margin-left: 3vw;
+    width: 63vw;
+}
+
+.auto-history-content {
+    margin-top: 7.152vw;
+    padding: 4.3vw 3.71vw;
+    height: 9.28vw;
+}
+
+.auto-history-content .left {
+    width: 84vw;
+}
+
+.auto-history-title {
+    font-size: 4.18vw;
+    color: #323232;
+}
+
+.auto-history-text {
+    font-size: 3.14vw;
+    color: #666666;
+}
+
+.auto-history-photo {
+    width: 8.051vw;
+    height: 8.051vw;
+    margin-top: 1.5vw;
+}
+
+.auto-history-text {
+    font-size: 3.14vw;
+    color: #666666;
+}
+
+.chatroom-info-member-count {
+    margin: 6.44vw 0 0 3.71vw;
+    font-size: 3.14vw;
+    color: #0F0F0F;
+}
+
+.member-data-content {
+    margin-top: 2.14vw;
+}
+
+.member-data-content .member-list {
+    width: 100vw;
+    margin-left: 0;
+}
+
+.member-data-content .btn-addfriend-img {
+    margin-right: 4vw;
+}
+
+.member-list-content .user-name-only {
+    margin-top: 1.9335vw;
+    width: 68vw;
+}
+
+.member-list-content .data-delete {
+    width: 4.5vw;
+    height: 4.5vw;
+    margin: 2vw 0 0 5vw;
+}
+
+.admin-text {
+    font-size: 3.14vw;
+    color: #989898;
+    margin-top: 2.9735vw;
 }
 
 .hide {
