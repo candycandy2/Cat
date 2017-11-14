@@ -826,6 +826,7 @@ $("#viewMain").pagecontainer({
             if (bReserveCancelConfirm == true) {
                 $('div[for=myReserveMsg]').popup('close');
                 var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
+                tplJS.recoveryPageScroll();
             } else {
                 $('div[for=myReserveMsg] span[id=titleText]').text('確定取消預約？');
                 $('div[for=myReserveMsg] button[id=confirm]').html('取消');
@@ -833,12 +834,14 @@ $("#viewMain").pagecontainer({
                 $('div[for=myReserveMsg] img[id=titleImg]').attr('src', 'img/068_icon_warm.png');
                 bReserveCancelConfirm = true;
             }
+
         });
 
         $('body').on('click', 'div[for=hasReservePopup] .btn-confirm', function() {
             if (bReserveCancelConfirm == true) {
                 $('div[for=hasReservePopup]').popup('close');
                 var doAPIReserveCancel = new getAPIReserveCancel(clickDateId, traceID);
+                tplJS.recoveryPageScroll();
             } else {
                 $('.hasReservePopup').find('.header-icon img').attr('src', 'img/068_icon_warm.png');
                 $('.hasReservePopup').find('.header-text').html('確定取消預約？');
@@ -860,15 +863,18 @@ $("#viewMain").pagecontainer({
             $('div[traceid=' + traceID + ']').removeClass('ui-color-myreserve');
             $('div[traceid=' + traceID + '] span').text('');
             $('div[for=cancelSuccessMsg]').popup('close');
+            tplJS.recoveryPageScroll();
         });
 
         $('body').on('click', 'div[for=reserveSuccessMsg] #confirm, div[for=apiFailMsg] #confirm, div[for=noSelectTimeMsg] #confirm, div[for=selectReserveSameTimeMsg] #confirm, div[for=noTimeIdMsg] #confirm, div[for=successMsg] #confirm, div[for=failMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
+            tplJS.recoveryPageScroll();
         });
 
         $('body').on('click', 'div[for=cancelFailMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
             $.mobile.changePage('#viewMain');
+            tplJS.recoveryPageScroll();
         });
 
         /*$('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
@@ -905,6 +911,7 @@ $("#viewMain").pagecontainer({
             $('#commonCarList-' + clickDeleteID).remove();
 
             $('div[for=deleteMsg]').popup('close');
+            tplJS.recoveryPageScroll();
         });
 
         $('body').on('click', 'div[id^=commonCarList-]', function(e) {
@@ -979,6 +986,7 @@ $("#viewMain").pagecontainer({
             };
 
             $('div[for=cancelMsg]').popup('close');
+            tplJS.recoveryPageScroll();
         });
 
         $('body').on('click', 'div[for=myReservePopup] .btn-confirm', function() {
@@ -996,6 +1004,7 @@ $("#viewMain").pagecontainer({
             };
 
             $('div[for=myReservePopup]').popup('close');
+            tplJS.recoveryPageScroll();
         });
 
         $('body').on('click', 'div[for=noDataMsg] #confirm', function() {

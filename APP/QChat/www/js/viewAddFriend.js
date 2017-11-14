@@ -109,7 +109,7 @@ $("#viewAddFriend").pagecontainer({
         });
 
         $("#viewAddFriend").on("pageshow", function(event, ui) {
-
+            prevPageID = "viewAddFriend";
         });
 
         /********************************** dom event *************************************/
@@ -156,7 +156,6 @@ $("#viewAddFriend").pagecontainer({
         //Back Button
         $(document).on({
             click: function() {
-                prevPageID = "viewAddFriend";
                 $.mobile.changePage('#viewIndex');
             }
         }, "#backAddFriend");

@@ -249,7 +249,7 @@ $("#viewLeaveQuery").pagecontainer({
             setDataToLeaveApply(applyText, leavenumText, leaveText, agentText, startText, endText, reasonText, baseText);
         });
 
-        //刪除假單（撤回狀態下）
+        //編輯假單（撤回狀態下）
         $("#editWithdrawLeave").on("click", function() {
             var bortherNode = $(this).parent().parent().children("div");
             var applyText = bortherNode.eq(0).children("div").eq(0).children("span").eq(1).text();

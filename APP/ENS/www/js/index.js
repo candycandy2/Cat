@@ -477,84 +477,84 @@ function checkEventTemplateData(action, eventType, titleData, contentData) {
 
         normalTitle = [{
             value: "1",
-            text: "[電力維護公告] XX機房將進行電力保養及維護，請協助關機"
+            text: langStr["str_043"] // "[電力維護公告] XX機房將進行電力保養及維護，請協助關機"
         }, {
             value: "2",
-            text: "[空調維護公告] XX機房將進行空調保養及維護，請協助關機"
+            text: langStr["str_044"] // "[空調維護公告] XX機房將進行空調保養及維護，請協助關機"
         }, {
             value: "3",
-            text: "[維護公告] 2017/MM/DD(星期X) [台北]辦公室網路維護工程，辦公室網路將無法使用"
+            text: langStr["str_045"] // "[維護公告] 2017/MM/DD(星期X) [台北]辦公室網路維護工程，辦公室網路將無法使用"
         }, {
             value: "4",
-            text: "[電力/空調維護公告] XX機房[電力/空調]保養及維護已經完成，請協助開機"
+            text: langStr["str_046"] // "[電力/空調維護公告] XX機房[電力/空調]保養及維護已經完成，請協助開機"
         }];
 
         normalContent = [{
             value: "1",
-            text: "XX機房將於YYYY/MM/DD 9:00AM進行電力保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
+            text: langStr["str_047"] // "XX機房將於YYYY/MM/DD 9:00AM進行電力保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
         }, {
             value: "2",
-            text: "XX機房將於YYYY/MM/DD 9:00AM進行空調保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
+            text: langStr["str_048"] // "XX機房將於YYYY/MM/DD 9:00AM進行空調保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報"
         }, {
             value: "3",
-            text: "[台北]辦公室將於2017/MM/DD 9:00AM - 5:00PM進行網路維修工程,辦公室網路將無法使用,請通知相關IT系統使用人員"
+            text: langStr["str_049"] // "[台北]辦公室將於2017/MM/DD 9:00AM - 5:00PM進行網路維修工程,辦公室網路將無法使用,請通知相關IT系統使用人員"
         }, {
             value: "4",
-            text: "XX機房[電力/空調]在下午4:00PM已經完成保養及維護,請協助開機及回報"
+            text: langStr["str_050"] // "XX機房[電力/空調]在下午4:00PM已經完成保養及維護,請協助開機及回報"
         }];
 
         urgentTitle = [{
             value: "1",
-            text: "[機房電力異常] 目前(2:30PM) XX機房因供電異常，請協助緊急關機"
+            text: langStr["str_051"] // "[機房電力異常] 目前(2:30PM) XX機房因供電異常，請協助緊急關機"
         }, {
             value: "2",
-            text: "[機房空調異常] 目前(2:30PM) XX機房因空調系統故障，請協助緊急關機"
+            text: langStr["str_052"] // "[機房空調異常] 目前(2:30PM) XX機房因空調系統故障，請協助緊急關機"
         }, {
             value: "3",
-            text: "[機房電力／空調正常]目前(4:30PM)  XX機房[電力/空調]已經恢復正常，請協助開機"
+            text: langStr["str_053"] // "[機房電力／空調正常]目前(4:30PM)  XX機房[電力/空調]已經恢復正常，請協助開機"
         }];
 
         urgentContent = [{
             value: "1",
-            text: "目前(2:30PM) XX機房因市電供電異常影響機房電力系統. 請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
+            text: langStr["str_054"] // "目前(2:30PM) XX機房因市電供電異常影響機房電力系統. 請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
         }, {
             value: "2",
-            text: "目前(2:30PM) XX機房因空調系統故障. 機房溫度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
+            text: langStr["str_055"] // "目前(2:30PM) XX機房因空調系統故障. 機房溫度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業"
         }, {
             value: "3",
-            text: "目前(4:30PM)XX機房[電力/空調]已經恢復正常,請機房系統管理員協助開機及回報"
+            text: langStr["str_056"] // "目前(4:30PM)XX機房[電力/空調]已經恢復正常,請機房系統管理員協助開機及回報"
         }];
 
         RMTitle = [{
             value: "1",
-            text: "工傷"
+            text: langStr["str_057"] // "工傷"
         }, {
             value: "2",
-            text: "火災、爆炸"
+            text: langStr["str_058"] // "火災、爆炸"
         }, {
             value: "3",
-            text: "傳染病"
+            text: langStr["str_059"] // "傳染病"
         }, {
             value: "4",
-            text: "營業中斷"
+            text: langStr["str_060"] // "營業中斷"
         }, {
             value: "5",
-            text: "SCM斷料"
+            text: langStr["str_061"] // "SCM斷料"
         }, {
             value: "6",
-            text: "貨物損失"
+            text: langStr["str_062"] // "貨物損失"
         }, {
             value: "7",
-            text: "客戶倒閉"
+            text: langStr["str_063"] // "客戶倒閉"
         }, {
             value: "8",
-            text: "產品品質"
+            text: langStr["str_064"] // "產品品質"
         }, {
             value: "9",
-            text: "IT中斷"
+            text: langStr["str_065"] // "IT中斷"
         }, {
             value: "10",
-            text: "其他"
+            text: langStr["str_106"] // "其他"
         }];
 
         RMContent = [{
