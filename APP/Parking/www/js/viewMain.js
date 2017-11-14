@@ -846,6 +846,7 @@ $("#viewMain").pagecontainer({
                 $('.hasReservePopup').find('.btn-cancel').html('不取消');
                 bReserveCancelConfirm = true;
             }
+            tplJS.recoveryPageScroll();
         });
         
         $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
@@ -905,6 +906,7 @@ $("#viewMain").pagecontainer({
             $('#commonCarList-' + clickDeleteID).remove();
 
             $('div[for=deleteMsg]').popup('close');
+            tplJS.recoveryPageScroll();
         });
 
         $('body').on('click', 'div[id^=commonCarList-]', function(e) {
@@ -996,6 +998,7 @@ $("#viewMain").pagecontainer({
             };
 
             $('div[for=myReservePopup]').popup('close');
+            tplJS.recoveryPageScroll();
         });
 
         $('body').on('click', 'div[for=noDataMsg] #confirm', function() {
