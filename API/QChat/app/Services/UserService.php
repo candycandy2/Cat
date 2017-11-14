@@ -20,17 +20,19 @@ class UserService
     /**
      * 取得使用者列表
      * @param  string $loginId    登入帳號
-     * @param  String $friendOnly 僅查詢好友 (Y:是 | N:否)
+     * @param  String $mode       查詢模式1:只有好友
+     *                                    2:非好友
+     *                                    3:全部
      * @param  string $empNo      員工編號
      * @return object
      */
-    public function getUserList($searchType, $friendOnly, $empNo, $searchString=""){
+    public function getUserList($searchType, $mode, $empNo, $searchString=""){
         $userList = [];
         $userListCount  = 0;
         $userCount = 0;
         $limit = 10;
-        $userList = $this->userRepository->getList($searchType, $friendOnly, $empNo, $searchString);
-        $userCount = $this->userRepository->getCount($searchType, $friendOnly, $empNo, $searchString);
+        $userList = $this->userRepository->getList($searchType, $mode, $empNo, $searchString);
+        $userCount = $this->userRepository->getCount($searchType, $mode, $empNo, $searchString);
         $result['user_list'] = $userList;
         if($userCount > 0){
             $result['over_threshold'] = ($userCount > $limit)?'Y':'N';

@@ -46,14 +46,14 @@ class FriendController extends Controller
         try {
             $required = Validator::make($this->data, [
                 'search_type' => 'required',
-                'friend_only' => 'required',
+                'mode' => 'required',
                 'emp_no' => 'required',
                 'search_string' => 'required_if:search_type,==,1|
                                     required_if:search_type,==,2',
             ]);
 
             $range = Validator::make($this->data, [
-                'friend_only' => 'in:Y,N',
+                'mode' => 'in:1,2,3',
                 'search_type' => 'in:1,2,3',
             ]);
 
@@ -83,11 +83,11 @@ class FriendController extends Controller
 
             $searchType = $this->data['search_type'];
             $searchString = $this->data['search_string'];
-            $friendOnly = $this->data['friend_only'];
+            $mode = $this->data['mode'];
             $empNo = $this->data['emp_no'];
 
             
-            $userList =  $this->userService->getUserList($searchType, $friendOnly, $empNo, $searchString);
+            $userList =  $this->userService->getUserList($searchType, $mode, $empNo, $searchString);
             
             if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
@@ -125,7 +125,7 @@ class FriendController extends Controller
             $searchString = $this->data['search_string'];
             $empNo = $this->data['emp_no'];
 
-            $friendList =  $this->userService->getUserList(1, 'Y', $empNo, $searchString);
+            $friendList =  $this->userService->getUserList(1, 1, $empNo, $searchString);
             $inviterList = $this->friendService->getInviterList($empNo);
 
             $userList['friend'] = $friendList;
