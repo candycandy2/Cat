@@ -221,7 +221,6 @@ $("#viewLeaveSubmit").pagecontainer({
             $('#divEmpty').hide();
             $("#chooseBaseday").text(selectBasedayStr);
             selectLeave = "";
-            //agentName = "";
             basedayState = null;
         }
 
@@ -259,12 +258,11 @@ $("#viewLeaveSubmit").pagecontainer({
         /********************************** page event *************************************/
         $("#viewLeaveSubmit").on("pagebeforeshow", function(event, ui) {
             if(!viewLeaveSubmitInit){
-                //页面show之前就给开始时间和结束时间控件赋值，“2017-11-11T08:00”
-                // $("#startDate").val(applyDay+"T08:00");
-                // $("#endDate").val(applyDay+"T17:00");
                 //申請日期和預覽申請日期，都是实际當天日期
                 $('#applyDay').text(applyDay);
                 $('#previewApplyDay').text(applyDay);
+                $("#startText").text(pleaseSelectStr);
+                $("#endText").text(pleaseSelectStr);
                 getAllLeaveCategroy();
 
                 viewLeaveSubmitInit = true;
@@ -390,7 +388,6 @@ $("#viewLeaveSubmit").pagecontainer({
         $(document).on("click", "#leave-agent-popup-option ul li", function(e) {
             agentid = $(this).attr("value");
             agentName = $(this).children("div").eq(1).children("span").text();
-            //checkLeaveBeforePreview();
         });
 
         //popup打开以后生成代理人列表
@@ -405,6 +402,7 @@ $("#viewLeaveSubmit").pagecontainer({
             }
         });
 
+        //代理人
         $(document).on("popupafterclose", "#leave-agent-popup-option", function() {
             checkLeaveBeforePreview();
         });
@@ -646,11 +644,6 @@ $("#viewLeaveSubmit").pagecontainer({
         //預覽送簽按鈕
         $("#previewBtn").on("click", function() {
             if($('#previewBtn').hasClass('leavePreview-active-btn')) {
-                $('.apply-container').hide();
-                $('.leaveMenu').hide();
-                $('.apply-preview').show();
-                $('#backMain').show();
-
                 //傳值到預覽頁面
                 $("#applyCategroy").text(leaveObj["categroy"]);
                 $("#applyLeave").text(selectLeave);
@@ -658,6 +651,11 @@ $("#viewLeaveSubmit").pagecontainer({
                 $("#applyStartday").text(startLeaveDate);
                 $("#applyEndday").text(endLeaveDate);
                 $("#applyReason").text(leaveReason);
+
+                $('.apply-container').hide();
+                $('.leaveMenu').hide();
+                $('.apply-preview').show();
+                $('#backMain').show();  
             }
         });
 
