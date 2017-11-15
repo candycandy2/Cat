@@ -36,7 +36,7 @@ class appLogController extends Controller
             $input[strtolower($k)] = $v;
         }
         //驗證uuid
-        if(!isset($input["uuid"]) || $Verify->chkUuidExist($input["uuid"])) {
+        if(!isset($input["uuid"]) || !$Verify->chkUuidExist($input["uuid"])) {
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
             'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
             'content'=>''];
