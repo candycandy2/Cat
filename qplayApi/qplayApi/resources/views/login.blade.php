@@ -9,6 +9,19 @@
         td{
             padding:0;
         }
+        ui-btn:active{
+            background-color: yellow;
+        }
+        a{
+            text-decoration:none;
+            color: #2A8ABD;
+        }
+        a:visited{
+            color:#2A8ABD;!important;
+        }
+        td.control_icon_cell{
+            width: 4.2vw;!important;
+        }
         .ui-icon-dropdown {
             background:url({{asset('/css/images/dropdown_n.png')}}) no-repeat 0 0;
             background-position: 98% 50%;
@@ -20,23 +33,24 @@
         .control_icon {
             max-height: 6.8vw !important;       
             max-width: 6.8vw !important;
-            margin-right: 6.6vw;
+            margin-right: 3vw;
+            margin-left: 3vw;
             display: inherit;
         }
         #main_table input {
-            font-size:5.8vw;
+            font-size:4.2vw;
         }
         #button_cell {
             width: 100%
         }
         #main_table {
-            margin: 10vw 0 3.6vw 0;
+            margin: 15vh 0 3.6vw 0;
             border-collapse: collapse;
             width: 100%;
         }
         #main_table tr
         {
-            border-bottom: 1px solid #333333;
+            border-bottom: 1px solid #e6e6e6;
         }
         #button_cell {
             padding-top: 3vw;
@@ -46,30 +60,30 @@
         }
         .control_title_text
         {
-            font:5.2vw "Arial";
+            font:3.8vw "Arial";
             color: #0f0f0f;
         }
         .login_control{
-            font:5.9vw "Arial";
+            font:3.8vw "Arial";
         }
         ::-webkit-input-placeholder {
-            font:5.8vw "Arial";
-            color: #989898;
+            font:3.8vw "Arial";
+            color: #999999;
             text-overflow: ellipsis;
         }
         :-moz-placeholder {
             font:1em "Arial";
-            color: #989898;!important;
+            color: #999999;!important;
             text-overflow: ellipsis;
         }
         ::-moz-placeholder {
             font:1em "Arial";
-            color: #989898;!important;
+            color: #999999;!important;
             text-overflow: ellipsis;
         }
         :-ms-input-placeholder {
             font:1em "Arial";
-            color: #989898;!important;
+            color: #999999;!important;
             text-overflow: ellipsis;
         }
 
@@ -78,6 +92,7 @@
             border: 0;
             box-shadow: 0 0 0 rgba(0,0,0,0);
             -webkit-box-shadow: 0 0 0 rgba(0,0,0,0);
+            font-size: 3.8vw;!important;
         }
 
         #dlgMessage .ui-header {
@@ -88,21 +103,58 @@
         #dlgMessage .ui-content {
             background-color: #fff;
             padding:15px;
-            color: #3c3c75;
+            color: #492e80;
             text-shadow:0 0;
         }
         #info_cell_forget {
-            font:1em "Arial";
+            font:3.2vw "Arial";
+            color: #666666;
         }
-        #info_cell_logout + .linkITS{
-            font:1em "Arial";
+        .linkITS{
+            margin-left: .3em;
+            font:3.2vw "Arial";
+            color: #666666; 
+        }
+        #info_cell{
+         color: #0f0f0f;
+         font: 3.2vw 'Arial';
+         width: 80%;
+         margin: 3vh auto auto auto;
+         text-alig: center;
+         padding-top: 0;   
+        }
+        #env_info {
+            color: red;
+            font-size:6.8vw;
+            position:absolute;
+            z-index: 2;
+            margin-left: auto;
+            margin-right: auto;
+            left:0;
+            right:0;
+        }
+        @media screen and (orientation: portrait) {
+          img.logo{
+            height:20vh;
+          }
+          img.logo_register{
+            height:13vh;
+          }
+        }
+        @media screen and (orientation: landscape) {
+          img.logo{
+            height:36vw;
+          }
+          img.logo_register{
+            height:24vw;
+          }
         }
     </style>
     <div data-role="page" id="pageLogin" style="font-family: 'Arial';">
-        <div role="main" class="ui-content" style="text-align: center;margin: 22vw 8vw 0 8vw;">
-            <img src="{{asset('/css/images/login_logo.png')}}" style="height:36vw;" />
+        <div role="main" class="ui-content" style="text-align: center;margin: 10vh 3.71vw 0 3.71vw;">
+            <img src="{{asset('/css/images/login_logo.png')}}" class="logo"/>
             @if (Config::get('app.env')!='production')
-                <div style="color: red; font-size:10vw">● {{Config::get('app.env')}} ●</div>
+                <div id="env_info">● {{Config::get('app.env')}} ●</div>
             @endif
             <table id="main_table">
                 <tr>
@@ -111,13 +163,11 @@
                     </td>
                     <td class="control_cell">
                         <table>
-                            <!--<tr>
-                                <td class="control_title control_title_text">公司</td>
-                            </tr>-->
                             <tr>
                                 <td>
-                                    <select class="login_control" placeholder="Company" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext" style="border-color: #1f1f1f;">
-                                        <option value="BENQ" selected="selected">BenQ</option>
+                                    <select class="login_control" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext" style="border-color: #1f1f1f; padding: .4em">
+                                        <option value="" selected disabled></option>
+                                        <option value="BENQ">BenQ</option>
                                         <option value="QGROUP">Qisda</option>
                                     </select>
                                 </td>
@@ -131,13 +181,10 @@
                     </td>
                     <td class="control_cell">
                         <table>
-                        <!--<tr>
-                                <td class="control_title control_title_text">帳號</td>
-                            </tr>-->
                             <tr>
                                 <td>
                                     <input class="login_control" type="text" data-clear-btn="false" name="tbxName" data-mini="true"
-                                           id="tbxName" value="" placeholder="帳號" />
+                                           id="tbxName" value="" placeholder="" style="padding-top:.7em "/>
                                 </td>
                             </tr>
                         </table>
@@ -149,27 +196,24 @@
                     </td>
                     <td class="control_cell">
                         <table>
-                        <!--<tr>
-                                <td class="control_title control_title_text">密碼</td>
-                            </tr>-->
                             <tr>
                                 <td>
                                     <input class="login_control" type="password" data-clear-btn="false" name="tbxPassword" data-mini="true"
-                                           id="tbxPassword" value="" placeholder="密碼" />
+                                           id="tbxPassword" value="" placeholder="" style="padding-top:.7em " />
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
             </table>
-            <div style="margin-top: 3.6vw;">
-                <div id="info_cell" style="color: #0f0f0f;font: 4.6vw 'Arial';width: 80%;margin: 0 auto;text-align: center;padding-top: 0;"><span id="info_cell_forget" >忘記密碼請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></div>
+            <div style="margin-top: 6vh;">
                 <div id="button_cell">
-                    <button id="btnLogin" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #3c3c75;font:5.6vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
+                    <button id="btnLogin" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #492e80;font:4vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="tryLogin()">登入</button>
-                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #3c3c75;font:5.6vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
+                    <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #492e80;font:4vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="oriLogin()">登入</button>
                 </div>
+                <div id="info_cell"><span id="info_cell_forget" >忘記密碼請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></div>
             </div>
         </div>
 
@@ -183,21 +227,21 @@
             </div>
         </div>
     </div>
-
-    <div data-role="page" id="pageRegister" style="background: linear-gradient(to bottom, #f2f2f3, #ffffff 50%, #f2f2f3);">
-        <div role="main" class="ui-content" style="text-align: center;">
-            <div style="margin: 48vw auto 0 auto;">
-                <img src="{{asset('/css/images/verified_img.png')}}" style="height:24vw; margin:0 2vw 4vw 9vw;" />
-                <h3 id="info_cell_verify" style="color: #0f0f0f;font:6.6vw 'Arial';margin-top:0;">帳號與設備驗證成功</h3>
-                
-        </div>
-        </div>
-        <div style="position:fixed;bottom: 0;padding:1em 1em 13.2vw 1em;left: 0;right: 0;">
-            <h4 style="color: #0f0f0f;font: 4.6vw 'Arial';margin: 0 auto;text-align: center;"><span id="info_cell_logout">若要註銷設備，請聯絡</span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></h4>
-            <div style="margin: 4vw auto 0 auto;">
-                <!--background-image:url({{asset('/css/images/action_n_big_btn.png')}});background-size: cover;background-repeat: no-repeat;border-color: #fff;-->
-                <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="background-color: #3c3c75;font:5.6vw 'Arial';color: #fff;line-height: 1em;width: 64vw;text-shadow: none;"
-                    onclick="start()">好，我知道了</button>
+    <div data-role="page" id="pageRegister" style="font-family: 'Arial';">
+        <div role="main" class="ui-content" style="text-align: center;margin: 27vh 3.71vw 0 3.71vw;">
+            <img src="{{asset('/css/images/verified_img.png')}}" class="logo_register"/>
+            <h3 id="info_cell_verify" style="color: #0f0f0f;font:6.6vw 'Arial';margin-top:3vh;">帳號與設備驗證成功</h3> 
+            <table id="main_table" style="height: 10vh">
+               
+            </table>
+            <div style="margin-top: 6vh;">
+                <div id="button_cell">
+                    <button id="btnOK" class="ui-btn ui-btn-corner-all login_button" style="color:white;background-color: #492e80;font:4vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
+                            onclick="start()">好，我知道了</button>
+                </div>
+                <div id="info_cell">
+                    <span id="info_cell_logout" >若要註銷設備，請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a>
+                </div>
             </div>
         </div>
     </div>
@@ -209,7 +253,7 @@
         var lang = "en-us";
         $(function () {
             lang = getLanguage();
-            var url = "{{asset('js/lang')}}" + "/login-"+lang+".js";
+            var url = "{{asset('js/lang')}}" + "/login-" + lang + ".js";
             $.getScript(url,Init);
             function Init(){
                 InitUI();
@@ -217,7 +261,7 @@
                 $("#tbxName").parent().css("background-color","transparent");
                 $("#tbxPassword").parent().css("background-color","transparent");
                 $("#ddlCompany").parent().css("background-color","transparent");
-
+                $("#ddlCompany-button").css("padding-left","3vw");
                 var showOriLogin = getQueryString("show_origin_login");
                 if(showOriLogin && showOriLogin == "Y") {
                     $("#btnOriLogin").show();
@@ -229,7 +273,8 @@
             if(!login_lang_list){
                 return;
             }
-            $("#ddlCompany").attr("placeholder",login_lang_list["COMPANY"]);
+            $("#ddlCompany option").eq(0).text(login_lang_list["COMPANY"]);
+            $("#ddlCompany-button > span").text(login_lang_list["COMPANY"]);
             $("#tbxName").attr("placeholder",login_lang_list["NAME"]);
             $("#tbxPassword").attr("placeholder",login_lang_list["PASSWORD"]);
             $("#btnLogin").text(login_lang_list["LOGIN"]);

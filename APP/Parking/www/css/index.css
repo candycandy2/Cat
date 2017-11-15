@@ -184,13 +184,17 @@ input[type=radio]:checked + label {
     border-radius: 16px;
 }
 
+.btn-one {
+    color: #1678E5;
+}
+
 /********************************** public area *************************************/
 
 .ui-title-btn {
     text-shadow: none !important;
     font-size: 4.39vw !important;
     border: 0;
-    padding-top: 3.238vw;
+    padding-top: 3.638vw;
 }
 
 .ui-margin-10 {
@@ -255,9 +259,9 @@ div.square {
     background-color: #2c89bc;
     color: white;
     width: 64vw;
-    height: 5vh;
+    height: 8vw;
     text-align: center;
-    padding-top: 1.5vh;
+    padding-top: 2vw;
     font-size: 4.5vw;
 }
 
@@ -336,6 +340,8 @@ div.square {
 
 .app-popup.lessInfo .main-QTY{ margin-bottom: 0vw;}
 
+.app-popup.lessInfo .main-QTT{ margin-bottom: 0vw;}
+
 .main-QTY:after{
     content: '';
     border-top: dashed #d6d6d6 1px;
@@ -343,7 +349,6 @@ div.square {
     width: 88%;
     height: 1px;
     position: absolute;
-    bottom: 140px;
     left: 17px;
 }
 
@@ -482,7 +487,7 @@ p.content-paragraph {
 
 #newApplicantName select {
     margin-left: -5px;
-    width: 33.2vw !important; 
+    background-size: 6vw 6vw !important; 
 }
 
 .add-event-border {
@@ -498,6 +503,10 @@ p.content-paragraph {
 
 #viewMainBack {
     font-weight: normal;
+}
+
+.content-QTY {
+    margin-top: 10vw;
 }
 
 /********************************** color setting *************************************/
@@ -720,9 +729,9 @@ div.scrollmenu a {
 
 .car-list-add-button {
     background: url(../img/052_btn_floating_add.png) no-repeat;
-    background-size: 17.71vw;
-    width: 17.71vw;
-    height: 17.71vw;
+    background-size: 15.71vw;
+    width: 15.71vw;
+    height: 15.71vw;
 }
 
 .car-list-footer.ui-bar-inherit{

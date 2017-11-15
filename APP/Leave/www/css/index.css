@@ -223,13 +223,6 @@ div.scrollmenu a {
     color: #999999 !important;
 }
 
-.queryLoader {
-	width: 15;
-	height: 15;
-	margin-left:45%;
-	display:none;
-}
-
 #searchBar, #searchAgent {
 	width: 75VW;
 	border-width: 1px;
@@ -544,10 +537,19 @@ div.scrollmenu a {
 	color: #2A8ABD;
 }
 
-.apply-preview-remove > img {
-	width: 4vw;
-	height: 4vw;
-	margin-top: 3.5vw;
+.apply-preview-remove > div {
+	width: 30%;
+	margin-left: 35%;
+	height: 10vw;
+	text-align: center;
+	overflow: hidden;
+	color: #2A8ABD;
+}
+
+.apply-preview-remove img {
+	width: 3.5vw;
+	height: 3.5vw;
+	vertical-align: middle;
 }
 
 /* popup */
@@ -682,7 +684,6 @@ div.scrollmenu a {
 	width: 88vw;
 	height: 5vw;
 	margin-top: 1.8vw;
-	/* line-height: 7vw; */
 }
 
 .leave-query-basedata > div,
@@ -837,30 +838,16 @@ div.scrollmenu a {
 }
 
 
+/**************************************** viewBackLeaveApply ***************************************/
+#backLeaveQueryDetail {
+	width: 4.934vw;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.back-leave-apply {
+	width: 93.6vw;
+	height: 154.5vw;
+	margin-left: 3.2vw;
+}
 
 
 

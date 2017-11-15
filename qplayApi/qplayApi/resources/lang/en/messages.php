@@ -16,7 +16,7 @@ return [
     'MSG_DEVICE_HAS_REGISTERED'=>'Device Has Registered',
     'MSG_IS_NOT_LOGIN'=>'is not Login',
     'MSG_IS_LOGIN'=>'is Login',
-    'MSG_CALL_SERVICE_ERROR'=>'Call Service Success',
+    'MSG_CALL_SERVICE_ERROR'=>'Call Service Error',
     'MSG_UNKNOWN_ERROR'=>'Unknown error',
     'MSG_ADD_TAG_TO_JPUSH_FAILED'=>'add tag to JPush failed'
 ];

@@ -1,7 +1,7 @@
 
 $("#viewEventAdd").pagecontainer({
     create: function(event, ui) {
-        
+
         var setDateTime = "setNow";
         var doneDateTime = {};
         var tempDateTime = {};
@@ -54,8 +54,8 @@ $("#viewEventAdd").pagecontainer({
 
                 eventRelatedData = {
                     id: "eventAdditional" + ID,
-                    defaultText: "添加事件",
-                    title: "請選擇-關聯事件",
+                    defaultText: langStr["str_066"], // "添加事件",
+                    title: langStr["str_067"], // "請選擇-關聯事件",
                     option: []
                 };
 
@@ -249,19 +249,19 @@ $("#viewEventAdd").pagecontainer({
             //Type:
             //ITS> 緊急通報 / 一般通報
             //RM> A級事件 / B級事件 / C級事件 / 預警事件 / 資訊分享
-            if (data.event_type === "緊急通報") {
+            if (data.event_type === langStr["str_068"] /*"緊急通報"*/) {
                 $("#eventLevel" + projectName).val("1");
-            } else if (data.event_type === "一般通報") {
+            } else if (data.event_type === langStr["str_069"] /*"一般通報"*/) {
                 $("#eventLevel" + projectName).val("2");
-            } else if (data.event_type === "A級事件") {
+            } else if (data.event_type === langStr["str_070"] /*"A級事件"*/) {
                 $("#eventLevel" + projectName).val("3");
-            } else if (data.event_type === "B級事件") {
+            } else if (data.event_type === langStr["str_071"] /*"B級事件"*/) {
                 $("#eventLevel" + projectName).val("4");
-            } else if (data.event_type === "C級事件") {
+            } else if (data.event_type === langStr["str_072"] /*"C級事件"*/) {
                 $("#eventLevel" + projectName).val("5");
-            } else if (data.event_type === "預警事件") {
+            } else if (data.event_type === langStr["str_073"] /*"預警事件"*/) {
                 $("#eventLevel" + projectName).val("6");
-            } else if (data.event_type === "資訊分享") {
+            } else if (data.event_type === langStr["str_074"] /*"資訊分享"*/) {
                 $("#eventLevel" + projectName).val("7");
             }
 
@@ -290,7 +290,8 @@ $("#viewEventAdd").pagecontainer({
             //Related Event
             if (data.related_event_row_id !== 0) {
                 var nowRelatedID = parseInt(eventRelatedID - 1, 10);
-                var newOption = '<option value="' + data.related_event_row_id + '" hidden selected>添加事件</option>';
+                // var newOption = '<option value="' + data.related_event_row_id + '" hidden selected>添加事件</option>';
+                var newOption = '<option value="' + data.related_event_row_id + '" hidden selected>' + langStr["str_066"] + '</option>';
                 $("#eventAdditional" + nowRelatedID).find("option").remove().end().append(newOption);
                 relatedEventList(data.related_event_row_id);
             }
@@ -304,7 +305,7 @@ $("#viewEventAdd").pagecontainer({
                         if (projectName === "ITS") {
                             var selectedFunctionText = "All Function";
                         } else if (projectName === "RM") {
-                            var selectedFunctionText = "所有單位";
+                            var selectedFunctionText = langStr["str_075"]; //"所有單位";
                         }
 
                         //create new Event Location List, set new ID by count number
@@ -375,7 +376,7 @@ $("#viewEventAdd").pagecontainer({
                 $("#doneTime").datebox('setTheDate', doneDateTime["hour"] + ":" + doneDateTime["minute"]);
             } else {
                 var now = new Date();
-                $("#doneDate").datebox('setTheDate', 
+                $("#doneDate").datebox('setTheDate',
                     now.getFullYear() + "-" +
                     parseInt(now.getMonth() + 1, 10) + "-" +
                     now.getDate()
@@ -477,7 +478,8 @@ $("#viewEventAdd").pagecontainer({
         }
 
         function eventAddSuccess() {
-            var content = '<div><span>通報已發送</span></div>';
+            //var content = '<div><span>通報已發送</span></div>';
+            var content = '<div><span>' + langStr["str_076"] + '</span></div>';
             $('<div class="event-add-success-full-screen">' + content + '</div').appendTo("body");
 
             tplJS.preventPageScroll();
@@ -523,28 +525,30 @@ $("#viewEventAdd").pagecontainer({
 
             if (projectName === "ITS") {
                 if (eventLevel === "1") {
-                    eventLevelStr = "緊急通報";
+                    eventLevelStr = langStr["str_068"]; //"緊急通報";
                 } else if (eventLevel === "2") {
-                    eventLevelStr = "一般通報";
+                    eventLevelStr = langStr["str_069"]; //"一般通報";
                 }
             } else if (projectName === "RM") {
                 if (eventLevel === "3") {
-                    eventLevelStr = "A級事件";
+                    eventLevelStr = langStr["str_070"]; //"A級事件";
                 } else if (eventLevel === "4") {
-                    eventLevelStr = "B級事件";
+                    eventLevelStr = langStr["str_071"]; //"B級事件";
                 } else if (eventLevel === "5") {
-                    eventLevelStr = "C級事件";
+                    eventLevelStr = langStr["str_072"]; //"C級事件";
                 } else if (eventLevel === "6") {
-                    eventLevelStr = "預警事件";
+                    eventLevelStr = langStr["str_073"]; //"預警事件";
                 } else if (eventLevel === "7") {
-                    eventLevelStr = "資訊分享";
+                    eventLevelStr = langStr["str_074"]; //"資訊分享";
                 }
             }
 
             if (prevPageID === "viewEventList") {
-                $("#eventAddConfirm .header .header").html("確定發送" + eventLevelStr + "通報?");
+                //$("#eventAddConfirm .header .header").html("確定發送" + eventLevelStr + "通報?");
+                $("#eventAddConfirm .header .header").html(langStr["str_077"] + eventLevelStr + langStr["str_078"]);
             } else if (prevPageID === "viewEventContent") {
-                $("#eventAddConfirm .header .header").html("確定修改且重送" + eventLevelStr + "通報?");
+                //$("#eventAddConfirm .header .header").html("確定修改且重送" + eventLevelStr + "通報?");
+                $("#eventAddConfirm .header .header").html(langStr["str_079"] + eventLevelStr + langStr["str_078"]);
             }
         }
 
@@ -601,8 +605,8 @@ $("#viewEventAdd").pagecontainer({
 
             eventTemplateData = {
                 id: "eventTemplate" + ID,
-                defaultText: "選擇範本",
-                title: "標題範本",
+                defaultText: langStr["str_080"], //"選擇範本",
+                title: langStr["str_081"], //"標題範本",
                 option: titleData
             };
 
@@ -705,11 +709,11 @@ $("#viewEventAdd").pagecontainer({
             $("#eventLocation-option").popup("destroy").remove();
 
             if (projectName === "ITS") {
-                var defaultText = "添加位置/IT Function";
-                var title = "請選擇-機房位置";
+                var defaultText = langStr["str_082"]; //"添加位置/IT Function";
+                var title = langStr["str_083"]; //"請選擇-機房位置";
             } else if (projectName === "RM") {
-                var defaultText = "添加通知對象/單位";
-                var title = "請選擇-通知對象";
+                var defaultText = langStr["str_084"]; //"添加通知對象/單位";
+                var title = langStr["str_085"]; //"請選擇-通知對象";
             }
 
             eventLocationData = {
@@ -744,16 +748,16 @@ $("#viewEventAdd").pagecontainer({
 
                 var options = [{
                     value: "1",
-                    text: "緊急通報"
+                    text: langStr["str_068"] //"緊急通報"
                 }, {
                     value: "2",
-                    text: "一般通報"
+                    text: langStr["str_069"] //"一般通報"
                 }];
 
                 defaultEventLevel = "1";
 
                 if (prevPageID === "viewEventContent") {
-                    if (eventContentData.event_type === "一般通報") {
+                    if (eventContentData.event_type === langStr["str_069"] /*"一般通報"*/) {
                         defaultEventLevel = "2";
                     }
                 }
@@ -761,31 +765,31 @@ $("#viewEventAdd").pagecontainer({
 
                 var options = [{
                     value: "3",
-                    text: "A級事件"
+                    text: langStr["str_070"] //"A級事件"
                 }, {
                     value: "4",
-                    text: "B級事件"
+                    text: langStr["str_071"] //"B級事件"
                 }, {
                     value: "5",
-                    text: "C級事件"
+                    text: langStr["str_072"] //"C級事件"
                 }, {
                     value: "6",
-                    text: "預警事件"
+                    text: langStr["str_073"] //"預警事件"
                 }, {
                     value: "7",
-                    text: "資訊分享"
+                    text: langStr["str_074"] //"資訊分享"
                 }];
 
                 defaultEventLevel = "3";
 
                 if (prevPageID === "viewEventContent") {
-                    if (eventContentData.event_type === "B級事件") {
+                    if (eventContentData.event_type === langStr["str_071"] /*"B級事件"*/) {
                         defaultEventLevel = "4";
-                    } else if (eventContentData.event_type === "C級事件") {
+                    } else if (eventContentData.event_type === langStr["str_072"] /*"C級事件"*/) {
                         defaultEventLevel = "5";
-                    } else if (eventContentData.event_type === "預警事件") {
+                    } else if (eventContentData.event_type === langStr["str_073"] /*"預警事件"*/) {
                         defaultEventLevel = "6";
-                    } else if (eventContentData.event_type === "資訊分享") {
+                    } else if (eventContentData.event_type === langStr["str_074"] /*"資訊分享"*/) {
                         defaultEventLevel = "7";
                     }
                 }
@@ -825,14 +829,14 @@ $("#viewEventAdd").pagecontainer({
                     $("#eventLevel" + projectName).val("3");
                 }
                 $("#eventTemplateTextarea").val("");
-                $('#eventTemplateTextarea').prop('placeholder', "請選擇範本或輸入標題");
+                $('#eventTemplateTextarea').prop('placeholder', langStr["str_086"] /*"請選擇範本或輸入標題"*/);
                 $("#eventDescriptionTextarea").val("");
-                $('#eventDescriptionTextarea').prop('placeholder', "描述文字");
+                $('#eventDescriptionTextarea').prop('placeholder', langStr["str_087"] /*"描述文字"*/);
                 $("#setNow").prop("checked", "checked");
                 setDateTime = "setNow";
 
-                var title = "新增通報";
-                var buttonText = "發送";
+                var title = langStr["str_001"]; //"新增通報";
+                var buttonText = langStr["str_002"]; //"發送";
 
                 var unrelatedEventList = new getUnrelatedEventList();
 
@@ -840,8 +844,8 @@ $("#viewEventAdd").pagecontainer({
             } else if (prevPageID === "viewEventContent") {
                 loadingMask("show");
 
-                var title = "編輯通報";
-                var buttonText = "儲存";
+                var title = langStr["str_088"]; //"編輯通報";
+                var buttonText = langStr["str_089"]; //"儲存";
 
                 var unrelatedEventList = new getUnrelatedEventList("edit");
 
@@ -878,7 +882,7 @@ $("#viewEventAdd").pagecontainer({
             if (projectName === "ITS") {
                 var textAll = "All Function";
             } else if (projectName === "RM") {
-                var textAll = "所有單位";
+                var textAll = langStr["str_075"]; //"所有單位";
             }
 
             eventFunctionData = {
@@ -978,7 +982,10 @@ $("#viewEventAdd").pagecontainer({
         $(document).on("click", ".event-add-additional-list .delete-event-additional", function() {
             var nowRelatedID = parseInt(eventRelatedID - 1, 10);
             $("#eventaAdditionalContent .event-add-additional-list").remove();
-            var newOption = '<option value="添加事件" hidden selected>添加事件</option>';
+            // var newOption = '<option value="添加事件" hidden selected>添加事件</option>';
+            var newOption = '<option value=' + langStr["str_066"] + 'hidden selected>' + langStr["str_066"] + '</option>';
+
+
             $("#eventAdditional" + nowRelatedID).find("option").remove().end().append(newOption);
         });
 
@@ -1044,9 +1051,9 @@ $("#viewEventAdd").pagecontainer({
         //Event Add / Edit Cancel Button
         $(document).on("popupafteropen", "#eventAddEditCancelConfirm", function() {
             if (prevPageID === "viewEventList") {
-               $("#eventAddEditCancelConfirm .header-text").html("確定取消新增?");
+               $("#eventAddEditCancelConfirm .header-text").html(langStr["str_090"] /*"確定取消新增?"*/);
             } else if (prevPageID === "viewEventContent") {
-                $("#eventAddEditCancelConfirm .header-text").html("確定取消編輯?");
+                $("#eventAddEditCancelConfirm .header-text").html(langStr["str_019"] /*"確定取消編輯?"*/);
             }
         });
 

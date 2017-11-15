@@ -731,33 +731,40 @@ $("#viewChatroom").pagecontainer({
             //if new create chatroom, the JM.data.chatroom[JM.chatroomID] is empty
             if (JM.data.chatroom[JM.chatroomID] === undefined) {
                 newCreate = true;
-                getConversation(false);
+                getConversation(true);
             } else {
                 window.chatroomTitle();
+
+                //JMessage - getHistoryMessages
+                getHistoryMessages();
             }
 
             //JMessage - enter conversation
             JM.Chatroom.enterConversation();
 
-            //JMessage - getHistoryMessages
-            getHistoryMessages();
-
         });
 
         /********************************** dom event *************************************/
 
+        //Chatroom Action
         $(document).on({
             click: function() {
                 window.removeEventListener("scroll", msgListViewScroll);
                 $.mobile.changePage('#viewIndex');
             }
-        }, "#backIndex");
+        }, "#backIndexChatroom");
 
         $(document).on({
             click: function() {
-                //exitGroup();
+                $(".chatroom-action").slideToggle(150);
             }
-        }, "#leaveChatroom");
+        }, "#chatroomAction");
+
+        $(document).on({
+            click: function() {
+                $.mobile.changePage('#viewChatroomInfo');
+            }
+        }, ".chatroom-info");
 
         //Send Text
         $(document).on({

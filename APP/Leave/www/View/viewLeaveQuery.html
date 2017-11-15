@@ -222,6 +222,48 @@
                 </div>
                 <div></div>
             </div>
+            <div class="leave-query-list">
+                <div>
+                    <div class="leave-query-state font-style3">
+                        <!-- 表單已生效 -->
+                        <span class="langStr" data-id="str_149"></span><span>(銷假中)</span>
+                        <img src="img/btn_nextpage.png">
+                    </div>
+                    <div class="leave-query-base font-style10">
+                        <div class="leave-query-basedata">
+                            <div>
+                                <!-- 請假單號 -->
+                                <span class="langStr" data-id="str_131"></span>
+                                <span class="leave-id">572005</span>
+                            </div>
+                            <div>
+                                <!-- 假別 -->
+                                <span class="langStr" data-id="str_152"></span>
+                                <span class="langStr" data-id="str_055"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- 請假區間 -->
+                            <span class="langStr" data-id="str_138"></span>
+                            <span>2017/12/08 12:00</span>
+                            <span> - </span>
+                            <span>2017/12/09 17:00</span>
+                        </div>
+                        <div>
+                            <!-- 請假數 -->
+                            <span class="langStr" data-id="str_153"></span>
+                            <span>1</span>
+                            <!-- 天 -->
+                            <span class="langStr" data-id="str_071"></span>
+                            <span>4</span>
+                            <!-- 小時 -->
+                            <span class="langStr" data-id="str_088"></span>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+
 
             <!-- max count msg -->
             <div class="leave-query-max font-style12">
@@ -461,9 +503,11 @@
                 </div>
             </div>
             <div class="apply-preview-remove">
-                <img src="img/edit.png">&nbsp;
-                <!-- 編輯 -->
-                <span class="langStr" data-id="str_154"></span>
+                <div id="editRefuseLeave">
+                    <img src="img/edit.png">&nbsp;
+                    <!-- 編輯 -->
+                    <span class="langStr" data-id="str_154"></span>
+                </div>
             </div>
         </div>
 
@@ -575,9 +619,11 @@
                 </div>
             </div>
             <div class="apply-preview-remove">
-                <img src="img/edit.png">&nbsp;
-                <!-- 編輯 -->
-                <span class="langStr" data-id="str_154"></span>
+                <div id="editWithdrawLeave">
+                    <img src="img/edit.png">&nbsp;
+                    <!-- 編輯 -->
+                    <span class="langStr" data-id="str_154"></span>
+                </div>
             </div>
         </div>
 
@@ -861,17 +907,19 @@
                     <span class="langStr" data-id="str_159"></span>
                 </div>
             </div>
-            <div class="apply-preview-remove" id="cancelApply">
-                <img src="img/btn_cancel.png">&nbsp;
-                <!-- 取消申請 -->
-                <span class="langStr" data-id="str_160"></span>
+            <div class="apply-preview-remove">
+                <div id="cancelApply">
+                    <img src="img/btn_cancel.png">&nbsp;
+                    <!-- 取消申請 -->
+                    <span class="langStr" data-id="str_160"></span>
+                </div> 
             </div>
         </div>
 
     </div>
 
     <!-- sign popup -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signStateFlow" for="signStateFlow">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signStateFlow" for="signStateFlow" id="signStateFlow">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -963,7 +1011,7 @@
     </div>
 
     <!-- refuse popup -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup refuseStateFlow" for="refuseStateFlow">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup refuseStateFlow" for="refuseStateFlow" id="refuseStateFlow">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -1055,7 +1103,7 @@
     </div>
 
     <!-- withdraw popup -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup withdrawStateFlow" for="withdrawStateFlow">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup withdrawStateFlow" for="withdrawStateFlow" id="withdrawStateFlow">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -1147,7 +1195,7 @@
     </div>
 
     <!-- effect popup -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup effectStateFlow" for="effectStateFlow">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup effectStateFlow" for="effectStateFlow" id="effectStateFlow">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -1239,7 +1287,7 @@
     </div>
 
     <!-- confirm withdraw -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmWithdraw" for="confirmWithdraw">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmWithdraw" for="confirmWithdraw" id="confirmWithdraw">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -1269,7 +1317,7 @@
     </div>
 
     <!-- confirm delete -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmDelete" for="confirmDelete">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmDelete" for="confirmDelete" id="confirmDelete">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -1299,7 +1347,7 @@
     </div>
 
     <!-- confirm back -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmRevoke" for="confirmRevoke">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmRevoke" for="confirmRevoke" id="confirmRevoke">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">

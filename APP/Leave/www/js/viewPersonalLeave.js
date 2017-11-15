@@ -36,6 +36,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
+                //console.log(data);
                 myCalendarData = {};
                 myHolidayData = [];
                 var leaveFlag = "3";
@@ -99,6 +100,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryLeftDaysData = function(leaveid) {
 
             this.successCallback = function(data) {
+                console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -194,8 +196,9 @@ $("#viewPersonalLeave").pagecontainer({
                             //viewLeaveSubmit
                             $("#leave-agent-popup-option-list").empty().append(agentList);
                             resizePopup("leave-agent-popup-option");
+                            
                             $("#leave-agent-popup-option-list").show();
-                            $(".queryLoader").hide();
+                            $("#loaderQuery").hide();                            
 
                             if (callback === "CountLeaveHours") {
                                 CountLeaveHours();
@@ -237,10 +240,10 @@ $("#viewPersonalLeave").pagecontainer({
         window.CountLeaveHours = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");          
                     var success = $("success", htmlDoc);
                     var applyDays = $("ApplyDays", htmlDoc);
                     var applyHours = $("ApplyHours", htmlDoc);
@@ -288,6 +291,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.SendLeaveApplicationData = function() {
 
             this.successCallback = function(data) {
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
 
@@ -313,6 +317,7 @@ $("#viewPersonalLeave").pagecontainer({
             };
 
             this.failCallback = function(data) {
+                console.log(data);
             };
 
             var __construct = function() {

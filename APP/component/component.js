@@ -120,7 +120,7 @@ var app = {
         //Set openMessage at first time
         if (window.localStorage.getItem("openMessage") === null) {
             //check data exit in Local Storage
-            window.localStorage.setItem("openMessage", false);
+            window.localStorage.setItem("openMessage", "false");
         }
 
         //[Android] Handle the back button, set in index.js
@@ -181,6 +181,7 @@ var app = {
         }
     },
     onOpenNotification: function(data) {
+        //review by alan
         //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
         var doOpenMessage = false;
         //If APP not open, check message after checkAppVersion()
@@ -192,12 +193,21 @@ var app = {
 
             //remember to open Message Detail Data
             loginData["openMessage"] = true;
-            window.localStorage.setItem("openMessage", true);
+            window.localStorage.setItem("openMessage", "true");
             window.localStorage.setItem("messageRowId", messageRowId);
 
         } else if (window.localStorage.getItem("openMessage") === "true") {
             //After onBackgoundNotification/onReceiveNotification, then do onOpenNotification
             doOpenMessage = true;
+        } else {
+            //review by alan
+            //do then same when (window.localStorage.getItem("openMessage") === "false")
+            doOpenMessage = true;
+
+            //remember to open Message Detail Data
+            loginData["openMessage"] = true;
+            window.localStorage.setItem("openMessage", "true");
+            window.localStorage.setItem("messageRowId", messageRowId);
         }
 
         if (doOpenMessage) {
@@ -228,7 +238,7 @@ var app = {
             if (window.localStorage.getItem("loginid") === null) {
                 //remember to open Message Detail Data
                 loginData["openMessage"] = true;
-                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("openMessage", "true");
                 window.localStorage.setItem("messageRowId", messageRowId);
             }
         }
@@ -242,7 +252,7 @@ var app = {
                 //remember to open Message Detail Data
 
                 loginData["openMessage"] = true;
-                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("openMessage", "true");
                 window.localStorage.setItem("messageRowId", messageRowId);
             }
 
@@ -250,7 +260,7 @@ var app = {
             //need to do it by Javscript
             if (device.platform === "iOS") {
                 loginData["openMessage"] = true;
-                window.localStorage.setItem("openMessage", true);
+                window.localStorage.setItem("openMessage", "true");
                 window.localStorage.setItem("messageRowId", messageRowId);
 
                 $("#newMessageTitle").html(data.aps["alert"]);
@@ -270,7 +280,7 @@ var app = {
                     $('#iOSGetNewMessage').hide();
 
                     loginData["openMessage"] = false;
-                    window.localStorage.setItem("openMessage", false);
+                    window.localStorage.setItem("openMessage", "false");
                 });
             }
         }

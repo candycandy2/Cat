@@ -5,7 +5,7 @@ var JM = {
     friendID: "",
     chatroomID: "",
     data: {},
-    init: function(JMAppKey, getGroupIds, receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged) {
+    init: function(JMAppKey, sendPushToken, receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged) {
 
         //Update JMessaage APP Key
         JM.key = JMAppKey;
@@ -26,6 +26,10 @@ var JM = {
 
         if (JM.data.chatroom_user === undefined) {
             JM.data.chatroom_user = {};
+        }
+
+        if (JM.data.chatroom_friend === undefined) {
+            JM.data.chatroom_friend = [];
         }
 
         window.MessageSendingOptions = {
@@ -81,13 +85,13 @@ var JM = {
         console.log("----initial");
 
         var params = {
-            'isOpenMessageRoaming': false
+            'isOpenMessageRoaming': true
         };
 
         window.JMessage.init(params);
 
         setTimeout(function(){
-            JM.login(getGroupIds);
+            JM.login(sendPushToken);
             //JM.logout();
         }, 2000);
 

@@ -5,7 +5,7 @@
             <div id="left" class="ui-title-btn">
                 <a id="QTYSettingBack" href="#"><img src="img/002_nav_back_white.png" class="title-icon" /></a>
             </div>
-            <div id="center" class="ui-title"><span>Parking</span></div>
+            <div id="center" class="ui-title"><span>車位預約</span></div>
             <div id="right" class="ui-title-btn"></div>
         </div>
     </div>
@@ -37,13 +37,13 @@
                 </div>
                 <div id="newSettingTypeQTY">
                         <input type="radio" data-role="none" name="setApplicantType" id="setGuestQTY" value='setGuestQTY' checked="checked">
-                        <label data-role="none" class="overlap-label-icon"></label>
-                        <label data-role="none" class="overlap-label-text" for="setGuestQTY" style=" margin-bottom: 4.3vw;">
+                        <label data-role="none" class="overlap-label-icon" for="setGuestQTY"></label>
+                        <label data-role="none" class="overlap-label-text" style=" margin-bottom: 4.3vw;">
                             <span>貴賓</span>
                         </label>
                         <input type="radio" data-role="none" name="setApplicantType" id="setRelatedBusinessQTY" value='setRelatedBusinessQTY'>
-                        <label data-role="none" class="overlap-label-icon"></label>
-                        <label data-role="none" class="overlap-label-text" for="setRelatedBusinessQTY">
+                        <label data-role="none" class="overlap-label-icon" for="setRelatedBusinessQTY"></label>
+                        <label data-role="none" class="overlap-label-text">
                             <span>關係企業</span>
                         </label>
                 </div>
@@ -73,6 +73,25 @@
             <div id="cancelQTYCarList"><a id="viewMainBack" href="#">取消</a></div>
             <div class="toast-style" id="nonCommonCarListMsg">
                 <span class="langStr" data-id="str_169">無常用車籍</span>
+            </div>
+        </div>
+    </div>
+    <!-- reserve fail msg -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo DetailInfo reserveQTYFailPopup" style="min-height: 33.2vw;max-height: 33.2vw !important;border-radius: 16px;" for="reserveQTYFailPopup">
+        <div data-role="main" class="ui-content-QTY">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'><img src="img/select.png" alt=""></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main-QTT">
+                <p class="main-paragraph font-style3">
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8 btnArea">
+                    <div class="btn-cancel">確定</div>
+                </div>
             </div>
         </div>
     </div>

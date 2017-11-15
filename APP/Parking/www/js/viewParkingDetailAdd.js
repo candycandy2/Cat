@@ -75,7 +75,7 @@ $("#viewParkingDetailAdd").pagecontainer({
         $('#newSettingSave').on('click', function() {
 
             if ($(this).hasClass('save-disable')) {
-                popupMsg('noSelectTimeMsg', '', '您尚未輸入文字', '', false, '確定', '');
+                popupMsg('noSelectTimeMsg', '', '*號為必填欄位', '', false, '確定', '');
             } else {
                 var parkingSettingdata = JSON.parse(localStorage.getItem('parkingSettingData'));
 

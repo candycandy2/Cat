@@ -76,7 +76,6 @@ $("#viewQTYParkingDetail").pagecontainer({
             }
 
             tplJS.DropdownList("viewQTYParkingDetail", "eventTemplateSelectContent", "append", "typeB", carListData);
-            $('#CommonCarList-popup'+ID).removeClass('tpl-dropdown-list');
             $('#CommonCarList-popup'+ID).addClass('add-event-border');
             $('#CommonCarList-popup'+ID+'-option').removeClass('ui-corner-all');
             $('#CommonCarList-popup'+ID+'-option').addClass('CommonCarList-option-corner-all');
@@ -164,7 +163,12 @@ $("#viewQTYParkingDetail").pagecontainer({
                     }
 
                 }else if (data['ResultCode'] === "042903") {
-                    popupMsg('reserveFailMsg', '預約失敗', '已被預約', '', false, '確定', '068_icon_warm.png');
+                    var headerContent = "預約失敗";
+                        msgContent = "已被預約";
+                    $('.reserveQTYFailPopup').find('.header-icon img').attr("src", "img/068_icon_warm.png");
+                    $('.reserveQTYFailPopup').find('.header-text').html(headerContent);
+                    $('.reserveQTYFailPopup').find('.main-paragraph').html(msgContent);
+                    popupMsgInit('.reserveQTYFailPopup');
                 }
                 loadingMask('hide');
             };
@@ -237,6 +241,15 @@ $("#viewQTYParkingDetail").pagecontainer({
 
         $('body').on('click', 'div[for=reserveQTYSuccessMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
+            $.mobile.changePage('#viewMain');
+        });
+
+        $('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
+            $('#viewPopupMsg').popup('close');
+            $.mobile.changePage('#viewMain');
+        });
+
+        $('body').on('click', 'div[for=reserveQTYFailPopup] .btn-cancel', function() {
             $.mobile.changePage('#viewMain');
         });
 

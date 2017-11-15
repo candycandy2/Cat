@@ -11,36 +11,80 @@ var leaveSignStr = langStr["str_147"];    //表單簽核中
 var leaveRefuseStr = langStr["str_150"];    //表單已拒絕
 var leaveWithdrawStr = langStr["str_148"];    //表單已撤回
 var leaveEffectStr = langStr["str_149"];    //表單已生效
+var leaveRevokeStr = langStr["str_157"];    //銷假申請
+var leaveQueryStr = langStr["str_078"];    //假單查詢
 var withdrawReason,dispelReason;
+
+//請假單頁初始化
+function leaveQueryInit() {
+    $("#backDetailList").hide();
+    $("#backSignPreview").hide();
+    $("#backEffectPreview").hide();
+    $(".leave-query-detail-sign").hide();          
+    $(".leave-query-detail-refuse").hide();
+    $(".leave-query-detail-withdraw").hide();
+    $(".leave-query-detail-effect").hide();
+    $(".leave-query-detail-back").hide();
+    $(".leave-query-withdraw").hide();
+    $(".leave-query-dispel").hide();
+    $(".leaveMenu").show();
+    $(".leave-query-main").show();
+    $("#viewLeaveQuery .ui-title").find("span").text(leaveQueryStr);
+}
 
 $("#viewLeaveQuery").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        //請假單頁初始化
-        function leaveQueryInit() {
-            $("#backDetailList").hide();
-            $("#backSignPreview").hide();
-            $("#backEffectPreview").hide();
-            $(".leave-query-detail-sign").hide();          
-            $(".leave-query-detail-refuse").hide();
-            $(".leave-query-detail-withdraw").hide();
-            $(".leave-query-detail-effect").hide();
-            $(".leave-query-detail-back").hide();
-            $(".leave-query-withdraw").hide();
-            $(".leave-query-dispel").hide();
-            $(".leaveMenu").show();
-            $(".leave-query-main").show();
-        }
-
         //從銷假返回詳情
         function backLeaveToDetail() {
             $(".leave-query-dispel").hide();
             $("#backEffectPreview").hide();
-            $("#cancelApply").hide();
             $(".leave-query-detail-effect").show();
             $("#backDetailList").show();
+            $("#viewLeaveQuery .ui-title").find("span").text(leaveQueryStr);
             //$("#dispelReason").removeAttr("readonly");
+        }
+
+        //給 “請假申請” 頁面賦值
+        function setDataToLeaveApply(apply, num, type, agent, start, end, reason, base) {
+            //修改申請日期
+            $("#applyDay").text(apply);
+
+            //修改假別
+            $.each($("#leave-popup-option-list li"), function(i, item) {
+                if($(item).text() == type) {
+                    $(item).trigger("click");
+                    return false;
+                }
+            });
+
+            //修改代理人
+            agentName = agent;
+            var agentOption = '<option hidden>' + agent + '</option>';
+            $("#leave-agent-popup").find("option").remove().end().append(agentOption);
+            tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+
+            //修改開始日期
+            startLeaveDate = start;
+            $("#startText").text(start);
+            $("#startDate").val(start.replace(" ", "T"));
+
+            //修改結束日期
+            endLeaveDate = end;
+            $("#endText").text(end);
+            $("#endDate").val(end.replace(" ", "T"));
+
+            //修改請假理由
+            leaveReason = reason;
+            $("#leaveReason").val(reason);
+
+            //修改基準日
+            baseday = base;
+            $("#chooseBaseday").text(base);
+
+            //檢查是否可以預覽送簽
+            checkLeaveBeforePreview();
         }
 
         /********************************** page event *************************************/
@@ -88,8 +132,6 @@ $("#viewLeaveQuery").pagecontainer({
                 $("#backDetailList").show();
                 $(".leave-query-detail-back").show();
             }
-            
-
         });
 
         //返回假單列表——click
@@ -158,7 +200,7 @@ $("#viewLeaveQuery").pagecontainer({
             }
         });
 
-        //撤回假單按鈕——click
+        //撤回假單按鈕——popup
         $("#confirmWithdrawBtn").on("click", function() {
             if($("#confirmWithdrawBtn").hasClass("leavePreview-active-btn")) {
                 //如果可以點擊，則彈窗提示確認或取消
@@ -172,12 +214,12 @@ $("#viewLeaveQuery").pagecontainer({
             $("#withdrawLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
-        //刪除假單彈框——popup
+        //刪除假單（拒絕狀態下）彈框——popup
         $("#deleteRefuseLeave").on("click", function() {
             popupMsgInit(".confirmDelete");
         });
 
-        //刪除假單彈框——popup
+        //刪除假單（撤回狀態下）彈框——popup
         $("#deleteWithdrawLeave").on("click", function() {
             popupMsgInit(".confirmDelete");
         });
@@ -188,8 +230,47 @@ $("#viewLeaveQuery").pagecontainer({
             $("#deleteLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
+        //編輯假單（決絕狀態下）
+        $("#editRefuseLeave").on("click", function() {
+            var bortherNode = $(this).parent().parent().children("div");
+            var applyText = bortherNode.eq(0).children("div").eq(0).children("span").eq(1).text();
+            var leavenumText = bortherNode.eq(0).children("div").eq(1).children("span").eq(1).text();
+            var leaveText = bortherNode.eq(3).children("div").eq(2).children("span").text();
+            var agentText = bortherNode.eq(4).children("div").eq(2).children("span").text();
+            var startText = bortherNode.eq(5).children("div").eq(2).children("span").eq(0).text();
+            var endText = bortherNode.eq(5).children("div").eq(2).children("span").eq(2).text();
+            var reasonText = bortherNode.eq(7).children("div").eq(2).children("span").text();
+            var baseText = "2017-10-24"
+
+            $("#backDetailList").click();
+            changePageByPanel("viewLeaveSubmit");
+
+            //跳轉到 “請假申請” 頁面進行編輯
+            setDataToLeaveApply(applyText, leavenumText, leaveText, agentText, startText, endText, reasonText, baseText);
+        });
+
+        //刪除假單（撤回狀態下）
+        $("#editWithdrawLeave").on("click", function() {
+            var bortherNode = $(this).parent().parent().children("div");
+            var applyText = bortherNode.eq(0).children("div").eq(0).children("span").eq(1).text();
+            var leavenumText = bortherNode.eq(0).children("div").eq(1).children("span").eq(1).text();
+            var leaveText = bortherNode.eq(3).children("div").eq(2).children("span").text();
+            var agentText = bortherNode.eq(4).children("div").eq(2).children("span").text();
+            var startText = bortherNode.eq(5).children("div").eq(2).children("span").eq(0).text();
+            var endText = bortherNode.eq(5).children("div").eq(2).children("span").eq(2).text();
+            var reasonText = bortherNode.eq(7).children("div").eq(2).children("span").text();
+            var baseText = "2017-10-24"
+
+            $("#backDetailList").click();
+            changePageByPanel("viewLeaveSubmit");
+
+            //跳轉到 “請假申請” 頁面進行編輯
+            setDataToLeaveApply(applyText, leavenumText, leaveText, agentText, startText, endText, reasonText, baseText);
+        });
+
         //銷假申請——click
         $("#dispelLeave").on("click", function() {
+            $("#viewLeaveQuery .ui-title").find("span").text(leaveRevokeStr);
             $(".leave-query-detail-effect").hide();
             $("#backDetailList").hide();
             $(".leave-query-dispel").show();
@@ -213,7 +294,7 @@ $("#viewLeaveQuery").pagecontainer({
             }
         });
 
-        //確定送簽——click
+        //確定銷假送簽——click
         $("#confirmDispelBtn").on("click", function() {
             if($("#confirmDispelBtn").hasClass("leavePreview-active-btn")) {
                 popupMsgInit(".confirmRevoke");
