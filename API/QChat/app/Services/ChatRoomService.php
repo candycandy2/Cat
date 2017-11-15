@@ -168,7 +168,7 @@ class ChatRoomService
         $method = 'groups/'.$groupId;
         $data =json_encode($data);
         $url = JMessage::API_V1_URL.$method;
-        return $this->jmessage->exec('POST', $url, $data);
+        return $this->jmessage->exec('PUT', $url, $data);
     }
 
     /**
