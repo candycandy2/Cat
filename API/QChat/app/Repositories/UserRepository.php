@@ -143,8 +143,10 @@ class UserRepository
             if($mode == 1){
                 $query->where('friend_ship.status','=','1');
             }else if($mode == 2){
-                $query->where('friend_ship.status','=',null)
-                     ->orWhere('friend_ship.status','<>', '1');
+                $query->where(function ($query){
+                    return $query->where('friend_ship.status', '=', null)
+                          ->orWhere('friend_ship.status', '<>', '1');
+                });
             }
            return $query ->select(
                                  'login_id as name',

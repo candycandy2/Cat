@@ -43,7 +43,8 @@ class CommonUtil{
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 break;
             case "PUT":
-                curl_setopt($curl, CURLOPT_PUT, 1);
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 break;
             default:
                 if ($data)
