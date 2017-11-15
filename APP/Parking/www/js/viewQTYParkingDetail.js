@@ -242,11 +242,13 @@ $("#viewQTYParkingDetail").pagecontainer({
         $('body').on('click', 'div[for=reserveQTYSuccessMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
             $.mobile.changePage('#viewMain');
+            tplJS.recoveryPageScroll();
         });
 
         $('body').on('click', 'div[for=reserveFailMsg] #confirm', function() {
             $('#viewPopupMsg').popup('close');
             $.mobile.changePage('#viewMain');
+            tplJS.recoveryPageScroll();
         });
 
         $('body').on('click', 'div[for=reserveQTYFailPopup] .btn-cancel', function() {

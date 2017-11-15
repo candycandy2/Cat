@@ -15,7 +15,7 @@ $("#viewNewChatroom").pagecontainer({
                     emp_no: loginData["emp_no"],
                     search_type: type,
                     search_string: string,
-                    friend_only: "N"
+                    mode: "2"
                 };
 
                 var queryDataParameter = createXMLDataString(queryDataObj);
@@ -24,6 +24,16 @@ $("#viewNewChatroom").pagecontainer({
                 var successCallback = function(data) {
 
                     var resultCode = data['ResultCode'];
+
+                    //Check if user in friend list
+                    var friendCount = 0;
+                    var friendArray = [];
+                    for (var i=0; i<JM.data.chatroom_friend.length; i++) {
+                        if (JM.data.chatroom_friend[i].toLowerCase().indexOf(string.toLowerCase()) != -1) {
+                            friendArray.push(JM.data.chatroom_friend[i]);
+                            friendCount++;
+                        }
+                    }
 
                     if (resultCode === "1") {
 
@@ -38,13 +48,30 @@ $("#viewNewChatroom").pagecontainer({
                         });
 
                         //store data in local storage
-                        for (var i=0; i<data['Content'].user_list.length; i++) {
+                        var dataCount = data['Content'].user_list.length + friendCount;
+                        var friendIndex = 0;
+
+                        for (var i=0; i<dataCount; i++) {
 
                             var userData = data['Content'].user_list[i];
 
+                            if ((i+1) > data['Content'].user_list.length) {
+                                if (friendArray[friendIndex] != null) {
+                                    var userData = {};
+                                    userData.name = friendArray[friendIndex];
+                                    userData.status = "1";
+                                    friendIndex++;
+
+                                    callback();
+                                }
+                            } else {
+                                var userData = data['Content'].user_list[i];
+                                window.processUserData(userData, callback);
+                            }
+
                             function callback() {
                                 if (view === "viewNewChatroom") {
-                                    userListView(data['Content'].user_list.length, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, empNumberArray);
+                                    userListView(dataCount, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, empNumberArray);
                                 } else if (view === "viewAddFriend") {
                                     if (type === "3") {
                                         window.addFriendListView(data['Content'].user_list.length, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, type);
@@ -53,8 +80,6 @@ $("#viewNewChatroom").pagecontainer({
                                     }
                                 }
                             }
-
-                            window.processUserData(userData, callback);
 
                         }
 
@@ -207,6 +232,9 @@ $("#viewNewChatroom").pagecontainer({
                         userList.find(".button-content .protect").hide();
                         userList.find(".button-icon-content").hide();
                         userList.find(".action-info").show();
+                    } else if (status === "1") {
+                        userList.find(".data-content .protect").hide();
+                        userList.find(".user-name").addClass("user-name-only");
                     }
                 } else if (JM.data.chatroom_user[userName].is_friend == false) {
                     userList.find(".not-friend").show();

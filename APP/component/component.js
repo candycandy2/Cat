@@ -224,7 +224,6 @@ var app = {
                         loginData["pushToken"] = window.localStorage.getItem("pushToken");
 
                         var messageList = new QueryMessageList();
-                        callGetMessageList = true;
                     }
                 }
             }
