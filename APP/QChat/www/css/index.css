@@ -276,7 +276,7 @@ input[type=checkbox]:checked + label {
 }
 
 .friend-list .user-name-only {
-    margin-top: 1.9335vw;
+    margin-top: 2.4335vw;
 }
 
 .friend-title {
@@ -396,7 +396,7 @@ input[type=checkbox]:checked + label {
 }
 
 .user-list .photo {
-    margin-top: 0vw;
+    margin-top: 0.5vw;
 }
 
 .user-list .user-content {
@@ -409,7 +409,7 @@ input[type=checkbox]:checked + label {
 }
 
 .user-list .user-name-only {
-    margin-top: 1.9335vw;
+    margin-top: 2.4335vw;
 }
 
 .user-list .user-info {
@@ -960,6 +960,18 @@ input[type=checkbox]:checked + label {
     color: #666666;
 }
 
+.chatroom-leave {
+    margin-top: 7.152vw;
+    padding: 4.3vw 3.71vw;
+    height: 5.28vw;
+}
+
+.chatroom-leave-text {
+    font-size: 4.18vw;
+    color: #2C89BC;
+    width: 25vw;
+}
+
 .chatroom-info-member-count {
     margin: 6.44vw 0 0 3.71vw;
     font-size: 3.14vw;
@@ -980,7 +992,7 @@ input[type=checkbox]:checked + label {
 }
 
 .member-list-content .user-name-only {
-    margin-top: 1.9335vw;
+    margin-top: 2.4335vw;
     width: 68vw;
 }
 

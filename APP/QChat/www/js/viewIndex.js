@@ -442,6 +442,8 @@ $("#viewIndex").pagecontainer({
                                 indexUserAvatar(data.filePath);
                             } else if (action === "friendListView") {
                                 friendListViewAvatar(listViewIndex, data.filePath);
+                            } else if (action === "chatroomMemberListView") {
+                                chatroomMemberListViewAvatar(listViewIndex, data.filePath);
                             }
                         }
                     }
