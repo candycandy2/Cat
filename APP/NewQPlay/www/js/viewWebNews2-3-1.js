@@ -82,15 +82,15 @@ $("#viewWebNews2-3-1").pagecontainer({
                             $("#messageLoadErrorPopup").popup("open");
                             $("#viewWebNews2-3-1").css("min-height", document.documentElement.clientHeight + "px");
                         }
-                    }, 10000);
+                    }, 3000);
                 } else {
                     if ($("#htmlContent")[0].scrollWidth < screenWidth) {
                         $("#htmlContent").css("width", (screenWidth) + "px");
                     }
 
-                    setTimeout(function() {
-                        doPanZoom();
-                    }, 500);
+                    // setTimeout(function() {
+                    //     doPanZoom();
+                    // }, 500);
                 }
 
                 function doPanZoom() {
