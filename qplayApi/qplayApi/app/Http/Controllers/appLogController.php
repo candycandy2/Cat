@@ -14,7 +14,13 @@ use Exception;
 
 class appLogController extends Controller
 {   
+
+    /**
+     * 新增APP行為Log 
+     * 透過此接口, 讓APP可以將log送到後台, 供未來大數據分析
+     */
     public function addAppLog(){
+
         $Verify = new Verify();
         $verifyResult = $Verify->verifyCustom(false);
 
@@ -24,11 +30,19 @@ class appLogController extends Controller
             'content'=>''];
             return response()->json($result);
         }
-
+       
         $input = Input::get();
         foreach ($input as $k=>$v) {
             $input[strtolower($k)] = $v;
         }
+        //驗證uuid
+        if(!isset($input["uuid"]) || !$Verify->chkUuidExist($input["uuid"])) {
+            $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
+            'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
+            'content'=>''];
+            return response()->json($result);
+        }
+             
         $request = Request::instance();
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
@@ -42,62 +56,31 @@ class appLogController extends Controller
                     'content'=>''];
                     return response()->json($result);
                 }
-
-                $appKey = $request->header('App-Key');
-                $projectInfo = CommonUtil::getProjectInfoAppKey($appKey);
+                $appHeadInfo = CommonUtil::getAppHeaderInfo();
                 $logMode = Config::get('app.log_mode');
-                $ip = CommonUtil::getIP();
-                $now = date('Y-m-d H:i:s',time());
+                $userId = $userInfo->row_id;
+                $appId = $appHeadInfo->row_id;
+                $logList = $jsonContent['log_list'];
+                $uuid = $input["uuid"];
+                $insertData = $this->getInsertData($userId, $appId, $uuid, $logList);
                 //Mysql
                 if ($logMode == 'ALL' || $logMode == 'MYSQL') {
                     $mysqlLog = new QP_App_Log();
-                     $mysqlLog-> insert([
-                        'user_row_id'=> $userInfo->row_id,
-                        'app_row_id'=> $projectInfo->row_id,
-                        'page_name'=>$jsonContent['page_name'],
-                        'page_action'=>$jsonContent['page_action'],
-                        'period'=>$jsonContent['period'],
-                        'device_type'=>$jsonContent['device_type'],
-                        'latitude'=>$jsonContent['latitude'],
-                        'longitude'=>$jsonContent['longitude'],
-                        'ip'=>$ip,
-                        'attribute1'=>$jsonContent['attribute1'],
-                        'attribute2'=>$jsonContent['attribute2'],
-                        'attribute3'=>$jsonContent['attribute3'],
-                        'attribute4'=>$jsonContent['attribute4'],
-                        'attribute5'=>$jsonContent['attribute5'],
-                        'created_at'=>$now
-                    ]);
+                    $mysqlLog ->insert($insertData);
                 }
 
                 //MongoDB
                 if ($logMode == 'ALL' || $logMode == 'MONGODB'){
                     $mongoDBlog = new MNG_App_Log();
-                    $mongoDBlog->user_row_id = $userInfo->row_id;
-                    $mongoDBlog->app_row_id = $projectInfo->row_id;
-                    $mongoDBlog->page_name = $jsonContent['page_name'];
-                    $mongoDBlog->page_action = $jsonContent['page_action'];
-                    $mongoDBlog->period = $jsonContent['period'];
-                    $mongoDBlog->device_type = $jsonContent['device_type'];
-                    $mongoDBlog->latitude = $jsonContent['latitude'];
-                    $mongoDBlog->longitude = $jsonContent['longitude'];
-                    $mongoDBlog->ip = $ip;
-                    $mongoDBlog->attribute1 = $jsonContent['attribute1'];
-                    $mongoDBlog->attribute2 = $jsonContent['attribute2'];
-                    $mongoDBlog->attribute3= $jsonContent['attribute3'];
-                    $mongoDBlog->attribute4= $jsonContent['attribute4'];
-                    $mongoDBlog->attribute5= $jsonContent['attribute5'];
-                    $mongoDBlog->save();
+                    $mongoDBlog ->insert($insertData);
                 }
 
                  $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                         'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                         'content'=>""];
                     return response()->json($result);
-
             }
-            catch (\Exception $e)
-            {
+            catch (\Exception $e){
                 $result = ['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
                     'content'=>""];
@@ -106,4 +89,52 @@ class appLogController extends Controller
             }
         }
     }
+
+    /**
+     * 取得寫入App Log資料
+     * @param  int    $userId  qp_user.row_id
+     * @param  int    $appId   qp_app_head.row_id
+     * @param  string $uuid    手機的uuid
+     * @param  array  $logList log 訊息列表
+     * @return array
+     */
+    private function getInsertData($userId, $appId, $uuid, $logList){
+        $dataList = [];
+        $ip = CommonUtil::getIP();
+        $now = date('Y-m-d H:i:s',time());       
+        foreach ($logList as $log) {
+            $data = new AppLog();
+            $data->user_row_id = $userId;
+            $data->app_row_id = $appId;
+            $data->uuid = $uuid;
+            $data->created_at = $now;
+            foreach ($log as $key=>$value) {
+                if(property_exists($data, $key)){
+                    $data->$key=$value;
+                }
+            }
+           $dataList[]=(array)$data;
+           unset($data);
+        }
+        return $dataList;
+    }
+}
+
+class AppLog{
+    public $user_row_id = "";
+    public $app_row_id = "";
+    public $uuid = "";
+    public $created_at= "";//server端寫入此筆資料的時間
+    public $page_name = "";
+    public $page_action = "";
+    public $period = 0;//停留區間
+    public $start_time = 0;//log紀錄開始時間
+    public $device_type = "";
+    public $latitude = "";
+    public $longitude = "";
+    public $attribute1 = "";
+    public $attribute2 = "";
+    public $attribute3 = "";
+    public $attribute4 = "";
+    public $attribute5 = "";
 }
