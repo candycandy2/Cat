@@ -68,7 +68,6 @@ $("#viewNewsEvents2-3").pagecontainer({
             }
 
             loadingMask("hide");
-            callGetMessageList = false;
         };
 
         window.QueryPortalList = function(type) {
@@ -106,10 +105,6 @@ $("#viewNewsEvents2-3").pagecontainer({
                         $("#updateTime" + type).hide();
                     }
 
-                    if (callGetMessageList) {
-                        callGetMessageList = false;
-                    }
-
                     loadingMask("hide");
                 };
 
@@ -136,6 +131,10 @@ $("#viewNewsEvents2-3").pagecontainer({
         };
 
         window.QueryMessageList = function(action) {
+
+            //review by alan
+            callGetMessageList = true;
+
             action = action || null;
 
             var self = this;
@@ -149,6 +148,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             }
 
             this.successCallback = function(data) {
+                callGetMessageList = false;
                 var resultcode = data['result_code'];
 
                 if (resultcode === 1) {
@@ -248,10 +248,6 @@ $("#viewNewsEvents2-3").pagecontainer({
                     */
                 }
 
-                if (callGetMessageList) {
-                    callGetMessageList = false;
-                }
-
                 if (messagePageShow) {
                     loadingMask("hide");
                 }
@@ -278,9 +274,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             };
 
             this.failCallback = function(data) {
-                if (callGetMessageList) {
-                    callGetMessageList = false;
-                }
+                callGetMessageList = false;
             };
 
             var __construct = function() {
@@ -562,7 +556,6 @@ $("#viewNewsEvents2-3").pagecontainer({
                     } else {
                         QueryPortalList(eventType);
                     }
-                    callGetMessageList = true;
                 }
             }
 
