@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div class="data-list-content chatroom-info-list auto-history-content">
+        <div class="data-list-content chatroom-info-list auto-history-content hide">
             <div class="left">
                 <div class="auto-history-title">
                     自動匯入歷史紀錄
@@ -51,6 +51,12 @@
                 <svg class="auto-history-photo hide" id="autoHistoryClose">
                     <use xlink:href="#icon-switch_c"></use>
                 </svg>
+            </div>
+        </div>
+
+        <div class="data-list-content chatroom-info-list chatroom-leave hide">
+            <div class="chatroom-leave-text">
+                退出群組
             </div>
         </div>
 
@@ -71,7 +77,9 @@
 
                 <hr class="ui-hr ui-hr-friend-list">
 
-                <div class="member-list-content">
+                <div class="member-list-content"></div>
+
+                <template id="tplMemberDataList">
                     <div class="data-list">
                         <div class="left img-content personal-photo-content">
                             <img class="personal-photo hide" src="">
@@ -89,61 +97,7 @@
                                 <svg class="data-delete hide">
                                     <use xlink:href="#icon-btn_delete"></use>
                                 </svg>
-                                <div class="admin-text">
-                                    管理員
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr class="ui-hr ui-hr-friend-list">
-
-                    <div class="data-list">
-                        <div class="left img-content personal-photo-content">
-                            <img class="personal-photo hide" src="">
-                            <svg class="personal-photo">
-                                <use xlink:href="#icon-img_default_photo"></use>
-                            </svg>
-                        </div>
-                        <div class="right">
-                            <div class="left">
-                                <div class="personal-name user-name-only">
-                                    Darren
-                                </div>
-                            </div>
-                            <div class="right">
-                                <svg class="data-delete">
-                                    <use xlink:href="#icon-btn_delete"></use>
-                                </svg>
                                 <div class="admin-text hide">
-                                    管理員
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr class="ui-hr ui-hr-friend-list">
-                </div>
-
-                <template id="tplMemberDataList">
-                    <div class="data-list">
-                        <div class="left img-content personal-photo-content">
-                            <img class="personal-photo hide" src="">
-                            <svg class="personal-photo">
-                                <use xlink:href="#icon-topnav_delete"></use>
-                            </svg>
-                        </div>
-                        <div class="right">
-                            <div class="left">
-                                <div class="personal-name user-name-only">
-                                    Darren
-                                </div>
-                            </div>
-                            <div class="right">
-                                <svg class="data-delete">
-                                    <use xlink:href="#icon-btn_delete"></use>
-                                </svg>
-                                <div class="admin-text">
                                     管理員
                                 </div>
                             </div>
