@@ -184,6 +184,10 @@ input[type=radio]:checked + label {
     border-radius: 16px;
 }
 
+.btn-one {
+    color: #1678E5;
+}
+
 /********************************** public area *************************************/
 
 .ui-title-btn {
@@ -302,9 +306,18 @@ div.square {
 
 .carlist-margin, .myreserve-margin { font-size: 4.18vw; margin-left: 3vw;}
 
-#pageTwo, #pageThree{ box-sizing: border-box;}
+#pageTwo, #pageThree{ 
+    box-sizing: border-box;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
 
-#pageTwo .myCarList{ padding-bottom: 0 !important; position: relative; margin-left: 0 !important} 
+#pageTwo .myCarList{ 
+    padding-bottom: 0 !important; 
+    position: relative; 
+    margin-left: 0 !important;
+    padding: 0vw 3vw 3vw;
+} 
 
 #pageTwo .myCarList:after{
     content: '';
@@ -312,14 +325,18 @@ div.square {
     display: block;
     width: 92.58vw;
     height: 1px;
-    position: absolute;
     bottom: 0;
     left: 0;
 }
 
 #pageTwo .myCarList > div > div{ margin: 4vw 0 3vw;}
 
-#pageThree .myReserveInfo{ padding-bottom: 0 !important; position: relative; margin-left: 0 !important}
+#pageThree .myReserveInfo { 
+    padding-bottom: 0 !important; 
+    position: relative; 
+    margin-left: 0 !important;
+    padding: 0vw 3vw 3vw;
+}
 
 #pageThree .myReserveInfo:after{
     content: '';
@@ -327,7 +344,6 @@ div.square {
     display: block;
     width: 92.58vw;
     height: 1px;
-    position: absolute;
     bottom: 0;
     left: 0;
 }
@@ -345,7 +361,6 @@ div.square {
     width: 88%;
     height: 1px;
     position: absolute;
-    bottom: 140px;
     left: 17px;
 }
 
@@ -502,6 +517,10 @@ p.content-paragraph {
     font-weight: normal;
 }
 
+.content-QTY {
+    margin-top: 10vw;
+}
+
 /********************************** color setting *************************************/
 
 .ui-color-lightblue {
@@ -579,7 +598,6 @@ div.scrollmenu {
     background-color: #fff;
     overflow: auto;
     white-space: nowrap;
-    /*display: flex;*/
     border-style: solid;
     border-width: 1px 0px 1px 1px;
     border-color: #d6d6d6 !important;

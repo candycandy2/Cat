@@ -3,13 +3,12 @@
 var initialAppName = "QChat";
 var appKeyOriginal = "appqchat";
 var appKey = "appqchat";
-var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom"];
+var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom", "viewAddFriend", "viewChatroomInfo"];
 //var waterMarkPageList = ["viewChatroom"];
 var appSecretKey = "9f48f50f233f6ec48ffc4ae93d52a335";
 
 var prevPageID;
 var jmessagePWD;
-var get
 var QChatJPushAppKey;
 var QChatJPushSecretKey;
 
@@ -139,6 +138,14 @@ function onBackKeyDown() {
             window.removeEventListener("scroll", msgListViewScroll);
             $.mobile.changePage('#viewIndex');
         }
+
+    } else if (activePageID === "viewAddFriend") {
+
+        $.mobile.changePage('#viewIndex');
+
+    } else if (activePageID === "viewChatroomInfo") {
+
+        $.mobile.changePage('#viewChatroom');
 
     }
 

@@ -53,11 +53,10 @@ window.initialSuccess = function(data) {
             //don't call QueryMessageList() in background.
             if (loginData["msgDateFrom"] !== null) {
                 var messageList = new QueryMessageList("auto");
-                callGetMessageList = true;
             }
 
             //review by alan
-            if (window.localStorage.getItem("openMessage") !== true) {
+            if (window.localStorage.getItem("openMessage") !== "true") {
                 $.mobile.changePage('#viewMain2-1', {
                     allowSamePageTransition: true,
                     transition: 'none',
@@ -148,7 +147,6 @@ function openNewMessage() {
         $.mobile.changePage('#viewNewsEvents2-3');
     } else {
         var messageList = new QueryMessageList();
-        callGetMessageList = true;
     }
 }
 

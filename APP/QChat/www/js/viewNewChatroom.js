@@ -2,18 +2,20 @@
 $("#viewNewChatroom").pagecontainer({
     create: function(event, ui) {
 
+        var userDataCount = 0;
+
         /********************************** function *************************************/
-        window.getQList = function(type, string) {
+        window.getQList = function(type, view, string) {
             string = string || "";
 
-            (function(type, string) {
+            (function(type, view, string) {
 
                 //type: [1:name] [3:only same department]
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
                     search_type: type,
                     search_string: string,
-                    friend_only: "N"
+                    mode: "2"
                 };
 
                 var queryDataParameter = createXMLDataString(queryDataObj);
@@ -22,6 +24,16 @@ $("#viewNewChatroom").pagecontainer({
                 var successCallback = function(data) {
 
                     var resultCode = data['ResultCode'];
+
+                    //Check if user in friend list
+                    var friendCount = 0;
+                    var friendArray = [];
+                    for (var i=0; i<JM.data.chatroom_friend.length; i++) {
+                        if (JM.data.chatroom_friend[i].toLowerCase().indexOf(string.toLowerCase()) != -1) {
+                            friendArray.push(JM.data.chatroom_friend[i]);
+                            friendCount++;
+                        }
+                    }
 
                     if (resultCode === "1") {
 
@@ -36,15 +48,38 @@ $("#viewNewChatroom").pagecontainer({
                         });
 
                         //store data in local storage
-                        for (var i=0; i<data['Content'].user_list.length; i++) {
+                        var dataCount = data['Content'].user_list.length + friendCount;
+                        var friendIndex = 0;
+
+                        for (var i=0; i<dataCount; i++) {
 
                             var userData = data['Content'].user_list[i];
 
-                            function callback() {
-                                userListView(data['Content'].user_list.length, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, empNumberArray);
+                            if ((i+1) > data['Content'].user_list.length) {
+                                if (friendArray[friendIndex] != null) {
+                                    var userData = {};
+                                    userData.name = friendArray[friendIndex];
+                                    userData.status = "1";
+                                    friendIndex++;
+
+                                    callback();
+                                }
+                            } else {
+                                var userData = data['Content'].user_list[i];
+                                window.processUserData(userData, callback);
                             }
 
-                            window.processUserData(userData, callback);
+                            function callback() {
+                                if (view === "viewNewChatroom") {
+                                    userListView(dataCount, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, empNumberArray);
+                                } else if (view === "viewAddFriend") {
+                                    if (type === "3") {
+                                        window.addFriendListView(data['Content'].user_list.length, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, type);
+                                    } else if (type === "1") {
+                                        window.addFriendListView(data['Content'].user_list.length, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, type);
+                                    }
+                                }
+                            }
 
                         }
 
@@ -52,7 +87,11 @@ $("#viewNewChatroom").pagecontainer({
 
                     } else if (resultCode === "025998") {
                         //no data
-                        userListView(0);
+                        if (view === "viewNewChatroom") {
+                            userListView(0);
+                        } else if (view === "viewAddFriend") {
+                            window.addFriendListView(0);
+                        }
                     }
 
                 };
@@ -61,7 +100,7 @@ $("#viewNewChatroom").pagecontainer({
 
                 CustomAPI("POST", true, "getQList", successCallback, failCallback, queryData, "");
 
-            }(type, string));
+            }(type, view, string));
         };
 
         window.processUserData = function(userData, callback) {
@@ -128,26 +167,37 @@ $("#viewNewChatroom").pagecontainer({
 
         };
 
-        function userListView(dataCount, overMaxLength, userName, dataIndex, nowTimestamp, empNumberArray) {
+        function userListView(dataCount, overMaxLength, userName, dataIndex, nowTimestamp, status, empNumberArray) {
             overMaxLength = overMaxLength || null;
             userName = userName || null;
             dataIndex = dataIndex || null;
             nowTimestamp = nowTimestamp || null;
+            status = status || null;
             empNumberArray = empNumberArray || null;
+
+            var showInOther = false;
+            var showInFriend = false;
+
+            //Check if User from getQList has exist in chatroom_friend
+            if (JM.data.chatroom_friend.indexOf(userName) == -1) {
+                showInOther = true;
+            } else {
+                showInFriend = true;
+            }
 
             if (dataCount === 0 || dataIndex === 1) {
                 $("#msgWelcome").hide();
                 $("#msgUserOverflow").hide();
-                $("#userListContent .user-list").remove();
-                $("#userListContent .ui-hr-list").remove();
+                $(".data-list-content .user-list").remove();
+                $(".data-list-content .ui-hr-list").remove();
             }
 
             if (dataCount === 0) {
                 $("#msgNoFound").show();
                 $("#titleFriend").hide();
+                $("#titleOtherUser").hide();
             } else {
                 $("#msgNoFound").hide();
-                $("#titleFriend").show();
 
                 var userListHTML = $("template#tplUserList").html();
                 var userList = $(userListHTML);
@@ -176,11 +226,29 @@ $("#viewNewChatroom").pagecontainer({
                     hideRadioBtn = true;
                     userList.find(".protect").show();
                     userList.find(".user-name").removeClass("user-name-only");
+
+                    //Had send invitation
+                    if (status === "2") {
+                        userList.find(".button-content .protect").hide();
+                        userList.find(".button-icon-content").hide();
+                        userList.find(".action-info").show();
+                    } else if (status === "1") {
+                        userList.find(".data-content .protect").hide();
+                        userList.find(".user-name").addClass("user-name-only");
+                    }
                 } else if (JM.data.chatroom_user[userName].is_friend == false) {
                     userList.find(".not-friend").show();
                 }
 
-                $("#userListContent").append(userList);
+                if (showInFriend) {
+                    $("#titleFriend").show();
+                    $("#userFriendListContent").append(userList);
+                }
+
+                if (showInOther) {
+                    $("#titleOtherUser").show();
+                    $("#userOtherListContent").append(userList);
+                }
 
                 if (hideRadioBtn) {
                     userList.find(".checkbox-content").css("opacity", "0");
@@ -280,7 +348,7 @@ $("#viewNewChatroom").pagecontainer({
 
         function checkSelectedUser() {
             //Set Create Camera Button, check count of User Selected UI
-            var selectCount = $('#userListContent :checkbox:checked').length;
+            var selectCount = $('.data-list-content :checkbox:checked').length;
             var dataCount = $(".new-chatroom-footer .data-list").length;
 
             if (selectCount == 0 && dataCount == 0) {
@@ -323,7 +391,7 @@ $("#viewNewChatroom").pagecontainer({
             }(userID));
         };
 
-        function sendQInvitation(listViewID, userID) {
+        window.sendQInvitation = function(listViewID, userID) {
             (function(listViewID, userID) {
 
                 var queryDataObj = {
@@ -355,9 +423,9 @@ $("#viewNewChatroom").pagecontainer({
                 CustomAPI("POST", true, "sendQInvitation", successCallback, failCallback, queryData, "");
 
             }(listViewID, userID));
-        }
+        };
 
-        function sendQInstall(listViewID, userID) {
+        window.sendQInstall = function(listViewID, userID) {
             (function(listViewID, userID) {
 
                 var queryDataObj = {
@@ -390,9 +458,9 @@ $("#viewNewChatroom").pagecontainer({
                 CustomAPI("POST", true, "sendQInstall", successCallback, failCallback, queryData, "");
 
             }(listViewID, userID));
-        }
+        };
 
-        function actionButton(listViewID, action) {
+        window.actionButton = function(listViewID, action) {
             //action: not-friend / not-register / protect / show
 
             //change button / info
@@ -403,9 +471,9 @@ $("#viewNewChatroom").pagecontainer({
             if (action === "not-friend") {
                 window.setQFriend(userID);
             } else if (action === "not-register") {
-                sendQInstall(listViewID, userID);
+                window.sendQInstall(listViewID, userID);
             } else if (action === "protect") {
-                sendQInvitation(listViewID, userID);
+                window.sendQInvitation(listViewID, userID);
             } else {
                 $(".action-success-full-screen").show();
 
@@ -415,10 +483,10 @@ $("#viewNewChatroom").pagecontainer({
                 }, 3000);
             }
 
-        }
+        };
 
         /********************************** page event *************************************/
-        $("#viewIndex").on("pagebeforeshow", function(event, ui) {
+        $("#viewNewChatroom").on("pagebeforeshow", function(event, ui) {
 
             //Recovery Search User Input UI
             $("#searchUserInput").css("width", "92.5vw");
@@ -428,16 +496,17 @@ $("#viewNewChatroom").pagecontainer({
 
             $("#msgWelcome").show();
             $("#titleFriend").hide();
+            $("#titleOtherUser").hide();
             $("#msgUserOverflow").hide();
-            $("#userListContent .user-list").remove();
-            $("#userListContent .ui-hr-list").remove();
+            $(".data-list-content .user-list").remove();
+            $(".data-list-content .ui-hr-list").remove();
 
             //Clear User Selected UI
             $(".new-chatroom-footer .data-list").remove();
             $(".new-chatroom-footer").css("opacity", 0);
         });
 
-        $("#viewIndex").on("pageshow", function(event, ui) {
+        $("#viewNewChatroom").on("pageshow", function(event, ui) {
 
         });
 
@@ -467,8 +536,10 @@ $("#viewNewChatroom").pagecontainer({
                 $(this).hide();
 
                 if (text.length > 0) {
+                    userDataCount = 0;
                     $("#searchUserClearContent").show();
-                    getQList("1", text);
+
+                    getQList("1", "viewNewChatroom", text);
                     setCreateChatroomButton("disable");
                 }
 
@@ -561,7 +632,7 @@ $("#viewNewChatroom").pagecontainer({
                 }
 
             }
-        }, "#userListContent input:checkbox");
+        }, ".data-list-content input:checkbox");
 
         //Delete selected user
         $(document).on({
@@ -570,7 +641,7 @@ $("#viewNewChatroom").pagecontainer({
                 //uncheck checkbox
                 var empID = $(this).prop("id").substr(3);
 
-                $("#userListContent input:checkbox").each(function(index, data) {
+                $(".data-list-content input:checkbox").each(function(index, data) {
                     if ($(data).val() == empID) {
                         $(data).prop("checked", false);
                     }

@@ -711,6 +711,8 @@ $("#viewChatroom").pagecontainer({
                     opacity: 1,
                     display: "block"
                 });
+
+                $(".chatroom-action").slideUp(10);
             }
 
         }
@@ -721,6 +723,8 @@ $("#viewChatroom").pagecontainer({
         });
 
         $("#viewChatroom").on("pageshow", function(event, ui) {
+
+            prevPageID = "viewChatroom";
 
             newCreate = false;
             lastRenderMsgID = 0;
@@ -746,18 +750,25 @@ $("#viewChatroom").pagecontainer({
 
         /********************************** dom event *************************************/
 
+        //Chatroom Action
         $(document).on({
             click: function() {
                 window.removeEventListener("scroll", msgListViewScroll);
                 $.mobile.changePage('#viewIndex');
             }
-        }, "#backIndex");
+        }, "#backIndexChatroom");
 
         $(document).on({
             click: function() {
-                //exitGroup();
+                $(".chatroom-action").slideToggle(150);
             }
-        }, "#leaveChatroom");
+        }, "#chatroomAction");
+
+        $(document).on({
+            click: function() {
+                $.mobile.changePage('#viewChatroomInfo');
+            }
+        }, ".chatroom-info");
 
         //Send Text
         $(document).on({

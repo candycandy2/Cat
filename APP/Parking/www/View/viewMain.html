@@ -77,7 +77,7 @@
             </div>
         </div>
         <div class="ui-margin-public" id="pageThree">
-            <div id="todayLine" style="margin: 4.3vw 0 2.14vw 0;font-size: 3.55vw;padding-top: 1vh" class="disable">本日</div>
+            <div id="todayLine" style="margin: 0 0 2.14vw 3.71vw;font-size: 3.55vw;padding-top: 1vh" class="disable">本日</div>
             <div id="defaultToday" class="btn-today myReserveInfo disable">
                 <div class="ui-grid-a">
                     <div class="ui-block-a col-7">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
             </div>
-            <div id="otherDayLine" style="margin: 8.3vw 0 2.14vw 0;font-size: 3.55vw;padding-top: 1vh" class="disable">未來</div>
+            <div id="otherDayLine" style="margin: 6.44vw 0 2.14vw 3.71vw;font-size: 3.55vw;padding-top: 1vh" class="disable">未來</div>
             <div id="defaultOtherDay" class="btn-otherday myReserveInfo disable">
                 <div class="ui-grid-a">
                     <div class="ui-block-a col-7">
@@ -181,7 +181,7 @@
         </div>
     </div>
      <!-- other reserve popup msg -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo DetailInfo otherReservePopupQTT" for="otherReservePopupQTT">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo DetailInfo otherReservePopupQTT" style="min-height: 33.2vw;max-height: 38.2vw !important;" for="otherReservePopupQTT">
         <div data-role="main" class="ui-content-QTY">
             <div class="header header-closeX">
                 <div class="font-style3 header-title-main" style="margin-bottom: 4.5vw">
@@ -197,6 +197,25 @@
                 <div class="btn-two font-style8 btnArea">
                     <a class="btn-mail">傳送郵件</a>
                     <a class="btn-tel">撥打電話</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- reserve fail msg -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup lessInfo DetailInfo reserveResultPopup" style="min-height: 33.2vw;max-height: 33.2vw !important;" for="reserveResultPopup">
+        <div data-role="main" class="ui-content-QTY">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'><img src="img/select.png" alt=""></span><span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main-QTT">
+                <p class="main-paragraph font-style3">
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8 btnArea">
+                    <div class="btn-cancel">確定</div>
                 </div>
             </div>
         </div>

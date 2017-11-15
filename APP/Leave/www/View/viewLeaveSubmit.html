@@ -95,12 +95,12 @@
                 <div class="font-style3">
                     <div id="btnStartday">
                         <!-- 請選擇 -->
-                        <span class="langStr" data-id="str_069" id="startText"></span>
+                        <span id="startText"></span>
                         <img src="img/dropdown.png" class="apply-select-img">
                     </div>
                     <div id="btnEndday">
                         <!-- 請選擇 -->
-                        <span class="langStr" data-id="str_069" id="endText"></span>
+                        <span id="endText"></span>
                         <img src="img/dropdown.png" class="apply-select-img">
                     </div>
                 </div>
@@ -259,10 +259,11 @@
                 </div>
             </div>
         </div>
+        
     </div>
 
     <!-- 假別天數不夠 2行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup leaveNotEnough" for="leaveNotEnough">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup leaveNotEnough" for="leaveNotEnough" id="leaveNotEnough">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -291,7 +292,7 @@
     </div>
 
     <!-- 假別剩餘天數 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup leftDaysByLeave" for="leftDaysByLeave">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup leftDaysByLeave" for="leftDaysByLeave" id="leftDaysByLeave">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -313,7 +314,7 @@
     </div>
 
     <!-- 結束時間要大於迄止時間 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup dateTimeError" for="dateTimeError">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup dateTimeError" for="dateTimeError" id="dateTimeError">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -339,7 +340,7 @@
     </div>
 
     <!-- 請先選擇類別與假別 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup categroyFirst" for="categroyFirst">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup categroyFirst" for="categroyFirst" id="categroyFirst">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -365,7 +366,7 @@
     </div>
 
     <!-- 請先選擇基準日 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup basedayFirst" for="basedayFirst">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup basedayFirst" for="basedayFirst" id="basedayFirst">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -391,7 +392,7 @@
     </div>
 
     <!-- 請先選擇開始時間 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup startdayFirst" for="startdayFirst">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup startdayFirst" for="startdayFirst" id="startdayFirst">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -417,7 +418,7 @@
     </div>
 
     <!-- baseday list -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup basedayList" for="basedayList">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup basedayList" for="basedayList" id="basedayList">
         <div data-role="main" class="ui-content">
             <div class="header typeB">
                 <div class="close"><img src="img/component/close_new.png" width="100%" height="100%" id="closeBasedayList"></div>

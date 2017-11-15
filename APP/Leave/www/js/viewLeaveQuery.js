@@ -15,27 +15,27 @@ var leaveRevokeStr = langStr["str_157"];    //銷假申請
 var leaveQueryStr = langStr["str_078"];    //假單查詢
 var withdrawReason,dispelReason;
 
+//請假單頁初始化
+function leaveQueryInit() {
+    $("#backDetailList").hide();
+    $("#backSignPreview").hide();
+    $("#backEffectPreview").hide();
+    $(".leave-query-detail-sign").hide();          
+    $(".leave-query-detail-refuse").hide();
+    $(".leave-query-detail-withdraw").hide();
+    $(".leave-query-detail-effect").hide();
+    $(".leave-query-detail-back").hide();
+    $(".leave-query-withdraw").hide();
+    $(".leave-query-dispel").hide();
+    $(".leaveMenu").show();
+    $(".leave-query-main").show();
+    $("#viewLeaveQuery .ui-title").find("span").text(leaveQueryStr);
+}
+
 $("#viewLeaveQuery").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        //請假單頁初始化
-        function leaveQueryInit() {
-            $("#backDetailList").hide();
-            $("#backSignPreview").hide();
-            $("#backEffectPreview").hide();
-            $(".leave-query-detail-sign").hide();          
-            $(".leave-query-detail-refuse").hide();
-            $(".leave-query-detail-withdraw").hide();
-            $(".leave-query-detail-effect").hide();
-            $(".leave-query-detail-back").hide();
-            $(".leave-query-withdraw").hide();
-            $(".leave-query-dispel").hide();
-            $(".leaveMenu").show();
-            $(".leave-query-main").show();
-            $("#viewLeaveQuery .ui-title").find("span").text(leaveQueryStr);
-        }
-
         //從銷假返回詳情
         function backLeaveToDetail() {
             $(".leave-query-dispel").hide();
@@ -249,7 +249,7 @@ $("#viewLeaveQuery").pagecontainer({
             setDataToLeaveApply(applyText, leavenumText, leaveText, agentText, startText, endText, reasonText, baseText);
         });
 
-        //刪除假單（撤回狀態下）
+        //編輯假單（撤回狀態下）
         $("#editWithdrawLeave").on("click", function() {
             var bortherNode = $(this).parent().parent().children("div");
             var applyText = bortherNode.eq(0).children("div").eq(0).children("span").eq(1).text();

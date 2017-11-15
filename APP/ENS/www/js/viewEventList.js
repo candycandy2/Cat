@@ -367,19 +367,19 @@ $("#viewEventList").pagecontainer({
                 var event_type = eventListData[i].event_type;
                 var className;
                 eventListMsg.find(".event-list-msg-top .link .icon").hide();
-                if (event_type === "一般通報") {
+                if (event_type === langStr["str_069"] /*"一般通報"*/) {
                     className = "normal";
-                } else if (event_type === "緊急通報") {
+                } else if (event_type === langStr["str_068"] /*"緊急通報"*/) {
                     className = "urgent";
-                } else if (event_type === "A級事件") {
+                } else if (event_type === langStr["str_070"] /*"A級事件"*/) {
                     className = "rm-a-class";
-                } else if (event_type === "B級事件") {
+                } else if (event_type === langStr["str_071"] /*"B級事件"*/) {
                     className = "rm-b-class";
-                } else if (event_type === "C級事件") {
+                } else if (event_type === langStr["str_072"] /*"C級事件"*/) {
                     className = "rm-c-class";
-                } else if (event_type === "預警事件") {
+                } else if (event_type === langStr["str_073"] /*"預警事件"*/) {
                     className = "rm-prevent-event";
-                } else if (event_type === "資訊分享") {
+                } else if (event_type === langStr["str_074"] /*"資訊分享"*/) {
                     className = "rm-info-share";
                 }
                 eventListMsg.find(".event-list-msg-top .link ." + className).show();
@@ -390,7 +390,7 @@ $("#viewEventList").pagecontainer({
 
                     var widthEventNumber = parseInt(eventListData[i].event_row_id.toString().length * 3 * document.documentElement.clientWidth / 100, 10);
                     var widthImg = parseInt(5 * document.documentElement.clientWidth / 100, 10);
-                    if (event_type === "一般通報") {
+                    if (event_type === langStr["str_069"] /*"一般通報"*/) {
                         widthImg = 0;
                     }
                     eventListMsg.find(".event-list-msg-top .link-event").css("margin-left", (widthEventNumber + widthImg) + "px");
@@ -400,17 +400,19 @@ $("#viewEventList").pagecontainer({
 
                 //Status: 未完成 / 完成
                 var event_status = eventListData[i].event_status;
-                if (event_status === "完成") {
+                if (event_status === langStr["str_091"] /*"完成"*/) {
                     eventListMsg.find(".event-list-msg-top .event-status .done").show();
                     eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
                 }
 
                 //User Count / Seen Count
-                var userSeenCount = eventListData[i].user_count + "(" + eventListData[i].seen_count + "人已讀)";
+                //var userSeenCount = eventListData[i].user_count + "(" + eventListData[i].seen_count + "人已讀)";
+                var userSeenCount = eventListData[i].user_count + "(" + eventListData[i].seen_count + langStr["str_092"] + ")";
                 eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                 //Task finish Count
-                var taskCount = eventListData[i].task_count + "(" + eventListData[i].task_finish_count + "項完成)"
+                //var taskCount = eventListData[i].task_count + "(" + eventListData[i].task_finish_count + "項完成)"
+                var taskCount = eventListData[i].task_count + "(" + eventListData[i].task_finish_count + langStr["str_093"] + ")"
                 eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                 //Message Count
@@ -457,7 +459,8 @@ $("#viewEventList").pagecontainer({
 
             if (sortType === "user") {
                 var eventMemberDataList = $(eventMemberDataListHTML);
-                eventMemberDataList.find(".title").html("管理員");
+                //eventMemberDataList.find(".title").html("管理員");
+                eventMemberDataList.find(".title").html(langStr["str_097"]);
 
                 var eventMemberDataListView = eventMemberDataList.find("ul");
                 var eventMemberData = "";
@@ -502,19 +505,19 @@ $("#viewEventList").pagecontainer({
             var className;
 
             eventMemberList.siblings(".header").find(".number .icon").hide();
-            if (event_type === "一般通報") {
+            if (event_type === langStr["str_069"] /*"一般通報"*/) {
                 className = "normal";
-            } else if (event_type === "緊急通報") {
+            } else if (event_type === langStr["str_068"] /*"緊急通報"*/) {
                 className = "urgent";
-            } else if (event_type === "A級事件") {
+            } else if (event_type === langStr["str_070"] /*"A級事件"*/) {
                 className = "rm-a-class";
-            } else if (event_type === "B級事件") {
+            } else if (event_type === langStr["str_071"] /*"B級事件"*/) {
                 className = "rm-b-class";
-            } else if (event_type === "C級事件") {
+            } else if (event_type === langStr["str_072"] /*"C級事件"*/) {
                 className = "rm-c-class";
-            } else if (event_type === "預警事件") {
+            } else if (event_type === langStr["str_073"] /*"預警事件"*/) {
                 className = "rm-prevent-event";
-            } else if (event_type === "資訊分享") {
+            } else if (event_type === langStr["str_074"] /*"資訊分享"*/) {
                 className = "rm-info-share";
             }
             eventMemberList.siblings(".header").find(".number ." + className).show();
@@ -579,19 +582,19 @@ $("#viewEventList").pagecontainer({
             var className;
 
             eventFunctionList.siblings(".header").find(".number .icon").hide();
-            if (event_type === "一般通報") {
+            if (event_type === langStr["str_069"] /*"一般通報"*/) {
                 className = "normal";
-            } else if (event_type === "緊急通報") {
+            } else if (event_type === langStr["str_068"] /*"緊急通報"*/) {
                 className = "urgent";
-            } else if (event_type === "A級事件") {
+            } else if (event_type === langStr["str_070"] /*"A級事件"*/) {
                 className = "rm-a-class";
-            } else if (event_type === "B級事件") {
+            } else if (event_type === langStr["str_071"] /*"B級事件"*/) {
                 className = "rm-b-class";
-            } else if (event_type === "C級事件") {
+            } else if (event_type === langStr["str_072"] /*"C級事件"*/) {
                 className = "rm-c-class";
-            } else if (event_type === "預警事件") {
+            } else if (event_type === langStr["str_073"] /*"預警事件"*/) {
                 className = "rm-prevent-event";
-            } else if (event_type === "資訊分享") {
+            } else if (event_type === langStr["str_074"] /*"資訊分享"*/) {
                 className = "rm-info-share";
             }
             eventFunctionList.siblings(".header").find(".number ." + className).show();
@@ -612,7 +615,7 @@ $("#viewEventList").pagecontainer({
             var eventFunctionListAfterHTML = eventFunctionList.siblings(".main").find("template#tplEventFunctionListAfter").html();
 
             for (var i=0; i<data.task_detail.length; i++) {
-                if (data.task_detail[i].task_status === "完成") {
+                if (data.task_detail[i].task_status === langStr["str_091"] /*"完成"*/) {
                     //After Done
                     var completeTime = new Date(data.task_detail[i].close_task_date * 1000);
                     var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +
@@ -831,10 +834,10 @@ $("#viewEventList").pagecontainer({
                 navbar: {
                     button: [{
                         href: "reportDiv",
-                        text: "通報動態"
+                        text: langStr["str_098"] // "通報動態"
                     }, {
                         href: "memberDiv",
-                        text: "成員"
+                        text: langStr["str_099"] // "成員"
                     }]
                 },
                 content: [{
@@ -860,19 +863,19 @@ $("#viewEventList").pagecontainer({
                 id: "eventTypeITS",
                 option: [{
                     value: "0",
-                    text: "全部"
+                    text: langStr["str_100"] // "全部"
                 }, {
                     value: "1",
-                    text: "未完成"
+                    text: langStr["str_032"] // "未完成"
                 }, {
                     value: "2",
-                    text: "完成"
+                    text: langStr["str_091"] // "完成"
                 }, {
                     value: "3",
-                    text: "緊急通報"
+                    text: langStr["str_068"] // "緊急通報"
                 }, {
                     value: "4",
-                    text: "一般通報"
+                    text: langStr["str_069"] // "一般通報"
                 }],
                 defaultValue: eventTypeDefaultVal,
                 attr: {
@@ -894,28 +897,28 @@ $("#viewEventList").pagecontainer({
                 id: "eventTypeRM",
                 option: [{
                     value: "0",
-                    text: "全部"
+                    text: langStr["str_100"] // "全部"
                 }, {
                     value: "1",
-                    text: "未完成"
+                    text: langStr["str_032"] // "未完成"
                 }, {
                     value: "2",
-                    text: "完成"
+                    text: langStr["str_091"] // "完成"
                 }, {
                     value: "3",
-                    text: "A級事件"
+                    text: langStr["str_070"] // "A級事件"
                 }, {
                     value: "4",
-                    text: "B級事件"
+                    text: langStr["str_071"] // "B級事件"
                 }, {
                     value: "5",
-                    text: "C級事件"
+                    text: langStr["str_072"] // "C級事件"
                 }, {
                     value: "6",
-                    text: "預警事件"
+                    text: langStr["str_073"] // "預警事件"
                 }, {
                     value: "7",
-                    text: "資訊分享"
+                    text: langStr["str_074"] // "資訊分享"
                 }],
                 defaultValue: eventTypeDefaultVal,
                 attr: {
@@ -936,13 +939,13 @@ $("#viewEventList").pagecontainer({
                 id: "eventMemberTypeITS",
                 option: [{
                     value: "location",
-                    text: "位置排序"
+                    text: langStr["str_101"] // "位置排序"
                 }, {
                     value: "function",
-                    text: "IT Function排序"
+                    text: langStr["str_102"] // "IT Function排序"
                 }, {
                     value: "user",
-                    text: "成員排序"
+                    text: langStr["str_103"] // "成員排序"
                 }],
                 defaultValue: eventMemberTypeDefaultVal,
                 attr: {
@@ -964,13 +967,13 @@ $("#viewEventList").pagecontainer({
                 id: "eventMemberTypeRM",
                 option: [{
                     value: "location",
-                    text: "對象排序"
+                    text: langStr["str_104"] // "對象排序"
                 }, {
                     value: "function",
-                    text: "單位排序"
+                    text: langStr["str_105"] // "單位排序"
                 }, {
                     value: "user",
-                    text: "成員排序"
+                    text: langStr["str_103"] // "成員排序"
                 }],
                 defaultValue: eventMemberTypeDefaultVal,
                 attr: {

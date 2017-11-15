@@ -52,7 +52,7 @@ $("#viewEventContent").pagecontainer({
 
                         //Status: 未完成 / 完成
                         var event_status = data['Content'].event_status;
-                        if (event_status === "完成") {
+                        if (event_status === langStr["str_091"]/*"完成"*/) {
                             eventListMsg.find(".event-list-msg-top .event-status .done").show();
                             eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
                             $("#eventEdit").hide();
@@ -105,7 +105,7 @@ $("#viewEventContent").pagecontainer({
 
                             var widthEventNumber = parseInt(data['Content'].event_row_id.toString().length * 3 * document.documentElement.clientWidth / 100, 10);
                             var widthImg = parseInt(5 * document.documentElement.clientWidth / 100, 10);
-                            if (event_type === "一般通報") {
+                            if (event_type === langStr["str_069"]/*"一般通報"*/) {
                                 widthImg = 0;
                             }
                             eventListMsg.find(".event-list-msg-top .link-event").css("margin-left", (widthEventNumber + widthImg) + "px");
@@ -122,19 +122,19 @@ $("#viewEventContent").pagecontainer({
                         var event_type = data['Content'].event_type;
 
                         eventListMsg.find(".event-list-msg-top .link .icon").hide();
-                        if (event_type === "一般通報") {
+                        if (event_type === langStr["str_069"]/*"一般通報"*/) {
                             className = "normal";
-                        } else if (event_type === "緊急通報") {
+                        } else if (event_type === langStr["str_068"]/*"緊急通報"*/) {
                             className = "urgent";
-                        } else if (event_type === "A級事件") {
+                        } else if (event_type === langStr["str_070"]/*"A級事件"*/) {
                             className = "rm-a-class";
-                        } else if (event_type === "B級事件") {
+                        } else if (event_type === langStr["str_071"]/*"B級事件"*/) {
                             className = "rm-b-class";
-                        } else if (event_type === "C級事件") {
+                        } else if (event_type === langStr["str_072"]/*"C級事件"*/) {
                             className = "rm-c-class";
-                        } else if (event_type === "預警事件") {
+                        } else if (event_type === langStr["str_073"]/*"預警事件"*/) {
                             className = "rm-prevent-event";
-                        } else if (event_type === "資訊分享") {
+                        } else if (event_type === langStr["str_074"]/*"資訊分享"*/) {
                             className = "rm-info-share";
                         }
                         eventListMsg.find(".event-list-msg-top .link ." + className).show();
@@ -145,7 +145,7 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-top").append(desc);
 
                         //User Count / Seen Count
-                        var userSeenCount = data['Content'].user_count + "(" + data['Content'].seen_count + "人已讀)";
+                        var userSeenCount = data['Content'].user_count + "(" + data['Content'].seen_count + langStr["str_092"] /*"人已讀"*/ + ")";
                         eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                         //Message Count
@@ -190,7 +190,7 @@ $("#viewEventContent").pagecontainer({
                         var eventTaskListAfterHTML = $("#contentEventContent").find("template#tplEventTaskListAfter").html();
 
                         for (var i=0; i<data['Content'].task_detail.length; i++) {
-                            if (data['Content'].task_detail[i].task_status === "未完成") {
+                            if (data['Content'].task_detail[i].task_status === langStr["str_032"] /*"未完成"*/) {
                                 //Before Done
                                 var eventTaskList = $(eventTaskListBeforeHTML);
                             } else {
@@ -214,7 +214,7 @@ $("#viewEventContent").pagecontainer({
                         $("#eventTaskListContent").css("margin-bottom", "1.5vw");
 
                         //Task finish Count
-                        var taskCount = data['Content'].task_detail.length + "(" + data['Content'].task_finish_count + "項完成)"
+                        var taskCount = data['Content'].task_detail.length + "(" + data['Content'].task_finish_count + langStr["str_093"]/*"項完成"*/ + ")"
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                         //ChatRoom Message List
@@ -323,7 +323,7 @@ $("#viewEventContent").pagecontainer({
                         if (messages[i]["msg_type"] === "text") {
                             latstMsg = messages[i]["msg_body"]["text"];
                         } else if (messages[i]["msg_type"] === "image") {
-                            latstMsg = "上傳了一張圖片";
+                            latstMsg = langStr["str_094"]; //"上傳了一張圖片";
                         }
                     }
 
@@ -564,7 +564,10 @@ $("#viewEventContent").pagecontainer({
 
             var imageContent = '<img src="' + photoUrl + '" width="' + resizePhotoWidth + '" height="' + resizePhotoHeight + '">';
 
-            var buttonContent = '<div class="button-content bottom font-style3"><span id="photoCancel">重新選擇</span><span id="photoConfirm">使用照片</span></div>';
+            // var buttonContent = '<div class="button-content bottom font-style3"><span id="photoCancel">重新選擇</span><span id="photoConfirm">使用照片</span></div>';
+            var buttonContent = '<div class="button-content bottom font-style3"><span id="photoCancel">' + langStr["str_095"] + '</span><span id="photoConfirm">' + langStr["str_107"] + '</span></div>';
+
+
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             if (device.platform === "iOS") {
@@ -710,7 +713,7 @@ $("#viewEventContent").pagecontainer({
 
             $(".previewImageDiv").hide();
             $(".previewImageDiv-AddHeight").hide();
-            $('#msgText').prop('placeholder', "請輸入訊息");
+            $('#msgText').prop('placeholder', langStr["str_096"] /*"請輸入訊息"*/);
             $("#msgText").val("");
 
             chatRoom.resetBadge();
