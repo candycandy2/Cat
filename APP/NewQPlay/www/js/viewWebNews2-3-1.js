@@ -331,7 +331,8 @@ $("#viewWebNews2-3-1").pagecontainer({
                     //If template_id == 999, it's Portal Event,
                     //need to be render become canvas
                     if (content.template_id === 999) {
-                        loadingMask("show");
+                        //review by alan
+                        //loadingMask("show");
 
                         $("#ITSEventNewContent").hide();
                         $("#PortalContent").show();
@@ -535,7 +536,9 @@ $("#viewWebNews2-3-1").pagecontainer({
                 $("#viewWebNews2-3-1 .page-main").css("opacity", 0);
                 var messageDetail = new QueryMessageDetail();
             } else {
-                loadingMask("show");
+                //review by alan
+                //for speed up
+                //loadingMask("show");
 
                 $("#ITSEventNewContent").hide();
                 $("#PortalContent").show();
