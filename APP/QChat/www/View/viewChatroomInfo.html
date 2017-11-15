@@ -1,0 +1,159 @@
+
+
+
+<div data-role="page" id="viewChatroomInfo">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <a href="#viewChatroom" data-role="none">
+            <div class="q-btn-header" style="width: 5.957vw;">
+                <svg class="header-icon">
+                    <use xlink:href="#icon-nav_back_white"></use>
+                </svg>
+            </div>
+        </a>
+        <div class="header-style">
+            <h1 class="ui-title"><span>聊天室資訊</span></h1>
+        </div>
+        <a id="editChatroomInfo" href="#" data-role="none" class="ui-btn-right">
+            <span>編輯</span>
+        </a>
+    </div>
+
+    <div data-role="main" class="page-main" id="viewChatroomInfoContent">
+
+        <div class="data-list-content chatroom-info-list">
+            <div class="left img-content chatroom-info-photo-content">
+                <img class="chatroom-info-photo hide" src="">
+                <svg class="chatroom-info-photo">
+                    <use xlink:href="#icon-img_default_group_big-"></use>
+                </svg>
+            </div>
+            <div class="right">
+                <div class="chatroom-info-name">
+                    Darren
+                </div>
+            </div>
+        </div>
+
+        <div class="data-list-content chatroom-info-list auto-history-content">
+            <div class="left">
+                <div class="auto-history-title">
+                    自動匯入歷史紀錄
+                </div>
+                <div class="auto-history-text">
+                    當新用戶受邀加入時，自動匯入30天內歷史訊息
+                </div>
+            </div>
+            <div class="right" id="autoHistorySwitch">
+                <svg class="auto-history-photo" id="autoHistoryOpen">
+                    <use xlink:href="#icon-switch_o"></use>
+                </svg>
+                <svg class="auto-history-photo hide" id="autoHistoryClose">
+                    <use xlink:href="#icon-switch_c"></use>
+                </svg>
+            </div>
+        </div>
+
+        <div class="chatroom-info-member-count">
+            成員(<span id="memberCount">0</span>)
+        </div>
+
+        <div class="member-data-content">
+            <div class="data-list-content member-list">
+                <div class="friend-add-btn">
+                    <svg class="btn-addfriend-img">
+                        <use xlink:href="#icon-btn_addfriend"></use>
+                    </svg>
+                    <div class="btn-addfriend-text">
+                        邀請成員
+                    </div>
+                </div>
+
+                <hr class="ui-hr ui-hr-friend-list">
+
+                <div class="member-list-content">
+                    <div class="data-list">
+                        <div class="left img-content personal-photo-content">
+                            <img class="personal-photo hide" src="">
+                            <svg class="personal-photo">
+                                <use xlink:href="#icon-img_default_photo"></use>
+                            </svg>
+                        </div>
+                        <div class="right">
+                            <div class="left">
+                                <div class="personal-name user-name-only">
+                                    Darren
+                                </div>
+                            </div>
+                            <div class="right">
+                                <svg class="data-delete hide">
+                                    <use xlink:href="#icon-btn_delete"></use>
+                                </svg>
+                                <div class="admin-text">
+                                    管理員
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="ui-hr ui-hr-friend-list">
+
+                    <div class="data-list">
+                        <div class="left img-content personal-photo-content">
+                            <img class="personal-photo hide" src="">
+                            <svg class="personal-photo">
+                                <use xlink:href="#icon-img_default_photo"></use>
+                            </svg>
+                        </div>
+                        <div class="right">
+                            <div class="left">
+                                <div class="personal-name user-name-only">
+                                    Darren
+                                </div>
+                            </div>
+                            <div class="right">
+                                <svg class="data-delete">
+                                    <use xlink:href="#icon-btn_delete"></use>
+                                </svg>
+                                <div class="admin-text hide">
+                                    管理員
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="ui-hr ui-hr-friend-list">
+                </div>
+
+                <template id="tplMemberDataList">
+                    <div class="data-list">
+                        <div class="left img-content personal-photo-content">
+                            <img class="personal-photo hide" src="">
+                            <svg class="personal-photo">
+                                <use xlink:href="#icon-topnav_delete"></use>
+                            </svg>
+                        </div>
+                        <div class="right">
+                            <div class="left">
+                                <div class="personal-name user-name-only">
+                                    Darren
+                                </div>
+                            </div>
+                            <div class="right">
+                                <svg class="data-delete">
+                                    <use xlink:href="#icon-btn_delete"></use>
+                                </svg>
+                                <div class="admin-text">
+                                    管理員
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="ui-hr ui-hr-friend-list">
+                </template>
+            </div>
+        </div>
+
+    </div>
+</div>

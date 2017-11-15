@@ -6,6 +6,70 @@ $("#viewNewsEvents2-3").pagecontainer({
         window.eventType = "";
 
         /********************************** function *************************************/
+        function FillPortalList(contentArray, type) {
+
+            $("#eventListContent .list-content").hide();
+            $("#" + type + "Content").show();
+            $("#deleteMessage").hide();
+
+            //Update title
+            $("#viewNewsEvents2-3 .ui-header .ui-title").html(type);
+
+            if (contentArray.length > 0) {
+                var listviewContent = "";
+
+                for (var i = 0; i < contentArray.length; i++) {
+                    var content = "<li value='' class='msg-index'>" +
+                        "<div class='msg-del-checkbox-content'>" +
+                        "</div>" +
+                        "<div class='msg-new-reddot-content'>" +
+                        "<div class='reddot-list hide'></div>" +
+                        "</div>" +
+                        "<div class='msg-list-content'>" +
+                        "<a value=" + contentArray[i].PortalID + " class='message-index'>" +
+                        "<p class='msg-list-title' style='white-space:pre-wrap; font-size:2.3vh;'>" + contentArray[i].PortalSubject + "</p>" +
+                        "<p class='msg-list-time'>" + contentArray[i].PortalDate + "</p>" +
+                        "<div style='position:absolute; top:0px; right:0px; width:20%; height:100%; background-color:red; z-index:10; display:none;'>" +
+                        "<p style='color:#FFF; text-align:center; margin:50% 0;'>Delete</p>" +
+                        "</div>" +
+                        "<input type='hidden' value='" + contentArray[i].PortalURL + "'>" +
+                        "</a>" +
+                        "<div>" +
+                        "</li>";
+
+                    listviewContent += content;
+                }
+
+                $("#" + type + "Listview").html(listviewContent);
+                $("#" + type + "Listview").listview('refresh');
+
+                $('a.message-index').on("click", function(e) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+
+                    if (eventType != "Event" && eventType != "News") {
+                        console.log($(this).find("input").val());
+                        portalURL = $(this).find("input").val();
+                        $.mobile.changePage("#viewWebNews2-3-1");
+                    }
+                });
+
+                //Latest Update Time
+                var datetime = new Date();
+                var datetimeStr = datetime.getFullYear() + "-" + padLeft(parseInt(datetime.getMonth() + 1, 10), 2) + "-" + padLeft(datetime.getUTCDate(), 2) + " " +
+                    addZero(datetime.getHours()) + ":" + addZero(datetime.getMinutes());
+                $(".update-time .update-time-str").html(datetimeStr);
+
+                $("#no" + type).hide();
+                $("#updateTime" + type).show();
+            } else {
+                $("#no" + type).show();
+                $("#updateTime" + type).hide();
+            }
+
+            loadingMask("hide");
+        };
+
         window.QueryPortalList = function(type) {
             (function(type) {
 
@@ -23,78 +87,54 @@ $("#viewNewsEvents2-3").pagecontainer({
 
                     if (data["ResultCode"] === "1") {
 
-                        if (data["Content"].length > 0) {
-                            var listviewContent = "";
+                        //save to local data
+                        window.localStorage.removeItem(queryData);
+                        var jsonData = {};
+                        jsonData = {
+                            lastUpdateTime: new Date(),
+                            content: data['Content']
+                        };
+                        window.localStorage.setItem(queryData, JSON.stringify(jsonData));
 
-                            for (var i = 0; i < data["Content"].length; i++) {
-                                var content = "<li value='' class='msg-index'>" +
-                                    "<div class='msg-del-checkbox-content'>" +
-                                    "</div>" +
-                                    "<div class='msg-new-reddot-content'>" +
-                                    "<div class='reddot-list hide'></div>" +
-                                    "</div>" +
-                                    "<div class='msg-list-content'>" +
-                                    "<a value=" + data["Content"][i].PortalID + " class='message-index'>" +
-                                    "<p class='msg-list-title' style='white-space:pre-wrap; font-size:2.3vh;'>" + data["Content"][i].PortalSubject + "</p>" +
-                                    "<p class='msg-list-time'>" + data["Content"][i].PortalDate + "</p>" +
-                                    "<div style='position:absolute; top:0px; right:0px; width:20%; height:100%; background-color:red; z-index:10; display:none;'>" +
-                                    "<p style='color:#FFF; text-align:center; margin:50% 0;'>Delete</p>" +
-                                    "</div>" +
-                                    "<input type='hidden' value='" + data["Content"][i].PortalURL + "'>" +
-                                    "</a>" +
-                                    "<div>" +
-                                    "</li>";
-
-                                listviewContent += content;
-                            }
-
-                            $("#" + type + "Listview").html(listviewContent);
-                            $("#" + type + "Listview").listview('refresh');
-
-                            $('a.message-index').on("click", function(e) {
-                                e.stopImmediatePropagation();
-                                e.preventDefault();
-
-                                if (eventType != "Event" && eventType != "News") {
-                                    console.log($(this).find("input").val());
-                                    portalURL = $(this).find("input").val();
-                                    $.mobile.changePage("#viewWebNews2-3-1");
-                                }
-                            });
-
-                            //Latest Update Time
-                            var datetime = new Date();
-                            var datetimeStr = datetime.getFullYear() + "-" + padLeft(parseInt(datetime.getMonth() + 1, 10), 2) + "-" + padLeft(datetime.getUTCDate(), 2) + " " +
-                                addZero(datetime.getHours()) + ":" + addZero(datetime.getMinutes());
-                            $(".update-time .update-time-str").html(datetimeStr);
-
-                            $("#no" + type).hide();
-                            $("#updateTime" + type).show();
-                        } else {
-                            $("#no" + type).show();
-                            $("#updateTime" + type).hide();
-                        }
+                        //record APP all data
+                        var responsecontent = jsonData['content'];
+                        FillPortalList(responsecontent, type);
 
                     } else if (data["ResultCode"] === "044901") {
                         $("#no" + type).show();
                         $("#updateTime" + type).hide();
                     }
 
-                    if (callGetMessageList) {
-                        callGetMessageList = false;
-                    }
-
                     loadingMask("hide");
                 };
 
-                var failCallback = function(data) {};
+                var failCallback = function(data) {
+                    loadingMask("hide");
+                };
 
-                CustomAPI("POST", true, "PortalList", successCallback, failCallback, queryData, "");
+                //review by alan
+                var localdata = window.localStorage.getItem(queryData);
+                var QueryData = null;
+                if (localdata == null) {
+                    QueryData = null;
+                } else {
+                    QueryData = JSON.parse(localdata);
+                }
+                if (QueryData === null || checkDataExpired(QueryData['lastUpdateTime'], 10, 'mm')) {
+                    CustomAPI("POST", true, "PortalList", successCallback, failCallback, queryData, "");
+                } else {
+                    var responsecontent = QueryData['content'];
+                    FillPortalList(responsecontent, type);
+                }
 
             }(type));
         };
 
         window.QueryMessageList = function(action) {
+
+            //review by alan
+            callGetMessageList = true;
+
             action = action || null;
 
             var self = this;
@@ -108,6 +148,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             }
 
             this.successCallback = function(data) {
+                callGetMessageList = false;
                 var resultcode = data['result_code'];
 
                 if (resultcode === 1) {
@@ -207,21 +248,17 @@ $("#viewNewsEvents2-3").pagecontainer({
                     */
                 }
 
-                if (callGetMessageList) {
-                    callGetMessageList = false;
-                }
-
                 if (messagePageShow) {
                     loadingMask("hide");
                 }
 
                 //Call API Portal List
                 if (action === "auto") {
-                    QueryPortalList("Announcement");
-                    QueryPortalList("Communication");
-                    QueryPortalList("CIP");
-                    QueryPortalList("CSD");
-                    QueryPortalList("ITS");
+                    //QueryPortalList("Announcement");
+                    //QueryPortalList("Communication");
+                    //QueryPortalList("CIP");
+                    //QueryPortalList("CSD");
+                    //QueryPortalList("ITS");
                 }
 
                 //review by alan
@@ -237,9 +274,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             };
 
             this.failCallback = function(data) {
-                if (callGetMessageList) {
-                    callGetMessageList = false;
-                }
+                callGetMessageList = false;
             };
 
             var __construct = function() {
@@ -521,7 +556,6 @@ $("#viewNewsEvents2-3").pagecontainer({
                     } else {
                         QueryPortalList(eventType);
                     }
-                    callGetMessageList = true;
                 }
             }
 

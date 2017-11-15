@@ -32,15 +32,18 @@ class UserRepository
      *                              2:department
      *                              3:only same department 只找尋同公司同部門的人
      *
-     * @param  String $friendOnly   僅查詢好友 (Y:是 | N:否)
+     * @param  String $mode         查詢模式
+     *                              1:只有好友
+     *                              2:非好友
+     *                              3:全部
      * @param  Strgin $searchString 當search_type = 1 or 2時, search_string欄位必填
      *                              當search_type=3時, search_string是非必填
      *                              會直接按emp_no查找相同公司,相同部門的人
      * @param  String $empNo         使用者的員工編號
      * @return mixed
      */
-    public function getList($searchType, $friendOnly, $empNo, $searchString=""){
-        return $this->getSql($searchType, $friendOnly, $empNo, $searchString)->limit(10)->get();
+    public function getList($searchType, $mode, $empNo, $searchString=""){
+        return $this->getSql($searchType, $mode, $empNo, $searchString)->limit(10)->get();
     }
 
     /**
@@ -49,15 +52,18 @@ class UserRepository
      *                              2:department
      *                              3:only same department 只找尋同公司同部門的人
      *
-     * @param  String $friendOnly   僅查詢好友 (Y:是 | N:否)
+     * @param  String $mode         查詢模式
+     *                              1:只有好友
+     *                              2:非好友
+     *                              3:全部
      * @param  Strgin $searchString 當search_type = 1 or 2時, search_string欄位必填
      *                              當search_type=3時, search_string是非必填
      *                              會直接按emp_no查找相同公司,相同部門的人
      * @param  String $empNo         使用者的員工編號
      * @return mixed
      */
-    public function getCount($searchType, $friendOnly, $empNo, $searchString=""){
-        return $this->getSql($searchType, $friendOnly, $empNo, $searchString)->get()->count();
+    public function getCount($searchType, $mode, $empNo, $searchString=""){
+        return $this->getSql($searchType, $mode, $empNo, $searchString)->get()->count();
     }
 
     /**
@@ -92,14 +98,17 @@ class UserRepository
      *                              2:department
      *                              3:only same department 只找尋同公司同部門的人
      *
-     * @param  String $friendOnly   僅查詢好友 (Y:是 | N:否)
+     * @param  String $mode         查詢模式
+     *                              1:只有好友
+     *                              2:非好友
+     *                              3:全部
      * @param  Strgin $searchString 當search_type = 1 or 2時, search_string欄位必填
      *                              當search_type=3時, search_string是非必填
      *                              會直接按emp_no查找相同公司,相同部門的人
      * @param  String $empNo         使用者的員工編號
      * @return query object
      */
-    private function getSql($searchType, $friendOnly, $empNo, $searchString="") {
+    private function getSql($searchType, $mode, $empNo, $searchString="") {
 
         if($searchType == '3'){
             $userDep = $this->user
@@ -131,8 +140,11 @@ class UserRepository
                     $query->where('login_id','LIKE','%'.$searchString.'%');
                 }
             }
-            if($friendOnly == 'Y'){
+            if($mode == 1){
                 $query->where('friend_ship.status','=','1');
+            }else if($mode == 2){
+                $query->where('friend_ship.status','=',null)
+                     ->orWhere('friend_ship.status','<>', '1');
             }
            return $query ->select(
                                  'login_id as name',

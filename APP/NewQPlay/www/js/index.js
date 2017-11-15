@@ -53,7 +53,6 @@ window.initialSuccess = function(data) {
             //don't call QueryMessageList() in background.
             if (loginData["msgDateFrom"] !== null) {
                 var messageList = new QueryMessageList("auto");
-                callGetMessageList = true;
             }
 
             //review by alan
@@ -148,7 +147,6 @@ function openNewMessage() {
         $.mobile.changePage('#viewNewsEvents2-3');
     } else {
         var messageList = new QueryMessageList();
-        callGetMessageList = true;
     }
 }
 

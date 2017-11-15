@@ -746,6 +746,7 @@ $("#viewChatroom").pagecontainer({
 
         /********************************** dom event *************************************/
 
+        //Chatroom Action
         $(document).on({
             click: function() {
                 window.removeEventListener("scroll", msgListViewScroll);
@@ -755,9 +756,15 @@ $("#viewChatroom").pagecontainer({
 
         $(document).on({
             click: function() {
-                //exitGroup();
+                $(".chatroom-action").slideToggle(150);
             }
-        }, "#leaveChatroom");
+        }, "#chatroomAction");
+
+        $(document).on({
+            click: function() {
+                $.mobile.changePage('#viewChatroomInfo');
+            }
+        }, ".chatroom-info");
 
         //Send Text
         $(document).on({

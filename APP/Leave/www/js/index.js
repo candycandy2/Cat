@@ -38,6 +38,8 @@ window.initialSuccess = function() {
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
     getDefaultSettingQueryData = "<EmpNo>" + myEmpNo + "</EmpNo>";
+    //console.log(queryCalendarData);
+    //console.log(getDefaultSettingQueryData);
     QueryCalendarData();
     if (leaveTypeData["option"].length == 0) {
         GetDefaultSetting();
@@ -239,5 +241,7 @@ function dateInit() {
         }
     }
 
-    $("#leaveDate a:eq(0)").addClass("hover");
+    //$("#leaveDate a:eq(0)").addClass("hover");
+    //modify by Allen
+    $("#leaveDate a:eq(0)").click();
 }
