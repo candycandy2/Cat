@@ -711,6 +711,8 @@ $("#viewChatroom").pagecontainer({
                     opacity: 1,
                     display: "block"
                 });
+
+                $(".chatroom-action").slideUp(10);
             }
 
         }
@@ -721,6 +723,8 @@ $("#viewChatroom").pagecontainer({
         });
 
         $("#viewChatroom").on("pageshow", function(event, ui) {
+
+            prevPageID = "viewChatroom";
 
             newCreate = false;
             lastRenderMsgID = 0;

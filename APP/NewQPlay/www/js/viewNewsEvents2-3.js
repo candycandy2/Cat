@@ -120,7 +120,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                 } else {
                     QueryData = JSON.parse(localdata);
                 }
-                if (QueryData === null || checkDataExpired(QueryData['lastUpdateTime'], 10, 'mm')) {
+                if (QueryData === null || checkDataExpired(QueryData['lastUpdateTime'], 30, 'mm')) {
                     CustomAPI("POST", true, "PortalList", successCallback, failCallback, queryData, "");
                 } else {
                     var responsecontent = QueryData['content'];
