@@ -3,7 +3,7 @@
 var initialAppName = "QChat";
 var appKeyOriginal = "appqchat";
 var appKey = "appqchat";
-var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom", "viewAddFriend", "viewChatroomInfo"];
+var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom", "viewAddFriend", "viewChatroomInfo", "viewChatroomEdit"];
 //var waterMarkPageList = ["viewChatroom"];
 var appSecretKey = "9f48f50f233f6ec48ffc4ae93d52a335";
 

@@ -72,7 +72,7 @@ var app = {
         */
 
         loadStringTable();
-        
+
         //For release
         this.bindEvents();
     },
@@ -293,27 +293,27 @@ var app = {
 app.initialize();
 
 function loadStringTable() {
-  //Browser default language, according to the mobile device language setting
-  //navigator.language: en-US / zh-CN / zh-TW
-  //note:
-  //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
-  //2. If Browser default language not exist in /string , use APP default language "zh-tw"
-  browserLanguage = navigator.language.toLowerCase();
-  var languageShortName = browserLanguage.substr(0, 2);
+    //Browser default language, according to the mobile device language setting
+    //navigator.language: en-US / zh-CN / zh-TW
+    //note:
+    //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
+    //2. If Browser default language not exist in /string , use APP default language "zh-tw"
+    browserLanguage = navigator.language.toLowerCase();
+    var languageShortName = browserLanguage.substr(0, 2);
 
-  if (languageShortName === "en") {
-      browserLanguage = "en-us";
-  }
+    if (languageShortName === "en") {
+        browserLanguage = "en-us";
+    }
 
-  $.getJSON("string/" + browserLanguage + ".json", function(data) {
-          //language string exist
-          getLanguageString();
-      })
-      .fail(function() {
-          //language string does not exist
-          browserLanguage = "en-us";
-          getLanguageString();
-      });
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+            //language string exist
+            getLanguageString();
+        })
+        .fail(function() {
+            //language string does not exist
+            browserLanguage = "en-us";
+            getLanguageString();
+        });
 };
 
 /********************************** jQuery Mobile Event *************************************/
@@ -375,8 +375,11 @@ $(document).one("pagebeforecreate", function() {
             }
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
         } else if (device.platform === "iOS") {
-            $('.page-header').addClass('ios-fix-overlap');
-            $('.ios-fix-overlap-div').css('display', 'block');
+            if (versionCompare(device.version, "11.0", "") === 1) {
+            } else {
+                $('.page-header').addClass('ios-fix-overlap');
+                $('.ios-fix-overlap-div').css('display', 'block');
+            }
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Heiti TC");
         }
@@ -614,39 +617,6 @@ function readConfig() {
         if (window.localStorage.getItem("versionCode") === null) {
             //No, this is the first time to open this APP.
             window.localStorage.setItem("versionCode", loginData["versionCode"]);
-
-            var versionCode = parseInt(loginData["versionCode"], 10);
-            //For old APP Version
-            //
-            //RRS
-            if (appKey.indexOf("rrs") !== -1) {
-                if (appEnvironment.length === 0) {
-                    //Production
-                    if (versionCode > 23 && versionCode <= 234) {
-                        getServerData();
-                    }
-                } else if (appEnvironment === "test") {
-                    //Staging
-                    if (versionCode > 226 && versionCode <= 234) {
-                        getServerData();
-                    }
-                }
-            }
-            //Yellowpage
-            if (appKey.indexOf("yellowpage") !== -1) {
-                if (appEnvironment.length === 0) {
-                    //Production
-                    if (versionCode > 226 && versionCode <= 234) {
-                        getServerData();
-                    }
-                } else if (appEnvironment === "test") {
-                    //Staging
-                    if (versionCode > 226 && versionCode <= 234) {
-                        getServerData();
-                    }
-                }
-            }
-
             doCheckAppVer = true;
         } else {
             var oldVersionCode = parseInt(window.localStorage.getItem("versionCode"), 10);
@@ -657,7 +627,7 @@ function readConfig() {
                 getServerData();
                 window.localStorage.setItem("versionCode", loginData["versionCode"]);
             } else {
-                //No, APP does not have update.
+                //No, APP have not updated.
                 doCheckAppVer = true;
             }
         }
@@ -748,7 +718,7 @@ function checkAppVersion() {
                     //qplay
                     if (device.platform === "iOS") {
                         window.open('itms-services://?action=download-manifest&url=' + serverURL + '/qplay/public/app/1/apk/ios/manifest.plist', '_system');
-                    } else {//android
+                    } else { //android
                         var updateUrl = '' + serverURL + '/qplay/public/app/1/apk/android/appqplay.apk';
                         updateAPP(updateUrl);
                     }
@@ -756,7 +726,7 @@ function checkAppVersion() {
                     //Download link without QPlay
                     if (device.platform === "iOS") {
                         window.open(download_url, '_system');
-                    } else {//android
+                    } else { //android
                         var updateUrl = download_url;
                         updateAPP(updateUrl);
                     }
@@ -817,8 +787,11 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            $('.page-header').addClass('ios-fix-overlap');
-            $('.ios-fix-overlap-div').css('display', 'block');
+            if (versionCompare(device.version, "11.0", "") === 1) {
+            } else {
+                $('.page-header').addClass('ios-fix-overlap');
+                $('.ios-fix-overlap-div').css('display', 'block');
+            }
         }
     };
 
@@ -1110,4 +1083,49 @@ function handleOpenURL(url) {
         }
     }
 
+}
+
+function versionCompare(v1, v2, options) {
+    var lexicographical = options && options.lexicographical,
+        zeroExtend = options && options.zeroExtend,
+        v1parts = v1.split('.'),
+        v2parts = v2.split('.');
+
+    function isValidPart(x) {
+        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+    }
+
+    if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+        return NaN;
+    }
+
+    if (zeroExtend) {
+        while (v1parts.length < v2parts.length) v1parts.push("0");
+        while (v2parts.length < v1parts.length) v2parts.push("0");
+    }
+
+    if (!lexicographical) {
+        v1parts = v1parts.map(Number);
+        v2parts = v2parts.map(Number);
+    }
+
+    for (var i = 0; i < v1parts.length; ++i) {
+        if (v2parts.length == i) {
+            return 1;
+        }
+
+        if (v1parts[i] == v2parts[i]) {
+            continue;
+        } else if (v1parts[i] > v2parts[i]) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    if (v1parts.length != v2parts.length) {
+        return -1;
+    }
+
+    return 0;
 }
