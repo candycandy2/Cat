@@ -617,39 +617,6 @@ function readConfig() {
         if (window.localStorage.getItem("versionCode") === null) {
             //No, this is the first time to open this APP.
             window.localStorage.setItem("versionCode", loginData["versionCode"]);
-
-            var versionCode = parseInt(loginData["versionCode"], 10);
-            //For old APP Version
-            //
-            //RRS
-            if (appKey.indexOf("rrs") !== -1) {
-                if (appEnvironment.length === 0) {
-                    //Production
-                    if (versionCode > 23 && versionCode <= 234) {
-                        getServerData();
-                    }
-                } else if (appEnvironment === "test") {
-                    //Staging
-                    if (versionCode > 226 && versionCode <= 234) {
-                        getServerData();
-                    }
-                }
-            }
-            //Yellowpage
-            if (appKey.indexOf("yellowpage") !== -1) {
-                if (appEnvironment.length === 0) {
-                    //Production
-                    if (versionCode > 226 && versionCode <= 234) {
-                        getServerData();
-                    }
-                } else if (appEnvironment === "test") {
-                    //Staging
-                    if (versionCode > 226 && versionCode <= 234) {
-                        getServerData();
-                    }
-                }
-            }
-
             doCheckAppVer = true;
         } else {
             var oldVersionCode = parseInt(window.localStorage.getItem("versionCode"), 10);
@@ -660,7 +627,7 @@ function readConfig() {
                 getServerData();
                 window.localStorage.setItem("versionCode", loginData["versionCode"]);
             } else {
-                //No, APP does not have update.
+                //No, APP have not updated.
                 doCheckAppVer = true;
             }
         }
