@@ -144,7 +144,9 @@ class ChatRoomController extends Controller
             //新增聊天室
             //1. call Jmessage to create chatroom
             $response = $this->chatRoomService->newChatRoom( $owner, $chatRoomName, $members, $chatroomDesc);
-            if(isset($response->error->code)){
+            if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                throw new JMessageException($response->message);
+            }else if(isset($response->error->code)){
                 throw new JMessageException($response->error->message);
             }
             // 2. save chatroom information to DB
@@ -267,7 +269,9 @@ class ChatRoomController extends Controller
             //2. call Jmessage to add group mamber
             if(count($destArr) > 0){
                 $response = $this->chatRoomService->addGroupMember($groupId, $destArr);
-                 if(isset($response->error->code)){
+                if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                    throw new JMessageException($response->message);
+                }else if(isset($response->error->code)){
                     throw new JMessageException($response->error->message);
                 }
             }
@@ -288,7 +292,7 @@ class ChatRoomController extends Controller
     }
 
      /**
-     * 透過此API可以新增成員
+     * 透過此API可以移除成員
      */
     public function removeQMember(){
 
@@ -361,7 +365,9 @@ class ChatRoomController extends Controller
             //2. call Jmessage to remove group mamber
             if(count($destArr) > 0){
                 $response = $this->chatRoomService->removeGroupMember($groupId, $destArr);
-                 if(isset($response->error->code)){
+                if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                    throw new JMessageException($response->message);
+                }else if(isset($response->error->code)){
                     throw new JMessageException($response->error->message);
                 }
             }
@@ -423,11 +429,13 @@ class ChatRoomController extends Controller
                  $dataToJMessage['name'] = $dataToDB['chatroom_name'] = $chatRoomName;
             }
             if(!is_null($chatRoomDesc)){
-                 $dataToJMessage['desc'] = $dataToDB['chatroom_name'] = $chatRoomDesc;
+                 $dataToJMessage['desc'] = $dataToDB['chatroom_desc'] = $chatRoomDesc;
             }
 
             $response =$this->chatRoomService->updateGroup($groupId, $dataToJMessage);
-            if(isset($response->error->code)){
+            if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                throw new JMessageException($response->message);
+            }else if(isset($response->error->code)){
                 throw new JMessageException($response->error->message);
             }
             $userId = $this->userService->getUserData($empNo)->row_id;
@@ -457,7 +465,9 @@ class ChatRoomController extends Controller
             $empNo = $this->data['emp_no'];
             $userName = $this->userService->getUserData($empNo)->login_id;
             $response =$this->chatRoomService->getUserGroups($userName);
-            if(isset($response->error->code)){
+            if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                throw new JMessageException($response->message);
+            }else if(isset($response->error->code)){
                 throw new JMessageException($response->error->message);
             }
              return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
