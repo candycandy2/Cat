@@ -21,7 +21,7 @@ $("#viewIndex").pagecontainer({
                     jmessagePWD = data['Content'];
                     console.log(jmessagePWD);
 
-                    JM.init(QChatJPushAppKey, sendPushToken, receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged);
+                    JM.init(QChatJPushAppKey, sendPushToken, receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage);
                 }
             };
 
@@ -322,6 +322,7 @@ $("#viewIndex").pagecontainer({
 
                         var need_history = "";
                         var group_message = "";
+                        var name_changed = "";
                         var desc = "";
 
                         if (JM.data.chatroom[chatroomID].need_history) {
@@ -336,41 +337,52 @@ $("#viewIndex").pagecontainer({
                             group_message = "N";
                         }
 
-                        desc = "need_history=" + need_history + ";" + "group_message=" + group_message;
-
-                        //update chatroom name in:
-                        //1. chatroom list
-                        //2. local storage
-                        //3. JMessage Server side
-                        var chatroomName = "";
-
-                        for (var i=0; i<data.length; i++) {
-                            var add = true;
-
-                            if (!is_group && loginData["loginid"] == data[i].username) {
-                                add = false;
-                            }
-
-                            if (add) {
-                                chatroomName = chatroomName + data[i].username + ", ";
-                            }
+                        if (JM.data.chatroom[chatroomID].name_changed) {
+                            name_changed = "Y";
+                        } else {
+                            name_changed = "N";
                         }
 
-                        var oldDisplayName = chatroomName.substr(0, chatroomName.length - 2);
-                        var newDisplayName = cutString(58.5, oldDisplayName, 4.18, "number", data.length);
+                        desc = "need_history=" + need_history + ";group_message=" + group_message + ";name_changed=" + name_changed;
 
-                        //chatroom list view
-                        $("#chatroomList" + chatroomID + " .group-name").html(newDisplayName);
+                        if (name_changed != "Y") {
+                            //update chatroom name in:
+                            //1. chatroom list
+                            //2. local storage
+                            //3. JMessage Server side
+                            var chatroomName = "";
 
-                        //local storage
-                        JM.data.chatroom[chatroomID].name = oldDisplayName;
+                            for (var i=0; i<data.length; i++) {
+                                var add = true;
 
-                        //JMessage Server side
-                        window.updateGroupInfo(chatroomID, oldDisplayName, desc);
+                                if (!is_group && loginData["loginid"] == data[i].username) {
+                                    add = false;
+                                }
 
-                        //for new create chatroom
+                                if (add) {
+                                    chatroomName = chatroomName + data[i].username + ", ";
+                                }
+                            }
+
+                            var oldDisplayName = chatroomName.substr(0, chatroomName.length - 2);
+                            var newDisplayName = cutString(58.5, oldDisplayName, 4.18, "number", data.length);
+
+                            //chatroom list view
+                            $("#chatroomList" + chatroomID + " .group-name").html(newDisplayName);
+
+                            //local storage
+                            JM.data.chatroom[chatroomID].name = oldDisplayName;
+
+                            //JMessage Server side
+                            window.updateGroupInfo(chatroomID, oldDisplayName, desc);
+                        }
+
                         if (action === "getConversation") {
+                            //new create chatroom
                             window.chatroomTitle();
+                        } else if (action === "chatroomInfo") {
+                            //chatroomInfo
+                            window.processChatroomInfo();
                         }
                     }
 
@@ -454,7 +466,16 @@ $("#viewIndex").pagecontainer({
                 } else {
                     if (JM.data.chatroom_user[userID].avator_path.length > 0) {
                         //display old avator which had be download before
-                        userListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+
+                        if (action === "userListView") {
+                            userListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                        } else if (action === "index") {
+                            indexUserAvatar(JM.data.chatroom_user[userID].avator_path);
+                        } else if (action === "friendListView") {
+                            friendListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                        } else if (action === "chatroomMemberListView") {
+                            chatroomMemberListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                        }
                     }
                 }
 
@@ -567,9 +588,9 @@ $("#viewIndex").pagecontainer({
 
                 if (data.extras.event === "false") {
                     if (activePageID === "viewChatroom") {
-                        getConversation(true, true);
+                        window.getConversation(true, true);
                     } else {
-                        getConversation(false, true);
+                        window.getConversation(false, true);
                     }
                 } else if (data.type === "text" && data.extras.event === "true") {
 
@@ -601,6 +622,13 @@ $("#viewIndex").pagecontainer({
         function loginStateChanged(data) {
             console.log("----loginStateChanged");
             console.log(data);
+        }
+
+        function syncRoamingMessage(data) {
+            console.log("----syncRoamingMessage");
+            console.log(data);
+
+            window.getConversations();
         }
 
         function recoverySearchUI() {
