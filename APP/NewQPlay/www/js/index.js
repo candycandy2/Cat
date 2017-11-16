@@ -150,7 +150,7 @@ function openNewMessage() {
     }
 }
 
-//Cehck APP version record
+//Check APP version record
 function checkAPPVersionRecord(action) {
     if (action === "initial") {
 
