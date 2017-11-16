@@ -35,7 +35,10 @@ gulp.task('default', shell.task([
     'echo copy build.json',
     'cp ../APP/CMSOP2/build.json ../APP/' + process.env.appname,
     'echo copy string',
-    'rsync -a ../APP/CMSOP4/string ../APP/' + process.env.appname
+    'rsync -a ../APP/CMSOP4/string ../APP/' + process.env.appname,
     //'echo copy Images',
-    //'rsync -a ../APP/Default/Images ../APP/'+ process.env.appname
+    //'rsync -a ../APP/Default/Images ../APP/'+ process.env.appname,
+    'echo copy www',
+    'rsync -a ../APP/CMSOP2/www ../APP/' + process.env.appname
+
 ]));
