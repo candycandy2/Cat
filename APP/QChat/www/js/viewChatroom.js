@@ -23,7 +23,7 @@ $("#viewChatroom").pagecontainer({
                     if (status === "success") {
                         if (!event) {
                             sendMessage = true;
-                            getConversation(true);
+                            window.getConversation(true);
                         }
                     }
 
@@ -44,7 +44,7 @@ $("#viewChatroom").pagecontainer({
 
                     if (status === "success") {
                         sendMessage = true;
-                        getConversation(true);
+                        window.getConversation(true);
                     } else {
                         //error case
                     }
@@ -234,9 +234,10 @@ $("#viewChatroom").pagecontainer({
             }
 
             if (data.target.desc.indexOf("=") != -1) {
-                //Check if Chatroom is [1 to 1] or group
+                
                 var descArray = data.target.desc.split(";");
 
+                //Check if Chatroom need auto read history
                 var needHistory;
                 var needHistoryArray = descArray[0].split("=");
                 if (needHistoryArray[1] === "Y") {
@@ -245,12 +246,22 @@ $("#viewChatroom").pagecontainer({
                     needHistory = false;
                 }
 
+                //Check if Chatroom is [1 to 1] or group
                 var groupMessage;
                 var groupMessageArray = descArray[1].split("=");
                 if (groupMessageArray[1] === "Y") {
                     groupMessage = true;
                 } else {
                     groupMessage = false;
+                }
+
+                //Check if Chatroom name changed by user
+                var nameChanged;
+                var nameChangedArray = descArray[2].split("=");
+                if (nameChangedArray[1] === "Y") {
+                    nameChanged = true;
+                } else {
+                    nameChanged = false;
                 }
 
                 //message: text or image
@@ -265,6 +276,7 @@ $("#viewChatroom").pagecontainer({
                 var tempData = {
                     is_group: groupMessage,
                     name: data.target.name,
+                    name_changed: nameChanged,
                     owner: data.target.owner,
                     unread_count: data.unreadCount,
                     member: memberData,
@@ -289,7 +301,10 @@ $("#viewChatroom").pagecontainer({
                     if (action === "getConversation") {
                         //If send message, no need to refresh group member
                         if (!sendMessage) {
-                            window.getGroupMembers(data.target.id, groupMessage, "getConversation");
+                            //If edit chatroom info, no need to refresh group member
+                            if (prevPageID != "viewChatroomInfo") {
+                                window.getGroupMembers(data.target.id, groupMessage, "getConversation");
+                            }
                         }
                     }
 
@@ -735,7 +750,7 @@ $("#viewChatroom").pagecontainer({
             //if new create chatroom, the JM.data.chatroom[JM.chatroomID] is empty
             if (JM.data.chatroom[JM.chatroomID] === undefined) {
                 newCreate = true;
-                getConversation(true);
+                window.getConversation(true);
             } else {
                 window.chatroomTitle();
 

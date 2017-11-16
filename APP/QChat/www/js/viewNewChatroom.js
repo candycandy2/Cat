@@ -681,11 +681,14 @@ $("#viewNewChatroom").pagecontainer({
 
                     if (empNumberArray.length == 1) {
                         var chatroomName = name.substr(0, name.length - 2);
-                        desc = desc + "group_message=N";
+                        desc = desc + "group_message=N;";
                     } else if (empNumberArray.length > 1) {
                         var chatroomName = loginData["loginid"] + ", " + name.substr(0, name.length - 2);
-                        desc = desc + "group_message=Y";
+                        desc = desc + "group_message=Y;";
                     }
+
+                    //Chatroom name changed
+                    desc = desc + "name_changed=N";
 
                     //Create chatroom
                     loadingMask("show");
