@@ -72,7 +72,7 @@ var app = {
         */
 
         loadStringTable();
-        
+
         //For release
         this.bindEvents();
     },
@@ -293,27 +293,27 @@ var app = {
 app.initialize();
 
 function loadStringTable() {
-  //Browser default language, according to the mobile device language setting
-  //navigator.language: en-US / zh-CN / zh-TW
-  //note:
-  //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
-  //2. If Browser default language not exist in /string , use APP default language "zh-tw"
-  browserLanguage = navigator.language.toLowerCase();
-  var languageShortName = browserLanguage.substr(0, 2);
+    //Browser default language, according to the mobile device language setting
+    //navigator.language: en-US / zh-CN / zh-TW
+    //note:
+    //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
+    //2. If Browser default language not exist in /string , use APP default language "zh-tw"
+    browserLanguage = navigator.language.toLowerCase();
+    var languageShortName = browserLanguage.substr(0, 2);
 
-  if (languageShortName === "en") {
-      browserLanguage = "en-us";
-  }
+    if (languageShortName === "en") {
+        browserLanguage = "en-us";
+    }
 
-  $.getJSON("string/" + browserLanguage + ".json", function(data) {
-          //language string exist
-          getLanguageString();
-      })
-      .fail(function() {
-          //language string does not exist
-          browserLanguage = "en-us";
-          getLanguageString();
-      });
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+            //language string exist
+            getLanguageString();
+        })
+        .fail(function() {
+            //language string does not exist
+            browserLanguage = "en-us";
+            getLanguageString();
+        });
 };
 
 /********************************** jQuery Mobile Event *************************************/
@@ -748,7 +748,7 @@ function checkAppVersion() {
                     //qplay
                     if (device.platform === "iOS") {
                         window.open('itms-services://?action=download-manifest&url=' + serverURL + '/qplay/public/app/1/apk/ios/manifest.plist', '_system');
-                    } else {//android
+                    } else { //android
                         var updateUrl = '' + serverURL + '/qplay/public/app/1/apk/android/appqplay.apk';
                         updateAPP(updateUrl);
                     }
@@ -756,7 +756,7 @@ function checkAppVersion() {
                     //Download link without QPlay
                     if (device.platform === "iOS") {
                         window.open(download_url, '_system');
-                    } else {//android
+                    } else { //android
                         var updateUrl = download_url;
                         updateAPP(updateUrl);
                     }
