@@ -130,9 +130,11 @@ var endData = {
 //檢查是否符合預覽送簽標準
 function checkLeaveBeforePreview() {
     //必須符合3個條件：1.請假理由不能爲空 2.開始時間不能爲“請選擇” 3.結束時間不能爲“請選擇”
-    if($("#leaveReason").val() !== "" && $("#leave-agent-popup option").text() !== pleaseSelectStr && 
-    $('#startText').text() !== pleaseSelectStr && $('#endText').text() !== pleaseSelectStr && 
-    $("#leave-popup option").text() !== pleaseSelectStr) {
+    if($("#leaveReason").val() !== ""
+        && $("#leave-agent-popup option").text() !== pleaseSelectStr
+        && $('#startText').text() !== pleaseSelectStr 
+        && $('#endText').text() !== pleaseSelectStr 
+        && $("#leave-popup option").text() !== pleaseSelectStr) {
         //判斷基準日是否選擇
         if(needBaseday == true) {
             if($("#chooseBaseday").text() == selectBasedayStr) {
@@ -491,7 +493,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         }else if(device.platform === "Android") {
                             $("#startDate").trigger("click");
                         }
-                        
+
                     }else {
                         popupMsgInit('.basedayFirst');
                     }
@@ -501,13 +503,13 @@ $("#viewLeaveSubmit").pagecontainer({
                     }else if(device.platform === "Android") {
                         $("#startDate").trigger("click");
                     }
-                    
+
                 }
             }
         });
 
         //開始日期控件关闭后，让其失去焦点
-        $(document).on("change", "#startDate", function() {
+        $("#startDate").on("change", function() {
             var self = $(this).val();
             var minute = parseInt(self.substring(14, 16));
 
@@ -541,7 +543,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         });
 
-        //點擊結束日期
+        //點擊結束日期——datetime
         $(document).on("click", "#btnEndday", function() {           
             //点击“结束时间”只需要判断“开始时间”是否选择
             if($("#startText").text() == pleaseSelectStr) {

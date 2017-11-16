@@ -56,14 +56,13 @@ class JMessage {
                         );
         
         $result = CommonUtil::callAPI($method, $url,  $header, $data);
-        if(isset($result->error)){
-            if($result->error == 28){ //timeout
+        $result = json_decode($result);
+        if(isset($result->error) && is_numeric($result->error) && $result->error > 0){
+            if($result->error == 28){ //timeout 拋出例外給外層處理，報錯或是重試
                 return $result;
             }
             throw new \Exception("Call JMessage API error occur, url:".$url , $result->error);
         }
-        $result = json_decode($result);
-
         return $result;
     }
 }
