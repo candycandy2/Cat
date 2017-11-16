@@ -89,6 +89,20 @@ input[type=checkbox]:checked + label {
     padding-top: 1vw;
 }
 
+.input {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d6d6d6;
+    border-radius: 4px;
+    background-color: #ffffff;
+    height: 8.242VW;
+    text-indent: 3.71VW;
+    font-size: 4.18vw;
+    padding: 0;
+    padding-top: 1vw;
+    width: 62vw;
+}
+
 .no-data {
     font-size: 3.14vw;
     color: #666666;
