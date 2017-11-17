@@ -727,7 +727,7 @@ $("#viewPersonalLeave").pagecontainer({
             $(this).addClass("hover");
 
             beginDate = endDate = $(this).data("value");
-            console.log(beginDate);
+            
         });
 
     }

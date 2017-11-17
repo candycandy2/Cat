@@ -9,6 +9,134 @@ $("#viewBackLeaveQuery").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
+        //獲取銷假單列表——<EmpNo>0409132</EmpNo>
+        window.QueryEmployeeLeaveCancelForm = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var backLeaveList = "";
+                    var callbackData = data['Content'][0]["cancelformlist"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var formidArr = $("formid", htmlDoc);
+                    var formnoArr = $("formno", htmlDoc);
+                    var statusArr = $("status", htmlDoc);
+                    var leaveidArr = $("leaveid", htmlDoc);
+                    var begindateArr = $("begindate", htmlDoc);
+                    var begintimeArr = $("begintime", htmlDoc);
+                    var enddateArr = $("enddate", htmlDoc);
+                    var endtimeArr = $("endtime", htmlDoc);
+                    var leavedaysArr = $("days", htmlDoc);
+                    var leavehoursArr = $("hours", htmlDoc);
+
+                    for(var i in formidArr) {
+                        backLeaveList += '<div class="backLeave-query-list">' + 
+                                            '<div>' +
+                                                '<div class="backLeave-query-state font-style3" data-num="' + formidArr[i] + '">' +
+                                                    '<span>' + statusArr[i] + '</span>' +
+                                                    '<img src="img/btn_nextpage.png">' +
+                                                '</div>' +
+                                                '<div class="backLeave-query-base font-style10">' +
+                                                    '<div class="backLeave-query-basedata">' +
+                                                        '<div>' +
+                                                            '<span class="langStr" data-id="str_166"></span>' +
+                                                            '<span class="leave-id">' + formnoArr[i] + '</span>' +
+                                                        '</div>' +
+                                                        '<div>' +
+                                                            '<span class="langStr" data-id="str_152"></span>' +
+                                                            '<span>' + leaveidArr[i] + '</span>' +
+                                                        '</div>' +
+                                                    '</div>' +
+                                                    '<div>' +
+                                                        '<span class="langStr" data-id="str_138"></span>' +
+                                                        '<span>' + begindateArr[i] + ' ' + begintimeArr[i] + '</span>' +
+                                                        '<span> - </span>' +
+                                                        '<span>' + enddateArr[i] + ' ' + endtimeArr[i] + '</span>' +
+                                                    '</div>' +
+                                                    '<div>' +
+                                                        '<span class="langStr" data-id="str_153"></span>' +
+                                                        '<span>' + leavedaysArr[i] + '</span>' +
+                                                        '<span class="langStr" data-id="str_071"></span>' +
+                                                        '<span>' + leavehoursArr[i] + '</span>' +
+                                                        '<span class="langStr" data-id="str_088"></span>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                            '</div>' +
+                                            '<div></div>' +
+                                        '</div>';
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryEmployeeLeaveCancelForm", self.successCallback, self.failCallback, QueryEmployeeLeaveCancelFormQueryData, "");
+            }();
+        };
+
+        //獲取銷假單詳情——<EmpNo>0409132</EmpNo><formid>123456</formid>
+        window.LeaveCancelFormDetail = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDoc);
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "LeaveCancelFormDetail", self.successCallback, self.failCallback, LeaveCancelFormDetailQueryData, "");
+            }();
+        };
+
+        //撤回銷假單——<EmpNo>0409132</EmpNo><formid>123456</formid><formno>572000</formno><reason>測試</reason>
+        window.RecallLeaveCancelForm = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDoc);
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "RecallLeaveCancelForm", self.successCallback, self.failCallback, RecallLeaveCancelFormQueryData, "");
+            }();
+        };
+
+        //刪除銷假單——<EmpNo>0409132</EmpNo><formid>123456</formid>
+        window.DeleteLeaveCancelForm = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDoc);
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "DeleteLeaveCancelForm", self.successCallback, self.failCallback, DeleteLeaveCancelFormQueryData, "");
+            }();
+        };
+
+
         //請假單頁初始化
         function backLeaveQueryInit() {
             $("#backToList").hide();
@@ -28,9 +156,13 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {
+            console.log(QueryEmployeeLeaveCancelFormQueryData);
+
+            
         });
 
         $("#viewBackLeaveQuery").on("pageshow", function(event, ui) {
+            QueryEmployeeLeaveCancelForm();
             loadingMask("hide");
         });
 

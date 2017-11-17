@@ -1,5 +1,8 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
 var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData;
+var QueryEmployeeLeaveApplyFormQueryData, LeaveApplyFormDetailQueryData, RecallLeaveApplyFormQueryData,
+DeleteLeaveApplyFormQueryData, SendLeaveCancelFormDataQueryData;
+var QueryEmployeeLeaveCancelFormQueryData, LeaveCancelFormDetailQueryData, RecallLeaveCancelFormQueryData, DeleteLeaveCancelFormQueryData;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
@@ -37,9 +40,10 @@ window.initialSuccess = function() {
                       + "</Month><EmpNo>"
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
-    getDefaultSettingQueryData = "<EmpNo>" + myEmpNo + "</EmpNo>";
-    //console.log(queryCalendarData);
-    //console.log(getDefaultSettingQueryData);
+    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    //console.log(QueryEmployeeLeaveCancelFormQueryData);
     QueryCalendarData();
     if (leaveTypeData["option"].length == 0) {
         GetDefaultSetting();
