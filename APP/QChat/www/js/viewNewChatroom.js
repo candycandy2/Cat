@@ -43,7 +43,7 @@ $("#viewNewChatroom").pagecontainer({
 
                         //check if this user has been selected before.
                         var empNumberArray = [];
-                        $(".new-chatroom-footer .data-list").each(function(index, element) {
+                        $("#viewNewChatroom .new-chatroom-footer .data-list").each(function(index, element) {
                             empNumberArray.push($(element).prop("id").substr(3));
                         });
 
@@ -188,8 +188,8 @@ $("#viewNewChatroom").pagecontainer({
             if (dataCount === 0 || dataIndex === 1) {
                 $("#msgWelcome").hide();
                 $("#msgUserOverflow").hide();
-                $(".data-list-content .user-list").remove();
-                $(".data-list-content .ui-hr-list").remove();
+                $("#viewNewChatroom .data-list-content .user-list").remove();
+                $("#viewNewChatroom .data-list-content .ui-hr-list").remove();
             }
 
             if (dataCount === 0) {
@@ -266,9 +266,9 @@ $("#viewNewChatroom").pagecontainer({
         }
 
         window.userListViewAvatar = function(listViewIndex, avatarPath) {
-            $("#userList" + listViewIndex).find(".img-content svg").hide();
-            $("#userList" + listViewIndex).find(".img-content img").prop("src", avatarPath);
-            $("#userList" + listViewIndex).find(".img-content img").show();
+            $("div#userList" + listViewIndex).find(".img-content svg").hide();
+            $("div#userList" + listViewIndex).find(".img-content img").prop("src", avatarPath);
+            $("div#userList" + listViewIndex).find(".img-content img").show();
         };
 
         window.newQChatroom = function(name, desc, empNumberArray) {
@@ -348,12 +348,12 @@ $("#viewNewChatroom").pagecontainer({
 
         function checkSelectedUser() {
             //Set Create Camera Button, check count of User Selected UI
-            var selectCount = $('.data-list-content :checkbox:checked').length;
-            var dataCount = $(".new-chatroom-footer .data-list").length;
+            var selectCount = $('#viewNewChatroom .data-list-content :checkbox:checked').length;
+            var dataCount = $("#viewNewChatroom .new-chatroom-footer .data-list").length;
 
             if (selectCount == 0 && dataCount == 0) {
                 setCreateChatroomButton("disable");
-                $(".new-chatroom-footer").css("opacity", 0);
+                $("#viewNewChatroom .new-chatroom-footer").css("opacity", 0);
             } else {
                 setCreateChatroomButton("enable");
             }
@@ -502,8 +502,8 @@ $("#viewNewChatroom").pagecontainer({
             $(".data-list-content .ui-hr-list").remove();
 
             //Clear User Selected UI
-            $(".new-chatroom-footer .data-list").remove();
-            $(".new-chatroom-footer").css("opacity", 0);
+            $("#viewNewChatroom .new-chatroom-footer .data-list").remove();
+            $("#viewNewChatroom .new-chatroom-footer").css("opacity", 0);
         });
 
         $("#viewNewChatroom").on("pageshow", function(event, ui) {
@@ -558,7 +558,7 @@ $("#viewNewChatroom").pagecontainer({
             change: function() {
 
                 //Animate
-                $(".new-chatroom-footer").css("opacity", 1);
+                $("#viewNewChatroom .new-chatroom-footer").css("opacity", 1);
 
                 var userEmpID = $(this).val();
                 var isChecked = $(this).is(":checked");
@@ -580,12 +580,12 @@ $("#viewNewChatroom").pagecontainer({
 
                     $("#viewNewChatroom").append(userAnimate);
 
-                    if ($(".new-chatroom-footer .data-list").length == 0) {
-                        var bottomOffset = $(".new-chatroom-footer").offset();
+                    if ($("#viewNewChatroom .new-chatroom-footer .data-list").length == 0) {
+                        var bottomOffset = $("#viewNewChatroom .new-chatroom-footer").offset();
                         var bottomDataWidth = 0;
                     } else {
-                        var bottomOffset = $(".new-chatroom-footer .data-list:last-child").offset();
-                        var bottomDataWidth = $(".new-chatroom-footer .data-list:last-child").width();
+                        var bottomOffset = $("#viewNewChatroom .new-chatroom-footer .data-list:last-child").offset();
+                        var bottomDataWidth = $("#viewNewChatroom .new-chatroom-footer .data-list:last-child").width();
                     }
 
                     var footerPaddingTop = parseInt(document.documentElement.clientWidth * (1.945 + 1) / 100, 10);
@@ -607,14 +607,14 @@ $("#viewNewChatroom").pagecontainer({
 
                         userAnimate.remove();
 
-                        $(".new-chatroom-footer .data-list:last-child").removeClass("last");
-                        $(".new-chatroom-footer").append(userDataSelected);
-                        $(".new-chatroom-footer .data-list:last-child").addClass("last");
+                        $("#viewNewChatroom .new-chatroom-footer .data-list:last-child").removeClass("last");
+                        $("#viewNewChatroom .new-chatroom-footer").append(userDataSelected);
+                        $("#viewNewChatroom .new-chatroom-footer .data-list:last-child").addClass("last");
 
                         checkSelectedUser();
                     });
                 } else {
-                    var dataCount = $(".new-chatroom-footer .data-list").length;
+                    var dataCount = $("#viewNewChatroom .new-chatroom-footer .data-list").length;
                     var leftWidth = parseInt(18.84 * dataCount, 10);
 
                     if ($("#emp" + userEmpID).length > 0) {
@@ -624,7 +624,7 @@ $("#viewNewChatroom").pagecontainer({
                             left: "-" + leftWidth + "vw",
                             opacity: 0
                         }, 500, function() {
-                            $(".new-chatroom-footer #emp" + userEmpID).remove();
+                            $("#viewNewChatroom .new-chatroom-footer #emp" + userEmpID).remove();
 
                             checkSelectedUser();
                         });
@@ -632,7 +632,7 @@ $("#viewNewChatroom").pagecontainer({
                 }
 
             }
-        }, ".data-list-content input:checkbox");
+        }, "#viewNewChatroomContent .data-list-content input:checkbox");
 
         //Delete selected user
         $(document).on({
@@ -641,14 +641,14 @@ $("#viewNewChatroom").pagecontainer({
                 //uncheck checkbox
                 var empID = $(this).prop("id").substr(3);
 
-                $(".data-list-content input:checkbox").each(function(index, data) {
+                $("#viewNewChatroomContent .data-list-content input:checkbox").each(function(index, data) {
                     if ($(data).val() == empID) {
                         $(data).prop("checked", false);
                     }
                 });
 
                 //remove user data
-                var dataCount = $(".new-chatroom-footer .data-list").length;
+                var dataCount = $("#viewNewChatroom .new-chatroom-footer .data-list").length;
                 var leftWidth = parseInt(18.84 * dataCount, 10);
 
                 $(this).css({
@@ -657,13 +657,13 @@ $("#viewNewChatroom").pagecontainer({
                     left: "-" + leftWidth + "vw",
                     opacity: 0
                 }, 500, function() {
-                    $(".new-chatroom-footer #emp" + empID).remove();
+                    $("#viewNewChatroom .new-chatroom-footer #emp" + empID).remove();
 
                     checkSelectedUser();
                 });
 
             }
-        }, ".new-chatroom-footer .data-list");
+        }, "#viewNewChatroom .new-chatroom-footer .data-list");
 
         //Create chatroom
         $(document).on({
@@ -674,7 +674,7 @@ $("#viewNewChatroom").pagecontainer({
                     var desc = "need_history=Y;";
                     var empNumberArray = [];
 
-                    $(".new-chatroom-footer .data-list").each(function(index, element) {
+                    $("#viewNewChatroom .new-chatroom-footer .data-list").each(function(index, element) {
                         name = name + $(element).find(".user-name").data("userName") + ", ";
                         empNumberArray.push($(element).prop("id").substr(3));
                     });

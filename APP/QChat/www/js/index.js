@@ -3,7 +3,7 @@
 var initialAppName = "QChat";
 var appKeyOriginal = "appqchat";
 var appKey = "appqchat";
-var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom", "viewAddFriend", "viewChatroomInfo", "viewChatroomEdit"];
+var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom", "viewAddFriend", "viewChatroomInfo", "viewChatroomEdit", "viewAddMember"];
 //var waterMarkPageList = ["viewChatroom"];
 var appSecretKey = "9f48f50f233f6ec48ffc4ae93d52a335";
 
@@ -75,10 +75,10 @@ function cutString(maxViewWidth, string, fontSize, type, memberCount) {
             if (stringWidthPX > maxWidthPX) {
 
                 if (type === "number") {
-                    var cutLength = 2;
+                    var cutLength = 3;
 
                     if (memberCount > 9) {
-                        cutLength = 3;
+                        cutLength = 4;
                     }
 
                     displayString = string.substr(0, i-cutLength) + ".." + "(" + memberCount + ")";
