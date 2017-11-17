@@ -60,110 +60,145 @@ window.initialSuccess = function() {
 //[Android]Handle the back button
 function onBackKeyDown() {
     //var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
-    if(visitedPageList.length == 1) {
-        if (checkPopupShown()){
-            var popupID = $(".ui-popup-active")[0].children[0].id;
-            $('#' + popupID).popup("close");
-        } else if ($(".ui-page-active").jqmData("panel") === "open"){
-            $("#mypanel").panel("close");
-        } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-1") {
-            $("input[id=viewPersonalLeave-tab-2]").trigger('click');
-            $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-            $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
-        } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-2") {
-            navigator.app.exitApp();
-        }
-    } else {
-        var activePageID = visitedPageList[visitedPageList.length-1];
-        var prePageID = visitedPageList[visitedPageList.length-2];
+    var activePageID = visitedPageList[visitedPageList.length-1];
+    var prePageID = visitedPageList[visitedPageList.length-2];
 
-        if (activePageID === "viewPersonalLeave") {
-            if (checkPopupShown()){
-                var popupID = $(".ui-popup-active")[0].children[0].id;
-                $('#' + popupID).popup("close");
-            } else if ($(".ui-page-active").jqmData("panel") === "open"){
-                $("#mypanel").panel("close");
-            } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-1") {
-                $("input[id=viewPersonalLeave-tab-2]").trigger('click');
-                $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-                $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
-            } else {
-                visitedPageList.pop();
-                changePageByPanel(prePageID);     
-            }
-        } else if (activePageID === "viewLeaveSubmit") {
-            if (checkPopupShown()) {
-                var popupID = $(".ui-popup-active")[0].children[0].id;
-                $('#' + popupID).popup("close");
-            } else if ($(".ui-page-active").jqmData("panel") === "open"){
-                $("#mypanel").panel("close");
-            } else if ($("#leaveReason").is(":focus")){
-                $("#leaveReason").blur();
-            } else if ($("#backMain").css("display") == "inline") {
-                $("#backMain").click();
-            } else {
-                visitedPageList.pop();
-                changePageByPanel(prePageID);   
-            }
-        } else if (activePageID === "viewLeaveQuery") {
-            if (checkPopupShown()) {
-                var popupID = $(".ui-popup-active")[0].children[0].id;
-                $('#' + popupID).popup("close");
-            } else if ($(".ui-page-active").jqmData("panel") === "open"){
-                $("#mypanel").panel( "close");
-            } else if ($("#withdrawReason").is(":focus")){
-                $("#withdrawReason").blur();
-            } else if ($("#dispelReason").is(":focus")){
-                $("#dispelReason").blur();
-            } else if ($("#backEffectPreview").css("display") == "inline") {
-                $("#backEffectPreview").click();
-            } else if ($("#backSignPreview").css("display") == "inline") {
-                $("#backSignPreview").click();
-            } else if ($("#backDetailList").css("display") == "inline") {
-                $("#backDetailList").click();
-            } else {
-                visitedPageList.pop();
-                changePageByPanel(prePageID);    
-            }
-        } else if (activePageID === "viewBackLeaveQuery") {
-            if (checkPopupShown()) {
-                var popupID = $(".ui-popup-active")[0].children[0].id;
-                $('#' + popupID).popup("close");
-            } else if ($(".ui-page-active").jqmData("panel") === "open"){
-                $("#mypanel").panel("close");
-            } else if ($("#signTowithdrawReason").is(":focus")){
-                $("#signTowithdrawReason").blur();
-            } else if ($("#backToList").css("display") == "inline") {
-                $("#backToList").click();
-            } else if ($("#backToSign").css("display") == "inline") {
-                $("#backToSign").click();
-            } else {
-                visitedPageList.pop();
-                changePageByPanel(prePageID);        
-            }
-        } else if (activePageID === "viewHolidayCalendar") {
-            if (checkPopupShown()) {
-                var popupID = $(".ui-popup-active")[0].children[0].id;
-                $('#' + popupID).popup("close");
-            } else if ($(".ui-page-active").jqmData("panel") === "open"){
-                $("#mypanel").panel("close");
-            } else if ($("#viewHolidayCalendarTab :radio:checked").val() == "viewHolidayCalendar-tab-3") {
-                $("input[id=viewHolidayCalendar-tab-2]").trigger('click');
-                $("label[for=viewHolidayCalendar-tab-2]").addClass('ui-btn-active');
-                $("label[for=viewHolidayCalendar-tab-3]").removeClass('ui-btn-active');
-                $("label[for=viewHolidayCalendar-tab-1]").removeClass('ui-btn-active');
-            } else if ($("#viewHolidayCalendarTab :radio:checked").val() == "viewHolidayCalendar-tab-2") {
-                $("input[id=viewHolidayCalendar-tab-1]").trigger('click');
-                $("label[for=viewHolidayCalendar-tab-1]").addClass('ui-btn-active');
-                $("label[for=viewHolidayCalendar-tab-2]").removeClass('ui-btn-active');
-                $("label[for=viewHolidayCalendar-tab-3]").removeClass('ui-btn-active');
-            } else {
-                visitedPageList.pop();
-                changePageByPanel(prePageID);    
-            }
-        }
+    if(checkPopupShown()) {
+        var popupID = $(".ui-popup-active")[0].children[0].id;
+        $('#' + popupID).popup("close");
+    } else if($(".ui-page-active").jqmData("panel") === "open") {
+        $("#mypanel").panel("close");
+    } else if ($("#leaveReason").is(":focus")){
+        $("#leaveReason").blur();
+    } else if ($("#withdrawReason").is(":focus")){
+        $("#withdrawReason").blur();
+    } else if ($("#dispelReason").is(":focus")){
+        $("#dispelReason").blur();
+    } else if ($("#signTowithdrawReason").is(":focus")){
+        $("#signTowithdrawReason").blur();
+    } else if ($("#backMain").css("display") == "inline") {
+        $("#backMain").click();
+    } else if ($("#backEffectPreview").css("display") == "inline") {
+        $("#backEffectPreview").click();
+    } else if ($("#backSignPreview").css("display") == "inline") {
+        $("#backSignPreview").click();
+    } else if ($("#backDetailList").css("display") == "inline") {
+        $("#backDetailList").click();
+    } else if ($("#backToList").css("display") == "inline") {
+        $("#backToList").click();
+    } else if ($("#backToSign").css("display") == "inline") {
+        $("#backToSign").click();
+    } else if(visitedPageList.length == 1) {
+        navigator.app.exitApp();
+    } else {
+        visitedPageList.pop();
+        changePageByPanel(prePageID);    
     }
-    
+
+    // if(visitedPageList.length == 1) {
+    //     if (checkPopupShown()){
+    //         var popupID = $(".ui-popup-active")[0].children[0].id;
+    //         $('#' + popupID).popup("close");
+    //     } else if ($(".ui-page-active").jqmData("panel") === "open"){
+    //         $("#mypanel").panel("close");
+    //     } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-1") {
+    //         $("input[id=viewPersonalLeave-tab-2]").trigger('click');
+    //         $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
+    //         $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
+    //     } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-2") {
+    //         navigator.app.exitApp();
+    //     }
+    // } else {
+    //     var activePageID = visitedPageList[visitedPageList.length-1];
+    //     var prePageID = visitedPageList[visitedPageList.length-2];
+
+    //     if (activePageID === "viewPersonalLeave") {
+    //         if (checkPopupShown()){
+    //             var popupID = $(".ui-popup-active")[0].children[0].id;
+    //             $('#' + popupID).popup("close");
+    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
+    //             $("#mypanel").panel("close");
+    //         } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-1") {
+    //             $("input[id=viewPersonalLeave-tab-2]").trigger('click');
+    //             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
+    //             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
+    //         } else {
+    //             visitedPageList.pop();
+    //             changePageByPanel(prePageID);     
+    //         }
+    //     } else if (activePageID === "viewLeaveSubmit") {
+    //         if (checkPopupShown()) {
+    //             var popupID = $(".ui-popup-active")[0].children[0].id;
+    //             $('#' + popupID).popup("close");
+    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
+    //             $("#mypanel").panel("close");
+    //         } else if ($("#leaveReason").is(":focus")){
+    //             $("#leaveReason").blur();
+    //         } else if ($("#backMain").css("display") == "inline") {
+    //             $("#backMain").click();
+    //         } else {
+    //             visitedPageList.pop();
+    //             changePageByPanel(prePageID);   
+    //         }
+    //     } else if (activePageID === "viewLeaveQuery") {
+    //         if (checkPopupShown()) {
+    //             var popupID = $(".ui-popup-active")[0].children[0].id;
+    //             $('#' + popupID).popup("close");
+    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
+    //             $("#mypanel").panel( "close");
+    //         } else if ($("#withdrawReason").is(":focus")){
+    //             $("#withdrawReason").blur();
+    //         } else if ($("#dispelReason").is(":focus")){
+    //             $("#dispelReason").blur();
+    //         } else if ($("#backEffectPreview").css("display") == "inline") {
+    //             $("#backEffectPreview").click();
+    //         } else if ($("#backSignPreview").css("display") == "inline") {
+    //             $("#backSignPreview").click();
+    //         } else if ($("#backDetailList").css("display") == "inline") {
+    //             $("#backDetailList").click();
+    //         } else {
+    //             visitedPageList.pop();
+    //             changePageByPanel(prePageID);    
+    //         }
+    //     } else if (activePageID === "viewBackLeaveQuery") {
+    //         if (checkPopupShown()) {
+    //             var popupID = $(".ui-popup-active")[0].children[0].id;
+    //             $('#' + popupID).popup("close");
+    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
+    //             $("#mypanel").panel("close");
+    //         } else if ($("#signTowithdrawReason").is(":focus")){
+    //             $("#signTowithdrawReason").blur();
+    //         } else if ($("#backToList").css("display") == "inline") {
+    //             $("#backToList").click();
+    //         } else if ($("#backToSign").css("display") == "inline") {
+    //             $("#backToSign").click();
+    //         } else {
+    //             visitedPageList.pop();
+    //             changePageByPanel(prePageID);        
+    //         }
+    //     } else if (activePageID === "viewHolidayCalendar") {
+    //         if (checkPopupShown()) {
+    //             var popupID = $(".ui-popup-active")[0].children[0].id;
+    //             $('#' + popupID).popup("close");
+    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
+    //             $("#mypanel").panel("close");
+    //         } else if ($("#viewHolidayCalendarTab :radio:checked").val() == "viewHolidayCalendar-tab-3") {
+    //             $("input[id=viewHolidayCalendar-tab-2]").trigger('click');
+    //             $("label[for=viewHolidayCalendar-tab-2]").addClass('ui-btn-active');
+    //             $("label[for=viewHolidayCalendar-tab-3]").removeClass('ui-btn-active');
+    //             $("label[for=viewHolidayCalendar-tab-1]").removeClass('ui-btn-active');
+    //         } else if ($("#viewHolidayCalendarTab :radio:checked").val() == "viewHolidayCalendar-tab-2") {
+    //             $("input[id=viewHolidayCalendar-tab-1]").trigger('click');
+    //             $("label[for=viewHolidayCalendar-tab-1]").addClass('ui-btn-active');
+    //             $("label[for=viewHolidayCalendar-tab-2]").removeClass('ui-btn-active');
+    //             $("label[for=viewHolidayCalendar-tab-3]").removeClass('ui-btn-active');
+    //         } else {
+    //             visitedPageList.pop();
+    //             changePageByPanel(prePageID);    
+    //         }
+    //     }
+    // }
+  
 }
 
 $(document).ready(function() {

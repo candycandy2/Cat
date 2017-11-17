@@ -81,7 +81,7 @@ class ChatRoomController extends Controller
         $chatroomDesc = $this->data['chatroom_desc'];
 
         $descData = $this->chatRoomService->getChatroomExtraData($chatroomDesc);
-        if( $descData['group_message'] == 'N'){
+        if(is_null($descData) || $descData['group_message'] == 'N'){
             if(count($targetUserList) > 1){
                 return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
                     'Message'=>"欄位格式錯誤",
@@ -432,12 +432,14 @@ class ChatRoomController extends Controller
                  $dataToJMessage['desc'] = $dataToDB['chatroom_desc'] = $chatRoomDesc;
             }
 
-            $response =$this->chatRoomService->updateGroup($groupId, $dataToJMessage);
+            /*僅更新QPlayDB，由手機端直接更新JMessage聊天室資訊，以達到即時同步*/
+            /*$response =$this->chatRoomService->updateGroup($groupId, $dataToJMessage);
             if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
                 throw new JMessageException($response->message);
             }else if(isset($response->error->code)){
                 throw new JMessageException($response->error->message);
-            }
+            }*/
+
             $userId = $this->userService->getUserData($empNo)->row_id;
             $this->chatRoomService->updateChatroom($groupId, $dataToDB, $userId);
 
