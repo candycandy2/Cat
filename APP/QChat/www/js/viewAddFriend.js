@@ -1,5 +1,4 @@
 
-
 $("#viewAddFriend").pagecontainer({
     create: function(event, ui) {
 
@@ -102,6 +101,8 @@ $("#viewAddFriend").pagecontainer({
             getQList("3", "viewAddFriend");
 
             //Recovery Search User Input UI
+            $(".data-list-content .user-list").remove();
+            $(".data-list-content .ui-hr-list").remove();
             $("#searchUserInputAddFriend").css("width", "92.5vw");
             $("#searchUserInputAddFriend").val("");
             $("#searchUserButtonAddFriend").hide();
