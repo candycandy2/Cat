@@ -377,7 +377,7 @@ $(document).one("pagebeforecreate", function() {
         } else if (device.platform === "iOS") {
             if (versionCompare(device.version, "11.0", "") === 1) {
             } else {
-                //$('.page-header').addClass('ios-fix-overlap');
+                $('.page-header').addClass('ios-fix-overlap');
                 $('.ios-fix-overlap-div').css('display', 'block');
             }
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
@@ -789,7 +789,7 @@ function setWhiteList() {
         if (device.platform === "iOS") {
             if (versionCompare(device.version, "11.0", "") === 1) {
             } else {
-                //$('.page-header').addClass('ios-fix-overlap');
+                $('.page-header').addClass('ios-fix-overlap');
                 $('.ios-fix-overlap-div').css('display', 'block');
             }
         }
