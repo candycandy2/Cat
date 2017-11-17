@@ -5,7 +5,7 @@ var JM = {
     friendID: "",
     chatroomID: "",
     data: {},
-    init: function(JMAppKey, sendPushToken, receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged) {
+    init: function(JMAppKey, sendPushToken, receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage) {
 
         //Update JMessaage APP Key
         JM.key = JMAppKey;
@@ -80,6 +80,11 @@ var JM = {
         window.JMessage.addLoginStateChangedListener(function (data) {
             console.log("----addLoginStateChangedListener");
             loginStateChanged(data);
+        });
+
+        window.JMessage.addSyncRoamingMessageListener(function (data) {
+            console.log("----addSyncRoamingMessageListener");
+            syncRoamingMessage(data);
         });
 
         console.log("----initial");
