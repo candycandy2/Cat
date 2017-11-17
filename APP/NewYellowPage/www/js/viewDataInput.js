@@ -3,7 +3,7 @@
 // review
 var companyInfoAry = [],
     phoneBookNone = false,
-    expiredTime = 3; // exporedTime = 3 months
+    expiredTime = 3; // expiredTime = 3 months
 
 $("#viewDataInput").pagecontainer({
     create: function(event, ui) {
@@ -362,8 +362,9 @@ $("#viewDataInput").pagecontainer({
                     mainElement: '#pageOne',
                     onRefresh: function() {
                         //do something for refresh
-                        window.localStorage.removeItem('QueryMyPhoneBookData'); //set dirty
-                        QueryMyPhoneBook(); //force to refresh
+                        //review by alan
+                        window.localStorage.removeItem('companyInfo'); //set dirty
+                        QueryCompanyData(); //force to refresh
                     }
                 });
             }
