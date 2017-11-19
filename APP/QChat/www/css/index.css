@@ -1022,6 +1022,36 @@ input[type=checkbox]:checked + label {
     margin-top: 2.9735vw;
 }
 
+#chatroomEditName {
+    margin-top: -2.5vw;
+}
+
+.member-add-btn {
+    clear: both;
+    display: inline-block;
+    width: 35vw;
+    padding: 4.3vw 0 3vw 0;
+}
+
+/*-----------------------------------------------------------------Chatroom Add Member*/
+#searchUserInputAddMember {
+    margin-left: 3.71vw;
+}
+
+#titleFriendAddMember {
+    margin-top: 18.5vw;
+    padding-left: 3.71vw;
+}
+
+#userListContentAddMember {
+    margin-left: 0;
+}
+
+#viewAddMemberContent .search-index-content {
+    top: 14vw;
+    left: 3.71vw;
+}
+
 .hide {
     display: none;
 }

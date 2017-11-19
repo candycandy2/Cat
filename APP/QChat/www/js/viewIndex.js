@@ -307,6 +307,7 @@ $("#viewIndex").pagecontainer({
                 var callback = function(status, data) {
 
                     if (status === "success") {
+
                         JM.data.chatroom[chatroomID].member = data;
 
                         JM.updateLocalStorage();
@@ -456,6 +457,8 @@ $("#viewIndex").pagecontainer({
                                 friendListViewAvatar(listViewIndex, data.filePath);
                             } else if (action === "chatroomMemberListView") {
                                 chatroomMemberListViewAvatar(listViewIndex, data.filePath);
+                            } else if (action === "addMemberListView") {
+                                addMemberListViewAvatar(listViewIndex, data.filePath);
                             }
                         }
                     }
@@ -597,6 +600,12 @@ $("#viewIndex").pagecontainer({
                     if (data.extras.action === "newChatroom") {
                         if (activePageID === "viewIndex") {
                             window.getGroupIds();
+                        }
+                    } else if (data.extras.action === "memberEvent") {
+                        if (activePageID === "viewChatroom") {
+                            window.getConversation(true, true);
+                        } else {
+                            window.getConversation(false, true);
                         }
                     }
 
@@ -842,7 +851,7 @@ $("#viewIndex").pagecontainer({
                 }
 
                 timer = setTimeout(function () {
-                    $(".friend-list-content .data-list").each(function(index, dom) {
+                    $(".friend-content .friend-list-content .data-list").each(function(index, dom) {
                         var name = $(dom).find(".personal-name").html();
 
                         if (name.toLowerCase().indexOf(text.toLowerCase()) == -1) {
@@ -877,7 +886,7 @@ $("#viewIndex").pagecontainer({
                         $("#chatroomHR" + chatroomID).show();
                     });
                 } else if (tabActiveID === "#memberDiv") {
-                    $(".friend-list-content .data-list").each(function(index, dom) {
+                    $(".friend-content .friend-list-content .data-list").each(function(index, dom) {
                         $(dom).removeClass("hide");
                         $(dom).next("hr").removeClass("hide");
                     });
