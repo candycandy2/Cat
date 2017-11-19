@@ -17,7 +17,7 @@ $("#viewDataInput").pagecontainer({
             var self = this,
                 storageTime;
 
-            if (localStorage.getItem('companyInfo') === null) {
+            if (localStorage.getItem('QueryCompanyData') === null) {
                 this.successCallback = function(data) {
                     loadingMask("hide");
                     var resultcode = data['ResultCode'];
@@ -27,7 +27,7 @@ $("#viewDataInput").pagecontainer({
                         // save data into localstorage
                         var nowTime = new Date();
                         companyInfoAry.push({ 'result': data['Content'], 'time': nowTime });
-                        localStorage.setItem('companyInfo', JSON.stringify(companyInfoAry));
+                        localStorage.setItem('QueryCompanyData', JSON.stringify(companyInfoAry));
                     }
                 };
                 this.failCallback = function(data) {};
@@ -35,10 +35,10 @@ $("#viewDataInput").pagecontainer({
                     CustomAPI("POST", true, "QueryCompanyData", self.successCallback, self.failCallback, queryData, "");
                 }();
             } else {
-                var storageData = JSON.parse(localStorage.getItem("companyInfo"));
+                var storageData = JSON.parse(localStorage.getItem("QueryCompanyData"));
                 insertCompanyValue(storageData[0].result);
                 if (checkDataExpired(storageData[0].time, expiredTime, 'MM')) {
-                    localStorage.removeItem("companyInfo");
+                    localStorage.removeItem("QueryCompanyData");
                 }
                 loadingMask("hide");
             }
@@ -363,7 +363,7 @@ $("#viewDataInput").pagecontainer({
                     onRefresh: function() {
                         //do something for refresh
                         //review by alan
-                        window.localStorage.removeItem('companyInfo'); //set dirty
+                        window.localStorage.removeItem('QueryCompanyData'); //set dirty
                         QueryCompanyData(); //force to refresh
                     }
                 });
