@@ -173,7 +173,7 @@ class FriendController extends Controller
             $targetEmpNo = $this->data['destination_emp_no'];
             
             if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -250,7 +250,7 @@ class FriendController extends Controller
             $reason = $this->data['reason'];
             
             if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -319,7 +319,7 @@ class FriendController extends Controller
             $sourceEmpNo = $this->data['source_emp_no'];
             
             if(!Verify::checkUserStatusByUserEmpNo($sourceEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -388,7 +388,7 @@ class FriendController extends Controller
             $rejectReason = $this->data['reason'];
 
             if(!Verify::checkUserStatusByUserEmpNo($sourceEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -443,7 +443,7 @@ class FriendController extends Controller
             $destinationEmpNo = $this->data['destination_emp_no'];
 
             if(!Verify::checkUserStatusByUserEmpNo($destinationEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -486,7 +486,7 @@ class FriendController extends Controller
             $destEmpNo = $this->data['destination_emp_no'];
            
             if(!Verify::checkUserStatusByUserEmpNo($destEmpNo)) {
-             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                     'Message'=>"要設定的好友工號不存在",
                     'Content'=>""]);
             }
