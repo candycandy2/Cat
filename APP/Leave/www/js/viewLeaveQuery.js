@@ -36,6 +36,154 @@ $("#viewLeaveQuery").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
+        //獲取請假單列表——<EmpNo>0409132</EmpNo>
+        window.QueryEmployeeLeaveApplyForm = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var leaveList = "";
+                    var callbackData = data['Content'][0]["applyformlist"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    var formidArr = $("formid", htmlDoc);
+                    var formnoArr = $("formno", htmlDoc);
+                    var statusArr = $("status", htmlDoc);
+                    var leaveidArr = $("leaveid", htmlDoc);
+                    var begindateArr = $("begindate", htmlDoc);
+                    var begintimeArr = $("begintime", htmlDoc);
+                    var enddateArr = $("enddate", htmlDoc);
+                    var endtimeArr = $("endtime", htmlDoc);
+                    var leavedaysArr = $("days", htmlDoc);
+                    var leavehoursArr = $("hours", htmlDoc);
+                    var cancelstatusArr = $("cancelstatus", htmlDoc);
+
+                    for(var i in formidArr) {
+                        leaveList += '<div class="leave-query-list">' +
+                                        '<div>' +
+                                            '<div class="leave-query-state font-style3" data-num="' + formidArr[i] + '">' +
+                                                '<span>' + statusArr[i] + '</span>' +
+                                                '<img src="img/btn_nextpage.png">' +
+                                            '</div>' +
+                                            '<div class="leave-query-base font-style10">' +
+                                                '<div class="leave-query-basedata">' +
+                                                    '<div>' +
+                                                        '<span class="langStr" data-id="str_131"></span>' +
+                                                        '<span class="leave-id">' + formnoArr[i] + '</span>' +
+                                                    '</div>' +
+                                                    '<div>' +
+                                                        '<span class="langStr" data-id="str_152"></span>' +
+                                                        '<span>' + leaveidArr[i] + '</span>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                                '<div>' +
+                                                    '<span class="langStr" data-id="str_138"></span>' +
+                                                    '<span>' + begindateArr[i] + ' ' + begintimeArr[i] + '</span>' +
+                                                    '<span> - </span>' +
+                                                    '<span>' + enddateArr[i] + ' ' + endtimeArr[i] + '</span>' +
+                                                '</div>' +
+                                                '<div>' +
+                                                    '<span class="langStr" data-id="str_153"></span>' +
+                                                    '<span>' + leavedaysArr[i] + '</span>' +
+                                                    '<span class="langStr" data-id="str_071"></span>' +
+                                                    '<span>' + leavehoursArr[i] + '</span>' +
+                                                    '<span class="langStr" data-id="str_088"></span>' +
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div></div>' +
+                                    '</div>';
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryEmployeeLeaveApplyForm", self.successCallback, self.failCallback, QueryEmployeeLeaveApplyFormQueryData, "");
+            }();
+        };
+
+        //獲取請假單詳情——<EmpNo>0409132</EmpNo><formid>123456</formid>
+        window.LeaveApplyFormDetail = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDoc);
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "LeaveApplyFormDetail", self.successCallback, self.failCallback, LeaveApplyFormDetailQueryData, "");
+            }();
+        };
+
+        //撤回請假單——<EmpNo>0409132</EmpNo><formid>123456</formid><formno>572000</formno><reason>測試</reason>
+        window.RecallLeaveApplyForm = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDoc);
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "RecallLeaveApplyForm", self.successCallback, self.failCallback, RecallLeaveApplyFormQueryData, "");
+            }();
+        };
+
+        //刪除請假單——<EmpNo>0409132</EmpNo><formid>123456</formid>
+        window.DeleteLeaveApplyForm = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDoc);
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "DeleteLeaveApplyForm", self.successCallback, self.failCallback, DeleteLeaveApplyFormQueryData, "");
+            }();
+        };
+
+        //送出銷假單——<EmpNo>0409132</EmpNo><applyformid>512340</applyformid><reason>沒事</reason>
+        window.SendLeaveCancelFormData = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDoc);
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "SendLeaveCancelFormData", self.successCallback, self.failCallback, SendLeaveCancelFormDataQueryData, "");
+            }();
+        };
+
         //從銷假返回詳情
         function backLeaveToDetail() {
             $(".leave-query-dispel").hide();
@@ -90,9 +238,12 @@ $("#viewLeaveQuery").pagecontainer({
         /********************************** page event *************************************/
         $("#viewLeaveQuery").on("pagebeforeshow", function(event, ui) {
             $(".leaveMenu").show();
+            
         });
 
         $("#viewLeaveQuery").on("pageshow", function(event, ui) {
+            console.log(QueryEmployeeLeaveApplyFormQueryData);
+            QueryEmployeeLeaveApplyForm();
             loadingMask("hide");
         });
 

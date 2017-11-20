@@ -148,7 +148,12 @@ $("#viewChatroomInfo").pagecontainer({
                     var resultCode = data['ResultCode'];
 
                     if (resultCode === "1") {
-                        window.getGroupMembers(JM.chatroomID, JM.data.chatroom[JM.chatroomID].is_group, "chatroomInfo");
+                        setTimeout(function(){
+
+                            window.sendTextMessage(loginData["loginid"] + "將" + removeMemberName + "從聊天室踢除", true, "memberEvent");
+                            window.getGroupMembers(JM.chatroomID, JM.data.chatroom[JM.chatroomID].is_group, "chatroomInfo");
+
+                        }, 1000);
                     }
                 };
 
@@ -173,6 +178,9 @@ $("#viewChatroomInfo").pagecontainer({
         });
 
         $("#viewChatroomInfo").on("pagebeforeshow", function(event, ui) {
+            $(".data-list-content .user-list").remove();
+            $(".data-list-content .ui-hr-list").remove();
+
             prevPageID = "viewChatroomInfo";
             window.processChatroomInfo();
         });
@@ -203,6 +211,13 @@ $("#viewChatroomInfo").pagecontainer({
                 $.mobile.changePage('#viewChatroomEdit');
             }
         }, "#editChatroomInfo");
+
+        //Add Member
+        $(document).on({
+            click: function() {
+                $.mobile.changePage('#viewAddMember');
+            }
+        }, ".member-add-btn");
 
         //Remove Member
         $(document).on({
