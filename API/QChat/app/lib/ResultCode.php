@@ -20,7 +20,7 @@ abstract class ResultCode
     const _025918_MemberNotRegistered = "025918";//新增聊天室失敗, 成員未註冊
     const _025919_ChatroomMemberInvalid = "025919";//傳入的成員不存在
     const _025920_TheChatroomIdIsInvalid = "025920";//傳入的聊天室編號無法識別
-    const _025921_DestinationEmployeeNumberIsInvalid = "025921";//要設定的好友工號不存在
+    const _025921_DestinationEmployeeInfoIsInvalid = "025921";//要設定的好友工號不存在
     const _025922_DestinationEmployeeNumberIsProtectUser = "025922";//要設定的好友是保護名單
     const _025923_YouCannotSendTheInvitationToFriends = "025923";//要設定對象已經是好友
     const _025924_DestinationEmployeeAlreadyRegistered = "025924";//要邀請的好友已經註冊過QPlay
