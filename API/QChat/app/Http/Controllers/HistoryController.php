@@ -123,7 +123,12 @@ class HistoryController extends Controller
                 }
                array_push( $conversation['messages'], $messages);
             }
-            return response()->json($conversation);
+
+            $result = ['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>$conversation
+                        ];
+            return response()->json($result);
         }catch (\Exception $e) {
              $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()];
             return response()->json($result);
