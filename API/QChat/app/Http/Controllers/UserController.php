@@ -73,7 +73,6 @@ class UserController extends Controller
      */
     public function getQUserDetail(){
         try {
-
             $required = Validator::make($this->data, [
                 'destination_emp_no' => 'required_without:destination_login_id',
                 'destination_login_id'=>'required_without:destination_emp_no'
@@ -86,8 +85,18 @@ class UserController extends Controller
                         'Content'=>""]);
             }
             $empNo = $this->data['emp_no'];
-            $destinationEmpNo = (is_null($this->data['destination_emp_no']))?"":$this->data['destination_emp_no'];
-            $destinationLoginId = (is_null($this->data['destination_login_id']))?"":$this->data['destination_login_id'];
+            $destinationEmpNo = "";
+            $destinationLoginId = "";
+            if(isset($this->data['destination_emp_no'])){
+                if(!is_null($this->data['destination_emp_no'])){
+                     $destinationEmpNo = $this->data['destination_emp_no'];
+                }
+            }
+            if(isset($this->data['destination_login_id'])){
+                if(!is_null($this->data['destination_login_id'])){
+                     $destinationLoginId = $this->data['destination_login_id'];
+                }
+            }
             if($destinationLoginId!="" && count($destinationLoginId) > 0){//用員工編號查
                $userData = $this->userService->getUserDataByLoginId($destinationLoginId);
                if(is_null($userData)){
