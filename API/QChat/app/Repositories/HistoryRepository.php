@@ -96,9 +96,9 @@ class HistoryRepository
          return $this->history
              ->leftjoin('qp_history_file','qp_history.msg_id','=','qp_history_file.msg_id')
              ->where('target_id',$groupId)
-             ->where('create_time','>=',$start)
-             ->where('create_time','<=',$end)
-             ->orderBy('create_time',$sort)
+             ->where('ctime','>=',$start)
+             ->where('ctime','<=',$end)
+             ->orderBy('ctime',$sort)
              ->get();
     }
 
@@ -113,8 +113,8 @@ class HistoryRepository
          return $this->history
              ->leftjoin('qp_history_file','qp_history.msg_id','=','qp_history_file.msg_id')
              ->where('target_id',$groupId)
-             ->where('create_time','>',$cursor)
-             ->orderBy('create_time',$sort)
+             ->where('ctime','>',$cursor)
+             ->orderBy('ctime',$sort)
              ->get();
             
     }
