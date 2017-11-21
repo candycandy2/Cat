@@ -74,7 +74,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.GetDefaultSetting = function() {
 
             this.successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["quickleavelist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
@@ -544,6 +544,7 @@ $("#viewPersonalLeave").pagecontainer({
             leaveid = $(this).val();
             leaveType = $(this).text();
             leaveTypeSelected = true;
+            console.log(leaveid);
         });
 
         $(document).on("popupafterclose", "#leaveType-popup-option", function() {
@@ -727,7 +728,7 @@ $("#viewPersonalLeave").pagecontainer({
             $(this).addClass("hover");
 
             beginDate = endDate = $(this).data("value");
-            console.log(beginDate);
+            
         });
 
     }

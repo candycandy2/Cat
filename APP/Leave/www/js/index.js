@@ -1,5 +1,8 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
 var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData;
+var QueryEmployeeLeaveApplyFormQueryData, LeaveApplyFormDetailQueryData, RecallLeaveApplyFormQueryData,
+DeleteLeaveApplyFormQueryData, SendLeaveCancelFormDataQueryData;
+var QueryEmployeeLeaveCancelFormQueryData, LeaveCancelFormDetailQueryData, RecallLeaveCancelFormQueryData, DeleteLeaveCancelFormQueryData;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
@@ -29,6 +32,7 @@ var dayTable = {
 };
 
 window.initialSuccess = function() {
+    //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
     queryCalendarData = "<LayoutHeader><Year>"
                       + currentYear
@@ -37,9 +41,9 @@ window.initialSuccess = function() {
                       + "</Month><EmpNo>"
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
-    getDefaultSettingQueryData = "<EmpNo>" + myEmpNo + "</EmpNo>";
-    //console.log(queryCalendarData);
-    //console.log(getDefaultSettingQueryData);
+    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    QueryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
     QueryCalendarData();
     if (leaveTypeData["option"].length == 0) {
         GetDefaultSetting();
@@ -280,3 +284,5 @@ function dateInit() {
     //modify by Allen
     $("#leaveDate a:eq(0)").click();
 }
+
+

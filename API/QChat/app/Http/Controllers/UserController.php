@@ -75,7 +75,8 @@ class UserController extends Controller
         try {
 
             $required = Validator::make($this->data, [
-                'destination_emp_no' => 'required',
+                'destination_emp_no' => 'required_without:destination_login_id',
+                'destination_login_id'=>'required_without:destination_emp_no'
             ]);
 
             if($required->fails())
@@ -85,15 +86,23 @@ class UserController extends Controller
                         'Content'=>""]);
             }
             $empNo = $this->data['emp_no'];
-            $destinationEmpNo = $this->data['destination_emp_no'];
-            
-            if(!Verify::checkUserStatusByUserEmpNo($destinationEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
-                        'Message'=>"要查詢的人員工號不存在",
-                        'Content'=>""]);
+            $destinationEmpNo = (is_null($this->data['destination_emp_no']))?"":$this->data['destination_emp_no'];
+            $destinationLoginId = (is_null($this->data['destination_login_id']))?"":$this->data['destination_login_id'];
+            if($destinationLoginId!="" && count($destinationLoginId) > 0){//用員工編號查
+               $userData = $this->userService->getUserDataByLoginId($destinationLoginId);
+               if(is_null($userData)){
+                    return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
+                    'Message'=>"要查詢的人員不存在",
+                    'Content'=>""]);
+               }
+               $destinationEmpNo = $userData->emp_no;
             }
-
-            $userDerail = $this->userService->getQUserDetail($destinationEmpNo);
+            if(!Verify::checkUserStatusByUserEmpNo($destinationEmpNo)) {
+             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
+                    'Message'=>"要查詢的人員不存在",
+                    'Content'=>""]);
+            }
+            $userDerail = $this->userService->getQUserDetail($empNo, $destinationEmpNo);
             if($userDerail ==null || count($userDerail) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
                         'Message'=>"查無資料",

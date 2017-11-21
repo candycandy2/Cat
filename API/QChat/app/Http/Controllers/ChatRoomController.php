@@ -111,7 +111,7 @@ class ChatRoomController extends Controller
         foreach ($targetUserList as $targetEmpNo) {
 
             if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -247,7 +247,7 @@ class ChatRoomController extends Controller
             
             foreach ($destEmpArr as $targetEmpNo) {
                 if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
                 }
@@ -343,7 +343,7 @@ class ChatRoomController extends Controller
             
             foreach ($destEmpArr as $targetEmpNo) {
                 if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
                 }
@@ -464,6 +464,7 @@ class ChatRoomController extends Controller
      */
     public function getQUserChatroom(){
         try {
+            $result = ['chartoom_list'];
             $empNo = $this->data['emp_no'];
             $userName = $this->userService->getUserData($empNo)->login_id;
             $response =$this->chatRoomService->getUserGroups($userName);
