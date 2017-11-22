@@ -43,6 +43,9 @@ var setActiveTab = function(openId, appKey){
         case 'push_service_hours':
             pushServiceHours.iniReport(appKey);
             break;
+        case 'message_read_rate':
+            messageReadRate.iniReport(appKey);
+            break;
     }
 
     $('.tab-content > div.active').removeClass('active').removeClass('in');
