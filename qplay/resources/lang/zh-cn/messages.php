@@ -327,6 +327,7 @@ return [
     'TAB_OPERATION_TIME' => '平均处理时间',
     'TAB_USAGE_REPORT' => '用户使用资料',
     'TAB_PUSH_SERVICE_HOURS' => '推播服务时段',
+    'TAB_MESSAGE_READ_RATE' => '讯息读取比例',
     'NUMBER_OF_REGISTERED_DEVICES' => '注册总设备数',
     'NUMBER_OF_REGISTERED_USERS' => '注册总用户数',
     'NUMBER_OF_ACTIVE_DEVICES' => '活跃设备数',
@@ -349,6 +350,9 @@ return [
     'TOTAL_RANKING' => '总排名',
     'POPULAR_TIMES' => '热门时段',
     'USAGE_COUNT' => '使用次数',
+    'MESSAGE_SOURCE' => '消息来源',
+    'PUSH_SEND_COUNT' => '推播人数',
+    'PUSH_READ_COUNT' => '已读人数',
 
     //ENS Maintain
     'IMPORT_BASIC_INFO' => '汇入成员资讯',
