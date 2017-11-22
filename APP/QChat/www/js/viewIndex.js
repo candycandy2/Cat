@@ -412,8 +412,8 @@ $("#viewIndex").pagecontainer({
                         } else if (action === "chatroomInfo") {
                             //chatroomInfo
                             window.processChatroomInfo();
-                        } else if (action === "chatroomSingleView") {
-                            window.chatroomSingleView(chatroomID);
+                        } else if (action === "chatroomListView") {
+                            window.chatroomListView();
                         }
                     }
 

@@ -3,7 +3,7 @@
 $("#viewChatroom").pagecontainer({
     create: function(event, ui) {
         
-        window.newCreate;
+        var newCreate;
         var chatroomDataError = false;
         var lastRenderJMMsgID = 0;
         var lastRenderQPlayMsgID = 0;
@@ -240,10 +240,20 @@ $("#viewChatroom").pagecontainer({
 
             //For JMessage Bug, if getConversation does not return [owner],
             //need to call getGroupInfo to get [owner];
+            if (data.target.owner === undefined) {
+                var callback = function(owner) {
+                    data.target.owner = owner;
+                    window.processChatroomData(data, action, getHistory, receiveMessage);
+                };
+
+                window.getGroupInfo(data.target.id, callback);
+
+                return;
+            }
 
             //Chatroom can not work without [desc]
             if (data.target.desc.indexOf("=") != -1) {
-                
+
                 var descArray = data.target.desc.split(";");
 
                 //Check if Chatroom need auto read history
@@ -327,8 +337,7 @@ $("#viewChatroom").pagecontainer({
                         if (chatroomDataError) {
                             window.chatroomListView();
                         } else {
-                            window.getGroupMembers(data.target.id, groupMessage, "chatroomSingleView");
-                            //window.chatroomSingleView(data.target.id);
+                            window.getGroupMembers(data.target.id, groupMessage, "chatroomListView");
                         }
                     } else {
                         //viewChatroom
@@ -850,6 +859,8 @@ $("#viewChatroom").pagecontainer({
         function downloadOriginalImage(msgID) {
             (function(msgID) {
 
+                var JMessageID = msgID.substr(5);
+
                 var callback = function(status, data) {
 
                     if (status === "success") {
@@ -858,8 +869,8 @@ $("#viewChatroom").pagecontainer({
 
                         //if the image msg in messageListView doesn't show up correctly,
                         //update the src of img
-                        if ($("#" + JM.chatroomID + "-" + msgID).prop("src").length == 0) {
-                            $("#" + JM.chatroomID + "-" + msgID).prop("src", data.filePath);
+                        if ($("#" + JM.chatroomID + "-JM" + JMessageID).prop("src").length == 0) {
+                            $("#" + JM.chatroomID + "-JM" + JMessageID).prop("src", data.filePath);
                         }
 
                         for (var i=0; i<JM.data.chatroom_message_history[JM.chatroomID].length; i++) {
@@ -883,7 +894,7 @@ $("#viewChatroom").pagecontainer({
 
                 };
 
-                JM.Message.downloadOriginalImage(msgID, callback);
+                JM.Message.downloadOriginalImage(JMessageID, callback);
 
             }(msgID));
         }
