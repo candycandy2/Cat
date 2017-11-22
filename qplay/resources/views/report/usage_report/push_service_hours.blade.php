@@ -27,7 +27,7 @@ $REPORT_TYPE = 'push_service_hours';
         </div>
         <div class="col-lg-12 col-md-12 col-xs-12" id="">
             <img class="loader" id="loading-indicator" style="display:" />
-            <div id="container_column_{{$REPORT_TYPE}}_1" style="height: 400px;" class="container"></div>
+            <div id="container_column_{{$REPORT_TYPE}}_1" style="height: 400px; min-width: 310px"></div>
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@ $REPORT_TYPE = 'push_service_hours';
     <div class="col-lg-1" id=""></div>
     <div class="col-lg-10 col-xs-12" id=""> 
         <img class="loader" id="loading-indicator" style="display:" />
-        <div id="table_{{$REPORT_TYPE}}_1" class="container">
+        <div id="table_{{$REPORT_TYPE}}_1" >
             <div><label class="text-muted js-table_date sub-title"></label></div>
             <div class="table-responsive">
                 <table class="table report-table">
@@ -60,7 +60,7 @@ $REPORT_TYPE = 'push_service_hours';
     <div class="col-lg-1" id=""></div>
     <div class="col-lg-10 col-xs-12" id="">
         <img class="loader" id="loading-indicator" style="display:" />
-        <div class="table-responsive container" id="table_{{$REPORT_TYPE}}_2" >
+        <div class="table-responsive" id="table_{{$REPORT_TYPE}}_2" >
             <table class="table table-bordered table-striped report-table">
               <thead>
                 <tr>

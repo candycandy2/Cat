@@ -328,6 +328,7 @@ return [
     'TAB_OPERATION_TIME' => '平均處理時間',
     'TAB_USAGE_REPORT' => '用戶使用資料',
     'TAB_PUSH_SERVICE_HOURS' => '推播服務時段',
+    'TAB_MESSAGE_READ_RATE' => '訊息讀取比例',
     'NUMBER_OF_REGISTERED_DEVICES' => '註冊總設備數',
     'NUMBER_OF_REGISTERED_USERS' => '註冊總用戶數',
     'NUMBER_OF_ACTIVE_DEVICES' => '活躍設備數',
@@ -350,6 +351,10 @@ return [
     'TOTAL_RANKING' => '總排名',
     'POPULAR_TIMES' => '熱門時段',
     'USAGE_COUNT' => '使用次數',
+    'MESSAGE_SOURCE' => '訊息來源',
+    'PUSH_SEND_COUNT' => '推播人數',
+    'PUSH_READ_COUNT' => '已讀人數',
+
 
 
     //ENS Maintain

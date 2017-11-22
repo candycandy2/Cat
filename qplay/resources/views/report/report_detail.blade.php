@@ -15,6 +15,7 @@ $menu_name = "REPORT";
     <script src="{{asset('/js/report/register_report/register_cumulative.js?v='.config('app.static_version'))}}"></script>
     <script src="{{asset('/js/report/register_report/register_daily.js?v='.config('app.static_version'))}}"></script>
     <script src="{{asset('/js/report/usage_report/push_service_hours.js?v='.config('app.static_version'))}}"></script>
+    <script src="{{asset('/js/report/usage_report/message_read_rate.js?v='.config('app.static_version'))}}"></script>
 @stop
 
 
@@ -45,6 +46,7 @@ $menu_name = "REPORT";
         <li class="dropdown" id="api"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{trans('messages.TAB_USAGE_REPORT')}}<span class="caret"></span></a>
             <ul class="dropdown-menu" id="usage_report">
                 <li><a data-tabid="push_service_hours">{{trans('messages.TAB_PUSH_SERVICE_HOURS')}}</a></li>
+                <li><a data-tabid="message_read_rate">{{trans('messages.TAB_MESSAGE_READ_RATE')}}</a></li>
             </ul>
         </li>
          @endif
@@ -74,8 +76,11 @@ $menu_name = "REPORT";
             @include('report.register_report.register_cumulative')
         </div>
         {{-- 用戶使用資料 --}}
-         <div class="tab-pane fade" id="push_service_hours">
+        <div class="tab-pane fade" id="push_service_hours">
             @include('report.usage_report.push_service_hours')
+        </div>
+        <div class="tab-pane fade" id="message_read_rate">
+            @include('report.usage_report.message_read_rate')
         </div>
         {{-- API統計 --}}
         <div class="tab-pane fade" id="api_call_frequency">

@@ -43,5 +43,10 @@ var Messages = {
     POPULAR_TIMES : '熱門時段',
     PUSH_SERVICE_HOURS : '推播服務時段分布',
     RANKING : '排名',
-    PUSH_TIMES :'推播次數'
+    PUSH_TIMES :'推播次數',
+    MESSAGE_COUNT : '訊息數',
+    ALREADY_READ : '已讀',
+    NOT_READ : '未讀',
+    DAILY_READ_RATE : '當日訊息讀取比例',
+    READ_RATE : '讀取比例'
 }

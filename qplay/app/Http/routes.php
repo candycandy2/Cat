@@ -103,7 +103,7 @@ Route::any('report/reportDetail/getRegisterCumulativeReport', ['middleware' => '
 Route::any('report/reportDetail/getActiveRegisterReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getActiveRegisterReport']);
 Route::any('report/reportDetail/getPushServiceRank', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getPushServiceRank']);
 Route::any('report/reportDetail/getPushServicReportEndDate', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getPushServicReportEndDate']);
-
+Route::any('report/reportDetail/getMessageReadReport', ['middleware' => 'auth','uses'=>'Report\ReportDetailController@getMessageReadReport']);
 
 //ENS Maintain
 Route::any('ENSMaintain/getBasicInfo', ['middleware' => 'auth','uses'=>'ENSMaintain\BasicInfoController@getBasicInfo']);

@@ -43,6 +43,10 @@ var Messages = {
     POPULAR_TIMES : 'Popular Times',
     PUSH_SERVICE_HOURS : 'Push Service Hours',
     RANKING : 'Ranking',
-    PUSH_TIMES :'Push Times'
-
+    PUSH_TIMES :'Push Times',
+    MESSAGE_COUNT : 'Message Count',
+    ALREADY_READ : 'Read',
+    NOT_READ : 'Unread',
+    DAILY_READ_RATE : 'Message Read Ratio',
+    READ_RATE : 'Read Ratio'
 }
