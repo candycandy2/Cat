@@ -243,7 +243,7 @@ var JM = {
             });
 
         },
-        getGroupInfo: function(groupID) {
+        getGroupInfo: function(groupID, callback) {
 
             var params = {
                 'id': groupID
@@ -252,9 +252,11 @@ var JM = {
             window.JMessage.getGroupInfo(params, function(data) {
                 console.log("---getGroupInfo success");
                 console.log(data);
+                callback("success", data);
             }, function(errorStr) {
                 console.log("----getGroupInfo Error");
                 console.log(errorStr);
+                callback("error", errorStr);
             });
 
         },

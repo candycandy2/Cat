@@ -131,6 +131,22 @@ $("#viewChatroomInfo").pagecontainer({
             }(chatroomID, action, name, pageID));
         };
 
+        window.getGroupInfo = function(groupID, callback) {
+            (function(groupID, callback) {
+
+                var successCallback = function(status, data) {
+
+                    if (status === "success") {
+                        callback(data.owner);
+                    }
+
+                };
+
+                JM.Chatroom.getGroupInfo(groupID, successCallback);
+
+            }(groupID, callback));
+        };
+
         function removeQMember(action) {
             (function(action) {
 
