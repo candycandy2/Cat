@@ -4,6 +4,9 @@ var leaveTypeSelected = false;
 var fulldayHide = false;
 var leftDaysData = {};
 var timoutQueryEmployeeData = null;
+var LeaveObjList = [];
+//var categroyLeave = [];
+var allLeaveCategroyStr = langStr["str_122"];    //所有類別
 
 var leaveTypeData = {
     id: "leaveType-popup",
@@ -27,16 +30,76 @@ var agentData = {
     }
 };
 
+var categroyData = {
+    id: "categroy-popup",
+    option: [],
+    title: "",
+    defaultText: langStr["str_069"],
+    changeDefaultText : true,
+    attr: {
+        class: "tpl-dropdown-list-icon-arrow"
+    }
+};
+
 $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
 
         var leaveIDArry = "";
+        var leaveTypeArry = "";
 
         /********************************** function *************************************/
+        //快速请假页面——获取部分假别
+        function getQuickLeaveList() {
+            for(var i = 0; i < leaveTypeArry.length; i++) {
+                leaveTypeData["option"][i] = {};
+                leaveTypeData["option"][i]["value"] = $(leaveIDArry[i]).html();
+                leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
+            }
+
+            //生成快速请假dropdownlist
+            tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeB", leaveTypeData);
+        }
+
+        //请假申请页面——获取所有类别
+        function getAllCategroyList() {
+            var categroyLeave = [];
+
+            //循環所有類別，並去重、去空
+            for(var i in LeaveObjList) {
+                if (categroyLeave.indexOf(LeaveObjList[i]["category"]) === -1 && LeaveObjList[i]["category"] !== "") {
+                    categroyLeave.push(LeaveObjList[i]["category"]);
+                } 
+            }
+            
+            //添加 “所有類別” 到列表第一位
+            categroyLeave.unshift(allLeaveCategroyStr);
+
+            //循环所有类别到popup
+            for(var i in categroyLeave) {
+                categroyData["option"][i] = {};
+                categroyData["option"][i]["value"] = categroyLeave[i];
+                categroyData["option"][i]["text"] = categroyLeave[i];
+            }
+
+            //生成所有类别dropdownlist
+            tplJS.DropdownList("viewLeaveSubmit", "leaveCategroy", "prepend", "typeB", categroyData);
+            
+            //默認選中popup “所有類別”
+            $.each($("#categroy-popup-option-list li"), function(i, item) {
+                if($(item).text() === allLeaveCategroyStr) {
+                    $(item).trigger("click");
+                    return false;
+                }
+            });
+        }
+
+        
+        
+
+        //API —— 行事历
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
-                //console.log(data);
                 myCalendarData = {};
                 myHolidayData = [];
                 var leaveFlag = "3";
@@ -76,16 +139,43 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
+                    //快速请假页面——部分假别
                     var callbackData = data['Content'][0]["quickleavelist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var leaveTypeArry = $("name", htmlDoc);
+                    leaveTypeArry = $("name", htmlDoc);
                     leaveIDArry = $("leaveid", htmlDoc);
-                    for(var i = 0; i < leaveTypeArry.length; i++) {
-                        leaveTypeData["option"][i] = {};
-                        leaveTypeData["option"][i]["value"] = $(leaveIDArry[i]).html();
-                        leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
+                    
+                    //获取快速请假的假别
+                    getQuickLeaveList();
+
+                    //请假申请页面——所有假别
+                    var allLeaveData = data['Content'][0]["Leavelist"];
+                    var allLeaveDom = new DOMParser().parseFromString(allLeaveData, "text/html");
+                    var leaveidArr = $("leaveid", allLeaveDom);
+                    var categoryArr = $("category", allLeaveDom);
+                    var nameArr = $("name", allLeaveDom);
+                    var descArr = $("desc", allLeaveDom);
+                    var unitArr = $("unit", allLeaveDom);
+                    var basedateArr = $("basedate", allLeaveDom);
+                    var attachArr = $("attach", allLeaveDom);
+
+                    LeaveObjList = [];
+                    for(var i = 0; i < leaveidArr.length; i++) {
+                        var leaveObject = {};
+                        leaveObject["leaveid"] = $(leaveidArr[i]).html();
+                        leaveObject["category"] = $(categoryArr[i]).html();
+                        leaveObject["name"] = $(nameArr[i]).html();
+                        leaveObject["desc"] = $(descArr[i]).html();
+                        leaveObject["unit"] = $(unitArr[i]).html();
+                        leaveObject["basedate"] = $(basedateArr[i]).html();
+                        leaveObject["attach"] = $(attachArr[i]).html();
+                        LeaveObjList.push(leaveObject);
                     }
-                    tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeB", leaveTypeData);
+                    console.log(LeaveObjList);
+
+                    //获取所有类别，并选择“所有类别”
+                    getAllCategroyList();
+
                 }
             };
 
@@ -544,6 +634,7 @@ $("#viewPersonalLeave").pagecontainer({
             leaveid = $(this).val();
             leaveType = $(this).text();
             leaveTypeSelected = true;
+            console.log(leaveid);
         });
 
         $(document).on("popupafterclose", "#leaveType-popup-option", function() {

@@ -32,6 +32,7 @@ var dayTable = {
 };
 
 window.initialSuccess = function() {
+    //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
     queryCalendarData = "<LayoutHeader><Year>"
                       + currentYear
@@ -40,10 +41,9 @@ window.initialSuccess = function() {
                       + "</Month><EmpNo>"
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
-    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo><LastModified></LastModified></LayoutHeader>";
     QueryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
     QueryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    //console.log(QueryEmployeeLeaveCancelFormQueryData);
     QueryCalendarData();
     if (leaveTypeData["option"].length == 0) {
         GetDefaultSetting();
@@ -284,3 +284,5 @@ function dateInit() {
     //modify by Allen
     $("#leaveDate a:eq(0)").click();
 }
+
+

@@ -13,6 +13,7 @@ var leaveWithdrawStr = langStr["str_148"];    //表單已撤回
 var leaveEffectStr = langStr["str_149"];    //表單已生效
 var leaveRevokeStr = langStr["str_157"];    //銷假申請
 var leaveQueryStr = langStr["str_078"];    //假單查詢
+var leaveListArr = [];
 var withdrawReason,dispelReason;
 
 //請假單頁初始化
@@ -40,12 +41,13 @@ $("#viewLeaveQuery").pagecontainer({
         window.QueryEmployeeLeaveApplyForm = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
-                    var leaveList = "";
+                    var leaveListHtml = "";
                     var callbackData = data['Content'][0]["applyformlist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var formidArr = $("formid", htmlDoc);
+                    console.log(htmlDoc.length);
+                    var formidArr = $("formid", htmlDoc);         
                     var formnoArr = $("formno", htmlDoc);
                     var statusArr = $("status", htmlDoc);
                     var leaveidArr = $("leaveid", htmlDoc);
@@ -57,35 +59,53 @@ $("#viewLeaveQuery").pagecontainer({
                     var leavehoursArr = $("hours", htmlDoc);
                     var cancelstatusArr = $("cancelstatus", htmlDoc);
 
-                    for(var i in formidArr) {
-                        leaveList += '<div class="leave-query-list">' +
+                    leaveListArr = [];
+                    for(var i = 0; i < formidArr.length; i++) {
+                        var leaveObject = {};
+                        leaveObject["formid"] = $(formidArr[i]).html();
+                        leaveObject["formno"] = $(formnoArr[i]).html();
+                        leaveObject["status"] = $(statusArr[i]).html();
+                        leaveObject["leaveid"] = $(leaveidArr[i]).html();
+                        leaveObject["begindate"] = $(begindateArr[i]).html();
+                        leaveObject["begintime"] = $(begintimeArr[i]).html();
+                        leaveObject["enddate"] = $(enddateArr[i]).html();
+                        leaveObject["endtime"] = $(endtimeArr[i]).html();
+                        leaveObject["days"] = $(leavedaysArr[i]).html();
+                        leaveObject["hours"] = $(leavehoursArr[i]).html();
+                        leaveObject["cancelstatus"] = $(cancelstatusArr[i]).html();
+                        leaveListArr.push(leaveObject);
+                    }
+                    console.log(leaveListArr);
+
+                    for(var i = 0; i < formidArr.length; i++) {
+                        leaveListHtml += '<div class="leave-query-list">' +
                                         '<div>' +
-                                            '<div class="leave-query-state font-style3" data-num="' + formidArr[i] + '">' +
-                                                '<span>' + statusArr[i] + '</span>' +
+                                            '<div class="leave-query-state font-style3" data-num="' + $(formidArr[i]).html() + '">' +
+                                                '<span>' + $(statusArr[i]).html() + '</span>' +
                                                 '<img src="img/btn_nextpage.png">' +
                                             '</div>' +
                                             '<div class="leave-query-base font-style10">' +
                                                 '<div class="leave-query-basedata">' +
                                                     '<div>' +
                                                         '<span class="langStr" data-id="str_131"></span>' +
-                                                        '<span class="leave-id">' + formnoArr[i] + '</span>' +
+                                                        '<span class="leave-id">' + $(formnoArr[i]).html() + '</span>' +
                                                     '</div>' +
                                                     '<div>' +
                                                         '<span class="langStr" data-id="str_152"></span>' +
-                                                        '<span>' + leaveidArr[i] + '</span>' +
+                                                        '<span>' + $(leaveidArr[i]).html() + '</span>' +
                                                     '</div>' +
                                                 '</div>' +
                                                 '<div>' +
                                                     '<span class="langStr" data-id="str_138"></span>' +
-                                                    '<span>' + begindateArr[i] + ' ' + begintimeArr[i] + '</span>' +
+                                                    '<span>' + $(begindateArr[i]).html() + ' ' + $(begintimeArr[i]).html() + '</span>' +
                                                     '<span> - </span>' +
-                                                    '<span>' + enddateArr[i] + ' ' + endtimeArr[i] + '</span>' +
+                                                    '<span>' + $(enddateArr[i]).html() + ' ' + $(endtimeArr[i]).html() + '</span>' +
                                                 '</div>' +
                                                 '<div>' +
                                                     '<span class="langStr" data-id="str_153"></span>' +
-                                                    '<span>' + leavedaysArr[i] + '</span>' +
+                                                    '<span>' + $(leavedaysArr[i]).html() + '</span>' +
                                                     '<span class="langStr" data-id="str_071"></span>' +
-                                                    '<span>' + leavehoursArr[i] + '</span>' +
+                                                    '<span>' + $(leavehoursArr[i]).html() + '</span>' +
                                                     '<span class="langStr" data-id="str_088"></span>' +
                                                 '</div>' +
                                             '</div>' +
@@ -93,6 +113,11 @@ $("#viewLeaveQuery").pagecontainer({
                                         '<div></div>' +
                                     '</div>';
                     }
+                    
+                    //$(".leave-query-main").append(leaveListHtml);
+                    //getLanguageString();
+
+                    loadingMask("hide");
                 }
             };
 
@@ -239,10 +264,10 @@ $("#viewLeaveQuery").pagecontainer({
         $("#viewLeaveQuery").on("pagebeforeshow", function(event, ui) {
             $(".leaveMenu").show();
             
+            
         });
 
         $("#viewLeaveQuery").on("pageshow", function(event, ui) {
-            console.log(QueryEmployeeLeaveApplyFormQueryData);
             QueryEmployeeLeaveApplyForm();
             loadingMask("hide");
         });

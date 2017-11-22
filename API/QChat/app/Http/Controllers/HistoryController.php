@@ -81,9 +81,9 @@ class HistoryController extends Controller
             $tag ="";
             if($count > 0){
                 if($sort == 'asc'){
-                    $tag = $data[$count-1]->create_time;
+                    $tag = $data[$count-1]->ctime;
                 }else{
-                    $tag = $data[0]->create_time;
+                    $tag = $data[0]->ctime;
                 }
             }
             $conversation = [
@@ -98,7 +98,7 @@ class HistoryController extends Controller
                         'set_from_name'=>$value->from_name,
                         'from_paltform'=>null,
                         'target_name'=>$value->target_name,
-                        'msg_type'=>$value->target_type,
+                        'msg_type'=>$value->msg_type,
                         'version'=>null,
                         'target_id'=>$value->target_id,
                         'sui_mtime'=>null,
@@ -123,7 +123,12 @@ class HistoryController extends Controller
                 }
                array_push( $conversation['messages'], $messages);
             }
-            return response()->json($conversation);
+
+            $result = ['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"",
+                        'Content'=>$conversation
+                        ];
+            return response()->json($result);
         }catch (\Exception $e) {
              $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()];
             return response()->json($result);
