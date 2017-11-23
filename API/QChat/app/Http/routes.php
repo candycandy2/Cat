@@ -36,3 +36,8 @@ Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','lo
 Route::group(['prefix' => 'v101/QChat','middleware' => 'log.api'], function () {
     Route::any('/getQGroupHistoryMessageJob','HistoryJobController@getQGroupHistoryMessageJob');
 });
+
+//Test
+/*Route::group(['prefix' => 'v101/QChat'], function () {
+    Route::any('/compressImage','TestController@compressImage');
+});*/

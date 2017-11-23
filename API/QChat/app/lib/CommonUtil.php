@@ -220,8 +220,19 @@ class CommonUtil{
   */
   public static function compressImage($imgsrc, $imgdst, $quality){
     list($width,$height,$type)=getimagesize($imgsrc);
-    $new_width = $width;
-    $new_height = $height;
+    $source_ratio = $width/$height;
+    $new_ratio = 1;
+    if($source_ratio > 1){ //橫圖
+        $target_ratio = round(1024/$width, 1);
+    }else{ //直圖
+        $target_ratio = round(1024/$height, 1);
+    }
+    //長或寬>1024才需做壓縮
+    if($target_ratio < 1){
+        $new_ratio = $target_ratio;
+    }
+    $new_width = $width * $new_ratio;
+    $new_height = $height * $new_ratio;
     switch($type){
       case 1:
         $giftype=self::checkGifCartoon($imgsrc);
