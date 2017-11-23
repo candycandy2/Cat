@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="388" id="com.qplay.appqplaytest" ios-CFBundleVersion="388" version="1.0.0.388[NewStaging]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="677" id="com.qplay.appqplaydev" ios-CFBundleVersion="677" version="1.0.0.677[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QPlay</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -13,47 +13,47 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <allow-intent href="appyellowpagetest:*" />
-    <allow-intent href="apprrstest:*" />
-    <allow-intent href="appeistest:*" />
-    <allow-intent href="appcalendartest:*" />
-    <allow-intent href="appenstest:*" />
-    <allow-intent href="appaccountingratetest:*" />
-    <allow-intent href="appleavetest:*" />
-    <allow-intent href="apprelievetest:*" />
-    <allow-intent href="appmastest:*" />
-    <allow-intent href="appimtest:*" />
-    <allow-intent href="appcmtest:*" />
-    <allow-intent href="appcmtwotest:*" />
-    <allow-intent href="appeagletest:*" />
-    <allow-intent href="appbadmintontest:*" />
-    <allow-intent href="appqisdaeistest:*" />
-    <allow-intent href="appqchattest:*" />
-    <allow-intent href="apprmtest:*" />
-    <allow-intent href="appmassagetest:*" />
-    <allow-intent href="appparkingtest:*" />
-    <allow-intent href="appactivitiestest:*" />
-    <allow-intent href="appinsurancetest:*" />
-    <allow-intent href="appscheme01test:*" />
-    <allow-intent href="appscheme02test:*" />
-    <allow-intent href="appscheme03test:*" />
-    <allow-intent href="appscheme04test:*" />
-    <allow-intent href="appscheme05test:*" />
-    <allow-intent href="appscheme06test:*" />
-    <allow-intent href="appscheme07test:*" />
-    <allow-intent href="appscheme08test:*" />
-    <allow-intent href="appscheme09test:*" />
-    <allow-intent href="appscheme10test:*" />
-    <allow-intent href="appscheme11test:*" />
-    <allow-intent href="appscheme12test:*" />
-    <allow-intent href="appscheme13test:*" />
-    <allow-intent href="appscheme14test:*" />
-    <allow-intent href="appscheme15test:*" />
-    <allow-intent href="appscheme16test:*" />
-    <allow-intent href="appscheme17test:*" />
-    <allow-intent href="appscheme18test:*" />
-    <allow-intent href="appscheme19test:*" />
-    <allow-intent href="appscheme20test:*" />
+    <allow-intent href="appyellowpagedev:*" />
+    <allow-intent href="apprrsdev:*" />
+    <allow-intent href="appeisdev:*" />
+    <allow-intent href="appcalendardev:*" />
+    <allow-intent href="appensdev:*" />
+    <allow-intent href="appaccountingratedev:*" />
+    <allow-intent href="appleavedev:*" />
+    <allow-intent href="apprelievedev:*" />
+    <allow-intent href="appmasdev:*" />
+    <allow-intent href="appimdev:*" />
+    <allow-intent href="appcmdev:*" />
+    <allow-intent href="appcmtwodev:*" />
+    <allow-intent href="appeagledev:*" />
+    <allow-intent href="appbadmintondev:*" />
+    <allow-intent href="appqisdaeisdev:*" />
+    <allow-intent href="appqchatdev:*" />
+    <allow-intent href="apprmdev:*" />
+    <allow-intent href="appmassagedev:*" />
+    <allow-intent href="appparkingdev:*" />
+    <allow-intent href="appactivitiesdev:*" />
+    <allow-intent href="appinsurancedev:*" />
+    <allow-intent href="appscheme01dev:*" />
+    <allow-intent href="appscheme02dev:*" />
+    <allow-intent href="appscheme03dev:*" />
+    <allow-intent href="appscheme04dev:*" />
+    <allow-intent href="appscheme05dev:*" />
+    <allow-intent href="appscheme06dev:*" />
+    <allow-intent href="appscheme07dev:*" />
+    <allow-intent href="appscheme08dev:*" />
+    <allow-intent href="appscheme09dev:*" />
+    <allow-intent href="appscheme10dev:*" />
+    <allow-intent href="appscheme11dev:*" />
+    <allow-intent href="appscheme12dev:*" />
+    <allow-intent href="appscheme13dev:*" />
+    <allow-intent href="appscheme14dev:*" />
+    <allow-intent href="appscheme15dev:*" />
+    <allow-intent href="appscheme16dev:*" />
+    <allow-intent href="appscheme17dev:*" />
+    <allow-intent href="appscheme18dev:*" />
+    <allow-intent href="appscheme19dev:*" />
+    <allow-intent href="appscheme20dev:*" />
     <allow-intent href="qisdasesm:*" />
     <platform name="android">
         <allow-intent href="market:*" />
@@ -67,27 +67,27 @@
     </platform>
     <engine name="ios" spec="~4.5.3" />
     <engine name="android" spec="~6.3.0" />
-    <plugin name="cordova-plugin-qlogin" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-qlogin">
-        <variable name="LOGIN_URL" value="https://qplaytest.benq.com/qplayApi/public/qplayauth_register" />
+    <plugin name="cordova-plugin-qlogin" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-qlogin">
+        <variable name="LOGIN_URL" value="https://qplaydev.benq.com/qplayApi/public/qplayauth_register" />
     </plugin>
-    <plugin name="cordova-plugin-qpush" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-qpush">
-        <variable name="API_KEY" value="33938c8b001b601c1e647cbd" />
+    <plugin name="cordova-plugin-qpush" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-qpush">
+        <variable name="API_KEY" value="e343504d536ebce16b70167e" />
     </plugin>
-    <plugin name="cordova-plugin-device" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-device" />
-    <plugin name="cordova-plugin-appversion" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-appversion" />
-    <plugin name="cordova-plugin-customurlscheme" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-customurlscheme">
-        <variable name="URL_SCHEME" value="appqplaytest" />
+    <plugin name="cordova-plugin-device" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-device" />
+    <plugin name="cordova-plugin-appversion" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-appversion" />
+    <plugin name="cordova-plugin-customurlscheme" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-customurlscheme">
+        <variable name="URL_SCHEME" value="appqplaydev" />
         <variable name="ANDROID_SCHEME" value=" " />
         <variable name="ANDROID_HOST" value=" " />
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
-    <plugin name="cordova-plugin-qsecurity" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-qsecurity">
-        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaytest&lt;/string&gt;&lt;string&gt;appyellowpagetest&lt;/string&gt;&lt;string&gt;appcalendartest&lt;/string&gt;&lt;string&gt;apprrstest&lt;/string&gt;&lt;string&gt;appaccountingratetest&lt;/string&gt;&lt;string&gt;appenstest&lt;/string&gt;&lt;string&gt;appeistest&lt;/string&gt;&lt;string&gt;appleavetest&lt;/string&gt;&lt;string&gt;apprelievetest&lt;/string&gt;&lt;string&gt;appmastest&lt;/string&gt;&lt;string&gt;appimtest&lt;/string&gt;&lt;string&gt;appcmtest&lt;/string&gt;&lt;string&gt;appcmtwotest&lt;/string&gt;&lt;string&gt;appeagletest&lt;/string&gt;&lt;string&gt;appbadmintontest&lt;/string&gt;&lt;string&gt;appqisdaeistest&lt;/string&gt;&lt;string&gt;appqchattest&lt;/string&gt;&lt;string&gt;apprmtest&lt;/string&gt;&lt;string&gt;appmassagetest&lt;/string&gt;&lt;string&gt;appparkingtest&lt;/string&gt;&lt;string&gt;appactivitiestest&lt;/string&gt;&lt;string&gt;appinsurancetest&lt;/string&gt;&lt;string&gt;appscheme01test&lt;/string&gt;&lt;string&gt;appscheme02test&lt;/string&gt;&lt;string&gt;appscheme03test&lt;/string&gt;&lt;string&gt;appscheme04test&lt;/string&gt;&lt;string&gt;appscheme05test&lt;/string&gt;&lt;string&gt;appscheme06test&lt;/string&gt;&lt;string&gt;appscheme07test&lt;/string&gt;&lt;string&gt;appscheme08test&lt;/string&gt;&lt;string&gt;appscheme09test&lt;/string&gt;&lt;string&gt;appscheme10test&lt;/string&gt;&lt;string&gt;appscheme11test&lt;/string&gt;&lt;string&gt;appscheme12test&lt;/string&gt;&lt;string&gt;appscheme13test&lt;/string&gt;&lt;string&gt;appscheme14test&lt;/string&gt;&lt;string&gt;appscheme15test&lt;/string&gt;&lt;string&gt;appscheme16test&lt;/string&gt;&lt;string&gt;appscheme17test&lt;/string&gt;&lt;string&gt;appscheme18test&lt;/string&gt;&lt;string&gt;appscheme19test&lt;/string&gt;&lt;string&gt;appscheme20test&lt;/string&gt;&lt;string&gt;qisdasesm&lt;/string&gt;" />
+    <plugin name="cordova-plugin-qsecurity" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-qsecurity">
+        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appyellowpagedev&lt;/string&gt;&lt;string&gt;appcalendardev&lt;/string&gt;&lt;string&gt;apprrsdev&lt;/string&gt;&lt;string&gt;appaccountingratedev&lt;/string&gt;&lt;string&gt;appensdev&lt;/string&gt;&lt;string&gt;appeisdev&lt;/string&gt;&lt;string&gt;appleavedev&lt;/string&gt;&lt;string&gt;apprelievedev&lt;/string&gt;&lt;string&gt;appmasdev&lt;/string&gt;&lt;string&gt;appimdev&lt;/string&gt;&lt;string&gt;appcmdev&lt;/string&gt;&lt;string&gt;appcmtwodev&lt;/string&gt;&lt;string&gt;appeagledev&lt;/string&gt;&lt;string&gt;appbadmintondev&lt;/string&gt;&lt;string&gt;appqisdaeisdev&lt;/string&gt;&lt;string&gt;appqchatdev&lt;/string&gt;&lt;string&gt;apprmdev&lt;/string&gt;&lt;string&gt;appmassagedev&lt;/string&gt;&lt;string&gt;appparkingdev&lt;/string&gt;&lt;string&gt;appactivitiesdev&lt;/string&gt;&lt;string&gt;appinsurancedev&lt;/string&gt;&lt;string&gt;appscheme01dev&lt;/string&gt;&lt;string&gt;appscheme02dev&lt;/string&gt;&lt;string&gt;appscheme03dev&lt;/string&gt;&lt;string&gt;appscheme04dev&lt;/string&gt;&lt;string&gt;appscheme05dev&lt;/string&gt;&lt;string&gt;appscheme06dev&lt;/string&gt;&lt;string&gt;appscheme07dev&lt;/string&gt;&lt;string&gt;appscheme08dev&lt;/string&gt;&lt;string&gt;appscheme09dev&lt;/string&gt;&lt;string&gt;appscheme10dev&lt;/string&gt;&lt;string&gt;appscheme11dev&lt;/string&gt;&lt;string&gt;appscheme12dev&lt;/string&gt;&lt;string&gt;appscheme13dev&lt;/string&gt;&lt;string&gt;appscheme14dev&lt;/string&gt;&lt;string&gt;appscheme15dev&lt;/string&gt;&lt;string&gt;appscheme16dev&lt;/string&gt;&lt;string&gt;appscheme17dev&lt;/string&gt;&lt;string&gt;appscheme18dev&lt;/string&gt;&lt;string&gt;appscheme19dev&lt;/string&gt;&lt;string&gt;appscheme20dev&lt;/string&gt;&lt;string&gt;qisdasesm&lt;/string&gt;" />
     </plugin>
-    <plugin name="cordova-plugin-app-update" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-app-update" />
-    <plugin name="cordova-plugin-android-permissions" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-android-permissions" />
-    <plugin name="cordova-plugin-whitelist" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-whitelist" />
-    <plugin name="cordova-plugin-inappbrowser" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-inappbrowser" />
-    <plugin name="phonegap-plugin-mobile-accessibility" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/phonegap-plugin-mobile-accessibility" />
-    <plugin name="cordova-plugin-appavailability" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayProduct-QPlay-YP-RRS/plugins/cordova-plugin-appavailability" />
+    <plugin name="cordova-plugin-app-update" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-app-update" />
+    <plugin name="cordova-plugin-android-permissions" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-android-permissions" />
+    <plugin name="cordova-plugin-whitelist" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-whitelist" />
+    <plugin name="cordova-plugin-inappbrowser" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-inappbrowser" />
+    <plugin name="phonegap-plugin-mobile-accessibility" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/phonegap-plugin-mobile-accessibility" />
+    <plugin name="cordova-plugin-appavailability" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-appavailability" />
 </widget>
