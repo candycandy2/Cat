@@ -1,5 +1,4 @@
 
-
 $("#viewChatroomInfo").pagecontainer({
     create: function(event, ui) {
 
