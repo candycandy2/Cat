@@ -1,5 +1,4 @@
 
-
 $("#viewChatroom").pagecontainer({
     create: function(event, ui) {
         
@@ -525,6 +524,7 @@ $("#viewChatroom").pagecontainer({
                         var lastMessageID = "msgJM" + JM.data.chatroom[JM.chatroomID].last_message.id;
 
                         $.each(tempData, function(index, data) {
+
                             var pushData = false;
 
                             if (newCreate) {
@@ -533,13 +533,14 @@ $("#viewChatroom").pagecontainer({
                                 }
                             } else {
                                 if (msgIDArray.indexOf("msgJM" + data.id) == -1) {
+
+                                    //Check if the msg with same timestamp has exist in QPlay, remove it.
+                                    if (msgTimeArray[data.createTime] != undefined) {
+                                        JM.data.chatroom_message_history[JM.chatroomID].splice(msgTimeArray.indexOf(data.createTime), 1);
+                                    }
+
                                     pushData = true;
                                 }
-                            }
-
-                            //Check if the msg with same timestamp has exist in QPlay, remove it.
-                            if (msgTimeArray[data.createTime] != undefined) {
-                                JM.data.chatroom_message_history[JM.chatroomID].splice(msgTimeArray.indexOf(data.createTime), 1);
                             }
 
                             if (pushData) {
@@ -702,8 +703,25 @@ $("#viewChatroom").pagecontainer({
                             msgText.prop("id", "msgQPlay" + message.id);
                         }
 
+                        //check if text has HTTP Link
+                        var messageText = "";
+                        if (message.text.toLowerCase().indexOf("http") != -1) {
+                            var textArray = message.text.split(" ");
+
+                            for (var i=0; i<textArray.length; i++) {
+
+                                if (textArray[i].toLowerCase().indexOf("http") != -1) {
+                                    messageText = messageText + " " + "<a href='#' onclick=\"window.open('" + textArray[i] + "', '_system');\">" + textArray[i] + "</a>";
+                                } else {
+                                    messageText = messageText + " " + textArray[i];
+                                }
+                            }
+                        } else {
+                            messageText = message.text;
+                        }
+
                         msgText.find(".time").html(msgDatetime.hhmm());
-                        msgText.find(".text").html(message.text);
+                        msgText.find(".text").html(messageText);
                         $("#viewChatroomContent").append(msgText);
 
                     }
