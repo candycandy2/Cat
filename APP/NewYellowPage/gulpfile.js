@@ -107,7 +107,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova platform add android',
   'cordova plugin add ../../plugins/cordova-plugin-device',
   //'cordova plugin add ../../plugins/cordova-plugin-console',
-  //'cordova plugin add cordova-plugin-appversion@1.0.0',
+  'cordova plugin add ../../plugins/cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
   'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appyellowpage' + process.env.appNameDecorate,
