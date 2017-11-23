@@ -44,7 +44,7 @@ function addComponentView() {
             $("#initialOther").removeClass("hide");
             $("#initialQPlay").remove();
             //when initialOther Page stay over 10 secs, show QPlay Login Link
-            setTimeout(function(){
+            setTimeout(function() {
                 $("#initialAppLoginTimeout").removeClass("hide");
             }, 10000);
         } else {
@@ -367,7 +367,9 @@ function adjustPageMarginTop() {
         }
 
         if (device.platform === "iOS") {
-            mainMarginTop = mainMarginTop + 20;
+            if (versionCompare(device.version, "11.0", "") === 1) {} else {
+                mainMarginTop = mainMarginTop + 20;
+            }
         }
 
         $(".page-main").css({
