@@ -446,7 +446,7 @@ $(document).one("pagebeforecreate", function() {
             footerFixed();
         },
         pageshow: function() {
-           getAppLogParameter();
+            getAppLogParameter();
         }
     });
 });
@@ -456,16 +456,32 @@ $(document).one("pagebeforecreate", function() {
 function getAppLogParameter() {
     var ADAccount = loginData['loginid'];
     var packageName = "com.qplay." + appKey;
-    //var pageName = pageID;
-    var pageAction = "enterPage";
-    var startTime = Math.round(new Date().getTime() / 1000);
-    var deviceType = device.platform;
-    var objLogParameter = new Object();
-    jsonData = {
+    var objLogList = new Object();
+    var logList = [];
+    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
+
+        jsonData = {
+            page_name: $.mobile.activePage.attr('id'),
+            site: "enterPage",
+            date: Math.round(new Date().getTime() / 1000),
+            time: device.platform
+        };
+        logList.push(jsonData);
+        //logList[appLogData.log_list.length].push(jsonData);
+
+    //appLogData.log_list[i].start_time;
+    /*objLogList.page_name = $.mobile.activePage.attr('id');
+    objLogList.page_action = "enterPage";
+    objLogList.start_time = Math.round(new Date().getTime() / 1000);
+    objLogList.device_type = device.platform;*/
+
+    var jsonAPIData = {
         login_id: ADAccount,
         package_name: packageName,
-        log_list: [objLogParameter]
+        log_list: logList
     };
+
+    localStorage.setItem('appLogData', JSON.stringify(jsonAPIData));
 }
 
 //review by alan
