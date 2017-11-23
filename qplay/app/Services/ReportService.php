@@ -8,6 +8,7 @@ namespace App\Services;
 use App\Repositories\RegisterRepository;
 use App\Repositories\ApiLogRepository;
 use App\Repositories\SessionRepository;
+use App\Repositories\UserMessageRepository;
 
 class ReportService
 {  
@@ -15,12 +16,15 @@ class ReportService
     protected $apiLogRepository;
     protected $sessionRepository;
 
-    public function __construct(RegisterRepository $registerRepository, ApiLogRepository $apiLogRepository,
-                            SessionRepository $sessionRepository)
+    public function __construct(RegisterRepository $registerRepository,
+                                ApiLogRepository $apiLogRepository,
+                                SessionRepository $sessionRepository,
+                                UserMessageRepository $userMessageRepository)
     {
         $this->registerRepository = $registerRepository;
         $this->apiLogRepository = $apiLogRepository;
         $this->sessionRepository = $sessionRepository;
+        $this->userMessageRepository=$userMessageRepository;
     }
 
     /**
@@ -94,7 +98,14 @@ class ReportService
     public function getActiveRegisterReport(){
         return $this->sessionRepository->getSessionDetail();
     }
-
+    
+    /**
+     * 取得推播資訊
+     * @param  string $from       開始時間
+     * @param  string $to         結束時間
+     * @param  int    $timeOffset 時差
+     * @return array
+     */
     public function getPushServiceRankReport($from, $to, $timeOffset){
         $res = [];
         $cursor = $this->apiLogRepository->getPushServiceRankDetail($from, $to, $timeOffset);
@@ -103,7 +114,11 @@ class ReportService
         return $res;
     }
 
-
+    /**
+     * 取得推播報表開始日及結束日
+     * @param  int    $timeOffset 時差
+     * @return array
+     */
     public function getPushServicReportEndDate($timeOffset){
         $res = [];
         $cursor = $this->apiLogRepository->getPushServicReportEndDate($timeOffset)->toArray();
@@ -111,4 +126,24 @@ class ReportService
         $res['reportStartDate'] = (count($cursor) >0)?$cursor[0]->min:"";
         return $res;
     }
+
+
+    /**
+     * 取得各site已發送訊息數
+     * @param  int    $timeOffset 時差
+     * @return mixed
+     */
+    public function getSendMessage($timeOffset){
+        return $this->userMessageRepository->getSendMessage($timeOffset);
+    }
+
+    /**
+     * 取得每日各site已讀訊息數
+     * @param  int    $timeOffset 時差
+     * @return mixed
+     */
+    public function getMessageReadInfo($timeOffset){
+        return $this->userMessageRepository->getReadMessageEachDay($timeOffset);
+    }
+
 }

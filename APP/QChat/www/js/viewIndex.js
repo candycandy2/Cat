@@ -79,17 +79,19 @@ $("#viewIndex").pagecontainer({
                     window.getGroupIds();
                 }
 
-                getQUserDetail("index", loginData["emp_no"]);
+                getQUserDetail("viewIndex", loginData["loginid"]);
 
             }());
         }
 
-        function getQUserDetail(action, empNO) {
-            (function() {
+        function getQUserDetail(action, empID, callback) {
+            callback = callback || null;
+
+            (function(action, empID, callback) {
 
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
-                    destination_emp_no: empNO
+                    destination_login_id: empID
                 };
 
                 var queryDataParameter = createXMLDataString(queryDataObj);
@@ -100,7 +102,7 @@ $("#viewIndex").pagecontainer({
 
                     if (resultCode === "1") {
 
-                        if (action === "index") {
+                        if (action === "viewIndex") {
                             $(".personal-content .personal-name").html(data['Content'][0].name);
 
                             if (data['Content'][0].memo == null) {
@@ -121,6 +123,8 @@ $("#viewIndex").pagecontainer({
                             window.processUserData(data['Content'][0], callback);
 
                             getQFriend();
+                        } else if (action === "downloadOriginalUserAvatar") {
+                            window.processUserData(data['Content'][0], callback);
                         }
                     }
                 };
@@ -129,7 +133,7 @@ $("#viewIndex").pagecontainer({
 
                 CustomAPI("POST", true, "getQUserDetail", successCallback, failCallback, queryData, "");
 
-            }());
+            }(action, empID, callback));
         }
 
         function getQFriend() {
@@ -211,13 +215,14 @@ $("#viewIndex").pagecontainer({
             }());
         };
 
-        function getQUserChatroom() {
-            (function() {
+        window.getQUserChatroom = function(action, chatroomID, callback) {
+            chatroomID = chatroomID || null;
+            callback = callback || null;
+
+            (function(action, chatroomID, callback) {
 
                 var queryDataObj = {
-                    emp_no: loginData["emp_no"],
-                    device_type: device.platform.toLowerCase(),
-                    push_token: registrationID
+                    emp_no: loginData["emp_no"]
                 };
 
                 var queryDataParameter = createXMLDataString(queryDataObj);
@@ -228,6 +233,17 @@ $("#viewIndex").pagecontainer({
 
                     if (resultCode === "1") {
 
+                        if (action === "conversation") {
+                            if (data["Content"].length > 0) {
+                                for (var i=0; i<data["Content"].length; i++) {
+                                    if (data["Content"][i].gid == chatroomID) {
+                                        callback(data["Content"][i].name, data["Content"][i].desc);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
                     }
                 };
 
@@ -235,8 +251,8 @@ $("#viewIndex").pagecontainer({
 
                 CustomAPI("POST", true, "getQUserChatroom", successCallback, failCallback, queryData, "");
 
-            }());
-        }
+            }(action, chatroomID, callback));
+        };
 
         window.getConversations = function() {
 
@@ -259,7 +275,7 @@ $("#viewIndex").pagecontainer({
                         }
 
                         loadingMask("hide");
-                        chatroomListView();
+                        window.chatroomListView();
                     }
 
                 };
@@ -308,6 +324,21 @@ $("#viewIndex").pagecontainer({
 
                     if (status === "success") {
 
+                        //Check if member changed
+                        var memberChange = false;
+                        var oldMemberData = [];
+
+                        for (var i=0; i<JM.data.chatroom[chatroomID].member.length; i++) {
+                            oldMemberData.push(JM.data.chatroom[chatroomID].member[i].username);
+                        }
+
+                        for (var i=0; i<data.length; i++) {
+                            if (oldMemberData.indexOf(data[i].username) == -1) {
+                                memberChange = true;
+                            }
+                        }
+
+                        //Set new data
                         JM.data.chatroom[chatroomID].member = data;
 
                         JM.updateLocalStorage();
@@ -346,11 +377,12 @@ $("#viewIndex").pagecontainer({
 
                         desc = "need_history=" + need_history + ";group_message=" + group_message + ";name_changed=" + name_changed;
 
-                        if (name_changed != "Y") {
-                            //update chatroom name in:
+                        if (name_changed != "Y" && memberChange) {
+                            //If member changed, update chatroom name in:
                             //1. chatroom list
                             //2. local storage
                             //3. JMessage Server side
+                            //4. QPlay Server side
                             var chatroomName = "";
 
                             for (var i=0; i<data.length; i++) {
@@ -371,11 +403,7 @@ $("#viewIndex").pagecontainer({
                             //chatroom list view
                             $("#chatroomList" + chatroomID + " .group-name").html(newDisplayName);
 
-                            //local storage
-                            JM.data.chatroom[chatroomID].name = oldDisplayName;
-
-                            //JMessage Server side
-                            window.updateGroupInfo(chatroomID, oldDisplayName, desc);
+                            window.setQChatroom(chatroomID, "name", oldDisplayName, "viewIndex");
                         }
 
                         if (action === "getConversation") {
@@ -384,6 +412,8 @@ $("#viewIndex").pagecontainer({
                         } else if (action === "chatroomInfo") {
                             //chatroomInfo
                             window.processChatroomInfo();
+                        } else if (action === "chatroomListView") {
+                            window.chatroomListView();
                         }
                     }
 
@@ -428,6 +458,17 @@ $("#viewIndex").pagecontainer({
             (function(action, nowTimestamp, userID, listViewIndex) {
 
                 var getAvator = false;
+
+                //If User data is null
+                if (JM.data.chatroom_user[userID] == undefined) {
+                    var callback = function(action, nowTimestamp, userID, listViewIndex) {
+                        window.downloadOriginalUserAvatar(action, nowTimestamp, userID, listViewIndex);
+                    };
+
+                    getQUserDetail("downloadOriginalUserAvatar", userID, callback);
+
+                    return;
+                }
 
                 //check download time
                 var avator_download_time = JM.data.chatroom_user[userID].avator_download_time;
@@ -478,6 +519,8 @@ $("#viewIndex").pagecontainer({
                             friendListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
                         } else if (action === "chatroomMemberListView") {
                             chatroomMemberListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                        } else if (action === "addMemberListView") {
+                            addMemberListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
                         }
                     }
                 }
@@ -513,7 +556,7 @@ $("#viewIndex").pagecontainer({
             $("#friendList" + listViewIndex).find("img").show();
         }
 
-        function chatroomListView() {
+        window.chatroomListView = function() {
 
             //Refresh Chatroom List
             var chatrooomCount = 0;
@@ -560,7 +603,7 @@ $("#viewIndex").pagecontainer({
                 $("#noChatroom").hide();
             }
 
-        }
+        };
 
         window.chatroomSingleView = function(chatroomID) {
             var createTime = new Date(JM.data.chatroom[chatroomID].last_message.create_time);

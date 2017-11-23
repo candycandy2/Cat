@@ -1052,6 +1052,11 @@ input[type=checkbox]:checked + label {
     left: 3.71vw;
 }
 
+/*-----------------------------------------------------------------My Info Edit*/
+#myInfoStatus {
+    margin-top: -2.5vw;
+}
+
 .hide {
     display: none;
 }

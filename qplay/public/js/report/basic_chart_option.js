@@ -358,3 +358,36 @@ var getColumnChartOpt = function(){
                 }
             }
 };
+
+var getSimpleColumnChartOpt = function(){
+    return {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Stacked column chart'
+        },
+        xAxis: {
+            categories: []
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ''
+            }
+        },
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+            shared: true
+        },
+        plotOptions: {
+            column: {
+                stacking: 'percent'
+            }
+        },
+        series:[],
+        lang: {
+            noData: Messages.NO_DATA_TO_DISPLAY
+        }
+    };
+}

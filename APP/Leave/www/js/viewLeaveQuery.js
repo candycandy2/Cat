@@ -46,6 +46,7 @@ $("#viewLeaveQuery").pagecontainer({
                     var leaveListHtml = "";
                     var callbackData = data['Content'][0]["applyformlist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
+                    console.log(htmlDoc.length);
                     var formidArr = $("formid", htmlDoc);         
                     var formnoArr = $("formno", htmlDoc);
                     var statusArr = $("status", htmlDoc);
@@ -58,7 +59,6 @@ $("#viewLeaveQuery").pagecontainer({
                     var leavehoursArr = $("hours", htmlDoc);
                     var cancelstatusArr = $("cancelstatus", htmlDoc);
 
-                    
                     leaveListArr = [];
                     for(var i = 0; i < formidArr.length; i++) {
                         var leaveObject = {};
@@ -75,7 +75,7 @@ $("#viewLeaveQuery").pagecontainer({
                         leaveObject["cancelstatus"] = $(cancelstatusArr[i]).html();
                         leaveListArr.push(leaveObject);
                     }
-                    console.log(leaveListArr[9]);
+                    console.log(leaveListArr);
 
                     for(var i = 0; i < formidArr.length; i++) {
                         leaveListHtml += '<div class="leave-query-list">' +
@@ -113,8 +113,9 @@ $("#viewLeaveQuery").pagecontainer({
                                         '<div></div>' +
                                     '</div>';
                     }
-                    //console.log(leaveListHtml);
+                    
                     //$(".leave-query-main").append(leaveListHtml);
+                    //getLanguageString();
 
                     loadingMask("hide");
                 }

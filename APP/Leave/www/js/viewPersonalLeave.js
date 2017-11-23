@@ -4,6 +4,8 @@ var leaveTypeSelected = false;
 var fulldayHide = false;
 var leftDaysData = {};
 var timoutQueryEmployeeData = null;
+var LeaveObjList = [];
+
 
 var leaveTypeData = {
     id: "leaveType-popup",
@@ -27,16 +29,160 @@ var agentData = {
     }
 };
 
+
 $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
 
         var leaveIDArry = "";
+        var leaveTypeArry = "";
 
         /********************************** function *************************************/
+        //快速请假页面——获取部分假别
+        function getQuickLeaveList() {
+            for(var i = 0; i < leaveTypeArry.length; i++) {
+                leaveTypeData["option"][i] = {};
+                leaveTypeData["option"][i]["value"] = $(leaveIDArry[i]).html();
+                leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
+            }
+
+            //生成快速请假dropdownlist
+            tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeB", leaveTypeData);
+        }
+
+        //请假申请页面——获取所有类别
+        function getAllCategroyList() {
+            var categroyLeave = [];
+
+            //循環所有類別，並去重、去空
+            for(var i in LeaveObjList) {
+                if (categroyLeave.indexOf(LeaveObjList[i]["category"]) === -1 && LeaveObjList[i]["category"] !== "") {
+                    categroyLeave.push(LeaveObjList[i]["category"]);
+                } 
+            }
+            
+            //添加 “所有類別” 到列表第一位
+            categroyLeave.unshift(allLeaveCategroyStr);
+
+            //循环所有类别到popup
+            for(var i in categroyLeave) {
+                categroyData["option"][i] = {};
+                categroyData["option"][i]["value"] = categroyLeave[i];
+                categroyData["option"][i]["text"] = categroyLeave[i];
+            }
+
+            //生成所有类别dropdownlist
+            tplJS.DropdownList("viewLeaveSubmit", "leaveCategroy", "prepend", "typeB", categroyData);
+            
+            //默認選中popup “所有類別”
+            $.each($("#categroy-popup-option-list li"), function(i, item) {
+                if($(item).text() === allLeaveCategroyStr) {
+                    $(item).trigger("click");
+                    return false;
+                }
+            });
+        }
+
+        //快速请假页——选择假别查看剩余天数
+        function checkLeftDaysByQuickLeave(leftday) {
+            //$("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftday + " 天");
+            $("#leaveType > span:nth-of-type(1)").text("* " + langStr["str_070"] + " " + leftday + " " + langStr["str_071"]);
+            $("input[id=leaveTime-tab1]").prop("disabled", false);
+            $("input[id=leaveTime-tab1]").parent().removeClass("ui-state-disabled");
+
+            if (leftday < 0) {
+                $("#leaveType > span:nth-of-type(1)").text("");
+            } else if (leftday >= 0 && leftday < 0.5) {
+                //var msgContent = leaveType + "只剩下 " + leftday + " 天";
+                var msgContent = leaveType + langStr["str_072"] + " " + leftday + " " + langStr["str_071"];
+                $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
+                popupMsgInit('.leftDaysNotEnough');
+
+                $("#leaveType > span:nth-of-type(1)").text("");
+                //$("#leaveType-popup option").text("請選擇");
+                $("#leaveType-popup option").text(langStr["str_069"]);
+                tplJS.reSizeDropdownList("leaveType-popup", "typeB");
+                leaveid = "";
+                leaveType = "";
+                $("#leaveConfirm").addClass("btn-disable");
+                $("#leaveConfirm").removeClass("btn-enable");
+
+            } else if (leftday >= 0.5 && leftday < 1) {
+                $("input[id=leaveTime-tab1]").prop("disabled", true);
+                $("input[id=leaveTime-tab1]").parent().addClass("ui-state-disabled");
+                if(leaveTimetab == "leaveTime-tab1") {
+                    $("input[id=leaveTime-tab2]").trigger('click');
+                    $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
+                    $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
+                    $("label[for=leaveTime-tab3]").removeClass('ui-btn-active');
+                }
+            }
+
+            if(leaveid != "" && agentid != "") {
+                $("#leaveConfirm").removeClass("btn-disable");
+                $("#leaveConfirm").addClass("btn-enable");
+            }
+            leaveTypeSelected = false;
+        }
+        
+        //请假申请页——选择假别查看剩余天数
+        function checkLeftDaysByLeave(leftday) {
+            //如果假别天数等于0或者小于最小请假单位(天)
+            if(leftday == 0 || (leftday > 0 && leftday < leaveDetail["unit"])) {
+                popupMsgInit('.leaveNotEnough');
+                getLeaveByCategory();
+            } else {
+                //desc
+                if(leaveDetail["desc"] !== "") {
+                    var divIntroduce = "<span>*" + leaveDetail["desc"] + "</span>";
+                    $('#leaveIntroduce').empty().append(divIntroduce).show();
+                } else {
+                    $('#leaveIntroduce').empty().hide();
+                }
+
+                //popup——left day
+                //var leftMsg = leftStr + leftday + dayStr + leaveDetail["name"] + canApplyStr;
+                //$('.leftDaysByLeave').find('.header-text').html(leftMsg);
+
+                //attachment
+                if(leaveDetail["attach"] === "Y") {
+                    $('#uploadAttachment').show();
+                } else {
+                    $('#uploadAttachment').hide();
+                }
+
+                //basedate
+                if(leaveDetail["basedate"] === "Y") {
+                    $('#baseDate').show();
+                    $('#divEmpty').show();
+
+                    needBaseday = true;
+
+                    //需要基准日的假别才可以检查有效基准日列表
+                    QueryDatumDatesQueryData = "<LayoutHeader><EmpNo>" + 
+                                                myEmpNo + 
+                                                "</EmpNo><leaveid>" + 
+                                                leaveid + 
+                                                "</leaveid></LayoutHeader>";
+
+                    QueryDatumDates();
+
+                } else {
+                    $('#baseDate').hide();
+                    $('#divEmpty').hide();
+
+                    needBaseday = false;
+                }
+            }
+
+            //只要点假别，结束时间一定要恢复初始状态
+            $("#endText").text(pleaseSelectStr);
+            $("#endDate").val("");
+        }
+
+        //API —— 行事历
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
-                //console.log(data);
                 myCalendarData = {};
                 myHolidayData = [];
                 var leaveFlag = "3";
@@ -74,18 +220,50 @@ $("#viewPersonalLeave").pagecontainer({
         window.GetDefaultSetting = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
+                    //快速请假页面——部分假别
                     var callbackData = data['Content'][0]["quickleavelist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var leaveTypeArry = $("name", htmlDoc);
+                    leaveTypeArry = $("name", htmlDoc);
                     leaveIDArry = $("leaveid", htmlDoc);
-                    for(var i = 0; i < leaveTypeArry.length; i++) {
-                        leaveTypeData["option"][i] = {};
-                        leaveTypeData["option"][i]["value"] = $(leaveIDArry[i]).html();
-                        leaveTypeData["option"][i]["text"] = $(leaveTypeArry[i]).html();
+                    
+                    //获取快速请假的假别
+                    getQuickLeaveList();
+
+                    //请假申请页面——所有假别
+                    var allLeaveData = data['Content'][0]["Leavelist"];
+                    var allLeaveDom = new DOMParser().parseFromString(allLeaveData, "text/html");
+                    var leaveidArr = $("leaveid", allLeaveDom);
+                    var categoryArr = $("category", allLeaveDom);
+                    var nameArr = $("name", allLeaveDom);
+                    var descArr = $("desc", allLeaveDom);
+                    var unitArr = $("unit", allLeaveDom);
+                    var basedateArr = $("basedate", allLeaveDom);
+                    var attachArr = $("attach", allLeaveDom);
+
+                    LeaveObjList = [];
+                    for(var i = 0; i < leaveidArr.length; i++) {
+                        var leaveObject = {};
+                        leaveObject["leaveid"] = $(leaveidArr[i]).html();
+                        leaveObject["category"] = $(categoryArr[i]).html();
+                        leaveObject["name"] = $(nameArr[i]).html();
+                        leaveObject["desc"] = $(descArr[i]).html();
+                        leaveObject["basedate"] = $(basedateArr[i]).html();
+                        leaveObject["attach"] = $(attachArr[i]).html();
+                        //统一请假最小单位(天),先转小写，再匹配子串
+                        if($(unitArr[i]).html().toLowerCase().indexOf("day") > 0) {
+                            leaveObject["unit"] = parseFloat($(unitArr[i]).html().toLowerCase().replace("day", ""));
+                        } else if($(unitArr[i]).html().toLowerCase().indexOf("hour") > 0) {
+                            leaveObject["unit"] = parseFloat($(unitArr[i]).html().toLowerCase().replace("hour", ""))/8;
+                        }
+                        LeaveObjList.push(leaveObject);
                     }
-                    tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeB", leaveTypeData);
+                    console.log(LeaveObjList);
+
+                    //获取所有类别，并选择“所有类别”
+                    getAllCategroyList();
+
                 }
             };
 
@@ -105,46 +283,15 @@ $("#viewPersonalLeave").pagecontainer({
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var leftDays = $("leftdays", htmlDoc);
-                    leftDaysData[leaveid] = $(leftDays).html();
+                    leftDaysData[leaveid] = parseFloat($(leftDays).html());
 
-                    //$("#leaveType > span:nth-of-type(1)").text("* 尚有 " + leftDaysData[leaveid] + " 天");
-                    $("#leaveType > span:nth-of-type(1)").text("* " + langStr["str_070"] + " " + leftDaysData[leaveid] + " " + langStr["str_071"]);
-                    $("input[id=leaveTime-tab1]").prop("disabled", false);
-                    $("input[id=leaveTime-tab1]").parent().removeClass("ui-state-disabled");
-
-                    if (leftDaysData[leaveid] < 0) {
-                        $("#leaveType > span:nth-of-type(1)").text("");
-                    } else if (leftDaysData[leaveid] >= 0 && leftDaysData[leaveid] < 0.5) {
-                        //var msgContent = leaveType + "只剩下 " + leftDaysData[leaveid] + " 天";
-                        var msgContent = leaveType + langStr["str_072"] + " " + leftDaysData[leaveid] + " " + langStr["str_071"];
-                        $('.leftDaysNotEnough').find('.main-paragraph').html(msgContent);
-                        popupMsgInit('.leftDaysNotEnough');
-
-                        $("#leaveType > span:nth-of-type(1)").text("");
-                        //$("#leaveType-popup option").text("請選擇");
-                        $("#leaveType-popup option").text(langStr["str_069"]);
-                        tplJS.reSizeDropdownList("leaveType-popup", "typeB");
-                        leaveid = "";
-                        leaveType = "";
-                        $("#leaveConfirm").addClass("btn-disable");
-                        $("#leaveConfirm").removeClass("btn-enable");
-
-                    } else if (leftDaysData[leaveid] >= 0.5 && leftDaysData[leaveid] < 1) {
-                        $("input[id=leaveTime-tab1]").prop("disabled", true);
-                        $("input[id=leaveTime-tab1]").parent().addClass("ui-state-disabled");
-                        if(leaveTimetab == "leaveTime-tab1") {
-                            $("input[id=leaveTime-tab2]").trigger('click');
-                            $("label[for=leaveTime-tab1]").removeClass('ui-btn-active');
-                            $("label[for=leaveTime-tab2]").addClass('ui-btn-active');
-                            $("label[for=leaveTime-tab3]").removeClass('ui-btn-active');
-                        }
+                    if(visitedPageList[visitedPageList.length-1] == "viewPersonalLeave") {
+                        checkLeftDaysByQuickLeave(leftDaysData[leaveid]);
+                    } else if (visitedPageList[visitedPageList.length-1] == "viewLeaveSubmit"){
+                        console.log("该假别剩余天数:"+$(leftDays).html());
+                        checkLeftDaysByLeave(leftDaysData[leaveid]);
                     }
-
-                    if(leaveid != "" && agentid != "") {
-                        $("#leaveConfirm").removeClass("btn-disable");
-                        $("#leaveConfirm").addClass("btn-enable");
-                    }
-                    leaveTypeSelected = false;
+                    
                 }
             };
 
@@ -544,7 +691,6 @@ $("#viewPersonalLeave").pagecontainer({
             leaveid = $(this).val();
             leaveType = $(this).text();
             leaveTypeSelected = true;
-            console.log(leaveid);
         });
 
         $(document).on("popupafterclose", "#leaveType-popup-option", function() {
