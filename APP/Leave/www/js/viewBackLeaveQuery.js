@@ -9,7 +9,7 @@ $("#viewBackLeaveQuery").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        //獲取銷假單列表——<EmpNo>0409132</EmpNo>
+        //獲取銷假單列表——<LayoutHeader><EmpNo>0003023</EmpNo></LayoutHeader>
         window.QueryEmployeeLeaveCancelForm = function() {
             
             this.successCallback = function(data) {
@@ -156,13 +156,11 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {
-            console.log(QueryEmployeeLeaveCancelFormQueryData);
-
+            QueryEmployeeLeaveCancelForm();
             
         });
 
         $("#viewBackLeaveQuery").on("pageshow", function(event, ui) {
-            QueryEmployeeLeaveCancelForm();
             loadingMask("hide");
         });
 

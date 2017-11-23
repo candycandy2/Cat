@@ -37,16 +37,59 @@ $("#viewLeaveQuery").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        //獲取請假單列表——<EmpNo>0409132</EmpNo>
+        //添加所有請假到列表
+        function setAllLeaveList() {
+            var leaveListHtml = "";
+            for(var i in leaveListArr) {
+                leaveListHtml += '<div class="leave-query-list">' +
+                                    '<div>' +
+                                        '<div class="leave-query-state font-style3" form-id="' + leaveListArr[i]["formid"] + '">' +
+                                            '<span>' + leaveListArr[i]["statusName"] + '</span>' + 
+                                            '<span>' + leaveListArr[i]["cancelstatus"] + '</span>' +
+                                            '<img src="img/btn_nextpage.png">' +
+                                        '</div>' +
+                                        '<div class="leave-query-base font-style10">' +
+                                            '<div class="leave-query-basedata">' +
+                                                '<div>' +
+                                                    '<span>請假單號：</span>' +
+                                                    '<span class="leave-id">' + leaveListArr[i]["formno"] + '</span>' +
+                                                '</div>' +
+                                                '<div>' +
+                                                    '<span>假別：</span>' +
+                                                    '<span>' + leaveListArr[i]["name"] + '</span>' +
+                                                '</div>' +
+                                            '</div>' +
+                                            '<div>' +
+                                                '<span>請假區間：</span>' +
+                                                '<span>' + leaveListArr[i]["begindate"] + ' ' + leaveListArr[i]["begintime"] + '</span>' +
+                                                '<span> - </span>' +
+                                                '<span>' + leaveListArr[i]["enddate"] + ' ' + leaveListArr[i]["endtime"] + '</span>' +
+                                            '</div>' +
+                                            '<div>' +
+                                                '<span>請假數：</span>' +
+                                                '<span>' + leaveListArr[i]["days"] + '</span>' +
+                                                '<span> 天 </span>' +
+                                                '<span>' + leaveListArr[i]["hours"] + '</span>' +
+                                                '<span> 小時</span>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<div></div>' +
+                                '</div>';
+            }
+            
+            $(".leave-query-main-list").append(leaveListHtml);
+        }
+
+
+        //獲取請假單列表——<LayoutHeader><EmpNo>0003023</EmpNo></LayoutHeader>
         window.QueryEmployeeLeaveApplyForm = function() {
             
             this.successCallback = function(data) {
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
-                    var leaveListHtml = "";
                     var callbackData = data['Content'][0]["applyformlist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    console.log(htmlDoc.length);
                     var formidArr = $("formid", htmlDoc);         
                     var formnoArr = $("formno", htmlDoc);
                     var statusArr = $("status", htmlDoc);
@@ -72,50 +115,38 @@ $("#viewLeaveQuery").pagecontainer({
                         leaveObject["endtime"] = $(endtimeArr[i]).html();
                         leaveObject["days"] = $(leavedaysArr[i]).html();
                         leaveObject["hours"] = $(leavehoursArr[i]).html();
-                        leaveObject["cancelstatus"] = $(cancelstatusArr[i]).html();
+                        //leaveObject["cancelstatus"] = $(cancelstatusArr[i]).html();
+
+                        //表單簽核的4種狀態
+                        if($(statusArr[i]).html() == "AP") {
+                            leaveObject["statusName"] = "表單已生效";
+                        } else if($(statusArr[i]).html() == "RC") {
+                            leaveObject["statusName"] = "表單已撤回";
+                        } else if($(statusArr[i]).html() == "RJ") {
+                            leaveObject["statusName"] = "表單已拒絕";
+                        } else {
+                            leaveObject["statusName"] = "表單簽核中";
+                        }
+
+                        //銷假狀態
+                        if($(cancelstatusArr[i]).html() !== "") {
+                            leaveObject["cancelstatus"] = "（"+$(cancelstatusArr[i]).html()+"）";
+                        } else {
+                            leaveObject["cancelstatus"] = "";
+                        }
+
+                        //添加假别名称
+                        for(var j = 0; j < LeaveObjList.length; j++) {
+                            if(leaveObject["leaveid"] == LeaveObjList[j]["leaveid"]) {
+                                leaveObject["name"] = LeaveObjList[j]["name"];
+                                leaveObject["category"] = LeaveObjList[j]["category"];
+                                break;
+                            }
+                        }
+
                         leaveListArr.push(leaveObject);
                     }
-                    console.log(leaveListArr);
-
-                    for(var i = 0; i < formidArr.length; i++) {
-                        leaveListHtml += '<div class="leave-query-list">' +
-                                        '<div>' +
-                                            '<div class="leave-query-state font-style3" data-num="' + $(formidArr[i]).html() + '">' +
-                                                '<span>' + $(statusArr[i]).html() + '</span>' +
-                                                '<img src="img/btn_nextpage.png">' +
-                                            '</div>' +
-                                            '<div class="leave-query-base font-style10">' +
-                                                '<div class="leave-query-basedata">' +
-                                                    '<div>' +
-                                                        '<span class="langStr" data-id="str_131"></span>' +
-                                                        '<span class="leave-id">' + $(formnoArr[i]).html() + '</span>' +
-                                                    '</div>' +
-                                                    '<div>' +
-                                                        '<span class="langStr" data-id="str_152"></span>' +
-                                                        '<span>' + $(leaveidArr[i]).html() + '</span>' +
-                                                    '</div>' +
-                                                '</div>' +
-                                                '<div>' +
-                                                    '<span class="langStr" data-id="str_138"></span>' +
-                                                    '<span>' + $(begindateArr[i]).html() + ' ' + $(begintimeArr[i]).html() + '</span>' +
-                                                    '<span> - </span>' +
-                                                    '<span>' + $(enddateArr[i]).html() + ' ' + $(endtimeArr[i]).html() + '</span>' +
-                                                '</div>' +
-                                                '<div>' +
-                                                    '<span class="langStr" data-id="str_153"></span>' +
-                                                    '<span>' + $(leavedaysArr[i]).html() + '</span>' +
-                                                    '<span class="langStr" data-id="str_071"></span>' +
-                                                    '<span>' + $(leavehoursArr[i]).html() + '</span>' +
-                                                    '<span class="langStr" data-id="str_088"></span>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                        '<div></div>' +
-                                    '</div>';
-                    }
-                    
-                    //$(".leave-query-main").append(leaveListHtml);
-                    //getLanguageString();
+                    setAllLeaveList();
 
                     loadingMask("hide");
                 }
@@ -129,7 +160,7 @@ $("#viewLeaveQuery").pagecontainer({
             }();
         };
 
-        //獲取請假單詳情——<EmpNo>0409132</EmpNo><formid>123456</formid>
+        //獲取請假單詳情——<LayoutHeader><EmpNo>0003023</EmpNo><formid>123456</formid></LayoutHeader>
         window.LeaveApplyFormDetail = function() {
             
             this.successCallback = function(data) {
@@ -262,13 +293,13 @@ $("#viewLeaveQuery").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewLeaveQuery").on("pagebeforeshow", function(event, ui) {
+            QueryEmployeeLeaveApplyForm();
             $(".leaveMenu").show();
             
             
         });
 
         $("#viewLeaveQuery").on("pageshow", function(event, ui) {
-            QueryEmployeeLeaveApplyForm();
             loadingMask("hide");
         });
 
@@ -277,10 +308,19 @@ $("#viewLeaveQuery").pagecontainer({
         });
 
         //點擊詳細，根據不同表單狀態顯示不同頁面——click
-        $(".leave-query-state").on("click", function() {
+        $(document).on("click", ".leave-query-state", function() {
             //var self = $(this).children("span").eq(0).text();
             var self = $.trim($(this).text());
-            //console.log(self);
+            var formid = $(this).attr("form-id");
+
+            LeaveApplyFormDetailQueryData = '<LayoutHeader><EmpNo>' 
+                                            + myEmpNo 
+                                            + '</EmpNo><formid>' 
+                                            + formid 
+                                            + '</formid></LayoutHeader>';
+
+            console.log(LeaveApplyFormDetailQueryData);
+            LeaveApplyFormDetail();
 
             if(self == leaveSignStr) {
                 $(".leaveMenu").hide();
