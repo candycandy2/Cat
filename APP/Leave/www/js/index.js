@@ -2,6 +2,7 @@ var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
 var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData;
 var QueryEmployeeLeaveApplyFormQueryData, LeaveApplyFormDetailQueryData, RecallLeaveApplyFormQueryData,
 DeleteLeaveApplyFormQueryData, SendLeaveCancelFormDataQueryData;
+var QueryDatumDatesQueryData;
 var QueryEmployeeLeaveCancelFormQueryData, LeaveCancelFormDetailQueryData, RecallLeaveCancelFormQueryData, DeleteLeaveCancelFormQueryData;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
@@ -285,4 +286,13 @@ function dateInit() {
     $("#leaveDate a:eq(0)").click();
 }
 
+//格式化日期字符串：日/月/年 —— 年-月-日
+function dateFormat(dataStr) {
+    var arr = dataStr.split("/");
 
+    var newArr = [];
+    for(var i in arr) {
+        newArr.unshift(arr[i]);
+    }
+    return newArr.join("-");
+}

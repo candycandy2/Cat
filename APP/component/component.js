@@ -444,11 +444,29 @@ $(document).one("pagebeforecreate", function() {
         },
         touchmove: function() {
             footerFixed();
+        },
+        pageshow: function() {
+           getAppLogParameter();
         }
     });
 });
 
 /********************************** QPlay APP function *************************************/
+
+function getAppLogParameter() {
+    var ADAccount = loginData['loginid'];
+    var packageName = "com.qplay." + appKey;
+    //var pageName = pageID;
+    var pageAction = "enterPage";
+    var startTime = Math.round(new Date().getTime() / 1000);
+    var deviceType = device.platform;
+    var objLogParameter = new Object();
+    jsonData = {
+        login_id: ADAccount,
+        package_name: packageName,
+        log_list: [objLogParameter]
+    };
+}
 
 //review by alan
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
