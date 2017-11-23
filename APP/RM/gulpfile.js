@@ -114,7 +114,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova platform add android',
   'cordova plugin add ../../plugins/cordova-plugin-device',
   //'cordova plugin add cordova-plugin-console',
-  //'cordova plugin add cordova-plugin-appversion',
+  'cordova plugin add ../../plugins/cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
   //set scheme name appXXXX, XXXX should in lowercase.

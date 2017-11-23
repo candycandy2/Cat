@@ -101,7 +101,7 @@ gulp.task('install', shell.task([
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
   //'cordova plugin add cordova-plugin-console',
-  //'cordova plugin add cordova-plugin-appversion',
+  'cordova plugin add ../../plugins/cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add cordova-plugin-android-permissions',
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appens' + process.env.appNameDecorate,
