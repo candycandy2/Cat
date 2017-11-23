@@ -203,7 +203,7 @@ function onBackKeyDown() {
     //         }
     //     }
     // }
-  
+
 }
 
 $(document).ready(function() {
@@ -227,7 +227,7 @@ function changePageByPanel(pageId) {
         $.mobile.changePage("#" + pageId);
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
-        //切换菜单才添加，back键不添加
+        //切换菜单才添加，back返回时不添加
         if(pageId !== visitedPageList[visitedPageList.length-1]) {
             visitedPageList.push(pageId);
         }
