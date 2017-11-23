@@ -432,13 +432,12 @@ class ChatRoomController extends Controller
                  $dataToJMessage['desc'] = $dataToDB['chatroom_desc'] = $chatRoomDesc;
             }
 
-            /*僅更新QPlayDB，由手機端直接更新JMessage聊天室資訊，以達到即時同步*/
-            /*$response =$this->chatRoomService->updateGroup($groupId, $dataToJMessage);
+            $response =$this->chatRoomService->updateGroup($groupId, $dataToJMessage);
             if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
                 throw new JMessageException($response->message);
             }else if(isset($response->error->code)){
                 throw new JMessageException($response->error->message);
-            }*/
+            }
 
             $userId = $this->userService->getUserData($empNo)->row_id;
             $this->chatRoomService->updateChatroom($groupId, $dataToDB, $userId);
