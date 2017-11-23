@@ -296,7 +296,7 @@ class HistoryService
                 $result['fname'] = $matches[1];
                 $result['format'] = $fileType;
                 rename($filename,$result['lpath']);
-                CommonUtil::compressImage($result['lpath'],$result['spath'],10);
+                CommonUtil::compressImage($result['lpath'],$result['spath'],30);
 
             }
           }
