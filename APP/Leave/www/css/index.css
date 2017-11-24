@@ -840,7 +840,11 @@ div.scrollmenu a {
 	margin-top: 13%;
 }
 
-
+#leaveWithdraw,
+#leaveRevoke,
+#leaveDelete {
+	display: none;
+}
 
 /**************************************** viewBackLeaveApply ***************************************/
 #backLeaveQueryDetail {
@@ -853,7 +857,10 @@ div.scrollmenu a {
 	margin-left: 3.2vw;
 }
 
-
+#backLeaveWithdraw,
+#backLeaveDelete {
+	display: none;
+}
 
 
 

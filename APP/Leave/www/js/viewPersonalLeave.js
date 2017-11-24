@@ -2,7 +2,7 @@ var leaveid, leaveType, agentid, beginDate, endDate, beginTime, endTime;
 var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 var fulldayHide = false;
-var leftDaysData = {};
+//var leftDaysData = {};
 var timoutQueryEmployeeData = null;
 var LeaveObjList = [];
 var quickLeaveLeft;
@@ -143,9 +143,9 @@ $("#viewPersonalLeave").pagecontainer({
                                          + "</enddate><endtime>"
                                          + endTime
                                          + "</endtime><datumdate></datumdate><applydays>"
-                                         + $(countApplyDays).html()
+                                         + countApplyDays
                                          + "</applydays><applyhours>"
-                                         + $(countApplyHours).html()
+                                         + countApplyHours
                                          + "</applyhours><reason>"
                                          + leaveType
                                          + "</reason></LayoutHeader>";
@@ -201,7 +201,7 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
-                    //快速请假页面——部分假别
+                    //1.快速请假页面——部分假别
                     var callbackData = data['Content'][0]["quickleavelist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     leaveTypeArry = $("name", htmlDoc);
@@ -210,7 +210,7 @@ $("#viewPersonalLeave").pagecontainer({
                     //获取快速请假的假别
                     getQuickLeaveList();
 
-                    //请假申请页面——所有假别
+                    //2.请假申请页面——所有假别
                     var allLeaveData = data['Content'][0]["Leavelist"];
                     var allLeaveDom = new DOMParser().parseFromString(allLeaveData, "text/html");
                     var leaveidArr = $("leaveid", allLeaveDom);
@@ -239,10 +239,12 @@ $("#viewPersonalLeave").pagecontainer({
                         LeaveObjList.push(leaveObject);
                     }
 
-                    //console.log(LeaveObjList);
                     //获取所有类别，并选择“所有类别”
                     getAllCategroyList();
 
+                    //3.注意事項列表
+                    var noticeData = data['Content'][0]["noticelist"];
+                    var noticeDom = new DOMParser().parseFromString(noticeData, "text/html");
                 }
             };
 
@@ -262,8 +264,9 @@ $("#viewPersonalLeave").pagecontainer({
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var leftDays = $("leftdays", htmlDoc);
-                    leftDaysData[leaveid] = parseFloat($(leftDays).html());
+                    //leftDaysData[leaveid] = parseFloat($(leftDays).html());
 
+                    //quickLeaveLeft取代leftDaysData
                     quickLeaveLeft = parseFloat($(leftDays).html());
                 }
             };
@@ -360,14 +363,16 @@ $("#viewPersonalLeave").pagecontainer({
         window.CountLeaveHours = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");          
                     countSuccess = $("success", htmlDoc);
                     countError = $("error", htmlDoc);
-                    countApplyDays = $("ApplyDays", htmlDoc);
-                    countApplyHours = $("ApplyHours", htmlDoc);
+                    var applyDays = $("ApplyDays", htmlDoc);
+                    var applyHours = $("ApplyHours", htmlDoc);
+                    countApplyDays = $(applyDays).html();
+                    countApplyHours = $(applyHours).html();
                 }
             };
 
@@ -819,8 +824,7 @@ $("#viewPersonalLeave").pagecontainer({
             $("#leaveDate a").removeClass("hover");
             $(this).addClass("hover");
 
-            beginDate = endDate = $(this).data("value");
-            
+            beginDate = endDate = $(this).data("value");  
         });
 
     }
