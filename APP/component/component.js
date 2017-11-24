@@ -127,7 +127,7 @@ var app = {
         document.addEventListener("backbutton", onBackKeyDown, false);
 
         //Handle APP background event, set in index.js
-        //document.addEventListener("pause", onPause, false);
+        document.addEventListener("pause", onPause, false);
 
         //Handle APP foreground event, set in index.js
         //document.addEventListener("resume", onResume, false);
@@ -454,34 +454,39 @@ $(document).one("pagebeforecreate", function() {
 /********************************** QPlay APP function *************************************/
 
 function getAppLogParameter() {
+    //localStorage.clear();
     var ADAccount = loginData['loginid'];
     var packageName = "com.qplay." + appKey;
     var objLogList = new Object();
-    var logList = [];
     var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
 
-        jsonData = {
-            page_name: $.mobile.activePage.attr('id'),
-            site: "enterPage",
-            date: Math.round(new Date().getTime() / 1000),
-            time: device.platform
-        };
-        logList.push(jsonData);
-        //logList[appLogData.log_list.length].push(jsonData);
-
-    //appLogData.log_list[i].start_time;
-    /*objLogList.page_name = $.mobile.activePage.attr('id');
+    objLogList.page_name = $.mobile.activePage.attr('id');
     objLogList.page_action = "enterPage";
-    objLogList.start_time = Math.round(new Date().getTime() / 1000);
-    objLogList.device_type = device.platform;*/
+    objLogList.start_time = new Date().getTime();
+    objLogList.period = "";
+    objLogList.device_type = device.platform;
 
-    var jsonAPIData = {
-        login_id: ADAccount,
-        package_name: packageName,
-        log_list: logList
-    };
+    if (appLogData == null) {
+        var jsonData = {
+            login_id: ADAccount,
+            package_name: packageName,
+            log_list: [objLogList]
+        };
+    } else {
+        var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length-1].start_time;
+        appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
+        appLogData.log_list.push(objLogList);
+        jsonData = appLogData;
+    }
 
-    localStorage.setItem('appLogData', JSON.stringify(jsonAPIData));
+    localStorage.setItem('appLogData', JSON.stringify(jsonData));
+}
+
+function onPause() {
+    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
+    var onPauseTime = new Date().getTime();
+    var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length-1].start_time;
+    appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
 }
 
 //review by alan
