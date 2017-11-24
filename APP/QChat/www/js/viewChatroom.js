@@ -245,7 +245,7 @@ $("#viewChatroom").pagecontainer({
                     window.processChatroomData(data, action, getHistory, receiveMessage);
                 };
 
-                window.getGroupInfo(data.target.id, callback);
+                window.getGroupInfo("viewChatroom", data.target.id, callback);
 
                 return;
             }
@@ -325,6 +325,8 @@ $("#viewChatroom").pagecontainer({
                                 window.getGroupMembers(data.target.id, groupMessage, "getConversation");
                             }
                         }
+
+                        window.chatroomTitle();
                     }
 
                     if (getHistory) {
