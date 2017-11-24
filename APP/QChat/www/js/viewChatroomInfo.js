@@ -91,6 +91,7 @@ $("#viewChatroomInfo").pagecontainer({
                 }
 
                 if (action === "name") {
+                    loadingMask("show");
                     name_changed = "Y";
                 }
 
@@ -113,13 +114,35 @@ $("#viewChatroomInfo").pagecontainer({
                     var resultCode = data['ResultCode'];
 
                     if (resultCode === "1") {
-                        if (action === "name") {
-                            window.getConversation(false);
 
-                            if (pageID != "viewIndex") {
-                                $.mobile.changePage('#viewChatroomInfo');
+                        var callback = function(data) {
+                            JM.data.chatroom[data.id].name = data.name;
+
+                            var descArray = data.desc.split(";");
+
+                            //Check if Chatroom need auto read history
+                            var needHistory;
+                            var needHistoryArray = descArray[0].split("=");
+                            if (needHistoryArray[1] === "Y") {
+                                needHistory = true;
+                            } else {
+                                needHistory = false;
                             }
+
+                            JM.data.chatroom[data.id].need_history = needHistory;
+                            JM.updateLocalStorage();
+
+                            $("#viewChatroomInfoContent .chatroom-info-name").html(cutString(63, JM.data.chatroom[JM.chatroomID].name, 4.18, "number", JM.data.chatroom[JM.chatroomID].member.length));
+                        };
+
+                        window.getGroupInfo("viewChatroomInfo", chatroomID, callback);
+
+                        if (pageID != "viewIndex") {
+                            $.mobile.changePage('#viewChatroomInfo');
                         }
+
+                        loadingMask("hide");
+
                     }
                 };
 
@@ -130,20 +153,24 @@ $("#viewChatroomInfo").pagecontainer({
             }(chatroomID, action, name, pageID));
         };
 
-        window.getGroupInfo = function(groupID, callback) {
-            (function(groupID, callback) {
+        window.getGroupInfo = function(action, groupID, callback) {
+            (function(action, groupID, callback) {
 
                 var successCallback = function(status, data) {
 
                     if (status === "success") {
-                        callback(data.owner);
+                        if (action === "viewChatroom") {
+                            callback(data.owner);
+                        } else if (action === "viewChatroomInfo") {
+                            callback(data);
+                        }
                     }
 
                 };
 
                 JM.Chatroom.getGroupInfo(groupID, successCallback);
 
-            }(groupID, callback));
+            }(action, groupID, callback));
         };
 
         function removeQMember(action) {
