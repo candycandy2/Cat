@@ -2,6 +2,8 @@ var backLeaveStateSign = langStr["str_147"];    //表單簽核中
 var backLeaveStateWithdraw = langStr["str_148"];    //表單已撤回
 var backLeaveStateEffect = langStr["str_149"];  //表單已生效
 var backLeaveStateRefuse = langStr["str_150"];  //表單已拒絕
+var viewBackLeaveQueryInit = false;
+var backLeaveListArr = [];
 var signToWithdrawReason;
 
 
@@ -14,8 +16,7 @@ $("#viewBackLeaveQuery").pagecontainer({
             
             this.successCallback = function(data) {
                 console.log(data);
-                if(data['ResultCode'] === "1") {
-                    var backLeaveList = "";
+                if(data['ResultCode'] === "1") {      
                     var callbackData = data['Content'][0]["cancelformlist"];
                     var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
                     var formidArr = $("formid", htmlDoc);
@@ -29,42 +30,38 @@ $("#viewBackLeaveQuery").pagecontainer({
                     var leavedaysArr = $("days", htmlDoc);
                     var leavehoursArr = $("hours", htmlDoc);
 
-                    for(var i in formidArr) {
-                        backLeaveList += '<div class="backLeave-query-list">' + 
-                                            '<div>' +
-                                                '<div class="backLeave-query-state font-style3" data-num="' + formidArr[i] + '">' +
-                                                    '<span>' + statusArr[i] + '</span>' +
-                                                    '<img src="img/btn_nextpage.png">' +
-                                                '</div>' +
-                                                '<div class="backLeave-query-base font-style10">' +
-                                                    '<div class="backLeave-query-basedata">' +
-                                                        '<div>' +
-                                                            '<span class="langStr" data-id="str_166"></span>' +
-                                                            '<span class="leave-id">' + formnoArr[i] + '</span>' +
-                                                        '</div>' +
-                                                        '<div>' +
-                                                            '<span class="langStr" data-id="str_152"></span>' +
-                                                            '<span>' + leaveidArr[i] + '</span>' +
-                                                        '</div>' +
-                                                    '</div>' +
-                                                    '<div>' +
-                                                        '<span class="langStr" data-id="str_138"></span>' +
-                                                        '<span>' + begindateArr[i] + ' ' + begintimeArr[i] + '</span>' +
-                                                        '<span> - </span>' +
-                                                        '<span>' + enddateArr[i] + ' ' + endtimeArr[i] + '</span>' +
-                                                    '</div>' +
-                                                    '<div>' +
-                                                        '<span class="langStr" data-id="str_153"></span>' +
-                                                        '<span>' + leavedaysArr[i] + '</span>' +
-                                                        '<span class="langStr" data-id="str_071"></span>' +
-                                                        '<span>' + leavehoursArr[i] + '</span>' +
-                                                        '<span class="langStr" data-id="str_088"></span>' +
-                                                    '</div>' +
-                                                '</div>' +
-                                            '</div>' +
-                                            '<div></div>' +
-                                        '</div>';
+                    backLeaveListArr = [];
+                    for(var i = 0; i < formidArr.length; i++) {
+                        var leaveObject = {};
+                        leaveObject["formid"] = $(formidArr[i]).html();
+                        leaveObject["formno"] = $(formnoArr[i]).html();
+                        leaveObject["status"] = $(statusArr[i]).html();
+                        leaveObject["leaveid"] = $(leaveidArr[i]).html();
+                        leaveObject["begindate"] = $(begindateArr[i]).html();
+                        leaveObject["begintime"] = $(begintimeArr[i]).html();
+                        leaveObject["enddate"] = $(enddateArr[i]).html();
+                        leaveObject["endtime"] = $(endtimeArr[i]).html();
+                        leaveObject["days"] = $(leavedaysArr[i]).html();
+                        leaveObject["hours"] = $(leavehoursArr[i]).html();
+
+                        //添加假别名称
+                        for(var j = 0; j < LeaveObjList.length; j++) {
+                            if(leaveObject["leaveid"] == LeaveObjList[j]["leaveid"]) {
+                                leaveObject["name"] = LeaveObjList[j]["name"];
+                                leaveObject["category"] = LeaveObjList[j]["category"];
+                                break;
+                            } else {
+                                leaveObject["name"] = "";
+                                leaveObject["category"] = "";
+                            }
+                        }
+
+
+                        backLeaveListArr.push(leaveObject);
                     }
+
+                    ////生成HTML並添加
+                    //setBackLeaveList();
                 }
             };
 
@@ -136,7 +133,6 @@ $("#viewBackLeaveQuery").pagecontainer({
             }();
         };
 
-
         //請假單頁初始化
         function backLeaveQueryInit() {
             $("#backToList").hide();
@@ -152,11 +148,61 @@ $("#viewBackLeaveQuery").pagecontainer({
             $(".backLeave-query-main").show();
         }
 
+        //動態生成HTML
+        function setBackLeaveList() {
+            var backLeaveHtml = "";
+            for(var i in backLeaveListArr) {
+                backLeaveHtml += '<div class="backLeave-query-list">' + 
+                                    '<div>' +
+                                        '<div class="backLeave-query-state font-style3" form-id="' + backLeaveListArr[i]["formid"] + '">' +
+                                            '<span>' + backLeaveListArr[i]["status"] + '</span>' +
+                                            '<img src="img/btn_nextpage.png">' +
+                                        '</div>' +
+                                        '<div class="backLeave-query-base font-style10">' +
+                                            '<div class="backLeave-query-basedata">' +
+                                                '<div>' +
+                                                    '<span>請假單號：</span>' +
+                                                    '<span class="leave-id">' + backLeaveListArr[i]["formno"] + '</span>' +
+                                                '</div>' +
+                                                '<div>' +
+                                                    '<span>假別：</span>' +
+                                                    '<span>' + backLeaveListArr[i]["name"] + '</span>' +
+                                                '</div>' +
+                                            '</div>' +
+                                            '<div>' +
+                                                '<span>請假區間：</span>' +
+                                                '<span>' + backLeaveListArr[i]["begindate"] + ' ' + backLeaveListArr[i]["begintime"] + '</span>' +
+                                                '<span> - </span>' +
+                                                '<span>' + backLeaveListArr[i]["enddate"] + ' ' + backLeaveListArr[i]["endtime"] + '</span>' +
+                                            '</div>' +
+                                            '<div>' +
+                                                '<span>請假數：</span>' +
+                                                '<span>' + backLeaveListArr[i]["days"] + '</span>' +
+                                                '<span> 天 </span>' +
+                                                '<span>' + backLeaveListArr[i]["hours"] + '</span>' +
+                                                '<span> 小時</span>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<div></div>' +
+                                '</div>';
+            }
 
+            if(backLeaveHtml == "") {
+                $("#maxBackLeaveMsg").text("*暫無假單記錄");
+            } else {
+                $("#maxBackLeaveMsg").text("*僅顯示近10筆假單記錄");
+                $(".backLeave-query-main-list").append(leaveListHtml);
+            }
+
+        }
 
         /********************************** page event *************************************/
         $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {
-            QueryEmployeeLeaveCancelForm();
+            if(!viewBackLeaveQueryInit) {
+                QueryEmployeeLeaveCancelForm();
+                viewBackLeaveQueryInit = true;
+            }
             
         });
 
@@ -170,29 +216,31 @@ $("#viewBackLeaveQuery").pagecontainer({
         });
 
         //表單狀況詳細情況
-        $(".backLeave-query-state").on("click", function() {
+        $(document).on("click", ".backLeave-query-state", function() {
             var self = $(this).children("span").eq(0).text();
+            var formid = $(this).attr("form-id");
 
-            if(self === backLeaveStateSign) {
+            if(self == backLeaveStateSign) {
                 $(".backLeave-query-main").hide();
                 $(".leaveMenu").hide();
                 $("#backToList").show();
                 $(".backLeave-query-detail-sign").show();
-            }else if(self === backLeaveStateWithdraw) {
+                $("#backLeaveWithdraw").show();
+                $("#backLeaveDelete").hide();
+            } else if(self == backLeaveStateWithdraw) {
                 $(".backLeave-query-main").hide();
                 $(".leaveMenu").hide();
                 $("#backToList").show();
-                $(".backLeave-query-detail-withdraw").show();
-            }else if(self === backLeaveStateEffect) {
+                $(".backLeave-query-detail-sign").show();
+                $("#backLeaveWithdraw").hide();
+                $("#backLeaveDelete").show();
+            } else {
                 $(".backLeave-query-main").hide();
                 $(".leaveMenu").hide();
                 $("#backToList").show();
-                $(".backLeave-query-detail-effect").show();
-            }else if(self === backLeaveStateRefuse) {
-                $(".backLeave-query-main").hide();
-                $(".leaveMenu").hide();
-                $("#backToList").show();
-                $(".backLeave-query-detail-refuse").show();
+                $(".backLeave-query-detail-sign").show();
+                $("#backLeaveWithdraw").hide();
+                $("#backLeaveDelete").hide();
             }
         });
 

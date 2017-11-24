@@ -286,13 +286,24 @@ function dateInit() {
     $("#leaveDate a:eq(0)").click();
 }
 
-//格式化日期字符串：日/月/年 —— 年-月-日
+//格式化日期字符串：“日/月/年” —— “年-月-日”
 function dateFormat(dataStr) {
-    var arr = dataStr.split("/");
+    var str = dataStr.split("/");
 
     var newArr = [];
-    for(var i in arr) {
-        newArr.unshift(arr[i]);
+    for(var i in str) {
+        newArr.unshift(str[i]);
     }
+    return newArr.join("-");
+}
+
+//格式化日期格式：“月/日/年 時:分:秒 PM” —— “年/月/日”
+function dateFormatter(dataStr) {
+    //先獲得“月/日/年”
+    var arr = dataStr.split(" ")[0].split("/");
+    var newArr = [];
+    newArr.push(arr[2]);
+    newArr.push(arr[0]);
+    newArr.push(arr[1]);
     return newArr.join("-");
 }

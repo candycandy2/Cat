@@ -7,7 +7,8 @@ var otherBasedayStr = langStr["str_141"];    //選擇其他基準日
 var selectBasedayStr = langStr["str_127"];    //選擇時間
 var viewLeaveSubmitInit = false;
 var categroyList = [];
-var selectCategroy;
+var selectCategory;
+var leaveCategory;
 var leaveObj = {};
 var leaveDetail = {};
 var leaveSelected = false;
@@ -87,7 +88,7 @@ function getLeaveByCategory() {
     $("#leave-popup-option-popup").remove();
 
     //类别分“所有类别”和所选类别
-    if(selectCategroy === allLeaveCategroyStr) {
+    if(selectCategory === allLeaveCategroyStr) {
         for(var i in LeaveObjList) {
             var obj = {};
             obj["leaveid"] = LeaveObjList[i]["leaveid"];
@@ -96,7 +97,7 @@ function getLeaveByCategory() {
         }
     } else {
         for(var i in LeaveObjList) {
-            if(selectCategroy === LeaveObjList[i]["category"]) {
+            if(selectCategory === LeaveObjList[i]["category"]) {
                 var obj = {};
                 obj["leaveid"] = LeaveObjList[i]["leaveid"];
                 obj["name"] = LeaveObjList[i]["name"];
@@ -203,8 +204,8 @@ $("#viewLeaveSubmit").pagecontainer({
         function checkLeaveHours() {
             if($(countSuccess).html() != undefined) {
                 //success无提示，改变请假数
-                $("#leaveDays").text($(countApplyDays).html());
-                $("#leaveHours").text($(countApplyHours).html());
+                $("#leaveDays").text(countApplyDays);
+                $("#leaveHours").text(countApplyHours);
             } else {
                 //error提示
                 var errorMsg = $(countError).html();
@@ -273,8 +274,8 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //選擇類別——select change
         $(document).on("change", "#categroy-popup", function() {
-            //selectCategroy = $.trim($(this).text()); 
-            selectCategroy = $(this).val();
+            //selectCategory = $.trim($(this).text()); 
+            selectCategory = $(this).val();
             getLeaveByCategory();
             checkLeaveBeforePreview();
         });
@@ -282,7 +283,7 @@ $("#viewLeaveSubmit").pagecontainer({
         //获取所选的假别信息——select change
         $(document).on("change", "#leave-popup", function() {
             leaveid = $(this).val();
-            leaveType = $(this).text();
+            leaveType = $.trim($(this).text());
             leaveSelected = true;
             console.log("leaveid:"+leaveid);
         });
@@ -292,8 +293,10 @@ $("#viewLeaveSubmit").pagecontainer({
             if(leaveSelected) {
                 for(var i in LeaveObjList) {
                     if(leaveid == LeaveObjList[i]["leaveid"]) {
+                        //選擇假別後，獲取假別對象
                         leaveDetail = LeaveObjList[i];
-                        
+                        leaveCategory = LeaveObjList[i]["category"]
+
                         //不需要基准日回传剩余天数，需要基准日回传有效基准日列表
                         if(leaveDetail["basedate"] == "N") {
                             queryLeftDaysData = "<LayoutHeader><EmpNo>" +
@@ -649,22 +652,24 @@ $("#viewLeaveSubmit").pagecontainer({
             $("#chooseBaseday").text(selectBasedayStr);
 
             //请假数
-            $("#previewLeaveDays").text("0");
-            $("#previewLeaveHours").text("0");
+            $("#leaveDays").text("0");
+            $("#leaveHours").text("0");
+            //$("#previewLeaveDays").text("0");
+            //$("#previewLeaveHours").text("0");
         });
 
         //預覽送簽按鈕
         $("#previewBtn").on("click", function() {
             if($('#previewBtn').hasClass('leavePreview-active-btn')) {
                 //傳值到預覽頁面
-                $("#applyCategroy").text(leaveDetail["category"]);
+                $("#applyCategroy").text(leaveCategory);
                 $("#applyLeave").text(leaveType);
                 $("#applyAgent").text(agentName);
                 $("#applyStartday").text(startLeaveDate);
                 $("#applyEndday").text(endLeaveDate);
                 $("#applyReason").text(leaveReason);
-                $("#previewLeaveDays").text($(countApplyDays).html());
-                $("#previewLeaveHours").text($(countApplyHours).html());
+                $("#previewLeaveDays").text(countApplyDays);
+                $("#previewLeaveHours").text(countApplyHours);
 
                 $('.apply-container').hide();
                 $('.leaveMenu').hide();
