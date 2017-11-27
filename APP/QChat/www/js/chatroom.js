@@ -7,6 +7,8 @@ var JM = {
     data: {},
     init: function(JMAppKey, sendPushToken, receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage) {
 
+        window.JMessage.setDebugMode({ enable: true });
+
         //Update JMessaage APP Key
         JM.key = JMAppKey;
 
@@ -176,7 +178,7 @@ var JM = {
             });
 
         },
-        updateMyAvatar: function(imgPath) {
+        updateMyAvatar: function(imgPath, callback) {
 
             var params = {
                 'imgPath': imgPath
@@ -185,9 +187,11 @@ var JM = {
             window.JMessage.updateMyAvatar(params, function(data) {
                 console.log("---updateMyAvatar success");
                 console.log(data);
+                callback("success", data);
             }, function(errorStr) {
                 console.log("----updateMyAvatar Error");
                 console.log(errorStr);
+                callback("error", errorStr);
             });
 
         },

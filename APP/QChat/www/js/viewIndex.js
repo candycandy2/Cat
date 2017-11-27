@@ -6,6 +6,7 @@ $("#viewIndex").pagecontainer({
         var timer;
         var groupsArray = [];
         var tabActiveID;
+        var doSyncRoamingMessage = false;
 
         /********************************** function *************************************/
         window.getJmessagePassword = function() {
@@ -260,6 +261,10 @@ $("#viewIndex").pagecontainer({
                 var callback = function(status, data) {
 
                     if (status === "success") {
+
+                        $("#chatroomListContent .chatroom-list").remove();
+                        $("#chatroomListContent .ui-hr-message").remove();
+
                         for (var i=0; i<data.length; i++) {
 
                             //For Alan, because he create a single chatroom,
@@ -268,14 +273,20 @@ $("#viewIndex").pagecontainer({
                                 //Check if User is still in this chatroom,
                                 //if not, ignore the chatroom data, and don't show it.
                                 if (groupsArray.indexOf(data[i].target.id.toString()) != -1) {
-                                    window.processChatroomData(data[i], "getConversations", false);
+                                    window.processChatroomData(data[i], "getConversations", false, true);
                                 }
                             }
 
                         }
 
                         loadingMask("hide");
-                        window.chatroomListView();
+
+                        //If no chatroom, show message
+                        if (data.length == 0) {
+                            $("#noChatroom").show();
+                        } else {
+                            $("#noChatroom").hide();
+                        }
                     }
 
                 };
@@ -413,7 +424,7 @@ $("#viewIndex").pagecontainer({
                             //chatroomInfo
                             window.processChatroomInfo();
                         } else if (action === "chatroomListView") {
-                            window.chatroomListView();
+                            window.chatroomListView(chatroomID);
                         }
                     }
 
@@ -546,7 +557,7 @@ $("#viewIndex").pagecontainer({
 
         function indexUserAvatar(avatarPath) {
             $(".personal-content .personal-photo-content svg").hide();
-            $(".personal-content .personal-photo-content svg").prop("src", avatarPath);
+            $(".personal-content .personal-photo-content img").prop("src", avatarPath);
             $(".personal-content .personal-photo-content img").show();
         }
 
@@ -556,53 +567,46 @@ $("#viewIndex").pagecontainer({
             $("#friendList" + listViewIndex).find("img").show();
         }
 
-        window.chatroomListView = function() {
+        window.chatroomListView = function(chatroomID) {
 
-            //Refresh Chatroom List
-            var chatrooomCount = 0;
+            (function(chatroomID) {
 
-            $("#chatroomListContent .chatroom-list").remove();
-            $("#chatroomListContent .ui-hr-message").remove();
-            var chatroomListHTML = $("template#tplChatroomList").html();
+                var chatroomListHTML = $("template#tplChatroomList").html();
 
-            $.each(JM.data.chatroom, function(chatroomID, chatroomData) {
+                $.each(JM.data.chatroom, function(chatroomDataID, chatroomData) {
 
-                chatrooomCount++;
+                    if (chatroomDataID == chatroomID) {
+                        var chatroomList = $(chatroomListHTML);
+                        var createTime = new Date(chatroomData.last_message.create_time);
 
-                var chatroomList = $(chatroomListHTML);
-                var createTime = new Date(chatroomData.last_message.create_time);
+                        chatroomList.siblings(".chatroom-list").prop("id", "chatroomList" + chatroomID);
+                        chatroomList.siblings(".ui-hr").prop("id", "chatroomHR" + chatroomID);
+                        chatroomList.find(".group-name").html(cutString(58.5, chatroomData.name, 4.18));
+                        chatroomList.find(".date").html(createTime.yyyymmdd("/"));
+                        chatroomList.find(".latest-message").html(cutString(58.5, chatroomData.last_message.text, 3.349));
+                        chatroomList.find(".number").html(chatroomData.unread_count);
 
-                chatroomList.siblings(".chatroom-list").prop("id", "chatroomList" + chatroomID);
-                chatroomList.siblings(".ui-hr").prop("id", "chatroomHR" + chatroomID);
-                chatroomList.find(".group-name").html(cutString(58.5, chatroomData.name, 4.18));
-                chatroomList.find(".date").html(createTime.yyyymmdd("/"));
-                chatroomList.find(".latest-message").html(cutString(58.5, chatroomData.last_message.text, 3.349));
-                chatroomList.find(".number").html(chatroomData.unread_count);
+                        if (chatroomData.unread_count == 0) {
+                            chatroomList.find(".number-circle").hide();
+                        } else if (chatroomData.unread_count > 9) {
+                            chatroomList.find(".number-circle").addClass("number-circle-big");
+                        }
 
-                if (chatroomData.unread_count == 0) {
-                    chatroomList.find(".number-circle").hide();
-                } else if (chatroomData.unread_count > 9) {
-                    chatroomList.find(".number-circle").addClass("number-circle-big");
-                }
+                        $("#chatroomListContent").append(chatroomList);
 
-                $("#chatroomListContent").append(chatroomList);
-                
-                if (!chatroomData.is_group) {
-                    //If [1 to 1] chatroom, check the chatroom avatar exist or expired
-                    window.checkChatroomAvatar(chatroomID, chatroomData.is_group);
-                } else {
-                    //If multi-member chatroom, need to show count of member in chatroom's name
-                    window.getGroupMembers(chatroomID, chatroomData.is_group);
-                }
-            });
+                        if (!chatroomData.is_group) {
+                            //If [1 to 1] chatroom, check the chatroom avatar exist or expired
+                            window.checkChatroomAvatar(chatroomID, chatroomData.is_group);
+                        } else {
+                            //If multi-member chatroom, need to show count of member in chatroom's name
+                            //window.getGroupMembers(chatroomID, chatroomData.is_group);
+                        }
 
-            //If no chatroom, show message
-            if (chatrooomCount == 0) {
-                $("#noChatroom").show();
-            } else {
-                $("#noChatroom").hide();
-            }
+                        return false;
+                    }
+                });
 
+            }(chatroomID));
         };
 
         window.chatroomSingleView = function(chatroomID) {
@@ -680,7 +684,10 @@ $("#viewIndex").pagecontainer({
             console.log("----syncRoamingMessage");
             console.log(data);
 
-            window.getConversations();
+            if (!doSyncRoamingMessage) {
+                window.getConversations();
+                doSyncRoamingMessage = true;
+            }
         }
 
         function recoverySearchUI() {
@@ -739,7 +746,7 @@ $("#viewIndex").pagecontainer({
             noData.html("搜尋結果為0筆。");
             $("#chatroomDiv").append(noData);
 
-            //--------------------chatroom Div--------------------
+            //--------------------member Div--------------------
             //search bar
             var searchBar = $($("template#tplSearchBar").html());
             searchBar.find("input").prop({
