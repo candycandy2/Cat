@@ -47,7 +47,10 @@ window.initialSuccess = function() {
     QueryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
     QueryCalendarData();
     if (leaveTypeData["option"].length == 0) {
+        //呼叫API
         GetDefaultSetting();
+        QueryEmployeeLeaveApplyForm();
+        QueryEmployeeLeaveCancelForm();
     }
     dateInit();
     $.mobile.changePage("#viewPersonalLeave");
