@@ -134,6 +134,39 @@ $("#viewLeaveSubmit").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
+        //请假申请页面——获取所有类别
+        function getAllCategroyList() {
+            var categroyLeave = [];
+
+            //循環所有類別，並去重、去空
+            for(var i in LeaveObjList) {
+                if (categroyLeave.indexOf(LeaveObjList[i]["category"]) === -1 && LeaveObjList[i]["category"] !== "") {
+                    categroyLeave.push(LeaveObjList[i]["category"]);
+                } 
+            }
+            
+            //添加 “所有類別” 到列表第一位
+            categroyLeave.unshift(allLeaveCategroyStr);
+
+            //循环所有类别到popup
+            for(var i in categroyLeave) {
+                categroyData["option"][i] = {};
+                categroyData["option"][i]["value"] = categroyLeave[i];
+                categroyData["option"][i]["text"] = categroyLeave[i];
+            }
+
+            //生成所有类别dropdownlist
+            tplJS.DropdownList("viewLeaveSubmit", "leaveCategroy", "prepend", "typeB", categroyData);
+            
+            //默認選中popup “所有類別”
+            $.each($("#categroy-popup-option-list li"), function(i, item) {
+                if($(item).text() === allLeaveCategroyStr) {
+                    $(item).trigger("click");
+                    return false;
+                }
+            });
+        }
+
         //当无基准日假别时，呼叫API，对假别剩余天数进行判断
         function checkLeftDaysNoBasedate() {
             //如果假别天数等于0或者小于最小请假单位(天)
@@ -253,17 +286,23 @@ $("#viewLeaveSubmit").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewLeaveSubmit").on("pagebeforeshow", function(event, ui) {
-            //申請日期和預覽申請日期，都是实际當天日期
-            $('#applyDay').text(applyDay);
-            $('#previewApplyDay').text(applyDay);
-            //选择日期为“请选择”
-            $("#startText").text(pleaseSelectStr);
-            $("#endText").text(pleaseSelectStr);
-            //getAllCategroyList();
+            if(!viewLeaveSubmitInit) {
+                //申請日期和預覽申請日期，都是实际當天日期
+                $('#applyDay').text(applyDay);
+                $('#previewApplyDay').text(applyDay);
+                //选择日期为“请选择”
+                $("#startText").text(pleaseSelectStr);
+                $("#endText").text(pleaseSelectStr);
+
+                //after custom API
+                getAllCategroyList();
+                viewLeaveSubmitInit = true;
+            }
+
         });
 
         $("#viewLeaveSubmit").on("pageshow", function(event, ui) {
-
+            
             loadingMask("hide");
         });
 
@@ -304,8 +343,9 @@ $("#viewLeaveSubmit").pagecontainer({
                                                 "</EmpNo><leaveid>" +
                                                 leaveid +
                                                 "</leaveid></LayoutHeader>";
-
+                            //呼叫API
                             QueryLeftDaysData(leaveid);
+                            //after custom API
                             checkLeftDaysNoBasedate();
 
                         } else if(leaveDetail["basedate"] == "Y") {
@@ -314,8 +354,9 @@ $("#viewLeaveSubmit").pagecontainer({
                                                         "</EmpNo><leaveid>" + 
                                                         leaveid + 
                                                         "</leaveid></LayoutHeader>";
-
+                            //呼叫API
                             QueryDatumDates();
+                            //after custom API
                             selectLeaveNeedBasedate();
 
                         }
@@ -591,8 +632,9 @@ $("#viewLeaveSubmit").pagecontainer({
                                                 + "</enddate><endtime>"
                                                 + endLeaveDate.split(" ")[1]
                                                 + "</endtime><datumdate></datumdate></LayoutHeader>";
-                                                
+                    //呼叫API                            
                     CountLeaveHours();
+                    //after custom API
                     checkLeaveHours();
 
                 }

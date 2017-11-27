@@ -44,6 +44,17 @@ $("#viewBackLeaveQuery").pagecontainer({
                         leaveObject["days"] = $(leavedaysArr[i]).html();
                         leaveObject["hours"] = $(leavehoursArr[i]).html();
 
+                        //表單簽核的4種狀態
+                        if($(statusArr[i]).html() == "AP") {
+                            leaveObject["statusName"] = formEffected;
+                        } else if($(statusArr[i]).html() == "RC") {
+                            leaveObject["statusName"] = formWithdrawed;
+                        } else if($(statusArr[i]).html() == "RJ") {
+                            leaveObject["statusName"] = formRefused;
+                        } else {
+                            leaveObject["statusName"] = formSigning;
+                        }
+
                         //添加假别名称
                         for(var j = 0; j < LeaveObjList.length; j++) {
                             if(leaveObject["leaveid"] == LeaveObjList[j]["leaveid"]) {
@@ -60,7 +71,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                         backLeaveListArr.push(leaveObject);
                     }
 
-                    ////生成HTML並添加
+                    //after custom API
                     //setBackLeaveList();
                 }
             };
@@ -69,7 +80,7 @@ $("#viewBackLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "QueryEmployeeLeaveCancelForm", self.successCallback, self.failCallback, QueryEmployeeLeaveCancelFormQueryData, "");
+                CustomAPI("POST", false, "QueryEmployeeLeaveCancelForm", self.successCallback, self.failCallback, QueryEmployeeLeaveCancelFormQueryData, "");
             }();
         };
 
@@ -155,7 +166,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                 backLeaveHtml += '<div class="backLeave-query-list">' + 
                                     '<div>' +
                                         '<div class="backLeave-query-state font-style3" form-id="' + backLeaveListArr[i]["formid"] + '">' +
-                                            '<span>' + backLeaveListArr[i]["status"] + '</span>' +
+                                            '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
                                             '<img src="img/btn_nextpage.png">' +
                                         '</div>' +
                                         '<div class="backLeave-query-base font-style10">' +
@@ -188,11 +199,11 @@ $("#viewBackLeaveQuery").pagecontainer({
                                 '</div>';
             }
 
-            if(backLeaveHtml == "") {
+            if(backLeaveListArr.length == 0) {
                 $("#maxBackLeaveMsg").text("*暫無假單記錄");
             } else {
                 $("#maxBackLeaveMsg").text("*僅顯示近10筆假單記錄");
-                $(".backLeave-query-main-list").append(leaveListHtml);
+                $(".backLeave-query-main-list").empty().append(backLeaveHtml);
             }
 
         }
@@ -200,7 +211,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         /********************************** page event *************************************/
         $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {
             if(!viewBackLeaveQueryInit) {
-                QueryEmployeeLeaveCancelForm();
+                setBackLeaveList();
                 viewBackLeaveQueryInit = true;
             }
             
@@ -217,17 +228,20 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //表單狀況詳細情況
         $(document).on("click", ".backLeave-query-state", function() {
-            var self = $(this).children("span").eq(0).text();
+            //var self = $(this).children("span").eq(0).text();
+            var self = $.trim($(this).text());
+            console.log(self);
             var formid = $(this).attr("form-id");
+            console.log(formid);
 
-            if(self == backLeaveStateSign) {
+            if(self == formSigning) {
                 $(".backLeave-query-main").hide();
                 $(".leaveMenu").hide();
                 $("#backToList").show();
                 $(".backLeave-query-detail-sign").show();
                 $("#backLeaveWithdraw").show();
                 $("#backLeaveDelete").hide();
-            } else if(self == backLeaveStateWithdraw) {
+            } else if(self == formWithdrawed) {
                 $(".backLeave-query-main").hide();
                 $(".leaveMenu").hide();
                 $("#backToList").show();
