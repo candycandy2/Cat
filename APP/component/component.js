@@ -446,14 +446,14 @@ $(document).one("pagebeforecreate", function() {
             footerFixed();
         },
         pageshow: function() {
-            setAppLogParam();
+            getAppLogParam();
         }
     });
 });
 
 /********************************** QPlay APP function *************************************/
 
-function setAppLogParam() {
+function getAppLogParam() {
     //localStorage.clear();
     var ADAccount = loginData['loginid'];
     var packageName = "com.qplay." + appKey;
@@ -479,7 +479,9 @@ function setAppLogParam() {
         jsonData = appLogData;
     }
 
-    localStorage.setItem('appLogData', JSON.stringify(jsonData));
+    localStorage.setItem('appLogData', JSON.stringify(jsonData)); 
+    //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
+    setTimeout('checkAmountData()', 10000);
 }
 
 function onPause() {
@@ -506,6 +508,47 @@ function onResume() {
     appLogData.log_list.push(objLogList);
     jsonData = appLogData;
     localStorage.setItem('appLogData', JSON.stringify(jsonData));
+}
+
+function checkAmountData(){
+    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
+    //若localstorage數目大於等於Ｍ筆,將資料傳給API
+    if (appLogData.log_list.length >=5) {
+        //var doAddAppLog = new getAddAppLog();
+    }
+}
+
+function getAddAppLog() {
+    
+    var self = this;
+    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
+
+    var jsonData = {
+        login_id: appLogData.login_id,
+        package_name: appLogData.package_name,
+        log_list: []
+    };   
+    //將Ｍ筆資料傳給API
+    for (var i = 0; i < 5 ; i++) {
+        jsonData.log_list.push(appLogData.log_list[i]);
+    }
+    var queryData = JSON.stringify(jsonData);
+    this.successCallback = function(data) {
+
+        var resultcode = data['result_code'];
+
+        if (resultcode == 1) {
+            //popupMsg('noDataMsg', '', 'call getAddAppLog Success!', '', false, '確定', '');
+            //將傳成功的Ｍ筆資料從localstorage刪除
+        } 
+    }
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        QPlayAPI("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "");
+    }();
+
 }
 //review by alan
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
