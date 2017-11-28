@@ -9,6 +9,10 @@ var formSigning = "表單簽核中";
 var formRefused = "表單已拒絕";
 var formWithdrawed = "表單已撤回";
 var formEffected = "表單已生效";
+var signedStr = "已簽核";
+var withdrawedStr = "已撤銷";
+var rejectedStr = "已拒絕";
+var notSignStr = "未簽核";
 var leaveListArr = [];
 var leaveDetailObj = {};
 var signList = [];
@@ -98,8 +102,8 @@ $("#viewLeaveQuery").pagecontainer({
                         leaveListArr.push(leaveObject);
                     }
 
-                    //生成HTML並添加
-                    setAllLeaveList();
+                    //after custom API
+                    //setAllLeaveList();
 
                     loadingMask("hide");
                 }
@@ -109,7 +113,7 @@ $("#viewLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "QueryEmployeeLeaveApplyForm", self.successCallback, self.failCallback, QueryEmployeeLeaveApplyFormQueryData, "");
+                CustomAPI("POST", false, "QueryEmployeeLeaveApplyForm", self.successCallback, self.failCallback, QueryEmployeeLeaveApplyFormQueryData, "");
             }();
         };
 
@@ -136,13 +140,12 @@ $("#viewLeaveQuery").pagecontainer({
                     //2.回傳簽核流程
                     var approveData = data['Content'][0]["approverecord"];
                     var approveDom = new DOMParser().parseFromString(approveData, "text/html");
-                    //console.log(approveDom);
                     var serialArr = $("app_serial", approveDom);
                     var empnameArr = $("app_emp_name", approveDom);
                     var ynArr = $("app_yn", approveDom);
                     var dateArr = $("app_date", approveDom);
                     var remarkArr = $("app_remark", approveDom);
-                    //console.log($(empnameArr[0]).html());
+
                     signList = [];
                     for(var i = 0; i < serialArr.length; i++) {
                         var signObj = {};
@@ -151,10 +154,32 @@ $("#viewLeaveQuery").pagecontainer({
                         signObj["yn"] = $(ynArr[i]).html();
                         signObj["date"] = $(dateArr[i]).html();
                         signObj["remark"] = $(remarkArr[i]).html();
+
+                        //根据签核状态判断使用什么图标
+                        //状态为“Y”是approved(已签核)
+                        if($(ynArr[i]).html() == "Y") {
+                            signObj["icon"] = "success.png";
+                            signObj["statusName"] = signedStr;
+
+                        //状态为"N"是rejected(已拒绝)
+                        } else if($(ynArr[i]).html() == "N") {
+                            signObj["icon"] = "reject.png";
+                            signObj["statusName"] = rejectedStr;
+
+                        //状态为""且日期为""，则是(未签核)
+                        } else if($(ynArr[i]).html() == "" && $(dateArr[i]).html() == "") {
+                            signObj["icon"] = "blank.png";
+                            signObj["statusName"] = notSignStr;
+
+                        //状态为""但日期不为""，则是(已撤销)
+                        } else if($(ynArr[i]).html() == "" && $(dateArr[i]).html() !== "") {
+                            signObj["icon"] = "withdraw.png";
+                            signObj["statusName"] = withdrawedStr;
+                        }
+
                         signList.push(signObj);
                     }
 
-                    //console.log(signList);
                 }
             };
 
@@ -267,11 +292,12 @@ $("#viewLeaveQuery").pagecontainer({
                                 '</div>';
             }
             
-            if(leaveListHtml == "") {
+            //判断请假单列表是否有数据
+            if(leaveListArr.length == 0) {
                 $("#maxLeaveMsg").text("*暫無假單記錄");
             } else {
                 $("#maxLeaveMsg").text("*僅顯示近10筆假單記錄");
-                $(".leave-query-main-list").append(leaveListHtml);
+                $(".leave-query-main-list").empty().append(leaveListHtml);
             }
         }
 
@@ -381,10 +407,36 @@ $("#viewLeaveQuery").pagecontainer({
             $("#" + btn3).hide();
         }
 
+        //生成簽核狀態的html放到popup中
+        function setLeaveStatusToPopup() {
+            var leaveStatusHtml = "";
+            for(var i in signList) {
+                leaveStatusHtml += '<li class="sign-list">' +
+                                        '<div class="sign-icon">' +
+                                            '<img src="img/' + signList[i]["icon"] + '">' +
+                                        '</div>' +
+                                        '<div class="sign-name">' +
+                                            '<div class="font-style3">' +
+                                                '<span>' + signList[i]["empname"] + '</span>' +
+                                            '</div>' +
+                                            '<div class="font-style10">' +
+                                                '<span>' + signList[i]["date"] + '</span>' +
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div class="sign-state font-style3">' +
+                                            '<span>' + signList[i]["statusName"] + '</span>' +
+                                        '</div>' +
+                                    '</li>';
+            }
+
+            $(".signStateFlow .main ul").empty().append(leaveStatusHtml);
+        }
+
         /********************************** page event *************************************/
         $("#viewLeaveQuery").on("pagebeforeshow", function(event, ui) {
             if(!viewLeaveQueryInit) {
-                QueryEmployeeLeaveApplyForm();
+                //after custom API
+                setAllLeaveList();
                 viewLeaveQueryInit = true;
             }
             $(".leaveMenu").show();  
@@ -413,9 +465,11 @@ $("#viewLeaveQuery").pagecontainer({
                                             + '</EmpNo><formid>' 
                                             + formid 
                                             + '</formid></LayoutHeader>';
-
+            //呼叫API
             LeaveApplyFormDetail();
-            //console.log(leaveDetailObj);
+            //after custom API
+            setDataToDetail();
+            setLeaveStatusToPopup();
 
             if(self == formSigning) {
                 leaveListToDetail("leaveWithdraw", "leaveDelete", "leaveRevoke", null);
@@ -427,8 +481,7 @@ $("#viewLeaveQuery").pagecontainer({
                 leaveListToDetail("leaveRevoke", "leaveWithdraw", "leaveDelete", "");
             }
 
-            //set data
-            setDataToDetail();
+            
         });
 
         //返回假單列表——click

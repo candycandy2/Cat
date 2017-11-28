@@ -130,7 +130,7 @@ var app = {
         document.addEventListener("pause", onPause, false);
 
         //Handle APP foreground event, set in index.js
-        //document.addEventListener("resume", onResume, false);
+        document.addEventListener("resume", onResume, false);
 
         //[device] data ready to get on this step.
         setTimeout(function() {
@@ -446,14 +446,14 @@ $(document).one("pagebeforecreate", function() {
             footerFixed();
         },
         pageshow: function() {
-            getAppLogParameter();
+            setAppLogParam();
         }
     });
 });
 
 /********************************** QPlay APP function *************************************/
 
-function getAppLogParameter() {
+function setAppLogParam() {
     //localStorage.clear();
     var ADAccount = loginData['loginid'];
     var packageName = "com.qplay." + appKey;
@@ -487,8 +487,26 @@ function onPause() {
     var onPauseTime = new Date().getTime();
     var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length-1].start_time;
     appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
+    jsonData = appLogData;
+    localStorage.setItem('appLogData', JSON.stringify(jsonData));
 }
 
+function onResume() {
+    var ADAccount = loginData['loginid'];
+    var packageName = "com.qplay." + appKey;
+    var objLogList = new Object();
+    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
+
+    objLogList.page_name = $.mobile.activePage.attr('id');
+    objLogList.page_action = "enterPage";
+    objLogList.start_time = new Date().getTime();
+    objLogList.period = "";
+    objLogList.device_type = device.platform;
+
+    appLogData.log_list.push(objLogList);
+    jsonData = appLogData;
+    localStorage.setItem('appLogData', JSON.stringify(jsonData));
+}
 //review by alan
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
 function checkTokenValid(resultCode, tokenValid, successCallback, data) {
