@@ -48,12 +48,12 @@
                 <div>
                     <!--申請日期-->
                     <span class="langStr" data-id="str_080"></span>
-                    <span><span>2017-02-08</span></span>
+                    <span id="backLeaveApplyDate">2017-02-08</span>
                 </div>
                 <div>
                     <!-- 銷假單號 -->
                     <span class="langStr" data-id="str_166"></span>
-                    <span>654000</span>
+                    <span id="backLeaveFormNo">654000</span>
                 </div> 
             </div>
             <div class="leave-detail-state">
@@ -65,7 +65,7 @@
                             <span class="langStr" data-id="str_144"></span>
                         </div>
                         <div class="font-style3">
-                            <span class="langStr" data-id="str_147"></span>
+                            <span id="backLeaveStatus"></span>
                         </div>
                     </div>
                     <div>
@@ -82,11 +82,11 @@
                             <span class="langStr" data-id="str_165"></span>
                         </div>
                         <div class="font-style3">
-                            <span>572000</span>
+                            <span id="refLeaveFormNo"></span>
                         </div>
                     </div>
                     <div>
-                        <img src="img/btn_nextpage.png" class="leave-detail-img return-leave-detail" id="signToLeaveDetail">
+                        <img src="img/btn_nextpage.png" class="leave-detail-img" id="signToLeaveDetail">
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     <span class="langStr" data-id="str_158"></span>
                 </div>
                 <div class="font-style3">
-                    <span>本來要請，後來又沒事了，不用請假</span>
+                    <span id="backLeaveApplyReason"></span>
                 </div>
             </div>
             <div class="apply-empty-div2"></div>
@@ -166,351 +166,8 @@
             </div>
             <div class="main">
                 <!-- <p class="main-paragraph font-style3"></p> -->
-                <ul>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Kevin.CM.Huang</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-02-08 9:00</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Paul.H.Wang</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-02-08 9:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/blank.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Jack.L.Zhao</span>
-                            </div>
-                            <div class="font-style10">
-                                <span></span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 未簽核 -->
-                            <span class="langStr" data-id="str_134"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/blank.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Call.Y.Yin</span>
-                            </div>
-                            <div class="font-style10">
-                                <span></span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 未簽核 -->
-                            <span class="langStr" data-id="str_134"></span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                <ul class="backLeave-flow-ul">
 
-    <!-- refuse popup -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup refuseIngFlow" for="refuseIngFlow" id="refuseIngFlow">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text"></span>
-                </div>
-            </div>
-            <div class="main">
-                <!-- <p class="main-paragraph font-style3"></p> -->
-                <ul>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Kevin.CM.Huang</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-05-07 12:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Paul.H.Wang</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-05-07 13:00</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Jack.L.Zhao</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-05-07 14:00</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/reject.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Call.Y.Yin</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-05-07 15:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已拒絕 -->
-                            <span class="langStr" data-id="str_135"></span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- withdraw popup -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup withdrawIngFlow" for="withdrawIngFlow" id="withdrawIngFlow">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text"></span>
-                </div>
-            </div>
-            <div class="main">
-                <!-- <p class="main-paragraph font-style3"></p> -->
-                <ul>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Kevin.CM.Huang</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-08-06 9:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Paul.H.Wang</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-08-06 10:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Jack.L.Zhao</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-08-06 11:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/withdraw.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Call.Y.Yin</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-08-06 12:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已撤回 -->
-                            <span class="langStr" data-id="str_136"></span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- effect popup -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup effectIngFlow" for="effectIngFlow" id="effectIngFlow">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon hidden'><img src="img/urgent.png"></span><span class="header-text"></span>
-                </div>
-            </div>
-            <div class="main">
-                <!-- <p class="main-paragraph font-style3"></p> -->
-                <ul>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Kevin.CM.Huang</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-10-06 12:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Paul.H.Wang</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-10-06 13:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Jack.L.Zhao</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-10-06 14:00</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
-                    <li class="sign-list">
-                        <div class="sign-icon">
-                            <img src="img/success.png">
-                        </div>
-                        <div class="sign-name">
-                            <div class="font-style3">
-                                <span>Call.Y.Yin</span>
-                            </div>
-                            <div class="font-style10">
-                                <span>2017-10-06 15:30</span>
-                            </div>
-                        </div>
-                        <div class="sign-state font-style3">
-                            <!-- 已簽核 -->
-                            <span class="langStr" data-id="str_133"></span>
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div class="footer">

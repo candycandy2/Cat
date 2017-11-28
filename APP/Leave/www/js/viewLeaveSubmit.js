@@ -256,8 +256,8 @@ $("#viewLeaveSubmit").pagecontainer({
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var dateArr = $("date", htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var dateArr = $("date", htmlDom);
 
                     //length大于0则有有效基准日列表，获取即可
                     if(dateArr.length == 0) {
@@ -279,9 +279,10 @@ $("#viewLeaveSubmit").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "QueryDatumDates", self.successCallback, self.failCallback, QueryDatumDatesQueryData, "");
+                CustomAPI("POST", true, "QueryDatumDates", self.successCallback, self.failCallback, queryDatumDatesQueryData, "");
             }();
         };
+        
         
 
         /********************************** page event *************************************/
@@ -349,7 +350,7 @@ $("#viewLeaveSubmit").pagecontainer({
                             checkLeftDaysNoBasedate();
 
                         } else if(leaveDetail["basedate"] == "Y") {
-                            QueryDatumDatesQueryData = "<LayoutHeader><EmpNo>" + 
+                            queryDatumDatesQueryData = "<LayoutHeader><EmpNo>" + 
                                                         myEmpNo + 
                                                         "</EmpNo><leaveid>" + 
                                                         leaveid + 

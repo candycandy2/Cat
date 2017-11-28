@@ -136,9 +136,9 @@ $("#viewPersonalLeave").pagecontainer({
                 var leaveFlag = "3";
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["Result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var colorTagArry = $("color", htmlDoc);
-                    var informationTagArry = $("information", htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var colorTagArry = $("color", htmlDom);
+                    var informationTagArry = $("information", htmlDom);
 
                     for(var day = 1; day <= colorTagArry.length; day++) {
                         if(myCalendarData[$(colorTagArry[day-1]).html()] === undefined ) {
@@ -172,9 +172,9 @@ $("#viewPersonalLeave").pagecontainer({
                 if(data['ResultCode'] === "1") {
                     //1.快速请假页面——部分假别
                     var callbackData = data['Content'][0]["quickleavelist"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    leaveTypeArry = $("name", htmlDoc);
-                    leaveIDArry = $("leaveid", htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    leaveTypeArry = $("name", htmlDom);
+                    leaveIDArry = $("leaveid", htmlDom);
                     
                     //获取快速请假的假别
                     //getQuickLeaveList();
@@ -231,8 +231,8 @@ $("#viewPersonalLeave").pagecontainer({
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var leftDays = $("leftdays", htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var leftDays = $("leftdays", htmlDom);
                     //leftDaysData[leaveid] = parseFloat($(leftDays).html());
 
                     //quickLeaveLeft取代leftDaysData
@@ -259,10 +259,10 @@ $("#viewPersonalLeave").pagecontainer({
                         agentNotExist = true;
                     }else {
                         var callbackData = data['Content'][0]["result"];
-                        var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                        var DepArry = $("Department", htmlDoc);
-                        var nameArry = $("name", htmlDoc);
-                        var agentIDArry = $("Empno", htmlDoc)
+                        var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                        var DepArry = $("Department", htmlDom);
+                        var nameArry = $("name", htmlDom);
+                        var agentIDArry = $("Empno", htmlDom)
                         for(var i=0; i<DepArry.length; i++) {
                             if($(agentIDArry[i]).html() !== localStorage["emp_no"]) {
                                 agentList += '<li class="tpl-option-msg-list" value="'+ $(agentIDArry[i]).html() + "" +'">'
@@ -336,11 +336,11 @@ $("#viewPersonalLeave").pagecontainer({
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");          
-                    countSuccess = $("success", htmlDoc);
-                    countError = $("error", htmlDoc);
-                    var applyDays = $("ApplyDays", htmlDoc);
-                    var applyHours = $("ApplyHours", htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");          
+                    countSuccess = $("success", htmlDom);
+                    countError = $("error", htmlDom);
+                    var applyDays = $("ApplyDays", htmlDom);
+                    var applyHours = $("ApplyHours", htmlDom);
                     countApplyDays = $(applyDays).html();
                     countApplyHours = $(applyHours).html();
                 }
@@ -366,13 +366,13 @@ $("#viewPersonalLeave").pagecontainer({
                         $('.applyLeaveFail').find('.main-paragraph').html(langStr["str_073"]);
                         popupMsgInit('.applyLeaveFail');
                     } else {
-                        var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                        var success = $("success", htmlDoc);
+                        var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                        var success = $("success", htmlDom);
                         if ($(success).html() != undefined) {
                             $(".toast-style").fadeIn(100).delay(3000).fadeOut(100);
                             localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
                         } else {
-                            var error = $("error", htmlDoc);
+                            var error = $("error", htmlDom);
                             var msgContent = $(error).html();
                             $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                             popupMsgInit('.applyLeaveFail');
