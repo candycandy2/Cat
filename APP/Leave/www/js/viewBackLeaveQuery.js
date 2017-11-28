@@ -4,6 +4,7 @@ var backLeaveStateEffect = langStr["str_149"];  //表單已生效
 var backLeaveStateRefuse = langStr["str_150"];  //表單已拒絕
 var viewBackLeaveQueryInit = false;
 var backLeaveListArr = [];
+var backLeaveDetailObj = {};
 var signToWithdrawReason;
 
 
@@ -15,20 +16,20 @@ $("#viewBackLeaveQuery").pagecontainer({
         window.QueryEmployeeLeaveCancelForm = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {      
                     var callbackData = data['Content'][0]["cancelformlist"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var formidArr = $("formid", htmlDoc);
-                    var formnoArr = $("formno", htmlDoc);
-                    var statusArr = $("status", htmlDoc);
-                    var leaveidArr = $("leaveid", htmlDoc);
-                    var begindateArr = $("begindate", htmlDoc);
-                    var begintimeArr = $("begintime", htmlDoc);
-                    var enddateArr = $("enddate", htmlDoc);
-                    var endtimeArr = $("endtime", htmlDoc);
-                    var leavedaysArr = $("days", htmlDoc);
-                    var leavehoursArr = $("hours", htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var formidArr = $("formid", htmlDom);
+                    var formnoArr = $("formno", htmlDom);
+                    var statusArr = $("status", htmlDom);
+                    var leaveidArr = $("leaveid", htmlDom);
+                    var begindateArr = $("begindate", htmlDom);
+                    var begintimeArr = $("begintime", htmlDom);
+                    var enddateArr = $("enddate", htmlDom);
+                    var endtimeArr = $("endtime", htmlDom);
+                    var leavedaysArr = $("days", htmlDom);
+                    var leavehoursArr = $("hours", htmlDom);
 
                     backLeaveListArr = [];
                     for(var i = 0; i < formidArr.length; i++) {
@@ -44,6 +45,17 @@ $("#viewBackLeaveQuery").pagecontainer({
                         leaveObject["days"] = $(leavedaysArr[i]).html();
                         leaveObject["hours"] = $(leavehoursArr[i]).html();
 
+                        //表單簽核的4種狀態
+                        if($(statusArr[i]).html() == "AP") {
+                            leaveObject["statusName"] = formEffected;
+                        } else if($(statusArr[i]).html() == "RC") {
+                            leaveObject["statusName"] = formWithdrawed;
+                        } else if($(statusArr[i]).html() == "RJ") {
+                            leaveObject["statusName"] = formRefused;
+                        } else {
+                            leaveObject["statusName"] = formSigning;
+                        }
+
                         //添加假别名称
                         for(var j = 0; j < LeaveObjList.length; j++) {
                             if(leaveObject["leaveid"] == LeaveObjList[j]["leaveid"]) {
@@ -56,11 +68,10 @@ $("#viewBackLeaveQuery").pagecontainer({
                             }
                         }
 
-
                         backLeaveListArr.push(leaveObject);
                     }
 
-                    ////生成HTML並添加
+                    //after custom API
                     //setBackLeaveList();
                 }
             };
@@ -69,7 +80,7 @@ $("#viewBackLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "QueryEmployeeLeaveCancelForm", self.successCallback, self.failCallback, QueryEmployeeLeaveCancelFormQueryData, "");
+                CustomAPI("POST", false, "QueryEmployeeLeaveCancelForm", self.successCallback, self.failCallback, queryEmployeeLeaveCancelFormQueryData, "");
             }();
         };
 
@@ -77,11 +88,40 @@ $("#viewBackLeaveQuery").pagecontainer({
         window.LeaveCancelFormDetail = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
+                    //1.回傳假單詳細信息
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    //console.log(htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var applydate = $("applydate", htmlDom);
+                    var reasons = $("reason", htmlDom);
+                    var refleaveformid = $("refleaveformid", htmlDom);
+                    var refleaveformno = $("refleaveformno", htmlDom);
+
+                    //补全另一部分详情
+                    backLeaveDetailObj["applydate"] = $(applydate).html();
+                    backLeaveDetailObj["reason"] = $(reasons).html();
+                    backLeaveDetailObj["refleaveformid"] = $(refleaveformid).html();
+                    backLeaveDetailObj["refleaveformno"] = $(refleaveformno).html();
+
+                    //改变详情页内容
+                    setBackLeaveDataToDetail();
+
+                    //2.回傳簽核流程
+                    var approveData = data['Content'][0]["approverecord"];
+                    var approveDom = new DOMParser().parseFromString(approveData, "text/html");
+                    var serialArr = $("app_serial", approveDom);
+                    var empnameArr = $("app_emp_name", approveDom);
+                    var ynArr = $("app_yn", approveDom);
+                    var dateArr = $("app_date", approveDom);
+                    var remarkArr = $("app_remark", approveDom);
+
+                    var backLeaveSignList = [];
+                    //首先遍历签核状态，再生成html元素
+                    getSignFlow(backLeaveSignList, serialArr, empnameArr, ynArr, dateArr, remarkArr);
+                    setLeaveFlowToPopup(backLeaveSignList, ".backLeave-flow-ul");
+
+                    loadingMask("hide");
                 }
             };
 
@@ -89,7 +129,7 @@ $("#viewBackLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "LeaveCancelFormDetail", self.successCallback, self.failCallback, LeaveCancelFormDetailQueryData, "");
+                CustomAPI("POST", false, "LeaveCancelFormDetail", self.successCallback, self.failCallback, leaveCancelFormDetailQueryData, "");
             }();
         };
 
@@ -100,8 +140,8 @@ $("#viewBackLeaveQuery").pagecontainer({
                 console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    //console.log(htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDom);
                 }
             };
 
@@ -109,7 +149,7 @@ $("#viewBackLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "RecallLeaveCancelForm", self.successCallback, self.failCallback, RecallLeaveCancelFormQueryData, "");
+                CustomAPI("POST", true, "RecallLeaveCancelForm", self.successCallback, self.failCallback, recallLeaveCancelFormQueryData, "");
             }();
         };
 
@@ -120,8 +160,8 @@ $("#viewBackLeaveQuery").pagecontainer({
                 console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    //console.log(htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDom);
                 }
             };
 
@@ -129,7 +169,100 @@ $("#viewBackLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "DeleteLeaveCancelForm", self.successCallback, self.failCallback, DeleteLeaveCancelFormQueryData, "");
+                CustomAPI("POST", true, "DeleteLeaveCancelForm", self.successCallback, self.failCallback, deleteLeaveCancelFormQueryData, "");
+            }();
+        };
+
+        //从“销假单详情”跳转到“请假单详情”
+        window.BackLeaveFormLeaveDetail = function() {
+            
+            this.successCallback = function(data) {
+                //console.log(data);
+                if(data['ResultCode'] === "1") {
+                    //1.回傳假單詳細信息
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var formid = $("formid", htmlDom);
+                    var formno = $("formno", htmlDom);
+                    var applydate = $("applydate", htmlDom);
+                    var status = $("status", htmlDom);
+                    var leaveid = $("leaveid", htmlDom);
+                    var begindate = $("begindate", htmlDom);
+                    var begintime = $("begintime", htmlDom);
+                    var enddate = $("enddate", htmlDom);
+                    var endtime = $("endtime", htmlDom);
+                    var leavedays = $("days", htmlDom);
+                    var leavehours = $("hours", htmlDom);
+                    var delegate = $("delegate", htmlDom);
+                    var reasons = $("reason", htmlDom);
+                    var datumdate = $("datumdate", htmlDom);
+                    var filestatus = $("filestatus", htmlDom);
+
+                    var obj = {};
+                    //查找类别和假别
+                    for(var i in LeaveObjList) {
+                        if(LeaveObjList[i]["leaveid"] == $(leaveid).html()) {
+                            obj["name"] = LeaveObjList[i]["name"];
+                            obj["category"] = LeaveObjList[i]["category"];
+                        }
+                    }
+                    //转换status
+                    if($(status[i]).html() == "AP") {
+                        obj["statusName"] = formEffected;
+                    } else if($(status[i]).html() == "RC") {
+                        obj["statusName"] = formWithdrawed;
+                    } else if($(status[i]).html() == "RJ") {
+                        obj["statusName"] = formRefused;
+                    } else {
+                        obj["statusName"] = formSigning;
+                    }
+
+                    //根据代理人工号，查找代理人姓名
+                    queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>'
+                                                 + myEmpNo
+                                                 + '</EmpNo><qEmpno>'
+                                                 + $(delegate).html()
+                                                 + '</qEmpno><qName></qName></LayoutHeader>';
+                    //根据id获取代理人姓名
+                    QueryEmployeeDetail();
+                    obj["agentname"] = $(employeeName).html();
+
+                    //传值给假单查询页
+                    $("#leaveApplyDate").text(dateFormatter($(applydate).html()));
+                    $("#leaveFormNo").text($(formno).html());
+                    $("#leaveStatus").text(leaveDetailObj["statusName"]);
+                    $("#leaveCategory").text(obj["category"]);
+                    $("#leaveName").text(obj["name"]);
+                    $("#leaveAgentName").text(obj["agentname"]);
+                    $("#leaveStartDate").text(dateFormatter($(begindate).html()));
+                    $("#leaveStartTime").text($(begintime).html());
+                    $("#leaveEndDate").text(dateFormatter($(enddate).html()));
+                    $("#leaveEndTime").text($(endtime).html());
+                    $("#leaveApplyDays").text($(leavedays).html());
+                    $("#leaveApplyHours").text($(leavehours).html());
+                    $("#leaveApplyReason").text($(reasons).html());
+
+                    // //2.回傳簽核流程
+                    var approveData = data['Content'][0]["approverecord"];
+                    var approveDom = new DOMParser().parseFromString(approveData, "text/html");
+                    var serialArr = $("app_serial", approveDom);
+                    var empnameArr = $("app_emp_name", approveDom);
+                    var ynArr = $("app_yn", approveDom);
+                    var dateArr = $("app_date", approveDom);
+                    var remarkArr = $("app_remark", approveDom);
+
+                    var backLeaveToLeaveSignList = [];
+                    getSignFlow(backLeaveToLeaveSignList, serialArr, empnameArr, ynArr, dateArr, remarkArr);
+                    setLeaveFlowToPopup(backLeaveToLeaveSignList, ".leave-flow-ul");
+
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", false, "LeaveApplyFormDetail", self.successCallback, self.failCallback, backLeaveFormLeaveDetailQueryData, "");
             }();
         };
 
@@ -155,7 +288,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                 backLeaveHtml += '<div class="backLeave-query-list">' + 
                                     '<div>' +
                                         '<div class="backLeave-query-state font-style3" form-id="' + backLeaveListArr[i]["formid"] + '">' +
-                                            '<span>' + backLeaveListArr[i]["status"] + '</span>' +
+                                            '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
                                             '<img src="img/btn_nextpage.png">' +
                                         '</div>' +
                                         '<div class="backLeave-query-base font-style10">' +
@@ -188,19 +321,53 @@ $("#viewBackLeaveQuery").pagecontainer({
                                 '</div>';
             }
 
-            if(backLeaveHtml == "") {
+            if(backLeaveListArr.length == 0) {
                 $("#maxBackLeaveMsg").text("*暫無假單記錄");
             } else {
                 $("#maxBackLeaveMsg").text("*僅顯示近10筆假單記錄");
-                $(".backLeave-query-main-list").append(leaveListHtml);
+                $(".backLeave-query-main-list").empty().append(backLeaveHtml);
             }
 
+        }
+
+        //从销假单列表到详情
+        function backLeaveToDetail(btn1, btn2, state) {
+            $(".backLeave-query-main").hide();
+            $(".leaveMenu").hide();
+            $("#backToList").show();
+            $(".backLeave-query-detail-sign").show();
+            if(state == null) {
+                $("#"+btn1).hide();     
+            } else {
+                $("#"+btn1).show();
+            }
+            $("#"+btn2).hide();
+        }
+
+        //根据formid从销假单列表当中获取该假单部分信息
+        function getBackLeaveDetailByID(id) {
+            for(var i in backLeaveListArr) {
+                if(id == backLeaveListArr[i]["formid"]) {
+                    return backLeaveListArr[i];
+                }
+            }
+        }
+
+        //详情页传值
+        function setBackLeaveDataToDetail() {
+            $("#backLeaveAppltDate").text(dateFormatter(backLeaveDetailObj["applydate"]));
+            $("#backLeaveFormNo").text(backLeaveDetailObj["formno"]);
+            $("#backLeaveStatus").text(backLeaveDetailObj["statusName"]);
+            $("#refLeaveFormNo").text(backLeaveDetailObj["refleaveformno"]);
+            //给销假单动态添加一个属性leave-id，即请假单编号
+            $("#signToLeaveDetail").attr("leave-id", backLeaveDetailObj["refleaveformid"]);
+            $("#backLeaveApplyReason").text(backLeaveDetailObj["reason"]);
         }
 
         /********************************** page event *************************************/
         $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {
             if(!viewBackLeaveQueryInit) {
-                QueryEmployeeLeaveCancelForm();
+                setBackLeaveList();
                 viewBackLeaveQueryInit = true;
             }
             
@@ -217,31 +384,31 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //表單狀況詳細情況
         $(document).on("click", ".backLeave-query-state", function() {
-            var self = $(this).children("span").eq(0).text();
+            loadingMask("show");
+            var self = $.trim($(this).text());
             var formid = $(this).attr("form-id");
 
-            if(self == backLeaveStateSign) {
-                $(".backLeave-query-main").hide();
-                $(".leaveMenu").hide();
-                $("#backToList").show();
-                $(".backLeave-query-detail-sign").show();
-                $("#backLeaveWithdraw").show();
-                $("#backLeaveDelete").hide();
-            } else if(self == backLeaveStateWithdraw) {
-                $(".backLeave-query-main").hide();
-                $(".leaveMenu").hide();
-                $("#backToList").show();
-                $(".backLeave-query-detail-sign").show();
-                $("#backLeaveWithdraw").hide();
-                $("#backLeaveDelete").show();
+            //先获取部分详情从销假单列表当中，另外部分详情从详情API中获取
+            backLeaveDetailObj = getBackLeaveDetailByID(formid);
+
+            leaveCancelFormDetailQueryData = '<LayoutHeader><EmpNo>' +
+                                             myEmpNo +
+                                             '</EmpNo><formid>' +
+                                             formid +
+                                             '</formid></LayoutHeader>';
+
+            //呼叫API
+            LeaveCancelFormDetail();
+
+            if(self == formSigning) {
+                backLeaveToDetail("backLeaveWithdraw", "backLeaveDelete", "");
+            } else if(self == formWithdrawed) {
+                backLeaveToDetail("backLeaveDelete", "backLeaveWithdraw", "");
             } else {
-                $(".backLeave-query-main").hide();
-                $(".leaveMenu").hide();
-                $("#backToList").show();
-                $(".backLeave-query-detail-sign").show();
-                $("#backLeaveWithdraw").hide();
-                $("#backLeaveDelete").hide();
+                backLeaveToDetail("backLeaveWithdraw", "backLeaveDelete", null);
             }
+
+            
         });
 
         //返回銷假單列表
@@ -302,21 +469,6 @@ $("#viewBackLeaveQuery").pagecontainer({
             $("#withdrawBackLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
-        //已拒絕流程——popup
-        $("#backLeaveRefuseFlow").on("click", function() {
-            popupMsgInit(".refuseIngFlow");
-        });
-
-        //已撤回流程——popup
-        $("#backLeaveWithdrawFlow").on("click", function() {
-            popupMsgInit(".withdrawIngFlow");
-        });
-
-        //已生效流程——popup
-        $("#backLeaveEffectFlow").on("click", function() {
-            popupMsgInit(".effectIngFlow");
-        });
-
         //刪除銷假單——popup
         $("#deleteBackLeaveBtn").on("click", function() {
             popupMsgInit(".confirmToDelete");
@@ -329,14 +481,21 @@ $("#viewBackLeaveQuery").pagecontainer({
         });
 
         //根據“請假單號”跳轉到請假單詳情頁
-        $(".return-leave-detail").on("click", function() {
+        $("#signToLeaveDetail").on("click", function() {
+            var refLeaveid = $(this).attr("leave-id");
+            //console.log(refLeaveid);
+            backLeaveFormLeaveDetailQueryData = '<LayoutHeader><EmpNo>'
+                                                + myEmpNo
+                                                + '</EmpNo><formid>'
+                                                + refLeaveid
+                                                + '</formid></LayoutHeader>';
+            //呼叫API
+            BackLeaveFormLeaveDetail();
+            //返回，跳转，再show         
             $("#backToList").trigger("click");
             changePageByPanel("viewLeaveQuery");
-            //同viewLeaveQuery的銷假狀態
-            $(".leaveMenu").hide();
-            $(".leave-query-main").hide();
-            $("#backDetailList").show();
-            $(".leave-query-detail-back").show();
+            leaveListToDetail("leaveRevoke", "leaveWithdraw", "leaveDelete", null);
+            detailFromPage = false;
         });
 
     }

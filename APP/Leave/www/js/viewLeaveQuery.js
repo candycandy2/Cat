@@ -9,9 +9,14 @@ var formSigning = "表單簽核中";
 var formRefused = "表單已拒絕";
 var formWithdrawed = "表單已撤回";
 var formEffected = "表單已生效";
+var signedStr = "已簽核";
+var withdrawedStr = "已撤銷";
+var rejectedStr = "已拒絕";
+var notSignStr = "未簽核";
+var detailFromPage;
+var employeeName;
 var leaveListArr = [];
 var leaveDetailObj = {};
-var signList = [];
 var withdrawReason,dispelReason;
 
 //請假單頁初始化
@@ -38,18 +43,18 @@ $("#viewLeaveQuery").pagecontainer({
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["applyformlist"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    var formidArr = $("formid", htmlDoc);
-                    var formnoArr = $("formno", htmlDoc);
-                    var statusArr = $("status", htmlDoc);
-                    var leaveidArr = $("leaveid", htmlDoc);
-                    var begindateArr = $("begindate", htmlDoc);
-                    var begintimeArr = $("begintime", htmlDoc);
-                    var enddateArr = $("enddate", htmlDoc);
-                    var endtimeArr = $("endtime", htmlDoc);
-                    var leavedaysArr = $("days", htmlDoc);
-                    var leavehoursArr = $("hours", htmlDoc);
-                    var cancelstatusArr = $("cancelstatus", htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var formidArr = $("formid", htmlDom);
+                    var formnoArr = $("formno", htmlDom);
+                    var statusArr = $("status", htmlDom);
+                    var leaveidArr = $("leaveid", htmlDom);
+                    var begindateArr = $("begindate", htmlDom);
+                    var begintimeArr = $("begintime", htmlDom);
+                    var enddateArr = $("enddate", htmlDom);
+                    var endtimeArr = $("endtime", htmlDom);
+                    var leavedaysArr = $("days", htmlDom);
+                    var leavehoursArr = $("hours", htmlDom);
+                    var cancelstatusArr = $("cancelstatus", htmlDom);
 
                     leaveListArr = [];
                     for(var i = 0; i < formidArr.length; i++) {
@@ -98,8 +103,8 @@ $("#viewLeaveQuery").pagecontainer({
                         leaveListArr.push(leaveObject);
                     }
 
-                    //生成HTML並添加
-                    setAllLeaveList();
+                    //after custom API
+                    //setAllLeaveList();
 
                     loadingMask("hide");
                 }
@@ -109,7 +114,7 @@ $("#viewLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "QueryEmployeeLeaveApplyForm", self.successCallback, self.failCallback, QueryEmployeeLeaveApplyFormQueryData, "");
+                CustomAPI("POST", false, "QueryEmployeeLeaveApplyForm", self.successCallback, self.failCallback, queryEmployeeLeaveApplyFormQueryData, "");
             }();
         };
 
@@ -126,35 +131,43 @@ $("#viewLeaveQuery").pagecontainer({
                     var delegate = $("delegate", htmlDom);
                     var reasons = $("reason", htmlDom);
                     var datumdate = $("datumdate", htmlDom);
+                    var filestatus = $("filestatus", htmlDom);
 
-                    //再近一步獲取詳情
+                    //根据代理人工号，查找代理人姓名
+                    queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>'
+                                                 + myEmpNo
+                                                 + '</EmpNo><qEmpno>'
+                                                 + $(delegate).html()
+                                                 + '</qEmpno><qName></qName></LayoutHeader>';
+                    //根据id获取代理人姓名
+                    QueryEmployeeDetail();
+                    leaveDetailObj["agentname"] = $(employeeName).html();
+
+                    //补全另一部分详情
                     leaveDetailObj["applydate"] = $(applydate).html();
                     leaveDetailObj["reason"] = $(reasons).html();
                     leaveDetailObj["agentid"] = $(delegate).html();
                     leaveDetailObj["datumdate"] = $(datumdate).html();
+                    leaveDetailObj["filestatus"] = $(filestatus).html();
+
+                    //改变详情页内容
+                    setLeaveDataToDetail();
 
                     //2.回傳簽核流程
                     var approveData = data['Content'][0]["approverecord"];
                     var approveDom = new DOMParser().parseFromString(approveData, "text/html");
-                    //console.log(approveDom);
                     var serialArr = $("app_serial", approveDom);
                     var empnameArr = $("app_emp_name", approveDom);
                     var ynArr = $("app_yn", approveDom);
                     var dateArr = $("app_date", approveDom);
                     var remarkArr = $("app_remark", approveDom);
-                    //console.log($(empnameArr[0]).html());
-                    signList = [];
-                    for(var i = 0; i < serialArr.length; i++) {
-                        var signObj = {};
-                        signObj["serial"] = $(serialArr[i]).html();
-                        signObj["empname"] = $(empnameArr[i]).html();
-                        signObj["yn"] = $(ynArr[i]).html();
-                        signObj["date"] = $(dateArr[i]).html();
-                        signObj["remark"] = $(remarkArr[i]).html();
-                        signList.push(signObj);
-                    }
 
-                    //console.log(signList);
+                    var leaveSignList = [];
+                    //首先遍历签核状态，再生成html元素
+                    getSignFlow(leaveSignList, serialArr, empnameArr, ynArr, dateArr, remarkArr);
+                    setLeaveFlowToPopup(leaveSignList, ".leave-flow-ul");
+
+                    loadingMask("hide");
                 }
             };
 
@@ -162,7 +175,7 @@ $("#viewLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", false, "LeaveApplyFormDetail", self.successCallback, self.failCallback, LeaveApplyFormDetailQueryData, "");
+                CustomAPI("POST", false, "LeaveApplyFormDetail", self.successCallback, self.failCallback, leaveApplyFormDetailQueryData, "");
             }();
         };
 
@@ -173,8 +186,9 @@ $("#viewLeaveQuery").pagecontainer({
                 console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    //console.log(htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    
+
                 }
             };
 
@@ -182,7 +196,7 @@ $("#viewLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "RecallLeaveApplyForm", self.successCallback, self.failCallback, RecallLeaveApplyFormQueryData, "");
+                CustomAPI("POST", true, "RecallLeaveApplyForm", self.successCallback, self.failCallback, recallLeaveApplyFormQueryData, "");
             }();
         };
 
@@ -193,8 +207,8 @@ $("#viewLeaveQuery").pagecontainer({
                 console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    //console.log(htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    //console.log(htmlDom);
                 }
             };
 
@@ -202,7 +216,7 @@ $("#viewLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "DeleteLeaveApplyForm", self.successCallback, self.failCallback, DeleteLeaveApplyFormQueryData, "");
+                CustomAPI("POST", true, "DeleteLeaveApplyForm", self.successCallback, self.failCallback, deleteLeaveApplyFormQueryData, "");
             }();
         };
 
@@ -213,8 +227,10 @@ $("#viewLeaveQuery").pagecontainer({
                 console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-                    var htmlDoc = new DOMParser().parseFromString(callbackData, "text/html");
-                    //console.log(htmlDoc);
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    
+                    
+                    
                 }
             };
 
@@ -222,7 +238,30 @@ $("#viewLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "SendLeaveCancelFormData", self.successCallback, self.failCallback, SendLeaveCancelFormDataQueryData, "");
+                CustomAPI("POST", true, "SendLeaveCancelFormData", self.successCallback, self.failCallback, sendLeaveCancelFormDataQueryData, "");
+            }();
+        };
+
+        //查询代理人信息
+        window.QueryEmployeeDetail = function() {
+
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var department = $("department", htmlDom);
+                    var empno = $("empno", htmlDom);
+                    employeeName = $("name", htmlDom);
+
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", false, "QueryEmployeeData", self.successCallback, self.failCallback, queryEmployeeDetailQueryData, "");
             }();
         };
 
@@ -267,11 +306,12 @@ $("#viewLeaveQuery").pagecontainer({
                                 '</div>';
             }
             
-            if(leaveListHtml == "") {
+            //判断请假单列表是否有数据
+            if(leaveListArr.length == 0) {
                 $("#maxLeaveMsg").text("*暫無假單記錄");
             } else {
                 $("#maxLeaveMsg").text("*僅顯示近10筆假單記錄");
-                $(".leave-query-main-list").append(leaveListHtml);
+                $(".leave-query-main-list").empty().append(leaveListHtml);
             }
         }
 
@@ -334,7 +374,7 @@ $("#viewLeaveQuery").pagecontainer({
             checkLeaveBeforePreview();
         }
 
-        //根據formid獲取假單詳情
+        //根据formid从假单列表当中获取该假单部分信息
         function getLeaveDetailByID(id) {
             for(var i in leaveListArr) {
                 if(leaveListArr[i]["formid"] == id) {
@@ -344,13 +384,13 @@ $("#viewLeaveQuery").pagecontainer({
         }
 
         //假單詳情傳值
-        function setDataToDetail() {
+        function setLeaveDataToDetail() {
             $("#leaveApplyDate").text(dateFormatter(leaveDetailObj["applydate"]));
             $("#leaveFormNo").text(leaveDetailObj["formno"]);
             $("#leaveStatus").text(leaveDetailObj["statusName"]);
             $("#leaveCategory").text(leaveDetailObj["category"]);
             $("#leaveName").text(leaveDetailObj["name"]);
-            $("#leaveAgentName").text(leaveDetailObj["agentid"]);
+            $("#leaveAgentName").text(leaveDetailObj["agentname"]);
             $("#leaveStartDate").text(leaveDetailObj["begindate"].split("/").join("-"));
             $("#leaveStartTime").text(leaveDetailObj["begintime"]);
             $("#leaveEndDate").text(leaveDetailObj["enddate"].split("/").join("-"));
@@ -366,25 +406,12 @@ $("#viewLeaveQuery").pagecontainer({
             $("#revokeFormNo").text(leaveDetailObj["formno"]);
         }
 
-        //假單列表到詳情
-        function leaveListToDetail(btn1, btn2, btn3, btn4) {
-            $(".leaveMenu").hide();
-            $(".leave-query-main").hide();
-            $("#backDetailList").show();
-            $(".leave-query-detail-sign").show();
-            if(btn4 == null) {
-                $("#" + btn1).show();
-            } else {
-                $("#" + btn1).hide();
-            }
-            $("#" + btn2).hide();
-            $("#" + btn3).hide();
-        }
 
         /********************************** page event *************************************/
         $("#viewLeaveQuery").on("pagebeforeshow", function(event, ui) {
             if(!viewLeaveQueryInit) {
-                QueryEmployeeLeaveApplyForm();
+                //after custom API
+                setAllLeaveList();
                 viewLeaveQueryInit = true;
             }
             $(".leaveMenu").show();  
@@ -392,6 +419,8 @@ $("#viewLeaveQuery").pagecontainer({
         });
 
         $("#viewLeaveQuery").on("pageshow", function(event, ui) {
+            //此变量用来记录详情页是从哪里跳转的，true表示本页（假单页），false表示“销假单页”
+            detailFromPage = true;
             loadingMask("hide");
         });
 
@@ -401,34 +430,32 @@ $("#viewLeaveQuery").pagecontainer({
 
         //點擊詳細，根據不同表單狀態顯示不同頁面——click
         $(document).on("click", ".leave-query-state", function() {
+            loadingMask("show");
             //var self = $(this).children("span").eq(0).text();
             var self = $.trim($(this).text());
-            var formid = $(this).attr("form-id");
-            //先獲取部分詳情
-            leaveDetailObj = getLeaveDetailByID(formid);
-            
+            var formid = $(this).attr("form-id");      
 
-            LeaveApplyFormDetailQueryData = '<LayoutHeader><EmpNo>' 
+            //先获取部分详情，另外部分详情在API中获取
+            leaveDetailObj = getLeaveDetailByID(formid);
+
+            leaveApplyFormDetailQueryData = '<LayoutHeader><EmpNo>' 
                                             + myEmpNo 
                                             + '</EmpNo><formid>' 
                                             + formid 
                                             + '</formid></LayoutHeader>';
-
+            //呼叫API
             LeaveApplyFormDetail();
-            //console.log(leaveDetailObj);
 
             if(self == formSigning) {
-                leaveListToDetail("leaveWithdraw", "leaveDelete", "leaveRevoke", null);
+                leaveListToDetail("leaveWithdraw", "leaveDelete", "leaveRevoke", "");
             }else if(self == formRefused || self == formWithdrawed) {
-                leaveListToDetail("leaveDelete", "leaveWithdraw", "leaveRevoke", null);
+                leaveListToDetail("leaveDelete", "leaveWithdraw", "leaveRevoke", "");
             }else if(self == formEffected) {
-                leaveListToDetail("leaveRevoke", "leaveWithdraw", "leaveDelete", null);
-            }else {
                 leaveListToDetail("leaveRevoke", "leaveWithdraw", "leaveDelete", "");
+            }else {
+                leaveListToDetail("leaveRevoke", "leaveWithdraw", "leaveDelete", null);
             }
 
-            //set data
-            setDataToDetail();
         });
 
         //返回假單列表——click
@@ -503,7 +530,7 @@ $("#viewLeaveQuery").pagecontainer({
 
         //確認撤回
         $("#comfirmWithdrawLeave").on("click", function() {
-            RecallLeaveApplyFormQueryData = '<LayoutHeader><EmpNo>' +
+            recallLeaveApplyFormQueryData = '<LayoutHeader><EmpNo>' +
                                             myEmpNo +
                                             '</EmpNo><formid>' +
                                             leaveDetailObj["formid"] +
@@ -513,7 +540,7 @@ $("#viewLeaveQuery").pagecontainer({
                                             withdrawReason +
                                             '</reason></LayoutHeader>';
 
-            console.log(RecallLeaveApplyFormQueryData);
+            console.log(recallLeaveApplyFormQueryData);
             //API
             //RecallLeaveApplyForm();
 
@@ -528,13 +555,13 @@ $("#viewLeaveQuery").pagecontainer({
 
         //確認刪除假單——click
         $("#comfirmDeleteLeave").on("click", function() {
-            DeleteLeaveApplyFormQueryData = '<LayoutHeader><EmpNo>'
+            deleteLeaveApplyFormQueryData = '<LayoutHeader><EmpNo>'
                                             + myEmpNo 
                                             + '</EmpNo><formid>'
                                             + leaveDetailObj["formid"]
                                             + '</formid></LayoutHeader>';
 
-            console.log(DeleteLeaveApplyFormQueryData);
+            console.log(deleteLeaveApplyFormQueryData);
             //API
             //DeleteLeaveApplyForm();
 
@@ -599,7 +626,7 @@ $("#viewLeaveQuery").pagecontainer({
 
         //確定銷假
         $("#comfirmRevokeLeave").on("click", function() {
-            SendLeaveCancelFormDataQueryData = '<LayoutHeader><EmpNo>'
+            sendLeaveCancelFormDataQueryData = '<LayoutHeader><EmpNo>'
                                                 + myEmpNo
                                                 + '</EmpNo><applyformid>'
                                                 + leaveDetailObj["formid"]
@@ -607,7 +634,7 @@ $("#viewLeaveQuery").pagecontainer({
                                                 + dispelReason
                                                 + '</reason></LayoutHeader>';
             
-            console.log(SendLeaveCancelFormDataQueryData);
+            console.log(sendLeaveCancelFormDataQueryData);
             //API
             //SendLeaveCancelFormData();
 

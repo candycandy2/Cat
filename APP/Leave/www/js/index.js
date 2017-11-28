@@ -1,9 +1,10 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
 var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData;
-var QueryEmployeeLeaveApplyFormQueryData, LeaveApplyFormDetailQueryData, RecallLeaveApplyFormQueryData,
-DeleteLeaveApplyFormQueryData, SendLeaveCancelFormDataQueryData;
-var QueryDatumDatesQueryData;
-var QueryEmployeeLeaveCancelFormQueryData, LeaveCancelFormDetailQueryData, RecallLeaveCancelFormQueryData, DeleteLeaveCancelFormQueryData;
+var queryDatumDatesQueryData;
+var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallLeaveApplyFormQueryData, deleteLeaveApplyFormQueryData,
+sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
+var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recallLeaveCancelFormQueryData, deleteLeaveCancelFormQueryData,
+backLeaveFormLeaveDetailQueryData;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
@@ -43,11 +44,14 @@ window.initialSuccess = function() {
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
     getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo><LastModified></LastModified></LayoutHeader>";
-    QueryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
     QueryCalendarData();
     if (leaveTypeData["option"].length == 0) {
+        //呼叫API
         GetDefaultSetting();
+        QueryEmployeeLeaveApplyForm();
+        QueryEmployeeLeaveCancelForm();
     }
     dateInit();
     $.mobile.changePage("#viewPersonalLeave");
@@ -306,4 +310,80 @@ function dateFormatter(dataStr) {
     newArr.push(arr[0]);
     newArr.push(arr[1]);
     return newArr.join("-");
+}
+
+//假單列表到詳情（请假单和销假单共用）
+function leaveListToDetail(btn1, btn2, btn3, state) {
+    $(".leaveMenu").hide();
+    $(".leave-query-main").hide();
+    $("#backDetailList").show();
+    $(".leave-query-detail-sign").show();
+    if(state == null) {
+        $("#" + btn1).hide();
+    } else {
+        $("#" + btn1).show();
+    }
+    $("#" + btn2).hide();
+    $("#" + btn3).hide();
+}
+
+//获取签核流程（请假单和销假单共用）
+function getSignFlow(arr, serial, empname, yn, date, remark) {
+    for(var i = 0; i < serial.length; i++) {
+        var signObj = {};
+        signObj["serial"] = $(serial[i]).html();
+        signObj["empname"] = $(empname[i]).html();
+        signObj["yn"] = $(yn[i]).html();
+        signObj["date"] = $(date[i]).html();
+        signObj["remark"] = $(remark[i]).html();
+
+        //根据签核状态判断使用什么图标
+        //状态为“Y”是approved(已签核)
+        if($(yn[i]).html() == "Y") {
+            signObj["icon"] = "success.png";
+            signObj["statusName"] = signedStr;
+
+        //状态为"N"是rejected(已拒绝)
+        } else if($(yn[i]).html() == "N") {
+            signObj["icon"] = "reject.png";
+            signObj["statusName"] = rejectedStr;
+
+        //状态为""且日期为""，则是(未签核)
+        } else if($(yn[i]).html() == "" && $(date[i]).html() == "") {
+            signObj["icon"] = "blank.png";
+            signObj["statusName"] = notSignStr;
+
+        //状态为""但日期不为""，则是(已撤销)
+        } else if($(yn[i]).html() == "" && $(date[i]).html() !== "") {
+            signObj["icon"] = "withdraw.png";
+            signObj["statusName"] = withdrawedStr;
+        }
+
+        arr.push(signObj);
+    }
+}
+
+//签核流程动态添加（请假单和销假单共用）
+function setLeaveFlowToPopup(arr, dom) {
+    var flow = "";
+    for(var i in arr) {
+        flow += '<li class="sign-list">' +
+                            '<div class="sign-icon">' +
+                                '<img src="img/' + arr[i]["icon"] + '">' +
+                            '</div>' +
+                            '<div class="sign-name">' +
+                                '<div class="font-style3">' +
+                                    '<span>' + arr[i]["empname"] + '</span>' +
+                                '</div>' +
+                                '<div class="font-style10">' +
+                                    '<span>' + arr[i]["date"] + '</span>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="sign-state font-style3">' +
+                                '<span>' + arr[i]["statusName"] + '</span>' +
+                            '</div>' +
+                        '</li>';
+    }
+
+    $(dom).empty().append(flow);
 }
