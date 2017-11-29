@@ -50,7 +50,7 @@ class appVersionController extends Controller
             ];
             return response()->json($result);
 
-        }catch (Exception $e){
+        }catch (\Exception $e){
 
             $result = ['result_code'=>ResultCode::_999999_unknownError,
                        'message'=>$e->getMessage(),
@@ -85,7 +85,7 @@ class appVersionController extends Controller
             ];
             return response()->json($result);
             
-        }catch (Exception $e){
+        }catch (\Exception $e){
 
             $result = ['result_code'=>ResultCode::_999999_unknownError,
                        'message'=>$e->getMessage(),
@@ -131,7 +131,7 @@ class appVersionController extends Controller
             ];
             return response()->json($result);
 
-        }catch (Exception $e){
+        }catch (\Exception $e){
 
             $result = ['result_code'=>ResultCode::_999999_unknownError,
                        'message'=>$e->getMessage(),
@@ -169,7 +169,7 @@ class appVersionController extends Controller
             ];
             return response()->json($result);
 
-        }catch (Exception $e){
+        }catch (\Exception $e){
             $result = ['result_code'=>ResultCode::_999999_unknownError,
                        'message'=>$e->getMessage(),
                        'content'=>""];
