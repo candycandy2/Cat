@@ -464,14 +464,17 @@ function getAppLogParam() {
     objLogList.page_action = "enterPage";
     objLogList.start_time = new Date().getTime();
     objLogList.period = "";
-    objLogList.device_type = device.platform;
+    objLogList.device_type = device.platform.toLowerCase(); 
 
-    if (appLogData == null) {
+    if (appLogData == null || appLogData.log_list.length == 0) {
         var jsonData = {
             login_id: ADAccount,
             package_name: packageName,
             log_list: [objLogList]
         };
+    } else if (objLogList.page_name == appLogData.log_list[appLogData.log_list.length-1].page_name) {
+        appLogData.log_list.push(objLogList);
+        jsonData = appLogData;
     } else {
         var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length-1].start_time;
         appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
@@ -503,18 +506,20 @@ function onResume() {
     objLogList.page_action = "enterPage";
     objLogList.start_time = new Date().getTime();
     objLogList.period = "";
-    objLogList.device_type = device.platform;
+    objLogList.device_type = device.platform.toLowerCase();
 
     appLogData.log_list.push(objLogList);
     jsonData = appLogData;
     localStorage.setItem('appLogData', JSON.stringify(jsonData));
+    //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
+    setTimeout('checkAmountData()', 10000);
 }
 
 function checkAmountData(){
     var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
     //若localstorage數目大於等於Ｍ筆,將資料傳給API
-    if (appLogData.log_list.length >=5) {
-        //var doAddAppLog = new getAddAppLog();
+    if (appLogData.log_list.length >=50) {
+        var doAddAppLog = new getAddAppLog();
     }
 }
 
@@ -529,7 +534,7 @@ function getAddAppLog() {
         log_list: []
     };   
     //將Ｍ筆資料傳給API
-    for (var i = 0; i < 5 ; i++) {
+    for (var i = 0; i < 50 ; i++) {
         jsonData.log_list.push(appLogData.log_list[i]);
     }
     var queryData = JSON.stringify(jsonData);
@@ -538,8 +543,12 @@ function getAddAppLog() {
         var resultcode = data['result_code'];
 
         if (resultcode == 1) {
-            //popupMsg('noDataMsg', '', 'call getAddAppLog Success!', '', false, '確定', '');
             //將傳成功的Ｍ筆資料從localstorage刪除
+            for (var i = 0; i < 50 ; i++) {
+                appLogData.log_list.shift();
+            }
+            localStorage.setItem('appLogData', JSON.stringify(appLogData));
+            popupMsg('noDataMsg', '', 'call getAddAppLog Success!', '', false, '確定', '');
         } 
     }
 
