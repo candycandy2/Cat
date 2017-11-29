@@ -4,5 +4,7 @@
 <p><strong>Code:</strong> {{ $e->getCode() }}</p>
 <p><strong>File:</strong> {{ $e->getFile() }}</p>
 <p><strong>Line:</strong> {{ $e->getLine() }}</p>
+<p><strong>Url:</strong> {{ $url }}</p>
+<p><strong>Input:</strong> {{ $input }}</p>
 <h3>Stack trace:</h3>
 <pre>{{ $e->getTraceAsString() }}</pre>

@@ -8,8 +8,10 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\lib\ResultCode;
 use Mail;
 use Config;
+use Request;
 
 class Handler extends ExceptionHandler
 {
@@ -38,7 +40,9 @@ class Handler extends ExceptionHandler
         parent::report($e);
         if ($this->shouldReport($e)) {
             if(\Config('app.error_mail_to')!=""){
-                Mail::send('emails.error_report', ['e' => $e], function($message)
+                $url = \Request::url();
+                $input = json_encode(\Request::all());
+                Mail::send('emails.error_report', ['e' => $e , 'url' => $url, 'input' => $input], function($message)
                 {   
                     $from = \Config('app.error_mail_from');
                     $fromName = \Config('app.error_mail_from_name');
@@ -60,6 +64,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+        $result = ['result_code'=>ResultCode::_999999_unknownError,
+                    'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
+                    'content'=>""];
+        $result = response()->json($result);
+        return $result;
+       //return parent::render($request, $e);
     }
 }
