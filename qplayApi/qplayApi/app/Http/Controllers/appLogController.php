@@ -63,6 +63,7 @@ class appLogController extends Controller
                 $logList = $jsonContent['log_list'];
                 $uuid = $input["uuid"];
                 $insertData = $this->getInsertData($userId, $appId, $uuid, $logList);
+
                 //Mysql
                 if ($logMode == 'ALL' || $logMode == 'MYSQL') {
                     $mysqlLog = new QP_App_Log();
@@ -108,6 +109,7 @@ class appLogController extends Controller
             $data->app_row_id = $appId;
             $data->uuid = $uuid;
             $data->created_at = $now;
+            $data->ip = $ip;
             foreach ($log as $key=>$value) {
                 if(property_exists($data, $key)){
                     $data->$key=$value;
