@@ -112,7 +112,11 @@ class appLogController extends Controller
             $data->ip = $ip;
             foreach ($log as $key=>$value) {
                 if(property_exists($data, $key)){
-                    $data->$key=$value;
+                    if($key == 'start_time'){
+                        $data->$key=substr($value,0,10);
+                    }else{
+                        $data->$key=$value;
+                    }
                 }
             }
            $dataList[]=(array)$data;
