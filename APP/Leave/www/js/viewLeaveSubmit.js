@@ -173,7 +173,7 @@ $("#viewLeaveSubmit").pagecontainer({
             if(quickLeaveLeft == 0 || (quickLeaveLeft > 0 && quickLeaveLeft < leaveDetail["unit"])) {
                 popupMsgInit('.leaveNotEnough');
                 getLeaveByCategory();
-            } else { 
+            } else {
                 //desc
                 if(leaveDetail["desc"] !== "") {
                     var divIntroduce = "<span>*" + leaveDetail["desc"] + "</span>";
@@ -233,26 +233,9 @@ $("#viewLeaveSubmit").pagecontainer({
             $("#endDate").val("");
         }
 
-        //结束时间选择完成后检查请假数
-        function checkLeaveHours() {
-            if($(countSuccess).html() != undefined) {
-                //success无提示，改变请假数
-                $("#leaveDays").text(countApplyDays);
-                $("#leaveHours").text(countApplyHours);
-            } else {
-                //error提示
-                var errorMsg = $(countError).html();
-                $('.leftDaysByLeave').find('.main-paragraph').html(errorMsg);
-                popupMsgInit('.leftDaysByLeave');
-                //enddate
-                $("#endText").text(pleaseSelectStr);
-                $("#endDate").val("");
-            }
-        }
-
         //查询某假别正在使用的有效基准日——<LayoutHeader><EmpNo>0409132</EmpNo><leaveid>3010</leaveid></LayoutHeader>
         window.QueryDatumDates = function() {
-            
+
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
@@ -272,6 +255,8 @@ $("#viewLeaveSubmit").pagecontainer({
 
                         basedayList = true;
                     }
+
+                    selectLeaveNeedBasedate();
                 }
             };
 
@@ -283,6 +268,44 @@ $("#viewLeaveSubmit").pagecontainer({
             }();
         };
         
+        //選擇結束時間計算請假數
+        window.CountLeaveHoursByEnd = function() {
+            
+            this.successCallback = function(data) {
+                //console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");          
+                    var countSuccess = $("success", htmlDom);
+                    var countError = $("error", htmlDom);
+                    var applyDays = $("ApplyDays", htmlDom);
+                    var applyHours = $("ApplyHours", htmlDom);
+                    var countApplyDays = $(applyDays).html();
+                    var countApplyHours = $(applyHours).html();
+
+                    if($(countSuccess).html() != undefined) {
+                        //success无提示，改变请假数
+                        $("#leaveDays").text(countApplyDays);
+                        $("#leaveHours").text(countApplyHours);
+                    } else {
+                        //error提示
+                        var errorMsg = $(countError).html();
+                        $('.leftDaysByLeave').find('.header-text').html(errorMsg);
+                        popupMsgInit('.leftDaysByLeave');
+                        //enddate
+                        $("#endText").text(pleaseSelectStr);
+                        $("#endDate").val("");
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "CountLeaveHours", self.successCallback, self.failCallback, countLeaveHoursByEndQueryData, "");
+            }();
+        };
         
 
         /********************************** page event *************************************/
@@ -303,7 +326,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         $("#viewLeaveSubmit").on("pageshow", function(event, ui) {
-            
+
             loadingMask("hide");
         });
 
@@ -357,8 +380,6 @@ $("#viewLeaveSubmit").pagecontainer({
                                                         "</leaveid></LayoutHeader>";
                             //呼叫API
                             QueryDatumDates();
-                            //after custom API
-                            selectLeaveNeedBasedate();
 
                         }
 
@@ -619,24 +640,21 @@ $("#viewLeaveSubmit").pagecontainer({
                 } else {  
                     $('#endText').text(endLeaveDate);
 
-                    //呼叫API:CountLeaveHours
-                    countLeaveHoursQueryData = "<LayoutHeader><EmpNo>"
-                                                + myEmpNo
-                                                + "</EmpNo><leaveid>"
-                                                + leaveid
-                                                + "</leaveid><begindate>"
-                                                + startLeaveDate.split(" ")[0].split("-").join("/")
-                                                + "</begindate><begintime>"
-                                                + startLeaveDate.split(" ")[1]
-                                                + "</begintime><enddate>"
-                                                + endLeaveDate.split(" ")[0].split("-").join("/")
-                                                + "</enddate><endtime>"
-                                                + endLeaveDate.split(" ")[1]
-                                                + "</endtime><datumdate></datumdate></LayoutHeader>";
-                    //呼叫API                            
-                    CountLeaveHours();
-                    //after custom API
-                    checkLeaveHours();
+                    countLeaveHoursByEndQueryData = "<LayoutHeader><EmpNo>"
+                                                  + myEmpNo
+                                                  + "</EmpNo><leaveid>"
+                                                  + leaveid
+                                                  + "</leaveid><begindate>"
+                                                  + startLeaveDate.split(" ")[0].split("-").join("/")
+                                                  + "</begindate><begintime>"
+                                                  + startLeaveDate.split(" ")[1]
+                                                  + "</begintime><enddate>"
+                                                  + endLeaveDate.split(" ")[0].split("-").join("/")
+                                                  + "</enddate><endtime>"
+                                                  + endLeaveDate.split(" ")[1]
+                                                  + "</endtime><datumdate></datumdate></LayoutHeader>";
+                    //呼叫API                       
+                    CountLeaveHoursByEnd();
 
                 }
 

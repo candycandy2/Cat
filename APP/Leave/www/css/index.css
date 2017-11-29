@@ -824,11 +824,14 @@ div.scrollmenu a {
 	clear: both;
 }
 
+/* popup */
 .confirmWithdraw > .ui-content,
 .confirmDelete > .ui-content,
 .confirmRevoke > .ui-content,
 .confirmToWithdraw > .ui-content,
-.confirmToDelete > .ui-content {
+.confirmToDelete > .ui-content,
+.leaveErrorMsg > .ui-content,
+.backLeaveErrorMsg > .ui-content {
 	padding: 0 !important;
 }
 
@@ -838,6 +841,17 @@ div.scrollmenu a {
 .confirmToWithdraw > .ui-content > .header,
 .confirmToDelete > .ui-content > .header {
 	margin-top: 13%;
+}
+
+.leaveErrorMsg > .ui-content > .header,
+.backLeaveErrorMsg > .ui-content > .header {
+	margin-top: 12.5%;
+}
+
+/*sign flow popup footer*/
+.signStateFlow > .ui-content > .footer,
+.signIngFlow > .ui-content > .footer {
+	margin-top: 10% !important;
 }
 
 #leaveWithdraw,
