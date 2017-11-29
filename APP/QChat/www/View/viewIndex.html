@@ -153,6 +153,54 @@
             </div>
         </template>
 
+        <template id="tplActionMsgFullScreen">
+            <div class="action-success-full-screen hide">
+                <div>
+                    <span class="hide" id="actionMsg1">已將 XXX 加為好友</span>
+                    <span class="hide" id="actionMsg2">已送出好友邀請</span>
+                    <span class="hide" id="actionMsg3">已發送邀請給 XXX</span>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > User Info -->
+        <template id="tplUserInfoPopup">
+            <div class="header">
+                <img class="chatroom-info-photo hide" src="">
+                <svg class="chatroom-info-photo">
+                    <use xlink:href="#icon-img_default_photo_big"></use>
+                </svg>
+                <div class="close-popup">
+                    <svg class="close-popup-button">
+                        <use xlink:href="#icon-btn_windowclose"></use>
+                    </svg>
+                </div>
+                <div style="height: 5vw;">
+                    Melody Yu
+                </div>
+                <div style="height: 5vw;">
+                    My Status
+                </div>
+                <hr class="ui-hr">
+                <div style="height: 5vw;">
+                    E-mail
+                </div>
+                <hr class="ui-hr">
+                <div style="height: 5vw;">
+                    分機
+                </div>
+            </div>
+            <div class="footer">
+                <div class="btn-one">
+                    <div>
+                        <a>
+                            編輯
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </template>
+
     </div>
 
     <div data-role="footer" class="index-footer" data-position="fixed">
