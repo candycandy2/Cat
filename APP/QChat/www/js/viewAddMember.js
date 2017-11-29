@@ -2,6 +2,7 @@
 $("#viewAddMember").pagecontainer({
     create: function(event, ui) {
 
+        var nowChatroomID;
         var timer;
 
         /********************************** function *************************************/
@@ -10,7 +11,7 @@ $("#viewAddMember").pagecontainer({
 
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
-                    group_id: JM.chatroomID
+                    group_id: nowChatroomID
                 };
 
                 var queryDataParameter = createXMLDataString(queryDataObj);
@@ -41,7 +42,7 @@ $("#viewAddMember").pagecontainer({
                             }
 
                             $.mobile.changePage('#viewChatroomInfo');
-                            window.getGroupMembers(JM.chatroomID, JM.data.chatroom[JM.chatroomID].is_group, "chatroomInfo");
+                            window.getGroupMembers(nowChatroomID, JM.data.chatroom[nowChatroomID].is_group, "chatroomInfo");
                         }, 1000);
                     }
                 };
@@ -64,8 +65,8 @@ $("#viewAddMember").pagecontainer({
 
             var memberList = [];
 
-            for (var i=0; i<JM.data.chatroom[JM.chatroomID].member.length; i++) {
-                memberList.push(JM.data.chatroom[JM.chatroomID].member[i].username);
+            for (var i=0; i<JM.data.chatroom[nowChatroomID].member.length; i++) {
+                memberList.push(JM.data.chatroom[nowChatroomID].member[i].username);
             }
 
             var userListHTML = $("template#tplUserList").html();
@@ -132,6 +133,8 @@ $("#viewAddMember").pagecontainer({
         });
 
         $("#viewAddMember").on("pagebeforeshow", function(event, ui) {
+            nowChatroomID = JM.chatroomID;
+
             //Clear Data
             $("#searchAddMember").val("");
             $(".data-list-content .user-list").remove();
