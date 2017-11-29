@@ -93,40 +93,6 @@ $("#viewPersonalLeave").pagecontainer({
             leaveTypeSelected = false;
         }
 
-        //快速请假送签之前，计算请假数之后
-        function sendLeaveBefore() {
-            if($(countSuccess).html() != undefined) {
-                sendLeaveApplicationData = "<LayoutHeader><empno>"
-                                         + myEmpNo
-                                         + "</empno><delegate>"
-                                         + agentid
-                                         + "</delegate><leaveid>"
-                                         + leaveid
-                                         + "</leaveid><begindate>"
-                                         + beginDate
-                                         + "</begindate><begintime>"
-                                         + beginTime
-                                         + "</begintime><enddate>"
-                                         + endDate
-                                         + "</enddate><endtime>"
-                                         + endTime
-                                         + "</endtime><datumdate></datumdate><applydays>"
-                                         + countApplyDays
-                                         + "</applydays><applyhours>"
-                                         + countApplyHours
-                                         + "</applyhours><reason>"
-                                         + leaveType
-                                         + "</reason></LayoutHeader>";
-                //呼叫API
-                SendLeaveApplicationData();
-            }else {
-                var msgContent = $(countError).html();
-                $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
-                popupMsgInit('.applyLeaveFail');
-                loadingMask("hide");
-            }
-        }
-
         //API —— 行事历
         window.QueryCalendarData = function() {
 
@@ -337,12 +303,43 @@ $("#viewPersonalLeave").pagecontainer({
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");          
-                    countSuccess = $("success", htmlDom);
-                    countError = $("error", htmlDom);
+                    var countSuccess = $("success", htmlDom);
+                    var countError = $("error", htmlDom);
                     var applyDays = $("ApplyDays", htmlDom);
                     var applyHours = $("ApplyHours", htmlDom);
-                    countApplyDays = $(applyDays).html();
-                    countApplyHours = $(applyHours).html();
+                    var countApplyDays = $(applyDays).html();
+                    var countApplyHours = $(applyHours).html();
+
+                    if($(countSuccess).html() != undefined) {
+                        sendLeaveApplicationData = "<LayoutHeader><empno>"
+                                                 + myEmpNo
+                                                 + "</empno><delegate>"
+                                                 + agentid
+                                                 + "</delegate><leaveid>"
+                                                 + leaveid
+                                                 + "</leaveid><begindate>"
+                                                 + beginDate
+                                                 + "</begindate><begintime>"
+                                                 + beginTime
+                                                 + "</begintime><enddate>"
+                                                 + endDate
+                                                 + "</enddate><endtime>"
+                                                 + endTime
+                                                 + "</endtime><datumdate></datumdate><applydays>"
+                                                 + countApplyDays
+                                                 + "</applydays><applyhours>"
+                                                 + countApplyHours
+                                                 + "</applyhours><reason>"
+                                                 + leaveType
+                                                 + "</reason></LayoutHeader>";
+                        //呼叫API
+                        SendLeaveApplicationData();
+                    }else {
+                        var msgContent = $(countError).html();
+                        $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
+                        popupMsgInit('.applyLeaveFail');
+                        loadingMask("hide");
+                    }
                 }
             };
 
@@ -350,7 +347,7 @@ $("#viewPersonalLeave").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", false, "CountLeaveHours", self.successCallback, self.failCallback, countLeaveHoursQueryData, "");
+                CustomAPI("POST", true, "CountLeaveHours", self.successCallback, self.failCallback, countLeaveHoursQueryData, "");
             }();
         };
 
@@ -574,11 +571,9 @@ $("#viewPersonalLeave").pagecontainer({
                 } else {
                     //呼叫API
                     CountLeaveHours();
-                    //after custom API
-                    sendLeaveBefore();
+
                 }
 
-                //loadingMask("show");
             }
         });
 
