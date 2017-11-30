@@ -500,6 +500,7 @@ div.scrollmenu a {
 	width: 86vw;
 	height: 9.17vw;
 	border: 0;
+	overflow-y: auto;
 	-webkit-appearance: none;
 }
 
