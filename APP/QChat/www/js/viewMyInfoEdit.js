@@ -42,14 +42,14 @@ $("#viewMyInfoEdit").pagecontainer({
                 url: imageUploadURL,
                 // viewport options
                 viewport: {
-                    width: parseInt(document.documentElement.clientWidth * 30 / 100, 10),
-                    height: parseInt(document.documentElement.clientWidth * 30 / 100, 10),
+                    width: parseInt(document.documentElement.clientWidth * 65 / 100, 10),
+                    height: parseInt(document.documentElement.clientWidth * 65 / 100, 10),
                     type: 'circle' //square, circle
                 },
                 // boundary options
                 boundary: {
-                    width: parseInt(document.documentElement.clientWidth * 75 / 100, 10),
-                    height: parseInt(document.documentElement.clientWidth * 75 / 100, 10)
+                    width: parseInt(document.documentElement.clientWidth * 85 / 100, 10),
+                    height: parseInt(document.documentElement.clientWidth * 85 / 100, 10)
                 },
                 // addiontal CSS class
                 customClass: 'avatar-crop-content',

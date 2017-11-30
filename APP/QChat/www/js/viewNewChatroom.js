@@ -307,24 +307,10 @@ $("#viewNewChatroom").pagecontainer({
                         
                         JM.chatroomID = data['Content'].group_id;
 
-                        //check is new create or not
-                        var newCreate = true;
-
-                        if (newCreate) {
-                            //Send default first message, then API-getConversations can
-                            //return latestMessage correctly.
-                            setTimeout(function(){
-                                window.sendTextMessage(loginData["loginid"] + "  建立聊天室", true, "newChatroom");
-                            }, 2000);
-
-                            //change page to chatroom
-                            setTimeout(function(){
-                                $.mobile.changePage('#viewChatroom');
-                            }, 5000);
-                        } else {
+                        //change page to chatroom
+                        setTimeout(function(){
                             $.mobile.changePage('#viewChatroom');
-                        }
-
+                        }, 5000);
                     }
                 };
 

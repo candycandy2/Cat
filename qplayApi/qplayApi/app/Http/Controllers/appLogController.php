@@ -47,47 +47,45 @@ class appLogController extends Controller
         $content = file_get_contents('php://input');
         $content = CommonUtil::prepareJSON($content);
         if (\Request::isJson($content)) {
-            try{
-                $jsonContent = json_decode($content, true);
-                $userInfo = CommonUtil::getUserInfoJustByUserID($jsonContent['login_id']);
-                if(is_null($userInfo)){
-                    $result = ['result_code'=>ResultCode::_000901_userNotExistError,
-                    'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError),
-                    'content'=>''];
-                    return response()->json($result);
-                }
-                $appHeadInfo = CommonUtil::getAppHeaderInfo();
-                $logMode = Config::get('app.log_mode');
-                $userId = $userInfo->row_id;
-                $appId = $appHeadInfo->row_id;
-                $logList = $jsonContent['log_list'];
-                $uuid = $input["uuid"];
-                $insertData = $this->getInsertData($userId, $appId, $uuid, $logList);
-
-                //Mysql
-                if ($logMode == 'ALL' || $logMode == 'MYSQL') {
-                    $mysqlLog = new QP_App_Log();
-                    $mysqlLog ->insert($insertData);
-                }
-
-                //MongoDB
-                if ($logMode == 'ALL' || $logMode == 'MONGODB'){
-                    $mongoDBlog = new MNG_App_Log();
-                    $mongoDBlog ->insert($insertData);
-                }
-
-                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                        'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
-                        'content'=>""];
-                    return response()->json($result);
+            $jsonContent = json_decode($content, true);
+            if(!isset($jsonContent['login_id']) ||
+               !isset($jsonContent['log_list'])){
+                $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
+                'content'=>''];
+                return response()->json($result);
             }
-            catch (\Exception $e){
-                $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
+            $userInfo = CommonUtil::getUserInfoJustByUserID($jsonContent['login_id']);
+            if(is_null($userInfo)){
+                $result = ['result_code'=>ResultCode::_000901_userNotExistError,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError),
+                'content'=>''];
+                return response()->json($result);
+            }
+            $appHeadInfo = CommonUtil::getAppHeaderInfo();
+            $logMode = Config::get('app.log_mode');
+            $userId = $userInfo->row_id;
+            $appId = $appHeadInfo->row_id;
+            $logList = $jsonContent['log_list'];
+            $uuid = $input["uuid"];
+            $insertData = $this->getInsertData($userId, $appId, $uuid, $logList);
+
+            //Mysql
+            if ($logMode == 'ALL' || $logMode == 'MYSQL') {
+                $mysqlLog = new QP_App_Log();
+                $mysqlLog ->insert($insertData);
+            }
+
+           //MongoDB
+            if ($logMode == 'ALL' || $logMode == 'MONGODB'){
+                $mongoDBlog = new MNG_App_Log();
+                $mongoDBlog ->insert($insertData);
+            }
+
+            $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
+                    'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'content'=>""];
-                $result = response()->json($result);
-                return $result;
-            }
+                return response()->json($result);
         }
     }
 
@@ -111,8 +109,12 @@ class appLogController extends Controller
             $data->created_at = $now;
             $data->ip = $ip;
             foreach ($log as $key=>$value) {
-                if(property_exists($data, $key)){
-                    $data->$key=$value;
+                if(property_exists($data, $key) && $value!=""){
+                    if($key == 'start_time'){
+                        $data->$key=substr($value,0,10);
+                    }else{
+                        $data->$key=$value;
+                    }
                 }
             }
            $dataList[]=(array)$data;
@@ -129,8 +131,8 @@ class AppLog{
     public $created_at= "";//server端寫入此筆資料的時間
     public $page_name = "";
     public $page_action = "";
-    public $period = 0;//停留區間
-    public $start_time = 0;//log紀錄開始時間
+    public $period = null;//停留區間
+    public $start_time = null;//log紀錄開始時間
     public $device_type = "";
     public $latitude = "";
     public $longitude = "";
