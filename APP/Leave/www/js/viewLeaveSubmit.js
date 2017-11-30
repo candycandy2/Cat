@@ -201,6 +201,8 @@ $("#viewLeaveSubmit").pagecontainer({
             //enddate
             $("#endText").text(pleaseSelectStr);
             $("#endDate").val("");
+            $("#leaveDays").text("0");
+            $("#leaveHours").text("0");
         }
 
         //当有基准日时，不需要对假别剩余天数进行判断
@@ -231,6 +233,8 @@ $("#viewLeaveSubmit").pagecontainer({
             //enddate
             $("#endText").text(pleaseSelectStr);
             $("#endDate").val("");
+            $("#leaveDays").text("0");
+            $("#leaveHours").text("0");
         }
 
         //查询某假别正在使用的有效基准日——<LayoutHeader><EmpNo>0409132</EmpNo><leaveid>3010</leaveid></LayoutHeader>
@@ -295,6 +299,8 @@ $("#viewLeaveSubmit").pagecontainer({
                         //enddate
                         $("#endText").text(pleaseSelectStr);
                         $("#endDate").val("");
+                        $("#leaveDays").text("0");
+                        $("#leaveHours").text("0");
                     }
                 }
             };
