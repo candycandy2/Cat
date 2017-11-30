@@ -446,7 +446,12 @@ $(document).one("pagebeforecreate", function() {
             footerFixed();
         },
         pageshow: function() {
-            getAppLogParam();
+            var ADAccount = loginData['loginid'];
+            var packageName = "com.qplay." + appKey;
+            var pagename = $.mobile.activePage.attr('id');
+            if ( ADAccount != null && packageName != null && pagename != null) {
+                getAppLogParam();
+            }
         }
     });
 });
@@ -548,7 +553,7 @@ function getAddAppLog() {
                 appLogData.log_list.shift();
             }
             localStorage.setItem('appLogData', JSON.stringify(appLogData));
-            popupMsg('noDataMsg', '', 'call getAddAppLog Success!', '', false, '確定', '');
+            //popupMsg('callAppLog', '', 'call getAddAppLog Success!', '', false, '確定', '');
         } 
     }
 
@@ -559,6 +564,7 @@ function getAddAppLog() {
     }();
 
 }
+
 //review by alan
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
 function checkTokenValid(resultCode, tokenValid, successCallback, data) {
