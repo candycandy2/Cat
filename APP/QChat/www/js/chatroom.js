@@ -22,6 +22,10 @@ var JM = {
             JM.data.chatroom = {};
         }
 
+        if (JM.data.chatroom_sequence === undefined) {
+            JM.data.chatroom_sequence = [];
+        }
+
         if (JM.data.chatroom_message_history === undefined) {
             JM.data.chatroom_message_history = {};
         }

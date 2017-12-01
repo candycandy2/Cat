@@ -286,6 +286,8 @@ $("#viewBackLeaveQuery").pagecontainer({
                     $("#backToList").trigger("click");
                     changePageByPanel("viewLeaveQuery");
                     leaveListToDetail("leaveRevoke", "leaveWithdraw", "leaveDelete", null);
+
+                    loadingMask("hide");
                 }
             };
 
@@ -320,7 +322,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                                     '<div>' +
                                         '<div class="backLeave-query-state font-style3" form-id="' + backLeaveListArr[i]["formid"] + '">' +
                                             '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
-                                            '<img src="img/btn_nextpage.png">' +
+                                            '<img src="img/more.png">' +
                                         '</div>' +
                                         '<div class="backLeave-query-base font-style10">' +
                                             '<div class="backLeave-query-basedata">' +
@@ -545,6 +547,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //根據“請假單號”跳轉到請假單詳情頁
         $("#signToLeaveDetail").on("click", function() {
+            loadingMask("show");
             leaveDetailFrom = false;
             var refLeaveid = $(this).attr("leave-id");
             //console.log(refLeaveid);
