@@ -15,7 +15,7 @@ var leaveSelected = false;
 var agentName;
 var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeaveTime;
 var basedayList = false;
-var baseday;
+var baseday = "";
 var needBaseday = false;
 var selectBaseday = false;
 var selectDatetime = false;
@@ -89,18 +89,18 @@ function getLeaveByCategory() {
 
     //类别分“所有类别”和所选类别
     if(selectCategory === allLeaveCategroyStr) {
-        for(var i in LeaveObjList) {
+        for(var i in allLeaveList) {
             var obj = {};
-            obj["leaveid"] = LeaveObjList[i]["leaveid"];
-            obj["name"] = LeaveObjList[i]["name"];
+            obj["leaveid"] = allLeaveList[i]["leaveid"];
+            obj["name"] = allLeaveList[i]["name"];
             leaveList.push(obj);
         }
     } else {
-        for(var i in LeaveObjList) {
-            if(selectCategory === LeaveObjList[i]["category"]) {
+        for(var i in allLeaveList) {
+            if(selectCategory === allLeaveList[i]["category"]) {
                 var obj = {};
-                obj["leaveid"] = LeaveObjList[i]["leaveid"];
-                obj["name"] = LeaveObjList[i]["name"];
+                obj["leaveid"] = allLeaveList[i]["leaveid"];
+                obj["name"] = allLeaveList[i]["name"];
                 leaveList.push(obj);
             }
         }   
@@ -124,8 +124,11 @@ function getLeaveByCategory() {
     $("#startDate").val("");
     $("#endText").text(pleaseSelectStr);
     $("#endDate").val("");
+    $("#oldBaseday").val("");
+    $("#newBaseday").val("");
     leaveid = "";
     leaveType = "";
+    baseday = "";
     basedayList = false;
 }
 
@@ -134,39 +137,6 @@ $("#viewLeaveSubmit").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        //请假申请页面——获取所有类别
-        function getAllCategroyList() {
-            var categroyLeave = [];
-
-            //循環所有類別，並去重、去空
-            for(var i in LeaveObjList) {
-                if (categroyLeave.indexOf(LeaveObjList[i]["category"]) === -1 && LeaveObjList[i]["category"] !== "") {
-                    categroyLeave.push(LeaveObjList[i]["category"]);
-                } 
-            }
-            
-            //添加 “所有類別” 到列表第一位
-            categroyLeave.unshift(allLeaveCategroyStr);
-
-            //循环所有类别到popup
-            for(var i in categroyLeave) {
-                categroyData["option"][i] = {};
-                categroyData["option"][i]["value"] = categroyLeave[i];
-                categroyData["option"][i]["text"] = categroyLeave[i];
-            }
-
-            //生成所有类别dropdownlist
-            tplJS.DropdownList("viewLeaveSubmit", "leaveCategroy", "prepend", "typeB", categroyData);
-            
-            //默認選中popup “所有類別”
-            $.each($("#categroy-popup-option-list li"), function(i, item) {
-                if($(item).text() === allLeaveCategroyStr) {
-                    $(item).trigger("click");
-                    return false;
-                }
-            });
-        }
-
         //当无基准日假别时，呼叫API，对假别剩余天数进行判断
         function checkLeftDaysNoBasedate() {
             //如果假别天数等于0或者小于最小请假单位(天)
@@ -280,20 +250,20 @@ $("#viewLeaveSubmit").pagecontainer({
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");          
-                    var countSuccess = $("success", htmlDom);
-                    var countError = $("error", htmlDom);
+                    var leaveSuccess = $("success", htmlDom);
+                    var leaveError = $("error", htmlDom);
                     var applyDays = $("ApplyDays", htmlDom);
                     var applyHours = $("ApplyHours", htmlDom);
-                    var countApplyDays = $(applyDays).html();
-                    var countApplyHours = $(applyHours).html();
+                    countApplyDays = $(applyDays).html();
+                    countApplyHours = $(applyHours).html();
 
-                    if($(countSuccess).html() != undefined) {
-                        //success无提示，改变请假数
+                    if($(leaveSuccess).html() != undefined) {
+                        //success无提示，改变请假数即可
                         $("#leaveDays").text(countApplyDays);
                         $("#leaveHours").text(countApplyHours);
                     } else {
                         //error提示
-                        var errorMsg = $(countError).html();
+                        var errorMsg = $(leaveError).html();
                         $('.leftDaysByLeave').find('.header-text').html(errorMsg);
                         popupMsgInit('.leftDaysByLeave');
                         //enddate
@@ -324,8 +294,6 @@ $("#viewLeaveSubmit").pagecontainer({
                 $("#startText").text(pleaseSelectStr);
                 $("#endText").text(pleaseSelectStr);
 
-                //after custom API
-                getAllCategroyList();
                 viewLeaveSubmitInit = true;
             }
 
@@ -354,17 +322,18 @@ $("#viewLeaveSubmit").pagecontainer({
             leaveid = $(this).val();
             leaveType = $.trim($(this).text());
             leaveSelected = true;
+            baseday = "";
             console.log("leaveid:"+leaveid);
         });
 
         //點擊假別彈框關閉以後判斷是否可以預覽送簽
         $(document).on("popupafterclose", "#leave-popup-option", function() {
             if(leaveSelected) {
-                for(var i in LeaveObjList) {
-                    if(leaveid == LeaveObjList[i]["leaveid"]) {
+                for(var i in allLeaveList) {
+                    if(leaveid == allLeaveList[i]["leaveid"]) {
                         //選擇假別後，獲取假別對象
-                        leaveDetail = LeaveObjList[i];
-                        leaveCategory = LeaveObjList[i]["category"]
+                        leaveDetail = allLeaveList[i];
+                        leaveCategory = allLeaveList[i]["category"]
 
                         //不需要基准日回传剩余天数，需要基准日回传有效基准日列表
                         if(leaveDetail["basedate"] == "N") {
@@ -471,7 +440,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //新基準日選擇——datetime change
-        $(document).on("change", "#newBaseday", function() {
+        $("#newBaseday").on("change", function() {
             baseday = $(this).val();
 
             if(baseday === "") {
@@ -496,6 +465,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //如果點擊 “選擇其他基準日” ，則彈出datetime
             if(self === otherBasedayStr) {
+                baseday = "";
                 if(device.platform === "iOS") {
                     $("#oldBaseday").trigger("focus");
                 }else if(device.platform === "Android") {
@@ -510,7 +480,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //無有效基準日選擇——datetime change
-        $(document).on("change", "#oldBaseday", function() {
+        $("#oldBaseday").on("change", function() {
             baseday = $(this).val();
 
             if(baseday === "") {
@@ -528,7 +498,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //點擊開始日期
-        $(document).on("click", "#btnStartday", function() {
+        $("#btnStartday").on("click", function() {
             //選擇開始日期之前判斷假別是否選擇
             if(leaveid === "") {
                 popupMsgInit('.categroyFirst');
@@ -598,7 +568,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //點擊結束日期——datetime
-        $(document).on("click", "#btnEndday", function() {           
+        $("#btnEndday").on("click", function() {           
             //点击“结束时间”只需要判断“开始时间”是否选择
             if($("#startText").text() == pleaseSelectStr) {
                 popupMsgInit('.startdayFirst');
@@ -613,7 +583,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //結束日期改變
-        $(document).on("change", "#endDate", function() {
+        $("#endDate").on("change", function() {
             var self = $(this).val();
             var minute = parseInt(self.substring(14, 16));
 
@@ -658,8 +628,12 @@ $("#viewLeaveSubmit").pagecontainer({
                                                   + endLeaveDate.split(" ")[0].split("-").join("/")
                                                   + "</enddate><endtime>"
                                                   + endLeaveDate.split(" ")[1]
-                                                  + "</endtime><datumdate></datumdate></LayoutHeader>";
-                    //呼叫API                       
+                                                  + "</endtime><datumdate>"
+                                                  + baseday
+                                                  + "</datumdate></LayoutHeader>";
+
+                    //console.log(countLeaveHoursByEndQueryData);
+                    //呼叫API
                     CountLeaveHoursByEnd();
 
                 }
@@ -676,7 +650,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //實時獲取多行文本值
-        $(document).on("keyup", "#leaveReason", function() {
+        $("#leaveReason").on("keyup", function() {
             leaveReason = $(this).val();
 
             //檢查是否可以預覽送簽

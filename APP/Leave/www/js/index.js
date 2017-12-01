@@ -1,5 +1,6 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
-var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData;
+var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData,
+queryEmployeeLeaveInfoQueryData;
 var queryDatumDatesQueryData, countLeaveHoursByEndQueryData;
 var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallLeaveApplyFormQueryData, deleteLeaveApplyFormQueryData,
 sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
@@ -41,6 +42,7 @@ window.initialSuccess = function() {
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
 
+    //行事历
     queryCalendarData = "<LayoutHeader><Year>"
                       + currentYear
                       + "</Year><Month>"
@@ -49,28 +51,42 @@ window.initialSuccess = function() {
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
 
-    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" 
-                               + myEmpNo 
-                               + "</EmpNo><LastModified></LastModified></LayoutHeader>";
-
-    queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" 
-                                         + myEmpNo 
-                                         + "</EmpNo></LayoutHeader>";
-
-    queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" 
-                                          + myEmpNo 
-                                          + "</EmpNo></LayoutHeader>";
-
     QueryCalendarData();
 
-    if (leaveTypeData["option"].length == 0) {
-        //呼叫API
-        GetDefaultSetting();
-        QueryEmployeeLeaveApplyForm();
-        QueryEmployeeLeaveCancelForm();
+    //默认设置GetDefaultSetting
+    if(localStorage.getItem("leaveDefaultSetting") == null) {
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    } else {
+        var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified>"
+                                   + lastModified
+                                   + "</LastModified></LayoutHeader>";
     }
+    GetDefaultSetting();
+
+    //个人剩余假别资讯
+    queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveInfo();
+
+    //请假单查询——获取假单列表
+    queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveApplyForm();
+
+    //销假单查询——获取销假单列表
+    queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveCancelForm();
+
+    //data scroll menu
     dateInit();
+
+    //changepage
     $.mobile.changePage("#viewPersonalLeave");
+
+    //agent
     if(localStorage.getItem("agent") !== null) {
         //viewPersonalLeave
         $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
