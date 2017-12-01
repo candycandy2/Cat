@@ -58,10 +58,10 @@ $("#viewBackLeaveQuery").pagecontainer({
                         }
 
                         //添加假别名称
-                        for(var j = 0; j < LeaveObjList.length; j++) {
-                            if(leaveObject["leaveid"] == LeaveObjList[j]["leaveid"]) {
-                                leaveObject["name"] = LeaveObjList[j]["name"];
-                                leaveObject["category"] = LeaveObjList[j]["category"];
+                        for(var j = 0; j < allLeaveList.length; j++) {
+                            if(leaveObject["leaveid"] == allLeaveList[j]["leaveid"]) {
+                                leaveObject["name"] = allLeaveList[j]["name"];
+                                leaveObject["category"] = allLeaveList[j]["category"];
                                 break;
                             } else {
                                 leaveObject["name"] = "";
@@ -227,10 +227,10 @@ $("#viewBackLeaveQuery").pagecontainer({
 
                     var obj = {};
                     //查找类别和假别
-                    for(var i in LeaveObjList) {
-                        if(LeaveObjList[i]["leaveid"] == $(leaveid).html()) {
-                            obj["name"] = LeaveObjList[i]["name"];
-                            obj["category"] = LeaveObjList[i]["category"];
+                    for(var i in allLeaveList) {
+                        if(allLeaveList[i]["leaveid"] == $(leaveid).html()) {
+                            obj["name"] = allLeaveList[i]["name"];
+                            obj["category"] = allLeaveList[i]["category"];
                         }
                     }
                     //转换status
