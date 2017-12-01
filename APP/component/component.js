@@ -472,7 +472,7 @@ function getAppLogParam() {
     objLogList.device_type = device.platform.toLowerCase(); 
 
     if (appLogData == null || appLogData.log_list.length == 0) {
-        var jsonData = {
+        jsonData = {
             login_id: ADAccount,
             package_name: packageName,
             log_list: [objLogList]
@@ -489,16 +489,19 @@ function getAppLogParam() {
 
     localStorage.setItem('appLogData', JSON.stringify(jsonData)); 
     //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
-    setTimeout('checkAmountData()', 10000);
+    //setTimeout('checkAmountData()', 10000);
 }
 
 function onPause() {
     var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
     var onPauseTime = new Date().getTime();
-    var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length-1].start_time;
-    appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
-    jsonData = appLogData;
-    localStorage.setItem('appLogData', JSON.stringify(jsonData));
+    if (appLogData.log_list != null) {
+        var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length-1].start_time;
+        appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
+        jsonData = appLogData;
+        localStorage.setItem('appLogData', JSON.stringify(jsonData));
+    }
+    var doAddAppLog = new getAddAppLog();
 }
 
 function onResume() {
@@ -512,18 +515,19 @@ function onResume() {
     objLogList.start_time = new Date().getTime();
     objLogList.period = "";
     objLogList.device_type = device.platform.toLowerCase();
-
-    appLogData.log_list.push(objLogList);
-    jsonData = appLogData;
-    localStorage.setItem('appLogData', JSON.stringify(jsonData));
+    if (appLogData.log_list != null) {
+        appLogData.log_list.push(objLogList);
+        jsonData = appLogData;
+        localStorage.setItem('appLogData', JSON.stringify(jsonData));
+    }
     //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
-    setTimeout('checkAmountData()', 10000);
+    //setTimeout('checkAmountData()', 10000);
 }
 
 function checkAmountData(){
     var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
     //若localstorage數目大於等於Ｍ筆,將資料傳給API
-    if (appLogData.log_list.length >=50) {
+    if (appLogData.log_list.length >=20) {
         var doAddAppLog = new getAddAppLog();
     }
 }
@@ -532,28 +536,27 @@ function getAddAppLog() {
     
     var self = this;
     var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-
-    var jsonData = {
+    
+    /*var jsonData = {
         login_id: appLogData.login_id,
         package_name: appLogData.package_name,
         log_list: []
-    };   
+    };  
     //將Ｍ筆資料傳給API
-    for (var i = 0; i < 50 ; i++) {
+    for (var i = 0; i < 20 ; i++) {
         jsonData.log_list.push(appLogData.log_list[i]);
-    }
-    var queryData = JSON.stringify(jsonData);
+    }*/
+    var queryData = JSON.stringify(appLogData);
+    
     this.successCallback = function(data) {
 
         var resultcode = data['result_code'];
-
+        var logDataLength = appLogData.log_list.length;
         if (resultcode == 1) {
-            //將傳成功的Ｍ筆資料從localstorage刪除
-            for (var i = 0; i < 50 ; i++) {
+            for (var i = 0; i < logDataLength ; i++) {
                 appLogData.log_list.shift();
             }
             localStorage.setItem('appLogData', JSON.stringify(appLogData));
-            //popupMsg('callAppLog', '', 'call getAddAppLog Success!', '', false, '確定', '');
         } 
     }
 
