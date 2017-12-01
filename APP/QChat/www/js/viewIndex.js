@@ -233,12 +233,12 @@ $("#viewIndex").pagecontainer({
                         } else if (action === "getConversation") {
                             window.processChatroomData(chatroom, "getConversations", true, false);
                         } else {
-                            $.each(JM.data.chatroom, function(chatroomDataID, chatroomData) {
-                                if (groupsArray.indexOf(chatroomDataID.toString()) != -1) {
+                            for (var i=0; i<JM.data.chatroom_sequence.length; i++) {
+                                if (groupsArray.indexOf(JM.data.chatroom_sequence[i].toString()) != -1) {
                                     //window.processChatroomData(chatroomData, "getConversations", false, true);
-                                    window.getGroupMembers(chatroomDataID, chatroomData.is_group, "chatroomListView");
+                                    window.getGroupMembers(JM.data.chatroom_sequence[i], JM.data.chatroom[JM.data.chatroom_sequence[i]].is_group, "chatroomListView");
                                 }
-                            });
+                            }
                         }
                     }
 
@@ -476,7 +476,7 @@ $("#viewIndex").pagecontainer({
                             window.processChatroomInfo();
                         } else if (action === "chatroomListView") {
                             if (memberChange) {
-                                window.chatroomListView(chatroomID);
+                                window.chatroomListView(chatroomID, "sort");
                             } else {
                                 //if ($("#chatroomListContent #chatroomList" + chatroomID).length == 0) {
                                     window.chatroomListView(chatroomID);
@@ -624,9 +624,10 @@ $("#viewIndex").pagecontainer({
             $("#friendList" + listViewIndex).find("img").show();
         }
 
-        window.chatroomListView = function(chatroomID) {
+        window.chatroomListView = function(chatroomID, action) {
+            action = action || null;
 
-            (function(chatroomID) {
+            (function(chatroomID, action) {
 
                 var chatroomListHTML = $("template#tplChatroomList").html();
 
@@ -669,7 +670,20 @@ $("#viewIndex").pagecontainer({
                     }
                 });
 
-            }(chatroomID));
+                //Remember Chatroom Sequence in veiwIndex
+                if (action === "sort") {
+                    JM.data.chatroom_sequence = [];
+
+                    $("#chatroomListContent .chatroom-list").each(function(index, chatroom) {
+                        var chatroomID = parseInt($(chatroom).prop("id").substr(12), 10);
+                        JM.data.chatroom_sequence.push(chatroomID);
+                    });
+
+                    JM.data.chatroom_sequence.reverse();
+                    JM.updateLocalStorage();
+                }
+
+            }(chatroomID, action));
         };
 
         window.chatroomSingleView = function(chatroomID) {

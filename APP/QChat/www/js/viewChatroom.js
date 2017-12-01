@@ -626,9 +626,6 @@ $("#viewChatroom").pagecontainer({
                         loadingMask("hide");
 
                         messageListView();
-
-                        //Re-Sort Chatroom sequence in viewIndex
-                        window.chatroomListView(nowChatroomID);
                     }
 
                 };
@@ -817,6 +814,9 @@ $("#viewChatroom").pagecontainer({
                     receiveMsg = false;
                     sendMessage = false;
                 }
+
+                //Re-Sort Chatroom sequence in viewIndex
+                window.chatroomListView(nowChatroomID, "sort");
             } else {
                 $(".message-preview").hide();
             }
