@@ -446,9 +446,13 @@ $(document).one("pagebeforecreate", function() {
             footerFixed();
         },
         pageshow: function() {
+            var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
             var ADAccount = loginData['loginid'];
             var packageName = "com.qplay." + appKey;
             var pagename = $.mobile.activePage.attr('id');
+            if (appLogData != null && appLogData.log_list.length != 0) {
+                var doAddAppLog = new getAddAppLog();
+            }
             if ( ADAccount != null && packageName != null && pagename != null) {
                 getAppLogParam();
             }

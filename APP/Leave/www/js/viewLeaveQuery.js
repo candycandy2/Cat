@@ -81,10 +81,10 @@ $("#viewLeaveQuery").pagecontainer({
                         }
 
                         //添加假别名称
-                        for(var j = 0; j < LeaveObjList.length; j++) {
-                            if(leaveObject["leaveid"] == LeaveObjList[j]["leaveid"]) {
-                                leaveObject["name"] = LeaveObjList[j]["name"];
-                                leaveObject["category"] = LeaveObjList[j]["category"];
+                        for(var j = 0; j < allLeaveList.length; j++) {
+                            if(leaveObject["leaveid"] == allLeaveList[j]["leaveid"]) {
+                                leaveObject["name"] = allLeaveList[j]["name"];
+                                leaveObject["category"] = allLeaveList[j]["category"];
                                 break;
                             } else {
                                 leaveObject["name"] = "";
