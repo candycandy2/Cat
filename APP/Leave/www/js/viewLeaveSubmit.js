@@ -26,7 +26,8 @@ var categroyData = {
     id: "categroy-popup",
     option: [],
     title: "",
-    defaultText: langStr["str_069"],
+    //defaultText: langStr["str_069"],
+    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -121,11 +122,11 @@ function getLeaveByCategory() {
     $('#divEmpty').hide();
     $("#chooseBaseday").text(selectBasedayStr);
     $("#startText").text(pleaseSelectStr);
-    $("#startDate").val("");
+    //$("#startDate").val("");
     $("#endText").text(pleaseSelectStr);
-    $("#endDate").val("");
-    $("#oldBaseday").val("");
-    $("#newBaseday").val("");
+    //$("#endDate").val("");
+    //$("#oldBaseday").val("");
+    //$("#newBaseday").val("");
     leaveid = "";
     leaveType = "";
     baseday = "";
@@ -161,8 +162,8 @@ $("#viewLeaveSubmit").pagecontainer({
 
                 //basedate
                 $("#chooseBaseday").text(selectBasedayStr);
-                $("#oldBaseday").val("");
-                $("#newBaseday").val("");
+                //$("#oldBaseday").val("");
+                //$("#newBaseday").val("");
                 $('#baseDate').hide();
                 $('#divEmpty').hide();
                 needBaseday = false;
@@ -170,7 +171,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //enddate
             $("#endText").text(pleaseSelectStr);
-            $("#endDate").val("");
+            //$("#endDate").val("");
             $("#leaveDays").text("0");
             $("#leaveHours").text("0");
         }
@@ -194,15 +195,15 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //basedate
             $("#chooseBaseday").text(selectBasedayStr);
-            $("#oldBaseday").val("");
-            $("#newBaseday").val("");
+            //$("#oldBaseday").val("");
+            //$("#newBaseday").val("");
             $('#baseDate').show();
             $('#divEmpty').show();
             needBaseday = true;
 
             //enddate
             $("#endText").text(pleaseSelectStr);
-            $("#endDate").val("");
+            //$("#endDate").val("");
             $("#leaveDays").text("0");
             $("#leaveHours").text("0");
         }
@@ -268,7 +269,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         popupMsgInit('.leftDaysByLeave');
                         //enddate
                         $("#endText").text(pleaseSelectStr);
-                        $("#endDate").val("");
+                        //$("#endDate").val("");
                         $("#leaveDays").text("0");
                         $("#leaveHours").text("0");
                     }
@@ -556,7 +557,7 @@ $("#viewLeaveSubmit").pagecontainer({
             }
             //如果开始时间改变，结束时间无论如何也要清空
             $("#endText").text(pleaseSelectStr);
-            $("#endDate").val("");
+            //$("#endDate").val("");
 
             //请假数恢复00
             $("#leaveDays").text("0");
@@ -609,7 +610,7 @@ $("#viewLeaveSubmit").pagecontainer({
                     //提示錯誤信息
                     popupMsgInit('.dateTimeError');
                     $('#endText').text(pleaseSelectStr);
-                    $("#endDate").val("");
+                    //$("#endDate").val("");
                     //请假数恢复0，0
                     $("#leaveDays").text("0");
                     $("#leaveHours").text("0");
@@ -680,11 +681,11 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //開始時間
             $("#startText").text(pleaseSelectStr);
-            $("#startDate").val("");
+            //$("#startDate").val("");
 
             //結束時間
             $("#endText").text(pleaseSelectStr);
-            $("#endDate").val("");
+            //$("#endDate").val("");
 
             //請假理由
             $("#leaveReason").val("");
