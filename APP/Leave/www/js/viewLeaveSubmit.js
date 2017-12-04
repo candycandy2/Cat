@@ -26,7 +26,8 @@ var categroyData = {
     id: "categroy-popup",
     option: [],
     title: "",
-    defaultText: langStr["str_069"],
+    //defaultText: langStr["str_069"],
+    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
