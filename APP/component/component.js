@@ -445,14 +445,21 @@ $(document).one("pagebeforecreate", function() {
         touchmove: function() {
             footerFixed();
         },
+        pagebeforeshow: function() {
+            var appLogData = JSON.parse(localStorage.getItem('appLogData'));
+            var firstPageLoad = JSON.parse(sessionStorage.getItem('firstPageLoad'));
+            if (firstPageLoad == null) {
+                sessionStorage.setItem('firstPageLoad', 'true');
+                if (appLogData != null && appLogData.log_list.length != 0) {
+                    var doAddAppLog = new getAddAppLog();
+                }
+            }
+        },
         pageshow: function() {
             var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
             var ADAccount = loginData['loginid'];
             var packageName = "com.qplay." + appKey;
-            var pagename = $.mobile.activePage.attr('id');
-            if (appLogData != null && appLogData.log_list.length != 0) {
-                var doAddAppLog = new getAddAppLog();
-            }
+            var pagename = $.mobile.activePage.attr('id');           
             if ( ADAccount != null && packageName != null && pagename != null) {
                 getAppLogParam();
             }
@@ -519,7 +526,7 @@ function onResume() {
     objLogList.start_time = new Date().getTime();
     objLogList.period = "";
     objLogList.device_type = device.platform.toLowerCase();
-    if (appLogData.log_list != null) {
+    if (appLogData != null) {
         appLogData.log_list.push(objLogList);
         jsonData = appLogData;
         localStorage.setItem('appLogData', JSON.stringify(jsonData));
@@ -528,13 +535,13 @@ function onResume() {
     //setTimeout('checkAmountData()', 10000);
 }
 
-function checkAmountData(){
+/*function checkAmountData(){
     var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
     //若localstorage數目大於等於Ｍ筆,將資料傳給API
     if (appLogData.log_list.length >=20) {
         var doAddAppLog = new getAddAppLog();
     }
-}
+}*/
 
 function getAddAppLog() {
     
