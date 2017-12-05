@@ -21,6 +21,7 @@ var selectBaseday = false;
 var selectDatetime = false;
 var leaveReason;
 var leaveSubmitPreview = false;
+var editLeaveForm = false;
 
 var categroyData = {
     id: "categroy-popup",
@@ -232,6 +233,7 @@ $("#viewLeaveSubmit").pagecontainer({
                     }
 
                     selectLeaveNeedBasedate();
+                    loadingMask("hide");
                 }
             };
 
@@ -273,6 +275,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         $("#leaveDays").text("0");
                         $("#leaveHours").text("0");
                     }
+                    loadingMask("hide");
                 }
             };
 
@@ -284,6 +287,40 @@ $("#viewLeaveSubmit").pagecontainer({
             }();
         };
         
+        //请假申请送签
+        window.SendApplyLeaveData = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var success = $("success", htmlDom);
+                    if ($(success).html() != undefined) {
+                        //如果送签成功，重新获取请假单列表，并跳转到“请假单查询”页，并记录代理人到local端
+                        QueryEmployeeLeaveApplyForm();
+                        $("#backMain").click();
+                        changePageByPanel("viewLeaveQuery");
+                        $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
+                        localStorage.setItem("agent", JSON.stringify([$("#leave-agent-popup option").text(), agentid]));
+                    } else {
+                        var error = $("error", htmlDom);
+                        var errorMsg = $(error).html();
+                        $('.leftDaysByLeave').find('.header-text').html(errorMsg);
+                        popupMsgInit('.leftDaysByLeave');
+                    }
+                    loadingMask("hide");
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "SendLeaveApplicationData", self.successCallback, self.failCallback, sendApplyLeaveQueryData, "");
+            }();
+        };
 
         /********************************** page event *************************************/
         $("#viewLeaveSubmit").on("pagebeforeshow", function(event, ui) {
@@ -291,10 +328,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 //申請日期和預覽申請日期，都是实际當天日期
                 $('#applyDay').text(applyDay);
                 $('#previewApplyDay').text(applyDay);
-                //选择日期为“请选择”
-                $("#startText").text(pleaseSelectStr);
-                $("#endText").text(pleaseSelectStr);
-
+                
                 viewLeaveSubmitInit = true;
             }
 
@@ -334,26 +368,26 @@ $("#viewLeaveSubmit").pagecontainer({
                     if(leaveid == allLeaveList[i]["leaveid"]) {
                         //選擇假別後，獲取假別對象
                         leaveDetail = allLeaveList[i];
-                        leaveCategory = allLeaveList[i]["category"]
+                        leaveCategory = allLeaveList[i]["category"];
 
                         //不需要基准日回传剩余天数，需要基准日回传有效基准日列表
                         if(leaveDetail["basedate"] == "N") {
-                            queryLeftDaysData = "<LayoutHeader><EmpNo>" +
-                                                myEmpNo +
-                                                "</EmpNo><leaveid>" +
-                                                leaveid +
-                                                "</leaveid></LayoutHeader>";
+                            queryLeftDaysData = "<LayoutHeader><EmpNo>"
+                                              + myEmpNo
+                                              + "</EmpNo><leaveid>"
+                                              + leaveid
+                                              + "</leaveid></LayoutHeader>";
                             //呼叫API
                             QueryLeftDaysData(leaveid);
                             //after custom API
                             checkLeftDaysNoBasedate();
 
                         } else if(leaveDetail["basedate"] == "Y") {
-                            queryDatumDatesQueryData = "<LayoutHeader><EmpNo>" + 
-                                                        myEmpNo + 
-                                                        "</EmpNo><leaveid>" + 
-                                                        leaveid + 
-                                                        "</leaveid></LayoutHeader>";
+                            queryDatumDatesQueryData = "<LayoutHeader><EmpNo>"
+                                                     + myEmpNo
+                                                     + "</EmpNo><leaveid>"
+                                                     + leaveid
+                                                     + "</leaveid></LayoutHeader>";
                             //呼叫API
                             QueryDatumDates();
 
@@ -364,6 +398,45 @@ $("#viewLeaveSubmit").pagecontainer({
                 }
             }
             checkLeaveBeforePreview();
+        });
+
+        $(document).on("click", "#leave-popup-option-list li", function() {
+            var self = $.trim($(this).text());
+            if(editLeaveForm == true) {
+                for(var i in allLeaveList) {
+                    if(self == allLeaveList[i]["name"]) {
+                        //選擇假別後，獲取假別對象
+                        leaveDetail = allLeaveList[i];
+                        leaveCategory = allLeaveList[i]["category"];
+
+                        //不需要基准日回传剩余天数，需要基准日回传有效基准日列表
+                        if(leaveDetail["basedate"] == "N") {
+                            queryLeftDaysData = "<LayoutHeader><EmpNo>"
+                                              + myEmpNo
+                                              + "</EmpNo><leaveid>"
+                                              + leaveid
+                                              + "</leaveid></LayoutHeader>";
+                            //呼叫API
+                            QueryLeftDaysData(leaveid);
+                            //after custom API
+                            checkLeftDaysNoBasedate();
+
+                        } else if(leaveDetail["basedate"] == "Y") {
+                            queryDatumDatesQueryData = "<LayoutHeader><EmpNo>"
+                                                     + myEmpNo
+                                                     + "</EmpNo><leaveid>"
+                                                     + leaveid
+                                                     + "</leaveid></LayoutHeader>";
+                            //呼叫API
+                            QueryDatumDates();
+
+                        }
+
+                        return false;
+                    }
+                }
+            }
+            checkLeaveBeforePreview();   
         });
 
         //搜索代理人
@@ -407,6 +480,7 @@ $("#viewLeaveSubmit").pagecontainer({
         $(document).on("click", "#leave-agent-popup-option ul li", function(e) {
             agentid = $(this).attr("value");
             agentName = $(this).children("div").eq(1).children("span").text();
+            //console.log(agentid+":"+agentName);
         });
 
         //popup打开以后生成代理人列表
@@ -614,9 +688,10 @@ $("#viewLeaveSubmit").pagecontainer({
                     //请假数恢复0，0
                     $("#leaveDays").text("0");
                     $("#leaveHours").text("0");
-                } else {  
+                } else {
+                    loadingMask("show");
                     $('#endText').text(endLeaveDate);
-
+                    
                     countLeaveHoursByEndQueryData = "<LayoutHeader><EmpNo>"
                                                   + myEmpNo
                                                   + "</EmpNo><leaveid>"
@@ -730,11 +805,48 @@ $("#viewLeaveSubmit").pagecontainer({
             return false;
         });
 
-        //立即預約，假單送簽，跳轉到假單茶村頁
+        //立即預約popup
         $("#applyBtn").on("click", function() {
-            $("#backMain").click();
-            changePageByPanel("viewLeaveQuery");
-            $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+            popupMsgInit('.confirmSend');
+            // $("#backMain").click();
+            // changePageByPanel("viewLeaveQuery");
+            // $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+        });
+
+        //確定送簽
+        $("#confirmSendLeave").on("click", function() {
+            loadingMask("show");
+            sendApplyLeaveQueryData = '<LayoutHeader><empno>'
+                                    + myEmpNo
+                                    + '</empno><delegate>'
+                                    + agentid
+                                    + '</delegate><leaveid>'
+                                    + leaveid
+                                    + '</leaveid><begindate>'
+                                    + startLeaveDate.split(" ")[0].split("-").join("/")
+                                    + '</begindate><begintime>'
+                                    + startLeaveDate.split(" ")[1]
+                                    + '</begintime><enddate>'
+                                    + endLeaveDate.split(" ")[0].split("-").join("/")
+                                    + '</enddate><endtime>'
+                                    + endLeaveDate.split(" ")[1]
+                                    + '</endtime><datumdate>'
+                                    + ((needBaseday == true) ? baseday : '')
+                                    + '</datumdate><applydays>'
+                                    + countApplyDays
+                                    + '</applydays><applyhours>'
+                                    + countApplyHours
+                                    + '</applyhours><reason>'
+                                    + leaveReason
+                                    + '</reason><isattached>'
+                                    + '</isattached><attachment>'
+                                    + '</attachment><formid>'
+                                    + ((editLeaveForm == false) ? '' : leaveDetailObj['formid'])
+                                    + '</formid></LayoutHeader>';
+
+            console.log(sendApplyLeaveQueryData);
+            //呼叫API
+            SendApplyLeaveData();
         });
     }
 });
