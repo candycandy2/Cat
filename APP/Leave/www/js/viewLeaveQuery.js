@@ -5,6 +5,8 @@ var formSigning = "表單簽核中";
 var formRefused = "表單已拒絕";
 var formWithdrawed = "表單已撤回";
 var formEffected = "表單已生效";
+var revokedStr = "已銷假";
+var revokingStr = "銷假中";
 var leaveDetailFrom = true;
 var employeeName;
 var leaveListArr = [];
@@ -61,6 +63,7 @@ $("#viewLeaveQuery").pagecontainer({
                         leaveObject["endtime"] = $(endtimeArr[i]).html();
                         leaveObject["days"] = $(leavedaysArr[i]).html();
                         leaveObject["hours"] = $(leavehoursArr[i]).html();
+                        leaveObject["cancelstatus"] = $(cancelstatusArr[i]).html();
 
                         //表單簽核的4種狀態
                         if($(statusArr[i]).html() == "AP") {
@@ -74,10 +77,12 @@ $("#viewLeaveQuery").pagecontainer({
                         }
 
                         //銷假狀態
-                        if($(cancelstatusArr[i]).html() !== "") {
-                            leaveObject["cancelstatus"] = "（"+$(cancelstatusArr[i]).html()+"）";
+                        if($(cancelstatusArr[i]).html() == "WA") {
+                            leaveObject["cancelname"] = "(" + revokingStr + ")";
+                        } else if($(cancelstatusArr[i]).html() == "AP") {
+                            leaveObject["cancelname"] = "(" + revokedStr + ")";
                         } else {
-                            leaveObject["cancelstatus"] = "";
+                            leaveObject["cancelname"] = "";
                         }
 
                         //添加假别名称
@@ -291,11 +296,18 @@ $("#viewLeaveQuery").pagecontainer({
             this.successCallback = function(data) {
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
-                    var callbackData = data['Content'][0]["result"];
-                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
-                    var department = $("department", htmlDom);
-                    var empno = $("empno", htmlDom);
-                    employeeName = $("name", htmlDom);
+                    //如果Content.length=0,則未查到代理人信息
+                    if(data['Content'].length == 0) {
+                        employeeName = "";
+                        
+                    } else {
+                        var callbackData = data['Content'][0]["result"];
+                        var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                        var department = $("department", htmlDom);
+                        var empno = $("empno", htmlDom);
+                        employeeName = $("name", htmlDom);
+                    }
+                    
 
                 }
             };
@@ -316,7 +328,7 @@ $("#viewLeaveQuery").pagecontainer({
                                     '<div>' +
                                         '<div class="leave-query-state font-style3" form-id="' + leaveListArr[i]["formid"] + '">' +
                                             '<span>' + leaveListArr[i]["statusName"] + '</span>' + 
-                                            '<span>' + leaveListArr[i]["cancelstatus"] + '</span>' +
+                                            '<span>' + leaveListArr[i]["cancelname"] + '</span>' +
                                             '<img src="img/more.png">' +
                                         '</div>' +
                                         '<div class="leave-query-base font-style10">' +
@@ -380,6 +392,7 @@ $("#viewLeaveQuery").pagecontainer({
             $("#leave-agent-popup").find("option").remove().end().append(agentOption);
             tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
 
+            //console.log(start);
             //修改開始日期
             startLeaveDate = start;
             $("#startText").text(start);
@@ -562,7 +575,7 @@ $("#viewLeaveQuery").pagecontainer({
         });
 
         //確認撤回
-        $("#comfirmWithdrawLeave").on("click", function() {
+        $("#confirmWithdrawLeave").on("click", function() {
             loadingMask("show");
             recallLeaveApplyFormQueryData = '<LayoutHeader><EmpNo>' +
                                             myEmpNo +
@@ -585,7 +598,7 @@ $("#viewLeaveQuery").pagecontainer({
         });
 
         //確認刪除假單——click
-        $("#comfirmDeleteLeave").on("click", function() {
+        $("#confirmDeleteLeave").on("click", function() {
             loadingMask("show");
             deleteLeaveApplyFormQueryData = '<LayoutHeader><EmpNo>'
                                             + myEmpNo
@@ -601,7 +614,7 @@ $("#viewLeaveQuery").pagecontainer({
         //編輯假單
         $("#editRefuseLeave").on("click", function() {
             var applyText = dateFormatter(leaveDetailObj["applydate"]);
-            var leavenumText = leaveDetailObj["formid"];
+            var leaveidText = leaveDetailObj["formid"];
             var categoryText = leaveDetailObj["category"];
             var leaveText = leaveDetailObj["name"];
             var agentText = leaveDetailObj["agentname"];
@@ -612,14 +625,15 @@ $("#viewLeaveQuery").pagecontainer({
             var daysText = leaveDetailObj["days"];
             var hoursText = leaveDetailObj["hours"];
 
-            //根据代理人id查找代理人姓名
+            //根据代理人id查找代理人姓名，代理人信息已在獲取詳情時存在leaveDetailObj中
+            agentid = leaveDetailObj["agentid"];
+            agentName = leaveDetailObj["agentname"];
 
-
-            //传值给“请假查询”页，再跳转
-            setDataToLeaveApply(applyText, leavenumText, categoryText, leaveText, agentText, startText, endText, reasonText, baseText, daysText, hoursText);
+            //跳转並傳值
+            editLeaveForm = true;
             $("#backDetailList").click();
+            setDataToLeaveApply(applyText, leaveidText, categoryText, leaveText, agentText, startText, endText, reasonText, baseText, daysText, hoursText);         
             changePageByPanel("viewLeaveSubmit");
-
             
         });
 
@@ -661,7 +675,7 @@ $("#viewLeaveQuery").pagecontainer({
         });
 
         //確定銷假
-        $("#comfirmRevokeLeave").on("click", function() {
+        $("#confirmRevokeLeave").on("click", function() {
             loadingMask("show");
             sendLeaveCancelFormDataQueryData = '<LayoutHeader><EmpNo>'
                                              + myEmpNo

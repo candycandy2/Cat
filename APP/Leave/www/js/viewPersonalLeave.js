@@ -576,8 +576,23 @@ $("#viewPersonalLeave").pagecontainer({
                 //modify by Allen
                 //beginDate = currentYear + "/" + currentMonth + "/" + currentDate;
                 //endDate = currentYear + "/" + currentMonth + "/" + currentDate;
+
+                //第一次進入首頁檢查是否有代理人信息，有則檢查代理人是否在職
                 if(localStorage.getItem("agent") !== null) {
                     agentid = JSON.parse(localStorage.getItem("agent"))[1];
+                    queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>'
+                                                 + myEmpNo
+                                                 + '</EmpNo><qEmpno>'
+                                                 + agentid
+                                                 + '</qEmpno><qName></qName></LayoutHeader>';
+                    //根据id获取代理人信息
+                    QueryEmployeeDetail();
+                    if(employeeName == "") {
+
+                    } else {
+                        
+                    }
+
                 }
 
                 viewPersonalLeaveInit = true;
