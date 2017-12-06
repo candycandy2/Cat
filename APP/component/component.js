@@ -482,7 +482,7 @@ function getAppLogParam() {
     objLogList.page_action = "enterPage";
     objLogList.start_time = new Date().getTime();
     objLogList.period = "";
-    objLogList.device_type = device.platform.toLowerCase(); 
+    objLogList.device_type = device.platform.toLowerCase();
 
     if (appLogData == null || appLogData.log_list.length == 0) {
         jsonData = {
@@ -491,9 +491,13 @@ function getAppLogParam() {
             log_list: [objLogList]
         };
     } else if (objLogList.page_name == appLogData.log_list[appLogData.log_list.length-1].page_name) {
+        appLogData.login_id = ADAccount;
+        appLogData.package_name = packageName;
         appLogData.log_list.push(objLogList);
         jsonData = appLogData;
     } else {
+        appLogData.login_id = ADAccount;
+        appLogData.package_name = packageName;
         var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length-1].start_time;
         appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
         appLogData.log_list.push(objLogList);
