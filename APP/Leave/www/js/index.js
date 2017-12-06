@@ -1,6 +1,7 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
-var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData;
-var queryDatumDatesQueryData;
+var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData,
+queryEmployeeLeaveInfoQueryData;
+var queryDatumDatesQueryData, countLeaveHoursByEndQueryData, sendApplyLeaveQueryData;
 var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallLeaveApplyFormQueryData, deleteLeaveApplyFormQueryData,
 sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
 var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recallLeaveCancelFormQueryData, deleteLeaveCancelFormQueryData,
@@ -13,6 +14,10 @@ var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQ
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var htmlContent = "";
+var signedStr = "已簽核";
+var withdrawedStr = "已撤回";
+var rejectedStr = "已拒絕";
+var notSignStr = "未簽核";
 
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
@@ -36,6 +41,8 @@ var dayTable = {
 window.initialSuccess = function() {
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
+
+    //行事历
     queryCalendarData = "<LayoutHeader><Year>"
                       + currentYear
                       + "</Year><Month>"
@@ -43,18 +50,46 @@ window.initialSuccess = function() {
                       + "</Month><EmpNo>"
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
-    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo><LastModified></LastModified></LayoutHeader>";
-    queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+
     QueryCalendarData();
-    if (leaveTypeData["option"].length == 0) {
-        //呼叫API
-        GetDefaultSetting();
-        QueryEmployeeLeaveApplyForm();
-        QueryEmployeeLeaveCancelForm();
+
+    //默认设置GetDefaultSetting
+    if(localStorage.getItem("leaveDefaultSetting") == null) {
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    } else {
+        var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified>"
+                                   + lastModified
+                                   + "</LastModified></LayoutHeader>";
     }
+    GetDefaultSetting();
+    //选择日期为“请选择”
+    $("#startText").text(pleaseSelectStr);
+    $("#endText").text(pleaseSelectStr);
+
+    //个人剩余假别资讯
+    queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveInfo();
+
+    //请假单查询——获取假单列表
+    queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveApplyForm();
+
+    //销假单查询——获取销假单列表
+    queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveCancelForm();
+
+    //data scroll menu
     dateInit();
+
+    //changepage
     $.mobile.changePage("#viewPersonalLeave");
+
+    //agent
     if(localStorage.getItem("agent") !== null) {
         //viewPersonalLeave
         $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
@@ -103,110 +138,6 @@ function onBackKeyDown() {
         visitedPageList.pop();
         changePageByPanel(prePageID);    
     }
-
-    // if(visitedPageList.length == 1) {
-    //     if (checkPopupShown()){
-    //         var popupID = $(".ui-popup-active")[0].children[0].id;
-    //         $('#' + popupID).popup("close");
-    //     } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //         $("#mypanel").panel("close");
-    //     } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-1") {
-    //         $("input[id=viewPersonalLeave-tab-2]").trigger('click');
-    //         $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-    //         $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
-    //     } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-2") {
-    //         navigator.app.exitApp();
-    //     }
-    // } else {
-    //     var activePageID = visitedPageList[visitedPageList.length-1];
-    //     var prePageID = visitedPageList[visitedPageList.length-2];
-
-    //     if (activePageID === "viewPersonalLeave") {
-    //         if (checkPopupShown()){
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel("close");
-    //         } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-1") {
-    //             $("input[id=viewPersonalLeave-tab-2]").trigger('click');
-    //             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-    //             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);     
-    //         }
-    //     } else if (activePageID === "viewLeaveSubmit") {
-    //         if (checkPopupShown()) {
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel("close");
-    //         } else if ($("#leaveReason").is(":focus")){
-    //             $("#leaveReason").blur();
-    //         } else if ($("#backMain").css("display") == "inline") {
-    //             $("#backMain").click();
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);   
-    //         }
-    //     } else if (activePageID === "viewLeaveQuery") {
-    //         if (checkPopupShown()) {
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel( "close");
-    //         } else if ($("#withdrawReason").is(":focus")){
-    //             $("#withdrawReason").blur();
-    //         } else if ($("#dispelReason").is(":focus")){
-    //             $("#dispelReason").blur();
-    //         } else if ($("#backEffectPreview").css("display") == "inline") {
-    //             $("#backEffectPreview").click();
-    //         } else if ($("#backSignPreview").css("display") == "inline") {
-    //             $("#backSignPreview").click();
-    //         } else if ($("#backDetailList").css("display") == "inline") {
-    //             $("#backDetailList").click();
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);    
-    //         }
-    //     } else if (activePageID === "viewBackLeaveQuery") {
-    //         if (checkPopupShown()) {
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel("close");
-    //         } else if ($("#signTowithdrawReason").is(":focus")){
-    //             $("#signTowithdrawReason").blur();
-    //         } else if ($("#backToList").css("display") == "inline") {
-    //             $("#backToList").click();
-    //         } else if ($("#backToSign").css("display") == "inline") {
-    //             $("#backToSign").click();
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);        
-    //         }
-    //     } else if (activePageID === "viewHolidayCalendar") {
-    //         if (checkPopupShown()) {
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel("close");
-    //         } else if ($("#viewHolidayCalendarTab :radio:checked").val() == "viewHolidayCalendar-tab-3") {
-    //             $("input[id=viewHolidayCalendar-tab-2]").trigger('click');
-    //             $("label[for=viewHolidayCalendar-tab-2]").addClass('ui-btn-active');
-    //             $("label[for=viewHolidayCalendar-tab-3]").removeClass('ui-btn-active');
-    //             $("label[for=viewHolidayCalendar-tab-1]").removeClass('ui-btn-active');
-    //         } else if ($("#viewHolidayCalendarTab :radio:checked").val() == "viewHolidayCalendar-tab-2") {
-    //             $("input[id=viewHolidayCalendar-tab-1]").trigger('click');
-    //             $("label[for=viewHolidayCalendar-tab-1]").addClass('ui-btn-active');
-    //             $("label[for=viewHolidayCalendar-tab-2]").removeClass('ui-btn-active');
-    //             $("label[for=viewHolidayCalendar-tab-3]").removeClass('ui-btn-active');
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);    
-    //         }
-    //     }
-    // }
 
 }
 

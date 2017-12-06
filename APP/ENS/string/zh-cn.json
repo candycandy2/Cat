@@ -1,7 +1,7 @@
 [
   {
     "term": "str_001",
-    "definition": "新增通報",
+    "definition": "新增通报",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -9,7 +9,7 @@
   },
   {
     "term": "str_002",
-    "definition": "發送",
+    "definition": "发送",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -17,7 +17,7 @@
   },
   {
     "term": "str_003",
-    "definition": "等級",
+    "definition": "等级",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -25,7 +25,7 @@
   },
   {
     "term": "str_004",
-    "definition": "標題 (限40個字)",
+    "definition": "标题 (限40个字)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,7 @@
   },
   {
     "term": "str_005",
-    "definition": "描述 (限80個字)",
+    "definition": "描述 (限80个字)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -49,7 +49,7 @@
   },
   {
     "term": "str_007",
-    "definition": "通知對象 / 單位",
+    "definition": "通知对象 / 单位",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -57,7 +57,7 @@
   },
   {
     "term": "str_008",
-    "definition": "希望完成時間",
+    "definition": "希望完成时间",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -73,7 +73,7 @@
   },
   {
     "term": "str_010",
-    "definition": "設定時間",
+    "definition": "设定时间",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -81,7 +81,7 @@
   },
   {
     "term": "str_011",
-    "definition": "關聯事件",
+    "definition": "关联事件",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -89,7 +89,7 @@
   },
   {
     "term": "str_012",
-    "definition": "請輸入標題",
+    "definition": "请输入标题",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -97,7 +97,7 @@
   },
   {
     "term": "str_013",
-    "definition": "確認",
+    "definition": "确认",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -105,7 +105,7 @@
   },
   {
     "term": "str_014",
-    "definition": "無可選事件",
+    "definition": "无可选事件",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -113,7 +113,7 @@
   },
   {
     "term": "str_015",
-    "definition": "請選擇位置 / IT Function",
+    "definition": "请选择位置 / IT Function",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -121,7 +121,7 @@
   },
   {
     "term": "str_016",
-    "definition": "請選擇通知對象 / 單位",
+    "definition": "请选择通知对象 / 单位",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -129,7 +129,7 @@
   },
   {
     "term": "str_017",
-    "definition": "希望完成時間需要大於現在時間",
+    "definition": "希望完成时间需要大于现在时间",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -137,7 +137,7 @@
   },
   {
     "term": "str_018",
-    "definition": "確定發送緊急通報?",
+    "definition": "确定发送紧急通报?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -145,7 +145,7 @@
   },
   {
     "term": "str_019",
-    "definition": "確定取消編輯?",
+    "definition": "确定取消编辑?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -153,7 +153,7 @@
   },
   {
     "term": "str_020",
-    "definition": "通訊異常，請聯絡 ITS",
+    "definition": "通讯异常，请联络 ITS",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -161,7 +161,7 @@
   },
   {
     "term": "str_021",
-    "definition": "IT Function管理員資料不正確，請至後台修正",
+    "definition": "IT Function管理员资料不正确，请至后台修正",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -169,7 +169,7 @@
   },
   {
     "term": "str_022",
-    "definition": "編輯",
+    "definition": "编辑",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -185,7 +185,7 @@
   },
   {
     "term": "str_024",
-    "definition": "BQT 3F機房",
+    "definition": "BQT 3F机房",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -201,7 +201,7 @@
   },
   {
     "term": "str_026",
-    "definition": "確認回報工作完成?",
+    "definition": "确认回报工作完成?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -209,7 +209,7 @@
   },
   {
     "term": "str_027",
-    "definition": "確定取消回報?",
+    "definition": "确定取消回报?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -217,7 +217,7 @@
   },
   {
     "term": "str_028",
-    "definition": "事件已經處理完畢，無法編輯",
+    "definition": "事件已经处理完毕，无法编辑",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -225,7 +225,7 @@
   },
   {
     "term": "str_029",
-    "definition": "請選擇上傳圖片的方式",
+    "definition": "请选择上传图片的方式",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -241,7 +241,7 @@
   },
   {
     "term": "str_031",
-    "definition": "相機",
+    "definition": "相机",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "str_033",
-    "definition": "[機房緊急通報_停電] 因為台電的關係, 請 QTY 機房進行關機作業",
+    "definition": "[机房紧急通报_停电] 因为台电的关系, 请 QTY 机房进行关机作业",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -265,7 +265,7 @@
   },
   {
     "term": "str_034",
-    "definition": "[機房緊急通報_停電]",
+    "definition": "[机房紧急通报_停电]",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -273,7 +273,7 @@
   },
   {
     "term": "str_035",
-    "definition": "因為台電的關係, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業",
+    "definition": "因为台电的关系, 请 QTY 机房进行关机作业, 请 QTY 机房进行关机作业, 请 QTY 机房进行关机作业",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -281,7 +281,7 @@
   },
   {
     "term": "str_036",
-    "definition": "查無事件資料",
+    "definition": "查无事件资料",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -289,7 +289,7 @@
   },
   {
     "term": "str_037",
-    "definition": "沒有資料",
+    "definition": "没有资料",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -297,7 +297,7 @@
   },
   {
     "term": "str_038",
-    "definition": "無權檢視事件內容",
+    "definition": "无权检视事件内容",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -305,7 +305,7 @@
   },
   {
     "term": "str_039",
-    "definition": "傳送信件",
+    "definition": "传送信件",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -313,7 +313,7 @@
   },
   {
     "term": "str_040",
-    "definition": "撥打電話",
+    "definition": "拨打电话",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -321,7 +321,7 @@
   },
   {
     "term": "str_041",
-    "definition": "無專案權限",
+    "definition": "无专案权限",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -329,7 +329,7 @@
   },
   {
     "term": "str_042",
-    "definition": "請聯絡專案管理員",
+    "definition": "请联络专案管理员",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "str_043",
-    "definition": "[電力維護公告] XX機房將進行電力保養及維護，請協助關機",
+    "definition": "[电力维护公告] XX机房将进行电力保养及维护，请协助关机",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -345,7 +345,7 @@
   },
   {
     "term": "str_044",
-    "definition": "[空調維護公告] XX機房將進行空調保養及維護，請協助關機",
+    "definition": "[空调维护公告] XX机房将进行空调保养及维护，请协助关机",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "str_045",
-    "definition": "[維護公告] 2017/MM/DD(星期X) [台北]辦公室網路維護工程，辦公室網路將無法使用",
+    "definition": "[维护公告] 2017/MM/DD(星期X) [台北]办公室网路维护工程，办公室网路将无法使用",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -361,7 +361,7 @@
   },
   {
     "term": "str_046",
-    "definition": "[電力/空調維護公告] XX機房[電力/空調]保養及維護已經完成，請協助開機",
+    "definition": "[电力/空调维护公告] XX机房[电力/空调]保养及维护已经完成，请协助开机",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -369,7 +369,7 @@
   },
   {
     "term": "str_047",
-    "definition": "XX機房將於YYYY/MM/DD 9:00AM進行電力保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報",
+    "definition": "XX机房将于YYYY/MM/DD 9:00AM进行电力保养及维护，请机房系统管理员于当日8:00AM以前完成关机作业及回报",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -377,7 +377,7 @@
   },
   {
     "term": "str_048",
-    "definition": "XX機房將於YYYY/MM/DD 9:00AM進行空調保養及維護，請機房系統管理員於當日8:00AM以前完成關機作業及回報",
+    "definition": "XX机房将于YYYY/MM/DD 9:00AM进行空调保养及维护，请机房系统管理员于当日8:00AM以前完成关机作业及回报",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -385,7 +385,7 @@
   },
   {
     "term": "str_049",
-    "definition": "[台北]辦公室將於2017/MM/DD 9:00AM - 5:00PM進行網路維修工程,辦公室網路將無法使用,請通知相關IT系統使用人員",
+    "definition": "[台北]办公室将于2017/MM/DD 9:00AM - 5:00PM进行网路维修工程,办公室网路将无法使用,请通知相关IT系统使用人员",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -393,7 +393,7 @@
   },
   {
     "term": "str_050",
-    "definition": "XX機房[電力/空調]在下午4:00PM已經完成保養及維護,請協助開機及回報",
+    "definition": "XX机房[电力/空调]在下午4:00PM已经完成保养及维护,请协助开机及回报",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -401,7 +401,7 @@
   },
   {
     "term": "str_051",
-    "definition": "[機房電力異常] 目前(2:30PM) XX機房因供電異常，請協助緊急關機",
+    "definition": "[机房电力异常] 目前(2:30PM) XX机房因供电异常，请协助紧急关机",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -409,7 +409,7 @@
   },
   {
     "term": "str_052",
-    "definition": "[機房空調異常] 目前(2:30PM) XX機房因空調系統故障，請協助緊急關機",
+    "definition": "[机房空调异常] 目前(2:30PM) XX机房因空调系统故障，请协助紧急关机",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -417,7 +417,7 @@
   },
   {
     "term": "str_053",
-    "definition": "[機房電力／空調正常]目前(4:30PM)  XX機房[電力/空調]已經恢復正常，請協助開機",
+    "definition": "[机房电力／空调正常]目前(4:30PM) XX机房[电力/空调]已经恢复正常，请协助开机",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -425,7 +425,7 @@
   },
   {
     "term": "str_054",
-    "definition": "目前(2:30PM) XX機房因市電供電異常影響機房電力系統. 請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業",
+    "definition": "目前(2:30PM) XX机房因市电供电异常影响机房电力系统. 请机房系统管理员于30分钟内(3:00PM以前)完成关机作业",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -433,7 +433,7 @@
   },
   {
     "term": "str_055",
-    "definition": "目前(2:30PM) XX機房因空調系統故障. 機房溫度過高，請機房系統管理員於30分鐘內(3:00PM以前)完成關機作業",
+    "definition": "目前(2:30PM) XX机房因空调系统故障. 机房温度过高，请机房系统管理员于30分钟内(3:00PM以前)完成关机作业",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -441,7 +441,7 @@
   },
   {
     "term": "str_056",
-    "definition": "目前(4:30PM)XX機房[電力/空調]已經恢復正常,請機房系統管理員協助開機及回報",
+    "definition": "目前(4:30PM)XX机房[电力/空调]已经恢复正常,请机房系统管理员协助开机及回报",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -449,7 +449,7 @@
   },
   {
     "term": "str_057",
-    "definition": "工傷",
+    "definition": "工伤",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -457,7 +457,7 @@
   },
   {
     "term": "str_058",
-    "definition": "火災、爆炸",
+    "definition": "火灾、爆炸",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -465,7 +465,7 @@
   },
   {
     "term": "str_059",
-    "definition": "傳染病",
+    "definition": "传染病",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -473,7 +473,7 @@
   },
   {
     "term": "str_060",
-    "definition": "營業中斷",
+    "definition": "营业中断",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -481,7 +481,7 @@
   },
   {
     "term": "str_061",
-    "definition": "SCM斷料",
+    "definition": "SCM断料",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -489,7 +489,7 @@
   },
   {
     "term": "str_062",
-    "definition": "貨物損失",
+    "definition": "货物损失",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -497,7 +497,7 @@
   },
   {
     "term": "str_063",
-    "definition": "客戶倒閉",
+    "definition": "客户倒闭",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -505,7 +505,7 @@
   },
   {
     "term": "str_064",
-    "definition": "產品品質",
+    "definition": "产品品质",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -513,7 +513,7 @@
   },
   {
     "term": "str_065",
-    "definition": "IT中斷",
+    "definition": "IT中断",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -529,7 +529,7 @@
   },
   {
     "term": "str_067",
-    "definition": "請選擇-關聯事件",
+    "definition": "请选择-关联事件",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -537,7 +537,7 @@
   },
   {
     "term": "str_068",
-    "definition": "緊急通報",
+    "definition": "紧急通报",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -545,7 +545,7 @@
   },
   {
     "term": "str_069",
-    "definition": "一般通報",
+    "definition": "一般通报",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -553,7 +553,7 @@
   },
   {
     "term": "str_070",
-    "definition": "A級事件",
+    "definition": "A级事件",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -561,7 +561,7 @@
   },
   {
     "term": "str_071",
-    "definition": "B級事件",
+    "definition": "B级事件",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -569,7 +569,7 @@
   },
   {
     "term": "str_072",
-    "definition": "C級事件",
+    "definition": "C级事件",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -577,7 +577,7 @@
   },
   {
     "term": "str_073",
-    "definition": "預警事件",
+    "definition": "预警事件",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -585,7 +585,7 @@
   },
   {
     "term": "str_074",
-    "definition": "資訊分享",
+    "definition": "资讯分享",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -593,7 +593,7 @@
   },
   {
     "term": "str_075",
-    "definition": "所有單位",
+    "definition": "所有单位",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -601,7 +601,7 @@
   },
   {
     "term": "str_076",
-    "definition": "通報已發送",
+    "definition": "通报已发送",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -609,7 +609,7 @@
   },
   {
     "term": "str_077",
-    "definition": "確定發送",
+    "definition": "确定发送",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -617,7 +617,7 @@
   },
   {
     "term": "str_078",
-    "definition": "通報?",
+    "definition": "通报?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -625,7 +625,7 @@
   },
   {
     "term": "str_079",
-    "definition": "確定修改且重送",
+    "definition": "确定修改且重送",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -633,7 +633,7 @@
   },
   {
     "term": "str_080",
-    "definition": "選擇範本",
+    "definition": "选择范本",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -641,7 +641,7 @@
   },
   {
     "term": "str_081",
-    "definition": "標題範本",
+    "definition": "标题范本",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -657,7 +657,7 @@
   },
   {
     "term": "str_083",
-    "definition": "請選擇-機房位置",
+    "definition": "请选择-机房位置",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -665,7 +665,7 @@
   },
   {
     "term": "str_084",
-    "definition": "添加通知對象/單位",
+    "definition": "添加通知对象/单位",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -673,7 +673,7 @@
   },
   {
     "term": "str_085",
-    "definition": "請選擇-通知對象",
+    "definition": "请选择-通知对象",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -681,7 +681,7 @@
   },
   {
     "term": "str_086",
-    "definition": "請選擇範本或輸入標題",
+    "definition": "请选择范本或输入标题",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -697,7 +697,7 @@
   },
   {
     "term": "str_088",
-    "definition": "編輯通報",
+    "definition": "编辑通报",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -705,7 +705,7 @@
   },
   {
     "term": "str_089",
-    "definition": "儲存",
+    "definition": "储存",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -713,7 +713,7 @@
   },
   {
     "term": "str_090",
-    "definition": "確定取消新增?",
+    "definition": "确定取消新增?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -729,7 +729,7 @@
   },
   {
     "term": "str_092",
-    "definition": "人已讀",
+    "definition": "人已读",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -737,7 +737,7 @@
   },
   {
     "term": "str_093",
-    "definition": "項完成",
+    "definition": "项完成",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -745,7 +745,7 @@
   },
   {
     "term": "str_094",
-    "definition": "上傳了一張圖片",
+    "definition": "上传了一张图片",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -753,7 +753,7 @@
   },
   {
     "term": "str_095",
-    "definition": "重新選擇",
+    "definition": "重新选择",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -761,7 +761,7 @@
   },
   {
     "term": "str_096",
-    "definition": "請輸入訊息",
+    "definition": "请输入讯息",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -769,7 +769,7 @@
   },
   {
     "term": "str_097",
-    "definition": "管理員",
+    "definition": "管理员",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -777,7 +777,7 @@
   },
   {
     "term": "str_098",
-    "definition": "通報動態",
+    "definition": "通报动态",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -785,7 +785,7 @@
   },
   {
     "term": "str_099",
-    "definition": "成員",
+    "definition": "成员",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -817,7 +817,7 @@
   },
   {
     "term": "str_103",
-    "definition": "成員排序",
+    "definition": "成员排序",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -825,7 +825,7 @@
   },
   {
     "term": "str_104",
-    "definition": "對象排序",
+    "definition": "对象排序",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -833,7 +833,7 @@
   },
   {
     "term": "str_105",
-    "definition": "單位排序",
+    "definition": "单位排序",
     "context": "",
     "term_plural": "",
     "reference": "",

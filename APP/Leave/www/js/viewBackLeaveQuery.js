@@ -5,6 +5,7 @@ var backLeaveStateRefuse = langStr["str_150"];  //表單已拒絕
 var viewBackLeaveQueryInit = false;
 var backLeaveListArr = [];
 var backLeaveDetailObj = {};
+var backLeaveFormid;
 var signToWithdrawReason;
 
 
@@ -57,10 +58,10 @@ $("#viewBackLeaveQuery").pagecontainer({
                         }
 
                         //添加假别名称
-                        for(var j = 0; j < LeaveObjList.length; j++) {
-                            if(leaveObject["leaveid"] == LeaveObjList[j]["leaveid"]) {
-                                leaveObject["name"] = LeaveObjList[j]["name"];
-                                leaveObject["category"] = LeaveObjList[j]["category"];
+                        for(var j = 0; j < allLeaveList.length; j++) {
+                            if(leaveObject["leaveid"] == allLeaveList[j]["leaveid"]) {
+                                leaveObject["name"] = allLeaveList[j]["name"];
+                                leaveObject["category"] = allLeaveList[j]["category"];
                                 break;
                             } else {
                                 leaveObject["name"] = "";
@@ -72,7 +73,9 @@ $("#viewBackLeaveQuery").pagecontainer({
                     }
 
                     //after custom API
-                    //setBackLeaveList();
+                    setBackLeaveList();
+
+                    loadingMask("hide");
                 }
             };
 
@@ -139,9 +142,26 @@ $("#viewBackLeaveQuery").pagecontainer({
             this.successCallback = function(data) {
                 console.log(data);
                 if(data['ResultCode'] === "1") {
-                    var callbackData = data['Content'][0]["result"];
+                    var callbackData = data['Content'][0]["cancelformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
-                    //console.log(htmlDom);
+                    var successMsg = $("success", htmlDom);
+                    
+                    if($(successMsg).html() != undefined) {
+                        //成功后先返回假单列表，再重新呼叫API获取最新数据   
+                        QueryEmployeeLeaveCancelForm();
+                        // $("#backToSign").trigger("click");
+                        // $("#backToList").trigger("click");
+                        backLeaveQueryInit();
+                        $("#withdrawBackLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                    } else {
+                        loadingMask("hide");
+                        var errorMsg = $("error", htmlDom);
+                        $('.backLeaveErrorMsg').find('.header-text').html($(errorMsg).html());
+                        popupMsgInit('.backLeaveErrorMsg');
+                    }
+
+                    $("#signTowithdrawReason").val("");
+                    $("#signToWithdrawBtn").removeClass("leavePreview-active-btn");
                 }
             };
 
@@ -159,9 +179,22 @@ $("#viewBackLeaveQuery").pagecontainer({
             this.successCallback = function(data) {
                 console.log(data);
                 if(data['ResultCode'] === "1") {
-                    var callbackData = data['Content'][0]["result"];
+                    var callbackData = data['Content'][0]["cancelformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
-                    //console.log(htmlDom);
+                    var successMsg = $("success", htmlDom);
+
+                    if($(successMsg).html() != undefined) {
+                        //成功后先返回假单列表，再重新呼叫API获取最新数据
+                        QueryEmployeeLeaveCancelForm();
+                        // $("#backToList").trigger("click");
+                        backLeaveQueryInit();
+                        $("#deleteBackLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                    } else {
+                        loadingMask("hide");
+                        var errorMsg = $("error", htmlDom);
+                        $('.backLeaveErrorMsg').find('.header-text').html($(errorMsg).html());
+                        popupMsgInit('.backLeaveErrorMsg');
+                    }
                 }
             };
 
@@ -200,18 +233,18 @@ $("#viewBackLeaveQuery").pagecontainer({
 
                     var obj = {};
                     //查找类别和假别
-                    for(var i in LeaveObjList) {
-                        if(LeaveObjList[i]["leaveid"] == $(leaveid).html()) {
-                            obj["name"] = LeaveObjList[i]["name"];
-                            obj["category"] = LeaveObjList[i]["category"];
+                    for(var i in allLeaveList) {
+                        if(allLeaveList[i]["leaveid"] == $(leaveid).html()) {
+                            obj["name"] = allLeaveList[i]["name"];
+                            obj["category"] = allLeaveList[i]["category"];
                         }
                     }
                     //转换status
-                    if($(status[i]).html() == "AP") {
+                    if($(status).html() == "AP") {
                         obj["statusName"] = formEffected;
-                    } else if($(status[i]).html() == "RC") {
+                    } else if($(status).html() == "RC") {
                         obj["statusName"] = formWithdrawed;
-                    } else if($(status[i]).html() == "RJ") {
+                    } else if($(status).html() == "RJ") {
                         obj["statusName"] = formRefused;
                     } else {
                         obj["statusName"] = formSigning;
@@ -230,7 +263,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                     //传值给假单查询页
                     $("#leaveApplyDate").text(dateFormatter($(applydate).html()));
                     $("#leaveFormNo").text($(formno).html());
-                    $("#leaveStatus").text(leaveDetailObj["statusName"]);
+                    $("#leaveStatus").text(obj["statusName"]);
                     $("#leaveCategory").text(obj["category"]);
                     $("#leaveName").text(obj["name"]);
                     $("#leaveAgentName").text(obj["agentname"]);
@@ -255,6 +288,12 @@ $("#viewBackLeaveQuery").pagecontainer({
                     getSignFlow(backLeaveToLeaveSignList, serialArr, empnameArr, ynArr, dateArr, remarkArr);
                     setLeaveFlowToPopup(backLeaveToLeaveSignList, ".leave-flow-ul");
 
+                    //返回，跳转，再show         
+                    $("#backToList").trigger("click");
+                    changePageByPanel("viewLeaveQuery");
+                    leaveListToDetail("leaveRevoke", "leaveWithdraw", "leaveDelete", null);
+
+                    loadingMask("hide");
                 }
             };
 
@@ -262,7 +301,7 @@ $("#viewBackLeaveQuery").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", false, "LeaveApplyFormDetail", self.successCallback, self.failCallback, backLeaveFormLeaveDetailQueryData, "");
+                CustomAPI("POST", true, "LeaveApplyFormDetail", self.successCallback, self.failCallback, backLeaveFormLeaveDetailQueryData, "");
             }();
         };
 
@@ -289,7 +328,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                                     '<div>' +
                                         '<div class="backLeave-query-state font-style3" form-id="' + backLeaveListArr[i]["formid"] + '">' +
                                             '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
-                                            '<img src="img/btn_nextpage.png">' +
+                                            '<img src="img/more.png">' +
                                         '</div>' +
                                         '<div class="backLeave-query-base font-style10">' +
                                             '<div class="backLeave-query-basedata">' +
@@ -367,13 +406,14 @@ $("#viewBackLeaveQuery").pagecontainer({
         /********************************** page event *************************************/
         $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {
             if(!viewBackLeaveQueryInit) {
-                setBackLeaveList();
+                //setBackLeaveList();
                 viewBackLeaveQueryInit = true;
             }
-            
+
         });
 
         $("#viewBackLeaveQuery").on("pageshow", function(event, ui) {
+
             loadingMask("hide");
         });
 
@@ -386,15 +426,15 @@ $("#viewBackLeaveQuery").pagecontainer({
         $(document).on("click", ".backLeave-query-state", function() {
             loadingMask("show");
             var self = $.trim($(this).text());
-            var formid = $(this).attr("form-id");
+            backLeaveFormid = $(this).attr("form-id");
 
             //先获取部分详情从销假单列表当中，另外部分详情从详情API中获取
-            backLeaveDetailObj = getBackLeaveDetailByID(formid);
+            backLeaveDetailObj = getBackLeaveDetailByID(backLeaveFormid);
 
             leaveCancelFormDetailQueryData = '<LayoutHeader><EmpNo>' +
                                              myEmpNo +
                                              '</EmpNo><formid>' +
-                                             formid +
+                                             backLeaveFormid +
                                              '</formid></LayoutHeader>';
 
             //呼叫API
@@ -465,8 +505,20 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //確定撤回
         $("#comfirmWithdrawBackLeave").on("click", function() {
-            backLeaveQueryInit();
-            $("#withdrawBackLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+            loadingMask("show");
+            recallLeaveCancelFormQueryData = '<LayoutHeader><EmpNo>'
+                                            + myEmpNo
+                                            + '</EmpNo><formid>'
+                                            + backLeaveDetailObj["formid"]
+                                            + '</formid><formno>'
+                                            + backLeaveDetailObj["formno"]
+                                            + '</formno><reason>'
+                                            + backLeaveDetailObj["reason"]
+                                            + '</reason></LayoutHeader>';
+        
+            //呼叫API
+            RecallLeaveCancelForm();
+
         });
 
         //刪除銷假單——popup
@@ -476,26 +528,34 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //確定刪除銷假單——click
         $("#comfirmDeleteBackLeave").on("click", function() {
-            backLeaveQueryInit();
-            $("#deleteBackLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+            loadingMask("show");
+            deleteLeaveCancelFormQueryData = '<LayoutHeader><EmpNo>'
+                                            + myEmpNo
+                                            + '</EmpNo><formid>'
+                                            + backLeaveDetailObj["formid"]
+                                            + '</formid></LayoutHeader>';
+
+            //呼叫API
+            DeleteLeaveCancelForm();
+
         });
 
         //根據“請假單號”跳轉到請假單詳情頁
         $("#signToLeaveDetail").on("click", function() {
+            loadingMask("show");
+            leaveDetailFrom = false;
             var refLeaveid = $(this).attr("leave-id");
-            //console.log(refLeaveid);
+            
             backLeaveFormLeaveDetailQueryData = '<LayoutHeader><EmpNo>'
                                                 + myEmpNo
                                                 + '</EmpNo><formid>'
                                                 + refLeaveid
                                                 + '</formid></LayoutHeader>';
+            
             //呼叫API
             BackLeaveFormLeaveDetail();
-            //返回，跳转，再show         
-            $("#backToList").trigger("click");
-            changePageByPanel("viewLeaveQuery");
-            leaveListToDetail("leaveRevoke", "leaveWithdraw", "leaveDelete", null);
-            detailFromPage = false;
+            
+
         });
 
     }

@@ -15,18 +15,20 @@ var leaveSelected = false;
 var agentName;
 var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeaveTime;
 var basedayList = false;
-var baseday;
+var baseday = "";
 var needBaseday = false;
 var selectBaseday = false;
 var selectDatetime = false;
 var leaveReason;
 var leaveSubmitPreview = false;
+var editLeaveForm = false;
 
 var categroyData = {
     id: "categroy-popup",
     option: [],
     title: "",
-    defaultText: langStr["str_069"],
+    //defaultText: langStr["str_069"],
+    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
@@ -89,18 +91,18 @@ function getLeaveByCategory() {
 
     //类别分“所有类别”和所选类别
     if(selectCategory === allLeaveCategroyStr) {
-        for(var i in LeaveObjList) {
+        for(var i in allLeaveList) {
             var obj = {};
-            obj["leaveid"] = LeaveObjList[i]["leaveid"];
-            obj["name"] = LeaveObjList[i]["name"];
+            obj["leaveid"] = allLeaveList[i]["leaveid"];
+            obj["name"] = allLeaveList[i]["name"];
             leaveList.push(obj);
         }
     } else {
-        for(var i in LeaveObjList) {
-            if(selectCategory === LeaveObjList[i]["category"]) {
+        for(var i in allLeaveList) {
+            if(selectCategory === allLeaveList[i]["category"]) {
                 var obj = {};
-                obj["leaveid"] = LeaveObjList[i]["leaveid"];
-                obj["name"] = LeaveObjList[i]["name"];
+                obj["leaveid"] = allLeaveList[i]["leaveid"];
+                obj["name"] = allLeaveList[i]["name"];
                 leaveList.push(obj);
             }
         }   
@@ -121,11 +123,14 @@ function getLeaveByCategory() {
     $('#divEmpty').hide();
     $("#chooseBaseday").text(selectBasedayStr);
     $("#startText").text(pleaseSelectStr);
-    $("#startDate").val("");
+    //$("#startDate").val("");
     $("#endText").text(pleaseSelectStr);
-    $("#endDate").val("");
+    //$("#endDate").val("");
+    //$("#oldBaseday").val("");
+    //$("#newBaseday").val("");
     leaveid = "";
     leaveType = "";
+    baseday = "";
     basedayList = false;
 }
 
@@ -134,46 +139,13 @@ $("#viewLeaveSubmit").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        //请假申请页面——获取所有类别
-        function getAllCategroyList() {
-            var categroyLeave = [];
-
-            //循環所有類別，並去重、去空
-            for(var i in LeaveObjList) {
-                if (categroyLeave.indexOf(LeaveObjList[i]["category"]) === -1 && LeaveObjList[i]["category"] !== "") {
-                    categroyLeave.push(LeaveObjList[i]["category"]);
-                } 
-            }
-            
-            //添加 “所有類別” 到列表第一位
-            categroyLeave.unshift(allLeaveCategroyStr);
-
-            //循环所有类别到popup
-            for(var i in categroyLeave) {
-                categroyData["option"][i] = {};
-                categroyData["option"][i]["value"] = categroyLeave[i];
-                categroyData["option"][i]["text"] = categroyLeave[i];
-            }
-
-            //生成所有类别dropdownlist
-            tplJS.DropdownList("viewLeaveSubmit", "leaveCategroy", "prepend", "typeB", categroyData);
-            
-            //默認選中popup “所有類別”
-            $.each($("#categroy-popup-option-list li"), function(i, item) {
-                if($(item).text() === allLeaveCategroyStr) {
-                    $(item).trigger("click");
-                    return false;
-                }
-            });
-        }
-
         //当无基准日假别时，呼叫API，对假别剩余天数进行判断
         function checkLeftDaysNoBasedate() {
             //如果假别天数等于0或者小于最小请假单位(天)
             if(quickLeaveLeft == 0 || (quickLeaveLeft > 0 && quickLeaveLeft < leaveDetail["unit"])) {
                 popupMsgInit('.leaveNotEnough');
                 getLeaveByCategory();
-            } else { 
+            } else {
                 //desc
                 if(leaveDetail["desc"] !== "") {
                     var divIntroduce = "<span>*" + leaveDetail["desc"] + "</span>";
@@ -191,8 +163,8 @@ $("#viewLeaveSubmit").pagecontainer({
 
                 //basedate
                 $("#chooseBaseday").text(selectBasedayStr);
-                $("#oldBaseday").val("");
-                $("#newBaseday").val("");
+                //$("#oldBaseday").val("");
+                //$("#newBaseday").val("");
                 $('#baseDate').hide();
                 $('#divEmpty').hide();
                 needBaseday = false;
@@ -200,7 +172,9 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //enddate
             $("#endText").text(pleaseSelectStr);
-            $("#endDate").val("");
+            //$("#endDate").val("");
+            $("#leaveDays").text("0");
+            $("#leaveHours").text("0");
         }
 
         //当有基准日时，不需要对假别剩余天数进行判断
@@ -222,37 +196,22 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //basedate
             $("#chooseBaseday").text(selectBasedayStr);
-            $("#oldBaseday").val("");
-            $("#newBaseday").val("");
+            //$("#oldBaseday").val("");
+            //$("#newBaseday").val("");
             $('#baseDate').show();
             $('#divEmpty').show();
             needBaseday = true;
 
             //enddate
             $("#endText").text(pleaseSelectStr);
-            $("#endDate").val("");
-        }
-
-        //结束时间选择完成后检查请假数
-        function checkLeaveHours() {
-            if($(countSuccess).html() != undefined) {
-                //success无提示，改变请假数
-                $("#leaveDays").text(countApplyDays);
-                $("#leaveHours").text(countApplyHours);
-            } else {
-                //error提示
-                var errorMsg = $(countError).html();
-                $('.leftDaysByLeave').find('.main-paragraph').html(errorMsg);
-                popupMsgInit('.leftDaysByLeave');
-                //enddate
-                $("#endText").text(pleaseSelectStr);
-                $("#endDate").val("");
-            }
+            //$("#endDate").val("");
+            $("#leaveDays").text("0");
+            $("#leaveHours").text("0");
         }
 
         //查询某假别正在使用的有效基准日——<LayoutHeader><EmpNo>0409132</EmpNo><leaveid>3010</leaveid></LayoutHeader>
         window.QueryDatumDates = function() {
-            
+
             this.successCallback = function(data) {
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
@@ -272,6 +231,9 @@ $("#viewLeaveSubmit").pagecontainer({
 
                         basedayList = true;
                     }
+
+                    selectLeaveNeedBasedate();
+                    loadingMask("hide");
                 }
             };
 
@@ -283,7 +245,82 @@ $("#viewLeaveSubmit").pagecontainer({
             }();
         };
         
+        //選擇結束時間計算請假數
+        window.CountLeaveHoursByEnd = function() {
+            
+            this.successCallback = function(data) {
+                //console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");          
+                    var leaveSuccess = $("success", htmlDom);
+                    var leaveError = $("error", htmlDom);
+                    var applyDays = $("ApplyDays", htmlDom);
+                    var applyHours = $("ApplyHours", htmlDom);
+                    countApplyDays = $(applyDays).html();
+                    countApplyHours = $(applyHours).html();
+
+                    if($(leaveSuccess).html() != undefined) {
+                        //success无提示，改变请假数即可
+                        $("#leaveDays").text(countApplyDays);
+                        $("#leaveHours").text(countApplyHours);
+                    } else {
+                        //error提示
+                        var errorMsg = $(leaveError).html();
+                        $('.leftDaysByLeave').find('.header-text').html(errorMsg);
+                        popupMsgInit('.leftDaysByLeave');
+                        //enddate
+                        $("#endText").text(pleaseSelectStr);
+                        //$("#endDate").val("");
+                        $("#leaveDays").text("0");
+                        $("#leaveHours").text("0");
+                    }
+                    loadingMask("hide");
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "CountLeaveHours", self.successCallback, self.failCallback, countLeaveHoursByEndQueryData, "");
+            }();
+        };
         
+        //请假申请送签
+        window.SendApplyLeaveData = function() {
+            
+            this.successCallback = function(data) {
+                console.log(data);
+                if(data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var success = $("success", htmlDom);
+                    if ($(success).html() != undefined) {
+                        //如果送签成功，重新获取请假单列表，并跳转到“请假单查询”页，并记录代理人到local端
+                        QueryEmployeeLeaveApplyForm();
+                        $("#backMain").click();
+                        changePageByPanel("viewLeaveQuery");
+                        $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
+                        localStorage.setItem("agent", JSON.stringify([$("#leave-agent-popup option").text(), agentid]));
+                    } else {
+                        var error = $("error", htmlDom);
+                        var errorMsg = $(error).html();
+                        $('.leftDaysByLeave').find('.header-text').html(errorMsg);
+                        popupMsgInit('.leftDaysByLeave');
+                    }
+                    loadingMask("hide");
+                }
+            };
+
+            this.failCallback = function(data) {
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "SendLeaveApplicationData", self.successCallback, self.failCallback, sendApplyLeaveQueryData, "");
+            }();
+        };
 
         /********************************** page event *************************************/
         $("#viewLeaveSubmit").on("pagebeforeshow", function(event, ui) {
@@ -291,19 +328,14 @@ $("#viewLeaveSubmit").pagecontainer({
                 //申請日期和預覽申請日期，都是实际當天日期
                 $('#applyDay').text(applyDay);
                 $('#previewApplyDay').text(applyDay);
-                //选择日期为“请选择”
-                $("#startText").text(pleaseSelectStr);
-                $("#endText").text(pleaseSelectStr);
-
-                //after custom API
-                getAllCategroyList();
+                
                 viewLeaveSubmitInit = true;
             }
 
         });
 
         $("#viewLeaveSubmit").on("pageshow", function(event, ui) {
-            
+
             loadingMask("hide");
         });
 
@@ -325,40 +357,39 @@ $("#viewLeaveSubmit").pagecontainer({
             leaveid = $(this).val();
             leaveType = $.trim($(this).text());
             leaveSelected = true;
+            baseday = "";
             console.log("leaveid:"+leaveid);
         });
 
         //點擊假別彈框關閉以後判斷是否可以預覽送簽
         $(document).on("popupafterclose", "#leave-popup-option", function() {
             if(leaveSelected) {
-                for(var i in LeaveObjList) {
-                    if(leaveid == LeaveObjList[i]["leaveid"]) {
+                for(var i in allLeaveList) {
+                    if(leaveid == allLeaveList[i]["leaveid"]) {
                         //選擇假別後，獲取假別對象
-                        leaveDetail = LeaveObjList[i];
-                        leaveCategory = LeaveObjList[i]["category"]
+                        leaveDetail = allLeaveList[i];
+                        leaveCategory = allLeaveList[i]["category"];
 
                         //不需要基准日回传剩余天数，需要基准日回传有效基准日列表
                         if(leaveDetail["basedate"] == "N") {
-                            queryLeftDaysData = "<LayoutHeader><EmpNo>" +
-                                                myEmpNo +
-                                                "</EmpNo><leaveid>" +
-                                                leaveid +
-                                                "</leaveid></LayoutHeader>";
+                            queryLeftDaysData = "<LayoutHeader><EmpNo>"
+                                              + myEmpNo
+                                              + "</EmpNo><leaveid>"
+                                              + leaveid
+                                              + "</leaveid></LayoutHeader>";
                             //呼叫API
                             QueryLeftDaysData(leaveid);
                             //after custom API
                             checkLeftDaysNoBasedate();
 
                         } else if(leaveDetail["basedate"] == "Y") {
-                            queryDatumDatesQueryData = "<LayoutHeader><EmpNo>" + 
-                                                        myEmpNo + 
-                                                        "</EmpNo><leaveid>" + 
-                                                        leaveid + 
-                                                        "</leaveid></LayoutHeader>";
+                            queryDatumDatesQueryData = "<LayoutHeader><EmpNo>"
+                                                     + myEmpNo
+                                                     + "</EmpNo><leaveid>"
+                                                     + leaveid
+                                                     + "</leaveid></LayoutHeader>";
                             //呼叫API
                             QueryDatumDates();
-                            //after custom API
-                            selectLeaveNeedBasedate();
 
                         }
 
@@ -367,6 +398,45 @@ $("#viewLeaveSubmit").pagecontainer({
                 }
             }
             checkLeaveBeforePreview();
+        });
+
+        $(document).on("click", "#leave-popup-option-list li", function() {
+            var self = $.trim($(this).text());
+            if(editLeaveForm == true) {
+                for(var i in allLeaveList) {
+                    if(self == allLeaveList[i]["name"]) {
+                        //選擇假別後，獲取假別對象
+                        leaveDetail = allLeaveList[i];
+                        leaveCategory = allLeaveList[i]["category"];
+
+                        //不需要基准日回传剩余天数，需要基准日回传有效基准日列表
+                        if(leaveDetail["basedate"] == "N") {
+                            queryLeftDaysData = "<LayoutHeader><EmpNo>"
+                                              + myEmpNo
+                                              + "</EmpNo><leaveid>"
+                                              + leaveid
+                                              + "</leaveid></LayoutHeader>";
+                            //呼叫API
+                            QueryLeftDaysData(leaveid);
+                            //after custom API
+                            checkLeftDaysNoBasedate();
+
+                        } else if(leaveDetail["basedate"] == "Y") {
+                            queryDatumDatesQueryData = "<LayoutHeader><EmpNo>"
+                                                     + myEmpNo
+                                                     + "</EmpNo><leaveid>"
+                                                     + leaveid
+                                                     + "</leaveid></LayoutHeader>";
+                            //呼叫API
+                            QueryDatumDates();
+
+                        }
+
+                        return false;
+                    }
+                }
+            }
+            checkLeaveBeforePreview();   
         });
 
         //搜索代理人
@@ -410,6 +480,7 @@ $("#viewLeaveSubmit").pagecontainer({
         $(document).on("click", "#leave-agent-popup-option ul li", function(e) {
             agentid = $(this).attr("value");
             agentName = $(this).children("div").eq(1).children("span").text();
+            //console.log(agentid+":"+agentName);
         });
 
         //popup打开以后生成代理人列表
@@ -444,7 +515,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //新基準日選擇——datetime change
-        $(document).on("change", "#newBaseday", function() {
+        $("#newBaseday").on("change", function() {
             baseday = $(this).val();
 
             if(baseday === "") {
@@ -469,6 +540,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //如果點擊 “選擇其他基準日” ，則彈出datetime
             if(self === otherBasedayStr) {
+                baseday = "";
                 if(device.platform === "iOS") {
                     $("#oldBaseday").trigger("focus");
                 }else if(device.platform === "Android") {
@@ -483,7 +555,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //無有效基準日選擇——datetime change
-        $(document).on("change", "#oldBaseday", function() {
+        $("#oldBaseday").on("change", function() {
             baseday = $(this).val();
 
             if(baseday === "") {
@@ -501,7 +573,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //點擊開始日期
-        $(document).on("click", "#btnStartday", function() {
+        $("#btnStartday").on("click", function() {
             //選擇開始日期之前判斷假別是否選擇
             if(leaveid === "") {
                 popupMsgInit('.categroyFirst');
@@ -559,7 +631,7 @@ $("#viewLeaveSubmit").pagecontainer({
             }
             //如果开始时间改变，结束时间无论如何也要清空
             $("#endText").text(pleaseSelectStr);
-            $("#endDate").val("");
+            //$("#endDate").val("");
 
             //请假数恢复00
             $("#leaveDays").text("0");
@@ -571,7 +643,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //點擊結束日期——datetime
-        $(document).on("click", "#btnEndday", function() {           
+        $("#btnEndday").on("click", function() {           
             //点击“结束时间”只需要判断“开始时间”是否选择
             if($("#startText").text() == pleaseSelectStr) {
                 popupMsgInit('.startdayFirst');
@@ -586,7 +658,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //結束日期改變
-        $(document).on("change", "#endDate", function() {
+        $("#endDate").on("change", function() {
             var self = $(this).val();
             var minute = parseInt(self.substring(14, 16));
 
@@ -612,31 +684,33 @@ $("#viewLeaveSubmit").pagecontainer({
                     //提示錯誤信息
                     popupMsgInit('.dateTimeError');
                     $('#endText').text(pleaseSelectStr);
-                    $("#endDate").val("");
+                    //$("#endDate").val("");
                     //请假数恢复0，0
                     $("#leaveDays").text("0");
                     $("#leaveHours").text("0");
-                } else {  
+                } else {
+                    loadingMask("show");
                     $('#endText').text(endLeaveDate);
+                    
+                    countLeaveHoursByEndQueryData = "<LayoutHeader><EmpNo>"
+                                                  + myEmpNo
+                                                  + "</EmpNo><leaveid>"
+                                                  + leaveid
+                                                  + "</leaveid><begindate>"
+                                                  + startLeaveDate.split(" ")[0].split("-").join("/")
+                                                  + "</begindate><begintime>"
+                                                  + startLeaveDate.split(" ")[1]
+                                                  + "</begintime><enddate>"
+                                                  + endLeaveDate.split(" ")[0].split("-").join("/")
+                                                  + "</enddate><endtime>"
+                                                  + endLeaveDate.split(" ")[1]
+                                                  + "</endtime><datumdate>"
+                                                  + baseday
+                                                  + "</datumdate></LayoutHeader>";
 
-                    //呼叫API:CountLeaveHours
-                    countLeaveHoursQueryData = "<LayoutHeader><EmpNo>"
-                                                + myEmpNo
-                                                + "</EmpNo><leaveid>"
-                                                + leaveid
-                                                + "</leaveid><begindate>"
-                                                + startLeaveDate.split(" ")[0].split("-").join("/")
-                                                + "</begindate><begintime>"
-                                                + startLeaveDate.split(" ")[1]
-                                                + "</begintime><enddate>"
-                                                + endLeaveDate.split(" ")[0].split("-").join("/")
-                                                + "</enddate><endtime>"
-                                                + endLeaveDate.split(" ")[1]
-                                                + "</endtime><datumdate></datumdate></LayoutHeader>";
-                    //呼叫API                            
-                    CountLeaveHours();
-                    //after custom API
-                    checkLeaveHours();
+                    //console.log(countLeaveHoursByEndQueryData);
+                    //呼叫API
+                    CountLeaveHoursByEnd();
 
                 }
 
@@ -652,7 +726,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //實時獲取多行文本值
-        $(document).on("keyup", "#leaveReason", function() {
+        $("#leaveReason").on("keyup", function() {
             leaveReason = $(this).val();
 
             //檢查是否可以預覽送簽
@@ -682,11 +756,11 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //開始時間
             $("#startText").text(pleaseSelectStr);
-            $("#startDate").val("");
+            //$("#startDate").val("");
 
             //結束時間
             $("#endText").text(pleaseSelectStr);
-            $("#endDate").val("");
+            //$("#endDate").val("");
 
             //請假理由
             $("#leaveReason").val("");
@@ -731,11 +805,48 @@ $("#viewLeaveSubmit").pagecontainer({
             return false;
         });
 
-        //立即預約，假單送簽，跳轉到假單茶村頁
+        //立即預約popup
         $("#applyBtn").on("click", function() {
-            $("#backMain").click();
-            changePageByPanel("viewLeaveQuery");
-            $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+            popupMsgInit('.confirmSend');
+            // $("#backMain").click();
+            // changePageByPanel("viewLeaveQuery");
+            // $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+        });
+
+        //確定送簽
+        $("#confirmSendLeave").on("click", function() {
+            loadingMask("show");
+            sendApplyLeaveQueryData = '<LayoutHeader><empno>'
+                                    + myEmpNo
+                                    + '</empno><delegate>'
+                                    + agentid
+                                    + '</delegate><leaveid>'
+                                    + leaveid
+                                    + '</leaveid><begindate>'
+                                    + startLeaveDate.split(" ")[0].split("-").join("/")
+                                    + '</begindate><begintime>'
+                                    + startLeaveDate.split(" ")[1]
+                                    + '</begintime><enddate>'
+                                    + endLeaveDate.split(" ")[0].split("-").join("/")
+                                    + '</enddate><endtime>'
+                                    + endLeaveDate.split(" ")[1]
+                                    + '</endtime><datumdate>'
+                                    + ((needBaseday == true) ? baseday : '')
+                                    + '</datumdate><applydays>'
+                                    + countApplyDays
+                                    + '</applydays><applyhours>'
+                                    + countApplyHours
+                                    + '</applyhours><reason>'
+                                    + leaveReason
+                                    + '</reason><isattached>'
+                                    + '</isattached><attachment>'
+                                    + '</attachment><formid>'
+                                    + ((editLeaveForm == false) ? '' : leaveDetailObj['formid'])
+                                    + '</formid></LayoutHeader>';
+
+            console.log(sendApplyLeaveQueryData);
+            //呼叫API
+            SendApplyLeaveData();
         });
     }
 });
