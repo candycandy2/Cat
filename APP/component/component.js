@@ -537,28 +537,10 @@ function onResume() {
     //setTimeout('checkAmountData()', 10000);
 }
 
-/*function checkAmountData(){
-    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-    //若localstorage數目大於等於Ｍ筆,將資料傳給API
-    if (appLogData.log_list.length >=20) {
-        var doAddAppLog = new getAddAppLog();
-    }
-}*/
-
 function getAddAppLog() {
     
     var self = this;
     var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-    
-    /*var jsonData = {
-        login_id: appLogData.login_id,
-        package_name: appLogData.package_name,
-        log_list: []
-    };  
-    //將Ｍ筆資料傳給API
-    for (var i = 0; i < 20 ; i++) {
-        jsonData.log_list.push(appLogData.log_list[i]);
-    }*/
     var queryData = JSON.stringify(appLogData);
     
     this.successCallback = function(data) {
