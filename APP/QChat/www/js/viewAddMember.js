@@ -82,6 +82,7 @@ $("#viewAddMember").pagecontainer({
 
                     //name
                     userList.find(".user-name").html(JM.data.chatroom_friend[i]);
+                    userList.find(".personal-popup").data("userID", JM.data.chatroom_friend[i]);
 
                     $("#userListContentAddMember").append(userList);
 

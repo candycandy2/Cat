@@ -121,6 +121,11 @@ $("#viewNewChatroom").pagecontainer({
                 is_friend = true;
             }
 
+            var send_invite = false;
+            if (userData.status === "2") {
+                send_invite = true;
+            }
+
             var is_register = false;
             if (userData.registered === "Y") {
                 is_register = true;
@@ -141,6 +146,7 @@ $("#viewNewChatroom").pagecontainer({
                 is_friend:              is_friend,
                 is_register:            is_register,
                 is_protect:             is_protect,
+                send_invite:            send_invite,
                 avator_path:            avator_path,
                 avator_download_time:   avator_download_time
             };
@@ -215,6 +221,7 @@ $("#viewNewChatroom").pagecontainer({
 
                 //name
                 userList.find(".user-name").html(userName);
+                userList.find(".personal-popup").data("userID", userName);
 
                 //info / radio button
                 var hideRadioBtn = false;
@@ -304,7 +311,9 @@ $("#viewNewChatroom").pagecontainer({
 
                     if (resultCode === "1") {
                         console.log("==========new chatroom success");
-                        
+
+                        $("#userInfoPopup").popup("close");
+
                         JM.chatroomID = data['Content'].group_id;
 
                         //change page to chatroom
