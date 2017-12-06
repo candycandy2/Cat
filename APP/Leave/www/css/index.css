@@ -463,7 +463,7 @@ div.scrollmenu a {
 
 .date-component input[type="datetime-local"],
 .date-component input[type="date"] {
-	opacity: 0;
+	opacity: 0 !important;
 }
 
 .apply-leave-count {
@@ -562,7 +562,8 @@ div.scrollmenu a {
 .dateTimeError > .ui-content,
 .categroyFirst > .ui-content,
 .basedayFirst > .ui-content,
-.startdayFirst > .ui-content {
+.startdayFirst > .ui-content,
+.confirmSend > .ui-content {
 	padding: 0 !important;
 }
 
@@ -574,7 +575,8 @@ div.scrollmenu a {
 .dateTimeError > .ui-content > .header,
 .categroyFirst > .ui-content > .header,
 .basedayFirst > .ui-content > .header,
-.startdayFirst > .ui-content > .header {
+.startdayFirst > .ui-content > .header,
+.confirmSend > .ui-content > .header {
 	margin-top: 12.5%;
 }
 

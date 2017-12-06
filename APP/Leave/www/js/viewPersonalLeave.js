@@ -25,19 +25,17 @@ var agentData = {
     id: "agent-popup",
     option: [],
     title: '<input type="search" id="searchBar" />',
-    defaultText: langStr["str_069"],
+    //defaultText: langStr["str_069"],
+    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
     changeDefaultText : true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
     }
 };
 
-
 $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
 
-        var leaveIDArry = "";
-        var leaveTypeArry = "";
 
         /********************************** function *************************************/
         //快速请假页面——获取部分假别
@@ -182,8 +180,8 @@ $("#viewPersonalLeave").pagecontainer({
                         //1.快速请假页面——部分假别
                         var callbackData = data['Content'][0]["quickleavelist"];
                         var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
-                        leaveTypeArry = $("name", htmlDom);
-                        leaveIDArry = $("leaveid", htmlDom);
+                        var leaveTypeArry = $("name", htmlDom);
+                        var leaveIDArry = $("leaveid", htmlDom);
 
                         quickLeaveList = [];
                         for(var i = 0; i < leaveTypeArry.length; i++) {
@@ -268,7 +266,7 @@ $("#viewPersonalLeave").pagecontainer({
             };
 
             var __construct = function() {
-                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
+                CustomAPI("POST", false, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
             }();
             
         };
@@ -395,6 +393,7 @@ $("#viewPersonalLeave").pagecontainer({
                     // var quickApplyDays = $(applyDays).html();
                     // var quickApplyHours = $(applyHours).html();
 
+                    //如果请假时数计算成功则直接可以申请快速请假
                     if($(quickSuccess).html() != undefined) {
                         sendLeaveApplicationData = "<LayoutHeader><empno>"
                                                  + myEmpNo
@@ -416,7 +415,12 @@ $("#viewPersonalLeave").pagecontainer({
                                                  + $(applyHours).html()
                                                  + "</applyhours><reason>"
                                                  + leaveType
-                                                 + "</reason></LayoutHeader>";
+                                                 + "</reason><isattached>"
+                                                 + "</isattached><attachment>"
+                                                 + "</attachment><formid>"
+                                                 + "</formid></LayoutHeader>";
+
+                        console.log(sendLeaveApplicationData);
                         //呼叫API
                         SendLeaveApplicationData();
                     }else {
@@ -440,19 +444,23 @@ $("#viewPersonalLeave").pagecontainer({
         window.SendLeaveApplicationData = function() {
 
             this.successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
 
-                    if (callbackData.indexOf("error") != -1) {
-                        //$('.applyLeaveFail').find('.main-paragraph').html("假單送簽失敗");
-                        $('.applyLeaveFail').find('.main-paragraph').html(langStr["str_073"]);
-                        popupMsgInit('.applyLeaveFail');
-                    } else {
+                    // if (callbackData.indexOf("error") > 0) {
+                    //     //$('.applyLeaveFail').find('.main-paragraph').html("假單送簽失敗");
+                    //     $('.applyLeaveFail').find('.main-paragraph').html(langStr["str_073"]);
+                    //     popupMsgInit('.applyLeaveFail');
+                    // } else {
                         var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                         var success = $("success", htmlDom);
                         if ($(success).html() != undefined) {
-                            $(".toast-style").fadeIn(100).delay(3000).fadeOut(100);
+                            //如果送签成功，重新获取请假单列表，并跳转到“请假单查询”页，并记录代理人到local端
+                            QueryEmployeeLeaveApplyForm();
+                            changePageByPanel("viewLeaveQuery");
+                            $(".toast-style").fadeIn(100).delay(2000).fadeOut(100);
+                            //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
                             localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
                         } else {
                             var error = $("error", htmlDom);
@@ -460,7 +468,7 @@ $("#viewPersonalLeave").pagecontainer({
                             $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                             popupMsgInit('.applyLeaveFail');
                         }
-                    }
+                    // }
                     loadingMask("hide");
                 }
             };
@@ -568,8 +576,23 @@ $("#viewPersonalLeave").pagecontainer({
                 //modify by Allen
                 //beginDate = currentYear + "/" + currentMonth + "/" + currentDate;
                 //endDate = currentYear + "/" + currentMonth + "/" + currentDate;
+
+                //第一次進入首頁檢查是否有代理人信息，有則檢查代理人是否在職
                 if(localStorage.getItem("agent") !== null) {
                     agentid = JSON.parse(localStorage.getItem("agent"))[1];
+                    queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>'
+                                                 + myEmpNo
+                                                 + '</EmpNo><qEmpno>'
+                                                 + agentid
+                                                 + '</qEmpno><qName></qName></LayoutHeader>';
+                    //根据id获取代理人信息
+                    QueryEmployeeDetail();
+                    if(employeeName == "") {
+
+                    } else {
+                        
+                    }
+
                 }
 
                 viewPersonalLeaveInit = true;
@@ -726,21 +749,21 @@ $("#viewPersonalLeave").pagecontainer({
 
         $(document).on("change", "#leaveType-popup", function() {
             leaveid = $(this).val();
-            leaveType = $(this).text();
+            leaveType = $.trim($(this).text());
             leaveTypeSelected = true;
         });
 
         $(document).on("popupafterclose", "#leaveType-popup-option", function() {
             if(leaveTypeSelected) {
-                for(var i = 0; i < leaveIDArry.length; i++) {
-                    if (leaveid === $(leaveIDArry[i]).html()) {
+                for(var i = 0; i < quickLeaveList.length; i++) {
+                    if (leaveid === quickLeaveList[i]["leaveid"]) {
                         queryLeftDaysData = "<LayoutHeader><EmpNo>"
                                           + myEmpNo
                                           + "</EmpNo><leaveid>"
-                                          + $(leaveIDArry[i]).html()
+                                          + quickLeaveList[i]["leaveid"]
                                           + "</leaveid></LayoutHeader>";
                         //呼叫API
-                        QueryLeftDaysData($(leaveIDArry[i]).html());
+                        QueryLeftDaysData(quickLeaveList[i]["leaveid"]);
                         //after custom API
                         checkLeftDaysByQuickLeave();
                     }

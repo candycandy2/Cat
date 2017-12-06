@@ -43,6 +43,7 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #mypanelviewLeaveSubmit").on("click", function() {
+        editLeaveForm = false; 
         changePageByPanel("viewLeaveSubmit");
     });
 
