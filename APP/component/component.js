@@ -504,15 +504,17 @@ function getAppLogParam() {
 }
 
 function onPause() {
-    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-    var onPauseTime = new Date().getTime();
-    if (appLogData.log_list != null) {
-        var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length-1].start_time;
-        appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
-        jsonData = appLogData;
-        localStorage.setItem('appLogData', JSON.stringify(jsonData));
+    if (window.localStorage.getItem("appLogData") !== null) {
+        var appLogData = JSON.parse(window.localStorage.getItem('appLogData'));
+        var onPauseTime = new Date().getTime();
+        if (appLogData.log_list != null) {
+            var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length-1].start_time;
+            appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
+            jsonData = appLogData;
+            window.localStorage.setItem('appLogData', JSON.stringify(jsonData));
+        }
+        var doAddAppLog = new getAddAppLog();
     }
-    var doAddAppLog = new getAddAppLog();
 }
 
 function onResume() {
