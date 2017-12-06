@@ -1059,6 +1059,8 @@ input[type=checkbox]:checked + label {
 
 #viewMyInfoEditContent .chatroom-info-photo-content {
     position: relative;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 #viewMyInfoEditContent .my-photo-edit {
@@ -1070,6 +1072,20 @@ input[type=checkbox]:checked + label {
     padding: 1vw 2vw;
     height: 4vw;
     width: 6.28vw;
+}
+
+#viewMyInfoEditContent .my-photo-edit-background {
+    background-color: #000000;
+    position: relative;
+    top: -8vw;
+    height: 7vw;
+    width: 25vw;
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(0,0,0,0.5) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(0,0,0,0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+#viewMyInfoEditContent img {
+    border-radius: 50%;
 }
 
 .avatar-crop-content {
@@ -1107,6 +1123,18 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 /*-----------------------------------------------------------------My Info Popup*/
+#userInfoPopup .app-popup .ui-content .header.all-center {
+    /*top: 60%;*/
+}
+
+#userInfoPopup .ui-content {
+    padding-bottom: 2.07vw;
+}
+
+#userInfoPopup img {
+    border-radius: 50%;
+}
+
 #userInfoPopup .close-popup {
     position: absolute;
     top: -9%;
@@ -1118,6 +1146,57 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 #userInfoPopup .close-popup-button {
     width: 9.661vw;
     height: 9.661vw;
+}
+
+.personal-popup-name {
+    font-size: 4.18vw;
+    color: #323232;
+}
+
+.personal-popup-memo {
+    font-size: 3.349vw;
+    color: #666666;
+}
+
+.personal-popup-email-title {
+    font-size: 3.14vw;
+    color: #323232;
+    margin-top: 3vw;
+    margin-bottom: 2vw;
+}
+
+.personal-popup-email {
+    font-size: 4.18vw;
+    color: #2C89BC;
+    margin-bottom: 3vw;
+}
+
+.personal-popup-phone-title {
+    font-size: 3.14vw;
+    color: #323232;
+    margin-top: 3vw;
+    margin-bottom: 2vw;
+}
+
+.personal-popup-phone {
+    font-size: 4.18vw;
+    color: #2C89BC;
+    margin-bottom: 3vw;
+}
+
+.personal-popup-button {
+    font-size: 4.18vw;
+    color: #2C89BC;
+    margin-top: 3vw;
+    margin-bottom: 2vw;
+    text-align: center;
+}
+
+.button-add-status {
+    font-size: 3.14vw;
+    color: #989898;
+    margin-top: 1vw;
+    margin-bottom: 2vw;
 }
 
 .hide {
