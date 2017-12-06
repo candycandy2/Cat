@@ -446,12 +446,14 @@ $(document).one("pagebeforecreate", function() {
             footerFixed();
         },
         pagebeforeshow: function() {
-            var appLogData = JSON.parse(localStorage.getItem('appLogData'));
-            var firstPageLoad = JSON.parse(sessionStorage.getItem('firstPageLoad'));
-            if (firstPageLoad == null) {
-                sessionStorage.setItem('firstPageLoad', 'true');
-                if (appLogData != null && appLogData.log_list.length != 0) {
-                    var doAddAppLog = new getAddAppLog();
+            if (loginData.uuid !== null ) {
+                var appLogData = JSON.parse(localStorage.getItem('appLogData'));
+                var firstPageLoad = JSON.parse(sessionStorage.getItem('firstPageLoad'));
+                if (firstPageLoad == null) {
+                    sessionStorage.setItem('firstPageLoad', 'true');
+                    if (appLogData != null && appLogData.log_list.length != 0) {
+                        var doAddAppLog = new getAddAppLog();
+                    }
                 }
             }
         },
