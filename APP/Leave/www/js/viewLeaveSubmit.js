@@ -275,6 +275,10 @@ $("#viewLeaveSubmit").pagecontainer({
                         $("#leaveDays").text("0");
                         $("#leaveHours").text("0");
                     }
+
+                    //檢查是否可以預覽送簽
+                    checkLeaveBeforePreview();
+
                     loadingMask("hide");
                 }
             };
@@ -298,19 +302,22 @@ $("#viewLeaveSubmit").pagecontainer({
                     var success = $("success", htmlDom);
                     if ($(success).html() != undefined) {
                         //如果送签成功，重新获取请假单列表，并跳转到“请假单查询”页，并记录代理人到local端
-                        QueryEmployeeLeaveApplyForm();
                         $("#backMain").click();
                         changePageByPanel("viewLeaveQuery");
+                        QueryEmployeeLeaveApplyForm();
                         $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
-                        //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
+                        //送签成功，清空申请表单
+                        $("previewBtn").trigger("click");
+                        //如果快速请假申请成功，代理人信息存到local端，姓名在前，工号在后
                         localStorage.setItem("agent", JSON.stringify([$("#leave-agent-popup option").text(), agentid]));
                     } else {
+                        loadingMask("hide");
                         var error = $("error", htmlDom);
                         var errorMsg = $(error).html();
                         $('.leftDaysByLeave').find('.header-text').html(errorMsg);
                         popupMsgInit('.leftDaysByLeave');
                     }
-                    loadingMask("hide");
+                    
                 }
             };
 
@@ -324,18 +331,12 @@ $("#viewLeaveSubmit").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewLeaveSubmit").on("pagebeforeshow", function(event, ui) {
-            if(!viewLeaveSubmitInit) {
-                //申請日期和預覽申請日期，都是实际當天日期
-                $('#applyDay').text(applyDay);
-                $('#previewApplyDay').text(applyDay);
-                
-                viewLeaveSubmitInit = true;
-            }
 
         });
 
         $("#viewLeaveSubmit").on("pageshow", function(event, ui) {
-
+            $('#applyDay').text(applyDay);
+            $('#previewApplyDay').text(applyDay);
             loadingMask("hide");
         });
 
@@ -480,7 +481,6 @@ $("#viewLeaveSubmit").pagecontainer({
         $(document).on("click", "#leave-agent-popup-option ul li", function(e) {
             agentid = $(this).attr("value");
             agentName = $(this).children("div").eq(1).children("span").text();
-            //console.log(agentid+":"+agentName);
         });
 
         //popup打开以后生成代理人列表
@@ -607,7 +607,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             startLeaveDate = "";
             startLeaveDay = 0;
-            startLeaveTime = 0;  
+            startLeaveTime = 0;
 
             //開始時間是否爲空
             if(self !== "") {
@@ -708,7 +708,6 @@ $("#viewLeaveSubmit").pagecontainer({
                                                   + baseday
                                                   + "</datumdate></LayoutHeader>";
 
-                    //console.log(countLeaveHoursByEndQueryData);
                     //呼叫API
                     CountLeaveHoursByEnd();
 
