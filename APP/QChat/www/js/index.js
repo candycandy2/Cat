@@ -100,6 +100,7 @@ window.initialSuccess = function() {
 
                     if (is_invite) {
                         $("#userInfoPopup .status-b").show();
+                        $("#userInfoPopup .button-add").addClass("personal-popup-button-disable");
                     } else {
                         $("#userInfoPopup .status-a").show();
                     }
@@ -129,7 +130,10 @@ window.initialSuccess = function() {
 
                 //Check if is Protect User
                 if (JM.data.chatroom_user[window.personalPopupUserID].is_protect) {
-
+                    //Check if send invite before
+                    if (!JM.data.chatroom_user[window.personalPopupUserID].is_invite) {
+                        window.sendQInvitation("popup", window.personalPopupUserID);
+                    }
                 } else {
                     window.setQFriend(window.personalPopupUserID);
                 }
