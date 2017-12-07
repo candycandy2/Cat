@@ -508,7 +508,7 @@ function getAppLogParam() {
 function onPause() {
     if (loginData.uuid.length != 0 && loginData['loginid'].length != 0) {
         var appLogData = JSON.parse(window.localStorage.getItem('appLogData'));       
-        if (appLogData !== null && appLogData.log_list.length != 0) {
+        if (appLogData != null && appLogData.log_list.length != 0) {
             var onPauseTime = new Date().getTime();
             var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length-1].start_time;
             appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
