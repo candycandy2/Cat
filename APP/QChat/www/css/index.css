@@ -1199,6 +1199,10 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     margin-bottom: 2vw;
 }
 
+.personal-popup-button-disable {
+    color: #989898;
+}
+
 .hide {
     display: none;
 }

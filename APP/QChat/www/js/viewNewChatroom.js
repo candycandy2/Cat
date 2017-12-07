@@ -386,8 +386,10 @@ $("#viewNewChatroom").pagecontainer({
             }(userID));
         };
 
-        window.sendQInvitation = function(listViewID, userID) {
-            (function(listViewID, userID) {
+        window.sendQInvitation = function(action, userID, listViewID) {
+            listViewID = listViewID || null;
+
+            (function(action, userID, listViewID) {
 
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
@@ -403,12 +405,18 @@ $("#viewNewChatroom").pagecontainer({
 
                     if (resultCode === "1") {
 
-                        $("#" + listViewID).find(".button-icon-content").hide();
-                        $("#" + listViewID).find(".action-info").show();
+                        if (action === "listview") {
+                            $("#" + listViewID).find(".button-icon-content").hide();
+                            $("#" + listViewID).find(".action-info").show();
 
-                        $("#actionMsg2").show();
+                            $("#actionMsg2").show();
 
-                        actionButton("show");
+                            actionButton("show");
+                        } else if (action === "popup") {
+                            $("#userInfoPopup .status-a").hide();
+                            $("#userInfoPopup .status-b").show();
+                            $("#userInfoPopup .button-add").addClass("personal-popup-button-disable");
+                        }
 
                     }
                 };
@@ -417,7 +425,7 @@ $("#viewNewChatroom").pagecontainer({
 
                 CustomAPI("POST", true, "sendQInvitation", successCallback, failCallback, queryData, "");
 
-            }(listViewID, userID));
+            }(action, userID, listViewID));
         };
 
         window.sendQInstall = function(listViewID, userID) {
@@ -468,7 +476,7 @@ $("#viewNewChatroom").pagecontainer({
             } else if (action === "not-register") {
                 window.sendQInstall(listViewID, userID);
             } else if (action === "protect") {
-                window.sendQInvitation(listViewID, userID);
+                window.sendQInvitation("listview", userID, listViewID);
             } else {
                 $(".action-success-full-screen").show();
 
