@@ -416,7 +416,7 @@ $("#viewLeaveQuery").pagecontainer({
             leaveDetailFrom = true;
             //var self = $(this).children("span").eq(0).text();
             var self = $.trim($(this).text());
-            var formid = $(this).attr("form-id");      
+            var formid = $(this).attr("form-id");
 
             //先获取部分详情，另外部分详情在API中获取
             leaveDetailObj = getLeaveDetailByID(formid);
