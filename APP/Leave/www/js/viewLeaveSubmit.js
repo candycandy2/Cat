@@ -1,14 +1,10 @@
-var allLeaveCategroyStr = langStr["str_122"];    //所有類別
+
 var pleaseSelectStr = langStr["str_069"];    //請選擇
-var leftStr = langStr["str_124"];    //剩餘
-var dayStr = langStr["str_071"];    //天
-var canApplyStr = langStr["str_125"];    //可申請
-var otherBasedayStr = langStr["str_141"];    //選擇其他基準日
 var selectBasedayStr = langStr["str_127"];    //選擇時間
+var otherBasedayStr = "選擇其他基準日";
 var viewLeaveSubmitInit = false;
-var categroyList = [];
-var selectCategory;
-var leaveCategory;
+var selectCategory;     //选择的类别，可能为“所有类别”
+var leaveCategory;      //对应假别的类别，肯定没有“所有类别”
 var leaveObj = {};
 var leaveDetail = {};
 var leaveSelected = false;
@@ -17,11 +13,9 @@ var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeav
 var basedayList = false;
 var baseday = "";
 var needBaseday = false;
-var selectBaseday = false;
-var selectDatetime = false;
 var leaveReason;
-var leaveSubmitPreview = false;
 var editLeaveForm = false;
+var countApplyDays, countApplyHours;
 
 var categroyData = {
     id: "categroy-popup",
@@ -227,7 +221,7 @@ $("#viewLeaveSubmit").pagecontainer({
                             basedayHtml += '<div class="tpl-option-msg-list">' + dateFormat($(dateArr[i]).html()) + '</div>';
                         }
                         $(".old-baseday-list").empty().append(basedayHtml);
-                        $(".old-baseday-list").append('<div class="tpl-option-msg-list">選擇其他基準日</div>');
+                        $(".old-baseday-list").append('<div class="tpl-option-msg-list">' + otherBasedayStr + '</div>');
 
                         basedayList = true;
                     }

@@ -1,11 +1,6 @@
-var backLeaveStateSign = langStr["str_147"];    //表單簽核中
-var backLeaveStateWithdraw = langStr["str_148"];    //表單已撤回
-var backLeaveStateEffect = langStr["str_149"];  //表單已生效
-var backLeaveStateRefuse = langStr["str_150"];  //表單已拒絕
 var viewBackLeaveQueryInit = false;
 var backLeaveListArr = [];
 var backLeaveDetailObj = {};
-var backLeaveFormid;
 var signToWithdrawReason;
 
 
@@ -43,8 +38,8 @@ $("#viewBackLeaveQuery").pagecontainer({
                         leaveObject["begintime"] = $(begintimeArr[i]).html();
                         leaveObject["enddate"] = $(enddateArr[i]).html();
                         leaveObject["endtime"] = $(endtimeArr[i]).html();
-                        leaveObject["days"] = $(leavedaysArr[i]).html();
-                        leaveObject["hours"] = $(leavehoursArr[i]).html();
+                        leaveObject["days"] = $(leavedaysArr[i]).html().split(".")[0];
+                        leaveObject["hours"] = ($(leavehoursArr[i]).html().split(".")[1] == "0") ? $(leavehoursArr[i]).html().split(".")[0] : $(leavehoursArr[i]).html();
 
                         //表單簽核的4種狀態
                         if($(statusArr[i]).html() == "AP") {
@@ -353,9 +348,9 @@ $("#viewBackLeaveQuery").pagecontainer({
             }
 
             if(backLeaveListArr.length == 0) {
-                $("#maxBackLeaveMsg").text("*暫無假單記錄");
+                $("#maxBackLeaveMsg").text(langStr["str_177"]);
             } else {
-                $("#maxBackLeaveMsg").text("*僅顯示近10筆假單記錄");
+                $("#maxBackLeaveMsg").text(langStr["str_145"]);
                 $(".backLeave-query-main-list").empty().append(backLeaveHtml);
             }
 
@@ -386,7 +381,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //详情页传值
         function setBackLeaveDataToDetail() {
-            $("#backLeaveAppltDate").text(dateFormatter(backLeaveDetailObj["applydate"]));
+            $("#backLeaveApplyDate").text(dateFormatter(backLeaveDetailObj["applydate"]));
             $("#backLeaveFormNo").text(backLeaveDetailObj["formno"]);
             $("#backLeaveStatus").text(backLeaveDetailObj["statusName"]);
             $("#refLeaveFormNo").text(backLeaveDetailObj["refleaveformno"]);
@@ -414,7 +409,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         $(document).on("click", ".backLeave-query-state", function() {
             loadingMask("show");
             var self = $.trim($(this).text());
-            backLeaveFormid = $(this).attr("form-id");
+            var backLeaveFormid = $(this).attr("form-id");
 
             //先获取部分详情从销假单列表当中，另外部分详情从详情API中获取
             backLeaveDetailObj = getBackLeaveDetailByID(backLeaveFormid);
@@ -498,7 +493,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                                            + '</formid><formno>'
                                            + backLeaveDetailObj["formno"]
                                            + '</formno><reason>'
-                                           + backLeaveDetailObj["reason"]
+                                           + signToWithdrawReason
                                            + '</reason></LayoutHeader>';
         
             //呼叫API

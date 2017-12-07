@@ -2,13 +2,12 @@ var leaveid, leaveType, agentid, beginDate, endDate, beginTime, endTime;
 var viewPersonalLeaveInit = false;
 var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
-var fulldayHide = false;
-//var leftDaysData = {};
+//var fulldayHide = false;
 var timoutQueryEmployeeData = null;
 var quickLeaveList = [];
 var allLeaveList = [];
 var quickLeaveLeft;
-var countSuccess, countError, countApplyDays, countApplyHours;
+var allLeaveCategroyStr = "所有類別";
 
 var leaveTypeData = {
     id: "leaveType-popup",
@@ -280,9 +279,6 @@ $("#viewPersonalLeave").pagecontainer({
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var leftDays = $("leftdays", htmlDom);
-                    //leftDaysData[leaveid] = parseFloat($(leftDays).html());
-
-                    //quickLeaveLeft取代leftDaysData
                     quickLeaveLeft = parseFloat($(leftDays).html());
                 }
             };
