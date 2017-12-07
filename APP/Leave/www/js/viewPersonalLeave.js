@@ -227,8 +227,8 @@ $("#viewPersonalLeave").pagecontainer({
 
                         //3.注意事項列表
                         var noticeData = data['Content'][0]["Noticelist"];
-                        var noticeDom = '<p>' + noticeData + '</p>';
-                        $("#infoContent-3").empty().append(noticeDom); 
+                        //var noticeDom = '<p>' + noticeData + '</p>';
+                        $("#infoContent-3").empty().append(noticeData); 
 
                         //localStorage.setItem
                         var leaveDefault = {
@@ -253,8 +253,8 @@ $("#viewPersonalLeave").pagecontainer({
 
                         //3.注意事項列表
                         var noticeData = leaveDefault["Noticelist"];
-                        var noticeDom = '<p>' + noticeData + '</p>';
-                        $("#infoContent-3").empty().append(noticeDom);
+                        //var noticeDom = '<p>' + noticeData + '</p>';
+                        $("#infoContent-3").empty().append(noticeData);
                     }
                     
                 }
