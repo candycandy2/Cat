@@ -1,9 +1,11 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
-var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData;
-var QueryEmployeeLeaveApplyFormQueryData, LeaveApplyFormDetailQueryData, RecallLeaveApplyFormQueryData,
-DeleteLeaveApplyFormQueryData, SendLeaveCancelFormDataQueryData;
-var QueryDatumDatesQueryData;
-var QueryEmployeeLeaveCancelFormQueryData, LeaveCancelFormDetailQueryData, RecallLeaveCancelFormQueryData, DeleteLeaveCancelFormQueryData;
+var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData,
+queryEmployeeLeaveInfoQueryData;
+var queryDatumDatesQueryData, countLeaveHoursByEndQueryData, sendApplyLeaveQueryData;
+var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallLeaveApplyFormQueryData, deleteLeaveApplyFormQueryData,
+sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
+var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recallLeaveCancelFormQueryData, deleteLeaveCancelFormQueryData,
+backLeaveFormLeaveDetailQueryData;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
@@ -12,6 +14,10 @@ var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQ
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var htmlContent = "";
+var signedStr = "已簽核";
+var withdrawedStr = "已撤回";
+var rejectedStr = "已拒絕";
+var notSignStr = "未簽核";
 
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
@@ -35,6 +41,8 @@ var dayTable = {
 window.initialSuccess = function() {
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
+
+    //行事历
     queryCalendarData = "<LayoutHeader><Year>"
                       + currentYear
                       + "</Year><Month>"
@@ -42,15 +50,46 @@ window.initialSuccess = function() {
                       + "</Month><EmpNo>"
                       + myEmpNo
                       + "</EmpNo></LayoutHeader>";
-    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo><LastModified></LastModified></LayoutHeader>";
-    QueryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+
     QueryCalendarData();
-    if (leaveTypeData["option"].length == 0) {
-        GetDefaultSetting();
+
+    //默认设置GetDefaultSetting
+    if(localStorage.getItem("leaveDefaultSetting") == null) {
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified>20170101000000</LastModified></LayoutHeader>";
+    } else {
+        var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified>"
+                                   + lastModified
+                                   + "</LastModified></LayoutHeader>";
     }
+    GetDefaultSetting();
+    //选择日期为“请选择”
+    $("#startText").text(pleaseSelectStr);
+    $("#endText").text(pleaseSelectStr);
+
+    //个人剩余假别资讯
+    queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveInfo();
+
+    //请假单查询——获取假单列表
+    queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveApplyForm();
+
+    //销假单查询——获取销假单列表
+    queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+    QueryEmployeeLeaveCancelForm();
+
+    //data scroll menu
     dateInit();
+
+    //changepage
     $.mobile.changePage("#viewPersonalLeave");
+
+    //agent
     if(localStorage.getItem("agent") !== null) {
         //viewPersonalLeave
         $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
@@ -100,110 +139,6 @@ function onBackKeyDown() {
         changePageByPanel(prePageID);    
     }
 
-    // if(visitedPageList.length == 1) {
-    //     if (checkPopupShown()){
-    //         var popupID = $(".ui-popup-active")[0].children[0].id;
-    //         $('#' + popupID).popup("close");
-    //     } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //         $("#mypanel").panel("close");
-    //     } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-1") {
-    //         $("input[id=viewPersonalLeave-tab-2]").trigger('click');
-    //         $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-    //         $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
-    //     } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-2") {
-    //         navigator.app.exitApp();
-    //     }
-    // } else {
-    //     var activePageID = visitedPageList[visitedPageList.length-1];
-    //     var prePageID = visitedPageList[visitedPageList.length-2];
-
-    //     if (activePageID === "viewPersonalLeave") {
-    //         if (checkPopupShown()){
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel("close");
-    //         } else if ($("#viewPersonalLeaveTab :radio:checked").val() == "viewPersonalLeave-tab-1") {
-    //             $("input[id=viewPersonalLeave-tab-2]").trigger('click');
-    //             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-    //             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);     
-    //         }
-    //     } else if (activePageID === "viewLeaveSubmit") {
-    //         if (checkPopupShown()) {
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel("close");
-    //         } else if ($("#leaveReason").is(":focus")){
-    //             $("#leaveReason").blur();
-    //         } else if ($("#backMain").css("display") == "inline") {
-    //             $("#backMain").click();
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);   
-    //         }
-    //     } else if (activePageID === "viewLeaveQuery") {
-    //         if (checkPopupShown()) {
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel( "close");
-    //         } else if ($("#withdrawReason").is(":focus")){
-    //             $("#withdrawReason").blur();
-    //         } else if ($("#dispelReason").is(":focus")){
-    //             $("#dispelReason").blur();
-    //         } else if ($("#backEffectPreview").css("display") == "inline") {
-    //             $("#backEffectPreview").click();
-    //         } else if ($("#backSignPreview").css("display") == "inline") {
-    //             $("#backSignPreview").click();
-    //         } else if ($("#backDetailList").css("display") == "inline") {
-    //             $("#backDetailList").click();
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);    
-    //         }
-    //     } else if (activePageID === "viewBackLeaveQuery") {
-    //         if (checkPopupShown()) {
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel("close");
-    //         } else if ($("#signTowithdrawReason").is(":focus")){
-    //             $("#signTowithdrawReason").blur();
-    //         } else if ($("#backToList").css("display") == "inline") {
-    //             $("#backToList").click();
-    //         } else if ($("#backToSign").css("display") == "inline") {
-    //             $("#backToSign").click();
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);        
-    //         }
-    //     } else if (activePageID === "viewHolidayCalendar") {
-    //         if (checkPopupShown()) {
-    //             var popupID = $(".ui-popup-active")[0].children[0].id;
-    //             $('#' + popupID).popup("close");
-    //         } else if ($(".ui-page-active").jqmData("panel") === "open"){
-    //             $("#mypanel").panel("close");
-    //         } else if ($("#viewHolidayCalendarTab :radio:checked").val() == "viewHolidayCalendar-tab-3") {
-    //             $("input[id=viewHolidayCalendar-tab-2]").trigger('click');
-    //             $("label[for=viewHolidayCalendar-tab-2]").addClass('ui-btn-active');
-    //             $("label[for=viewHolidayCalendar-tab-3]").removeClass('ui-btn-active');
-    //             $("label[for=viewHolidayCalendar-tab-1]").removeClass('ui-btn-active');
-    //         } else if ($("#viewHolidayCalendarTab :radio:checked").val() == "viewHolidayCalendar-tab-2") {
-    //             $("input[id=viewHolidayCalendar-tab-1]").trigger('click');
-    //             $("label[for=viewHolidayCalendar-tab-1]").addClass('ui-btn-active');
-    //             $("label[for=viewHolidayCalendar-tab-2]").removeClass('ui-btn-active');
-    //             $("label[for=viewHolidayCalendar-tab-3]").removeClass('ui-btn-active');
-    //         } else {
-    //             visitedPageList.pop();
-    //             changePageByPanel(prePageID);    
-    //         }
-    //     }
-    // }
-  
 }
 
 $(document).ready(function() {
@@ -227,7 +162,7 @@ function changePageByPanel(pageId) {
         $.mobile.changePage("#" + pageId);
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
-        //切换菜单才添加，back键不添加
+        //切换菜单才添加，back返回时不添加
         if(pageId !== visitedPageList[visitedPageList.length-1]) {
             visitedPageList.push(pageId);
         }
@@ -286,13 +221,100 @@ function dateInit() {
     $("#leaveDate a:eq(0)").click();
 }
 
-//格式化日期字符串：日/月/年 —— 年-月-日
+//格式化日期字符串：“日/月/年” —— “年-月-日”
 function dateFormat(dataStr) {
-    var arr = dataStr.split("/");
+    var str = dataStr.split("/");
 
     var newArr = [];
-    for(var i in arr) {
-        newArr.unshift(arr[i]);
+    for(var i in str) {
+        newArr.unshift(str[i]);
     }
     return newArr.join("-");
+}
+
+//格式化日期格式：“月/日/年 時:分:秒 PM” —— “年/月/日”
+function dateFormatter(dataStr) {
+    //先獲得“月/日/年”
+    var arr = dataStr.split(" ")[0].split("/");
+    var newArr = [];
+    newArr.push(arr[2]);
+    newArr.push(arr[0]);
+    newArr.push(arr[1]);
+    return newArr.join("-");
+}
+
+//假單列表到詳情（请假单和销假单共用）
+function leaveListToDetail(btn1, btn2, btn3, state) {
+    $(".leaveMenu").hide();
+    $(".leave-query-main").hide();
+    $("#backDetailList").show();
+    $(".leave-query-detail-sign").show();
+    if(state == null) {
+        $("#" + btn1).hide();
+    } else {
+        $("#" + btn1).show();
+    }
+    $("#" + btn2).hide();
+    $("#" + btn3).hide();
+}
+
+//获取签核流程（请假单和销假单共用）
+function getSignFlow(arr, serial, empname, yn, date, remark) {
+    for(var i = 0; i < serial.length; i++) {
+        var signObj = {};
+        signObj["serial"] = $(serial[i]).html();
+        signObj["empname"] = $(empname[i]).html();
+        signObj["yn"] = $(yn[i]).html();
+        signObj["date"] = $(date[i]).html();
+        signObj["remark"] = $(remark[i]).html();
+
+        //根据签核状态判断使用什么图标
+        //状态为“Y”是approved(已签核)
+        if($(yn[i]).html() == "Y") {
+            signObj["icon"] = "success.png";
+            signObj["statusName"] = signedStr;
+
+        //状态为"N"是rejected(已拒绝)
+        } else if($(yn[i]).html() == "N") {
+            signObj["icon"] = "reject.png";
+            signObj["statusName"] = rejectedStr;
+
+        //状态为""且日期为""，则是(未签核)
+        } else if($(yn[i]).html() == "" && $(date[i]).html() == "") {
+            signObj["icon"] = "blank.png";
+            signObj["statusName"] = notSignStr;
+
+        //状态为""但日期不为""，则是(已撤销)
+        } else if($(yn[i]).html() == "" && $(date[i]).html() !== "") {
+            signObj["icon"] = "withdraw.png";
+            signObj["statusName"] = withdrawedStr;
+        }
+
+        arr.push(signObj);
+    }
+}
+
+//签核流程动态添加（请假单和销假单共用）
+function setLeaveFlowToPopup(arr, dom) {
+    var flow = "";
+    for(var i in arr) {
+        flow += '<li class="sign-list">' +
+                    '<div class="sign-icon">' +
+                        '<img src="img/' + arr[i]["icon"] + '">' +
+                    '</div>' +
+                    '<div class="sign-name">' +
+                        '<div class="font-style3">' +
+                            '<span>' + arr[i]["empname"] + '</span>' +
+                        '</div>' +
+                        '<div class="font-style10">' +
+                            '<span>' + arr[i]["date"] + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="sign-state font-style3">' +
+                        '<span>' + arr[i]["statusName"] + '</span>' +
+                    '</div>' +
+                '</li>';
+    }
+
+    $(dom).empty().append(flow);
 }

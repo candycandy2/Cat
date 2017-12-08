@@ -1,9 +1,9 @@
 
 $("#viewChatroom").pagecontainer({
     create: function(event, ui) {
-        
+
+        var nowChatroomID = "";
         var newCreate;
-        var chatroomDataError = false;
         var lastRenderJMMsgID = 0;
         var lastRenderQPlayMsgID = 0;
         var msgDateText = "";
@@ -13,30 +13,35 @@ $("#viewChatroom").pagecontainer({
         var receiveMsg = false;
 
         /********************************** function *************************************/
-        window.sendTextMessage = function(text, event, action) {
+        window.sendTextMessage = function(chatroomID, text, event, action) {
             event = event || false;
             action = action || "";
 
-            (function(text, event, action) {
+            (function(chatroomID, text, event, action) {
 
                 var callback = function(status, data) {
 
                     if (status === "success") {
+                        sendMessage = true;
+
                         if (!event) {
-                            sendMessage = true;
-                            window.getConversation(true);
+                            window.getConversation(chatroomID, true);
+                        } else {
+                            if (action === "newChatroom") {
+                                window.getConversation(chatroomID, true);
+                            }
                         }
                     }
 
                 };
 
-                JM.Message.sendTextMessage(text, callback, event, action);
+                JM.Message.sendTextMessage(chatroomID, text, callback, event, action);
 
-            }(text, event, action));
+            }(chatroomID, text, event, action));
         };
 
-        function sendImageMessage() {
-            (function() {
+        function sendImageMessage(chatroomID) {
+            (function(chatroomID) {
 
                 sendImgSuccess = false;
                 imageDefaultMessage();
@@ -45,16 +50,16 @@ $("#viewChatroom").pagecontainer({
 
                     if (status === "success") {
                         sendMessage = true;
-                        window.getConversation(true);
+                        window.getConversation(chatroomID, true);
                     } else {
                         //error case
                     }
 
                 };
 
-                JM.Message.sendImageMessage(photoLocalPath, callback);
+                JM.Message.sendImageMessage(chatroomID, photoLocalPath, callback);
 
-            }());
+            }(chatroomID));
         }
 
         function imageDefaultMessage() {
@@ -138,7 +143,7 @@ $("#viewChatroom").pagecontainer({
             //Photo Confirm - Button Event
             $("#photoConfirm").on("click", function() {
                 confirmPhotoClose();
-                sendImageMessage();
+                sendImageMessage(nowChatroomID);
             });
         }
 
@@ -188,12 +193,12 @@ $("#viewChatroom").pagecontainer({
             });
         }
 
-        window.getConversation = function(getHistory, receiveMessage) {
+        window.getConversation = function(chatroomID, getHistory, receiveMessage) {
             receiveMessage = receiveMessage || false;
 
             receiveMsg = receiveMessage;
 
-            (function(getHistory, receiveMessage) {
+            (function(chatroomID, getHistory, receiveMessage) {
 
                 var callback = function(status, data) {
 
@@ -201,154 +206,167 @@ $("#viewChatroom").pagecontainer({
                         console.log("----getConversation--success");
                         console.log(data);
 
-                        window.processChatroomData(data, "getConversation", getHistory, receiveMessage);
+                        if (newCreate) {
+                            window.getGroupIds("getConversation", data);
+                        } else {
+                            window.processChatroomData(data, "getConversation", getHistory, receiveMessage);
+                        }
                     }
 
                 };
 
-                JM.Chatroom.getConversation(callback);
+                JM.Chatroom.getConversation(chatroomID, callback);
 
-            }(getHistory, receiveMessage));
+            }(chatroomID, getHistory, receiveMessage));
         };
 
         window.processChatroomData = function(data, action, getHistory, receiveMessage) {
+            receiveMessage = receiveMessage || false;
 
-            console.log(data.conversationType);
-            console.log(data.target);
-            console.log(data.latestMessage);
+            (function(data, action, getHistory, receiveMessage) {
 
-            var avatarPath;
-            var avatarDownloadTime;
-            var loadHistory;
-            var memberData;
-            var lastViewMsgID = 0;
+                //For receive event, check if User is still in this chatroom,
+                //if not, ignore the chatroom data, and don't show it.
+                if (groupsArray.indexOf(data.target.id.toString()) == -1) {
+                    return;
+                }
 
-            //Check if Chatroom data was exist
-            if (JM.data.chatroom[data.target.id] !== undefined) {
-                avatarPath = JM.data.chatroom[data.target.id].avatar_path;
-                avatarDownloadTime = JM.data.chatroom[data.target.id].avatar_download_time;
-                loadHistory = JM.data.chatroom[data.target.id].load_history;
-                memberData = JM.data.chatroom[data.target.id].member;
-                lastViewMsgID  = JM.data.chatroom[data.target.id].last_view_msg_id;
-            } else {
-                avatarPath = "";
-                avatarDownloadTime = 0;
-                loadHistory = false;
-                memberData = [];               
-            }
+                var avatarPath;
+                var avatarDownloadTime;
+                var loadHistory;
+                var memberData;
+                var lastViewMsgID = 0;
 
-            //For JMessage Bug, if getConversation does not return [owner],
-            //need to call getGroupInfo to get [owner];
-            if (data.target.owner === undefined) {
-                var callback = function(owner) {
-                    data.target.owner = owner;
-                    window.processChatroomData(data, action, getHistory, receiveMessage);
-                };
-
-                window.getGroupInfo(data.target.id, callback);
-
-                return;
-            }
-
-            //Chatroom can not work without [desc]
-            if (data.target.desc.indexOf("=") != -1) {
-
-                var descArray = data.target.desc.split(";");
-
-                //Check if Chatroom need auto read history
-                var needHistory;
-                var needHistoryArray = descArray[0].split("=");
-                if (needHistoryArray[1] === "Y") {
-                    needHistory = true;
+                //Check if Chatroom data was exist
+                if (JM.data.chatroom[data.target.id] !== undefined) {
+                    avatarPath = JM.data.chatroom[data.target.id].avatar_path;
+                    avatarDownloadTime = JM.data.chatroom[data.target.id].avatar_download_time;
+                    loadHistory = JM.data.chatroom[data.target.id].load_history;
+                    memberData = JM.data.chatroom[data.target.id].member;
+                    lastViewMsgID  = JM.data.chatroom[data.target.id].last_view_msg_id;
                 } else {
-                    needHistory = false;
+                    avatarPath = "";
+                    avatarDownloadTime = 0;
+                    loadHistory = false;
+                    memberData = [];
                 }
 
-                //Check if Chatroom is [1 to 1] or group
-                var groupMessage;
-                var groupMessageArray = descArray[1].split("=");
-                if (groupMessageArray[1] === "Y") {
-                    groupMessage = true;
-                } else {
-                    groupMessage = false;
+                //For JMessage Bug, if getConversation does not return [owner],
+                //need to call getGroupInfo to get [owner];
+                if (data.target.owner === undefined) {
+                    var callback = function(callbackData) {
+                        data.target.desc = callbackData.desc;
+                        data.target.name = callbackData.name;
+                        data.target.owner = callbackData.owner;
+
+                        window.processChatroomData(data, action, getHistory, receiveMessage);
+                    };
+
+                    window.getGroupInfo("viewChatroom", data.target.id, callback);
+
+                    return;
                 }
 
-                //Check if Chatroom name changed by user
-                var nameChanged;
-                var nameChangedArray = descArray[2].split("=");
-                if (nameChangedArray[1] === "Y") {
-                    nameChanged = true;
-                } else {
-                    nameChanged = false;
+                //Chatroom can not work without [desc]
+                //[desc] should be : [need_history=Y;group_message=Y;name_changed=N]
+                if (data.target.desc.length < 40) {
+                    return;
                 }
 
-                //message: text or image
-                var messageContent = "";
+                if (data.target.desc.indexOf("=") != -1) {
 
-                if (data.latestMessage.type === "text") {
-                    messageContent = data.latestMessage.text;
-                } else if (data.latestMessage.type === "image") {
-                    messageContent = data.latestMessage.from.username + " 上傳了一張圖片";
-                }
+                    var descArray = data.target.desc.split(";");
 
-                var tempData = {
-                    is_group: groupMessage,
-                    name: data.target.name,
-                    name_changed: nameChanged,
-                    owner: data.target.owner,
-                    unread_count: data.unreadCount,
-                    member: memberData,
-                    last_message: {
-                        create_time: data.latestMessage.createTime,
-                        id: data.latestMessage.id,
-                        from: data.latestMessage.from.username,
-                        type: data.latestMessage.type,
-                        text: messageContent
-                    },
-                    avatar_path: avatarPath,
-                    avatar_download_time: avatarDownloadTime,
-                    need_history: needHistory,
-                    load_history: loadHistory,
-                    last_view_msg_id: lastViewMsgID
-                };
+                    //Check if Chatroom need auto read history
+                    var needHistory;
+                    var needHistoryArray = descArray[0].split("=");
+                    if (needHistoryArray[1] === "Y") {
+                        needHistory = true;
+                    } else {
+                        needHistory = false;
+                    }
 
-                JM.data.chatroom[data.target.id] = tempData;
+                    //Check if Chatroom is [1 to 1] or group
+                    var groupMessage;
+                    var groupMessageArray = descArray[1].split("=");
+                    if (groupMessageArray[1] === "Y") {
+                        groupMessage = true;
+                    } else {
+                        groupMessage = false;
+                    }
 
-                JM.updateLocalStorage();
+                    //Check if Chatroom name changed by user
+                    var nameChanged;
+                    var nameChangedArray = descArray[2].split("=");
+                    if (nameChangedArray[1] === "Y") {
+                        nameChanged = true;
+                    } else {
+                        nameChanged = false;
+                    }
 
-                if (!receiveMessage) {
-                    if (action === "getConversation") {
-                        //If send message, no need to refresh group member
-                        if (!sendMessage) {
-                            //If edit chatroom info, no need to refresh group member
-                            if (prevPageID != "viewChatroomInfo") {
+                    //message: text or image
+                    var messageContent = "";
+
+                    if (data.latestMessage.type === "text") {
+                        messageContent = data.latestMessage.text;
+                    } else if (data.latestMessage.type === "image") {
+                        messageContent = data.latestMessage.from.username + " 上傳了一張圖片";
+                    }
+
+                    var tempData = {
+                        is_group: groupMessage,
+                        name: data.target.name,
+                        name_changed: nameChanged,
+                        owner: data.target.owner,
+                        unread_count: data.unreadCount,
+                        member: memberData,
+                        last_message: {
+                            create_time: data.latestMessage.createTime,
+                            id: data.latestMessage.id,
+                            from: data.latestMessage.from.username,
+                            type: data.latestMessage.type,
+                            text: messageContent
+                        },
+                        avatar_path: avatarPath,
+                        avatar_download_time: avatarDownloadTime,
+                        need_history: needHistory,
+                        load_history: loadHistory,
+                        last_view_msg_id: lastViewMsgID
+                    };
+
+                    JM.data.chatroom[data.target.id] = tempData;
+
+                    JM.updateLocalStorage();
+
+                    if (!receiveMessage) {
+                        if (action === "getConversation") {
+                            //If send message, no need to refresh group member
+                            if (!sendMessage) {
+                                //If edit chatroom info, no need to refresh group member
+                                if (prevPageID != "viewChatroomInfo") {
+                                    window.getGroupMembers(data.target.id, groupMessage, "getConversation");
+                                }
+                            }
+
+                            window.chatroomTitle();
+                        }
+
+                        if (getHistory) {
+                            getHistoryMessages();
+                        }
+                    } else {
+                        if (!getHistory) {
+                            window.getGroupMembers(data.target.id, groupMessage, "chatroomListView");
+                        } else {
+                            //viewChatroom
+                            getHistoryMessages();
+
+                            if (newCreate) {
                                 window.getGroupMembers(data.target.id, groupMessage, "getConversation");
                             }
                         }
                     }
-
-                    if (getHistory) {
-                        getHistoryMessages();
-                    }
                 } else {
-                    if (!getHistory) {
-                        //viewIndex
-                        if (chatroomDataError) {
-                            window.chatroomListView();
-                        } else {
-                            window.getGroupMembers(data.target.id, groupMessage, "chatroomListView");
-                        }
-                    } else {
-                        //viewChatroom
-                        getHistoryMessages();
-                    }
-                }
-            } else {
-                if (action === "getConversation") {
-                    //For JMessage Bug, desc / name will return null,
-                    //get those data from QPlay
-                    chatroomDataError = true;
-
                     var callback = function(name, desc) {
                         data.target.name = name;
                         data.target.desc = desc;
@@ -358,13 +376,14 @@ $("#viewChatroom").pagecontainer({
 
                     window.getQUserChatroom("conversation", data.target.id, callback);
                 }
-            }
+
+            }(data, action, getHistory, receiveMessage));
 
         };
 
         window.chatroomTitle = function() {
-            var chatroomName = JM.data.chatroom[JM.chatroomID].name;
-            var memberLength = JM.data.chatroom[JM.chatroomID].member.length;
+            var chatroomName = JM.data.chatroom[nowChatroomID].name;
+            var memberLength = JM.data.chatroom[nowChatroomID].member.length;
 
             $("#chatroomTitle").html(cutString(58.5, chatroomName, 4.39, "number", memberLength));
         };
@@ -379,7 +398,7 @@ $("#viewChatroom").pagecontainer({
 
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
-                    group_id: JM.chatroomID,
+                    group_id: nowChatroomID,
                     begin_time: beginTime,
                     end_time: endTime
                 };
@@ -392,8 +411,8 @@ $("#viewChatroom").pagecontainer({
 
                     if (resultCode === "1") {
 
-                        if (JM.data.chatroom_message_history[JM.chatroomID] === undefined) {
-                            JM.data.chatroom_message_history[JM.chatroomID] = [];
+                        if (JM.data.chatroom_message_history[nowChatroomID] === undefined) {
+                            JM.data.chatroom_message_history[nowChatroomID] = [];
                         }
 
                         if (data["Content"].messages.length > 0) {
@@ -414,7 +433,7 @@ $("#viewChatroom").pagecontainer({
                                         }
                                     };
 
-                                    JM.data.chatroom_message_history[JM.chatroomID].push(tempData);
+                                    JM.data.chatroom_message_history[nowChatroomID].push(tempData);
                                 } else if (data["Content"].messages[i].msg_type === "image") {
                                     var tempData = {
                                         id: (i + 1),
@@ -432,14 +451,16 @@ $("#viewChatroom").pagecontainer({
                                         }
                                     };
 
-                                    JM.data.chatroom_message_history[JM.chatroomID].push(tempData);
+                                    JM.data.chatroom_message_history[nowChatroomID].push(tempData);
                                 }
 
                             }
 
-                            JM.data.chatroom[JM.chatroomID].load_history = true;
+                            JM.data.chatroom[nowChatroomID].load_history = true;
                             JM.updateLocalStorage();
 
+                            callback();
+                        } else {
                             callback();
                         }
 
@@ -456,17 +477,17 @@ $("#viewChatroom").pagecontainer({
         function getHistoryMessages() {
             (function() {
 
-                if (JM.data.chatroom[JM.chatroomID] === undefined) {
+                if (JM.data.chatroom[nowChatroomID] === undefined) {
                     //new create chatroom
-                    var from = 1;
-                    var limit = 0;
+                    var from = 0;
+                    var limit = -1;
                 } else {
 
                     var getHistory = false;
 
-                    if (JM.data.chatroom_message_history[JM.chatroomID] === undefined) {
+                    if (JM.data.chatroom_message_history[nowChatroomID] === undefined) {
                         //For User who was new added to the chatroom
-                        if (JM.data.chatroom[JM.chatroomID].need_history == true && JM.data.chatroom[JM.chatroomID].load_history == false) {
+                        if (JM.data.chatroom[nowChatroomID].need_history == true && JM.data.chatroom[nowChatroomID].load_history == false) {
                             if (!newCreate) {
                                 getQGroupHistoryMessage(getHistoryMessages);
                                 return;
@@ -483,8 +504,14 @@ $("#viewChatroom").pagecontainer({
                     if (getHistory) {
                         //According to the retrun data from JMessage API-getConversations,
                         //decide the [from] & [limit]
-                        var from = JM.data.chatroom[JM.chatroomID].last_message.id;
-                        var limit = JM.data.chatroom[JM.chatroomID].unread_count;
+                        //var from = JM.data.chatroom[nowChatroomID].last_message.id;
+                        var from = 0;
+
+                        if (sendMessage) {
+                            var limit = 1;
+                        } else {
+                            var limit = JM.data.chatroom[nowChatroomID].unread_count;
+                        }
                     }
 
                 }
@@ -494,6 +521,16 @@ $("#viewChatroom").pagecontainer({
                     if (status === "success") {
                         console.log("----getHistoryMessages--success");
                         console.log(data);
+
+                        //Update unread_count in local storage
+                        var oldUnreadCount = JM.data.chatroom[nowChatroomID].unread_count;
+                        var newUnreadCount = oldUnreadCount - limit;
+
+                        if (newUnreadCount < 0) {
+                            newUnreadCount = 0;
+                        }
+
+                        JM.data.chatroom[nowChatroomID].unread_count = newUnreadCount;
 
                         //the message id won't return by serial number, ex: [1,2,3,4,5],
                         //may return this type [1,2,3,5,4]; so, sort the data by id
@@ -505,23 +542,23 @@ $("#viewChatroom").pagecontainer({
                         var msgIDArray = [];
                         window.msgTimeArray = [];
 
-                        if (JM.data.chatroom_message_history[JM.chatroomID] === undefined) {
-                            JM.data.chatroom_message_history[JM.chatroomID] = [];
+                        if (JM.data.chatroom_message_history[nowChatroomID] === undefined) {
+                            JM.data.chatroom_message_history[nowChatroomID] = [];
                         } else {
-                            for (var i=0; i<JM.data.chatroom_message_history[JM.chatroomID].length; i++) {
+                            for (var i=0; i<JM.data.chatroom_message_history[nowChatroomID].length; i++) {
 
-                                if (JM.data.chatroom_message_history[JM.chatroomID][i].source === "JM") {
-                                    var msgID = "msgJM" + JM.data.chatroom_message_history[JM.chatroomID][i].id;
-                                } else if (JM.data.chatroom_message_history[JM.chatroomID][i].source === "QPlay") {
-                                    var msgID = "msgQPlay" + JM.data.chatroom_message_history[JM.chatroomID][i].id;
+                                if (JM.data.chatroom_message_history[nowChatroomID][i].source === "JM") {
+                                    var msgID = "msgJM" + JM.data.chatroom_message_history[nowChatroomID][i].id;
+                                } else if (JM.data.chatroom_message_history[nowChatroomID][i].source === "QPlay") {
+                                    var msgID = "msgQPlay" + JM.data.chatroom_message_history[nowChatroomID][i].id;
                                 }
 
                                 msgIDArray.push(msgID);
-                                msgTimeArray[JM.data.chatroom_message_history[JM.chatroomID][i].time] = i;
+                                msgTimeArray[JM.data.chatroom_message_history[nowChatroomID][i].time] = i;
                             }
                         }
 
-                        var lastMessageID = "msgJM" + JM.data.chatroom[JM.chatroomID].last_message.id;
+                        var lastMessageID = "msgJM" + JM.data.chatroom[nowChatroomID].last_message.id;
 
                         $.each(tempData, function(index, data) {
 
@@ -536,7 +573,7 @@ $("#viewChatroom").pagecontainer({
 
                                     //Check if the msg with same timestamp has exist in QPlay, remove it.
                                     if (msgTimeArray[data.createTime] != undefined) {
-                                        JM.data.chatroom_message_history[JM.chatroomID].splice(msgTimeArray.indexOf(data.createTime), 1);
+                                        JM.data.chatroom_message_history[nowChatroomID].splice(msgTimeArray.indexOf(data.createTime), 1);
                                     }
 
                                     pushData = true;
@@ -559,7 +596,7 @@ $("#viewChatroom").pagecontainer({
                                         }
                                     };
 
-                                    JM.data.chatroom_message_history[JM.chatroomID].push(tempData);
+                                    JM.data.chatroom_message_history[nowChatroomID].push(tempData);
                                 } else if (data.type === "image") {
                                     var tempData = {
                                         id: data.id,
@@ -577,7 +614,7 @@ $("#viewChatroom").pagecontainer({
                                         }
                                     };
 
-                                    JM.data.chatroom_message_history[JM.chatroomID].push(tempData);
+                                    JM.data.chatroom_message_history[nowChatroomID].push(tempData);
                                 }
 
                             }
@@ -593,13 +630,13 @@ $("#viewChatroom").pagecontainer({
 
                 };
 
-                JM.Message.getHistoryMessages(from, limit, callback);
+                JM.Message.getHistoryMessages(nowChatroomID, from, limit, callback);
 
             }());
         }
 
         function resetUnreadMessageCount() {
-            JM.Chatroom.resetUnreadMessageCount();
+            JM.Chatroom.resetUnreadMessageCount(nowChatroomID);
         }
 
         function messageListView() {
@@ -611,23 +648,23 @@ $("#viewChatroom").pagecontainer({
             var msgImgRightHTML = $("template#tplMsgImgRight").html();
             var msgImgLeftHTML = $("template#tplMsgImgLeft").html();
 
-            var owner = JM.data.chatroom[JM.chatroomID].owner;
+            var owner = JM.data.chatroom[nowChatroomID].owner;
             var lastSender = "";
             var lastMsg = "";
 
-            $.each(JM.data.chatroom_message_history[JM.chatroomID], function(index, message) {
+            $.each(JM.data.chatroom_message_history[nowChatroomID], function(index, message) {
 
                 //Set last_view_msg_id
-                if (JM.data.chatroom[JM.chatroomID].last_view_msg_id == 0) {
+                if (JM.data.chatroom[nowChatroomID].last_view_msg_id == 0) {
                     if (message.type === "text") {
 
                         if (message.source === "JM") {
-                            var lastViewID = "msgJM" + message.id;
+                            var lastViewID = "JM" + message.id;
                         } else if (message.source === "QPlay") {
-                            var lastViewID = "msgQPlay" + message.id;
+                            var lastViewID = "QPlay" + message.id;
                         }
 
-                        JM.data.chatroom[JM.chatroomID].last_view_msg_id = lastViewID;
+                        JM.data.chatroom[nowChatroomID].last_view_msg_id = lastViewID;
                     }
                 }
 
@@ -692,6 +729,7 @@ $("#viewChatroom").pagecontainer({
                         } else {
                             var msgText = $(msgTextLeftHTML);
                             msgText.find(".name").html(message.from);
+                            msgText.find(".personal-popup").data("userID", message.from);
                         }
 
                         lastSender = message.from;
@@ -735,18 +773,19 @@ $("#viewChatroom").pagecontainer({
                     } else {
                         var msgImg = $(msgImgLeftHTML);
                         msgImg.find(".name").html(message.from);
+                        msgImg.find(".personal-popup").data("userID", message.from);
                     }
 
                     lastSender = message.from;
                     lastMsg = "上傳了一張圖片";
 
                     if (message.source === "JM") {
-                        var tagID = JM.chatroomID + "-JM" + message.id;
+                        var tagID = nowChatroomID + "-JM" + message.id;
                         var imagePath = message.thumbPath;
 
                         msgImg.prop("id", "msgJM" + message.id);
                     } else if (message.source === "QPlay") {
-                        var tagID = JM.chatroomID + "-QPlay" + message.id;
+                        var tagID = nowChatroomID + "-QPlay" + message.id;
                         var imagePath = message.thumbPath;
 
                         msgImg.prop("id", "msgQPlay" + message.id);
@@ -777,18 +816,21 @@ $("#viewChatroom").pagecontainer({
                     receiveMsg = false;
                     sendMessage = false;
                 }
+
+                //Re-Sort Chatroom sequence in viewIndex
+                window.chatroomListView(nowChatroomID, "sort");
             } else {
                 $(".message-preview").hide();
             }
 
             //scroll to specific message id
-            var last_view_msg_id = JM.data.chatroom[JM.chatroomID].last_view_msg_id;
+            var last_view_msg_id = JM.data.chatroom[nowChatroomID].last_view_msg_id;
 
-            if ($("#" + last_view_msg_id).length != 0) {
+            if ($("#msg" + last_view_msg_id).length != 0) {
                 var headerHeight = $("#viewChatroom .page-header").height();
                 var footerHeight = $("#viewChatroom .ui-header").height();
-                var msgHeight = $("#" + last_view_msg_id).height();
-                var scrollPageTop = $("#" + last_view_msg_id).offset().top - ($(window).height() - headerHeight - footerHeight);
+                var msgHeight = $("#msg" + last_view_msg_id).height();
+                var scrollPageTop = $("#msg" + last_view_msg_id).offset().top - ($(window).height() - headerHeight - footerHeight);
 
                 if (device.platform === "iOS") {
                     scrollPageTop -= 20;
@@ -851,20 +893,20 @@ $("#viewChatroom").pagecontainer({
         }
 
         function checkImageDownload(msgID) {
-            for (var i=0; i<JM.data.chatroom_message_history[JM.chatroomID].length; i++) {
+            for (var i=0; i<JM.data.chatroom_message_history[nowChatroomID].length; i++) {
 
-                var checkID = "msg" + JM.data.chatroom_message_history[JM.chatroomID][i].source + JM.data.chatroom_message_history[JM.chatroomID][i].id;
+                var checkID = "msg" + JM.data.chatroom_message_history[nowChatroomID][i].source + JM.data.chatroom_message_history[nowChatroomID][i].id;
 
                 if (msgID == checkID) {
-                    if (!JM.data.chatroom_message_history[JM.chatroomID][i].get_download) {
+                    if (!JM.data.chatroom_message_history[nowChatroomID][i].get_download) {
                         downloadOriginalImage(msgID);
                     } else {
 
                         //Check the image exist in JM or QPlay
-                        if (JM.data.chatroom_message_history[JM.chatroomID][i].source === "JM") {
-                            var imagePath = JM.data.chatroom_message_history[JM.chatroomID][i].thumbPath;
-                        } else if (JM.data.chatroom_message_history[JM.chatroomID][i].source === "QPlay") {
-                            var imagePath = JM.data.chatroom_message_history[JM.chatroomID][i].originalPath;
+                        if (JM.data.chatroom_message_history[nowChatroomID][i].source === "JM") {
+                            var imagePath = JM.data.chatroom_message_history[nowChatroomID][i].thumbPath;
+                        } else if (JM.data.chatroom_message_history[nowChatroomID][i].source === "QPlay") {
+                            var imagePath = JM.data.chatroom_message_history[nowChatroomID][i].originalPath;
                         }
 
                         tempImage(imagePath, "download");
@@ -887,24 +929,24 @@ $("#viewChatroom").pagecontainer({
 
                         //if the image msg in messageListView doesn't show up correctly,
                         //update the src of img
-                        if ($("#" + JM.chatroomID + "-JM" + JMessageID).prop("src").length == 0) {
-                            $("#" + JM.chatroomID + "-JM" + JMessageID).prop("src", data.filePath);
+                        if ($("#" + nowChatroomID + "-JM" + JMessageID).prop("src").length == 0) {
+                            $("#" + nowChatroomID + "-JM" + JMessageID).prop("src", data.filePath);
                         }
 
-                        for (var i=0; i<JM.data.chatroom_message_history[JM.chatroomID].length; i++) {
+                        for (var i=0; i<JM.data.chatroom_message_history[nowChatroomID].length; i++) {
 
-                            var checkID = "msg" + JM.data.chatroom_message_history[JM.chatroomID][i].source + JM.data.chatroom_message_history[JM.chatroomID][i].id;
+                            var checkID = "msg" + JM.data.chatroom_message_history[nowChatroomID][i].source + JM.data.chatroom_message_history[nowChatroomID][i].id;
 
                             if (msgID == checkID) {
                                 var downloadTime = new Date();
                                 var downloadTimeStamp = downloadTime.TimeStamp();
 
-                                JM.data.chatroom_message_history[JM.chatroomID][i].thumbPath = data.filePath;
-                                JM.data.chatroom_message_history[JM.chatroomID][i].download_time = downloadTimeStamp;
-                                JM.data.chatroom_message_history[JM.chatroomID][i].get_download = true;
+                                JM.data.chatroom_message_history[nowChatroomID][i].thumbPath = data.filePath;
+                                JM.data.chatroom_message_history[nowChatroomID][i].download_time = downloadTimeStamp;
+                                JM.data.chatroom_message_history[nowChatroomID][i].get_download = true;
                                 JM.updateLocalStorage();
 
-                                tempImage(JM.data.chatroom_message_history[JM.chatroomID][i].thumbPath, "download");
+                                tempImage(JM.data.chatroom_message_history[nowChatroomID][i].thumbPath, "download");
                                 break;
                             }
                         }
@@ -912,14 +954,14 @@ $("#viewChatroom").pagecontainer({
 
                 };
 
-                JM.Message.downloadOriginalImage(JMessageID, callback);
+                JM.Message.downloadOriginalImage(nowChatroomID, JMessageID, callback);
 
             }(msgID));
         }
 
         function exitGroup() {
             JM.Chatroom.exitGroup(function(status, data) {
-                delete JM.data.chatroom[JM.chatroomID];
+                delete JM.data.chatroom[nowChatroomID];
                 JM.updateLocalStorage();
             });
         }
@@ -967,23 +1009,27 @@ $("#viewChatroom").pagecontainer({
         /********************************** page event *************************************/
         $("#viewChatroom").on("pagebeforeshow", function(event, ui) {
             cameraButtonSet("close");
+            $(".message-preview").hide();
         });
 
         $("#viewChatroom").on("pageshow", function(event, ui) {
 
             prevPageID = "viewChatroom";
 
+            nowChatroomID = JM.chatroomID;
             newCreate = false;
             lastRenderJMMsgID = 0;
-            lastRenderQPlayMsgID
+            lastRenderQPlayMsgID = 0;
             msgDateText = "";
             $("#viewChatroomContent .msg").remove();
 
             //Chatroom Title
             //if new create chatroom, the JM.data.chatroom[JM.chatroomID] is empty
-            if (JM.data.chatroom[JM.chatroomID] === undefined) {
+            if (JM.data.chatroom[nowChatroomID] === undefined) {
                 newCreate = true;
-                window.getConversation(true);
+
+                //Send default first message
+                window.sendTextMessage(nowChatroomID, loginData["loginid"] + "  建立聊天室", true, "newChatroom");
             } else {
                 window.chatroomTitle();
 
@@ -992,8 +1038,7 @@ $("#viewChatroom").pagecontainer({
             }
 
             //JMessage - enter conversation
-            JM.Chatroom.enterConversation();
-
+            JM.Chatroom.enterConversation(nowChatroomID);
         });
 
         /********************************** dom event *************************************/
@@ -1014,6 +1059,7 @@ $("#viewChatroom").pagecontainer({
 
         $(document).on({
             click: function() {
+                JM.chatroomID = nowChatroomID;
                 $.mobile.changePage('#viewChatroomInfo');
             }
         }, ".chatroom-info");
@@ -1023,7 +1069,7 @@ $("#viewChatroom").pagecontainer({
             click: function() {
 
                 if ($("#msgText").val().length > 0) {
-                    sendTextMessage($("#msgText").val());
+                    sendTextMessage(nowChatroomID, $("#msgText").val());
                     $("#msgText").val("");
                 }
 
@@ -1074,10 +1120,11 @@ $("#viewChatroom").pagecontainer({
             $("#viewChatroomContent .msg").each(function(index, el) {
                 if ($(el).prop("id").length !== 0) {
 
-                    var last_view_msg_id = JM.data.chatroom[JM.chatroomID].last_view_msg_id;
+                    var last_view_msg_id = getMsgNumber(JM.data.chatroom[nowChatroomID].last_view_msg_id);
                     var ID = $(el).prop("id").substr(3);
+                    var IDNumber = getMsgNumber(ID);
 
-                    if (parseInt(ID, 10) <= parseInt(last_view_msg_id, 10)) {
+                    if (parseInt(IDNumber, 10) <= parseInt(last_view_msg_id, 10)) {
                         return;
                     }
 
@@ -1089,7 +1136,7 @@ $("#viewChatroom").pagecontainer({
                         (rect.bottom + footerHeight) <= (window.innerHeight || document.documentElement.clientHeight) &&
                         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
                     ) {
-                        JM.data.chatroom[JM.chatroomID].last_view_msg_id = ID;
+                        JM.data.chatroom[nowChatroomID].last_view_msg_id = ID;
                         return false;
                     }
 
@@ -1097,5 +1144,13 @@ $("#viewChatroom").pagecontainer({
             });
 
         };
+
+        function getMsgNumber(ID) {
+            if (ID.indexOf("JM") != -1) {
+                return ID.substr(2);
+            } else if (ID.indexOf("QPlay") != -1) {
+                return ID.substr(5);
+            }
+        }
     }
 });

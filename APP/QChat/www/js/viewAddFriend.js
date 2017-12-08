@@ -62,11 +62,12 @@ $("#viewAddFriend").pagecontainer({
                 var userList = $(userListHTML);
 
                 userList.prop("id", "userList" + dataIndex);
-                userList.find(".checkbox-content").addClass("checkbox-content-addFriend");
+                userList.find(".checkbox-content").remove();
                 userList.find(".user-content").addClass("user-content-addFriend");
 
                 //name
                 userList.find(".user-name").html(userName);
+                userList.find(".personal-popup").data("userID", userName);
 
                 //info
                 if (JM.data.chatroom_user[userName].is_register == false) {
