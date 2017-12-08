@@ -468,40 +468,40 @@ $(document).one("pagebeforecreate", function() {
 function getAppLogParam() {
     //localStorage.clear();
     var ADAccount = loginData['loginid'];
-    var packageName = "com.qplay." + appKey;
-    var pagename = $.mobile.activePage.attr('id'); 
-    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-    var objLogList = new Object();
-    if ( ADAccount.length != 0 && appKey != null && pagename != null) {
-        objLogList.page_name = $.mobile.activePage.attr('id');
-        objLogList.page_action = "enterPage";
-        objLogList.start_time = new Date().getTime();
-        objLogList.period = "";
-        objLogList.device_type = device.platform.toLowerCase();
-
-        if (appLogData == null || appLogData.log_list.length == 0) {
-            jsonData = {
-                login_id: ADAccount,
-                package_name: packageName,
-                log_list: [objLogList]
-            };
-        } else if (objLogList.page_name == appLogData.log_list[appLogData.log_list.length-1].page_name) {
-            appLogData.login_id = ADAccount;
-            appLogData.package_name = packageName;
-            appLogData.log_list.push(objLogList);
-            jsonData = appLogData;
-        } else {
-            appLogData.login_id = ADAccount;
-            appLogData.package_name = packageName;
-            var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length-1].start_time;
-            appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
-            appLogData.log_list.push(objLogList);
-            jsonData = appLogData;
+    if (loginData.uuid.length != 0 && ADAccount.length != 0)
+        var packageName = "com.qplay." + appKey;
+        var pagename = $.mobile.activePage.attr('id'); 
+        var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
+        var objLogList = new Object();
+        if ( appKey != null && pagename != null) {
+            objLogList.page_name = $.mobile.activePage.attr('id');
+            objLogList.page_action = "enterPage";
+            objLogList.start_time = new Date().getTime();
+            objLogList.period = "";
+            objLogList.device_type = device.platform.toLowerCase();
+            if (appLogData == null || appLogData.log_list.length == 0) {
+                jsonData = {
+                    login_id: ADAccount,
+                    package_name: packageName,
+                    log_list: [objLogList]
+                };
+            } else if (objLogList.page_name == appLogData.log_list[appLogData.log_list.length-1].page_name) {
+                appLogData.login_id = ADAccount;
+                appLogData.package_name = packageName;
+                appLogData.log_list.push(objLogList);
+                jsonData = appLogData;
+            } else {
+                appLogData.login_id = ADAccount;
+                appLogData.package_name = packageName;
+                var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length-1].start_time;
+                appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
+                appLogData.log_list.push(objLogList);
+                jsonData = appLogData;
+            }
+            localStorage.setItem('appLogData', JSON.stringify(jsonData)); 
+            //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
+            //setTimeout('checkAmountData()', 10000);
         }
-
-        localStorage.setItem('appLogData', JSON.stringify(jsonData)); 
-        //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
-        //setTimeout('checkAmountData()', 10000);
     }
 }
 
@@ -514,8 +514,9 @@ function onPause() {
             appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
             jsonData = appLogData;
             window.localStorage.setItem('appLogData', JSON.stringify(jsonData));
+            var doAddAppLog = new getAddAppLog();  
         }
-        var doAddAppLog = new getAddAppLog();  
+        
     } 
 }
 
