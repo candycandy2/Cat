@@ -149,7 +149,7 @@ $("#viewMyInfoEdit").pagecontainer({
                 console.log('Native URI: ' + nativePath.substr(7));
 
                 avatarUploadPath = nativePath.substr(7);
-                updateMyAvatar();
+                //updateMyAvatar();
             });
         }
 
@@ -179,7 +179,7 @@ $("#viewMyInfoEdit").pagecontainer({
                     var resultCode = data['ResultCode'];
 
                     if (resultCode === "1") {
-
+                        updateMyAvatar();
                     }
                 };
 
@@ -210,6 +210,18 @@ $("#viewMyInfoEdit").pagecontainer({
         /********************************** page event *************************************/
         $("#viewMyInfoEdit").on("pagebeforeshow", function(event, ui) {
 
+            if (JM.data.chatroom_user[loginData["loginid"]].avator_download_time != 0) {
+                $("#viewMyInfoEditContent .chatroom-info-photo-content svg").hide();
+                $("#viewMyInfoEditContent .chatroom-info-photo-content img").prop("src", JM.data.chatroom_user[loginData["loginid"]].avator_path);
+                $("#viewMyInfoEditContent .chatroom-info-photo-content img").show();
+            }
+
+            $("#myInfoStatus").val(JM.data.chatroom_user[loginData["loginid"]].memo);
+
+        });
+
+        $("#viewMyInfoEdit").on("pageshow", function(event, ui) {
+            prevPageID = "viewMyInfoEdit";
         });
 
         /********************************** dom event *************************************/
@@ -221,9 +233,16 @@ $("#viewMyInfoEdit").pagecontainer({
 
         $(document).on({
             click: function() {
-                updateMyAvatar();
+                setQUserDetail();
             }
         }, "#viewMyInfoEdit #saveMyInfo");
+
+        //Back Button
+        $(document).on({
+            click: function() {
+                $.mobile.changePage('#' + prevPageID);
+            }
+        }, "#backMyInfoEdit");
 
     }
 });

@@ -108,6 +108,7 @@ $("#viewIndex").pagecontainer({
 
                         if (action === "viewIndex") {
                             $(".personal-content .personal-name").html(data['Content'][0].name);
+                            $(".personal-content .personal-popup").data("userID", data['Content'][0].name);
 
                             if (data['Content'][0].memo == null) {
                                 $(".personal-content .personal-name").addClass("user-name-only");
@@ -168,6 +169,7 @@ $("#viewIndex").pagecontainer({
 
                             friendDataList.find(".personal-photo-content").prop("id", "friendList" + i);
                             friendDataList.find(".personal-name").html(data['Content'].friend.user_list[i].name);
+                            friendDataList.find(".personal-popup").data("userID", data['Content'].friend.user_list[i].name);
 
                             if (data['Content'].friend.user_list[i].memo == null) {
                                 friendDataList.find(".personal-name").addClass("user-name-only");
@@ -200,6 +202,33 @@ $("#viewIndex").pagecontainer({
 
             }());
         }
+
+        window.removeQFriend = function() {
+            (function() {
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    destination_emp_no: JM.data.chatroom_user[window.personalPopupUserID].emp_no
+                };
+
+                var queryDataParameter = createXMLDataString(queryDataObj);
+                var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+                        getQFriend();
+                        $("#confirmDeleteFriendPopup").popup("close");
+                    }
+                };
+
+                var failCallback = function() {};
+
+                CustomAPI("POST", true, "removeQFriend", successCallback, failCallback, queryData, "");
+
+            }());
+        };
 
         window.getGroupIds = function(action, chatroom) {
             action = action || null;
@@ -853,13 +882,14 @@ $("#viewIndex").pagecontainer({
             var actionMsgFullScreen = $($("template#tplActionMsgFullScreen").html());
             $("body").append(actionMsgFullScreen);
 
-            //User Info Popup
-            var userInfoPopupData = {
-                id: "userInfoPopup",
-                content: $("template#tplUserInfoPopup").html()
+            //Confirm Delete Friend
+            var confirmDeleteFriendPopupData = {
+                id: "confirmDeleteFriendPopup",
+                content: $("template#tplConfirmDeleteFriend").html()
             };
 
-            tplJS.Popup(null, null, "append", userInfoPopupData);
+            tplJS.Popup(null, null, "append", confirmDeleteFriendPopupData);
+
         });
 
         $("#viewIndex").on("pagebeforeshow", function(event, ui) {
@@ -873,7 +903,7 @@ $("#viewIndex").pagecontainer({
         $("#viewIndex").on("pageshow", function(event, ui) {
 
             //Set Active Tab
-            if (prevPageID === "viewAddFriend") {
+            if (prevPageID === "viewAddFriend" || prevPageID === "viewMyInfoEdit") {
                 $("#tabIndex a:eq(1)").addClass("ui-btn-active");
                 $("#tabIndex").tabs({ active: 1 });
             } else {
@@ -891,6 +921,7 @@ $("#viewIndex").pagecontainer({
             //When leave chatroom, need to receive the Push Notification
             JM.Chatroom.exitConversation();
 
+            prevPageID = "viewIndex";
         });
 
         /********************************** dom event *************************************/
@@ -1047,6 +1078,20 @@ $("#viewIndex").pagecontainer({
                 $.mobile.changePage('#viewAddFriend');
             }
         }, ".friend-add-btn");
+
+        //Confirm Delete Friend
+        $(document).on({
+            click: function(event) {
+
+                if ($(event.target).hasClass("cancel") || $(event.target).parent().hasClass("cancel")) {
+                    $("#confirmDeleteFriendPopup").popup("close");
+                    $("#userInfoPopup").popup("open");
+                } else if ($(event.target).hasClass("confirm") || $(event.target).parent().hasClass("confirm")) {
+                    window.removeQFriend();
+                }
+
+            }
+        }, "#confirmDeleteFriendPopup");
 
     }
 });

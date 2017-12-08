@@ -57,7 +57,7 @@ window.initialSuccess = function() {
     if(localStorage.getItem("leaveDefaultSetting") == null) {
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
                                    + myEmpNo
-                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+                                   + "</EmpNo><LastModified>20170101000000</LastModified></LayoutHeader>";
     } else {
         var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
@@ -299,21 +299,21 @@ function setLeaveFlowToPopup(arr, dom) {
     var flow = "";
     for(var i in arr) {
         flow += '<li class="sign-list">' +
-                            '<div class="sign-icon">' +
-                                '<img src="img/' + arr[i]["icon"] + '">' +
-                            '</div>' +
-                            '<div class="sign-name">' +
-                                '<div class="font-style3">' +
-                                    '<span>' + arr[i]["empname"] + '</span>' +
-                                '</div>' +
-                                '<div class="font-style10">' +
-                                    '<span>' + arr[i]["date"] + '</span>' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="sign-state font-style3">' +
-                                '<span>' + arr[i]["statusName"] + '</span>' +
-                            '</div>' +
-                        '</li>';
+                    '<div class="sign-icon">' +
+                        '<img src="img/' + arr[i]["icon"] + '">' +
+                    '</div>' +
+                    '<div class="sign-name">' +
+                        '<div class="font-style3">' +
+                            '<span>' + arr[i]["empname"] + '</span>' +
+                        '</div>' +
+                        '<div class="font-style10">' +
+                            '<span>' + arr[i]["date"] + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="sign-state font-style3">' +
+                        '<span>' + arr[i]["statusName"] + '</span>' +
+                    '</div>' +
+                '</li>';
     }
 
     $(dom).empty().append(flow);

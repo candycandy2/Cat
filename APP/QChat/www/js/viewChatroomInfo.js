@@ -32,9 +32,12 @@ $("#viewChatroomInfo").pagecontainer({
             for (var i=0; i<memberName.length; i++) {
                 //check if chatroom owner
                 if (memberName[i] != JM.data.chatroom[nowChatroomID].owner) {
+
                     var memberData = $(memberDataHTML);
+
                     memberData.prop("id", "chatroomMemberList" + (i+1));
                     memberData.find(".personal-name").html(memberName[i]);
+                    memberData.find(".personal-popup").data("userID", memberName[i]);
 
                     //Only owner can remove member
                     if (loginData["loginid"] === JM.data.chatroom[nowChatroomID].owner) {
@@ -49,12 +52,14 @@ $("#viewChatroomInfo").pagecontainer({
                     $(".member-list-content").append(memberData);
 
                     window.downloadOriginalUserAvatar("chatroomMemberListView", nowTimestamp, memberName[i], (i+1));
+
                 }
             }
 
             var memberData = $(memberDataHTML);
             memberData.prop("id", "chatroomMemberList0");
             memberData.find(".personal-name").html(JM.data.chatroom[nowChatroomID].owner);
+            memberData.find(".personal-popup").data("userID", JM.data.chatroom[nowChatroomID].owner);
             memberData.find(".admin-text").removeClass("hide");
 
             $(".member-list-content").prepend(memberData);
