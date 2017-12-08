@@ -468,7 +468,7 @@ $(document).one("pagebeforecreate", function() {
 function getAppLogParam() {
     //localStorage.clear();
     var ADAccount = loginData['loginid'];
-    if (loginData.uuid.length != 0 && ADAccount.length != 0)
+    if (loginData.uuid.length != 0 && ADAccount.length != 0) {
         var packageName = "com.qplay." + appKey;
         var pagename = $.mobile.activePage.attr('id'); 
         var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
