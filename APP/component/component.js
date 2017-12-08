@@ -469,7 +469,6 @@ function getAppLogParam() {
     //localStorage.clear();
     var ADAccount = loginData['loginid'];
     if (loginData.uuid.length != 0 && ADAccount.length != 0)
-    
         var packageName = "com.qplay." + appKey;
         var pagename = $.mobile.activePage.attr('id'); 
         var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
@@ -480,7 +479,6 @@ function getAppLogParam() {
             objLogList.start_time = new Date().getTime();
             objLogList.period = "";
             objLogList.device_type = device.platform.toLowerCase();
-
             if (appLogData == null || appLogData.log_list.length == 0) {
                 jsonData = {
                     login_id: ADAccount,
@@ -500,7 +498,6 @@ function getAppLogParam() {
                 appLogData.log_list.push(objLogList);
                 jsonData = appLogData;
             }
-
             localStorage.setItem('appLogData', JSON.stringify(jsonData)); 
             //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
             //setTimeout('checkAmountData()', 10000);
