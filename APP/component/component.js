@@ -458,7 +458,7 @@ $(document).one("pagebeforecreate", function() {
             }
         },
         pageshow: function() {
-            getAppLogParam();
+            //getAppLogParam();
         }
     });
 });
@@ -521,7 +521,7 @@ function onPause() {
 }
 
 function onResume() {
-    getAppLogParam();
+    //getAppLogParam();
     //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
     //setTimeout('checkAmountData()', 10000);
 }
@@ -547,7 +547,7 @@ function getAddAppLog() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        QPlayAPI("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "");
+        //QPlayAPI("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "");
     }();
 
 }
