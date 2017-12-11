@@ -30,8 +30,25 @@ class LogAferRequest
 
     public function terminate($request, $response)
     {   
+        $userId = "";
+        $uuid = $request->input('uuid');
+        $domain = $request->header('domain');
+        $loginid = $request->header('loginid');
+        
+        $tempUser = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+        if($domain!=null && $loginid!=null){    
+            if($tempUser !=null){
+                $userId = $tempUser->row_id;
+            }
+        }else if($uuid != null){
+            $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+            if($userInfo !=null){
+                $userId = $userInfo->row_id;
+            }
+        }
+
         $ACTION = explode('@',$this->route->getActionName())[1];
-        CommonUtil::logApi("", $ACTION,
+        CommonUtil::logApi($userId, $ACTION,
         response()->json(apache_response_headers()), json_decode($response->getContent()));
     }
 }

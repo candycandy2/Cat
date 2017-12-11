@@ -114,6 +114,7 @@ return [
     */
 
     'log' => env('APP_LOG', 'daily'),
+    'log_max_files' => 30,
 
     /*
     |--------------------------------------------------------------------------
@@ -161,7 +162,7 @@ return [
     |error_mail_to : 錯誤信收件者信箱
     */
     'error_mail_from' => env('ERROR_MAIL_FROM','QPlay@benq.com'),
-    'error_mail_from_name' => env('ERROR_MAIL_FROM_NAME','QPlayErrorHandler'),
+    'error_mail_from_name' => env('ERROR_MAIL_FROM_NAME','QPlay@benq.com'),
     'error_mail_to' => env('ERROR_MAIL_TO'),
    
 
