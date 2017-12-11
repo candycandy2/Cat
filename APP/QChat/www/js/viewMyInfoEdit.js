@@ -89,8 +89,6 @@ $("#viewMyInfoEdit").pagecontainer({
             });
 
             avatarCropClose();
-
-            loadingMask("show");
         }
 
         function b64toBlob(b64Data, contentType, sliceSize) {
@@ -165,6 +163,8 @@ $("#viewMyInfoEdit").pagecontainer({
 
         function setQUserDetail() {
             (function() {
+
+                loadingMask("show");
 
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],

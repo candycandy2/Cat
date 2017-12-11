@@ -202,7 +202,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         window.BackLeaveFormLeaveDetail = function() {
             
             this.successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
                 if(data['ResultCode'] === "1") {
                     //1.回傳假單詳細信息
                     var callbackData = data['Content'][0]["result"];
@@ -263,8 +263,8 @@ $("#viewBackLeaveQuery").pagecontainer({
                     $("#leaveStartTime").text($(begintime).html());
                     $("#leaveEndDate").text(dateFormatter($(enddate).html()));
                     $("#leaveEndTime").text($(endtime).html());
-                    $("#leaveApplyDays").text($(leavedays).html());
-                    $("#leaveApplyHours").text($(leavehours).html());
+                    $("#leaveApplyDays").text($(leavedays).html().split(".")[0]);
+                    $("#leaveApplyHours").text(($(leavehours).html().split(".")[1] == "0") ? $(leavehours).html().split(".")[0] : $(leavehours).html());
                     $("#leaveApplyReason").text($(reasons).html());
 
                     // //2.回傳簽核流程
@@ -320,7 +320,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                                         '<div class="backLeave-query-base font-style10">' +
                                             '<div class="backLeave-query-basedata">' +
                                                 '<div>' +
-                                                    '<span>請假單號：</span>' +
+                                                    '<span>銷假單號：</span>' +
                                                     '<span class="leave-id">' + backLeaveListArr[i]["formno"] + '</span>' +
                                                 '</div>' +
                                                 '<div>' +
@@ -467,7 +467,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //輸入撤回理由——textarea
         $("#signTowithdrawReason").on("keyup", function() {
-            signToWithdrawReason = $(this).val();
+            signToWithdrawReason = $.trim($(this).val());
 
             if(signToWithdrawReason !== "") {
                 $("#signToWithdrawBtn").addClass("leavePreview-active-btn");

@@ -563,11 +563,13 @@ div.scrollmenu a {
 .categroyFirst > .ui-content,
 .basedayFirst > .ui-content,
 .startdayFirst > .ui-content,
-.confirmSend > .ui-content {
+.confirmSend > .ui-content,
+.agentNotData > .ui-content {
 	padding: 0 !important;
 }
 
-.leaveNotEnough > .ui-content > .header {
+.leaveNotEnough > .ui-content > .header,
+.agentNotData > .ui-content > .header {
 	margin-top: 10%;
 }
 

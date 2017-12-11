@@ -3,6 +3,7 @@ var pleaseSelectStr = langStr["str_069"];    //請選擇
 var selectBasedayStr = langStr["str_127"];    //選擇時間
 var otherBasedayStr = "選擇其他基準日";
 var viewLeaveSubmitInit = false;
+var timoutQueryEmployee = null;
 var selectCategory;     //选择的类别，可能为“所有类别”
 var leaveCategory;      //对应假别的类别，肯定没有“所有类别”
 var leaveObj = {};
@@ -128,49 +129,48 @@ function getLeaveByCategory() {
     basedayList = false;
 }
 
+//当无基准日假别时，呼叫API，对假别剩余天数进行判断
+function checkLeftDaysNoBasedate(leftdays) {
+    //如果假别天数等于0或者小于最小请假单位(天)
+    if(leftdays == 0 || (leftdays > 0 && leftdays < leaveDetail["unit"])) {
+        popupMsgInit('.leaveNotEnough');
+        getLeaveByCategory();
+    } else {
+        //desc
+        if(leaveDetail["desc"] !== "") {
+            var divIntroduce = "<span>*" + leaveDetail["desc"] + "</span>";
+            $('#leaveIntroduce').empty().append(divIntroduce).show();
+        } else {
+            $('#leaveIntroduce').empty().hide();
+        }
+
+        //attachment
+        if(leaveDetail["attach"] === "Y") {
+            $('#uploadAttachment').show();
+        } else {
+            $('#uploadAttachment').hide();
+        }
+
+        //basedate
+        $("#chooseBaseday").text(selectBasedayStr);
+        //$("#oldBaseday").val("");
+        //$("#newBaseday").val("");
+        $('#baseDate').hide();
+        $('#divEmpty').hide();
+        needBaseday = false;
+    }
+
+    //enddate
+    $("#endText").text(pleaseSelectStr);
+    //$("#endDate").val("");
+    $("#leaveDays").text("0");
+    $("#leaveHours").text("0");
+}
 
 $("#viewLeaveSubmit").pagecontainer({
     create: function(event, ui) {
         
         /********************************** function *************************************/
-        //当无基准日假别时，呼叫API，对假别剩余天数进行判断
-        function checkLeftDaysNoBasedate() {
-            //如果假别天数等于0或者小于最小请假单位(天)
-            if(quickLeaveLeft == 0 || (quickLeaveLeft > 0 && quickLeaveLeft < leaveDetail["unit"])) {
-                popupMsgInit('.leaveNotEnough');
-                getLeaveByCategory();
-            } else {
-                //desc
-                if(leaveDetail["desc"] !== "") {
-                    var divIntroduce = "<span>*" + leaveDetail["desc"] + "</span>";
-                    $('#leaveIntroduce').empty().append(divIntroduce).show();
-                } else {
-                    $('#leaveIntroduce').empty().hide();
-                }
-
-                //attachment
-                if(leaveDetail["attach"] === "Y") {
-                    $('#uploadAttachment').show();
-                } else {
-                    $('#uploadAttachment').hide();
-                }
-
-                //basedate
-                $("#chooseBaseday").text(selectBasedayStr);
-                //$("#oldBaseday").val("");
-                //$("#newBaseday").val("");
-                $('#baseDate').hide();
-                $('#divEmpty').hide();
-                needBaseday = false;
-            }
-
-            //enddate
-            $("#endText").text(pleaseSelectStr);
-            //$("#endDate").val("");
-            $("#leaveDays").text("0");
-            $("#leaveHours").text("0");
-        }
-
         //当有基准日时，不需要对假别剩余天数进行判断
         function selectLeaveNeedBasedate() {
             //desc
@@ -301,7 +301,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         QueryEmployeeLeaveApplyForm();
                         $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
-                        $("previewBtn").trigger("click");
+                        $("#emptyLeaveForm").trigger("click");
                         //如果快速请假申请成功，代理人信息存到local端，姓名在前，工号在后
                         localStorage.setItem("agent", JSON.stringify([$("#leave-agent-popup option").text(), agentid]));
                     } else {
@@ -329,8 +329,13 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         $("#viewLeaveSubmit").on("pageshow", function(event, ui) {
+            //如果是从“假单详情（已撤回）”编辑功能跳转过来的，且该代理人不在职，popup提示重新选择代理人
+            if(editLeaveForm && employeeName == "") {
+                popupMsgInit('.agentNotData');
+            }
             $('#applyDay').text(applyDay);
             $('#previewApplyDay').text(applyDay);
+            
             loadingMask("hide");
         });
 
@@ -373,9 +378,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                               + leaveid
                                               + "</leaveid></LayoutHeader>";
                             //呼叫API
-                            QueryLeftDaysData(leaveid);
-                            //after custom API
-                            checkLeftDaysNoBasedate();
+                            QueryLeftDaysData();
 
                         } else if(leaveDetail["basedate"] == "Y") {
                             queryDatumDatesQueryData = "<LayoutHeader><EmpNo>"
@@ -412,9 +415,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                               + leaveid
                                               + "</leaveid></LayoutHeader>";
                             //呼叫API
-                            QueryLeftDaysData(leaveid);
-                            //after custom API
-                            checkLeftDaysNoBasedate();
+                            QueryLeftDaysData();             
 
                         } else if(leaveDetail["basedate"] == "Y") {
                             queryDatumDatesQueryData = "<LayoutHeader><EmpNo>"
@@ -456,11 +457,12 @@ $("#viewLeaveSubmit").pagecontainer({
                               + "</qEmpno><qName>"
                               + searchName
                               + "</qName></LayoutHeader>";
-            if(timoutQueryEmployeeData != null) {
-                clearTimeout(timoutQueryEmployeeData);
-                timoutQueryEmployeeData = null;
+            console.log(queryEmployeeData);
+            if(timoutQueryEmployee != null) {
+                clearTimeout(timoutQueryEmployee);
+                timoutQueryEmployee = null;
             }
-            timoutQueryEmployeeData = setTimeout(function() {
+            timoutQueryEmployee = setTimeout(function() {
                 QueryEmployeeData();
 
                 $("#loaderQuery").show();
@@ -720,7 +722,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //實時獲取多行文本值
         $("#leaveReason").on("keyup", function() {
-            leaveReason = $(this).val();
+            leaveReason = $.trim($(this).val());
 
             //檢查是否可以預覽送簽
             checkLeaveBeforePreview();
@@ -742,10 +744,10 @@ $("#viewLeaveSubmit").pagecontainer({
             //假別
             getLeaveByCategory();
 
-            //代理人
-            var agentOption = '<option hidden>' + pleaseSelectStr + '</option>';
-            $("#leave-agent-popup").find("option").remove().end().append(agentOption);
-            tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+            //代理人不清除
+            // var agentOption = '<option hidden>' + pleaseSelectStr + '</option>';
+            // $("#leave-agent-popup").find("option").remove().end().append(agentOption);
+            // tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
 
             //開始時間
             $("#startText").text(pleaseSelectStr);
