@@ -129,6 +129,8 @@ $("#viewLeaveQuery").pagecontainer({
                     var reasons = $("reason", htmlDom);
                     var datumdate = $("datumdate", htmlDom);
                     var filestatus = $("filestatus", htmlDom);
+                    var begindate = $("begindate", htmlDom);
+                    var enddate = $("enddate", htmlDom);
 
                     //根据代理人工号，查找代理人姓名
                     queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>'
@@ -144,6 +146,8 @@ $("#viewLeaveQuery").pagecontainer({
                     leaveDetailObj["applydate"] = $(applydate).html();
                     leaveDetailObj["reason"] = $(reasons).html();
                     leaveDetailObj["agentid"] = $(delegate).html();
+                    leaveDetailObj["begindate"] = dateFormatter($(begindate).html());
+                    leaveDetailObj["enddate"] = dateFormatter($(enddate).html());
                     leaveDetailObj["datumdate"] = dateFormatter($(datumdate).html());
                     leaveDetailObj["filestatus"] = $(filestatus).html();
 
@@ -493,7 +497,7 @@ $("#viewLeaveQuery").pagecontainer({
 
         //輸入撤回理由——textarea
         $("#withdrawReason").on("keyup", function() {
-            withdrawReason = $(this).val();
+            withdrawReason = $.trim($(this).val());
 
             if(withdrawReason !== "") {
                 $("#confirmWithdrawBtn").addClass("leavePreview-active-btn");
@@ -555,8 +559,6 @@ $("#viewLeaveQuery").pagecontainer({
             var endText = leaveDetailObj["enddate"].split("/").join("-") + " " + leaveDetailObj["endtime"];
 
             //根据代理人id查找代理人姓名，代理人信息已在獲取詳情時存在leaveDetailObj中
-            agentid = leaveDetailObj["agentid"];
-            agentName = leaveDetailObj["agentname"];
             leaveid = leaveDetailObj["leaveid"];
             leaveCategory = leaveDetailObj["category"];
 
@@ -577,10 +579,21 @@ $("#viewLeaveQuery").pagecontainer({
                 }
             });
 
-            //修改代理人
-            var agentOption = '<option hidden>' + agentName + '</option>';
-            $("#leave-agent-popup").find("option").remove().end().append(agentOption);
-            tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+            //修改代理人——如果需要编辑假单，还需要检查代理人是否在职，如果不编辑只需显示代理人信息即可
+            if(employeeName == "") {
+                var agentOption = '<option hidden>' + agentName + '</option>';
+                $("#leave-agent-popup").find("option").remove().end().append(agentOption);
+                tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+                agentid = leaveDetailObj["agentid"];
+                agentName = leaveDetailObj["agentname"];
+            } else {
+                var agentOption = '<option hidden>' + pleaseSelectStr + '</option>';
+                $("#leave-agent-popup").find("option").remove().end().append(agentOption);
+                tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+                agentid = "";
+                agentName = "";
+            }
+            
 
             //修改開始日期
             startLeaveDate = startText;
@@ -646,7 +659,7 @@ $("#viewLeaveQuery").pagecontainer({
 
         //輸入銷假理由——keyup
         $("#dispelReason").on("keyup", function() {
-            dispelReason = $(this).val();
+            dispelReason = $.trim($(this).val());
 
             if(dispelReason !== "") {
                 $("#confirmDispelBtn").addClass("leavePreview-active-btn");
