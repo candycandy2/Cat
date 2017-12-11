@@ -61,7 +61,7 @@ $("#viewLeaveQuery").pagecontainer({
                         leaveObject["begintime"] = $(begintimeArr[i]).html();
                         leaveObject["enddate"] = $(enddateArr[i]).html();
                         leaveObject["endtime"] = $(endtimeArr[i]).html();
-                        leaveObject["days"] = $(leavedaysArr[i]).html().split(".")[0];
+                        leaveObject["days"] = ($(leavedaysArr[i]).html().split(".")[1] == "0") ? $(leavedaysArr[i]).html().split(".")[0] : $(leavedaysArr[i]).html();
                         leaveObject["hours"] = ($(leavehoursArr[i]).html().split(".")[1] == "0") ? $(leavehoursArr[i]).html().split(".")[0] : $(leavehoursArr[i]).html();
                         leaveObject["cancelstatus"] = $(cancelstatusArr[i]).html();
 
@@ -129,8 +129,8 @@ $("#viewLeaveQuery").pagecontainer({
                     var reasons = $("reason", htmlDom);
                     var datumdate = $("datumdate", htmlDom);
                     var filestatus = $("filestatus", htmlDom);
-                    var begindate = $("begindate", htmlDom);
-                    var enddate = $("enddate", htmlDom);
+                    // var begindate = $("begindate", htmlDom);
+                    // var enddate = $("enddate", htmlDom);
 
                     //根据代理人工号，查找代理人姓名
                     queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>'
@@ -140,15 +140,15 @@ $("#viewLeaveQuery").pagecontainer({
                                                  + '</qEmpno><qName></qName></LayoutHeader>';
                     //根据id获取代理人姓名
                     QueryEmployeeDetail();
-                    leaveDetailObj["agentname"] = $(employeeName).html();
+                    leaveDetailObj["agentname"] = employeeName;
 
                     //补全另一部分详情
                     leaveDetailObj["applydate"] = $(applydate).html();
                     leaveDetailObj["reason"] = $(reasons).html();
                     leaveDetailObj["agentid"] = $(delegate).html();
-                    leaveDetailObj["begindate"] = dateFormatter($(begindate).html());
-                    leaveDetailObj["enddate"] = dateFormatter($(enddate).html());
-                    leaveDetailObj["datumdate"] = dateFormatter($(datumdate).html());
+                    // leaveDetailObj["begindate"] = dateFormatter($(begindate).html());
+                    // leaveDetailObj["enddate"] = dateFormatter($(enddate).html());
+                    leaveDetailObj["datumdate"] = formatterDate($(datumdate).html());
                     leaveDetailObj["filestatus"] = $(filestatus).html();
 
                     //改变详情页内容
@@ -302,7 +302,8 @@ $("#viewLeaveQuery").pagecontainer({
                         var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                         var department = $("department", htmlDom);
                         var empno = $("empno", htmlDom);
-                        employeeName = $("name", htmlDom);
+                        var ename = $("name", htmlDom);
+                        employeeName = $.trim($(ename).html());
                     }
                 
                 }
@@ -383,9 +384,9 @@ $("#viewLeaveQuery").pagecontainer({
             $("#leaveCategory").text(leaveDetailObj["category"]);
             $("#leaveName").text(leaveDetailObj["name"]);
             $("#leaveAgentName").text(leaveDetailObj["agentname"]);
-            $("#leaveStartDate").text(leaveDetailObj["begindate"].split("/").join("-"));
+            $("#leaveStartDate").text(leaveDetailObj["begindate"]);
             $("#leaveStartTime").text(leaveDetailObj["begintime"]);
-            $("#leaveEndDate").text(leaveDetailObj["enddate"].split("/").join("-"));
+            $("#leaveEndDate").text(leaveDetailObj["enddate"]);
             $("#leaveEndTime").text(leaveDetailObj["endtime"]);
             $("#leaveApplyDays").text(leaveDetailObj["days"]);
             $("#leaveApplyHours").text(leaveDetailObj["hours"]);
@@ -555,8 +556,8 @@ $("#viewLeaveQuery").pagecontainer({
             editLeaveForm = true;
 
             /**************** 1.取值 ***************/
-            var startText = leaveDetailObj["begindate"].split("/").join("-") + " " + leaveDetailObj["begintime"];
-            var endText = leaveDetailObj["enddate"].split("/").join("-") + " " + leaveDetailObj["endtime"];
+            var startText = leaveDetailObj["begindate"] + " " + leaveDetailObj["begintime"];
+            var endText = leaveDetailObj["enddate"] + " " + leaveDetailObj["endtime"];
 
             //根据代理人id查找代理人姓名，代理人信息已在獲取詳情時存在leaveDetailObj中
             leaveid = leaveDetailObj["leaveid"];
@@ -572,6 +573,17 @@ $("#viewLeaveQuery").pagecontainer({
             });
             
             //修改假別
+            queryLeftDaysData = "<LayoutHeader><EmpNo>"
+                                + myEmpNo
+                                + "</EmpNo><leaveid>"
+                                + leaveid
+                                + "</leaveid></LayoutHeader>";
+            queryDatumDatesQueryData = "<LayoutHeader><EmpNo>"
+                                    + myEmpNo
+                                    + "</EmpNo><leaveid>"
+                                    + leaveid
+                                    + "</leaveid></LayoutHeader>";
+
             $.each($("#leave-popup-option-list li"), function(i, item) {
                 if($(item).text() == leaveDetailObj["name"]) {
                     $(item).trigger("click");
@@ -580,18 +592,20 @@ $("#viewLeaveQuery").pagecontainer({
             });
 
             //修改代理人——如果需要编辑假单，还需要检查代理人是否在职，如果不编辑只需显示代理人信息即可
-            if(employeeName == "") {
-                var agentOption = '<option hidden>' + agentName + '</option>';
-                $("#leave-agent-popup").find("option").remove().end().append(agentOption);
-                tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+            if(employeeName !== "") {
                 agentid = leaveDetailObj["agentid"];
                 agentName = leaveDetailObj["agentname"];
-            } else {
-                var agentOption = '<option hidden>' + pleaseSelectStr + '</option>';
-                $("#leave-agent-popup").find("option").remove().end().append(agentOption);
+                var options = '<option hidden>' + agentName + '</option>';
+                $("#leave-agent-popup").find("option").remove().end().append(options);
                 tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+                
+            } else {
                 agentid = "";
                 agentName = "";
+                var options = '<option hidden>' + pleaseSelectStr + '</option>';
+                $("#leave-agent-popup").find("option").remove().end().append(options);
+                tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+                
             }
             
 
@@ -618,23 +632,26 @@ $("#viewLeaveQuery").pagecontainer({
             changePageByPanel("viewLeaveSubmit");
 
             /**************** 4.计算请假数 ***************/
-            countLeaveHoursByEndQueryData = "<LayoutHeader><EmpNo>"
-                                          + myEmpNo
-                                          + "</EmpNo><leaveid>"
-                                          + leaveDetailObj["leaveid"]
-                                          + "</leaveid><begindate>"
-                                          + leaveDetailObj["begindate"]
-                                          + "</begindate><begintime>"
-                                          + leaveDetailObj["begintime"]
-                                          + "</begintime><enddate>"
-                                          + leaveDetailObj["enddate"]
-                                          + "</enddate><endtime>"
-                                          + leaveDetailObj["endtime"]
-                                          + "</endtime><datumdate>"
-                                          + baseday
-                                          + "</datumdate></LayoutHeader>";
-            //呼叫API
-            CountLeaveHoursByEnd();
+            setTimeout(function() {
+                countLeaveHoursByEndQueryData = "<LayoutHeader><EmpNo>"
+                                              + myEmpNo
+                                              + "</EmpNo><leaveid>"
+                                              + leaveDetailObj["leaveid"]
+                                              + "</leaveid><begindate>"
+                                              + leaveDetailObj["begindate"]
+                                              + "</begindate><begintime>"
+                                              + leaveDetailObj["begintime"]
+                                              + "</begintime><enddate>"
+                                              + leaveDetailObj["enddate"]
+                                              + "</enddate><endtime>"
+                                              + leaveDetailObj["endtime"]
+                                              + "</endtime><datumdate>"
+                                              + baseday
+                                              + "</datumdate></LayoutHeader>";
+                console.log(countLeaveHoursByEndQueryData);
+                //呼叫API
+                CountLeaveHoursByEnd();
+            },2000);
 
         });
 

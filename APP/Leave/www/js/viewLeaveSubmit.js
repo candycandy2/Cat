@@ -56,7 +56,7 @@ var leaveAgentData = {
 //檢查是否符合預覽送簽標準
 function checkLeaveBeforePreview() {
     //必須符合3個條件：1.請假理由不能爲空 2.開始時間和结束时间 3.需要基准日的是否已选择 4.代理人必须选择
-    if($("#leaveReason").val() !== ""
+    if(leaveReason !== ""
         && $("#leave-agent-popup option").text() !== pleaseSelectStr
         && $('#startText').text() !== pleaseSelectStr 
         && $('#endText').text() !== pleaseSelectStr 
@@ -127,44 +127,6 @@ function getLeaveByCategory() {
     leaveType = "";
     baseday = "";
     basedayList = false;
-}
-
-//当无基准日假别时，呼叫API，对假别剩余天数进行判断
-function checkLeftDaysNoBasedate(leftdays) {
-    //如果假别天数等于0或者小于最小请假单位(天)
-    if(leftdays == 0 || (leftdays > 0 && leftdays < leaveDetail["unit"])) {
-        popupMsgInit('.leaveNotEnough');
-        getLeaveByCategory();
-    } else {
-        //desc
-        if(leaveDetail["desc"] !== "") {
-            var divIntroduce = "<span>*" + leaveDetail["desc"] + "</span>";
-            $('#leaveIntroduce').empty().append(divIntroduce).show();
-        } else {
-            $('#leaveIntroduce').empty().hide();
-        }
-
-        //attachment
-        if(leaveDetail["attach"] === "Y") {
-            $('#uploadAttachment').show();
-        } else {
-            $('#uploadAttachment').hide();
-        }
-
-        //basedate
-        $("#chooseBaseday").text(selectBasedayStr);
-        //$("#oldBaseday").val("");
-        //$("#newBaseday").val("");
-        $('#baseDate').hide();
-        $('#divEmpty').hide();
-        needBaseday = false;
-    }
-
-    //enddate
-    $("#endText").text(pleaseSelectStr);
-    //$("#endDate").val("");
-    $("#leaveDays").text("0");
-    $("#leaveHours").text("0");
 }
 
 $("#viewLeaveSubmit").pagecontainer({
@@ -377,6 +339,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                               + "</EmpNo><leaveid>"
                                               + leaveid
                                               + "</leaveid></LayoutHeader>";
+                            console.log(queryLeftDaysData);
                             //呼叫API
                             QueryLeftDaysData();
 
@@ -414,6 +377,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                               + "</EmpNo><leaveid>"
                                               + leaveid
                                               + "</leaveid></LayoutHeader>";
+                            console.log(queryLeftDaysData);
                             //呼叫API
                             QueryLeftDaysData();             
 
@@ -599,6 +563,7 @@ $("#viewLeaveSubmit").pagecontainer({
         //開始日期改变
         $("#startDate").on("change", function() {
             var self = $(this).val();
+            console.log(self);
             var minute = parseInt(self.substring(14, 16));
 
             startLeaveDate = "";
@@ -610,9 +575,9 @@ $("#viewLeaveSubmit").pagecontainer({
                 //android上日期格式:yyyy-MM-dd T hh:mm，ios上日期格式：yyyy-MM-dd T hh:mm:ss
                 //分钟数小于30设为“00”,如果大于等于30设为“30”
                 if(minute < 30) {
-                    startLeaveDate = self.replace("T", " ").substring(0, 14) + "00";
+                    startLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "00";
                 } else {
-                    startLeaveDate = self.replace("T", " ").substring(0, 14) + "30";
+                    startLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "30";
                 }
 
                 //分别获取日期和时间，需要与结束时间进行比较，原则上开始时间必须小于结束时间
@@ -666,9 +631,9 @@ $("#viewLeaveSubmit").pagecontainer({
             if(self !== "") {
                 //分钟数小于30设为“00”,如果大于等于30设为“30”
                 if(minute < 30) {
-                    endLeaveDate = self.replace("T", " ").substring(0, 14) + "00";
+                    endLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "00";
                 } else {
-                    endLeaveDate = self.replace("T", " ").substring(0, 14) + "30";
+                    endLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "30";
                 }
 
                 //分别获取日期和时间，需要与开始时间进行比较，原则上开始时间必须小于结束时间
@@ -693,17 +658,17 @@ $("#viewLeaveSubmit").pagecontainer({
                                                   + "</EmpNo><leaveid>"
                                                   + leaveid
                                                   + "</leaveid><begindate>"
-                                                  + startLeaveDate.split(" ")[0].split("-").join("/")
+                                                  + startLeaveDate.split(" ")[0]
                                                   + "</begindate><begintime>"
                                                   + startLeaveDate.split(" ")[1]
                                                   + "</begintime><enddate>"
-                                                  + endLeaveDate.split(" ")[0].split("-").join("/")
+                                                  + endLeaveDate.split(" ")[0]
                                                   + "</enddate><endtime>"
                                                   + endLeaveDate.split(" ")[1]
                                                   + "</endtime><datumdate>"
                                                   + baseday
                                                   + "</datumdate></LayoutHeader>";
-
+                    console.log(countLeaveHoursByEndQueryData);
                     //呼叫API
                     CountLeaveHoursByEnd();
 
@@ -818,11 +783,11 @@ $("#viewLeaveSubmit").pagecontainer({
                                     + '</delegate><leaveid>'
                                     + leaveid
                                     + '</leaveid><begindate>'
-                                    + startLeaveDate.split(" ")[0].split("-").join("/")
+                                    + startLeaveDate.split(" ")[0]
                                     + '</begindate><begintime>'
                                     + startLeaveDate.split(" ")[1]
                                     + '</begintime><enddate>'
-                                    + endLeaveDate.split(" ")[0].split("-").join("/")
+                                    + endLeaveDate.split(" ")[0]
                                     + '</enddate><endtime>'
                                     + endLeaveDate.split(" ")[1]
                                     + '</endtime><datumdate>'
