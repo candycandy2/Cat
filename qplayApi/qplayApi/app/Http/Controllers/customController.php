@@ -17,8 +17,6 @@ class customController extends Controller
             $result = ['ResultCode'=>ResultCode::_999016_haveNoAppVersion,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999016_haveNoAppVersion),
                 'content'=>''];
-            CommonUtil::logCustomApi($api_version,$app_key,$action,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -28,15 +26,11 @@ class customController extends Controller
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             $url = CommonUtil::getApiCustomerUrl($action);//$url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
             $result = $this->GetData($url, $verifyResult["token_valid_date"]);//return $this->GetData($url, "20160109");
-            CommonUtil::logCustomApi($api_version,$app_key,$action,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         } else {
             $result = array("ResultCode"=>$verifyResult["code"],
                 "Message"=>$verifyResult["message"],
                 "Content"=>"");
-            CommonUtil::logCustomApi($api_version,$app_key,$action,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }

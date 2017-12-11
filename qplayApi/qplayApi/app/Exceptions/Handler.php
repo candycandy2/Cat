@@ -9,12 +9,15 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\lib\ResultCode;
+use App\Jobs\SendErrorMail;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Mail;
 use Config;
 use Request;
 
 class Handler extends ExceptionHandler
 {
+    use DispatchesJobs;
     /**
      * A list of the exception types that should not be reported.
      *
@@ -40,17 +43,16 @@ class Handler extends ExceptionHandler
         parent::report($e);
         if ($this->shouldReport($e)) {
             if(\Config('app.error_mail_to')!=""){
-                $url = \Request::url();
-                $input = json_encode(\Request::all());
-                Mail::send('emails.error_report', ['e' => $e , 'url' => $url, 'input' => $input], function($message)
-                {   
-                    $from = \Config('app.error_mail_from');
-                    $fromName = \Config('app.error_mail_from_name');
-                    $to = explode(',',\Config('app.error_mail_to'));
-                    $subject = '['.\Config('app.env').']QPlay API Error Occur!!';
-                    $message->from( $from , $fromName);
-                    $message->to($to)->subject($subject);
-                });
+                $error = [
+                    'message' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'url' => \Request::url(),
+                    'input' => json_encode(\Request::all()),
+                    'trace' =>$e->getTraceAsString()
+                ];
+                $this->dispatch(new SendErrorMail($error));
             }
         }
     }
