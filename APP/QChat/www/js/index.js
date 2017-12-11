@@ -33,7 +33,18 @@ window.initialSuccess = function() {
     //Personal Popup
     $(document).on({
         click: function(event) {
-            console.log("=========================@@@@@");
+            var userID = "";
+
+            if ($(event.target)[0].nodeName === "use") {
+                userID = $(event.target.parentElement).data("userID");
+            } else {
+                userID = $(event.target).data("userID")
+            }
+
+            //Check if User have not register
+            if (!JM.data.chatroom_user[userID].is_register) {
+                return;
+            }
 
             //User Info Popup
             $("#userInfoPopup").popup("destroy").remove();
@@ -49,14 +60,6 @@ window.initialSuccess = function() {
             $("#userInfoPopup .footer").hide();
             $("#userInfoPopup .ui-hr-bottom").hide();
             $("#userInfoPopup .button-add-status").hide();
-
-            var userID = "";
-
-            if ($(event.target)[0].nodeName === "use") {
-                userID = $(event.target.parentElement).data("userID");
-            } else {
-                userID = $(event.target).data("userID")
-            }
 
             if (JM.data.chatroom_user[userID].avator_download_time != 0) {
                 $("#userInfoPopup svg.chatroom-info-photo").hide();
