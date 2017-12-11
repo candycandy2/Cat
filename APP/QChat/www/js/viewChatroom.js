@@ -729,6 +729,7 @@ $("#viewChatroom").pagecontainer({
                         } else {
                             var msgText = $(msgTextLeftHTML);
                             msgText.find(".name").html(message.from);
+                            msgText.find(".personal-popup").data("userID", message.from);
                         }
 
                         lastSender = message.from;
@@ -772,6 +773,7 @@ $("#viewChatroom").pagecontainer({
                     } else {
                         var msgImg = $(msgImgLeftHTML);
                         msgImg.find(".name").html(message.from);
+                        msgImg.find(".personal-popup").data("userID", message.from);
                     }
 
                     lastSender = message.from;

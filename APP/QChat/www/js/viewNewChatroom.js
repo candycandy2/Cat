@@ -121,6 +121,11 @@ $("#viewNewChatroom").pagecontainer({
                 is_friend = true;
             }
 
+            var send_invite = false;
+            if (userData.status === "2") {
+                send_invite = true;
+            }
+
             var is_register = false;
             if (userData.registered === "Y") {
                 is_register = true;
@@ -141,6 +146,7 @@ $("#viewNewChatroom").pagecontainer({
                 is_friend:              is_friend,
                 is_register:            is_register,
                 is_protect:             is_protect,
+                send_invite:            send_invite,
                 avator_path:            avator_path,
                 avator_download_time:   avator_download_time
             };
@@ -215,6 +221,7 @@ $("#viewNewChatroom").pagecontainer({
 
                 //name
                 userList.find(".user-name").html(userName);
+                userList.find(".personal-popup").data("userID", userName);
 
                 //info / radio button
                 var hideRadioBtn = false;
@@ -304,7 +311,9 @@ $("#viewNewChatroom").pagecontainer({
 
                     if (resultCode === "1") {
                         console.log("==========new chatroom success");
-                        
+
+                        $("#userInfoPopup").popup("close");
+
                         JM.chatroomID = data['Content'].group_id;
 
                         //change page to chatroom
@@ -377,8 +386,10 @@ $("#viewNewChatroom").pagecontainer({
             }(userID));
         };
 
-        window.sendQInvitation = function(listViewID, userID) {
-            (function(listViewID, userID) {
+        window.sendQInvitation = function(action, userID, listViewID) {
+            listViewID = listViewID || null;
+
+            (function(action, userID, listViewID) {
 
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
@@ -394,12 +405,18 @@ $("#viewNewChatroom").pagecontainer({
 
                     if (resultCode === "1") {
 
-                        $("#" + listViewID).find(".button-icon-content").hide();
-                        $("#" + listViewID).find(".action-info").show();
+                        if (action === "listview") {
+                            $("#" + listViewID).find(".button-icon-content").hide();
+                            $("#" + listViewID).find(".action-info").show();
 
-                        $("#actionMsg2").show();
+                            $("#actionMsg2").show();
 
-                        actionButton("show");
+                            actionButton("show");
+                        } else if (action === "popup") {
+                            $("#userInfoPopup .status-a").hide();
+                            $("#userInfoPopup .status-b").show();
+                            $("#userInfoPopup .button-add").addClass("personal-popup-button-disable");
+                        }
 
                     }
                 };
@@ -408,7 +425,7 @@ $("#viewNewChatroom").pagecontainer({
 
                 CustomAPI("POST", true, "sendQInvitation", successCallback, failCallback, queryData, "");
 
-            }(listViewID, userID));
+            }(action, userID, listViewID));
         };
 
         window.sendQInstall = function(listViewID, userID) {
@@ -459,7 +476,7 @@ $("#viewNewChatroom").pagecontainer({
             } else if (action === "not-register") {
                 window.sendQInstall(listViewID, userID);
             } else if (action === "protect") {
-                window.sendQInvitation(listViewID, userID);
+                window.sendQInvitation("listview", userID, listViewID);
             } else {
                 $(".action-success-full-screen").show();
 

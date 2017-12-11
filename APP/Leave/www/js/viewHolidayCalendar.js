@@ -32,9 +32,11 @@ $("#viewHolidayCalendar").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewHolidayCalendar").on("pagebeforeshow", function(event, ui) {
+
         });
 
         $("#viewHolidayCalendar").on("pageshow", function(event, ui) {
+            
             loadingMask("hide");
         });
 
