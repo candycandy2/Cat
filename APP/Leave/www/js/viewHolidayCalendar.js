@@ -10,6 +10,7 @@ $("#viewHolidayCalendar").pagecontainer({
                 show_days: true,
                 weekstartson: 0,
                 markWeekend: true,
+                showNextyear: true,
                 infoData: QTYholidayData,
                 showInfoListTo: "#viewHolidayCalendar .infoList",
                 nav_icon: {
