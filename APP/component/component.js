@@ -499,8 +499,6 @@ function getAppLogParam() {
                 jsonData = appLogData;
             }
             localStorage.setItem('appLogData', JSON.stringify(jsonData)); 
-            //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
-            //setTimeout('checkAmountData()', 10000);
         }
     }
 }
@@ -522,8 +520,6 @@ function onPause() {
 
 function onResume() {
     //getAppLogParam();
-    //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
-    //setTimeout('checkAmountData()', 10000);
 }
 
 function getAddAppLog() {
