@@ -232,7 +232,7 @@ function dateFormat(dataStr) {
     return newArr.join("-");
 }
 
-//格式化日期格式：“月/日/年 時:分:秒 PM” —— “年/月/日”
+//格式化日期格式：“月/日/年 時:分:秒 PM” —— “年-月-日”
 function dateFormatter(dataStr) {
     //先獲得“月/日/年”
     var arr = dataStr.split(" ")[0].split("/");
@@ -241,6 +241,16 @@ function dateFormatter(dataStr) {
     newArr.push(arr[0]);
     newArr.push(arr[1]);
     return newArr.join("-");
+}
+
+//格式化日期格式：“月/日/年 時:分:秒 PM” —— “年/月/日”
+function formatterDate(str) {
+    var arr = str.split(" ")[0].split("/");
+    var newArr = [];
+    newArr.push(arr[2]);
+    newArr.push(arr[0]);
+    newArr.push(arr[1]);
+    return newArr.join("/");
 }
 
 //假單列表到詳情（请假单和销假单共用）
