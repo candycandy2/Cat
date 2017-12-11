@@ -209,13 +209,10 @@ class qplayController extends Controller
                 //'message'=>'傳入參數不足或傳入參數格式錯誤',
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi('', $ACTION,
-                response()->json(apache_response_headers()), $result);
             $result = response()->json($result);
             return $result;
         }
         $uuid = $input["uuid"];
-        $userId = CommonUtil::getUserRowIDByUUID($uuid);
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
             $uuidList = \DB::table("qp_register")
@@ -227,8 +224,6 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                     'content'=>array("is_register"=>1)];
-                CommonUtil::logApi( $userId, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 $result = response()->json($result);
                 return $result;
             }
@@ -237,8 +232,6 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>trans("messages.MSG_DEVICE_HAS_NOT_REGISTERED"),
                     'content'=>array("is_register"=>0)];
-                CommonUtil::logApi( $userId, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 $result = response()->json($result);
                 return $result;
             }
@@ -248,8 +241,6 @@ class qplayController extends Controller
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>$verifyResult["message"],
                 'content'=>''];
-            CommonUtil::logApi( $userId, $ACTION,
-                response()->json(apache_response_headers()), $result);
             $result = response()->json($result);
             return $result;
         }
@@ -288,11 +279,8 @@ class qplayController extends Controller
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>$message,
                 'content'=>array("redirect_uri"=>$finalUrl)];
-            CommonUtil::logApi('', $ACTION,
-                response()->json(apache_response_headers()), $result);
             $result = response()->json($result);
             return $result;
-
         }
 
         $uuid = $input["uuid"];
@@ -321,8 +309,6 @@ class qplayController extends Controller
                     $result = ['result_code'=>ResultCode::_000902_passwordError,
                         'message'=>$message,
                         'content'=>array("redirect_uri"=>$finalUrl)];
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
                     $result = response()->json($result);
                     return $result;
                 }
@@ -342,14 +328,12 @@ class qplayController extends Controller
                     $result = ['result_code'=>ResultCode::_000903_deviceHasRegistered,
                         'message'=>$message,
                         'content'=>array("redirect_uri"=>$finalUrl)];
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
                     $result = response()->json($result);
                     return $result;
                 }
 
                 try
-                {
+                 {
                     $token = uniqid();  //生成token
                     $nowTimestamp = time();
                     $token_valid = $nowTimestamp + (7 * 86400);
@@ -384,7 +368,7 @@ class qplayController extends Controller
                     else
                     {
                         \DB::table("qp_session")->insert([
-                            'user_row_id'=>$user->row_ida,
+                            'user_row_id'=>$user->row_id,
                             'uuid'=>$uuid,
                             'token'=>$token,
                             'token_valid_date'=>$token_valid,
@@ -406,18 +390,7 @@ class qplayController extends Controller
                 }
                 catch (\Exception $e)
                 {
-                    $message = trans('messages.MSG_CALL_SERVICE_SUCCESS');
-                    $finalUrl = urlencode($redirect_uri.'?result_code='
-                        .ResultCode::_999999_unknownError
-                        .'&message='
-                        .$message);
-                    $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>$message,
-                        'content'=>array("redirect_uri"=>$finalUrl)];
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
-                    $result = response()->json($result);
-                    return $result;
+                    throw $e;
                 }
                 $appHeaderList = \DB::table("qp_app_head")
                     ->join("qp_project","qp_app_head.project_row_id",  "=", "qp_project.row_id")
@@ -453,10 +426,6 @@ class qplayController extends Controller
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ];
-
-                CommonUtil::logApi($user->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
-	
         	//register to QMessage
         	$QMessage_register_url = \Config::get('app.QMessage_Register_URL');
         	if(!empty($QMessage_register_url)){
@@ -479,8 +448,7 @@ class qplayController extends Controller
         $result = ['result_code'=>$verifyResult["code"],
             'message'=>$message,
             'content'=>array("redirect_uri"=>$finalUrl)];
-        CommonUtil::logApi("", $ACTION,
-            response()->json(apache_response_headers()), $result);
+
         $result = response()->json($result);
 	return $result;
     }
@@ -536,8 +504,6 @@ class qplayController extends Controller
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             $result = response()->json($result);
             return $result;
         }
@@ -551,8 +517,6 @@ class qplayController extends Controller
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             $result = response()->json($result);
             return $result;
         }
@@ -573,9 +537,6 @@ class qplayController extends Controller
                         "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
                 }
             }
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -632,28 +593,18 @@ class qplayController extends Controller
                 \DB::commit();
             } catch (\Exception $e) {
                 \DB::rollBack();
-                $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
-                    'content'=>''];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 throw $e;
-                
             }
 
             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                 'content'=>array('uuid'=>$uuid)
             ];
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         } else {
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }
@@ -689,8 +640,6 @@ class qplayController extends Controller
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>$message,
                 'content'=>array("redirect_uri"=>$finalUrl)];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
         $uuid = $input["uuid"];
@@ -714,8 +663,6 @@ class qplayController extends Controller
                     $result = ['result_code'=>ResultCode::_000905_deviceNotRegistered,
                         'message'=>$message,
                         'content'=>array("redirect_uri"=>$finalUrl)];
-                    CommonUtil::logApi("", $ACTION,
-                        response()->json(apache_response_headers()), $result);
                     return response()->json($result);
                 }
                 else
@@ -732,8 +679,6 @@ class qplayController extends Controller
                         $result = ['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
                             'message'=>$message,
                             'content'=>array("redirect_uri"=>$finalUrl)];
-                        CommonUtil::logApi($tempUser->row_id, $ACTION,
-                            response()->json(apache_response_headers()), $result);
                         return response()->json($result);
                     }
                 }
@@ -756,8 +701,6 @@ class qplayController extends Controller
                     $result = ['result_code'=>ResultCode::_000902_passwordError,
                         'message'=>$message,
                         'content'=>array("redirect_uri"=>$finalUrl)];
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
                     return response()->json($result);
                 }
 
@@ -811,19 +754,7 @@ class qplayController extends Controller
                 }
                 catch (Exception $e)
                 {
-                    $message = trans('messages.MSG_CALL_SERVICE_ERROR');
-                    $finalUrl = urlencode($redirect_uri.'?result_code='
-                        .ResultCode::_999999_unknownError
-                        .'&message='
-                        .$message);
-                    $status_code = ResultCode::_999999_unknownError;
-                    $result = ['result_code'=>$status_code,
-                        'message'=>$message,
-                        'token_valid'=>$token_valid,
-                        'content'=>array("redirect_uri"=>$finalUrl)];
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
-                    return response()->json($result);
+                    throw $e;
                 }
 
                 $appHeaderList = \DB::table("qp_app_head")
@@ -860,9 +791,6 @@ class qplayController extends Controller
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ];
-
-                CommonUtil::logApi($user->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
         }
@@ -874,8 +802,6 @@ class qplayController extends Controller
         $result = ['result_code'=>$verifyResult["code"],
             'message'=>$message,
             'content'=>array("redirect_uri"=>$finalUrl)];
-        CommonUtil::logApi("", $ACTION,
-            response()->json(apache_response_headers()), $result);
         return response()->json($result);
     }
 
@@ -898,8 +824,6 @@ class qplayController extends Controller
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
         $uuid = $input["uuid"];
@@ -916,8 +840,6 @@ class qplayController extends Controller
                         'message'=>trans("messages.MSG_LOGOUT_SUCCESS"),
                         'content'=>"[".$domain."]".$loginid."not found"
                     ];
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
                     return response()->json($result);
                 }
                 //Check uuid exist
@@ -932,8 +854,6 @@ class qplayController extends Controller
                     $result = ['result_code'=>ResultCode::_000905_deviceNotRegistered,
                         'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000905_deviceNotRegistered),
                         'content'=>''];
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
                     return response()->json($result);
                 }
                 else
@@ -944,8 +864,6 @@ class qplayController extends Controller
                         $result = ['result_code'=>ResultCode::_000904_loginUserNotMathRegistered,
                             'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000904_loginUserNotMathRegistered),
                             'content'=>''];
-                        CommonUtil::logApi($user->row_id, $ACTION,
-                            response()->json(apache_response_headers()), $result);
                         return response()->json($result);
                     }
                 }
@@ -956,33 +874,19 @@ class qplayController extends Controller
                 }
                 catch (Exception $e)
                 {
-                    $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
-                        'content'=>''
-                    ];
-
-                    CommonUtil::logApi($user->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
-
-                    return response()->json($result);
+                    throw $e;
                 }
 
                 $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                     'message'=>trans("messages.MSG_LOGOUT_SUCCESS"),
                     'content'=>array("uuid" => $uuid)
                 ];
-
-                CommonUtil::logApi($user->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
         }
-
         $result = ['result_code'=>$verifyResult["code"],
             'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
             'content'=>''];
-        CommonUtil::logApi("", $ACTION,
-            response()->json(apache_response_headers()), $result);
         return response()->json($result);
     }
 
@@ -1012,9 +916,6 @@ class qplayController extends Controller
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1024,7 +925,6 @@ class qplayController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-
             return $this->checkMyAppVersion($ACTION, $package_name, $device_type, $version_code, $intra);
         }
         else
@@ -1032,8 +932,6 @@ class qplayController extends Controller
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }
@@ -1063,9 +961,6 @@ class qplayController extends Controller
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1082,8 +977,6 @@ class qplayController extends Controller
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }
@@ -1106,9 +999,6 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_000915_packageNotExist,
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000915_packageNotExist),
                     'content'=>''];
-
-                CommonUtil::logApi("", $action,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
             $app_row_id = $appRowIdList[0]->row_id;
@@ -1122,8 +1012,6 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_999015_haveNoAppVersion,
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999015_haveNoAppVersion),
                     'content'=>''];
-                CommonUtil::logApi("", $action,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
 
@@ -1138,19 +1026,12 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_999012_appOffTheShelf,
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999012_appOffTheShelf),
                     'content'=>''];
-                CommonUtil::logApi("", $action,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
 
             if(count($versionList) > 1)
             {
-                $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
-                    'content'=>''];
-                CommonUtil::logApi("", $action,
-                    response()->json(apache_response_headers()), $result);
-                return response()->json($result);
+                throw new Exception("not only one version status is ready", 1);
             }
 
             $versionLine = $versionList[0];
@@ -1159,8 +1040,6 @@ class qplayController extends Controller
                 $result = ['result_code'=>ResultCode::_000913_NotNeedUpdate,
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000913_NotNeedUpdate),
                     'content'=>''];
-                CommonUtil::logApi("", $action,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
             else
@@ -1169,8 +1048,6 @@ class qplayController extends Controller
                     'message'=>trans("messages.MSG_NEED_TO_UPDATE"),
                     'content'=>array("version_code"=>$versionLine->version_code,
                     'download_url'=>FilePath::getApkDownloadUrl($app_row_id, $device_type, $versionLine->version_code, $versionLine->url,$intra))];
-                CommonUtil::logApi("", $action,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
 
@@ -1186,7 +1063,6 @@ class qplayController extends Controller
         foreach ($input as $k=>$v) {
             $input[strtolower($k)] = $v;
         }
-
         //For Log
         $ACTION = 'getAppList';
 
@@ -1196,9 +1072,6 @@ class qplayController extends Controller
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1209,8 +1082,6 @@ class qplayController extends Controller
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1232,9 +1103,6 @@ class qplayController extends Controller
                         "message"=> $message];
                 }
             }
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1414,8 +1282,6 @@ SQL;
                         'app_list'=>$app_list,
                         'multi_lang'=>$multi_lang)
                 ];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
             else
@@ -1423,8 +1289,6 @@ SQL;
                 $result = ['result_code'=>$verifyResult["code"],
                     'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                     'content'=>''];
-                CommonUtil::logApi("", $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
         }
@@ -1433,8 +1297,6 @@ SQL;
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }
@@ -1459,8 +1321,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1472,8 +1332,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1493,9 +1351,6 @@ SQL;
                         "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
                 }
             }
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1504,8 +1359,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999010_appKeyIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect),
                 'content'=>''];
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1541,8 +1394,6 @@ SQL;
                     'content'=>json_encode($whitelist),
                     'security_level'=>$level[0],
                 ];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             } else {
                 $result = ['result_code'=>$verifyResult["code"],
@@ -1556,8 +1407,6 @@ SQL;
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1583,8 +1432,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1595,8 +1442,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1616,9 +1461,6 @@ SQL;
                         "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
                 }
             }
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
@@ -1653,8 +1495,7 @@ SQL;
                         $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                             'content'=>''];
-                        CommonUtil::logApi($userInfo->row_id, $ACTION,
-                            response()->json(apache_response_headers()), $result);
+                       
                         return response()->json($result);
                     }
                 }
@@ -1663,8 +1504,7 @@ SQL;
                         $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                             'content'=>''];
-                        CommonUtil::logApi($userInfo->row_id, $ACTION,
-                            response()->json(apache_response_headers()), $result);
+                       
                         return response()->json($result);
                     }
                 }
@@ -1673,8 +1513,7 @@ SQL;
                         $result = ['result_code' => ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message' => CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                             'content' => ''];
-                        CommonUtil::logApi($userInfo->row_id, $ACTION,
-                            response()->json(apache_response_headers()), $result);
+                        
                         return response()->json($result);
                     }
                 }
@@ -1683,8 +1522,7 @@ SQL;
                         $result = ['result_code' => ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message' => CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                             'content' => ''];
-                        CommonUtil::logApi($userInfo->row_id, $ACTION,
-                            response()->json(apache_response_headers()), $result);
+                       
                         return response()->json($result);
                     }
                 }
@@ -1700,8 +1538,7 @@ SQL;
                         $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                             'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                             'content'=>''];
-                        CommonUtil::logApi($userInfo->row_id, $ACTION,
-                            response()->json(apache_response_headers()), $result);
+                       
                         return response()->json($result);
                     }
 
@@ -1710,8 +1547,7 @@ SQL;
                             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                                 'content'=>''];
-                            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                                response()->json(apache_response_headers()), $result);
+                           
                             return response()->json($result);
                         }
 
@@ -1721,8 +1557,7 @@ SQL;
                             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                                 'content'=>''];
-                            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                                response()->json(apache_response_headers()), $result);
+                            
                             return response()->json($result);
                         }
                     }
@@ -1801,23 +1636,20 @@ SQL;
                     'content'=>array('message_count'=> count($r),
                         'message_list'=>$r)
                 ];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
+              
                 return response()->json($result);
             } else {
                 $result = ['result_code'=>$verifyResult["code"],
                     'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                     'content'=>''];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
+               
                 return response()->json($result);
             }
         } else {
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
+           
             return response()->json($result);
         }
     }
@@ -1843,8 +1675,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1856,8 +1686,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1877,9 +1705,6 @@ SQL;
                         "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
                 }
             }
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -1897,8 +1722,6 @@ SQL;
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>''
                     ];
-                    CommonUtil::logApi($userInfo->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
                     return response()->json($result);
                 }
                 $msg = $msgList[0];
@@ -1981,8 +1804,6 @@ SQL;
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>$msgDetail
                     ];
-                    CommonUtil::logApi($userInfo->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
                     return response()->json($result);
                 } else /*no data need to show 000910 {
                     $result = response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
@@ -1996,8 +1817,6 @@ SQL;
                         'token_valid'=>$verifyResult["token_valid_date"],
                         'content'=>''
                     ];
-                    CommonUtil::logApi($userInfo->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
                     return response()->json($result);
                 }
 
@@ -2005,16 +1824,12 @@ SQL;
                 $result = ['result_code'=>$verifyResult["code"],
                     'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                     'content'=>''];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
         } else {
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }
@@ -2042,8 +1857,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2057,8 +1870,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2078,9 +1889,6 @@ SQL;
                         "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
                 }
             }
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2097,8 +1905,7 @@ SQL;
                     $result = ['result_code'=>ResultCode::_000910_messageNotExist,
                         'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000910_messageNotExist),
                         'content'=>''];
-                    CommonUtil::logApi($userInfo->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
+                    
                     return response()->json($result);
                 }
                 $message_row_id = $msgSendList[0]->message_row_id;
@@ -2109,8 +1916,7 @@ SQL;
                     $result = ['result_code'=>ResultCode::_000910_messageNotExist,
                         'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000910_messageNotExist),
                         'content'=>''];
-                    CommonUtil::logApi($userInfo->row_id, $ACTION,
-                        response()->json(apache_response_headers()), $result);
+                   
                     return response()->json($result);
                 }
             }
@@ -2189,23 +1995,17 @@ SQL;
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('message_send_row_id' => $message_send_row_id_str)
                 ];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             } else {
                 $result = ['result_code'=>$verifyResult["code"],
                     'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                     'content'=>''];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
         } else {
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }
@@ -2233,8 +2033,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2246,8 +2044,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2267,9 +2063,6 @@ SQL;
                         "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
                 }
             }
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2277,8 +2070,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_000909_appKeyNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000909_appKeyNotExist),
                 'content'=>''];
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2295,8 +2086,6 @@ SQL;
                 $result = ['result_code'=>ResultCode::_000905_deviceNotRegistered,
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000905_deviceNotRegistered),
                     'content'=>''];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
 
@@ -2313,8 +2102,6 @@ SQL;
                 $result = ['result_code'=>ResultCode::_999013_pushTokenUsed,
                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999013_pushTokenUsed),
                     'content'=>''];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 \DB::table("qp_register")-> where('row_id', "=", $registerId)->delete();
                 return response()->json($result);
             }
@@ -2351,25 +2138,15 @@ SQL;
                 //Register to JPush Tag
                 $tag = PushUtil::GetTagByUserInfo($userInfo);
                 $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
+
                 if(!$pushResult["result"]) {
                     \DB::rollBack();
-                    $result = ['result_code'=>ResultCode::_999999_unknownError,
-                        'message'=>trans('messages.MSG_ADD_TAG_TO_JPUSH_FAILED'),
-                        'content'=>''
-                    ];
-                    CommonUtil::logApi("", $ACTION,
-                        response()->json(apache_response_headers()), $result);
-                    return response()->json($result);
+                    throw new Exception(trans('messages.MSG_ADD_TAG_TO_JPUSH_FAILED'), 1);
                 }
 
                 \DB::commit();
             } catch (\Exception $e) {
                 \DB::rollBack();
-                $result = ['result_code'=>ResultCode::_999999_unknownError,
-                    'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
-                    'content'=>''];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 throw $e;
             }
 
@@ -2377,16 +2154,11 @@ SQL;
                 'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                 'content'=>array('uuid'=>$uuid)
             ];
-
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         } else {
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }
@@ -2411,8 +2183,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2423,8 +2193,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2444,9 +2212,6 @@ SQL;
                         "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
                 }
             }
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2472,23 +2237,17 @@ SQL;
                     'token_valid'=>$token_valid,
                     'content'=>array("uuid" => $uuid, "token"=>$token)
                 ];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             } else {
                 $result = ['result_code'=>$verifyResult["code"],
                     'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                     'content'=>''];
-                CommonUtil::logApi($userInfo->row_id, $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
         } else {
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi($userInfo->row_id, $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }
@@ -2515,8 +2274,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
         
@@ -2534,8 +2291,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2543,8 +2298,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_000909_appKeyNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000909_appKeyNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2587,8 +2340,6 @@ SQL;
                         $result = ['result_code'=>ResultCode::_000918_dataIncomplete,
                             'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000918_dataIncomplete),
                             'content'=>''];
-                        CommonUtil::logApi("", $ACTION,
-                            response()->json(apache_response_headers()), $result);
                         return response()->json($result);
                     }
                 }
@@ -2606,8 +2357,6 @@ SQL;
                         $result = ['result_code'=>ResultCode::_000909_appKeyNotExist,
                             'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000909_appKeyNotExist),
                             'content'=>''];
-                        CommonUtil::logApi("", $ACTION,
-                            response()->json(apache_response_headers()), $result);
                         return response()->json($result);
                     }
 
@@ -2617,9 +2366,6 @@ SQL;
                         $result = ['result_code'=>ResultCode::_000916_titleLengthTooLong,
                             'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000916_titleLengthTooLong),
                             'content'=>''];
-
-                        CommonUtil::logApi("", $ACTION,
-                            response()->json(apache_response_headers()), $result);
                         return response()->json($result);
                     }
                     $template_id = $jsonContent['template_id'];
@@ -2638,8 +2384,6 @@ SQL;
                                 $result = ['result_code'=>ResultCode::_999014_companyNotExist,
                                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999014_companyNotExist),
                                     'content'=>''];
-                                CommonUtil::logApi("", $ACTION,
-                                    response()->json(apache_response_headers()), $result);
                                 return response()->json($result);
                             }
                             $companyStr = $companyStr.trim($company).";";
@@ -2648,8 +2392,6 @@ SQL;
                             $result = ['result_code'=>ResultCode::_000918_dataIncomplete,
                                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000918_dataIncomplete),
                                 'content'=>''];
-                            CommonUtil::logApi("", $ACTION,
-                                response()->json(apache_response_headers()), $result);
                             return response()->json($result);
                         }
 
@@ -2706,8 +2448,6 @@ SQL;
                                         'content'=>array('jsonContent'=>$countFlag,
                                             'content'=>$content)
                                     ];
-                                    CommonUtil::logApi("", $ACTION,
-                                        response()->json(apache_response_headers()), $result);
                                     return response()->json($result);
                                 }
                             }
@@ -2718,17 +2458,10 @@ SQL;
                                 'content'=>array('jsonContent'=>$countFlag,
                                     'content'=>$content)//json_encode($jsonContent)
                             ];
-                            CommonUtil::logApi("", $ACTION,
-                                response()->json(apache_response_headers()), $result);
                             return response()->json($result);
                         } catch (\Exception $e) {
                             \DB::rollBack();
-                            $result = ['result_code'=>ResultCode::_999999_unknownError,
-                                'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
-                                'content'=>''];
-                            CommonUtil::logApi("", $ACTION,
-                                response()->json(apache_response_headers()), $result);
-                           throw new $e;
+                           throw $e;
                         }
                     }
                     else {  //Event
@@ -2744,8 +2477,6 @@ SQL;
                                 $result = ['result_code'=>ResultCode::_000912_userReceivePushMessageNotExist,
                                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000912_userReceivePushMessageNotExist),
                                     'content'=>''];
-                                CommonUtil::logApi("", $ACTION,
-                                    response()->json(apache_response_headers()), $result);
                                 return response()->json($result);
                             }
 
@@ -2753,8 +2484,6 @@ SQL;
                                 $result = ['result_code'=>$verifyResult["code"],
                                     'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                                     'content'=>''];
-                                CommonUtil::logApi("", $ACTION,
-                                    response()->json(apache_response_headers()), $result);
                                 return response()->json($result);
                             }
 
@@ -2775,12 +2504,8 @@ SQL;
                                 $result = ['result_code'=>ResultCode::_000917_roleNotExist,
                                     'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000917_roleNotExist),
                                     'content'=>''];
-
-                                CommonUtil::logApi("", $ACTION,
-                                    response()->json(apache_response_headers()), $result);
                                 return response()->json($result);
                             }
-
                             array_push($destinationRoleInfoList, $destinationRoleInfo);
                         }
 
@@ -2925,8 +2650,6 @@ SQL;
                                         'content'=>array('jsonContent'=>$newCountFlag,
                                             'content'=>$content)
                                     ];
-                                    CommonUtil::logApi("", $ACTION,
-                                        response()->json(apache_response_headers()), $result);
                                     return response()->json($result);
                                 }
                             }
@@ -2937,17 +2660,10 @@ SQL;
                                 'content'=>array('jsonContent'=>count($destinationUserIdList),
                                     'content'=>$content)//json_encode($jsonContent)
                             ];
-                            CommonUtil::logApi("", $ACTION,
-                                response()->json(apache_response_headers()), $result);
                             return response()->json($result);
                         } catch (\Exception $e) {
                             \DB::rollBack();
-                            $result = ['result_code'=>ResultCode::_999999_unknownError,
-                                'message'=>trans('messages.MSG_UNKNOWN_ERROR'),
-                                'content'=>''];
-                            CommonUtil::logApi("", $ACTION,
-                                response()->json(apache_response_headers()), $result);
-                            throw new $e;
+                            throw $e;
                         }
                     }
                 }
@@ -2957,8 +2673,6 @@ SQL;
         $result = ['result_code'=>$verifyResult["code"],
             'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
             'content'=>''];
-        CommonUtil::logApi("", $ACTION,
-            response()->json(apache_response_headers()), $result);
         return response()->json($result);
     }
 
@@ -2983,8 +2697,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -2996,8 +2708,6 @@ SQL;
             $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
                 'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -3017,9 +2727,6 @@ SQL;
                         "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
                 }
             }
-
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
 
@@ -3042,23 +2749,17 @@ SQL;
                     'token_valid'=>$verifyResult["token_valid_date"],
                     'content'=>array('uuid'=>$uuid)
                 ];
-                CommonUtil::logApi("", $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             } else {
                 $result = ['result_code'=>$verifyResult["code"],
                     'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                     'content'=>''];
-                CommonUtil::logApi("", $ACTION,
-                    response()->json(apache_response_headers()), $result);
                 return response()->json($result);
             }
         } else {
             $result = ['result_code'=>$verifyResult["code"],
                 'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
-            CommonUtil::logApi("", $ACTION,
-                response()->json(apache_response_headers()), $result);
             return response()->json($result);
         }
     }

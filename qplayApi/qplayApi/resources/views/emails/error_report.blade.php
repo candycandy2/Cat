@@ -1,10 +1,11 @@
+<?php $error = unserialize($errorObj); ?>
 <h3>Error information:</h3>
 <p><strong>Date:</strong> {{ date('M d, Y H:iA') }}</p>
-<p><strong>Message:</strong> {{ $e->getMessage() }}</p>
-<p><strong>Code:</strong> {{ $e->getCode() }}</p>
-<p><strong>File:</strong> {{ $e->getFile() }}</p>
-<p><strong>Line:</strong> {{ $e->getLine() }}</p>
-<p><strong>Url:</strong> {{ $url }}</p>
-<p><strong>Input:</strong> {{ $input }}</p>
+<p><strong>Message:</strong> {{ $error['message'] }}</p>
+<p><strong>Code:</strong> {{ $error['code'] }}</p>
+<p><strong>File:</strong> {{ $error['file'] }}</p>
+<p><strong>Line:</strong> {{ $error['line'] }}</p>
+<p><strong>Url:</strong> {{ $error['url'] }}</p>
+<p><strong>Input:</strong> {{ $error['input'] }}</p>
 <h3>Stack trace:</h3>
-<pre>{{ $e->getTraceAsString() }}</pre>
+<pre>{{ $error['trace'] }}</pre>

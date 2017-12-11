@@ -51,5 +51,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'log.api' => \App\Http\Middleware\LogAferRequest::class,
+        'log.custom.api' => \App\Http\Middleware\LogCustomAferRequest::class,
     ];
 }
