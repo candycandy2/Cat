@@ -13,7 +13,7 @@ $("#viewBackLeaveQuery").pagecontainer({
             
             this.successCallback = function(data) {
                 //console.log(data);
-                if(data['ResultCode'] === "1") {      
+                if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["cancelformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var formidArr = $("formid", htmlDom);
@@ -38,7 +38,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                         leaveObject["begintime"] = $(begintimeArr[i]).html();
                         leaveObject["enddate"] = $(enddateArr[i]).html();
                         leaveObject["endtime"] = $(endtimeArr[i]).html();
-                        leaveObject["days"] = $(leavedaysArr[i]).html().split(".")[0];
+                        leaveObject["days"] = ($(leavedaysArr[i]).html().split(".")[1] == "0") ? $(leavedaysArr[i]).html().split(".")[0] : $(leavedaysArr[i]).html();
                         leaveObject["hours"] = ($(leavehoursArr[i]).html().split(".")[1] == "0") ? $(leavehoursArr[i]).html().split(".")[0] : $(leavehoursArr[i]).html();
 
                         //表單簽核的4種狀態
@@ -250,7 +250,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                                                  + '</qEmpno><qName></qName></LayoutHeader>';
                     //根据id获取代理人姓名
                     QueryEmployeeDetail();
-                    obj["agentname"] = $(employeeName).html();
+                    obj["agentname"] = employeeName;
 
                     //传值给假单查询页
                     $("#leaveApplyDate").text(dateFormatter($(applydate).html()));
@@ -263,7 +263,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                     $("#leaveStartTime").text($(begintime).html());
                     $("#leaveEndDate").text(dateFormatter($(enddate).html()));
                     $("#leaveEndTime").text($(endtime).html());
-                    $("#leaveApplyDays").text($(leavedays).html().split(".")[0]);
+                    $("#leaveApplyDays").text(($(leavedays).html().split(".")[1] == "0") ? $(leavedays).html().split(".")[0] : $(leavedays).html());
                     $("#leaveApplyHours").text(($(leavehours).html().split(".")[1] == "0") ? $(leavehours).html().split(".")[0] : $(leavehours).html());
                     $("#leaveApplyReason").text($(reasons).html());
 
