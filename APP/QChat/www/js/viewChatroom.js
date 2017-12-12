@@ -1059,8 +1059,20 @@ $("#viewChatroom").pagecontainer({
 
         $(document).on({
             click: function() {
-                JM.chatroomID = nowChatroomID;
-                $.mobile.changePage('#viewChatroomInfo');
+                if (JM.data.chatroom[nowChatroomID].is_group) {
+                    JM.chatroomID = nowChatroomID;
+                    $.mobile.changePage('#viewChatroomInfo');
+                } else {
+                    var otherMember = "";
+
+                    for (var i=0; i<JM.data.chatroom[nowChatroomID].member.length; i++) {
+                        if (JM.data.chatroom[nowChatroomID].member[i].username != loginData["loginid"]) {
+                            otherMember = JM.data.chatroom[nowChatroomID].member[i].username;
+                        }
+                    }
+
+                    window.personalPopup(otherMember);
+                }
             }
         }, ".chatroom-info");
 
