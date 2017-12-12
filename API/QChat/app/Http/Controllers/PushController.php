@@ -69,11 +69,8 @@ class PushController extends Controller
             $result = ['ResultCode'=>ResultCode::_1_reponseSuccessful,'Message'=>''];
             return response()->json($result);
         }catch (\Exception $e) {
-
              \DB::rollBack();
-
-            $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""];
-            return response()->json($result);
+             throw $e;
         } 
         
     }
