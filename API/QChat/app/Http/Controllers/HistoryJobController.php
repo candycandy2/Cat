@@ -109,11 +109,8 @@ class HistoryJobController extends Controller
             return response()->json($result);
             Log::info('Sync Success!');
           }catch (\Exception $e) {
-
              \DB::rollBack();
-             $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()];
-             Log::info('Sync Fail!' . json_encode($result));
-            return response()->json($result);
+             throw $e;
          } 
     }
 }
