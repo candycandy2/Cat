@@ -3,7 +3,8 @@
 var initialAppName = "QChat";
 var appKeyOriginal = "appqchat";
 var appKey = "appqchat";
-var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom", "viewAddFriend", "viewChatroomInfo", "viewChatroomEdit", "viewAddMember", "viewMyInfoEdit"];
+var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom", "viewAddFriend", "viewChatroomInfo", "viewChatroomEdit", 
+                "viewAddMember", "viewMyInfoEdit", "viewFriendInvite"];
 //var waterMarkPageList = ["viewChatroom"];
 var appSecretKey = "9f48f50f233f6ec48ffc4ae93d52a335";
 
@@ -41,79 +42,87 @@ window.initialSuccess = function() {
                 userID = $(event.target).data("userID")
             }
 
-            //Check if User have not register
-            if (!JM.data.chatroom_user[userID].is_register) {
-                return;
-            }
-
-            //User Info Popup
-            $("#userInfoPopup").popup("destroy").remove();
-
-            var userInfoPopupData = {
-                id: "userInfoPopup",
-                content: $("template#tplUserInfoPopup").html()
-            };
-
-            tplJS.Popup(null, null, "append", userInfoPopupData);
-
-            $("#userInfoPopup .button").hide();
-            $("#userInfoPopup .footer").hide();
-            $("#userInfoPopup .ui-hr-bottom").hide();
-            $("#userInfoPopup .button-add-status").hide();
-
-            if (JM.data.chatroom_user[userID].avator_download_time != 0) {
-                $("#userInfoPopup svg.chatroom-info-photo").hide();
-                $("#userInfoPopup img").prop("src", JM.data.chatroom_user[userID].avator_path);
-                $("#userInfoPopup img").show();
-            } else {
-                $("#userInfoPopup img").hide();
-                $("#userInfoPopup svg.chatroom-info-photo").show();
-            }
-
-            var memo = "&nbsp;";
-
-            if (JM.data.chatroom_user[userID].memo != null && JM.data.chatroom_user[userID].memo.length > 0) {
-                memo = JM.data.chatroom_user[userID].memo;
-            }
-
-            $("#userInfoPopup .personal-popup-name").html(userID);
-            $("#userInfoPopup .personal-popup-memo").html(memo);
-            $("#userInfoPopup .personal-popup-email").html(JM.data.chatroom_user[userID].email);
-            $("#userInfoPopup .personal-popup-phone").html(JM.data.chatroom_user[userID].ext_no);
-
-            if (loginData["loginid"] === userID) {
-                //Yourself
-                $("#userInfoPopup .button-edit").show();
-            } else {
-                //Other User
-                var is_friend = JM.data.chatroom_user[userID].is_friend;
-                var is_protect = JM.data.chatroom_user[userID].is_protect;
-                var is_invite = JM.data.chatroom_user[userID].is_invite;
-
-                $("#userInfoPopup .button-chat").show();
-
-                if (is_friend) {
-                    $("#userInfoPopup .button-delete").show();
-                } else {
-                    $("#userInfoPopup .button-add").show();
-                }
-
-                if (is_protect && !is_friend) {
-                    $("#userInfoPopup .button-chat").hide();
-
-                    if (is_invite) {
-                        $("#userInfoPopup .status-b").show();
-                        $("#userInfoPopup .button-add").addClass("personal-popup-button-disable");
-                    } else {
-                        $("#userInfoPopup .status-a").show();
-                    }
-                }
-            }
-
-            window.personalPopupUserID = userID;
-            $("#userInfoPopup").popup("open");
+            window.personalPopup(userID);
         }
     }, ".personal-popup");
+
+    window.personalPopup = function(userID) {
+        //Check if User have not register
+        if (!JM.data.chatroom_user[userID].is_register) {
+            return;
+        }
+
+        //User Info Popup
+        $("#userInfoPopup").popup("destroy").remove();
+
+        var userInfoPopupData = {
+            id: "userInfoPopup",
+            content: $("template#tplUserInfoPopup").html()
+        };
+
+        tplJS.Popup(null, null, "append", userInfoPopupData);
+
+        $("#userInfoPopup .button").hide();
+        $("#userInfoPopup .footer").hide();
+        $("#userInfoPopup .ui-hr-bottom").hide();
+        $("#userInfoPopup .button-add-status").hide();
+
+        if (JM.data.chatroom_user[userID].avator_download_time != 0) {
+            $("#userInfoPopup svg.chatroom-info-photo").hide();
+            $("#userInfoPopup img").prop("src", JM.data.chatroom_user[userID].avator_path);
+            $("#userInfoPopup img").show();
+        } else {
+            $("#userInfoPopup img").hide();
+            $("#userInfoPopup svg.chatroom-info-photo").show();
+        }
+
+        var memo = "&nbsp;";
+
+        if (JM.data.chatroom_user[userID].memo != null && JM.data.chatroom_user[userID].memo.length > 0) {
+            memo = JM.data.chatroom_user[userID].memo;
+        }
+
+        $("#userInfoPopup .personal-popup-name").html(userID);
+        $("#userInfoPopup .personal-popup-memo").html(memo);
+        $("#userInfoPopup .personal-popup-email").html(JM.data.chatroom_user[userID].email);
+        $("#userInfoPopup .personal-popup-phone").html(JM.data.chatroom_user[userID].ext_no);
+
+        if (loginData["loginid"] === userID) {
+            //Yourself
+            $("#userInfoPopup .button-edit").show();
+        } else {
+            //Other User
+            var is_friend = JM.data.chatroom_user[userID].is_friend;
+            var is_protect = JM.data.chatroom_user[userID].is_protect;
+            var is_invite = JM.data.chatroom_user[userID].is_invite;
+
+            $("#userInfoPopup .button-chat").show();
+
+            if (is_friend) {
+                $("#userInfoPopup .button-delete").show();
+            } else {
+                $("#userInfoPopup .button-add").show();
+            }
+
+            if (is_protect && !is_friend) {
+                $("#userInfoPopup .button-chat").hide();
+
+                if (is_invite) {
+                    $("#userInfoPopup .status-b").show();
+                    $("#userInfoPopup .button-add").addClass("personal-popup-button-disable");
+                } else {
+                    $("#userInfoPopup .status-a").show();
+                }
+            }
+
+            if (prevPageID === "viewChatroom") {
+                $("#userInfoPopup .button-chat").hide();
+            }
+        }
+
+        window.personalPopupUserID = userID;
+        $("#userInfoPopup").popup("open");
+    };
 
     $(document).on({
         click: function(event) {
