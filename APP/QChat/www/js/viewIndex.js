@@ -93,6 +93,8 @@ $("#viewIndex").pagecontainer({
 
             (function(action, empID, callback) {
 
+                var callbackFunction = callback;
+
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
                     destination_login_id: empID
@@ -129,7 +131,9 @@ $("#viewIndex").pagecontainer({
 
                             getQFriend();
                         } else if (action === "downloadOriginalUserAvatar") {
-                            window.processUserData(data['Content'][0], callback);
+                            window.processUserData(data['Content'][0], callbackFunction);
+                        } else if (action === "inviteListView") {
+                            window.processUserData(data['Content'][0], callbackFunction);
                         }
                     }
                 };
@@ -160,8 +164,8 @@ $("#viewIndex").pagecontainer({
                         var nowDateTime = new Date();
                         var nowTimestamp = nowDateTime.TimeStamp();
 
-                        $(".friend-content .friend-list .data-list").remove();
-                        $(".friend-content .friend-list .ui-hr-friend-list").remove();
+                        $(".friend-content .friend-list-content").html("");
+                        $(".friend-content .invite-list-content").html("");
 
                         for (var i=0; i<data['Content'].friend.user_list.length; i++) {
                             var friendDataListHTML = $("template#tplFriendDataList").html();
@@ -189,7 +193,40 @@ $("#viewIndex").pagecontainer({
 
                         //only show request data when the request count > 0
                         if (data['Content'].inviter.user_list.length > 0) {
+                            JM.data.chatroom_invite = [];
 
+                            var inviteCount = data['Content'].inviter.user_list.length;
+                            var inviteDataListHTML = $("template#tplInviteDataList").html();
+                            var inviteDataList = $(inviteDataListHTML);
+
+                            for (var i=0; i<data['Content'].inviter.user_list.length; i++) {
+                                (function(user_list, i) {
+
+                                    JM.data.chatroom_invite.push(user_list[i].name);
+
+                                    function callback() {
+                                        window.downloadOriginalUserAvatar("inviteListView", nowTimestamp, user_list[i].name, i);
+
+                                        if (i == 0) {
+                                            inviteDataList.find(".personal-photo-content").prop("id", "inviteList0");
+                                            inviteDataList.find(".personal-name").html(user_list[0].name);
+                                            inviteDataList.find(".personal-popup").data("userID", user_list[0].name);
+
+                                            if (JM.data.chatroom_user[user_list[0].name].memo == null) {
+                                                inviteDataList.find(".personal-name").addClass("user-name-only");
+                                                inviteDataList.find(".personal-status").addClass("hide");
+                                            } else {
+                                                inviteDataList.find(".personal-status").html(JM.data.chatroom_user[user_list[0].name].memo);
+                                            }
+
+                                            $(".friend-content .invite-list-content").append(inviteDataList);
+                                            $(".friend-content .invite-list-content #requestCount").html(user_list.length);
+                                        }
+                                    }
+
+                                    getQUserDetail("inviteListView", user_list[i].name, callback);
+                                }(data['Content'].inviter.user_list, i));
+                            }
                         }
 
                         JM.updateLocalStorage();
@@ -593,6 +630,8 @@ $("#viewIndex").pagecontainer({
                                 indexUserAvatar(data.filePath);
                             } else if (action === "friendListView") {
                                 friendListViewAvatar(listViewIndex, data.filePath);
+                            } else if (action === "inviteListView") {
+                                inviteListViewAvatar(listViewIndex, data.filePath);
                             } else if (action === "chatroomMemberListView") {
                                 chatroomMemberListViewAvatar(listViewIndex, data.filePath);
                             } else if (action === "addMemberListView") {
@@ -614,6 +653,8 @@ $("#viewIndex").pagecontainer({
                             indexUserAvatar(JM.data.chatroom_user[userID].avator_path);
                         } else if (action === "friendListView") {
                             friendListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                        } else if (action === "inviteListView") {
+                            inviteListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
                         } else if (action === "chatroomMemberListView") {
                             chatroomMemberListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
                         } else if (action === "addMemberListView") {
@@ -651,6 +692,12 @@ $("#viewIndex").pagecontainer({
             $("#friendList" + listViewIndex).find("svg").hide();
             $("#friendList" + listViewIndex).find("img").prop("src", avatarPath);
             $("#friendList" + listViewIndex).find("img").show();
+        }
+
+        function inviteListViewAvatar(listViewIndex, avatarPath) {
+            $("#inviteList" + listViewIndex).find("svg").hide();
+            $("#inviteList" + listViewIndex).find("img").prop("src", avatarPath);
+            $("#inviteList" + listViewIndex).find("img").show();
         }
 
         window.chatroomListView = function(chatroomID, action) {
@@ -903,7 +950,7 @@ $("#viewIndex").pagecontainer({
         $("#viewIndex").on("pageshow", function(event, ui) {
 
             //Set Active Tab
-            if (prevPageID === "viewAddFriend" || prevPageID === "viewMyInfoEdit") {
+            if (prevPageID === "viewAddFriend" || prevPageID === "viewMyInfoEdit" || prevPageID === "viewFriendInvite") {
                 $("#tabIndex a:eq(1)").addClass("ui-btn-active");
                 $("#tabIndex").tabs({ active: 1 });
             } else {
@@ -996,27 +1043,51 @@ $("#viewIndex").pagecontainer({
             }
         }, "#chatroomDiv .chatroom-list");
 
-        //Friend List Switch btn
+        //Friend List / Invite List Switch btn
         $(document).on({
-            click: function() {
+            click: function(event) {
 
-                $(".friend-content .list-down").toggleClass("hide");
-                $(".friend-content .list-up").toggleClass("hide");
+                var clssName = "";
+                var fadeSpeed = 0;
+                var slideSpeed = 0;
 
-                if ($(".friend-content .list-down").hasClass("hide")) {
-                    //open
-                    $(".friend-content .data-list").not(".hide").fadeIn(300);
-                    $(".friend-content .friend-list-content").slideDown(350);
+                if ($(event.target).hasClass("friend")) {
+                    clssName = "friend";
+                    fadeSpeed = 300;
+                    slideSpeed = 350;
                 } else {
-                    //close
-                    $(".friend-content .data-list").not(".hide").fadeOut(300);
-                    $(".friend-content .friend-list-content").slideUp(350);
+                    clssName = "invite";
+                    fadeSpeed = 150;
                 }
 
-                $(".friend-content .data-list.hide").css("display", "");
+                $(".friend-content ." + clssName + " .list-down").toggleClass("hide");
+                $(".friend-content ." + clssName + " .list-up").toggleClass("hide");
+
+                if ($(".friend-content ." + clssName + " .list-down").hasClass("hide")) {
+                    //open
+                    $(".friend-content ." + clssName + "-list-content .data-list").not(".hide").fadeIn(fadeSpeed);
+                    if (clssName === "friend") {
+                        $(".friend-content ." + clssName + "-list-content").slideDown(slideSpeed);
+                    }
+                } else {
+                    //close
+                    $(".friend-content ." + clssName + "-list-content .data-list").not(".hide").fadeOut(fadeSpeed);
+                    if (clssName === "friend") {
+                        $(".friend-content ." + clssName + "-list-content").slideUp(slideSpeed);
+                    }
+                }
+
+                $(".friend-content ." + clssName + "-list-content .data-list.hide").css("display", "");
 
             }
         }, ".friend-content .list-switch");
+
+        //Invite List Button
+        $(document).on({
+            click: function(event) {
+                $.mobile.changePage('#viewFriendInvite');
+            }
+        }, "#viewIndexContent .invite-list-content");
 
         //Search Friend
         $(document).on({

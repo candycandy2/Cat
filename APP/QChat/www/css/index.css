@@ -285,11 +285,29 @@ input[type=checkbox]:checked + label {
 
 }
 
-.friend-list {
-    position: absolute;
+.invite-list, .friend-list {
+    position: relative;
 }
 
+.friend-list {
+    top: 1vw;
+}
+
+.invite-list {
+    min-height: 12.15vw;
+}
+
+.invite-list .user-name-only,
 .friend-list .user-name-only {
+    margin-top: 2.4335vw;
+}
+
+.invite-list .group-content {
+    width: 67vw;
+}
+
+.invite-list .request-count {
+    font-size: 4.18vw;
     margin-top: 2.4335vw;
 }
 
@@ -1201,6 +1219,15 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .personal-popup-button-disable {
     color: #989898;
+}
+
+/*-----------------------------------------------------------------FriendInvite*/
+#viewFriendInviteContent {
+    padding: 0 3.71vw 0;
+}
+
+#userListContentFriendInvite .user-list .user-content {
+    width: 54vw;
 }
 
 .hide {
