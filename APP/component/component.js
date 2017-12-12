@@ -416,8 +416,7 @@ $(document).one("pagebeforecreate", function() {
                     event.preventDefault();
                     openAPP(href);
                 }
-            }
-            if (href.indexOf('http://') !== -1 || href.indexOf('https://') !== -1) {
+            } else if (href.indexOf('http://') !== -1 || href.indexOf('https://') !== -1) {
                 event.preventDefault();
                 cordova.InAppBrowser.open(href, '_system', 'location=yes');
             }
