@@ -191,9 +191,12 @@ $("#viewIndex").pagecontainer({
                             window.processUserData(data['Content'].friend.user_list[i], callback);
                         }
 
-                        //only show request data when the request count > 0
-                        if (data['Content'].inviter.user_list.length > 0) {
+                        //only show request data when:
+                        //1. Protect User
+                        //2. the request count > 0
+                        if (JM.data.chatroom_user[loginData["loginid"]].is_protect && data['Content'].inviter.user_list.length > 0) {
                             JM.data.chatroom_invite = [];
+                            $("#viewIndexContent .friend-content .invite-list").show();
 
                             var inviteCount = data['Content'].inviter.user_list.length;
                             var inviteDataListHTML = $("template#tplInviteDataList").html();
