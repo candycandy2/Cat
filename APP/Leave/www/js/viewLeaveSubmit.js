@@ -14,7 +14,7 @@ var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeav
 var basedayList = false;
 var baseday = "";
 var needBaseday = false;
-var leaveReason;
+var leaveReason = "";
 var editLeaveForm = false;
 var countApplyDays, countApplyHours;
 
@@ -339,7 +339,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                               + "</EmpNo><leaveid>"
                                               + leaveid
                                               + "</leaveid></LayoutHeader>";
-                            console.log(queryLeftDaysData);
+                            //console.log(queryLeftDaysData);
                             //呼叫API
                             QueryLeftDaysData();
 
@@ -484,6 +484,9 @@ $("#viewLeaveSubmit").pagecontainer({
                 $("#chooseBaseday").text(baseday);
             }
 
+            //只要换基准日，结束时间都恢复“请选择”
+            $('#endText').text(pleaseSelectStr);
+            
             checkLeaveBeforePreview();
         });
 
@@ -511,6 +514,9 @@ $("#viewLeaveSubmit").pagecontainer({
                 $("#chooseBaseday").text(self);
             }
 
+            //只要换基准日，结束时间都恢复“请选择”
+            $('#endText').text(pleaseSelectStr);
+
             checkLeaveBeforePreview();
         });
 
@@ -523,6 +529,9 @@ $("#viewLeaveSubmit").pagecontainer({
             }else {
                 $("#chooseBaseday").text(baseday);
             }
+
+            //只要换基准日，结束时间都恢复“请选择”
+            $('#endText').text(pleaseSelectStr);
 
             checkLeaveBeforePreview();
         });
@@ -563,7 +572,7 @@ $("#viewLeaveSubmit").pagecontainer({
         //開始日期改变
         $("#startDate").on("change", function() {
             var self = $(this).val();
-            console.log(self);
+            //console.log(self);
             var minute = parseInt(self.substring(14, 16));
 
             startLeaveDate = "";
@@ -708,25 +717,27 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //假別
             getLeaveByCategory();
+            leaveid = "";
 
             //代理人不清除
-            // var agentOption = '<option hidden>' + pleaseSelectStr + '</option>';
-            // $("#leave-agent-popup").find("option").remove().end().append(agentOption);
-            // tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
 
             //開始時間
             $("#startText").text(pleaseSelectStr);
+            startLeaveDate = "";
             //$("#startDate").val("");
 
             //結束時間
             $("#endText").text(pleaseSelectStr);
+            endLeaveDate = "";
             //$("#endDate").val("");
 
             //請假理由
             $("#leaveReason").val("");
+            leaveReason = "";
 
             //基準日
             $("#chooseBaseday").text(selectBasedayStr);
+            baseday = "";
 
             //请假数
             $("#leaveDays").text("0");
@@ -808,5 +819,7 @@ $("#viewLeaveSubmit").pagecontainer({
             //呼叫API
             SendApplyLeaveData();
         });
+
+
     }
 });
