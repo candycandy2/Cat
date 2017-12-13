@@ -371,7 +371,7 @@ $("#viewNewChatroom").pagecontainer({
 
                     if (resultCode === "1") {
 
-                        $("#actionMsg1").html("已將 " + userID + " 加為好友");
+                        $("#actionMsg1 .user-name").html(userID);
                         $("#actionMsg1").show();
 
                         actionButton("show");
@@ -448,7 +448,7 @@ $("#viewNewChatroom").pagecontainer({
                         $("#" + listViewID).find(".button-icon-content").hide();
                         $("#" + listViewID).find(".action-info").show();
 
-                        $("#actionMsg3").html("已發送邀請給 " + userID);
+                        $("#actionMsg3 .user-name").html(userID);
                         $("#actionMsg3").show();
 
                         actionButton("show");
@@ -482,7 +482,7 @@ $("#viewNewChatroom").pagecontainer({
 
                 setTimeout(function() {
                     $(".action-success-full-screen").hide();
-                    $(".action-success-full-screen span").hide();
+                    $(".action-success-full-screen .action-msg").hide();
                 }, 3000);
             }
 
