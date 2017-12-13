@@ -164,6 +164,8 @@ window.initialSuccess = function() {
 
         }
     }, "#userInfoPopup .personal-popup-button");
+
+    window.JPush.init();
 };
 
 function cutString(maxViewWidth, string, fontSize, type, memberCount) {
@@ -299,3 +301,31 @@ function onResume() {
 
     //When APP in foreground, check if the view is chatroom, then stop receive the Push Notification
 }
+
+//JPush - for push from QPlay Server
+document.addEventListener("jpush.openNotification", function (event) {
+    console.log(event);
+    if (device.platform == "Android") {
+        console.log(event.alert);
+    } else {
+        console.log(event.aps.alert);
+    }
+}, false);
+
+document.addEventListener("jpush.receiveNotification", function (event) {
+    console.log(event);
+    if (device.platform == "Android") {
+        console.log(event.alert);
+    } else {
+        console.log(event.aps.alert);
+    }
+}, false);
+
+document.addEventListener("jpush.receiveMessage", function (event) {
+    console.log(event);
+    if (device.platform == "Android") {
+        console.log(event.message);
+    } else {
+        console.log(event.content);
+    }
+}, false);

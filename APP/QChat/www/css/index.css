@@ -497,7 +497,7 @@ input[type=checkbox]:checked + label {
     text-align: center;
 }
 
-.action-success-full-screen div span {
+.action-success-full-screen .action-msg {
     background-color: rgba(102, 102, 102, 0.7);
     color: #FFFFFF;
     font-size: 3.55vw;
