@@ -29,7 +29,7 @@ var prslvsCalendar = {};
 var holidayCalendar = {};
 var myCalendarData = {};
 var myHolidayData = [];
-var applyDay = currentYear+"-"+currentMonth+"-"+currentDate;
+var applyDay = currentYear+"/"+currentMonth+"/"+currentDate;
 var dayTable = {
     "1" : "(一)",
     "2" : "(二)",

@@ -97,7 +97,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                     var refleaveformno = $("refleaveformno", htmlDom);
 
                     //补全另一部分详情
-                    backLeaveDetailObj["applydate"] = $(applydate).html();
+                    backLeaveDetailObj["applydate"] = formatterDate($(applydate).html());
                     backLeaveDetailObj["reason"] = $(reasons).html();
                     backLeaveDetailObj["refleaveformid"] = $(refleaveformid).html();
                     backLeaveDetailObj["refleaveformno"] = $(refleaveformno).html();
@@ -253,15 +253,15 @@ $("#viewBackLeaveQuery").pagecontainer({
                     obj["agentname"] = employeeName;
 
                     //传值给假单查询页
-                    $("#leaveApplyDate").text(dateFormatter($(applydate).html()));
+                    $("#leaveApplyDate").text(formatterDate($(applydate).html()));
                     $("#leaveFormNo").text($(formno).html());
                     $("#leaveStatus").text(obj["statusName"]);
                     $("#leaveCategory").text(obj["category"]);
                     $("#leaveName").text(obj["name"]);
                     $("#leaveAgentName").text(obj["agentname"]);
-                    $("#leaveStartDate").text(dateFormatter($(begindate).html()));
+                    $("#leaveStartDate").text(formatterDate($(begindate).html()));
                     $("#leaveStartTime").text($(begintime).html());
-                    $("#leaveEndDate").text(dateFormatter($(enddate).html()));
+                    $("#leaveEndDate").text(formatterDate($(enddate).html()));
                     $("#leaveEndTime").text($(endtime).html());
                     $("#leaveApplyDays").text(($(leavedays).html().split(".")[1] == "0") ? $(leavedays).html().split(".")[0] : $(leavedays).html());
                     $("#leaveApplyHours").text(($(leavehours).html().split(".")[1] == "0") ? $(leavehours).html().split(".")[0] : $(leavehours).html());
@@ -381,13 +381,15 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //详情页传值
         function setBackLeaveDataToDetail() {
-            $("#backLeaveApplyDate").text(dateFormatter(backLeaveDetailObj["applydate"]));
+            $("#backLeaveApplyDate").text(backLeaveDetailObj["applydate"]);
             $("#backLeaveFormNo").text(backLeaveDetailObj["formno"]);
             $("#backLeaveStatus").text(backLeaveDetailObj["statusName"]);
             $("#refLeaveFormNo").text(backLeaveDetailObj["refleaveformno"]);
             //给销假单动态添加一个属性leave-id，即请假单编号
             $("#signToLeaveDetail").attr("leave-id", backLeaveDetailObj["refleaveformid"]);
             $("#backLeaveApplyReason").text(backLeaveDetailObj["reason"]);
+            //撤回页面的"销假单号"
+            $("#withdrawBackLeaveFormno").text(backLeaveDetailObj["formno"]);
         }
 
         /********************************** page event *************************************/
@@ -396,7 +398,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         });
 
         $("#viewBackLeaveQuery").on("pageshow", function(event, ui) {
-
+            $("#withdrawBackLeaveApplyDate").text(applyDay);
             loadingMask("hide");
         });
 
@@ -434,12 +436,12 @@ $("#viewBackLeaveQuery").pagecontainer({
             
         });
 
-        //返回銷假單列表
+        //从详情返回銷假單列表
         $("#backToList").on("click", function() {
-            $("#backToList").hide();
-            $(".backLeave-query-detail-sign").hide();
             $(".backLeave-query-main").show();
             $(".leaveMenu").show();
+            $("#backToList").hide();
+            $(".backLeave-query-detail-sign").hide();
             return false;
         });
 
@@ -456,12 +458,12 @@ $("#viewBackLeaveQuery").pagecontainer({
             $(".backLeave-query-sign-withdraw").show();
         });
 
-        //返回簽核中詳情
+        //从撤回返回詳情
         $("#backToSign").on("click", function() {
-            $("#backToSign").hide();
-            $(".backLeave-query-sign-withdraw").hide();
             $("#backToList").show();
             $(".backLeave-query-detail-sign").show();
+            $("#backToSign").hide();
+            $(".backLeave-query-sign-withdraw").hide();
             return false;
         });
 
