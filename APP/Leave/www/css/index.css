@@ -244,17 +244,23 @@ div.scrollmenu a {
 }
 
 #agent-popup-option-popup .header.typeB,
-#leave-agent-popup-option-popup .header.typeB {
+#leave-agent-popup-option-popup .header.typeB,
+#categroy-popup-option-popup .header.typeB,
+#leave-popup-option-popup .header.typeB {
 	height: 18.8VW;
 }
 
 #agent-popup-option-popup .header .title,
-#leave-agent-popup-option-popup .header .title {
+#leave-agent-popup-option-popup .header .title,
+#categroy-popup-option-popup .header .title,
+#leave-popup-option-popup .header .title {
 	width: 75VW;
 }
 
 #agent-popup-option-popup ul,
-#leave-agent-popup-option-popup ul {
+#leave-agent-popup-option-popup ul,
+#categroy-popup-option-popup ul,
+#leave-popup-option-popup ul {
 	margin-top: 0VW;
 	/* width: 308px;
 	height: 200px;
@@ -262,7 +268,9 @@ div.scrollmenu a {
 }
 
 #agent-popup-option-popup ul::-webkit-scrollbar,
-#leave-agent-popup-option-popup ul::-webkit-scrollbar {
+#leave-agent-popup-option-popup ul::-webkit-scrollbar,
+#categroy-popup-option-popup ul::-webkit-scrollbar,
+#leave-popup-option-popup ul::-webkit-scrollbar {
     width: 3px;
     margin: 0px;
 }
@@ -276,7 +284,9 @@ div.scrollmenu a {
 }
 
 #agent-popup-option-popup ul::-webkit-scrollbar-thumb,
-#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb {
+#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb,
+#categroy-popup-option-popup ul::-webkit-scrollbar-thumb,
+#leave-popup-option-popup ul::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 15px;
 	background: rgba(0,0,0,0.8);
@@ -284,7 +294,9 @@ div.scrollmenu a {
 }
 
 #agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
-#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
+#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
+#categroy-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
+#leave-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
     background: rgba(0,0,0,0.4);
 }
 
