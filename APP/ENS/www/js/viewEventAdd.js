@@ -1,4 +1,3 @@
-
 $("#viewEventAdd").pagecontainer({
     create: function(event, ui) {
 
@@ -60,7 +59,7 @@ $("#viewEventAdd").pagecontainer({
                 };
 
                 if (relatedEventExist) {
-                    for (var i=0; i<data['Content'].length; i++) {
+                    for (var i = 0; i < data['Content'].length; i++) {
                         var tempData = {
                             value: data['Content'][i].event_row_id,
                             text: data['Content'][i].event_row_id + "[" + data['Content'][i].event_title + "]" + data['Content'][i].event_desc
@@ -146,7 +145,7 @@ $("#viewEventAdd").pagecontainer({
                 var specificTimeStamp = specificDoneDateTime.TimeStamp();
             } else if (setDateTime === "setTime") {
                 var specificDoneDateTime = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
-                doneDateTime["hour"] + ":" + doneDateTime["minute"] + ":00";
+                    doneDateTime["hour"] + ":" + doneDateTime["minute"] + ":00";
                 var specificTime = new Date(specificDoneDateTime);
                 var specificTimeStamp = specificTime.TimeStamp();
             }
@@ -178,12 +177,12 @@ $("#viewEventAdd").pagecontainer({
             var basicListParameter = "";
 
             if (action === "newEvent") {
-                for (var i=0; i<loctionFunctionData.length; i++) {
+                for (var i = 0; i < loctionFunctionData.length; i++) {
 
                     if (loctionFunctionData[i].function === "all") {
                         $.each(loginData["BasicInfo"][projectName]["locationFunction"], function(location, functionName) {
                             if (location === loctionFunctionData[i].location) {
-                                for (var j=0; j<functionName.length; j++) {
+                                for (var j = 0; j < functionName.length; j++) {
                                     var tempDataObj = {
                                         location: loctionFunctionData[i].location,
                                         function: functionName[j]
@@ -249,19 +248,19 @@ $("#viewEventAdd").pagecontainer({
             //Type:
             //ITS> 緊急通報 / 一般通報
             //RM> A級事件 / B級事件 / C級事件 / 預警事件 / 資訊分享
-            if (data.event_type === langStr["str_068"] /*"緊急通報"*/) {
+            if (data.event_type === langStr["str_068"] /*"緊急通報"*/ ) {
                 $("#eventLevel" + projectName).val("1");
-            } else if (data.event_type === langStr["str_069"] /*"一般通報"*/) {
+            } else if (data.event_type === langStr["str_069"] /*"一般通報"*/ ) {
                 $("#eventLevel" + projectName).val("2");
-            } else if (data.event_type === langStr["str_070"] /*"A級事件"*/) {
+            } else if (data.event_type === langStr["str_070"] /*"A級事件"*/ ) {
                 $("#eventLevel" + projectName).val("3");
-            } else if (data.event_type === langStr["str_071"] /*"B級事件"*/) {
+            } else if (data.event_type === langStr["str_071"] /*"B級事件"*/ ) {
                 $("#eventLevel" + projectName).val("4");
-            } else if (data.event_type === langStr["str_072"] /*"C級事件"*/) {
+            } else if (data.event_type === langStr["str_072"] /*"C級事件"*/ ) {
                 $("#eventLevel" + projectName).val("5");
-            } else if (data.event_type === langStr["str_073"] /*"預警事件"*/) {
+            } else if (data.event_type === langStr["str_073"] /*"預警事件"*/ ) {
                 $("#eventLevel" + projectName).val("6");
-            } else if (data.event_type === langStr["str_074"] /*"資訊分享"*/) {
+            } else if (data.event_type === langStr["str_074"] /*"資訊分享"*/ ) {
                 $("#eventLevel" + projectName).val("7");
             }
 
@@ -284,7 +283,7 @@ $("#viewEventAdd").pagecontainer({
             doneDateTime["minute"] = padLeft(completeTime.getMinutes(), 2);
 
             var completeTimeText = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
-            doneDateTime["hour"] + ":" + doneDateTime["minute"];
+                doneDateTime["hour"] + ":" + doneDateTime["minute"];
             $("#textDateTime").html(completeTimeText);
 
             //Related Event
@@ -297,9 +296,9 @@ $("#viewEventAdd").pagecontainer({
             }
 
             //Task List
-            for (var i=0; i<data.task_detail.length; i++) {
+            for (var i = 0; i < data.task_detail.length; i++) {
 
-                $.each(loginData["BasicInfo"][projectName]["locationFunction"], function(location, functionData){
+                $.each(loginData["BasicInfo"][projectName]["locationFunction"], function(location, functionData) {
                     if (data.task_detail[i].task_location === location) {
 
                         if (projectName === "ITS") {
@@ -312,7 +311,7 @@ $("#viewEventAdd").pagecontainer({
                         var ID = loctionFunctionID;
                         loctionFunctionID++;
 
-                        for (var j=0; j<functionData.length; j++) {
+                        for (var j = 0; j < functionData.length; j++) {
                             if (data.task_detail[i].task_function === functionData[j]) {
                                 selectedFunctionText = data.task_detail[i].task_function;
                             }
@@ -356,8 +355,8 @@ $("#viewEventAdd").pagecontainer({
             if (device.platform === "iOS") {
                 pageScrollHeight += 20;
             }
-            var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight, 10 );
-            var left = parseInt((clientWidth - widthPopup), 10 );
+            var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight, 10);
+            var left = parseInt((clientWidth - widthPopup), 10);
 
             $(".ui-datebox-container").parent("div.ui-popup-active").css({
                 "top": top,
@@ -392,7 +391,7 @@ $("#viewEventAdd").pagecontainer({
                 doneDateTime["month"] = this.callFormat('%m', setDate);
                 doneDateTime["day"] = this.callFormat('%d', setDate);
 
-                $("#doneTime").trigger('datebox', {'method':'open'});
+                $("#doneTime").trigger('datebox', { 'method': 'open' });
                 tplJS.preventPageScroll();
             } else {
                 if (doneDateTime["year"] === undefined) {
@@ -412,7 +411,7 @@ $("#viewEventAdd").pagecontainer({
                 doneDateTime["minute"] = this.callFormat('%M', setTime);
 
                 var textDateTime = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
-                doneDateTime["hour"] + ":" + doneDateTime["minute"];
+                    doneDateTime["hour"] + ":" + doneDateTime["minute"];
                 $("#textDateTime").html(textDateTime);
 
                 //Create temporary data
@@ -437,7 +436,7 @@ $("#viewEventAdd").pagecontainer({
             functionData = functionData || null;
 
             if (action === "delete") {
-                for (var i=parseInt(loctionFunctionData.length - 1, 10); i>=0; i--) {
+                for (var i = parseInt(loctionFunctionData.length - 1, 10); i >= 0; i--) {
                     if (loctionFunctionData[i]["location"] === location) {
                         loctionFunctionData.splice(i, 1);
                     }
@@ -450,7 +449,7 @@ $("#viewEventAdd").pagecontainer({
                 if (typeof functionData === "string") {
                     $("#" + domID).val(functionData);
                 } else {
-                    for (var i=0; i<functionData.length; i++) {
+                    for (var i = 0; i < functionData.length; i++) {
                         if (i == 0) {
                             $("#" + domID).val(functionData[i]);
                         } else {
@@ -461,7 +460,7 @@ $("#viewEventAdd").pagecontainer({
 
                 verticalCenterDeleteButton("eventFunctionSelectContent-" + IDNumber);
             } else if (action === "remove") {
-                for (var i=parseInt(loctionFunctionData.length - 1, 10); i>=0; i--) {
+                for (var i = parseInt(loctionFunctionData.length - 1, 10); i >= 0; i--) {
                     if (loctionFunctionData[i]["domID"] === domID) {
                         loctionFunctionData.splice(i, 1);
                     }
@@ -505,7 +504,7 @@ $("#viewEventAdd").pagecontainer({
                 $("#eventAddConfirm").popup("open");
             } else if (setDateTime === "setTime") {
                 var specificDoneDateTime = doneDateTime["year"] + "/" + doneDateTime["month"] + "/" + doneDateTime["day"] + " " +
-                doneDateTime["hour"] + ":" + doneDateTime["minute"] + ":00";
+                    doneDateTime["hour"] + ":" + doneDateTime["minute"] + ":00";
                 var specificTime = new Date(specificDoneDateTime);
                 var specificTimeStamp = specificTime.TimeStamp();
 
@@ -757,7 +756,7 @@ $("#viewEventAdd").pagecontainer({
                 defaultEventLevel = "1";
 
                 if (prevPageID === "viewEventContent") {
-                    if (eventContentData.event_type === langStr["str_069"] /*"一般通報"*/) {
+                    if (eventContentData.event_type === langStr["str_069"] /*"一般通報"*/ ) {
                         defaultEventLevel = "2";
                     }
                 }
@@ -783,13 +782,13 @@ $("#viewEventAdd").pagecontainer({
                 defaultEventLevel = "3";
 
                 if (prevPageID === "viewEventContent") {
-                    if (eventContentData.event_type === langStr["str_071"] /*"B級事件"*/) {
+                    if (eventContentData.event_type === langStr["str_071"] /*"B級事件"*/ ) {
                         defaultEventLevel = "4";
-                    } else if (eventContentData.event_type === langStr["str_072"] /*"C級事件"*/) {
+                    } else if (eventContentData.event_type === langStr["str_072"] /*"C級事件"*/ ) {
                         defaultEventLevel = "5";
-                    } else if (eventContentData.event_type === langStr["str_073"] /*"預警事件"*/) {
+                    } else if (eventContentData.event_type === langStr["str_073"] /*"預警事件"*/ ) {
                         defaultEventLevel = "6";
-                    } else if (eventContentData.event_type === langStr["str_074"] /*"資訊分享"*/) {
+                    } else if (eventContentData.event_type === langStr["str_074"] /*"資訊分享"*/ ) {
                         defaultEventLevel = "7";
                     }
                 }
@@ -829,9 +828,9 @@ $("#viewEventAdd").pagecontainer({
                     $("#eventLevel" + projectName).val("3");
                 }
                 $("#eventTemplateTextarea").val("");
-                $('#eventTemplateTextarea').prop('placeholder', langStr["str_086"] /*"請選擇範本或輸入標題"*/);
+                $('#eventTemplateTextarea').prop('placeholder', langStr["str_086"] /*"請選擇範本或輸入標題"*/ );
                 $("#eventDescriptionTextarea").val("");
-                $('#eventDescriptionTextarea').prop('placeholder', langStr["str_087"] /*"描述文字"*/);
+                $('#eventDescriptionTextarea').prop('placeholder', langStr["str_087"] /*"描述文字"*/ );
                 $("#setNow").prop("checked", "checked");
                 setDateTime = "setNow";
 
@@ -868,7 +867,7 @@ $("#viewEventAdd").pagecontainer({
             var selectedLocation = $("#eventLocation" + projectName).val();
 
             //Check if this Location has Exist in Data List
-            for (var i=0; i<loctionFunctionData.length; i++) {
+            for (var i = 0; i < loctionFunctionData.length; i++) {
                 if (loctionFunctionData[i]["location"] === selectedLocation) {
                     return;
                 }
@@ -901,7 +900,7 @@ $("#viewEventAdd").pagecontainer({
                 }
             };
 
-            for (var i=0; i<loginData["BasicInfo"][projectName]["locationFunction"][selectedLocation].length; i++) {
+            for (var i = 0; i < loginData["BasicInfo"][projectName]["locationFunction"][selectedLocation].length; i++) {
                 var tempData = {
                     value: loginData["BasicInfo"][projectName]["locationFunction"][selectedLocation][i],
                     text: loginData["BasicInfo"][projectName]["locationFunction"][selectedLocation][i]
@@ -953,7 +952,7 @@ $("#viewEventAdd").pagecontainer({
 
                             updateLoctionFunctionData("update", selectID, selectedLocation, "all");
                         } else {
-                            for (var i=0; i<dataArray.length; i++) {
+                            for (var i = 0; i < dataArray.length; i++) {
                                 var tempData = {
                                     domID: selectID,
                                     location: selectedLocation,
@@ -1013,7 +1012,7 @@ $("#viewEventAdd").pagecontainer({
         });
 
         $(document).on("click", "#setTime", function() {
-            $("#doneDate").trigger('datebox', {'method':'open'});
+            $("#doneDate").trigger('datebox', { 'method': 'open' });
             tplJS.preventPageScroll();
         });
 
@@ -1051,9 +1050,9 @@ $("#viewEventAdd").pagecontainer({
         //Event Add / Edit Cancel Button
         $(document).on("popupafteropen", "#eventAddEditCancelConfirm", function() {
             if (prevPageID === "viewEventList") {
-               $("#eventAddEditCancelConfirm .header-text").html(langStr["str_090"] /*"確定取消新增?"*/);
+                $("#eventAddEditCancelConfirm .header-text").html(langStr["str_090"] /*"確定取消新增?"*/ );
             } else if (prevPageID === "viewEventContent") {
-                $("#eventAddEditCancelConfirm .header-text").html(langStr["str_019"] /*"確定取消編輯?"*/);
+                $("#eventAddEditCancelConfirm .header-text").html(langStr["str_019"] /*"確定取消編輯?"*/ );
             }
         });
 

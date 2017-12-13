@@ -29,7 +29,7 @@ var prslvsCalendar = {};
 var holidayCalendar = {};
 var myCalendarData = {};
 var myHolidayData = [];
-var applyDay = currentYear+"-"+currentMonth+"-"+currentDate;
+var applyDay = currentYear+"/"+currentMonth+"/"+currentDate;
 var dayTable = {
     "1" : "(一)",
     "2" : "(二)",
@@ -70,18 +70,6 @@ window.initialSuccess = function() {
     //选择日期为“请选择”
     $("#startText").text(pleaseSelectStr);
     $("#endText").text(pleaseSelectStr);
-
-    //个人剩余假别资讯
-    queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveInfo();
-
-    //请假单查询——获取假单列表
-    queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveApplyForm();
-
-    //销假单查询——获取销假单列表
-    queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveCancelForm();
 
     //data scroll menu
     dateInit();
@@ -221,15 +209,15 @@ function dateInit() {
     $("#leaveDate a:eq(0)").click();
 }
 
-//格式化日期字符串：“日/月/年” —— “年-月-日”
+//格式化日期字符串：“年-月-日” —— “年/月/日”
 function dateFormat(dataStr) {
-    var str = dataStr.split("/");
+    var str = dataStr.split("-");
 
     var newArr = [];
     for(var i in str) {
-        newArr.unshift(str[i]);
+        newArr.push(str[i]);
     }
-    return newArr.join("-");
+    return newArr.join("/");
 }
 
 //格式化日期格式：“月/日/年 時:分:秒 PM” —— “年-月-日”
@@ -246,6 +234,16 @@ function dateFormatter(dataStr) {
 //格式化日期格式：“月/日/年 時:分:秒 PM” —— “年/月/日”
 function formatterDate(str) {
     var arr = str.split(" ")[0].split("/");
+    var newArr = [];
+    newArr.push(arr[2]);
+    newArr.push(arr[0]);
+    newArr.push(arr[1]);
+    return newArr.join("/");
+}
+
+//日期格式化：“月/日/年” —— “年/月/日”
+function formatDate(str) {
+    var arr = str.split("/");
     var newArr = [];
     newArr.push(arr[2]);
     newArr.push(arr[0]);

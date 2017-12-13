@@ -96,8 +96,8 @@ function Calendar(options) {
         }
 
         if(_showInfoList) {
-            if(_infoData[dateInitObj.getMonth()]["status"] == 1) {
-                showCalendarHolidayInfo(dateInitObj.getMonth());
+            if(_infoData[_year][_month]["status"] == 1) {
+                showCalendarHolidayInfo(_year, _month);
             }else {
                 $(opts.showInfoListTo).hide();
             }
