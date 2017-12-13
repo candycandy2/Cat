@@ -70,7 +70,7 @@
                     個人資料
                 </div>
                 <div class="personal-content">
-                    <div class="data-list-content friend-list">
+                    <div class="data-list-content">
                         <div class="data-list chatroom-list">
                             <div class="left img-content personal-photo-content">
                                 <img class="personal-popup personal-photo hide" src="">
@@ -95,17 +95,62 @@
                 </div>
 
                 <div class="friend-content">
+                    <div class="data-list-content invite-list">
+                        <div>
+                            <div class="friend-title">
+                                好友請求
+                            </div>
+                            <div class="list-switch invite">
+                                <svg class="list-down invite hide">
+                                    <use class="invite" xlink:href="#icon-btn_list_down"></use>
+                                </svg>
+                                <svg class="list-up invite">
+                                    <use class="invite" xlink:href="#icon-btn_list_up"></use>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="invite-list-content">
+                        </div>
+
+                        <template id="tplInviteDataList">
+                            <div class="data-list">
+                                <div class="left img-content personal-photo-content">
+                                    <img class="personal-photo hide" src="">
+                                    <svg class="personal-photo">
+                                        <use xlink:href="#icon-img_default_photo"></use>
+                                    </svg>
+                                </div>
+                                <div class="right data-content">
+                                    <div class="left">
+                                        <div class="group-content">
+                                            <div class="personal-name">
+                                                Darren
+                                            </div>
+                                            <div class="personal-status">
+                                                Hi~
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right request-count">
+                                        (<span id="requestCount"></span>)
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
                     <div class="data-list-content friend-list">
                         <div>
                             <div class="friend-title">
                                 我的好友
                             </div>
-                            <div class="list-switch">
-                                <svg class="list-down hide">
-                                    <use xlink:href="#icon-btn_list_down"></use>
+                            <div class="list-switch friend">
+                                <svg class="list-down friend hide">
+                                    <use class="friend" xlink:href="#icon-btn_list_down"></use>
                                 </svg>
-                                <svg class="list-up">
-                                    <use xlink:href="#icon-btn_list_up"></use>
+                                <svg class="list-up friend">
+                                    <use class="friend" xlink:href="#icon-btn_list_up"></use>
                                 </svg>
                             </div>
                         </div>

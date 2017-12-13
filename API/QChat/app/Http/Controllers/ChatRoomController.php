@@ -176,7 +176,7 @@ class ChatRoomController extends Controller
             if(!is_null($newGroupId)){
                 $this->chatRoomService->deleteGroup($newGroupId);
             }
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+            throw $e;
          }
     }
 
@@ -287,7 +287,7 @@ class ChatRoomController extends Controller
                         'Content'=>$response]);
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+            throw $e;
         }
     }
 
@@ -319,7 +319,7 @@ class ChatRoomController extends Controller
             $empNo = $this->data['emp_no'];
             $dest = $this->data['member_list']['destination_emp_no'];
             if(is_array($dest)){
-            $destEmpArr = array_unique($dest);
+                $destEmpArr = array_unique($dest);
             }else{
                 $destEmpArr = array($dest);
             }
@@ -383,7 +383,7 @@ class ChatRoomController extends Controller
                         'Content'=>$response]);
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+            throw $e;
         }
     }
 
@@ -453,7 +453,7 @@ class ChatRoomController extends Controller
                         'Content'=>$response]);
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+            throw $e;
         }
     }
 
@@ -476,13 +476,9 @@ class ChatRoomController extends Controller
                         'Message'=>"Success",
                         'Content'=> $response ]);
         }catch (JMessageException $e){
-            \DB::rollBack();
              return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
-        }catch (\Exception $e) {
-            \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
         }
     }
 }
