@@ -1,5 +1,6 @@
 var leaveid, leaveType, agentid, beginDate, endDate, beginTime, endTime;
-var viewPersonalLeaveInit = false;
+var viewPersonalLeaveBeforeshow = false;
+var viewPersonalLeaveShow = false;
 var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 //var fulldayHide = false;
@@ -146,7 +147,7 @@ $("#viewPersonalLeave").pagecontainer({
                 }
 
                 //basedate
-                $("#chooseBaseday").text(selectBasedayStr);
+                //$("#chooseBaseday").text(selectBasedayStr);
                 //$("#oldBaseday").val("");
                 //$("#newBaseday").val("");
                 $('#baseDate').hide();
@@ -317,7 +318,7 @@ $("#viewPersonalLeave").pagecontainer({
             };
 
             var __construct = function () {
-                CustomAPI("POST", false, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
+                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
             }();
 
         };
@@ -639,7 +640,8 @@ $("#viewPersonalLeave").pagecontainer({
             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
 
-            if (!viewPersonalLeaveInit) {
+            if (!viewPersonalLeaveBeforeshow) {
+                viewPersonalLeaveBeforeshow = true;
                 //第一次進入首頁檢查是否有代理人信息，有則檢查代理人是否在職
                 if (localStorage.getItem("agent") !== null) {
                     queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>'
@@ -674,12 +676,26 @@ $("#viewPersonalLeave").pagecontainer({
                 leaveid = "";
                 beginTime = "08:00";
                 endTime = "17:00";
-                viewPersonalLeaveInit = true;
             }
 
         });
 
         $("#viewPersonalLeave").on("pageshow", function (event, ui) {
+            if (!viewPersonalLeaveShow) {
+                //个人剩余假别资讯
+                queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+                QueryEmployeeLeaveInfo();
+
+                //请假单查询——获取假单列表
+                queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+                QueryEmployeeLeaveApplyForm();
+
+                //销假单查询——获取销假单列表
+                queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+                QueryEmployeeLeaveCancelForm();
+
+                viewPersonalLeaveShow = true;
+            }
 
             loadingMask("hide");
         });

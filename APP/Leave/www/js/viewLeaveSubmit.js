@@ -151,7 +151,7 @@ $("#viewLeaveSubmit").pagecontainer({
             }
 
             //basedate
-            $("#chooseBaseday").text(selectBasedayStr);
+            //$("#chooseBaseday").text(selectBasedayStr);
             //$("#oldBaseday").val("");
             //$("#newBaseday").val("");
             $('#baseDate').show();
@@ -159,7 +159,7 @@ $("#viewLeaveSubmit").pagecontainer({
             needBaseday = true;
 
             //enddate
-            $("#endText").text(pleaseSelectStr);
+            //$("#endText").text(pleaseSelectStr);
             //$("#endDate").val("");
             $("#leaveDays").text("0");
             $("#leaveHours").text("0");
@@ -180,7 +180,7 @@ $("#viewLeaveSubmit").pagecontainer({
                     } else {
                         var basedayHtml = "";
                         for(var i = 0; i < dateArr.length; i ++) {
-                            basedayHtml += '<div class="tpl-option-msg-list">' + dateFormat($(dateArr[i]).html()) + '</div>';
+                            basedayHtml += '<div class="tpl-option-msg-list">' + formatDate($.trim($(dateArr[i]).html())) + '</div>';
                         }
                         $(".old-baseday-list").empty().append(basedayHtml);
                         $(".old-baseday-list").append('<div class="tpl-option-msg-list">' + otherBasedayStr + '</div>');
@@ -369,6 +369,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         //選擇假別後，獲取假別對象
                         leaveDetail = allLeaveList[i];
                         leaveCategory = allLeaveList[i]["category"];
+                        leaveid = allLeaveList[i]["leaveid"];
 
                         //不需要基准日回传剩余天数，需要基准日回传有效基准日列表
                         if(leaveDetail["basedate"] == "N") {
@@ -476,7 +477,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //新基準日選擇——datetime change
         $("#newBaseday").on("change", function() {
-            baseday = $(this).val();
+            baseday = dateFormat($(this).val());
 
             if(baseday === "") {
                 $("#chooseBaseday").text(selectBasedayStr);
@@ -522,7 +523,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //無有效基準日選擇——datetime change
         $("#oldBaseday").on("change", function() {
-            baseday = $(this).val();
+            baseday = dateFormat($(this).val());
 
             if(baseday === "") {
                 $("#chooseBaseday").text(selectBasedayStr);
@@ -675,7 +676,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                                   + "</enddate><endtime>"
                                                   + endLeaveDate.split(" ")[1]
                                                   + "</endtime><datumdate>"
-                                                  + baseday
+                                                  + ((needBaseday == true) ? baseday : '')
                                                   + "</datumdate></LayoutHeader>";
                     console.log(countLeaveHoursByEndQueryData);
                     //呼叫API

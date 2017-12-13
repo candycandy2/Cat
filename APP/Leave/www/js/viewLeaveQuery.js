@@ -465,7 +465,7 @@ $("#viewLeaveQuery").pagecontainer({
                 $("#backToList").show();
                 $(".backLeave-query-detail-sign").show();
                 $(".backLeave-query-main").hide();
-                $(".leaveMenu").hide();     
+                $(".leaveMenu").hide();
             }
             return false;
 
@@ -609,12 +609,12 @@ $("#viewLeaveQuery").pagecontainer({
             //修改開始日期
             startLeaveDate = startText;
             $("#startText").text(startLeaveDate);
-            $("#startDate").val(startLeaveDate.replace(" ", "T"));
+            //$("#startDate").val(startLeaveDate.replace(" ", "T"));
 
             //修改結束日期
             endLeaveDate = endText;
             $("#endText").text(endLeaveDate);
-            $("#endDate").val(endLeaveDate.replace(" ", "T"));
+            //$("#endDate").val(endLeaveDate.replace(" ", "T"));
 
             //修改請假理由
             leaveReason = leaveDetailObj["reason"];
@@ -623,6 +623,10 @@ $("#viewLeaveQuery").pagecontainer({
             //修改基準日
             baseday = leaveDetailObj["datumdate"];
             $("#chooseBaseday").text(baseday);
+
+            //修改请假数
+            $("#leaveDays").text("0");
+            $("#leaveHours").text("0");
             
             /**************** 3.跳转 ***************/
             $("#backDetailList").click();
@@ -645,7 +649,7 @@ $("#viewLeaveQuery").pagecontainer({
                                               + "</endtime><datumdate>"
                                               + baseday
                                               + "</datumdate></LayoutHeader>";
-                console.log(countLeaveHoursByEndQueryData);
+                //console.log(countLeaveHoursByEndQueryData);
                 //呼叫API
                 CountLeaveHoursByEnd();
             },2000);
