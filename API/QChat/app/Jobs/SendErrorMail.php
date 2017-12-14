@@ -39,7 +39,7 @@ class SendErrorMail extends Job implements ShouldQueue
             $from = \Config('app.error_mail_from');
             $fromName = \Config('app.error_mail_from_name');
             $to = explode(',',\Config('app.error_mail_to'));
-            $subject = '**['.\Config('app.env').'] QChat API Error Occur **';
+            $subject = '**['.\Config('app.env').'] '.\Config('app.name').' Error Occur **';
             $message->from( $from , $fromName);
             $message->to($to)->subject($subject);
         });
