@@ -551,6 +551,7 @@ function Calendar(options) {
         for (var i = 0; i < dateArray.length; i++) {
             $("#" + _id + " #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
         }
+        showCalendarWorkdayInfo(year, month);
         for (var i = 0; i < strArray.length; i++) {
             holidayList += '<li>' +
                 '<span>' +
@@ -564,8 +565,10 @@ function Calendar(options) {
 
     function showCalendarWorkdayInfo(year, month) {
         var dateArr = _infoData[year][month]["workday"]["date"].split(",");
-        for (var i = 0; i < dateArr.length; i++) {
-            $("#" + _id + " #" + dateArr[i].match(/^\s{0,}(\d*)/)[1]).removeClass("weekend");
+        if (dateArr != "") {
+            for (var i = 0; i < dateArr.length; i++) {
+                $("#" + _id + " #" + dateArr[i].match(/^\s{0,}(\d*)/)[1]).parent().removeClass("weekend");
+            }
         }
     }
 
