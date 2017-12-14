@@ -41,6 +41,14 @@ return [
             'expire' => 60,
         ],
 
+        'database_qplay' => [
+            'connection' => 'mysql_qplay', // The database.php connection to use
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'default',
+            'expire' => 60,
+        ],
+
         'beanstalkd' => [
             'driver' => 'beanstalkd',
             'host' => 'localhost',
@@ -78,7 +86,7 @@ return [
     */
 
     'failed' => [
-        'database' => env('DB_CONNECTION', 'mysql'),
+        'database' => env('DB_CONNECTION', 'mysql_qplay'),
         'table' => 'failed_jobs',
     ],
 

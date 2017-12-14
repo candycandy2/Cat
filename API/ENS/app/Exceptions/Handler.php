@@ -8,9 +8,16 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\lib\ResultCode;
+use App\Jobs\SendErrorMail;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Mail;
+use Config;
+use Request;
 
 class Handler extends ExceptionHandler
 {
+    use DispatchesJobs;
     /**
      * A list of the exception types that should not be reported.
      *
@@ -34,6 +41,21 @@ class Handler extends ExceptionHandler
     public function report(Exception $e)
     {
         parent::report($e);
+        if ($this->shouldReport($e)) {
+            if(\Config('app.error_mail_to')!=""){
+                $error = [
+                    'message' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'url' => \Request::url(),
+                    'input' => json_encode(\Request::all()),
+                    'trace' =>$e->getTraceAsString()
+                ];
+                $job = (new SendErrorMail($error))->onConnection('database_qplay')->onQueue(\Config('app.name').'_ErrorMail');
+                $this->dispatch($job);
+            }
+        }
     }
 
     /**
@@ -45,6 +67,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+        $result = ['ResultCode'=>ResultCode::_014999_unknownError,'Content'=>""];
+        $result = response()->json($result);
+        return $result;
+       //return parent::render($request, $e);
     }
 }
