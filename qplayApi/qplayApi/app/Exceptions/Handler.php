@@ -52,7 +52,8 @@ class Handler extends ExceptionHandler
                     'input' => json_encode(\Request::all()),
                     'trace' =>$e->getTraceAsString()
                 ];
-                $this->dispatch(new SendErrorMail($error));
+                $job = (new SendErrorMail($error))->onQueue(\Config('app.name').'_ErrorMail');
+                $this->dispatch($job);
             }
         }
     }
