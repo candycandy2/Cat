@@ -83,12 +83,12 @@ $("#viewIndex").pagecontainer({
                     window.getGroupIds();
                 }
 
-                getQUserDetail("viewIndex", loginData["loginid"]);
+                window.getQUserDetail("viewIndex", loginData["loginid"]);
 
             }());
         }
 
-        function getQUserDetail(action, empID, callback) {
+        window.getQUserDetail = function(action, empID, callback) {
             callback = callback || null;
 
             (function(action, empID, callback) {
@@ -108,7 +108,7 @@ $("#viewIndex").pagecontainer({
 
                     if (resultCode === "1") {
 
-                        if (action === "viewIndex") {
+                        if (action === "viewIndex" || action === "viewMyInfoEdit") {
                             $(".personal-content .personal-name").html(data['Content'][0].name);
                             $(".personal-content .personal-popup").data("userID", data['Content'][0].name);
 
@@ -129,7 +129,9 @@ $("#viewIndex").pagecontainer({
 
                             window.processUserData(data['Content'][0], callback);
 
-                            window.getQFriend();
+                            if (action === "viewIndex") {
+                                window.getQFriend();
+                            }
                         } else if (action === "downloadOriginalUserAvatar") {
                             window.processUserData(data['Content'][0], callbackFunction);
                         } else if (action === "inviteListView") {
@@ -143,7 +145,7 @@ $("#viewIndex").pagecontainer({
                 CustomAPI("POST", true, "getQUserDetail", successCallback, failCallback, queryData, "");
 
             }(action, empID, callback));
-        }
+        };
 
         window.getQFriend = function(action) {
             action = action || null;
@@ -231,7 +233,7 @@ $("#viewIndex").pagecontainer({
                                         }
                                     }
 
-                                    getQUserDetail("inviteListView", user_list[i].name, callback);
+                                    window.getQUserDetail("inviteListView", user_list[i].name, callback);
                                 }(data['Content'].inviter.user_list, i));
                             }
 
@@ -614,7 +616,7 @@ $("#viewIndex").pagecontainer({
                         window.downloadOriginalUserAvatar(action, nowTimestamp, userID, listViewIndex);
                     };
 
-                    getQUserDetail("downloadOriginalUserAvatar", userID, callback);
+                    window.getQUserDetail("downloadOriginalUserAvatar", userID, callback);
 
                     return;
                 }
