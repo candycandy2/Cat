@@ -82,7 +82,7 @@ class JPush
                     "android" =>array(
                             "alert"=> "",
                             "title"=> "",
-                            "builder_id"=>1,
+                            "builder_id"=>0,
                             "extras" => array(
                                 "Parameter"=> ""
                             )
@@ -101,8 +101,8 @@ class JPush
                         )
                 ),
             "options"=>array(
-                    "time_to_live"=>Config::get('app.time_to_live'),
-                    "apns_production"=> Config::get('app.apns_flag')
+                    "time_to_live"=>Config::get('app.time_to_live',864000),
+                    "apns_production"=> Config::get('app.apns_flag',true)
                 )
         );
 
@@ -122,6 +122,12 @@ class JPush
     public function setDesc($desc){
         $this->pushData["notification"]["android"]["alert"]['body'] = $desc;
         $this->pushData["notification"]["ios"]["alert"]['body'] = $desc;
+        return $this;
+    }
+
+    public function setParameter($parameter){
+        $this->pushData["notification"]["android"]["extras"]['Parameter'] = $parameter;
+        $this->pushData["notification"]["ios"]["extras"]['Parameter'] = $parameter;
         return $this;
     }
 
