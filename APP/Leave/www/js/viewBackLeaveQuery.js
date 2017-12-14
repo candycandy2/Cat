@@ -297,13 +297,13 @@ $("#viewBackLeaveQuery").pagecontainer({
             }();
         };
 
-        //請假單頁初始化
+        //销假單頁初始化
         function backLeaveQueryInit() {
             $("#backToList").hide();
             $("#backToSign").hide();
             $(".backLeave-query-detail-sign").hide();
             $(".backLeave-query-sign-withdraw").hide();
-            $(".leaveMenu").show();
+            $("#viewBackLeaveQuery .leaveMenu").show();
             $(".backLeave-query-main").show();
         }
 
@@ -359,7 +359,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         //从销假单列表到详情
         function backLeaveToDetail(btn1, btn2, state) {
             $(".backLeave-query-main").hide();
-            $(".leaveMenu").hide();
+            $("#viewBackLeaveQuery .leaveMenu").hide();
             $("#backToList").show();
             $(".backLeave-query-detail-sign").show();
             if(state == null) {
@@ -438,11 +438,11 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //从详情返回銷假單列表
         $("#backToList").on("click", function() {
-            $(".backLeave-query-main").show();
-            $(".leaveMenu").show();
             $("#backToList").hide();
             $(".backLeave-query-detail-sign").hide();
-            return false;
+            $(".backLeave-query-main").show();
+            $("#viewBackLeaveQuery .leaveMenu").show();
+            //return false;
         });
 
         //簽核中流程——popup
@@ -460,11 +460,11 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //从撤回返回詳情
         $("#backToSign").on("click", function() {
-            $("#backToList").show();
-            $(".backLeave-query-detail-sign").show();
             $("#backToSign").hide();
             $(".backLeave-query-sign-withdraw").hide();
-            return false;
+            $("#backToList").show();
+            $(".backLeave-query-detail-sign").show();
+            //return false;
         });
 
         //輸入撤回理由——textarea

@@ -18,6 +18,7 @@ var signedStr = "已簽核";
 var withdrawedStr = "已撤回";
 var rejectedStr = "已拒絕";
 var notSignStr = "未簽核";
+var editLeaveForm = false;
 
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
@@ -251,9 +252,9 @@ function formatDate(str) {
     return newArr.join("/");
 }
 
-//假單列表到詳情（请假单和销假单共用）
+//请假單列表到詳情（请假单和销假单共用）
 function leaveListToDetail(btn1, btn2, btn3, state) {
-    $(".leaveMenu").hide();
+    $("#viewLeaveQuery .leaveMenu").hide();
     $(".leave-query-main").hide();
     $("#backDetailList").show();
     $(".leave-query-detail-sign").show();

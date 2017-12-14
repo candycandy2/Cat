@@ -15,20 +15,7 @@ var basedayList = false;
 var baseday = "";
 var needBaseday = false;
 var leaveReason = "";
-var editLeaveForm = false;
 var countApplyDays, countApplyHours;
-
-var categroyData = {
-    id: "categroy-popup",
-    option: [],
-    title: "",
-    //defaultText: langStr["str_069"],
-    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
-    changeDefaultText : true,
-    attr: {
-        class: "tpl-dropdown-list-icon-arrow"
-    }
-};
 
 var leaveData = {
     id: "leave-popup",
@@ -761,20 +748,19 @@ $("#viewLeaveSubmit").pagecontainer({
                 $("#previewLeaveHours").text(countApplyHours);
 
                 $('.apply-container').hide();
-                $('.leaveMenu').hide();
+                $('#viewLeaveSubmit .leaveMenu').hide();
                 $('.apply-preview').show();
-                $('#backMain').show();  
+                $('#backMain').show();
             }
         });
 
-        //返回編輯按鈕
+        //从预览返回申请
         $("#backMain").on("click", function() {
-            $('.apply-container').show();
-            $('.leaveMenu').show();
             $('.apply-preview').hide();
-            $('#backMain').hide();      
-                   
-            return false;
+            $('#backMain').hide();
+            $('.apply-container').show();
+            $('#viewLeaveSubmit .leaveMenu').show();
+            //return false;
         });
 
         //立即預約popup
