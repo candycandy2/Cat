@@ -21,7 +21,7 @@ function leaveQueryInit() {
     $(".leave-query-detail-sign").hide();
     $(".leave-query-withdraw").hide();
     $(".leave-query-dispel").hide();
-    $(".leaveMenu").show();
+    $("#viewLeaveQuery .leaveMenu").show();
     $(".leave-query-main").show();
     $("#viewLeaveQuery .ui-title").find("span").text(leaveQueryStr);
 }
@@ -400,7 +400,7 @@ $("#viewLeaveQuery").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewLeaveQuery").on("pagebeforeshow", function(event, ui) {
-            $(".leaveMenu").show();
+            $("#viewLeaveQuery .leaveMenu").show();
         });
 
         $("#viewLeaveQuery").on("pageshow", function(event, ui) {
@@ -447,27 +447,22 @@ $("#viewLeaveQuery").pagecontainer({
 
         //返回假單列表——click
         $("#backDetailList").on("click", function() {
-            //如果为true是从本页的“假单查询”而来，如果为false则是从“销假单查询”的详情而来
-            if(leaveDetailFrom == true) {
-                $(".leaveMenu").show();
-                $(".leave-query-main").show();
-                $("#backDetailList").hide();
-                $(".leave-query-detail-sign").hide();
-            } else {
-                //先返回本页初始状态
-                $(".leaveMenu").show();
-                $(".leave-query-main").show();
-                $("#backDetailList").hide();
-                $(".leave-query-detail-sign").hide();
-                //再切换到“销假单查询”页
+            //跳转前本页恢复初始状态
+            $("#backDetailList").hide();
+            $(".leave-query-detail-sign").hide();
+            $("#viewLeaveQuery .leaveMenu").show();
+            $(".leave-query-main").show();
+            //如果为false则是从“销假单查询”的详情而来，如果为true则不用操作
+            if(leaveDetailFrom == false) {
+                //先切换到“销假单查询”页
                 changePageByPanel("viewBackLeaveQuery");
-                //最后再到“销假单查询”的详情页即“假单详情的来源”
-                $("#backToList").show();
-                $(".backLeave-query-detail-sign").show();
+                //再到“销假单查询”的详情页即“假单详情的来源”
                 $(".backLeave-query-main").hide();
-                $(".leaveMenu").hide();
+                $("#viewBackLeaveQuery .leaveMenu").hide();
+                $("#backToList").show();
+                $(".backLeave-query-detail-sign").show();   
             }
-            return false;
+            //return false;
 
         });
 
@@ -486,11 +481,11 @@ $("#viewLeaveQuery").pagecontainer({
 
         //從撤回返回詳情
         $("#backSignPreview").on("click", function() {
-            $(".leave-query-detail-sign").show();
-            $("#backDetailList").show();
             $(".leave-query-withdraw").hide();
             $("#backSignPreview").hide();
-            return false;
+            $(".leave-query-detail-sign").show();
+            $("#backDetailList").show();
+            //return false;
         });
 
         //輸入撤回理由——textarea
@@ -667,12 +662,12 @@ $("#viewLeaveQuery").pagecontainer({
 
         //從銷假返回詳情
         $("#backEffectPreview").on("click", function() {
-            $(".leave-query-detail-sign").show();
-            $("#backDetailList").show();
             $("#viewLeaveQuery .ui-title").find("span").text(leaveQueryStr);
             $(".leave-query-dispel").hide();
             $("#backEffectPreview").hide();
-            return false;
+            $(".leave-query-detail-sign").show();
+            $("#backDetailList").show();
+            //return false;
         });
 
         //輸入銷假理由——keyup
@@ -690,7 +685,7 @@ $("#viewLeaveQuery").pagecontainer({
         $("#confirmDispelBtn").on("click", function() {
             if($("#confirmDispelBtn").hasClass("leavePreview-active-btn")) {
                 popupMsgInit(".confirmRevoke");
-            } 
+            }
         });
 
         //確定銷假
