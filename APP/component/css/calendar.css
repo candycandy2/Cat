@@ -2,13 +2,15 @@
     margin-top: 3.71VW;
 }
 
-.QPlayCalendar .table th, .QPlayCalendar .table td {
+.QPlayCalendar .table th,
+.QPlayCalendar .table td {
     text-align: center;
 }
 
 .QPlayCalendar tr.calendar-month-header th {
     background-color: #fafafa;
 }
+
 .QPlayCalendar .table tr.calendar-dow-header {
     height: 11.513VW;
 }
@@ -33,7 +35,7 @@
     width: 4.934VW;
 }
 
-.QPlayCalendar-navPrev{
+.QPlayCalendar-navPrev {
     margin-left: 3.71VW;
 }
 
@@ -47,7 +49,7 @@ table {
     display: table;
     border-collapse: separate;
     border-spacing: 0px;
-/*    border-style: solid;
+    /*    border-style: solid;
     border-width: 0.1px;
     border-color: #d6d6d6;*/
     width: 92.58VW;
@@ -88,7 +90,9 @@ th {
     border-width: 0.5px;
 }
 
+
 /* legend */
+
 .QPlayCalendar div.legend {
     margin-right: 3.71Vw;
     margin-bottom: 2.14VW;
