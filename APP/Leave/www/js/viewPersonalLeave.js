@@ -378,7 +378,6 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 if (data['ResultCode'] === "1") {
                     var agentList = "";
-                    //var agentNotExist = false;
                     //如果未找到代理人，popup提示，找到代理人则生成list供用户选择
                     if (data['Content'][0] == undefined) {
                         //agentNotExist = true;
@@ -429,36 +428,7 @@ $("#viewPersonalLeave").pagecontainer({
                             $("#agent-popup-option").popup("close");
                             popupMsgInit('.agentNotExist');
                         }
-
-
-
-                        // if(agentList == "") {
-                        //     agentNotExist = true;
-                        // }else {
-
-                        // }
                     }
-
-                    // if(agentNotExist) {
-                    //     $("#agent-popup-option").popup("close");
-                    //     popupMsgInit('.agentNotExist');
-
-                    //     //Clear Data
-                    //     var newOption = '<option hidden>請選擇</option>';
-                    //     var newOption = '<option hidden>' + langStr["str_069"] + '</option>';
-                    //     //veiwPersonalLeave
-                    //     $("#agent-popup").find("option").remove().end().append(newOption);
-                    //     //viewLeaveSubmit
-                    //     $("#leave-agent-popup").find("option").remove().end().append(newOption);
-                    //     agentid = "";
-                    //     window.localStorage.removeItem('agent');
-                    //     setTimeout(function(){
-                    //         //viewPersonalLeave
-                    //         tplJS.reSizeDropdownList("agent-popup", "typeB");
-                    //         //viewLeaveSubmit
-                    //         tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
-                    //     }, 1000);
-                    // }
                 }
             };
 
@@ -844,7 +814,7 @@ $("#viewPersonalLeave").pagecontainer({
                 "</qEmpno><qName>" +
                 searchName +
                 "</qName></LayoutHeader>";
-            console.log(queryEmployeeData);
+
             if (timoutQueryEmployeeData != null) {
                 clearTimeout(timoutQueryEmployeeData);
                 timoutQueryEmployeeData = null;

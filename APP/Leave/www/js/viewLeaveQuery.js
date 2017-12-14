@@ -34,7 +34,7 @@ $("#viewLeaveQuery").pagecontainer({
         window.QueryEmployeeLeaveApplyForm = function() {
             
             this.successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["applyformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -401,6 +401,14 @@ $("#viewLeaveQuery").pagecontainer({
         /********************************** page event *************************************/
         $("#viewLeaveQuery").on("pagebeforeshow", function(event, ui) {
             $("#viewLeaveQuery .leaveMenu").show();
+            /**** PullToRefresh ****/
+            PullToRefresh.init({
+                mainElement: '.page-date',
+                onRefresh: function() {
+                    loadingMask("show");
+                    QueryEmployeeLeaveApplyForm();
+                }
+            });
         });
 
         $("#viewLeaveQuery").on("pageshow", function(event, ui) {
