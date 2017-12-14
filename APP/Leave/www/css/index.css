@@ -636,6 +636,15 @@ div.scrollmenu a {
 
 /****************************************** viewLeaveQuery *****************************************/
 
+#viewLeaveQuery .page-date {
+	font-family: Arial;
+	height: 1vw;
+	color: #0f0f0f;
+	text-align:center;
+	width: 80%;
+	margin: 1vw auto 0;
+}
+
 #backDetailList,
 #backSignPreview,
 #backEffectPreview,
