@@ -15,30 +15,32 @@ $("#viewFriendInvite").pagecontainer({
                 var nowTimestamp = nowDateTime.TimeStamp();
 
                 var userListHTML = $("template#tplUserList").html();
-                var userList = $(userListHTML);
 
                 for (var i=0; i<JM.data.chatroom_invite.length; i++) {
-                    userList.attr("name", "inviteList" + i);
-                    userList.find(".checkbox-content").remove();
+                    (function(i) {
+                        var userList = $(userListHTML);
 
-                    //name
-                    userList.find(".user-name").html(JM.data.chatroom_invite[i]);
-                    userList.find(".personal-popup").data("userID", JM.data.chatroom_invite[i]);
-                    userList.find(".button-content").data("userID", JM.data.chatroom_invite[i]);
-                    userList.find(".button-content .invite").removeClass("hide");
+                        userList.attr("name", "inviteList" + i);
+                        userList.find(".checkbox-content").remove();
 
-                    if (JM.data.chatroom_user[JM.data.chatroom_invite[i]].memo != null && 
-                        JM.data.chatroom_user[JM.data.chatroom_invite[i]].memo.length > 0) {
+                        //name
+                        userList.find(".user-name").html(JM.data.chatroom_invite[i]);
+                        userList.find(".personal-popup").data("userID", JM.data.chatroom_invite[i]);
+                        userList.find(".button-content").data("userID", JM.data.chatroom_invite[i]);
+                        userList.find(".button-content .invite").removeClass("hide");
 
-                        userList.find(".personal-name").removeClass("user-name-only");
-                        userList.find(".user-content .invite-status").removeClass("hide");
-                        userList.find(".user-content .invite-status").html(JM.data.chatroom_user[JM.data.chatroom_invite[i]].memo);
+                        if (JM.data.chatroom_user[JM.data.chatroom_invite[i]].memo != null && 
+                            JM.data.chatroom_user[JM.data.chatroom_invite[i]].memo.length > 0) {
 
-                    }
+                            userList.find(".personal-name").removeClass("user-name-only");
+                            userList.find(".user-content .invite-status").removeClass("hide");
+                            userList.find(".user-content .invite-status").html(JM.data.chatroom_user[JM.data.chatroom_invite[i]].memo);
+                        }
 
-                    $("#userListContentFriendInvite").append(userList);
+                        $("#userListContentFriendInvite").append(userList);
 
-                    window.downloadOriginalUserAvatar("inviteListView", nowTimestamp, JM.data.chatroom_invite[i], i);
+                        window.downloadOriginalUserAvatar("inviteListView", nowTimestamp, JM.data.chatroom_invite[i], i);
+                    }(i));
                 }
             } else {
                 $("#noFriendInvite").show();

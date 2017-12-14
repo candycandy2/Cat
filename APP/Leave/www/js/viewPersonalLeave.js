@@ -32,6 +32,18 @@ var agentData = {
     }
 };
 
+var categroyData = {
+    id: "categroy-popup",
+    option: [],
+    title: "",
+    //defaultText: langStr["str_069"],
+    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
+    changeDefaultText : true,
+    attr: {
+        class: "tpl-dropdown-list-icon-arrow"
+    }
+};
+
 $("#viewPersonalLeave").pagecontainer({
     create: function(event, ui) {
 
@@ -39,6 +51,11 @@ $("#viewPersonalLeave").pagecontainer({
         /********************************** function *************************************/
         //快速请假页面——获取部分假别
         function getQuickLeaveList() {
+            //初始化
+            leaveTypeData["option"] = [];
+            $("#leaveType").empty();
+            $("#leaveType-popup-option-popup").remove();
+
             for (var i = 0; i < quickLeaveList.length; i++) {
                 leaveTypeData["option"][i] = {};
                 leaveTypeData["option"][i]["value"] = quickLeaveList[i]["leaveid"];
@@ -51,7 +68,11 @@ $("#viewPersonalLeave").pagecontainer({
 
         //请假申请页面——获取所有类别
         function getAllCategroyList() {
+            //初始化
             var categroyLeave = [];
+            categroyData["option"] = [];
+            $("#leaveCategroy").empty();
+            $("#categroy-popup-option-popup").remove();
 
             //循環所有類別，並去重、去空
             for (var i in allLeaveList) {
@@ -371,7 +392,7 @@ $("#viewPersonalLeave").pagecontainer({
                         var agentIDArry = $("Empno", htmlDom);
                         for (var i = 0; i < DepArry.length; i++) {
                             if ($(agentIDArry[i]).html() !== localStorage["emp_no"]) {
-                                agentList += '<li class="tpl-option-msg-list" value="' + $(agentIDArry[i]).html() + "" + '">' +
+                                agentList += '<li class="tpl-option-msg-list" value="' + $(agentIDArry[i]).html() + '">' +
                                     '<div style="width: 25VW;"><span>' +
                                     $(DepArry[i]).html() +
                                     '</span></div>' +
