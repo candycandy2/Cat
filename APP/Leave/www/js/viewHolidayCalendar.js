@@ -29,11 +29,13 @@ $("#viewHolidayCalendar").pagecontainer({
                     }
                 ]
             });
+
+            
         });
 
         /********************************** page event *************************************/
         $("#viewHolidayCalendar").on("pagebeforeshow", function(event, ui) {
-
+            
         });
 
         $("#viewHolidayCalendar").on("pageshow", function(event, ui) {
@@ -52,6 +54,11 @@ $("#viewHolidayCalendar").pagecontainer({
 
         $(".page-tabs #viewHolidayCalendar-tab-3").on("click", function() {
             holidayCalendar.refreshInfoList(QCSholidayData);
+            $.each($("#viewHolidayCalendar-calendar td"), function(index, item) {
+                if($(item).attr("id") == "2018-04-08" || $(item).attr("id") == "2018-04-28") {
+                    $(item).removeClass("weekend");
+                }
+            });
         });
     }
 });
