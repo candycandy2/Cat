@@ -129,7 +129,7 @@ $("#viewIndex").pagecontainer({
 
                             window.processUserData(data['Content'][0], callback);
 
-                            getQFriend();
+                            window.getQFriend();
                         } else if (action === "downloadOriginalUserAvatar") {
                             window.processUserData(data['Content'][0], callbackFunction);
                         } else if (action === "inviteListView") {
@@ -145,8 +145,10 @@ $("#viewIndex").pagecontainer({
             }(action, empID, callback));
         }
 
-        function getQFriend() {
-            (function() {
+        window.getQFriend = function(action) {
+            action = action || null;
+
+            (function(action) {
 
                 var queryDataObj = {
                     emp_no: loginData["emp_no"]
@@ -167,8 +169,10 @@ $("#viewIndex").pagecontainer({
                         $(".friend-content .friend-list-content").html("");
                         $(".friend-content .invite-list-content").html("");
 
+                        var friendDataListHTML = $("template#tplFriendDataList").html();
+
                         for (var i=0; i<data['Content'].friend.user_list.length; i++) {
-                            var friendDataListHTML = $("template#tplFriendDataList").html();
+
                             var friendDataList = $(friendDataListHTML);
 
                             friendDataList.find(".personal-photo-content").prop("id", "friendList" + i);
@@ -230,9 +234,17 @@ $("#viewIndex").pagecontainer({
                                     getQUserDetail("inviteListView", user_list[i].name, callback);
                                 }(data['Content'].inviter.user_list, i));
                             }
+
+                            if (action === "receiveInvite") {
+                                $.mobile.changePage('#viewFriendInvite');
+                            }
+                        } else {
+                            $("#viewIndexContent .friend-content .invite-list").hide();
                         }
 
                         JM.updateLocalStorage();
+
+                        loadingMask("hide");
                     }
                 };
 
@@ -240,8 +252,8 @@ $("#viewIndex").pagecontainer({
 
                 CustomAPI("POST", true, "getQFriend", successCallback, failCallback, queryData, "");
 
-            }());
-        }
+            }(action));
+        };
 
         window.removeQFriend = function() {
             (function() {
@@ -258,7 +270,7 @@ $("#viewIndex").pagecontainer({
                     var resultCode = data['ResultCode'];
 
                     if (resultCode === "1") {
-                        getQFriend();
+                        window.getQFriend();
                         $("#confirmDeleteFriendPopup").popup("close");
                     }
                 };
@@ -944,7 +956,7 @@ $("#viewIndex").pagecontainer({
 
         $("#viewIndex").on("pagebeforeshow", function(event, ui) {
             if (JM.data.sendPushToken !== undefined) {
-                getQFriend();
+                window.getQFriend();
             }
 
             recoverySearchUI();
@@ -962,7 +974,7 @@ $("#viewIndex").pagecontainer({
             }
 
             if (!getPWD) {
-                //loadingMask("show");
+                loadingMask("show");
                 var jmessagePassword = new getJmessagePassword();
             } else {
                 window.getGroupIds();
