@@ -260,6 +260,10 @@ input[type=checkbox]:checked + label {
     margin-bottom: 5vw;
 }
 
+.personal-content .user-name-only {
+    margin-top: 2.4335vw;
+}
+
 .data-list .personal-photo-content {
     height: 8vw;
 }
