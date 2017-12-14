@@ -331,6 +331,8 @@ function Calendar(options) {
     }
 
     function appendDaysOfMonth($calendarElement, $tableObj, year, month) {
+        
+        
         var time = new Date();
         var ajaxSettings = $calendarElement.data('ajaxSettings');
         var weeksInMonth = calcWeeksInMonth(year, month);
@@ -558,6 +560,13 @@ function Calendar(options) {
         }
         $(opts.showInfoListTo).append($("<ul></ul>").append($(holidayList))).enhanceWithin();
         $(opts.showInfoListTo).show();
+    }
+
+    function showCalendarWorkdayInfo(year, month) {
+        var dateArr = _infoData[year][month]["workday"]["date"].split(",");
+        for(var i=0; i<dateArr.length; i++) {
+            $("#" + _id + " #" + dateArr[i].match(/^\s{0,}(\d*)/)[1]).removeClass("weekend");
+        }
     }
 
     function dateAsString(year, month, day) {

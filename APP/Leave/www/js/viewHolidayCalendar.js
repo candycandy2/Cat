@@ -1,6 +1,6 @@
 $("#viewHolidayCalendar").pagecontainer({
     create: function(event, ui) {
-        
+
         /********************************** function *************************************/
         $(document).ready(function() {
             holidayCalendar = new Calendar({
@@ -17,29 +17,26 @@ $("#viewHolidayCalendar").pagecontainer({
                     prev: '<img src="img/pre.png" id="left-navigation" class="nav_icon">',
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
                 },
-                legend: [
-                    {
-                        type: "img-text", 
-                        label: "星期六日",
-                        classname: "weekend-icon"
-                    }, {
-                        type: "img-text",
-                        label: "放假節日",
-                        classname: "holiday-icon"
-                    }
-                ]
+                legend: [{
+                    type: "img-text",
+                    label: "星期六日",
+                    classname: "weekend-icon"
+                }, {
+                    type: "img-text",
+                    label: "放假節日",
+                    classname: "holiday-icon"
+                }]
             });
 
-            
         });
 
         /********************************** page event *************************************/
         $("#viewHolidayCalendar").on("pagebeforeshow", function(event, ui) {
-            
+
         });
 
         $("#viewHolidayCalendar").on("pageshow", function(event, ui) {
-            
+
             loadingMask("hide");
         });
 
@@ -54,11 +51,6 @@ $("#viewHolidayCalendar").pagecontainer({
 
         $(".page-tabs #viewHolidayCalendar-tab-3").on("click", function() {
             holidayCalendar.refreshInfoList(QCSholidayData);
-            $.each($("#viewHolidayCalendar-calendar td"), function(index, item) {
-                if($(item).attr("id") == "2018-04-08" || $(item).attr("id") == "2018-04-28") {
-                    $(item).removeClass("weekend");
-                }
-            });
         });
     }
 });
