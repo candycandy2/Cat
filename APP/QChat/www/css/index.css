@@ -20,6 +20,10 @@ a {
     min-height: 90vh;
 }
 
+.ui-page-theme-a a:hover, html .ui-bar-a a:hover, html .ui-body-a a:hover, html body .ui-group-theme-a a:hover {
+    color: #FFFFFF;
+}
+
 /*-----------------------------------------------------------------common class*/
 input[type=checkbox] {
     display: none;
