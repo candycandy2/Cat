@@ -3,7 +3,8 @@ var pleaseSelectStr = langStr["str_069"];    //請選擇
 var selectBasedayStr = langStr["str_127"];    //選擇時間
 var otherBasedayStr = "選擇其他基準日";
 var viewLeaveSubmitInit = false;
-var timoutQueryEmployee = null;
+var timeoutQueryEmployee = null;
+var timeoutChangeEnddate = null;
 var selectCategory;     //选择的类别，可能为“所有类别”
 var leaveCategory;      //对应假别的类别，肯定没有“所有类别”
 var leaveObj = {};
@@ -410,11 +411,11 @@ $("#viewLeaveSubmit").pagecontainer({
                               + searchName
                               + "</qName></LayoutHeader>";
             //console.log(queryEmployeeData);
-            if(timoutQueryEmployee != null) {
-                clearTimeout(timoutQueryEmployee);
-                timoutQueryEmployee = null;
+            if(timeoutQueryEmployee != null) {
+                clearTimeout(timeoutQueryEmployee);
+                timeoutQueryEmployee = null;
             }
-            timoutQueryEmployee = setTimeout(function() {
+            timeoutQueryEmployee = setTimeout(function() {
                 QueryEmployeeData();
 
                 $("#loaderQuery").show();
@@ -666,11 +667,16 @@ $("#viewLeaveSubmit").pagecontainer({
                                                   + ((needBaseday == true) ? baseday : '')
                                                   + "</datumdate></LayoutHeader>";
                     //console.log(countLeaveHoursByEndQueryData);
-                    //呼叫API
-                    CountLeaveHoursByEnd();
 
+                    if(timeoutChangeEnddate != null) {
+                        clearTimeout(timeoutChangeEnddate);
+                        timeoutChangeEnddate = null;
+                    }
+                    timeoutChangeEnddate = setTimeout(function() {
+                        //呼叫API
+                        CountLeaveHoursByEnd();
+                    }, 2000);
                 }
-
             } else {
                 $('#endText').text(pleaseSelectStr);
                 //请假数恢复00
