@@ -89,7 +89,9 @@ $("#viewAddFriend").pagecontainer({
 
                 $("#userListContentAddFriend").append(userList);
 
-                userList.find(".checkbox-content").css("opacity", "0");
+                if (type != "1") {
+                    userList.find(".checkbox-content").css("opacity", "0");
+                }
 
                 window.downloadOriginalUserAvatar("userListView", nowTimestamp, userName, dataIndex);
             }
