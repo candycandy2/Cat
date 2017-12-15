@@ -618,7 +618,10 @@ $("#viewEventAdd").pagecontainer({
 
                 $.each(eventTemplateData.option, function(key, obj) {
                     if (obj.value == selectedValue) {
-                        $("#eventTemplateTextarea").val( $("#eventLevel" + projectName + " option")[$("#eventLevel" + projectName).val() - 1].text + obj.text);
+                        var index = 1;
+                        if (projectName === "RM")
+                            index = 3;
+                        $("#eventTemplateTextarea").val($("#eventLevel" + projectName + " option")[$("#eventLevel" + projectName).val() - index].text + obj.text);
                     }
                 });
 
