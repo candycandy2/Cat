@@ -635,8 +635,8 @@ div.scrollmenu a {
 }
 
 /****************************************** viewLeaveQuery *****************************************/
-
-#viewLeaveQuery .page-date {
+/* pull refresh */
+.page-main .page-date {
 	font-family: Arial;
 	height: 1vw;
 	color: #0f0f0f;

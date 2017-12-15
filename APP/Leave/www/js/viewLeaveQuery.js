@@ -28,13 +28,13 @@ function leaveQueryInit() {
 
 $("#viewLeaveQuery").pagecontainer({
     create: function(event, ui) {
-        
+
         /********************************** function *************************************/
         //獲取請假單列表——<LayoutHeader><EmpNo>0003023</EmpNo></LayoutHeader>
         window.QueryEmployeeLeaveApplyForm = function() {
-            
+
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["applyformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -143,12 +143,12 @@ $("#viewLeaveQuery").pagecontainer({
                     leaveDetailObj["agentname"] = employeeName;
 
                     //补全另一部分详情
-                    leaveDetailObj["applydate"] = formatterDate($(applydate).html());
+                    leaveDetailObj["applydate"] = $(applydate).html().split(" ")[0];
                     leaveDetailObj["reason"] = $(reasons).html();
                     leaveDetailObj["agentid"] = $(delegate).html();
                     // leaveDetailObj["begindate"] = dateFormatter($(begindate).html());
                     // leaveDetailObj["enddate"] = dateFormatter($(enddate).html());
-                    leaveDetailObj["datumdate"] = formatterDate($(datumdate).html());
+                    leaveDetailObj["datumdate"] = $(datumdate).html();
                     leaveDetailObj["filestatus"] = $(filestatus).html();
 
                     //改变详情页内容
@@ -184,7 +184,7 @@ $("#viewLeaveQuery").pagecontainer({
         window.RecallLeaveApplyForm = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -220,7 +220,7 @@ $("#viewLeaveQuery").pagecontainer({
         window.DeleteLeaveApplyForm = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -253,7 +253,7 @@ $("#viewLeaveQuery").pagecontainer({
         window.SendLeaveCancelFormData = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -406,9 +406,13 @@ $("#viewLeaveQuery").pagecontainer({
                 mainElement: '.page-date',
                 onRefresh: function() {
                     loadingMask("show");
+                    //请假单只需要更新请假单列表
                     QueryEmployeeLeaveApplyForm();
+                    //setTimeout(changePageByPanel("viewLeaveQuery"), 2000);
+                    QueryEmployeeLeaveCancelForm();
                 }
             });
+            
         });
 
         $("#viewLeaveQuery").on("pageshow", function(event, ui) {

@@ -238,7 +238,7 @@ $("#viewLeaveSubmit").pagecontainer({
         window.SendApplyLeaveData = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -365,7 +365,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                               + "</EmpNo><leaveid>"
                                               + leaveid
                                               + "</leaveid></LayoutHeader>";
-                            console.log(queryLeftDaysData);
+                            //console.log(queryLeftDaysData);
                             //呼叫API
                             QueryLeftDaysData();             
 
@@ -665,7 +665,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                                   + "</endtime><datumdate>"
                                                   + ((needBaseday == true) ? baseday : '')
                                                   + "</datumdate></LayoutHeader>";
-                    console.log(countLeaveHoursByEndQueryData);
+                    //console.log(countLeaveHoursByEndQueryData);
                     //呼叫API
                     CountLeaveHoursByEnd();
 
@@ -766,9 +766,6 @@ $("#viewLeaveSubmit").pagecontainer({
         //立即預約popup
         $("#applyBtn").on("click", function() {
             popupMsgInit('.confirmSend');
-            // $("#backMain").click();
-            // changePageByPanel("viewLeaveQuery");
-            // $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
         //確定送簽
@@ -802,7 +799,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                     + ((editLeaveForm == false) ? '' : leaveDetailObj['formid'])
                                     + '</formid></LayoutHeader>';
 
-            console.log(sendApplyLeaveQueryData);
+            //console.log(sendApplyLeaveQueryData);
             //呼叫API
             SendApplyLeaveData();
         });
