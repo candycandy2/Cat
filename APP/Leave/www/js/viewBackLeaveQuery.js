@@ -12,7 +12,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         window.QueryEmployeeLeaveCancelForm = function() {
             
             this.successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["cancelformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -97,7 +97,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                     var refleaveformno = $("refleaveformno", htmlDom);
 
                     //补全另一部分详情
-                    backLeaveDetailObj["applydate"] = formatterDate($(applydate).html());
+                    backLeaveDetailObj["applydate"] = $(applydate).html().split(" ")[0];
                     backLeaveDetailObj["reason"] = $(reasons).html();
                     backLeaveDetailObj["refleaveformid"] = $(refleaveformid).html();
                     backLeaveDetailObj["refleaveformno"] = $(refleaveformno).html();
@@ -135,7 +135,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         window.RecallLeaveCancelForm = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -170,7 +170,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         window.DeleteLeaveCancelForm = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -202,7 +202,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         window.BackLeaveFormLeaveDetail = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     //1.回傳假單詳細信息
                     var callbackData = data['Content'][0]["result"];
@@ -253,15 +253,15 @@ $("#viewBackLeaveQuery").pagecontainer({
                     obj["agentname"] = employeeName;
 
                     //传值给假单查询页
-                    $("#leaveApplyDate").text(formatterDate($(applydate).html()));
+                    $("#leaveApplyDate").text($(applydate).html().split(" ")[0]);
                     $("#leaveFormNo").text($(formno).html());
                     $("#leaveStatus").text(obj["statusName"]);
                     $("#leaveCategory").text(obj["category"]);
                     $("#leaveName").text(obj["name"]);
                     $("#leaveAgentName").text(obj["agentname"]);
-                    $("#leaveStartDate").text(formatterDate($(begindate).html()));
+                    $("#leaveStartDate").text($(begindate).html());
                     $("#leaveStartTime").text($(begintime).html());
-                    $("#leaveEndDate").text(formatterDate($(enddate).html()));
+                    $("#leaveEndDate").text($(enddate).html());
                     $("#leaveEndTime").text($(endtime).html());
                     $("#leaveApplyDays").text(($(leavedays).html().split(".")[1] == "0") ? $(leavedays).html().split(".")[0] : $(leavedays).html());
                     $("#leaveApplyHours").text(($(leavehours).html().split(".")[1] == "0") ? $(leavehours).html().split(".")[0] : $(leavehours).html());
@@ -394,7 +394,6 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {
-            
         });
 
         $("#viewBackLeaveQuery").on("pageshow", function(event, ui) {
