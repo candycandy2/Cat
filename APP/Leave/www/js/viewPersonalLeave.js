@@ -239,7 +239,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.GetDefaultSetting = function() {
 
             this.successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
 
                 //如果ResultCode=1且Content>0，说明数据有更新，重新获取数据并存到local
                 if (data['ResultCode'] === "1") {
@@ -481,7 +481,7 @@ $("#viewPersonalLeave").pagecontainer({
                             "</attachment><formid>" +
                             "</formid></LayoutHeader>";
 
-                        console.log(sendLeaveApplicationData);
+                        //console.log(sendLeaveApplicationData);
                         //呼叫API
                         SendLeaveApplicationData();
                     } else {
@@ -505,7 +505,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.SendLeaveApplicationData = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
 

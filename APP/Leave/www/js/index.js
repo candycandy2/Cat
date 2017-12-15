@@ -58,7 +58,7 @@ window.initialSuccess = function() {
     if(localStorage.getItem("leaveDefaultSetting") == null) {
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
                                    + myEmpNo
-                                   + "</EmpNo><LastModified>20170101000000</LastModified></LayoutHeader>";
+                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
     } else {
         var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
