@@ -20,6 +20,10 @@ a {
     min-height: 90vh;
 }
 
+.ui-page-theme-a a:hover, html .ui-bar-a a:hover, html .ui-body-a a:hover, html body .ui-group-theme-a a:hover {
+    color: #FFFFFF;
+}
+
 /*-----------------------------------------------------------------common class*/
 input[type=checkbox] {
     display: none;
@@ -260,6 +264,10 @@ input[type=checkbox]:checked + label {
     margin-bottom: 5vw;
 }
 
+.personal-content .user-name-only {
+    margin-top: 2.4335vw;
+}
+
 .data-list .personal-photo-content {
     height: 8vw;
 }
@@ -497,7 +505,7 @@ input[type=checkbox]:checked + label {
     text-align: center;
 }
 
-.action-success-full-screen div span {
+.action-success-full-screen .action-msg {
     background-color: rgba(102, 102, 102, 0.7);
     color: #FFFFFF;
     font-size: 3.55vw;

@@ -15,20 +15,7 @@ var basedayList = false;
 var baseday = "";
 var needBaseday = false;
 var leaveReason = "";
-var editLeaveForm = false;
 var countApplyDays, countApplyHours;
-
-var categroyData = {
-    id: "categroy-popup",
-    option: [],
-    title: "",
-    //defaultText: langStr["str_069"],
-    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
-    changeDefaultText : true,
-    attr: {
-        class: "tpl-dropdown-list-icon-arrow"
-    }
-};
 
 var leaveData = {
     id: "leave-popup",
@@ -151,7 +138,7 @@ $("#viewLeaveSubmit").pagecontainer({
             }
 
             //basedate
-            $("#chooseBaseday").text(selectBasedayStr);
+            //$("#chooseBaseday").text(selectBasedayStr);
             //$("#oldBaseday").val("");
             //$("#newBaseday").val("");
             $('#baseDate').show();
@@ -159,7 +146,7 @@ $("#viewLeaveSubmit").pagecontainer({
             needBaseday = true;
 
             //enddate
-            $("#endText").text(pleaseSelectStr);
+            //$("#endText").text(pleaseSelectStr);
             //$("#endDate").val("");
             $("#leaveDays").text("0");
             $("#leaveHours").text("0");
@@ -180,7 +167,7 @@ $("#viewLeaveSubmit").pagecontainer({
                     } else {
                         var basedayHtml = "";
                         for(var i = 0; i < dateArr.length; i ++) {
-                            basedayHtml += '<div class="tpl-option-msg-list">' + dateFormat($(dateArr[i]).html()) + '</div>';
+                            basedayHtml += '<div class="tpl-option-msg-list">' + formatDate($.trim($(dateArr[i]).html())) + '</div>';
                         }
                         $(".old-baseday-list").empty().append(basedayHtml);
                         $(".old-baseday-list").append('<div class="tpl-option-msg-list">' + otherBasedayStr + '</div>');
@@ -251,7 +238,7 @@ $("#viewLeaveSubmit").pagecontainer({
         window.SendApplyLeaveData = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -369,6 +356,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         //選擇假別後，獲取假別對象
                         leaveDetail = allLeaveList[i];
                         leaveCategory = allLeaveList[i]["category"];
+                        leaveid = allLeaveList[i]["leaveid"];
 
                         //不需要基准日回传剩余天数，需要基准日回传有效基准日列表
                         if(leaveDetail["basedate"] == "N") {
@@ -377,7 +365,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                               + "</EmpNo><leaveid>"
                                               + leaveid
                                               + "</leaveid></LayoutHeader>";
-                            console.log(queryLeftDaysData);
+                            //console.log(queryLeftDaysData);
                             //呼叫API
                             QueryLeftDaysData();             
 
@@ -421,7 +409,7 @@ $("#viewLeaveSubmit").pagecontainer({
                               + "</qEmpno><qName>"
                               + searchName
                               + "</qName></LayoutHeader>";
-            console.log(queryEmployeeData);
+            //console.log(queryEmployeeData);
             if(timoutQueryEmployee != null) {
                 clearTimeout(timoutQueryEmployee);
                 timoutQueryEmployee = null;
@@ -476,7 +464,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //新基準日選擇——datetime change
         $("#newBaseday").on("change", function() {
-            baseday = $(this).val();
+            baseday = dateFormat($(this).val());
 
             if(baseday === "") {
                 $("#chooseBaseday").text(selectBasedayStr);
@@ -522,7 +510,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //無有效基準日選擇——datetime change
         $("#oldBaseday").on("change", function() {
-            baseday = $(this).val();
+            baseday = dateFormat($(this).val());
 
             if(baseday === "") {
                 $("#chooseBaseday").text(selectBasedayStr);
@@ -675,9 +663,9 @@ $("#viewLeaveSubmit").pagecontainer({
                                                   + "</enddate><endtime>"
                                                   + endLeaveDate.split(" ")[1]
                                                   + "</endtime><datumdate>"
-                                                  + baseday
+                                                  + ((needBaseday == true) ? baseday : '')
                                                   + "</datumdate></LayoutHeader>";
-                    console.log(countLeaveHoursByEndQueryData);
+                    //console.log(countLeaveHoursByEndQueryData);
                     //呼叫API
                     CountLeaveHoursByEnd();
 
@@ -760,28 +748,24 @@ $("#viewLeaveSubmit").pagecontainer({
                 $("#previewLeaveHours").text(countApplyHours);
 
                 $('.apply-container').hide();
-                $('.leaveMenu').hide();
+                $('#viewLeaveSubmit .leaveMenu').hide();
                 $('.apply-preview').show();
-                $('#backMain').show();  
+                $('#backMain').show();
             }
         });
 
-        //返回編輯按鈕
+        //从预览返回申请
         $("#backMain").on("click", function() {
-            $('.apply-container').show();
-            $('.leaveMenu').show();
             $('.apply-preview').hide();
-            $('#backMain').hide();      
-                   
-            return false;
+            $('#backMain').hide();
+            $('.apply-container').show();
+            $('#viewLeaveSubmit .leaveMenu').show();
+            //return false;
         });
 
         //立即預約popup
         $("#applyBtn").on("click", function() {
             popupMsgInit('.confirmSend');
-            // $("#backMain").click();
-            // changePageByPanel("viewLeaveQuery");
-            // $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
         //確定送簽
@@ -815,7 +799,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                     + ((editLeaveForm == false) ? '' : leaveDetailObj['formid'])
                                     + '</formid></LayoutHeader>';
 
-            console.log(sendApplyLeaveQueryData);
+            //console.log(sendApplyLeaveQueryData);
             //呼叫API
             SendApplyLeaveData();
         });

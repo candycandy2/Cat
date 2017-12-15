@@ -59,7 +59,7 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewHolidayCalendar");
     });
 
-    $(".menu-btn").on("click", function() {
+    $(".menu-btn .leaveMenu").on("click", function() {
         $("#mypanel").panel("open");
         $(".page-mask").show();
     });

@@ -1,5 +1,6 @@
 var leaveid, leaveType, agentid, beginDate, endDate, beginTime, endTime;
-var viewPersonalLeaveInit = false;
+var viewPersonalLeaveBeforeshow = false;
+var viewPersonalLeaveShow = false;
 var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 //var fulldayHide = false;
@@ -31,13 +32,30 @@ var agentData = {
     }
 };
 
+var categroyData = {
+    id: "categroy-popup",
+    option: [],
+    title: "",
+    //defaultText: langStr["str_069"],
+    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
+    changeDefaultText : true,
+    attr: {
+        class: "tpl-dropdown-list-icon-arrow"
+    }
+};
+
 $("#viewPersonalLeave").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
 
         /********************************** function *************************************/
         //快速请假页面——获取部分假别
         function getQuickLeaveList() {
+            //初始化
+            leaveTypeData["option"] = [];
+            $("#leaveType").empty();
+            $("#leaveType-popup-option-popup").remove();
+
             for (var i = 0; i < quickLeaveList.length; i++) {
                 leaveTypeData["option"][i] = {};
                 leaveTypeData["option"][i]["value"] = quickLeaveList[i]["leaveid"];
@@ -50,7 +68,11 @@ $("#viewPersonalLeave").pagecontainer({
 
         //请假申请页面——获取所有类别
         function getAllCategroyList() {
+            //初始化
             var categroyLeave = [];
+            categroyData["option"] = [];
+            $("#leaveCategroy").empty();
+            $("#categroy-popup-option-popup").remove();
 
             //循環所有類別，並去重、去空
             for (var i in allLeaveList) {
@@ -73,7 +95,7 @@ $("#viewPersonalLeave").pagecontainer({
             tplJS.DropdownList("viewLeaveSubmit", "leaveCategroy", "prepend", "typeB", categroyData);
 
             //默認選中popup “所有類別”
-            $.each($("#categroy-popup-option-list li"), function (i, item) {
+            $.each($("#categroy-popup-option-list li"), function(i, item) {
                 if ($(item).text() === allLeaveCategroyStr) {
                     $(item).trigger("click");
                     return false;
@@ -146,7 +168,7 @@ $("#viewPersonalLeave").pagecontainer({
                 }
 
                 //basedate
-                $("#chooseBaseday").text(selectBasedayStr);
+                //$("#chooseBaseday").text(selectBasedayStr);
                 //$("#oldBaseday").val("");
                 //$("#newBaseday").val("");
                 $('#baseDate').hide();
@@ -177,9 +199,9 @@ $("#viewPersonalLeave").pagecontainer({
         }
 
         //行事历
-        window.QueryCalendarData = function () {
+        window.QueryCalendarData = function() {
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 myCalendarData = {};
                 myHolidayData = [];
                 var leaveFlag = "3";
@@ -206,19 +228,18 @@ $("#viewPersonalLeave").pagecontainer({
                 loadingMask("hide");
             };
 
-            this.failCallback = function (data) {
-            };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPI("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "");
             }();
         };
 
         //获取默认设置，包括所有假别、注意事项等
-        window.GetDefaultSetting = function () {
+        window.GetDefaultSetting = function() {
 
-            this.successCallback = function (data) {
-                //console.log(data);
+            this.successCallback = function(data) {
+                console.log(data);
 
                 //如果ResultCode=1且Content>0，说明数据有更新，重新获取数据并存到local
                 if (data['ResultCode'] === "1") {
@@ -313,19 +334,18 @@ $("#viewPersonalLeave").pagecontainer({
 
             };
 
-            this.failCallback = function (data) {
-            };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
-                CustomAPI("POST", false, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
+            var __construct = function() {
+                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
             }();
 
         };
 
         //根据leaveid查询假别剩余时数
-        window.QueryLeftDaysData = function () {
+        window.QueryLeftDaysData = function() {
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 //console.log(data);
                 if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
@@ -344,22 +364,20 @@ $("#viewPersonalLeave").pagecontainer({
                 }
             };
 
-            this.failCallback = function (data) {
-            };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPI("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
             }();
         };
 
         //查询员工信息（代理人查询）
-        window.QueryEmployeeData = function (callback) {
+        window.QueryEmployeeData = function(callback) {
             callback = callback || null;
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 if (data['ResultCode'] === "1") {
                     var agentList = "";
-                    //var agentNotExist = false;
                     //如果未找到代理人，popup提示，找到代理人则生成list供用户选择
                     if (data['Content'][0] == undefined) {
                         //agentNotExist = true;
@@ -373,14 +391,14 @@ $("#viewPersonalLeave").pagecontainer({
                         var agentIDArry = $("Empno", htmlDom);
                         for (var i = 0; i < DepArry.length; i++) {
                             if ($(agentIDArry[i]).html() !== localStorage["emp_no"]) {
-                                agentList += '<li class="tpl-option-msg-list" value="' + $(agentIDArry[i]).html() + "" + '">'
-                                    + '<div style="width: 25VW;"><span>'
-                                    + $(DepArry[i]).html()
-                                    + '</span></div>'
-                                    + '<div><span>'
-                                    + $(nameArry[i]).html()
-                                    + '</span></div>'
-                                    + '</li>';
+                                agentList += '<li class="tpl-option-msg-list" value="' + $(agentIDArry[i]).html() + '">' +
+                                    '<div style="width: 25VW;"><span>' +
+                                    $(DepArry[i]).html() +
+                                    '</span></div>' +
+                                    '<div><span>' +
+                                    $(nameArry[i]).html() +
+                                    '</span></div>' +
+                                    '</li>';
                             }
                         }
 
@@ -410,51 +428,21 @@ $("#viewPersonalLeave").pagecontainer({
                             $("#agent-popup-option").popup("close");
                             popupMsgInit('.agentNotExist');
                         }
-
-
-
-                        // if(agentList == "") {
-                        //     agentNotExist = true;
-                        // }else {
-
-                        // }
                     }
-
-                    // if(agentNotExist) {
-                    //     $("#agent-popup-option").popup("close");
-                    //     popupMsgInit('.agentNotExist');
-
-                    //     //Clear Data
-                    //     var newOption = '<option hidden>請選擇</option>';
-                    //     var newOption = '<option hidden>' + langStr["str_069"] + '</option>';
-                    //     //veiwPersonalLeave
-                    //     $("#agent-popup").find("option").remove().end().append(newOption);
-                    //     //viewLeaveSubmit
-                    //     $("#leave-agent-popup").find("option").remove().end().append(newOption);
-                    //     agentid = "";
-                    //     window.localStorage.removeItem('agent');
-                    //     setTimeout(function(){
-                    //         //viewPersonalLeave
-                    //         tplJS.reSizeDropdownList("agent-popup", "typeB");
-                    //         //viewLeaveSubmit
-                    //         tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
-                    //     }, 1000);
-                    // }
                 }
             };
 
-            this.failCallback = function (data) {
-            };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPI("POST", true, "QueryEmployeeData", self.successCallback, self.failCallback, queryEmployeeData, "");
             }();
         };
 
         //计算请假时数
-        window.CountLeaveHours = function () {
+        window.CountLeaveHours = function() {
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 //console.log(data);
                 if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
@@ -468,32 +456,32 @@ $("#viewPersonalLeave").pagecontainer({
 
                     //如果请假时数计算成功则直接可以申请快速请假
                     if ($(quickSuccess).html() != undefined) {
-                        sendLeaveApplicationData = "<LayoutHeader><empno>"
-                            + myEmpNo
-                            + "</empno><delegate>"
-                            + agentid
-                            + "</delegate><leaveid>"
-                            + leaveid
-                            + "</leaveid><begindate>"
-                            + beginDate
-                            + "</begindate><begintime>"
-                            + beginTime
-                            + "</begintime><enddate>"
-                            + endDate
-                            + "</enddate><endtime>"
-                            + endTime
-                            + "</endtime><datumdate></datumdate><applydays>"
-                            + $(applyDays).html()
-                            + "</applydays><applyhours>"
-                            + $(applyHours).html()
-                            + "</applyhours><reason>"
-                            + leaveType
-                            + "</reason><isattached>"
-                            + "</isattached><attachment>"
-                            + "</attachment><formid>"
-                            + "</formid></LayoutHeader>";
+                        sendLeaveApplicationData = "<LayoutHeader><empno>" +
+                            myEmpNo +
+                            "</empno><delegate>" +
+                            agentid +
+                            "</delegate><leaveid>" +
+                            leaveid +
+                            "</leaveid><begindate>" +
+                            beginDate +
+                            "</begindate><begintime>" +
+                            beginTime +
+                            "</begintime><enddate>" +
+                            endDate +
+                            "</enddate><endtime>" +
+                            endTime +
+                            "</endtime><datumdate></datumdate><applydays>" +
+                            $(applyDays).html() +
+                            "</applydays><applyhours>" +
+                            $(applyHours).html() +
+                            "</applyhours><reason>" +
+                            leaveType +
+                            "</reason><isattached>" +
+                            "</isattached><attachment>" +
+                            "</attachment><formid>" +
+                            "</formid></LayoutHeader>";
 
-                        console.log(sendLeaveApplicationData);
+                        //console.log(sendLeaveApplicationData);
                         //呼叫API
                         SendLeaveApplicationData();
                     } else {
@@ -506,19 +494,18 @@ $("#viewPersonalLeave").pagecontainer({
                 }
             };
 
-            this.failCallback = function (data) {
-            };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPI("POST", true, "CountLeaveHours", self.successCallback, self.failCallback, countLeaveHoursQueryData, "");
             }();
         };
 
         //假单送签
-        window.SendLeaveApplicationData = function () {
+        window.SendLeaveApplicationData = function() {
 
-            this.successCallback = function (data) {
-                console.log(data);
+            this.successCallback = function(data) {
+                //console.log(data);
                 if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
 
@@ -549,18 +536,17 @@ $("#viewPersonalLeave").pagecontainer({
                 }
             };
 
-            this.failCallback = function (data) {
-            };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPI("POST", true, "SendLeaveApplicationData", self.successCallback, self.failCallback, sendLeaveApplicationData, "");
             }();
         };
 
         //个人剩余假别资讯<LayoutHeader><EmpNo>0003023</EmpNo></LayoutHeader>
-        window.QueryEmployeeLeaveInfo = function (leaveid) {
+        window.QueryEmployeeLeaveInfo = function(leaveid) {
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 //console.log(data);
                 if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
@@ -570,22 +556,21 @@ $("#viewPersonalLeave").pagecontainer({
 
                     var leaveInfoHtml = '';
                     for (var i = 0; i < nameArr.length; i++) {
-                        leaveInfoHtml += '<li>'
-                            + '<div><span>'
-                            + $(nameArr[i]).html()
-                            + '</span></div><div><span>'
-                            + $(valueArr[i]).html()
-                            + '</span><span> 天</span></div></li>';
+                        leaveInfoHtml += '<li>' +
+                            '<div><span>' +
+                            $(nameArr[i]).html() +
+                            '</span></div><div><span>' +
+                            $(valueArr[i]).html() +
+                            '</span><span> 天</span></div></li>';
                     }
 
                     $("#infoContent-1 ul").empty().append(leaveInfoHtml);
                 }
             };
 
-            this.failCallback = function (data) {
-            };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPI("POST", true, "QueryEmployeeLeaveInfo", self.successCallback, self.failCallback, queryEmployeeLeaveInfoQueryData, "");
             }();
         };
@@ -599,7 +584,7 @@ $("#viewPersonalLeave").pagecontainer({
             return dataTempC[0];
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             prslvsCalendar = new Calendar({
                 renderTo: "#viewPersonalLeave #myCalendar",
                 id: "viewPersonalLeave-calendar",
@@ -608,14 +593,14 @@ $("#viewPersonalLeave").pagecontainer({
                 weekstartson: 0,
                 markToday: true,
                 markWeekend: true,
-                changeDateEventListener: function (year, month) {
-                    queryCalendarData = "<LayoutHeader><Year>"
-                        + year
-                        + "</Year><Month>"
-                        + month
-                        + "</Month><EmpNo>"
-                        + myEmpNo
-                        + "</EmpNo></LayoutHeader>";
+                changeDateEventListener: function(year, month) {
+                    queryCalendarData = "<LayoutHeader><Year>" +
+                        year +
+                        "</Year><Month>" +
+                        month +
+                        "</Month><EmpNo>" +
+                        myEmpNo +
+                        "</EmpNo></LayoutHeader>";
                     //呼叫API
                     QueryCalendarData();
                 },
@@ -627,7 +612,7 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         /********************************** page event *************************************/
-        $("#viewPersonalLeave").one("pagebeforeshow", function (event, ui) {
+        $("#viewPersonalLeave").one("pagebeforeshow", function(event, ui) {
             $("#tab-1").hide();
             $("#tab-2").show();
             if (lastPageID === "viewPersonalLeave") {
@@ -639,14 +624,15 @@ $("#viewPersonalLeave").pagecontainer({
             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
 
-            if (!viewPersonalLeaveInit) {
+            if (!viewPersonalLeaveBeforeshow) {
+                viewPersonalLeaveBeforeshow = true;
                 //第一次進入首頁檢查是否有代理人信息，有則檢查代理人是否在職
                 if (localStorage.getItem("agent") !== null) {
-                    queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>'
-                        + myEmpNo
-                        + '</EmpNo><qEmpno>'
-                        + JSON.parse(localStorage.getItem("agent"))[1]
-                        + '</qEmpno><qName></qName></LayoutHeader>';
+                    queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>' +
+                        myEmpNo +
+                        '</EmpNo><qEmpno>' +
+                        JSON.parse(localStorage.getItem("agent"))[1] +
+                        '</qEmpno><qName></qName></LayoutHeader>';
                     //根据id获取代理人信息
                     QueryEmployeeDetail();
                     //如果值为空，则未找到代理人对象，代理人已离职
@@ -674,23 +660,37 @@ $("#viewPersonalLeave").pagecontainer({
                 leaveid = "";
                 beginTime = "08:00";
                 endTime = "17:00";
-                viewPersonalLeaveInit = true;
             }
 
         });
 
-        $("#viewPersonalLeave").on("pageshow", function (event, ui) {
+        $("#viewPersonalLeave").on("pageshow", function(event, ui) {
+            if (!viewPersonalLeaveShow) {
+                //个人剩余假别资讯
+                queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+                QueryEmployeeLeaveInfo();
+
+                //请假单查询——获取假单列表
+                queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+                QueryEmployeeLeaveApplyForm();
+
+                //销假单查询——获取销假单列表
+                queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+                QueryEmployeeLeaveCancelForm();
+
+                viewPersonalLeaveShow = true;
+            }
 
             loadingMask("hide");
         });
 
         /********************************** dom event *************************************/
-        $(".page-tabs #viewPersonalLeave-tab-1").on("click", function () {
+        $(".page-tabs #viewPersonalLeave-tab-1").on("click", function() {
             $("#tab-1").show();
             $("#tab-2").hide();
         });
 
-        $(".page-tabs #viewPersonalLeave-tab-2").on("click", function () {
+        $(".page-tabs #viewPersonalLeave-tab-2").on("click", function() {
             $("#tab-1").hide();
             $("#tab-2").show();
 
@@ -707,7 +707,7 @@ $("#viewPersonalLeave").pagecontainer({
             // }
         });
 
-        $("#infoTitle-1").on("click", function () {
+        $("#infoTitle-1").on("click", function() {
             if ($("#infoContent-1").css("display") === "none") {
                 $("#infoContent-1").slideDown(500);
                 $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
@@ -717,7 +717,7 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $("#infoTitle-3").on("click", function () {
+        $("#infoTitle-3").on("click", function() {
             if ($("#infoContent-3").css("display") === "none") {
                 $("#infoContent-3").slideDown(500);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_up.png")
@@ -727,7 +727,7 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $("#leaveTime-tab1").on("click", function () {
+        $("#leaveTime-tab1").on("click", function() {
             timeArry = splitTime($(this).val());
             beginTime = timeArry[1];
             endTime = timeArry[2];
@@ -738,7 +738,7 @@ $("#viewPersonalLeave").pagecontainer({
             leaveTimetab = "leaveTime-tab1";
         });
 
-        $("#leaveTime-tab2").on("click", function () {
+        $("#leaveTime-tab2").on("click", function() {
             timeArry = splitTime($(this).val());
             beginTime = timeArry[1];
             endTime = timeArry[2];
@@ -748,7 +748,7 @@ $("#viewPersonalLeave").pagecontainer({
             leaveTimetab = "leaveTime-tab2";
         });
 
-        $("#leaveTime-tab3").on("click", function () {
+        $("#leaveTime-tab3").on("click", function() {
             timeArry = splitTime($(this).val());
             beginTime = timeArry[1];
             endTime = timeArry[2];
@@ -758,30 +758,30 @@ $("#viewPersonalLeave").pagecontainer({
             leaveTimetab = "leaveTime-tab3";
         });
 
-        $("#leaveConfirm").on("click", function () {
+        $("#leaveConfirm").on("click", function() {
             if ($("#leaveConfirm").hasClass("btn-enable")) {
-                countLeaveHoursQueryData = "<LayoutHeader><EmpNo>"
-                    + myEmpNo
-                    + "</EmpNo><leaveid>"
-                    + leaveid
-                    + "</leaveid><begindate>"
-                    + beginDate
-                    + "</begindate><begintime>"
-                    + beginTime
-                    + "</begintime><enddate>"
-                    + endDate
-                    + "</enddate><endtime>"
-                    + endTime
-                    + "</endtime><datumdate></datumdate></LayoutHeader>";
+                countLeaveHoursQueryData = "<LayoutHeader><EmpNo>" +
+                    myEmpNo +
+                    "</EmpNo><leaveid>" +
+                    leaveid +
+                    "</leaveid><begindate>" +
+                    beginDate +
+                    "</begindate><begintime>" +
+                    beginTime +
+                    "</begintime><enddate>" +
+                    endDate +
+                    "</enddate><endtime>" +
+                    endTime +
+                    "</endtime><datumdate></datumdate></LayoutHeader>";
 
                 if (localStorage.getItem("agent") !== null) {
-                    queryEmployeeData = "<LayoutHeader><EmpNo>"
-                        + myEmpNo
-                        + "</EmpNo><qEmpno>"
-                        + JSON.parse(localStorage.getItem("agent"))[1]
-                        + "</qEmpno><qName>"
-                        + JSON.parse(localStorage.getItem("agent"))[0]
-                        + "</qName></LayoutHeader>";
+                    queryEmployeeData = "<LayoutHeader><EmpNo>" +
+                        myEmpNo +
+                        "</EmpNo><qEmpno>" +
+                        JSON.parse(localStorage.getItem("agent"))[1] +
+                        "</qEmpno><qName>" +
+                        JSON.parse(localStorage.getItem("agent"))[0] +
+                        "</qName></LayoutHeader>";
                     //呼叫API
                     QueryEmployeeData("CountLeaveHours");
                 } else {
@@ -793,7 +793,7 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $(document).on("keyup", "#searchBar", function (e) {
+        $(document).on("keyup", "#searchBar", function(e) {
             if ($("#searchBar").val().length == 0) {
                 $("#queryLoader").hide();
                 $("#agent-popup-option-list").hide();
@@ -807,19 +807,19 @@ $("#viewPersonalLeave").pagecontainer({
             } else {
                 searchEmpNo = $("#searchBar").val();
             }
-            queryEmployeeData = "<LayoutHeader><EmpNo>"
-                + myEmpNo
-                + "</EmpNo><qEmpno>"
-                + searchEmpNo
-                + "</qEmpno><qName>"
-                + searchName
-                + "</qName></LayoutHeader>";
-            console.log(queryEmployeeData);
+            queryEmployeeData = "<LayoutHeader><EmpNo>" +
+                myEmpNo +
+                "</EmpNo><qEmpno>" +
+                searchEmpNo +
+                "</qEmpno><qName>" +
+                searchName +
+                "</qName></LayoutHeader>";
+
             if (timoutQueryEmployeeData != null) {
                 clearTimeout(timoutQueryEmployeeData);
                 timoutQueryEmployeeData = null;
             }
-            timoutQueryEmployeeData = setTimeout(function () {
+            timoutQueryEmployeeData = setTimeout(function() {
                 //呼叫API
                 QueryEmployeeData();
 
@@ -831,21 +831,21 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $(document).on("change", "#leaveType-popup", function () {
+        $(document).on("change", "#leaveType-popup", function() {
             leaveid = $(this).val();
             leaveType = $.trim($(this).text());
             leaveTypeSelected = true;
         });
 
-        $(document).on("popupafterclose", "#leaveType-popup-option", function () {
+        $(document).on("popupafterclose", "#leaveType-popup-option", function() {
             if (leaveTypeSelected) {
                 for (var i = 0; i < quickLeaveList.length; i++) {
                     if (leaveid === quickLeaveList[i]["leaveid"]) {
-                        queryLeftDaysData = "<LayoutHeader><EmpNo>"
-                            + myEmpNo
-                            + "</EmpNo><leaveid>"
-                            + quickLeaveList[i]["leaveid"]
-                            + "</leaveid></LayoutHeader>";
+                        queryLeftDaysData = "<LayoutHeader><EmpNo>" +
+                            myEmpNo +
+                            "</EmpNo><leaveid>" +
+                            quickLeaveList[i]["leaveid"] +
+                            "</leaveid></LayoutHeader>";
                         //呼叫API
                         QueryLeftDaysData();
 
@@ -854,18 +854,18 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $(document).on("click", "#agent-popup-option ul li", function (e) {
+        $(document).on("click", "#agent-popup-option ul li", function(e) {
             agentid = $(this).attr("value");
         });
 
-        $(document).on("popupafterclose", "#agent-popup-option", function () {
+        $(document).on("popupafterclose", "#agent-popup-option", function() {
             if (leaveid != "" && agentid != "") {
                 $("#leaveConfirm").removeClass("btn-disable");
                 $("#leaveConfirm").addClass("btn-enable");
             }
         });
 
-        $(document).on("popupafteropen", "#agent-popup-option", function () {
+        $(document).on("popupafteropen", "#agent-popup-option", function() {
             $("#searchBar").val("");
             $("#agent-popup-option-list").empty();
 
@@ -900,7 +900,7 @@ $("#viewPersonalLeave").pagecontainer({
                 'overflow-y': 'hidden',
                 'touch-action': 'none',
                 'height': $(window).height()
-            }, 0, function () {
+            }, 0, function() {
                 var top = $('#' + popupID + '-screen.in').offset().top;
                 if (top < 0) {
                     $('.ui-popup-screen.in').css({
@@ -917,7 +917,7 @@ $("#viewPersonalLeave").pagecontainer({
 
         //Calendar Event
         $(document).on({
-            click: function (event) {
+            click: function(event) {
                 var isLeave = false;
                 var isWeekend = false;
                 var isNormal = false;
@@ -990,7 +990,7 @@ $("#viewPersonalLeave").pagecontainer({
                         "line-height": "1.2"
                     });
 
-                    $(".tooltip").find("table").each(function (index, dom) {
+                    $(".tooltip").find("table").each(function(index, dom) {
                         $(dom).find("td:eq(0)").css("width", firstTdWidth);
                     });
                 }
@@ -998,7 +998,7 @@ $("#viewPersonalLeave").pagecontainer({
             }
         }, ".QPlayCalendar");
 
-        $(document).on("click", function (event) {
+        $(document).on("click", function(event) {
             if (!$(event.target).parent().parent().parent().parent().parent().hasClass("QPlayCalendar")) {
                 if (!$(event.target).parent().parent().parent().parent().parent().hasClass("tooltip")) {
                     if ($(".tooltip").length > 0) {
@@ -1008,14 +1008,14 @@ $("#viewPersonalLeave").pagecontainer({
             }
         });
 
-        $(document).on("change", "input[name=radio-choice-h-2]", function () {
+        $(document).on("change", "input[name=radio-choice-h-2]", function() {
             if ($(".tooltip").length > 0) {
                 $(".tooltip").remove();
             }
         });
 
         //Leave Date scroll click
-        $(document).on("click", "#leaveDate a", function () {
+        $(document).on("click", "#leaveDate a", function() {
             $("#leaveDate a").removeClass("hover");
             $(this).addClass("hover");
 

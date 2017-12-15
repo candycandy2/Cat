@@ -7,6 +7,9 @@
 				"str" : ["- 1/1 元旦",
 				         "- 1/28 初一 ~ 1/30初三 春节节日"]
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 1
 		}, {
 			"month" : "2",
@@ -14,12 +17,18 @@
 				"date" : "",
 				"str" : []
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 0
 		}, {
 			"month" : "3",
 			"holiday" : {
 				"date" : "",
 				"str" : []
+			},
+			"workday" : {
+				"date" : ""
 			},
 			"status" : 0
 		}, {
@@ -29,6 +38,9 @@
 				"str" : ["- 4/4 清明节",
 				         "- 4/1 上班补4/3"]
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 1
 		}, {
 			"month" : "5",
@@ -37,12 +49,18 @@
 				"str" : ["- 5/1 劳动节",
 				         "- 5/30 端午节, 5/27上班补5/29"]
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 1
 		}, {
 			"month" : "6",
 			"holiday" : {
 				"date" : "",
 				"str" : []
+			},
+			"workday" : {
+				"date" : ""
 			},
 			"status" : 0
 		}, {
@@ -51,6 +69,9 @@
 				"date" : "",
 				"str" : []
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 0
 		}, {
 			"month" : "8",
@@ -58,12 +79,18 @@
 				"date" : "",
 				"str" : []
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 0
 		}, {
 			"month" : "9",
 			"holiday" : {
 				"date" : "",
 				"str" : []
+			},
+			"workday" : {
+				"date" : ""
 			},
 			"status" : 0
 		}, {
@@ -73,6 +100,9 @@
 				"str" : ["- 10/1 ~ 10/3 国庆节",
 				         "- 10/4 中秋节"]
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 1
 		}, {
 			"month" : "11",
@@ -80,12 +110,18 @@
 				"date" : "",
 				"str" : []
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 0
 		}, {
 			"month" : "12",
 			"holiday" : {
 				"date" : "",
 				"str" : []
+			},
+			"workday" : {
+				"date" : ""
 			},
 			"status" : 0
 		}
@@ -97,12 +133,18 @@
 				"date" : "1",
 				"str" : ["- 1/1 元旦"]
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 1
 		}, {
 			"month" : "2",
 			"holiday" : {
 				"date" : "15,16,19",
 				"str" : ["- 2/16 初一 ~ 2/18 初三 春节节日"]
+			},
+			"workday" : {
+				"date" : ""
 			},
 			"status" : 1
 		}, {
@@ -111,12 +153,18 @@
 				"date" : "",
 				"str" : []
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 0
 		}, {
 			"month" : "4",
 			"holiday" : {
 				"date" : "5,6,30",
-				"str" : ["- 4/5 清明节"]
+				"str" : ["- 4/5 清明节","- 4/8 上班补 4/6","- 4/28 上班补 4/30"]
+			},
+			"workday" : {
+				"date" : "8,28"
 			},
 			"status" : 1
 		}, {
@@ -125,12 +173,18 @@
 				"date" : "1",
 				"str" : ["- 5/1 劳动节"]
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 1
 		}, {
 			"month" : "6",
 			"holiday" : {
 				"date" : "18",
 				"str" : ["- 6/18 端午节"]
+			},
+			"workday" : {
+				"date" : ""
 			},
 			"status" : 1
 		}, {
@@ -139,12 +193,18 @@
 				"date" : "",
 				"str" : []
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 0
 		}, {
 			"month" : "8",
 			"holiday" : {
 				"date" : "",
 				"str" : []
+			},
+			"workday" : {
+				"date" : ""
 			},
 			"status" : 0
 		}, {
@@ -153,12 +213,18 @@
 				"date" : "24",
 				"str" : ["- 9/24 中秋节"]
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 1
 		}, {
 			"month" : "10",
 			"holiday" : {
 				"date" : "1,2,3",
 				"str" : ["- 10/1 ~ 10/3 国庆节"]
+			},
+			"workday" : {
+				"date" : ""
 			},
 			"status" : 1
 		}, {
@@ -167,12 +233,18 @@
 				"date" : "",
 				"str" : []
 			},
+			"workday" : {
+				"date" : ""
+			},
 			"status" : 0
 		}, {
 			"month" : "12",
 			"holiday" : {
 				"date" : "",
 				"str" : []
+			},
+			"workday" : {
+				"date" : ""
 			},
 			"status" : 0
 		}

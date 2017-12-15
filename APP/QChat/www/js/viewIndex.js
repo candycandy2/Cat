@@ -83,12 +83,12 @@ $("#viewIndex").pagecontainer({
                     window.getGroupIds();
                 }
 
-                getQUserDetail("viewIndex", loginData["loginid"]);
+                window.getQUserDetail("viewIndex", loginData["loginid"]);
 
             }());
         }
 
-        function getQUserDetail(action, empID, callback) {
+        window.getQUserDetail = function(action, empID, callback) {
             callback = callback || null;
 
             (function(action, empID, callback) {
@@ -108,7 +108,7 @@ $("#viewIndex").pagecontainer({
 
                     if (resultCode === "1") {
 
-                        if (action === "viewIndex") {
+                        if (action === "viewIndex" || action === "viewMyInfoEdit") {
                             $(".personal-content .personal-name").html(data['Content'][0].name);
                             $(".personal-content .personal-popup").data("userID", data['Content'][0].name);
 
@@ -129,7 +129,9 @@ $("#viewIndex").pagecontainer({
 
                             window.processUserData(data['Content'][0], callback);
 
-                            getQFriend();
+                            if (action === "viewIndex") {
+                                window.getQFriend();
+                            }
                         } else if (action === "downloadOriginalUserAvatar") {
                             window.processUserData(data['Content'][0], callbackFunction);
                         } else if (action === "inviteListView") {
@@ -143,10 +145,12 @@ $("#viewIndex").pagecontainer({
                 CustomAPI("POST", true, "getQUserDetail", successCallback, failCallback, queryData, "");
 
             }(action, empID, callback));
-        }
+        };
 
-        function getQFriend() {
-            (function() {
+        window.getQFriend = function(action) {
+            action = action || null;
+
+            (function(action) {
 
                 var queryDataObj = {
                     emp_no: loginData["emp_no"]
@@ -167,8 +171,10 @@ $("#viewIndex").pagecontainer({
                         $(".friend-content .friend-list-content").html("");
                         $(".friend-content .invite-list-content").html("");
 
+                        var friendDataListHTML = $("template#tplFriendDataList").html();
+
                         for (var i=0; i<data['Content'].friend.user_list.length; i++) {
-                            var friendDataListHTML = $("template#tplFriendDataList").html();
+
                             var friendDataList = $(friendDataListHTML);
 
                             friendDataList.find(".personal-photo-content").prop("id", "friendList" + i);
@@ -191,9 +197,12 @@ $("#viewIndex").pagecontainer({
                             window.processUserData(data['Content'].friend.user_list[i], callback);
                         }
 
-                        //only show request data when the request count > 0
-                        if (data['Content'].inviter.user_list.length > 0) {
+                        //only show request data when:
+                        //1. Protect User
+                        //2. the request count > 0
+                        if (JM.data.chatroom_user[loginData["loginid"]].is_protect && data['Content'].inviter.user_list.length > 0) {
                             JM.data.chatroom_invite = [];
+                            $("#viewIndexContent .friend-content .invite-list").show();
 
                             var inviteCount = data['Content'].inviter.user_list.length;
                             var inviteDataListHTML = $("template#tplInviteDataList").html();
@@ -224,12 +233,20 @@ $("#viewIndex").pagecontainer({
                                         }
                                     }
 
-                                    getQUserDetail("inviteListView", user_list[i].name, callback);
+                                    window.getQUserDetail("inviteListView", user_list[i].name, callback);
                                 }(data['Content'].inviter.user_list, i));
                             }
+
+                            if (action === "receiveInvite") {
+                                $.mobile.changePage('#viewFriendInvite');
+                            }
+                        } else {
+                            $("#viewIndexContent .friend-content .invite-list").hide();
                         }
 
                         JM.updateLocalStorage();
+
+                        loadingMask("hide");
                     }
                 };
 
@@ -237,8 +254,8 @@ $("#viewIndex").pagecontainer({
 
                 CustomAPI("POST", true, "getQFriend", successCallback, failCallback, queryData, "");
 
-            }());
-        }
+            }(action));
+        };
 
         window.removeQFriend = function() {
             (function() {
@@ -255,7 +272,7 @@ $("#viewIndex").pagecontainer({
                     var resultCode = data['ResultCode'];
 
                     if (resultCode === "1") {
-                        getQFriend();
+                        window.getQFriend();
                         $("#confirmDeleteFriendPopup").popup("close");
                     }
                 };
@@ -599,7 +616,7 @@ $("#viewIndex").pagecontainer({
                         window.downloadOriginalUserAvatar(action, nowTimestamp, userID, listViewIndex);
                     };
 
-                    getQUserDetail("downloadOriginalUserAvatar", userID, callback);
+                    window.getQUserDetail("downloadOriginalUserAvatar", userID, callback);
 
                     return;
                 }
@@ -941,7 +958,7 @@ $("#viewIndex").pagecontainer({
 
         $("#viewIndex").on("pagebeforeshow", function(event, ui) {
             if (JM.data.sendPushToken !== undefined) {
-                getQFriend();
+                window.getQFriend();
             }
 
             recoverySearchUI();
@@ -959,7 +976,7 @@ $("#viewIndex").pagecontainer({
             }
 
             if (!getPWD) {
-                //loadingMask("show");
+                loadingMask("show");
                 var jmessagePassword = new getJmessagePassword();
             } else {
                 window.getGroupIds();

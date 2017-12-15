@@ -18,6 +18,7 @@ var signedStr = "已簽核";
 var withdrawedStr = "已撤回";
 var rejectedStr = "已拒絕";
 var notSignStr = "未簽核";
+var editLeaveForm = false;
 
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
@@ -29,7 +30,7 @@ var prslvsCalendar = {};
 var holidayCalendar = {};
 var myCalendarData = {};
 var myHolidayData = [];
-var applyDay = currentYear+"-"+currentMonth+"-"+currentDate;
+var applyDay = currentYear+"/"+currentMonth+"/"+currentDate;
 var dayTable = {
     "1" : "(一)",
     "2" : "(二)",
@@ -57,7 +58,7 @@ window.initialSuccess = function() {
     if(localStorage.getItem("leaveDefaultSetting") == null) {
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
                                    + myEmpNo
-                                   + "</EmpNo><LastModified>20170101000000</LastModified></LayoutHeader>";
+                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
     } else {
         var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
@@ -70,18 +71,6 @@ window.initialSuccess = function() {
     //选择日期为“请选择”
     $("#startText").text(pleaseSelectStr);
     $("#endText").text(pleaseSelectStr);
-
-    //个人剩余假别资讯
-    queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveInfo();
-
-    //请假单查询——获取假单列表
-    queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveApplyForm();
-
-    //销假单查询——获取销假单列表
-    queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveCancelForm();
 
     //data scroll menu
     dateInit();
@@ -221,15 +210,15 @@ function dateInit() {
     $("#leaveDate a:eq(0)").click();
 }
 
-//格式化日期字符串：“日/月/年” —— “年-月-日”
+//格式化日期字符串：“年-月-日” —— “年/月/日”
 function dateFormat(dataStr) {
-    var str = dataStr.split("/");
+    var str = dataStr.split("-");
 
     var newArr = [];
     for(var i in str) {
-        newArr.unshift(str[i]);
+        newArr.push(str[i]);
     }
-    return newArr.join("-");
+    return newArr.join("/");
 }
 
 //格式化日期格式：“月/日/年 時:分:秒 PM” —— “年-月-日”
@@ -253,9 +242,19 @@ function formatterDate(str) {
     return newArr.join("/");
 }
 
-//假單列表到詳情（请假单和销假单共用）
+//日期格式化：“月/日/年” —— “年/月/日”
+function formatDate(str) {
+    var arr = str.split("/");
+    var newArr = [];
+    newArr.push(arr[2]);
+    newArr.push(arr[0]);
+    newArr.push(arr[1]);
+    return newArr.join("/");
+}
+
+//请假單列表到詳情（请假单和销假单共用）
 function leaveListToDetail(btn1, btn2, btn3, state) {
-    $(".leaveMenu").hide();
+    $("#viewLeaveQuery .leaveMenu").hide();
     $(".leave-query-main").hide();
     $("#backDetailList").show();
     $(".leave-query-detail-sign").show();

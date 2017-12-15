@@ -244,23 +244,17 @@ div.scrollmenu a {
 }
 
 #agent-popup-option-popup .header.typeB,
-#leave-agent-popup-option-popup .header.typeB,
-#categroy-popup-option-popup .header.typeB,
-#leave-popup-option-popup .header.typeB {
+#leave-agent-popup-option-popup .header.typeB {
 	height: 18.8VW;
 }
 
 #agent-popup-option-popup .header .title,
-#leave-agent-popup-option-popup .header .title,
-#categroy-popup-option-popup .header .title,
-#leave-popup-option-popup .header .title {
+#leave-agent-popup-option-popup .header .title {
 	width: 75VW;
 }
 
 #agent-popup-option-popup ul,
-#leave-agent-popup-option-popup ul,
-#categroy-popup-option-popup ul,
-#leave-popup-option-popup ul {
+#leave-agent-popup-option-popup ul {
 	margin-top: 0VW;
 	/* width: 308px;
 	height: 200px;
@@ -471,6 +465,7 @@ div.scrollmenu a {
 	position: fixed;
 	top: 0;
 	right: 0;
+	z-index: -100;
 }
 
 .date-component input[type="datetime-local"],
@@ -640,6 +635,15 @@ div.scrollmenu a {
 }
 
 /****************************************** viewLeaveQuery *****************************************/
+/* pull refresh */
+.page-main .page-date {
+	font-family: Arial;
+	height: 1vw;
+	color: #0f0f0f;
+	text-align:center;
+	width: 80%;
+	margin: 1vw auto 0;
+}
 
 #backDetailList,
 #backSignPreview,

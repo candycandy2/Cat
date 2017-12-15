@@ -164,6 +164,8 @@ window.initialSuccess = function() {
 
         }
     }, "#userInfoPopup .personal-popup-button");
+
+    window.JPush.init();
 };
 
 function cutString(maxViewWidth, string, fontSize, type, memberCount) {
@@ -299,3 +301,44 @@ function onResume() {
 
     //When APP in foreground, check if the view is chatroom, then stop receive the Push Notification
 }
+
+//JPush - for push from QPlay Server
+document.addEventListener("jpush.openNotification", function (event) {
+    if (device.platform == "Android") {
+        console.log(event.extras.Parameter);
+        var extras = event.extras.Parameter;
+        var parameter = extras.split("=");
+
+        if (parameter[1] === "acceptQInvitation") {
+            prevPageID = "viewFriendInvite";
+            window.getQFriend();
+            $.mobile.changePage('#viewIndex');
+        } else if (parameter[1] === "sendQInvitation") {
+            window.getQFriend("receiveInvite");
+        }
+    } else {
+        console.log(event.aps.alert);
+    }
+}, false);
+
+document.addEventListener("jpush.receiveNotification", function (event) {
+    if (device.platform == "Android") {
+        console.log(event.extras.Parameter);
+        var extras = event.extras.Parameter;
+        var parameter = extras.split("=");
+
+        if (parameter[1] === "sendQInvitation" || parameter[1] === "acceptQInvitation") {
+            window.getQFriend();
+        }
+    } else {
+        console.log(event.aps.alert);
+    }
+}, false);
+
+document.addEventListener("jpush.receiveMessage", function (event) {
+    if (device.platform == "Android") {
+        console.log(event.extras.Parameter);
+    } else {
+        console.log(event.content);
+    }
+}, false);
