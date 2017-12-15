@@ -107,8 +107,7 @@ $("#viewLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", false, "QueryEmployeeLeaveApplyForm", self.successCallback, self.failCallback, queryEmployeeLeaveApplyFormQueryData, "");
@@ -146,8 +145,6 @@ $("#viewLeaveQuery").pagecontainer({
                     leaveDetailObj["applydate"] = $(applydate).html().split(" ")[0];
                     leaveDetailObj["reason"] = $(reasons).html();
                     leaveDetailObj["agentid"] = $(delegate).html();
-                    // leaveDetailObj["begindate"] = dateFormatter($(begindate).html());
-                    // leaveDetailObj["enddate"] = dateFormatter($(enddate).html());
                     leaveDetailObj["datumdate"] = $(datumdate).html();
                     leaveDetailObj["filestatus"] = $(filestatus).html();
 
@@ -172,8 +169,7 @@ $("#viewLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", false, "LeaveApplyFormDetail", self.successCallback, self.failCallback, leaveApplyFormDetailQueryData, "");
@@ -208,8 +204,7 @@ $("#viewLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", true, "RecallLeaveApplyForm", self.successCallback, self.failCallback, recallLeaveApplyFormQueryData, "");
@@ -241,8 +236,7 @@ $("#viewLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", true, "DeleteLeaveApplyForm", self.successCallback, self.failCallback, deleteLeaveApplyFormQueryData, "");
@@ -279,8 +273,7 @@ $("#viewLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", true, "SendLeaveCancelFormData", self.successCallback, self.failCallback, sendLeaveCancelFormDataQueryData, "");
@@ -309,8 +302,7 @@ $("#viewLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", false, "QueryEmployeeData", self.successCallback, self.failCallback, queryEmployeeDetailQueryData, "");
@@ -408,7 +400,6 @@ $("#viewLeaveQuery").pagecontainer({
                     loadingMask("show");
                     //请假单只需要更新请假单列表
                     QueryEmployeeLeaveApplyForm();
-                    //setTimeout(changePageByPanel("viewLeaveQuery"), 2000);
                     QueryEmployeeLeaveCancelForm();
                 }
             });
