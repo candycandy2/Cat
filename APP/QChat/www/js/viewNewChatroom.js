@@ -230,7 +230,11 @@ $("#viewNewChatroom").pagecontainer({
                     userList.find(".not-register").show();
                     userList.find(".user-name").removeClass("user-name-only");
                 } else if (JM.data.chatroom_user[userName].is_protect == true) {
-                    hideRadioBtn = true;
+
+                    if (JM.data.chatroom_user[userName].is_friend == false) {
+                        hideRadioBtn = true;
+                    }
+
                     userList.find(".protect").show();
                     userList.find(".user-name").removeClass("user-name-only");
 
