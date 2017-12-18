@@ -10,9 +10,9 @@ $("#viewBackLeaveQuery").pagecontainer({
         /********************************** function *************************************/
         //獲取銷假單列表——<LayoutHeader><EmpNo>0003023</EmpNo></LayoutHeader>
         window.QueryEmployeeLeaveCancelForm = function() {
-            
+
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["cancelformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -74,8 +74,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", false, "QueryEmployeeLeaveCancelForm", self.successCallback, self.failCallback, queryEmployeeLeaveCancelFormQueryData, "");
@@ -84,7 +83,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //獲取銷假單詳情——<EmpNo>0409132</EmpNo><formid>123456</formid>
         window.LeaveCancelFormDetail = function() {
-            
+
             this.successCallback = function(data) {
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
@@ -123,8 +122,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", false, "LeaveCancelFormDetail", self.successCallback, self.failCallback, leaveCancelFormDetailQueryData, "");
@@ -133,16 +131,16 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //撤回銷假單——<EmpNo>0409132</EmpNo><formid>123456</formid><formno>572000</formno><reason>測試</reason>
         window.RecallLeaveCancelForm = function() {
-            
+
             this.successCallback = function(data) {
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var successMsg = $("success", htmlDom);
-                    
+
                     if($(successMsg).html() != undefined) {
-                        //成功后先返回假单列表，再重新呼叫API获取最新数据   
+                        //成功后先返回假单列表，再重新呼叫API获取最新数据
                         QueryEmployeeLeaveCancelForm();
                         backLeaveQueryInit();
                         $("#withdrawBackLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
@@ -158,8 +156,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", true, "RecallLeaveCancelForm", self.successCallback, self.failCallback, recallLeaveCancelFormQueryData, "");
@@ -168,7 +165,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //刪除銷假單——<EmpNo>0409132</EmpNo><formid>123456</formid>
         window.DeleteLeaveCancelForm = function() {
-            
+
             this.successCallback = function(data) {
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
@@ -190,8 +187,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", true, "DeleteLeaveCancelForm", self.successCallback, self.failCallback, deleteLeaveCancelFormQueryData, "");
@@ -200,7 +196,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         //从“销假单详情”跳转到“请假单详情”
         window.BackLeaveFormLeaveDetail = function() {
-            
+
             this.successCallback = function(data) {
                 //console.log(data);
                 if(data['ResultCode'] === "1") {
@@ -280,7 +276,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                     getSignFlow(backLeaveToLeaveSignList, serialArr, empnameArr, ynArr, dateArr, remarkArr);
                     setLeaveFlowToPopup(backLeaveToLeaveSignList, ".leave-flow-ul");
 
-                    //返回，跳转，再show         
+                    //返回，跳转，再show
                     $("#backToList").trigger("click");
                     changePageByPanel("viewLeaveQuery");
                     leaveListToDetail("leaveRevoke", "leaveWithdraw", "leaveDelete", null);
@@ -289,8 +285,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
-            };
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", true, "LeaveApplyFormDetail", self.successCallback, self.failCallback, backLeaveFormLeaveDetailQueryData, "");

@@ -125,7 +125,7 @@ function onBackKeyDown() {
         navigator.app.exitApp();
     } else {
         visitedPageList.pop();
-        changePageByPanel(prePageID);    
+        changePageByPanel(prePageID);
     }
 
 }
@@ -147,7 +147,7 @@ function changePageByPanel(pageId) {
         loadingMask("show");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
-        lastPageID = $.mobile.activePage[0].id;     
+        lastPageID = $.mobile.activePage[0].id;
         $.mobile.changePage("#" + pageId);
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
@@ -156,7 +156,7 @@ function changePageByPanel(pageId) {
             visitedPageList.push(pageId);
         }
     }
-    $("#mypanel").panel("close"); 
+    $("#mypanel").panel("close");
 }
 
 function dateInit() {
@@ -165,7 +165,6 @@ function dateInit() {
     var day = currentDay;
     for(var i=1; i<=14; i++) {
         if(day > 0 && day < 6) {
-
             $("#leaveDate").append('<a href="#" class="ui-link">' + month + "/" + date + " " + dayTable[day] + '</a>');
             $("#leaveDate a:last-child").data("value", currentYear + "/" + month + "/" + date);
 
@@ -210,7 +209,7 @@ function dateInit() {
     $("#leaveDate a:eq(0)").click();
 }
 
-//格式化日期字符串：“年-月-日” —— “年/月/日”
+//格式化日期字符串：“年-月-日” —— “年/月/日”，用于日期控件值的转换
 function dateFormat(dataStr) {
     var str = dataStr.split("-");
 
@@ -221,34 +220,13 @@ function dateFormat(dataStr) {
     return newArr.join("/");
 }
 
-//格式化日期格式：“月/日/年 時:分:秒 PM” —— “年-月-日”
-function dateFormatter(dataStr) {
-    //先獲得“月/日/年”
-    var arr = dataStr.split(" ")[0].split("/");
-    var newArr = [];
-    newArr.push(arr[2]);
-    newArr.push(arr[0]);
-    newArr.push(arr[1]);
-    return newArr.join("-");
-}
-
-//格式化日期格式：“月/日/年 時:分:秒 PM” —— “年/月/日”
-function formatterDate(str) {
-    var arr = str.split(" ")[0].split("/");
-    var newArr = [];
-    newArr.push(arr[2]);
-    newArr.push(arr[0]);
-    newArr.push(arr[1]);
-    return newArr.join("/");
-}
-
-//日期格式化：“月/日/年” —— “年/月/日”
+//日期格式化：“日/月/年” —— “年/月/日”，用于有效基准日列表的日期格式转换
 function formatDate(str) {
     var arr = str.split("/");
     var newArr = [];
     newArr.push(arr[2]);
-    newArr.push(arr[0]);
     newArr.push(arr[1]);
+    newArr.push(arr[0]);
     return newArr.join("/");
 }
 

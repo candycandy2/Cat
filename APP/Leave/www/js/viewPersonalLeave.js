@@ -693,18 +693,6 @@ $("#viewPersonalLeave").pagecontainer({
         $(".page-tabs #viewPersonalLeave-tab-2").on("click", function() {
             $("#tab-1").hide();
             $("#tab-2").show();
-
-            // if(localStorage.getItem("agent") !== null) {
-            //     queryEmployeeData = "<LayoutHeader><EmpNo>"
-            //                       + myEmpNo
-            //                       + "</EmpNo><qEmpno>"
-            //                       + JSON.parse(localStorage.getItem("agent"))[1]
-            //                       + "</qEmpno><qName>"
-            //                       + JSON.parse(localStorage.getItem("agent"))[0]
-            //                       + "</qName></LayoutHeader>";
-            //     //呼叫API
-            //     QueryEmployeeData();
-            // }
         });
 
         $("#infoTitle-1").on("click", function() {
