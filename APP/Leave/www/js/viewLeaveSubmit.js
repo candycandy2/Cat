@@ -3,7 +3,8 @@ var pleaseSelectStr = langStr["str_069"];    //請選擇
 var selectBasedayStr = langStr["str_127"];    //選擇時間
 var otherBasedayStr = "選擇其他基準日";
 var viewLeaveSubmitInit = false;
-var timoutQueryEmployee = null;
+var timeoutQueryEmployee = null;
+var timeoutChangeEnddate = null;
 var selectCategory;     //选择的类别，可能为“所有类别”
 var leaveCategory;      //对应假别的类别，肯定没有“所有类别”
 var leaveObj = {};
@@ -238,7 +239,7 @@ $("#viewLeaveSubmit").pagecontainer({
         window.SendApplyLeaveData = function() {
             
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if(data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -365,7 +366,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                               + "</EmpNo><leaveid>"
                                               + leaveid
                                               + "</leaveid></LayoutHeader>";
-                            console.log(queryLeftDaysData);
+                            //console.log(queryLeftDaysData);
                             //呼叫API
                             QueryLeftDaysData();             
 
@@ -410,11 +411,11 @@ $("#viewLeaveSubmit").pagecontainer({
                               + searchName
                               + "</qName></LayoutHeader>";
             //console.log(queryEmployeeData);
-            if(timoutQueryEmployee != null) {
-                clearTimeout(timoutQueryEmployee);
-                timoutQueryEmployee = null;
+            if(timeoutQueryEmployee != null) {
+                clearTimeout(timeoutQueryEmployee);
+                timeoutQueryEmployee = null;
             }
-            timoutQueryEmployee = setTimeout(function() {
+            timeoutQueryEmployee = setTimeout(function() {
                 QueryEmployeeData();
 
                 $("#loaderQuery").show();
@@ -665,12 +666,17 @@ $("#viewLeaveSubmit").pagecontainer({
                                                   + "</endtime><datumdate>"
                                                   + ((needBaseday == true) ? baseday : '')
                                                   + "</datumdate></LayoutHeader>";
-                    console.log(countLeaveHoursByEndQueryData);
-                    //呼叫API
-                    CountLeaveHoursByEnd();
+                    //console.log(countLeaveHoursByEndQueryData);
 
+                    if(timeoutChangeEnddate != null) {
+                        clearTimeout(timeoutChangeEnddate);
+                        timeoutChangeEnddate = null;
+                    }
+                    timeoutChangeEnddate = setTimeout(function() {
+                        //呼叫API
+                        CountLeaveHoursByEnd();
+                    }, 2000);
                 }
-
             } else {
                 $('#endText').text(pleaseSelectStr);
                 //请假数恢复00
@@ -766,9 +772,6 @@ $("#viewLeaveSubmit").pagecontainer({
         //立即預約popup
         $("#applyBtn").on("click", function() {
             popupMsgInit('.confirmSend');
-            // $("#backMain").click();
-            // changePageByPanel("viewLeaveQuery");
-            // $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
         });
 
         //確定送簽
@@ -802,7 +805,7 @@ $("#viewLeaveSubmit").pagecontainer({
                                     + ((editLeaveForm == false) ? '' : leaveDetailObj['formid'])
                                     + '</formid></LayoutHeader>';
 
-            console.log(sendApplyLeaveQueryData);
+            //console.log(sendApplyLeaveQueryData);
             //呼叫API
             SendApplyLeaveData();
         });

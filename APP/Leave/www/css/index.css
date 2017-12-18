@@ -635,8 +635,8 @@ div.scrollmenu a {
 }
 
 /****************************************** viewLeaveQuery *****************************************/
-
-#viewLeaveQuery .page-date {
+/* pull refresh */
+.page-main .page-date {
 	font-family: Arial;
 	height: 1vw;
 	color: #0f0f0f;
@@ -881,6 +881,7 @@ div.scrollmenu a {
 	display: none;
 }
 
+
 /**************************************** viewBackLeaveApply ***************************************/
 #backLeaveQueryDetail {
 	width: 4.934vw;
@@ -896,9 +897,6 @@ div.scrollmenu a {
 #backLeaveDelete {
 	display: none;
 }
-
-
-
 
 
 /**************************************** viewHolidayCalendar ***************************************/
@@ -920,6 +918,7 @@ div.scrollmenu a {
     width: 2.415VW;
     margin-right: 1.5VW;
 }
+
 /********************************************** mypanel *********************************************/
 #mypanel .panel-content{
 	background-color: #f6f6f6;

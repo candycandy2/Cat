@@ -239,7 +239,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.GetDefaultSetting = function() {
 
             this.successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
 
                 //如果ResultCode=1且Content>0，说明数据有更新，重新获取数据并存到local
                 if (data['ResultCode'] === "1") {
@@ -481,7 +481,7 @@ $("#viewPersonalLeave").pagecontainer({
                             "</attachment><formid>" +
                             "</formid></LayoutHeader>";
 
-                        console.log(sendLeaveApplicationData);
+                        //console.log(sendLeaveApplicationData);
                         //呼叫API
                         SendLeaveApplicationData();
                     } else {
@@ -505,7 +505,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.SendLeaveApplicationData = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
 
@@ -693,18 +693,6 @@ $("#viewPersonalLeave").pagecontainer({
         $(".page-tabs #viewPersonalLeave-tab-2").on("click", function() {
             $("#tab-1").hide();
             $("#tab-2").show();
-
-            // if(localStorage.getItem("agent") !== null) {
-            //     queryEmployeeData = "<LayoutHeader><EmpNo>"
-            //                       + myEmpNo
-            //                       + "</EmpNo><qEmpno>"
-            //                       + JSON.parse(localStorage.getItem("agent"))[1]
-            //                       + "</qEmpno><qName>"
-            //                       + JSON.parse(localStorage.getItem("agent"))[0]
-            //                       + "</qName></LayoutHeader>";
-            //     //呼叫API
-            //     QueryEmployeeData();
-            // }
         });
 
         $("#infoTitle-1").on("click", function() {

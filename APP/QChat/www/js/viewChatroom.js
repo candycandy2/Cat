@@ -348,7 +348,11 @@ $("#viewChatroom").pagecontainer({
                                 }
                             }
 
-                            window.chatroomTitle();
+                            if (newCreate) {
+                                window.getGroupMembers(data.target.id, groupMessage, "getConversation");
+                            } else {
+                                window.chatroomTitle();
+                            }
                         }
 
                         if (getHistory) {
@@ -1081,7 +1085,7 @@ $("#viewChatroom").pagecontainer({
             click: function() {
 
                 if ($("#msgText").val().length > 0) {
-                    sendTextMessage(nowChatroomID, $("#msgText").val());
+                    window.sendTextMessage(nowChatroomID, $("#msgText").val());
                     $("#msgText").val("");
                 }
 
