@@ -300,7 +300,6 @@ $("#viewPersonalLeave").pagecontainer({
 
                         //3.注意事項列表
                         var noticeData = data['Content'][0]["Noticelist"];
-                        //var noticeDom = '<p>' + noticeData + '</p>';
                         $("#infoContent-3").empty().append(noticeData);
 
                         //localStorage.setItem
@@ -326,7 +325,6 @@ $("#viewPersonalLeave").pagecontainer({
 
                         //3.注意事項列表
                         var noticeData = leaveDefault["Noticelist"];
-                        //var noticeDom = '<p>' + noticeData + '</p>';
                         $("#infoContent-3").empty().append(noticeData);
                     }
 
@@ -451,8 +449,6 @@ $("#viewPersonalLeave").pagecontainer({
                     var quickError = $("error", htmlDom);
                     var applyDays = $("ApplyDays", htmlDom);
                     var applyHours = $("ApplyHours", htmlDom);
-                    // var quickApplyDays = $(applyDays).html();
-                    // var quickApplyHours = $(applyHours).html();
 
                     //如果请假时数计算成功则直接可以申请快速请假
                     if ($(quickSuccess).html() != undefined) {
@@ -593,6 +589,7 @@ $("#viewPersonalLeave").pagecontainer({
                 weekstartson: 0,
                 markToday: true,
                 markWeekend: true,
+                showNextyear: true,
                 changeDateEventListener: function(year, month) {
                     queryCalendarData = "<LayoutHeader><Year>" +
                         year +
