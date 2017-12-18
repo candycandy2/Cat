@@ -158,7 +158,10 @@ var app = {
             loginData["pushToken"] = data;
             window.localStorage.setItem("deviceType", device.platform);
             window.localStorage.setItem("pushToken", data);
-            stopCheck();
+
+            if (window.stopCheck != undefined) {
+                window.stopCheck();
+            }
 
             var checkAppVer = new checkAppVersion();
         } else {
