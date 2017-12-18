@@ -57,12 +57,16 @@ class Verify
              return array("code"=>ResultCode::_025916_InputXmlFormatIsInvalid,
             "message"=>"傳入的xml格式錯誤, Server端無法解析");
         }
+        if(count($xml->emp_no) != 1){
+              return array('code'=>ResultCode::_025905_FieldFormatError,
+                'message'=>"欄位格式錯誤");
+        }
         $empNo = trim((string)$xml->emp_no[0]);
         if($empNo == "" ){
              return array("code"=>ResultCode::_025903_MandatoryFieldLost,
                 "message"=>"必填字段缺失");
         }
-        if( preg_match("/^[0-9]*$/", $empNo) == 0){
+        if( preg_match("/^[0-9]+$/", $empNo) == 0){
               return array('code'=>ResultCode::_025905_FieldFormatError,
                 'message'=>"欄位格式錯誤");
         }
