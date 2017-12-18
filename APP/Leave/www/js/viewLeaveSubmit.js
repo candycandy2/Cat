@@ -1,22 +1,22 @@
 
 var pleaseSelectStr = langStr["str_069"];    //請選擇
 var selectBasedayStr = langStr["str_127"];    //選擇時間
-var otherBasedayStr = "選擇其他基準日";
+var otherBasedayStr = langStr["str_141"];    //選擇其他基準日
 var viewLeaveSubmitInit = false;
 var timeoutQueryEmployee = null;
 var timeoutChangeEnddate = null;
-var selectCategory;     //选择的类别，可能为“所有类别”
-var leaveCategory;      //对应假别的类别，肯定没有“所有类别”
+var selectCategory = "";     //选择的类别，可能为“所有类别”
+var leaveCategory = "";      //对应假别的类别，肯定没有“所有类别”
 var leaveObj = {};
 var leaveDetail = {};
 var leaveSelected = false;
-var agentName;
+var agentName = "";
 var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeaveTime;
 var basedayList = false;
 var baseday = "";
 var needBaseday = false;
 var leaveReason = "";
-var countApplyDays, countApplyHours;
+var countApplyDays = "0", countApplyHours = "0";
 
 var leaveData = {
     id: "leave-popup",
@@ -104,13 +104,14 @@ function getLeaveByCategory() {
     $('#baseDate').hide();
     $('#uploadAttachment').hide();
     $('#divEmpty').hide();
+    //更換假別對基準日有直接影響
     $("#chooseBaseday").text(selectBasedayStr);
-    $("#startText").text(pleaseSelectStr);
+    $("#oldBaseday").val("");
+    $("#newBaseday").val("");
+    //$("#startText").text(pleaseSelectStr);
     //$("#startDate").val("");
-    $("#endText").text(pleaseSelectStr);
+    //$("#endText").text(pleaseSelectStr);
     //$("#endDate").val("");
-    //$("#oldBaseday").val("");
-    //$("#newBaseday").val("");
     leaveid = "";
     leaveType = "";
     baseday = "";
@@ -215,7 +216,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         popupMsgInit('.leftDaysByLeave');
                         //enddate
                         $("#endText").text(pleaseSelectStr);
-                        //$("#endDate").val("");
+                        $("#endDate").val("");
                         $("#leaveDays").text("0");
                         $("#leaveHours").text("0");
                     }
@@ -475,6 +476,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //只要换基准日，结束时间都恢复“请选择”
             $('#endText').text(pleaseSelectStr);
+            $("#endDate").val("");
             
             checkLeaveBeforePreview();
         });
@@ -505,6 +507,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //只要换基准日，结束时间都恢复“请选择”
             $('#endText').text(pleaseSelectStr);
+            $("#endDate").val("");
 
             checkLeaveBeforePreview();
         });
@@ -521,6 +524,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //只要换基准日，结束时间都恢复“请选择”
             $('#endText').text(pleaseSelectStr);
+            $("#endDate").val("");
 
             checkLeaveBeforePreview();
         });
@@ -586,11 +590,12 @@ $("#viewLeaveSubmit").pagecontainer({
   
             } else {
                 $('#startText').text(pleaseSelectStr);
+                $("#startDate").val("");
                 
             }
             //如果开始时间改变，结束时间无论如何也要清空
             $("#endText").text(pleaseSelectStr);
-            //$("#endDate").val("");
+            $("#endDate").val("");
 
             //请假数恢复00
             $("#leaveDays").text("0");
@@ -643,12 +648,12 @@ $("#viewLeaveSubmit").pagecontainer({
                     //提示錯誤信息
                     popupMsgInit('.dateTimeError');
                     $('#endText').text(pleaseSelectStr);
-                    //$("#endDate").val("");
+                    $("#endDate").val("");
                     //请假数恢复0，0
                     $("#leaveDays").text("0");
                     $("#leaveHours").text("0");
                 } else {
-                    loadingMask("show");
+                    //loadingMask("show");
                     $('#endText').text(endLeaveDate);
                     
                     countLeaveHoursByEndQueryData = "<LayoutHeader><EmpNo>"
@@ -679,6 +684,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 }
             } else {
                 $('#endText').text(pleaseSelectStr);
+                $("#endDate").val("");
                 //请假数恢复00
                 $("#leaveDays").text("0");
                 $("#leaveHours").text("0");
@@ -717,13 +723,13 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //開始時間
             $("#startText").text(pleaseSelectStr);
+            $("#startDate").val("");
             startLeaveDate = "";
-            //$("#startDate").val("");
 
             //結束時間
             $("#endText").text(pleaseSelectStr);
+            $("#endDate").val("");
             endLeaveDate = "";
-            //$("#endDate").val("");
 
             //請假理由
             $("#leaveReason").val("");
@@ -731,6 +737,8 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //基準日
             $("#chooseBaseday").text(selectBasedayStr);
+            $("#oldBaseday").val("");
+            $("#newBaseday").val("");
             baseday = "";
 
             //请假数
