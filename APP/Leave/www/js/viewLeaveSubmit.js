@@ -616,13 +616,18 @@ $("#viewLeaveSubmit").pagecontainer({
         // });
 
         $("#startDate").on("change", function() {
-            if(timeoutChangeBegindate != null) {
-                clearTimeout(timeoutChangeBegindate);
-                timeoutChangeBegindate = null;
-            }
-            timeoutChangeBegindate = setTimeout(function() {
+            if(device.platform === "iOS") {
+                if(timeoutChangeBegindate != null) {
+                    clearTimeout(timeoutChangeBegindate);
+                    timeoutChangeBegindate = null;
+                }
+                timeoutChangeBegindate = setTimeout(function() {
+                    $("#startDate").blur();
+                }, 12000);
+            } else if(device.platform === "Android") {
                 $("#startDate").blur();
-            }, 2000);
+            }
+            
             
         });
 
@@ -757,14 +762,18 @@ $("#viewLeaveSubmit").pagecontainer({
         // });
 
         $("#endDate").on("change", function() {
-            if(timeoutChangeEnddate != null) {
-                clearTimeout(timeoutChangeEnddate);
-                timeoutChangeEnddate = null;
-            }
-            timeoutChangeEnddate = setTimeout(function() {
+            if(device.platform === "iOS") {
+                if(timeoutChangeEnddate != null) {
+                    clearTimeout(timeoutChangeEnddate);
+                    timeoutChangeEnddate = null;
+                }
+                timeoutChangeEnddate = setTimeout(function() {
+                    $("#endDate").blur();
+                }, 12000);
+            } else if(device.platform === "Android") {
                 $("#endDate").blur();
-            }, 4000);
-            
+            }
+               
         });
 
         $("#endDate").on("blur", function() {
@@ -882,8 +891,6 @@ $("#viewLeaveSubmit").pagecontainer({
             //请假数
             $("#leaveDays").text("0");
             $("#leaveHours").text("0");
-            //$("#previewLeaveDays").text("0");
-            //$("#previewLeaveHours").text("0");
         });
 
         //預覽送簽按鈕
