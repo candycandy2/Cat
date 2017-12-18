@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Name
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "environment" your application is currently
+    | running in. This may determine error mail subject. Set this in your ".env" file.
+    |
+    */
+
+    'name' => env('APP_NAME'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Debug Mode
     |--------------------------------------------------------------------------
     |
@@ -114,6 +126,7 @@ return [
     */
 
     'log' => env('APP_LOG', 'daily'),
+    'log_max_files' => 30,
 
     /*
     |--------------------------------------------------------------------------
@@ -160,8 +173,8 @@ return [
     |error_mail_from_name : 錯誤信發見者名稱
     |error_mail_to : 錯誤信收件者信箱
     */
-    'error_mail_from' => env('ERROR_MAIL_FROM','QPlay@benq.com'),
-    'error_mail_from_name' => env('ERROR_MAIL_FROM_NAME','QPlayErrorHandler'),
+    'error_mail_from' => env('ERROR_MAIL_FROM'),
+    'error_mail_from_name' => env('ERROR_MAIL_FROM_NAME'),
     'error_mail_to' => env('ERROR_MAIL_TO'),
    
 

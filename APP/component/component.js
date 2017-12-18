@@ -375,8 +375,7 @@ $(document).one("pagebeforecreate", function() {
             }
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
         } else if (device.platform === "iOS") {
-            if (versionCompare(device.version, "11.0", "") === 1) {
-            } else {
+            if (versionCompare(device.version, "11.0", "") === 1) {} else {
                 $('.page-header').addClass('ios-fix-overlap');
                 $('.ios-fix-overlap-div').css('display', 'block');
             }
@@ -417,6 +416,9 @@ $(document).one("pagebeforecreate", function() {
                     event.preventDefault();
                     openAPP(href);
                 }
+            } else if (href.indexOf('http://') !== -1 || href.indexOf('https://') !== -1) {
+                event.preventDefault();
+                cordova.InAppBrowser.open(href, '_system', 'location=yes');
             }
         }
     });
@@ -446,23 +448,19 @@ $(document).one("pagebeforecreate", function() {
             footerFixed();
         },
         pagebeforeshow: function() {
-            var appLogData = JSON.parse(localStorage.getItem('appLogData'));
-            var firstPageLoad = JSON.parse(sessionStorage.getItem('firstPageLoad'));
-            if (firstPageLoad == null) {
-                sessionStorage.setItem('firstPageLoad', 'true');
-                if (appLogData != null && appLogData.log_list.length != 0) {
-                    var doAddAppLog = new getAddAppLog();
+            if (loginData.uuid.length != 0 && loginData['loginid'].length != 0) {
+                var appLogData = JSON.parse(localStorage.getItem('appLogData'));
+                var firstPageLoad = JSON.parse(sessionStorage.getItem('firstPageLoad'));
+                if (firstPageLoad == null) {
+                    sessionStorage.setItem('firstPageLoad', 'true');
+                    if (appLogData != null && appLogData.log_list.length != 0) {
+                        var doAddAppLog = new getAddAppLog();
+                    }
                 }
             }
         },
         pageshow: function() {
-            var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-            var ADAccount = loginData['loginid'];
-            var packageName = "com.qplay." + appKey;
-            var pagename = $.mobile.activePage.attr('id');           
-            if ( ADAccount != null && packageName != null && pagename != null) {
-                getAppLogParam();
-            }
+            getAppLogParam();
         }
     });
 });
@@ -471,110 +469,88 @@ $(document).one("pagebeforecreate", function() {
 
 function getAppLogParam() {
     //localStorage.clear();
-    var ADAccount = loginData['loginid'];
-    var packageName = "com.qplay." + appKey;
-    var objLogList = new Object();
-    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-
-    objLogList.page_name = $.mobile.activePage.attr('id');
-    objLogList.page_action = "enterPage";
-    objLogList.start_time = new Date().getTime();
-    objLogList.period = "";
-    objLogList.device_type = device.platform.toLowerCase(); 
-
-    if (appLogData == null || appLogData.log_list.length == 0) {
-        jsonData = {
-            login_id: ADAccount,
-            package_name: packageName,
-            log_list: [objLogList]
-        };
-    } else if (objLogList.page_name == appLogData.log_list[appLogData.log_list.length-1].page_name) {
-        appLogData.log_list.push(objLogList);
-        jsonData = appLogData;
-    } else {
-        var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length-1].start_time;
-        appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
-        appLogData.log_list.push(objLogList);
-        jsonData = appLogData;
+    loginData["versionName"] = AppVersion.version;
+    if (loginData["versionName"].indexOf("Development") !== -1) {
+        var ADAccount = loginData['loginid'];
+        if (loginData.uuid.length != 0 && ADAccount.length != 0) {
+            var packageName = "com.qplay." + appKey;
+            var pagename = $.mobile.activePage.attr('id');
+            var appLogData = JSON.parse(localStorage.getItem('appLogData'));
+            var objLogList = new Object();
+            if (appKey != null && pagename != null) {
+                objLogList.page_name = $.mobile.activePage.attr('id');
+                objLogList.page_action = "enterPage";
+                objLogList.start_time = new Date().getTime();
+                objLogList.period = "";
+                objLogList.device_type = device.platform.toLowerCase();
+                if (appLogData == null || appLogData.log_list.length == 0) {
+                    jsonData = {
+                        login_id: ADAccount,
+                        package_name: packageName,
+                        log_list: [objLogList]
+                    };
+                } else if (objLogList.page_name == appLogData.log_list[appLogData.log_list.length - 1].page_name) {
+                    appLogData.login_id = ADAccount;
+                    appLogData.package_name = packageName;
+                    appLogData.log_list.push(objLogList);
+                    jsonData = appLogData;
+                } else {
+                    appLogData.login_id = ADAccount;
+                    appLogData.package_name = packageName;
+                    var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length - 1].start_time;
+                    appLogData.log_list[appLogData.log_list.length - 1].period = pagePeriod;
+                    appLogData.log_list.push(objLogList);
+                    jsonData = appLogData;
+                }
+                localStorage.setItem('appLogData', JSON.stringify(jsonData));
+            }
+        }
     }
-
-    localStorage.setItem('appLogData', JSON.stringify(jsonData)); 
-    //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
-    //setTimeout('checkAmountData()', 10000);
 }
 
-function onPause() {
-    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-    var onPauseTime = new Date().getTime();
-    if (appLogData.log_list != null) {
-        var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length-1].start_time;
-        appLogData.log_list[appLogData.log_list.length-1].period = pagePeriod;
-        jsonData = appLogData;
-        localStorage.setItem('appLogData', JSON.stringify(jsonData));
+function onPause() {    
+    if (loginData.uuid.length != 0 && loginData['loginid'].length != 0) {
+        var appLogData = JSON.parse(window.localStorage.getItem('appLogData'));
+        if (appLogData != null && appLogData.log_list.length != 0) {
+            var onPauseTime = new Date().getTime();
+            var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length - 1].start_time;
+            appLogData.log_list[appLogData.log_list.length - 1].period = pagePeriod;
+            jsonData = appLogData;
+            window.localStorage.setItem('appLogData', JSON.stringify(jsonData));
+            var doAddAppLog = new getAddAppLog();
+        }
     }
-    var doAddAppLog = new getAddAppLog();
 }
 
 function onResume() {
-    var ADAccount = loginData['loginid'];
-    var packageName = "com.qplay." + appKey;
-    var objLogList = new Object();
-    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-
-    objLogList.page_name = $.mobile.activePage.attr('id');
-    objLogList.page_action = "enterPage";
-    objLogList.start_time = new Date().getTime();
-    objLogList.period = "";
-    objLogList.device_type = device.platform.toLowerCase();
-    if (appLogData != null) {
-        appLogData.log_list.push(objLogList);
-        jsonData = appLogData;
-        localStorage.setItem('appLogData', JSON.stringify(jsonData));
-    }
-    //頁面停留Ｎ分鐘後,確認localstorage有幾筆資料
-    //setTimeout('checkAmountData()', 10000);
+    getAppLogParam();
 }
 
-/*function checkAmountData(){
-    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-    //若localstorage數目大於等於Ｍ筆,將資料傳給API
-    if (appLogData.log_list.length >=20) {
-        var doAddAppLog = new getAddAppLog();
-    }
-}*/
-
 function getAddAppLog() {
-    
+
     var self = this;
-    var appLogData = JSON.parse(localStorage.getItem('appLogData')); 
-    
-    /*var jsonData = {
-        login_id: appLogData.login_id,
-        package_name: appLogData.package_name,
-        log_list: []
-    };  
-    //將Ｍ筆資料傳給API
-    for (var i = 0; i < 20 ; i++) {
-        jsonData.log_list.push(appLogData.log_list[i]);
-    }*/
+    var appLogData = JSON.parse(localStorage.getItem('appLogData'));
     var queryData = JSON.stringify(appLogData);
-    
+
     this.successCallback = function(data) {
 
         var resultcode = data['result_code'];
         var logDataLength = appLogData.log_list.length;
         if (resultcode == 1) {
-            for (var i = 0; i < logDataLength ; i++) {
+            for (var i = 0; i < logDataLength; i++) {
                 appLogData.log_list.shift();
             }
             localStorage.setItem('appLogData', JSON.stringify(appLogData));
-        } 
+        }
     }
 
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        QPlayAPI("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "");
+        loginData["versionName"] = AppVersion.version;
+        if (loginData["versionName"].indexOf("Development") !== -1) {
+            QPlayAPI("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "");
+        }
     }();
 
 }
@@ -916,8 +892,7 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            if (versionCompare(device.version, "11.0", "") === 1) {
-            } else {
+            if (versionCompare(device.version, "11.0", "") === 1) {} else {
                 $('.page-header').addClass('ios-fix-overlap');
                 $('.ios-fix-overlap-div').css('display', 'block');
             }

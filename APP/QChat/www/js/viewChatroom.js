@@ -348,7 +348,11 @@ $("#viewChatroom").pagecontainer({
                                 }
                             }
 
-                            window.chatroomTitle();
+                            if (newCreate) {
+                                window.getGroupMembers(data.target.id, groupMessage, "getConversation");
+                            } else {
+                                window.chatroomTitle();
+                            }
                         }
 
                         if (getHistory) {
@@ -729,6 +733,7 @@ $("#viewChatroom").pagecontainer({
                         } else {
                             var msgText = $(msgTextLeftHTML);
                             msgText.find(".name").html(message.from);
+                            msgText.find(".personal-popup").data("userID", message.from);
                         }
 
                         lastSender = message.from;
@@ -772,6 +777,7 @@ $("#viewChatroom").pagecontainer({
                     } else {
                         var msgImg = $(msgImgLeftHTML);
                         msgImg.find(".name").html(message.from);
+                        msgImg.find(".personal-popup").data("userID", message.from);
                     }
 
                     lastSender = message.from;
@@ -1057,8 +1063,20 @@ $("#viewChatroom").pagecontainer({
 
         $(document).on({
             click: function() {
-                JM.chatroomID = nowChatroomID;
-                $.mobile.changePage('#viewChatroomInfo');
+                if (JM.data.chatroom[nowChatroomID].is_group) {
+                    JM.chatroomID = nowChatroomID;
+                    $.mobile.changePage('#viewChatroomInfo');
+                } else {
+                    var otherMember = "";
+
+                    for (var i=0; i<JM.data.chatroom[nowChatroomID].member.length; i++) {
+                        if (JM.data.chatroom[nowChatroomID].member[i].username != loginData["loginid"]) {
+                            otherMember = JM.data.chatroom[nowChatroomID].member[i].username;
+                        }
+                    }
+
+                    window.personalPopup(otherMember);
+                }
             }
         }, ".chatroom-info");
 
@@ -1067,7 +1085,7 @@ $("#viewChatroom").pagecontainer({
             click: function() {
 
                 if ($("#msgText").val().length > 0) {
-                    sendTextMessage(nowChatroomID, $("#msgText").val());
+                    window.sendTextMessage(nowChatroomID, $("#msgText").val());
                     $("#msgText").val("");
                 }
 

@@ -262,7 +262,9 @@ div.scrollmenu a {
 }
 
 #agent-popup-option-popup ul::-webkit-scrollbar,
-#leave-agent-popup-option-popup ul::-webkit-scrollbar {
+#leave-agent-popup-option-popup ul::-webkit-scrollbar,
+#categroy-popup-option-popup ul::-webkit-scrollbar,
+#leave-popup-option-popup ul::-webkit-scrollbar {
     width: 3px;
     margin: 0px;
 }
@@ -276,7 +278,9 @@ div.scrollmenu a {
 }
 
 #agent-popup-option-popup ul::-webkit-scrollbar-thumb,
-#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb {
+#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb,
+#categroy-popup-option-popup ul::-webkit-scrollbar-thumb,
+#leave-popup-option-popup ul::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 15px;
 	background: rgba(0,0,0,0.8);
@@ -284,7 +288,9 @@ div.scrollmenu a {
 }
 
 #agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
-#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
+#leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
+#categroy-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
+#leave-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
     background: rgba(0,0,0,0.4);
 }
 
@@ -459,6 +465,7 @@ div.scrollmenu a {
 	position: fixed;
 	top: 0;
 	right: 0;
+	z-index: -100;
 }
 
 .date-component input[type="datetime-local"],
@@ -563,11 +570,13 @@ div.scrollmenu a {
 .categroyFirst > .ui-content,
 .basedayFirst > .ui-content,
 .startdayFirst > .ui-content,
-.confirmSend > .ui-content {
+.confirmSend > .ui-content,
+.agentNotData > .ui-content {
 	padding: 0 !important;
 }
 
-.leaveNotEnough > .ui-content > .header {
+.leaveNotEnough > .ui-content > .header,
+.agentNotData > .ui-content > .header {
 	margin-top: 10%;
 }
 
@@ -626,6 +635,15 @@ div.scrollmenu a {
 }
 
 /****************************************** viewLeaveQuery *****************************************/
+/* pull refresh */
+.page-main .page-date {
+	font-family: Arial;
+	height: 1vw;
+	color: #0f0f0f;
+	text-align:center;
+	width: 80%;
+	margin: 1vw auto 0;
+}
 
 #backDetailList,
 #backSignPreview,
@@ -863,6 +881,7 @@ div.scrollmenu a {
 	display: none;
 }
 
+
 /**************************************** viewBackLeaveApply ***************************************/
 #backLeaveQueryDetail {
 	width: 4.934vw;
@@ -878,9 +897,6 @@ div.scrollmenu a {
 #backLeaveDelete {
 	display: none;
 }
-
-
-
 
 
 /**************************************** viewHolidayCalendar ***************************************/
@@ -902,6 +918,7 @@ div.scrollmenu a {
     width: 2.415VW;
     margin-right: 1.5VW;
 }
+
 /********************************************** mypanel *********************************************/
 #mypanel .panel-content{
 	background-color: #f6f6f6;

@@ -3,7 +3,8 @@
 var initialAppName = "QChat";
 var appKeyOriginal = "appqchat";
 var appKey = "appqchat";
-var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom", "viewAddFriend", "viewChatroomInfo", "viewChatroomEdit", "viewAddMember", "viewMyInfoEdit"];
+var pageList = ["viewIndex", "viewChatroom", "viewNewChatroom", "viewAddFriend", "viewChatroomInfo", "viewChatroomEdit", 
+                "viewAddMember", "viewMyInfoEdit", "viewFriendInvite"];
 //var waterMarkPageList = ["viewChatroom"];
 var appSecretKey = "9f48f50f233f6ec48ffc4ae93d52a335";
 
@@ -30,6 +31,141 @@ window.initialSuccess = function() {
 
     $.mobile.changePage('#viewIndex');
 
+    //Personal Popup
+    $(document).on({
+        click: function(event) {
+            var userID = "";
+
+            if ($(event.target)[0].nodeName === "use") {
+                userID = $(event.target.parentElement).data("userID");
+            } else {
+                userID = $(event.target).data("userID")
+            }
+
+            window.personalPopup(userID);
+        }
+    }, ".personal-popup");
+
+    window.personalPopup = function(userID) {
+        //Check if User have not register
+        if (!JM.data.chatroom_user[userID].is_register) {
+            return;
+        }
+
+        //User Info Popup
+        $("#userInfoPopup").popup("destroy").remove();
+
+        var userInfoPopupData = {
+            id: "userInfoPopup",
+            content: $("template#tplUserInfoPopup").html()
+        };
+
+        tplJS.Popup(null, null, "append", userInfoPopupData);
+
+        $("#userInfoPopup .button").hide();
+        $("#userInfoPopup .footer").hide();
+        $("#userInfoPopup .ui-hr-bottom").hide();
+        $("#userInfoPopup .button-add-status").hide();
+
+        if (JM.data.chatroom_user[userID].avator_download_time != 0) {
+            $("#userInfoPopup svg.chatroom-info-photo").hide();
+            $("#userInfoPopup img").prop("src", JM.data.chatroom_user[userID].avator_path);
+            $("#userInfoPopup img").show();
+        } else {
+            $("#userInfoPopup img").hide();
+            $("#userInfoPopup svg.chatroom-info-photo").show();
+        }
+
+        var memo = "&nbsp;";
+
+        if (JM.data.chatroom_user[userID].memo != null && JM.data.chatroom_user[userID].memo.length > 0) {
+            memo = JM.data.chatroom_user[userID].memo;
+        }
+
+        $("#userInfoPopup .personal-popup-name").html(userID);
+        $("#userInfoPopup .personal-popup-memo").html(memo);
+        $("#userInfoPopup .personal-popup-email").html(JM.data.chatroom_user[userID].email);
+        $("#userInfoPopup .personal-popup-phone").html(JM.data.chatroom_user[userID].ext_no);
+
+        if (loginData["loginid"] === userID) {
+            //Yourself
+            $("#userInfoPopup .button-edit").show();
+        } else {
+            //Other User
+            var is_friend = JM.data.chatroom_user[userID].is_friend;
+            var is_protect = JM.data.chatroom_user[userID].is_protect;
+            var is_invite = JM.data.chatroom_user[userID].is_invite;
+
+            $("#userInfoPopup .button-chat").show();
+
+            if (is_friend) {
+                $("#userInfoPopup .button-delete").show();
+            } else {
+                $("#userInfoPopup .button-add").show();
+            }
+
+            if (is_protect && !is_friend) {
+                $("#userInfoPopup .button-chat").hide();
+
+                if (is_invite) {
+                    $("#userInfoPopup .status-b").show();
+                    $("#userInfoPopup .button-add").addClass("personal-popup-button-disable");
+                } else {
+                    $("#userInfoPopup .status-a").show();
+                }
+            }
+
+            if (prevPageID === "viewChatroom") {
+                $("#userInfoPopup .button-chat").hide();
+            }
+        }
+
+        window.personalPopupUserID = userID;
+        $("#userInfoPopup").popup("open");
+    };
+
+    $(document).on({
+        click: function(event) {
+            $("#userInfoPopup").popup("close");
+        }
+    }, "#userInfoPopup .close-popup");
+
+    $(document).on({
+        click: function(event) {
+
+            if ($(event.target).hasClass("button-edit") || $(event.target).parent().hasClass("button-edit")) {
+                $.mobile.changePage('#viewMyInfoEdit');
+            } else if ($(event.target).hasClass("button-delete") || $(event.target).parent().hasClass("button-delete")) {
+                $("#userInfoPopup").popup("close");
+                $("#confirmDeleteFriendPopup").popup("open");
+            } else if ($(event.target).hasClass("button-add") || $(event.target).parent().hasClass("button-add")) {
+
+                //Check if is Protect User
+                if (JM.data.chatroom_user[window.personalPopupUserID].is_protect) {
+                    //Check if send invite before
+                    if (!JM.data.chatroom_user[window.personalPopupUserID].is_invite) {
+                        window.sendQInvitation("popup", window.personalPopupUserID);
+                    }
+                } else {
+                    window.setQFriend(window.personalPopupUserID);
+                }
+
+            } else if ($(event.target).hasClass("button-chat") || $(event.target).parent().hasClass("button-chat")) {
+
+                var name = window.personalPopupUserID;
+                var desc = "need_history=Y;group_message=N;name_changed=N";
+                var empNumberArray = [JM.data.chatroom_user[window.personalPopupUserID].emp_no];
+
+                //Create chatroom
+                loadingMask("show");
+                window.newQChatroom(name, desc, empNumberArray);
+
+            }
+
+        }
+    }, "#userInfoPopup .personal-popup-button");
+
+    window.JPush.init();
 };
 
 function cutString(maxViewWidth, string, fontSize, type, memberCount) {
@@ -165,3 +301,44 @@ function onResume() {
 
     //When APP in foreground, check if the view is chatroom, then stop receive the Push Notification
 }
+
+//JPush - for push from QPlay Server
+document.addEventListener("jpush.openNotification", function (event) {
+    if (device.platform == "Android") {
+        console.log(event.extras.Parameter);
+        var extras = event.extras.Parameter;
+        var parameter = extras.split("=");
+
+        if (parameter[1] === "acceptQInvitation") {
+            prevPageID = "viewFriendInvite";
+            window.getQFriend();
+            $.mobile.changePage('#viewIndex');
+        } else if (parameter[1] === "sendQInvitation") {
+            window.getQFriend("receiveInvite");
+        }
+    } else {
+        console.log(event.aps.alert);
+    }
+}, false);
+
+document.addEventListener("jpush.receiveNotification", function (event) {
+    if (device.platform == "Android") {
+        console.log(event.extras.Parameter);
+        var extras = event.extras.Parameter;
+        var parameter = extras.split("=");
+
+        if (parameter[1] === "sendQInvitation" || parameter[1] === "acceptQInvitation") {
+            window.getQFriend();
+        }
+    } else {
+        console.log(event.aps.alert);
+    }
+}, false);
+
+document.addEventListener("jpush.receiveMessage", function (event) {
+    if (device.platform == "Android") {
+        console.log(event.extras.Parameter);
+    } else {
+        console.log(event.content);
+    }
+}, false);

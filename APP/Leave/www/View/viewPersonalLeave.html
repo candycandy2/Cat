@@ -2,7 +2,7 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
-            <img src="img/menu.png" style="width: 4.934VW; margin-right: 30px;">
+            <img src="img/menu.png" class="leaveMenu">
         </a>
         <div class="header-style">
             <div class="ui-title">
@@ -40,7 +40,7 @@
                     </div>
                     <div class="infoContent" id="infoContent-1">
                         <ul style="margin-top: 6.04VW;">
-                            
+
                         </ul>
                     </div>
                 </div>
@@ -53,39 +53,36 @@
                         <img class="listDown" src="img/list_down.png">
                     </div>
                     <div class="infoContent" id="infoContent-3">
-                        
+
                     </div>
                 </div>
             </div>
         </div>
         <div id="tab-2" style="margin: 4.3VW 3.71VW 0VW 3.71VW;">
             <div>
-                <!--<span>假別</span>-->
+                <!-- 假別 -->
                 <span class="langStr" data-id="str_102"></span>
             </div>
+            <!-- 假别 dropdownlist -->
             <div data-role="none" id="leaveType" style="margin-top: 1.16VW;">
                 <span></span>
             </div>
-
             <div style="margin-top: 5VW;">
-                <!--<span>代理人</span>-->
+                <!-- 代理人 -->
                 <span class="langStr" data-id="str_103"></span>
             </div>
+            <!-- 代理人 dropdownlist -->
             <div data-role="none" id="agent" style="margin-top: 1.16VW;">
                 <span></span>
             </div>
-
             <div style="margin-top: 5VW;">
-                <!--<span>請假日期</span>-->
+                <!-- 請假日期 -->
                 <span class="langStr" data-id="str_104"></span>
             </div>
-
-            <div id="leaveDate" class="scrollmenu">
-                <!--<a href="#" class="ui-link"></a>-->
-            </div>
-
+            <!-- scroll date -->
+            <div id="leaveDate" class="scrollmenu"></div>
             <div style="margin-top: 5VW;">
-                <!--<span>請假時段</span>-->
+                <!-- 請假時段 -->
                 <span class="langStr" data-id="str_105"></span>
             </div>
             <form>
@@ -110,22 +107,28 @@
                 </fieldset>
             </form>
             <div class="btn-disable radius-btn" id="leaveConfirm" style="margin: 10VW auto; margin-bottom: 0;">
-                <!--我要請假-->
+                <!-- 我要請假 -->
                 <span class="langStr" data-id="str_107"></span>
             </div>
-
             <div class="toast-style" style="display: none;">
-                <!--<span>假單已送簽</span>-->
+                <!-- 假單已送簽 -->
                 <span class="langStr" data-id="str_108"></span>
             </div>
         </div>
     </div>
 
+    <!-- 天數不夠 -->
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup leftDaysNotEnough" for="leftDaysNotEnough">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text"><!--天數不夠--><span class="langStr" data-id="str_109"></span></span>
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!-- 天數不夠 -->
+                        <span class="langStr" data-id="str_109"></span>
+                    </span>
                 </div>
             </div>
             <div class="main">
@@ -142,11 +145,18 @@
         </div>
     </div>
 
+    <!--代理人不存在-->
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup agentNotExist" for="agentNotExist">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text"><!--代理人不存在--><span class="langStr" data-id="str_111"></span>
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--代理人不存在-->
+                        <span class="langStr" data-id="str_111"></span>
+                    </span>
                 </div>
             </div>
             <div class="main">
@@ -166,11 +176,18 @@
         </div>
     </div>
 
+    <!-- 请假失败 -->
     <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup applyLeaveFail" for="applyLeaveFail">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span><span class="header-text"><!--請假失敗--><span class="langStr" data-id="str_113"></span>
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--請假失敗-->
+                        <span class="langStr" data-id="str_113"></span>
+                    </span>
                 </div>
             </div>
             <div class="main">
@@ -186,4 +203,5 @@
             </div>
         </div>
     </div>
+
 </div>

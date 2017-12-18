@@ -26,9 +26,8 @@
                     <!-- 申請類別 -->
                     <span class="langStr" data-id="str_081"></span>
                 </div>
-                <div data-role="none" id="leaveCategroy" class="font-style3">
-                    
-                </div>
+                <!-- 类别 dropdownlist -->
+                <div data-role="none" id="leaveCategroy" class="font-style3"></div>
             </div>
             <!-- empty div -->
             <div class="apply-empty-div1"></div>
@@ -37,14 +36,11 @@
                     <!-- 申請假別 -->
                     <span class="langStr" data-id="str_082"></span>
                 </div>
-                <div data-role="none" id="leaveGenre" class="font-style3">
-
-                </div>
+                <!-- 假别 dropdownlist -->
+                <div data-role="none" id="leaveGenre" class="font-style3"></div>
             </div>
             <!-- introduce -->
-            <div id="leaveIntroduce" class="font-style12">
-
-            </div>
+            <div id="leaveIntroduce" class="font-style12"></div>
             <!-- empty div -->
             <div class="apply-empty-div1"></div>
             <div class="apply-agent">
@@ -52,6 +48,7 @@
                     <!-- 職務代理人 -->
                     <span class="langStr" data-id="str_083"></span>
                 </div>
+                <!-- 代理人 dropdownlist -->
                 <div data-role="none" id="leaveAgent" class="font-style3">
                     <span></span>
                 </div>
@@ -104,10 +101,6 @@
                         <img src="img/dropdown.png" class="apply-select-img">
                     </div>
                 </div>
-                <!-- <div>
-                    <input type="text" data-role="none" placeholder="请选择" id="picker1">
-                    <img src="img/dropdown.png" class="apply-select-img">
-                </div> -->
             </div>
             <!-- date component -->
             <div class="date-component">
@@ -145,10 +138,6 @@
                         <span class="langStr" data-id="str_110"></span>
                     </label>
 
-                    <!-- <input type="radio" name="radio-choice-attachment-3" id="attachment-tab-1" value="attachment-tab-1">
-                    <label for="attachment-tab-1">上傳</label>&nbsp;&nbsp;
-
-                    <img src="img/upload.png" style="width:5vw; height:5vw"> -->
                 </fieldset>
             </div>
             <!-- apply reason -->
@@ -271,7 +260,9 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
                     <span class="header-text">
                         <!-- 假別天數不夠 -->
                         <span class="langStr" data-id="str_115"></span>
@@ -303,13 +294,11 @@
                     <span class='header-icon'>
                         <img src="img/urgent.png">
                     </span>
-                    <span class="header-text">
-                        
-                    </span>
+                    <span class="header-text"></span>
                 </div>
             </div>
             <div class="main">
-                <!-- <p class="main-paragraph font-style3"></p> -->
+                <p class="main-paragraph font-style3"></p>
             </div>
             <div class="footer">
                 <div class="btn-one font-style1 btnArea">
@@ -327,7 +316,9 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
                     <span class="header-text">
                         <!--請假迄止時間應大於請假開始時間-->
                         <span class="langStr" data-id="str_116"></span>
@@ -353,7 +344,9 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
                     <span class="header-text">
                         <!-- 請先選擇類別與假別 -->
                         <span class="langStr" data-id="str_139"></span>
@@ -379,7 +372,9 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
                     <span class="header-text">
                         <!-- 請先選擇基準日 -->
                         <span class="langStr" data-id="str_140"></span>
@@ -405,7 +400,9 @@
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'><img src="img/urgent.png"></span>
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
                     <span class="header-text">
                         <!-- 請先選擇開始時間 -->
                         <span class="langStr" data-id="str_171"></span>
@@ -430,15 +427,14 @@
     <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup basedayList" for="basedayList" id="basedayList">
         <div data-role="main" class="ui-content">
             <div class="header typeB">
-                <div class="close"><img src="img/component/close_new.png" width="100%" height="100%" id="closeBasedayList"></div>
+                <div class="close">
+                    <img src="img/component/close_new.png" width="100%" height="100%" id="closeBasedayList">
+                </div>
                 <div class="title"></div>
             </div>
             <div class="old-baseday-list">
-                <!-- <div class="tpl-option-msg-list">2017-02-02</div>
-                <div class="tpl-option-msg-list">2017-06-02</div>
-                <div class="tpl-option-msg-list">2017-10-02</div>
-                <div class="tpl-option-msg-list">選擇其他基準日</div> -->
-            </div>          
+
+            </div>
         </div>
     </div>
 
@@ -457,7 +453,7 @@
                 </div>
             </div>
             <div class="main">
-                <p class="main-paragraph font-style3"> <br> </p>       
+                <p class="main-paragraph font-style3"> <br> </p>
             </div>
             <div class="footer">
                 <div class="btn-two font-style1 btnArea">
@@ -466,6 +462,37 @@
                         <span class="langStr" data-id="com_023"></span>
                     </div>
                     <div class="btn-cancel" id="confirmSendLeave">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--代理人不存在-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup agentNotData" for="agentNotData">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--代理人不存在-->
+                        <span class="langStr" data-id="str_111"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--請選擇其他代理人-->
+                    <span class="langStr" data-id="str_112"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
                     </div>

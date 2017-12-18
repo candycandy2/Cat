@@ -2,7 +2,9 @@
 $("#viewMyInfoEdit").pagecontainer({
     create: function(event, ui) {
 
+        var lastPrevPageID = "";
         var avatarUploadPath = "";
+        var timer;
 
         /********************************** function *************************************/
         function avatarCrop(imageUploadURL) {
@@ -71,6 +73,7 @@ $("#viewMyInfoEdit").pagecontainer({
 
                 console.log(img);
                 avatarUploadPath = img;
+                $("#saveMyInfo").removeClass("none-work");
 
                 // Split the base64 string in data and contentType
                 var block = avatarUploadPath.split(";");
@@ -89,8 +92,6 @@ $("#viewMyInfoEdit").pagecontainer({
             });
 
             avatarCropClose();
-
-            loadingMask("show");
         }
 
         function b64toBlob(b64Data, contentType, sliceSize) {
@@ -149,7 +150,7 @@ $("#viewMyInfoEdit").pagecontainer({
                 console.log('Native URI: ' + nativePath.substr(7));
 
                 avatarUploadPath = nativePath.substr(7);
-                updateMyAvatar();
+                //updateMyAvatar();
             });
         }
 
@@ -166,6 +167,8 @@ $("#viewMyInfoEdit").pagecontainer({
         function setQUserDetail() {
             (function() {
 
+                loadingMask("show");
+
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
                     memo: $("#myInfoStatus").val().substr(0, 19)
@@ -179,13 +182,18 @@ $("#viewMyInfoEdit").pagecontainer({
                     var resultCode = data['ResultCode'];
 
                     if (resultCode === "1") {
-
+                        updateMyAvatar();
+                        window.getQUserDetail("viewMyInfoEdit", loginData["loginid"]);
                     }
                 };
 
                 var failCallback = function(data) {};
 
-                CustomAPI("POST", true, "setQUserDetail", successCallback, failCallback, queryData, "");
+                if ($("#myInfoStatus").val() != JM.data.chatroom_user[loginData["loginid"]].memo) {
+                    CustomAPI("POST", true, "setQUserDetail", successCallback, failCallback, queryData, "");
+                } else {
+                    updateMyAvatar();
+                }
 
             }());
         }
@@ -197,12 +205,27 @@ $("#viewMyInfoEdit").pagecontainer({
 
                     if (status === "success") {
                         console.log("=============updateMyAvatar success");
+
+                        avatarUploadPath = "";
+                        $("#saveMyInfo").addClass("none-work");
                         loadingMask("hide");
+
+                        //Update Local Avatar
+                        var nowDateTime = new Date();
+                        var nowTimestamp = nowDateTime.TimeStamp();
+
+                        JM.data.chatroom_user[loginData["loginid"]].avator_download_time = 0;
+                        window.downloadOriginalUserAvatar("index", nowTimestamp, loginData["loginid"]);
                     }
 
                 };
 
-                JM.User.updateMyAvatar(avatarUploadPath, callback);
+                if (avatarUploadPath.length > 0) {
+                    JM.User.updateMyAvatar(avatarUploadPath, callback);
+                } else {
+                    $("#saveMyInfo").addClass("none-work");
+                    loadingMask("hide");
+                }
 
             }());
         }
@@ -210,9 +233,42 @@ $("#viewMyInfoEdit").pagecontainer({
         /********************************** page event *************************************/
         $("#viewMyInfoEdit").on("pagebeforeshow", function(event, ui) {
 
+            if (JM.data.chatroom_user[loginData["loginid"]].avator_download_time != 0) {
+                $("#viewMyInfoEditContent .chatroom-info-photo-content svg").hide();
+                $("#viewMyInfoEditContent .chatroom-info-photo-content img").prop("src", JM.data.chatroom_user[loginData["loginid"]].avator_path);
+                $("#viewMyInfoEditContent .chatroom-info-photo-content img").show();
+            }
+
+            $("#myInfoStatus").val(JM.data.chatroom_user[loginData["loginid"]].memo);
+
+        });
+
+        $("#viewMyInfoEdit").on("pageshow", function(event, ui) {
+            lastPrevPageID = prevPageID;
+            prevPageID = "viewMyInfoEdit";
         });
 
         /********************************** dom event *************************************/
+        $(document).on({
+            keyup: function(event) {
+
+                var text = $(this).val();
+
+                if (timer !== null) {
+                    clearTimeout(timer);
+                }
+
+                timer = setTimeout(function () {
+                    if (text != JM.data.chatroom_user[loginData["loginid"]].memo) {
+                        $("#saveMyInfo").removeClass("none-work");
+                    } else {
+                        $("#saveMyInfo").addClass("none-work");
+                    }
+                }, 1000);
+
+            }
+        }, "#myInfoStatus");
+
         $(document).on({
             click: function() {
                 CameraPlugin.openFilePicker("PHOTOLIBRARY", avatarCrop);
@@ -221,9 +277,18 @@ $("#viewMyInfoEdit").pagecontainer({
 
         $(document).on({
             click: function() {
-                updateMyAvatar();
+                if (!$(this).hasClass("none-work")) {
+                    setQUserDetail();
+                }
             }
         }, "#viewMyInfoEdit #saveMyInfo");
+
+        //Back Button
+        $(document).on({
+            click: function() {
+                $.mobile.changePage('#' + lastPrevPageID);
+            }
+        }, "#backMyInfoEdit");
 
     }
 });

@@ -18,6 +18,7 @@ var signedStr = "已簽核";
 var withdrawedStr = "已撤回";
 var rejectedStr = "已拒絕";
 var notSignStr = "未簽核";
+var editLeaveForm = false;
 
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
@@ -29,7 +30,7 @@ var prslvsCalendar = {};
 var holidayCalendar = {};
 var myCalendarData = {};
 var myHolidayData = [];
-var applyDay = currentYear+"-"+currentMonth+"-"+currentDate;
+var applyDay = currentYear+"/"+currentMonth+"/"+currentDate;
 var dayTable = {
     "1" : "(一)",
     "2" : "(二)",
@@ -70,18 +71,6 @@ window.initialSuccess = function() {
     //选择日期为“请选择”
     $("#startText").text(pleaseSelectStr);
     $("#endText").text(pleaseSelectStr);
-
-    //个人剩余假别资讯
-    queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveInfo();
-
-    //请假单查询——获取假单列表
-    queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveApplyForm();
-
-    //销假单查询——获取销假单列表
-    queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-    QueryEmployeeLeaveCancelForm();
 
     //data scroll menu
     dateInit();
@@ -136,7 +125,7 @@ function onBackKeyDown() {
         navigator.app.exitApp();
     } else {
         visitedPageList.pop();
-        changePageByPanel(prePageID);    
+        changePageByPanel(prePageID);
     }
 
 }
@@ -158,7 +147,7 @@ function changePageByPanel(pageId) {
         loadingMask("show");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
-        lastPageID = $.mobile.activePage[0].id;     
+        lastPageID = $.mobile.activePage[0].id;
         $.mobile.changePage("#" + pageId);
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
@@ -167,7 +156,7 @@ function changePageByPanel(pageId) {
             visitedPageList.push(pageId);
         }
     }
-    $("#mypanel").panel("close"); 
+    $("#mypanel").panel("close");
 }
 
 function dateInit() {
@@ -176,7 +165,6 @@ function dateInit() {
     var day = currentDay;
     for(var i=1; i<=14; i++) {
         if(day > 0 && day < 6) {
-
             $("#leaveDate").append('<a href="#" class="ui-link">' + month + "/" + date + " " + dayTable[day] + '</a>');
             $("#leaveDate a:last-child").data("value", currentYear + "/" + month + "/" + date);
 
@@ -221,31 +209,30 @@ function dateInit() {
     $("#leaveDate a:eq(0)").click();
 }
 
-//格式化日期字符串：“日/月/年” —— “年-月-日”
+//格式化日期字符串：“年-月-日” —— “年/月/日”，用于日期控件值的转换
 function dateFormat(dataStr) {
-    var str = dataStr.split("/");
+    var str = dataStr.split("-");
 
     var newArr = [];
     for(var i in str) {
-        newArr.unshift(str[i]);
+        newArr.push(str[i]);
     }
-    return newArr.join("-");
+    return newArr.join("/");
 }
 
-//格式化日期格式：“月/日/年 時:分:秒 PM” —— “年/月/日”
-function dateFormatter(dataStr) {
-    //先獲得“月/日/年”
-    var arr = dataStr.split(" ")[0].split("/");
+//日期格式化：“日/月/年” —— “年/月/日”，用于有效基准日列表的日期格式转换
+function formatDate(str) {
+    var arr = str.split("/");
     var newArr = [];
     newArr.push(arr[2]);
-    newArr.push(arr[0]);
     newArr.push(arr[1]);
-    return newArr.join("-");
+    newArr.push(arr[0]);
+    return newArr.join("/");
 }
 
-//假單列表到詳情（请假单和销假单共用）
+//请假單列表到詳情（请假单和销假单共用）
 function leaveListToDetail(btn1, btn2, btn3, state) {
-    $(".leaveMenu").hide();
+    $("#viewLeaveQuery .leaveMenu").hide();
     $(".leave-query-main").hide();
     $("#backDetailList").show();
     $(".leave-query-detail-sign").show();
@@ -288,6 +275,11 @@ function getSignFlow(arr, serial, empname, yn, date, remark) {
         } else if($(yn[i]).html() == "" && $(date[i]).html() !== "") {
             signObj["icon"] = "withdraw.png";
             signObj["statusName"] = withdrawedStr;
+
+        //其他任何狀態都不需要顯示，icon爲空，name爲空
+        } else {
+            signObj["icon"] = "blank.png";
+            signObj["statusName"] = "";
         }
 
         arr.push(signObj);
@@ -299,21 +291,21 @@ function setLeaveFlowToPopup(arr, dom) {
     var flow = "";
     for(var i in arr) {
         flow += '<li class="sign-list">' +
-                            '<div class="sign-icon">' +
-                                '<img src="img/' + arr[i]["icon"] + '">' +
-                            '</div>' +
-                            '<div class="sign-name">' +
-                                '<div class="font-style3">' +
-                                    '<span>' + arr[i]["empname"] + '</span>' +
-                                '</div>' +
-                                '<div class="font-style10">' +
-                                    '<span>' + arr[i]["date"] + '</span>' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="sign-state font-style3">' +
-                                '<span>' + arr[i]["statusName"] + '</span>' +
-                            '</div>' +
-                        '</li>';
+                    '<div class="sign-icon">' +
+                        '<img src="img/' + arr[i]["icon"] + '">' +
+                    '</div>' +
+                    '<div class="sign-name">' +
+                        '<div class="font-style3">' +
+                            '<span>' + arr[i]["empname"] + '</span>' +
+                        '</div>' +
+                        '<div class="font-style10">' +
+                            '<span>' + arr[i]["date"] + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="sign-state font-style3">' +
+                        '<span>' + arr[i]["statusName"] + '</span>' +
+                    '</div>' +
+                '</li>';
     }
 
     $(dom).empty().append(flow);

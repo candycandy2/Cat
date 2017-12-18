@@ -41,7 +41,7 @@
   },
   {
     "term": "str_006",
-    "definition": "2017 行事曆",
+    "definition": "2018 行事曆",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1394,6 +1394,30 @@
   {
     "term": "str_176",
     "definition": "已銷假",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_177",
+    "definition": "*暫無假單記錄",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_178",
+    "definition": "*僅顯示近10筆銷假單記錄",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_179",
+    "definition": "*暫無銷假單記錄",
     "context": "",
     "term_plural": "",
     "reference": "",

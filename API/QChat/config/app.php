@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Environment
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "environment" your application is currently
+    | running in. This may determine error mail subject. Set this in your ".env" file.
+    |
+    */
+
+    'name' => env('APP_NAME'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Debug Mode
     |--------------------------------------------------------------------------
     |
@@ -109,6 +121,7 @@ return [
     */
 
     'log' => env('APP_LOG', 'daily'),
+     'log_max_files' => 30,
 
     /*
     |--------------------------------------------------------------------------
@@ -159,6 +172,18 @@ return [
     
     'mail_name' => env('MAIL_USERNAME'),
     'mail_address'   => env('MAIL_USER_MAIL_ADDRESS'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Error Handler Parameters
+    |--------------------------------------------------------------------------
+    |error_mail_from : 錯誤信發信人信箱
+    |error_mail_from_name : 錯誤信發見者名稱
+    |error_mail_to : 錯誤信收件者信箱
+    */
+    'error_mail_from' => env('ERROR_MAIL_FROM'),
+    'error_mail_from_name' => env('ERROR_MAIL_FROM_NAME'),
+    'error_mail_to' => env('ERROR_MAIL_TO'),
     
     /*
     |--------------------------------------------------------------------------

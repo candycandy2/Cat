@@ -17,6 +17,10 @@
     <div data-role="main" class="page-main">
         <!-- 請假單列表 -->
         <div class="leave-query-main">
+            <!-- pull refresh -->
+            <div class="page-date"></div>
+            
+            <!-- leave list -->
             <div class="leave-query-main-list">
 
             </div>
@@ -24,7 +28,7 @@
             <!-- max count msg -->
             <div class="leave-query-max font-style12">
                 <!-- *僅顯示近10筆假單記錄 -->
-                <span class="langStr" data-id="str_145" id="maxLeaveMsg"></span>
+                <span id="maxLeaveMsg"></span>
             </div>
             
         </div>
@@ -258,7 +262,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- sign popup -->
@@ -273,7 +276,6 @@
                 </div>
             </div>
             <div class="main">
-                <!-- <p class="main-paragraph font-style3"></p> -->
                 <ul class="leave-flow-ul">
 
                 </ul>
@@ -393,9 +395,7 @@
                     <span class='header-icon'>
                         <img src="img/urgent.png">
                     </span>
-                    <span class="header-text">
-                        
-                    </span>
+                    <span class="header-text"></span>
                 </div>
             </div>
             <div class="main">

@@ -36,7 +36,7 @@ $("#viewAddMember").pagecontainer({
                             for (var i=0; i<empNumberArray.length; i++) {
                                 $.each(JM.data.chatroom_user, function(name, data){
                                     if (data.emp_no == empNumberArray[i]) {
-                                        window.sendTextMessage(loginData["loginid"] + "將" + name + "加入聊天室", true, "memberEvent");
+                                        window.sendTextMessage(nowChatroomID, loginData["loginid"] + "將" + name + "加入聊天室", true, "memberEvent");
                                     }
                                 });
                             }
@@ -82,6 +82,7 @@ $("#viewAddMember").pagecontainer({
 
                     //name
                     userList.find(".user-name").html(JM.data.chatroom_friend[i]);
+                    userList.find(".personal-popup").data("userID", JM.data.chatroom_friend[i]);
 
                     $("#userListContentAddMember").append(userList);
 
