@@ -102,8 +102,8 @@ gulp.task('install', shell.task([
   'cordova plugin add cordova-plugin-camera',
   'cordova plugin add cordova-plugin-ios-camera-permissions --save',
   'cordova plugin add phonegap-plugin-mobile-accessibility',
-  'cordova plugin add jmessage-phonegap-plugin@3.0.12 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
-  'cordova plugin add jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushQChatAPPKey
+  'cordova plugin add jmessage-phonegap-plugin@3.0.23 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
+  'cordova plugin add jpush-phonegap-plugin@3.2.13 --variable APP_KEY=' + process.env.QPushQChatAPPKey
   //'cordova plugin add cordova-plugin-file'
 ]));
 
