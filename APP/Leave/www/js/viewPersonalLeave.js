@@ -179,8 +179,8 @@ $("#viewPersonalLeave").pagecontainer({
             //enddate
             //$("#endText").text(pleaseSelectStr);
             //$("#endDate").val("");
-            $("#leaveDays").text("0");
-            $("#leaveHours").text("0");
+            //$("#leaveDays").text("0");
+            //$("#leaveHours").text("0");
         }
 
         //送签成功恢复初始状态
@@ -206,23 +206,29 @@ $("#viewPersonalLeave").pagecontainer({
                 myHolidayData = [];
                 var leaveFlag = "3";
                 if (data['ResultCode'] === "1") {
-                    var callbackData = data['Content'][0]["Result"];
-                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
-                    var colorTagArry = $("color", htmlDom);
-                    var informationTagArry = $("information", htmlDom);
-
-                    for (var day = 1; day <= colorTagArry.length; day++) {
-                        if (myCalendarData[$(colorTagArry[day - 1]).html()] === undefined) {
-                            myCalendarData[$(colorTagArry[day - 1]).html()] = [];
+                    //length大于0说明有数据，length等于0说明年份不对没有数据
+                    if(data['Content'].length > 0) {
+                        var callbackData = data['Content'][0]["Result"];
+                        var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                        var colorTagArry = $("color", htmlDom);
+                        var informationTagArry = $("information", htmlDom);
+    
+                        for (var day = 1; day <= colorTagArry.length; day++) {
+                            if (myCalendarData[$(colorTagArry[day - 1]).html()] === undefined) {
+                                myCalendarData[$(colorTagArry[day - 1]).html()] = [];
+                            }
+                            myCalendarData[$(colorTagArry[day - 1]).html()].push(day);
+                            myHolidayData[day] = parseCDATA($(informationTagArry[day - 1]).html());
                         }
-                        myCalendarData[$(colorTagArry[day - 1]).html()].push(day);
-                        myHolidayData[day] = parseCDATA($(informationTagArry[day - 1]).html());
-                    }
-                    if (leaveFlag in myCalendarData) {
-                        for (var day in myCalendarData[leaveFlag]) {
-                            $("#viewPersonalLeave-calendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
+                        if (leaveFlag in myCalendarData) {
+                            for (var day in myCalendarData[leaveFlag]) {
+                                $("#viewPersonalLeave-calendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
+                            }
                         }
+                    } else {
+                        
                     }
+                    
 
                 }
                 loadingMask("hide");

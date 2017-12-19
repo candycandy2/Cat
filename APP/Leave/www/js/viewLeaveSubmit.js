@@ -109,8 +109,6 @@ function getLeaveByCategory() {
     $("#chooseBaseday").text(selectBasedayStr);
     $("#oldBaseday").val("");
     $("#newBaseday").val("");
-    //$("#startText").text(pleaseSelectStr);
-    //$("#startDate").val("");
     //$("#endText").text(pleaseSelectStr);
     //$("#endDate").val("");
     leaveid = "";
@@ -654,11 +652,11 @@ $("#viewLeaveSubmit").pagecontainer({
                 startLeaveTime = parseInt(self.split("T")[1].replace(/:/g, ""));
 
                 $('#startText').text(startLeaveDate);
-    
+
             } else {
                 $('#startText').text(pleaseSelectStr);
                 $("#startDate").val("");
-                
+
             }
             //如果开始时间改变，结束时间无论如何也要清空
             $("#endText").text(pleaseSelectStr);
