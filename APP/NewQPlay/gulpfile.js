@@ -202,11 +202,10 @@ gulp.task('jenkinsinstall', shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
     'cordova plugin add ../../plugins/cordova-plugin-whitelist',
     'cordova plugin add ../../plugins/cordova-plugin-inappbrowser',
-    //'cordova plugin add ../../plugins/cordova-plugin-proguard',
+    'cordova plugin add ../../plugins/cordova-plugin-proguard',
     'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
     'cordova plugin add ../../plugins/cordova-plugin-appavailability'//,
     //'cordova plugin add cordova-plugin-file@4.3.1'
-    //'cordova plugin add ../../plugins/cordova-plugin-proguard'
 ]));
 
 gulp.task('patch', function() {
