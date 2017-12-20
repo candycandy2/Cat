@@ -298,6 +298,14 @@ $("#viewWebNews2-3-1").pagecontainer({
                     $("#htmlContent").find("base").remove();
 
                     renderCanvas($("#htmlContent").html());
+
+                    //Had used the URL
+                    portalURL = "";
+                    //Had openMessage
+                    if (window.localStorage.getItem("openMessage") === "true") {
+                        loginData["openMessage"] = false;
+                        window.localStorage.setItem("openMessage", "false");
+                    }
                 });
 
             }());
