@@ -216,7 +216,7 @@ $("#viewReserve").pagecontainer({
                             laterContent += '<div class="reserveInfo">'
                                           +     '<div class="reserveInfo-area-left reserveInfo-area" reserveid = "' + QueryMyReserveCallBackdata[i]["ReserveID"] + '">'
                                           +         '<div class="reserveInfo-company">'+ site + '</div>'
-                                          +         '<div class="reserveInfo-time" reserveYear='+ reserveDateArry[2] +' >' + reserveDate + "&nbsp;&nbsp;" + beginTime + "&nbsp;-&nbsp;" + endTime + '</div>'
+                                          +         '<div class="reserveInfo-time" reserveYear='+ reserveDateArry[2] +'>' + reserveDate + "&nbsp;&nbsp;" + beginTime + "&nbsp;-&nbsp;" + endTime + '</div>'
                                           +     '</div>'
                                           +     '<div class="reserveInfo-area-right reserveInfo-area">'
                                           +         '<div class="btn-area">'
