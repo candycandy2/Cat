@@ -1119,12 +1119,16 @@ $("#viewEventList").pagecontainer({
             ahowEventData(this, "member");
         });
 
-        $(document).on("click", "#eventMemberList .confirm", function() {
-            $("#eventMemberList").popup("close");
-            $("#eventMemberList").popup("destroy").remove();
-            $("#eventMemberList-option").popup("destroy").remove();
-            footerFixed();
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).hasClass("confirm") || $(event.target).parent().hasClass("confirm")) {
+                    $("#eventMemberList").popup("close");
+                    $("#eventMemberList").popup("destroy").remove();
+                    $("#eventMemberList-option").popup("destroy").remove();
+                    footerFixed();
+                }
+            }
+        }, "#eventMemberList");
 
         //Event Member List Popup - open Mail / Tel
         $(document).on("click", "#eventMemberList .event-member-list .text", function() {
@@ -1140,12 +1144,16 @@ $("#viewEventList").pagecontainer({
             ahowEventData(this, "function");
         });
 
-        $(document).on("click", "#eventFunctionList .confirm", function() {
-            $("#eventFunctionList").popup("close");
-            $("#eventFunctionList").popup("destroy").remove();
-            $("#eventFunctionList-option").popup("destroy").remove();
-            footerFixed();
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).hasClass("confirm") || $(event.target).parent().hasClass("confirm")) {
+                    $("#eventFunctionList").popup("close");
+                    $("#eventFunctionList").popup("destroy").remove();
+                    $("#eventFunctionList-option").popup("destroy").remove();
+                    footerFixed();
+                }
+            }
+        }, "#eventFunctionList");
 
         //Event Content
         $(document).on("click", ".event-list-msg .description, .event-list-msg .name-time, .event-list-msg .message", function() {
@@ -1166,18 +1174,26 @@ $("#viewEventList").pagecontainer({
         });
 
         //Event No Data Popup
-        $(document).on("click", "#eventListNoDataPopup .confirm", function() {
-            $("#eventListNoDataPopup").popup("close");
-            $(".event-list-no-data").show();
-            loadingMask("hide");
-            footerFixed();
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    $("#eventListNoDataPopup").popup("close");
+                    $(".event-list-no-data").show();
+                    loadingMask("hide");
+                    footerFixed();
+                }
+            }
+        }, "#eventListNoDataPopup");
 
         //Event Related No Authority Popup
-        $(document).on("click", "#eventRelatedNoAuthorityPopup .confirm", function() {
-            $("#eventRelatedNoAuthorityPopup").popup("close");
-            footerFixed();
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    $("#eventRelatedNoAuthorityPopup").popup("close");
+                    footerFixed();
+                }
+            }
+        }, "#eventRelatedNoAuthorityPopup");
 
         //Event Member List - Sort Type
         $(document).on("change", ".member-type", function() {

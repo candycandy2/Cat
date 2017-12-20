@@ -728,16 +728,14 @@ $("#viewEventContent").pagecontainer({
 
         $(document).on({
             click: function(event) {
-
-                if ($(event.target).hasClass("cancel")) {
+                if ($(event.target).parent().hasClass("cancel")) {
                     var openType = "PHOTOLIBRARY";
-                } else if ($(event.target).hasClass("confirm")) {
+                } else if ($(event.target).parent().hasClass("confirm")) {
                     var openType = "CAMERA";
                 }
 
                 $("#openCameraPhotoLibrary").popup("close");
                 openFilePicker(openType);
-
             }
         }, "#openCameraPhotoLibrary");
 
@@ -776,16 +774,14 @@ $("#viewEventContent").pagecontainer({
 
         $(document).on({
             click: function(event) {
-
-                if ($(event.target).hasClass("cancel")) {
+                if ($(event.target).parent().hasClass("cancel")) {
                     $("#eventReportWorkDoneConfirm").popup("close");
                     footerFixed();
-                } else if ($(event.target).hasClass("confirm")) {
+                } else if ($(event.target).parent().hasClass("confirm")) {
                     $("#eventReportWorkDoneConfirm").popup("close");
                     footerFixed();
                     updateTaskStatus(1);
                 }
-
             }
         }, "#eventReportWorkDoneConfirm");
 
@@ -796,16 +792,14 @@ $("#viewEventContent").pagecontainer({
 
         $(document).on({
             click: function(event) {
-
-                if ($(event.target).hasClass("cancel")) {
+                if ($(event.target).parent().hasClass("cancel")) {
                     $("#eventCancelWorkDoneConfirm").popup("close");
                     footerFixed();
-                } else if ($(event.target).hasClass("confirm")) {
+                } else if ($(event.target).parent().hasClass("confirm")) {
                     $("#eventCancelWorkDoneConfirm").popup("close");
                     footerFixed();
                     updateTaskStatus(0);
                 }
-
             }
         }, "#eventCancelWorkDoneConfirm");
 
