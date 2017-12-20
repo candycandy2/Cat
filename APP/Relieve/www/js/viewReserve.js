@@ -1,5 +1,5 @@
 var bReserveCancelConfirm = false;
-var month, date, trace, reserveCancelMonth, reserveCancelDate, reserveCancelID;
+var year, month, date, trace, reserveCancelMonth, reserveCancelDate, reserveCancelID;
 var queryTime = "";
 var timeQueue = {};
 var myReserver_dirtyFlag = true;
@@ -65,7 +65,7 @@ $("#viewReserve").pagecontainer({
                             $("#time" + BTime).find('div:nth-child(2)').removeClass("iconSelect");
                             $("#time" + BTime + " div:nth-child(2)").text(QueryReserveDetailCallBackData[i]["Name"]);
                             
-                            var msg =  currentYear + "/" + month + "/" + date 
+                            var msg =  year + "/" + month + "/" + date 
                                      + ","
                                      + QueryReserveDetailCallBackData[i]["BTime"]
                                      + "-"
@@ -102,7 +102,7 @@ $("#viewReserve").pagecontainer({
                 var resultcode = data['ResultCode'];
                 if(resultcode === "023902") {
                     var headerContent = "預約成功";
-                        msgContent = currentYear + "/" + month + "/" + date;
+                        msgContent = year + "/" + month + "/" + date;
                     myReserver_dirtyFlag = true;
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/select.png");
                     localStorage.setItem("Site", reserveSite);
@@ -216,7 +216,7 @@ $("#viewReserve").pagecontainer({
                             laterContent += '<div class="reserveInfo">'
                                           +     '<div class="reserveInfo-area-left reserveInfo-area" reserveid = "' + QueryMyReserveCallBackdata[i]["ReserveID"] + '">'
                                           +         '<div class="reserveInfo-company">'+ site + '</div>'
-                                          +         '<div class="reserveInfo-time">' + reserveDate + "&nbsp;&nbsp;" + beginTime + "&nbsp;-&nbsp;" + endTime + '</div>'
+                                          +         '<div class="reserveInfo-time" reserveYear='+ reserveDateArry[2] +' >' + reserveDate + "&nbsp;&nbsp;" + beginTime + "&nbsp;-&nbsp;" + endTime + '</div>'
                                           +     '</div>'
                                           +     '<div class="reserveInfo-area-right reserveInfo-area">'
                                           +         '<div class="btn-area">'
@@ -283,7 +283,7 @@ $("#viewReserve").pagecontainer({
                 $("#reserveSite").val(localStorage.getItem("Site"));
                 reserveSite = localStorage.getItem("Site");
             }
-            $("#scrollDate #" + currentMonth + currentDate).trigger('click');
+            $("#scrollDate #" + currentYear + currentMonth + currentDate).trigger('click');
         });
 
         /********************************** dom event *************************************/
@@ -338,9 +338,10 @@ $("#viewReserve").pagecontainer({
             timeQueue = {};
             $('#scrollDate').find('.hover').removeClass('hover');
             $(this).addClass('hover');
-            month = cutStringToArray($(this).context.id, ["2", "2"])[1];
-            date = cutStringToArray($(this).context.id, ["2", "2"])[2];
-            queryDate = currentYear.toString() + month + date;
+            year = cutStringToArray($(this).context.id, ["4", "2", "2"])[1];
+            month = cutStringToArray($(this).context.id, ["4", "2", "2"])[2];
+            date = cutStringToArray($(this).context.id, ["4", "2", "2"])[3];
+            queryDate = year + month + date;
             QueryReserveDetailQuerydata =   "<LayoutHeader><Site>"
                                           + reserveSite
                                           + "</Site><ReserveDate>"
@@ -450,16 +451,18 @@ $("#viewReserve").pagecontainer({
             // cancel sure
             if (bReserveCancelConfirm == true) {
                 if($('#pageOne').css('display') === 'block') {
+                    tempYear = year;
                     tempMonth = month;
                     tempDate = date;
                     tempReserveID = $(trace).attr("reserveid");
                 }else if($('#pageTwo').css('display') === 'block') {
+                    tempYear = reserveCancelYear;
                     tempMonth = reserveCancelMonth;
                     tempDate = reserveCancelDate;
                     tempReserveID = reserveCancelID;
                 }
                 ReserveCancelQuerydata =   "<LayoutHeader><ReserveDate>"
-                                         + currentYear + tempMonth + tempDate
+                                         + tempYear + tempMonth + tempDate
                                          + "</ReserveDate><ReserveUser>"
                                          + myEmpNo
                                          + "</ReserveUser><ReserveID>"
@@ -494,9 +497,11 @@ $("#viewReserve").pagecontainer({
             reserveCancelID = tmpParent.find("div:nth-of-type(1)").attr("reserveid");
             if ($(this).parents('#today-reserve-area').length > 0) {
                 msgContent = '今日&nbsp;&nbsp' + msgContent;
+                reserveCancelYear = currentYear;
                 reserveCancelMonth = currentMonth;
                 reserveCancelDate = currentDate;
             }else if($(this).parents('#later-reserve-area').length > 0) {
+                reserveCancelYear = tmpParent.find("div:nth-of-type(2)").attr("reserveYear");
                 reserveCancelMonth = msgContent.match(/([0-9]+)\/([0-9]+)/)[1];
                 reserveCancelDate = msgContent.match(/([0-9]+)\/([0-9]+)/)[2];
             }
