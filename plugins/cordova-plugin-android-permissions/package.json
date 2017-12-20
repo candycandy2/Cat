@@ -10,7 +10,7 @@
         "spec": "latest",
         "type": "tag"
       },
-      "/Users/samuel.hsieh/Documents/EnterpriseAPPPlatform/APP/NewQPlay/node_modules"
+      ""
     ]
   ],
   "_from": "cordova-plugin-android-permissions@latest",
@@ -45,7 +45,7 @@
   "_shasum": "9e7c116be668eb7dfa41491b13d8d47da9548149",
   "_shrinkwrap": null,
   "_spec": "cordova-plugin-android-permissions",
-  "_where": "/Users/samuel.hsieh/Documents/EnterpriseAPPPlatform/APP/NewQPlay/node_modules",
+  "_where": "",
   "author": {
     "name": "Jason Yang"
   },
