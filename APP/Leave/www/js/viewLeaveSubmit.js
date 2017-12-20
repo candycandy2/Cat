@@ -109,8 +109,6 @@ function getLeaveByCategory() {
     $("#chooseBaseday").text(selectBasedayStr);
     $("#oldBaseday").val("");
     $("#newBaseday").val("");
-    //$("#startText").text(pleaseSelectStr);
-    //$("#startDate").val("");
     //$("#endText").text(pleaseSelectStr);
     //$("#endDate").val("");
     leaveid = "";

@@ -10,6 +10,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\lib\ResultCode;
 use App\Jobs\SendErrorMail;
+use App\Jobs\SendErrorMailExecption;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Mail;
 use Config;
@@ -28,6 +29,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        SendErrorMailExecption::class
     ];
 
     /**
@@ -41,20 +43,40 @@ class Handler extends ExceptionHandler
     public function report(Exception $e)
     {
         parent::report($e);
-        if ($this->shouldReport($e)) {
-            if(\Config('app.error_mail_to')!=""){
-                $error = [
-                    'message' => $e->getMessage(),
-                    'code' => $e->getCode(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'url' => \Request::url(),
-                    'input' => json_encode(\Request::all()),
-                    'trace' =>$e->getTraceAsString()
-                ];
-                $job = (new SendErrorMail($error))->onConnection('database_qplay')->onQueue(\Config('app.name').'_ErrorMail');
-                $this->dispatch($job);
+        try{
+            $errMessage = $e->getMessage();
+            $connectionNotFound = (preg_match("/No connector for \[\w*\]/", $errMessage)) ? true : false;
+            if($connectionNotFound){
+                //if queue commend line error,send error mail once
+                $data = [];
+                $data['errorObj'] = serialize($this->error);
+                $mailer->send('emails.error_report', $data, function($message)
+                {   
+                    $from = \Config('app.error_mail_from');
+                    $fromName = \Config('app.error_mail_from_name');
+                    $to = explode(',',\Config('app.error_mail_to'));
+                    $subject = '**['.\Config('app.env').'] '.\Config('app.name').' Error Occur **';
+                    $message->from( $from , $fromName);
+                    $message->to($to)->subject($subject);
+                });
+
+            }else if ($this->shouldReport($e)) {
+                if(\Config('app.error_mail_to')!=""){
+                    $error = [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine(),
+                        'url' => \Request::url(),
+                        'input' => json_encode(\Request::all()),
+                        'trace' =>$e->getTraceAsString()
+                    ];
+                    $job = (new SendErrorMail($error))->onQueue(\Config('app.name').'_ErrorMail');
+                    $this->dispatch($job);
+                }
             }
+        }catch (\Exception $e){
+            Log::error($e);
         }
     }
 

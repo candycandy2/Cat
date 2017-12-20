@@ -40,7 +40,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             'Apache Cordova Team' +
                         '</author>' +
                         '<content src="index.html" />' +
-                        '<preference name="Orientation" value="default" />' +
+                        '<preference name="orientation" value="portrait" />' +
                         '<access origin="*" />' +
                         '<access origin="tel:*" launch-external="yes" />' +
                         '<allow-navigation href="*" />' +
@@ -74,28 +74,32 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', shell.task([
-  // 'cordova plugin remove cordova-plugin-device',
-  // 'cordova plugin remove cordova-plugin-console',
-  // 'cordova plugin remove cordova-plugin-appversion',
-  // 'cordova plugin remove cordova-plugin-customurlscheme',
-  // 'cordova plugin remove cordova-plugin-qsecurity',
-  // 'cordova plugin remove cordova-plugin-whitelist',
-  // 'cordova plugin remove cordova-plugin-inappbrowser',
+  'cordova plugin remove cordova-plugin-device',
+  //'cordova plugin remove cordova-plugin-console',
+  //'cordova plugin remove cordova-plugin-appversion',
+  'cordova plugin remove cordova-plugin-app-update',
+  'cordova plugin remove cordova-plugin-android-permissions',
+  'cordova plugin remove cordova-plugin-customurlscheme',
+  'cordova plugin remove cordova-plugin-qsecurity',
+  'cordova plugin remove cordova-plugin-whitelist',
+  'cordova plugin remove phonegap-plugin-mobile-accessibility',
+  'cordova plugin remove cordova-plugin-inappbrowser',
   //'cordova plugin remove cordova-plugin-file',
-  // 'cordova platform rm ios',
+  'cordova platform rm ios',
   'cordova platform rm android',
-  // 'cordova platform add ios',
+  'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
   //'cordova plugin add cordova-plugin-console',
   //'cordova plugin add cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add cordova-plugin-android-permissions',
+  //set scheme name appXXXX, XXXX should in lowercase.
   'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appcm' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add phonegap-plugin-mobile-accessibility',
-  'cordova plugin add cordova-plugin-inappbrowser'
+  'cordova plugin add cordova-plugin-inappbrowser'//,
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -103,15 +107,17 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add ../../plugins/cordova-plugin-device',
-  //'cordova plugin add cordova-plugin-console',
+  //'cordova plugin add ../../plugins/cordova-plugin-console',
   'cordova plugin add ../../plugins/cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
+  //set scheme name appXXXX, XXXX should in lowercase.
   'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appcm' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add ../../plugins/cordova-plugin-whitelist',
+  'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
-  'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'
+  'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'//,
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
