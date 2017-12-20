@@ -1401,7 +1401,7 @@
   },
   {
     "term": "str_177",
-    "definition": "*暫無假單記錄",
+    "definition": "*暫無請假單記錄",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1418,6 +1418,14 @@
   {
     "term": "str_179",
     "definition": "*暫無銷假單記錄",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_180",
+    "definition": "確認送簽e",
     "context": "",
     "term_plural": "",
     "reference": "",
