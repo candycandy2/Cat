@@ -87,6 +87,11 @@ window.initialSuccess = function() {
         $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
         tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
     }
+
+    //datetime-local max value (hard code)
+    $("#startDate").attr("max", "2018-12-31T23:59");
+    $("#endDate").attr("max", "2018-12-31T23:59");
+
     loadingMask("show");
 }
 
@@ -275,6 +280,11 @@ function getSignFlow(arr, serial, empname, yn, date, remark) {
         } else if($(yn[i]).html() == "" && $(date[i]).html() !== "") {
             signObj["icon"] = "withdraw.png";
             signObj["statusName"] = withdrawedStr;
+
+        //其他任何狀態都不需要顯示，icon爲空，name爲空
+        } else {
+            signObj["icon"] = "blank.png";
+            signObj["statusName"] = "";
         }
 
         arr.push(signObj);

@@ -343,9 +343,9 @@ $("#viewBackLeaveQuery").pagecontainer({
             }
 
             if(backLeaveListArr.length == 0) {
-                $("#maxBackLeaveMsg").text(langStr["str_177"]);
+                $("#maxBackLeaveMsg").text(langStr["str_179"]);
             } else {
-                $("#maxBackLeaveMsg").text(langStr["str_145"]);
+                $("#maxBackLeaveMsg").text(langStr["str_178"]);
                 $(".backLeave-query-main-list").empty().append(backLeaveHtml);
             }
 

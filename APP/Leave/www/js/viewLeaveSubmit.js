@@ -1,22 +1,23 @@
 
 var pleaseSelectStr = langStr["str_069"];    //請選擇
 var selectBasedayStr = langStr["str_127"];    //選擇時間
-var otherBasedayStr = "選擇其他基準日";
+var otherBasedayStr = langStr["str_141"];    //選擇其他基準日
 var viewLeaveSubmitInit = false;
 var timeoutQueryEmployee = null;
+var timeoutChangeBegindate = null;
 var timeoutChangeEnddate = null;
-var selectCategory;     //选择的类别，可能为“所有类别”
-var leaveCategory;      //对应假别的类别，肯定没有“所有类别”
+var selectCategory = "";     //选择的类别，可能为“所有类别”
+var leaveCategory = "";      //对应假别的类别，肯定没有“所有类别”
 var leaveObj = {};
 var leaveDetail = {};
 var leaveSelected = false;
-var agentName;
+var agentName = "";
 var startLeaveDate,endLeaveDate,startLeaveDay,endLeaveDay,startLeaveTime,endLeaveTime;
 var basedayList = false;
 var baseday = "";
 var needBaseday = false;
 var leaveReason = "";
-var countApplyDays, countApplyHours;
+var countApplyDays = "0", countApplyHours = "0";
 
 var leaveData = {
     id: "leave-popup",
@@ -104,13 +105,12 @@ function getLeaveByCategory() {
     $('#baseDate').hide();
     $('#uploadAttachment').hide();
     $('#divEmpty').hide();
+    //更換假別對基準日有直接影響
     $("#chooseBaseday").text(selectBasedayStr);
-    $("#startText").text(pleaseSelectStr);
-    //$("#startDate").val("");
-    $("#endText").text(pleaseSelectStr);
+    $("#oldBaseday").val("");
+    $("#newBaseday").val("");
+    //$("#endText").text(pleaseSelectStr);
     //$("#endDate").val("");
-    //$("#oldBaseday").val("");
-    //$("#newBaseday").val("");
     leaveid = "";
     leaveType = "";
     baseday = "";
@@ -215,7 +215,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         popupMsgInit('.leftDaysByLeave');
                         //enddate
                         $("#endText").text(pleaseSelectStr);
-                        //$("#endDate").val("");
+                        $("#endDate").val("");
                         $("#leaveDays").text("0");
                         $("#leaveHours").text("0");
                     }
@@ -475,6 +475,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //只要换基准日，结束时间都恢复“请选择”
             $('#endText').text(pleaseSelectStr);
+            $("#endDate").val("");
             
             checkLeaveBeforePreview();
         });
@@ -505,6 +506,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //只要换基准日，结束时间都恢复“请选择”
             $('#endText').text(pleaseSelectStr);
+            $("#endDate").val("");
 
             checkLeaveBeforePreview();
         });
@@ -521,6 +523,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //只要换基准日，结束时间都恢复“请选择”
             $('#endText').text(pleaseSelectStr);
+            $("#endDate").val("");
 
             checkLeaveBeforePreview();
         });
@@ -559,9 +562,75 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //開始日期改变
+        // $("#startDate").on("change", function() {
+            
+        //     if(timeoutChangeBegindate != null) {
+        //         clearTimeout(timeoutChangeBegindate);
+        //         timeoutChangeBegindate = null;
+        //     }
+        //     timeoutChangeBegindate = setTimeout(function() {
+        //         var self = $("#startDate").val();
+        //         //console.log(self);
+        //         var minute = parseInt(self.substring(14, 16));
+    
+        //         startLeaveDate = "";
+        //         startLeaveDay = 0;
+        //         startLeaveTime = 0;
+    
+        //         //開始時間是否爲空
+        //         if(self !== "") {
+        //             //android上日期格式:yyyy-MM-dd T hh:mm，ios上日期格式：yyyy-MM-dd T hh:mm:ss
+        //             //分钟数小于30设为“00”,如果大于等于30设为“30”
+        //             if(minute < 30) {
+        //                 startLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "00";
+        //             } else {
+        //                 startLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "30";
+        //             }
+    
+        //             //分别获取日期和时间，需要与结束时间进行比较，原则上开始时间必须小于结束时间
+        //             startLeaveDay = parseInt(self.split("T")[0].replace(/-/g, ""));
+        //             startLeaveTime = parseInt(self.split("T")[1].replace(/:/g, ""));
+    
+        //             $('#startText').text(startLeaveDate);
+      
+        //         } else {
+        //             $('#startText').text(pleaseSelectStr);
+        //             $("#startDate").val("");
+                    
+        //         }
+        //         //如果开始时间改变，结束时间无论如何也要清空
+        //         $("#endText").text(pleaseSelectStr);
+        //         $("#endDate").val("");
+    
+        //         //请假数恢复00
+        //         $("#leaveDays").text("0");
+        //         $("#leaveHours").text("0");
+    
+        //         //檢查是否可以預覽送簽
+        //         checkLeaveBeforePreview();
+
+        //     }, 2000);
+
+        // });
+
         $("#startDate").on("change", function() {
+            if(device.platform === "iOS") {
+                if(timeoutChangeBegindate != null) {
+                    clearTimeout(timeoutChangeBegindate);
+                    timeoutChangeBegindate = null;
+                }
+                timeoutChangeBegindate = setTimeout(function() {
+                    $("#startDate").blur();
+                }, 12000);
+            } else if(device.platform === "Android") {
+                $("#startDate").blur();
+            }
+            
+            
+        });
+
+        $("#startDate").on("blur", function() {
             var self = $(this).val();
-            //console.log(self);
             var minute = parseInt(self.substring(14, 16));
 
             startLeaveDate = "";
@@ -583,14 +652,15 @@ $("#viewLeaveSubmit").pagecontainer({
                 startLeaveTime = parseInt(self.split("T")[1].replace(/:/g, ""));
 
                 $('#startText').text(startLeaveDate);
-  
+
             } else {
                 $('#startText').text(pleaseSelectStr);
-                
+                $("#startDate").val("");
+
             }
             //如果开始时间改变，结束时间无论如何也要清空
             $("#endText").text(pleaseSelectStr);
-            //$("#endDate").val("");
+            $("#endDate").val("");
 
             //请假数恢复00
             $("#leaveDays").text("0");
@@ -598,8 +668,8 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //檢查是否可以預覽送簽
             checkLeaveBeforePreview();
-
         });
+
 
         //點擊結束日期——datetime
         $("#btnEndday").on("click", function() {           
@@ -617,7 +687,94 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         //結束日期改變
+        // $("#endDate").on("change", function() {
+        //     if(timeoutChangeEnddate != null) {
+        //         clearTimeout(timeoutChangeEnddate);
+        //         timeoutChangeEnddate = null;
+        //     }
+        //     timeoutChangeEnddate = setTimeout(function() {
+        //         var self = $("#endDate").val();
+        //         var minute = parseInt(self.substring(14, 16));
+    
+        //         endLeaveDate = "";
+        //         endLeaveDay = 0;
+        //         endLeaveTime = 0;         
+    
+        //         //結束時間是否爲空
+        //         if(self !== "") {
+        //             //分钟数小于30设为“00”,如果大于等于30设为“30”
+        //             if(minute < 30) {
+        //                 endLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "00";
+        //             } else {
+        //                 endLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "30";
+        //             }
+    
+        //             //分别获取日期和时间，需要与开始时间进行比较，原则上开始时间必须小于结束时间
+        //             endLeaveDay = parseInt(self.split("T")[0].replace(/-/g, ""));
+        //             endLeaveTime = parseInt(self.split("T")[1].replace(/:/g, ""));
+    
+        //             //結束時間必須大於開始時間
+        //             if(startLeaveDay > endLeaveDay || (startLeaveDay == endLeaveDay && startLeaveTime > endLeaveTime)) {
+        //                 //提示錯誤信息
+        //                 popupMsgInit('.dateTimeError');
+        //                 $('#endText').text(pleaseSelectStr);
+        //                 $("#endDate").val("");
+        //                 //请假数恢复0，0
+        //                 $("#leaveDays").text("0");
+        //                 $("#leaveHours").text("0");
+        //             } else {
+        //                 //loadingMask("show");
+        //                 $('#endText').text(endLeaveDate);
+                        
+        //                 countLeaveHoursByEndQueryData = "<LayoutHeader><EmpNo>"
+        //                                               + myEmpNo
+        //                                               + "</EmpNo><leaveid>"
+        //                                               + leaveid
+        //                                               + "</leaveid><begindate>"
+        //                                               + startLeaveDate.split(" ")[0]
+        //                                               + "</begindate><begintime>"
+        //                                               + startLeaveDate.split(" ")[1]
+        //                                               + "</begintime><enddate>"
+        //                                               + endLeaveDate.split(" ")[0]
+        //                                               + "</enddate><endtime>"
+        //                                               + endLeaveDate.split(" ")[1]
+        //                                               + "</endtime><datumdate>"
+        //                                               + ((needBaseday == true) ? baseday : '')
+        //                                               + "</datumdate></LayoutHeader>";
+        //                 //console.log(countLeaveHoursByEndQueryData);
+        //                 CountLeaveHoursByEnd();  
+        //             }
+        //         } else {
+        //             $('#endText').text(pleaseSelectStr);
+        //             $("#endDate").val("");
+        //             //请假数恢复00
+        //             $("#leaveDays").text("0");
+        //             $("#leaveHours").text("0");
+        //         }
+    
+        //         //檢查是否可以預覽送簽
+        //         checkLeaveBeforePreview();
+                
+        //     }, 2500);
+
+        // });
+
         $("#endDate").on("change", function() {
+            if(device.platform === "iOS") {
+                if(timeoutChangeEnddate != null) {
+                    clearTimeout(timeoutChangeEnddate);
+                    timeoutChangeEnddate = null;
+                }
+                timeoutChangeEnddate = setTimeout(function() {
+                    $("#endDate").blur();
+                }, 12000);
+            } else if(device.platform === "Android") {
+                $("#endDate").blur();
+            }
+               
+        });
+
+        $("#endDate").on("blur", function() {
             var self = $(this).val();
             var minute = parseInt(self.substring(14, 16));
 
@@ -643,42 +800,36 @@ $("#viewLeaveSubmit").pagecontainer({
                     //提示錯誤信息
                     popupMsgInit('.dateTimeError');
                     $('#endText').text(pleaseSelectStr);
-                    //$("#endDate").val("");
+                    $("#endDate").val("");
                     //请假数恢复0，0
                     $("#leaveDays").text("0");
                     $("#leaveHours").text("0");
                 } else {
-                    loadingMask("show");
+                    //loadingMask("show");
                     $('#endText').text(endLeaveDate);
                     
                     countLeaveHoursByEndQueryData = "<LayoutHeader><EmpNo>"
-                                                  + myEmpNo
-                                                  + "</EmpNo><leaveid>"
-                                                  + leaveid
-                                                  + "</leaveid><begindate>"
-                                                  + startLeaveDate.split(" ")[0]
-                                                  + "</begindate><begintime>"
-                                                  + startLeaveDate.split(" ")[1]
-                                                  + "</begintime><enddate>"
-                                                  + endLeaveDate.split(" ")[0]
-                                                  + "</enddate><endtime>"
-                                                  + endLeaveDate.split(" ")[1]
-                                                  + "</endtime><datumdate>"
-                                                  + ((needBaseday == true) ? baseday : '')
-                                                  + "</datumdate></LayoutHeader>";
+                                                    + myEmpNo
+                                                    + "</EmpNo><leaveid>"
+                                                    + leaveid
+                                                    + "</leaveid><begindate>"
+                                                    + startLeaveDate.split(" ")[0]
+                                                    + "</begindate><begintime>"
+                                                    + startLeaveDate.split(" ")[1]
+                                                    + "</begintime><enddate>"
+                                                    + endLeaveDate.split(" ")[0]
+                                                    + "</enddate><endtime>"
+                                                    + endLeaveDate.split(" ")[1]
+                                                    + "</endtime><datumdate>"
+                                                    + ((needBaseday == true) ? baseday : '')
+                                                    + "</datumdate></LayoutHeader>";
                     //console.log(countLeaveHoursByEndQueryData);
-
-                    if(timeoutChangeEnddate != null) {
-                        clearTimeout(timeoutChangeEnddate);
-                        timeoutChangeEnddate = null;
-                    }
-                    timeoutChangeEnddate = setTimeout(function() {
-                        //呼叫API
-                        CountLeaveHoursByEnd();
-                    }, 2000);
+                    CountLeaveHoursByEnd();
+                    
                 }
             } else {
                 $('#endText').text(pleaseSelectStr);
+                $("#endDate").val("");
                 //请假数恢复00
                 $("#leaveDays").text("0");
                 $("#leaveHours").text("0");
@@ -717,13 +868,13 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //開始時間
             $("#startText").text(pleaseSelectStr);
+            $("#startDate").val("");
             startLeaveDate = "";
-            //$("#startDate").val("");
 
             //結束時間
             $("#endText").text(pleaseSelectStr);
+            $("#endDate").val("");
             endLeaveDate = "";
-            //$("#endDate").val("");
 
             //請假理由
             $("#leaveReason").val("");
@@ -731,13 +882,13 @@ $("#viewLeaveSubmit").pagecontainer({
 
             //基準日
             $("#chooseBaseday").text(selectBasedayStr);
+            $("#oldBaseday").val("");
+            $("#newBaseday").val("");
             baseday = "";
 
             //请假数
             $("#leaveDays").text("0");
             $("#leaveHours").text("0");
-            //$("#previewLeaveDays").text("0");
-            //$("#previewLeaveHours").text("0");
         });
 
         //預覽送簽按鈕
