@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="40" id="com.qplay.appactivitiesdev" ios-CFBundleVersion="40" version="1.0.0.40[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="42" id="com.qplay.appactivitiesdev" ios-CFBundleVersion="42" version="1.0.0.42[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Activities</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
     <content src="index.html" />
-    <preference name="Orientation" value="default" />
+    <preference name="orientation" value="portrait" />
     <access origin="*" />
     <access launch-external="yes" origin="tel:*" />
     <allow-navigation href="*" />
@@ -42,6 +42,7 @@
         <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appactivitiesdev&lt;/string&gt;" />
     </plugin>
     <plugin name="cordova-plugin-whitelist" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-Activities-Insurance/plugins/cordova-plugin-whitelist" />
+    <plugin name="cordova-plugin-proguard" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-Activities-Insurance/plugins/cordova-plugin-proguard" />
     <plugin name="phonegap-plugin-mobile-accessibility" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-Activities-Insurance/plugins/phonegap-plugin-mobile-accessibility" />
     <plugin name="cordova-plugin-inappbrowser" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-Activities-Insurance/plugins/cordova-plugin-inappbrowser" />
 </widget>

@@ -275,6 +275,11 @@ function getSignFlow(arr, serial, empname, yn, date, remark) {
         } else if($(yn[i]).html() == "" && $(date[i]).html() !== "") {
             signObj["icon"] = "withdraw.png";
             signObj["statusName"] = withdrawedStr;
+
+        //其他任何狀態都不需要顯示，icon爲空，name爲空
+        } else {
+            signObj["icon"] = "blank.png";
+            signObj["statusName"] = "";
         }
 
         arr.push(signObj);

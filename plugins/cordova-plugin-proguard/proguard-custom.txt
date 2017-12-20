@@ -25,6 +25,9 @@
 #-injars      libs
 #-outjars     bin/classes-processed.jar
 
+# obfuscate org.apache.cordova.qsecurity
+-keep class !org.apache.cordova.qsecurity { *; }
+
 # Using Google's License Verification Library
 -keep class com.android.vending.licensing.ILicensingService
 
