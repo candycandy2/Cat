@@ -102,8 +102,8 @@ function scorllDateInit(upper) {
                 date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);
             }else if((Number(date) + 1) > lastDateOfMonth) {
                 if (month == 12) { 
-                        year++;
-                        month = "01";
+                    year++;
+                    month = "01";
                 }else {
                     month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
                 }
@@ -115,8 +115,8 @@ function scorllDateInit(upper) {
                 date = ((Number(date) + 2) < 10) ? "0"+(Number(date) + 2) : (Number(date) + 2);    
             }else if((Number(date) + 2) > lastDateOfMonth) {
                 if (month == 12) { 
-                        year++;
-                        month = "01";
+                    year++;
+                    month = "01";
                 }else {
                     month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
                 }
@@ -128,8 +128,8 @@ function scorllDateInit(upper) {
                 date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);    
             }else if((Number(date) + 1) > lastDateOfMonth) {
                 if (month == 12) { 
-                        year++;
-                        month = "01";
+                    year++;
+                    month = "01";
                 }else {
                     month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
                 }
