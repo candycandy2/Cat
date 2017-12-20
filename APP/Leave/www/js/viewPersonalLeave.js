@@ -207,6 +207,7 @@ $("#viewPersonalLeave").pagecontainer({
                 myCalendarData = {};
                 myHolidayData = [];
                 var leaveFlag = "3";
+                var holidayFlag = "2";
                 if (data['ResultCode'] === "1") {
                     //length大于0说明有数据，length等于0说明年份不对没有数据
                     if(data['Content'].length > 0) {
@@ -214,7 +215,7 @@ $("#viewPersonalLeave").pagecontainer({
                         var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                         var colorTagArry = $("color", htmlDom);
                         var informationTagArry = $("information", htmlDom);
-    
+
                         for (var day = 1; day <= colorTagArry.length; day++) {
                             if (myCalendarData[$(colorTagArry[day - 1]).html()] === undefined) {
                                 myCalendarData[$(colorTagArry[day - 1]).html()] = [];
@@ -227,6 +228,12 @@ $("#viewPersonalLeave").pagecontainer({
                                 $("#viewPersonalLeave-calendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
                             }
                         }
+
+                        //遍歷假日列表，統一爲藍色
+                        for(var i in myCalendarData[holidayFlag]) {
+                            $("#viewPersonalLeave-calendar #" + myCalendarData[holidayFlag][i]).addClass("weekend");
+                        }
+
                         calendarData = true;
                     } else {
                         calendarData = false;
@@ -949,12 +956,12 @@ $("#viewPersonalLeave").pagecontainer({
                         divWidthPX = parseInt(document.documentElement.clientWidth * 48 / 100, 10);
                         tooltipTop = calendarFirstTrTop;
                     } else if (isWeekend) {
-                        divWidth = "32vw";
-                        divWidthPX = parseInt(document.documentElement.clientWidth * 32 / 100, 10);
+                        divWidth = "26vw";
+                        divWidthPX = parseInt(document.documentElement.clientWidth * 26 / 100, 10);
                         tooltipTop = parseInt(clickTdTop + tooltipMarginTop, 10);
                     } else if (isNormal) {
-                        divWidth = "25vw";
-                        divWidthPX = parseInt(document.documentElement.clientWidth * 25 / 100, 10);
+                        divWidth = "26vw";
+                        divWidthPX = parseInt(document.documentElement.clientWidth * 26 / 100, 10);
                         tooltipTop = parseInt(clickTdTop + tooltipMarginTop, 10);
                     }
     
