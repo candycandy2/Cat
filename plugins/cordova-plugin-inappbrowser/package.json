@@ -10,7 +10,7 @@
         "spec": "1.7.1",
         "type": "version"
       },
-      "/Users/samuel.hsieh/Documents/EnterpriseAPPPlatform/APP/NewQPlay/node_modules"
+      ""
     ]
   ],
   "_from": "cordova-plugin-inappbrowser@1.7.1",
@@ -45,7 +45,7 @@
   "_shasum": "435b43f591fe7bfa95ea98dbe0004841fe59ba51",
   "_shrinkwrap": null,
   "_spec": "cordova-plugin-inappbrowser@1.7.1",
-  "_where": "/Users/samuel.hsieh/Documents/EnterpriseAPPPlatform/APP/NewQPlay/node_modules",
+  "_where": "",
   "author": {
     "name": "Apache Software Foundation"
   },

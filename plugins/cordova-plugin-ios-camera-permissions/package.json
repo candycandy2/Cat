@@ -10,7 +10,7 @@
         "spec": "latest",
         "type": "tag"
       },
-      "/Users/samuel.hsieh/Documents/EnterpriseAPPPlatform/APP/ENS/node_modules"
+      ""
     ]
   ],
   "_from": "cordova-plugin-ios-camera-permissions@latest",
@@ -45,7 +45,7 @@
   "_shasum": "94612c7de5fdcf59b8630057b50739b4909e0ac9",
   "_shrinkwrap": null,
   "_spec": "cordova-plugin-ios-camera-permissions",
-  "_where": "/Users/samuel.hsieh/Documents/EnterpriseAPPPlatform/APP/ENS/node_modules",
+  "_where": "",
   "author": {
     "name": "Andreas Jacob",
     "email": "andreas@cordobo.de",
