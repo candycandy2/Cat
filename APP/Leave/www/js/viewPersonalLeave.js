@@ -5,6 +5,7 @@ var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 //var fulldayHide = false;
 var timoutQueryEmployeeData = null;
+var calendarData = false;
 var quickLeaveList = [];
 var allLeaveList = [];
 var allLeaveCategroyStr = "所有類別";
@@ -202,6 +203,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.QueryCalendarData = function() {
 
             this.successCallback = function(data) {
+                console.log(data);
                 myCalendarData = {};
                 myHolidayData = [];
                 var leaveFlag = "3";
@@ -225,8 +227,9 @@ $("#viewPersonalLeave").pagecontainer({
                                 $("#viewPersonalLeave-calendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
                             }
                         }
+                        calendarData = true;
                     } else {
-                        
+                        calendarData = false;
                     }
                     
 
@@ -909,82 +912,85 @@ $("#viewPersonalLeave").pagecontainer({
         //Calendar Event
         $(document).on({
             click: function(event) {
-                var isLeave = false;
-                var isWeekend = false;
-                var isNormal = false;
-                var dayNumber = $(event.target).prop("id");
-                var divWidth;
-                var divWidthPX;
-                var firstTdWidth;
-                var calendarFirstTr = $(".QPlayCalendar").find("tr:eq(1)")[0];
-                var calendarFirstTrTop = $(calendarFirstTr).position().top;
-                var tooltipMarginTop = parseInt(document.documentElement.clientWidth * 1.724 / 100, 10);
-                calendarFirstTrTop = parseInt(calendarFirstTrTop + tooltipMarginTop, 10);
-                var clickTdTop = $(event.target).parent().position().top;
-                var tooltipTop;
-
-                //Leave
-                if ($(event.target).parent().hasClass("leave")) {
-                    isLeave = true;
-                }
-
-                //Weekend
-                if ($(event.target).parent().hasClass("weekend")) {
-                    isWeekend = true;
-                }
-
-                //Normal
-                if (!isLeave && !isWeekend) {
-                    isNormal = true;
-                }
-
-                if (isLeave) {
-                    divWidth = "48vw";
-                    firstTdWidth = "24vw";
-                    divWidthPX = parseInt(document.documentElement.clientWidth * 48 / 100, 10);
-                    tooltipTop = calendarFirstTrTop;
-                } else if (isWeekend) {
-                    divWidth = "32vw";
-                    divWidthPX = parseInt(document.documentElement.clientWidth * 32 / 100, 10);
-                    tooltipTop = parseInt(clickTdTop + tooltipMarginTop, 10);
-                } else if (isNormal) {
-                    divWidth = "25vw";
-                    divWidthPX = parseInt(document.documentElement.clientWidth * 25 / 100, 10);
-                    tooltipTop = parseInt(clickTdTop + tooltipMarginTop, 10);
-                }
-
-                //Tooltip position: left / right
-                var dayIndexInWeek = $(event.target).parent().index(); //0,1,2,3,4,5,6
-                var tooltipPosition = "right";
-                var tooltipHorizontalPosition;
-                var tdLeft = $(event.target).position().left;
-                var tdWidth = $(event.target).width();
-                var tdPaddingY = parseInt(document.documentElement.clientWidth * 1.53 / 100, 10);
-                var tooltipMarginY = parseInt(document.documentElement.clientWidth * 2.81 / 100, 10);
-
-                if (dayIndexInWeek >= 3) {
-                    tooltipPosition = "left";
-                }
-
-                if (tooltipPosition === "left") {
-                    tooltipHorizontalPosition = "left:" + parseInt(tdLeft - divWidthPX - tdPaddingY - tooltipMarginY, 10) + "px;";
-                } else {
-                    tooltipHorizontalPosition = "left:" + parseInt(tdLeft + tdWidth - tdPaddingY * 2 + tooltipMarginY, 10) + "px;";
-                }
-
-                $(".tooltip").remove();
-                $("#viewPersonalLeave").append('<div class="tooltip" style="width:' + divWidth + '; top:' + tooltipTop + 'px; ' + tooltipHorizontalPosition + '">' + myHolidayData[dayNumber] + '</div>');
-
-                if (isLeave) {
-                    $(".tooltip").find("table").css({
-                        "width": divWidth,
-                        "line-height": "1.2"
-                    });
-
-                    $(".tooltip").find("table").each(function(index, dom) {
-                        $(dom).find("td:eq(0)").css("width", firstTdWidth);
-                    });
-                }
+                //只有當calendar=true有數據時才添加 tooltip
+                if(calendarData) {
+                    var isLeave = false;
+                    var isWeekend = false;
+                    var isNormal = false;
+                    var dayNumber = $(event.target).prop("id");
+                    var divWidth;
+                    var divWidthPX;
+                    var firstTdWidth;
+                    var calendarFirstTr = $(".QPlayCalendar").find("tr:eq(1)")[0];
+                    var calendarFirstTrTop = $(calendarFirstTr).position().top;
+                    var tooltipMarginTop = parseInt(document.documentElement.clientWidth * 1.724 / 100, 10);
+                    calendarFirstTrTop = parseInt(calendarFirstTrTop + tooltipMarginTop, 10);
+                    var clickTdTop = $(event.target).parent().position().top;
+                    var tooltipTop;
+    
+                    //Leave
+                    if ($(event.target).parent().hasClass("leave")) {
+                        isLeave = true;
+                    }
+    
+                    //Weekend
+                    if ($(event.target).parent().hasClass("weekend")) {
+                        isWeekend = true;
+                    }
+    
+                    //Normal
+                    if (!isLeave && !isWeekend) {
+                        isNormal = true;
+                    }
+    
+                    if (isLeave) {
+                        divWidth = "48vw";
+                        firstTdWidth = "24vw";
+                        divWidthPX = parseInt(document.documentElement.clientWidth * 48 / 100, 10);
+                        tooltipTop = calendarFirstTrTop;
+                    } else if (isWeekend) {
+                        divWidth = "32vw";
+                        divWidthPX = parseInt(document.documentElement.clientWidth * 32 / 100, 10);
+                        tooltipTop = parseInt(clickTdTop + tooltipMarginTop, 10);
+                    } else if (isNormal) {
+                        divWidth = "25vw";
+                        divWidthPX = parseInt(document.documentElement.clientWidth * 25 / 100, 10);
+                        tooltipTop = parseInt(clickTdTop + tooltipMarginTop, 10);
+                    }
+    
+                    //Tooltip position: left / right
+                    var dayIndexInWeek = $(event.target).parent().index(); //0,1,2,3,4,5,6
+                    var tooltipPosition = "right";
+                    var tooltipHorizontalPosition;
+                    var tdLeft = $(event.target).position().left;
+                    var tdWidth = $(event.target).width();
+                    var tdPaddingY = parseInt(document.documentElement.clientWidth * 1.53 / 100, 10);
+                    var tooltipMarginY = parseInt(document.documentElement.clientWidth * 2.81 / 100, 10);
+    
+                    if (dayIndexInWeek >= 3) {
+                        tooltipPosition = "left";
+                    }
+    
+                    if (tooltipPosition === "left") {
+                        tooltipHorizontalPosition = "left:" + parseInt(tdLeft - divWidthPX - tdPaddingY - tooltipMarginY, 10) + "px;";
+                    } else {
+                        tooltipHorizontalPosition = "left:" + parseInt(tdLeft + tdWidth - tdPaddingY * 2 + tooltipMarginY, 10) + "px;";
+                    }
+    
+                    $(".tooltip").remove();
+                    $("#viewPersonalLeave").append('<div class="tooltip" style="width:' + divWidth + '; top:' + tooltipTop + 'px; ' + tooltipHorizontalPosition + '">' + myHolidayData[dayNumber] + '</div>');
+    
+                    if (isLeave) {
+                        $(".tooltip").find("table").css({
+                            "width": divWidth,
+                            "line-height": "1.2"
+                        });
+    
+                        $(".tooltip").find("table").each(function(index, dom) {
+                            $(dom).find("td:eq(0)").css("width", firstTdWidth);
+                        });
+                    }
+                }      
 
             }
         }, ".QPlayCalendar");
