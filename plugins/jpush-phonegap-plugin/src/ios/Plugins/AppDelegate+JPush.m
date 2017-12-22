@@ -28,29 +28,36 @@
     return [self init_plus];
 }
 
--(void)fireOpenNotification:(NSTimer*)timer{
-    if (SharedJPushPlugin) {
-        [JPushPlugin fireDocumentEvent:JPushDocumentEvent_OpenNotification jsString:[timer.userInfo toJsonString]];
-        [timer invalidate];
-    }
-}
-
 NSDictionary *_launchOptions;
 -(void)applicationDidLaunch:(NSNotification *)notification{
 
+    if (!_jpushEventCache) {
+        _jpushEventCache = @{}.mutableCopy;
+    }
 
+    [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
+      NSDictionary *event = @{@"registrationId": registrationID?:@""};
+      [JPushPlugin fireDocumentEvent:JPushDocumentEvent_receiveRegistrationId jsString:[event toJsonString]];
+    }];
+  
     if (notification) {
         if (notification.userInfo) {
-            NSDictionary *userInfo1 = [notification.userInfo valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-            if (userInfo1.count > 0) {
-                [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(fireOpenNotification:) userInfo:userInfo1 repeats:YES];
-            }
-
-            NSDictionary *userInfo2 = [notification.userInfo valueForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-            if (userInfo2.count > 0) {
-                [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(fireOpenNotification:) userInfo:userInfo2 repeats:YES];
-            }
+          
+          if ([notification.userInfo valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey]) {
+            [JPushPlugin fireDocumentEvent:JPushDocumentEvent_OpenNotification jsString:[notification.userInfo toJsonString]];
+          }
+          
+          if ([notification.userInfo valueForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
+            UILocalNotification *localNotification = [notification.userInfo valueForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+            
+            NSDictionary* localNotificationEvent = @{@"content":localNotification.alertBody,
+                                                     @"badge": @(localNotification.applicationIconBadgeNumber),
+                                                     @"extras":localNotification.userInfo,
+                                                     };
+            [JPushPlugin fireDocumentEvent:JPushDocumentEvent_OpenNotification jsString:[localNotificationEvent toJsonString]];
+          }
         }
+      
         [JPUSHService setDebugMode];
 
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:JPushConfig_FileName ofType:@"plist"];
@@ -68,6 +75,11 @@ NSDictionary *_launchOptions;
 -(void)startJPushSDK{
     [self registerForRemoteNotification];
     [JPushPlugin setupJPushSDK:_launchOptions];
+}
+
+- (void)jpushSDKDidLoginNotification {
+  NSDictionary *event = @{@"registrationId": JPUSHService.registrationID};
+  [JPushPlugin fireDocumentEvent:JPushDocumentEvent_receiveRegistrationId jsString:[event toJsonString]];
 }
 
 -(void)registerForRemoteNotification{
@@ -141,7 +153,12 @@ NSDictionary *_launchOptions;
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    [[NSNotificationCenter defaultCenter] postNotificationName:JPushDocumentEvent_ReceiveLocalNotification object:notification.userInfo];
+  NSDictionary* localNotificationEvent = @{@"content":notification.alertBody,
+                                           @"badge": @(notification.applicationIconBadgeNumber),
+                                           @"extras":notification.userInfo,
+                                           };
+  
+    [[NSNotificationCenter defaultCenter] postNotificationName:JPushDocumentEvent_ReceiveLocalNotification object:localNotificationEvent];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
