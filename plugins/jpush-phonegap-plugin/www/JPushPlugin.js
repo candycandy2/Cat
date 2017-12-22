@@ -70,26 +70,87 @@ JPushPlugin.prototype.clearLocalNotifications = function () {
   }
 }
 
-JPushPlugin.prototype.setTagsWithAlias = function (tags, alias, successCallback, errorCallback) {
-  if (tags == null) {
-    this.setAlias(alias)
-    return
-  }
-  if (alias == null) {
-    this.setTags(tags)
-    return
-  }
-  var arrayTagWithAlias = [tags]
-  arrayTagWithAlias.unshift(alias)
-  this.callNative('setTagsWithAlias', arrayTagWithAlias, successCallback, errorCallback)
+/**
+ * 设置标签。
+ * 注意：该接口是覆盖逻辑，而不是增量逻辑。即新的调用会覆盖之前的设置。
+ * 
+ * @param params = { 'sequence': number, 'tags': ['tag1', 'tag2'] }
+ */
+JPushPlugin.prototype.setTags = function (params, successCallback, errorCallback) {
+  this.callNative('setTags', [params], successCallback, errorCallback)
 }
 
-JPushPlugin.prototype.setTags = function (tags, successCallback, errorCallback) {
-  this.callNative('setTags', tags, successCallback, errorCallback)
+/**
+ * 新增标签。
+ * 
+ * @param params = { 'sequence': number, 'tags': ['tag1', 'tag2'] }
+ */
+JPushPlugin.prototype.addTags = function (params, successCallback, errorCallback) {
+  this.callNative('addTags', [params], successCallback, errorCallback)
 }
 
-JPushPlugin.prototype.setAlias = function (alias, successCallback, errorCallback) {
-  this.callNative('setAlias', [alias], successCallback, errorCallback)
+/**
+ * 删除指定标签。
+ * 
+ * @param params = { 'sequence': number, 'tags': ['tag1', 'tag2'] }
+ */
+JPushPlugin.prototype.deleteTags = function (params, successCallback, errorCallback) {
+  this.callNative('deleteTags', [params], successCallback, errorCallback)
+}
+
+/**
+ * 清除所有标签。
+ * 
+ * @param params = { 'sequence': number }
+ */
+JPushPlugin.prototype.cleanTags = function (params, successCallback, errorCallback) {
+  this.callNative('cleanTags', [params], successCallback, errorCallback)
+}
+
+/**
+ * 查询所有标签。
+ * 
+ * @param params = { 'sequence': number }
+ */
+JPushPlugin.prototype.getAllTags = function (params, successCallback, errorCallback) {
+  this.callNative('getAllTags', [params], successCallback, errorCallback)
+}
+
+/**
+ * 查询指定标签与当前用户的绑定状态。
+ * 
+ * @param params = { 'sequence': number, 'tag': string }
+ */
+JPushPlugin.prototype.checkTagBindState = function (params, successCallback, errorCallback) {
+  this.callNative('checkTagBindState', [params], successCallback, errorCallback)
+}
+
+/**
+ * 设置别名。
+ * 注意：该接口是覆盖逻辑，而不是增量逻辑。即新的调用会覆盖之前的设置。
+ * 
+ * @param params = { 'sequence': number, 'alias': string }
+ */
+JPushPlugin.prototype.setAlias = function (params, successCallback, errorCallback) {
+  this.callNative('setAlias', [params], successCallback, errorCallback)
+}
+
+/**
+ * 删除别名。
+ * 
+ * @param params = { 'sequence': number }
+ */
+JPushPlugin.prototype.deleteAlias = function (params, successCallback, errorCallback) {
+  this.callNative('deleteAlias', [params], successCallback, errorCallback)
+}
+
+/**
+ * 查询当前绑定的别名。
+ * 
+ * @param params = { 'sequence': number }
+ */
+JPushPlugin.prototype.getAlias = function (params, successCallback, errorCallback) {
+  this.callNative('getAlias', [params], successCallback, errorCallback)
 }
 
 // 判断系统设置中是否对本应用启用通知。
@@ -236,21 +297,18 @@ JPushPlugin.prototype.receiveRegistrationIdInAndroidCallback = function (data) {
 
 JPushPlugin.prototype.receiveMessageInAndroidCallback = function (data) {
   data = JSON.stringify(data)
-  console.log('JPushPlugin:receiveMessageInAndroidCallback: ' + data)
   this.receiveMessage = JSON.parse(data)
   cordova.fireDocumentEvent('jpush.receiveMessage', this.receiveMessage)
 }
 
 JPushPlugin.prototype.openNotificationInAndroidCallback = function (data) {
   data = JSON.stringify(data)
-  console.log('JPushPlugin:openNotificationInAndroidCallback: ' + data)
   this.openNotification = JSON.parse(data)
   cordova.fireDocumentEvent('jpush.openNotification', this.openNotification)
 }
 
 JPushPlugin.prototype.receiveNotificationInAndroidCallback = function (data) {
   data = JSON.stringify(data)
-  console.log('JPushPlugin:receiveNotificationInAndroidCallback: ' + data)
   this.receiveNotification = JSON.parse(data)
   cordova.fireDocumentEvent('jpush.receiveNotification', this.receiveNotification)
 }
@@ -290,16 +348,6 @@ JPushPlugin.prototype.removeLocalNotification = function (notificationID) {
 JPushPlugin.prototype.reportNotificationOpened = function (msgID) {
   if (device.platform === 'Android') {
     this.callNative('reportNotificationOpened', [msgID], null)
-  }
-}
-
-/**
- *是否开启统计分析功能，用于“用户使用时长”，“活跃用户”，“用户打开次数”的统计，并上报到服务器上，
- *在 Portal 上展示给开发者。
- */
-JPushPlugin.prototype.setStatisticsOpen = function (mode) {
-  if (device.platform === 'Android') {
-    this.callNative('setStatisticsOpen', [mode], null)
   }
 }
 
