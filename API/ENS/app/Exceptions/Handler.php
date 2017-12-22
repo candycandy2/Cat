@@ -90,9 +90,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if(\Config('app.debug')){
+            return parent::render($request, $e);
+        }
         $result = ['ResultCode'=>ResultCode::_014999_unknownError,'Content'=>""];
         $result = response()->json($result);
         return $result;
-       //return parent::render($request, $e);
     }
 }
