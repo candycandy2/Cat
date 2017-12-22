@@ -378,7 +378,17 @@ $(document).one("pagebeforecreate", function() {
             }
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
         } else if (device.platform === "iOS") {
-            if (versionCompare(device.version, "11.0", "") === 1) {} else {
+            var ratio = window.devicePixelRatio || 1;
+            var screen = {
+                width : window.screen.width * ratio,
+                height : window.screen.height * ratio
+            };
+            if (screen.width === 1125 && screen.height === 2001) { 
+                $('meta[name=viewport]').attr('content', 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover');
+            }
+            else if (versionCompare(device.version, "11.0", "") === 1) {
+                
+            } else {
                 $('.page-header').addClass('ios-fix-overlap');
                 $('.ios-fix-overlap-div').css('display', 'block');
             }
