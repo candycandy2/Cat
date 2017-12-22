@@ -12,6 +12,7 @@ use App\lib\ResultCode;
 use App\Jobs\SendErrorMail;
 use App\Jobs\SendErrorMailExecption;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Support\Facades\Log;
 use Mail;
 use Config;
 use Request;
@@ -76,7 +77,7 @@ class Handler extends ExceptionHandler
                 }
             }
         }catch (\Exception $e){
-            Log::error($e);
+           Log::error($e->getMessage());
         }
     }
 
