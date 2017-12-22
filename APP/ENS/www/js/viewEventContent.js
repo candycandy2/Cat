@@ -717,6 +717,15 @@ $("#viewEventContent").pagecontainer({
             $("#msgText").val("");
 
             chatRoom.resetBadge();
+
+            //Chagne Action Title
+            if (projectName === "ITS") {
+                $(".langStr023").show();
+                $(".langStr007").hide();
+            } else if (projectName === "RM") {
+                $(".langStr023").hide();
+                $(".langStr007").show();
+            }
         });
         /********************************** dom event *************************************/
 
