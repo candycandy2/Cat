@@ -467,10 +467,18 @@ class ChatRoomController extends Controller
             $empNo = $this->data['emp_no'];
             $userName = $this->userService->getUserData($empNo)->login_id;
             $response =$this->chatRoomService->getUserGroups($userName);
+
             if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
                 throw new JMessageException($response->message);
             }else if(isset($response->error->code)){
                 throw new JMessageException($response->error->message);
+            }
+            
+            foreach ($response as $key => $chatroom) {
+               $res = $this->chatRoomService->getChatroom($chatroom->gid);
+               if(is_null($res)){
+                 unset($response[$key]);
+               }
             }
              return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",

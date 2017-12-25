@@ -58,13 +58,14 @@ class CommonUtil{
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_TIMEOUT_MS, $api_max_exe_time);
-
         if( ! $result = curl_exec($curl)) 
         { 
             $errno = curl_errno($curl);
             $result = json_encode(['error'=>$errno,'message'=>curl_strerror($errno)]);
+            curl_close($curl);
             return  $result;
         }
+        curl_close($curl);
         return $result;
     }
 
