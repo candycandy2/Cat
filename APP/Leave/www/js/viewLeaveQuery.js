@@ -320,7 +320,7 @@ $("#viewLeaveQuery").pagecontainer({
                     '<span>' + leaveListArr[i]["cancelname"] + '</span>' +
                     '<img src="img/more.png">' +
                     '</div>' +
-                    '<div class="leave-query-base font-style10">' +
+                    '<div class="leave-query-base font-style11">' +
                     '<div class="leave-query-basedata">' +
                     '<div>' +
                     '<span>請假單號：</span>' +
