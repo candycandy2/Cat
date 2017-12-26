@@ -312,7 +312,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                                             '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
                                             '<img src="img/more.png">' +
                                         '</div>' +
-                                        '<div class="backLeave-query-base font-style10">' +
+                                        '<div class="backLeave-query-base font-style11">' +
                                             '<div class="backLeave-query-basedata">' +
                                                 '<div>' +
                                                     '<span>銷假單號：</span>' +
