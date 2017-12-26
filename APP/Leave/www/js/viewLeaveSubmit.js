@@ -263,7 +263,9 @@ $("#viewLeaveSubmit").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function(data) {
+                loadingMask("hide");
+            };
 
             var __construct = function() {
                 CustomAPI("POST", true, "SendLeaveApplicationData", self.successCallback, self.failCallback, sendApplyLeaveQueryData, "");
@@ -905,6 +907,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 $('#viewLeaveSubmit .leaveMenu').hide();
                 $('.apply-preview').show();
                 $('#backMain').show();
+                $("#applyBtn").show();
             }
         });
 
@@ -924,6 +927,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //確定送簽
         $("#confirmSendLeave").on("click", function() {
+            $("#applyBtn").hide();
             loadingMask("show");
             sendApplyLeaveQueryData = '<LayoutHeader><empno>' +
                 myEmpNo +
