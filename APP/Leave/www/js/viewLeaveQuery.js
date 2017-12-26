@@ -128,8 +128,6 @@ $("#viewLeaveQuery").pagecontainer({
                     var reasons = $("reason", htmlDom);
                     var datumdate = $("datumdate", htmlDom);
                     var filestatus = $("filestatus", htmlDom);
-                    // var begindate = $("begindate", htmlDom);
-                    // var enddate = $("enddate", htmlDom);
 
                     //根据代理人工号，查找代理人姓名
                     queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>' +
