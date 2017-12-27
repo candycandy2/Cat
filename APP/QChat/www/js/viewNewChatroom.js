@@ -28,6 +28,7 @@ $("#viewNewChatroom").pagecontainer({
                     //Check if user in friend list
                     var friendCount = 0;
                     var friendArray = [];
+
                     for (var i=0; i<JM.data.chatroom_friend.length; i++) {
                         if (JM.data.chatroom_friend[i].toLowerCase().indexOf(string.toLowerCase()) != -1) {
                             friendArray.push(JM.data.chatroom_friend[i]);
@@ -35,7 +36,20 @@ $("#viewNewChatroom").pagecontainer({
                         }
                     }
 
-                    if (resultCode === "1") {
+                    if (resultCode === "1" || resultCode === "025998") {
+
+                        if (resultCode === "1") {
+                            var userListCount = data['Content'].user_list.length;
+                        } else if (resultCode === "025998") {
+                            var userListCount = 0;
+                        }
+
+                        var dataCount = userListCount + friendCount;
+                    } else {
+                        var dataCount = 0;
+                    }
+
+                    if (dataCount > 0) {
 
                         //check download time
                         var nowDateTime = new Date();
@@ -48,14 +62,15 @@ $("#viewNewChatroom").pagecontainer({
                         });
 
                         //store data in local storage
-                        var dataCount = data['Content'].user_list.length + friendCount;
                         var friendIndex = 0;
 
                         for (var i=0; i<dataCount; i++) {
 
-                            var userData = data['Content'].user_list[i];
+                            if (userListCount > 0) {
+                                var userData = data['Content'].user_list[i];
+                            }
 
-                            if ((i+1) > data['Content'].user_list.length) {
+                            if ((i+1) > userListCount) {
                                 if (friendArray[friendIndex] != null) {
                                     var userData = {};
                                     userData.name = friendArray[friendIndex];
@@ -85,7 +100,7 @@ $("#viewNewChatroom").pagecontainer({
 
                         JM.updateLocalStorage();
 
-                    } else if (resultCode === "025998") {
+                    } else if (dataCount == 0) {
                         //no data
                         if (view === "viewNewChatroom") {
                             userListView(0);
@@ -547,7 +562,7 @@ $("#viewNewChatroom").pagecontainer({
                     $("#searchUserClearContent").show();
 
                     getQList("1", "viewNewChatroom", text);
-                    setCreateChatroomButton("disable");
+                    checkSelectedUser();
                 }
 
             }

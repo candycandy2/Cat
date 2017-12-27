@@ -109,8 +109,7 @@ function getLeaveByCategory() {
     $("#chooseBaseday").text(selectBasedayStr);
     $("#oldBaseday").val("");
     $("#newBaseday").val("");
-    //$("#endText").text(pleaseSelectStr);
-    //$("#endDate").val("");
+
     leaveid = "";
     leaveType = "";
     baseday = "";
@@ -138,17 +137,10 @@ $("#viewLeaveSubmit").pagecontainer({
                 $('#uploadAttachment').hide();
             }
 
-            //basedate
-            //$("#chooseBaseday").text(selectBasedayStr);
-            //$("#oldBaseday").val("");
-            //$("#newBaseday").val("");
             $('#baseDate').show();
             $('#divEmpty').show();
             needBaseday = true;
 
-            //enddate
-            //$("#endText").text(pleaseSelectStr);
-            //$("#endDate").val("");
             $("#leaveDays").text("0");
             $("#leaveHours").text("0");
         }
