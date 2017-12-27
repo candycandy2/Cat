@@ -56,9 +56,10 @@
     height: 5VH;
     font-size: 2.5VH;
     font-family: Arial;
-    font-weight: 500;
+    font-weight: 300;
     line-height: 5.6VH;
     text-align: center;
+    background-color: #FFFFFF;
     padding: 0px;
 }
 
@@ -493,7 +494,7 @@ html body .ui-group-theme-a a:visited {
 }
 
 .apply-leave-count {
-    height: 10.83vw;
+    height: 11.5vw;
     color: #0f0f0f;
     border-bottom: 1px solid #d6d6d6;
 }
@@ -691,6 +692,7 @@ html body .ui-group-theme-a a:visited {
     height: 32vw;
     border: 0.1vh solid #d6d6d6;
     border-radius: 8px;
+    background-color: #fff;
 }
 
 .leave-query-list>div:nth-of-type(2),
@@ -840,17 +842,17 @@ html body .ui-group-theme-a a:visited {
 }
 
 .sign-icon {
-    width: 13vw;
+    width: 10.18vw;
 }
 
 .sign-icon img {
-    width: 5vw;
-    height: 5vw;
+    width: 4.18vw;
+    height: 4.18vw;
     margin-left: 3vw;
 }
 
 .sign-name {
-    width: 47vw;
+    width: 49vw;
 }
 
 .sign-name>div:nth-of-type(1) {
@@ -901,7 +903,7 @@ html body .ui-group-theme-a a:visited {
 
 .signStateFlow>.ui-content>.footer,
 .signIngFlow>.ui-content>.footer {
-    margin-top: 10% !important;
+    margin-top: 5% !important;
 }
 
 #leaveWithdraw,

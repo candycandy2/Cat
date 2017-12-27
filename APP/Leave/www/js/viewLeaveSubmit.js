@@ -237,8 +237,8 @@ $("#viewLeaveSubmit").pagecontainer({
                     if ($(success).html() != undefined) {
                         //如果送签成功，重新获取请假单列表，并跳转到“请假单查询”页，并记录代理人到local端
                         $("#backMain").click();
-                        changePageByPanel("viewLeaveQuery");
                         QueryEmployeeLeaveApplyForm();
+                        changePageByPanel("viewLeaveQuery"); 
                         $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyLeaveForm").trigger("click");
@@ -949,7 +949,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 ((editLeaveForm == false) ? '' : leaveDetailObj['formid']) +
                 '</formid></LayoutHeader>';
 
-            //console.log(sendApplyLeaveQueryData);
+            console.log(sendApplyLeaveQueryData);
             //呼叫API
             SendApplyLeaveData();
         });

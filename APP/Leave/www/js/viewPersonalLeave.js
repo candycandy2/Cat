@@ -454,12 +454,12 @@ $("#viewPersonalLeave").pagecontainer({
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var quickSuccess = $("success", htmlDom);
-                    var quickError = $("error", htmlDom);
-                    var applyDays = $("ApplyDays", htmlDom);
-                    var applyHours = $("ApplyHours", htmlDom);
 
                     //如果请假时数计算成功则直接可以申请快速请假
                     if ($(quickSuccess).html() != undefined) {
+                        var applyDays = $("ApplyDays", htmlDom);
+                        var applyHours = $("ApplyHours", htmlDom);
+
                         sendLeaveApplicationData = "<LayoutHeader><empno>" +
                             myEmpNo +
                             "</empno><delegate>" +
@@ -490,6 +490,7 @@ $("#viewPersonalLeave").pagecontainer({
                         SendLeaveApplicationData();
                     } else {
                         loadingMask("hide");
+                        var quickError = $("error", htmlDom);
                         var msgContent = $(quickError).html();
                         $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.applyLeaveFail');
@@ -508,18 +509,20 @@ $("#viewPersonalLeave").pagecontainer({
         window.SendLeaveApplicationData = function() {
 
             this.successCallback = function(data) {
-                //console.log(data);
+                console.log(data);
                 if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var success = $("success", htmlDom);
                     if ($(success).html() != undefined) {
+                        //请假成功清除内容，不包括代理人
+                        clearLeaveDataAfterSend();
                         //如果送签成功，重新获取请假单列表，并跳转到“请假单查询”页，并记录代理人到local端
+                        $("#leaveConfirm").addClass("btn-disable");
+                        $("#leaveConfirm").removeClass("btn-enable");
                         QueryEmployeeLeaveApplyForm();
                         changePageByPanel("viewLeaveQuery");
                         $(".toast-style").fadeIn(100).delay(2000).fadeOut(100);
-                        //请假成功清除内容，不包括代理人
-                        clearLeaveDataAfterSend();
                         //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
                         localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
                     } else {
@@ -699,17 +702,17 @@ $("#viewPersonalLeave").pagecontainer({
                 $("#infoTitle-1").find(".listDown").attr("src", "img/list_up.png");
             } else if ($("#infoContent-1").css("display") === "block") {
                 $("#infoContent-1").slideUp(500);
-                $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png")
+                $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png");
             }
         });
 
         $("#infoTitle-3").on("click", function() {
             if ($("#infoContent-3").css("display") === "none") {
                 $("#infoContent-3").slideDown(500);
-                $("#infoTitle-3").find(".listDown").attr("src", "img/list_up.png")
+                $("#infoTitle-3").find(".listDown").attr("src", "img/list_up.png");
             } else if ($("#infoContent-3").css("display") === "block") {
                 $("#infoContent-3").slideUp(500);
-                $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png")
+                $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png");
             }
         });
 
