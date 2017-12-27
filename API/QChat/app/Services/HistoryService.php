@@ -265,13 +265,13 @@ class HistoryService
                         'fname'=>'',
                         'format'=>'');
         $curl = curl_init($url);
-
+        if(Config::get("app.env") == "local"){
          //add for Develop
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
-        curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
-        curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:2');
-
+         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
+         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
+         curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
+         curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
+        }
         curl_setopt($curl, CURLOPT_TIMEOUT_MS, $api_max_exe_time);
         curl_setopt($curl, CURLOPT_WRITEHEADER, $headerBuff);
         curl_setopt($curl, CURLOPT_FILE, $fileTarget);
