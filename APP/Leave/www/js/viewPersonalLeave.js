@@ -54,7 +54,8 @@ $("#viewPersonalLeave").pagecontainer({
         function getQuickLeaveList() {
             //初始化
             leaveTypeData["option"] = [];
-            $("#leaveType").empty();
+            $("#leaveType-popup").remove();
+            $("#leaveType-popup-option-placeholder").remove();
             $("#leaveType-popup-option-popup").remove();
 
             for (var i = 0; i < quickLeaveList.length; i++) {
@@ -65,6 +66,9 @@ $("#viewPersonalLeave").pagecontainer({
 
             //生成快速请假dropdownlist
             tplJS.DropdownList("viewPersonalLeave", "leaveType", "prepend", "typeB", leaveTypeData);
+
+            //清空dropdownlist后面的span
+            $("#leaveType > span:nth-of-type(1)").text("");
         }
 
         //请假申请页面——获取所有类别
@@ -168,29 +172,17 @@ $("#viewPersonalLeave").pagecontainer({
                     $('#uploadAttachment').hide();
                 }
 
-                //basedate
-                //$("#chooseBaseday").text(selectBasedayStr);
-                //$("#oldBaseday").val("");
-                //$("#newBaseday").val("");
                 $('#baseDate').hide();
                 $('#divEmpty').hide();
                 needBaseday = false;
             }
 
-            //enddate
-            //$("#endText").text(pleaseSelectStr);
-            //$("#endDate").val("");
-            //$("#leaveDays").text("0");
-            //$("#leaveHours").text("0");
         }
 
         //送签成功恢复初始状态
         function clearLeaveDataAfterSend() {
-            //假别
-            var leaveOption = '<option hidden>' + pleaseSelectStr + '</option>';
-            $("#leaveType-popup").find("option").remove().end().append(agentOption);
-            tplJS.reSizeDropdownList("leaveType-popup", "typeB");
-            $("#leaveType-popup").next().text("");
+            //假别恢复初始状态
+            getQuickLeaveList();
 
             //请假日期
             $("#leaveDate a:eq(0)").click();
@@ -497,12 +489,11 @@ $("#viewPersonalLeave").pagecontainer({
                         //呼叫API
                         SendLeaveApplicationData();
                     } else {
+                        loadingMask("hide");
                         var msgContent = $(quickError).html();
                         $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.applyLeaveFail');
-                    }
-
-                    loadingMask("hide");
+                    }                    
                 }
             };
 
@@ -520,12 +511,6 @@ $("#viewPersonalLeave").pagecontainer({
                 //console.log(data);
                 if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
-
-                    // if (callbackData.indexOf("error") > 0) {
-                    //     //$('.applyLeaveFail').find('.main-paragraph').html("假單送簽失敗");
-                    //     $('.applyLeaveFail').find('.main-paragraph').html(langStr["str_073"]);
-                    //     popupMsgInit('.applyLeaveFail');
-                    // } else {
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var success = $("success", htmlDom);
                     if ($(success).html() != undefined) {
@@ -543,7 +528,7 @@ $("#viewPersonalLeave").pagecontainer({
                         $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.applyLeaveFail');
                     }
-                    // }
+
                     loadingMask("hide");
                 }
             };
@@ -761,6 +746,7 @@ $("#viewPersonalLeave").pagecontainer({
 
         $("#leaveConfirm").on("click", function() {
             if ($("#leaveConfirm").hasClass("btn-enable")) {
+                loadingMask("show");
                 countLeaveHoursQueryData = "<LayoutHeader><EmpNo>" +
                     myEmpNo +
                     "</EmpNo><leaveid>" +
