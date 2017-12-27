@@ -97,7 +97,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
                     //补全另一部分详情
                     backLeaveDetailObj["applydate"] = $(applydate).html().split(" ")[0];
-                    backLeaveDetailObj["reason"] = $(reasons).html();
+                    backLeaveDetailObj["reason"] = $.trim($(reasons).html());
                     backLeaveDetailObj["refleaveformid"] = $(refleaveformid).html();
                     backLeaveDetailObj["refleaveformno"] = $(refleaveformno).html();
 
@@ -261,7 +261,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                     $("#leaveEndTime").text($(endtime).html());
                     $("#leaveApplyDays").text(($(leavedays).html().split(".")[1] == "0") ? $(leavedays).html().split(".")[0] : $(leavedays).html());
                     $("#leaveApplyHours").text(($(leavehours).html().split(".")[1] == "0") ? $(leavehours).html().split(".")[0] : $(leavehours).html());
-                    $("#leaveApplyReason").text($(reasons).html());
+                    $("#leaveApplyReason").text($.trim($(reasons).html()));
 
                     // //2.回傳簽核流程
                     var approveData = data['Content'][0]["approverecord"];
@@ -312,7 +312,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                                             '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
                                             '<img src="img/more.png">' +
                                         '</div>' +
-                                        '<div class="backLeave-query-base font-style10">' +
+                                        '<div class="backLeave-query-base font-style11">' +
                                             '<div class="backLeave-query-basedata">' +
                                                 '<div>' +
                                                     '<span>銷假單號：</span>' +
