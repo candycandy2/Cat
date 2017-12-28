@@ -33,11 +33,7 @@
   "cordova": {
     "id": "cordova-plugin-splashscreen",
     "platforms": [
-      "android",
-      "ubuntu",
-      "ios",
-      "windows",
-      "browser"
+      "ios"
     ]
   },
   "deprecated": false,
