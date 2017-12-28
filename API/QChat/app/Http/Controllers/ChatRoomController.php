@@ -474,12 +474,6 @@ class ChatRoomController extends Controller
                 throw new JMessageException($response->error->message);
             }
             
-            foreach ($response as $key => $chatroom) {
-               $res = $this->chatRoomService->getChatroom($chatroom->gid);
-               if(is_null($res)){
-                 unset($response[$key]);
-               }
-            }
              return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
                         'Content'=> $response ]);
