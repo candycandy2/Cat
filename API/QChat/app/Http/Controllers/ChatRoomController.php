@@ -271,7 +271,7 @@ class ChatRoomController extends Controller
                 $response = $this->chatRoomService->addGroupMember($groupId, $destArr);
                 if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
                     throw new JMessageException($response->message);
-                }else if(isset($response->error->code)){
+                }else if(isset($response->error->code) && $response->error->code != '899011' ){//Repeat to add the members
                     throw new JMessageException($response->error->message);
                 }
             }
@@ -367,7 +367,7 @@ class ChatRoomController extends Controller
                 $response = $this->chatRoomService->removeGroupMember($groupId, $destArr);
                 if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
                     throw new JMessageException($response->message);
-                }else if(isset($response->error->code)){
+                }else if(isset($response->error->code) && $response->error->code != '899014'){
                     throw new JMessageException($response->error->message);
                 }
             }
