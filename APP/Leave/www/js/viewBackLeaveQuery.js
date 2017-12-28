@@ -6,14 +6,14 @@ var signToWithdrawReason;
 
 $("#viewBackLeaveQuery").pagecontainer({
     create: function(event, ui) {
-        
+
         /********************************** function *************************************/
         //獲取銷假單列表——<LayoutHeader><EmpNo>0003023</EmpNo></LayoutHeader>
         window.QueryEmployeeLeaveCancelForm = function() {
 
             this.successCallback = function(data) {
                 //console.log(data);
-                if(data['ResultCode'] === "1") {
+                if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["cancelformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var formidArr = $("formid", htmlDom);
@@ -28,7 +28,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                     var leavehoursArr = $("hours", htmlDom);
 
                     backLeaveListArr = [];
-                    for(var i = 0; i < formidArr.length; i++) {
+                    for (var i = 0; i < formidArr.length; i++) {
                         var leaveObject = {};
                         leaveObject["formid"] = $(formidArr[i]).html();
                         leaveObject["formno"] = $(formnoArr[i]).html();
@@ -42,19 +42,19 @@ $("#viewBackLeaveQuery").pagecontainer({
                         leaveObject["hours"] = ($(leavehoursArr[i]).html().split(".")[1] == "0") ? $(leavehoursArr[i]).html().split(".")[0] : $(leavehoursArr[i]).html();
 
                         //表單簽核的4種狀態
-                        if($(statusArr[i]).html() == "AP") {
+                        if ($(statusArr[i]).html() == "AP") {
                             leaveObject["statusName"] = formEffected;
-                        } else if($(statusArr[i]).html() == "RC") {
+                        } else if ($(statusArr[i]).html() == "RC") {
                             leaveObject["statusName"] = formWithdrawed;
-                        } else if($(statusArr[i]).html() == "RJ") {
+                        } else if ($(statusArr[i]).html() == "RJ") {
                             leaveObject["statusName"] = formRefused;
                         } else {
                             leaveObject["statusName"] = formSigning;
                         }
 
                         //添加假别名称
-                        for(var j = 0; j < allLeaveList.length; j++) {
-                            if(leaveObject["leaveid"] == allLeaveList[j]["leaveid"]) {
+                        for (var j = 0; j < allLeaveList.length; j++) {
+                            if (leaveObject["leaveid"] == allLeaveList[j]["leaveid"]) {
                                 leaveObject["name"] = allLeaveList[j]["name"];
                                 leaveObject["category"] = allLeaveList[j]["category"];
                                 break;
@@ -86,7 +86,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
-                if(data['ResultCode'] === "1") {
+                if (data['ResultCode'] === "1") {
                     //1.回傳假單詳細信息
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -134,12 +134,12 @@ $("#viewBackLeaveQuery").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
-                if(data['ResultCode'] === "1") {
+                if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var successMsg = $("success", htmlDom);
 
-                    if($(successMsg).html() != undefined) {
+                    if ($(successMsg).html() != undefined) {
                         //成功后先返回假单列表，再重新呼叫API获取最新数据
                         QueryEmployeeLeaveCancelForm();
                         backLeaveQueryInit();
@@ -168,12 +168,12 @@ $("#viewBackLeaveQuery").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
-                if(data['ResultCode'] === "1") {
+                if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var successMsg = $("success", htmlDom);
 
-                    if($(successMsg).html() != undefined) {
+                    if ($(successMsg).html() != undefined) {
                         //成功后先返回假单列表，再重新呼叫API获取最新数据
                         QueryEmployeeLeaveCancelForm();
                         backLeaveQueryInit();
@@ -199,7 +199,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
             this.successCallback = function(data) {
                 //console.log(data);
-                if(data['ResultCode'] === "1") {
+                if (data['ResultCode'] === "1") {
                     //1.回傳假單詳細信息
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -221,29 +221,29 @@ $("#viewBackLeaveQuery").pagecontainer({
 
                     var obj = {};
                     //查找类别和假别
-                    for(var i in allLeaveList) {
-                        if(allLeaveList[i]["leaveid"] == $(leaveid).html()) {
+                    for (var i in allLeaveList) {
+                        if (allLeaveList[i]["leaveid"] == $(leaveid).html()) {
                             obj["name"] = allLeaveList[i]["name"];
                             obj["category"] = allLeaveList[i]["category"];
                         }
                     }
                     //转换status
-                    if($(status).html() == "AP") {
+                    if ($(status).html() == "AP") {
                         obj["statusName"] = formEffected;
-                    } else if($(status).html() == "RC") {
+                    } else if ($(status).html() == "RC") {
                         obj["statusName"] = formWithdrawed;
-                    } else if($(status).html() == "RJ") {
+                    } else if ($(status).html() == "RJ") {
                         obj["statusName"] = formRefused;
                     } else {
                         obj["statusName"] = formSigning;
                     }
 
                     //根据代理人工号，查找代理人姓名
-                    queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>'
-                                                 + myEmpNo
-                                                 + '</EmpNo><qEmpno>'
-                                                 + $(delegate).html()
-                                                 + '</qEmpno><qName></qName></LayoutHeader>';
+                    queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>' +
+                        myEmpNo +
+                        '</EmpNo><qEmpno>' +
+                        $(delegate).html() +
+                        '</qEmpno><qName></qName></LayoutHeader>';
                     //根据id获取代理人姓名
                     QueryEmployeeDetail();
                     obj["agentname"] = employeeName;
@@ -305,44 +305,44 @@ $("#viewBackLeaveQuery").pagecontainer({
         //動態生成HTML
         function setBackLeaveList() {
             var backLeaveHtml = "";
-            for(var i in backLeaveListArr) {
-                backLeaveHtml += '<div class="backLeave-query-list">' + 
-                                    '<div>' +
-                                        '<div class="backLeave-query-state font-style3" form-id="' + backLeaveListArr[i]["formid"] + '">' +
-                                            '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
-                                            '<img src="img/more.png">' +
-                                        '</div>' +
-                                        '<div class="backLeave-query-base font-style11">' +
-                                            '<div class="backLeave-query-basedata">' +
-                                                '<div>' +
-                                                    '<span>銷假單號：</span>' +
-                                                    '<span class="leave-id">' + backLeaveListArr[i]["formno"] + '</span>' +
-                                                '</div>' +
-                                                '<div>' +
-                                                    '<span>假別：</span>' +
-                                                    '<span>' + backLeaveListArr[i]["name"] + '</span>' +
-                                                '</div>' +
-                                            '</div>' +
-                                            '<div>' +
-                                                '<span>請假區間：</span>' +
-                                                '<span>' + backLeaveListArr[i]["begindate"] + ' ' + backLeaveListArr[i]["begintime"] + '</span>' +
-                                                '<span> - </span>' +
-                                                '<span>' + backLeaveListArr[i]["enddate"] + ' ' + backLeaveListArr[i]["endtime"] + '</span>' +
-                                            '</div>' +
-                                            '<div>' +
-                                                '<span>請假數：</span>' +
-                                                '<span>' + backLeaveListArr[i]["days"] + '</span>' +
-                                                '<span> 天 </span>' +
-                                                '<span>' + backLeaveListArr[i]["hours"] + '</span>' +
-                                                '<span> 小時</span>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>' +
-                                    '<div></div>' +
-                                '</div>';
+            for (var i in backLeaveListArr) {
+                backLeaveHtml += '<div class="backLeave-query-list">' +
+                    '<div>' +
+                    '<div class="backLeave-query-state font-style3" form-id="' + backLeaveListArr[i]["formid"] + '">' +
+                    '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
+                    '<img src="img/more.png">' +
+                    '</div>' +
+                    '<div class="backLeave-query-base font-style11">' +
+                    '<div class="backLeave-query-basedata">' +
+                    '<div>' +
+                    '<span>銷假單號：</span>' +
+                    '<span class="leave-id">' + backLeaveListArr[i]["formno"] + '</span>' +
+                    '</div>' +
+                    '<div>' +
+                    '<span>假別：</span>' +
+                    '<span>' + backLeaveListArr[i]["name"] + '</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div>' +
+                    '<span>請假區間：</span>' +
+                    '<span>' + backLeaveListArr[i]["begindate"] + ' ' + backLeaveListArr[i]["begintime"] + '</span>' +
+                    '<span> - </span>' +
+                    '<span>' + backLeaveListArr[i]["enddate"] + ' ' + backLeaveListArr[i]["endtime"] + '</span>' +
+                    '</div>' +
+                    '<div>' +
+                    '<span>請假數：</span>' +
+                    '<span>' + backLeaveListArr[i]["days"] + '</span>' +
+                    '<span> 天 </span>' +
+                    '<span>' + backLeaveListArr[i]["hours"] + '</span>' +
+                    '<span> 小時</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div></div>' +
+                    '</div>';
             }
 
-            if(backLeaveListArr.length == 0) {
+            if (backLeaveListArr.length == 0) {
                 $("#maxBackLeaveMsg").text(langStr["str_179"]);
             } else {
                 $("#maxBackLeaveMsg").text(langStr["str_178"]);
@@ -357,18 +357,18 @@ $("#viewBackLeaveQuery").pagecontainer({
             $("#viewBackLeaveQuery .leaveMenu").hide();
             $("#backToList").show();
             $(".backLeave-query-detail-sign").show();
-            if(state == null) {
-                $("#"+btn1).hide();     
+            if (state == null) {
+                $("#" + btn1).hide();
             } else {
-                $("#"+btn1).show();
+                $("#" + btn1).show();
             }
-            $("#"+btn2).hide();
+            $("#" + btn2).hide();
         }
 
         //根据formid从销假单列表当中获取该假单部分信息
         function getBackLeaveDetailByID(id) {
-            for(var i in backLeaveListArr) {
-                if(id == backLeaveListArr[i]["formid"]) {
+            for (var i in backLeaveListArr) {
+                if (id == backLeaveListArr[i]["formid"]) {
                     return backLeaveListArr[i];
                 }
             }
@@ -388,8 +388,7 @@ $("#viewBackLeaveQuery").pagecontainer({
         }
 
         /********************************** page event *************************************/
-        $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {
-        });
+        $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {});
 
         $("#viewBackLeaveQuery").on("pageshow", function(event, ui) {
             $("#withdrawBackLeaveApplyDate").text(applyDay);
@@ -398,7 +397,7 @@ $("#viewBackLeaveQuery").pagecontainer({
 
         /********************************** dom event *************************************/
         $("#viewBackLeaveQuery").keypress(function(event) {
-            
+
         });
 
         //表單狀況詳細情況
@@ -410,24 +409,24 @@ $("#viewBackLeaveQuery").pagecontainer({
             //先获取部分详情从销假单列表当中，另外部分详情从详情API中获取
             backLeaveDetailObj = getBackLeaveDetailByID(backLeaveFormid);
 
-            leaveCancelFormDetailQueryData = '<LayoutHeader><EmpNo>'
-                                           + myEmpNo
-                                           + '</EmpNo><formid>'
-                                           + backLeaveFormid
-                                           + '</formid></LayoutHeader>';
+            leaveCancelFormDetailQueryData = '<LayoutHeader><EmpNo>' +
+                myEmpNo +
+                '</EmpNo><formid>' +
+                backLeaveFormid +
+                '</formid></LayoutHeader>';
 
             //呼叫API
             LeaveCancelFormDetail();
 
-            if(self == formSigning) {
+            if (self == formSigning) {
                 backLeaveToDetail("backLeaveWithdraw", "backLeaveDelete", "");
-            } else if(self == formWithdrawed) {
+            } else if (self == formWithdrawed) {
                 backLeaveToDetail("backLeaveDelete", "backLeaveWithdraw", "");
             } else {
                 backLeaveToDetail("backLeaveWithdraw", "backLeaveDelete", null);
             }
 
-            
+
         });
 
         //从详情返回銷假單列表
@@ -465,16 +464,16 @@ $("#viewBackLeaveQuery").pagecontainer({
         $("#signTowithdrawReason").on("keyup", function() {
             signToWithdrawReason = $.trim($(this).val());
 
-            if(signToWithdrawReason !== "") {
+            if (signToWithdrawReason !== "") {
                 $("#signToWithdrawBtn").addClass("leavePreview-active-btn");
-            }else {
+            } else {
                 $("#signToWithdrawBtn").removeClass("leavePreview-active-btn");
             }
         });
 
         //撤回銷假單——click
         $("#signToWithdrawBtn").on("click", function() {
-            if($("#signToWithdrawBtn").hasClass("leavePreview-active-btn")) {
+            if ($("#signToWithdrawBtn").hasClass("leavePreview-active-btn")) {
                 popupMsgInit(".confirmToWithdraw");
             }
         });
@@ -482,16 +481,16 @@ $("#viewBackLeaveQuery").pagecontainer({
         //確定撤回
         $("#comfirmWithdrawBackLeave").on("click", function() {
             loadingMask("show");
-            recallLeaveCancelFormQueryData = '<LayoutHeader><EmpNo>'
-                                           + myEmpNo
-                                           + '</EmpNo><formid>'
-                                           + backLeaveDetailObj["formid"]
-                                           + '</formid><formno>'
-                                           + backLeaveDetailObj["formno"]
-                                           + '</formno><reason>'
-                                           + signToWithdrawReason
-                                           + '</reason></LayoutHeader>';
-        
+            recallLeaveCancelFormQueryData = '<LayoutHeader><EmpNo>' +
+                myEmpNo +
+                '</EmpNo><formid>' +
+                backLeaveDetailObj["formid"] +
+                '</formid><formno>' +
+                backLeaveDetailObj["formno"] +
+                '</formno><reason>' +
+                signToWithdrawReason +
+                '</reason></LayoutHeader>';
+
             //呼叫API
             RecallLeaveCancelForm();
 
@@ -505,11 +504,11 @@ $("#viewBackLeaveQuery").pagecontainer({
         //確定刪除銷假單——click
         $("#comfirmDeleteBackLeave").on("click", function() {
             loadingMask("show");
-            deleteLeaveCancelFormQueryData = '<LayoutHeader><EmpNo>'
-                                           + myEmpNo
-                                           + '</EmpNo><formid>'
-                                           + backLeaveDetailObj["formid"]
-                                           + '</formid></LayoutHeader>';
+            deleteLeaveCancelFormQueryData = '<LayoutHeader><EmpNo>' +
+                myEmpNo +
+                '</EmpNo><formid>' +
+                backLeaveDetailObj["formid"] +
+                '</formid></LayoutHeader>';
 
             //呼叫API
             DeleteLeaveCancelForm();
@@ -521,19 +520,19 @@ $("#viewBackLeaveQuery").pagecontainer({
             loadingMask("show");
             leaveDetailFrom = false;
             var refLeaveid = $(this).attr("leave-id");
-            
-            backLeaveFormLeaveDetailQueryData = '<LayoutHeader><EmpNo>'
-                                              + myEmpNo
-                                              + '</EmpNo><formid>'
-                                              + refLeaveid
-                                              + '</formid></LayoutHeader>';
-            
+
+            backLeaveFormLeaveDetailQueryData = '<LayoutHeader><EmpNo>' +
+                myEmpNo +
+                '</EmpNo><formid>' +
+                refLeaveid +
+                '</formid></LayoutHeader>';
+
             //呼叫API
             BackLeaveFormLeaveDetail();
-            
+
         });
 
 
-        
+
     }
 });

@@ -392,15 +392,15 @@ $("#viewLeaveQuery").pagecontainer({
         $("#viewLeaveQuery").on("pagebeforeshow", function(event, ui) {
             $("#viewLeaveQuery .leaveMenu").show();
             /**** PullToRefresh ****/
-            PullToRefresh.init({
-                mainElement: '.page-date',
-                onRefresh: function() {
-                    loadingMask("show");
-                    //请假单只需要更新请假单列表
-                    QueryEmployeeLeaveApplyForm();
-                    QueryEmployeeLeaveCancelForm();
-                }
-            });
+            // PullToRefresh.init({
+            //     mainElement: '.page-date',
+            //     onRefresh: function() {
+            //         loadingMask("show");
+            //         //请假单只需要更新请假单列表
+            //         QueryEmployeeLeaveApplyForm();
+            //         QueryEmployeeLeaveCancelForm();
+            //     }
+            // });
 
         });
 
