@@ -1,9 +1,9 @@
-var leaveid, leaveType, agentid, beginDate, endDate, beginTime, endTime;
+var leaveid = "", leaveType = "", agentid = "";
+var beginDate = "", endDate = "", beginTime = "", endTime = "";
 var viewPersonalLeaveBeforeshow = false;
 var viewPersonalLeaveShow = false;
 var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
-//var fulldayHide = false;
 var timoutQueryEmployeeData = null;
 var calendarData = false;
 var quickLeaveList = [];
@@ -69,6 +69,7 @@ $("#viewPersonalLeave").pagecontainer({
 
             //清空dropdownlist后面的span
             $("#leaveType > span:nth-of-type(1)").text("");
+            leaveid = "";
         }
 
         //请假申请页面——获取所有类别
