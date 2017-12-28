@@ -8,7 +8,7 @@ var timoutQueryEmployeeData = null;
 var calendarData = false;
 var quickLeaveList = [];
 var allLeaveList = [];
-var allLeaveCategroyStr = "所有類別";
+var allLeaveCategroyStr = langStr["str_122"]; //所有類別
 
 var leaveTypeData = {
     id: "leaveType-popup",
