@@ -949,7 +949,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 ((editLeaveForm == false) ? '' : leaveDetailObj['formid']) +
                 '</formid></LayoutHeader>';
 
-            console.log(sendApplyLeaveQueryData);
+            //console.log(sendApplyLeaveQueryData);
             //呼叫API
             SendApplyLeaveData();
         });
