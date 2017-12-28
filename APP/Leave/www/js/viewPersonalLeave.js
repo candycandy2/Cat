@@ -510,7 +510,7 @@ $("#viewPersonalLeave").pagecontainer({
         window.SendLeaveApplicationData = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 if (data['ResultCode'] === "1") {
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
