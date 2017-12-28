@@ -141,7 +141,7 @@ $("#viewLeaveQuery").pagecontainer({
 
                     //补全另一部分详情
                     leaveDetailObj["applydate"] = $(applydate).html().split(" ")[0];
-                    leaveDetailObj["reason"] = $(reasons).html();
+                    leaveDetailObj["reason"] = $.trim($(reasons).html());
                     leaveDetailObj["agentid"] = $(delegate).html();
                     leaveDetailObj["datumdate"] = $(datumdate).html();
                     leaveDetailObj["filestatus"] = $(filestatus).html();
