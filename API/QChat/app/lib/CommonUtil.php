@@ -62,8 +62,8 @@ class CommonUtil{
          // curl add for Develop
          curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
          curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
-         curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
-         curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:1');
+         curl_setopt($curl, CURLOPT_PROXY,Config::get("app.proxy"));
+         curl_setopt($curl, CURLOPT_PROXYUSERPWD,Config::get("app.proxypwd"));
         }
         if( ! $result = curl_exec($curl)) 
         { 
