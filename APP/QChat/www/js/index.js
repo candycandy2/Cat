@@ -12,12 +12,12 @@ var prevPageID;
 var jmessagePWD;
 var QChatJPushAppKey;
 var QChatJPushSecretKey;
+var getPWD = false;
+var bindJMEvent = false;
+var APIErrorRetryTime = 0;
+var APIErrorName = "";
 
 window.initialSuccess = function() {
-
-    $.get('img/component/img_qplay.svg', function(svg){
-        $('body').append(svg);
-    }, 'text');
 
     QChatJPushAppKey = "9f8e8736002966a1c4e8718e";
     QChatJPushSecretKey = "c338a15248dbe291916029a1";
@@ -28,6 +28,25 @@ window.initialSuccess = function() {
         QChatJPushAppKey = "f1007b6d14755a1e17e74195";
         QChatJPushSecretKey = "1c33fd43b7c962ebaf14893a";
     }
+
+    window.JPush.init();
+
+    //Bind JMessage Listener Event
+    if (!bindJMEvent) {
+        JM.bindEvent(receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage);
+        bindJMEvent = true;
+    }
+
+    if (!getPWD) {
+        loadingMask("show");
+        var jmessagePassword = new getJmessagePassword();
+    } else {
+        window.getGroupIds();
+    }
+
+    $.get('img/component/img_qplay.svg', function(svg){
+        $('body').append(svg);
+    }, 'text');
 
     $.mobile.changePage('#viewIndex');
 
@@ -165,7 +184,6 @@ window.initialSuccess = function() {
         }
     }, "#userInfoPopup .personal-popup-button");
 
-    window.JPush.init();
 };
 
 function cutString(maxViewWidth, string, fontSize, type, memberCount) {
@@ -242,6 +260,39 @@ function createXMLDataString(data) {
     });
 
     return XMLDataString;
+}
+
+function handleAPIError(APIName, resultCode, callback, parameter) {
+
+    if (window.APIErrorRetryTime === 0) {
+        window.APIErrorName = APIName;
+    }
+
+    if (window.APIErrorName == APIName) {
+        if (window.APIErrorRetryTime <= 3) {
+
+            //025930: JMessage > QPlay timeout
+            if (resultCode === "025930") {
+
+                //Now, only retry 3 times.
+                if (window.APIErrorRetryTime === 3) {
+                    window.APIErrorRetryTime = 0;
+                    window.APIErrorName = "";
+
+                    $.mobile.changePage('#viewIndex');
+                    return;
+                }
+
+                if (typeof callback === "function") {
+                    callback(parameter);
+                    APIErrorRetryTime++;
+                }
+
+            }
+
+        }
+    }
+
 }
 
 //[Android]Handle the back button
@@ -335,6 +386,7 @@ document.addEventListener("jpush.receiveNotification", function (event) {
     }
 }, false);
 
+//JMessage - Event Listener
 document.addEventListener("jpush.receiveMessage", function (event) {
     if (device.platform == "Android") {
         console.log(event.extras.Parameter);
@@ -342,3 +394,75 @@ document.addEventListener("jpush.receiveMessage", function (event) {
         console.log(event.content);
     }
 }, false);
+
+window.receiveMessage = function(data) {
+    console.log("----receiveMessage");
+    console.log(data);
+
+    //var doAction = true;
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+
+    if (!$.isEmptyObject(data.extras)) {
+
+        if (data.extras.event === "false") {
+            if (activePageID === "viewChatroom") {
+                window.getConversation(data.extras.chatroom_id, true, true);
+            } else {
+                window.getConversation(data.extras.chatroom_id, false, true);
+            }
+        } else if (data.type === "text" && data.extras.event === "true") {
+
+            window.getGroupIds("receiveMessage", data);
+            /*
+            if (data.extras.action === "newChatroom") {
+                if (activePageID === "viewIndex") {
+                    window.getGroupIds("receiveMessage", data);
+                }
+            } else if (data.extras.action === "memberEvent") {
+                if (activePageID === "viewChatroom") {
+                    window.getConversation(data.extras.chatroom_id, true, true);
+                } else {
+                    window.getConversation(data.extras.chatroom_id, false, true);
+                }
+            }
+            */
+        }
+    }
+};
+
+window.clickMessageNotification = function(data) {
+    console.log("----clickMessageNotification");
+    console.log(data);
+
+    if (!$.isEmptyObject(data.extras)) {
+        JM.chatroomID = data.extras.chatroom_id;
+
+        if (prevPageID === "viewChatroom") {
+            $.mobile.changePage('#viewChatroom', {
+                reloadPage: true
+            });
+        }
+
+        $.mobile.changePage('#viewChatroom');
+    }
+};
+
+window.syncOfflineMessage = function(data) {
+    console.log("----syncOfflineMessage");
+    console.log(data);
+
+    window.processChatroomData(data.conversation, "getConversations", false, true);
+};
+
+window.loginStateChanged = function(data) {
+    console.log("----loginStateChanged");
+    console.log(data);
+};
+
+window.syncRoamingMessage = function(data) {
+    console.log("----syncRoamingMessage");
+    console.log(data);
+
+    window.getConversation(data.target.id, false, true);
+};

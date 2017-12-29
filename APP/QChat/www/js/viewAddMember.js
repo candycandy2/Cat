@@ -9,6 +9,8 @@ $("#viewAddMember").pagecontainer({
         function addQMember(empNumberArray) {
             (function(empNumberArray) {
 
+                loadingMask("show");
+
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
                     group_id: nowChatroomID
@@ -31,8 +33,8 @@ $("#viewAddMember").pagecontainer({
                     var resultCode = data['ResultCode'];
 
                     if (resultCode === "1") {
-
                         setTimeout(function(){
+
                             for (var i=0; i<empNumberArray.length; i++) {
                                 $.each(JM.data.chatroom_user, function(name, data){
                                     if (data.emp_no == empNumberArray[i]) {
@@ -41,9 +43,18 @@ $("#viewAddMember").pagecontainer({
                                 });
                             }
 
+                            loadingMask("hide");
+
                             $.mobile.changePage('#viewChatroomInfo');
                             window.getGroupMembers(nowChatroomID, JM.data.chatroom[nowChatroomID].is_group, "chatroomInfo");
+
                         }, 1000);
+                    } else {
+                        var callback = function(parameter) {
+                            addQMember(parameter);
+                        };
+
+                        window.handleAPIError(APIName, resultCode, callback, empNumberArray);
                     }
                 };
 
