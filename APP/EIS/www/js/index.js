@@ -103,7 +103,12 @@ window.initialSuccess = function() {
     currentDate = time.getDate();
     currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
     if(currentDate == 1) {
-        currentMonth = currentMonth - 1;
+        if(currentMonth > 1) {
+            currentMonth = currentMonth - 1;
+        }else{
+            currentMonth = 12;
+            currentYear = currentYear - 1;
+        }
     }
     if(localStorage.getItem("eisdata") === null) {
         callProductDetailAPIReduce();

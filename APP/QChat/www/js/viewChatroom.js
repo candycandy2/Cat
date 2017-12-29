@@ -29,6 +29,8 @@ $("#viewChatroom").pagecontainer({
                         } else {
                             if (action === "newChatroom") {
                                 window.getConversation(chatroomID, true);
+                            } else if (action === "memberEvent") {
+                                window.getConversation(chatroomID, false);
                             }
                         }
                     }
@@ -225,9 +227,16 @@ $("#viewChatroom").pagecontainer({
 
             (function(data, action, getHistory, receiveMessage) {
 
+                //For sync event, any processChatroomData should after getGroupIds,
+                //if not, call it first.
+                if (!window.callGetGroupIds) {
+                    window.getGroupIds("syncEvent", data);
+                    return;
+                }
+
                 //For receive event, check if User is still in this chatroom,
                 //if not, ignore the chatroom data, and don't show it.
-                if (groupsArray.indexOf(data.target.id.toString()) == -1) {
+                if (window.groupsArray.indexOf(data.target.id.toString()) == -1) {
                     return;
                 }
 
@@ -509,6 +518,8 @@ $("#viewChatroom").pagecontainer({
                         //According to the retrun data from JMessage API-getConversations,
                         //decide the [from] & [limit]
                         //var from = JM.data.chatroom[nowChatroomID].last_message.id;
+
+                        //JMessage change the sequence of return data, the index of latest data is 0;
                         var from = 0;
 
                         if (sendMessage) {
@@ -655,6 +666,7 @@ $("#viewChatroom").pagecontainer({
             var owner = JM.data.chatroom[nowChatroomID].owner;
             var lastSender = "";
             var lastMsg = "";
+            var lastMsgType = "";
 
             $.each(JM.data.chatroom_message_history[nowChatroomID], function(index, message) {
 
@@ -709,6 +721,8 @@ $("#viewChatroom").pagecontainer({
                     //check if this is a event message
                     if (message.extras.event === "true") {
 
+                        lastMsgType = "event";
+
                         if (message.extras.action === "newChatroom") {
 
                         }
@@ -728,6 +742,8 @@ $("#viewChatroom").pagecontainer({
                     } else {
 
                         //normal text message
+                        lastMsgType = "text";
+
                         if (sender) {
                             var msgText = $(msgTextRightHTML);
                         } else {
@@ -772,6 +788,8 @@ $("#viewChatroom").pagecontainer({
                 //Image
                 if (message.type === "image") {
 
+                    lastMsgType = "image";
+
                     if (sender) {
                         var msgImg = $(msgImgRightHTML);
                     } else {
@@ -811,14 +829,20 @@ $("#viewChatroom").pagecontainer({
             cameraButtonSet("close");
 
             if (receiveMsg || sendMessage) {
-                // [xxx create chatroom] don't show preview
-                if (lastSender.length > 0) {
-                    //addReceiveMessageListener event || sendTextMessage
-                    $(".message-preview").html(cutString(85, lastSender + " : " + lastMsg, 3.349));
-                    $(".message-preview").show();
 
-                    receiveMsg = false;
-                    sendMessage = false;
+                // [xxx create chatroom] don't show preview
+                if (lastMsgType === "event") {
+                    $(".message-preview").hide();
+                } else {
+                    if (lastSender.length > 0) {
+                        //addReceiveMessageListener event || sendTextMessage
+                        $(".message-preview").html(cutString(85, lastSender + " : " + lastMsg, 3.349));
+                        $(".message-preview").show();
+
+                        receiveMsg = false;
+                        sendMessage = false;
+                        lastSender = "";
+                    }
                 }
 
                 //Re-Sort Chatroom sequence in viewIndex
@@ -1025,6 +1049,7 @@ $("#viewChatroom").pagecontainer({
             lastRenderJMMsgID = 0;
             lastRenderQPlayMsgID = 0;
             msgDateText = "";
+
             $("#viewChatroomContent .msg").remove();
 
             //Chatroom Title

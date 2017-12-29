@@ -89,9 +89,9 @@ $("#viewNewChatroom").pagecontainer({
                                     userListView(dataCount, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, empNumberArray);
                                 } else if (view === "viewAddFriend") {
                                     if (type === "3") {
-                                        window.addFriendListView(data['Content'].user_list.length, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, type);
+                                        window.addFriendListView(dataCount, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, type);
                                     } else if (type === "1") {
-                                        window.addFriendListView(data['Content'].user_list.length, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, type);
+                                        window.addFriendListView(dataCount, data['Content'].over_threshold, userData.name, i+1, nowTimestamp, userData.status, type);
                                     }
                                 }
                             }
