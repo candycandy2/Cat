@@ -1,4 +1,3 @@
-
 /*******************************************************************************************/
 /********************************** Date Ttme function *************************************/
 /*******************************************************************************************/
@@ -45,7 +44,7 @@ Date.prototype.TimeZoneConvert = function() {
     var fixedDateStr = new Date(fixedDateStrTimestamp * 1000);
 
     return fixedDateStr.getFullYear() + "-" + padLeft(parseInt(fixedDateStr.getMonth() + 1, 10), 2) + "-" + padLeft(fixedDateStr.getUTCDate(), 2) + " " +
-    padLeft(fixedDateStr.getHours(), 2) + ":" + padLeft(fixedDateStr.getMinutes(), 2) + ":" + padLeft(fixedDateStr.getSeconds(), 2);
+        padLeft(fixedDateStr.getHours(), 2) + ":" + padLeft(fixedDateStr.getMinutes(), 2) + ":" + padLeft(fixedDateStr.getSeconds(), 2);
 };
 
 Date.prototype.TimeStamp = function() {
@@ -93,8 +92,8 @@ function checkDataExpired(time, num, pram) {
     }
 }
 
-function dateFormatYMD (date) {
+function dateFormatYMD(date) {
     //"2017-01-20 09:23:28" is Invalid Date Format in iOS,
     //need to change into "2017/01/20 09:23:28"
-    return date.replace(/-/g,'/');
+    return date.replace(/-/g, '/');
 }
