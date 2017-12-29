@@ -184,6 +184,8 @@ $("#viewChatroomInfo").pagecontainer({
         function removeQMember(action) {
             (function(action) {
 
+                loadingMask("show");
+
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
                     group_id: nowChatroomID
@@ -221,7 +223,15 @@ $("#viewChatroomInfo").pagecontainer({
                                 $.mobile.changePage('#viewIndex');
                             }
 
+                            loadingMask("hide");
+
                         }, 1000);
+                    } else {
+                        var callback = function(parameter) {
+                            removeQMember(parameter);
+                        };
+
+                        window.handleAPIError(APIName, resultCode, callback, action);
                     }
                 };
 
