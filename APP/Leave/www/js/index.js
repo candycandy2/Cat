@@ -165,13 +165,14 @@ function changePageByPanel(pageId) {
 }
 
 function dateInit() {
+    var year = currentYear;
     var month = currentMonth;
     var date = currentDate;
     var day = currentDay;
     for(var i=1; i<=14; i++) {
         if(day > 0 && day < 6) {
             $("#leaveDate").append('<a href="#" class="ui-link">' + month + "/" + date + " " + dayTable[day] + '</a>');
-            $("#leaveDate a:last-child").data("value", currentYear + "/" + month + "/" + date);
+            $("#leaveDate a:last-child").data("value", year + "/" + month + "/" + date);
 
             day++;
             if(day == 6) {
@@ -186,6 +187,7 @@ function dateInit() {
                         month = (Number(month) + 1) + "";
                     } else {
                         month = "01";
+                        year = (Number(year) + 1) + "";
                     }
                     date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);
                 }
@@ -199,6 +201,7 @@ function dateInit() {
                     month = (Number(month) + 1) + "";
                 } else {
                     month = "01";
+                    year = (Number(year) + 1) + "";
                 }
                 date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
             }
@@ -215,6 +218,7 @@ function dateInit() {
                     month = (Number(month) + 1) + "";
                 } else {
                     month = "01";
+                    year = (Number(year) + 1) + "";
                 }
                 date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);
             }
@@ -231,6 +235,7 @@ function dateInit() {
                     month = (Number(month) + 1) + "";
                 } else {
                     month = "01";
+                    year = (Number(year) + 1) + "";
                 }
                 date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
             }
