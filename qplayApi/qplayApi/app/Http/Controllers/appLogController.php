@@ -63,22 +63,24 @@ class appLogController extends Controller
                 return response()->json($result);
             }
             $appHeadInfo = CommonUtil::getAppHeaderInfo();
+            $appKey = CommonUtil::getAppKeyFromHeader();
+            $ip = CommonUtil::getIP();
             $logMode = Config::get('app.log_mode');
-            $userId = $userInfo->row_id;
-            $appId = $appHeadInfo->row_id;
             $logList = $jsonContent['log_list'];
             $uuid = $input["uuid"];
-            $insertData = $this->getInsertData($userId, $appId, $uuid, $logList);
+            
 
             //Mysql
             if ($logMode == 'ALL' || $logMode == 'MYSQL') {
                 $mysqlLog = new QP_App_Log();
+                $insertData = $mysqlLog ->getInsertData($appKey, $appHeadInfo, $userInfo, $uuid, $logList, $ip);
                 $mysqlLog ->insert($insertData);
             }
 
            //MongoDB
             if ($logMode == 'ALL' || $logMode == 'MONGODB'){
                 $mongoDBlog = new MNG_App_Log();
+                $insertData = $mongoDBlog ->getInsertData($appKey, $appHeadInfo, $userInfo, $uuid, $logList, $ip);
                 $mongoDBlog ->insert($insertData);
             }
 
@@ -88,57 +90,4 @@ class appLogController extends Controller
                 return response()->json($result);
         }
     }
-
-    /**
-     * 取得寫入App Log資料
-     * @param  int    $userId  qp_user.row_id
-     * @param  int    $appId   qp_app_head.row_id
-     * @param  string $uuid    手機的uuid
-     * @param  array  $logList log 訊息列表
-     * @return array
-     */
-    private function getInsertData($userId, $appId, $uuid, $logList){
-        $dataList = [];
-        $ip = CommonUtil::getIP();
-        $now = date('Y-m-d H:i:s',time());       
-        foreach ($logList as $log) {
-            $data = new AppLog();
-            $data->user_row_id = $userId;
-            $data->app_row_id = $appId;
-            $data->uuid = $uuid;
-            $data->created_at = $now;
-            $data->ip = $ip;
-            foreach ($log as $key=>$value) {
-                if(property_exists($data, $key) && $value!=""){
-                    if($key == 'start_time'){
-                        $data->$key=substr($value,0,10);
-                    }else{
-                        $data->$key=$value;
-                    }
-                }
-            }
-           $dataList[]=(array)$data;
-           unset($data);
-        }
-        return $dataList;
-    }
-}
-
-class AppLog{
-    public $user_row_id = "";
-    public $app_row_id = "";
-    public $uuid = "";
-    public $created_at= "";//server端寫入此筆資料的時間
-    public $page_name = "";
-    public $page_action = "";
-    public $period = null;//停留區間
-    public $start_time = null;//log紀錄開始時間
-    public $device_type = "";
-    public $latitude = "";
-    public $longitude = "";
-    public $attribute1 = "";
-    public $attribute2 = "";
-    public $attribute3 = "";
-    public $attribute4 = "";
-    public $attribute5 = "";
 }
