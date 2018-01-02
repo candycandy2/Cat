@@ -526,6 +526,10 @@ $("#viewPersonalLeave").pagecontainer({
                         $(".toast-style").fadeIn(100).delay(2000).fadeOut(100);
                         //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
                         localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
+                        //如果快速请假送签成功，请假申请页面的代理人也要修改成当前成功的代理人
+                        var options = '<option hidden>' + JSON.parse(localStorage.getItem("agent"))[0] + '</option>';
+                        $("#leave-agent-popup").find("option").remove().end().append(options);
+                        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
                     } else {
                         var error = $("error", htmlDom);
                         var msgContent = $(error).html();
