@@ -2,14 +2,13 @@
 $("#viewIndex").pagecontainer({
     create: function(event, ui) {
 
-        window.getPWD = false;
+        var firstShow = true;
         var timer;
+        window.callGetGroupIds = false;
         window.groupsArray = [];
-        var bindJMEvent = false;
         var getQUserChatroomData = [];
         var getQUserChatroomDataTime = 0;
         var tabActiveID;
-        var doSyncRoamingMessage = false;
 
         /********************************** function *************************************/
         window.getJmessagePassword = function() {
@@ -293,16 +292,15 @@ $("#viewIndex").pagecontainer({
                 var callback = function(status, data) {
 
                     if (status === "success") {
-                        groupsArray = data;
+                        window.callGetGroupIds = true;
+
+                        window.groupsArray = [];
+                        for (var i=0; i<data.length; i++) {
+                            window.groupsArray.push(data[i].toString());
+                        }
 
                         //For Jmseeage, hide this action
                         //window.getConversations();
-
-                        //Bind JMessage Listener Event
-                        if (!bindJMEvent) {
-                            JM.bindEvent(receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage);
-                            bindJMEvent = true;
-                        }
 
                         if (action === "receiveMessage") {
 
@@ -315,9 +313,11 @@ $("#viewIndex").pagecontainer({
 
                         } else if (action === "getConversation") {
                             window.processChatroomData(chatroom, "getConversation", true, false);
+                        } else if (action === "syncEvent") {
+                            window.processChatroomData(chatroom, "getConversation", false, true);
                         } else {
                             for (var i=0; i<JM.data.chatroom_sequence.length; i++) {
-                                if (groupsArray.indexOf(JM.data.chatroom_sequence[i].toString()) != -1) {
+                                if (window.groupsArray.indexOf(JM.data.chatroom_sequence[i].toString()) != -1) {
                                     //window.processChatroomData(chatroomData, "getConversations", false, true);
                                     window.getGroupMembers(JM.data.chatroom_sequence[i], JM.data.chatroom[JM.data.chatroom_sequence[i]].is_group, "chatroomListView");
                                 }
@@ -601,7 +601,9 @@ $("#viewIndex").pagecontainer({
 
         window.downloadOriginalUserAvatar = function(action, nowTimestamp, userID, listViewIndex) {
             userID = userID || null;
-            listViewIndex = listViewIndex || null;
+            if (listViewIndex !== 0) {
+                listViewIndex = listViewIndex || null;
+            }
 
             //User Avatar will update after 3 days
             (function(action, nowTimestamp, userID, listViewIndex) {
@@ -793,83 +795,6 @@ $("#viewIndex").pagecontainer({
             }
         };
 
-        function receiveMessage(data) {
-            console.log("----receiveMessage");
-            console.log(data);
-
-            //var doAction = true;
-            var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-            var activePageID = activePage[0].id;
-
-            if (!$.isEmptyObject(data.extras)) {
-
-                if (data.extras.event === "false") {
-                    if (activePageID === "viewChatroom") {
-                        window.getConversation(data.extras.chatroom_id, true, true);
-                    } else {
-                        window.getConversation(data.extras.chatroom_id, false, true);
-                    }
-                } else if (data.type === "text" && data.extras.event === "true") {
-
-                    window.getGroupIds("receiveMessage", data);
-                    /*
-                    if (data.extras.action === "newChatroom") {
-                        if (activePageID === "viewIndex") {
-                            window.getGroupIds("receiveMessage", data);
-                        }
-                    } else if (data.extras.action === "memberEvent") {
-                        if (activePageID === "viewChatroom") {
-                            window.getConversation(data.extras.chatroom_id, true, true);
-                        } else {
-                            window.getConversation(data.extras.chatroom_id, false, true);
-                        }
-                    }
-                    */
-                }
-            }
-        }
-
-        function clickMessageNotification(data) {
-            console.log("----clickMessageNotification");
-            console.log(data);
-
-            if (!$.isEmptyObject(data.extras)) {
-                JM.chatroomID = data.extras.chatroom_id;
-
-                if (prevPageID === "viewChatroom") {
-                    $.mobile.changePage('#viewChatroom', {
-                        reloadPage: true
-                    });
-                }
-
-                $.mobile.changePage('#viewChatroom');
-            }
-        }
-
-        function syncOfflineMessage(data) {
-            console.log("----syncOfflineMessage");
-            console.log(data);
-
-            window.processChatroomData(data.conversation, "getConversations", false, true);
-        }
-
-        function loginStateChanged(data) {
-            console.log("----loginStateChanged");
-            console.log(data);
-        }
-
-        function syncRoamingMessage(data) {
-            console.log("----syncRoamingMessage");
-            console.log(data);
-
-            window.processChatroomData(data.conversation, "getConversations", false, true);
-
-            if (!doSyncRoamingMessage) {
-                //window.getConversations();
-                doSyncRoamingMessage = true;
-            }
-        }
-
         function recoverySearchUI() {
             $(".searchBar").val("");
             $(".search-user-clear-content").hide();
@@ -975,11 +900,10 @@ $("#viewIndex").pagecontainer({
                 $("#tabIndex").tabs({ active: 0 });
             }
 
-            if (!getPWD) {
-                loadingMask("show");
-                var jmessagePassword = new getJmessagePassword();
-            } else {
+            if (!firstShow) {
                 window.getGroupIds();
+            } else {
+                firstShow = false;
             }
 
             //When leave chatroom, need to receive the Push Notification

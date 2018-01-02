@@ -175,16 +175,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Error Handler Parameters
+    | Develop Parameters
     |--------------------------------------------------------------------------
-    |error_mail_from : 錯誤信發信人信箱
-    |error_mail_from_name : 錯誤信發見者名稱
-    |error_mail_to : 錯誤信收件者信箱
+    |proxy : 使用的proxy
+    |proxypwd : proxy密碼
     */
-    'error_mail_from' => env('ERROR_MAIL_FROM'),
-    'error_mail_from_name' => env('ERROR_MAIL_FROM_NAME'),
-    'error_mail_to' => env('ERROR_MAIL_TO'),
-    
+    'proxy' => env('PROXY'),
+    'proxypwd' => env('PROXYUSERPWD'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

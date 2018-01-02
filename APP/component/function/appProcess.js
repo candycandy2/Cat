@@ -6,18 +6,21 @@ var closeDisconnectNetworkInit = false, // let closeDisconnectNetwork click even
 
 
 function getLanguageString() {
+    var i;
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
-        for (var i = 0; i < data.length; i++) {
+        for (i = 0; i < data.length; i++) {
             langStr[data[i].term] = data[i].definition.trim();
         }
+    });
 
+    $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
         $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
-            for (var i = 0; i < data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 langStr[data[i].term] = data[i].definition.trim();
             }
-
-            addComponentView();
         });
+
+        addComponentView();
     });
 }
 

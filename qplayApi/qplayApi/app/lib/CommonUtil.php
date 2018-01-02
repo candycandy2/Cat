@@ -85,7 +85,16 @@ class CommonUtil
             if(!is_null($domain)){
                 $userList = $userList->where('qp_user.user_domain', '=', $domain);
             }
-            $userList = $userList->select('qp_user.row_id')->get();
+            $userList = $userList->select('qp_user.row_id',
+                                          'qp_user.login_id',
+                                          'qp_user.company',
+                                          'qp_user.site_code',
+                                          'qp_user.ext_no',
+                                          'qp_user.emp_no',
+                                          'qp_user.emp_name',
+                                          'qp_user.user_domain',
+                                          'qp_user.department',
+                                          'qp_user.email')->get();
         if(count($userList) < 1) {
             return null;
         }

@@ -18,6 +18,7 @@ var projectName = "ITS";
 errorCodeArray = ["014999"];
 
 window.initialSuccess = function() {
+    window.JPush.init();
 
     window.ENSJPushAppKey = "c96ae87b304de281b976d0ea";
     window.ENSJPushSecretKey = "5292cabae5da19de1b8c5b9c";

@@ -12,6 +12,7 @@ use App\lib\ResultCode;
 use App\Jobs\SendErrorMail;
 use App\Jobs\SendErrorMailExecption;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Support\Facades\Log;
 use Mail;
 use Config;
 use Request;
@@ -76,7 +77,7 @@ class Handler extends ExceptionHandler
                 }
             }
         }catch (\Exception $e){
-            Log::error($e);
+            Log::error($e->getMessage());
         }
     }
 
@@ -89,11 +90,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if(\Config('app.debug')){
+            return parent::render($request, $e);
+        }
         $result = ['result_code'=>ResultCode::_999999_unknownError,
                     'message'=>trans('messages.MSG_CALL_SERVICE_ERROR'),
                     'content'=>""];
         $result = response()->json($result);
         return $result;
-       //return parent::render($request, $e);
     }
 }

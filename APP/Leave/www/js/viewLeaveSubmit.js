@@ -109,8 +109,7 @@ function getLeaveByCategory() {
     $("#chooseBaseday").text(selectBasedayStr);
     $("#oldBaseday").val("");
     $("#newBaseday").val("");
-    //$("#endText").text(pleaseSelectStr);
-    //$("#endDate").val("");
+
     leaveid = "";
     leaveType = "";
     baseday = "";
@@ -138,17 +137,10 @@ $("#viewLeaveSubmit").pagecontainer({
                 $('#uploadAttachment').hide();
             }
 
-            //basedate
-            //$("#chooseBaseday").text(selectBasedayStr);
-            //$("#oldBaseday").val("");
-            //$("#newBaseday").val("");
             $('#baseDate').show();
             $('#divEmpty').show();
             needBaseday = true;
 
-            //enddate
-            //$("#endText").text(pleaseSelectStr);
-            //$("#endDate").val("");
             $("#leaveDays").text("0");
             $("#leaveHours").text("0");
         }
@@ -245,8 +237,8 @@ $("#viewLeaveSubmit").pagecontainer({
                     if ($(success).html() != undefined) {
                         //如果送签成功，重新获取请假单列表，并跳转到“请假单查询”页，并记录代理人到local端
                         $("#backMain").click();
-                        changePageByPanel("viewLeaveQuery");
                         QueryEmployeeLeaveApplyForm();
+                        changePageByPanel("viewLeaveQuery"); 
                         $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyLeaveForm").trigger("click");
@@ -263,7 +255,9 @@ $("#viewLeaveSubmit").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function(data) {
+                loadingMask("hide");
+            };
 
             var __construct = function() {
                 CustomAPI("POST", true, "SendLeaveApplicationData", self.successCallback, self.failCallback, sendApplyLeaveQueryData, "");
@@ -905,6 +899,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 $('#viewLeaveSubmit .leaveMenu').hide();
                 $('.apply-preview').show();
                 $('#backMain').show();
+                $("#applyBtn").show();
             }
         });
 
@@ -924,6 +919,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //確定送簽
         $("#confirmSendLeave").on("click", function() {
+            $("#applyBtn").hide();
             loadingMask("show");
             sendApplyLeaveQueryData = '<LayoutHeader><empno>' +
                 myEmpNo +
