@@ -153,7 +153,7 @@
   },
   {
     "term": "str_020",
-    "definition": "一年有30天日的半薪病假",
+    "definition": "一年有30日的半薪病假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -201,7 +201,7 @@
   },
   {
     "term": "str_026",
-    "definition": "一年有14天日的事假",
+    "definition": "一年有14日的事假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "str_043",
-    "definition": "不得分開請假，應與子女出生前後一星期內辦理請假手續",
+    "definition": "不得分開請假，應於子女出生前後一星期內辦理請假手續",
     "context": "",
     "term_plural": "",
     "reference": "",
