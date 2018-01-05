@@ -91,6 +91,10 @@ window.initialSuccess = function() {
     //datetime-local max value (hard code)
     $("#startDate").attr("max", "2018-12-31T23:59");
     $("#endDate").attr("max", "2018-12-31T23:59");
+    $("#leaveReason").attr("placeholder", langStr["str_090"]);
+    $("#withdrawReason").attr("placeholder", langStr["str_090"]);
+    $("#dispelReason").attr("placeholder", langStr["str_090"]);
+    $("#signTowithdrawReason").attr("placeholder", langStr["str_090"]);
 
     loadingMask("show");
 }

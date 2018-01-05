@@ -81,7 +81,7 @@
   },
   {
     "term": "str_011",
-    "definition": "依照同仁年資天數計算e",
+    "definition": "According to personal seniority",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -97,7 +97,7 @@
   },
   {
     "term": "str_013",
-    "definition": "使用期限到2017/12/31止e",
+    "definition": "The due date is 2017/12/31",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -113,7 +113,7 @@
   },
   {
     "term": "str_015",
-    "definition": "7天/年，於發放下期特休或離職時回扣e",
+    "definition": "7 Days/Year, retrive from next Annual Leave or when quit",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -137,7 +137,7 @@
   },
   {
     "term": "str_018",
-    "definition": "超過三日以上，須檢附醫師證明方可請假，扣薪條件如半薪病假e",
+    "definition": "Over 3 days, need enclosing medical certificate, pay as Half Pay Sick Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -145,7 +145,7 @@
   },
   {
     "term": "str_019",
-    "definition": "半薪病假e",
+    "definition": "Half Pay Sick Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -153,7 +153,7 @@
   },
   {
     "term": "str_020",
-    "definition": "一年有30天日的半薪病假e",
+    "definition": "30 days Half Pay Sick Leave per year",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -169,7 +169,7 @@
   },
   {
     "term": "str_022",
-    "definition": "同半薪病假e",
+    "definition": "the same as Half Pay Sick Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -177,7 +177,7 @@
   },
   {
     "term": "str_023",
-    "definition": "無薪病假e",
+    "definition": "No Pay Sick Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -185,7 +185,7 @@
   },
   {
     "term": "str_024",
-    "definition": "一年之30日半薪病假用畢時方可使用e",
+    "definition": "Use it when 30 days Half Pay Sick Leave are exhausted",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -201,7 +201,7 @@
   },
   {
     "term": "str_026",
-    "definition": "一年有14天日的事假e",
+    "definition": "14 days for Leave Of Absence per year",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -217,7 +217,7 @@
   },
   {
     "term": "str_028",
-    "definition": "同事假，全年以7日爲限，併入事假計算e",
+    "definition": "The same as Leave Of Absence, 7 days per year, merge into Leave Of Absence",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -225,7 +225,7 @@
   },
   {
     "term": "str_029",
-    "definition": "特別事假e",
+    "definition": "Special Personal Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -233,7 +233,7 @@
   },
   {
     "term": "str_030",
-    "definition": "當一年之14日事假用畢時方可申請使用e",
+    "definition": "Use it when 14 days Leave Of Absence are exhausted",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "str_032",
-    "definition": "可分開請，結婚生效日前30日及後90日內請畢，基準日爲結婚登記日e",
+    "definition": "Can request separately, available from 30 days before marriage to 90 days after, base date is registration date",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "str_033",
-    "definition": "訂婚假e",
+    "definition": "Engagement",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -265,7 +265,7 @@
   },
   {
     "term": "str_034",
-    "definition": "訂婚當日及其前後兩日之五日內請畢e",
+    "definition": "Availabel on engagement day and 2 days before and after that",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -273,7 +273,7 @@
   },
   {
     "term": "str_035",
-    "definition": "喪假e",
+    "definition": "Bereavement Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -281,7 +281,7 @@
   },
   {
     "term": "str_036",
-    "definition": "3天喪假e",
+    "definition": "3 Day Bereavement Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -289,7 +289,7 @@
   },
   {
     "term": "str_037",
-    "definition": "可分開請，但須與100日內請畢e",
+    "definition": "Can request separately, available in 100 days",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -297,7 +297,7 @@
   },
   {
     "term": "str_038",
-    "definition": "6天喪假e",
+    "definition": "6 Day Bereavement Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -305,7 +305,7 @@
   },
   {
     "term": "str_039",
-    "definition": "8天喪假e",
+    "definition": "8 Day Bereavement Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -313,7 +313,7 @@
   },
   {
     "term": "str_040",
-    "definition": "產假e",
+    "definition": "Maternity Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -321,7 +321,7 @@
   },
   {
     "term": "str_041",
-    "definition": "有薪產檢假e",
+    "definition": "Pregnancy Checkup",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -329,7 +329,7 @@
   },
   {
     "term": "str_042",
-    "definition": "以懷孕日爲基準，請假以小時爲最小單位e",
+    "definition": "Base on conception date, request by hour",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "str_043",
-    "definition": "不得分開請假，應與子女出生前後一星期內辦理請假手續e",
+    "definition": "Can not request separately, should request within one week before or after childbirth",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -345,7 +345,7 @@
   },
   {
     "term": "str_044",
-    "definition": "半薪產假e",
+    "definition": "Half Pay Maternity Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "str_045",
-    "definition": "到職未滿六個月以上者，以半薪計算e",
+    "definition": "Joined less than six months, on half pay",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -361,7 +361,7 @@
   },
   {
     "term": "str_046",
-    "definition": "陪產假e",
+    "definition": "Paternity Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -369,7 +369,7 @@
   },
   {
     "term": "str_047",
-    "definition": "分娩當日及其前後十五日，擇其中五日請假e",
+    "definition": "At childbirth day and 15 days before or after that, request a 5 days leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -377,7 +377,7 @@
   },
   {
     "term": "str_048",
-    "definition": "流產假e",
+    "definition": "Miscarriage Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -385,7 +385,7 @@
   },
   {
     "term": "str_049",
-    "definition": "流產假（3-6個月）e",
+    "definition": "Miscarriage Leave（3-6 months）",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -393,7 +393,7 @@
   },
   {
     "term": "str_050",
-    "definition": "同產假e",
+    "definition": "the same as Maternity Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -401,7 +401,7 @@
   },
   {
     "term": "str_051",
-    "definition": "半薪流產假（3-6個月）e",
+    "definition": "Half Pay Miscarriage Leave（3-6 months）",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -409,7 +409,7 @@
   },
   {
     "term": "str_052",
-    "definition": "流產假（2-3個月）e",
+    "definition": "Miscarriage Leave（2-3 months）",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -417,7 +417,7 @@
   },
   {
     "term": "str_053",
-    "definition": "不給薪e",
+    "definition": "No pay",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -425,7 +425,7 @@
   },
   {
     "term": "str_054",
-    "definition": "流產假（未滿2個月）e",
+    "definition": "Miscarriage Leave（under 2 months）",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -433,7 +433,7 @@
   },
   {
     "term": "str_055",
-    "definition": "公傷假e",
+    "definition": "Occupational Sickness Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -441,7 +441,7 @@
   },
   {
     "term": "str_056",
-    "definition": "半薪公傷假e",
+    "definition": "Half Pay Occupational Sickness Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -449,7 +449,7 @@
   },
   {
     "term": "str_057",
-    "definition": "薪資由公司代爲申請勞保傷病給付後，另補其原有薪資差額e",
+    "definition": "On behalf of labor, company applies for Labor Injury or Sickness Benefits first and then make up the balance",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -457,7 +457,7 @@
   },
   {
     "term": "str_058",
-    "definition": "公假e",
+    "definition": "Official Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -465,7 +465,7 @@
   },
   {
     "term": "str_059",
-    "definition": "因政府之召集、集會、選舉等履行其國民權利義務時e",
+    "definition": "Call-up from the government, gathering, election",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -473,7 +473,7 @@
   },
   {
     "term": "str_060",
-    "definition": "曠職e",
+    "definition": "Unauthorised Absence",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -481,7 +481,7 @@
   },
   {
     "term": "str_061",
-    "definition": "志工假e",
+    "definition": "Volunteer Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -489,7 +489,7 @@
   },
   {
     "term": "str_062",
-    "definition": "每年給予一天e",
+    "definition": "One day per year",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -497,7 +497,7 @@
   },
   {
     "term": "str_063",
-    "definition": "派外探親假e",
+    "definition": "Expatriate Home Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -505,7 +505,7 @@
   },
   {
     "term": "str_064",
-    "definition": "派外探親假，僅適用派外同仁申請e",
+    "definition": "Expatriate Home Leave, only for expatriate employees",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -513,7 +513,7 @@
   },
   {
     "term": "str_065",
-    "definition": "派外急難假e",
+    "definition": "Expatriate Emergency Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -521,7 +521,7 @@
   },
   {
     "term": "str_066",
-    "definition": "派外...重病或死亡，由Level 2以上主管核定急難假的天數e",
+    "definition": "For Expatriate...serious disease or death, Level 2 above managers approve days for Emergency Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -529,7 +529,7 @@
   },
   {
     "term": "str_067",
-    "definition": "民族祭典假e",
+    "definition": "Traditional Rites and Ceremonies Leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -537,7 +537,7 @@
   },
   {
     "term": "str_068",
-    "definition": "原住民依據族別不同，有不同的祭典日可請一日e",
+    "definition": "According to different tribes and ceremonies aborigines can take one day leave",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -705,7 +705,7 @@
   },
   {
     "term": "str_090",
-    "definition": "Please input reason !",
+    "definition": "Please input reason",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1001,7 +1001,7 @@
   },
   {
     "term": "str_127",
-    "definition": "選擇時間e",
+    "definition": "Select Time",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1009,7 +1009,7 @@
   },
   {
     "term": "str_128",
-    "definition": "立即預約e",
+    "definition": "Reserve Now",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1017,7 +1017,7 @@
   },
   {
     "term": "str_129",
-    "definition": "清除e",
+    "definition": "Clean",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1025,7 +1025,7 @@
   },
   {
     "term": "str_130",
-    "definition": "空字串e",
+    "definition": "Empty String",
     "context": "",
     "term_plural": "",
     "reference": "",
