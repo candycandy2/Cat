@@ -528,22 +528,24 @@ $("#viewLeaveSubmit").pagecontainer({
             $(".basedayList").popup("close");
         });
 
+        $('#starDateTime').datetimepicker();
         //點擊開始日期
         $("#btnStartday").on("click", function() {
             //選擇開始日期之前判斷假別是否選擇
-            if (leaveid === "") {
+            /*if (leaveid === "") {
                 popupMsgInit('.categroyFirst');
             } else {
                 //再判斷是否需要基準日
                 if (needBaseday) {
                     //再判斷基準日是否已经选择
-                    if ($("#chooseBaseday").text() !== selectBasedayStr) {
+                    if ($("#chooseBaseday").text() !== selectBasedayStr) {*/
                         if (device.platform === "iOS") {
-                            $("#startDate").trigger("focus");
+                            //$("#startDate").trigger("focus");
+                            $('#starDateTime').datetimepicker('show'); 
                         } else if (device.platform === "Android") {
                             $("#startDate").trigger("click");
                         }
-                    } else {
+                    /*} else {
                         popupMsgInit('.basedayFirst');
                     }
                 } else {
@@ -553,7 +555,63 @@ $("#viewLeaveSubmit").pagecontainer({
                         $("#startDate").trigger("click");
                     }
                 }
+            }*/
+        });
+
+
+        $("#starDateTime").on("change", function() {
+            if (device.platform === "iOS") {
+                if (timeoutChangeBegindate != null) {
+                    clearTimeout(timeoutChangeBegindate);
+                    timeoutChangeBegindate = null;
+                }
+                timeoutChangeBegindate = setTimeout(function() {
+                    $("#starDateTime").blur();
+                }, 12000);
+            } else if (device.platform === "Android") {
+                $("#starDateTime").blur();
             }
+        });
+
+        $("#starDateTime").on("blur", function() {
+            var self = $(this).val();
+            var minute = parseInt(self.substring(14, 16));
+
+            startLeaveDate = "";
+            startLeaveDay = 0;
+            startLeaveTime = 0;
+
+            //開始時間是否爲空
+            if (self !== "") {
+                //android上日期格式:yyyy-MM-dd T hh:mm，ios上日期格式：yyyy-MM-dd T hh:mm:ss
+                //分钟数小于30设为“00”,如果大于等于30设为“30”
+                if (minute < 30) {
+                    startLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "00";
+                } else {
+                    startLeaveDate = self.replace("T", " ").substring(0, 14).replace(/-/g, "/") + "30";
+                }
+
+                //分别获取日期和时间，需要与结束时间进行比较，原则上开始时间必须小于结束时间
+                startLeaveDay = parseInt(startLeaveDate);
+                startLeaveTime = parseInt(self.split(" ")[1].replace(/:/g, ""));
+
+                $('#startText').text(startLeaveDate);
+
+            } else {
+                $('#startText').text(pleaseSelectStr);
+                $("#starDateTime").val("");
+
+            }
+            //如果开始时间改变，结束时间无论如何也要清空
+            $("#endText").text(pleaseSelectStr);
+            $("#endDate").val("");
+
+            //请假数恢复00
+            $("#leaveDays").text("0");
+            $("#leaveHours").text("0");
+
+            //檢查是否可以預覽送簽
+            checkLeaveBeforePreview();
         });
 
         //開始日期改变
@@ -620,8 +678,6 @@ $("#viewLeaveSubmit").pagecontainer({
             } else if (device.platform === "Android") {
                 $("#startDate").blur();
             }
-
-
         });
 
         $("#startDate").on("blur", function() {
