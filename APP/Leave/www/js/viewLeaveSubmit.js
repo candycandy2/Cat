@@ -532,20 +532,20 @@ $("#viewLeaveSubmit").pagecontainer({
         //點擊開始日期
         $("#btnStartday").on("click", function() {
             //選擇開始日期之前判斷假別是否選擇
-            /*if (leaveid === "") {
+            if (leaveid === "") {
                 popupMsgInit('.categroyFirst');
             } else {
                 //再判斷是否需要基準日
                 if (needBaseday) {
                     //再判斷基準日是否已经选择
-                    if ($("#chooseBaseday").text() !== selectBasedayStr) {*/
+                    if ($("#chooseBaseday").text() !== selectBasedayStr) {
                         if (device.platform === "iOS") {
                             //$("#startDate").trigger("focus");
                             $('#starDateTime').datetimepicker('show'); 
                         } else if (device.platform === "Android") {
                             $("#startDate").trigger("click");
                         }
-                    /*} else {
+                    } else {
                         popupMsgInit('.basedayFirst');
                     }
                 } else {
@@ -555,7 +555,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         $("#startDate").trigger("click");
                     }
                 }
-            }*/
+            }
         });
 
 
