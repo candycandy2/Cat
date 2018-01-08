@@ -14,7 +14,7 @@ $("#viewAccount").pagecontainer({
         var popupMinHeight = 0;
 
         var MonthWord = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        var FromStatus = "USD" ;
+        var FromStatus = "USD";
         var ToStatus = "All Currency";
         var tabActiveIDs;
         var checkDefaultActiveTab = false;
@@ -107,9 +107,9 @@ $("#viewAccount").pagecontainer({
             var content = "";
             var currencyRate;
 
-            $.each(allCurrencyData, function(countryFrom, toData){
+            $.each(allCurrencyData, function(countryFrom, toData) {
                 if (countryFrom === FromStatus) {
-                    $.each(toData[dataMonth], function(countryTo, currencyData){
+                    $.each(toData[dataMonth], function(countryTo, currencyData) {
                         if (countryTo === ToStatus) {
                             currencyRate = currencyData["Ex_Rate"];
                             return false;
@@ -147,10 +147,10 @@ $("#viewAccount").pagecontainer({
 
             var content = "";
 
-            for (var i=0; i<favoriteCurrencyData.length; i++) {
-                $.each(allCurrencyData, function(countryFrom, toData){
+            for (var i = 0; i < favoriteCurrencyData.length; i++) {
+                $.each(allCurrencyData, function(countryFrom, toData) {
                     if (countryFrom === favoriteCurrencyData[i]) {
-                        $.each(toData[dataMonth], function(countryTo, currencyData){
+                        $.each(toData[dataMonth], function(countryTo, currencyData) {
                             if (countryTo === ToStatus) {
                                 content += CountrylisthtmlFirst(favoriteCurrencyData[i], currencyData["Ex_Rate"], "star_icon", true);
                                 return false;
@@ -160,8 +160,8 @@ $("#viewAccount").pagecontainer({
                 });
             }
 
-            $.each(allCurrencyData, function(countryFrom, toData){
-                $.each(toData[dataMonth], function(countryTo, currencyData){
+            $.each(allCurrencyData, function(countryFrom, toData) {
+                $.each(toData[dataMonth], function(countryTo, currencyData) {
                     if (favoriteCurrencyData.indexOf(countryFrom) == -1) {
                         if (countryTo === ToStatus) {
                             content += CountrylisthtmlFirst(countryFrom, currencyData["Ex_Rate"], "nonstar_icon", false);
@@ -181,10 +181,10 @@ $("#viewAccount").pagecontainer({
 
             var content = "";
 
-            for (var i=0; i<favoriteCurrencyData.length; i++) {
-                $.each(allCurrencyData, function(countryFrom, toData){
+            for (var i = 0; i < favoriteCurrencyData.length; i++) {
+                $.each(allCurrencyData, function(countryFrom, toData) {
                     if (countryFrom === FromStatus) {
-                        $.each(toData[dataMonth], function(countryTo, currencyData){
+                        $.each(toData[dataMonth], function(countryTo, currencyData) {
                             if (countryTo === favoriteCurrencyData[i]) {
                                 content += CountrylisthtmlSecond(countryTo, currencyData["Ex_Rate"], "star_icon", true);
                                 return false;
@@ -195,9 +195,9 @@ $("#viewAccount").pagecontainer({
                 });
             }
 
-            $.each(allCurrencyData, function(countryFrom, toData){
+            $.each(allCurrencyData, function(countryFrom, toData) {
                 if (countryFrom === FromStatus) {
-                    $.each(toData[dataMonth], function(countryTo, currencyData){
+                    $.each(toData[dataMonth], function(countryTo, currencyData) {
                         if (favoriteCurrencyData.indexOf(countryTo) == -1) {
                             content += CountrylisthtmlSecond(countryTo, currencyData["Ex_Rate"], "nonstar_icon", false);
                         }
@@ -208,7 +208,7 @@ $("#viewAccount").pagecontainer({
 
             $("ul[data-role='listview'][class^='test']").html("");
             $(tabActiveIDs + " ul").append(content);
-            
+
             recoveryPageHeight();
         }
 
@@ -226,19 +226,19 @@ $("#viewAccount").pagecontainer({
                 var favoriteClassTo = "";
             }
 
-            return '<li data-icon="false" class="1_li CountryA" id="litest">' 
-                + '<div class="Listdiv1 select choose ' + FromStatus + favoriteClassFrom
-                + '"' + 'id=' + FromStatus + '>' 
-                + '<img  class="' + cssClassFrom + '" src ="img/tmp/favorite.png"> ' 
-                + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' 
-                + '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' 
-                + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' 
-                + '<div class="Listdiv2 select choose ' + ToStatus + favoriteClassTo + '"' + 'id=' + ToStatus + '>' 
-                + '<img  class="' + cssClassTo + '" src ="img/tmp/favorite.png"> ' 
-                + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
-                + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate
-                + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> '
-                + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
+            return '<li data-icon="false" class="1_li CountryA" id="litest">' +
+                '<div class="Listdiv1 select choose ' + FromStatus + favoriteClassFrom +
+                '"' + 'id=' + FromStatus + '>' +
+                '<img  class="' + cssClassFrom + '" src ="img/tmp/favorite.png"> ' +
+                '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus + '.png"> ' +
+                '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' +
+                '<div  class="Listdiv1equalmark4">=</div>' + '</div>' +
+                '<div class="Listdiv2 select choose ' + ToStatus + favoriteClassTo + '"' + 'id=' + ToStatus + '>' +
+                '<img  class="' + cssClassTo + '" src ="img/tmp/favorite.png"> ' +
+                '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' +
+                '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate +
+                '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' +
+                '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
         function CountrylisthtmlFirst(country, rate, cssClass, favorite) {
@@ -248,17 +248,17 @@ $("#viewAccount").pagecontainer({
                 var favoriteClass = "";
             }
 
-            return '<li data-icon="false" class="1_li CountryA ">' 
-                + '<div class="Listdiv1 select choose ' + country + favoriteClass + '"' + 'id=' 
-                + country + '>' + '<img  class="' + cssClass + '" src ="img/tmp/favorite.png"> ' 
-                + '<img  class="ListviewFlag1" src ="img/tmp/' + country + '.png"> ' 
-                + '<span class="ListRate1">' + '1 ' + country + '</span>  '
-                + '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' 
-                + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> '
-                + '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' 
-                + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate 
-                + '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' 
-                + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
+            return '<li data-icon="false" class="1_li CountryA ">' +
+                '<div class="Listdiv1 select choose ' + country + favoriteClass + '"' + 'id=' +
+                country + '>' + '<img  class="' + cssClass + '" src ="img/tmp/favorite.png"> ' +
+                '<img  class="ListviewFlag1" src ="img/tmp/' + country + '.png"> ' +
+                '<span class="ListRate1">' + '1 ' + country + '</span>  ' +
+                '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' +
+                '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' +
+                '<img  class="ListviewFlag2" src ="img/tmp/' + ToStatus + '.png">' +
+                '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate +
+                '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' +
+                '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
         function CountrylisthtmlSecond(country, rate, cssClass, favorite) {
@@ -268,18 +268,18 @@ $("#viewAccount").pagecontainer({
                 var favoriteClass = "";
             }
 
-            return '<li data-icon="false" class="1_li CountryA">' 
-                + '<div class="Listdiv1" id=' + FromStatus + '>'
-                + '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' 
-                + '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus 
-                + '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus 
-                + '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>'
-                + '</div>' + '<div class="Listdiv2 select choose ' + country + favoriteClass + '"' 
-                + 'id= ' + country + '>' + '<img  class="' + cssClass + '" src ="img/tmp/favorite.png"> ' 
-                + '<img  class="ListviewFlag2" src ="img/tmp/' + country + '.png">'
-                + '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate
-                + '</span> ' + '<span class="ListRate2">' + country + '</span>' + '<br> '
-                + '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
+            return '<li data-icon="false" class="1_li CountryA">' +
+                '<div class="Listdiv1" id=' + FromStatus + '>' +
+                '<img  class="nonstar_icon" src ="img/tmp/favorite.png"> ' +
+                '<img  class="ListviewFlag1" src ="img/tmp/' + FromStatus +
+                '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus +
+                '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' +
+                '</div>' + '<div class="Listdiv2 select choose ' + country + favoriteClass + '"' +
+                'id= ' + country + '>' + '<img  class="' + cssClass + '" src ="img/tmp/favorite.png"> ' +
+                '<img  class="ListviewFlag2" src ="img/tmp/' + country + '.png">' +
+                '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate +
+                '</span> ' + '<span class="ListRate2">' + country + '</span>' + '<br> ' +
+                '</div>' + '</div>' + '</li><hr class="ui-hr ui-hr-option">';
         }
 
         function initialPullRefresh() {
@@ -359,7 +359,7 @@ $("#viewAccount").pagecontainer({
                 }
 
                 if (allCurrencyData[getfrom][tempExDateMonth] === undefined) {
-                    allCurrencyData[getfrom][tempExDateMonth] = {};   
+                    allCurrencyData[getfrom][tempExDateMonth] = {};
                 }
 
                 if (allCurrencyData[getfrom][tempExDateMonth][getto] === undefined) {
@@ -381,8 +381,8 @@ $("#viewAccount").pagecontainer({
 
             //Remove the old data
             //ex: if now have data of month [4,5,6], and now date is June, then remove data of month [4]
-            $.each(allCurrencyData, function(countryFrom, toData){
-                $.each(toData, function(month, currencyData){
+            $.each(allCurrencyData, function(countryFrom, toData) {
+                $.each(toData, function(month, currencyData) {
                     if (showDataMonth.indexOf(parseInt(month, 10)) == -1) {
                         delete allCurrencyData[countryFrom][month];
                     }
@@ -391,7 +391,7 @@ $("#viewAccount").pagecontainer({
             window.localStorage.setItem("allCurrencyData", JSON.stringify(allCurrencyData));
 
             //Decide the latest_update_datetime
-            if (arrayLast_update_date.length > 0) { 
+            if (arrayLast_update_date.length > 0) {
                 arrayLast_update_date.sort();
                 var b = arrayLast_update_date.length - 1;
                 var newDatetime = arrayLast_update_date[b];
@@ -472,7 +472,7 @@ $("#viewAccount").pagecontainer({
 
             var todayYearmod = todayYear.toString().substring(2, 4);
 
-            for (var i=0; i<showDataMonth.length; i++) {
+            for (var i = 0; i < showDataMonth.length; i++) {
                 var fragNum = parseInt(i + 1, 10);
                 $(".frag" + fragNum).text(MonthWord[showDataMonth[i] - 1] + "-" + todayYearmod);
             }
@@ -480,7 +480,7 @@ $("#viewAccount").pagecontainer({
             $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
 
             var dateshow = latestUpdateDatetime.toString().substr(0, 10);
-            $(".mainword3").text("Updated on "+ dateshow);
+            $(".mainword3").text("Updated on " + dateshow);
         }
 
         function dataListView(popupID) {
@@ -617,13 +617,13 @@ $("#viewAccount").pagecontainer({
 
             //If the ToStatus has no currency data, don't display this counry in datalist
             if (popupID === "popupA") {
-                if (FromStatus == "All Currency" && ToStatus != "All Currency" || 
+                if (FromStatus == "All Currency" && ToStatus != "All Currency" ||
                     FromStatus != "All Currency" && ToStatus != "All Currency") {
 
-                    $.each(allCurrencyData, function(countryFrom, toData){
+                    $.each(allCurrencyData, function(countryFrom, toData) {
                         var currencyExist = false;
 
-                        $.each(toData[dataMonth], function(countryTo, currencyData){
+                        $.each(toData[dataMonth], function(countryTo, currencyData) {
                             if (countryTo === ToStatus) {
                                 dataListCountry.push(countryFrom);
                             }
@@ -632,7 +632,7 @@ $("#viewAccount").pagecontainer({
 
                     showAllCountryOption = true;
                 } else if (FromStatus != "All Currency" && ToStatus == "All Currency") {
-                    $.each(allCurrencyData, function(countryFrom, toData){
+                    $.each(allCurrencyData, function(countryFrom, toData) {
                         var countryIndex = allCountry.indexOf(countryFrom);
                         if (countryIndex != -1) {
                             dataListCountry.push(countryFrom);
@@ -645,9 +645,9 @@ $("#viewAccount").pagecontainer({
 
             if (popupID === "popupB") {
                 if (FromStatus != "All Currency") {
-                    $.each(allCurrencyData, function(countryFrom, toData){
+                    $.each(allCurrencyData, function(countryFrom, toData) {
                         if (countryFrom === FromStatus) {
-                            $.each(toData[dataMonth], function(countryTo, currencyData){
+                            $.each(toData[dataMonth], function(countryTo, currencyData) {
                                 dataListCountry.push(countryTo);
                             });
                         }
@@ -673,7 +673,7 @@ $("#viewAccount").pagecontainer({
                 dataListContent += popupListLi[0].outerHTML + popupListLi[2].outerHTML;
             }
 
-            for (var i=0; i<dataListCountry.length; i++) {
+            for (var i = 0; i < dataListCountry.length; i++) {
                 var popupListLi = $(popupListLiHTML);
 
                 if (selectedCountry === dataListCountry[i]) {
