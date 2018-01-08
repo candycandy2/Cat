@@ -373,10 +373,15 @@ $("#viewAccount").pagecontainer({
             allCountry.sort();
             window.localStorage.setItem("allCountry", JSON.stringify(allCountry));
 
+            //review by alan
             //According to the Ex_Date, only display the latest 2 month's data
+            //[12,1,11]
             showDataMonth.sort().reverse();
+            //[12,11,1]
             showDataMonth.splice(2);
+            //[12,11]
             showDataMonth.reverse();
+            //[11,12]
             window.localStorage.setItem("showDataMonth", JSON.stringify(showDataMonth));
 
             //Remove the old data
