@@ -1,0 +1,147 @@
+<div data-role="page" id="viewActivitiesSignup">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn" data-role="none">
+            <img src="img/menu.png" class="menu">
+            <img src="img/back.png" class="back-list">
+        </a>
+        <div class="header-style">
+            <div class="ui-title">活動報名</div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main">
+        <!--1.活動列表-->
+        <div id="allActivities">
+            <!--已開放-->
+            <div class="open-title">
+                <div></div>
+                <div class="font-style11 font-color1">已開放：</div>
+                <div></div>
+            </div>
+            <div id="openList">
+                <div class="activity-list">
+                    <div class="activity-list-img">
+                        <img src="img/event_date.png">
+                    </div>
+                    <div class="activity-list-info font-color2">
+                        <div class="font-style10">[健身房課程]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
+                        <div class="font-style11">
+                            <span>名額:</span>
+                            <span>12</span>&nbsp;&nbsp;
+                            <span>剩餘:</span>
+                            <span>11</span>
+                        </div>
+                        <div class="font-style11">
+                            <span>報名期間:</span>
+                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-line"></div>
+                <div class="activity-list">
+                    <div class="activity-list-img">
+                        <img src="img/event_date.png">
+                    </div>
+                    <div class="activity-list-info font-color2">
+                        <div class="font-style10">[健身房課程]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
+                        <div class="font-style11">
+                            <span>名額:</span>
+                            <span>12</span>&nbsp;&nbsp;
+                            <span>剩餘:</span>
+                            <span>11</span>
+                        </div>
+                        <div class="font-style11">
+                            <span>報名期間:</span>
+                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--未開放-->
+            <div class="close-title">
+                <div></div>
+                <div class="font-style11 font-color1">未來：</div>
+                <div></div>
+            </div>
+            <div id="closeList">
+                <div class="activity-list">
+                    <div class="activity-list-img">
+                        <img src="img/event_date.png">
+                    </div>
+                    <div class="activity-list-info font-color2">
+                        <div class="font-style10">[健身房課程]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
+                        <div class="font-style11">
+                            <span>名額:</span>
+                            <span>12</span>&nbsp;&nbsp;
+                            <span>剩餘:</span>
+                            <span>11</span>
+                        </div>
+                        <div class="font-style11">
+                            <span>報名期間:</span>
+                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-line"></div>
+                <div class="activity-list">
+                    <div class="activity-list-img">
+                        <img src="img/event_date.png">
+                    </div>
+                    <div class="activity-list-info font-color2">
+                        <div class="font-style10">[健身房課程]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
+                        <div class="font-style11">
+                            <span>名額:</span>
+                            <span>12</span>&nbsp;&nbsp;
+                            <span>剩餘:</span>
+                            <span>11</span>
+                        </div>
+                        <div class="font-style11">
+                            <span>報名期間:</span>
+                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--2.活動詳情-->
+        <div id="activityDetail">
+            <div class="detail-header">
+                <div class="detail-header-img">
+                    <img src="img/event_date.png" id="activityThumbnail">
+                </div>
+                <div class="detail-header-info">
+                    <div class="font-style10 font-color2">
+                        <span id="activityName">[健身房課程]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</span>
+                    </div>
+                    <div class="font-style11 font-color2">
+                        <span>總名額:</span>
+                        <span id="activityAllPlace">無上限</span>&nbsp;&nbsp;
+                        <span>參與名額限制:</span>
+                        <span id="activityLimit">5</span>
+                    </div>
+                    <div class="font-style11 font-color2">
+                        <span>報名期間:</span>
+                        <span id="activityDate">2017/9/1 13:00 - 2017/9/8 12:00</span>
+                    </div>
+                    <div class="font-style11 font-color2">
+                        <span>已報名人數:</span>
+                        <span id="activityPeople" class="font-color4">521</span>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-main">
+
+            </div>
+            <!-- <div class="detail-footer"></div> -->
+        </div>
+
+        <!--3.暫無活動-->
+        <div id="noActivity" class="font-style12 font-color3">目前沒有任何活動</div>
+    </div>
+
+    <div data-role="footer" data-position="fixed" class="page-footer" data-tap-toggle="false">
+        <span>開始報名</span>
+    </div>
+</div>

@@ -1,8 +1,8 @@
 
-$("#viewMain").pagecontainer({
+
+$("#viewActivitiesRecord").pagecontainer({
     create: function(event, ui) {
         //page init
-        /********************************** function *************************************/
         window.APIRequest = function() {
 
             var self = this;
@@ -23,12 +23,12 @@ $("#viewMain").pagecontainer({
         };
 
         /********************************** page event *************************************/
-        $("#viewMain").on("pagebeforeshow", function(event, ui) {
+        $("#viewActivitiesRecord").on("pagebeforeshow", function(event, ui) {
 
         });
 
         /********************************** dom event *************************************/
-        $('#viewMain').keypress(function(event) {
+        $("#viewActivitiesRecord").keypress(function(event) {
 
         });
     }
