@@ -5,7 +5,9 @@ var JM = {
     friendID: "",
     chatroomID: "",
     data: {},
-    init: function(JMAppKey, sendPushToken, receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged) {
+    init: function(JMAppKey, sendPushToken) {
+
+        window.JMessage.setDebugMode({ enable: true });
 
         //Update JMessaage APP Key
         JM.key = JMAppKey;
@@ -20,6 +22,10 @@ var JM = {
             JM.data.chatroom = {};
         }
 
+        if (JM.data.chatroom_sequence === undefined) {
+            JM.data.chatroom_sequence = [];
+        }
+
         if (JM.data.chatroom_message_history === undefined) {
             JM.data.chatroom_message_history = {};
         }
@@ -30,6 +36,10 @@ var JM = {
 
         if (JM.data.chatroom_friend === undefined) {
             JM.data.chatroom_friend = [];
+        }
+
+        if (JM.data.chatroom_invite === undefined) {
+            JM.data.chatroom_invite = [];
         }
 
         window.MessageSendingOptions = {
@@ -62,6 +72,21 @@ var JM = {
           notificationText: "Darren content"
         };
 
+        console.log("----initial");
+
+        var params = {
+            'isOpenMessageRoaming': true
+        };
+
+        window.JMessage.init(params);
+
+        setTimeout(function(){
+            JM.login(sendPushToken);
+            //JM.logout();
+        }, 2000);
+
+    },
+    bindEvent: function(receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage) {
         window.JMessage.addReceiveMessageListener(function (data) {
             console.log("----addReceiveMessageListener");
             receiveMessage(data);
@@ -82,19 +107,10 @@ var JM = {
             loginStateChanged(data);
         });
 
-        console.log("----initial");
-
-        var params = {
-            'isOpenMessageRoaming': true
-        };
-
-        window.JMessage.init(params);
-
-        setTimeout(function(){
-            JM.login(sendPushToken);
-            //JM.logout();
-        }, 2000);
-
+        window.JMessage.addSyncRoamingMessageListener(function (data) {
+            console.log("----addSyncRoamingMessageListener");
+            syncRoamingMessage(data);
+        });
     },
     updateLocalStorage: function() {
         window.localStorage.setItem("JMData", JSON.stringify(JM.data));
@@ -114,7 +130,6 @@ var JM = {
             console.log("----register Error");
             console.log(errorStr);
         });
-
     },
     login: function(callback) {
 
@@ -157,7 +172,8 @@ var JM = {
         getUserInfo: function(userID, callback) {
 
             var params = {
-                'username': userID
+                'username': userID,
+                'appKey': JM.key
             };
 
             window.JMessage.getUserInfo(params, function(data) {
@@ -171,7 +187,7 @@ var JM = {
             });
 
         },
-        updateMyAvatar: function(imgPath) {
+        updateMyAvatar: function(imgPath, callback) {
 
             var params = {
                 'imgPath': imgPath
@@ -180,9 +196,11 @@ var JM = {
             window.JMessage.updateMyAvatar(params, function(data) {
                 console.log("---updateMyAvatar success");
                 console.log(data);
+                callback("success", data);
             }, function(errorStr) {
                 console.log("----updateMyAvatar Error");
                 console.log(errorStr);
+                callback("error", errorStr);
             });
 
         },
@@ -200,7 +218,17 @@ var JM = {
             }, function(errorStr) {
                 console.log("----downloadOriginalUserAvatar Error");
                 console.log(errorStr);
-                callback("error", errorStr);
+
+                //For iOS, this API occur 860021 error when first call it, even though the init/login all success.
+                //So, do it again, only this way can get correct data.
+                if (device.platform === "iOS") {
+                    if (errorStr.code == 860021) {
+                        JM.User.downloadOriginalUserAvatar(userID, callback);
+                    }
+                } else {
+                    callback("error", errorStr);
+                }
+
             });
 
         }
@@ -238,7 +266,7 @@ var JM = {
             });
 
         },
-        getGroupInfo: function(groupID) {
+        getGroupInfo: function(groupID, callback) {
 
             var params = {
                 'id': groupID
@@ -247,9 +275,11 @@ var JM = {
             window.JMessage.getGroupInfo(params, function(data) {
                 console.log("---getGroupInfo success");
                 console.log(data);
+                callback("success", data);
             }, function(errorStr) {
                 console.log("----getGroupInfo Error");
                 console.log(errorStr);
+                callback("error", errorStr);
             });
 
         },
@@ -287,12 +317,12 @@ var JM = {
             });
 
         },
-        enterConversation: function() {
+        enterConversation: function(chatroomID) {
             console.log("---enterConversation");
 
             var params = {
                 'type': "group",
-                'groupId': JM.chatroomID,
+                'groupId': chatroomID,
                 'username': loginData["loginid"],
                 'appKey': "f1007b6d14755a1e17e74195"
             };
@@ -312,11 +342,12 @@ var JM = {
             window.JMessage.exitConversation();
 
         },
-        getConversation: function(callback) {
+        getConversation: function(chatroomID, callback) {
+            console.log("@@@@@@getConversation-single");
 
             var params = {
                 'type': "group",
-                'groupId': JM.chatroomID,
+                'groupId': chatroomID,
                 'username': loginData["loginid"]
             };
 
@@ -345,11 +376,11 @@ var JM = {
             });
 
         },
-        resetUnreadMessageCount: function() {
+        resetUnreadMessageCount: function(chatroomID) {
 
             var params = {
                 'type': "group",
-                'groupId': JM.chatroomID
+                'groupId': chatroomID
             };
 
             window.JMessage.resetUnreadMessageCount(params, function(data) {
@@ -418,13 +449,14 @@ var JM = {
         }
     },
     Message: {
-        getHistoryMessages: function(from, limit, callback) {
+        getHistoryMessages: function(chatroomID, from, limit, callback) {
+            console.log("@@@@@@@getHistoryMessages");
 
             var params = {
                 'type': "group",
-                'groupId': JM.chatroomID,
-                'from': 0,
-                'limit': -1
+                'groupId': chatroomID,
+                'from': from,
+                'limit': limit
             };
 
             window.JMessage.getHistoryMessages(params, function(data) {
@@ -438,16 +470,16 @@ var JM = {
             });
 
         },
-        sendTextMessage: function(text, callback, event, action) {
+        sendTextMessage: function(chatroomID, text, callback, event, action) {
             event = event || false;
             action = action || "";
 
             var params = {
                 'type': "group",
-                'groupId': JM.chatroomID,
+                'groupId': chatroomID,
                 'text': text,
                 'extras': {
-                    chatroom_id: JM.chatroomID,
+                    chatroom_id: chatroomID,
                     event: event,
                     action: action
                 },
@@ -465,16 +497,16 @@ var JM = {
             });
 
         },
-        sendImageMessage: function(imgPath, callback, event, action) {
+        sendImageMessage: function(chatroomID, imgPath, callback, event, action) {
             event = event || false;
             action = action || "";
 
             var params = {
                 'type': "group",
-                'groupId': JM.chatroomID,
+                'groupId': chatroomID,
                 'path': imgPath,
                 'extras': {
-                    chatroom_id: JM.chatroomID,
+                    chatroom_id: chatroomID,
                     event: event,
                     action: action
                 },
@@ -492,11 +524,11 @@ var JM = {
             });
 
         },
-        downloadOriginalImage: function(msgID, callback) {
+        downloadOriginalImage: function(chatroomID, msgID, callback) {
 
             var params = {
                 'type': "group",
-                'groupId': JM.chatroomID,
+                'groupId': chatroomID,
                 'username': loginData["loginid"],
                 'appKey': JM.key,
                 'messageId': msgID

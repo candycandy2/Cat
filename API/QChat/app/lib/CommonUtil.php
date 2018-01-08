@@ -43,7 +43,8 @@ class CommonUtil{
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 break;
             case "PUT":
-                curl_setopt($curl, CURLOPT_PUT, 1);
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 break;
             default:
                 if ($data)
@@ -57,18 +58,21 @@ class CommonUtil{
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_TIMEOUT_MS, $api_max_exe_time);
-        //add for Develop
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
-        curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
-        curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:2');
-
+        if(Config::get("app.env") == "local"){
+         // curl add for Develop
+         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
+         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
+         curl_setopt($curl, CURLOPT_PROXY,Config::get("app.proxy"));
+         curl_setopt($curl, CURLOPT_PROXYUSERPWD,Config::get("app.proxypwd"));
+        }
         if( ! $result = curl_exec($curl)) 
         { 
             $errno = curl_errno($curl);
             $result = json_encode(['error'=>$errno,'message'=>curl_strerror($errno)]);
+            curl_close($curl);
             return  $result;
         }
+        curl_close($curl);
         return $result;
     }
 
@@ -219,8 +223,19 @@ class CommonUtil{
   */
   public static function compressImage($imgsrc, $imgdst, $quality){
     list($width,$height,$type)=getimagesize($imgsrc);
-    $new_width = $width;
-    $new_height = $height;
+    $source_ratio = $width/$height;
+    $new_ratio = 1;
+    if($source_ratio > 1){ //橫圖
+        $target_ratio = round(1024/$width, 1);
+    }else{ //直圖
+        $target_ratio = round(1024/$height, 1);
+    }
+    //長或寬>1024才需做壓縮
+    if($target_ratio < 1){
+        $new_ratio = $target_ratio;
+    }
+    $new_width = $width * $new_ratio;
+    $new_height = $height * $new_ratio;
     switch($type){
       case 1:
         $giftype=self::checkGifCartoon($imgsrc);

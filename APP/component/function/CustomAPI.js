@@ -21,7 +21,7 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
     // review
     function requestError(data) {
         errorHandler(data);
-        if (failCallback){
+        if (failCallback) {
             failCallback();
         }
     }
@@ -47,5 +47,5 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
         success: requestSuccess,
         error: requestError
     });
-    
+
 }

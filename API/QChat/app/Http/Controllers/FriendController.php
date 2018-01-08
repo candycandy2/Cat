@@ -43,64 +43,60 @@ class FriendController extends Controller
      * @return json
      */
     public function getQList(Request $request){
-        try {
-            $required = Validator::make($this->data, [
-                'search_type' => 'required',
-                'mode' => 'required',
-                'emp_no' => 'required',
-                'search_string' => 'required_if:search_type,==,1|
-                                    required_if:search_type,==,2',
-            ]);
+        $required = Validator::make($this->data, [
+            'search_type' => 'required',
+            'mode' => 'required',
+            'emp_no' => 'required',
+            'search_string' => 'required_if:search_type,==,1|
+                                required_if:search_type,==,2',
+        ]);
 
-            $range = Validator::make($this->data, [
-                'mode' => 'in:1,2,3',
-                'search_type' => 'in:1,2,3',
-            ]);
+        $range = Validator::make($this->data, [
+            'mode' => 'in:1,2,3',
+            'search_type' => 'in:1,2,3',
+        ]);
 
-            if($required->fails())
-            {
-                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
-                        'Message'=>"必填字段缺失",
-                        'Content'=>""]);
-            }
-
-            if($range->fails())
-            {      
-                return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                        'Message'=>"欄位格式錯誤",
-                        'Content'=>""]);
-            }
-            if(is_array($this->data['search_string'])){
-                
-                if(count($this->data['search_string']) > 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                        'Message'=>"欄位格式錯誤",
-                        'Content'=>""]);
-                }else {
-                    $this->data['search_string'] = "";
-                }
-            }
-
-            $searchType = $this->data['search_type'];
-            $searchString = $this->data['search_string'];
-            $mode = $this->data['mode'];
-            $empNo = $this->data['emp_no'];
-
-            
-            $userList =  $this->userService->getUserList($searchType, $mode, $empNo, $searchString);
-            
-            if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
-                        'Message'=>"查無資料",
-                        'Content'=>""]);
-            }
-            
-            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                        'Message'=>"",
-                        'Content'=>$userList]);
-        }catch (\Exception $e) {
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+        if($required->fails())
+        {
+            return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                    'Message'=>"必填字段缺失",
+                    'Content'=>""]);
         }
+
+        if($range->fails())
+        {      
+            return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+        }
+        if(is_array($this->data['search_string'])){
+            
+            if(count($this->data['search_string']) > 0){
+             return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
+            }else {
+                $this->data['search_string'] = "";
+            }
+        }
+
+        $searchType = $this->data['search_type'];
+        $searchString = $this->data['search_string'];
+        $mode = $this->data['mode'];
+        $empNo = $this->data['emp_no'];
+
+        
+        $userList =  $this->userService->getUserList($searchType, $mode, $empNo, $searchString);
+        
+        if(!isset($userList['user_list']) || count($userList['user_list']) == 0){
+             return $result = response()->json(['ResultCode'=>ResultCode::_025998_NoData,
+                    'Message'=>"查無資料",
+                    'Content'=>""]);
+        }
+        
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                    'Message'=>"",
+                    'Content'=>$userList]);
     }
 
     /**
@@ -109,34 +105,30 @@ class FriendController extends Controller
      * @return json
      */
     public function getQFriend(Request $request){
-        try {
-            if(!isset($this->data['search_string']) || 
-                count($this->data['search_string']) == 0){
-                $this->data['search_string'] = "";
-            }else{
-                 if(count($this->data['search_string']) > 1){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
-                        'Message'=>"欄位格式錯誤",
-                        'Content'=>""]);
-                }
+        if(!isset($this->data['search_string']) || 
+            count($this->data['search_string']) == 0){
+            $this->data['search_string'] = "";
+        }else{
+             if(count($this->data['search_string']) > 1){
+             return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
+                    'Message'=>"欄位格式錯誤",
+                    'Content'=>""]);
             }
-
-            $userList = ['friend'=>[],'inviter'=>[]];
-            $searchString = $this->data['search_string'];
-            $empNo = $this->data['emp_no'];
-
-            $friendList =  $this->userService->getUserList(1, 1, $empNo, $searchString);
-            $inviterList = $this->friendService->getInviterList($empNo);
-
-            $userList['friend'] = $friendList;
-            $userList['inviter']['user_list'] = $inviterList;
-
-            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                        'Message'=>"",
-                        'Content'=>$userList]);
-        }catch (\Exception $e) {
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
         }
+
+        $userList = ['friend'=>[],'inviter'=>[]];
+        $searchString = $this->data['search_string'];
+        $empNo = $this->data['emp_no'];
+
+        $friendList =  $this->userService->getUserList(1, 1, $empNo, $searchString);
+        $inviterList = $this->friendService->getInviterList($empNo);
+
+        $userList['friend'] = $friendList;
+        $userList['inviter']['user_list'] = $inviterList;
+
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                    'Message'=>"",
+                    'Content'=>$userList]);
     }
 
     /**
@@ -173,7 +165,7 @@ class FriendController extends Controller
             $targetEmpNo = $this->data['destination_emp_no'];
             
             if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -200,7 +192,7 @@ class FriendController extends Controller
            
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+            throw $e;
         }
     }
 
@@ -250,7 +242,7 @@ class FriendController extends Controller
             $reason = $this->data['reason'];
             
             if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -282,7 +274,7 @@ class FriendController extends Controller
             
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+            throw $e;
         }
     }
 
@@ -319,7 +311,7 @@ class FriendController extends Controller
             $sourceEmpNo = $this->data['source_emp_no'];
             
             if(!Verify::checkUserStatusByUserEmpNo($sourceEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -338,7 +330,7 @@ class FriendController extends Controller
             
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+            throw $e;
         }
 
     }
@@ -388,7 +380,7 @@ class FriendController extends Controller
             $rejectReason = $this->data['reason'];
 
             if(!Verify::checkUserStatusByUserEmpNo($sourceEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -406,7 +398,7 @@ class FriendController extends Controller
             
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+            throw $e;
         }
     }
 
@@ -443,11 +435,12 @@ class FriendController extends Controller
             $destinationEmpNo = $this->data['destination_emp_no'];
 
             if(!Verify::checkUserStatusByUserEmpNo($destinationEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
             $isProtectedUser = $this->userService->checkUserIsProteted($empNo);
+
             $this->friendService->removeQFriend($empNo, $destinationEmpNo, $this->userId);
             if( $isProtectedUser ){
                 //保護用戶需雙向解除朋友關係
@@ -460,7 +453,7 @@ class FriendController extends Controller
             
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+            throw $e;
         }
     }
 
@@ -469,53 +462,48 @@ class FriendController extends Controller
      * @return json
      */
     public function sendQInstall(){
-       try {
-          
-            $required = Validator::make($this->data, [
-                'destination_emp_no' => 'required'
-            ]);
+        $required = Validator::make($this->data, [
+            'destination_emp_no' => 'required'
+        ]);
 
-            if($required->fails())
-            {
-                return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
-                        'Message'=>"必填字段缺失",
-                        'Content'=>""]);
-            }
-
-            $empNo = $this->data['emp_no'];
-            $destEmpNo = $this->data['destination_emp_no'];
-           
-            if(!Verify::checkUserStatusByUserEmpNo($destEmpNo)) {
-             return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
-                    'Message'=>"要設定的好友工號不存在",
+        if($required->fails())
+        {
+            return $result = response()->json(['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                    'Message'=>"必填字段缺失",
                     'Content'=>""]);
-            }
-            $registerMessage = $this->userService->getQMessageRegister($destEmpNo);
-            if($registerMessage->register_message == 'Y'){
-                return $result = response()->json(['ResultCode'=>ResultCode::_025924_DestinationEmployeeAlreadyRegistered,
-                'Message'=>"要邀請的好友已經註冊過QPlay",
-                'Content'=>""]);
-            }
-
-            $user = $this->userService->getUserData($empNo);
-            $destUser = $this->userService->getUserData($destEmpNo);
-            $data = array(
-                        'sender'      =>$user->login_id,
-                        'receiver'    =>$destUser->login_id,
-                        'to'          =>$destUser->email,
-                        'fromName'    =>Config::get('app.mail_name'),
-                        'fromAddress' =>Config::get('app.mail_address'),
-                        'subject'     =>$user->login_id ."邀請您使用QPlay",
-                        'sendDate'    =>time()
-                    );
-            $template = 'emails.invitation_to_install';
-            CommonUtil::sendMail($template,$data);
-
-            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                        'Message'=>"",
-                        'Content'=>""]);
-        }catch (\Exception $e) {
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
         }
+
+        $empNo = $this->data['emp_no'];
+        $destEmpNo = $this->data['destination_emp_no'];
+       
+        if(!Verify::checkUserStatusByUserEmpNo($destEmpNo)) {
+         return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
+                'Message'=>"要設定的好友工號不存在",
+                'Content'=>""]);
+        }
+        $registerMessage = $this->userService->getQMessageRegister($destEmpNo);
+        if($registerMessage->register_message == 'Y'){
+            return $result = response()->json(['ResultCode'=>ResultCode::_025924_DestinationEmployeeAlreadyRegistered,
+            'Message'=>"要邀請的好友已經註冊過QPlay",
+            'Content'=>""]);
+        }
+
+        $user = $this->userService->getUserData($empNo);
+        $destUser = $this->userService->getUserData($destEmpNo);
+        $data = array(
+                    'sender'      =>$user->login_id,
+                    'receiver'    =>$destUser->login_id,
+                    'to'          =>$destUser->email,
+                    'fromName'    =>Config::get('app.mail_name'),
+                    'fromAddress' =>Config::get('app.mail_address'),
+                    'subject'     =>$user->login_id ."邀請您使用QPlay",
+                    'sendDate'    =>time()
+                );
+        $template = 'emails.invitation_to_install';
+        CommonUtil::sendMail($template,$data);
+
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                    'Message'=>"",
+                    'Content'=>""]);
     }
 }

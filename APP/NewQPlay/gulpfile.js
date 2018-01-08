@@ -195,18 +195,17 @@ gulp.task('jenkinsinstall', shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + process.env.QPushAPPKey,
     'cordova plugin add ../../plugins/cordova-plugin-device',
     //'cordova plugin add cordova-plugin-console@1.0.5',
-    //'cordova plugin add cordova-plugin-appversion',
+    'cordova plugin add ../../plugins/cordova-plugin-appversion',
     'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
     'cordova plugin add ../../plugins/cordova-plugin-app-update',
     'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
     'cordova plugin add ../../plugins/cordova-plugin-whitelist',
     'cordova plugin add ../../plugins/cordova-plugin-inappbrowser',
-    //'cordova plugin add ../../plugins/cordova-plugin-proguard',
+    'cordova plugin add ../../plugins/cordova-plugin-proguard',
     'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
     'cordova plugin add ../../plugins/cordova-plugin-appavailability'//,
     //'cordova plugin add cordova-plugin-file@4.3.1'
-    //'cordova plugin add ../../plugins/cordova-plugin-proguard'
 ]));
 
 gulp.task('patch', function() {

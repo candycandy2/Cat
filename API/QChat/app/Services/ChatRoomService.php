@@ -7,6 +7,7 @@ use App\Repositories\UserRepository;
 use App\Repositories\ChatRoomRepository;
 use App\lib\CommonUtil;
 use Config;
+use Exception;
 
 class ChatRoomService
 {   
@@ -64,6 +65,9 @@ class ChatRoomService
         $chatroom = $this->chatRoomRepository->getChatroom($groupId);
         if(count($chatroom) > 0 && isset($chatroom->chatroom_desc)){
             $desc = $this->getChatroomExtraData($chatroom->chatroom_desc);
+            if(is_null($desc)){
+                throw new \Exception();
+            }
             $chatroom->extraData =  $desc;
         }
         return $chatroom;
@@ -78,7 +82,9 @@ class ChatRoomService
         $res = $this->chatRoomRepository->getPrivateGroup($member1, $member2);
         foreach ($res as $chatroom) {
            $desc = $this->getChatroomExtraData(trim($chatroom->chatroom_desc));
-
+           if(is_null($desc)){
+                throw new \Exception();
+            }
            if($desc['group_message'] == 'N'){
                  $privateGroupId = $chatroom->chatroom_id;
            }
@@ -124,8 +130,13 @@ class ChatRoomService
      */
     public function getChatroomExtraData(String $list){
         $array = explode(';',$list);
+        
         $result = [];
         foreach ($array as $item) {
+            preg_match("/\w+=\w+/", $item, $matches);
+            if(count($matches) == 0){
+                return null;
+            }
             $result[explode('=',$item)[0]] = explode('=',$item)[1];    
         }
         return $result;
@@ -168,7 +179,7 @@ class ChatRoomService
         $method = 'groups/'.$groupId;
         $data =json_encode($data);
         $url = JMessage::API_V1_URL.$method;
-        return $this->jmessage->exec('POST', $url, $data);
+        return $this->jmessage->exec('PUT', $url, $data);
     }
 
     /**

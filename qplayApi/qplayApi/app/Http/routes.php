@@ -23,27 +23,25 @@ if (array_key_exists('lang',$_GET)){
 
 Route::any('/v101/qplay/getIpInfo', 'qplayController@getIpInfo');
 
-//QPlay Api
-Route::any('/v101/qplay/getSecurityList', 'qplayController@getSecurityList');
-Route::any('/v101/qplay/register', 'qplayController@register');
-Route::any('/v101/qplay/unregister', 'qplayController@unregister');
-Route::any('/v101/qplay/isRegister', 'qplayController@isRegister');
-Route::any('/v101/qplay/login', 'qplayController@login');
-Route::any('/v101/qplay/logout', 'qplayController@logout');
-Route::any('/v101/qplay/checkAppVersionIntra', 'qplayController@checkAppVersionIntra');
-Route::any('/v101/qplay/checkAppVersion', 'qplayController@checkAppVersion');
-Route::any('/v101/qplay/getAppList', 'qplayController@getAppList');
-Route::any('/v101/qplay/getMessageList', 'qplayController@getMessageList');
-Route::any('/v101/qplay/getMessageDetail', 'qplayController@getMessageDetail');
-Route::any('/v101/qplay/updateMessage', 'qplayController@updateMessage');
-Route::any('/v101/qplay/sendPushToken', 'qplayController@sendPushToken');
-Route::any('/v101/qplay/renewToken', 'qplayController@renewToken');
-Route::any('/v101/qplay/updateLastMessageTime', 'qplayController@updateLastMessageTime');
-Route::any('/v101/qplay/addDownloadHit', 'qplayController@addDownloadHit');
-Route::post('/v101/qplay/sendPushMessage', 'qplayController@sendPushMessage');
-
 Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function () {
+    Route::any('/getSecurityList', 'qplayController@getSecurityList');
+    Route::any('/register', 'qplayController@register');
+    Route::any('/unregister', 'qplayController@unregister');
+    Route::any('/isRegister', 'qplayController@isRegister');
+    Route::any('/login', 'qplayController@login');
+    Route::any('/logout', 'qplayController@logout');
+    Route::any('/checkAppVersionIntra', 'qplayController@checkAppVersionIntra');
+    Route::any('/checkAppVersion', 'qplayController@checkAppVersion');
+    Route::any('/getAppList', 'qplayController@getAppList');
+    Route::any('/getMessageList', 'qplayController@getMessageList');
+    Route::any('/getMessageDetail', 'qplayController@getMessageDetail');
+    Route::any('/updateMessage', 'qplayController@updateMessage');
+    Route::any('/sendPushToken', 'qplayController@sendPushToken');
+    Route::any('/renewToken', 'qplayController@renewToken');
+    Route::any('/updateLastMessageTime', 'qplayController@updateLastMessageTime');
+    Route::post('/sendPushMessage', 'qplayController@sendPushMessage');
     Route::post('/addAppLog', 'appLogController@addAppLog');
+    Route::any('/addDownloadHit', 'qplayController@addDownloadHit');
 });
 
 //Smart Factory
@@ -56,7 +54,8 @@ Route::any('/qplayauth_register', function() {
 });
 
 //Custom
-Route::any('/{api_version}/custom/{app_key}/{function}', 'customController@processRequest');
+Route::any('/{api_version}/custom/{app_key}/{function}', ['middleware' => 'log.custom.api',
+    'uses'=>'customController@processRequest']);
 
 //MongoTest
 Route::any('/mongo', 'mongoController@Test');
@@ -66,26 +65,6 @@ Route::any('/v101/qplay/deleteAppFile', 'appVersionController@deleteAppFile');
 Route::any('/v101/qplay/deleteAppFileFromPublish', 'appVersionController@deleteAppFileFromPublish');
 Route::any('/v101/qplay/uploadAppFile', 'appVersionController@uploadAppFile');
 Route::any('/v101/qplay/copyAppFileToPublish', 'appVersionController@copyAppFileToPublish');
-
-//YellowPage
-/*Route::any('/v101/yellowpage/QueryEmployeeData', 'yellowpageController@QueryEmployeeData');
-Route::any('/v101/yellowpage/QueryEmployeeDataDetail', 'yellowpageController@QueryEmployeeDataDetail');
-Route::any('/v101/yellowpage/AddMyPhoneBook', 'yellowpageController@AddMyPhoneBook');
-Route::any('/v101/yellowpage/DeleteMyPhoneBook', 'yellowpageController@DeleteMyPhoneBook');
-Route::any('/v101/yellowpage/QueryMyPhoneBook', 'yellowpageController@QueryMyPhoneBook');
-Route::any('/v101/yellowpage/QueryCompanyData', 'yellowpageController@QueryCompanyData');*/
-
-
-
-//RRS
-/*Route::any('/v101/rrs/ListAllManager', 'rrsController@ListAllManager');
-Route::any('/v101/rrs/ListAllMeetingRoom', 'rrsController@ListAllMeetingRoom');
-Route::any('/v101/rrs/ListAllTime', 'rrsController@ListAllTime');
-Route::any('/v101/rrs/QueryMyReserve', 'rrsController@QueryMyReserve');
-Route::any('/v101/rrs/QueryReserveDetail', 'rrsController@QueryReserveDetail');
-Route::any('/v101/rrs/QuickReserve', 'rrsController@QuickReserve');
-Route::any('/v101/rrs/ReserveCancel', 'rrsController@ReserveCancel');
-Route::any('/v101/rrs/ReserveMeetingRoom', 'rrsController@ReserveMeetingRoom');*/
 
 //for Test
 Route::any('/test', function() {

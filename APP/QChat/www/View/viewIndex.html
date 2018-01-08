@@ -70,22 +70,22 @@
                     個人資料
                 </div>
                 <div class="personal-content">
-                    <div class="data-list-content friend-list">
+                    <div class="data-list-content">
                         <div class="data-list chatroom-list">
                             <div class="left img-content personal-photo-content">
-                                <img class="personal-photo hide" src="">
-                                <svg class="personal-photo">
+                                <img class="personal-popup personal-photo hide" src="">
+                                <svg class="personal-popup personal-photo">
                                     <use xlink:href="#icon-img_default_photo"></use>
                                 </svg>
                             </div>
                             <div class="right data-content">
                                 <div>
                                     <div class="group-content">
-                                        <div class="personal-name">
-                                            Darren
+                                        <div class="personal-popup personal-name">
+                                            <!--Darren-->
                                         </div>
                                         <div class="personal-status">
-                                            Hi~
+                                            <!--Hi~-->
                                         </div>
                                     </div>
                                 </div>
@@ -95,17 +95,62 @@
                 </div>
 
                 <div class="friend-content">
+                    <div class="data-list-content invite-list hide">
+                        <div>
+                            <div class="friend-title">
+                                好友請求
+                            </div>
+                            <div class="list-switch invite">
+                                <svg class="list-down invite hide">
+                                    <use class="invite" xlink:href="#icon-btn_list_down"></use>
+                                </svg>
+                                <svg class="list-up invite">
+                                    <use class="invite" xlink:href="#icon-btn_list_up"></use>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="invite-list-content">
+                        </div>
+
+                        <template id="tplInviteDataList">
+                            <div class="data-list">
+                                <div class="left img-content personal-photo-content">
+                                    <img class="personal-photo hide" src="">
+                                    <svg class="personal-photo">
+                                        <use xlink:href="#icon-img_default_photo"></use>
+                                    </svg>
+                                </div>
+                                <div class="right data-content">
+                                    <div class="left">
+                                        <div class="group-content">
+                                            <div class="personal-name">
+                                                <!--Darren-->
+                                            </div>
+                                            <div class="personal-status">
+                                                <!--Hi~-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="right request-count">
+                                        (<span id="requestCount"></span>)
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
                     <div class="data-list-content friend-list">
                         <div>
                             <div class="friend-title">
                                 我的好友
                             </div>
-                            <div class="list-switch">
-                                <svg class="list-down hide">
-                                    <use xlink:href="#icon-btn_list_down"></use>
+                            <div class="list-switch friend">
+                                <svg class="list-down friend hide">
+                                    <use class="friend" xlink:href="#icon-btn_list_down"></use>
                                 </svg>
-                                <svg class="list-up">
-                                    <use xlink:href="#icon-btn_list_up"></use>
+                                <svg class="list-up friend">
+                                    <use class="friend" xlink:href="#icon-btn_list_up"></use>
                                 </svg>
                             </div>
                         </div>
@@ -127,19 +172,19 @@
                         <template id="tplFriendDataList">
                             <div class="data-list">
                                 <div class="left img-content personal-photo-content">
-                                    <img class="personal-photo hide" src="">
-                                    <svg class="personal-photo">
+                                    <img class="personal-popup personal-photo hide" src="">
+                                    <svg class="personal-popup personal-photo">
                                         <use xlink:href="#icon-img_default_photo"></use>
                                     </svg>
                                 </div>
                                 <div class="right data-content">
                                     <div>
                                         <div class="group-content">
-                                            <div class="personal-name">
-                                                Darren
+                                            <div class="personal-popup personal-name">
+                                                <!--Darren-->
                                             </div>
                                             <div class="personal-status">
-                                                Hi~
+                                                <!--Hi~-->
                                             </div>
                                         </div>
                                     </div>
@@ -148,6 +193,103 @@
 
                             <hr class="ui-hr ui-hr-friend-list">
                         </template>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="tplActionMsgFullScreen">
+            <div class="action-success-full-screen hide">
+                <div>
+                    <span class="action-msg hide" id="actionMsg1">已將 <span class="user-name">XXX</span> 加為好友</span>
+                    <span class="action-msg hide" id="actionMsg2">已送出好友邀請</span>
+                    <span class="action-msg hide" id="actionMsg3">已發送邀請給 <span class="user-name">XXX</span></span>
+                    <span class="action-msg hide" id="actionMsg4">已和 <span class="user-name">XXX</span> 成為好友</span>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > User Info -->
+        <template id="tplUserInfoPopup">
+            <div class="header">
+                <img class="chatroom-info-photo hide" src="">
+                <svg class="chatroom-info-photo">
+                    <use xlink:href="#icon-img_default_photo_big"></use>
+                </svg>
+                <div class="close-popup">
+                    <svg class="close-popup-button">
+                        <use xlink:href="#icon-btn_windowclose"></use>
+                    </svg>
+                </div>
+                <div class="personal-popup-name">
+                    Melody Yu
+                </div>
+                <div class="personal-popup-memo">
+                    My Status
+                </div>
+            </div>
+            <div class="main">
+                <div class="personal-popup-email-title">
+                    E-Mail
+                </div>
+                <div class="personal-popup-email">
+                    Ming.Wang@BenQ.com
+                </div>
+                <hr class="ui-hr">
+                <div class="personal-popup-phone-title">
+                    分機
+                </div>
+                <div class="personal-popup-phone">
+                    8800-7351
+                </div>
+
+                <hr class="ui-hr button-hr button button-edit">
+                <div class="personal-popup-button button button-edit">
+                    編輯
+                </div>
+                <hr class="ui-hr button-hr button button-delete">
+                <div class="personal-popup-button button button-delete">
+                    刪除好友
+                </div>
+                <hr class="ui-hr button-hr button button-add">
+                <div class="personal-popup-button button button-add">
+                    加入好友
+                    <div class="button-add-status status-a">
+                        *需成為好友才能開始聊天
+                    </div>
+                    <div class="button-add-status status-b">
+                        *好友邀請已發送
+                    </div>
+                </div>
+                <hr class="ui-hr button-hr button button-chat">
+                <div class="personal-popup-button button button-chat">
+                    開始聊天
+                </div>
+            </div>
+            <div class="footer">
+                <div class="btn-one">
+                    <div>
+                        <a>
+                            編輯
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Confirm Delete Friend -->
+        <template id="tplConfirmDeleteFriend">
+            <div class="header font-style1">
+                確定要解除好友?
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">
+                        <!-- 取消 -->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="confirm">
+                        確定
                     </div>
                 </div>
             </div>

@@ -1,0 +1,38 @@
+
+<div data-role="page" id="viewAddMember">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <a href="#viewChatroomInfo" data-role="none" id="backAddMember">
+            <div class="q-btn-header" style="width: 5.957vw;">
+                <svg class="header-icon">
+                    <use xlink:href="#icon-nav_back_white"></use>
+                </svg>
+            </div>
+        </a>
+        <div class="header-style">
+            <h1 class="ui-title"><span>邀請成員</span></h1>
+        </div>
+        <a id="addMember" href="#" data-role="none" class="ui-btn-right none-work">
+            <span>確定</span>
+        </a>
+    </div>
+
+    <div data-role="main" class="page-main" id="viewAddMemberContent">
+
+        <div class="no-data hide" id="msgNoFoundAddMember">
+            搜尋的結果為0筆 ，<br>如找不到您要的用戶 ，請重新搜尋名稱 。
+        </div>
+
+        <div class="text-title" id="titleFriendAddMember">
+            <div class="add-friend-title">
+                我的好友 :
+            </div>
+        </div>
+
+        <div class="data-list-content friend-list-content" id="userListContentAddMember"></div>
+
+    </div>
+
+    <div data-role="footer" class="new-chatroom-footer" data-position="fixed"></div>
+
+</div>

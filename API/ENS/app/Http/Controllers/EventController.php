@@ -201,8 +201,7 @@ class EventController extends Controller
             if(isset($chatroomId)){
                 $this->eventService->deleteChatRoom($chatroomId);
             }
-            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-            'Content'=>'']);
+            throw $e;
         }
     }
 
@@ -244,64 +243,59 @@ class EventController extends Controller
      */
     public function getEventList(){
         
-        try{
-            $Verify = new Verify();
-            $verifyResult = $Verify->verify();
-            if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
-                 $result = response()->json(['ResultCode'=>$verifyResult["code"],
-                    'Message'=>$verifyResult["message"],
-                    'Content'=>'']);
-                return $result;
-            }
-            $input = Input::get();
-            $xml=simplexml_load_string($input['strXml']);
-            
-            $empNo = trim((string)$xml->emp_no[0]);
-            $eventType = trim((string)$xml->event_type_parameter_value[0]);
-            $eventStatus = trim((string)$xml->event_status[0]);
-            $project = trim((string)$xml->project[0]);
+        $Verify = new Verify();
+        $verifyResult = $Verify->verify();
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+             $result = response()->json(['ResultCode'=>$verifyResult["code"],
+                'Message'=>$verifyResult["message"],
+                'Content'=>'']);
+            return $result;
+        }
+        $input = Input::get();
+        $xml=simplexml_load_string($input['strXml']);
+        
+        $empNo = trim((string)$xml->emp_no[0]);
+        $eventType = trim((string)$xml->event_type_parameter_value[0]);
+        $eventStatus = trim((string)$xml->event_status[0]);
+        $project = trim((string)$xml->project[0]);
 
-            if($project ==""){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                    'Message'=>"必填欄位缺失",
-                    'Content'=>""]);
-            }
+        if($project ==""){
+            return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                'Message'=>"必填欄位缺失",
+                'Content'=>""]);
+        }
 
-            if(!in_array($project, Config::get('app.ens_project'))){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
-                    'Message'=>"project參數不存在",
-                    'Content'=>""]);
-            }
+        if(!in_array($project, Config::get('app.ens_project'))){
+            return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                'Message'=>"project參數不存在",
+                'Content'=>""]);
+        }
 
-            if($eventType!=""){
-                $parameterMap = CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
-                if(!in_array($eventType,array_keys($parameterMap))){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
-                    'Message'=>'事件類型錯誤',
-                    'Content'=>'']);
-                }
-            }
-            if($eventStatus!=""){
-                $validStatusArr = array(EventService::STATUS_FINISHED,EventService::STATUS_UNFINISHED);
-                if(!in_array($eventStatus,$validStatusArr)){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014913_eventStatusCodeError,
-                    'Message'=>"事件狀態碼錯誤",
-                    'Content'=>""]);
-                }
-            }
-
-            $eventList = $this->eventService->getEventList($project, $empNo, $eventType, $eventStatus);
-            if(count($eventList) == 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
-                'Message'=>'查無事件資料',
+        if($eventType!=""){
+            $parameterMap = CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
+            if(!in_array($eventType,array_keys($parameterMap))){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014912_eventTypeError,
+                'Message'=>'事件類型錯誤',
                 'Content'=>'']);
             }
-            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                'Content'=>$eventList]);
-        } catch (\Exception $e){
-            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
+        }
+        if($eventStatus!=""){
+            $validStatusArr = array(EventService::STATUS_FINISHED,EventService::STATUS_UNFINISHED);
+            if(!in_array($eventStatus,$validStatusArr)){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014913_eventStatusCodeError,
+                'Message'=>"事件狀態碼錯誤",
+                'Content'=>""]);
+            }
+        }
+
+        $eventList = $this->eventService->getEventList($project, $empNo, $eventType, $eventStatus);
+        if(count($eventList) == 0){
+             return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
+            'Message'=>'查無事件資料',
             'Content'=>'']);
         }
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+            'Content'=>$eventList]);
 
     }
     /**
@@ -310,55 +304,49 @@ class EventController extends Controller
      */
     public function getEventDetail(){
     
-         try{
-            $Verify = new Verify();
-            $verifyResult = $Verify->verify();
-            if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
-                 $result = response()->json(['ResultCode'=>$verifyResult["code"],
-                    'Message'=>$verifyResult["message"],
-                    'Content'=>'']);
-                return $result;
-            }
-            $input = Input::get();
-            $xml=simplexml_load_string($input['strXml']);
-            
-            $empNo      = trim((string)$xml->emp_no[0]);
-            $eventId    = trim((string)$xml->event_row_id[0]);
-            $project    = trim((string)$xml->project[0]);
-
-            if($eventId == "" || $project == ""){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                    'Message'=>"必填欄位缺失",
-                    'Content'=>""]);
-            }
-
-            if(!in_array($project, Config::get('app.ens_project'))){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
-                    'Message'=>"project參數不存在",
-                    'Content'=>""]);
-            }
-
-            if(preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-            }
-
-            $eventList = $this->eventService->getEventDetail($project, $eventId, $empNo);
-            if(count($eventList) == 0){
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
-                'Message'=>'查無事件資料',
+        $Verify = new Verify();
+        $verifyResult = $Verify->verify();
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+             $result = response()->json(['ResultCode'=>$verifyResult["code"],
+                'Message'=>$verifyResult["message"],
                 'Content'=>'']);
-            }
+            return $result;
+        }
+        $input = Input::get();
+        $xml=simplexml_load_string($input['strXml']);
+        
+        $empNo      = trim((string)$xml->emp_no[0]);
+        $eventId    = trim((string)$xml->event_row_id[0]);
+        $project    = trim((string)$xml->project[0]);
 
-            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                'Content'=>$eventList]);
-        } catch (\Exception $e){
-            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-            'Content'=>""]);
+        if($eventId == "" || $project == ""){
+            return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                'Message'=>"必填欄位缺失",
+                'Content'=>""]);
         }
 
+        if(!in_array($project, Config::get('app.ens_project'))){
+            return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                'Message'=>"project參數不存在",
+                'Content'=>""]);
+        }
 
+        if(preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                'Message'=>"欄位格式錯誤",
+                'Content'=>""]);
+        }
+
+        $eventList = $this->eventService->getEventDetail($project, $eventId, $empNo);
+        if(count($eventList) == 0){
+             return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
+            'Message'=>'查無事件資料',
+            'Content'=>'']);
+        }
+
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+            'Content'=>$eventList]);
+        
     }
 
     /**
@@ -486,8 +474,7 @@ class EventController extends Controller
 
         } catch (\Exception $e){
             \DB::rollBack();
-            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-            'Content'=>""]);           
+            throw $e;     
         }
    
     }
@@ -613,9 +600,7 @@ class EventController extends Controller
 
         } catch (\Exception $e){
             \DB::rollBack();
-            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-            'Content'=>$e->getMessage()]);
-           
+            throw $e;
         }
     }
 
@@ -628,61 +613,55 @@ class EventController extends Controller
         
         $allow_user = "admin";
 
-         try{
-            $Verify = new Verify();
-            $verifyResult = $Verify->verify();
-            if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
-                 $result = response()->json(['ResultCode'=>$verifyResult["code"],
-                    'Message'=>$verifyResult["message"],
-                    'Content'=>'']);
-                return $result;
-            }
-            $input = Input::get();
-            $xml=simplexml_load_string($input['strXml']);
-            
-            $empNo = trim((string)$xml->emp_no[0]);
-            $eventId = trim((string)$xml->event_row_id[0]);
-            $project = trim((string)$xml->project[0]);
+        $Verify = new Verify();
+        $verifyResult = $Verify->verify();
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+             $result = response()->json(['ResultCode'=>$verifyResult["code"],
+                'Message'=>$verifyResult["message"],
+                'Content'=>'']);
+            return $result;
+        }
+        $input = Input::get();
+        $xml=simplexml_load_string($input['strXml']);
+        
+        $empNo = trim((string)$xml->emp_no[0]);
+        $eventId = trim((string)$xml->event_row_id[0]);
+        $project = trim((string)$xml->project[0]);
 
-            if($project ==""){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
-                    'Message'=>"必填欄位缺失",
-                    'Content'=>""]);
-            }
-
-            if(!in_array($project, Config::get('app.ens_project'))){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
-                    'Message'=>"project參數不存在",
-                    'Content'=>""]);
-            }
-            
-            $userAuthList = $this->userService->getUserRoleListByProject($project, $empNo);
-            if(is_null($userAuthList) || !in_array($allow_user, $userAuthList)){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
-                    'Message'=>"權限不足",
-                    'Content'=>""]);
-            }
-            
-            if( $eventId != "" && preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-            }
-            
-            $eventList = $this->eventService->getUnrelatedEventList($project, $eventId);
-            //have no Unrelated Event
-            if(count($eventList) == 0){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
-                    'Message'=>'查無事件資料',
-                    'Content'=>'']);
-            }
-            return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                'Content'=>$eventList]);
-        } catch (\Exception $e){
-            return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-            'Content'=>""]);
+        if($project ==""){
+            return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
+                'Message'=>"必填欄位缺失",
+                'Content'=>""]);
         }
 
+        if(!in_array($project, Config::get('app.ens_project'))){
+            return $result = response()->json(['ResultCode'=>ResultCode::_014922_projectInvalid,
+                'Message'=>"project參數不存在",
+                'Content'=>""]);
+        }
+        
+        $userAuthList = $this->userService->getUserRoleListByProject($project, $empNo);
+        if(is_null($userAuthList) || !in_array($allow_user, $userAuthList)){
+            return $result = response()->json(['ResultCode'=>ResultCode::_014907_noAuthority,
+                'Message'=>"權限不足",
+                'Content'=>""]);
+        }
+        
+        if( $eventId != "" && preg_match("/^[1-9][0-9]*$/", $eventId) == 0 ){
+                 return $result = response()->json(['ResultCode'=>ResultCode::_014905_fieldFormatError,
+                'Message'=>"欄位格式錯誤",
+                'Content'=>""]);
+        }
+        
+        $eventList = $this->eventService->getUnrelatedEventList($project, $eventId);
+        //have no Unrelated Event
+        if(count($eventList) == 0){
+            return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
+                'Message'=>'查無事件資料',
+                'Content'=>'']);
+        }
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+            'Content'=>$eventList]);
     }
 
     /**

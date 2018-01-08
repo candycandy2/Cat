@@ -8,7 +8,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
 
     //queryStr: start with [&], ex: &account=test&pwd=123
 
-    failCallback =  failCallback || null;
+    failCallback = failCallback || null;
     queryData = queryData || null;
     queryStr = queryStr || "";
 
@@ -26,7 +26,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
     // review
     function requestError(data) {
         errorHandler(data);
-        if (failCallback){
+        if (failCallback) {
             failCallback();
         }
     }
@@ -52,5 +52,5 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         success: requestSuccess,
         error: requestError
     });
-    
+
 }

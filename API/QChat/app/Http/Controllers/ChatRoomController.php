@@ -81,7 +81,7 @@ class ChatRoomController extends Controller
         $chatroomDesc = $this->data['chatroom_desc'];
 
         $descData = $this->chatRoomService->getChatroomExtraData($chatroomDesc);
-        if( $descData['group_message'] == 'N'){
+        if(is_null($descData) || $descData['group_message'] == 'N'){
             if(count($targetUserList) > 1){
                 return $result = response()->json(['ResultCode'=>ResultCode::_025905_FieldFormatError,
                     'Message'=>"欄位格式錯誤",
@@ -111,7 +111,7 @@ class ChatRoomController extends Controller
         foreach ($targetUserList as $targetEmpNo) {
 
             if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
             }
@@ -144,7 +144,9 @@ class ChatRoomController extends Controller
             //新增聊天室
             //1. call Jmessage to create chatroom
             $response = $this->chatRoomService->newChatRoom( $owner, $chatRoomName, $members, $chatroomDesc);
-            if(isset($response->error->code)){
+            if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                throw new JMessageException($response->message);
+            }else if(isset($response->error->code)){
                 throw new JMessageException($response->error->message);
             }
             // 2. save chatroom information to DB
@@ -174,7 +176,7 @@ class ChatRoomController extends Controller
             if(!is_null($newGroupId)){
                 $this->chatRoomService->deleteGroup($newGroupId);
             }
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>""]);
+            throw $e;
          }
     }
 
@@ -245,7 +247,7 @@ class ChatRoomController extends Controller
             
             foreach ($destEmpArr as $targetEmpNo) {
                 if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
                 }
@@ -267,7 +269,9 @@ class ChatRoomController extends Controller
             //2. call Jmessage to add group mamber
             if(count($destArr) > 0){
                 $response = $this->chatRoomService->addGroupMember($groupId, $destArr);
-                 if(isset($response->error->code)){
+                if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                    throw new JMessageException($response->message);
+                }else if(isset($response->error->code) && $response->error->code != '899011' ){//Repeat to add the members
                     throw new JMessageException($response->error->message);
                 }
             }
@@ -283,12 +287,12 @@ class ChatRoomController extends Controller
                         'Content'=>$response]);
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+            throw $e;
         }
     }
 
      /**
-     * 透過此API可以新增成員
+     * 透過此API可以移除成員
      */
     public function removeQMember(){
 
@@ -315,7 +319,7 @@ class ChatRoomController extends Controller
             $empNo = $this->data['emp_no'];
             $dest = $this->data['member_list']['destination_emp_no'];
             if(is_array($dest)){
-            $destEmpArr = array_unique($dest);
+                $destEmpArr = array_unique($dest);
             }else{
                 $destEmpArr = array($dest);
             }
@@ -339,7 +343,7 @@ class ChatRoomController extends Controller
             
             foreach ($destEmpArr as $targetEmpNo) {
                 if(!Verify::checkUserStatusByUserEmpNo($targetEmpNo)) {
-                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeNumberIsInvalid,
+                 return $result = response()->json(['ResultCode'=>ResultCode::_025921_DestinationEmployeeInfoIsInvalid,
                         'Message'=>"要設定的好友工號不存在",
                         'Content'=>""]);
                 }
@@ -361,7 +365,9 @@ class ChatRoomController extends Controller
             //2. call Jmessage to remove group mamber
             if(count($destArr) > 0){
                 $response = $this->chatRoomService->removeGroupMember($groupId, $destArr);
-                 if(isset($response->error->code)){
+                if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                    throw new JMessageException($response->message);
+                }else if(isset($response->error->code) && $response->error->code != '899014'){
                     throw new JMessageException($response->error->message);
                 }
             }
@@ -377,7 +383,7 @@ class ChatRoomController extends Controller
                         'Content'=>$response]);
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+            throw $e;
         }
     }
 
@@ -423,13 +429,16 @@ class ChatRoomController extends Controller
                  $dataToJMessage['name'] = $dataToDB['chatroom_name'] = $chatRoomName;
             }
             if(!is_null($chatRoomDesc)){
-                 $dataToJMessage['desc'] = $dataToDB['chatroom_name'] = $chatRoomDesc;
+                 $dataToJMessage['desc'] = $dataToDB['chatroom_desc'] = $chatRoomDesc;
             }
 
             $response =$this->chatRoomService->updateGroup($groupId, $dataToJMessage);
-            if(isset($response->error->code)){
+            if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                throw new JMessageException($response->message);
+            }else if(isset($response->error->code)){
                 throw new JMessageException($response->error->message);
             }
+
             $userId = $this->userService->getUserData($empNo)->row_id;
             $this->chatRoomService->updateChatroom($groupId, $dataToDB, $userId);
 
@@ -444,7 +453,7 @@ class ChatRoomController extends Controller
                         'Content'=>$response]);
         }catch (\Exception $e) {
             \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
+            throw $e;
         }
     }
 
@@ -454,23 +463,24 @@ class ChatRoomController extends Controller
      */
     public function getQUserChatroom(){
         try {
+            $result = ['chartoom_list'];
             $empNo = $this->data['emp_no'];
             $userName = $this->userService->getUserData($empNo)->login_id;
             $response =$this->chatRoomService->getUserGroups($userName);
-            if(isset($response->error->code)){
+
+            if(isset($response->error) && is_numeric($response->error) && $response->error == 28){
+                throw new JMessageException($response->message);
+            }else if(isset($response->error->code)){
                 throw new JMessageException($response->error->message);
             }
+            
              return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
                         'Content'=> $response ]);
         }catch (JMessageException $e){
-            \DB::rollBack();
              return response()->json(['ResultCode'=>ResultCode::_025930_CallAPIFailedOrErrorOccurs,
                         'Message'=>"Call API failed or error occurred",
                         'Content'=>$response]);
-        }catch (\Exception $e) {
-            \DB::rollBack();
-            return response()->json(['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()]);
         }
     }
 }

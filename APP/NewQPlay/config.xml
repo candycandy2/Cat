@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="656" id="com.qplay.appqplaydev" ios-CFBundleVersion="656" version="1.0.0.656[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="762" id="com.qplay.appqplaydev" ios-CFBundleVersion="762" version="1.0.0.762[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QPlay</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -65,7 +65,7 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <engine name="ios" spec="~4.5.3" />
+    <engine name="ios" spec="~4.5.4" />
     <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-plugin-qlogin" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-qlogin">
         <variable name="LOGIN_URL" value="https://qplaydev.benq.com/qplayApi/public/qplayauth_register" />
@@ -74,6 +74,7 @@
         <variable name="API_KEY" value="e343504d536ebce16b70167e" />
     </plugin>
     <plugin name="cordova-plugin-device" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-device" />
+    <plugin name="cordova-plugin-appversion" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-appversion" />
     <plugin name="cordova-plugin-customurlscheme" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-customurlscheme">
         <variable name="URL_SCHEME" value="appqplaydev" />
         <variable name="ANDROID_SCHEME" value=" " />
@@ -87,6 +88,7 @@
     <plugin name="cordova-plugin-android-permissions" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-android-permissions" />
     <plugin name="cordova-plugin-whitelist" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-whitelist" />
     <plugin name="cordova-plugin-inappbrowser" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-inappbrowser" />
+    <plugin name="cordova-plugin-proguard" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-proguard" />
     <plugin name="phonegap-plugin-mobile-accessibility" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/phonegap-plugin-mobile-accessibility" />
     <plugin name="cordova-plugin-appavailability" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-appavailability" />
 </widget>

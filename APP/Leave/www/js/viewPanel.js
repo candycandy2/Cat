@@ -25,8 +25,6 @@ var panel = htmlContent
         +'</div>'
         +'<div class="page-mask" style="display: none;"></div>';
 
-
-
 $(document).one("pagebeforeshow", function() {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
@@ -43,6 +41,7 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #mypanelviewLeaveSubmit").on("click", function() {
+        editLeaveForm = false; 
         changePageByPanel("viewLeaveSubmit");
     });
 
@@ -58,8 +57,7 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewHolidayCalendar");
     });
 
-
-    $(".menu-btn").on("click", function() {
+    $(".menu-btn .leaveMenu").on("click", function() {
         $("#mypanel").panel("open");
         $(".page-mask").show();
     });

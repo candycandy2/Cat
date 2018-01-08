@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Environment
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "environment" your application is currently
+    | running in. This may determine error mail subject. Set this in your ".env" file.
+    |
+    */
+
+    'name' => env('APP_NAME'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Debug Mode
     |--------------------------------------------------------------------------
     |
@@ -109,6 +121,7 @@ return [
     */
 
     'log' => env('APP_LOG', 'daily'),
+     'log_max_files' => 30,
 
     /*
     |--------------------------------------------------------------------------
@@ -159,7 +172,17 @@ return [
     
     'mail_name' => env('MAIL_USERNAME'),
     'mail_address'   => env('MAIL_USER_MAIL_ADDRESS'),
-    
+
+    /*
+    |--------------------------------------------------------------------------
+    | Develop Parameters
+    |--------------------------------------------------------------------------
+    |proxy : 使用的proxy
+    |proxypwd : proxy密碼
+    */
+    'proxy' => env('PROXY'),
+    'proxypwd' => env('PROXYUSERPWD'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

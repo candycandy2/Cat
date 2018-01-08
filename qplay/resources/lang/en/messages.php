@@ -329,6 +329,7 @@ return [
     'TAB_OPERATION_TIME' => 'API Operation Time',
     'TAB_USAGE_REPORT' => 'Usage Report',
     'TAB_PUSH_SERVICE_HOURS' => 'Push Service Hours',
+    'TAB_MESSAGE_READ_RATE' => 'Message Read Rate',
     'NUMBER_OF_REGISTERED_DEVICES' => 'Registered Devices',
     'NUMBER_OF_REGISTERED_USERS' => 'Registered Users',
     'NUMBER_OF_ACTIVE_DEVICES' => 'Active Devices',
@@ -351,6 +352,9 @@ return [
     'TOTAL_RANKING' => 'Total Ranking',
     'POPULAR_TIMES' => 'Popular Times',
     'USAGE_COUNT' => 'Usage Count',
+    'MESSAGE_SOURCE' => 'Message Source',
+    'PUSH_SEND_COUNT' => 'Pushed Count',
+    'PUSH_READ_COUNT' => 'Read Count',
 
 
     //ENS Maintain

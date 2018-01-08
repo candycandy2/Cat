@@ -6,18 +6,21 @@ var closeDisconnectNetworkInit = false, // let closeDisconnectNetwork click even
 
 
 function getLanguageString() {
+    var i;
     $.getJSON("string/" + browserLanguage + ".json", function(data) {
-        for (var i = 0; i < data.length; i++) {
+        for (i = 0; i < data.length; i++) {
             langStr[data[i].term] = data[i].definition.trim();
         }
+    });
 
+    $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
         $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
-            for (var i = 0; i < data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 langStr[data[i].term] = data[i].definition.trim();
             }
-
-            addComponentView();
         });
+
+        addComponentView();
     });
 }
 
@@ -44,7 +47,7 @@ function addComponentView() {
             $("#initialOther").removeClass("hide");
             $("#initialQPlay").remove();
             //when initialOther Page stay over 10 secs, show QPlay Login Link
-            setTimeout(function(){
+            setTimeout(function() {
                 $("#initialAppLoginTimeout").removeClass("hide");
             }, 10000);
         } else {
@@ -367,7 +370,9 @@ function adjustPageMarginTop() {
         }
 
         if (device.platform === "iOS") {
-            mainMarginTop = mainMarginTop + 20;
+            if (versionCompare(device.version, "11.0", "") === 1) {} else {
+                mainMarginTop = mainMarginTop + 20;
+            }
         }
 
         $(".page-main").css({

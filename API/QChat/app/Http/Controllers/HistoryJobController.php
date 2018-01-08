@@ -32,11 +32,11 @@ class HistoryJobController extends Controller
      * @return json
      */
     public function getQGroupHistoryMessageJob(){
-        $ACTION = 'getQGroupHistoryMessageJob';
+        //$ACTION = 'getQGroupHistoryMessageJob';
         //ignore_user_abort(true);//瀏覽器關掉後也持續執行
         set_time_limit(0);//不限制time out 時間
 
-        Log::info($ACTION . ' 開始執行...');
+        //Log::info($ACTION . ' 開始執行...');
         
         //取得上次同步的最後時間
         $lastQueryTime = $this->parameterRepository->getLastQueryTime();
@@ -107,13 +107,10 @@ class HistoryJobController extends Controller
            } while ($endTime != $now);
             $result = ['ResultCode'=>ResultCode::_1_reponseSuccessful,'Message'=>'Sync Success!'];
             return response()->json($result);
-            Log::info('Sync Success!');
+            //Log::info('Sync Success!');
           }catch (\Exception $e) {
-
              \DB::rollBack();
-             $result = ['ResultCode'=>ResultCode::_025999_UnknownError,'Message'=>$e->getMessage()];
-             Log::info('Sync Fail!' . json_encode($result));
-            return response()->json($result);
+             throw $e;
          } 
     }
 }

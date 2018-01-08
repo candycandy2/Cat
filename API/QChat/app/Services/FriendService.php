@@ -54,6 +54,7 @@ class FriendService
          }
         $this->push->setReceiver($tokens)
              ->setTitle($owner."邀請您成為好友")
+             ->setParameter('action=sendQInvitation')
              ->send();
     }
 
@@ -92,6 +93,7 @@ class FriendService
          }
         $this->push->setReceiver($tokens)
              ->setTitle($owner."接受您的好友邀請")
+             ->setParameter('action=acceptQInvitation')
              ->send();
     }
 
@@ -115,6 +117,7 @@ class FriendService
          }
         $this->push->setReceiver($tokens)
              ->setTitle($owner."拒絕您的好友邀請")
+             ->setParameter('action=rejectQInvitation')
              ->send();
     }
 

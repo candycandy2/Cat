@@ -72,7 +72,7 @@ var app = {
         */
 
         loadStringTable();
-        
+
         //For release
         this.bindEvents();
     },
@@ -127,10 +127,10 @@ var app = {
         document.addEventListener("backbutton", onBackKeyDown, false);
 
         //Handle APP background event, set in index.js
-        //document.addEventListener("pause", onPause, false);
+        document.addEventListener("pause", onPause, false);
 
         //Handle APP foreground event, set in index.js
-        //document.addEventListener("resume", onResume, false);
+        document.addEventListener("resume", onResume, false);
 
         //[device] data ready to get on this step.
         setTimeout(function() {
@@ -158,7 +158,10 @@ var app = {
             loginData["pushToken"] = data;
             window.localStorage.setItem("deviceType", device.platform);
             window.localStorage.setItem("pushToken", data);
-            stopCheck();
+
+            if (window.stopCheck != undefined) {
+                window.stopCheck();
+            }
 
             var checkAppVer = new checkAppVersion();
         } else {
@@ -293,27 +296,27 @@ var app = {
 app.initialize();
 
 function loadStringTable() {
-  //Browser default language, according to the mobile device language setting
-  //navigator.language: en-US / zh-CN / zh-TW
-  //note:
-  //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
-  //2. If Browser default language not exist in /string , use APP default language "zh-tw"
-  browserLanguage = navigator.language.toLowerCase();
-  var languageShortName = browserLanguage.substr(0, 2);
+    //Browser default language, according to the mobile device language setting
+    //navigator.language: en-US / zh-CN / zh-TW
+    //note:
+    //1. All english country(ex: en-ln, en-ph, en-nz ...), use "en-us"
+    //2. If Browser default language not exist in /string , use APP default language "zh-tw"
+    browserLanguage = navigator.language.toLowerCase();
+    var languageShortName = browserLanguage.substr(0, 2);
 
-  if (languageShortName === "en") {
-      browserLanguage = "en-us";
-  }
+    if (languageShortName === "en") {
+        browserLanguage = "en-us";
+    }
 
-  $.getJSON("string/" + browserLanguage + ".json", function(data) {
-          //language string exist
-          getLanguageString();
-      })
-      .fail(function() {
-          //language string does not exist
-          browserLanguage = "en-us";
-          getLanguageString();
-      });
+    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+            //language string exist
+            getLanguageString();
+        })
+        .fail(function() {
+            //language string does not exist
+            browserLanguage = "en-us";
+            getLanguageString();
+        });
 };
 
 /********************************** jQuery Mobile Event *************************************/
@@ -375,8 +378,20 @@ $(document).one("pagebeforecreate", function() {
             }
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
         } else if (device.platform === "iOS") {
-            $('.page-header').addClass('ios-fix-overlap');
-            $('.ios-fix-overlap-div').css('display', 'block');
+            var ratio = window.devicePixelRatio || 1;
+            var screen = {
+                width: window.screen.width * ratio,
+                height: window.screen.height * ratio
+            };
+            /*if (screen.width === 1125 && screen.height === 2001) { 
+                $('meta[name=viewport]').attr('content', 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover');
+            }*/
+            if (versionCompare(device.version, "11.0", "") === 1) {
+
+            } else {
+                $('.page-header').addClass('ios-fix-overlap');
+                $('.ios-fix-overlap-div').css('display', 'block');
+            }
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Heiti TC");
         }
@@ -414,6 +429,9 @@ $(document).one("pagebeforecreate", function() {
                     event.preventDefault();
                     openAPP(href);
                 }
+            } else if (href.indexOf('http://') !== -1 || href.indexOf('https://') !== -1) {
+                event.preventDefault();
+                cordova.InAppBrowser.open(href, '_system', 'location=yes');
             }
         }
     });
@@ -441,11 +459,114 @@ $(document).one("pagebeforecreate", function() {
         },
         touchmove: function() {
             footerFixed();
+        },
+        pagebeforeshow: function() {
+            if (loginData.uuid.length > 0 && loginData['loginid'].length > 0) {
+                var appLogData = JSON.parse(localStorage.getItem('appLogData'));
+                var firstPageLoad = JSON.parse(sessionStorage.getItem('firstPageLoad'));
+                if (firstPageLoad == null) {
+                    sessionStorage.setItem('firstPageLoad', 'true');
+                    if (appLogData != null && appLogData.log_list.length > 0) {
+                        var doAddAppLog = new getAddAppLog();
+                    }
+                }
+            }
+        },
+        pageshow: function() {
+            getAppLogParam();
         }
     });
 });
 
 /********************************** QPlay APP function *************************************/
+
+function getAppLogParam() {
+    //localStorage.clear();
+    loginData["versionName"] = AppVersion.version;
+    if (loginData["versionName"].indexOf("Development") !== -1) {
+        var ADAccount = loginData['loginid'];
+        if (loginData.uuid.length > 0 && ADAccount.length > 0) {
+            var packageName = "com.qplay." + appKey;
+            var pagename = $.mobile.activePage.attr('id');
+            var appLogData = JSON.parse(localStorage.getItem('appLogData'));
+            var objLogList = new Object();
+            if (appKey != null && pagename != null) {
+                objLogList.page_name = $.mobile.activePage.attr('id');
+                objLogList.page_action = "enterPage";
+                objLogList.start_time = new Date().getTime();
+                objLogList.period = "";
+                objLogList.device_type = device.platform.toLowerCase();
+                if (appLogData == null || appLogData.log_list.length == 0) {
+                    jsonData = {
+                        login_id: ADAccount,
+                        package_name: packageName,
+                        log_list: [objLogList]
+                    };
+                } else if (objLogList.page_name == appLogData.log_list[appLogData.log_list.length - 1].page_name) {
+                    appLogData.login_id = ADAccount;
+                    appLogData.package_name = packageName;
+                    appLogData.log_list.push(objLogList);
+                    jsonData = appLogData;
+                } else {
+                    appLogData.login_id = ADAccount;
+                    appLogData.package_name = packageName;
+                    var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length - 1].start_time;
+                    appLogData.log_list[appLogData.log_list.length - 1].period = pagePeriod;
+                    appLogData.log_list.push(objLogList);
+                    jsonData = appLogData;
+                }
+                localStorage.setItem('appLogData', JSON.stringify(jsonData));
+            }
+        }
+    }
+}
+
+function onPause() {    
+    if (loginData.uuid.length > 0 && loginData['loginid'].length > 0) {
+        var appLogData = JSON.parse(window.localStorage.getItem('appLogData'));
+        if (appLogData != null && appLogData.log_list.length > 0) {
+            var onPauseTime = new Date().getTime();
+            var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length - 1].start_time;
+            appLogData.log_list[appLogData.log_list.length - 1].period = pagePeriod;
+            jsonData = appLogData;
+            window.localStorage.setItem('appLogData', JSON.stringify(jsonData));
+            var doAddAppLog = new getAddAppLog();
+        }
+    }
+}
+
+function onResume() {
+    getAppLogParam();
+}
+
+function getAddAppLog() {
+
+    var self = this;
+    var appLogData = JSON.parse(localStorage.getItem('appLogData'));
+    var queryData = JSON.stringify(appLogData);
+
+    this.successCallback = function(data) {
+
+        var resultcode = data['result_code'];
+        var logDataLength = appLogData.log_list.length;
+        if (resultcode == 1) {
+            for (var i = 0; i < logDataLength; i++) {
+                appLogData.log_list.shift();
+            }
+            localStorage.setItem('appLogData', JSON.stringify(appLogData));
+        }
+    }
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        loginData["versionName"] = AppVersion.version;
+        if (loginData["versionName"].indexOf("Development") !== -1) {
+            QPlayAPI("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "");
+        }
+    }();
+
+}
 
 //review by alan
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
@@ -614,39 +735,6 @@ function readConfig() {
         if (window.localStorage.getItem("versionCode") === null) {
             //No, this is the first time to open this APP.
             window.localStorage.setItem("versionCode", loginData["versionCode"]);
-
-            var versionCode = parseInt(loginData["versionCode"], 10);
-            //For old APP Version
-            //
-            //RRS
-            if (appKey.indexOf("rrs") !== -1) {
-                if (appEnvironment.length === 0) {
-                    //Production
-                    if (versionCode > 23 && versionCode <= 234) {
-                        getServerData();
-                    }
-                } else if (appEnvironment === "test") {
-                    //Staging
-                    if (versionCode > 226 && versionCode <= 234) {
-                        getServerData();
-                    }
-                }
-            }
-            //Yellowpage
-            if (appKey.indexOf("yellowpage") !== -1) {
-                if (appEnvironment.length === 0) {
-                    //Production
-                    if (versionCode > 226 && versionCode <= 234) {
-                        getServerData();
-                    }
-                } else if (appEnvironment === "test") {
-                    //Staging
-                    if (versionCode > 226 && versionCode <= 234) {
-                        getServerData();
-                    }
-                }
-            }
-
             doCheckAppVer = true;
         } else {
             var oldVersionCode = parseInt(window.localStorage.getItem("versionCode"), 10);
@@ -657,7 +745,7 @@ function readConfig() {
                 getServerData();
                 window.localStorage.setItem("versionCode", loginData["versionCode"]);
             } else {
-                //No, APP does not have update.
+                //No, APP have not updated.
                 doCheckAppVer = true;
             }
         }
@@ -748,7 +836,7 @@ function checkAppVersion() {
                     //qplay
                     if (device.platform === "iOS") {
                         window.open('itms-services://?action=download-manifest&url=' + serverURL + '/qplay/public/app/1/apk/ios/manifest.plist', '_system');
-                    } else {//android
+                    } else { //android
                         var updateUrl = '' + serverURL + '/qplay/public/app/1/apk/android/appqplay.apk';
                         updateAPP(updateUrl);
                     }
@@ -756,7 +844,7 @@ function checkAppVersion() {
                     //Download link without QPlay
                     if (device.platform === "iOS") {
                         window.open(download_url, '_system');
-                    } else {//android
+                    } else { //android
                         var updateUrl = download_url;
                         updateAPP(updateUrl);
                     }
@@ -817,8 +905,10 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            $('.page-header').addClass('ios-fix-overlap');
-            $('.ios-fix-overlap-div').css('display', 'block');
+            if (versionCompare(device.version, "11.0", "") === 1) {} else {
+                $('.page-header').addClass('ios-fix-overlap');
+                $('.ios-fix-overlap-div').css('display', 'block');
+            }
         }
     };
 
@@ -1079,10 +1169,13 @@ function handleOpenURL(url) {
         } else {
             //For Other APP, which was be opened by dynamic action,
             //the specific funciton [handleOpenByScheme] need to set in APP/www/js/index.js
-            if (handleOpenByScheme !== null) {
-                if (typeof handleOpenByScheme === "function") {
-                    callHandleOpenURL = false;
-                    handleOpenByScheme(queryData);
+            if(typeof handleOpenByScheme !== "undefined")
+            {
+                if (handleOpenByScheme !== null) {
+                    if (typeof handleOpenByScheme === "function") {
+                        callHandleOpenURL = false;
+                        handleOpenByScheme(queryData);
+                    }
                 }
             }
         }
@@ -1110,4 +1203,49 @@ function handleOpenURL(url) {
         }
     }
 
+}
+
+function versionCompare(v1, v2, options) {
+    var lexicographical = options && options.lexicographical,
+        zeroExtend = options && options.zeroExtend,
+        v1parts = v1.split('.'),
+        v2parts = v2.split('.');
+
+    function isValidPart(x) {
+        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+    }
+
+    if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+        return NaN;
+    }
+
+    if (zeroExtend) {
+        while (v1parts.length < v2parts.length) v1parts.push("0");
+        while (v2parts.length < v1parts.length) v2parts.push("0");
+    }
+
+    if (!lexicographical) {
+        v1parts = v1parts.map(Number);
+        v2parts = v2parts.map(Number);
+    }
+
+    for (var i = 0; i < v1parts.length; ++i) {
+        if (v2parts.length == i) {
+            return 1;
+        }
+
+        if (v1parts[i] == v2parts[i]) {
+            continue;
+        } else if (v1parts[i] > v2parts[i]) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    if (v1parts.length != v2parts.length) {
+        return -1;
+    }
+
+    return 0;
 }

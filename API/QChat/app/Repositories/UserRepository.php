@@ -80,13 +80,26 @@ class UserRepository
     }
 
     /**
-     * 取得用戶基本資料
+     * 依員工編號取得用戶基本資料
      * @param  String $empNo 員工編號
      * @return mixed
      */
     public function getUserData($empNo){
         return $this->user
                 ->where('emp_no',$empNo)
+                ->select('row_id', 'emp_no', 'email', 'ext_no', 'site_code','login_id')
+                ->first();
+
+    }
+
+    /**
+     * 依員工帳號取得用戶基本資料
+     * @param  String $loginId 員工帳號
+     * @return mixed
+     */
+    public function getUserDataByLoginId($loginId){
+        return $this->user
+                ->where('login_id',$loginId)
                 ->select('row_id', 'emp_no', 'email', 'ext_no', 'site_code','login_id')
                 ->first();
 
@@ -143,8 +156,10 @@ class UserRepository
             if($mode == 1){
                 $query->where('friend_ship.status','=','1');
             }else if($mode == 2){
-                $query->where('friend_ship.status','=',null)
-                     ->orWhere('friend_ship.status','<>', '1');
+                $query->where(function ($query){
+                    return $query->where('friend_ship.status', '=', null)
+                          ->orWhere('friend_ship.status', '<>', '1');
+                });
             }
            return $query ->select(
                                  'login_id as name',
@@ -212,20 +227,26 @@ class UserRepository
     }
 
     /**
-     * 取得用戶詳細資料
+     * 依員工編號取得用戶詳細資料
+     * @param  String $empNo 員工編號
      * @param  String $destinationEmpNo 特定的用戶員工編號
      * @return mixed
      */
-    public function getUserDetailByEmpNo($destinationEmpNo){
+    public function getUserDetailByEmpNo($empNo, $destinationEmpNo){
         $query =  $this->user
-        ->Leftjoin('qp_friend_matrix','qp_friend_matrix.target_emp_no','=','qp_user.emp_no')
+        ->Leftjoin(DB::raw("(SELECT from_emp_no,target_emp_no,status,invitation_reason,reject_reason
+                  FROM qp_friend_matrix
+                  Where from_emp_no = ".$empNo."
+                  ) as friend_ship"),function($join){
+                  $join->on("friend_ship.target_emp_no","=","qp_user.emp_no");
+              })
         ->Leftjoin('qp_qchat_user_detail','qp_user.emp_no','=','qp_qchat_user_detail.emp_no')
         ->Leftjoin('qp_protect_user','qp_user.emp_no','=','qp_protect_user.emp_no')
         ->where('qp_user.emp_no','=',$destinationEmpNo);
        return $query ->select(
                              'login_id as name',
                              'qp_user.register_message as registered',
-                             DB::raw('IF (qp_friend_matrix.status is NULL, 0, qp_friend_matrix.status) as status'),
+                             DB::raw('IF (friend_ship.status is NULL, 0, friend_ship.status) as status'),
                              DB::raw('IF (qp_protect_user.row_id is NULL,"N","Y") as protected'),
                              'qp_user.emp_no',
                              'user_domain as domain',
@@ -235,7 +256,6 @@ class UserRepository
                              'memo',
                              'portrait_path')->get();
     }
-
     /**
      * 取得使用這註冊QPlay狀態
      * @return mixed

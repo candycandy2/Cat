@@ -109,14 +109,14 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova platform add android',
   'cordova plugin add ../../plugins/cordova-plugin-device',
   //'cordova plugin add cordova-plugin-console',
-  //'cordova plugin add cordova-plugin-appversion',
+  'cordova plugin add ../../plugins/cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
   'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
   //set scheme name appXXXX, XXXX should in lowercase.
   'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appaccountingrate' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add ../../plugins/cordova-plugin-whitelist',
-  //'cordova plugin add ../../plugins/cordova-plugin-proguard',
+  'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'

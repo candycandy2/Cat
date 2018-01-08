@@ -56,7 +56,7 @@ class HistoryService
     public function getMessageWithCursor($result, $count, $beginTime, $endTime){
 
         if(!isset($result->cursor)){
-            Log::info('cursor end 1:'.json_encode($result));
+            //Log::info('cursor end 1:'.json_encode($result));
             return;
         }
 
@@ -68,7 +68,7 @@ class HistoryService
         $res = $this->jmessage->exec('GET', $this->cursorUrl );
         if(isset($res->error)){
                 //使用cursor取資料時發生錯誤,回到使用datetime呼叫API
-                Log::info('cursor time out ,back to retry datetime');
+                //Log::info('cursor time out ,back to retry datetime');
                 $this->getMessageAndFile($beginTime, $endTime, $count);
         }else{
              //整理使用dateime呼叫的資料
@@ -76,7 +76,7 @@ class HistoryService
             if(isset($res->cursor)){
                 $this->jmessage->getMessageWithCursor($res, $count, $beginTime, $endTime);
             }else{
-                 Log::info('cursor end 2:'.json_encode($res));
+                 //Log::info('cursor end 2:'.json_encode($res));
                 return;
             }
         }
@@ -111,14 +111,14 @@ class HistoryService
             //首次取得資料時發生time out,重新使用datetime呼叫API，重試三次後斷開
             if($result->error == 28 && $this->retry <3){
                 $this->retry ++;
-                Log::info('datetime time out,retry: '.$this->retry);
+                //Log::info('datetime time out,retry: '.$this->retry);
                 $this->getMessageAndFile($beginTime, $endTime, $count);
             }else{
                 return $result;
             }
          }else{
             $this->retry =0;
-            Log::info($beginTime.' ~ '.$endTime.'，共'.$result->total.'筆資料');
+            //Log::info($beginTime.' ~ '.$endTime.'，共'.$result->total.'筆資料');
              //整理使用dateime呼叫的資料
             $this->arrangeMessageData($result);
             if(isset($result->cursor)){
@@ -136,9 +136,9 @@ class HistoryService
      */
     public function newMySQLHistory($historyData, $historyFileData){
         $this->historyRepository->insertHistory($historyData);
-        Log::info('History預計寫入，共'.count($historyData).'筆');
+        //Log::info('History預計寫入，共'.count($historyData).'筆');
         $this->historyRepository->insertHistoryFile($historyFileData);
-        Log::info('HistoryFile，預計寫入，共'.count($historyFileData)."筆");
+        //Log::info('HistoryFile，預計寫入，共'.count($historyFileData)."筆");
     }
 
     /**
@@ -220,8 +220,8 @@ class HistoryService
                 $media = $this->getMedia($message->msg_body->media_id);
                 if(!isset($media->url) && $retry < 3){
                     $retry ++;
-                    Log::info('get image error,retry: '.$retry);
-                    Log::info('get image error,content: '.json_encode($media));
+                    //Log::info('get image error,retry: '.$retry);
+                    //Log::info('get image error,content: '.json_encode($media));
                     $media = $this->getMedia($message->msg_body->media_id);
                 }
                 $file = $this->downloadFile($media->url);
@@ -265,13 +265,13 @@ class HistoryService
                         'fname'=>'',
                         'format'=>'');
         $curl = curl_init($url);
-
+        if(Config::get("app.env") == "local"){
          //add for Develop
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
-        curl_setopt($curl, CURLOPT_PROXY,'proxyt2.benq.corp.com:3128');
-        curl_setopt($curl, CURLOPT_PROXYUSERPWD,'Cleo.W.Chan:1234qwe:2');
-
+         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST,0);
+         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER,0);
+         curl_setopt($curl, CURLOPT_PROXY,Config::get("app.proxy"));
+         curl_setopt($curl, CURLOPT_PROXYUSERPWD,Config::get("app.proxypwd"));
+        }
         curl_setopt($curl, CURLOPT_TIMEOUT_MS, $api_max_exe_time);
         curl_setopt($curl, CURLOPT_WRITEHEADER, $headerBuff);
         curl_setopt($curl, CURLOPT_FILE, $fileTarget);
@@ -280,7 +280,7 @@ class HistoryService
         $retry = 1;
         $rs = curl_exec($curl);
         while(curl_errno($curl) == 28 && $retry <= 3){
-            Log::info('download image retry times : ' . $retry);
+            //Log::info('download image retry times : ' . $retry);
             $rs = curl_exec($curl);
             $retry++;
         }
@@ -296,7 +296,7 @@ class HistoryService
                 $result['fname'] = $matches[1];
                 $result['format'] = $fileType;
                 rename($filename,$result['lpath']);
-                CommonUtil::compressImage($result['lpath'],$result['spath'],10);
+                CommonUtil::compressImage($result['lpath'],$result['spath'],30);
 
             }
           }
