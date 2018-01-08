@@ -330,6 +330,7 @@ $("#viewAccount").pagecontainer({
             var packJson = packJsontemp;
             localStorage.setItem("packJsontemp", JSON.stringify(packJsontemp));
 
+            var NewshowMonth = [];
             for (var i = 0; i < packJson.length; i++) {
                 getrate = packJson[i].Ex_Rate;
                 getfrom = packJson[i].From_Currency;
@@ -346,11 +347,20 @@ $("#viewAccount").pagecontainer({
                     allCountry.push(getto);
                 }
 
+                Date.prototype.yyyymm = function() {
+                    var mm = this.getMonth() + 1; // getMonth() is zero-based
+
+                    return [this.getFullYear(),
+                        (mm > 9 ? '' : '0') + mm
+                    ].join('');
+                };
+
                 //Check if the month of Ex_Date is exist in showDataMonth
                 var tempExDate = new Date(exdate);
                 var tempExDateMonth = parseInt(tempExDate.getMonth() + 1, 10);
-                if (showDataMonth.indexOf(tempExDateMonth) == -1) {
-                    showDataMonth.push(tempExDateMonth);
+                var tempYYYYMM = tempExDate.yyyymm();
+                if (NewshowMonth.indexOf(tempYYYYMM) == -1) {
+                    NewshowMonth.push(tempYYYYMM);
                 }
 
                 //Process all currency data
@@ -370,19 +380,19 @@ $("#viewAccount").pagecontainer({
                 allCurrencyData[getfrom][tempExDateMonth][getto]["Ex_Rate"] = getrate;
             }
 
+            if (i > 0) {
+                NewshowMonth.sort().reverse();
+                //[12,11,1] => ["201801","201712","201711"]
+                NewshowMonth.splice(2);
+                //[12,11] => ["201801","201712"]
+                NewshowMonth.reverse();
+                //[11,12] => ["201712","201801"]
+                showDataMonth = [parseInt(NewshowMonth[0].substring(4, 6)), parseInt(NewshowMonth[1].substring(4, 6))];
+                window.localStorage.setItem("showDataMonth", JSON.stringify(showDataMonth));
+            }
+
             allCountry.sort();
             window.localStorage.setItem("allCountry", JSON.stringify(allCountry));
-
-            //review by alan
-            //According to the Ex_Date, only display the latest 2 month's data
-            //[12,1,11]
-            showDataMonth.sort().reverse();
-            //[12,11,1]
-            showDataMonth.splice(2);
-            //[12,11]
-            showDataMonth.reverse();
-            //[11,12]
-            window.localStorage.setItem("showDataMonth", JSON.stringify(showDataMonth));
 
             //Remove the old data
             //ex: if now have data of month [4,5,6], and now date is June, then remove data of month [4]
@@ -477,9 +487,15 @@ $("#viewAccount").pagecontainer({
 
             var todayYearmod = todayYear.toString().substring(2, 4);
 
-            for (var i = 0; i < showDataMonth.length; i++) {
-                var fragNum = parseInt(i + 1, 10);
-                $(".frag" + fragNum).text(MonthWord[showDataMonth[i] - 1] + "-" + todayYearmod);
+            if (showDataMonth[1] == 1) {
+                //handle for cross-year ex: 2017/12 & 2018/1
+                $(".frag" + 2).text(MonthWord[showDataMonth[1] - 1] + "-" + todayYearmod);
+                $(".frag" + 1).text(MonthWord[showDataMonth[0] - 1] + "-" + (todayYear - 1).toString().substring(2, 4));
+            } else {
+                for (var i = 0; i < showDataMonth.length; i++) {
+                    var fragNum = parseInt(i + 1, 10);
+                    $(".frag" + fragNum).text(MonthWord[showDataMonth[i] - 1] + "-" + todayYearmod);
+                }
             }
 
             $(".mainword1").text("From " + FromStatus + " to " + ToStatus + " ");
