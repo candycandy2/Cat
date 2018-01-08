@@ -1020,35 +1020,53 @@ $("#viewEventAdd").pagecontainer({
         });
 
         //No Related Event Exist
-        $(document).on("click", "#noRelatedEventExist .confirm", function() {
-            $("#noRelatedEventExist").popup("close");
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    $("#noRelatedEventExist").popup("close");
+                }
+            }
+        }, "#noRelatedEventExist");
 
         //Template / Descirption were empty
-        $(document).on("click", "#templateDescEmpty .confirm", function() {
-            $("#templateDescEmpty").popup("close");
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    $("#templateDescEmpty").popup("close");
+                }
+            }
+        }, "#templateDescEmpty");
 
         //Send Event
         $(document).on("click", "#sendEvent", function() {
             checkTemplateDesc();
         });
 
-        $(document).on("click", "#selectLocationFunction .confirm", function() {
-            $("#selectLocationFunction").popup("close");
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    $("#selectLocationFunction").popup("close");
+                }
+            }
+        }, "#selectLocationFunction");
 
-        $(document).on("click", "#doneDateTimeAlert .confirm", function() {
-            $("#doneDateTimeAlert").popup("close");
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    $("#doneDateTimeAlert").popup("close");
+                }
+            }
+        }, "#doneDateTimeAlert");
 
-        $(document).on("click", "#eventAddConfirm .cancel", function() {
-            $("#eventAddConfirm").popup("close");
-        });
-
-        $(document).on("click", "#eventAddConfirm .confirm", function() {
-            var event = new newEvent();
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    var event = new newEvent();
+                } else if ($(event.target).parent().hasClass("cancel")) {
+                    $("#eventAddConfirm").popup("close");
+                }
+            }
+        }, "#eventAddConfirm");
 
         //Event Add / Edit Cancel Button
         $(document).on("popupafteropen", "#eventAddEditCancelConfirm", function() {
@@ -1059,30 +1077,40 @@ $("#viewEventAdd").pagecontainer({
             }
         });
 
-        $(document).on("click", "#eventAddEditCancelConfirm .cancel", function() {
-            $("#eventAddEditCancelConfirm").popup("close");
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    $("#eventAddEditCancelConfirm").popup("close");
 
-        $(document).on("click", "#eventAddEditCancelConfirm .confirm", function() {
-            $("#eventAddEditCancelConfirm").popup("close");
-
-            if (prevPageID === "viewEventList") {
-                $.mobile.changePage('#viewEventList');
-            } else if (prevPageID === "viewEventContent") {
-                var eventDetail = new getEventDetail(eventRowID);
-                $.mobile.changePage('#viewEventContent');
+                    if (prevPageID === "viewEventList") {
+                        $.mobile.changePage('#viewEventList');
+                    } else if (prevPageID === "viewEventContent") {
+                        var eventDetail = new getEventDetail(eventRowID);
+                        $.mobile.changePage('#viewEventContent');
+                    }
+                } else if ($(event.target).parent().hasClass("cancel")) {
+                    $("#eventAddEditCancelConfirm").popup("close");
+                }
             }
-        });
+        }, "#eventAddEditCancelConfirm");
 
         //Event Add Fail
-        $(document).on("click", "#eventAddFail .confirm", function() {
-            $("#eventAddFail").popup("close");
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    $("#eventAddFail").popup("close");
+                }
+            }
+        }, "#eventAddFail");
 
         //Event Member Error
-        $(document).on("click", "#eventMemberError .confirm", function() {
-            $("#eventMemberError").popup("close");
-        });
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).parent().hasClass("confirm")) {
+                    $("#eventMemberError").popup("close");
+                }
+            }
+        }, "#eventMemberError");
 
         //Back Button
         $(document).on("click", "#eventAddBack", function() {

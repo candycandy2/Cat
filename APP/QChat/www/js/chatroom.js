@@ -130,7 +130,6 @@ var JM = {
             console.log("----register Error");
             console.log(errorStr);
         });
-
     },
     login: function(callback) {
 
@@ -173,7 +172,8 @@ var JM = {
         getUserInfo: function(userID, callback) {
 
             var params = {
-                'username': userID
+                'username': userID,
+                'appKey': JM.key
             };
 
             window.JMessage.getUserInfo(params, function(data) {
@@ -218,7 +218,17 @@ var JM = {
             }, function(errorStr) {
                 console.log("----downloadOriginalUserAvatar Error");
                 console.log(errorStr);
-                callback("error", errorStr);
+
+                //For iOS, this API occur 860021 error when first call it, even though the init/login all success.
+                //So, do it again, only this way can get correct data.
+                if (device.platform === "iOS") {
+                    if (errorStr.code == 860021) {
+                        JM.User.downloadOriginalUserAvatar(userID, callback);
+                    }
+                } else {
+                    callback("error", errorStr);
+                }
+
             });
 
         }
@@ -441,8 +451,7 @@ var JM = {
     Message: {
         getHistoryMessages: function(chatroomID, from, limit, callback) {
             console.log("@@@@@@@getHistoryMessages");
-console.log("from:"+from);
-console.log("limit:"+limit);
+
             var params = {
                 'type': "group",
                 'groupId': chatroomID,

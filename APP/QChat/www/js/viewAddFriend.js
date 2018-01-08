@@ -8,7 +8,9 @@ $("#viewAddFriend").pagecontainer({
         window.addFriendListView = function(dataCount, overMaxLength, userName, dataIndex, nowTimestamp, status, type) {
             overMaxLength = overMaxLength || null;
             userName = userName || null;
-            dataIndex = dataIndex || null;
+            if (dataIndex !== 0) {
+                dataIndex = dataIndex || null;
+            }
             nowTimestamp = nowTimestamp || null;
             status = status || null;
             type = type || null;
@@ -28,7 +30,7 @@ $("#viewAddFriend").pagecontainer({
                 $("#userListContentAddFriend .ui-hr-list").remove();
             }
 
-            if (dataCount === 0) {
+            if (dataCount === 0 || userDataCount === 0) {
                 $("#msgNoFoundAddFriend").show();
                 $("#titleFriendAddFriend").hide();
 

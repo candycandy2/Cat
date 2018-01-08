@@ -87,6 +87,15 @@ window.initialSuccess = function() {
         $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
         tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
     }
+
+    //datetime-local max value (hard code)
+    $("#startDate").attr("max", "2018-12-31T23:59");
+    $("#endDate").attr("max", "2018-12-31T23:59");
+    $("#leaveReason").attr("placeholder", langStr["str_090"]);
+    $("#withdrawReason").attr("placeholder", langStr["str_090"]);
+    $("#dispelReason").attr("placeholder", langStr["str_090"]);
+    $("#signTowithdrawReason").attr("placeholder", langStr["str_090"]);
+
     loadingMask("show");
 }
 
@@ -160,13 +169,14 @@ function changePageByPanel(pageId) {
 }
 
 function dateInit() {
+    var year = currentYear;
     var month = currentMonth;
     var date = currentDate;
     var day = currentDay;
     for(var i=1; i<=14; i++) {
         if(day > 0 && day < 6) {
             $("#leaveDate").append('<a href="#" class="ui-link">' + month + "/" + date + " " + dayTable[day] + '</a>');
-            $("#leaveDate a:last-child").data("value", currentYear + "/" + month + "/" + date);
+            $("#leaveDate a:last-child").data("value", year + "/" + month + "/" + date);
 
             day++;
             if(day == 6) {
@@ -174,13 +184,29 @@ function dateInit() {
                 if((Number(date) + 3) <= lastDateOfMonth) {
                     date = ((Number(date) + 3) < 10) ? "0"+(Number(date) + 3) : (Number(date) + 3);
                 }else if((Number(date) + 3) > lastDateOfMonth) {
-                    month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                    //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                    if((Number(month) + 1) < 10) {
+                        month = "0" + (Number(month) + 1);
+                    } else if((Number(month) + 1) < 12) {
+                        month = (Number(month) + 1) + "";
+                    } else {
+                        month = "01";
+                        year = (Number(year) + 1) + "";
+                    }
                     date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);
                 }
             }else if((Number(date) + 1) <= lastDateOfMonth) {
                 date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);
             }else if((Number(date) + 1) > lastDateOfMonth) {
-                month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                if((Number(month) + 1) < 10) {
+                    month = "0" + (Number(month) + 1);
+                } else if((Number(month) + 1) < 12) {
+                    month = (Number(month) + 1) + "";
+                } else {
+                    month = "01";
+                    year = (Number(year) + 1) + "";
+                }
                 date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
             }
         }else if(day == 6) {
@@ -189,7 +215,15 @@ function dateInit() {
             if((Number(date) + 2) <= lastDateOfMonth) {
                 date = ((Number(date) + 2) < 10) ? "0"+(Number(date) + 2) : (Number(date) + 2);
             }else if((Number(date) + 2) > lastDateOfMonth) {
-                month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                if((Number(month) + 1) < 10) {
+                    month = "0" + (Number(month) + 1);
+                } else if((Number(month) + 1) < 12) {
+                    month = (Number(month) + 1) + "";
+                } else {
+                    month = "01";
+                    year = (Number(year) + 1) + "";
+                }
                 date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);
             }
         }else if(day == 0) {
@@ -198,7 +232,15 @@ function dateInit() {
             if((Number(date) + 1) <= lastDateOfMonth) {
                 date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);
             }else if((Number(date) + 1) > lastDateOfMonth) {
-                month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                if((Number(month) + 1) < 10) {
+                    month = "0" + (Number(month) + 1);
+                } else if((Number(month) + 1) < 12) {
+                    month = (Number(month) + 1) + "";
+                } else {
+                    month = "01";
+                    year = (Number(year) + 1) + "";
+                }
                 date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
             }
         }

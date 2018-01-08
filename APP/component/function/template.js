@@ -79,7 +79,7 @@ var tplJS = {
         this.setMultiLanguage(HTMLContent);
     },
     setDOMAttr: function(dom, data) {
-        $.each(data, function(key, value){
+        $.each(data, function(key, value) {
             if (key === "class") {
                 dom.addClass(value);
             } else {
@@ -89,7 +89,7 @@ var tplJS = {
     },
     setMultiLanguage: function(dom) {
         if ($(dom).find(".langStr").length > 0) {
-            $(dom).find(".langStr").each(function(index, element){
+            $(dom).find(".langStr").each(function(index, element) {
                 var id = $(element).data("id");
                 $(element).html(langStr[id]);
             });
@@ -251,7 +251,7 @@ var tplJS = {
         //Tab content
         var tabContentHTML = tab.find("template#tplTabContent").html();
 
-        for (var i=0; i<data.content.length; i++) {
+        for (var i = 0; i < data.content.length; i++) {
             var tabContent = $(tabContentHTML);
             tabContent.prop("id", data.content[i].id);
 
@@ -287,7 +287,7 @@ var tplJS = {
         var navbarButtonHTML = navbar.find("template#tplNavbarButton").html();
         navbar.find("ul").empty();
 
-        for (var i=0; i<data.button.length; i++) {
+        for (var i = 0; i < data.button.length; i++) {
             var navbarButton = $(navbarButtonHTML);
             var className;
 
@@ -352,7 +352,7 @@ var tplJS = {
             dropdownList.data("multiple", multiSelect);
         }
 
-        
+
         var changeDefaultText = false;
         if (data.changeDefaultText !== undefined) {
             changeDefaultText = data.changeDefaultText;
@@ -372,7 +372,7 @@ var tplJS = {
         var dropdownListOptionHTML = dropdownList.find("template#tplDropdownListOption").html();
 
         if (type === "typeA") {
-            for (var i=0; i<data.option.length; i++) {
+            for (var i = 0; i < data.option.length; i++) {
                 var dropdownListOption = $(dropdownListOptionHTML);
 
                 dropdownListOption.prop("value", data.option[i].value);
@@ -418,7 +418,7 @@ var tplJS = {
         var dropdownListLiHTML = dropdownList.find("template#tplPopupContentDropdownListLi").html();
         var dropdownListHrHTML = dropdownList.find("template#tplPopupContentDropdownListHr").html();
 
-        for (var i=0; i<data.option.length; i++) {
+        for (var i = 0; i < data.option.length; i++) {
             var dropdownListLi = $(dropdownListLiHTML);
             dropdownListLi.data("value", data.option[i].value);
             dropdownListLi.html(data.option[i].text);
@@ -499,7 +499,7 @@ var tplJS = {
             $('#' + popupID).popup('open');
         });
 
-        (function(dropdownListID){
+        (function(dropdownListID) {
             $(document).on("click", "#" + popupID + " .close", function() {
                 if (type === "typeA") {
                     if (multiSelect) {
@@ -519,7 +519,7 @@ var tplJS = {
         }(data.id));
 
         //Click Li to change the value of Dropdown List
-        (function(dropdownListID){
+        (function(dropdownListID) {
             $(document).on("click", "#" + popupID + " ul li", function() {
                 if (!multiSelect) {
                     $("#" + popupID + " ul li").removeClass("tpl-dropdown-list-selected");
@@ -583,18 +583,18 @@ var tplJS = {
                 } else if (type === "typeB") {
                     //Find drowdown list, set selected option value
                     var defaultText;
-                    if(!changeDefaultText) {
+                    if (!changeDefaultText) {
                         $("#" + dropdownListID + " option").each(function(index, el) {
                             if (index === 0) {
                                 defaultText = $(el).text();
                             }
                         });
-                    }else {
+                    } else {
                         $("#" + dropdownListUlID + " li").each(function(index, value) {
-                            if($(value).hasClass("tpl-dropdown-list-selected")){
-                                if($(value).find('div:nth-child(2)').text() === "") {
+                            if ($(value).hasClass("tpl-dropdown-list-selected")) {
+                                if ($(value).find('div:nth-child(2)').text() === "") {
                                     defaultText = $(value).text();
-                                }else {
+                                } else {
                                     defaultText = $(value).find('div:nth-child(2)').text();
                                 }
                             }
@@ -652,7 +652,7 @@ var tplJS = {
         var popupHTML = $("template#tplPopup").html();
         var popup = $(popupHTML);
         var HRHTML = $("template#tplPopupContentHr").html();
-        
+
         //Popup ID
         popup.prop("id", data.id);
         popup.addClass("msg");
@@ -772,15 +772,15 @@ var tplJS = {
 };
 
 
-function popupMsgInit(popupClass){
+function popupMsgInit(popupClass) {
     $(popupClass).popup(); //initialize the popup
     $(popupClass).show();
     $(popupClass).popup('open');
     popupMsgCloseInit(popupClass);
 }
 
-function popupMsgCloseInit(popupClass){
-    $('body').one('click', popupClass  + ' .btn-cancel', function() {
+function popupMsgCloseInit(popupClass) {
+    $('body').one('click', popupClass + ' .btn-cancel', function() {
         $(popupClass).popup('close');
     });
 }

@@ -378,7 +378,17 @@ $(document).one("pagebeforecreate", function() {
             }
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
         } else if (device.platform === "iOS") {
-            if (versionCompare(device.version, "11.0", "") === 1) {} else {
+            var ratio = window.devicePixelRatio || 1;
+            var screen = {
+                width: window.screen.width * ratio,
+                height: window.screen.height * ratio
+            };
+            /*if (screen.width === 1125 && screen.height === 2001) { 
+                $('meta[name=viewport]').attr('content', 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover');
+            }*/
+            if (versionCompare(device.version, "11.0", "") === 1) {
+
+            } else {
                 $('.page-header').addClass('ios-fix-overlap');
                 $('.ios-fix-overlap-div').css('display', 'block');
             }
@@ -451,12 +461,12 @@ $(document).one("pagebeforecreate", function() {
             footerFixed();
         },
         pagebeforeshow: function() {
-            if (loginData.uuid.length != 0 && loginData['loginid'].length != 0) {
+            if (loginData.uuid.length > 0 && loginData['loginid'].length > 0) {
                 var appLogData = JSON.parse(localStorage.getItem('appLogData'));
                 var firstPageLoad = JSON.parse(sessionStorage.getItem('firstPageLoad'));
                 if (firstPageLoad == null) {
                     sessionStorage.setItem('firstPageLoad', 'true');
-                    if (appLogData != null && appLogData.log_list.length != 0) {
+                    if (appLogData != null && appLogData.log_list.length > 0) {
                         var doAddAppLog = new getAddAppLog();
                     }
                 }
@@ -475,7 +485,7 @@ function getAppLogParam() {
     loginData["versionName"] = AppVersion.version;
     if (loginData["versionName"].indexOf("Development") !== -1) {
         var ADAccount = loginData['loginid'];
-        if (loginData.uuid.length != 0 && ADAccount.length != 0) {
+        if (loginData.uuid.length > 0 && ADAccount.length > 0) {
             var packageName = "com.qplay." + appKey;
             var pagename = $.mobile.activePage.attr('id');
             var appLogData = JSON.parse(localStorage.getItem('appLogData'));
@@ -512,9 +522,9 @@ function getAppLogParam() {
 }
 
 function onPause() {    
-    if (loginData.uuid.length != 0 && loginData['loginid'].length != 0) {
+    if (loginData.uuid.length > 0 && loginData['loginid'].length > 0) {
         var appLogData = JSON.parse(window.localStorage.getItem('appLogData'));
-        if (appLogData != null && appLogData.log_list.length != 0) {
+        if (appLogData != null && appLogData.log_list.length > 0) {
             var onPauseTime = new Date().getTime();
             var pagePeriod = onPauseTime - appLogData.log_list[appLogData.log_list.length - 1].start_time;
             appLogData.log_list[appLogData.log_list.length - 1].period = pagePeriod;
@@ -1159,10 +1169,13 @@ function handleOpenURL(url) {
         } else {
             //For Other APP, which was be opened by dynamic action,
             //the specific funciton [handleOpenByScheme] need to set in APP/www/js/index.js
-            if (handleOpenByScheme !== null) {
-                if (typeof handleOpenByScheme === "function") {
-                    callHandleOpenURL = false;
-                    handleOpenByScheme(queryData);
+            if(typeof handleOpenByScheme !== "undefined")
+            {
+                if (handleOpenByScheme !== null) {
+                    if (typeof handleOpenByScheme === "function") {
+                        callHandleOpenURL = false;
+                        handleOpenByScheme(queryData);
+                    }
                 }
             }
         }

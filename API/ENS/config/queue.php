@@ -35,14 +35,7 @@ return [
         ],
 
         'database' => [
-            'driver' => 'database',
-            'table' => 'jobs',
-            'queue' => 'default',
-            'expire' => 60,
-        ],
-
-        'database_qplay' => [
-            'connection' => 'mysql_qplay', // The database.php connection to use
+            'connection' => 'mysql_qplay', 
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'default',

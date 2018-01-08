@@ -25,8 +25,6 @@ var panel = htmlContent
         +'</div>'
         +'<div class="page-mask" style="display: none;"></div>';
 
-
-
 $(document).one("pagebeforeshow", function() {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();

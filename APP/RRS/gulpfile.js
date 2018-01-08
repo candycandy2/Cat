@@ -56,13 +56,33 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
                             //'<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
+                            '<splash src="res/screen/android/splash-land-hdpi.png" density="land-hdpi"/>'+
+                            '<splash src="res/screen/android/splash-land-ldpi.png" density="land-ldpi"/>'+
+                            '<splash src="res/screen/android/splash-land-mdpi.png" density="land-mdpi"/>'+
+                            '<splash src="res/screen/android/splash-land-xhdpi.png" density="land-xhdpi"/>'+
+                            '<splash src="res/screen/android/splash-port-hdpi.png" density="port-hdpi"/>'+
+                            '<splash src="res/screen/android/splash-port-ldpi.png" density="port-ldpi"/>'+
+                            '<splash src="res/screen/android/splash-port-mdpi.png" density="port-mdpi"/>'+
+                            '<splash src="res/screen/android/splash-port-xhdpi.png" density="port-xhdpi"/>'+
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
-                            //'<preference name="iosPersistentFileLocation" value="Compatibility" />' +
+                            //'<preference name="iosPersistentFileLocation" value="Compatibility" />' +                  
+                            '<splash src="res/screen/ios/Default@2x~iphone~anyany.png" />'+
+                            '<splash src="res/screen/ios/Default@2x~iphone~comany.png" />'+
+                            '<splash src="res/screen/ios/Default@2x~iphone~comcom.png" />'+
+                            '<splash src="res/screen/ios/Default@3x~iphone~anyany.png" />'+
+                            '<splash src="res/screen/ios/Default@3x~iphone~anycom.png" />'+
+                            '<splash src="res/screen/ios/Default@3x~iphone~comany.png" />'+
+                            '<splash src="res/screen/ios/Default@2x~ipad~anyany.png" />'+
+                            '<splash src="res/screen/ios/Default@2x~ipad~comany.png" />'+
                         '</platform>' +
+                        '<preference name="ShowSplashScreenSpinner" value="false" />'+
+                        '<preference name="SplashScreenDelay" value="0" />'+
+                        '<preference name="FadeSplashScreen" value="false" />'+
+                        '<preference name="FadeSplashScreenDuration" value="0" />'+
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
 
@@ -98,8 +118,9 @@ gulp.task('install', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add phonegap-plugin-mobile-accessibility',
-  'cordova plugin add cordova-plugin-inappbrowser'
-  //'cordova plugin add cordova-plugin-file'
+  'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
+  'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'
+  //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
 gulp.task('jenkinsinstall', shell.task([
@@ -115,6 +136,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-whitelist',
   'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
+  'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));

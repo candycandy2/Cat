@@ -1,10 +1,10 @@
 function cleanHTML(input) {
     // 1. remove line breaks / Mso classes
     var stringStripper = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;
-    var output = input.replace(stringStripper, ' ');
+    var outputstringStripper = input.replace(stringStripper, ' ');
     // 2. strip Word generated HTML comments
     var commentSripper = new RegExp('<!--(.*?)-->', 'g');
-    var output = output.replace(commentSripper, '');
+    var output = outputstringStripper.replace(commentSripper, '');
     var tagStripper = new RegExp('<(/)*(meta|link|span|table|tbody|td|tr|body|div|strong|\\?xml:|st1:|o:)(.*?)>', 'gi');
     // 3. remove tags leave content if any
     output = output.replace(tagStripper, '');
@@ -17,7 +17,7 @@ function cleanHTML(input) {
     }
     // 5. remove attributes ' style="..."'
     var badAttributes = ['style', 'start'];
-    for (var i = 0; i < badAttributes.length; i++) {
+    for (i = 0; i < badAttributes.length; i++) {
         var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"', 'gi');
         output = output.replace(attributeStripper, '');
     }
@@ -198,19 +198,23 @@ $("#viewWebNews2-3-1").pagecontainer({
                     //panzoom end event
                     $("#htmlContent").on("panzoomend", function(e, panzoom, matrix, changed) {
 
-                        var matrix = $("#htmlContent").panzoom("getMatrix");
+                        var canvasWidth;
+                        var screenWidth;
+                        var canvasOffsetTop;
+
+                        matrix = $("#htmlContent").panzoom("getMatrix");
 
                         if (matrix[0] == minScale) {
 
-                            var screenWidth = document.documentElement.clientWidth;
+                            screenWidth = document.documentElement.clientWidth;
                             $("#PortalContent").css({
                                 "width": screenWidth + "px",
                                 "overflow-x": "hidden"
                             });
 
-                            var canvasWidth = $("#htmlContent").width();
-                            var canvasOffset = $("#htmlContent").offset();
-                            var canvasOffsetTop = canvasOffset.top;
+                            canvasWidth = $("#htmlContent").width();
+                            canvasOffset = $("#htmlContent").offset();
+                            canvasOffsetTop = canvasOffset.top;
                             var left = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
 
                             $("#htmlContent").css({
@@ -225,8 +229,8 @@ $("#viewWebNews2-3-1").pagecontainer({
 
                         } else if (matrix[0] > minScale) {
 
-                            var canvasWidth = $("#htmlContent").width() * matrix[0];
-                            var screenWidth = document.documentElement.clientWidth;
+                            canvasWidth = $("#htmlContent").width() * matrix[0];
+                            screenWidth = document.documentElement.clientWidth;
 
                             $("#viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
                             $("#PortalContent").css({
@@ -246,8 +250,8 @@ $("#viewWebNews2-3-1").pagecontainer({
                                 transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + ", 0, 0)"
                             });
 
-                            var canvasOffset = $("#htmlContent").offset();
-                            var canvasOffsetTop = canvasOffset.top;
+                            canvasOffset = $("#htmlContent").offset();
+                            canvasOffsetTop = canvasOffset.top;
 
                             $("#htmlContent").offset({
                                 top: canvasOffsetTop,
@@ -298,6 +302,14 @@ $("#viewWebNews2-3-1").pagecontainer({
                     $("#htmlContent").find("base").remove();
 
                     renderCanvas($("#htmlContent").html());
+
+                    //Had used the URL
+                    portalURL = "";
+                    //Had openMessage
+                    if (window.localStorage.getItem('openMessage') === "true") {
+                        loginData.openMessage = false;
+                        window.localStorage.setItem('openMessage', "false");
+                    }
                 });
 
             }());
@@ -309,8 +321,8 @@ $("#viewWebNews2-3-1").pagecontainer({
             var queryStr = "&message_send_row_id=" + messageRowId;
 
             this.successCallback = function(data) {
-                var resultcode = data['result_code'];
-                var content = data['content'];
+                var resultcode = data.result_code;
+                var content = data.content;
 
                 function NoticeTypeShow(template_id) {
                     for (var i = 0; i <= 17; i++) {
@@ -408,7 +420,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 }
 
                 if (window.localStorage.getItem("openMessage") === "true") {
-                    loginData["openMessage"] = false;
+                    loginData.openMessage = false;
                     window.localStorage.setItem("openMessage", "false");
                 }
             };
@@ -429,7 +441,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 var doUpdateLocalStorage = false;
 
                 if (type === "event") {
-                    var resultcode = data['result_code'];
+                    var resultcode = data.result_code;
 
                     if (resultcode === 1) {
                         doUpdateLocalStorage = true;
@@ -448,6 +460,7 @@ $("#viewWebNews2-3-1").pagecontainer({
 
                     //Single / Multiple message update check
                     var singleMessage = true;
+                    var i, j;
 
                     messageRowId = messageRowId.toString();
 
@@ -457,7 +470,7 @@ $("#viewWebNews2-3-1").pagecontainer({
 
                     if (singleMessage) {
                         if (messageArrIndex === null) {
-                            for (var i = 0; i < messagecontent.message_list.length; i++) {
+                            for (i = 0; i < messagecontent.message_list.length; i++) {
                                 if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId) {
                                     messageArrIndex = i;
                                 }
@@ -474,9 +487,9 @@ $("#viewWebNews2-3-1").pagecontainer({
                     } else {
                         var messageRowIdArr = messageRowId.split(",");
 
-                        for (var i = 0; i < messageRowIdArr.length; i++) {
+                        for (i = 0; i < messageRowIdArr.length; i++) {
 
-                            for (var j = 0; j < messagecontent.message_list.length; j++) {
+                            for (j = 0; j < messagecontent.message_list.length; j++) {
                                 if (messagecontent.message_list[j].message_send_row_id.toString() === messageRowIdArr[i]) {
                                     messageArrIndex = j;
                                 }
@@ -492,7 +505,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                         }
                     }
 
-                    loginData["messagecontent"] = messagecontent;
+                    loginData.messagecontent = messagecontent;
                     window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
                     messageArrIndex = null;
 
@@ -580,7 +593,7 @@ $("#viewWebNews2-3-1").pagecontainer({
             var footerHeight;
 
             tempWidth = $("#viewWebNews2-3-1 .news-header").width();
-            tempHeight = header['height'] * tempWidth / header['width'];
+            tempHeight = header.height * tempWidth / header.width;
             $("#viewWebNews2-3-1 .news-header").css('height', tempHeight + 'px');
 
             tempTop = tempHeight * 0.2;
@@ -591,9 +604,9 @@ $("#viewWebNews2-3-1").pagecontainer({
 
             footerWidth = $("#viewWebNews2-3-1 .footer-top").width();
 
-            if (footerWidth * 0.2 < footerImage['width']) {
+            if (footerWidth * 0.2 < footerImage.width) {
                 tempWidth = footerWidth * 0.2;
-                tempHeight = footerImage['height'] * tempWidth / footerImage['width'];
+                tempHeight = footerImage.height * tempWidth / footerImage.width;
 
                 $("#viewWebNews2-3-1 .footer-top").css('height', tempHeight + 'px');
 
@@ -612,20 +625,20 @@ $("#viewWebNews2-3-1").pagecontainer({
                     'font-size': '10px'
                 });
             } else {
-                $("#viewWebNews2-3-1 .footer-top").css('height', footerImage['height'] + 'px');
+                $("#viewWebNews2-3-1 .footer-top").css('height', footerImage.height + 'px');
 
                 $("#viewWebNews2-3-1 .footer-benq").css({
-                    'width': footerImage['width'] + 'px',
-                    'height': footerImage['height'] + 'px'
+                    'width': footerImage.width + 'px',
+                    'height': footerImage.height + 'px'
                 });
                 $("#viewWebNews2-3-1 .footer-qisda").css({
-                    'width': footerImage['width'] + 'px',
-                    'height': footerImage['height'] + 'px'
+                    'width': footerImage.width + 'px',
+                    'height': footerImage.height + 'px'
                 });
 
                 $("#viewWebNews2-3-1 .footer-text").css({
-                    'width': (footerWidth - footerImage['width'] * 2) - 15 + 'px',
-                    'padding-top': footerImage['height'] * 0.4 + 'px',
+                    'width': (footerWidth - footerImage.width * 2) - 15 + 'px',
+                    'padding-top': footerImage.height * 0.4 + 'px',
                     'font-size': '12px'
                 });
             }

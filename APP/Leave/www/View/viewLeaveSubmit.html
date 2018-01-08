@@ -108,6 +108,7 @@
                 <input type="datetime-local" data-role="none" name="endDate" id="endDate" class="date-time-component" />
                 <input type="date" data-role="none" name="oldBaseday" id="oldBaseday" class="date-time-component" />
                 <input type="date" data-role="none" name="newBaseday" id="newBaseday" class="date-time-component" />
+                <input id="starDateTime" readonly="readonly">
             </div>
             <div class="apply-leave-count">
                 <div class="font-style11">
@@ -147,7 +148,7 @@
                     <span class="langStr" data-id="str_089"></span>
                 </div>
                 <div>
-                    <textarea data-role="none" id="leaveReason" class="reason-textarea" placeholder="請填寫理由"></textarea>
+                    <textarea data-role="none" id="leaveReason" class="reason-textarea"></textarea>
                 </div>
             </div>
             <!-- empty div -->
@@ -247,8 +248,8 @@
             <!-- apply btn -->
             <div class="apply-submit-btn">
                 <div id="applyBtn">
-                    <!--立即預約-->
-                    <span class="langStr" data-id="str_128"></span>
+                    <!-- 確認送簽 -->
+                    <span class="langStr" data-id="str_180"></span>
                 </div>
             </div>
         </div>
@@ -290,7 +291,7 @@
     <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup leftDaysByLeave" for="leftDaysByLeave" id="leftDaysByLeave">
         <div data-role="main" class="ui-content">
             <div class="header">
-                <div class="font-style3 header-title-main">
+                <div class="font-style3 header-title-main" style="margin-left:5.36vw;margin-right:5.36vw;">
                     <span class='header-icon'>
                         <img src="img/urgent.png">
                     </span>

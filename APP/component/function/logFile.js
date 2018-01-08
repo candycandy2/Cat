@@ -1,4 +1,3 @@
-
 /************************************************************************************************/
 /***************************************** Log File  ********************************************/
 /************************************************************************************************/
@@ -53,14 +52,14 @@ var LogFile = {
         */
     },
     writeFile: function(fileEntry, dataObj, isAppend) {
-        fileEntry.createWriter(function (fileWriter) {
+        fileEntry.createWriter(function(fileWriter) {
             //write success
             fileWriter.onwriteend = function() {
                 //console.log("Successful file read...");
             };
 
             //write fail
-            fileWriter.onerror = function (e) {
+            fileWriter.onerror = function(e) {
                 //console.log("Failed file read: " + e.toString());
             };
 
@@ -80,7 +79,7 @@ var LogFile = {
     },
     readFile: function(fileEntry, dataArr, isAppend) {
 
-        fileEntry.file(function (file) {
+        fileEntry.file(function(file) {
             var reader = new FileReader();
 
             reader.onloadend = function() {
@@ -129,7 +128,7 @@ var LogFile = {
     },
     removeFile: function(fileName) {
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(file) {
-            file.root.getFile(fileName + "json", {create:false}, function(fileEntry) {
+            file.root.getFile(fileName + "json", { create: false }, function(fileEntry) {
                 fileEntry.remove(function(file) {
                     console.log("File removed!");
                 }, function() {
@@ -143,11 +142,11 @@ var LogFile = {
     logDataFormat: function(dataStr) {
         //return dataStr + "\n";
         var tempDataTrim = dataStr.trim();
-        var tempDataLastChar = tempDataTrim.substring( parseInt(tempDataTrim.length - 1, 10) );
+        var tempDataLastChar = tempDataTrim.substring(parseInt(tempDataTrim.length - 1, 10));
         var jsonData = dataStr;
 
         if (tempDataLastChar === ",") {
-            var tempData = tempDataTrim.substring( 0, parseInt(tempDataTrim.length - 1, 10) );
+            var tempData = tempDataTrim.substring(0, parseInt(tempDataTrim.length - 1, 10));
             jsonData = tempData + "}";
         }
 

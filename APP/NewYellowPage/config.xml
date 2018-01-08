@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="718" id="com.qplay.appyellowpagedev" ios-CFBundleVersion="718" version="1.0.0.718[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="762" id="com.qplay.appyellowpagedev" ios-CFBundleVersion="762" version="1.0.0.762[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>YellowPage</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -42,6 +42,7 @@
         <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appyellowpagedev&lt;/string&gt;" />
     </plugin>
     <plugin name="cordova-plugin-whitelist" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-whitelist" />
+    <plugin name="cordova-plugin-proguard" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-proguard" />
     <plugin name="phonegap-plugin-mobile-accessibility" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/phonegap-plugin-mobile-accessibility" />
     <plugin name="cordova-plugin-inappbrowser" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QPlay-RRS-YP/plugins/cordova-plugin-inappbrowser" />
 </widget>

@@ -80,22 +80,33 @@ function scorllDateInit(upper) {
     var day = currentDay;
     var date = currentDate;
     var month = currentMonth;
+    var year = currentYear;
     for(var i=0; i<upper; i++) {
         if(day < 6 && day > 0) {
-            scrollDate += '<a id="' + month + date + '" class="ui-link">' + month + '/' + date + '&nbsp;' + dayTable[day] + '</a>';
+            scrollDate += '<a id="' + year + month + date + '" class="ui-link">' + month + '/' + date + '&nbsp;' + dayTable[day] + '</a>';
             day++;
             if(day == 6) {
                 day = 1;
                 if((Number(date) + 3) <= lastDateOfMonth) {
                     date = ((Number(date) + 3) < 10) ? "0"+(Number(date) + 3) : (Number(date) + 3);    
                 }else if((Number(date) + 3) > lastDateOfMonth) {
-                    month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
-                    date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);    
+                    if (month == 12) { 
+                        year++;
+                        month = "01";
+                    }else {
+                        month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;  
+                    }  
+                    date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);                    
                 }
             }else if((Number(date) + 1) <= lastDateOfMonth) {
                 date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);
             }else if((Number(date) + 1) > lastDateOfMonth) {
-                month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                if (month == 12) { 
+                    year++;
+                    month = "01";
+                }else {
+                    month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                }
                 date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
             }
         }else if(day == 6) {
@@ -103,7 +114,12 @@ function scorllDateInit(upper) {
             if((Number(date) + 2) <= lastDateOfMonth) {
                 date = ((Number(date) + 2) < 10) ? "0"+(Number(date) + 2) : (Number(date) + 2);    
             }else if((Number(date) + 2) > lastDateOfMonth) {
-                month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                if (month == 12) { 
+                    year++;
+                    month = "01";
+                }else {
+                    month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                }
                 date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);    
             }
         }else if(day == 0) {
@@ -111,7 +127,12 @@ function scorllDateInit(upper) {
             if((Number(date) + 1) <= lastDateOfMonth) {
                 date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);    
             }else if((Number(date) + 1) > lastDateOfMonth) {
-                month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                if (month == 12) { 
+                    year++;
+                    month = "01";
+                }else {
+                    month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
+                }
                 date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);    
             }
         }
