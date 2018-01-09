@@ -1,5 +1,5 @@
 
-$("#viewActivitiesSignup").pagecontainer({
+$("#viewActivitiesDetail").pagecontainer({
     create: function(event, ui) {
         //page init
         /********************************** function *************************************/
@@ -23,24 +23,24 @@ $("#viewActivitiesSignup").pagecontainer({
         };
 
         /********************************** page event *************************************/
-        $("#viewActivitiesSignup").on("pagebeforeshow", function(event, ui) {
-            
+        $("#viewActivitiesDetail").on("pagebeforeshow", function(event, ui) {
+
         });
 
         /********************************** dom event *************************************/
-        $("#viewActivitiesSignup").keypress(function(event) {
+        $("#viewActivitiesDetail").keypress(function(event) {
 
         });
 
-        //點擊活動列表，跳轉到詳情頁
-        $("#openList .activity-list").on("click", function() {
-            changePageByPanel("viewActivitiesDetail", true);
-        });
-
-        //從編輯也返回詳情頁
-        $("#viewActivitiesSignup .back-detail").on("click", function() {
+        //從詳情頁返回列表
+        $("#viewActivitiesDetail .back-list").on("click", function() {
             pageVisitedList.pop();
-            changePageByPanel("viewActivitiesDetail", false);
+            changePageByPanel("viewActivitiesSignup", false);
+        });
+
+        //點擊 "開始報名" 跳轉到編輯頁
+        $("#beginSignupBtn").on("click", function() {
+            changePageByPanel("viewSignupManage", true);
         });
     }
 });
