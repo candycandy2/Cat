@@ -1,8 +1,8 @@
 
-
-$("#viewTalk").pagecontainer({
+$("#viewMyFamilyDatum").pagecontainer({
     create: function(event, ui) {
         //page init
+        /********************************** function *************************************/
         window.APIRequest = function() {
 
             var self = this;
@@ -23,12 +23,12 @@ $("#viewTalk").pagecontainer({
         };
 
         /********************************** page event *************************************/
-        $("#viewTalk").on("pagebeforeshow", function(event, ui) {
+        $("#viewMyFamilyDatum").on("pagebeforeshow", function(event, ui) {
 
         });
 
         /********************************** dom event *************************************/
-        $('#viewTalk').keypress(function(event) {
+        $("#viewMyFamilyDatum").keypress(function(event) {
 
         });
     }
