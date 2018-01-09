@@ -1,7 +1,7 @@
 [
   {
     "term": "str_001",
-    "definition": "個人假勤",
+    "definition": "个人假勤",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -9,7 +9,7 @@
   },
   {
     "term": "str_002",
-    "definition": "請假申請",
+    "definition": "请假申请",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -17,7 +17,7 @@
   },
   {
     "term": "str_003",
-    "definition": "請假單查詢 / 銷假",
+    "definition": "请假单查询 / 销假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,7 @@
   },
   {
     "term": "str_005",
-    "definition": "銷假單查詢",
+    "definition": "销假单查询",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -41,7 +41,7 @@
   },
   {
     "term": "str_006",
-    "definition": "2018 行事曆",
+    "definition": "2018 行事历",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -57,7 +57,7 @@
   },
   {
     "term": "str_008",
-    "definition": "放假節日",
+    "definition": "放假节日",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -81,7 +81,7 @@
   },
   {
     "term": "str_011",
-    "definition": "依照同仁年資天數計算",
+    "definition": "依照同仁年资天数计算",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -89,7 +89,7 @@
   },
   {
     "term": "str_012",
-    "definition": "基準日",
+    "definition": "基准日",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -97,7 +97,7 @@
   },
   {
     "term": "str_013",
-    "definition": "使用期限到2017/12/31止",
+    "definition": "使用期限到2018/12/31止",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -105,7 +105,7 @@
   },
   {
     "term": "str_014",
-    "definition": "預支特休",
+    "definition": "预支特休",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -113,7 +113,7 @@
   },
   {
     "term": "str_015",
-    "definition": "7天/年，於發放下期特休或離職時回扣",
+    "definition": "7天/年，于发放下期特休或离职时回扣",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -137,7 +137,7 @@
   },
   {
     "term": "str_018",
-    "definition": "超過三日以上，須檢附醫師證明方可請假，扣薪條件如半薪病假",
+    "definition": "超过三日以上，须检附医师证明方可请假，扣薪条件如半薪病假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -153,7 +153,7 @@
   },
   {
     "term": "str_020",
-    "definition": "一年有30天日的半薪病假",
+    "definition": "一年有30日的半薪病假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -177,7 +177,7 @@
   },
   {
     "term": "str_023",
-    "definition": "無薪病假",
+    "definition": "无薪病假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -185,7 +185,7 @@
   },
   {
     "term": "str_024",
-    "definition": "一年之30日半薪病假用畢時方可使用",
+    "definition": "一年之30日半薪病假用毕时方可使用",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -201,7 +201,7 @@
   },
   {
     "term": "str_026",
-    "definition": "一年有14天日的事假",
+    "definition": "一年有14日的事假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -209,7 +209,7 @@
   },
   {
     "term": "str_027",
-    "definition": "家庭照顧假",
+    "definition": "家庭照顾假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -217,7 +217,7 @@
   },
   {
     "term": "str_028",
-    "definition": "同事假，全年以7日爲限，併入事假計算",
+    "definition": "同事假，全年以7日为限，并入事假计算",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -225,7 +225,7 @@
   },
   {
     "term": "str_029",
-    "definition": "特別事假",
+    "definition": "特别事假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -233,7 +233,7 @@
   },
   {
     "term": "str_030",
-    "definition": "當一年之14日事假用畢時方可申請使用",
+    "definition": "当一年之14日事假用毕时方可申请使用",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "str_032",
-    "definition": "可分開請，結婚生效日前30日及後90日內請畢，基準日爲結婚登記日",
+    "definition": "可分开请，结婚生效日前30日及后90日内请毕，基准日为结婚登记日",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "str_033",
-    "definition": "訂婚假",
+    "definition": "订婚假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -265,7 +265,7 @@
   },
   {
     "term": "str_034",
-    "definition": "訂婚當日及其前後兩日之五日內請畢",
+    "definition": "订婚当日及其前后两日之五日内请毕",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -273,7 +273,7 @@
   },
   {
     "term": "str_035",
-    "definition": "喪假",
+    "definition": "丧假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -281,7 +281,7 @@
   },
   {
     "term": "str_036",
-    "definition": "3天喪假",
+    "definition": "3天丧假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -289,7 +289,7 @@
   },
   {
     "term": "str_037",
-    "definition": "可分開請，但須與100日內請畢",
+    "definition": "可分开请，但须与100日内请毕",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -297,7 +297,7 @@
   },
   {
     "term": "str_038",
-    "definition": "6天喪假",
+    "definition": "6天丧假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -305,7 +305,7 @@
   },
   {
     "term": "str_039",
-    "definition": "8天喪假",
+    "definition": "8天丧假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -313,7 +313,7 @@
   },
   {
     "term": "str_040",
-    "definition": "產假",
+    "definition": "产假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -321,7 +321,7 @@
   },
   {
     "term": "str_041",
-    "definition": "有薪產檢假",
+    "definition": "有薪产检假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -329,7 +329,7 @@
   },
   {
     "term": "str_042",
-    "definition": "以懷孕日爲基準，請假以小時爲最小單位",
+    "definition": "以怀孕日为基准，请假以小时为最小单位",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "str_043",
-    "definition": "不得分開請假，應與子女出生前後一星期內辦理請假手續",
+    "definition": "不得分开请假，应与子女出生前后一星期内办理请假手续",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -345,7 +345,7 @@
   },
   {
     "term": "str_044",
-    "definition": "半薪產假",
+    "definition": "半薪产假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "str_045",
-    "definition": "到職未滿六個月以上者，以半薪計算",
+    "definition": "到职未满六个月以上者，以半薪计算",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -361,7 +361,7 @@
   },
   {
     "term": "str_046",
-    "definition": "陪產假",
+    "definition": "陪产假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -369,7 +369,7 @@
   },
   {
     "term": "str_047",
-    "definition": "分娩當日及其前後十五日，擇其中五日請假",
+    "definition": "分娩当日及其前后十五日，择其中五日请假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -377,7 +377,7 @@
   },
   {
     "term": "str_048",
-    "definition": "流產假",
+    "definition": "流产假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -385,7 +385,7 @@
   },
   {
     "term": "str_049",
-    "definition": "流產假（3-6個月）",
+    "definition": "流产假（3-6个月）",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -393,7 +393,7 @@
   },
   {
     "term": "str_050",
-    "definition": "同產假",
+    "definition": "同产假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -401,7 +401,7 @@
   },
   {
     "term": "str_051",
-    "definition": "半薪流產假（3-6個月）",
+    "definition": "半薪流产假（3-6个月）",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -409,7 +409,7 @@
   },
   {
     "term": "str_052",
-    "definition": "流產假（2-3個月）",
+    "definition": "流产假（2-3个月）",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -417,7 +417,7 @@
   },
   {
     "term": "str_053",
-    "definition": "不給薪",
+    "definition": "不给薪",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -425,7 +425,7 @@
   },
   {
     "term": "str_054",
-    "definition": "流產假（未滿2個月）",
+    "definition": "流产假（未满2个月）",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -433,7 +433,7 @@
   },
   {
     "term": "str_055",
-    "definition": "公傷假",
+    "definition": "公伤假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -441,7 +441,7 @@
   },
   {
     "term": "str_056",
-    "definition": "半薪公傷假",
+    "definition": "半薪公伤假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -449,7 +449,7 @@
   },
   {
     "term": "str_057",
-    "definition": "薪資由公司代爲申請勞保傷病給付後，另補其原有薪資差額",
+    "definition": "薪资由公司代为申请劳保伤病给付后，另补其原有薪资差额",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -465,7 +465,7 @@
   },
   {
     "term": "str_059",
-    "definition": "因政府之召集、集會、選舉等履行其國民權利義務時",
+    "definition": "因政府之召集、集会、选举等履行其国民权利义务时",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -473,7 +473,7 @@
   },
   {
     "term": "str_060",
-    "definition": "曠職",
+    "definition": "旷职",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -489,7 +489,7 @@
   },
   {
     "term": "str_062",
-    "definition": "每年給予一天",
+    "definition": "每年给予一天",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -497,7 +497,7 @@
   },
   {
     "term": "str_063",
-    "definition": "派外探親假",
+    "definition": "派外探亲假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -505,7 +505,7 @@
   },
   {
     "term": "str_064",
-    "definition": "派外探親假，僅適用派外同仁申請",
+    "definition": "派外探亲假，仅适用派外同仁申请",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -513,7 +513,7 @@
   },
   {
     "term": "str_065",
-    "definition": "派外急難假",
+    "definition": "派外急难假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -521,7 +521,7 @@
   },
   {
     "term": "str_066",
-    "definition": "派外...重病或死亡，由Level 2以上主管核定急難假的天數",
+    "definition": "派外...重病或死亡，由Level 2以上主管核定急难假的天数",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -537,7 +537,7 @@
   },
   {
     "term": "str_068",
-    "definition": "原住民依據族別不同，有不同的祭典日可請一日",
+    "definition": "原住民依据族别不同，有不同的祭典日可请一日",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -545,7 +545,7 @@
   },
   {
     "term": "str_069",
-    "definition": "請選擇",
+    "definition": "请选择",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -577,7 +577,7 @@
   },
   {
     "term": "str_073",
-    "definition": "假單送簽失敗",
+    "definition": "假单送签失败",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -609,7 +609,7 @@
   },
   {
     "term": "str_077",
-    "definition": "行事曆",
+    "definition": "行事历",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -617,7 +617,7 @@
   },
   {
     "term": "str_078",
-    "definition": "假單查詢",
+    "definition": "假单查询",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -625,7 +625,7 @@
   },
   {
     "term": "str_080",
-    "definition": "申請日期：",
+    "definition": "申请日期：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -633,7 +633,7 @@
   },
   {
     "term": "str_081",
-    "definition": "申請類別",
+    "definition": "申请类别",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -641,7 +641,7 @@
   },
   {
     "term": "str_082",
-    "definition": "申請假別",
+    "definition": "申请假别",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -649,7 +649,7 @@
   },
   {
     "term": "str_083",
-    "definition": "職務代理人",
+    "definition": "职务代理人",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -657,7 +657,7 @@
   },
   {
     "term": "str_084",
-    "definition": "請假日期與時間",
+    "definition": "请假日期与时间",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -665,7 +665,7 @@
   },
   {
     "term": "str_085",
-    "definition": "開始時間",
+    "definition": "开始时间",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -673,7 +673,7 @@
   },
   {
     "term": "str_086",
-    "definition": "結束時間",
+    "definition": "结束时间",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -681,7 +681,7 @@
   },
   {
     "term": "str_087",
-    "definition": "請假數",
+    "definition": "请假数",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -689,7 +689,7 @@
   },
   {
     "term": "str_088",
-    "definition": "小時",
+    "definition": "小时",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -697,7 +697,7 @@
   },
   {
     "term": "str_089",
-    "definition": "請假理由",
+    "definition": "请假理由",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -705,7 +705,7 @@
   },
   {
     "term": "str_090",
-    "definition": "請填寫理由",
+    "definition": "请填写理由",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -713,7 +713,7 @@
   },
   {
     "term": "str_091",
-    "definition": "預覽送簽",
+    "definition": "预览送签",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -721,7 +721,7 @@
   },
   {
     "term": "str_092",
-    "definition": "快速請假",
+    "definition": "快速请假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -729,7 +729,7 @@
   },
   {
     "term": "str_093",
-    "definition": "個人剩餘假別資訊",
+    "definition": "个人剩余假别资讯",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -737,7 +737,7 @@
   },
   {
     "term": "str_094",
-    "definition": "去年彈休",
+    "definition": "去年弹休",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -745,7 +745,7 @@
   },
   {
     "term": "str_095",
-    "definition": "*如果沒有列出您需要的基準日，請確認該請假單是否[生效]",
+    "definition": "*如果没有列出您需要的基准日，请确认该请假单是否[生效]",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -761,7 +761,7 @@
   },
   {
     "term": "str_097",
-    "definition": "注意事項",
+    "definition": "注意事项",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -769,7 +769,7 @@
   },
   {
     "term": "str_098",
-    "definition": "1. 加班同仁可申請「加班補休假」，相關規定請參考員工加班管理辦法及員工給假管理辦法",
+    "definition": "1. 加班同仁可申请「加班补休假」，相关规定请参考员工加班管理办法及员工给假管理办法",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -777,7 +777,7 @@
   },
   {
     "term": "str_099",
-    "definition": "2. 本期特休可在失效日前申請2017年任一天工作日做為休假安排",
+    "definition": "2. 本期特休可在失效日前申请2017年任一天工作日做为休假安排",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -785,7 +785,7 @@
   },
   {
     "term": "str_100",
-    "definition": "3. 去年特休、去年彈休可使用至2017/12/31，未使用完的時數將折算代金，併於2018年1月份薪資發放",
+    "definition": "3. 去年特休、去年弹休可使用至2017/12/31，未使用完的时数将折算代金，并于2018年1月份薪资发放",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -793,7 +793,7 @@
   },
   {
     "term": "str_101",
-    "definition": "4. QPlay-Leave APP 目前最小請假單位為半天，將陸續建全其功能與網頁版一樣，敬請期待!",
+    "definition": "4. QPlay-Leave APP 目前最小请假单位为半天，将陆续建全其功能与网页版一样，敬请期待!",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -801,7 +801,7 @@
   },
   {
     "term": "str_102",
-    "definition": "假別",
+    "definition": "假别",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -817,7 +817,7 @@
   },
   {
     "term": "str_104",
-    "definition": "請假日期",
+    "definition": "请假日期",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -825,7 +825,7 @@
   },
   {
     "term": "str_105",
-    "definition": "請假時段",
+    "definition": "请假时段",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -841,7 +841,7 @@
   },
   {
     "term": "str_107",
-    "definition": "我要請假",
+    "definition": "我要请假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -849,7 +849,7 @@
   },
   {
     "term": "str_108",
-    "definition": "假單已送簽",
+    "definition": "假单已送签",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -857,7 +857,7 @@
   },
   {
     "term": "str_109",
-    "definition": "天數不夠",
+    "definition": "天数不够",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -865,7 +865,7 @@
   },
   {
     "term": "str_110",
-    "definition": "後補",
+    "definition": "后补",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -881,7 +881,7 @@
   },
   {
     "term": "str_112",
-    "definition": "請選擇其他代理人",
+    "definition": "请选择其他代理人",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -889,7 +889,7 @@
   },
   {
     "term": "str_113",
-    "definition": "請假失敗",
+    "definition": "请假失败",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -897,7 +897,7 @@
   },
   {
     "term": "str_114",
-    "definition": "上傳",
+    "definition": "上传",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -905,7 +905,7 @@
   },
   {
     "term": "str_115",
-    "definition": "假別天數不夠",
+    "definition": "假别天数不够",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -913,7 +913,7 @@
   },
   {
     "term": "str_116",
-    "definition": "請假迄止時間應大於請假開始時間",
+    "definition": "请假迄止时间应大于请假开始时间",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -961,7 +961,7 @@
   },
   {
     "term": "str_122",
-    "definition": "所有類別",
+    "definition": "所有类别",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -969,7 +969,7 @@
   },
   {
     "term": "str_123",
-    "definition": "選擇日期",
+    "definition": "选择日期",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -977,7 +977,7 @@
   },
   {
     "term": "str_124",
-    "definition": "剩餘",
+    "definition": "剩余",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -985,7 +985,7 @@
   },
   {
     "term": "str_125",
-    "definition": "可申請",
+    "definition": "可申请",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -993,7 +993,7 @@
   },
   {
     "term": "str_126",
-    "definition": "請選擇其他假別",
+    "definition": "请选择其他假别",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1001,7 +1001,7 @@
   },
   {
     "term": "str_127",
-    "definition": "選擇時間",
+    "definition": "选择时间",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1009,7 +1009,7 @@
   },
   {
     "term": "str_128",
-    "definition": "立即預約",
+    "definition": "立即预约",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1033,7 +1033,7 @@
   },
   {
     "term": "str_131",
-    "definition": "請假單號：",
+    "definition": "请假单号：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1049,7 +1049,7 @@
   },
   {
     "term": "str_133",
-    "definition": "已簽核",
+    "definition": "已签核",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1057,7 +1057,7 @@
   },
   {
     "term": "str_134",
-    "definition": "未簽核",
+    "definition": "未签核",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1065,7 +1065,7 @@
   },
   {
     "term": "str_135",
-    "definition": "已拒絕",
+    "definition": "已拒绝",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1089,7 +1089,7 @@
   },
   {
     "term": "str_138",
-    "definition": "請假區間：",
+    "definition": "请假区间：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1097,7 +1097,7 @@
   },
   {
     "term": "str_139",
-    "definition": "請先選擇類別與假別",
+    "definition": "请先选择类别与假别",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1105,7 +1105,7 @@
   },
   {
     "term": "str_140",
-    "definition": "請先選擇基準日",
+    "definition": "请先选择基准日",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1113,7 +1113,7 @@
   },
   {
     "term": "str_141",
-    "definition": "選擇其他基準日",
+    "definition": "选择其他基准日",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1121,7 +1121,7 @@
   },
   {
     "term": "str_142",
-    "definition": "撤回假單",
+    "definition": "撤回假单",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1137,7 +1137,7 @@
   },
   {
     "term": "str_144",
-    "definition": "假單狀況",
+    "definition": "假单状况",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1145,7 +1145,7 @@
   },
   {
     "term": "str_145",
-    "definition": "*僅顯示近10筆假單記錄",
+    "definition": "*仅显示近10笔假单记录",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1153,7 +1153,7 @@
   },
   {
     "term": "str_146",
-    "definition": "確定撤回？",
+    "definition": "确定撤回？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1161,7 +1161,7 @@
   },
   {
     "term": "str_147",
-    "definition": "表單簽核中",
+    "definition": "表单签核中",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1169,7 +1169,7 @@
   },
   {
     "term": "str_148",
-    "definition": "表單已撤回",
+    "definition": "表单已撤回",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1177,7 +1177,7 @@
   },
   {
     "term": "str_149",
-    "definition": "表單已生效",
+    "definition": "表单已生效",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1185,7 +1185,7 @@
   },
   {
     "term": "str_150",
-    "definition": "表單已拒絕",
+    "definition": "表单已拒绝",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1193,7 +1193,7 @@
   },
   {
     "term": "str_151",
-    "definition": "刪除假單",
+    "definition": "删除假单",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1201,7 +1201,7 @@
   },
   {
     "term": "str_152",
-    "definition": "假別：",
+    "definition": "假别：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1209,7 +1209,7 @@
   },
   {
     "term": "str_153",
-    "definition": "請假數：",
+    "definition": "请假数：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1217,7 +1217,7 @@
   },
   {
     "term": "str_154",
-    "definition": "編輯",
+    "definition": "编辑",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1225,7 +1225,7 @@
   },
   {
     "term": "str_155",
-    "definition": "確定刪除？",
+    "definition": "确定删除？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1233,7 +1233,7 @@
   },
   {
     "term": "str_156",
-    "definition": "銷假",
+    "definition": "销假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1241,7 +1241,7 @@
   },
   {
     "term": "str_157",
-    "definition": "銷假申請",
+    "definition": "销假申请",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1249,7 +1249,7 @@
   },
   {
     "term": "str_158",
-    "definition": "銷假理由",
+    "definition": "销假理由",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1257,7 +1257,7 @@
   },
   {
     "term": "str_159",
-    "definition": "確定送簽",
+    "definition": "确定送签",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1265,7 +1265,7 @@
   },
   {
     "term": "str_160",
-    "definition": "取消申請",
+    "definition": "取消申请",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1273,7 +1273,7 @@
   },
   {
     "term": "str_161",
-    "definition": "銷假單已撤回",
+    "definition": "销假单已撤回",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1281,7 +1281,7 @@
   },
   {
     "term": "str_162",
-    "definition": "假單已撤回",
+    "definition": "假单已撤回",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1289,7 +1289,7 @@
   },
   {
     "term": "str_163",
-    "definition": "假單已刪除",
+    "definition": "假单已删除",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1297,7 +1297,7 @@
   },
   {
     "term": "str_164",
-    "definition": "假單已送簽",
+    "definition": "假单已送签",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1305,7 +1305,7 @@
   },
   {
     "term": "str_165",
-    "definition": "請假單號",
+    "definition": "请假单号",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1313,7 +1313,7 @@
   },
   {
     "term": "str_166",
-    "definition": "銷假單號：",
+    "definition": "销假单号：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1321,7 +1321,7 @@
   },
   {
     "term": "str_167",
-    "definition": "撤回銷假單",
+    "definition": "撤回销假单",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1329,7 +1329,7 @@
   },
   {
     "term": "str_168",
-    "definition": "刪除銷假單",
+    "definition": "删除销假单",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1337,7 +1337,7 @@
   },
   {
     "term": "str_169",
-    "definition": "銷假單已刪除",
+    "definition": "销假单已删除",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1353,7 +1353,7 @@
   },
   {
     "term": "str_171",
-    "definition": "請先選擇開始時間",
+    "definition": "请先选择开始时间",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1361,7 +1361,7 @@
   },
   {
     "term": "str_172",
-    "definition": "銷假單已送簽",
+    "definition": "销假单已送签",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1369,7 +1369,7 @@
   },
   {
     "term": "str_173",
-    "definition": "確定銷假？",
+    "definition": "确定销假？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1377,7 +1377,7 @@
   },
   {
     "term": "str_174",
-    "definition": "確定送簽？",
+    "definition": "确定送签？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1385,7 +1385,7 @@
   },
   {
     "term": "str_175",
-    "definition": "銷假中",
+    "definition": "销假中",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1393,7 +1393,7 @@
   },
   {
     "term": "str_176",
-    "definition": "已銷假",
+    "definition": "已销假",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1401,7 +1401,7 @@
   },
   {
     "term": "str_177",
-    "definition": "*暫無請假單記錄",
+    "definition": "*暂无请假单记录",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1409,7 +1409,7 @@
   },
   {
     "term": "str_178",
-    "definition": "*僅顯示近10筆銷假單記錄",
+    "definition": "*仅显示近10笔销假单记录",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1417,7 +1417,7 @@
   },
   {
     "term": "str_179",
-    "definition": "*暫無銷假單記錄",
+    "definition": "*暂无销假单记录",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1425,7 +1425,7 @@
   },
   {
     "term": "str_180",
-    "definition": "確認送簽",
+    "definition": "确认送签",
     "context": "",
     "term_plural": "",
     "reference": "",
