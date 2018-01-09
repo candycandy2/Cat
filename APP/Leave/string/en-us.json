@@ -1033,7 +1033,7 @@
   },
   {
     "term": "str_131",
-    "definition": "請假單號:",
+    "definition": "Leave Number:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1041,7 +1041,7 @@
   },
   {
     "term": "str_132",
-    "definition": "撤回理由e",
+    "definition": "Cancel Reason",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1049,7 +1049,7 @@
   },
   {
     "term": "str_133",
-    "definition": "已簽核e",
+    "definition": "Approved",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1201,7 +1201,7 @@
   },
   {
     "term": "str_152",
-    "definition": "假別:",
+    "definition": "Leave Type:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1209,7 +1209,7 @@
   },
   {
     "term": "str_153",
-    "definition": "請假數:",
+    "definition": "Total Leave:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1217,7 +1217,7 @@
   },
   {
     "term": "str_154",
-    "definition": "編輯e",
+    "definition": "Edit",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1225,7 +1225,7 @@
   },
   {
     "term": "str_155",
-    "definition": "確定刪除？e",
+    "definition": "Delete？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1233,7 +1233,7 @@
   },
   {
     "term": "str_156",
-    "definition": "銷假e",
+    "definition": "Leave Cancellation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1241,7 +1241,7 @@
   },
   {
     "term": "str_157",
-    "definition": "銷假申請e",
+    "definition": "Leave Cancellation Application",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1249,7 +1249,7 @@
   },
   {
     "term": "str_158",
-    "definition": "銷假理由e",
+    "definition": "Cancel Reason",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1257,7 +1257,7 @@
   },
   {
     "term": "str_159",
-    "definition": "確定送簽e",
+    "definition": "Summit",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1265,7 +1265,7 @@
   },
   {
     "term": "str_160",
-    "definition": "取消申請e",
+    "definition": "Withdraw",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1369,7 +1369,7 @@
   },
   {
     "term": "str_173",
-    "definition": "確定銷假？e",
+    "definition": "Send Leave Calcellation？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1377,7 +1377,7 @@
   },
   {
     "term": "str_174",
-    "definition": "確定送簽？e",
+    "definition": "Submit？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1385,7 +1385,7 @@
   },
   {
     "term": "str_175",
-    "definition": "銷假中e",
+    "definition": "Leave Cancelling",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1393,7 +1393,7 @@
   },
   {
     "term": "str_176",
-    "definition": "已銷假e",
+    "definition": "Cancelled",
     "context": "",
     "term_plural": "",
     "reference": "",
