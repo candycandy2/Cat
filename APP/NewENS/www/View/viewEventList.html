@@ -1,0 +1,414 @@
+
+<div data-role="page" id="viewEventList">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <a href="#" data-role="none" id="projectType">
+            <div class="q-btn-header" style="width: 5.957vw;">
+                <img src="img/nav_humb.png" width="100%" height="100%">
+            </div>
+        </a>
+        <div class="header-style">
+            <div class="ui-title">
+                ENS
+            </div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main" id="contentEventList">
+
+        <div id="projectSelect">
+            <div class="header">ENS</div>
+            <hr class="ui-hr">
+            <div class="item" id="ITS">ITS</div>
+            <hr class="ui-hr">
+            <div class="item" id="RM">RM</div>
+        </div>
+
+        <!--template @Event List Msg-->
+        <template id="tplEventListMsg2">
+            <div class="event-list-msg">
+                <div class="event-list-msg-top">
+                    <div>
+                        <span class="link">
+                            <div class="icon normal">
+                                <span class="img hide"></span>
+                                <span class="text" style="margin-left:0;">16003</span>
+                            </div>
+                            <div class="icon urgent">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                            <div class="icon rm-a-class">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                            <div class="icon rm-b-class">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                            <div class="icon rm-c-class">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                            <div class="icon rm-prevent-event">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                            <div class="icon rm-info-share">
+                                <span class="img"></span>
+                                <span class="text">16003</span>
+                            </div>
+                            <div class="link-event"></div>
+                        </span>
+                        <span class="event-status">
+                            <div class="done hide">
+                                <span class="img"></span>
+                                <span class="text"><!--已完成--></span>
+                            </div>
+                            <div class="unfinished">
+                                <span class="img"></span>
+                                <span class="text">
+                                    <!-- 未完成 -->
+                                    <span class="langStr" data-id="str_032"></span>
+                                </span>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="description">
+                        <!-- [機房緊提通報_停電] 因為台電的關係, 請 QTY 機房進行關機作業 -->
+                        <span class="langStr" data-id="str_033"></span>
+                    </div>
+                    <div class="name-time">
+                        <span class="name">Michael Yang</span>
+                        <span class="time">2017-01-01 12:30</span>
+                    </div>
+                    <div class="message">
+                        <span class="count"></span><!-- 留言 --><span class="langStr" data-id="str_025"></span>
+                    </div>
+                </div>
+                <hr class="event-list-msg-hr">
+                <div class="event-list-msg-bottom">
+                    <span class="member">
+                        <span class="img"></span>
+                        <span class="text">1</span>
+                    </span>
+                    <!--<span class="view">
+                        <span class="img"></span>
+                        <span class="text">2</span>
+                    </span>-->
+                    <span class="member-done">
+                        <span class="img"></span>
+                        <span class="text">3</span>
+                    </span>
+                    <!--<span class="message">
+                        <span class="img"></span>
+                        <span class="text">0</span>
+                    </span>-->
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Member List-->
+        <template id="tplEventMemberList">
+            <!--header: Title or Button-->
+            <div class="header event-member-list">
+                <div class="number">
+                    <div class="icon normal">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon urgent">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-a-class">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-b-class">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-c-class">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-prevent-event">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-info-share">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <!-- [機房緊提通報_停電] -->
+                    <span class="langStr" data-id="str_034"></span>
+                </div>
+                <div class="description">
+                    <!-- 因為台電的關係, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業 -->
+                    <span class="langStr" data-id="str_035"></span>
+                </div>
+            </div>
+            <!--main: Ul listview-->
+            <ul data-role="listview" class="main event-member-list">
+                <template id="tplEventMemberListBefore">
+                    <li>
+                        <div class="view-before">
+                            <span class="img"></span>
+                            <span class="text">Kevin.CM.Huang</span>
+                        </div>
+                    </li>
+                </template>
+                <template id="tplEventMemberListAfter">
+                    <li>
+                        <div class="view-after">
+                            <span class="img"></span>
+                            <span class="text">Steven.Yan</span>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">OK</div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Funciton List-->
+        <template id="tplEventFunctionList">
+            <!--header: Title or Button-->
+            <div class="header event-member-list">
+                <div class="number">
+                    <div class="icon normal">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon urgent">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-a-class">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-b-class">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-c-class">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-prevent-event">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                    <div class="icon rm-info-share">
+                        <div class="img-text">
+                            <span class="img"></span>
+                            <span class="text">16003</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <!-- [機房緊提通報_停電] -->
+                    <span class="langStr" data-id="str_034"></span>
+                </div>
+                <div class="description">
+                     <!-- 因為台電的關係, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業, 請 QTY 機房進行關機作業 -->
+                     <span class="langStr" data-id="str_035"></span>
+                </div>
+            </div>
+            <!--main: Ul listview-->
+            <ul data-role="listview" class="main event-member-list">
+                <template id="tplEventFunctionListBefore">
+                    <li class="work-before">
+                        <div class="left">
+                            <span class="img"></span>
+                        </div>
+                        <div class="right">
+                            <div class="title font-style3">
+                                <!-- BQT 3F機房 -->
+                                <span class="langStr" data-id="str_024"></span>
+                            </div>
+                            <div class="function font-style3">
+                                Function A
+                            </div>
+                            <div class="user-datetime">
+                                <sapn class="user font-style12"></sapn>
+                                <sapn class="datetime font-style12"></sapn>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+                <template id="tplEventFunctionListAfter">
+                    <li class="work-after">
+                        <div class="left">
+                            <span class="img"></span>
+                        </div>
+                        <div class="right">
+                            <div class="title font-style3">
+                                <!-- BQT 3F機房 -->
+                                <span class="langStr" data-id="str_024"></span>
+                            </div>
+                            <div class="function font-style3">
+                                Function A
+                            </div>
+                            <div class="user-datetime">
+                                <sapn class="user font-style12">Kevin.CM.Huang</sapn>
+                                <sapn class="datetime font-style12">2017/01/01 12:00</sapn>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">OK</div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @Tab memberDiv content > Event Member Data List-->
+        <template id="tplEventMemberDataList">
+            <div class="event-member-data-list">
+                <div class="title font-style2">
+                    QTT 3F
+                </div>
+                <ul data-role="listview" class="main font-style5">
+                    <li>
+                        Emily Lin
+                    </li>
+                    <li>
+                        Wendy Shih
+                    </li>
+                </ul>
+            </div>
+        </template>
+
+        <!--template @popup content > Event No Data -->
+        <template id="tplEventListNoDataPopup">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                <!-- 查無事件資料 -->
+                <span class="langStr" data-id="str_036"></span>
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確定 -->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @Event No Data Msg-->
+        <template id="tplEventListNoData">
+            <div class="event-list-no-data font-style3 hide">
+                <!-- 沒有資料 -->
+                <span class="langStr" data-id="str_037"></span>
+            </div>
+        </template>
+
+        <!--template @popup content > Event No Data -->
+        <template id="tplEventRelatedNoAuthorityPopup">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                <!-- 無權檢視事件內容 -->
+                <span class="langStr" data-id="str_038"></span>
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確定 -->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Contact User -->
+        <template id="tplContactUserPopup">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                <div id="userName"><!--David Liu--></div>
+                <div id="extNo"><!--1234-1234--></div>
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div>
+                        <a id="mail">
+                            <!-- 傳送信件 -->
+                            <span class="langStr" data-id="str_039"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <a id="tel">
+                            <!-- 撥打電話 -->
+                            <span class="langStr" data-id="str_040"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > No Authority to use -->
+        <template id="tplNoUseAuthorityPopup">
+            <!--header: Title or Button-->
+            <div class="header font-style1">
+                <!-- 無專案權限 -->
+                <span class="langStr" data-id="str_041"></span>
+                <br>
+                <!-- 請聯絡專案管理員 -->
+                <span class="langStr" data-id="str_042"></span>
+            </div>
+            <!--footer: Button-->
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確定 -->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+    </div>
+    <div data-role="footer" class="event-list-footer" data-position="fixed">
+        <div id="addEvent" class="event-list-add-button hide"></div>
+    </div>
+</div>

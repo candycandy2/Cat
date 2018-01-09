@@ -1,0 +1,280 @@
+
+<div data-role="page" id="viewEventAdd">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <a id="eventAddBack" href="#" data-role="none">
+            <div class="q-btn-header">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
+        <div class="header-style">
+            <h1 class="ui-title">
+                <!-- 新增通報 -->
+                <span class="langStr" data-id="str_001"></span>
+            </h1>
+        </div>
+        <a id="sendEvent" href="#" data-role="none" class="ui-btn-right">
+            <!-- 發送 -->
+            <span class="langStr" data-id="str_002"></span>
+        </a>
+    </div>
+    <div data-role="main" class="page-main event-add" id="contentEventAdd">
+        <div class="title">
+            <!--等級 -->
+            <span class="langStr" data-id="str_003"></span>
+        </div>
+        <div id="eventLevelContent">
+
+        </div>
+
+            <hr class="ui-hr">
+
+        <div class="title">
+            <!-- 標題 (限40個字) -->
+            <span class="langStr" data-id="str_004"></span>
+        </div>
+        <div id="eventTemplateSelectContent">
+
+        </div>
+        <textarea id="eventTemplateTextarea" data-autogrow="false" maxlength="40" class="textarea-template"></textarea>
+
+            <hr class="ui-hr">
+
+        <div class="title">
+            <!-- 描述 (限80個字) -->
+            <span class="langStr" data-id="str_005"></span>
+        </div>
+        <textarea id="eventDescriptionTextarea" data-autogrow="false" maxlength="180" class="textarea-description"></textarea>
+
+            <hr class="ui-hr">
+
+        <div class="title">
+            <span class="function-title title-ITS">
+                <!-- 位置 / IT Function -->
+                <span class="langStr" data-id="str_006"></span>
+            </span>
+            <span class="function-title title-RM">
+                <!-- 通知對象 / 單位 -->
+                <span class="langStr" data-id="str_007"></span>
+            </span>
+        </div>
+        <div id="eventLocationSelectContent">
+
+        </div>
+        <div id="eventLocationListContent">
+            <template id="tplEventLocationList">
+                <div class="event-add-location-list">
+                    <div class="left delete-event-location">
+                        <span class="delete"></span>
+                    </div>
+                    <div class="right">
+                        <div class="event-loction">
+                            <!--BQT 3F機房-->
+                        </div>
+                        <div class="event-function" id="eventFunctionSelectContent">
+
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+            <hr class="ui-hr">
+
+        <div class="title">
+            <!-- 希望完成時間 -->
+            <span class="langStr" data-id="str_008"></span>
+        </div>
+        <div id="setDateTimeContent">
+                <input type="radio" data-role="none" name="setDateTime" id="setNow" value='setNow' checked="checked">
+                <label data-role="none" class="overlap-label-icon"></label>
+                <label data-role="none" class="overlap-label-text" for="setNow">
+                    <!-- 立即 -->
+                    <span class="langStr" data-id="str_009"></span>
+                </label>
+
+                <input type="radio" data-role="none" name="setDateTime" id="setTime" value='setTime'>
+                <label data-role="none" class="overlap-label-icon"></label>
+                <label data-role="none" class="overlap-label-text" for="setTime">
+                    <!-- 設定時間 -->
+                    <span class="langStr" data-id="str_010"></span>
+                    <span id="textDateTime"></span>
+                </label>
+        </div>
+
+        <div style="display: none;">
+            <input class="form-control" id="doneDate" type="text" data-role="datebox"
+            data-options='{"mode":"flipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox",
+            "closeCallback": "openDoneTime"}' readonly="readonly">
+
+            <input class="form-control" id="doneTime" type="text" data-role="datebox"
+            data-options='{"mode":"timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox",
+            "closeCallback": "setDoneDateTime"}' readonly="readonly">
+        </div>
+
+            <hr class="ui-hr">
+
+        <div class="title" id="eventaAdditionalTitle">
+            <!-- 關聯事件 -->
+            <span class="langStr" data-id="str_011"></span>
+        </div>
+        <div id="eventaAdditionalSelectContent">
+
+        </div>
+        <div id="eventaAdditionalContent">
+            <template id="tplEventAdditionalList">
+                <div class="event-add-additional-list">
+                    <div class="left delete-event-additional">
+                        <span class="delete"></span>
+                    </div>
+                    <div class="right event-additional-number">
+
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!--template @popup content > Template / Descirption were empty-->
+        <template id="tplTemplateDescEmpty">
+            <div class="header font-style1">
+                <!-- 請輸入標題 -->
+                <span class="langStr" data-id="str_012"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > No Related Event Exist-->
+        <template id="tplNoRelatedEventExist">
+            <div class="header font-style1">
+                <!-- 無可選事件 -->
+                <span class="langStr" data-id="str_014"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Location / Function does not select-->
+        <template id="tplSelectLocationFunction">
+            <div class="header font-style1">
+                <span class="function-title title-ITS">
+                    <!-- 請選擇位置 / IT Function -->
+                    <span class="langStr" data-id="str_015"></span>
+                </span>
+                <span class="function-title title-RM">
+                    <!-- 請選擇通知對象 / 單位 -->
+                    <span class="langStr" data-id="str_016"></span>
+                </span>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Done DateTime less then Now-->
+        <template id="tplDoneDateTimeAlert">
+            <div class="header font-style1">
+                <!-- 希望完成時間需要大於現在時間 -->
+                <span class="langStr" data-id="str_017"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Add Confirm-->
+        <template id="tplEventAddConfirm">
+            <div class="header font-style1">
+                <!-- 確定發送緊急通報? -->
+                <span class="langStr" data-id="str_018"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">
+                        <!-- 取消 -->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Edit Cancel Confirm-->
+        <template id="tplEventAddEditCancelConfirm">
+            <div class="header font-style1 header-text">
+                <!-- 確定取消編輯? -->
+                <span class="langStr" data-id="str_019"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">
+                        <!-- 取消 -->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Add Fail-->
+        <template id="tplEventAddFail">
+            <div class="header font-style1">
+                <!-- 通訊異常，請聯絡 ITS -->
+                <span class="langStr" data-id="str_020"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event Member Error-->
+        <template id="tplEventMemberError">
+            <div class="header font-style1">
+                <!-- IT Function管理員資料不正確，請至後台修正 -->
+                <span class="langStr" data-id="str_021"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+    </div>
+</div>
