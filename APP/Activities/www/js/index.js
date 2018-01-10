@@ -3,9 +3,9 @@
 var lastPageID = "viewActivitiesSignup";
 var pageList = ["viewPanel","viewActivitiesSignup","viewActivitiesRecord","viewMyFamilyDatum","viewActivitiesDetail","viewSignupManage"];
 var pageVisitedList = ["viewActivitiesSignup"];
-var initialAppName = " Activities";
-var appKeyOriginal = " appactivities";
-var appKey = " appactivities";
+var initialAppName = "Activities";
+var appKeyOriginal = "appactivities";
+var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
 
@@ -30,7 +30,7 @@ var htmlContent = "";
 // }
 
 window.initialSuccess = function() {
-    
+
     //changepage
     $.mobile.changePage("#viewActivitiesSignup");
 
