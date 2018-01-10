@@ -90,7 +90,7 @@ gulp.task('appCSS', function(){
 });
 
 gulp.task('componentCSS', ['appCSS'], function() {
-    return gulp.src('../component/css/jquery.mobile-1.4.5.min.css')
+    return gulp.src(['../component/css/jquery.mobile-1.4.5.min.css','../component/css/jquery.datetimepicker.css'])
         .pipe(gulp.dest('www/css/'));
 });
 
