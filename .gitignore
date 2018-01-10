@@ -87,6 +87,7 @@ WEB/InstallQPlay/sftp-config.json
 /qplay/public/*.log
 
 APP/*/www/img/component/*
+APP/*/www/css/jquery.datetimepicker.css
 /qplay/.env
 /qplay/public/.htaccess
 vendor
