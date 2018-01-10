@@ -27,6 +27,10 @@ $("#viewActivitiesDetail").pagecontainer({
 
         });
 
+        $("#viewActivitiesDetail").on("pageshow", function(event, ui) {
+
+        });
+
         /********************************** dom event *************************************/
         $("#viewActivitiesDetail").keypress(function(event) {
 
@@ -39,8 +43,22 @@ $("#viewActivitiesDetail").pagecontainer({
         });
 
         //點擊 "開始報名" 跳轉到編輯頁
-        $("#beginSignupBtn").on("click", function() {
+        $(".team-to-signup").on("click", function() {
             changePageByPanel("viewSignupManage", true);
+            $("#viewTeamManage").hide();
+            $("#viewTeamSignup").show();
         });
+
+        //點擊 "報名管理" 跳轉到編輯頁
+        $(".team-to-manage").on("click", function() {
+            changePageByPanel("viewSignupManage", true);
+            $("#viewTeamSignup").hide();
+            $("#viewTeamManage").show();
+        });
+
+
+
+
+
     }
 });

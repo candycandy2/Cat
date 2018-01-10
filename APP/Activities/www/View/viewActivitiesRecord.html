@@ -5,19 +5,54 @@
             <img src="img/menu.png" class="menu">
         </a>
         <div class="header-style">
-            <div class="ui-title">
-                報名記錄
-                <!-- <span class="langStr" data-id="str_003"></span> -->
-            </div>
+            <div class="ui-title">報名記錄</div>
         </div>
     </div>
-    <div data-role="main" class="page-main" style="line-height: initial !important;">
-        <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="a">
-            <li><a href="#viewMain">前一頁</a></li>
-            <li><a href="#">Andy => 下班去吃燒烤</a></li>
-            <li><a href="#">Ken => 我想去夜市</a></li>
-            <li><a href="#">Peter => 今天晚上不行</a></li>
-            <li><a href="#">May => 我想跟</a></li>
-        </ul>
+    <div data-role="main" class="page-main">
+        <!--1.活動報名列表-->
+        <div id="viewFamilyList">
+            <div class="family-list">
+                <div class="font-style10 font-color2">
+                    <div>Wend.Chen/同仁/1組</div>
+                    <div>[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                </div>
+                <div>
+                    <img src="img/delete.png" class="delete-png">
+                </div>
+            </div>
+            <div class="record-line"></div>
+            <div class="family-list">
+                <div class="font-style10 font-color2">
+                    <div>Wend.Chen/同仁/1組</div>
+                    <div>[創意人文]羅馬競技場-9/14（一）台北3F體育館台北3F體育館</div>
+                </div>
+                <div>
+                    <img src="img/delete.png" class="delete-png">
+                </div>
+            </div>
+            <div class="record-line"></div>
+            <div class="family-list">
+                <div class="font-style10 font-color2">
+                    <div>Wend.Chen/同仁/1組</div>
+                    <div>[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                </div>
+                <div>
+
+                </div>
+            </div>
+            <div class="record-line"></div>
+            <div class="family-list">
+                <div class="font-style10 font-color2">
+                    <div>Wend.Chen/同仁/1組</div>
+                    <div>[創意人文]羅馬競技場-9/14（一）台北3F體育館台北3F體育館</div>
+                </div>
+                <div>
+                    <img src="img/delete.png" class="delete-png">
+                </div>
+            </div>
+        </div>
+
+        <!--2.暫無報名記錄-->
+        <div id="viewRecordsNone" class="font-style12 font-color3" style="display:none;">僅顯示尚未結束的報名記錄</div>
     </div>
 </div>

@@ -27,6 +27,10 @@ $("#viewSignupManage").pagecontainer({
 
         });
 
+        $("#viewSignupManage").on("pageshow", function(event, ui) {
+
+        });
+
         /********************************** dom event *************************************/
         $("#viewSignupManage").keypress(function(event) {
 
@@ -45,5 +49,20 @@ $("#viewSignupManage").pagecontainer({
         // $("#departNo").on("blur", function() {
         //     $(".team-signup-footer").show();
         // });
+
+        $(".list-img").on("click", function() {
+            var imgSrc = $(this).attr("src").split("/")[1];
+            if(imgSrc == "list_down.png") {
+                $(this).attr("src", "img/list_up.png");
+                $(this).parent().parent().css("border-bottom", "0");
+                $(this).parent().parent().next().css("border-bottom", "1px solid #f6f6f6");
+                $(this).parent().parent().next().show();
+            } else {
+                $(this).attr("src", "img/list_down.png");
+                $(this).parent().parent().css("border-bottom", "1px solid #f6f6f6");
+                $(this).parent().parent().next().css("border-bottom", "0");
+                $(this).parent().parent().next().hide();
+            }
+        });
     }
 });
