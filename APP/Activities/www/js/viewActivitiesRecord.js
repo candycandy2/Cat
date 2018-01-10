@@ -27,9 +27,21 @@ $("#viewActivitiesRecord").pagecontainer({
 
         });
 
+        $("#viewActivitiesRecord").on("pageshow", function(event, ui) {
+
+        });
+
         /********************************** dom event *************************************/
         $("#viewActivitiesRecord").keypress(function(event) {
 
+        });
+
+        $(".delete-png").on("click", function() {
+            var selfParent = $(this).parent().parent();
+            if(selfParent.next().attr("class") == "record-line") {
+                selfParent.next().remove();
+            }
+            selfParent.remove();
         });
     }
 });
