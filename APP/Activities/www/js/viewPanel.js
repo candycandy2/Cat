@@ -14,6 +14,14 @@ var panel = htmlContent
         +       '<span class="panel-text">我的眷屬資料</span>'
         //+       '<span class="panel-text">' + langStr["str_004"] + '</span>'
         +   '</div>'
+        +   '<div class="panel-content" id="mypanelviewActivitiesDetail" style="display:none;">'
+        +       '<span class="panel-text">活動詳情</span>'
+        //+       '<span class="panel-text">' + langStr["str_004"] + '</span>'
+        +   '</div>'
+        +   '<div class="panel-content" id="mypanelviewSignupManage" style="display:none;">'
+        +       '<span class="panel-text">報名和管理</span>'
+        //+       '<span class="panel-text">' + langStr["str_004"] + '</span>'
+        +   '</div>'
         +'</div>'
         +'<div class="page-mask" style="display: none;"></div>';
 
@@ -29,15 +37,15 @@ $(document).one("pagebeforeshow", function() {
     }
 
     $("#mypanel #mypanelviewActivitiesSignup").on("click", function() {
-        changePageByPanel("viewActivitiesSignup");
+        changePageByPanel("viewActivitiesSignup", true);
     });
 
     $("#mypanel #mypanelviewActivitiesRecord").on("click", function() {
-        changePageByPanel("viewActivitiesRecord");
+        changePageByPanel("viewActivitiesRecord", true);
     });
 
     $("#mypanel #mypanelviewMyFamilyDatum").on("click", function() {
-        changePageByPanel("viewMyFamilyDatum");
+        changePageByPanel("viewMyFamilyDatum", true);
     });
 
     $(".menu-btn .menu").on("click", function() {

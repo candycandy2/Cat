@@ -24,7 +24,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesSignup").on("pagebeforeshow", function(event, ui) {
-
+            
         });
 
         /********************************** dom event *************************************/
@@ -32,20 +32,15 @@ $("#viewActivitiesSignup").pagecontainer({
 
         });
 
+        //點擊活動列表，跳轉到詳情頁
         $("#openList .activity-list").on("click", function() {
-            $("#viewActivitiesSignup .menu").hide();
-            $("#allActivities").hide();
-            $("#viewActivitiesSignup .back-list").show();
-            $("#activityDetail").show();
-            $("#viewActivitiesSignup .page-footer").show();
+            changePageByPanel("viewActivitiesDetail", true);
         });
 
-        $("#viewActivitiesSignup .back-list").on("click", function() {
-            $("#viewActivitiesSignup .back-list").hide();
-            $("#activityDetail").hide();
-            $("#viewActivitiesSignup .page-footer").hide();
-            $("#viewActivitiesSignup .menu").show();
-            $("#allActivities").show();
+        //從編輯也返回詳情頁
+        $("#viewActivitiesSignup .back-detail").on("click", function() {
+            pageVisitedList.pop();
+            changePageByPanel("viewActivitiesDetail", false);
         });
     }
 });

@@ -54,15 +54,12 @@
 /********************************************** public ***********************************************/
 
 .menu-btn {
-    margin-top: 0.31VH;
+    margin-top: 3.238vw;
 }
 
-.menu {
-    width: 4.934VW;
-}
-
-.back-list {
-    display: none;
+.menu,
+.back-list,
+.back-detail {
     width: 4.934VW;
 }
 
@@ -85,6 +82,43 @@
 .font-color4 {
     color: #e92729;
 }
+
+.font-color5 {
+    color: #2c89bc;
+}
+
+.two-btn-inline > span:nth-of-type(1) {
+    display: inline-block;
+    width: 49vw;
+    height: 10.656vw;
+    border-right: 1px solid #ffffff;
+}
+
+.two-btn-inline > span:nth-of-type(2) {
+    display: inline-block;
+    width: 49vw;
+    height: 10.656vw;
+}
+
+.btn-disabled {
+    color: #989898 !important;
+    background: #d6d6d6 !important;
+}
+
+.btn-enabled {
+    color: #ffffff !important;
+    background: #2d89bc !important;
+}
+
+.input-text-full {
+    width: 92vw;
+    height: 10vw;
+    margin-top: 2.14vw;
+    border: 1px solid #d6d6d6;
+    outline: none;
+    text-indent: 3.71vw;
+}
+
 
 /************************************** viewActivitiesSignup ******************************************/
 
@@ -179,7 +213,7 @@
     overflow: hidden;
 }
 
-#noActivity {
+#viewActivitiesNone {
     display: none;
     width: 100vw;
     text-align: center;
@@ -187,8 +221,16 @@
     margin: 0vw 0vw;
 }
 
-/***************** detail ****************/
-#activityDetail {
+/**************************************** viewActivitiesDetail ***************************************/
+#activitiesDetailTeamSignup {
+    width: 92.58vw;
+    min-height: 30vw;
+    margin-top: 5vw;
+    margin-left: 3.71vw;
+    /* display: none; */
+}
+
+#activitiesDetailTeamManage {
     width: 92.58vw;
     min-height: 30vw;
     margin-top: 5vw;
@@ -245,23 +287,145 @@
 
 .detail-main {
     width: 92.58vw;
-    height: 200vw;
+    height: 250vw;
     margin-top: 4vw;
-    margin-bottom: 4vw;
-    background: lightgray;
-    border-bottom: 1px solid red;
+    margin-bottom: 14.656vw;
+    background: #d6d6d6;
 }
 
-.page-footer {
-    width: 100vw;
+.detail-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
     height: 10.656vw;
     text-align: center;
     line-height: 10.656vw;
-    font-family: Arial !important;
-    background: #2d89bc !important;
-    color: #ffffff !important;
-    display: none;
+    color: #ffffff;
+    background: #2d89bc;
 }
+
+
+/******************************************* viewSignupManage **************************************/
+#viewTeamSignup {
+    width: 92.58vw;
+    min-height: 30vw;
+    margin-top: 5vw;
+    margin-left: 3.71vw;
+    /* display: none; */
+}
+
+.team-signup-title {
+    width: 92.58vw;
+    height: 18.5vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.team-signup-title ::after {
+    clear: both;
+}
+
+.team-signup-title > div {
+    float: left;
+}
+
+.team-signup-title > div:nth-of-type(1) {
+    width: 17.5vw;
+    height: 18.5vw;
+}
+
+.team-signup-title > div:nth-of-type(1) img {
+    width: 14.5vw;
+    height: 14.5vw;
+}
+
+.team-signup-title > div:nth-of-type(2) {
+    width: 75vw;
+    height: 18.5vw;
+}
+
+.team-signup-add {
+    margin-top: 4vw;
+    margin-bottom: 2.14vw;
+}
+
+.team-signup-depart {
+    margin-bottom: 2.14vw;
+}
+
+.team-signup-input {
+    width: 92.58vw;
+    height: 16vw;
+    line-height: 16vw;
+}
+
+.team-signup-add-friend {
+    width: 92.58vw;
+    height: 16vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.team-signup-add-friend ::after {
+    clear: both;
+}
+
+.team-signup-add-friend > div {
+    float: left;
+}
+
+.team-signup-add-friend > div:nth-of-type(1) {
+    width: 6.44vw;
+    height: 6.44vw;
+    margin-top: 4.1vw;
+    margin-left: 3.71vw;
+    margin-right: 3.71vw;
+}
+
+.team-signup-add-friend > div:nth-of-type(1) img {
+    width: 6.44vw;
+    height: 6.44vw;
+}
+
+.team-signup-add-friend > div:nth-of-type(2) {
+    width: 70vw;
+    height: 16vw;
+    line-height: 16vw;
+}
+
+.team-signup-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 10.656vw;
+    text-align: center;
+    line-height: 10.656vw;
+    color: #989898;
+    background: #d6d6d6;
+}
+
+#viewTeamManage {
+    width: 92.58vw;
+    min-height: 30vw;
+    margin-top: 5vw;
+    margin-left: 3.71vw;
+    /* display: none; */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
