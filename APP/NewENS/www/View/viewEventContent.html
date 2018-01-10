@@ -1,0 +1,229 @@
+
+<div data-role="page" id="viewEventContent">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <a href="#viewEventList" data-role="none">
+            <div class="q-btn-header" style="width: 4vh;">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
+        <div class="header-style">
+            <h1 class="ui-title"><span id="pageTitle"></span></h1>
+        </div>
+        <a id="eventEdit" href="#" data-role="none" class="ui-btn-right hide">
+            <!-- 編輯 -->
+            <span class="langStr" data-id="str_022"></span>
+        </a>
+    </div>
+    <div data-role="main" class="page-main event-content" id="contentEventContent">
+
+            <hr class="ui-hr">
+
+        <div class="title">
+            <!-- 希望完成時間 -->
+            <span class="langStr" data-id="str_008"></span>
+        </div>
+        <div class="event-content-data-list">
+            <div class="datetime">
+                2016/10/27 08:00
+            </div>
+        </div>
+
+            <hr class="ui-hr">
+
+        <div class="relate-event-content hide">
+            <div class="title">
+                <!-- 關聯事件 -->
+                <span class="langStr" data-id="str_011"></span>
+            </div>
+            <div class="event-content-data-list">
+                <div class="left">
+                    <span style="display: block; width: 4.42vw; height: 4.42vw;"></span>
+                </div>
+                <div class="right relate-event">
+                    16003
+                </div>
+            </div>
+        </div>
+
+            <!--<hr class="ui-hr">-->
+
+        <div class="title">
+            <!-- 工作分配 -->
+            <span class="langStr langStr023 hide" data-id="str_023"></span>
+            <span class="langStr langStr007 hide" data-id="str_007"></span>
+        </div>
+        <div id="eventTaskListContent" class="event-content-data-list">
+            <template id="tplEventTaskListBefore">
+                <div class="work-before">
+                    <div class="left">
+                        <span class="img"></span>
+                    </div>
+                    <div class="right">
+                        <div class="title font-style3">
+                            <!-- BQT 3F機房 -->
+                            <span class="langStr" data-id="str_024"></span>
+                        </div>
+                        <div class="function font-style3">
+                            Function A
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template id="tplEventTaskListAfter">
+                <div class="work-after">
+                    <div class="left">
+                        <span class="img"></span>
+                    </div>
+                    <div class="right">
+                        <div class="title font-style3">
+                            <!-- BQT 3F機房 -->
+                            <span class="langStr" data-id="str_024"></span>
+                        </div>
+                        <div class="function font-style3">
+                            Function A
+                        </div>
+                        <div class="user-datetime">
+                            <sapn class="user font-style6">Kevin.CM.Huang</sapn>
+                            <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+            <hr id="msgContentHR" class="ui-hr hide">
+
+        <div class="message-content hide">
+            <div class="title">
+                <!-- 留言 -->
+                <span class="langStr" data-id="str_025"></span>
+            </div>
+            <div id="messageContent" class="event-content-data-list">
+                <template id="tplMessageList">
+                    <div class="message-data-list">
+                        <div class="message-user-datetime">
+                            <sapn class="user font-style3">Kevin.CM.Huang</sapn>
+                            <sapn class="datetime font-style7">2017/01/01 12:00</sapn>
+                        </div>
+                        <div class="text font-style5 hide">
+                            Test Message
+                        </div>
+                        <div class="image hide">
+                            <img class="chat-img" width="50" height="50">
+                        </div>
+                        <hr class="ui-hr ui-hr-message">
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <div id="tempImage">
+
+        </div>
+
+        <div class="previewImageDiv-AddHeight hide">
+
+        </div>
+
+        <div class="previewImageDiv hide">
+            <span class="left">
+                <img id="finalImage" width="50" height="50">
+            </span>
+            <span class="right delete-button">
+                <span class="delete"></span>
+            </span>
+        </div>
+
+        <!--template @popup content > Report Event Work Done Confirm-->
+        <template id="tplEventReportWorkDoneConfirm">
+            <div class="header font-style1">
+                <!-- 確認回報工作完成? -->
+                <span class="langStr" data-id="str_026"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">
+                        <!-- 取消 -->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Cancel Event Work Done Confirm-->
+        <template id="tplEventCancelWorkDoneConfirm">
+            <div class="header font-style1">
+                <!-- 確定取消回報? -->
+                <span class="langStr" data-id="str_027"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">
+                        <!-- 取消 -->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Event has finished Confirm-->
+        <template id="tplEventFinishedConfirm">
+            <div class="header font-style1">
+                <!-- 事件已經處理完畢，無法編輯 -->
+                <span class="langStr" data-id="str_028"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style8">
+                    <div class="confirm">
+                        <!-- 確認 -->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--template @popup content > Open Camera / Photo Library-->
+        <template id="tplOpenCameraPhotoLibrary">
+            <div class="header font-style1">
+                <!-- 請選擇上傳圖片的方式 -->
+                <span class="langStr" data-id="str_029"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style8">
+                    <div class="cancel">
+                      <!-- 相簿 -->
+                      <span class="langStr" data-id="str_030"></span>
+                    </div>
+                    <div class="confirm">
+                      <!-- 相機 -->
+                      <span class="langStr" data-id="str_031"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+    </div>
+    <div data-role="footer" class="event-content-footer" data-position="fixed">
+        <div class="message-preview font-style7 hide">
+        </div>
+        <div class="left" id="cameraButton">
+            <span class="camera"></span>
+        </div>
+        <div class="center">
+            <input name="msgText" id="msgText" type="text">
+        </div>
+        <div class="right" id="msgButton">
+            <!-- 留言 -->
+            <span class="langStr" data-id="str_025"></span>
+        </div>
+    </div>
+</div>

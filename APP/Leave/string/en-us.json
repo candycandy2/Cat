@@ -97,7 +97,7 @@
   },
   {
     "term": "str_013",
-    "definition": "The due date is 2017/12/31",
+    "definition": "The due date is 2018/12/31",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -769,7 +769,7 @@
   },
   {
     "term": "str_098",
-    "definition": "1. 加班同仁可申請「加班補休假」，相關規定請參考員工加班管理辦法及員工給假管理辦法",
+    "definition": "1.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -777,7 +777,7 @@
   },
   {
     "term": "str_099",
-    "definition": "2. 本期特休可在失效日前申請2017年任一天工作日做為休假安排",
+    "definition": "2.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -785,7 +785,7 @@
   },
   {
     "term": "str_100",
-    "definition": "3. 去年特休、去年彈休可使用至2017/12/31，未使用完的時數將折算代金，併於2018年1月份薪資發放",
+    "definition": "3.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -793,7 +793,7 @@
   },
   {
     "term": "str_101",
-    "definition": "4. QPlay-Leave APP 目前最小請假單位為半天，將陸續建全其功能與網頁版一樣，敬請期待!",
+    "definition": "4.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1033,7 +1033,7 @@
   },
   {
     "term": "str_131",
-    "definition": "請假單號:",
+    "definition": "Leave Number:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1041,7 +1041,7 @@
   },
   {
     "term": "str_132",
-    "definition": "撤回理由e",
+    "definition": "Cancel Reason",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1049,7 +1049,7 @@
   },
   {
     "term": "str_133",
-    "definition": "已簽核e",
+    "definition": "Approved",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1057,7 +1057,7 @@
   },
   {
     "term": "str_134",
-    "definition": "未簽核e",
+    "definition": "Unapproved",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1065,7 +1065,7 @@
   },
   {
     "term": "str_135",
-    "definition": "已拒絕e",
+    "definition": "Rejected",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1073,7 +1073,7 @@
   },
   {
     "term": "str_136",
-    "definition": "已撤回e",
+    "definition": "Ｗithdrawed",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1081,7 +1081,7 @@
   },
   {
     "term": "str_137",
-    "definition": "已生效e",
+    "definition": "Executed",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1089,7 +1089,7 @@
   },
   {
     "term": "str_138",
-    "definition": "請假區間:",
+    "definition": "Duration:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1097,7 +1097,7 @@
   },
   {
     "term": "str_139",
-    "definition": "請先選擇類別與假別e",
+    "definition": "Select Leave Type Category and Leave Type first",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1105,7 +1105,7 @@
   },
   {
     "term": "str_140",
-    "definition": "請先選擇基準日e",
+    "definition": "Select base date (From) first",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1113,7 +1113,7 @@
   },
   {
     "term": "str_141",
-    "definition": "選擇其他基準日e",
+    "definition": "Select other base date (From)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1121,7 +1121,7 @@
   },
   {
     "term": "str_142",
-    "definition": "撤回假單e",
+    "definition": "Withdraw Leave Application",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1129,7 +1129,7 @@
   },
   {
     "term": "str_143",
-    "definition": "撤回e",
+    "definition": "Withdraw",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1137,7 +1137,7 @@
   },
   {
     "term": "str_144",
-    "definition": "假單狀況e",
+    "definition": "Status",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1145,7 +1145,7 @@
   },
   {
     "term": "str_145",
-    "definition": "*僅顯示近10筆假單記錄e",
+    "definition": "*Display only the latest 10 Leave records",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1153,7 +1153,7 @@
   },
   {
     "term": "str_146",
-    "definition": "確定撤回？e",
+    "definition": "Withdraw？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1161,7 +1161,7 @@
   },
   {
     "term": "str_147",
-    "definition": "表單簽核中e",
+    "definition": "Application is under approval",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1169,7 +1169,7 @@
   },
   {
     "term": "str_148",
-    "definition": "表單已撤回e",
+    "definition": "Application is withdrawed",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1177,7 +1177,7 @@
   },
   {
     "term": "str_149",
-    "definition": "表單已生效e",
+    "definition": "Application is executed",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1185,7 +1185,7 @@
   },
   {
     "term": "str_150",
-    "definition": "表單已拒絕e",
+    "definition": "Application is rejected",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1193,7 +1193,7 @@
   },
   {
     "term": "str_151",
-    "definition": "刪除假單e",
+    "definition": "Delete Leave Application",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1201,7 +1201,7 @@
   },
   {
     "term": "str_152",
-    "definition": "假別:",
+    "definition": "Leave Type:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1209,7 +1209,7 @@
   },
   {
     "term": "str_153",
-    "definition": "請假數:",
+    "definition": "Total Leave:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1217,7 +1217,7 @@
   },
   {
     "term": "str_154",
-    "definition": "編輯e",
+    "definition": "Edit",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1225,7 +1225,7 @@
   },
   {
     "term": "str_155",
-    "definition": "確定刪除？e",
+    "definition": "Delete？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1233,7 +1233,7 @@
   },
   {
     "term": "str_156",
-    "definition": "銷假e",
+    "definition": "Leave Cancellation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1241,7 +1241,7 @@
   },
   {
     "term": "str_157",
-    "definition": "銷假申請e",
+    "definition": "Leave Cancellation Application",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1249,7 +1249,7 @@
   },
   {
     "term": "str_158",
-    "definition": "銷假理由e",
+    "definition": "Cancel Reason",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1257,7 +1257,7 @@
   },
   {
     "term": "str_159",
-    "definition": "確定送簽e",
+    "definition": "Summit",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1265,7 +1265,7 @@
   },
   {
     "term": "str_160",
-    "definition": "取消申請e",
+    "definition": "Withdraw",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1273,7 +1273,7 @@
   },
   {
     "term": "str_161",
-    "definition": "銷假單已撤回e",
+    "definition": "Leave Cancellation Application is withdrawed",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1281,7 +1281,7 @@
   },
   {
     "term": "str_162",
-    "definition": "假單已撤回e",
+    "definition": "Leave Application is withdrawed",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1289,7 +1289,7 @@
   },
   {
     "term": "str_163",
-    "definition": "假單已刪除e",
+    "definition": "Leave Application is deleted",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1297,7 +1297,7 @@
   },
   {
     "term": "str_164",
-    "definition": "假單已送簽e",
+    "definition": "Leave Application is submitted",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1305,7 +1305,7 @@
   },
   {
     "term": "str_165",
-    "definition": "請假單號e",
+    "definition": "Leave Number",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1313,7 +1313,7 @@
   },
   {
     "term": "str_166",
-    "definition": "銷假單號:",
+    "definition": "Leave Cancellation Number:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1321,7 +1321,7 @@
   },
   {
     "term": "str_167",
-    "definition": "撤回銷假單e",
+    "definition": "Withdraw Leave Cancellation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1329,7 +1329,7 @@
   },
   {
     "term": "str_168",
-    "definition": "刪除銷假單e",
+    "definition": "Delete Leave Cancellation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1337,7 +1337,7 @@
   },
   {
     "term": "str_169",
-    "definition": "銷假單已刪除e",
+    "definition": "Leave Cancellation is deleted",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1353,7 +1353,7 @@
   },
   {
     "term": "str_171",
-    "definition": "請先選擇開始時間",
+    "definition": "Please select start time (From)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1361,7 +1361,7 @@
   },
   {
     "term": "str_172",
-    "definition": "銷假單已送簽e",
+    "definition": "Leave Cancellation is submitted",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1369,7 +1369,7 @@
   },
   {
     "term": "str_173",
-    "definition": "確定銷假？e",
+    "definition": "Submit Leave Calcellation？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1377,7 +1377,7 @@
   },
   {
     "term": "str_174",
-    "definition": "確定送簽？e",
+    "definition": "Submit？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1385,7 +1385,7 @@
   },
   {
     "term": "str_175",
-    "definition": "銷假中e",
+    "definition": "Leave Cancelling",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1393,7 +1393,7 @@
   },
   {
     "term": "str_176",
-    "definition": "已銷假e",
+    "definition": "Cancelled",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1401,7 +1401,7 @@
   },
   {
     "term": "str_177",
-    "definition": "*暫無請假單記錄e",
+    "definition": "*No record for Leave Application",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1409,7 +1409,7 @@
   },
   {
     "term": "str_178",
-    "definition": "*僅顯示近10筆銷假單記錄e",
+    "definition": "*Display only the latest 10 Leave Cancellation records",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1417,7 +1417,7 @@
   },
   {
     "term": "str_179",
-    "definition": "*暫無銷假單記錄e",
+    "definition": "*No record for Leave Cancellation Application",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1425,7 +1425,7 @@
   },
   {
     "term": "str_180",
-    "definition": "確認送簽e",
+    "definition": "Confirm submit",
     "context": "",
     "term_plural": "",
     "reference": "",
