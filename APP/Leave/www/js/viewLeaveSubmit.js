@@ -529,6 +529,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         $('#starDateTime').datetimepicker({
+            step:30,
             onSelectTime:function(current_time,$input){
                 $("#starDateTime").blur();
             }
@@ -706,6 +707,7 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         $('#endDateTime').datetimepicker({
+            step:30,
             onSelectTime:function(current_time,$input){
                 $("#endDateTime").blur();
             }
