@@ -29,6 +29,20 @@ var htmlContent = "";
 //     }
 // }
 
+window.initialSuccess = function() {
+    
+    //changepage
+    $.mobile.changePage("#viewActivitiesSignup");
+
+}
+
+//[Android]Handle the back button
+function onBackKeyDown() {
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+
+}
+
 function changePageByPanel(pageId, panel) {
     if($.mobile.activePage[0].id !== pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
