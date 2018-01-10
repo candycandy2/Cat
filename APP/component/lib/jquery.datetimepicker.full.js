@@ -2118,6 +2118,16 @@ var datetimepickerFactory = function ($) {
 					}
 				});
 
+				if ( windowWidth>= 300 && windowWidth < 340){
+					left = 5 ;
+					verticalPosition = 65;
+				} else if ( windowWidth >= 340 && windowWidth < 380){
+					left = 25 ;
+					verticalPosition = 70;
+				} else if ( windowWidth >= 400 && windowWidth < 440){
+					verticalPosition = 120;
+				}
+
 				datetimepickerCss = {
 					position: position,
 					left: left,
