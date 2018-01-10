@@ -212,9 +212,18 @@ function errorHandler(data) {
     }
     // 3. status that we never seen before
     else {
+        //status == 500, Text = internal Server Error
         showNetworkDisconnected = true;
-        logMsg = data.statusText;
-        openNetworkDisconnectWindow(data.statusText);
+        logMsg = data.statusText + "(status : " + data.status + ")";
+        //openNetworkDisconnectWindow(logMsg);
+        alert('網路連線失敗，' + logMsg);
+        reStartAPP = true;
+
+        showNetworkDisconnected = false;
+        if (reStartAPP) {
+            reStartAPP = false;
+            location.reload();
+        }
     }
 }
 
