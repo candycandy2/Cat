@@ -196,7 +196,7 @@ function openNetworkDisconnectWindow(status) {
     $('#disconnectNetwork').popup('open');
 }
 
-function errorHandler(data) {
+function errorHandler(data,requestAction) {
     console.log('readyState: ' + data.readyState + ' status: ' + data.status + ' statusText: ' + data.statusText);
     //1. status = timeout (Network status display ["canceled"])
     if (data.statusText === "timeout") {
@@ -216,14 +216,8 @@ function errorHandler(data) {
         showNetworkDisconnected = true;
         logMsg = data.statusText + "(status : " + data.status + ")";
         //openNetworkDisconnectWindow(logMsg);
-        alert('網路連線失敗，' + logMsg);
-        reStartAPP = true;
-
-        showNetworkDisconnected = false;
-        if (reStartAPP) {
-            reStartAPP = false;
-            location.reload();
-        }
+        alert('Call ' + requestAction + ',' + logMsg);
+        location.reload();
     }
 }
 
