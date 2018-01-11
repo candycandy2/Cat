@@ -22,9 +22,40 @@ $("#viewSignupManage").pagecontainer({
 
         };
 
+        //根據不同活動類型，顯示不同頁面
+        function showViewByModel() {
+            var viewModel;
+            if(actModel == 1) {
+                viewModel = "Person";
+            } else if(actModel == 3) {
+                viewModel = "Family";
+            } else if(actModel == 4) {
+                viewModel = "Team";
+            } else if(actModel == 5) {
+                viewModel = "Time";
+            }
+
+            var viewHtml;
+            if(isSignup) {
+                viewHtml = "Manage";
+            } else {
+                viewHtml = "Signup"
+            }
+
+            var viewID = "view" + viewModel + viewHtml;
+
+            $.each($("#viewSignupManage .page-main > div"), function(index, item) {
+                if($(item).attr("id") == viewID) {
+                    $(item).removeClass("view-hide").addClass("view-show");
+                } else {
+                    $(item).removeClass("view-show").addClass("view-hide");
+                }
+            });
+        }
+
         /********************************** page event *************************************/
         $("#viewSignupManage").on("pagebeforeshow", function(event, ui) {
-
+            showViewByModel();
         });
 
         $("#viewSignupManage").on("pageshow", function(event, ui) {

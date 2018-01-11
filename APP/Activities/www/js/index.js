@@ -1,6 +1,7 @@
 
 /*global variable, function*/
 //var lastPageID = "viewActivitiesSignup";
+var activitiesListQueryData,activitiesDetailQueryData;
 var pageList = ["viewPanel","viewActivitiesSignup","viewActivitiesRecord","viewMyFamilyDatum","viewActivitiesDetail","viewSignupManage"];
 var pageVisitedList = ["viewActivitiesSignup"];
 var initialAppName = "Activities";
@@ -8,11 +9,16 @@ var appKeyOriginal = "appactivities";
 var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
+var myEmpNo = "1501005";
 
+/* temporary varibale */
+var actModel,isSignup;
 
 
 
 window.initialSuccess = function() {
+    activitiesListQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';
+    //ActivitiesListQuery();
 
     //changepage
     $.mobile.changePage("#viewActivitiesSignup");
