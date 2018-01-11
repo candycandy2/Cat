@@ -82,6 +82,8 @@ function addComponentView() {
         });
 
         overridejQueryFunction();
+
+        addPlugin();
     }, "html");
 }
 
@@ -404,4 +406,31 @@ function waterMark() {
         "<text x='0' y='" + stringSingleWidth + "' fill='black' font-size='" + stringSingleWidth + "'>" + loginData["loginid"] + "</text></svg>";
 
     $(".watermark").css('background-image', 'url("' + SVG + '")');
+}
+
+function addPlugin() {
+    $(document).one("pageshow", function() {
+        $.get("plugin/ckeditor/ckeditor.js").done(function() {
+            var script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = "plugin/ckeditor/ckeditor.js";
+            document.head.appendChild(script);
+
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "plugin/ckeditor/samples.css";
+            document.head.appendChild(link);
+
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "plugin/ckeditor/toolbarconfigurator/lib/codemirror/neo.css";
+            document.head.appendChild(link);
+
+            setTimeout(function(){
+                initSample();
+            }, 3000);
+        }).fail(function() {
+            console.log("----------------plugin file does not exist");
+        });
+    });
 }

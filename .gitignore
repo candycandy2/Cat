@@ -16,6 +16,7 @@ APP/*/www/font/
 APP/*/www/img/component/Logo.svg
 APP/*/www/img/component/QPlay_logo_noword.svg
 APP/*/www/img/component/QPlay_logo.svg
+APP/*/www/plugin/
 APP/*/node_modules/
 APP/*/package.json
 APP/*/package-lock.json
