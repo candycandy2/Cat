@@ -38,7 +38,6 @@ $("#viewActivitiesDetail").pagecontainer({
 
         //從詳情頁返回列表
         $("#viewActivitiesDetail .back-list").on("click", function() {
-            pageVisitedList.pop();
             changePageByPanel("viewActivitiesSignup", false);
         });
 
