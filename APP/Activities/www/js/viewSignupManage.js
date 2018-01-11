@@ -36,9 +36,8 @@ $("#viewSignupManage").pagecontainer({
 
         });
 
-        //從詳情頁返回列表
+        //從編輯頁返回詳情頁
         $("#viewSignupManage .back-detail").on("click", function() {
-            pageVisitedList.pop();
             changePageByPanel("viewActivitiesDetail", false);
         });
 
