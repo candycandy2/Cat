@@ -3,16 +3,90 @@
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none">
             <img src="img/menu.png" class="menu">
+            <img src="img/back.png" class="back-family" style="display:none;">
         </a>
         <div class="header-style">
             <div class="ui-title">我的眷屬資料</div>
         </div>
+        <!-- <a class="save-family-btn" id="saveFamily" data-role="none">儲存</a> -->
     </div>
     <div data-role="main" class="page-main">
         <!--1.眷屬資料列表-->
-        <div></div>
+        <div id="viewFamilyList">
+            <div id="familyList">
+                <div class="family-list">
+                    <div class="font-style10 font-color2 family-edit">
+                        <div>林小美/祖父母</div>
+                        <div>1982/01/01</div>
+                        <div>A22123456</div>
+                    </div>
+                    <div>
+                        <img src="img/delete.png" class="family-delete">
+                    </div>
+                </div>
+                <div class="activity-line"></div>
+                <div class="family-list">
+                    <div class="font-style10 font-color2 family-edit">
+                        <div>王大明/父母</div>
+                        <div>1950/01/01</div>
+                        <div>F22123456</div>
+                    </div>
+                    <div>
+                        <img src="img/delete.png" class="family-delete">
+                    </div>
+                </div>
+                <div class="activity-line"></div>
+                <div class="family-list">
+                    <div class="font-style10 font-color2 family-edit">
+                        <div>小花/子女</div>
+                        <div>1996/01/01</div>
+                        <div>F22123456</div>
+                    </div>
+                    <div class="font-style10 font-color3">
+                        <span>活動尚未結束無法刪除</span>
+                    </div>
+                </div>
+            </div>
+            <div class="family-notice">
+                <div class="font-style12 fon-color2">
+                    <span>*您已設定保留眷屬資料供活動報名使用，資料會於在職期間保留於系統中，但您可隨時於系統中刪除</span>
+                </div>
+                <div class="font-style12 font-color4">
+                    <span>*請注意，當眷屬報名的活動尚未結束時，無法刪除資料</span>
+                </div>
+            </div>
+        </div>
 
-        <!--2.暫無眷屬資料-->
+        <!--2.新增和編輯頁面-->
+        <div id="viewFamilyEdit" style="display:none;">
+            <div class="family-input-div">
+                <label for="">姓名</label>
+                <input type="text" name="" id="" data-role="none" class="family-input">
+            </div>
+            <div class="family-input-div">
+                <label for="">關係</label>
+                <input type="text" name="" id="" data-role="none" class="family-input">
+            </div>
+            <div class="family-input-div">
+                <label for="">性別</label>
+                <input type="text" name="" id="" data-role="none" class="family-input">
+            </div>
+            <div class="family-input-div">
+                <label for="">身份證</label>
+                <input type="text" name="" id="" data-role="none" class="family-input">
+            </div>
+            <div class="family-input-div">
+                <label for="">生日</label>
+                <input type="text" name="" id="" data-role="none" class="family-input">
+            </div>
+        </div>
+
+        <!--2.fixed add img-->
+        <div class="family-add-img">
+            <img src="img/floating_add.png">
+        </div>
+
+        <!--3.暫無眷屬資料-->
         <div id="viewFamilyNone" class="font-style12 font-color3">目前沒有眷屬資料</div>
     </div>
 </div>
