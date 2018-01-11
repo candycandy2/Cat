@@ -17,11 +17,6 @@
 	display: none;
 }
 
-.xdsoft_datetimepicker .xdsoft_calendar >table >thead{
-	font-family: Arial !important;
-	font-weight: 100 !important;
-}
-
 .xdsoft_datetimepicker.xdsoft_rtl {
 	padding: 8px 0 8px 8px;
 }
