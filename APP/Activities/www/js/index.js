@@ -3,9 +3,9 @@
 var lastPageID = "viewActivitiesSignup";
 var pageList = ["viewPanel","viewActivitiesSignup","viewActivitiesRecord","viewMyFamilyDatum","viewActivitiesDetail","viewSignupManage"];
 var pageVisitedList = ["viewActivitiesSignup"];
-var initialAppName = " Activities";
-var appKeyOriginal = " appactivities";
-var appKey = " appactivities";
+var initialAppName = "Activities";
+var appKeyOriginal = "appactivities";
+var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
 
@@ -28,6 +28,20 @@ var htmlContent = "";
 //         changePageByPanel(prePageID, false);
 //     }
 // }
+
+window.initialSuccess = function() {
+
+    //changepage
+    $.mobile.changePage("#viewActivitiesSignup");
+
+}
+
+//[Android]Handle the back button
+function onBackKeyDown() {
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+
+}
 
 function changePageByPanel(pageId, panel) {
     if($.mobile.activePage[0].id !== pageId) {

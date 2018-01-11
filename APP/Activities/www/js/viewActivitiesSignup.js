@@ -34,7 +34,17 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //點擊活動列表，跳轉到詳情頁
         $("#openList .activity-list").on("click", function() {
+            var num = $(this).attr("data-no");
             changePageByPanel("viewActivitiesDetail", true);
+            if(num == "1") {
+                $(".detail-header-after").hide();
+                $("#teamToManage").hide();
+                $("#teamToSignup").show();
+            } else if(num == "2") {
+                $("#teamToSignup").hide();
+                $(".detail-header-after").show();
+                $("#teamToManage").show();
+            }
         });
 
         //從編輯也返回詳情頁

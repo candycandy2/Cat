@@ -10,81 +10,134 @@
     </div>
     <div data-role="main" class="page-main">
         <!--1.個人報名-->
-        <div id="viewPersonSignup" style="display:none;"></div>
+        <div id="viewPerson" style="display:none;">
+            <!--報名-->
+            <div id="viewPersonSignup"></div>
+            <!--管理-->
+            <div id="viewPersonManage"></div>
+        </div>
 
-        <!--2.個人報名管理-->
-        <div id="viewPersonManage" style="display:none;"></div>
+        <!--2.眷屬報名-->
+        <div id="viewFamily" style="display:none;">
+            <!--報名-->
+            <div id="viewFamilySignup"></div>
+            <!--管理-->
+            <div id="viewFamilyManage"></div>
+        </div>
 
-        <!--3.眷屬報名-->
-        <div id="viewFamilySignup" style="display:none;"></div>
 
-        <!--4.眷屬報名管理-->
-        <div id="viewFamilyManage" style="display:none;"></div>
+        <!--3.時段報名-->
+        <div id="viewTime" style="display:none;">
+            <!--報名-->
+            <div id="viewTimeSignup"></div>
+            <!--管理-->
+            <div id="viewTimeManage"></div>
+        </div>
 
-        <!--5.時段報名-->
-        <div id="viewTimeSignup" style="display:none;"></div>
-
-        <!--6.時段報名管理-->
-        <div id="viewTimeManage" style="display:none;"></div>
-
-        <!--7.組隊報名-->
-        <div id="viewTeamSignup">
-            <div class="team-signup-title">
-                <div>
-                    <img src="img/event_date.png" id="teamSignupThumbnail">
+        <!--4.組隊報名-->
+        <div id="viewTeam">
+            <!--報名-->
+            <div id="viewTeamSignup">
+                <div class="team-signup-title">
+                    <div>
+                        <img src="img/event_date.png" id="teamSignupThumbnail">
+                    </div>
+                    <div class="font-style10 font-color2" id="teamSignupName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
                 </div>
-                <div class="font-style10 font-color2" id="teamSignupName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
-            </div>
-            <div class="font-style11 font-color1 team-signup-add">新增團隊</div>
-            <div class="font-style11 font-color1">部門代碼</div>
-            <div class="team-signup-input">
-                <input type="text" id="departNo" data-role="none" class="input-text-full">
-            </div>
-            <div class="font-style11 font-color1">隊伍</div>
-            <div class="team-signup-input">
-                <input type="text" id="teamName" data-role="none" class="input-text-full">
-            </div>
-            <div class="font-style11 font-color1">
-                <span>成員(</span>
-                <span>0</span>
-                <span>/</span>
-                <span>3</span>
-                <span>)</span>
-            </div>
-            <div class="team-signup-add-friend font-style3 font-color5">
-                <div>
-                    <img src="img/addfriend.png">
+                <div class="font-style11 font-color1 team-signup-add">新增團隊</div>
+                <div class="font-style11 font-color1">部門代碼</div>
+                <div class="team-signup-input">
+                    <input type="text" id="departNo" data-role="none" class="input-text-full">
                 </div>
-                <div>
-                    <span>新增名單</span>
+                <div class="font-style11 font-color1">隊伍</div>
+                <div class="team-signup-input">
+                    <input type="text" id="teamName" data-role="none" class="input-text-full">
+                </div>
+                <div class="font-style11 font-color1">
+                    <span>成員(</span>
+                    <span>0</span>
+                    <span>/</span>
+                    <span>3</span>
+                    <span>)</span>
+                </div>
+                <div class="team-signup-add-friend font-style3 font-color5">
+                    <div>
+                        <img src="img/addfriend.png">
+                    </div>
+                    <div>
+                        <span>新增名單</span>
+                    </div>
+                </div>
+                <!--API 搜索成員，動態生成-->
+                <div></div>
+
+                <div class="font-style12 font-color2" style="margin-top:4.3vw;">
+                    <span>*請先設定部門代碼，隊名與成員(</span>
+                    <span class="font-color4">每隊人數</span>
+                    <span class="font-color4">3</span>
+                    <span class="font-color4">人</span>
+                    <span>)，再點選[送出名單]按鍵完成報名</span>
+                </div>
+                <div class="font-style12 font-color2">*完成報名後，可再設定下一個組別</div>
+
+                <div class="team-signup-footer font-style3">
+                    <div>送出名單</div>
                 </div>
             </div>
-            <!--API 搜索成員，動態生成-->
-            <div></div>
 
-            <div class="font-style12 font-color2" style="margin-top:4.3vw;">
-                <span>*請先設定部門代碼，隊名與成員(</span>
-                <span class="font-color4">每隊人數</span>
-                <span class="font-color4">3</span>
-                <span class="font-color4">人</span>
-                <span>)，再點選[送出名單]按鍵完成報名</span>>
-            </div>
-            <div class="font-style12 font-color2">*完成報名後，可再設定下一個組別</div>
-
-            <div class="team-signup-footer font-style3">
-                <div>送出名單</div>
+            <!--管理-->
+            <div id="viewTeamManage" style="display:none;">
+                <div class="team-signup-title">
+                    <div>
+                        <img src="img/event_date.png" id="teamManageThumbnail">
+                    </div>
+                    <div class="font-style10 font-color2" id="teamManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                </div>
+                <div class="team-manage-signuped font-style11 font-color4">您已報名本項活動：2組</div>
+                <div class="team-manage-signuped font-style11 font-color1">以下是您的報名資料</div>
+                <div id="teamTableContainer">
+                    <table data-role="none" id="teamTable">
+                        <tr>
+                            <td>編號</td>
+                            <td>部門代碼</td>
+                            <td></td>
+                            <td>隊名</td>
+                            <td><img src="img/all_list_down.png" class="all-list-img"></td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>AI30</td>
+                            <td></td>
+                            <td>衝衝衝第一名</td>
+                            <td><img src="img/list_down.png" class="list-img"></td>
+                        </tr>
+                        <tr colspan="5" style="display:none;">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>B140 Alan Tu<br>B140 Wendy Shih<br>A141 Samuel Hsieh</td>
+                            <td><img src="img/delete.png" class="delete-img"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>BI40</td>
+                            <td></td>
+                            <td>只要我們說第二名每人敢說自己是第一名</td>
+                            <td><img src="img/list_down.png" class="list-img"></td>
+                        </tr>
+                        <tr colspan="5" style="display:none;">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>B140 Alan Tu<br>B140 Vinny YC Tang<br>B140 Jennifer Y Wang<br>B140 Darren K Ti</td>
+                            <td><img src="img/delete.png" class="delete-img"></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <!--8.組隊報名管理-->
-        <div id="viewTeamManage" style="display:none;">
-            <div class="team-signup-title">
-                <div>
-                    <img src="img/event_date.png" id="teamManageThumbnail">
-                </div>
-                <div class="font-style10 font-color2" id="teamManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
-            </div>
-        </div>
+
     </div>
 
 

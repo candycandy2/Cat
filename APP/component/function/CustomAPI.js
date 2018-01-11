@@ -20,7 +20,7 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
 
     // review
     function requestError(data) {
-        errorHandler(data);
+        errorHandler(data,requestAction);
         if (failCallback) {
             failCallback();
         }

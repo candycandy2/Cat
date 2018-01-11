@@ -521,7 +521,7 @@ function getAppLogParam() {
     }
 }
 
-function onPause() {    
+function onPause() {
     if (loginData.uuid.length > 0 && loginData['loginid'].length > 0) {
         var appLogData = JSON.parse(window.localStorage.getItem('appLogData'));
         if (appLogData != null && appLogData.log_list.length > 0) {
@@ -1169,8 +1169,7 @@ function handleOpenURL(url) {
         } else {
             //For Other APP, which was be opened by dynamic action,
             //the specific funciton [handleOpenByScheme] need to set in APP/www/js/index.js
-            if(typeof handleOpenByScheme !== "undefined")
-            {
+            if (typeof handleOpenByScheme !== "undefined") {
                 if (handleOpenByScheme !== null) {
                     if (typeof handleOpenByScheme === "function") {
                         callHandleOpenURL = false;

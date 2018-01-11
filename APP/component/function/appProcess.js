@@ -196,7 +196,7 @@ function openNetworkDisconnectWindow(status) {
     $('#disconnectNetwork').popup('open');
 }
 
-function errorHandler(data) {
+function errorHandler(data,requestAction) {
     console.log('readyState: ' + data.readyState + ' status: ' + data.status + ' statusText: ' + data.statusText);
     //1. status = timeout (Network status display ["canceled"])
     if (data.statusText === "timeout") {
@@ -212,9 +212,12 @@ function errorHandler(data) {
     }
     // 3. status that we never seen before
     else {
+        //status == 500, Text = internal Server Error
         showNetworkDisconnected = true;
-        logMsg = data.statusText;
-        openNetworkDisconnectWindow(data.statusText);
+        logMsg = data.statusText + "(status : " + data.status + ")";
+        //openNetworkDisconnectWindow(logMsg);
+        alert('Call ' + requestAction + ',' + logMsg);
+        location.reload();
     }
 }
 
