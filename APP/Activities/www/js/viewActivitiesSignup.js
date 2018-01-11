@@ -49,7 +49,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //從編輯也返回詳情頁
         $("#viewActivitiesSignup .back-detail").on("click", function() {
-            pageVisitedList.pop();
             changePageByPanel("viewActivitiesDetail", false);
         });
     }
