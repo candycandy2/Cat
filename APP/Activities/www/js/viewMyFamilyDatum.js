@@ -27,6 +27,10 @@ $("#viewMyFamilyDatum").pagecontainer({
 
         });
 
+        $("#viewMyFamilyDatum").on("pageshow", function(event, ui) {
+
+        });
+
         /********************************** dom event *************************************/
         $("#viewMyFamilyDatum").keypress(function(event) {
 
