@@ -474,7 +474,11 @@ $("#viewBackLeaveQuery").pagecontainer({
         //撤回銷假單——click
         $("#signToWithdrawBtn").on("click", function() {
             if ($("#signToWithdrawBtn").hasClass("leavePreview-active-btn")) {
-                popupMsgInit(".confirmToWithdraw");
+                $("#signTowithdrawReason").blur();
+                setTimeout(function() {
+                    popupMsgInit(".confirmToWithdraw");
+                }, 100);
+                  
             }
         });
 

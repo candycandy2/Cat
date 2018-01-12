@@ -708,6 +708,7 @@ $("#viewPersonalLeave").pagecontainer({
             } else if ($("#infoContent-1").css("display") === "block") {
                 $("#infoContent-1").slideUp(500);
                 $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png");
+                
             }
         });
 
@@ -715,6 +716,7 @@ $("#viewPersonalLeave").pagecontainer({
             if ($("#infoContent-3").css("display") === "none") {
                 $("#infoContent-3").slideDown(500);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_up.png");
+                $('html,body').animate({scrollTop:$('#infoContent-3').offset().top}, 1000);
             } else if ($("#infoContent-3").css("display") === "block") {
                 $("#infoContent-3").slideUp(500);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png");
