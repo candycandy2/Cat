@@ -238,7 +238,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         //如果送签成功，重新获取请假单列表，并跳转到“请假单查询”页，并记录代理人到local端
                         $("#backMain").click();
                         QueryEmployeeLeaveApplyForm();
-                        changePageByPanel("viewLeaveQuery"); 
+                        changePageByPanel("viewLeaveQuery");
                         $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyLeaveForm").trigger("click");
@@ -529,9 +529,9 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         $('#starDateTime').datetimepicker({
-            step:30,
-            maxDate:'2018/12/31',
-            onSelectTime:function(current_time,$input){
+            step: 30,
+            maxDate: '2018/12/31',
+            onSelectTime: function(current_time, $input) {
                 $("#starDateTime").blur();
             }
         });
@@ -546,12 +546,12 @@ $("#viewLeaveSubmit").pagecontainer({
                     //再判斷基準日是否已经选择
                     if ($("#chooseBaseday").text() !== selectBasedayStr) {
                         //$("#startDate").trigger("focus");
-                        $('#starDateTime').datetimepicker('show'); 
+                        $('#starDateTime').datetimepicker('show');
                     } else {
                         popupMsgInit('.basedayFirst');
                     }
                 } else {
-                    $('#starDateTime').datetimepicker('show'); 
+                    $('#starDateTime').datetimepicker('show');
                 }
             }
         });
@@ -704,8 +704,9 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         $('#endDateTime').datetimepicker({
-            step:30,
-            onSelectTime:function(current_time,$input){
+            step: 30,
+            maxDate: '2018/12/31',
+            onSelectTime: function(current_time, $input) {
                 $("#endDateTime").blur();
             }
         });
@@ -716,7 +717,7 @@ $("#viewLeaveSubmit").pagecontainer({
             if ($("#startText").text() == pleaseSelectStr) {
                 popupMsgInit('.startdayFirst');
             } else {
-                $('#endDateTime').datetimepicker('show'); 
+                $('#endDateTime').datetimepicker('show');
                 /*if (device.platform === "iOS") {
                     $("#endDate").trigger("focus");
                 } else if (device.platform === "Android") {
