@@ -842,17 +842,17 @@ html body .ui-group-theme-a a:visited {
 }
 
 .sign-icon {
-    width: 10.18vw;
+    width: 8vw;
 }
 
 .sign-icon img {
     width: 4.18vw;
     height: 4.18vw;
-    margin-left: 3vw;
+    margin-left: 2vw;
 }
 
 .sign-name {
-    width: 49vw;
+    width: 43vw;
 }
 
 .sign-name>div:nth-of-type(1) {
@@ -864,8 +864,9 @@ html body .ui-group-theme-a a:visited {
 }
 
 .sign-state {
-    width: 15vw;
+    width: 23vw;
     color: #666666;
+    text-align: right;
 }
 
 .sign-state:after {
