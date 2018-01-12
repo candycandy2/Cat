@@ -14,10 +14,10 @@ var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQ
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var htmlContent = "";
-var signedStr = "已簽核";
-var withdrawedStr = "已撤回";
-var rejectedStr = "已拒絕";
-var notSignStr = "未簽核";
+var signedStr; //"已簽核";
+var withdrawedStr; //"已撤回";
+var rejectedStr; //"已拒絕";
+var notSignStr; //"未簽核";
 var editLeaveForm = false;
 
 var time = new Date(Date.now());
@@ -95,6 +95,12 @@ window.initialSuccess = function() {
     $("#withdrawReason").attr("placeholder", langStr["str_090"]);
     $("#dispelReason").attr("placeholder", langStr["str_090"]);
     $("#signTowithdrawReason").attr("placeholder", langStr["str_090"]);
+
+
+    signedStr = langStr["str_133"]; //"已簽核";
+    withdrawedStr = langStr["str_136"]; //"已撤回";
+    rejectedStr = langStr["str_135"]; //"已拒絕";
+    notSignStr = langStr["str_134"]; //"未簽核";
 
     loadingMask("show");
 }
