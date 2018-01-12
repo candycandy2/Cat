@@ -238,7 +238,7 @@ $("#viewLeaveSubmit").pagecontainer({
                         //如果送签成功，重新获取请假单列表，并跳转到“请假单查询”页，并记录代理人到local端
                         $("#backMain").click();
                         QueryEmployeeLeaveApplyForm();
-                        changePageByPanel("viewLeaveQuery"); 
+                        changePageByPanel("viewLeaveQuery");
                         $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyLeaveForm").trigger("click");
@@ -529,34 +529,31 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         $('#starDateTime').datetimepicker({
-            step:30,
-            onSelectTime:function(current_time,$input){
+            step: 30,
+            maxDate: '2018/12/31',
+            onSelectTime: function(current_time, $input) {
                 $("#starDateTime").blur();
             }
         });
         //點擊開始日期
         $("#btnStartday").on("click", function() {
             //選擇開始日期之前判斷假別是否選擇
-            /*if (leaveid === "") {
+            if (leaveid === "") {
                 popupMsgInit('.categroyFirst');
             } else {
                 //再判斷是否需要基準日
                 if (needBaseday) {
                     //再判斷基準日是否已经选择
-                    if ($("#chooseBaseday").text() !== selectBasedayStr) {*/
+                    if ($("#chooseBaseday").text() !== selectBasedayStr) {
                         //$("#startDate").trigger("focus");
-                        $('#starDateTime').datetimepicker('show'); 
-                    /*} else {
+                        $('#starDateTime').datetimepicker('show');
+                    } else {
                         popupMsgInit('.basedayFirst');
                     }
                 } else {
-                    if (device.platform === "iOS") {
-                        $("#startDate").trigger("focus");
-                    } else if (device.platform === "Android") {
-                        $("#startDate").trigger("click");
-                    }
+                    $('#starDateTime').datetimepicker('show');
                 }
-            }*/
+            }
         });
 
         $("#starDateTime").on("blur", function() {
@@ -707,8 +704,9 @@ $("#viewLeaveSubmit").pagecontainer({
         });
 
         $('#endDateTime').datetimepicker({
-            step:30,
-            onSelectTime:function(current_time,$input){
+            step: 30,
+            maxDate: '2018/12/31',
+            onSelectTime: function(current_time, $input) {
                 $("#endDateTime").blur();
             }
         });
@@ -719,7 +717,7 @@ $("#viewLeaveSubmit").pagecontainer({
             if ($("#startText").text() == pleaseSelectStr) {
                 popupMsgInit('.startdayFirst');
             } else {
-                $('#endDateTime').datetimepicker('show'); 
+                $('#endDateTime').datetimepicker('show');
                 /*if (device.platform === "iOS") {
                     $("#endDate").trigger("focus");
                 } else if (device.platform === "Android") {

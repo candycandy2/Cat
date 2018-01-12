@@ -16,6 +16,7 @@ APP/*/www/font/
 APP/*/www/img/component/Logo.svg
 APP/*/www/img/component/QPlay_logo_noword.svg
 APP/*/www/img/component/QPlay_logo.svg
+APP/*/www/plugin/
 APP/*/node_modules/
 APP/*/package.json
 APP/*/package-lock.json
@@ -87,6 +88,7 @@ WEB/InstallQPlay/sftp-config.json
 /qplay/public/*.log
 
 APP/*/www/img/component/*
+APP/*/www/css/jquery.datetimepicker.css
 /qplay/.env
 /qplay/public/.htaccess
 vendor

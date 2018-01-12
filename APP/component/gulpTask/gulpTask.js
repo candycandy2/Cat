@@ -184,3 +184,9 @@ gulp.task('componentJS', ['libJS', 'appJS', 'String', 'Font'], function() {
     fs.unlink('./function.js', (err) => {
     });
 });
+
+//Add Plugin
+gulp.task('addPlugin', function() {
+    return gulp.src('../component/plugin/**/*')
+        .pipe(gulp.dest('www/plugin/'));
+});
