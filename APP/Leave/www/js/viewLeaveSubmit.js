@@ -530,7 +530,8 @@ $("#viewLeaveSubmit").pagecontainer({
 
         $('#starDateTime').datetimepicker({
             step: 30,
-            maxDate: '2018/12/31',
+            yearStart: '2016',
+            yearEnd: '2018',
             onSelectTime: function(current_time, $input) {
                 $("#starDateTime").blur();
             }
@@ -705,7 +706,8 @@ $("#viewLeaveSubmit").pagecontainer({
 
         $('#endDateTime').datetimepicker({
             step: 30,
-            maxDate: '2018/12/31',
+            yearStart: '2016',
+            yearEnd: '2018',
             onSelectTime: function(current_time, $input) {
                 $("#endDateTime").blur();
             }
