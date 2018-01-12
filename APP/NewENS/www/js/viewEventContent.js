@@ -149,7 +149,7 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                         //Message Count
-                        chatRoom.setChatroomID(data['Content'].chatroom_id);
+                        //Darren- chatRoom.setChatroomID(data['Content'].chatroom_id);
                         var msgCount;
 
                         for (j=0; j<messageCountData.length; j++) {
@@ -218,7 +218,7 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                         //ChatRoom Message List
-                        JM.Message.getGroupConversationHistoryMessage(chatRoom.messageHandler);
+                        //Darren- JM.Message.getGroupConversationHistoryMessage(chatRoom.messageHandler);
 
                         //Update User Read Status & Time
                         //note: if Event status=finish or User=create_user or User has readed, do not update Event Status
@@ -240,6 +240,10 @@ $("#viewEventContent").pagecontainer({
                             callBack(self.readAuthority);
                         }
                     }
+
+                    //Darren-
+                    loadingMask("hide");
+                    QForum.VIEW.replyButtonFooter("viewEventContent");
 
                 } else if (resultCode === "014904") {
                     loadingMask("hide");
@@ -833,7 +837,7 @@ $("#viewEventContent").pagecontainer({
             if (uploadText) {
                 loadingMask("show");
 
-                JM.Message.sendGroupTextMessage(msg, chatRoom.messageHandler);
+                //Darren- JM.Message.sendGroupTextMessage(msg, chatRoom.messageHandler);
                 chatRoom.sendNewMsg = true;
                 $("#msgText").val("");
             }
@@ -846,7 +850,7 @@ $("#viewEventContent").pagecontainer({
                 loadingMask("show");
                 chatRoom.localPhotoUrl = photoUrl;
 
-                JM.Message.sendGroupImageMessage(photoUrl, chatRoom.messageHandler);
+                //Darren- JM.Message.sendGroupImageMessage(photoUrl, chatRoom.messageHandler);
                 chatRoom.sendNewMsg = true;
             }
 
