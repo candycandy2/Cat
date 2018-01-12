@@ -39,7 +39,6 @@ window.initialSuccess = function() {
 
     $.mobile.changePage('#viewEventList');
 
-    JM.initial();
     chatRoom.resetBadge();
 }
 
@@ -50,9 +49,9 @@ var chatRoom = {
     localPhotoUrl: "",
     setChatroomID: function(ID) {
         this.nowChatRoomID = ID;
-        JM.chatroomID = ID;
+        //Darren- JM.chatroomID = ID;
 
-        JM.Chatroom.getGroupInfo();
+        //Darren- JM.Chatroom.getGroupInfo();
     },
     initialData: function() {
         if (window.localStorage.getItem("Messages") !== null) {
