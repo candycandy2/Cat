@@ -1,5 +1,5 @@
 
-$("#viewSignupManage").pagecontainer({
+$("#viewActivitiesManage").pagecontainer({
     create: function(event, ui) {
         //page init
         /********************************** function *************************************/
@@ -44,7 +44,7 @@ $("#viewSignupManage").pagecontainer({
 
             var viewID = "view" + viewModel + viewHtml;
 
-            $.each($("#viewSignupManage .page-main > div"), function(index, item) {
+            $.each($("#viewActivitiesManage .page-main > div"), function(index, item) {
                 if($(item).attr("id") == viewID) {
                     $(item).removeClass("view-hide").addClass("view-show");
                 } else {
@@ -54,31 +54,23 @@ $("#viewSignupManage").pagecontainer({
         }
 
         /********************************** page event *************************************/
-        $("#viewSignupManage").on("pagebeforeshow", function(event, ui) {
+        $("#viewActivitiesManage").on("pagebeforeshow", function(event, ui) {
             showViewByModel();
         });
 
-        $("#viewSignupManage").on("pageshow", function(event, ui) {
+        $("#viewActivitiesManage").on("pageshow", function(event, ui) {
 
         });
 
         /********************************** dom event *************************************/
-        $("#viewSignupManage").keypress(function(event) {
+        $("#viewActivitiesManage").keypress(function(event) {
 
         });
 
-        //從編輯頁返回詳情頁
-        $("#viewSignupManage .back-detail").on("click", function() {
+        //從管理頁返回詳情頁
+        $("#viewActivitiesManage .back-detail").on("click", function() {
             changePageByPanel("viewActivitiesDetail", false);
         });
-
-        // $("#departNo").on("focus", function() {
-        //     $(".team-signup-footer").hide();
-        // });
-
-        // $("#departNo").on("blur", function() {
-        //     $(".team-signup-footer").show();
-        // });
 
         $(".list-img").on("click", function() {
             var imgSrc = $(this).attr("src").split("/")[1];
