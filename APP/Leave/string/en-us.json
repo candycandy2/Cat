@@ -561,7 +561,7 @@
   },
   {
     "term": "str_071",
-    "definition": "Day",
+    "definition": "day",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -689,7 +689,7 @@
   },
   {
     "term": "str_088",
-    "definition": "hours",
+    "definition": "hour",
     "context": "",
     "term_plural": "",
     "reference": "",
