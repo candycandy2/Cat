@@ -91,16 +91,16 @@ class CommonUtil{
   * @param sting $imgsrc 圖片路徑
   * @param string $imgdst 壓縮後保存路徑
   */
-  public static function compressImage($imgsrc, $imgdst, $quality){
+  public static function compressImage($imgsrc, $imgdst, $standard, $quality){
     list($width,$height,$type)=getimagesize($imgsrc);
     $source_ratio = $width/$height;
     $new_ratio = 1;
     if($source_ratio > 1){ //橫圖
-        $target_ratio = round(1024/$width, 1);
+        $target_ratio = round($standard/$width, 1);
     }else{ //直圖
-        $target_ratio = round(1024/$height, 1);
+        $target_ratio = round($standard/$height, 1);
     }
-    //長或寬>1024才需做壓縮
+    //長或寬 > standard 才需做壓縮
     if($target_ratio < 1){
         $new_ratio = $target_ratio;
     }

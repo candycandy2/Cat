@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::POST('v101/picture/upload','pictureController@uploaPicture');
+Route::POST('v101/picture/upload','PictureController@uploaPicture');
