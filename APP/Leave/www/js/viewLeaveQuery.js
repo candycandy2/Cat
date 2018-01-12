@@ -503,7 +503,11 @@ $("#viewLeaveQuery").pagecontainer({
         $("#confirmWithdrawBtn").on("click", function() {
             if ($("#confirmWithdrawBtn").hasClass("leavePreview-active-btn")) {
                 //popup提示確定或取消
-                popupMsgInit(".confirmWithdraw");
+                $("#withdrawReason").blur();
+                setTimeout(function() {
+                    popupMsgInit(".confirmWithdraw");
+                }, 100);
+                
             }
         });
 
@@ -684,7 +688,11 @@ $("#viewLeaveQuery").pagecontainer({
         //確定銷假送簽——click
         $("#confirmDispelBtn").on("click", function() {
             if ($("#confirmDispelBtn").hasClass("leavePreview-active-btn")) {
-                popupMsgInit(".confirmRevoke");
+                $("#dispelReason").blur();
+                setTimeout(function() {
+                    popupMsgInit(".confirmRevoke");
+                }, 100);
+                
             }
         });
 
