@@ -59,7 +59,8 @@
 
 .menu,
 .back-list,
-.back-detail {
+.back-detail,
+.back-family {
     width: 4.934VW;
 }
 
@@ -119,6 +120,13 @@
     text-indent: 3.71vw;
 }
 
+.view-show {
+    display: block;
+}
+
+.view-hide {
+    display: none;
+}
 
 /************************************** viewActivitiesSignup ******************************************/
 
@@ -159,7 +167,7 @@
 .activity-list {
     padding: 4vw 3.71vw;
     width: 92.58vw;
-    height: 20vw;
+    height: 18vw;
 }
 
 .activity-list > div {
@@ -172,7 +180,7 @@
 
 .activity-list-img {
     width: 17.5vw;
-    height: 20vw;
+    height: 18vw;
 }
 .activity-list-img img {
     width: 14.5vw;
@@ -182,7 +190,7 @@
 
 .activity-list-info {
     width: 75vw;
-    height: 20vw;
+    height: 18vw;
 }
 
 .activity-list-info > div:nth-of-type(1) {
@@ -231,7 +239,7 @@
 
 .detail-header {
     width: 92.58vw;
-    height: 26vw;
+    height: 23vw;
 }
 
 .detail-header > div {
@@ -244,7 +252,7 @@
 
 .detail-header-img {
     width: 17.5vw;
-    height: 23.5vw;
+    height: 23vw;
 }
 
 .detail-header-img img {
@@ -255,7 +263,7 @@
 
 .detail-header-info {
     width: 75vw;
-    height: 26vw;
+    height: 23vw;
 }
 
 .detail-header-info > div:nth-of-type(1) {
@@ -278,7 +286,7 @@
 .detail-header-after {
     width: 75vw;
     margin-left: 17.5vw;
-    margin-top: 1.5vw;
+    margin-top: 2vw;
     display: none;
 }
 
@@ -566,17 +574,16 @@
     margin-left: 2.541vw;
 }
 
-.delete-img {
+.team-delete {
     width: 4vw;
     height: 4vw;
     margin-left: 2.541vw;
-    margin-bottom: 0;
 }
 
 
 /***************************************** viewActivitiesRecord *************************************/
 
-#viewFamilyList {
+#viewRecordList {
     width: 100vw;
     min-height: 15vw;
     margin-top: 5vw;
@@ -591,35 +598,35 @@
     margin: 0vw 0vw;
 }
 
-.family-list {
+.record-list {
     width: 89.5vw;
     min-height: 11vw;
     margin-left: 3.71vw;
     padding: 3vw 0 7vw 3vw;
 }
 
-.family-list > div {
+.record-list > div {
     float: left;
 }
 
-.family-list > div:nth-of-type(1) {
-    width: 76.58vw;
+.record-list > div:nth-of-type(1) {
+    width: 75.5vw;
     /* min-height: 11vw;
     max-height: 15vw; */
 }
 
-.family-list > div:nth-of-type(1) > div:nth-of-type(2) {
+.record-list > div:nth-of-type(1) > div:nth-of-type(2) {
     margin-top: 1.16vw;
 }
 
-.family-list > div:nth-of-type(2) {
-    width: 9vw;
+.record-list > div:nth-of-type(2) {
+    width: 8vw;
     height: 4.5vw;
-    margin-left: 3.5vw;
-    margin-top: 5.5vw;
+    margin-left: 5.5vw;
+    margin-top: 4.5vw;
 }
 
-.delete-png {
+.record-delete {
     width: 4.5vw;
     height: 4.5vw;
 }
@@ -655,8 +662,126 @@
     text-align: center;
     line-height: 150vw;
     margin: 0vw 0vw;
+    display: none;
 }
 
+.save-family-btn {
+    font-weight: normal;
+    font-size: 3.768vw !important;
+}
+
+#viewMyFamilyDatum .page-header a:link {
+    color: #666 !important;
+}
+
+#viewMyFamilyDatum .page-header a:visited {
+    color: #666 !important;
+}
+
+#viewMyFamilyDatum .page-header a:hover {
+    color: #666 !important;
+}
+
+#viewMyFamilyDatum .page-header a:active {
+    color: #666 !important;
+}
+
+.family-add-img {
+    position: fixed;
+    bottom: 4.3vw;
+    right: 6.727vw;
+    width: 13.848vw;
+    height: 13.848vw;
+}
+
+.family-add-img img {
+    width: 13.848vw;
+    height: 13.848vw;
+}
+
+#viewFamilyList {
+    margin-top: 5vw;
+}
+
+.family-list {
+    width: 86.5vw;
+    height: 14.5vw;
+    padding: 3vw 6.71vw;
+    background: #ffffff;
+}
+
+.family-list > div {
+    float: left;
+}
+
+.family-list ::after {
+    clear: both;
+}
+
+.family-list > div:nth-of-type(1) {
+    width: 64vw;
+    height:14.5vw;
+}
+
+.family-list > div:nth-of-type(1) > div:nth-of-type(2),
+.family-list > div:nth-of-type(1) > div:nth-of-type(3) {
+    margin-top: 1.16vw;
+}
+
+.family-list > div:nth-of-type(2) {
+    width: 22.5vw;
+    height: 14.5vw;
+    line-height: 5vw;
+}
+
+.family-delete {
+    width: 4.5vw;
+    height: 4.5vw;
+    margin-left: 18vw;
+    margin-top: 5vw;
+}
+
+.family-notice {
+    width: 92.58vw;
+    min-height: 50vw;
+    margin-top: 4.3vw;
+    margin-left: 3.71vw;
+}
+
+.family-notice div {
+    line-height: 1.5;
+}
+
+
+#viewFamilyEdit {
+    width: 92.58vw;
+    margin-top: 10vw;
+    margin-left: 3.71vw;
+}
+
+.family-input-div {
+    width: 92.58vw;
+    height: 16vw;
+    margin-bottom: 2vw;
+}
+
+.family-input-div label {
+    width: 20vw;
+    height: 10vw;
+    display: inline-block;
+    text-align: right;
+    line-height: 10vw;
+}
+
+.family-input {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+}
 
 
 
