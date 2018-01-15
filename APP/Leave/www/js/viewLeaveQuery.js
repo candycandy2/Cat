@@ -340,7 +340,7 @@ $("#viewLeaveQuery").pagecontainer({
                     '</div>' +
                     '<div>' +
                     //'<span>請假數：</span>' +
-                    '<span>' + langStr["str_153"] + '</span>' +
+                    '<span>' + langStr["str_153"] + ' </span>' +
                     '<span>' + leaveListArr[i]["days"] + ' </span>' +
                     //'<span> 天 </span>' +
                     '<span> ' + langStr["str_071"] + ' </span>' +
@@ -513,7 +513,7 @@ $("#viewLeaveQuery").pagecontainer({
                 setTimeout(function() {
                     popupMsgInit(".confirmWithdraw");
                 }, 100);
-                
+
             }
         });
 
@@ -698,7 +698,7 @@ $("#viewLeaveQuery").pagecontainer({
                 setTimeout(function() {
                     popupMsgInit(".confirmRevoke");
                 }, 100);
-                
+
             }
         });
 

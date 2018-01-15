@@ -2,26 +2,23 @@
 /*global variable, function*/
 //var lastPageID = "viewActivitiesSignup";
 var activitiesListQueryData,activitiesDetailQueryData;
-var pageList = ["viewPanel","viewActivitiesSignup","viewActivitiesRecord","viewMyFamilyDatum","viewActivitiesDetail","viewSignupManage"];
-var pageVisitedList = ["viewActivitiesSignup"];
+var pageList = ["viewPanel","viewActivitiesList","viewActivitiesRecord","viewMyFamilyDatum","viewActivitiesDetail","viewActivitiesSignup","viewActivitiesManage"];
+var pageVisitedList = ["viewActivitiesList"];
 var initialAppName = "Activities";
 var appKeyOriginal = "appactivities";
 var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
 var myEmpNo = "1501005";
-
-/* temporary varibale */
-var actModel,isSignup;
-
+var isFull,isRepeatSignup,isSignup,actModel,modelName,viewName;
 
 
 window.initialSuccess = function() {
     activitiesListQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';
-    //ActivitiesListQuery();
+    ActivitiesListQuery();
 
     //changepage
-    $.mobile.changePage("#viewActivitiesSignup");
+    $.mobile.changePage("#viewActivitiesList");
 
 }
 
@@ -51,7 +48,7 @@ function changePageByPanel(pageId, panel) {
         $.mobile.changePage("#" + pageId);
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
-        //切换菜单才添加，back返回时不添加
+        //切换菜单才添加到數組，back返回时不添加並刪除最後一頁
         if(panel) {
             pageVisitedList.push(pageId);
         } else {

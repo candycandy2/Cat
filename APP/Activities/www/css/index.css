@@ -128,7 +128,7 @@
     display: none;
 }
 
-/************************************** viewActivitiesSignup ******************************************/
+/************************************** viewActivitiesList ******************************************/
 
 .open-title div,
 .close-title div {
@@ -230,7 +230,7 @@
 }
 
 /**************************************** viewActivitiesDetail ***************************************/
-#activitiesDetailTeamSignup {
+#activityDetail {
     width: 92.58vw;
     min-height: 38vw;
     margin-top: 5vw;
@@ -318,23 +318,52 @@
     background: #2d89bc;
 }
 
+.detail-footer > div {
+    display: none;
+}
 
 
-/******************************************* viewSignupManage **************************************/
-#viewTeamSignup {
+/******************************************* viewActivitiesSignup **************************************/
+#viewActivitiesSignup .page-main > div {
     width: 92.58vw;
     min-height: 30vw;
     margin-top: 5vw;
     margin-left: 3.71vw;
 }
 
-#viewTeamManage {
+.person-signup-set-title {
     width: 92.58vw;
-    min-height: 30vw;
-    margin-top: 5vw;
-    margin-left: 3.71vw;
-    /* display: none; */
+    margin-top: 4vw;
 }
+
+.person-signup-set-people {
+    width: 92.58vw;
+    margin-top: 2.14vw;
+    padding-bottom: 2.14vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.person-signup-notice {
+    line-height: 1.25;
+    margin-top: 4.3vw;
+    margin-bottom: 0.6vw;
+}
+
+.person-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 10.656vw;
+    text-align: center;
+    line-height: 10.656vw;
+    color: #ffffff;
+    background: #2d89bc;
+}
+
+
+
+
 
 
 
@@ -485,82 +514,6 @@
 }
 
 
-/* .team-table-thead {
-    height: 12.077vw;
-    color: #323232;
-    font-weight: normal;
-    font-size: 3.349vw !important;
-    border-bottom: 1px solid #d6d6d6;
-    line-height: 12.077vw;
-}
-
-.team-table-thead > div {
-    float: left;
-}
-
-.team-table-tbody {
-    border-bottom: 1px solid #f6f6f6;
-}
-
-.team-table-tbody > div:nth-of-type(1) {
-    height: 15.538vw;
-    color: #323232;
-    font-weight: normal;
-    font-size: 3.349vw !important;
-    line-height: 15.538vw;
-}
-
-.team-table-tbody > div:nth-of-type(1) > div { 
-    float: left;
-}
-
-.team-table-tbody > div:nth-of-type(2) {
-    color: #666666;
-    font-weight: normal;
-    font-size: 3.55vw !important;
-}
-
-.team-table-tbody > div:nth-of-type(2) > div {
-    float: left;
-}
-
-.team-table-tbody > div:nth-of-type(1) ::after,
-.team-table-tbody > div:nth-of-type(2) ::after {
-    clear: both;
-}
-
-.team-table-thead > div:nth-of-type(1),
-.team-table-tbody > div:nth-of-type(1) > div:nth-of-type(1),
-.team-table-tbody > div:nth-of-type(2) > div:nth-of-type(1) {
-    width: 11.889vw;
-    text-align: center;
-}
-
-.team-table-thead > div:nth-of-type(2),
-.team-table-tbody > div:nth-of-type(1) > div:nth-of-type(2),
-.team-table-tbody > div:nth-of-type(2) > div:nth-of-type(2) {
-    width: 22.135vw;
-    text-align: center;
-}
-
-.team-table-thead > div:nth-of-type(3),
-.team-table-tbody > div:nth-of-type(1) > div:nth-of-type(3),
-.team-table-tbody > div:nth-of-type(2) > div:nth-of-type(3) {
-    width: 4.428vw;
-}
-
-.team-table-thead > div:nth-of-type(4),
-.team-table-tbody > div:nth-of-type(1) > div:nth-of-type(4),
-.team-table-tbody > div:nth-of-type(2) > div:nth-of-type(4) {
-    width: 43.5vw;
-}
-
-.team-table-thead > div:nth-of-type(5),
-.team-table-tbody > div:nth-of-type(1) > div:nth-of-type(5),
-.team-table-tbody > div:nth-of-type(2) > div:nth-of-type(5) {
-    width: 10.315vw;
-} */
-
 
 .all-list-img {
     width: 5.233vw;
@@ -579,6 +532,18 @@
     height: 4vw;
     margin-left: 2.541vw;
 }
+
+
+/***************************************** viewActivitiesManage ************************************/
+
+#viewActivitiesManage .page-main > div {
+    width: 92.58vw;
+    min-height: 30vw;
+    margin-top: 5vw;
+    margin-left: 3.71vw;
+}
+
+
 
 
 /***************************************** viewActivitiesRecord *************************************/
