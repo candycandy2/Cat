@@ -905,7 +905,7 @@
   },
   {
     "term": "str_115",
-    "definition": "Left days are not enough",
+    "definition": "The rest of days are not enough",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -913,7 +913,7 @@
   },
   {
     "term": "str_116",
-    "definition": "To date should be greater than From date!",
+    "definition": "To date should be later than From date!",
     "context": "",
     "term_plural": "",
     "reference": "",
