@@ -396,14 +396,14 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 
                     if (item.id == "txtUrl") {
                         if (!findTextURL) {
-                            $("#" + item._.inputId).val("http://qplaydev.benq.com/qplay/public/app/50/icon/ITS_512.png");
+                            $("#" + item._.inputId).val(window.ckeditorIMAGE.imageServerURL);
                         }
 
                         findTextURL = true;
                     } else if (item.id == "txtWidth") {
-                        $("#" + item._.inputId).val("111");
+                        $("#" + item._.inputId).val(window.ckeditorIMAGE.imageWidth);
                     } else if (item.id == "txtHeight") {
-                        $("#" + item._.inputId).val("300");
+                        $("#" + item._.inputId).val(window.ckeditorIMAGE.imageHeight);
                     }
                 }
 
@@ -597,9 +597,6 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 		this.on( 'show', function() {
             console.log("-----------------show");
 
-            //Darren-
-            //this.fire("ok");
-
 			dialogElement.on( 'keydown', keydownHandler, this );
 
 			// Some browsers instead, don't cancel key events in the keydown, but in the
@@ -715,11 +712,35 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 		 */
 
         //Darren-
+        if (dialogName === "image") {
+            window.ckeditorIMAGE = this;
+
+            var qstorageCallBack = function(data) {
+                console.log("=================qstorageCallBack");
+                console.log(data);
+
+                window.ckeditorIMAGE.imageServerURL = data.thumbnail_1024_url;
+                window.ckeditorIMAGE.imageWidth = data.thumbnail_1024_width;
+                window.ckeditorIMAGE.imageHeight = data.thumbnail_1024_height;
+
+                window.ckeditorIMAGE.fire("ok");
+            };
+
+            var cameraPluginCallback = function(imageUploadURL) {
+                //User QStorage
+                QStorage.UploadAPI(imageUploadURL, qstorageCallBack);
+            };
+
+            //Open PhotoLibrary by cordova-plugin-camera
+            CameraPlugin.openFilePicker("PHOTOLIBRARY", cameraPluginCallback);
+        }
+        /*
         window.Darren = this;
 
         setTimeout(function(){
             window.Darren.fire("ok");
         }, 3000);
+        */
 	};
 
 	// Focusable interface. Use it via dialog.addFocusable.
