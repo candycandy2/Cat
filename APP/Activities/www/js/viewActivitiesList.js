@@ -12,9 +12,11 @@ $("#viewActivitiesList").pagecontainer({
                 console.log(data);
 
                 if(data["ResultCode"] == "1") {
-
+                    $("#viewActivitiesNone").hide();
+                    $("#viewActivitiesList").show();
                 } else if(data["ResultCode"] == "045901") {
-
+                    $("#viewActivitiesList").hide();
+                    $("#viewActivitiesNone").show();
                 }
                 
 
@@ -28,6 +30,86 @@ $("#viewActivitiesList").pagecontainer({
             }();
 
         };
+
+        window.ActivitiesDetailQuery = function () {
+
+            var self = this;
+
+            this.successCallback = function (data) {
+                loadingMask("hide");
+
+                if (data["ResultCode"] == "1") {
+                    var activityObj = data["Content"][0];
+                    console.log(activityObj);
+
+                    $("#detailThumbnail").attr("src", activityObj["ActivitiesImage"]);
+                    //$("#detailName").text(activityObj["ActivitiesName"]);
+                    $("#detailPlace").text(activityObj["QuotaPlaces"]);
+                    $("#detailLimit").text(activityObj["LimitPlaces"]);
+                    $("#detailDate").text(activityObj["SignupDate"]);
+                    $("#detailPeople").text(activityObj["ActivitiesPlaces"]);
+                    $("#detailUser").text(activityObj["SignupPlaces"]);
+
+                    isRepeatSignup = activityObj["IsRepeatSignup"];
+                    isFull = activityObj["IsFull"];
+                    isSignup = activityObj["IsSignup"];
+                    actModel = activityObj["SignupModel"];
+
+                    switch (actModel) {
+                        case 1:
+                            modelName = "Person";
+                            break;
+                        case 3:
+                            modelName = "Family";
+                            break;
+                        case 4:
+                            modelName = "Time";
+                            break;
+                        case 5:
+                            modelName = "Team";
+                            break;
+                    }
+
+                    switch (isSignup) {
+                        case "N":
+                            viewName = "Signup";
+                            break;
+                        case "Y":
+                            viewName = "Manage";
+                            break;
+                    }
+
+                    //根據是否報名，是否滿額等條件判斷顯示不同按鈕
+                    if(isSignup == "Y" && actModel !== 4) {
+                        //管理
+                        showBtnByID("alreadyBtn", isSignup);
+                    } else if(isSignup == "Y" && actModel == 4) {
+                        //報名、管理
+                        showBtnByID("continueBtn", isSignup);
+                    } else if(isSignup == "N" && isRepeatSignup == "Y") {
+                        //已報名同類活動
+                        showBtnByID("repeatBtn", isSignup);
+                    } else if(isSignup == "N" && isRepeatSignup == "N" && isFull == "Y") {
+                        //已滿額
+                        showBtnByID("fullBtn", isSignup);
+                    } else if(isSignup == "N" && isRepeatSignup == "N" && isFull == "N") {
+                        //報名 
+                        showBtnByID("beginBtn", isSignup);
+                    }
+
+
+                }
+
+            };
+
+            this.failCallback = function (data) { };
+
+            var __construct = function () {
+                CustomAPI("POST", true, "Activities_Detail", self.successCallback, self.failCallback, activitiesDetailQueryData, "");
+            }();
+
+        };
+
 
 
         function showBtnByID(btn, bl) {
