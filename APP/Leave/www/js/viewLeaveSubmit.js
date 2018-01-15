@@ -449,6 +449,7 @@ $("#viewLeaveSubmit").pagecontainer({
             if (basedayList) {
                 popupMsgInit('.basedayList');
             } else {
+                //review by alan => need to update Datepicker
                 //datetime-local
                 if (device.platform === "iOS") {
                     $("#newBaseday").trigger("focus");
