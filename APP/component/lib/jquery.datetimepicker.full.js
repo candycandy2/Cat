@@ -1053,6 +1053,18 @@ var datetimepickerFactory = function ($) {
 							options.onChangeMonth.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 						}
 
+						if (_xdsoft_datetime.currentTime.getFullYear() < options.yearEnd){
+							$('.xdsoft_next').show();
+						} else if(_xdsoft_datetime.currentTime.getFullYear() == options.yearEnd && _xdsoft_datetime.currentTime.getMonth()+1 == 12) {
+							$('.xdsoft_next').hide();
+						} 
+
+						if (_xdsoft_datetime.currentTime.getFullYear() > options.yearStart) {
+							$('.xdsoft_datepicker .xdsoft_prev').show();
+						}else if(_xdsoft_datetime.currentTime.getFullYear() == options.yearStart && _xdsoft_datetime.currentTime.getMonth()+1 == 1) {
+							$('.xdsoft_datepicker .xdsoft_prev').hide();
+						}
+
 						if (year !== _xdsoft_datetime.currentTime.getFullYear() && $.isFunction(options.onChangeYear)) {
 							options.onChangeYear.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 						}
@@ -1528,6 +1540,31 @@ var datetimepickerFactory = function ($) {
 					var $this = $(this),
 						timer = 0,
 						stop = false;
+
+					if((_xdsoft_datetime.currentTime.getYear()+1900) == options.yearEnd) 
+					{ 
+						if ($this.hasClass(options.next)) { 
+							if((_xdsoft_datetime.currentTime.getMonth()+1) == 11) {
+									$('.xdsoft_next').hide();
+ 							}else {
+ 								$('.xdsoft_next').show();
+ 							}
+						} 
+						if ($this.hasClass(options.prev)) { 
+							$('.xdsoft_next').show(); 
+						} 
+					}else if ((_xdsoft_datetime.currentTime.getYear()+1900) == options.yearEnd-2) {
+						if ($this.hasClass(options.prev)) { 
+							if((_xdsoft_datetime.currentTime.getMonth()+1) == 2) {
+								$('.xdsoft_datepicker .xdsoft_prev').hide();
+ 							}else {
+ 								$('.xdsoft_datepicker .xdsoft_prev').show();
+ 							}
+						} 
+						if ($this.hasClass(options.next)) { 
+							$('.xdsoft_datepicker .xdsoft_prev').show(); 
+						} 
+					}
 
 					(function arguments_callee1(v) {
 						if ($this.hasClass(options.next)) {
@@ -2145,7 +2182,7 @@ var datetimepickerFactory = function ($) {
 					var onShow = true;
 					if (options.onShow && $.isFunction(options.onShow)) {
 						onShow = options.onShow.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'), event);
-					}
+					}					
 					if (onShow !== false) {
 						datetimepicker.show();
 						setPos();
@@ -2159,6 +2196,24 @@ var datetimepickerFactory = function ($) {
 								$([options.ownerDocument.body, options.contentWindow]).off('touchstart mousedown.xdsoft', arguments_callee6);
 							});
 						}
+					}
+					if((_xdsoft_datetime.currentTime.getYear()+1900) == options.yearEnd) {
+						if((_xdsoft_datetime.currentTime.getMonth()+1) == 12){
+							$('.xdsoft_next').hide();
+							$('.xdsoft_datepicker .xdsoft_prev').show();
+						}else {
+							$('.xdsoft_next').show();
+							$('.xdsoft_datepicker .xdsoft_prev').show();						}
+
+ 					}else if ((_xdsoft_datetime.currentTime.getYear()+1900) == options.yearStart) {
+						if((_xdsoft_datetime.currentTime.getMonth()+1) == 1) {
+							$('.xdsoft_datepicker .xdsoft_prev').hide();
+							$('.xdsoft_next').show();
+						}else {
+							$('.xdsoft_datepicker .xdsoft_prev').show();
+							$('.xdsoft_next').show();
+						}
+
 					}
 				})
 				.on('close.xdsoft', function (event) {

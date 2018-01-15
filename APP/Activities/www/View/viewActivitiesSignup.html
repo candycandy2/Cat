@@ -2,149 +2,92 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none">
-            <img src="img/menu.png" class="menu">
+            <img src="img/back.png" class="back-detail">
         </a>
         <div class="header-style">
             <div class="ui-title">活動報名</div>
         </div>
     </div>
     <div data-role="main" class="page-main">
-        <!--1.活動列表-->
-        <div id="viewActivitiesList">
-            <!--已開放-->
-            <div class="open-title">
-                <div></div>
-                <div class="font-style11 font-color1">已開放：</div>
-                <div></div>
+        <!--1.個人報名-->
+        <div id="viewPersonSignup" data-model="1">
+            <div class="team-signup-title">
+                <div>
+                    <img src="img/event_date.png">
+                </div>
+                <div class="font-style10 font-color2">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
             </div>
-            <div id="openList">
-                <div class="activity-list" data-no="1">
-                    <div class="activity-list-img">
-                        <img src="img/event_date.png">
-                    </div>
-                    <div class="activity-list-info font-color2">
-                        <div class="font-style10">[組隊報名]桃園9/14 活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
-                        <div class="font-style11">
-                            <span>名額:</span>
-                            <span>12</span>&nbsp;&nbsp;
-                            <span>剩餘:</span>
-                            <span>11</span>
-                        </div>
-                        <div class="font-style11">
-                            <span>報名期間:</span>
-                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="activity-line"></div>
-                <div class="activity-list" data-no="2">
-                    <div class="activity-list-img">
-                        <img src="img/event_date.png">
-                    </div>
-                    <div class="activity-list-info font-color2">
-                        <div class="font-style10">[組隊管理]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
-                        <div class="font-style11">
-                            <span>名額:</span>
-                            <span>12</span>&nbsp;&nbsp;
-                            <span>剩餘:</span>
-                            <span>11</span>
-                        </div>
-                        <div class="font-style11">
-                            <span>報名期間:</span>
-                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="activity-line"></div>
-                <div class="activity-list" data-no="3">
-                    <div class="activity-list-img">
-                        <img src="img/event_date.png">
-                    </div>
-                    <div class="activity-list-info font-color2">
-                        <div class="font-style10">[個人報名]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
-                        <div class="font-style11">
-                            <span>名額:</span>
-                            <span>12</span>&nbsp;&nbsp;
-                            <span>剩餘:</span>
-                            <span>11</span>
-                        </div>
-                        <div class="font-style11">
-                            <span>報名期間:</span>
-                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="activity-line"></div>
-                <div class="activity-list" data-no="4">
-                    <div class="activity-list-img">
-                        <img src="img/event_date.png">
-                    </div>
-                    <div class="activity-list-info font-color2">
-                        <div class="font-style10">[個人管理]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
-                        <div class="font-style11">
-                            <span>名額:</span>
-                            <span>12</span>&nbsp;&nbsp;
-                            <span>剩餘:</span>
-                            <span>11</span>
-                        </div>
-                        <div class="font-style11">
-                            <span>報名期間:</span>
-                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="person-signup-set-title font-style11 font-color1">請設定您的報名資料</div>
+            <div class="person-signup-set-people font-style3 font-color1">報名人數：1</div>
+            <!--自定義控件-->
+            <div></div>
+            <div class="person-signup-notice font-style11 font-color4">
+                <span>*完成報名後，若需更改報名資料，請直接與欄位上更改後，再點選[更改資料]按鍵</span>
             </div>
-
-            <!--未開放-->
-            <div class="close-title">
-                <div></div>
-                <div class="font-style11 font-color1">未來：</div>
-                <div></div>
+            <div class="font-style11 font-color4">
+                <span>*若需取消所有報名名單，請直接點選[取消報名]按鍵</span>
             </div>
-            <div id="closeList">
-                <div class="activity-list">
-                    <div class="activity-list-img">
-                        <img src="img/event_date.png">
-                    </div>
-                    <div class="activity-list-info font-color2">
-                        <div class="font-style10">[健身房課程]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
-                        <div class="font-style11">
-                            <span>名額:</span>
-                            <span>12</span>&nbsp;&nbsp;
-                            <span>剩餘:</span>
-                            <span>11</span>
-                        </div>
-                        <div class="font-style11">
-                            <span>報名期間:</span>
-                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="activity-line"></div>
-                <div class="activity-list">
-                    <div class="activity-list-img">
-                        <img src="img/event_date.png">
-                    </div>
-                    <div class="activity-list-info font-color2">
-                        <div class="font-style10">[健身房課程]桃園9/14（四）活力有氧（時間：17:30-18:30 地點：健身房3F 韻律教室）</div>
-                        <div class="font-style11">
-                            <span>名額:</span>
-                            <span>12</span>&nbsp;&nbsp;
-                            <span>剩餘:</span>
-                            <span>11</span>
-                        </div>
-                        <div class="font-style11">
-                            <span>報名期間:</span>
-                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="person-footer font-style3">
+                <span>開始報名</span>
             </div>
         </div>
 
-        <!--2.暫無活動-->
-        <div id="viewActivitiesNone" class="font-style12 font-color3">目前沒有任何活動</div>
+        <!--2.眷屬報名-->
+        <div id="viewFamilySignup" data-model="3">眷屬報名</div>
+
+        <!--3.時段報名-->
+        <div id="viewTimeSignup" data-model="5">時段報名</div>
+
+        <!--4.組隊報名-->
+        <div id="viewTeamSignup" data-model="4">
+            <div class="team-signup-title">
+                <div>
+                    <img src="img/event_date.png" id="teamSignupThumbnail">
+                </div>
+                <div class="font-style10 font-color2" id="teamSignupName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+            </div>
+            <div class="font-style11 font-color1 team-signup-add">新增團隊</div>
+            <div class="font-style11 font-color1">部門代碼</div>
+            <div class="team-signup-input">
+                <input type="text" id="departNo" data-role="none" class="input-text-full">
+            </div>
+            <div class="font-style11 font-color1">隊伍</div>
+            <div class="team-signup-input">
+                <input type="text" id="teamName" data-role="none" class="input-text-full">
+            </div>
+            <div class="font-style11 font-color1">
+                <span>成員(</span>
+                <span>0</span>
+                <span>/</span>
+                <span>3</span>
+                <span>)</span>
+            </div>
+            <div class="team-signup-add-friend font-style3 font-color5">
+                <div>
+                    <img src="img/addfriend.png">
+                </div>
+                <div>
+                    <span>新增名單</span>
+                </div>
+            </div>
+            <!--API 搜索成員，動態生成-->
+            <div></div>
+
+            <div class="font-style12 font-color2" style="margin-top:4.3vw;">
+                <span>*請先設定部門代碼，隊名與成員(</span>
+                <span class="font-color4">每隊人數</span>
+                <span class="font-color4">3</span>
+                <span class="font-color4">人</span>
+                <span>)，再點選[送出名單]按鍵完成報名</span>
+            </div>
+            <div class="font-style12 font-color2">*完成報名後，可再設定下一個組別</div>
+
+            <div class="team-signup-footer font-style3">
+                <div>送出名單</div>
+            </div>
+        </div>
 
     </div>
+
 
 </div>
