@@ -18,8 +18,8 @@
                 <div class="font-style10 font-color2">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
             </div>
             <div class="person-signup-set-title font-style11 font-color1">請設定您的報名資料</div>
-            <div class="person-signup-set-people font-style3 font-color1">報名人數：1</div>
-            <!--自定義控件-->
+            <div class="person-signup-set-people font-style3 font-color1">報名人數：1人</div>
+            <!--自定義欄位-->
             <div></div>
             <div class="person-signup-notice font-style11 font-color4">
                 <span>*完成報名後，若需更改報名資料，請直接與欄位上更改後，再點選[更改資料]按鍵</span>
@@ -33,10 +33,126 @@
         </div>
 
         <!--2.眷屬報名-->
-        <div id="viewFamilySignup" data-model="3">眷屬報名</div>
+        <div id="viewFamilySignup" data-model="3">
+            <div class="team-signup-title">
+                <div>
+                    <img src="img/event_date.png">
+                </div>
+                <div class="font-style10 font-color2">
+                    <div>[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                    <div style="margin-top:2.14vw;">您尚可報名人數：3人</div>
+                </div>
+            </div>
+            <div class="peraon-manage-signuped font-style11 font-color2">*本活動須同仁本人一同前往</div>
+            <div class="family-signup-set-title font-style11 font-color1">請先填寫同仁報名資訊</div>
+            <div class="family-signup-basic font-style7 font-color1">
+                <span>王小明</span>/
+                <span>同仁</span>/
+                <span>男</span>/
+                <span>F123456789</span>/
+                <span>1980-12-01</span>
+            </div>
+            <!--自定義欄位-->
+            <div class="family-signup-custom-field">
+                <div class="custom-field">
+                    <label for="" class="font-style11">活動建議</label>
+                    <textarea name="" id="" data-role="none" class="input-textarea"></textarea>
+                </div>
+                <div class="custom-field">
+                    <label for="" class="font-style11">搭車地點</label>
+                    <div>請選取</div>
+                </div>
+                <div class="custom-field">
+                    <label for="" class="font-style11">option1</label>
+                    <input name="" id="" type="text" data-role="none" class="input-text">
+                </div>
+                <div class="custom-field">
+                    <label for="" class="font-style11">option2</label>
+                    <input name="" id="" type="text" data-role="none" class="input-text">
+                </div>
+                <div class="custom-field">
+                    <label for="" class="font-style11">option3</label>
+                    <input name="" id="" type="text" data-role="none" class="input-text">
+                </div>
+                <!-- <div class="custom-field">
+                    <label for="" class="font-style11">午餐</label>
+                    <input name="aaa" id="r1" type="radio" value="面條" class="input-radio">
+                    <label for="r1" class="radio-label">面條</label>
+                    <input name="aaa" id="r2" type="radio" value="米飯" class="input-radio">
+                    <label for="r2" class="radio-label">米飯</label>
+                    <input name="aaa" id="r3" type="radio" value="漢堡" class="input-radio">
+                    <label for="r3" class="radio-label">漢堡</label>
+                </div> -->
+            </div>
+            <div class="blank-container-before-footer"></div>
+            <div class="person-footer font-style3 btn-disabled">
+                <span>選擇眷屬</span>
+            </div>
+        </div>
 
         <!--3.時段報名-->
-        <div id="viewTimeSignup" data-model="5">時段報名</div>
+        <div id="viewTimeSignup" data-model="5">
+            <div class="team-signup-title">
+                <div>
+                    <img src="img/event_date.png">
+                </div>
+                <div class="font-style10 font-color2">
+                    <div>[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                    <div style="margin-top:2.14vw;">您尚可報名人數：5人</div>
+                </div>
+            </div>
+            <div class="time-signup-select">请选取报名时段</div>
+            <div>
+                <table data-role="none" id="timeSignupTable">
+                    <tr>
+                        <td></td>
+                        <td>时段</td>
+                        <td>提供名额</td>
+                        <td>剩余名额</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="selectTime" value="08" id="b1" class="input-radio"> </td>
+                        <td>08:00-10:00</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="selectTime" value="10" id="b2" class="input-radio"> </td>
+                        <td>10:00-12:00</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="selectTime" value="14" id="b3" class="input-radio"> </td>
+                        <td>14:00-16:00</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="selectTime" value="16" id="b4" class="input-radio"> </td>
+                        <td>16:00-18:00</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="custom-field">
+                <label for="" class="font-style11">活動建議</label>
+                <textarea name="" id="" data-role="none" class="input-textarea"></textarea>
+            </div>
+            <div class="custom-field">
+                <label for="" class="font-style11">搭車地點</label>
+                <div>請選取</div>
+            </div>
+            <div class="custom-field">
+                <label for="" class="font-style11">option1</label>
+                <input name="" id="" type="text" data-role="none" class="input-text">
+            </div>
+            <div class="blank-container-before-footer"></div>
+            <div class="person-footer font-style3 btn-disabled">
+                <span>确定送出</span>
+            </div>
+        </div>
 
         <!--4.組隊報名-->
         <div id="viewTeamSignup" data-model="4">
@@ -86,6 +202,9 @@
                 <div>送出名單</div>
             </div>
         </div>
+
+        <!--5.选择眷属-->
+        <div></div>
 
     </div>
 

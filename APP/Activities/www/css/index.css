@@ -128,6 +128,55 @@
     display: none;
 }
 
+.custom-field {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.custom-field > label:nth-of-type(1) {
+    padding:4.3vw 0vw 2.14vw 0vw;
+    color: #0f0f0f; 
+}
+
+.input-textarea {
+    resize: none;
+    width: 85vw;
+    height: 9.17vw;
+    border: 1px solid #d6d6d6;
+    overflow-y: auto;
+    -webkit-appearance: none;
+    padding-left: 3.17vw;
+    margin-bottom: 2.14vw;
+}
+
+.input-text {
+    width: 89vw;
+    height: 10vw;
+    margin-top: 2.14vw;
+    border: 1px solid #d6d6d6;
+    outline: none;
+    padding-left: 3.17vw;
+    margin-bottom: 2.14vw;
+}
+
+.input-radio {
+    border: 1px solid #2c89bc !important;
+    background: #ffffff !important;
+}
+
+.input-radio:checked {
+    background: #2c89bc !important;
+}
+
+.radio-label {
+    border: none !important;
+    background: #f9f9f9 !important;
+}
+
+.blank-container-before-footer {
+    width: 95.28vw;
+    height: 10vw;
+}
+
 /************************************** viewActivitiesList ******************************************/
 
 .open-title div,
@@ -362,11 +411,6 @@
 }
 
 
-
-
-
-
-
 .team-signup-title {
     width: 92.58vw;
     height: 18.5vw;
@@ -534,6 +578,48 @@
 }
 
 
+.family-signup-set-title {
+    margin-top: 5vw;
+    width: 92.58vw;
+}
+
+.family-signup-basic {
+    margin-top: 2.14vw;
+    padding-bottom: 2.14vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.time-signup-select {
+    padding: 4vw 0 2.14vw 0; 
+}
+
+#timeSignupTable,
+#timeManageTable {
+    border-collapse: collapse;
+}
+
+#timeSignupTable tr:nth-of-type(1) {
+    height: 12.8vw;
+    border-bottom: 1px solid #989898;
+}
+
+#timeSignupTable tr > td:nth-of-type(1) {
+    width: 7.92vw;
+    vertical-align: middle;
+}
+
+#timeSignupTable tr > td:nth-of-type(2),
+#timeSignupTable tr > td:nth-of-type(3),
+#timeSignupTable tr > td:nth-of-type(4) {
+    width: 26.57vw;
+    text-align: center;
+}
+
+#timeSignupTable tr:nth-of-type(n+2) {
+    height: 15.538vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
 /***************************************** viewActivitiesManage ************************************/
 
 #viewActivitiesManage .page-main > div {
@@ -543,6 +629,65 @@
     margin-left: 3.71vw;
 }
 
+.peraon-manage-signuped {
+    margin-top: 4vw;
+    width: 92.58vw;
+}
+
+.time-manage-signuped1 {
+    width: 100%;
+    padding: 4vw 0 4vw 0;
+}
+
+.time-manage-signuped2 {
+    width: 100%;
+    padding-bottom: 4vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.time-manage-signuped3 {
+    width: 100%;
+    padding: 4vw 0 2.14vw 0;
+}
+
+.time-manage-signuped4 {
+    width: 100%;
+    padding-bottom: 2.14vw;
+}
+
+.time-manage-signuped5 {
+    width: 100%;
+    padding: 4.3vw 0 2.14vw 0;
+}
+
+.time-manage-line {
+    width: 92.58vw;
+    height: 1px;
+    background-color: #d6d6d6;
+    overflow: hidden;  
+}
+
+#timeManageTable tr {
+    height: 8.05vw;
+    color: #323232;
+}
+
+#timeManageTable tr:nth-of-type(1) {
+    font-weight: normal;
+    font-size: 3.349vw !important;
+    border-bottom: 1px solid #989898;
+}
+
+#timeManageTable tr:nth-of-type(n+2) {
+    font-weight: normal;
+    font-size: 3.55vw !important;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+#timeManageTable tr > td {
+    width: 30.86vw;
+    text-align: center;
+}
 
 
 
@@ -576,8 +721,6 @@
 
 .record-list > div:nth-of-type(1) {
     width: 75.5vw;
-    /* min-height: 11vw;
-    max-height: 15vw; */
 }
 
 .record-list > div:nth-of-type(1) > div:nth-of-type(2) {
@@ -603,19 +746,6 @@
     background-color: #d6d6d6;
     overflow: hidden;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

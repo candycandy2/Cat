@@ -3,101 +3,25 @@ $("#viewActivitiesDetail").pagecontainer({
     create: function (event, ui) {
         //page init
         /********************************** function *************************************/
-        window.ActivitiesDetailQuery = function () {
+        window.ActivitiesSignupQuery = function() {
 
             var self = this;
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 loadingMask("hide");
+                console.log(data);
 
-                if (data["ResultCode"] == "1") {
-                    var activityObj = data["Content"][0];
-                    console.log(activityObj);
-
-                    $("#detailThumbnail").attr("src", activityObj["ActivitiesImage"]);
-                    //$("#detailName").text(activityObj["ActivitiesName"]);
-                    $("#detailPlace").text(activityObj["QuotaPlaces"]);
-                    $("#detailLimit").text(activityObj["LimitPlaces"]);
-                    $("#detailDate").text(activityObj["SignupDate"]);
-                    $("#detailPeople").text(activityObj["SignupPlaces"]);
-                    $("#detailUser").text(activityObj["SignupPlaces"]);
-
-                    isRepeatSignup = activityObj["IsRepeatSignup"];
-                    isFull = activityObj["IsFull"];
-                    isSignup = activityObj["IsSignup"];
-                    actModel = activityObj["SignupModel"];
-
-                    switch (actModel) {
-                        case 1:
-                            modelName = "Person";
-                            break;
-                        case 3:
-                            modelName = "Family";
-                            break;
-                        case 4:
-                            modelName = "Time";
-                            break;
-                        case 5:
-                            modelName = "Team";
-                            break;
-                    }
-
-                    switch (isSignup) {
-                        case "N":
-                            viewName = "Signup";
-                            break;
-                        case "Y":
-                            viewName = "Manage";
-                            break;
-                    }
-
-                    //根據是否報名，是否滿額等條件判斷顯示不同按鈕
-                    if(isSignup == "Y" && actModel !== 4) {
-                        //管理
-                        showBtnByID("alreadyBtn", isSignup);
-                    } else if(isSignup == "Y" && actModel == 4) {
-                        //報名、管理
-                        showBtnByID("continueBtn", isSignup);
-                    } else if(isSignup == "N" && isRepeatSignup == "Y") {
-                        //已報名同類活動
-                        showBtnByID("repeatBtn", isSignup);
-                    } else if(isSignup == "N" && isRepeatSignup == "N" && isFull == "Y") {
-                        //已滿額
-                        showBtnByID("fullBtn", isSignup);
-                    } else if(isSignup == "N" && isRepeatSignup == "N" && isFull == "N") {
-                        //報名 
-                        showBtnByID("beginBtn");
-                    }
-
-
-                }
-
+                var resultcode = data['ResultCode'];
+                //do something
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
-                CustomAPI("POST", true, "Activities_Detail", self.successCallback, self.failCallback, activitiesDetailQueryData, "");
+            var __construct = function() {
+                CustomAPI("POST", true, "Activities_Signup", self.successCallback, self.failCallback, activitiesSignupQueryData, "");
             }();
 
         };
-
-
-        function showBtnByID(btn, bl) {
-            $.each($(".detail-footer > div"), function(index, item) {
-                if($(item).attr("id") == btn) {
-                    $(item).show();
-                } else {
-                    $(item).hide();
-                }
-            });
-
-            if(bl == "Y") {
-                $(".detail-header-after").show();
-            } else {
-                $(".detail-header-after").hide();
-            }
-        }
 
 
         function showViewByModel(view, model) {
@@ -113,7 +37,13 @@ $("#viewActivitiesDetail").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesDetail").on("pagebeforeshow", function (event, ui) {
-
+            activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
+                + 2025
+                + '</ActivitiesID><SignModel>'
+                + actModel
+                + '</SignModel><EmployeeNo>'
+                + myEmpNo
+                + '</EmployeeNo></LayoutHeader>';
         });
 
         $("#viewActivitiesDetail").on("pageshow", function (event, ui) {
@@ -135,6 +65,8 @@ $("#viewActivitiesDetail").pagecontainer({
             changePageByPanel("viewActivitiesSignup", true);
 
             showViewByModel("viewActivitiesSignup", actModel);
+
+            //ActivitiesSignupQuery();
             
         });
 
@@ -143,6 +75,8 @@ $("#viewActivitiesDetail").pagecontainer({
             changePageByPanel("viewActivitiesManage", true);
 
             showViewByModel("viewActivitiesManage", actModel);
+
+            //ActivitiesSignupQuery();
         });
 
 

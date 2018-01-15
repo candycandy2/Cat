@@ -1,7 +1,10 @@
 
 /*global variable, function*/
 //var lastPageID = "viewActivitiesSignup";
-var activitiesListQueryData,activitiesDetailQueryData;
+var activitiesListQueryData,activitiesDetailQueryData,activitiesSignupQueryData,activitiesSignupManageQueryData;
+var activitiesSignupConfirmQueryData,activitiesSignupCancelQueryData,activitiesSignupFamilyQueryData;
+var activitiesSignupEmployeeQueryData,activitiesRecordQueryData,activitiesFamilyQueryData;
+var activitiesFamilyAddQueryData,activitiesFamilyUpdateQueryData,activitiesFamilyDeleteQueryData;
 var pageList = ["viewPanel","viewActivitiesList","viewActivitiesRecord","viewMyFamilyDatum","viewActivitiesDetail","viewActivitiesSignup","viewActivitiesManage"];
 var pageVisitedList = ["viewActivitiesList"];
 var initialAppName = "Activities";
@@ -15,7 +18,7 @@ var isFull,isRepeatSignup,isSignup,actModel,modelName,viewName;
 
 window.initialSuccess = function() {
     activitiesListQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';
-    ActivitiesListQuery();
+    //ActivitiesListQuery();
 
     //changepage
     $.mobile.changePage("#viewActivitiesList");
