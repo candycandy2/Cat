@@ -429,28 +429,6 @@ function addPlugin() {
 
             }(value));
         });
-        /*
-        $.get("plugin/ckeditor/ckeditor.js").done(function() {
 
-            var script = document.createElement("script");
-            script.type = "text/javascript";
-            script.src = "plugin/ckeditor/ckeditor.js";
-            document.head.appendChild(script);
-
-        }).fail(function() {
-            console.log("----------------plugin ckeditor: file does not exist");
-        });
-
-        $.get("plugin/QForum/QForum.js").done(function() {
-
-            var script = document.createElement("script");
-            script.type = "text/javascript";
-            script.src = "plugin/QForum/QForum.js";
-            document.head.appendChild(script);
-
-        }).fail(function() {
-            console.log("----------------plugin QForum: file does not exist");
-        });
-        */
     });
 }

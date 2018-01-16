@@ -477,24 +477,13 @@ $("#viewLeaveSubmit").pagecontainer({
 
             checkLeaveBeforePreview();
         });
-        /*
-        //新基準日選擇——datetime change
-        $("#newBaseday").on("change", function() {
-            baseday = dateFormat($(this).val());
 
-            if (baseday === "") {
-                $("#chooseBaseday").text(selectBasedayStr);
-            } else {
-                $("#chooseBaseday").text(baseday);
-            }
-
-            //只要换基准日，结束时间都恢复“请选择”
-            $('#endText').text(pleaseSelectStr);
-            $("#endDate").val("");
-
-            checkLeaveBeforePreview();
+        $('#oldBaseDate').datetimepicker({
+            timepicker: false,
+            yearStart: '2016',
+            yearEnd: '2018'
         });
-        */
+
         //選擇有效基準日列表——click basedaylist
         $(document).on("click", ".basedayList .old-baseday-list div", function() {
             var self = $(this).text();
@@ -509,11 +498,12 @@ $("#viewLeaveSubmit").pagecontainer({
             //如果點擊 “選擇其他基準日” ，則彈出datetime
             if (self === otherBasedayStr) {
                 baseday = "";
-                if (device.platform === "iOS") {
+                $('#oldBaseDate').datetimepicker('show');
+                /*if (device.platform === "iOS") {
                     $("#oldBaseday").trigger("focus");
                 } else if (device.platform === "Android") {
                     $("#oldBaseday").trigger("click");
-                }
+                }*/
             } else {
                 baseday = self;
                 $("#chooseBaseday").text(self);
@@ -526,7 +516,24 @@ $("#viewLeaveSubmit").pagecontainer({
             checkLeaveBeforePreview();
         });
 
-        //無有效基準日選擇——datetime change
+         //無有效基準日選擇——datetime change
+        $("#oldBaseDate").on("change", function() {
+            baseday = ($(this).val()).substring(0, 10);
+
+            if (baseday === "") {
+                $("#chooseBaseday").text(selectBasedayStr);
+            } else {
+                $("#chooseBaseday").text(baseday);
+            }
+
+            //只要换基准日，结束时间都恢复“请选择”
+            $('#endText').text(pleaseSelectStr);
+            $("#endDate").val("");
+
+            checkLeaveBeforePreview();
+        });
+
+        /*//無有效基準日選擇——datetime change
         $("#oldBaseday").on("change", function() {
             baseday = dateFormat($(this).val());
 
@@ -541,7 +548,7 @@ $("#viewLeaveSubmit").pagecontainer({
             $("#endDate").val("");
 
             checkLeaveBeforePreview();
-        });
+        });*/
 
         //關閉有效基準日列表——popup close
         $("#closeBasedayList").on("click", function() {
