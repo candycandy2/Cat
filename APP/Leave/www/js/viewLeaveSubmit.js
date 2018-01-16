@@ -444,21 +444,40 @@ $("#viewLeaveSubmit").pagecontainer({
             checkLeaveBeforePreview();
         });
 
+        $('#newBaseDate').datetimepicker({
+            timepicker: false,
+            yearStart: '2016',
+            yearEnd: '2018',
+            onSelectTime: function(current_time, $input) {
+                $("#newBaseDate").blur();
+            }
+        });
+
         //選擇基準日，根據是否有有效基準日操作——click
         $("#selectBaseday").on("click", function() {
             if (basedayList) {
                 popupMsgInit('.basedayList');
             } else {
-                //review by alan => need to update Datepicker
                 //datetime-local
-                if (device.platform === "iOS") {
-                    $("#newBaseday").trigger("focus");
-                } else if (device.platform === "Android") {
-                    $("#newBaseday").trigger("click");
-                }
+                $('#newBaseDate').datetimepicker('show');
             }
         });
+        //新基準日選擇——datetime change
+        $("#newBaseDate").on("change", function() {
+            baseday = ($(this).val()).substring(0, 10);
+            if (baseday === "") {
+                $("#chooseBaseday").text(selectBasedayStr);
+            } else {
+                $("#chooseBaseday").text(baseday);
+            }
 
+            //只要换基准日，结束时间都恢复“请选择”
+            $('#endText').text(pleaseSelectStr);
+            $("#endDate").val("");
+
+            checkLeaveBeforePreview();
+        });
+        /*
         //新基準日選擇——datetime change
         $("#newBaseday").on("change", function() {
             baseday = dateFormat($(this).val());
@@ -475,7 +494,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
             checkLeaveBeforePreview();
         });
-
+        */
         //選擇有效基準日列表——click basedaylist
         $(document).on("click", ".basedayList .old-baseday-list div", function() {
             var self = $(this).text();

@@ -1,5 +1,5 @@
 
-//APP need have a div with class-name = "QForum-Content"
+//Plugin - QForum
 var QForum = {
     appKey: "appqforum",
     appSecretKey: "",
