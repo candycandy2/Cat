@@ -174,7 +174,7 @@
 
 .blank-container-before-footer {
     width: 95.28vw;
-    height: 10vw;
+    height: 12vw;
 }
 
 /************************************** viewActivitiesList ******************************************/
@@ -557,7 +557,109 @@
     width: 10.315vw;
 }
 
+/* employee component */
+#searchBar {
+    width: 75VW;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d6d6d6;
+    border-radius: 4px;
+    background-color: #ffffff;
+    background-image: url("../img/search.png");
+    background-repeat: no-repeat;
+    background-size: 3.945VW;
+    background-position-x: 2.71VW;
+    background-position-y: 1.6275VW;
+    height: 8VW;
+    margin-top: 5.07VW;
+    text-indent: 8VW;
+    font-size: 4vw;
+    padding: 0;
+    padding-top: 0.8vw;
+}
 
+#employee-popup-option-popup .header.typeB {
+    height: 18.8VW;
+}
+
+#employee-popup-option-popup .header .title {
+    width: 75VW;
+}
+
+#employee-popup-option-popup ul {
+    margin-top: 0VW;
+}
+
+#employee-popup-option-popup ul::-webkit-scrollbar {
+    width: 3px;
+    margin: 0px;
+}
+
+#employee-popup-option-popup ul::-webkit-scrollbar-track {
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px;*/
+}
+
+#employee-popup-option-popup ul::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);*/
+}
+
+#employee-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#loaderQuery {
+    width: 4vw;
+    height: 4vw;
+    margin-left: 48%;
+    display: none;
+}
+
+.queryNoEmployee>.ui-content {
+    padding: 0 !important;
+}
+
+.queryNoEmployee .ui-content>.header {
+    margin-top: 10%;
+}
+
+.tpl-option-msg-list {
+    border-top-style: solid;
+    border-top-color: #efefef;
+    border-width: 0.1px;
+    display: -webkit-flex;
+}
+
+.team-employee-list {
+    width: 92.58vw;
+    height: 15.539vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.team-employee-list > span {
+    height: 15.539vw;
+    line-height: 15.539vw;
+    display: inline-block;
+}
+
+.team-employee-list > span:nth-of-type(1) {
+    width: 18.908vw;
+    padding-left: 3.71vw;
+}
+
+.team-employee-list > span:nth-of-type(2) {
+    width: 62vw;
+}
+
+.team-signup-delete {
+    width: 4.2vw;
+    height: 4.2vw;
+}
 
 .all-list-img {
     width: 5.233vw;
@@ -794,15 +896,27 @@
     height: 13.848vw;
 }
 
+.family-save-btn {
+    position: fixed;
+    top: 4.5vw;
+    right: 3.71vw;
+    z-index: 1000;
+    color: #ffffff !important;
+    opacity: 0.6;
+}
+
 #viewFamilyList {
     margin-top: 5vw;
+}
+
+#familyList {
+    background: #ffffff;
 }
 
 .family-list {
     width: 86.5vw;
     height: 14.5vw;
     padding: 3vw 6.71vw;
-    background: #ffffff;
 }
 
 .family-list > div {
@@ -825,15 +939,16 @@
 
 .family-list > div:nth-of-type(2) {
     width: 22.5vw;
-    height: 14.5vw;
-    line-height: 5vw;
+    height: 5vw;
+    padding-top: 4.5vw;
+    /* line-height: 5vw; */
 }
 
 .family-delete {
     width: 4.5vw;
     height: 4.5vw;
     margin-left: 18vw;
-    margin-top: 5vw;
+    /* margin-top: 5vw; */
 }
 
 .family-notice {
@@ -878,13 +993,45 @@
     border: 1px solid #d6d6d6;
 }
 
+.family-input-dropdown {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../img/dropdown.png) no-repeat;
+    background-size: 5% 20%;
+    background-position: 50vw 4.5vw;
+}
 
+.confirmDeteteFamily >.ui-content,
+.confirmCancelEditFamily >.ui-content {
+    padding: 0 !important;
+}
 
+.confirmDeteteFamily .ui-content>.header,
+.confirmCancelEditFamily .ui-content>.header {
+    margin-top: 10%;
+}
 
+.confirmDeteteFamily .ui-content>.main,
+.confirmCancelEditFamily .ui-content>.main {
+    margin-top: 6%;
+}
 
+.confirmCancelAddFamily >.ui-content {
+    padding: 0 !important;
+}
 
+.confirmCancelAddFamily .ui-content>.header {
+    margin-top: 14%;
+}
 
-
+.confirmCancelAddFamily .ui-content>.main {
+    margin-top: 12%;
+}
 
 
 
