@@ -4,9 +4,7 @@ $("#viewActivitiesList").pagecontainer({
         //page init
         /********************************** function *************************************/
         window.ActivitiesListQuery = function() {
-
-            var self = this;
-
+            
             this.successCallback = function(data) {
                 loadingMask("hide");
                 console.log(data);
