@@ -4,10 +4,54 @@
 //2. photo library
 var CameraPlugin = {
     imageUploadURL: "",
+    //Maximum size(MB) of upload image
+    imageMaxSize: 10,
+    viewList: ["popup"],
+    initial: function() {
+
+        //Load View
+        $.map(CameraPlugin.viewList, function(value, key) {
+            (function(viewID, viewIndex) {
+                $.get("plugin/camera/view/" + viewID + ".html", function(data) {
+                    $.mobile.pageContainer.append(data);
+
+                    viewIndex++;
+
+                    if (viewIndex == CameraPlugin.viewList.length) {
+                        CameraPlugin.renderHTML();
+                    }
+                }, "html");
+            }(value, key));
+        });
+
+    },
+    renderHTML: function() {
+
+        //UI Popup : Image size overflow
+        var imageSizeOverflowData = {
+            id: "imageSizeOverflow",
+            content: $("template#tplImageSizeOverflow").html()
+        };
+
+        tplJS.Popup(null, null, "append", imageSizeOverflowData);
+
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).hasClass("confirm") || $(event.target).parent().hasClass("confirm")) {
+                    $("#imageSizeOverflow").popup("close");
+
+                    footerFixed();
+                    loadingMask("hide");
+                }
+            }
+        }, "#imageSizeOverflow");
+
+    },
     setOptions: function(srcType) {
+
         var options = {
             // Some common settings are 20, 50, and 100
-            quality: 100,
+            quality: 90,
             destinationType: Camera.DestinationType.FILE_URI,
             // In this app, dynamically set the picture source, Camera or photo gallery
             sourceType: srcType,
@@ -18,6 +62,7 @@ var CameraPlugin = {
             allowEdit: false,
             correctOrientation: true  //Corrects Android orientation quirks
         }
+
         return options;
     },
     openFilePicker: function(openType, callback) {
@@ -49,7 +94,26 @@ var CameraPlugin = {
             var imageRealURLArray = imageRealURL.split("?");
             CameraPlugin.imageUploadURL = imageRealURLArray[0];
 
-            callback(CameraPlugin.imageUploadURL);
+            window.resolveLocalFileSystemURL(imageUri, function success(fileEntry) {
+                console.log(fileEntry);
+
+                fileEntry.file(function(fileObj) {
+                    console.log(fileObj);
+
+                    var sizeMB = (parseInt(fileObj.size, 10) / 1024 / 1024).toFixed(2);
+                    console.log("sizeMB----:"+sizeMB);
+
+                    if (sizeMB > CameraPlugin.imageMaxSize) {
+                        $("#imageSizeOverflow").popup("open");
+                        callback("sizeOverflow", CameraPlugin.imageUploadURL);
+                    } else {
+                        callback("sizeOK", CameraPlugin.imageUploadURL);
+                    }
+                });
+
+            }, function () {
+                // error
+            });
 
         }, function cameraError(error) {
 
@@ -59,3 +123,5 @@ var CameraPlugin = {
         }, options);
     }
 };
+
+CameraPlugin.initial();
