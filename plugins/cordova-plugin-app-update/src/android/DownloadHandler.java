@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.view.View.OnClickListener;
