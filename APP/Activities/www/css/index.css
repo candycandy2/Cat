@@ -59,7 +59,8 @@
 
 .menu,
 .back-list,
-.back-detail {
+.back-detail,
+.back-family {
     width: 4.934VW;
 }
 
@@ -119,8 +120,64 @@
     text-indent: 3.71vw;
 }
 
+.view-show {
+    display: block;
+}
 
-/************************************** viewActivitiesSignup ******************************************/
+.view-hide {
+    display: none;
+}
+
+.custom-field {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.custom-field > label:nth-of-type(1) {
+    padding:4.3vw 0vw 2.14vw 0vw;
+    color: #0f0f0f; 
+}
+
+.input-textarea {
+    resize: none;
+    width: 85vw;
+    height: 9.17vw;
+    border: 1px solid #d6d6d6;
+    overflow-y: auto;
+    -webkit-appearance: none;
+    padding-left: 3.17vw;
+    margin-bottom: 2.14vw;
+}
+
+.input-text {
+    width: 89vw;
+    height: 10vw;
+    margin-top: 2.14vw;
+    border: 1px solid #d6d6d6;
+    outline: none;
+    padding-left: 3.17vw;
+    margin-bottom: 2.14vw;
+}
+
+.input-radio {
+    border: 1px solid #2c89bc !important;
+    background: #ffffff !important;
+}
+
+.input-radio:checked {
+    background: #2c89bc !important;
+}
+
+.radio-label {
+    border: none !important;
+    background: #f9f9f9 !important;
+}
+
+.blank-container-before-footer {
+    width: 95.28vw;
+    height: 12vw;
+}
+
+/************************************** viewActivitiesList ******************************************/
 
 .open-title div,
 .close-title div {
@@ -159,7 +216,7 @@
 .activity-list {
     padding: 4vw 3.71vw;
     width: 92.58vw;
-    height: 20vw;
+    height: 18vw;
 }
 
 .activity-list > div {
@@ -172,7 +229,7 @@
 
 .activity-list-img {
     width: 17.5vw;
-    height: 20vw;
+    height: 18vw;
 }
 .activity-list-img img {
     width: 14.5vw;
@@ -182,7 +239,7 @@
 
 .activity-list-info {
     width: 75vw;
-    height: 20vw;
+    height: 18vw;
 }
 
 .activity-list-info > div:nth-of-type(1) {
@@ -222,26 +279,16 @@
 }
 
 /**************************************** viewActivitiesDetail ***************************************/
-#activitiesDetailTeamSignup {
+#activityDetail {
     width: 92.58vw;
-    min-height: 30vw;
+    min-height: 38vw;
     margin-top: 5vw;
     margin-left: 3.71vw;
-    /* display: none; */
-}
-
-#activitiesDetailTeamManage {
-    width: 92.58vw;
-    min-height: 30vw;
-    margin-top: 5vw;
-    margin-left: 3.71vw;
-    display: none;
 }
 
 .detail-header {
     width: 92.58vw;
-    height: 30vw;
-    border-bottom: 1px solid #d6d6d6;
+    height: 23vw;
 }
 
 .detail-header > div {
@@ -254,7 +301,7 @@
 
 .detail-header-img {
     width: 17.5vw;
-    height: 23.5vw;
+    height: 23vw;
 }
 
 .detail-header-img img {
@@ -265,7 +312,7 @@
 
 .detail-header-info {
     width: 75vw;
-    height: 23.5vw;
+    height: 23vw;
 }
 
 .detail-header-info > div:nth-of-type(1) {
@@ -283,6 +330,21 @@
 .detail-header-info > div:nth-of-type(3),
 .detail-header-info > div:nth-of-type(4) {
     margin-top: 1.16vw;
+}
+
+.detail-header-after {
+    width: 75vw;
+    margin-left: 17.5vw;
+    margin-top: 2vw;
+    display: none;
+}
+
+.detail-line {
+    width: 100%;
+    height: 1px;
+    background-color: #d6d6d6;
+    overflow: hidden;
+    margin-top: 4vw;
 }
 
 .detail-main {
@@ -305,15 +367,49 @@
     background: #2d89bc;
 }
 
+.detail-footer > div {
+    display: none;
+}
 
-/******************************************* viewSignupManage **************************************/
-#viewTeamSignup {
+
+/******************************************* viewActivitiesSignup **************************************/
+#viewActivitiesSignup .page-main > div {
     width: 92.58vw;
     min-height: 30vw;
     margin-top: 5vw;
     margin-left: 3.71vw;
-    /* display: none; */
 }
+
+.person-signup-set-title {
+    width: 92.58vw;
+    margin-top: 4vw;
+}
+
+.person-signup-set-people {
+    width: 92.58vw;
+    margin-top: 2.14vw;
+    padding-bottom: 2.14vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.person-signup-notice {
+    line-height: 1.25;
+    margin-top: 4.3vw;
+    margin-bottom: 0.6vw;
+}
+
+.person-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 10.656vw;
+    text-align: center;
+    line-height: 10.656vw;
+    color: #ffffff;
+    background: #2d89bc;
+}
+
 
 .team-signup-title {
     width: 92.58vw;
@@ -404,37 +500,538 @@
     background: #d6d6d6;
 }
 
-#viewTeamManage {
+.team-manage-signuped {
+    width: 100%;
+    margin-top: 4vw;
+}
+
+#teamTableContainer {
+    margin-top: 4vw;
+}
+
+#teamTable {
+    border-collapse: collapse;
+}
+
+#teamTable tr:nth-of-type(1) {
+    height: 12.077vw;
+    color: #323232;
+    font-weight: normal;
+    font-size: 3.349vw !important;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+#teamTable tr:nth-of-type(2n+2) {
+    height: 15.538vw;
+    color: #323232;
+    font-weight: normal;
+    font-size: 3.349vw !important;
+    border-bottom: 1px solid #f6f6f6;
+}
+
+#teamTable tr:nth-of-type(2n+3) {
+    color: #666666;
+    font-weight: normal;
+    font-size: 3.55vw !important;
+}
+
+#teamTable td:nth-of-type(1) {
+    text-align: center;
+    width: 11.889vw;
+}
+
+#teamTable td:nth-of-type(2) {
+    text-align: center;
+    width: 22.135vw;
+}
+
+#teamTable td:nth-of-type(3) {
+    width: 4.428vw;
+}
+
+#teamTable td:nth-of-type(4) {
+    width: 44vw;
+}
+
+#teamTable td:nth-of-type(5) {
+    width: 10.315vw;
+}
+
+/* employee component */
+#searchBar {
+    width: 75VW;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d6d6d6;
+    border-radius: 4px;
+    background-color: #ffffff;
+    background-image: url("../img/search.png");
+    background-repeat: no-repeat;
+    background-size: 3.945VW;
+    background-position-x: 2.71VW;
+    background-position-y: 1.6275VW;
+    height: 8VW;
+    margin-top: 5.07VW;
+    text-indent: 8VW;
+    font-size: 4vw;
+    padding: 0;
+    padding-top: 0.8vw;
+}
+
+#employee-popup-option-popup .header.typeB {
+    height: 18.8VW;
+}
+
+#employee-popup-option-popup .header .title {
+    width: 75VW;
+}
+
+#employee-popup-option-popup ul {
+    margin-top: 0VW;
+}
+
+#employee-popup-option-popup ul::-webkit-scrollbar {
+    width: 3px;
+    margin: 0px;
+}
+
+#employee-popup-option-popup ul::-webkit-scrollbar-track {
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px;*/
+}
+
+#employee-popup-option-popup ul::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);*/
+}
+
+#employee-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#loaderQuery {
+    width: 4vw;
+    height: 4vw;
+    margin-left: 48%;
+    display: none;
+}
+
+.queryNoEmployee>.ui-content {
+    padding: 0 !important;
+}
+
+.queryNoEmployee .ui-content>.header {
+    margin-top: 10%;
+}
+
+.tpl-option-msg-list {
+    border-top-style: solid;
+    border-top-color: #efefef;
+    border-width: 0.1px;
+    display: -webkit-flex;
+}
+
+.team-employee-list {
+    width: 92.58vw;
+    height: 15.539vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.team-employee-list > span {
+    height: 15.539vw;
+    line-height: 15.539vw;
+    display: inline-block;
+}
+
+.team-employee-list > span:nth-of-type(1) {
+    width: 18.908vw;
+    padding-left: 3.71vw;
+}
+
+.team-employee-list > span:nth-of-type(2) {
+    width: 62vw;
+}
+
+.team-signup-delete {
+    width: 4.2vw;
+    height: 4.2vw;
+}
+
+.all-list-img {
+    width: 5.233vw;
+    height: 5.233vw;
+    margin-left: 2.541vw;
+}
+
+.list-img {
+    width: 4vw;
+    height: 4vw;
+    margin-left: 2.541vw;
+}
+
+.team-delete {
+    width: 4vw;
+    height: 4vw;
+    margin-left: 2.541vw;
+}
+
+
+.family-signup-set-title {
+    margin-top: 5vw;
+    width: 92.58vw;
+}
+
+.family-signup-basic {
+    margin-top: 2.14vw;
+    padding-bottom: 2.14vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.time-signup-select {
+    padding: 4vw 0 2.14vw 0; 
+}
+
+#timeSignupTable,
+#timeManageTable {
+    border-collapse: collapse;
+}
+
+#timeSignupTable tr:nth-of-type(1) {
+    height: 12.8vw;
+    border-bottom: 1px solid #989898;
+}
+
+#timeSignupTable tr > td:nth-of-type(1) {
+    width: 7.92vw;
+    vertical-align: middle;
+}
+
+#timeSignupTable tr > td:nth-of-type(2),
+#timeSignupTable tr > td:nth-of-type(3),
+#timeSignupTable tr > td:nth-of-type(4) {
+    width: 26.57vw;
+    text-align: center;
+}
+
+#timeSignupTable tr:nth-of-type(n+2) {
+    height: 15.538vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+/***************************************** viewActivitiesManage ************************************/
+
+#viewActivitiesManage .page-main > div {
     width: 92.58vw;
     min-height: 30vw;
     margin-top: 5vw;
     margin-left: 3.71vw;
-    /* display: none; */
+}
+
+.peraon-manage-signuped {
+    margin-top: 4vw;
+    width: 92.58vw;
+}
+
+.time-manage-signuped1 {
+    width: 100%;
+    padding: 4vw 0 4vw 0;
+}
+
+.time-manage-signuped2 {
+    width: 100%;
+    padding-bottom: 4vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.time-manage-signuped3 {
+    width: 100%;
+    padding: 4vw 0 2.14vw 0;
+}
+
+.time-manage-signuped4 {
+    width: 100%;
+    padding-bottom: 2.14vw;
+}
+
+.time-manage-signuped5 {
+    width: 100%;
+    padding: 4.3vw 0 2.14vw 0;
+}
+
+.time-manage-line {
+    width: 92.58vw;
+    height: 1px;
+    background-color: #d6d6d6;
+    overflow: hidden;  
+}
+
+#timeManageTable tr {
+    height: 8.05vw;
+    color: #323232;
+}
+
+#timeManageTable tr:nth-of-type(1) {
+    font-weight: normal;
+    font-size: 3.349vw !important;
+    border-bottom: 1px solid #989898;
+}
+
+#timeManageTable tr:nth-of-type(n+2) {
+    font-weight: normal;
+    font-size: 3.55vw !important;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+#timeManageTable tr > td {
+    width: 30.86vw;
+    text-align: center;
+}
+
+
+
+/***************************************** viewActivitiesRecord *************************************/
+
+#viewRecordList {
+    width: 100vw;
+    min-height: 15vw;
+    margin-top: 5vw;
+    margin-bottom: 4vw;
+    background: #ffffff;
+}
+
+#viewRecordsNone {
+    width: 100vw;
+    text-align: center;
+    line-height: 150vw;
+    margin: 0vw 0vw;
+}
+
+.record-list {
+    width: 89.5vw;
+    min-height: 11vw;
+    margin-left: 3.71vw;
+    padding: 3vw 0 7vw 3vw;
+}
+
+.record-list > div {
+    float: left;
+}
+
+.record-list > div:nth-of-type(1) {
+    width: 75.5vw;
+}
+
+.record-list > div:nth-of-type(1) > div:nth-of-type(2) {
+    margin-top: 1.16vw;
+}
+
+.record-list > div:nth-of-type(2) {
+    width: 8vw;
+    height: 4.5vw;
+    margin-left: 5.5vw;
+    margin-top: 4.5vw;
+}
+
+.record-delete {
+    width: 4.5vw;
+    height: 4.5vw;
+}
+
+.record-line {
+    width: 92.58vw;
+    height: 1px;
+    margin-left: 3.71vw;
+    background-color: #d6d6d6;
+    overflow: hidden;
 }
 
 
 
 
+/******************************************* viewMyFamilyDatum **************************************/
+
+#viewFamilyNone {
+    width: 100vw;
+    text-align: center;
+    line-height: 150vw;
+    margin: 0vw 0vw;
+    display: none;
+}
+
+.save-family-btn {
+    font-weight: normal;
+    font-size: 3.768vw !important;
+}
+
+#viewMyFamilyDatum .page-header a:link {
+    color: #666 !important;
+}
+
+#viewMyFamilyDatum .page-header a:visited {
+    color: #666 !important;
+}
+
+#viewMyFamilyDatum .page-header a:hover {
+    color: #666 !important;
+}
+
+#viewMyFamilyDatum .page-header a:active {
+    color: #666 !important;
+}
+
+.family-add-img {
+    position: fixed;
+    bottom: 4.3vw;
+    right: 6.727vw;
+    width: 13.848vw;
+    height: 13.848vw;
+}
+
+.family-add-img img {
+    width: 13.848vw;
+    height: 13.848vw;
+}
+
+.family-save-btn {
+    position: fixed;
+    top: 4.5vw;
+    right: 3.71vw;
+    z-index: 1000;
+    color: #ffffff !important;
+    opacity: 0.6;
+}
+
+#viewFamilyList {
+    margin-top: 5vw;
+}
+
+#familyList {
+    background: #ffffff;
+}
+
+.family-list {
+    width: 86.5vw;
+    height: 14.5vw;
+    padding: 3vw 6.71vw;
+}
+
+.family-list > div {
+    float: left;
+}
+
+.family-list ::after {
+    clear: both;
+}
+
+.family-list > div:nth-of-type(1) {
+    width: 64vw;
+    height:14.5vw;
+}
+
+.family-list > div:nth-of-type(1) > div:nth-of-type(2),
+.family-list > div:nth-of-type(1) > div:nth-of-type(3) {
+    margin-top: 1.16vw;
+}
+
+.family-list > div:nth-of-type(2) {
+    width: 22.5vw;
+    height: 5vw;
+    padding-top: 4.5vw;
+    /* line-height: 5vw; */
+}
+
+.family-delete {
+    width: 4.5vw;
+    height: 4.5vw;
+    margin-left: 18vw;
+    /* margin-top: 5vw; */
+}
+
+.family-notice {
+    width: 92.58vw;
+    min-height: 50vw;
+    margin-top: 4.3vw;
+    margin-left: 3.71vw;
+}
+
+.family-notice div {
+    line-height: 1.5;
+}
 
 
+#viewFamilyEdit {
+    width: 92.58vw;
+    margin-top: 10vw;
+    margin-left: 3.71vw;
+}
 
+.family-input-div {
+    width: 92.58vw;
+    height: 16vw;
+    margin-bottom: 2vw;
+}
 
+.family-input-div label {
+    width: 20vw;
+    height: 10vw;
+    display: inline-block;
+    text-align: right;
+    line-height: 10vw;
+}
 
+.family-input {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+}
 
+.family-input-dropdown {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../img/dropdown.png) no-repeat;
+    background-size: 5% 20%;
+    background-position: 50vw 4.5vw;
+}
 
+.confirmDeteteFamily >.ui-content,
+.confirmCancelEditFamily >.ui-content {
+    padding: 0 !important;
+}
 
+.confirmDeteteFamily .ui-content>.header,
+.confirmCancelEditFamily .ui-content>.header {
+    margin-top: 10%;
+}
 
+.confirmDeteteFamily .ui-content>.main,
+.confirmCancelEditFamily .ui-content>.main {
+    margin-top: 6%;
+}
 
+.confirmCancelAddFamily >.ui-content {
+    padding: 0 !important;
+}
 
+.confirmCancelAddFamily .ui-content>.header {
+    margin-top: 14%;
+}
 
-
-
-
-
-
-
-
-
+.confirmCancelAddFamily .ui-content>.main {
+    margin-top: 12%;
+}
 
 
 

@@ -2,7 +2,7 @@
 var panel = htmlContent
         +'<div data-role="panel" id="mypanel" data-display="overlay">'
         +   '<div class="ios-fix-overlap-div"></div>'
-        +   '<div class="panel-content" id="mypanelviewActivitiesSignup">'
+        +   '<div class="panel-content" id="mypanelviewActivitiesList">'
         +       '<span class="panel-text">活動報名</span>'
         //+       '<span class="panel-text">' + langStr["str_002"] + '</span>'
         +   '</div>'
@@ -14,30 +14,31 @@ var panel = htmlContent
         +       '<span class="panel-text">我的眷屬資料</span>'
         //+       '<span class="panel-text">' + langStr["str_004"] + '</span>'
         +   '</div>'
-        +   '<div class="panel-content" id="mypanelviewActivitiesDetail" style="display:none;">'
+        +   '<div class="panel-content view-hide" id="mypanelviewActivitiesDetail">'
         +       '<span class="panel-text">活動詳情</span>'
-        //+       '<span class="panel-text">' + langStr["str_004"] + '</span>'
         +   '</div>'
-        +   '<div class="panel-content" id="mypanelviewSignupManage" style="display:none;">'
-        +       '<span class="panel-text">報名和管理</span>'
-        //+       '<span class="panel-text">' + langStr["str_004"] + '</span>'
+        +   '<div class="panel-content view-hide" id="mypanelviewActivitiesSignup">'
+        +       '<span class="panel-text">報名</span>'
+        +   '</div>'
+        +   '<div class="panel-content view-hide" id="mypanelviewActivitiesManage">'
+        +       '<span class="panel-text">管理</span>'
         +   '</div>'
         +'</div>'
-        +'<div class="page-mask" style="display: none;"></div>';
+        +'<div class="page-mask view-hide"></div>';
 
 $(document).one("pagebeforeshow", function() {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
-    $("#mypanel #mypanelviewActivitiesSignup").css("background", "#503f81");
-    $("#mypanel #mypanelviewActivitiesSignup").css("color", "#fff");
+    $("#mypanel #mypanelviewActivitiesList").css("background", "#503f81");
+    $("#mypanel #mypanelviewActivitiesList").css("color", "#fff");
 
     if (device.platform === "iOS") {
-        $("#mypanelviewActivitiesSignup").css("margin-top", "20px");
+        $("#mypanelviewActivitiesList").css("margin-top", "20px");
         $(".page-mask").css("top", "20px");
     }
 
-    $("#mypanel #mypanelviewActivitiesSignup").on("click", function() {
-        changePageByPanel("viewActivitiesSignup", true);
+    $("#mypanel #mypanelviewActivitiesList").on("click", function() {
+        changePageByPanel("viewActivitiesList", true);
     });
 
     $("#mypanel #mypanelviewActivitiesRecord").on("click", function() {

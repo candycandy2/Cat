@@ -3,21 +3,170 @@
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none">
             <img src="img/menu.png" class="menu">
+            <img src="img/back.png" class="back-family" style="display:none;">
         </a>
         <div class="header-style">
-            <div class="ui-title">
-                我的眷屬資料
-                <!-- <span class="langStr" data-id="str_004"></span> -->
+            <div class="ui-title">我的眷屬資料</div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main">
+        <!--1.眷屬資料列表-->
+        <div id="viewFamilyList">
+            <div id="familyList">
+                <!-- <div class="family-list">
+                    <div class="font-style10 font-color2 family-edit">
+                        <div>小花/子女</div>
+                        <div>1996/01/01</div>
+                        <div>F22123456</div>
+                    </div>
+                    <div class="font-style10 font-color3">
+                        <span>活動尚未結束無法刪除</span>
+                    </div>
+                </div>
+                <div class="activity-line"></div> -->
+            </div>
+            <div class="family-notice">
+                <div class="font-style12 fon-color2">
+                    <span>*您已設定保留眷屬資料供活動報名使用，資料會於在職期間保留於系統中，但您可隨時於系統中刪除</span>
+                </div>
+                <div class="font-style12 font-color4">
+                    <span>*請注意，當眷屬報名的活動尚未結束時，無法刪除資料</span>
+                </div>
+            </div>
+        </div>
+
+        <!--2.新增和編輯頁面-->
+        <div id="viewFamilyEdit" style="display:none;">
+            <div class="family-input-div">
+                <label for="">姓名</label>
+                <input type="text" name="" id="" data-role="none" class="family-input">
+            </div>
+            <div class="family-input-div">
+                <label for="">關係</label>
+                <input type="text" name="" id="familyRelationship" data-role="none" class="family-input-dropdown" readonly>
+            </div>
+            <div class="family-input-div">
+                <label for="">性別</label>
+                <input type="text" name="" id="familyGender" data-role="none" class="family-input-dropdown" readonly>
+            </div>
+            <div class="family-input-div">
+                <label for="">身份證</label>
+                <input type="text" name="" id="" data-role="none" class="family-input">
+            </div>
+            <div class="family-input-div">
+                <label for="">生日</label>
+                <input type="text" name="" id="" data-role="none" class="family-input">
+            </div>
+            <!--dropdownlist: hidden-->
+            <div id="relationshipDropdownlist" style="display:none;"></div>
+            <div id="genderDropdownlist" style="display:none;"></div>
+            <!--fixed save string-->
+            <div class="family-save-btn font-style10">儲存</div>
+        </div>
+
+        <!--3.fixed add img-->
+        <div class="family-add-img">
+            <img src="img/floating_add.png">
+        </div>
+
+        <!--4.暫無眷屬資料-->
+        <div id="viewFamilyNone" class="font-style12 font-color3">目前沒有眷屬資料</div>
+    </div>
+
+    <!--確定刪除眷屬資料-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeteteFamily" for="confirmDeteteFamily">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定刪除眷屬資料-->
+                        <span class="langStr" data-id="str_032"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">林小美</p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmDeleteFamilyBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div data-role="main" class="page-main" style="line-height: initial !important;">
-        <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="a">
-            <li><a href="#viewMain">前一頁</a></li>
-            <li><a href="#">Andy => 下班去吃燒烤</a></li>
-            <li><a href="#">Ken => 我想去夜市</a></li>
-            <li><a href="#">Peter => 今天晚上不行</a></li>
-            <li><a href="#">May => 我想跟</a></li>
-        </ul>
+
+    <!--確定取消新增-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelAddFamily" for="confirmCancelAddFamily">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定取消新增-->
+                        <span class="langStr" data-id="str_033"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmCancelAddFamilyBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!--確定取消編輯-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelEditFamily" for="confirmCancelEditFamily">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定取消新增-->
+                        <span class="langStr" data-id="str_031"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">林小美</p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmCancelEditFamilyBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

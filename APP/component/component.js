@@ -383,8 +383,9 @@ $(document).one("pagebeforecreate", function() {
                 width: window.screen.width * ratio,
                 height: window.screen.height * ratio
             };
-            /*if (screen.width === 1125 && screen.height === 2001) { 
+            /*if (screen.width === 1125 && screen.height === 2436) { 
                 $('meta[name=viewport]').attr('content', 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover');
+                $('body').attr('style', '-webkit-text-size-adjust: 100%; font-family: "Heiti TC"; padding-top: env(safe-area-inset-top)!important;');
             }*/
             if (versionCompare(device.version, "11.0", "") === 1) {
 
@@ -521,7 +522,7 @@ function getAppLogParam() {
     }
 }
 
-function onPause() {    
+function onPause() {
     if (loginData.uuid.length > 0 && loginData['loginid'].length > 0) {
         var appLogData = JSON.parse(window.localStorage.getItem('appLogData'));
         if (appLogData != null && appLogData.log_list.length > 0) {
@@ -1169,8 +1170,7 @@ function handleOpenURL(url) {
         } else {
             //For Other APP, which was be opened by dynamic action,
             //the specific funciton [handleOpenByScheme] need to set in APP/www/js/index.js
-            if(typeof handleOpenByScheme !== "undefined")
-            {
+            if (typeof handleOpenByScheme !== "undefined") {
                 if (handleOpenByScheme !== null) {
                     if (typeof handleOpenByScheme === "function") {
                         callHandleOpenURL = false;

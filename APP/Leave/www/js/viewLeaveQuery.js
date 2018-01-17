@@ -1,12 +1,12 @@
 var leaveRevokeStr = langStr["str_157"]; //銷假申請
 var leaveQueryStr = langStr["str_078"]; //假單查詢
 var viewLeaveQueryInit = false;
-var formSigning = "表單簽核中";
-var formRefused = "表單已拒絕";
-var formWithdrawed = "表單已撤回";
-var formEffected = "表單已生效";
-var revokedStr = "已銷假";
-var revokingStr = "銷假中";
+var formSigning = langStr["str_147"]; //"表單簽核中";
+var formRefused = langStr["str_150"]; //"表單已拒絕";
+var formWithdrawed = langStr["str_148"]; //"表單已撤回";
+var formEffected = langStr["str_149"]; //"表單已生效";
+var revokedStr = langStr["str_176"]; //"已銷假";
+var revokingStr = langStr["str_175"]; //"銷假中";
 var leaveDetailFrom = true;
 var employeeName;
 var leaveListArr = [];
@@ -186,7 +186,7 @@ $("#viewLeaveQuery").pagecontainer({
 
                     //如果成功则跳转，如果失败则提示错误信息
                     if ($(successMsg).html() != undefined) {
-                        //成功后先返回假单列表，再重新呼叫API获取最新数据  
+                        //成功后先返回假单列表，再重新呼叫API获取最新数据
                         QueryEmployeeLeaveApplyForm();
                         leaveQueryInit();
                         $("#withdrawLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
@@ -321,26 +321,32 @@ $("#viewLeaveQuery").pagecontainer({
                     '<div class="leave-query-base font-style11">' +
                     '<div class="leave-query-basedata">' +
                     '<div>' +
-                    '<span>請假單號：</span>' +
+                    //'<span>請假單號：</span>' +
+                    '<span>' + langStr["str_131"] + ' </span>' +
                     '<span class="leave-id">' + leaveListArr[i]["formno"] + '</span>' +
                     '</div>' +
                     '<div>' +
-                    '<span>假別：</span>' +
+                    //'<span>假別：</span>' +
+                    '<span>' + langStr["str_152"] + ' </span>' +
                     '<span>' + leaveListArr[i]["name"] + '</span>' +
                     '</div>' +
                     '</div>' +
                     '<div>' +
-                    '<span>請假區間：</span>' +
+                    //'<span>請假區間：</span>' +
+                    '<span>' + langStr["str_138"] + ' </span>' +
                     '<span>' + leaveListArr[i]["begindate"] + ' ' + leaveListArr[i]["begintime"] + '</span>' +
                     '<span> - </span>' +
                     '<span>' + leaveListArr[i]["enddate"] + ' ' + leaveListArr[i]["endtime"] + '</span>' +
                     '</div>' +
                     '<div>' +
-                    '<span>請假數：</span>' +
-                    '<span>' + leaveListArr[i]["days"] + '</span>' +
-                    '<span> 天 </span>' +
+                    //'<span>請假數：</span>' +
+                    '<span>' + langStr["str_153"] + ' </span>' +
+                    '<span>' + leaveListArr[i]["days"] + ' </span>' +
+                    //'<span> 天 </span>' +
+                    '<span> ' + langStr["str_071"] + ' </span>' +
                     '<span>' + leaveListArr[i]["hours"] + '</span>' +
-                    '<span> 小時</span>' +
+                    //'<span> 小時</span>' +
+                    '<span> ' + langStr["str_088"] + '</span>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -503,7 +509,11 @@ $("#viewLeaveQuery").pagecontainer({
         $("#confirmWithdrawBtn").on("click", function() {
             if ($("#confirmWithdrawBtn").hasClass("leavePreview-active-btn")) {
                 //popup提示確定或取消
-                popupMsgInit(".confirmWithdraw");
+                $("#withdrawReason").blur();
+                setTimeout(function() {
+                    popupMsgInit(".confirmWithdraw");
+                }, 100);
+
             }
         });
 
@@ -684,7 +694,11 @@ $("#viewLeaveQuery").pagecontainer({
         //確定銷假送簽——click
         $("#confirmDispelBtn").on("click", function() {
             if ($("#confirmDispelBtn").hasClass("leavePreview-active-btn")) {
-                popupMsgInit(".confirmRevoke");
+                $("#dispelReason").blur();
+                setTimeout(function() {
+                    popupMsgInit(".confirmRevoke");
+                }, 100);
+
             }
         });
 

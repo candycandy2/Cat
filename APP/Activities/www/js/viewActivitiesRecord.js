@@ -3,7 +3,7 @@
 $("#viewActivitiesRecord").pagecontainer({
     create: function(event, ui) {
         //page init
-        window.APIRequest = function() {
+        window.APIddd = function() {
 
             var self = this;
 
@@ -17,7 +17,7 @@ $("#viewActivitiesRecord").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
+                //CustomAPI("POST", true, "Activities_List", self.successCallback, self.failCallback, activitiesListQueryData, "");
             }();
 
         };
@@ -27,9 +27,21 @@ $("#viewActivitiesRecord").pagecontainer({
 
         });
 
+        $("#viewActivitiesRecord").on("pageshow", function(event, ui) {
+
+        });
+
         /********************************** dom event *************************************/
         $("#viewActivitiesRecord").keypress(function(event) {
 
+        });
+
+        $(".record-delete").on("click", function() {
+            var selfParent = $(this).parent().parent();
+            if(selfParent.next().attr("class") == "record-line") {
+                selfParent.next().remove();
+            }
+            selfParent.remove();
         });
     }
 });
