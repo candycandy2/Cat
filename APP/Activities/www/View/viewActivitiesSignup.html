@@ -173,40 +173,76 @@
             </div>
             <div class="font-style11 font-color1">
                 <span>成員(</span>
-                <span>0</span>
+                <span id="teamCurrentPlace">0</span>
                 <span>/</span>
-                <span>3</span>
+                <span id="teamLimitPlace">4</span>
                 <span>)</span>
             </div>
             <div class="team-signup-add-friend font-style3 font-color5">
                 <div>
-                    <img src="img/addfriend.png">
+                    <img src="img/addfriend.png" class="add-team-member">
                 </div>
                 <div>
-                    <span>新增名單</span>
+                    <span class="add-team-member">新增名單</span>
                 </div>
             </div>
             <!--API 搜索成員，動態生成-->
-            <div></div>
-
+            <div class="team-signup-employee-list">
+                <!-- <div class="team-employee-list">
+                    <span>BI40</span><span>Ming Wang</span><span><img src="img/delete.png" class="team-signup-delete"></span>
+                </div> -->
+            </div>
+            <!--dropdownlist: hidden-->
+            <div id="employeeDropdownlist" style="display:none;"></div>
+            <!--notice-->
             <div class="font-style12 font-color2" style="margin-top:4.3vw;">
                 <span>*請先設定部門代碼，隊名與成員(</span>
                 <span class="font-color4">每隊人數</span>
-                <span class="font-color4">3</span>
+                <span class="font-color4" id="teamLimitPlaces">4</span>
                 <span class="font-color4">人</span>
                 <span>)，再點選[送出名單]按鍵完成報名</span>
             </div>
             <div class="font-style12 font-color2">*完成報名後，可再設定下一個組別</div>
-
+            <div class="blank-container-before-footer"></div>
             <div class="team-signup-footer font-style3">
                 <div>送出名單</div>
             </div>
         </div>
 
         <!--5.选择眷属-->
-        <div></div>
+        <div data-model="0"></div>
 
     </div>
 
+    <!--查無員工資料-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup queryNoEmployee" for="queryNoEmployee">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--查無員工資料-->
+                        <span class="langStr" data-id="str_038"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--請重新查詢-->
+                    <span class="langStr" data-id="str_039"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
