@@ -107,8 +107,31 @@ return [
     | Available Settings: "single", "daily", "syslog", "errorlog"
     |
     */
+    'log' => env('APP_LOG', 'daily'),
+    'log_max_files' => 30,
 
-    'log' => env('APP_LOG', 'single'),
+    /*
+    |--------------------------------------------------------------------------
+    | API Log Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the API Log settings for your application.
+    | Available Settings: "ALL", "MYSQL", "MONGODB"
+    |
+    */
+    'log_mode' => env('LOG_MODE','All'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Error Handler Parameters
+    |--------------------------------------------------------------------------
+    |error_mail_from : 錯誤信發信人信箱
+    |error_mail_from_name : 錯誤信發見者名稱
+    |error_mail_to : 錯誤信收件者信箱
+    */
+    'error_mail_from' => env('ERROR_MAIL_FROM'),
+    'error_mail_from_name' => env('ERROR_MAIL_FROM_NAME'),
+    'error_mail_to' => env('ERROR_MAIL_TO'),
 
     /*
     |--------------------------------------------------------------------------
@@ -155,6 +178,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
 
     ],
 

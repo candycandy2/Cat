@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['prefix' => 'v101/picture','middleware' => ['api','locale','verify.basic','log.api']], function () {
+    Route::POST('/upload','PictureController@uploaPicture');
 });
-
-Route::POST('v101/picture/upload','PictureController@uploaPicture');

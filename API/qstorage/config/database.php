@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'mysql_qstorage'),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,39 +45,45 @@ return [
     */
 
     'connections' => [
-
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-        ],
-
-        'mysql' => [
+        'mysql_qplay' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
+            'host' => env('DB_HOST_QPLAY', 'localhost'),
+            'port' => env('DB_PORT_QPLAY', '3306'),
+            'database' => env('DB_DATABASE_QPLAY', ''),
+            'username' => env('DB_USERNAME_QPLAY', ''),
+            'password' => env('DB_PASSWORD_QPLAY', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
             'prefix' => '',
             'strict' => false,
             'engine' => null,
         ],
-
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
+        'mysql_qstorage' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_QSTORAGE', 'localhost'),
+            'port' => env('DB_PORT_QSTORAGE', '3306'),
+            'database' => env('DB_DATABASE_QSTORAGE', ''),
+            'username' => env('DB_USERNAME_QSTORAGE', ''),
+            'password' => env('DB_PASSWORD_QSTORAGE', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
             'prefix' => '',
-            'schema' => 'public',
+            'strict' => false,
+            'engine' => null,
         ],
-
+        'mongodb_qstorage' => [
+            'driver'   => 'mongodb',
+            'host'     => env('MONGO_HOST_QSTORAGE'),
+            'port'     => env('MONGO_PORT_QSTORAGE'),
+            'database' => env('MONGO_DB_QSTORAGE'),
+            'username' => env('MONGO_USERNAME_QSTORAGE'),
+            'password' => env('MONGO_PWD_QSTORAGE'),
+            'options' => [
+                'database' => env('MONGO_AUTH_DB_QSTORAGE'), // sets the authentication database required by mongo 3
+                'username' => env('MONGO_AUTH_USERNAME_QSTORAGE'),
+                'password' => env('MONGO_AUTH_PWD_QSTORAGE'),
+            ]
+        ],
     ],
 
     /*
