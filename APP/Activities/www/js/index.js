@@ -1,7 +1,10 @@
 
 /*global variable, function*/
 //var lastPageID = "viewActivitiesSignup";
-var activitiesListQueryData,activitiesDetailQueryData;
+var activitiesListQueryData,activitiesDetailQueryData,activitiesSignupQueryData,activitiesSignupManageQueryData;
+var activitiesSignupConfirmQueryData,activitiesSignupCancelQueryData,activitiesSignupFamilyQueryData;
+var activitiesSignupEmployeeQueryData,activitiesRecordQueryData,activitiesFamilyQueryData;
+var activitiesFamilyAddQueryData,activitiesFamilyUpdateQueryData,activitiesFamilyDeleteQueryData;
 var pageList = ["viewPanel","viewActivitiesList","viewActivitiesRecord","viewMyFamilyDatum","viewActivitiesDetail","viewActivitiesSignup","viewActivitiesManage"];
 var pageVisitedList = ["viewActivitiesList"];
 var initialAppName = "Activities";
@@ -11,11 +14,17 @@ var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
 var myEmpNo = "1501005";
 var isFull,isRepeatSignup,isSignup,actModel,modelName,viewName;
+var viewSignupInit = true,viewFamilyInit = true;
 
 
 window.initialSuccess = function() {
+    // 1. get activities list
     activitiesListQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';
-    ActivitiesListQuery();
+    //ActivitiesListQuery();
+
+    // 2. get family list
+    activitiesFamilyQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';
+    ActivitiesFamilyQuery();
 
     //changepage
     $.mobile.changePage("#viewActivitiesList");

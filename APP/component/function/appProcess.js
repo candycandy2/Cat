@@ -411,26 +411,24 @@ function waterMark() {
 function addPlugin() {
     $(document).one("pageshow", function() {
 
-        $.get("plugin/ckeditor/ckeditor.js").done(function() {
+        var pluginList = ["ckeditor", "camera", "QStorage", "QForum"];
 
-            var script = document.createElement("script");
-            script.type = "text/javascript";
-            script.src = "plugin/ckeditor/ckeditor.js";
-            document.head.appendChild(script);
+        $.map(pluginList, function(value, key) {
+            (function(pluginName) {
 
-        }).fail(function() {
-            console.log("----------------plugin ckeditor: file does not exist");
+                $.get("plugin/" + pluginName + "/" + pluginName + ".js").done(function() {
+
+                    var script = document.createElement("script");
+                    script.type = "text/javascript";
+                    script.src = "plugin/" + pluginName + "/" + pluginName + ".js";
+                    document.head.appendChild(script);
+
+                }).fail(function() {
+                    console.log("----------------plugin " + pluginName + ": file does not exist");
+                });
+
+            }(value));
         });
 
-        $.get("plugin/QForum/QForum.js").done(function() {
-
-            var script = document.createElement("script");
-            script.type = "text/javascript";
-            script.src = "plugin/QForum/QForum.js";
-            document.head.appendChild(script);
-
-        }).fail(function() {
-            console.log("----------------plugin QForum: file does not exist");
-        });
     });
 }

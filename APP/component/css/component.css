@@ -161,7 +161,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1001;
+    z-index: 1090;
     height: 100%;
     width: 100%;
     background: rgba(35,31,32,0.3);

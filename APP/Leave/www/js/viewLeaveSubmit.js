@@ -444,25 +444,24 @@ $("#viewLeaveSubmit").pagecontainer({
             checkLeaveBeforePreview();
         });
 
+        $('#newBaseDate').datetimepicker({
+            timepicker: false,
+            yearStart: '2016',
+            yearEnd: '2018'
+        });
+
         //選擇基準日，根據是否有有效基準日操作——click
         $("#selectBaseday").on("click", function() {
             if (basedayList) {
                 popupMsgInit('.basedayList');
             } else {
-                //review by alan => need to update Datepicker
                 //datetime-local
-                if (device.platform === "iOS") {
-                    $("#newBaseday").trigger("focus");
-                } else if (device.platform === "Android") {
-                    $("#newBaseday").trigger("click");
-                }
+                $('#newBaseDate').datetimepicker('show');
             }
         });
-
         //新基準日選擇——datetime change
-        $("#newBaseday").on("change", function() {
-            baseday = dateFormat($(this).val());
-
+        $("#newBaseDate").on("change", function() {
+            baseday = ($(this).val()).substring(0, 10);
             if (baseday === "") {
                 $("#chooseBaseday").text(selectBasedayStr);
             } else {
@@ -474,6 +473,12 @@ $("#viewLeaveSubmit").pagecontainer({
             $("#endDate").val("");
 
             checkLeaveBeforePreview();
+        });
+
+        $('#oldBaseDate').datetimepicker({
+            timepicker: false,
+            yearStart: '2016',
+            yearEnd: '2018'
         });
 
         //選擇有效基準日列表——click basedaylist
@@ -490,11 +495,7 @@ $("#viewLeaveSubmit").pagecontainer({
             //如果點擊 “選擇其他基準日” ，則彈出datetime
             if (self === otherBasedayStr) {
                 baseday = "";
-                if (device.platform === "iOS") {
-                    $("#oldBaseday").trigger("focus");
-                } else if (device.platform === "Android") {
-                    $("#oldBaseday").trigger("click");
-                }
+                $('#oldBaseDate').datetimepicker('show');
             } else {
                 baseday = self;
                 $("#chooseBaseday").text(self);
@@ -507,9 +508,9 @@ $("#viewLeaveSubmit").pagecontainer({
             checkLeaveBeforePreview();
         });
 
-        //無有效基準日選擇——datetime change
-        $("#oldBaseday").on("change", function() {
-            baseday = dateFormat($(this).val());
+         //無有效基準日選擇——datetime change
+        $("#oldBaseDate").on("change", function() {
+            baseday = ($(this).val()).substring(0, 10);
 
             if (baseday === "") {
                 $("#chooseBaseday").text(selectBasedayStr);

@@ -396,15 +396,18 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 
                     if (item.id == "txtUrl") {
                         if (!findTextURL) {
-                            $("#" + item._.inputId).val("http://qplaydev.benq.com/qplay/public/app/50/icon/ITS_512.png");
+                            $("#" + item._.inputId).val(window.ckeditorIMAGE.imageServerURL);
                         }
 
                         findTextURL = true;
                     } else if (item.id == "txtWidth") {
-                        $("#" + item._.inputId).val("111");
+                        $("#" + item._.inputId).val(window.ckeditorIMAGE.imageWidth);
                     } else if (item.id == "txtHeight") {
-                        $("#" + item._.inputId).val("300");
+                        $("#" + item._.inputId).val(window.ckeditorIMAGE.imageHeight);
                     }
+
+                    loadingMask("hide");
+                    window.ckeditorIMAGE.fire("hide");
                 }
 
 				if ( item.validate ) {
@@ -597,15 +600,43 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 		this.on( 'show', function() {
             console.log("-----------------show");
 
-            //Darren-
-            //this.fire("ok");
-
 			dialogElement.on( 'keydown', keydownHandler, this );
 
 			// Some browsers instead, don't cancel key events in the keydown, but in the
 			// keypress. So we must do a longer trip in those cases. (https://dev.ckeditor.com/ticket/4531,https://dev.ckeditor.com/ticket/8985)
-			if ( CKEDITOR.env.gecko )
+			if ( CKEDITOR.env.gecko ) {
 				dialogElement.on( 'keypress', keypressHandler, this );
+            }
+
+            //Darren-
+            //When dialog-image shown, call CameraPlugin to open PhotoLibrary
+            if (dialogName === "image") {
+                window.ckeditorIMAGE = this;
+
+                var qstorageCallBack = function(data) {
+                    console.log(data);
+
+                    window.ckeditorIMAGE.imageServerURL = data.thumbnail_1024_url;
+                    window.ckeditorIMAGE.imageWidth = data.thumbnail_1024_width;
+                    window.ckeditorIMAGE.imageHeight = data.thumbnail_1024_height;
+
+                    window.ckeditorIMAGE.fire("ok");
+                };
+
+                var cameraPluginCallback = function(status, imageUploadURL) {
+                    if (status == "sizeOverflow") {
+                        window.ckeditorIMAGE.fire("hide");
+                    } else {
+                        //User QStorage
+                        QStorage.UploadAPI(imageUploadURL, qstorageCallBack);
+                    }
+                };
+
+                //Open PhotoLibrary by cordova-plugin-camera
+                CameraPlugin.openFilePicker("PHOTOLIBRARY", cameraPluginCallback);
+
+                loadingMask("show");
+            }
 
 		} );
 		this.on( 'hide', function() {
@@ -713,13 +744,6 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 		 * @readonly
 		 * @property {Number} [state=CKEDITOR.DIALOG_STATE_IDLE]
 		 */
-
-        //Darren-
-        window.Darren = this;
-
-        setTimeout(function(){
-            window.Darren.fire("ok");
-        }, 3000);
 	};
 
 	// Focusable interface. Use it via dialog.addFocusable.
@@ -3216,8 +3240,9 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
             console.log("-----------------openDialog");
 			var dialog = null, dialogDefinitions = CKEDITOR.dialog._.dialogDefinitions[ dialogName ];
 
-			if ( CKEDITOR.dialog._.currentTop === null )
+			if ( CKEDITOR.dialog._.currentTop === null ){
 				//Darren- showCover( this );
+            }
 
 			// If the dialogDefinition is already loaded, open it immediately.
 			if ( typeof dialogDefinitions == 'function' ) {
