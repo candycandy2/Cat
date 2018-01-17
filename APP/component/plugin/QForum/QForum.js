@@ -116,7 +116,8 @@ var QForum = {
         }
     },
     VIEW: {
-        replyButtonFooter: function(pageID) {
+        replyButtonFooter: function(pageID, callback) {
+            callback = callback || null;
 
             if ($("#" + pageID + " .QForum-Content .reply-button").length == 0) {
                 var replyButtonFooterHTML = $($("template#tplReplyButtonFooter").html());
@@ -129,15 +130,22 @@ var QForum = {
                 $(document).on({
                     click: function(event) {
 
+                        QForum.EVENT.clearEditorContent();
                         $(".QForum-Content.reply-fullscreen-popup").show();
 
                         //Resize Editor
-                        var width = parseInt(document.documentElement.clientWidth * 90 / 100, 10);
-                        var height = parseInt(document.documentElement.clientHeight * 80 / 100, 10);
+                        var width = parseInt(document.documentElement.clientWidth * 92 / 100, 10);
+                        var height = parseInt(document.documentElement.clientHeight * 82 / 100, 10);
+
+                        //Auto set top of .cke_chrome / .cke_top
+                        var hederHeight = parseInt(document.documentElement.clientWidth * 13.1 / 100, 10);
+                        var marginTop = parseInt(document.documentElement.clientWidth * 2.73 / 100, 10);
+                        var toolBarHeight = 42;
 
                         //For iOS, overlap
                         if (device.platform === "iOS") {
-                            //height -= 20;
+                            height -= 20;
+                            hederHeight += 20;
                         }
 
                         //For small size screen, toolbar become 2 lines
@@ -145,11 +153,21 @@ var QForum = {
                             //height -= 33;
                         }
 
-                        CKEDITOR.instances.editor.resize(width, height);
+                        window.CKEDITOR.instances.editor.resize(width, height);
+
+                        $(".QForum-Content .main .cke_chrome").css({
+                            "top": (hederHeight + marginTop + toolBarHeight) + "px"
+                        });
+
+                        $(".QForum-Content .main .cke_top").css({
+                            "top": hederHeight + "px"
+                        });
 
                     }
                 }, ".QForum-Content .reply-button");
             }
+
+            QForum.EVENT.replySubmit(callback);
 
         },
         replyFullScreenPopup: function() {
@@ -171,8 +189,50 @@ var QForum = {
 
                 initSample();
 
+                QForum.EVENT.editorKeyIn();
+
             }
 
+        }
+    },
+    EVENT: {
+        editorKeyIn: function() {
+
+            window.CKEDITOR.instances.editor.on('key', function(e) {
+                var self = this;
+
+                setTimeout(function() {
+                    if (self.getData().length > 0) {
+                        $("#replySubmit").removeClass("none-work");
+                    } else {
+                        $("#replySubmit").addClass("none-work");
+                    }
+                }, 500);
+            });
+
+        },
+        replySubmit: function(callback) {
+
+            $("#replySubmit").off("click");
+
+            $(document).on({
+                click: function() {
+                    if (!$(this).hasClass("none-work")) {
+
+                        $(".QForum-Content.reply-fullscreen-popup").hide();
+
+                        //callback(QForum.EVENT.getEditorContent());
+                        console.log(QForum.EVENT.getEditorContent());
+                    }
+                }
+            }, "#replySubmit");
+
+        },
+        getEditorContent: function() {
+            return window.CKEDITOR.instances.editor.getData();
+        },
+        clearEditorContent: function() {
+            window.CKEDITOR.instances.editor.setData("");
         }
     }
 };

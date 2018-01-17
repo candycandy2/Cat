@@ -1,8 +1,18 @@
 
 //Darren
+
 1. plugins/dialog/plugin.js: Update for dialog-image
 ---A. Hide dialog-image
 ---B. Use APP/component/plugin/camera/camera.js to get local path of image in mobile
 ---C. Then update image by APP/component/plugin/QStorage/QStorage.js, Server will return qriginal_url
 ---D. User qriginal_url to set in dialog-image, then trigger window.ckeditorIMAGE.fire("ok")
 ---E. After all, display image on ckeditor.
+
+2. config.js
+---A. config.toolbarGroups > set toolbar icon
+
+3. plugin/ ckeditor/ skins/ moono-lisa/ mainui.css
+---A. CSS setting of toolbar
+
+4. plugins/dialog/plugin.js: Update for check content of ckeditor
+---A. Hide dialog-image
