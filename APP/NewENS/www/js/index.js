@@ -30,6 +30,10 @@ window.initialSuccess = function() {
         window.ENSJPushSecretKey = "335a12f8b4b9d71c9d813e7d";
     }
 
+    $.get('img/component/img_qplay.svg', function(svg){
+        $('body').append(svg);
+    }, 'text');
+
     loadingMask("show");
 
     changeProject("check");

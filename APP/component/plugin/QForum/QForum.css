@@ -1,5 +1,10 @@
 
 /*QForum CSS*/
+
+.none-work {
+    opacity: 0.6;
+}
+
 .QForum-Content.reply-fullscreen-popup {
     position: fixed;
     z-index: 1080;
@@ -10,5 +15,63 @@
 }
 
 .QForum-Content.reply-fullscreen-popup .main {
-    padding: 10% 5%;
+    padding: 0 3.71vw;
+    margin-top: 13.1vw;
+}
+
+.QForum-Content .reply-button {
+    font-size: 4.18vw;
+    color: #FFFFFF;
+    background-color: #2B87BA;
+    padding: 3.238vw 0;
+    text-align: center;
+    line-height: 1;
+}
+
+.QForum-Content .header {
+    padding: 3.238vw 3.71vw;
+    display: inline-block;
+    background-color: #492F7F;
+    width: 100%;
+}
+
+.QForum-Content .header div {
+    float: left;
+}
+
+.QForum-Content .header .left {
+    width: 20vw;
+    height: 5.958vw;
+}
+
+.QForum-Content .header .header-icon {
+    width: 5.958vw;
+    height: 5.958vw;
+}
+
+.QForum-Content .header .center, .QForum-Content .header .right {
+    color: #FFFFFF;
+    font-size: 4.39vw;
+}
+
+.QForum-Content .header .center {
+    width: 52vw;
+    text-align: center;
+}
+
+.QForum-Content .header .right {
+    width: 20vw;
+    text-align: right;
+    padding-right: 3.71vw;
+}
+
+.QForum-Content .main .cke_top {
+    position: fixed;
+    left: 0;
+    top: 13.1vw;
+    width: 100%;
+}
+
+.QForum-Content .main .cke_chrome {
+    position: fixed;
 }

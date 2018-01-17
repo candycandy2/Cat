@@ -169,8 +169,8 @@ console.log("===================11--1");
                                 // :(((
                                 if ( isBBCodeBuiltIn ) {
                                     editorElement.setHtml(
-                                        'Hello world!\n\n' +
-                                        'I\'m an instance of [url=https://ckeditor.com]CKEditor[/url].'
+                                        //'Hello world!\n\n' +
+                                        //'I\'m an instance of [url=https://ckeditor.com]CKEditor[/url].'
                                     );
                                 }
 
@@ -184,6 +184,9 @@ console.log("===================11--1");
                                     // TODO we can consider displaying some info box that
                                     // without wysiwygarea the classic editor may not work.
                                 }
+
+                                //Darren- set empty content
+                                window.CKEDITOR.instances.editor.setData("");
                             };
 
                             function isWysiwygareaAvailable() {

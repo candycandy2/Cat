@@ -94,6 +94,7 @@ var CameraPlugin = {
             var imageRealURLArray = imageRealURL.split("?");
             CameraPlugin.imageUploadURL = imageRealURLArray[0];
 
+            //After select image, check the size.
             window.resolveLocalFileSystemURL(imageUri, function success(fileEntry) {
                 console.log(fileEntry);
 
