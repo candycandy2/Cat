@@ -108,7 +108,8 @@ gulp.task('install', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-camera',
   'cordova plugin add cordova-plugin-ios-camera-permissions --save',
   'cordova plugin add phonegap-plugin-mobile-accessibility',
-  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey,
+  'cordova plugin add cordova-plugin-file-transfer'
   //'cordova plugin add cordova-plugin-file'
 ]));
 
@@ -126,7 +127,8 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-camera',
   'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --save',
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
-  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
+  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey,
+  'cordova plugin add cordova-plugin-file-transfer'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 

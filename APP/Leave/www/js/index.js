@@ -96,7 +96,6 @@ window.initialSuccess = function() {
     $("#dispelReason").attr("placeholder", langStr["str_090"]);
     $("#signTowithdrawReason").attr("placeholder", langStr["str_090"]);
 
-
     signedStr = langStr["str_133"]; //"已簽核";
     withdrawedStr = langStr["str_136"]; //"已撤回";
     rejectedStr = langStr["str_135"]; //"已拒絕";

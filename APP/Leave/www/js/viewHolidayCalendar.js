@@ -19,11 +19,11 @@ $("#viewHolidayCalendar").pagecontainer({
                 },
                 legend: [{
                     type: "img-text",
-                    label: "星期六日",
+                    label: langStr["str_007"], // "星期六日"
                     classname: "weekend-icon"
                 }, {
                     type: "img-text",
-                    label: "放假節日",
+                    label: langStr["str_008"], // "放假節日"
                     classname: "holiday-icon"
                 }]
             });

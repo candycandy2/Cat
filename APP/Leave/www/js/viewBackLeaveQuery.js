@@ -315,26 +315,32 @@ $("#viewBackLeaveQuery").pagecontainer({
                     '<div class="backLeave-query-base font-style11">' +
                     '<div class="backLeave-query-basedata">' +
                     '<div>' +
-                    '<span>銷假單號：</span>' +
+                    //'<span>銷假單號：</span>' +
+                    '<span>' + langStr["str_166"] + ' </span>' +
                     '<span class="leave-id">' + backLeaveListArr[i]["formno"] + '</span>' +
                     '</div>' +
                     '<div>' +
-                    '<span>假別：</span>' +
+                    //'<span>假別：</span>' +
+                    '<span>' + langStr["str_152"] + ' </span>' +
                     '<span>' + backLeaveListArr[i]["name"] + '</span>' +
                     '</div>' +
                     '</div>' +
                     '<div>' +
-                    '<span>請假區間：</span>' +
+                    //'<span>請假區間：</span>' +
+                    '<span>' + langStr["str_138"] + ' </span>' +
                     '<span>' + backLeaveListArr[i]["begindate"] + ' ' + backLeaveListArr[i]["begintime"] + '</span>' +
                     '<span> - </span>' +
                     '<span>' + backLeaveListArr[i]["enddate"] + ' ' + backLeaveListArr[i]["endtime"] + '</span>' +
                     '</div>' +
                     '<div>' +
-                    '<span>請假數：</span>' +
+                    //'<span>請假數：</span>' +
+                    '<span>' + langStr["str_153"] + ' </span>' +
                     '<span>' + backLeaveListArr[i]["days"] + '</span>' +
-                    '<span> 天 </span>' +
+                    //'<span> 天 </span>' +
+                    '<span> ' + langStr["str_071"] + ' </span>' +
                     '<span>' + backLeaveListArr[i]["hours"] + '</span>' +
-                    '<span> 小時</span>' +
+                    //'<span> 小時</span>' +
+                    '<span> ' + langStr["str_088"] + '</span>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -478,7 +484,7 @@ $("#viewBackLeaveQuery").pagecontainer({
                 setTimeout(function() {
                     popupMsgInit(".confirmToWithdraw");
                 }, 100);
-                  
+
             }
         });
 
