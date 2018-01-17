@@ -91,13 +91,40 @@ public class DownloadHandler extends Handler {
 
         //判读版本是否在7.0以上
         if (Build.VERSION.SDK_INT >= 24) {
-            //provider authorities
-            String packageName = mContext.getPackageName();
-            Uri apkUri = FileProvider.getUriForFile(mContext, packageName + ".fileprovider", file);
-            //Granting Temporary Permissions to a URI
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            if(Build.VERSION.SDK_INT >= 26) {
+                //>=26
+                if (mContext.getPackageManager().canRequestPackageInstalls())
+                {
+                    try
+                    {
+                        //provider authorities
+                        String packageName = mContext.getPackageName();
+                        Uri apkUri = FileProvider.getUriForFile(mContext, packageName + ".fileprovider", file);
+                        //Granting Temporary Permissions to a URI
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                    }
+                    catch (Exception e)
+                    {
+                        //LogUtilities.show(this, e);
+                    }
+                }
+                else
+                {
+                    mContext.startActivity(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).setData(Uri.parse(String.format("package:%s", mContext.getPackageName()))));
+                }
+            }
+            else {
+                //24~25
+                //provider authorities
+                String packageName = mContext.getPackageName();
+                Uri apkUri = FileProvider.getUriForFile(mContext, packageName + ".fileprovider", file);
+                //Granting Temporary Permissions to a URI
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            }
         } else {
+            //<24
             intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
         }
 
