@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
+use Illuminate\Contracts\Validation;
 use File;
 
 class PictureController extends Controller
@@ -17,31 +18,43 @@ class PictureController extends Controller
      */
     public function uploaPicture(Request $request){
   
-         $request->header('Content-Type');
-         $request->header('signature-time');
-         $request->header('signature');
+        $contentType = $request->header('Content-Type');
+        $appKey = $request->header('app-key');
+        $resourceId = $request->header('resource-id');
 
-         $appKey = $request->header('app-key');
-         
-         $account = $request->header('account');
-         $resourceId = $request->header('resource-id');
-         $uuid =  $request->uuid;
-         $lang = $request->lang;
+        $uuid =  $request->uuid;
+        $lang = $request->lang;
         
-         $file = $request->file('files');
-         $path = str_replace('/', DIRECTORY_SEPARATOR, $resourceId);
+        if(explode(';',$contentType)[0] != "multipart/form-data"){
+            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
+                "message"=> "Content-Type錯誤");
+        }
+        
+        $validator = \Validator::make($request->all(), [
+        'files'=>'required|image|max:10240'
+        ],
+        [
+            'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'image' => ResultCode::_997907_UploadDataTypeIsNotAllow,
+            'max' => ResultCode::_997908_FileSizeExceedsTheAllowableLimit
+        ]);
+
+        if ($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>trans('result_code.'.$validator->errors()->first())], 200);
+        }
+
+        $file = $request->file('files');
+
+        $path = str_replace('/', DIRECTORY_SEPARATOR, $resourceId);
+        $compressSetting = $this->getCompressSetting();
+        $result = [];
          
-         $quility = 30;
-         $standardArray = ['1024'=>30,
-                           '300'=>100];
-
-         $result = [];
-
         $ext = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
         $folderName = uniqid();
         $fullSizeName = $folderName. '_full.'. $ext;
         $node = $appKey. DIRECTORY_SEPARATOR. 'picture'. $path. $folderName;
-        $destinationPath = public_path($node); 
+        $destinationPath = public_path($node);
         $urlNode = str_replace(DIRECTORY_SEPARATOR, '/', $node).'/';
 
         $file->move($destinationPath,$fullSizeName);
@@ -53,7 +66,7 @@ class PictureController extends Controller
         $result['original_size'] =  filesize ($fullSizeFile);
         $result['original_url'] =  url($urlNode. $fullSizeName);
 
-        foreach ($standardArray as $longSide => $quility) {
+        foreach ($compressSetting as $longSide => $quility) {
             $compressSizeName = $folderName. '_'. $longSide . '.'. $ext;
             $compressSizeFile = $destinationPath. DIRECTORY_SEPARATOR. $compressSizeName;
             CommonUtil::compressImage( $fullSizeFile, $compressSizeFile, $longSide, $quility);
@@ -68,4 +81,9 @@ class PictureController extends Controller
             'Content'=>$result]);
 
     }
+
+    private function getCompressSetting(){
+        return ['1024'=>30];
+    }
+
 }

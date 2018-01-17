@@ -49,5 +49,8 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verify.basic' => \App\Http\Middleware\VerifyWithBasicAuth::class,
+        'locale' => \App\Http\Middleware\Locale::class,
+        'log.api' => \App\Http\Middleware\LogAferRequest::class
     ];
 }
