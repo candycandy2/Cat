@@ -33,6 +33,8 @@ if (process.env.env === "test") {
     env.set({QPushAPPKey: "6e51cf3c174910d247ac76f3"});
 }
 
+env.set({pluginConfig: 'ckeditor,camera,QStorage,QForum'});
+
 /*-----------------------------------------edit config.xml------------------------------------------*/
 var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appens" + process.env.appNameDecorate + "</string>";
 
@@ -133,10 +135,10 @@ gulp.task('jenkinsinstall', shell.task([
 ]));
 
 //ex: gulp default
-gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'addPlugin'], function(){
+gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
 
-gulp.task('jenkinsdefault', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'addPlugin'], function(){
+gulp.task('jenkinsdefault', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });

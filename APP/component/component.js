@@ -324,6 +324,12 @@ $(document).one("pagebeforecreate", function() {
 
     $(':mobile-pagecontainer').html("");
 
+    //For QPlay Plugin
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "plugin/config.js";
+    document.head.appendChild(script);
+
     //According to the data [pageList] which set in index.js ,
     //add Page JS into index.html
     $.map(pageList, function(value, key) {
