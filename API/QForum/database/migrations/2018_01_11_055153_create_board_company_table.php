@@ -17,8 +17,8 @@ class CreateBoardCompanyTable extends Migration
             $table->increments('row_id')->unique();
             $table->integer('board_id');
             $table->string('company', 50);
-            $table->integer('created_user')->default(NULL);
-            $table->integer('updated_user')->default(NULL);
+            $table->integer('created_user')->nullable()->default(NULL);
+            $table->integer('updated_user')->nullable()->default(NULL);
             $table->timestamps();
         });
     }

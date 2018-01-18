@@ -45,12 +45,14 @@ class BoardRepository
         $companyBoards = $this->boardCompany->where('qp_board_company.company', $company)
                                        ->join('qp_board','qp_board.row_id','=','qp_board_company.board_id')
                                        ->join('qp_board_type','qp_board.board_type_id','=','qp_board_type.row_id')
+                                       ->where('qp_board.public_type',2)
                                        ->select('board_type_id', 'type_name', 'qp_board.row_id as board_id','board_name', 'manager', 'qp_board.status', 'public_type');
 
         $userBoards = $this->boardUser->where('qp_board_user.emp_no', $empNo)
                                         ->join('qp_board','qp_board.row_id','=','qp_board_user.board_id')
                                         ->join('qp_user','qp_user.emp_no','=','qp_board_user.emp_no')
                                         ->join('qp_board_type','qp_board.board_type_id','=','qp_board_type.row_id')
+                                        ->where('qp_board.public_type',3)
                                         ->select('board_type_id', 'type_name', 'qp_board.row_id as board_id','board_name', 'manager', 'qp_board.status', 'public_type');
 
         return $this->board
