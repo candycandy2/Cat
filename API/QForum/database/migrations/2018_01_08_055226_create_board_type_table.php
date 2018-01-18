@@ -15,8 +15,8 @@ class CreateBoardTypeTable extends Migration
         Schema::create('qp_board_type', function (Blueprint $table) {
             $table->increments('row_id')->unique();
             $table->string('type_name', 50);
-            $table->integer('created_user')->default(NULL);
-            $table->integer('updated_user')->default(NULL);
+            $table->integer('created_user')->nullable()->default(NULL);
+            $table->integer('updated_user')->nullable()->default(NULL);
             $table->timestamps();
         });
     }

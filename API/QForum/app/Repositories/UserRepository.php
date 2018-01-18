@@ -31,7 +31,7 @@ class UserRepository
     public function getUserData($empNo){
         return $this->user
                 ->where('emp_no',$empNo)
-                ->select('row_id', 'emp_no', 'email', 'ext_no', 'site_code','login_id')
+                ->select('row_id', 'emp_no', 'email', 'ext_no', 'site_code','login_id','company')
                 ->first();
 
     }

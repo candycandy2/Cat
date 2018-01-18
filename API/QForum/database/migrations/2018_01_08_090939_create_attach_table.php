@@ -17,8 +17,8 @@ class CreateAttachTable extends Migration
             $table->string('post_id',50);
             $table->integer('comment_id');
             $table->text('file_url');
-            $table->integer('created_user')->default(NULL);
-            $table->integer('updated_user')->default(NULL);
+            $table->integer('created_user')->nullable()->default(NULL);
+            $table->integer('updated_user')->nullable()->default(NULL);
             $table->softDeletes();    
             $table->timestamps();
         });
