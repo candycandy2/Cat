@@ -629,9 +629,9 @@
 }
 
 .tpl-option-msg-list {
-    border-top-style: solid;
+    /* border-top-style: solid;
     border-top-color: #efefef;
-    border-width: 0.1px;
+    border-width: 0.1px; */
     display: -webkit-flex;
 }
 
@@ -939,8 +939,8 @@
 
 .family-list > div:nth-of-type(2) {
     width: 22.5vw;
-    height: 5vw;
-    padding-top: 4.5vw;
+    height: 10vw;
+    padding-top: 3.5vw;
     /* line-height: 5vw; */
 }
 
@@ -948,7 +948,7 @@
     width: 4.5vw;
     height: 4.5vw;
     margin-left: 18vw;
-    /* margin-top: 5vw; */
+    margin-top: 1vw;
 }
 
 .family-notice {
@@ -1002,8 +1002,21 @@
     text-indent: 3.2vw;
     border: 1px solid #d6d6d6;
     background: url(../img/dropdown.png) no-repeat;
-    background-size: 5% 20%;
-    background-position: 50vw 4.5vw;
+    background-size: 6% 20%;
+    background-position: 50vw 4vw;
+}
+
+.family-input-calendar {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../img/calendar.png) no-repeat;
+    background-size: 6% 40%;
+    background-position: 50vw 3vw;
 }
 
 .confirmDeteteFamily >.ui-content,
