@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql_qstorage'),
+    'default' => env('DB_CONNECTION', 'mysql_qplay'),
 
     /*
     |--------------------------------------------------------------------------
@@ -58,30 +58,17 @@ return [
             'strict' => false,
             'engine' => null,
         ],
-        'mysql_qstorage' => [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST_QSTORAGE', 'localhost'),
-            'port' => env('DB_PORT_QSTORAGE', '3306'),
-            'database' => env('DB_DATABASE_QSTORAGE', ''),
-            'username' => env('DB_USERNAME_QSTORAGE', ''),
-            'password' => env('DB_PASSWORD_QSTORAGE', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_general_ci',
-            'prefix' => '',
-            'strict' => false,
-            'engine' => null,
-        ],
-        'mongodb_qstorage' => [
+        'mongodb_qplay' => [
             'driver'   => 'mongodb',
-            'host'     => env('MONGO_HOST_QSTORAGE'),
-            'port'     => env('MONGO_PORT_QSTORAGE'),
-            'database' => env('MONGO_DB_QSTORAGE'),
-            'username' => env('MONGO_USERNAME_QSTORAGE'),
-            'password' => env('MONGO_PWD_QSTORAGE'),
+            'host'     => env('MONGO_HOST_QPLAY'),
+            'port'     => env('MONGO_PORT_QPLAY'),
+            'database' => env('MONGO_DB_QPLAY'),
+            'username' => env('MONGO_USERNAME_QPLAY'),
+            'password' => env('MONGO_PWD_QPLAY'),
             'options' => [
-                'database' => env('MONGO_AUTH_DB_QSTORAGE'), // sets the authentication database required by mongo 3
-                'username' => env('MONGO_AUTH_USERNAME_QSTORAGE'),
-                'password' => env('MONGO_AUTH_PWD_QSTORAGE'),
+                'database' => env('MONGO_AUTH_DB_QPLAY'), // sets the authentication database required by mongo 3
+                'username' => env('MONGO_AUTH_USERNAME_QPLAY'),
+                'password' => env('MONGO_AUTH_PWD_QPLAY'),
             ]
         ],
     ],
