@@ -16,8 +16,8 @@ class CreateBoardUserTable extends Migration
             $table->increments('row_id')->unique();
             $table->integer('board_id');
             $table->string('emp_no', 50);
-            $table->integer('created_user')->default(NULL);
-            $table->integer('updated_user')->default(NULL);
+            $table->integer('created_user')->nullable()->default(NULL);
+            $table->integer('updated_user')->nullable()->default(NULL);
             $table->timestamps();
         });
     }

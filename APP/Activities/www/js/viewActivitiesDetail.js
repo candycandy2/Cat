@@ -3,16 +3,17 @@ $("#viewActivitiesDetail").pagecontainer({
     create: function (event, ui) {
         //page init
         /********************************** function *************************************/
+        //我要報名
         window.ActivitiesSignupQuery = function() {
 
-            var self = this;
-
             this.successCallback = function(data) {
-                loadingMask("hide");
                 console.log(data);
 
                 var resultcode = data['ResultCode'];
                 //do something
+
+
+                loadingMask("hide");
             };
 
             this.failCallback = function(data) {};
@@ -23,6 +24,26 @@ $("#viewActivitiesDetail").pagecontainer({
 
         };
 
+        //報名管理
+        window.ActivitiesSignupManageQuery = function() {
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                var resultcode = data['ResultCode'];
+                //do something
+
+
+                loadingMask("hide");
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "Activities_Signup_Manage", self.successCallback, self.failCallback, activitiesSignupManageQueryData, "");
+            }();
+
+        };
 
         function showViewByModel(view, model) {
             $.each($("#"+view+" .page-main > div"), function(index, item) {
@@ -37,13 +58,7 @@ $("#viewActivitiesDetail").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesDetail").on("pagebeforeshow", function (event, ui) {
-            activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
-                + 2025
-                + '</ActivitiesID><SignModel>'
-                + actModel
-                + '</SignModel><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo></LayoutHeader>';
+            
         });
 
         $("#viewActivitiesDetail").on("pageshow", function (event, ui) {
@@ -62,21 +77,42 @@ $("#viewActivitiesDetail").pagecontainer({
 
         //點擊 "開始報名" 跳轉到編輯頁
         $(".detail-signup-btn").on("click", function () {
+            activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
+                + actID
+                + '</ActivitiesID><SignModel>'
+                + actModel
+                + '</SignModel><EmployeeNo>'
+                + myEmpNo
+                + '</EmployeeNo></LayoutHeader>';
+
+            console.log(activitiesSignupQueryData);
+
+            //ActivitiesSignupQuery();
+            
             changePageByPanel("viewActivitiesSignup", true);
 
             showViewByModel("viewActivitiesSignup", actModel);
 
-            //ActivitiesSignupQuery();
-            
         });
 
         //點擊 "報名管理" 跳轉到編輯頁
         $(".detail-manage-btn").on("click", function () {
+            activitiesSignupManageQueryData = '<LayoutHeader><ActivitiesID>'
+                + actID
+                + '</ActivitiesID><SignModel>'
+                + actModel
+                + '</SignModel><EmployeeNo>'
+                + myEmpNo
+                + '</EmployeeNo></LayoutHeader>';
+
+            console.log(activitiesSignupManageQueryData);
+        
+            //ActivitiesSignupManageQuery();
+
             changePageByPanel("viewActivitiesManage", true);
 
             showViewByModel("viewActivitiesManage", actModel);
 
-            //ActivitiesSignupQuery();
         });
 
 

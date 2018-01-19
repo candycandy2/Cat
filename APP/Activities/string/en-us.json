@@ -310,5 +310,45 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "str_040",
+    "definition": "請選擇e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_041",
+    "definition": "新增眷屬資料失敗e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_042",
+    "definition": "更新眷屬資料失敗e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_043",
+    "definition": "刪除眷屬資料失敗e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_044",
+    "definition": "關閉e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]

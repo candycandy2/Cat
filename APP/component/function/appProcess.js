@@ -411,9 +411,8 @@ function waterMark() {
 function addPlugin() {
     $(document).one("pageshow", function() {
 
-        var pluginList = ["ckeditor", "camera", "QStorage", "QForum"];
-
-        $.map(pluginList, function(value, key) {
+        //window.pluginList set in plugin/config.js
+        $.map(window.pluginList, function(value, key) {
             (function(pluginName) {
 
                 $.get("plugin/" + pluginName + "/" + pluginName + ".js").done(function() {

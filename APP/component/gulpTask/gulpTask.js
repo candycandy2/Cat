@@ -180,13 +180,34 @@ gulp.task('Font', ['commonFont'], function() {
         .pipe(gulp.dest('www/font/'));
 });
 
-gulp.task('componentJS', ['libJS', 'appJS', 'String', 'Font'], function() {
-    fs.unlink('./function.js', (err) => {
-    });
+//Plugin Config / Add
+env.set({pluginConfig: ""});
+
+gulp.task('setPlugin', function() {
+    return gulp.src('../component/plugin/config.js')
+        .pipe(gulp.dest('www/plugin/'))
+        .on('end', function() {
+
+            if (process.env.pluginConfig.length > 0) {
+                var configArray = process.env.pluginConfig.split(",");
+                var pluginConfigContent = "var pluginList = [";
+
+                for (var i=0; i<configArray.length; i++) {
+                    pluginConfigContent = pluginConfigContent + '"' + configArray[i] + '",';
+
+                    gulp.src('../component/plugin/' + configArray[i] + '/**/*')
+                    .pipe(gulp.dest('www/plugin/' + configArray[i]));
+                }
+
+                pluginConfigContent = pluginConfigContent.substr(0, pluginConfigContent.length - 1);
+                pluginConfigContent = pluginConfigContent + "];"
+
+                fs.writeFile('www/plugin/config.js', pluginConfigContent);
+            }
+        });
 });
 
-//Add Plugin
-gulp.task('addPlugin', function() {
-    return gulp.src('../component/plugin/**/*')
-        .pipe(gulp.dest('www/plugin/'));
+gulp.task('componentJS', ['libJS', 'appJS', 'String', 'Font', 'setPlugin'], function() {
+    fs.unlink('./function.js', (err) => {
+    });
 });

@@ -209,11 +209,13 @@ a > img {
 
 /*Darren- override CKeditor CSS*/
 body {
-    margin: 5vw;
+    margin: 0;
+    padding: 2.73vw 3.71vw;
 }
 
 .cke_editable {
     font-size: 4.18vw;
+    color: #323232;
 }
 
 .cke_editable p {
