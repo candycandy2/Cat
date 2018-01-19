@@ -74,12 +74,10 @@ $("#viewMyFamilyDatum").pagecontainer({
 
                     $("#familyList").empty().append(familyList).children("div:last-child").remove();
                     
-                    // $("#viewFamilyNone").hide();
-                    // $("#viewFamilyList").show();
+                    //$("#viewFamilyNone").hide();
 
                 } else if (data["ResultCode"] == "045902") {
-                    // $("#viewFamilyList").hide();
-                    // $("#viewFamilyNone").show();
+                    //$("#viewFamilyNone").show();
                 }
 
                 loadingMask("hide");
@@ -98,7 +96,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         window.ActivitiesFamilyAddQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "045903") {
                     ActivitiesFamilyQuery();
@@ -152,7 +150,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         window.ActivitiesFamilyDeleteQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "045907") {
                     ActivitiesFamilyQuery();
@@ -341,7 +339,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         $("#viewMyFamilyDatum").on("pagebeforeshow", function (event, ui) {
             if (viewFamilyInit) {
                 setDropdownlistByFamily();
-
+                //ActivitiesFamilyQuery();
                 viewFamilyInit = false;
             }
 
