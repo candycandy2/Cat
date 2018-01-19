@@ -301,7 +301,6 @@ $("#viewMain2-1").pagecontainer({
 
         function success(pos) {
           var crd = pos.coords;
-
           console.log('Your current position is:');
           console.log('Latitude : ' + crd.latitude);
           console.log('Longitude: ' + crd.longitude);
@@ -390,7 +389,7 @@ $("#viewMain2-1").pagecontainer({
             /*$(document).ready(function(){
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(success, error, options);
-                    //navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
+                    //navigator.geolocation.getCurrentPosition(locationSuccess, locationError, options);
                 }              
             });*/
         });
