@@ -116,7 +116,7 @@ var pushServiceHours = pushServiceHours || function() {
                 type = target.data("type"),
                 count = target.data("count"),
                 startDate = new Date(),
-                endDate = new Date(reportEndDate.replace(new RegExp(/(-)/g), '/')),
+                endDate = new Date('2018-01-18'.replace(new RegExp(/(-)/g), '/')),
                 from = '',
                 to = '';
 
@@ -128,13 +128,10 @@ var pushServiceHours = pushServiceHours || function() {
                       to = reportEndDate;
                 }else{
                     if(type == 'day'){
-                        startDate.setMonth(endDate.getMonth());
-                        startDate.setDate(endDate.getDate() - count);    
+                        startDate.setDate(endDate.getDate() - count);
                     }else if(type  == 'month'){
                         startDate.setMonth(endDate.getMonth() - count);
-                        startDate.setDate(endDate.getDate());
                     }
-                    startDate.setYear(endDate.getFullYear());
                     
                     from = startDate.getFullYear() + '-' + (startDate.getMonth()+1) + '-' + startDate.getDate();
                     to = endDate.getFullYear() + '-' + (endDate.getMonth()+1) + '-' + endDate.getDate();
