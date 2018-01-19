@@ -43,61 +43,21 @@ class CommentController extends Controller
     {
         $xml=simplexml_load_string($request['strXml']);
         $data = json_decode(json_encode($xml),TRUE);
-        $requiredRule = [
-            'post_id' => 'required',
-            'content' => 'required'
+        $rules = [
+            'post_id' => 'required|string|size:32|post_exist|post_auth:'.$data['emp_no'],
+            'content' => 'required|string',
+            'file_list' => 'sometimes|required|array'
         ];
-
-        $rangeRule = [
-            'post_id' => 'string|size:32',
-            'content' => 'string'
-        ];
-       
-        //add validation when post with file
-        if(isset($data['file_list']) && is_array($data['file_list'])){
-            if(is_string($data['file_list']['file'])){
-               $data['file_list']['file'] = (array)$data['file_list']['file'];
-            }
-            $requiredRule ['file_list.file'] = 'required';
-            $rangeRule ['file_list.file'] = 'array';
-        }
-         
-        $required = Validator::make($data, $requiredRule);
-        if($required->fails())
-        {
-            return $result = response()->json(['ResultCode'=>ResultCode::_047903_MandatoryFieldLost,
-                    'Message'=>"必填字段缺失",
-                    'Content'=>""]);
-        }
-        $range = Validator::make($data, $rangeRule);
-        if($range->fails())
-        {
-             return $result = response()->json(['ResultCode'=>ResultCode::_047905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-        }
+    
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>""], 200);
+        }   
 
         $empNo = $data['emp_no'];
-        $postId = $data['post_id'];
         $fileList = isset($data['file_list'])?$data['file_list']:null;
-
         $userData = $this->userService->getUserData($empNo);
-        $postData = $this->postService->getPostData($postId);
-         if(is_null($postData)){
-            return response()->json(['ResultCode'=>ResultCode::_047904_NoAuthorityToAccessThisBoard,
-                        'Message'=>"貼文不存在",
-                        'Content'=>""]);
-        }
-        $boardId = $postData->board_id;
-        $hasAuth = $this->boardService->checkUserBoardAuth($boardId, $userData);
-        if(!$hasAuth){
-            return response()->json(['ResultCode'=>ResultCode::_047904_NoAuthorityToAccessThisBoard,
-                        'Message'=>"沒有該討論版權限",
-                        'Content'=>""]);
-        }
-        
-       
-        
         //new Post and add attach
         \DB::beginTransaction();
         try{
