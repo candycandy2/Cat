@@ -46,7 +46,9 @@ public class DownloadApkThread implements Runnable {
         this.mHashMap = mHashMap;
         this.mHandler = mHandler;
 
-        this.mSavePath = Environment.getExternalStorageDirectory() + "/" + "download"; // SD Path
+        //review by alan
+        String packageName = mContext.getPackageName();
+        this.mSavePath = Environment.getExternalStorageDirectory() + "/" + "download" + packageName; // SD Path
         this.downloadHandler = new DownloadHandler(mContext, mProgress, mDownloadDialog, this.mSavePath, mHashMap);
     }
 

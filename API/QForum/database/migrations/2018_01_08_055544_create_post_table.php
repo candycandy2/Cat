@@ -20,8 +20,8 @@ class CreatePostTable extends Migration
             $table->mediumText('content');
             $table->bigInteger('ctime');
             $table->string('status',1)->default('Y');
-            $table->integer('created_user')->default(NULL);
-            $table->integer('updated_user')->default(NULL);
+            $table->integer('created_user')->nullable()->default(NULL);
+            $table->integer('updated_user')->nullable()->default(NULL);
             $table->softDeletes();
             $table->timestamps();
         });

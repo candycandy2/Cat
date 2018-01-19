@@ -56,10 +56,10 @@ $("#viewActivitiesSignup").pagecontainer({
                             + employeeArr[i]["EmployeeDept"]
                             + '</span></div><div><span>'
                             + employeeArr[i]["EmployeeName"]
-                            + '</span></div></li>';
+                            + '</span></div></li><hr class="ui-hr ui-hr-option">';
                     }
 
-                    $("#employee-popup-option-list").empty().append(employeeList);
+                    $("#employee-popup-option-list").empty().append(employeeList).children("ul hr:last-child").remove();
                     resizePopup("employee-popup-option");
 
                     $("#employee-popup-option-list").show();

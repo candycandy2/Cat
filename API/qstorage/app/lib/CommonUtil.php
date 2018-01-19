@@ -1,5 +1,7 @@
 <?php
 namespace App\lib;
+
+use App\Model\QP_User as QP_User;
 use Config;
 
 class CommonUtil{
@@ -96,9 +98,9 @@ class CommonUtil{
     $source_ratio = $width/$height;
     $new_ratio = 1;
     if($source_ratio > 1){ //橫圖
-        $target_ratio = round($standard/$width, 1);
+        $target_ratio = $standard/$width;
     }else{ //直圖
-        $target_ratio = round($standard/$height, 1);
+        $target_ratio = $standard/$height;
     }
     //長或寬 > standard 才需做壓縮
     if($target_ratio < 1){
@@ -137,4 +139,47 @@ class CommonUtil{
     }
   }
 
+   public static function getUserInfoJustByUserEmpNo($empNo, $domain=null)
+    {
+        $userList = QP_User::where('qp_user.status', '=', 'Y')
+            -> where('qp_user.resign', '=', 'N')
+            -> where('qp_user.emp_no', '=', $empNo);
+            if(!is_null($domain)){
+                $userList = $userList->where('qp_user.user_domain', '=', $domain);
+            }
+            $userList = $userList->select('qp_user.row_id',
+                                          'qp_user.login_id',
+                                          'qp_user.company',
+                                          'qp_user.site_code',
+                                          'qp_user.ext_no',
+                                          'qp_user.emp_no',
+                                          'qp_user.emp_name',
+                                          'qp_user.user_domain',
+                                          'qp_user.department',
+                                          'qp_user.email')->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0];
+    }
+
+    public static function getUserInfoByUUID($uuid,$auth=true)
+    {
+        $query = QP_User::join('qp_register', 'qp_user.row_id', '=', 'qp_register.user_row_id')
+            -> where('qp_register.uuid', '=', $uuid);
+            if($auth){
+               $query -> where('qp_register.status', '=', 'A');
+               $query -> where('qp_user.status', '=', 'Y');
+               $query -> where('qp_user.resign', '=', 'N');
+            }
+           $userList = $query-> select('qp_user.row_id', 'qp_user.login_id', 'qp_user.emp_no',
+                'qp_user.emp_name', 'qp_user.email', 'qp_user.user_domain', 'qp_user.company',
+                'qp_user.department','qp_user.site_code','qp_user.status', 'qp_user.resign'  )->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0];
+    }
 }

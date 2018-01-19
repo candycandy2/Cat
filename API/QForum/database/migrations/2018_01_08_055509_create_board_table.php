@@ -18,10 +18,10 @@ class CreateBoardTable extends Migration
             $table->string('board_name', 200);
             $table->string('manager', 200);
             $table->string('public_type', 1)->default(3);
-            $table->string('company', 250)->default(NULL);
+            $table->string('company', 250)->nullable()->default(NULL);
             $table->string('status',1)->default('Y');
-            $table->integer('created_user')->default(NULL);
-            $table->integer('updated_user')->default(NULL);
+            $table->integer('created_user')->nullable()->default(NULL);
+            $table->integer('updated_user')->nullable()->default(NULL);
             $table->timestamps();
         });
     }

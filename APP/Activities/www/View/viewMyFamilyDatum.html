@@ -36,26 +36,26 @@
         </div>
 
         <!--2.新增和編輯頁面-->
-        <div id="viewFamilyEdit" style="display:none;">
+        <div id="viewFamilyEdit">
             <div class="family-input-div">
-                <label for="">姓名</label>
-                <input type="text" name="" id="" data-role="none" class="family-input">
+                <label for="familyName">姓名</label>
+                <input type="text" name="familyName" id="familyName" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
-                <label for="">關係</label>
-                <input type="text" name="" id="familyRelationship" data-role="none" class="family-input-dropdown" readonly>
+                <label for="familyRelationship">關係</label>
+                <input type="text" name="familyRelationship" id="familyRelationship" data-role="none" class="family-input-dropdown" readonly>
             </div>
             <div class="family-input-div">
-                <label for="">性別</label>
-                <input type="text" name="" id="familyGender" data-role="none" class="family-input-dropdown" readonly>
+                <label for="familyGender">性別</label>
+                <input type="text" name="familyGender" id="familyGender" data-role="none" class="family-input-dropdown" readonly>
             </div>
             <div class="family-input-div">
-                <label for="">身份證</label>
-                <input type="text" name="" id="" data-role="none" class="family-input">
+                <label for="familyID">身份證</label>
+                <input type="text" name="familyID" id="familyID" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
-                <label for="">生日</label>
-                <input type="text" name="" id="" data-role="none" class="family-input">
+                <label for="familyBirth">生日</label>
+                <input name="familyBirth" id="familyBirth" data-role="none" class="family-input-calendar" readonly>
             </div>
             <!--dropdownlist: hidden-->
             <div id="relationshipDropdownlist" style="display:none;"></div>
@@ -163,6 +163,34 @@
                     <div class="btn-cancel" id="confirmCancelEditFamilyBtn">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--新增眷屬資料失敗/更新眷屬資料失敗/刪除眷屬資料失敗-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup familyErrorMsg" for="familyErrorMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--新增眷屬資料失敗-->
+                        <span class="langStr" data-id="str_041"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
                     </div>
                 </div>
             </div>
