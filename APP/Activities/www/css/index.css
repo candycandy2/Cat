@@ -271,7 +271,6 @@
 }
 
 #viewActivitiesNone {
-    display: none;
     width: 100vw;
     text-align: center;
     line-height: 150vw;
@@ -487,6 +486,11 @@
     line-height: 16vw;
 }
 
+.team-signup-remark {
+    margin-top: 4.3vw;
+    line-height: 1.5;
+}
+
 .team-signup-footer {
     position: fixed;
     left: 0;
@@ -495,8 +499,8 @@
     height: 10.656vw;
     text-align: center;
     line-height: 10.656vw;
-    color: #989898;
-    background: #d6d6d6;
+    color: #ffffff;
+    background: #2d89bc;
 }
 
 .team-manage-signuped {
@@ -796,7 +800,7 @@
 
 #viewRecordList {
     width: 100vw;
-    min-height: 15vw;
+    /* min-height: 15vw; */
     margin-top: 5vw;
     margin-bottom: 4vw;
     background: #ffffff;
@@ -807,6 +811,7 @@
     text-align: center;
     line-height: 150vw;
     margin: 0vw 0vw;
+    display: none;
 }
 
 .record-list {
@@ -952,7 +957,7 @@
 
 .family-notice {
     width: 92.58vw;
-    min-height: 50vw;
+    min-height: 30vw;
     margin-top: 4.3vw;
     margin-left: 3.71vw;
 }
