@@ -22,7 +22,7 @@ class CommentService
         $now = date('Y-m-d H:i:s',time());
         $insertData = [
                 'post_id' => $data['post_id'],
-                'content' => $data['content'],
+                'content' => html_entity_decode($data['content'], ENT_QUOTES),
                 'from_id' => $userData->login_id,
                 'created_user' => $userData->row_id,
                 'ctime' => time(),
