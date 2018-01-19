@@ -12,7 +12,7 @@ $("#viewActivitiesRecord").pagecontainer({
                     var recordArr = data["Content"];
                     var recordContent = "";
 
-                    for(var i in recordArr) {
+                    for (var i in recordArr) {
                         recordContent += '<div class="record-list"><div class="font-style10 font-color2"><div>'
                             + recordArr[i]["SignupName"]
                             + ' / '
@@ -34,13 +34,11 @@ $("#viewActivitiesRecord").pagecontainer({
                     }
 
                     $("#viewRecordList").empty().append(recordContent).children("div:last-child").remove();
-                    
-                    // $("#viewRecordsNone").hide();
-                    // $("#viewRecordList").show();
+
+                    $("#viewRecordsNone").hide();
 
                 } else if (data["ResultCode"] == "045909") {
-                    // $("#viewRecordList").hide();
-                    // $("#viewRecordsNone").show();
+                    $("#viewRecordsNone").show();
                 }
 
 
@@ -57,7 +55,11 @@ $("#viewActivitiesRecord").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesRecord").on("pagebeforeshow", function (event, ui) {
+            if (viewRecordInit) {
+                //ActivitiesRecordQuery();
 
+                viewRecordInit = false;
+            }
         });
 
         $("#viewActivitiesRecord").on("pageshow", function (event, ui) {
@@ -70,7 +72,8 @@ $("#viewActivitiesRecord").pagecontainer({
         });
 
         //取消報名
-        $(document).on("click", ".record-delete", function() {
+        $(document).on("click", ".record-delete", function () {
+            loadingMask("show");
             var acID = $(this).parent().attr("data-id");
             var siNo = $(this).parent().attr("data-no");
             var model = $(this).parent().attr("data-model");
@@ -86,8 +89,8 @@ $("#viewActivitiesRecord").pagecontainer({
                 + '</EmployeeNo></LayoutHeader>';
 
             console.log(activitiesSignupCancelQueryData);
-                
-            //ActivitiesSignupCancelQuery();
+
+            ActivitiesSignupCancelQuery();
 
         });
     }

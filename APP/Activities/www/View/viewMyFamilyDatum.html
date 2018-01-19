@@ -6,11 +6,20 @@
             <img src="img/back.png" class="back-family" style="display:none;">
         </a>
         <div class="header-style">
-            <div class="ui-title">我的眷屬資料</div>
+            <div class="ui-title">
+                <!--我的眷屬資料-->
+                <span class="langStr" data-id="str_004"></span>
+            </div>
         </div>
     </div>
     <div data-role="main" class="page-main">
-        <!--1.眷屬資料列表-->
+        <!--1.暫無眷屬資料-->
+        <div id="viewFamilyNone" class="font-style12 font-color3">
+            <!--目前沒有眷屬資料-->
+            <span class="langStr" data-id="str_036"></span>
+        </div>
+
+        <!--2.眷屬資料列表-->
         <div id="viewFamilyList">
             <div id="familyList">
                 <!-- <div class="family-list">
@@ -35,7 +44,7 @@
             </div>
         </div>
 
-        <!--2.新增和編輯頁面-->
+        <!--3.新增和編輯頁面-->
         <div id="viewFamilyEdit">
             <div class="family-input-div">
                 <label for="familyName">姓名</label>
@@ -64,13 +73,12 @@
             <div class="family-save-btn font-style10">儲存</div>
         </div>
 
-        <!--3.fixed add img-->
+        <!--4.fixed add img-->
         <div class="family-add-img">
             <img src="img/floating_add.png">
         </div>
 
-        <!--4.暫無眷屬資料-->
-        <div id="viewFamilyNone" class="font-style12 font-color3">目前沒有眷屬資料</div>
+        
     </div>
 
     <!--確定刪除眷屬資料-->
