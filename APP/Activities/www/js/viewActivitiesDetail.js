@@ -2,7 +2,7 @@
 $("#viewActivitiesDetail").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
-        var isFull,isRepeatSignup,isSignup,actModel,actID,modelName,viewName;
+        var isFull, isRepeatSignup, isSignup, actModel, actID, modelName, viewName;
 
         //活動詳情
         window.ActivitiesDetailQuery = function (status) {
@@ -32,16 +32,16 @@ $("#viewActivitiesDetail").pagecontainer({
                         if (isSignup == "Y" && actModel !== 4) {
                             //管理
                             showBtnByID("alreadyBtn", isSignup);
-                        } else if (isSignup == "Y" && actModel == 4) {
+                        } else if (isSignup == "Y" && isFull == "N" && actModel == 4) {
                             //報名、管理
                             showBtnByID("continueBtn", isSignup);
-                        } else if (isSignup == "N" && isRepeatSignup == "Y") {
-                            //已報名同類活動
-                            showBtnByID("repeatBtn", isSignup);
-                        } else if (isSignup == "N" && isRepeatSignup == "N" && isFull == "Y") {
+                        } else if (isSignup == "Y" && isFull == "Y" && actModel == 4) {
+                            //管理
+                            showBtnByID("alreadyBtn", isSignup);
+                        } else if (isSignup == "N" && isFull == "Y") {
                             //已滿額
                             showBtnByID("fullBtn", isSignup);
-                        } else if (isSignup == "N" && isRepeatSignup == "N" && isFull == "N") {
+                        } else if (isSignup == "N" && isFull == "N") {
                             //報名 
                             showBtnByID("beginBtn", isSignup);
                             $("#beginBtn").removeClass("btn-disabled");
@@ -129,22 +129,25 @@ $("#viewActivitiesDetail").pagecontainer({
 
         //點擊 "開始報名" 跳轉到編輯頁
         $(".detail-signup-btn").on("click", function () {
-            activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
-                + actID
-                + '</ActivitiesID><SignupModel>'
-                + actModel
-                + '</SignupModel><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo></LayoutHeader>';
+            if (isRepeatSignup == "Y") {
+                //已報名同類活動，不能報名該活動
+                popupMsgInit('.signupedSameMsg');
+            } else if (isRepeatSignup == "N") {
+                activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
+                    + actID
+                    + '</ActivitiesID><SignupModel>'
+                    + actModel
+                    + '</SignupModel><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo></LayoutHeader>';
 
-            console.log(activitiesSignupQueryData);
+                //console.log(activitiesSignupQueryData);
 
-            ActivitiesSignupQuery(actModel);
+                ActivitiesSignupQuery(actModel);
 
-            showViewByModel("viewActivitiesSignup", actModel);
-            changePageByPanel("viewActivitiesSignup", true);
-
-
+                showViewByModel("viewActivitiesSignup", actModel);
+                changePageByPanel("viewActivitiesSignup", true);
+            }
 
         });
 
@@ -158,14 +161,12 @@ $("#viewActivitiesDetail").pagecontainer({
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';
 
-            console.log(activitiesSignupManageQueryData);
+            //console.log(activitiesSignupManageQueryData);
 
             ActivitiesSignupManageQuery(actModel);
 
             showViewByModel("viewActivitiesManage", actModel);
             changePageByPanel("viewActivitiesManage", true);
-
-
 
         });
 

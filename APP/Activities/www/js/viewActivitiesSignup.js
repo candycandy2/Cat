@@ -126,8 +126,14 @@ $("#viewActivitiesSignup").pagecontainer({
                     ActivitiesListQuery();
                     ActivitiesRecordQuery();
                     //跳轉
+                    $.each($("#openList .activity-list"), function(index, item) {
+                        if($(item).attr("data-id") == submitID) {
+                            $(item).trigger("click");
+                        }
+                    });
                 } else if (data['ResultCode'] == "045912") {
-
+                    //失敗，報名組數超過剩餘名額
+                    popupMsgInit('.overLimitMsg');
                 }
 
                 loadingMask("hide");
@@ -339,6 +345,7 @@ $("#viewActivitiesSignup").pagecontainer({
                 //console.log(activitiesSignupConfirmQueryData);
                 ActivitiesSignupConfirmQuery();
             }
+            
         });
 
 
