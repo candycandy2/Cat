@@ -4,8 +4,9 @@
  */
 namespace App\Http\Controllers;
 
-use App\Components\Push;
-use App\Components\Message;
+use App\lib\Push;
+use App\lib\Message;
+use App\lib\Forum;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use Request;
@@ -16,15 +17,16 @@ class testController extends Controller
 {
 
     protected $push;
+    protected $forum;
     protected $eventService;
 
     const EVENT_TYPE = 'event_type';
     const STATUS_FINISHED = '1';
     const STATUS_UNFINISHED = '0';
 
-    public function __construct(Push $push, eventService $eventService)
+    public function __construct(Push $push, eventService $eventService, Forum $forum)
     {
-
+        $this->forum = $forum;
         $this->push = $push;
         $this->eventService = $eventService;
     }
@@ -142,33 +144,40 @@ class testController extends Controller
    }
 
    public function createChatRoom(){
-        
-       
-        $owner = "Cleo.W.Chan";
-        $members = array("Steven.Yan","Sammi.Yao");
-        $desc = "cleo test create chatRoom";
-        $project = "appensdev";
-        //var_dump($messageGroupInfo);exit();
-        $qMessage = new Message();
-        $res = json_decode($qMessage->createChatRoom($owner, $members, $desc));
-        if($res->ResultCode != 1){
-            if($res->ResultCode == '998002'){
+         $input = Input::get();
+         $xml=simplexml_load_string($input['strXml']);
+         $empNo = trim((string)$xml->emp_no[0]);
+         
+         $queryParam = array('lang'=> $input['lang'],
+                             'uuid'=> $input['uuid']);
+        $postId = $this->forum->getPostId($empNo, $queryParam);
 
-                return $result = response()->json(['ResultCode'=>ResultCode::_014918_memberNotRegistered,
-                'Message'=>"新增聊天室失敗, 成員未註冊",
-                'Content'=>""]);
+        var_dump(json_decode($postId));
+        // $owner = "Cleo.W.Chan";
+        // $members = array("Steven.Yan","Sammi.Yao");
+        // $desc = "cleo test create chatRoom";
+        // $project = "appensdev";
+        // //var_dump($messageGroupInfo);exit();
+        // $qMessage = new Message();
+        // $res = json_decode($qMessage->createChatRoom($owner, $members, $desc));
+        // if($res->ResultCode != 1){
+        //     if($res->ResultCode == '998002'){
 
-            }else if($res->ResultCode== '998003' ||
-                    $res->ResultCode == '998004'){
+        //         return $result = response()->json(['ResultCode'=>ResultCode::_014918_memberNotRegistered,
+        //         'Message'=>"新增聊天室失敗, 成員未註冊",
+        //         'Content'=>""]);
 
-                return $result = response()->json(['ResultCode'=>ResultCode::_014919_chatroomMemberInvalid,
-                'Message'=>"聊天室成員不存在",
-                'Content'=>""]);
-            }else{
-                 return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-                 'Content'=>""]);
-            }
-        }
+        //     }else if($res->ResultCode== '998003' ||
+        //             $res->ResultCode == '998004'){
+
+        //         return $result = response()->json(['ResultCode'=>ResultCode::_014919_chatroomMemberInvalid,
+        //         'Message'=>"聊天室成員不存在",
+        //         'Content'=>""]);
+        //     }else{
+        //          return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
+        //          'Content'=>""]);
+        //     }
+        // }
    }
 
 

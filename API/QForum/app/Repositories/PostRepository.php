@@ -15,7 +15,7 @@ class PostRepository
     }
 
     public function newPost(Array $data){
-        return $this->post->insertGetId($data);
+        return $this->post->insert($data);
     }
 
     public function getPostData($postId, $boardId){

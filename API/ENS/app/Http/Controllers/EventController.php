@@ -61,7 +61,6 @@ class EventController extends Controller
             $empNo = trim((string)$xml->emp_no[0]);
             $data = $this->getInsertEventData($xml);
             $updateData = [];
-
             if(!isset($data['lang'])        || $data['lang']=="" || 
                !isset($data['need_push'])   || $data['need_push']=="" || 
                !isset($data['project'])     || $data['project']=="" || 
@@ -152,41 +151,22 @@ class EventController extends Controller
             $queryParam =  array(
                 'lang' => $data['lang'],
                 'need_push' =>  $data['need_push'],
-                'project' =>  $data['project']
+                'project' =>  $data['project'],
+                'uuid' => (isset($input['uuid']))?$input['uuid']:""
                 );
             
-            //Step 1. create chat room
-            $owner = $this->userService->getUserInfoByEmpNo(array($empNo))[0]->login_id;
-            $eventUsers = $this->userService->getUserInfoByEmpNo($eventUser);
-            $desc = $data['event_title'];
-            $createChatRoomRes = $this->eventService->createChatRoom($owner, $eventUsers, $desc);
+            $title = $data['event_title'];
+            $content = $data['event_desc'];
+            $newPostRs = json_decode($this->eventService->newPost($data['project'], $empNo, $title, $content, $queryParam));
 
-            if(is_null($createChatRoomRes)){
-                 \DB::rollBack();
-                    return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
+            if($newPostRs->ResultCode != ResultCode::_1_reponseSuccessful){
+                 return $result = response()->json(['ResultCode'=>$newPostRs->ResultCode,
+                'Message'=>"新增Post失敗",
                 'Content'=>""]);
-            }
-            $createChatRoomRes = json_decode($createChatRoomRes);
-            if($createChatRoomRes->ResultCode != 1){
-                \DB::rollBack();
-                if($createChatRoomRes->ResultCode == '998002'){
-                    return $result = response()->json(['ResultCode'=>ResultCode::_014918_memberNotRegistered,
-                    'Message'=>"新增聊天室失敗，成員未註冊",
-                    'Content'=>""]);
-
-                }else if($createChatRoomRes->ResultCode== '998003' ||
-                        $createChatRoomRes->ResultCode == '998004'){
-                    return $result = response()->json(['ResultCode'=>ResultCode::_014919_chatroomMemberInvalid,
-                    'Message'=>"聊天室成員不存在",
-                    'Content'=>""]);
-                }else{
-                     return $result = response()->json(['ResultCode'=>ResultCode::_014999_unknownError,
-                     'Content'=>""]);
-                }
             }
 
             //Step2. create event
-            $chatroomId = $createChatRoomRes->Content->gid;
+            $chatroomId = $newPostRs->Content->post_id;
             $data['chatroom_id'] = $chatroomId;
             $eventId = $this->eventService->newEvent($empNo, $data, $taskUserList, $eventUser, $queryParam);
             \DB::commit();
@@ -194,7 +174,7 @@ class EventController extends Controller
             //Step3. send push
             $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
-                'Content'=>$createChatRoomRes->Content]);
+                'Content'=>$title]);
 
         } catch (\Exception $e){
             \DB::rollBack();

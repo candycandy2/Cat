@@ -75,13 +75,14 @@ class PostController extends Controller
                                       'Message'=>""], 200);
         }
 
-        $pboardIdostId = $data['post_id'];
+        $postId = $data['post_id'];
         $fileList = isset($data['file_list'])?$data['file_list']:null;
-
+        $empNo = $data['emp_no'];
+        $userData = $this->userService->getUserData($empNo);
         //new Post and add attach
         \DB::beginTransaction();
         try{
-            $realPostId = $this->postService->newPost($data, $userData);
+            $newPostResult = $this->postService->newPost($data, $userData);
             if(is_array($fileList)){
                 $attachResult = $this->attachService->addAttach($data, $userData);
             }
@@ -89,7 +90,7 @@ class PostController extends Controller
             \DB::commit();
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
-                        'Content'=>array("post_id"=> $realPostId)]);
+                        'Content'=>array("post_id"=> $postId)]);
         } catch (\Exception $e){
             \DB::rollBack();
             throw $e;
