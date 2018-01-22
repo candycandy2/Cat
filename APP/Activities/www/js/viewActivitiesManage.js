@@ -1,8 +1,37 @@
 
 $("#viewActivitiesManage").pagecontainer({
     create: function (event, ui) {
-        //page init
         /********************************** function *************************************/
+        //報名管理
+        window.ActivitiesSignupManageQuery = function (mode) {
+
+            this.successCallback = function (data) {
+                console.log(data);
+
+                if (data["ResultCode"] == "1") {
+                    if (model == "1") {
+
+                    } else if (model == "3") {
+
+                    } else if (model == "4") {
+
+                    } else if (model == "5") {
+
+                    }
+                }
+
+
+                loadingMask("hide");
+            };
+
+            this.failCallback = function (data) { };
+
+            var __construct = function () {
+                CustomAPI("POST", true, "Activities_Signup_Manage", self.successCallback, self.failCallback, activitiesSignupManageQueryData, "");
+            }();
+
+        };
+
         //取消報名
         window.ActivitiesSignupCancelQuery = function () {
 
@@ -11,6 +40,8 @@ $("#viewActivitiesManage").pagecontainer({
 
                 if (data["ResultCode"] == "045913") {
 
+                    
+                    ActivitiesRecordQuery();
                 } else if (data["ResultCode"] == "045914") {
                     //報名取消失敗
 
@@ -28,6 +59,7 @@ $("#viewActivitiesManage").pagecontainer({
             }();
 
         };
+
 
 
         window.APIRequest = function () {
@@ -49,40 +81,9 @@ $("#viewActivitiesManage").pagecontainer({
 
         };
 
-        //根據不同活動類型，顯示不同頁面
-        function showViewByModel() {
-            var viewModel;
-            if (actModel == 1) {
-                viewModel = "Person";
-            } else if (actModel == 3) {
-                viewModel = "Family";
-            } else if (actModel == 4) {
-                viewModel = "Team";
-            } else if (actModel == 5) {
-                viewModel = "Time";
-            }
-
-            var viewHtml;
-            if (isSignup) {
-                viewHtml = "Manage";
-            } else {
-                viewHtml = "Signup"
-            }
-
-            var viewID = "view" + viewModel + viewHtml;
-
-            $.each($("#viewActivitiesManage .page-main > div"), function (index, item) {
-                if ($(item).attr("id") == viewID) {
-                    $(item).removeClass("view-hide").addClass("view-show");
-                } else {
-                    $(item).removeClass("view-show").addClass("view-hide");
-                }
-            });
-        }
-
         /********************************** page event *************************************/
         $("#viewActivitiesManage").on("pagebeforeshow", function (event, ui) {
-            showViewByModel();
+
         });
 
         $("#viewActivitiesManage").on("pageshow", function (event, ui) {
@@ -99,6 +100,7 @@ $("#viewActivitiesManage").pagecontainer({
             changePageByPanel("viewActivitiesDetail", false);
         });
 
+        //展開隊伍
         $(".list-img").on("click", function () {
             var imgSrc = $(this).attr("src").split("/")[1];
             if (imgSrc == "list_down.png") {
