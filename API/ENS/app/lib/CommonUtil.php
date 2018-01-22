@@ -124,9 +124,23 @@ class CommonUtil
      * 取得與QPlay Api 溝通的Signature
      * Base64( HMAC-SHA256( SignatureTime , AppSecretKey ) )
      * @param  timestamp $signatureTime 時間戳記
+     * @param  string    $appSecretKey  使用的 app secrte key，預設為ENS的secret key
      * @return String    加密後的字串
      */
-    public static function getSignature($signatureTime)
+    public static function getSignature($signatureTime, $secretKey=null)
+        {
+            $secretKey = (is_null($secretKey))?Config::get('app.secret_key'):$secretKey;
+            $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, $secretKey, true));
+            return $ServerSignature;
+        }
+
+    /**
+     * 取得與QPlay Custom Api 溝通的Signature
+     * Base64( HMAC-SHA256( SignatureTime , AppSecretKey ) )
+     * @param  timestamp $signatureTime 時間戳記
+     * @return String    加密後的字串
+     */
+    public static function getCustomSignature($signatureTime)
         {
             $ServerSignature = base64_encode(hash_hmac('sha256', $signatureTime, Config::get('app.secret_key'), true));
             return $ServerSignature;
@@ -238,5 +252,20 @@ class CommonUtil
         }
 
         return 3; //正常
+    }
+
+    /**
+     * 取得討論版id
+     * @param  string $project 專案名稱
+     * @return mixed
+     */
+    public static function getBoardId($project){
+
+      return $board = \DB::connection('mysql_qplay')->table('qp_board_type')
+        ->join('qp_board', 'qp_board_type.row_id', "=", 'qp_board.board_type_id')
+        -> where('qp_board_type.type_name', '=', 'ENS')
+        -> where('qp_board.board_name',$project)
+        ->select('qp_board.row_id as board_id')->first();
+
     }
 }

@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\lib\ResultCode;
 use App\Repositories\UserRepository;
-use App\Components\Message;
+use App\lib\Message;
 use Config;
 
 class UserService

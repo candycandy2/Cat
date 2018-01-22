@@ -148,6 +148,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | QForum Api Server
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the qForum api server settings for your application.
+    |
+    */
+   
+    'qforum_api_server' => env('QFORUM_API_SERVER'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Secret Key
     |--------------------------------------------------------------------------
     |
@@ -156,7 +167,21 @@ return [
     |
     */
     
-    'secret_key' => 'dd88f6e1eea34e77a9ab75439d327363',
+    'secret_key' => env('APP_SECRET_KEY'),
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | App QForum Secret Key
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the a qforum_secret_key for your application to
+    | call the QForum API via qplay custom API
+    | this secret comes from qforum project.
+    |
+    */
+    
+    'qforum_secret_key' => env('APP_QFORUM_SECRET_KEY'),
     
     /*
     |--------------------------------------------------------------------------
