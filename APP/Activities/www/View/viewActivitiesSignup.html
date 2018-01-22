@@ -5,7 +5,10 @@
             <img src="img/back.png" class="back-detail">
         </a>
         <div class="header-style">
-            <div class="ui-title">活動報名</div>
+            <div class="ui-title">
+                <!--活動報名-->
+                <span class="langStr" data-id="str_002"></span>
+            </div>
         </div>
     </div>
     <div data-role="main" class="page-main">
@@ -194,17 +197,10 @@
             </div>
             <!--dropdownlist: hidden-->
             <div id="employeeDropdownlist" style="display:none;"></div>
-            <!--notice-->
-            <div class="font-style12 font-color2" style="margin-top:4.3vw;">
-                <span>*請先設定部門代碼，隊名與成員(</span>
-                <span class="font-color4">每隊人數</span>
-                <span class="font-color4" id="teamLimitPlaces">4</span>
-                <span class="font-color4">人</span>
-                <span>)，再點選[送出名單]按鍵完成報名</span>
-            </div>
-            <div class="font-style12 font-color2">*完成報名後，可再設定下一個組別</div>
+            <!--remark-->
+            <div id="teamRemark" class="font-style12 font-color2 team-signup-remark"></div>
             <div class="blank-container-before-footer"></div>
-            <div class="team-signup-footer font-style3">
+            <div id="sendTeamSignup" class="team-signup-footer font-style3 btn-disabled">
                 <div>送出名單</div>
             </div>
         </div>

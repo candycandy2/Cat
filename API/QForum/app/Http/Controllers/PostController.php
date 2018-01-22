@@ -14,6 +14,7 @@ use Webpatser\Uuid\Uuid;
 use App\lib\ResultCode;
 
 
+
 class PostController extends Controller
 {
     
@@ -60,56 +61,23 @@ class PostController extends Controller
     {
         $xml=simplexml_load_string($request['strXml']);
         $data = json_decode(json_encode($xml),TRUE);
-        $requiredRule = [
-            'board_id' => 'required',
-            'post_id' => 'required',
-            'post_title' => 'required',
-            'content' => 'required'
+        $rules = [
+            'board_id' => 'required|numeric|board_auth:'.$data['emp_no'],
+            'post_id' => 'required|string|size:32',
+            'post_title' => 'required|string|max:99',
+            'content' => 'required|string',
+            'file_list' => 'sometimes|required|array',
         ];
 
-        $rangeRule = [
-            'board_id' => 'numeric',
-            'post_id' => 'string|size:32',
-            'post_title' => 'string|size:99',
-            'content' => 'string'
-        ];
-       
-        //add validation when post with file
-        if(isset($data['file_list']) && is_array($data['file_list'])){
-            if(is_string($data['file_list']['file'])){
-               $data['file_list']['file'] = (array)$data['file_list']['file'];
-            }
-            $requiredRule ['file_list.file'] = 'required';
-            $rangeRule ['file_list.file'] = 'array';
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>""], 200);
         }
 
-        $required = Validator::make($data, $requiredRule);
-        if($required->fails())
-        {
-            return $result = response()->json(['ResultCode'=>ResultCode::_047903_MandatoryFieldLost,
-                    'Message'=>"必填字段缺失",
-                    'Content'=>""]);
-        }
-        $range = Validator::make($data, $rangeRule);
-        if($range->fails())
-        {
-             return $result = response()->json(['ResultCode'=>ResultCode::_047905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-        }
-
-        $empNo = $data['emp_no'];
-        $boardId = $data['board_id'];
-        $postId = $data['post_id'];
+        $pboardIdostId = $data['post_id'];
         $fileList = isset($data['file_list'])?$data['file_list']:null;
 
-        $userData = $this->userService->getUserData($empNo);
-        $hasAuth = $this->boardService->checkUserBoardAuth($boardId, $userData);
-        if(!$hasAuth){
-            return response()->json(['ResultCode'=>ResultCode::_047904_NoAuthorityToAccessThisBoard,
-                        'Message'=>"沒有該討論版權限",
-                        'Content'=>""]);
-        }
         //new Post and add attach
         \DB::beginTransaction();
         try{
@@ -146,45 +114,19 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getPostList()
+    public function getPostList(Request $request)
     {
         $xml=simplexml_load_string($request['strXml']);
         $data = json_decode(json_encode($xml),TRUE);
-        $requiredRule = [
-            'board_id' => 'required'
-        ];
 
-        $rangeRule = [
-            'board_id' => 'numeric'
-        ];
+        $validator = Validator::make($data , [
+            'board_id'=> 'required|numeric|board_auth:'.$data['emp_no']
+        ]);
 
-        $required = Validator::make($data, $requiredRule);
-        if($required->fails())
-        {
-            return $result = response()->json(['ResultCode'=>ResultCode::_047903_MandatoryFieldLost,
-                    'Message'=>"必填字段缺失",
-                    'Content'=>""]);
+        if ($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>""], 200);
         }
-        $range = Validator::make($data, $rangeRule);
-        if($range->fails())
-        {
-             return $result = response()->json(['ResultCode'=>ResultCode::_047905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
-        }
-
-        $empNo = $data['emp_no'];
-        $boardId = $data['board_id'];
-
-        $userData = $this->userService->getUserData($empNo);
-        $hasAuth = $this->boardService->checkUserBoardAuth($boardId, $userData);
-        if(!$hasAuth){
-            return response()->json(['ResultCode'=>ResultCode::_047904_NoAuthorityToAccessThisBoard,
-                        'Message'=>"沒有該討論版權限",
-                        'Content'=>""]);
-        }
-
-
     }
 
     /**
@@ -197,49 +139,25 @@ class PostController extends Controller
     {
         $xml=simplexml_load_string($request['strXml']);
         $data = json_decode(json_encode($xml),TRUE);
-        $requiredRule = [
-            'board_id' => 'required',
-            'post_id' => 'required',
-            'reply_from_seq' => 'required',
-            'reply_to_seq' => 'required'
-        ];
+        
+        $boardId =  (isset($data['board_id']))?$data['board_id']:null;
+        $replyFromSeq =  (isset($data['reply_from_seq']))?$data['reply_from_seq']:null;
 
-        $rangeRule = [
-            'board_id' => 'numeric',
-            'post_id' => 'string|size:32',
-            'reply_from_seq' => 'numeric',
-            'reply_to_seq' => 'numeric'
-        ];
+        $validator = Validator::make($data , [
+            'board_id' => 'required|numeric|board_auth:'.$data['emp_no'],
+            'post_id' => 'required|string|size:32|belone_board:'.$boardId,
+            'reply_from_seq' => 'required|numeric',
+            'reply_to_seq' => 'required|numeric|greater_than:'.$replyFromSeq
+        ]);
 
-        $required = Validator::make($data, $requiredRule);
-        if($required->fails())
-        {
-            return $result = response()->json(['ResultCode'=>ResultCode::_047903_MandatoryFieldLost,
-                    'Message'=>"必填字段缺失",
-                    'Content'=>""]);
-        }
-        $range = Validator::make($data, $rangeRule);
-        if($range->fails())
-        {
-             return $result = response()->json(['ResultCode'=>ResultCode::_047905_FieldFormatError,
-                    'Message'=>"欄位格式錯誤",
-                    'Content'=>""]);
+        if ($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>""], 200);
         }
 
-        $empNo = $data['emp_no'];
-        $boardId = $data['board_id'];
         $postId = $data['post_id'];
-
-        $userData = $this->userService->getUserData($empNo);
-        $hasAuth = $this->boardService->checkUserBoardAuth($boardId, $userData);
-        if(!$hasAuth){
-            return response()->json(['ResultCode'=>ResultCode::_047904_NoAuthorityToAccessThisBoard,
-                        'Message'=>"沒有該討論版權限",
-                        'Content'=>""]);
-        }
-
-        $post = $this->postService->getPostData($postId);
-         $comments = $this->commentService->getComments($postId);
+        $post = $this->postService->getPostData($postId, $boardId);
+        $comments = $this->commentService->getComments($postId);
         $post['reply_list'] = $comments;
        
         
