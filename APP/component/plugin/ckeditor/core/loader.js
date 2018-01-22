@@ -203,12 +203,12 @@ console.log("===================11--1");
                         //Darren-
                         var link = document.createElement("link");
                         link.rel = "stylesheet";
-                        link.href = "plugin/ckeditor/samples.css";
+                        link.href = "plugin/ckeditor/toolbarconfigurator/lib/codemirror/neo.css";
                         document.head.appendChild(link);
 
                         var link = document.createElement("link");
                         link.rel = "stylesheet";
-                        link.href = "plugin/ckeditor/toolbarconfigurator/lib/codemirror/neo.css";
+                        link.href = "plugin/ckeditor/contents.css";
                         document.head.appendChild(link);
 
                     }

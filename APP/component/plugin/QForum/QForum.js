@@ -2,8 +2,8 @@
 //Plugin - QForum
 var QForum = {
     appKey: "appqforum",
-    appSecretKey: "",
-    viewList: ["footer", "popup"],
+    appSecretKey: "c40a5073000796596c2ba5e70579b1e6",
+    viewList: ["footer", "popup", "replyListView"],
     initial: function() {
 
         //Load CSS
@@ -116,11 +116,10 @@ var QForum = {
         }
     },
     VIEW: {
-        replyButtonFooter: function(pageID, callback) {
-            callback = callback || null;
+        replyButtonFooter: function(pageID) {
 
             if ($("#" + pageID + " .QForum-Content .reply-button").length == 0) {
-                var replyButtonFooterHTML = $($("template#tplReplyButtonFooter").html());
+                var replyButtonFooterHTML = $($("template#tplQForumReplyButtonFooter").html());
                 $("#" + pageID).append(replyButtonFooterHTML).trigger("create");
 
                 //Create Popup
@@ -167,14 +166,15 @@ var QForum = {
                 }, ".QForum-Content .reply-button");
             }
 
-            QForum.EVENT.replySubmit(callback);
+            QForum.EVENT.replySubmit(pageID);
+            QForum.VIEW.replyListView(pageID);
 
         },
         replyFullScreenPopup: function() {
 
             if ($(".QForum-Content.reply-fullscreen-popup").length == 0) {
 
-                var replyFullScreenPopupHTML = $($("template#tplReplyFullScreenPopup").html());
+                var replyFullScreenPopupHTML = $($("template#tplQForumReplyFullScreenPopup").html());
                 $("body").append(replyFullScreenPopupHTML);
 
                 //For iOS, overlap
@@ -190,6 +190,22 @@ var QForum = {
                 initSample();
 
                 QForum.EVENT.editorKeyIn();
+
+            }
+
+        },
+        replyListView: function(pageID) {
+
+            if ($("#" + pageID + " .QForum-Content.reply-listview").length == 0) {
+
+                var replyListViewHTML = $($("template#tplQForumReplyListView").html());
+                $("#" + pageID + " .page-main").append(replyListViewHTML);
+
+                var replyListDataHTML = $($("template#tplQForumReplyListData").html());
+                $(".QForum-Content.reply-listview").append(replyListDataHTML);
+
+                var replyListDataHTML = $($("template#tplQForumReplyListData").html());
+                $(".QForum-Content.reply-listview").append(replyListDataHTML);
 
             }
 
@@ -211,7 +227,7 @@ var QForum = {
             });
 
         },
-        replySubmit: function(callback) {
+        replySubmit: function(pageID) {
 
             $("#replySubmit").off("click");
 
@@ -223,6 +239,7 @@ var QForum = {
 
                         //callback(QForum.EVENT.getEditorContent());
                         console.log(QForum.EVENT.getEditorContent());
+                        QForum.VIEW.replyListView(pageID);
                     }
                 }
             }, "#replySubmit");

@@ -143,6 +143,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
+                            '<edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge"><string>your custom text here</string></edit-config>' +
                             //'<preference name="iosPersistentFileLocation" value="Compatibility" />' +
                         '</platform>' +
                     '</widget>';
@@ -204,6 +205,7 @@ gulp.task('jenkinsinstall', shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-inappbrowser',
     'cordova plugin add ../../plugins/cordova-plugin-proguard',
     'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
+    'cordova plugin add ../../plugins/cordova-plugin-geolocation',
     'cordova plugin add ../../plugins/cordova-plugin-appavailability'//,
     //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
