@@ -5,7 +5,7 @@ $("#viewActivitiesList").pagecontainer({
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activitiesArr = data["Content"];
@@ -53,8 +53,8 @@ $("#viewActivitiesList").pagecontainer({
                     $("#closeList").empty().append(closeContent).children("div:last-child").remove();
                     
                 } else if (data["ResultCode"] == "045901") {
-                    var noDataMsg = '<div id="viewActivitiesNone" class="font-style12 font-color3"><span class="langStr" data-id="str_034"></span></div>';
-                    $("#viewActivitiesContent").empty().append(noDataMsg);
+                    $("#viewActivitiesContent").hide();
+                    $("#viewActivitiesNone").show();
                 }
 
                 loadingMask("hide");
