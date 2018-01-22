@@ -13,6 +13,3 @@
 
 3. plugin/ ckeditor/ skins/ moono-lisa/ mainui.css
 ---A. CSS setting of toolbar
-
-4. plugins/dialog/plugin.js: Update for check content of ckeditor
----A. Hide dialog-image
