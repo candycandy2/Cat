@@ -275,19 +275,22 @@
     text-align: center;
     line-height: 150vw;
     margin: 0vw 0vw;
+    display: none;
 }
 
 /**************************************** viewActivitiesDetail ***************************************/
 #activityDetail {
     width: 92.58vw;
-    min-height: 38vw;
+    /* min-height: 38vw; */
     margin-top: 5vw;
     margin-left: 3.71vw;
 }
 
 .detail-header {
     width: 92.58vw;
-    height: 23vw;
+    padding-bottom: 4vw;
+    /* border-bottom:1px solid #d6d6d6; */
+    min-height: 23vw;
 }
 
 .detail-header > div {
@@ -311,7 +314,7 @@
 
 .detail-header-info {
     width: 75vw;
-    height: 23vw;
+    /* height: 23vw; */
 }
 
 .detail-header-info > div:nth-of-type(1) {
@@ -327,28 +330,26 @@
 }
 
 .detail-header-info > div:nth-of-type(3),
-.detail-header-info > div:nth-of-type(4) {
+.detail-header-info > div:nth-of-type(4),
+.detail-header-info > div:nth-of-type(5) {
     margin-top: 1.16vw;
 }
 
 .detail-header-after {
-    width: 75vw;
-    margin-left: 17.5vw;
-    margin-top: 2vw;
     display: none;
 }
 
 .detail-line {
     width: 100%;
-    height: 1px;
-    background-color: #d6d6d6;
-    overflow: hidden;
-    margin-top: 4vw;
+    height: 4vw;
+    border-bottom: 1px solid #d6d6d6;
+    /* overflow: hidden; */
+    /* margin-top: 4vw; */
 }
 
 .detail-main {
     width: 92.58vw;
-    min-height: 50vw;
+    /* min-height: 50vw; */
     margin-top: 4vw;
     margin-bottom: 2vw;
 }
@@ -369,6 +370,14 @@
     display: none;
 }
 
+.signupedSameMsg >.ui-content {
+    padding: 0 !important;
+}
+
+.signupedSameMsg .ui-content>.main,
+.signupedSameMsg .ui-content>.footer {
+    margin-top: 12%;
+}
 
 /******************************************* viewActivitiesSignup **************************************/
 #viewActivitiesSignup .page-main > div {
@@ -631,6 +640,17 @@
     margin-top: 10%;
 }
 
+.overLimitMsg >.ui-content {
+    padding: 0 !important;
+}
+
+.overLimitMsg .ui-content>.main {
+    padding: 0 10vw;
+    margin-top: 10%;
+    line-height: 1.5;
+}
+
+
 .tpl-option-msg-list {
     /* border-top-style: solid;
     border-top-color: #efefef;
@@ -869,22 +889,6 @@
 .save-family-btn {
     font-weight: normal;
     font-size: 3.768vw !important;
-}
-
-#viewMyFamilyDatum .page-header a:link {
-    color: #666 !important;
-}
-
-#viewMyFamilyDatum .page-header a:visited {
-    color: #666 !important;
-}
-
-#viewMyFamilyDatum .page-header a:hover {
-    color: #666 !important;
-}
-
-#viewMyFamilyDatum .page-header a:active {
-    color: #666 !important;
 }
 
 .family-add-img {

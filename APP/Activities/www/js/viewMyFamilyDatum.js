@@ -1,7 +1,6 @@
 
 $("#viewMyFamilyDatum").pagecontainer({
     create: function (event, ui) {
-        //page init
         /********************************** function *************************************/
         var familyArr = [];
         var addOrUpdate;
@@ -35,6 +34,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             this.successCallback = function (data) {  
                 //console.log(data);
 
+                familyArr = [];
                 if (data["ResultCode"] == "1") {
                     //排序
                     familyArr = data["Content"].sort(sortByRelationship("FamilyRelationship", "FamilyName"));
@@ -69,15 +69,13 @@ $("#viewMyFamilyDatum").pagecontainer({
                                 + langStr["str_037"]
                                 + '</span></div></div><div class="activity-line"></div>';
                         }
-
                     }
 
                     $("#familyList").empty().append(familyList).children("div:last-child").remove();
-                    
-                    //$("#viewFamilyNone").hide();
 
                 } else if (data["ResultCode"] == "045902") {
-                    //$("#viewFamilyNone").show();
+                    $("#viewFamilyList").hide();
+                    $("#viewFamilyNone").show();
                 }
 
                 loadingMask("hide");
@@ -288,14 +286,22 @@ $("#viewMyFamilyDatum").pagecontainer({
             $("#viewMyFamilyDatum .back-family").hide();
             $("#viewFamilyEdit").hide();
             $("#viewMyFamilyDatum .menu").show();
-            $("#viewFamilyList").show();
+            if(familyArr.length == 0) {
+                $("#viewFamilyNone").show();
+            } else {
+                $("#viewFamilyList").show();
+            }
             $(".family-add-img").show();
         }
 
         //“編輯”和“新增”的跳轉
         function changeViewToDetail() {
             $("#viewMyFamilyDatum .menu").hide();
-            $("#viewFamilyList").hide();
+            if(familyArr.length == 0) {
+                $("#viewFamilyNone").hide();
+            } else {
+                $("#viewFamilyList").hide();
+            } 
             $(".family-add-img").hide();
             $("#viewMyFamilyDatum .back-family").show();
             $("#viewFamilyEdit").show();
