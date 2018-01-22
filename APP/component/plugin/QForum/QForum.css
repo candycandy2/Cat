@@ -14,7 +14,7 @@
     display: none;
 }
 
-.QForum-Content.reply-fullscreen-popup .main {
+.QForum-Content.reply-fullscreen-popup .QForum.main {
     padding: 0 3.71vw;
     margin-top: 13.1vw;
 }
@@ -28,50 +28,97 @@
     line-height: 1;
 }
 
-.QForum-Content .header {
+.QForum-Content .QForum.header {
     padding: 3.238vw 3.71vw;
     display: inline-block;
     background-color: #492F7F;
     width: 100%;
 }
 
-.QForum-Content .header div {
+.QForum-Content .QForum.header div {
     float: left;
 }
 
-.QForum-Content .header .left {
+.QForum-Content .QForum.header .QForum.left {
     width: 20vw;
     height: 5.958vw;
 }
 
-.QForum-Content .header .header-icon {
+.QForum-Content .QForum.header .QForum.header-icon {
     width: 5.958vw;
     height: 5.958vw;
 }
 
-.QForum-Content .header .center, .QForum-Content .header .right {
+.QForum-Content .QForum.header .QForum.center, .QForum-Content .QForum.header .QForum.right {
     color: #FFFFFF;
     font-size: 4.39vw;
 }
 
-.QForum-Content .header .center {
+.QForum-Content .QForum.header .QForum.center {
     width: 52vw;
     text-align: center;
 }
 
-.QForum-Content .header .right {
+.QForum-Content .QForum.header .QForum.right {
     width: 20vw;
     text-align: right;
     padding-right: 3.71vw;
 }
 
-.QForum-Content .main .cke_top {
+.QForum-Content .QForum.main .cke_top {
     position: fixed;
     left: 0;
     top: 13.1vw;
     width: 100%;
 }
 
-.QForum-Content .main .cke_chrome {
+.QForum-Content .QForum.main .cke_chrome {
     position: fixed;
+}
+
+.QForum-Content.reply-listview {
+    margin: 2.14vw 0;
+}
+
+.QForum-Content.reply-listview .QForum.list-data {
+    all: unset;
+    display: block;
+    border: 1px solid #d6d6d6;
+    padding: 2.73vw 3.71vw;
+    margin-bottom: 4.3vw;
+}
+
+.QForum-Content.reply-listview .QForum.list-data .QForum.title {
+    all: unset;
+    display: inline-block;
+    /*margin-bottom: 2.73vw;*/
+    width: 100%;
+}
+
+.QForum-Content.reply-listview .QForum.list-data .QForum.name {
+    all: unset;
+    font-size: 3.97vw;
+    color: #323232;
+    width: 85%;
+    float: left;
+}
+
+.QForum-Content.reply-listview .QForum.list-data .QForum.button {
+    all: unset;
+    width: 14%;
+    float: left;
+    text-align: right;
+}
+
+.QForum-Content.reply-listview .QForum.list-data .QForum.button .QForum.button-icon {
+    width: 5.958vw;
+    height: 5.958vw;
+}
+
+.QForum-Content.reply-listview .QForum.list-data .QForum.time {
+    all: unset;
+    font-size: 3.14vw;
+    color: #666666;
+    display: block;
+    margin-bottom: 4.3vw;
 }

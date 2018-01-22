@@ -616,9 +616,29 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
                 var qstorageCallBack = function(data) {
                     console.log(data);
 
+                    //Decide the image size in ckeditor, according to horizontal or vertical
+                    var width = data.thumbnail_1024_width;
+                    var height = data.thumbnail_1024_height;
+                    var limitHorizontalWidthPX = parseInt(document.documentElement.clientWidth * 53.558 / 100, 10);
+                    var limitVerticalWidthPX = parseInt(document.documentElement.clientWidth * 40.25 / 100, 10);
+
+                    if (data.thumbnail_1024_width > data.thumbnail_1024_height) {
+                        //horizontal
+                        if (data.thumbnail_1024_width > limitHorizontalWidthPX) {
+                            width = limitHorizontalWidthPX;
+                            height = (limitHorizontalWidthPX * data.thumbnail_1024_height / data.thumbnail_1024_width);
+                        }
+                    } else {
+                        //vertical
+                        if (data.thumbnail_1024_width > limitVerticalWidthPX) {
+                            width = limitVerticalWidthPX;
+                            height = (limitVerticalWidthPX * data.thumbnail_1024_height / data.thumbnail_1024_width);
+                        }
+                    }
+
                     window.ckeditorIMAGE.imageServerURL = data.thumbnail_1024_url;
-                    window.ckeditorIMAGE.imageWidth = data.thumbnail_1024_width;
-                    window.ckeditorIMAGE.imageHeight = data.thumbnail_1024_height;
+                    window.ckeditorIMAGE.imageWidth = width;
+                    window.ckeditorIMAGE.imageHeight = height;
 
                     window.ckeditorIMAGE.fire("ok");
                 };
