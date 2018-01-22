@@ -64,25 +64,4 @@ class BoardRepository
                 ->get();
     }
 
-    /**
-     * 檢查使用者是否有該版權限
-     * @param  [type] $boardId [description]
-     * @param  [type] $empNo   [description]
-     * @return [type]          [description]
-     */
-    public function checkBoardUser($boardId, $empNo){
-       return $this->boardUser
-        ->where('board_id', $boardId)
-        ->where('emp_no', $empNo)
-        ->select('row_id')
-        ->get();
-    }
-
-    public function checkBoardCompany($boardId, $companyName){
-       return $this->boardCompany
-        ->where('board_id', $boardId)
-        ->where('company', $companyName)
-        ->select('row_id')
-        ->get();
-    }
 }

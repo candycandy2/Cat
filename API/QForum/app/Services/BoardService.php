@@ -34,42 +34,4 @@ class BoardService
         }
         return $boards;
     }
-
-    /**
-     * 檢查使用者有無該版的討使用權限
-     * @param  int     $boardId  討論版id
-     * @param  object  $userData 使用者資料
-     * @return boolean
-     */
-    public function checkUserBoardAuth($boardId, $userData){
-        $result = false;
-        $board = $this->boardRepository->getBoard($boardId);
-        if(is_null($board)){ //board不存在
-            return false;
-        }
-        $publicType = $board->public_type;
-        switch ($publicType) {
-            case 1:
-                //開放給全集團
-                $result = true;
-                break;
-            case 2:
-                //開放給特定公司
-                $companyBoards = $this->boardRepository->checkBoardCompany($boardId, $userData->company);
-                if( (!is_null($userData->company)) && (count($companyBoards) > 0)){
-                    $result = true;
-                }
-                break;
-            case 3:
-                //開放給特定用戶
-                 $userBoards = $this->boardRepository->checkBoardUser($boardId, $userData->emp_no);
-                 if( (!is_null($userData->emp_no)) && (count($userBoards) > 0)){
-                    $result = true;
-                }
-                break;
-            default:
-                 $result = false;
-        }
-       return $result;
-    }
 }
