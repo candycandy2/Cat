@@ -252,20 +252,20 @@ $("#viewMain2-1").pagecontainer({
             }
         }
 
-        /*function locationSuccess(position) {
+        function locationSuccess(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
-            var appid = "dj0yJmk9Q20wMFRNeGFWZnZZJmQ9WVdrOVRXRnZWVmxWTm1zbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD0yOQ--";
+            var APPID = 'MaoUYU6k';
 
-            var geoAPI = 'http://where.yahooapis.com/geocode?location='+lat+','+lon+'&flags=J&gflags=R&appid='+appid;
+            var geoAPI = 'http://where.yahooapis.com/geocode?location='+lat+','+lon+'&flags=J&gflags=R&appid='+APPID;
 
             var city = "Taipei";
             var searchtext = "select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "') and u='c'"
 
             //change city variable dynamically as required
             $.getJSON(geoAPI, function(data) {
-                if(r.ResultSet.Found == 1) {
-                    results = r.ResultSet.Results;
+                if(data.ResultSet.Found == 1) {
+                    results = data.ResultSet.Results;
                     city = results[0].city;
                     code = results[0].statecode || results[0].countrycode;
                     // This is the city identifier for the weather API
@@ -295,10 +295,6 @@ $("#viewMain2-1").pagecontainer({
             }
         }
 
-        var options = {
-          enableHighAccuracy: true
-        }
-
         function success(pos) {
           var crd = pos.coords;
           console.log('Your current position is:');
@@ -309,7 +305,7 @@ $("#viewMain2-1").pagecontainer({
 
         function error(err) {
           console.warn('ERROR(' + err.code + '): ' + err.message);
-        }*/
+        }
         /********************************** page event *************************************/
         $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
             var eventLogoutConfirmPopupData = {
@@ -386,12 +382,12 @@ $("#viewMain2-1").pagecontainer({
                 }
             });
 
-            /*$(document).ready(function(){
+            $(document).ready(function(){
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(success, error, options);
-                    //navigator.geolocation.getCurrentPosition(locationSuccess, locationError, options);
+                    //navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
+                    navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
                 }              
-            });*/
+            });
         });
 
         $("#viewMain2-1").scroll(function() {
