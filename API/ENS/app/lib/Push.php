@@ -2,7 +2,7 @@
 /**
  * 推播相關元件
  */
-namespace App\Components;
+namespace App\lib;
 
 use App\lib\CommonUtil;
 use App\Repositories\EventRepository;

@@ -26,6 +26,7 @@ class CommentRepository
                                'login_id as reply_user','qp_comment.updated_user' ,
                                'qp_comment.created_at as reply_create_time' ,
                                'qp_comment.updated_at as reply_update_time',
+                               'qp_comment.status as reply_status',
                                'qp_comment.deleted_at as reply_delete_time')
                       ->get();
     }
