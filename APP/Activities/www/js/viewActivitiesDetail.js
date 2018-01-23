@@ -102,9 +102,9 @@ $("#viewActivitiesDetail").pagecontainer({
             });
 
             if (bl == "Y") {
-                $(".detail-header-after").show();
+                $(".detail-header-signuped").show();
             } else {
-                $(".detail-header-after").hide();
+                $(".detail-header-signuped").hide();
             }
         }
 

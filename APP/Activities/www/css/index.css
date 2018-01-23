@@ -77,7 +77,7 @@
 }
 
 .font-color3 {
-    color: #666;
+    color: #666 !important;
 }
 
 .font-color4 {
@@ -270,6 +270,7 @@
     overflow: hidden;
 }
 
+
 #viewActivitiesNone {
     width: 100vw;
     text-align: center;
@@ -290,7 +291,8 @@
     width: 92.58vw;
     padding-bottom: 4vw;
     /* border-bottom:1px solid #d6d6d6; */
-    min-height: 23vw;
+    /* min-height: 23vw; */
+    overflow: hidden;
 }
 
 .detail-header > div {
@@ -335,14 +337,14 @@
     margin-top: 1.16vw;
 }
 
-.detail-header-after {
+.detail-header-signuped {
     display: none;
 }
 
 .detail-line {
     width: 100%;
-    height: 4vw;
-    border-bottom: 1px solid #d6d6d6;
+    height: 1px;
+    background: #d6d6d6;
     /* overflow: hidden; */
     /* margin-top: 4vw; */
 }
@@ -814,7 +816,34 @@
     text-align: center;
 }
 
+.cancelSignupMsg >.ui-content,
+.recordSignupMsg >.ui-content {
+    padding: 0 !important;
+}
 
+.cancelSignupMsg .ui-content>.header,
+.recordSignupMsg .ui-content>.header {
+    padding: 0 5.36vw;
+    margin-top: 5.07vw;
+}
+
+.cancelSignupMsg .ui-content>.header .header-title,
+.recordSignupMsg .ui-content>.header .header-title {
+    margin-top: 1.5vw;
+    padding-bottom: 3.4vw;
+    text-align: left;
+    border-bottom: 1px dashed #d6d6d6;
+}
+
+.cancelSignupMsg .ui-content>.main,
+.recordSignupMsg .ui-content>.main {
+    margin-top: 3.4vw;
+}
+
+.cancelSignupMsg .ui-content>.main .main-paragraph,
+.recordSignupMsg .ui-content>.main .main-paragraph {
+    text-align: left !important;
+}
 
 /***************************************** viewActivitiesRecord *************************************/
 
@@ -1045,17 +1074,23 @@
 }
 
 .confirmCancelAddFamily >.ui-content,
-.familyErrorMsg >.ui-content {
+.familyErrorMsg >.ui-content,
+.cancelFailMsg >.ui-content,
+.recordFailMsg >.ui-content {
     padding: 0 !important;
 }
 
 .confirmCancelAddFamily .ui-content>.header,
-.familyErrorMsg .ui-content>.header {
+.familyErrorMsg .ui-content>.header,
+.cancelFailMsg .ui-content>.header,
+.recordFailMsg .ui-content>.header {
     margin-top: 14%;
 }
 
 .confirmCancelAddFamily .ui-content>.main,
-.familyErrorMsg .ui-content>.main {
+.familyErrorMsg .ui-content>.main,
+.cancelFailMsg .ui-content>.main,
+.recordFailMsg .ui-content>.main {
     margin-top: 12%;
 }
 
