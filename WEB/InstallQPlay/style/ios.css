@@ -1,5 +1,5 @@
 ﻿html{ 
-	background-color:#DDD;
+	background-color:#fdfdfd;
 	font-family:Arial, Helvetica, sans-serif;
 	-webkit-text-size-adjust:none;
 }
@@ -8,14 +8,14 @@
 
 header{
 	width:100%;
-	background-color:#046c93;
+	background-color:#2B87BA;
 	box-shadow:0 3px 6px #ccc;
 }
 
 header h1{
 	color:#FFF;
 	text-align:center;
-	font-size:22px;
+	font-size:14px;
 	line-height:42px;
 	font-family:"微軟正黑體", "Arial";
 }
@@ -31,14 +31,19 @@ article{
 
 article h3{
 	font-weight:bold;
-	padding-top:10px;
-	padding-bottom:15px;
-	font-size:20px;
+	padding-top:5px;
+	padding-bottom:5px;
+	font-size:12px;
 }
 article p{
-	padding-bottom:15px;
-	line-height:1.6;}
+	margin-top:5px;
+	font-size:12px;
+	padding-bottom:3px;
+	line-height:1.2;}
 article img{
 	display:block;
-	margin:0 auto;
 }
+.downloadbtn{
+	display:block;
+	margin:0 auto;
+	}
