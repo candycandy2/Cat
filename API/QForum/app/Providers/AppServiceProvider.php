@@ -83,6 +83,11 @@ class AppServiceProvider extends ServiceProvider
         Validator::replacer('max', function($message, $attribute, $rule, $params) {
             return ResultCode::_047905_FieldFormatError;
         });
+
+        Validator::replacer('min', function($message, $attribute, $rule, $params) {
+            return ResultCode::_047905_FieldFormatError;
+        });
+        
     }
 
     /**
