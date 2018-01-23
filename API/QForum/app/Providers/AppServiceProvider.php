@@ -40,6 +40,23 @@ class AppServiceProvider extends ServiceProvider
             return $this->checkPostExist($value);
         });
 
+        Validator::extend('post_owner', function($attribute, $value, $params, $validator){
+            $empNo = $params[0];
+            return $this->checkPostOwner($empNo, $value);
+        });
+
+        Validator::extend('post_is_open', function($attribute, $value, $params, $validator){
+            return $this->checkPostIsOpen($value);
+        });
+
+        Validator::extend('board_is_open', function($attribute, $value, $params, $validator){
+            return $this->checkBoardIsOpen($value);
+        });
+
+        Validator::extend('parent_board_is_open', function($attribute, $value, $params, $validator){
+            return $this->checkBoardIsOPtnWithPostId($value);
+        });
+
         Validator::replacer('greater_than', function($message, $attribute, $rule, $params) {
             return ResultCode::_047905_FieldFormatError;
         });
@@ -56,8 +73,25 @@ class AppServiceProvider extends ServiceProvider
             return ResultCode::_047998_NoData;
         });
 
-         Validator::replacer('post_exist', function($message, $attribute, $rule, $params) {
+        Validator::replacer('post_exist', function($message, $attribute, $rule, $params) {
             return ResultCode::_047904_NoAuthorityToAccessThisBoard;
+        });
+
+        Validator::replacer('post_owner', function($message, $attribute, $rule, $params) {
+            return ResultCode::_047906_FieldFormatError;
+        });
+
+        Validator::replacer('post_is_open', function($message, $attribute, $rule, $params) {
+            return ResultCode::_047910_PostIsClosed;
+        });
+
+        Validator::replacer('board_is_open', function($message, $attribute, $rule, $params) {
+            return ResultCode::_047911_BoardIsClosed;
+        });
+
+
+        Validator::replacer('parent_board_is_open', function($message, $attribute, $rule, $params) {
+            return ResultCode::_047911_BoardIsClosed;
         });
 
         Validator::replacer('required', function($message, $attribute, $rule, $params) {
@@ -122,7 +156,10 @@ class AppServiceProvider extends ServiceProvider
      * @return boolean
      */
     private function checkUserBoardAuth($empNo, $boardId){
-        $board = \DB::table("qp_board")->where('row_id', '=', $boardId)->select('public_type')->first();
+        $board = \DB::table("qp_board")
+                ->where('row_id', '=', $boardId)
+                ->select('public_type')
+                ->first();
         if(!is_null($board)){
             if($board->public_type == 1){ //開放給全集團
                 return true;
@@ -180,5 +217,90 @@ class AppServiceProvider extends ServiceProvider
             return true;
         }
         return false;
+    }
+
+    private function checkPostOwner($empNo, $postId){
+        $postRs = \DB::table("qp_post")
+                    ->where('row_id','=',$postId)
+                    ->select('board_id','created_user')
+                    ->first();
+        if(!is_null($postRs)){
+            $boardRs = \DB::table("qp_board")
+                    ->where('row_id','=',$postRs->board_id)
+                    ->select('manager')
+                    ->first();
+            $manager = explode(',',$boardRs->manager);
+            if(in_array($empNo, $manager)){
+                return true;
+            }
+            $UserRs = \DB::table("qp_user")
+                    ->where('row_id','=',$postRs->created_user)
+                    ->select('emp_no')
+                    ->first();
+            if($UserRs->emp_no == $empNo){
+                return true;
+            }
+        } 
+        return false; 
+    }
+
+    private function IsMyPost($postId, $empNo){
+        $postRs = \DB::table("qp_post")
+                    ->where('row_id','=',$postId)
+                    ->join('qp_user','qp_post.created_user','=', 'qp_user.row_id')
+                    ->select('qp_user.emp_no as emp_no',
+                            'board_id',
+                            'qp_post.created_user as post_creator')
+                    ->first();
+        if($postRs->emp_no == $postRs->post_creator){
+            return true;
+        }
+        return false; 
+    }
+
+
+    private function IsMyComment($commrntId, $empNo){
+        $commentRs = \DB::table("qp_comment")
+                    ->where('row_id','=',$postId)
+                    ->join('qp_user','qp_comment.created_user','=', 'qp_user.row_id')
+                    ->select('qp_user.emp_no as emp_no',
+                            'board_id',
+                            'qp_comment.created_user as comment_creator')
+                    ->first();
+        if($postRs->emp_no == $postRs->comment_creator){
+            return true;
+        }
+        return false; 
+    }
+
+    private function checkBoardIsOPtnWithPostId($postId){
+         $result = \DB::table("qp_post")->where('row_id', '=', $postId)->select('board_id')->first();
+
+         if(!is_null ($result)){
+           return $this->checkBoardIsOpen($result->board_id);
+         }
+         return false;
+    }
+
+    private function checkBoardIsOpen($boardId){
+        $board = \DB::table("qp_board")
+                ->where('row_id', '=', $boardId)
+                ->select('status')
+                ->first();
+        if($board->status == 'Y'){
+            return true;
+        }
+        return false; 
+    }
+
+    private function checkPostIsOpen($postId){
+        $post = \DB::table("qp_post")
+                ->where('row_id', '=', $postId)
+                ->select('status')
+                ->first();
+        if($post->status == 'Y'){
+            return true;
+        }
+        return false; 
     }
 }

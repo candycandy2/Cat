@@ -34,6 +34,16 @@ class PostService
     }
 
     /**
+     * 假刪貼文
+     * @param  string $postId   貼文id
+     * @param  object $userData 使用者資料
+     * @return boolean
+     */
+    public function softDeletePost($postId, $userData){
+        return $this->postRepository->softDeletePost($postId, $userData);
+    }
+
+    /**
      * 取得貼文資訊
      * @param  string $postId 貼文id
      * @param  int $boardId 討論版id

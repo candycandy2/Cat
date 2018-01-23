@@ -18,10 +18,12 @@ abstract class ResultCode
     const _047907_OnlyPostOwnerCanModifyTitle = "047907"; //只有創建人能修改標題
     const _047908_AccountNotExist = "047908"; //帳號不存在
     const _047909_OnlyManagerCanModifyTheBoardBasicInformation = "047909"; //只有管理者才能修改討論版
+    const _047910_PostIsClosed= "047910"; //貼文已關閉
+    const _047911_BoardIsClosed= "047911"; //討論版已關閉
     const _047915_ContentTypeParameterInvalid = "047915"; //Content-Type錯誤
     const _047916_InputXmlFormatIsInvalid = "047916";  //傳入的xml格式錯誤,Server端無法解析 
     const _047917_InputJsonFormatIsInvalid = "047917";//傳入的json格式錯誤,Server端無法解析
     const _047930_CallAPIFailedOrErrorOccurs = '047930'; //調用JMessage API出错
     const _047998_NoData = "047998";  //查無資料
-    const _047999_UnknownError = "047999";  //其他未知錯誤  
+    const _047999_UnknownError = "047999";  //其他未知錯誤
 }
