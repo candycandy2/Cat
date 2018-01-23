@@ -83,7 +83,6 @@ function addComponentView() {
 
         overridejQueryFunction();
 
-        addPlugin();
     }, "html");
 }
 
