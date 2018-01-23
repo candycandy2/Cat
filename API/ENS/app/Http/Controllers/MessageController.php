@@ -6,7 +6,7 @@ use App\lib\ResultCode;
 use App\lib\Verify;
 use Illuminate\Support\Facades\Input;
 use App\lib\CommonUtil;
-use App\Components\Message;
+use App\lib\Message;
 
 class MessageController extends Controller
 {

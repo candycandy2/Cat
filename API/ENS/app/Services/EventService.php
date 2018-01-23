@@ -9,8 +9,9 @@ use App\Repositories\BasicInfoRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
 use App\lib\CommonUtil;
-use App\Components\Push;
-use App\Components\Message;
+use App\lib\Push;
+use App\lib\Forum;
+use App\lib\Message;
 use DB;
 
 class EventService
@@ -20,18 +21,20 @@ class EventService
     protected $taskRepository;
     protected $userRepository;
     protected $push;
+    protected $forum;
 
     const EVENT_TYPE = 'event_type';
     const STATUS_FINISHED = '1';
     const STATUS_UNFINISHED = '0';
 
-    public function __construct(EventRepository $eventRepository, BasicInfoRepository $basicInfoRepository, TaskRepository $taskRepository, UserRepository $userRepository, Push $push)
+    public function __construct(EventRepository $eventRepository, BasicInfoRepository $basicInfoRepository, TaskRepository $taskRepository, UserRepository $userRepository, Push $push, Forum $forum)
     {
         $this->eventRepository = $eventRepository;
         $this->basicInfoRepository = $basicInfoRepository;
         $this->taskRepository = $taskRepository;
         $this->userRepository = $userRepository;
         $this->push = $push;
+        $this->forum = $forum;
     }
 
     /**
@@ -343,7 +346,23 @@ class EventService
             return false;
         }
    }
-    
+
+   /**
+    * 新增貼文
+    * @param  string $project    專案名稱
+    * @param  string $empNo      員工編號
+    * @param  string $title      事件標題
+    * @param  string $content    事件內容
+    * @param  array $queryParam  url query param
+    * @return json
+    */
+   public function newPost($project, $empNo, $title, $content, $queryParam){
+        $postIdRs = json_decode($this->forum->getPostId($empNo, $queryParam));
+        $postId = $postIdRs->Content;
+        $newPostRes = $this->forum->newPost($project, $empNo, $postId, $title, $content, $queryParam);
+        return $newPostRes;
+   }
+
     /**
      * 建立事件聊天室
      * @param  Array  $eventUsers 事件參與人資訊清單

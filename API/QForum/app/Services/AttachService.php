@@ -17,6 +17,7 @@ class AttachService
         $postId = $data['post_id'];
         $commentId = isset($data['comment_id'])?$data['comment_id']:NULL; 
         $fileData = $data['file_list']['file'];
+        $fileData = (is_array($fileData))?$fileData:(array)$fileData;
         $insertData = [];
         foreach ($fileData as $fileUrl) {
             $insertData[] = [
