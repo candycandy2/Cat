@@ -157,9 +157,12 @@ class PostController extends Controller
 
         $postId = $data['post_id'];
         $post = $this->postService->getPostData($postId, $boardId);
-        $comments = $this->commentService->getComments($postId);
+        $replyCount = $this->commentService->getCommentCount($postId);
+        $comments = $this->commentService->getComments($postId, $data['reply_from_seq'], $data['reply_to_seq']);
+        
+        $post['reply_count'] = $replyCount;
         $post['reply_list'] = $comments;
-       
+        
         
         return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                     'Message'=>"Success",
