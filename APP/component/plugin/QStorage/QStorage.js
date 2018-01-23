@@ -2,7 +2,39 @@
 //Plugin - QStorage
 //--need cordova-plugin-file-transfer
 var QStorage = {
-    appKey: "qstorage",
+    appKey: "",
+    appSecretKey: "",
+    uploadImgDatas: [],
+    initial: function() {
+
+        /*
+        //According to the Parent versionName, decide APPKey > [dev] / [test] / []
+        if (loginData["versionName"].indexOf("Staging") !== -1) {
+            QStorage.appKey = "appqstoragetest";
+        } else if (loginData["versionName"].indexOf("Development") !== -1) {
+            QStorage.appKey = "appqstoragedev";
+        } else {
+            QStorage.appKey = "appqstorage";
+        }
+
+        QStorage.clearUploadDatas();
+        */
+
+        if (typeof QForum !== "undefined") {
+            QStorage.appKey = QForum.appKey;
+            QStorage.appSecretKey = QForum.appSecretKey;
+        } else {
+            QStorage.appKey = appKey;
+            QStorage.appSecretKey = appSecretKey;
+        }
+
+    },
+    clearUploadDatas: function() {
+        QStorage.uploadImgDatas = [];
+    },
+    getUploadDatas: function() {
+        return QStorage.uploadImgDatas;
+    },
     getSignature: function(action, signatureTime) {
         if (action === "getTime") {
             return Math.round(new Date().getTime() / 1000);
@@ -26,6 +58,7 @@ var QStorage = {
 
             if (resultData["ResultCode"] === "1") {
                 callback(resultData["Content"]);
+                QStorage.uploadImgDatas.push(resultData["Content"].thumbnail_1024_url);
             }
         }
 
@@ -51,12 +84,15 @@ var QStorage = {
             options.mimeType = "image/png";
         }
 
+        var signatureTime = QStorage.getSignature("getTime");
+        var signatureInBase64 = QStorage.getSignature("getInBase64", signatureTime);
+
         //Header
         var headers = {
-            "App-Key": "qforum", 
-            "Signature-Time": "1514181776",
-            "Signature": "WuXF9mc2A4Uqk+wlfCiql0o36nw7BW+Kt0depX+WmyY=",
-            "Account": loginData["loginid"]
+            "App-Key": QStorage.appKey,
+            "Signature-Time": signatureTime,
+            "Signature": signatureInBase64,
+            "Account": loginData["emp_no"]
         };
 
         options.headers = headers;
