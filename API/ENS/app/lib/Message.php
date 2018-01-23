@@ -2,7 +2,7 @@
 /**
  * 訊息相關元件
  */
-namespace App\Components;
+namespace App\lib;
 
 use App\lib\CommonUtil;
 use Config;

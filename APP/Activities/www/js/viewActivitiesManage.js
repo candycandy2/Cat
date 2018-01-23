@@ -3,7 +3,7 @@ $("#viewActivitiesManage").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         //報名管理
-        window.ActivitiesSignupManageQuery = function (mode) {
+        window.ActivitiesSignupManageQuery = function (model) {
 
             this.successCallback = function (data) {
                 console.log(data);

@@ -8,7 +8,7 @@ namespace App\Services;
 use App\Repositories\BasicInfoRepository;
 use App\Repositories\UserRepository;
 use App\lib\ResultCode;
-use App\Components\Message;
+use App\lib\Message;
 use App\lib\CommonUtil;
 use Excel;
 
