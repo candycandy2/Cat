@@ -24,7 +24,7 @@ class PostService
                 'board_id' => $data['board_id'],
                 'row_id' => $data['post_id'],
                 'post_title' => $data['post_title'],
-                'content' => $data['content'],
+                'content' => html_entity_decode($data['content'], ENT_QUOTES),
                 'from_id' => $userData->login_id,
                 'created_user' => $userData->row_id,
                 'ctime' => time(),
@@ -36,10 +36,11 @@ class PostService
     /**
      * 取得貼文資訊
      * @param  string $postId 貼文id
+     * @param  int $boardId 討論版id
      * @return mixed
      */
-    public function getPostData($postId){
-        return $this->postRepository->getPostData($postId);
+    public function getPostData($postId, $boardId=null){
+        return $this->postRepository->getPostData($postId, $boardId);
     }
 
     public function getPostDetails($boardId, $postId){

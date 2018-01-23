@@ -222,6 +222,11 @@ body {
     line-height: 1;
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
+    margin-bottom: 2.73vw;
+}
+
+.cke_editable p img:first-child {
+    margin-right: 3.71vw;
 }
 
 .cke_editable ol {
