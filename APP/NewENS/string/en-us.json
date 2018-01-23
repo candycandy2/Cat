@@ -89,7 +89,7 @@
   },
   {
     "term": "str_012",
-    "definition": "Please give a title",
+    "definition": "Title / desc cannot be blank.",
     "context": "",
     "term_plural": "",
     "reference": "",
