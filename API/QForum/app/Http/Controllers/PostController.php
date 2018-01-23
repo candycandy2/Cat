@@ -106,7 +106,6 @@ class PostController extends Controller
      */
     public function deletePost($id)
     {
-        //
     }
 
     /**
@@ -147,7 +146,7 @@ class PostController extends Controller
         $validator = Validator::make($data , [
             'board_id' => 'required|numeric|board_auth:'.$data['emp_no'],
             'post_id' => 'required|string|size:32|belone_board:'.$boardId,
-            'reply_from_seq' => 'required|numeric',
+            'reply_from_seq' => 'required|numeric|min:1',
             'reply_to_seq' => 'required|numeric|greater_than:'.$replyFromSeq
         ]);
 
