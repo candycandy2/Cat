@@ -7,11 +7,11 @@
  * @fileOverview Defines the {@link CKEDITOR.loader} objects, which is used to
  *		load core scripts and their dependencies from _source.
  */
-console.log("===================5");
+
 if ( typeof CKEDITOR == 'undefined' )
 	CKEDITOR = {}; // jshint ignore:line
-console.log("===================6");
-if ( !CKEDITOR.loader ) {console.log("===================7");
+
+if ( !CKEDITOR.loader ) {
 	/**
 	 * Load core scripts and their dependencies from _source.
 	 *
@@ -97,7 +97,7 @@ if ( !CKEDITOR.loader ) {console.log("===================7");
 		var getUrl = function( resource ) {
 				if ( CKEDITOR && CKEDITOR.getUrl )
 					return CKEDITOR.getUrl( resource );
-console.log("===================10");
+
 				return CKEDITOR.basePath + resource + ( resource.indexOf( '?' ) >= 0 ? '&' : '?' ) + 't=' + timestamp;
 			};
 
@@ -123,7 +123,7 @@ console.log("===================10");
 			 */
 			loadPending: function() {
 				var scriptName = pendingLoad.shift();
-console.log("===================11--1");
+
 				if ( !scriptName )
 					return;
 
@@ -133,15 +133,15 @@ console.log("===================11--1");
 				script.type = 'text/javascript';
 				script.src = scriptSrc;
 
-				function onScriptLoaded() {console.log("===================11--2");
+				function onScriptLoaded() {
 					// Append this script to the list of loaded scripts.
 					CKEDITOR.loader.loadedScripts.push( scriptName );
 
 					// Load the next.
 					CKEDITOR.loader.loadPending();
 
-                    console.log(scriptName);
                     //Darren-
+                    //console.log(scriptName);
                     /**
                      * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
                      * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -149,9 +149,8 @@ console.log("===================11--1");
                      * exported initSample
                      *
                      */
-                     console.log("===================14");
-                        console.log(scriptName);
-                        console.log(scriptSrc);
+                    //console.log(scriptName);
+                    //console.log(scriptSrc);
                     if (scriptName === "_bootstrap") {
                         
                         // The trick to keep the editor in the sample quite small
@@ -159,7 +158,9 @@ console.log("===================11--1");
                         CKEDITOR.config.height = 150;
                         CKEDITOR.config.width = 'auto';
 
-                        window.initSample = ( function() {console.log("====================initSample");
+                        window.initSample = ( function() {
+                            console.log("====================initSample");
+
                             var wysiwygareaAvailable = isWysiwygareaAvailable(),
                                 isBBCodeBuiltIn = !!CKEDITOR.plugins.get( 'bbcode' );
 
@@ -217,26 +218,26 @@ console.log("===================11--1");
 				// We must guarantee the execution order of the scripts, so we
 				// need to load them one by one. (https://dev.ckeditor.com/ticket/4145)
 				// The following if/else block has been taken from the scriptloader core code.
-				if ( typeof script.onreadystatechange !== 'undefined' ) {console.log("===================11--3");
+				if ( typeof script.onreadystatechange !== 'undefined' ) {
 					/** @ignore */
 					script.onreadystatechange = function() {
 						if ( script.readyState == 'loaded' || script.readyState == 'complete' ) {
 							script.onreadystatechange = null;
-							onScriptLoaded();console.log("===================11--4");
+							onScriptLoaded();
 						}
 					};
-				} else {console.log("===================11--5");
+				} else {
 					/** @ignore */
 					script.onload = function() {
 						// Some browsers, such as Safari, may call the onLoad function
 						// immediately. Which will break the loading sequence. (https://dev.ckeditor.com/ticket/3661)
-						setTimeout( function() {console.log("===================11--6");
+						setTimeout( function() {
 							onScriptLoaded( scriptName );
 						}, 0 );
 					};
 				}
 
-				document.body.appendChild( script );console.log("===================11");
+				document.body.appendChild( script );
 			},
 
 			/**
@@ -275,11 +276,11 @@ console.log("===================11--1");
 				// If the page is fully loaded, we can't use document.write
 				// but if the script is run while the body is loading then it's safe to use it
 				// Unfortunately, Firefox <3.6 doesn't support document.readyState, so it won't get this improvement
-				if ( document.body && ( !document.readyState || document.readyState == 'complete' ) ) {console.log("===================12");
+				if ( document.body && ( !document.readyState || document.readyState == 'complete' ) ) {
 					pendingLoad.push( scriptName );
 
 					if ( !defer )
-						this.loadPending();console.log("===================13");
+						this.loadPending();
 				} else {
 					// Append this script to the list of loaded scripts.
 					this.loadedScripts.push( scriptName );
@@ -290,9 +291,9 @@ console.log("===================11--1");
 		};
 	} )();
 }
-console.log("===================8");
+
 // Check if any script has been defined for autoload.
-if ( CKEDITOR._autoLoad ) {console.log("===================9");
+if ( CKEDITOR._autoLoad ) {
 	CKEDITOR.loader.load( CKEDITOR._autoLoad );
 	delete CKEDITOR._autoLoad;
 }
