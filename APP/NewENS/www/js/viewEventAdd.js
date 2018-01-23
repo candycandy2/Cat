@@ -565,8 +565,9 @@ $("#viewEventAdd").pagecontainer({
 
         function checkTemplateDesc() {
             var tempalte = $("#eventTemplateTextarea").val();
+            var desc = $("#eventDescriptionTextarea").val();
 
-            if (tempalte.length === 0) {
+            if (tempalte.length === 0 || desc.length === 0) {
                 $("#templateDescEmpty").popup("open");
             } else {
                 checkFunctionData();

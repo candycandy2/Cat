@@ -251,7 +251,7 @@ $("#viewMain2-1").pagecontainer({
                 }
             }
         }
-
+        /*
         function locationSuccess(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
@@ -305,7 +305,7 @@ $("#viewMain2-1").pagecontainer({
 
         function error(err) {
           console.warn('ERROR(' + err.code + '): ' + err.message);
-        }
+        }*/
         /********************************** page event *************************************/
         $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
             var eventLogoutConfirmPopupData = {
@@ -382,12 +382,12 @@ $("#viewMain2-1").pagecontainer({
                 }
             });
 
-            $(document).ready(function(){
+            /*$(document).ready(function(){
                 if (navigator.geolocation) {
                     //navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
                     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
                 }              
-            });
+            });*/
         });
 
         $("#viewMain2-1").scroll(function() {
