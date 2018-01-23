@@ -1,6 +1,8 @@
 
 $("#viewActivitiesManage").pagecontainer({
     create: function (event, ui) {
+        var resultArr = [];
+        var cancelModel, cancelActName, cancelID, cancelNo, cancelTeamName;
         /********************************** function *************************************/
         //報名管理
         window.ActivitiesSignupManageQuery = function (model) {
@@ -8,18 +10,92 @@ $("#viewActivitiesManage").pagecontainer({
             this.successCallback = function (data) {
                 console.log(data);
 
+                //取消報名的活動類型
+                cancelModel = model;
                 if (data["ResultCode"] == "1") {
                     if (model == "1") {
 
                     } else if (model == "3") {
 
                     } else if (model == "4") {
+                        var manageArr = data["Content"];
+                        cancelActName = manageArr[0]["ActivitiesName"];
+                        $("#teamManageThumbnail").attr("src", manageArr[0]["ActivitiesImage"]);
+                        $("#teamManageName").text(manageArr[0]["ActivitiesName"]);
+                        $("#teamSignupedPlaces").text(manageArr[0]["SignupTeam"]);
+
+                        //簡化數據
+                        var simplifyArr = [];
+                        $.each(manageArr, function (index, item) {
+                            simplifyArr.push({
+                                "ActivitiesID": item["ActivitiesID"],
+                                "TeamID": item["TeamID"],
+                                "TeamDept": item["TeamDept"],
+                                "TeamName": item["TeamName"],
+                                "TeamNo": item["TeamNo"],
+                                "TeamMember": item["TeamMemberDept"] + " " + item["TeamMember"]
+                            });
+                        });
+
+                        //相同Team合併
+                        resultArr = [];
+                        for (var i = 0; i < simplifyArr.length;) {
+                            if (i >= simplifyArr.length - 1) {
+                                if (i == simplifyArr.length - 1) {
+                                    resultArr.push(mergeItemBySameTeam(simplifyArr[i], null, "TeamMember"));
+                                }
+                                break;
+                            }
+                            //如果TeamID相同，合併對象；如果不同Team，直接添加到新數組
+                            if (simplifyArr[i]["TeamID"] == simplifyArr[i + 1]["TeamID"]) {
+                                var mergedItem = mergeItemBySameTeam(simplifyArr[i], simplifyArr[i + 1], "TeamMember");
+                                var exist = false;
+                                for (var j = 0; j < resultArr.length; j++) {
+                                    if (resultArr[j]["TeamID"] == mergedItem["TeamID"]) {
+                                        resultArr[j] = mergeItemBySameTeam(resultArr[j], mergedItem, "TeamMember");
+                                        exist = true;
+                                        break;
+                                    }
+                                }
+                                if (!exist) {
+                                    resultArr.push(mergedItem);
+                                }
+
+                                i += 2;
+                            } else {
+                                resultArr.push(mergeItemBySameTeam(simplifyArr[i], null, "TeamMember"));
+                                i += 1;
+                            }
+
+                        }
+                        console.log(resultArr);
+
+                        //生成html
+                        var manageContent = "";
+                        for (var i in resultArr) {
+                            manageContent += '<tr><td>'
+                                + resultArr[i]["TeamNo"]
+                                + '</td><td>'
+                                + resultArr[i]["TeamDept"]
+                                + '</td><td></td><td>'
+                                + resultArr[i]["TeamName"]
+                                + '</td><td><img src="img/list_down.png" class="list-img"></td></tr><tr style="display:none;"><td></td><td></td><td></td><td>'
+                                + resultArr[i]["Member"]
+                                + '</td><td><img src="img/delete.png" class="team-delete" data-id="'
+                                + resultArr[i]["ActivitiesID"]
+                                + '" data-no="'
+                                + resultArr[i]["TeamID"]
+                                + '"></td></tr>';
+                        }
+
+                        $("#teamTable tr:first-child").nextAll().remove();
+                        $("#teamTable").append(manageContent);
+
 
                     } else if (model == "5") {
 
                     }
                 }
-
 
                 loadingMask("hide");
             };
@@ -39,15 +115,19 @@ $("#viewActivitiesManage").pagecontainer({
                 console.log(data);
 
                 if (data["ResultCode"] == "045913") {
-
-                    
+                    ActivitiesListQuery();
                     ActivitiesRecordQuery();
+                    //跳轉
+                    $.each($("#openList .activity-list"), function(index, item) {
+                        if($(item).attr("data-id") == cancelID) {
+                            $(item).trigger("click");
+                        }
+                    });
+
                 } else if (data["ResultCode"] == "045914") {
                     //報名取消失敗
-
+                    popupMsgInit('.cancelFailMsg');
                 }
-
-
 
                 loadingMask("hide");
             };
@@ -81,6 +161,23 @@ $("#viewActivitiesManage").pagecontainer({
 
         };
 
+        //合併對象
+        function mergeItemBySameTeam(obj1, obj2, param) {
+            var obj = {};
+            if (obj2 !== null) {
+                obj["Member"] = obj1[param] + "<br>" + obj2[param];
+            } else {
+                obj["Member"] = obj1[param];
+            }
+            obj["ActivitiesID"] = obj1["ActivitiesID"];
+            obj["TeamDept"] = obj1["TeamDept"];
+            obj["TeamID"] = obj1["TeamID"];
+            obj["TeamName"] = obj1["TeamName"];
+            obj["TeamNo"] = obj1["TeamNo"];
+            return obj;
+        }
+
+
         /********************************** page event *************************************/
         $("#viewActivitiesManage").on("pagebeforeshow", function (event, ui) {
 
@@ -101,9 +198,9 @@ $("#viewActivitiesManage").pagecontainer({
         });
 
         //展開隊伍
-        $(".list-img").on("click", function () {
-            var imgSrc = $(this).attr("src").split("/")[1];
-            if (imgSrc == "list_down.png") {
+        $(document).on("click", ".list-img", function () {
+            var src = $(this).attr("src").split("/")[1];
+            if (src == "list_down.png") {
                 $(this).attr("src", "img/list_up.png");
                 $(this).parent().parent().css("border-bottom", "0");
                 $(this).parent().parent().next().css("border-bottom", "1px solid #f6f6f6");
@@ -115,5 +212,69 @@ $("#viewActivitiesManage").pagecontainer({
                 $(this).parent().parent().next().hide();
             }
         });
+
+        //展開所有
+        $(".all-list-img").on("click", function () {
+            var src = $(this).attr("src").split("/")[1];
+            if (src == "all_list_down.png") {
+                $.each($(".list-img"), function (index, item) {
+                    if ($(item).attr("src") == "img/list_down.png") {
+                        $(item).trigger("click");
+                    }
+                });
+                $(this).attr("src", "img/all_list_up.png");
+            } else {
+                $.each($(".list-img"), function (index, item) {
+                    if ($(item).attr("src") == "img/list_up.png") {
+                        $(item).trigger("click");
+                    }
+                });
+                $(this).attr("src", "img/all_list_down.png");
+            }
+        });
+
+        //取消組隊報名
+        $(document).on("click", ".team-delete", function () {
+            cancelID = $(this).attr("data-id");
+            cancelNo = $(this).attr("data-no");
+            cancelTeamName;
+
+            for (var i in resultArr) {
+                if (cancelNo == resultArr[i]["TeamID"]) {
+                    cancelTeamName = resultArr[i]["TeamName"];
+                    break;
+                }
+            }
+
+            $(".cancelSignupMsg .header-title").text(cancelActName);
+            $(".cancelSignupMsg .main-paragraph").text(cancelTeamName);
+            popupMsgInit('.cancelSignupMsg');
+
+        });
+
+        //確定取消報名
+        $("#cancelSignup").on("click", function () {
+            loadingMask("show");
+            activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
+                + cancelID
+                + '</ActivitiesID><SignupNo>'
+                + cancelNo
+                + '</SignupNo><SignupModel>'
+                + cancelModel
+                + '</SignupModel><EmployeeNo>'
+                + myEmpNo
+                + '</EmployeeNo></LayoutHeader>';
+
+            console.log(activitiesSignupCancelQueryData);
+
+            ActivitiesSignupCancelQuery();
+        });
+
+
+
+
+
+
+
     }
 });

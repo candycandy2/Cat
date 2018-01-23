@@ -1,10 +1,11 @@
 
 /*global variable, function*/
 //var lastPageID = "viewActivitiesSignup";
-var activitiesListQueryData, activitiesDetailQueryData, activitiesSignupQueryData, activitiesSignupManageQueryData;
-var activitiesSignupConfirmQueryData, activitiesSignupCancelQueryData, activitiesSignupFamilyQueryData;
-var activitiesSignupEmployeeQueryData, activitiesRecordQueryData, activitiesFamilyQueryData;
-var activitiesFamilyAddQueryData, activitiesFamilyUpdateQueryData, activitiesFamilyDeleteQueryData;
+var activitiesListQueryData, activitiesDetailQueryData, activitiesSignupQueryData,
+    activitiesSignupManageQueryData, activitiesSignupConfirmQueryData, activitiesSignupCancelQueryData,
+    activitiesRecordCancelQueryData, activitiesSignupFamilyQueryData, activitiesSignupEmployeeQueryData,
+    activitiesRecordQueryData, activitiesFamilyQueryData, activitiesFamilyAddQueryData,
+    activitiesFamilyUpdateQueryData, activitiesFamilyDeleteQueryData;
 var pageList = ["viewPanel", "viewActivitiesList", "viewActivitiesRecord", "viewMyFamilyDatum", "viewActivitiesDetail", "viewActivitiesSignup", "viewActivitiesManage"];
 var pageVisitedList = ["viewActivitiesList"];
 var initialAppName = "Activities";
