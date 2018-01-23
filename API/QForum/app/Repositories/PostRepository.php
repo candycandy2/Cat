@@ -18,6 +18,17 @@ class PostRepository
         return $this->post->insert($data);
     }
 
+    public function softDeletePost($postId, $userData){
+        $now = date('Y-m-d H:i:s',time());
+        return $this->post
+               ->where('row_id',$postId)
+               ->where('status','Y')
+               ->update(['status' => 'N',
+                        'updated_at' => $now,
+                        'updated_user' =>$userData->row_id,
+                        'deleted_at' => $now]);
+    }
+
     public function getPostData($postId, $boardId){
         $query = $this->post->where('qp_post.row_id', $postId);
            if(!is_null($boardId)){
@@ -25,6 +36,7 @@ class PostRepository
            }
            $query = $query->join('qp_board','qp_board.row_id', '=', 'qp_post.board_id')
            ->join('qp_user','qp_user.row_id','=','qp_post.created_user')
+           ->where('qp_post.status', 'Y')
            ->select('qp_board.row_id as board_id',
                     'qp_board.board_name as board_name',
                     'qp_board.status as board_status',
@@ -34,7 +46,8 @@ class PostRepository
                     'qp_user.login_id as post_creator',
                     'qp_post.created_at as post_create_time',
                     'qp_post.updated_at as post_update_time',
-                    'qp_post.deleted_at as post_delete_time'
+                    'qp_post.deleted_at as post_delete_time',
+                    'qp_post.status as post_status'
                 )
            ->first();
         return $query;
@@ -52,6 +65,7 @@ class PostRepository
                             'qp_user.row_id as post_creator',
                             'qp_post.created_at as post_create_time',
                             'qp_post.updated_at as post_update_time',
+                            'qp_post.status as post_status',
                             'qp_post.deleted_at as post_delete_time'
                         )
                     ->get();

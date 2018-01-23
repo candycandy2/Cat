@@ -24,13 +24,17 @@ class CommentRepository
                      ->join('qp_user','qp_user.row_id', '=', 'qp_comment.created_user')
                      ->where('qp_comment.sequence_id','>=',$from)
                      ->where('qp_comment.sequence_id','<=',$to)
-                     ->select('qp_comment.row_id as comment_id','sequence_id','content as reply_content',
-                               'login_id as reply_user','qp_comment.updated_user' ,
-                               'qp_comment.created_at as reply_create_time' ,
-                               'qp_comment.updated_at as reply_update_time',
-                               'qp_comment.status as reply_status',
-                               'qp_comment.deleted_at as reply_delete_time')
+                     ->select( DB::raw('qp_comment.row_id as comment_id,sequence_id,
+                               IF(qp_comment.status = "Y", content, null) as reply_content,
+                               login_id as reply_user,qp_comment.updated_user ,
+                               qp_comment.created_at as reply_create_time ,
+                               qp_comment.updated_at as reply_update_time,
+                               qp_comment.status as reply_status,
+                               qp_comment.deleted_at as reply_delete_time')
+                            )
                     ->get();
+
+
     }
 
     public function getCommentCount($postId){
