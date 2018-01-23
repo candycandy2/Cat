@@ -330,6 +330,8 @@ $(document).one("pagebeforecreate", function() {
     script.src = "plugin/config.js";
     document.head.appendChild(script);
 
+    addPlugin();
+
     //According to the data [pageList] which set in index.js ,
     //add Page JS into index.html
     $.map(pageList, function(value, key) {
