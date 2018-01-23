@@ -89,7 +89,7 @@
   },
   {
     "term": "str_012",
-    "definition": "请输入标题",
+    "definition": "请输入标题/描述",
     "context": "",
     "term_plural": "",
     "reference": "",
