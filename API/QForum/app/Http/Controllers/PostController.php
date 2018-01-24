@@ -62,7 +62,7 @@ class PostController extends Controller
         $xml=simplexml_load_string($request['strXml']);
         $data = json_decode(json_encode($xml),TRUE);
         $rules = [
-            'board_id' => 'required|numeric|board_auth:'.$data['emp_no'],
+            'board_id' => 'required|numeric|board_is_open|board_auth:'.$data['emp_no'],
             'post_id' => 'required|string|size:32',
             'post_title' => 'required|string|max:99',
             'content' => 'required|string',
@@ -104,8 +104,26 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function deletePost($id)
+    public function deletePost(Request $request)
     {
+        $xml=simplexml_load_string($request['strXml']);
+        $data = json_decode(json_encode($xml),TRUE);
+
+        $validator = Validator::make($data , [
+            'post_id' => 'required|string|size:32|post_exist|post_auth:'.$data['emp_no'].'|post_owner:'.$data['emp_no'],
+        ]);
+
+        if ($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>""], 200);
+        }
+        $postId = $data['post_id'];
+        $userData = $this->userService->getUserData($data['emp_no']);
+        $this->postService->softDeletePost($postId, $userData);
+
+        return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                    'Message'=>"Success",
+                    'Content'=>""]);
     }
 
     /**
@@ -144,8 +162,8 @@ class PostController extends Controller
         $replyFromSeq =  (isset($data['reply_from_seq']))?$data['reply_from_seq']:null;
 
         $validator = Validator::make($data , [
-            'board_id' => 'required|numeric|board_auth:'.$data['emp_no'],
-            'post_id' => 'required|string|size:32|belone_board:'.$boardId,
+            'board_id' => 'required|numeric|board_is_open|board_auth:'.$data['emp_no'],
+            'post_id' => 'required|string|size:32|post_is_open|belone_board:'.$boardId,
             'reply_from_seq' => 'required|numeric|min:1',
             'reply_to_seq' => 'required|numeric|greater_than:'.$replyFromSeq
         ]);
@@ -157,9 +175,13 @@ class PostController extends Controller
 
         $postId = $data['post_id'];
         $post = $this->postService->getPostData($postId, $boardId);
-        $comments = $this->commentService->getComments($postId);
+        
+        $replyCount = $this->commentService->getCommentCount($postId);
+        $comments = $this->commentService->getComments($postId, $data['reply_from_seq'], $data['reply_to_seq']);
+        
+        $post['reply_count'] = $replyCount;
         $post['reply_list'] = $comments;
-       
+        
         
         return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                     'Message'=>"Success",
