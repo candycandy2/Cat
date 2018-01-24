@@ -330,6 +330,8 @@ $(document).one("pagebeforecreate", function() {
     script.src = "plugin/config.js";
     document.head.appendChild(script);
 
+    addPlugin();
+
     //According to the data [pageList] which set in index.js ,
     //add Page JS into index.html
     $.map(pageList, function(value, key) {
@@ -490,7 +492,7 @@ $(document).one("pagebeforecreate", function() {
 function getAppLogParam() {
     //localStorage.clear();
     loginData["versionName"] = AppVersion.version;
-    if (loginData["versionName"].indexOf("Development") !== -1) {
+    //if (loginData["versionName"].indexOf("Development") !== -1 || loginData["versionName"].indexOf("Staging") !== -1) {
         var ADAccount = loginData['loginid'];
         if (loginData.uuid.length > 0 && ADAccount.length > 0) {
             var packageName = "com.qplay." + appKey;
@@ -525,7 +527,7 @@ function getAppLogParam() {
                 localStorage.setItem('appLogData', JSON.stringify(jsonData));
             }
         }
-    }
+    //}
 }
 
 function onPause() {
@@ -568,9 +570,9 @@ function getAddAppLog() {
 
     var __construct = function() {
         loginData["versionName"] = AppVersion.version;
-        if (loginData["versionName"].indexOf("Development") !== -1) {
+        //if (loginData["versionName"].indexOf("Development") !== -1 || loginData["versionName"].indexOf("Staging") !== -1) {
             QPlayAPI("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "");
-        }
+        //}
     }();
 
 }

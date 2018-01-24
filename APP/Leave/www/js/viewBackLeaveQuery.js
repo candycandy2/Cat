@@ -466,15 +466,28 @@ $("#viewBackLeaveQuery").pagecontainer({
             //return false;
         });
 
-        //輸入撤回理由——textarea
-        $("#signTowithdrawReason").on("keyup", function() {
-            signToWithdrawReason = $.trim($(this).val());
+        function SignToReason() {
+            signToWithdrawReason = $.trim($("#signTowithdrawReason").val());
 
             if (signToWithdrawReason !== "") {
                 $("#signToWithdrawBtn").addClass("leavePreview-active-btn");
             } else {
                 $("#signToWithdrawBtn").removeClass("leavePreview-active-btn");
             }
+        }
+
+        var timeoutSignToReason = null;
+        //輸入撤回理由——textarea
+        $("#signTowithdrawReason").on("keyup", function() {
+            
+            if(timeoutSignToReason != null) {
+                clearTimeout(timeoutSignToReason);
+                timeoutSignToReason = null;
+            }
+            timeoutSignToReason = setTimeout(function() {
+                SignToReason();
+            }, 2000);
+
         });
 
         //撤回銷假單——click

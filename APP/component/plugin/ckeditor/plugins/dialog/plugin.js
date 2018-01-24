@@ -648,6 +648,7 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
                         window.ckeditorIMAGE.fire("hide");
                     } else {
                         //User QStorage
+                        QStorage.initial();
                         QStorage.UploadAPI(imageUploadURL, qstorageCallBack);
                     }
                 };

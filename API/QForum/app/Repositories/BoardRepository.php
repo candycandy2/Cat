@@ -46,6 +46,7 @@ class BoardRepository
                                        ->join('qp_board','qp_board.row_id','=','qp_board_company.board_id')
                                        ->join('qp_board_type','qp_board.board_type_id','=','qp_board_type.row_id')
                                        ->where('qp_board.public_type',2)
+                                       ->where('qp_board.status','Y')
                                        ->select('board_type_id', 'type_name', 'qp_board.row_id as board_id','board_name', 'manager', 'qp_board.status', 'public_type');
 
         $userBoards = $this->boardUser->where('qp_board_user.emp_no', $empNo)
@@ -53,10 +54,12 @@ class BoardRepository
                                         ->join('qp_user','qp_user.emp_no','=','qp_board_user.emp_no')
                                         ->join('qp_board_type','qp_board.board_type_id','=','qp_board_type.row_id')
                                         ->where('qp_board.public_type',3)
+                                        ->where('qp_board.status','Y')
                                         ->select('board_type_id', 'type_name', 'qp_board.row_id as board_id','board_name', 'manager', 'qp_board.status', 'public_type');
 
         return $this->board
                 ->where('public_type',1)
+                ->where('qp_board.status','Y')
                 ->join('qp_board_type','qp_board.board_type_id','=','qp_board_type.row_id')
                 ->select('board_type_id', 'type_name', 'qp_board.row_id as board_id','board_name', 'manager', 'qp_board.status', 'public_type')
                 ->union($companyBoards)

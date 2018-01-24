@@ -65,6 +65,7 @@ class EventController extends Controller
                !isset($data['need_push'])   || $data['need_push']=="" || 
                !isset($data['project'])     || $data['project']=="" || 
                !isset($data['event_title']) || $data['event_title']=="" ||
+               !isset($data['event_desc'])  || $data['event_desc']=="" ||
                !isset($data['event_type_parameter_value']) || $data['event_type_parameter_value'] =="" || 
                !isset($data['estimated_complete_date'])     || $data['estimated_complete_date'] == "" ||
                !isset($data['basicList'])   || $data['basicList']==""){
@@ -353,7 +354,8 @@ class EventController extends Controller
             $eventId        = trim((string)$xml->event_row_id[0]);
             $lang           = trim((string)$xml->lang[0]);
             $needPush       = trim((string)$xml->need_push[0]);
-            $project         = trim((string)$xml->project[0]);
+            $project        = trim((string)$xml->project[0]);
+            $eventDesc     = trim((string)$xml->event_desc[0]);
             $relatedId      = trim((string) $xml->related_event_row_id[0]);
             $completeDate   = trim((string) $xml->estimated_complete_date[0]);
             $eventTypeParameterValue   = trim((string) $xml->event_type_parameter_value[0]);
@@ -377,7 +379,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if($lang == "" || $needPush == "" || $project =="" || $eventId == ""){
+            if($lang == "" || $needPush == "" || $project =="" || $eventId == "" || $eventDesc == ""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);

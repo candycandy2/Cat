@@ -251,61 +251,21 @@ $("#viewMain2-1").pagecontainer({
                 }
             }
         }
-
+        
         function locationSuccess(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
-            var APPID = 'MaoUYU6k';
-
-            var geoAPI = 'http://where.yahooapis.com/geocode?location='+lat+','+lon+'&flags=J&gflags=R&appid='+APPID;
-
-            var city = "Taipei";
-            var searchtext = "select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "') and u='c'"
-
-            //change city variable dynamically as required
-            $.getJSON(geoAPI, function(data) {
-                if(data.ResultSet.Found == 1) {
-                    results = data.ResultSet.Results;
-                    city = results[0].city;
-                    code = results[0].statecode || results[0].countrycode;
-                    // This is the city identifier for the weather API
-                    woeid = results[0].woeid;
-                    $.getJSON("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json").success(function(data){
-                        console.log(data);
-                        $('#temp').html( city + ", " + data.query.results.channel.item.condition.text + ", " + data.query.results.channel.item.condition.temp + "°C");
-                    });
-                }
+            var searchtext = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='(" +lat+","+lon+ ")') and u='c'"
+            $.getJSON("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json").success(function(data){
+                weatherResults = data.query.results.channel;
+                $('#temp').html( weatherResults.location.city + ", " + weatherResults.item.condition.text + ", " + weatherResults.item.condition.temp + "°C");
             });
         }
 
         function locationError(error){
-            switch(error.code) {
-                case error.TIMEOUT:
-                    showError("A timeout occured! Please try again!");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    showError('We can\'t detect your location. Sorry!');
-                    break;
-                case error.PERMISSION_DENIED:
-                    showError('Please allow geolocation access for this to work.');
-                    break;
-                case error.UNKNOWN_ERROR:
-                    showError('An unknown error occured!');
-                    break;
-            }
+            console.warn('ERROR(' + error.code + '): ' + error.message);
         }
 
-        function success(pos) {
-          var crd = pos.coords;
-          console.log('Your current position is:');
-          console.log('Latitude : ' + crd.latitude);
-          console.log('Longitude: ' + crd.longitude);
-          console.log('More or less ' + crd.accuracy + ' meters.');
-        }
-
-        function error(err) {
-          console.warn('ERROR(' + err.code + '): ' + err.message);
-        }
         /********************************** page event *************************************/
         $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
             var eventLogoutConfirmPopupData = {
@@ -384,7 +344,6 @@ $("#viewMain2-1").pagecontainer({
 
             $(document).ready(function(){
                 if (navigator.geolocation) {
-                    //navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
                     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
                 }              
             });
