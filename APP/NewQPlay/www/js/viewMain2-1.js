@@ -244,7 +244,6 @@ $("#viewMain2-1").pagecontainer({
                     if (applist[appindex].package_name == "com.qplay." + openAppName) {
                         selectAppIndex = appindex;
                         $.mobile.changePage('#viewAppDetail2-2');
-
                         loginData['openAppDetailPage'] = false;
                         break;
                     }

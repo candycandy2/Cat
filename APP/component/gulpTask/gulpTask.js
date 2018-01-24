@@ -67,6 +67,12 @@ gulp.task('copyIOSLaunchImages', function() {
         .pipe(gulp.dest('platforms/ios/' + process.env.APP_NAME + '/Images.xcassets/LaunchImage.launchimage/', { overwrite: true }));
 });
 
+// copy resource files needed by iOS X
+gulp.task('copyRes', function() {
+    return gulp.src('../component/res/**/*', {base: '../component/res/'})
+        .pipe(gulp.dest('res/', { overwrite: true }));
+});
+
 //Bulid iOS
 gulp.task('build', shell.task([
     'cordova build ios --debug --device --buildConfig=build.json',

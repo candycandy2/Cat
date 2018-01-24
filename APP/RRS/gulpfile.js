@@ -69,7 +69,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
-                            //'<preference name="iosPersistentFileLocation" value="Compatibility" />' +                  
+                            //'<preference name="iosPersistentFileLocation" value="Compatibility" />' +
                             '<splash src="res/screen/ios/Default@2x~iphone~anyany.png" />'+
                             '<splash src="res/screen/ios/Default@2x~iphone~comany.png" />'+
                             '<splash src="res/screen/ios/Default@2x~iphone~comcom.png" />'+
@@ -103,6 +103,7 @@ gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
+  'cordova plugin remove cordova-plugin-splashscreen',
   'cordova plugin remove cordova-plugin-inappbrowser',
   //'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
@@ -142,10 +143,10 @@ gulp.task('jenkinsinstall', shell.task([
 ]));
 
 //ex: gulp default
-gulp.task('default', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+gulp.task('default', ['copyRes', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
 
-gulp.task('jenkinsdefault', ['copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+gulp.task('jenkinsdefault', ['copyRes', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
