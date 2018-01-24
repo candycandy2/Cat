@@ -508,7 +508,7 @@ $("#viewLeaveSubmit").pagecontainer({
             checkLeaveBeforePreview();
         });
 
-         //無有效基準日選擇——datetime change
+        //無有效基準日選擇——datetime change
         $("#oldBaseDate").on("change", function() {
             baseday = ($(this).val()).substring(0, 10);
 
@@ -801,7 +801,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //實時獲取多行文本值
         $("#leaveReason").on("keyup", function() {
-            leaveReason = $.trim($(this).val());
+            leaveReason = $.trim($(this).val()); //review by alan
 
             //檢查是否可以預覽送簽
             checkLeaveBeforePreview();
@@ -860,7 +860,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 $("#applyAgent").text(agentName);
                 $("#applyStartday").text(startLeaveDate);
                 $("#applyEndday").text(endLeaveDate);
-                $("#applyReason").text(leaveReason);
+                $("#applyReason").text(leaveReason); //review by alan
                 $("#previewLeaveDays").text(countApplyDays);
                 $("#previewLeaveHours").text(countApplyHours);
 
