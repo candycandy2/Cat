@@ -216,14 +216,14 @@ gulp.task('patch', function() {
 });
 
 //ex: gulp default --env test
-gulp.task('default', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+gulp.task('default', ['patch', 'copyRes', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
 
-gulp.task('jenkinsdefault', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
+gulp.task('jenkinsdefault', ['patch', 'copyRes', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG'], function(){
 
 });
 
-gulp.task('jenkinsdefaultwithbuild', ['patch', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
+gulp.task('jenkinsdefaultwithbuild', ['patch', 'copyRes', 'copyAndroidImages', 'copyIOSImages', 'copyIOSLaunchImages', 'componentCSS', 'componentJS', 'componentHTML', 'componentIMG', 'build'], function(){
 
 });
