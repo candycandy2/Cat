@@ -42,6 +42,7 @@ article p{
 	line-height:1.2;}
 article img{
 	display:block;
+	margin:0 auto;
 }
 .downloadbtn{
 	display:block;
