@@ -92,9 +92,9 @@
         <div id="viewTimeManage" data-model="5">
             <div class="team-signup-title">
                 <div>
-                    <img src="img/event_date.png" id="teamManageThumbnail">
+                    <img src="img/event_date.png" id="timeManageThumbnail">
                 </div>
-                <div class="font-style10 font-color2" id="teamManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                <div class="font-style10 font-color2" id="timeManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
             </div>
             <div class="time-manage-signuped1 font-style11 font-color4">您已報名本項活動：1人</div>
             <div class="time-manage-signuped2 font-style12 font-color2">*您已完成報名，若需變更時段，請先取消報名後再重新報名</div>
@@ -150,7 +150,11 @@
                 </div>
                 <div class="font-style10 font-color2" id="teamManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
             </div>
-            <div class="team-manage-signuped font-style11 font-color4">您已報名本項活動：2組</div>
+            <div class="team-manage-signuped font-style11 font-color4">
+                <span>您已報名本項活動：</span>
+                <span id="teamSignupedPlaces">2</span>
+                <span>組</span>
+            </div>
             <div class="team-manage-signuped font-style11 font-color1">以下是您的報名資料</div>
             <div id="teamTableContainer">
                 <table data-role="none" id="teamTable">
@@ -163,7 +167,7 @@
                             <img src="img/all_list_down.png" class="all-list-img">
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>1</td>
                         <td>AI30</td>
                         <td></td>
@@ -172,7 +176,7 @@
                             <img src="img/list_down.png" class="list-img">
                         </td>
                     </tr>
-                    <tr colspan="5" style="display:none;">
+                    <tr style="display:none;">
                         <td></td>
                         <td></td>
                         <td></td>
@@ -193,7 +197,7 @@
                             <img src="img/list_down.png" class="list-img">
                         </td>
                     </tr>
-                    <tr colspan="5" style="display:none;">
+                    <tr style="display:none;">
                         <td></td>
                         <td></td>
                         <td></td>
@@ -205,7 +209,7 @@
                         <td>
                             <img src="img/delete.png" class="team-delete">
                         </td>
-                    </tr>
+                    </tr> -->
                 </table>
             </div>
         </div>
@@ -215,5 +219,66 @@
 
     </div>
 
+
+    <!--確定取消報名-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelSignupMsg" for="cancelSignupMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定取消報名-->
+                        <span class="langStr" data-id="str_030"></span>
+                    </span>
+                </div>
+                <div class="header-title"></div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style11 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--不取消-->
+                        <span class="langStr" data-id="str_046"></span>
+                    </div>
+                    <div class="btn-cancel" id="cancelSignup">
+                        <!--取消-->
+                        <span class="langStr" data-id="str_045"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--報名取消失敗-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelFailMsg" for="cancelFailMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--報名取消失敗-->
+                        <span class="langStr" data-id="str_047"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

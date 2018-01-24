@@ -44,7 +44,7 @@ class CommentController extends Controller
         $xml=simplexml_load_string($request['strXml']);
         $data = json_decode(json_encode($xml),TRUE);
         $rules = [
-            'post_id' => 'required|string|size:32|post_exist|post_auth:'.$data['emp_no'],
+            'post_id' => 'required|string|size:32|post_exist|parent_board_is_open|post_is_open|post_auth:'.$data['emp_no'],
             'content' => 'required|string',
             'file_list' => 'sometimes|required|array'
         ];

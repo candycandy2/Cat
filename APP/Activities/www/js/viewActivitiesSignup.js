@@ -24,8 +24,10 @@ $("#viewActivitiesSignup").pagecontainer({
             this.successCallback = function (data) {
                 console.log(data);
 
+                //報名提交的活動類型
+                submitModel = model;
                 if (data["ResultCode"] == "1") {
-                    var signupObj = data["Content"][0];
+                    
 
                     if (model == "1") {
 
@@ -34,6 +36,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     } else if (model == "3") {
 
                     } else if (model == "4") {
+                        var signupObj = data["Content"][0];
                         $("#teamSignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#teamSignupName").text(signupObj["ActivitiesName"]);
                         $("#teamCurrentPlace").text("0");
@@ -46,7 +49,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
                         //報名參數
                         submitID = signupObj["ActivitiesID"];
-                        submitModel = model;
+                        
 
                     } else if (model == "5") {
 

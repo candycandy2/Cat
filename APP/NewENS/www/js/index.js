@@ -37,15 +37,17 @@ window.initialSuccess = function() {
     loadingMask("show");
 
     changeProject("check");
-    chatRoom.initialData();
+    //Darren 20180123- chatRoom.initialData();
     processLocalData.initialData();
     checkEventTemplateData("check");
 
     $.mobile.changePage('#viewEventList');
 
-    chatRoom.resetBadge();
+    //Darren 20180123- chatRoom.resetBadge();
 }
 
+//Darren 20180123-
+/*
 var chatRoom = {
     nowChatRoomID: "",
     Messages: {},
@@ -53,9 +55,9 @@ var chatRoom = {
     localPhotoUrl: "",
     setChatroomID: function(ID) {
         this.nowChatRoomID = ID;
-        //Darren- JM.chatroomID = ID;
+        JM.chatroomID = ID;
 
-        //Darren- JM.Chatroom.getGroupInfo();
+        JM.Chatroom.getGroupInfo();
     },
     initialData: function() {
         if (window.localStorage.getItem("Messages") !== null) {
@@ -84,7 +86,7 @@ var chatRoom = {
 
             for (var i=0; i<data.messages.length; i++) {
 
-                /*
+                //
                 if (device.platform === "iOS") {
                     var messageTimestamp = data.messages[i].create_time;
                 } else if (device.platform === "Android") {
@@ -95,7 +97,7 @@ var chatRoom = {
                     messageTimestamp = messageTimestamp.toString() + "000";
                 }
                 messageTimestamp = parseInt(messageTimestamp, 10);
-                */
+                //
                 var messageTimestamp = data.messages[i].msg_ctime;
 
                 var createTime = new Date(messageTimestamp);
@@ -159,7 +161,7 @@ var chatRoom = {
         //}
 
         //For sendGroupTextMessage / sendGroupImageMessage
-        /*
+        //
         if (type === "single") {
             if (chatRoom.Messages[chatRoom.nowChatRoomID] === undefined) {
                 chatRoom.Messages[chatRoom.nowChatRoomID] = [];
@@ -205,7 +207,7 @@ var chatRoom = {
 
             chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
         }
-        */
+        //
 
         chatRoom.refreshMsg();
     },
@@ -234,8 +236,8 @@ var chatRoom = {
                     if (
                         rect.top >= 0 &&
                         rect.left >= 0 &&
-                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
-                        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && //or $(window).height() //
+                        rect.right <= (window.innerWidth || document.documentElement.clientWidth) //or $(window).width() //
                     ) {
                         var ID = $(el).prop("id");
                         $("#" + ID).prop("src", photoData[ID]);
@@ -259,6 +261,7 @@ var chatRoom = {
 window.addEventListener("scroll", function() {
     chatRoom.loadImg();
 });
+*/
 
 //1. Each data has its own life-cycle.
 //2. Every time before call API, check the life-cycle timestamp first.

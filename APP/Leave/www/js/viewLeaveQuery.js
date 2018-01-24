@@ -494,15 +494,28 @@ $("#viewLeaveQuery").pagecontainer({
             //return false;
         });
 
-        //輸入撤回理由——textarea
-        $("#withdrawReason").on("keyup", function() {
-            withdrawReason = $.trim($(this).val());
+        function WithdrawReason() {
+            withdrawReason = $.trim($("#withdrawReason").val());
 
             if (withdrawReason !== "") {
                 $("#confirmWithdrawBtn").addClass("leavePreview-active-btn");
             } else {
                 $("#confirmWithdrawBtn").removeClass("leavePreview-active-btn");
             }
+        }
+
+        var timeoutWithdrawReason = null;
+        //輸入撤回理由——textarea
+        $("#withdrawReason").on("keyup", function() {
+            
+            if (timeoutWithdrawReason != null) {
+                clearTimeout(timeoutWithdrawReason);
+                timeoutWithdrawReason = null;
+            }
+            timeoutWithdrawReason = setTimeout(function() {
+                WithdrawReason();
+            }, 2000);
+
         });
 
         //撤回假單按鈕——popup
@@ -680,15 +693,28 @@ $("#viewLeaveQuery").pagecontainer({
             //return false;
         });
 
-        //輸入銷假理由——keyup
-        $("#dispelReason").on("keyup", function() {
-            dispelReason = $.trim($(this).val());
+        function DispelReason() {
+            dispelReason = $.trim($("#dispelReason").val());
 
             if (dispelReason !== "") {
                 $("#confirmDispelBtn").addClass("leavePreview-active-btn");
             } else {
                 $("#confirmDispelBtn").removeClass("leavePreview-active-btn");
             }
+        }
+
+        var timeoutDispelReason = null;
+        //輸入銷假理由——textarea
+        $("#dispelReason").on("keyup", function() {
+
+            if (timeoutDispelReason != null) {
+                clearTimeout(timeoutDispelReason);
+                timeoutDispelReason = null;
+            }
+            timeoutDispelReason = setTimeout(function() {
+                DispelReason();
+            }, 2000);
+
         });
 
         //確定銷假送簽——click

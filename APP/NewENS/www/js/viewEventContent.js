@@ -149,7 +149,7 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                         //Message Count
-                        //Darren- chatRoom.setChatroomID(data['Content'].chatroom_id);
+                        //Darren 20180123- chatRoom.setChatroomID(data['Content'].chatroom_id);
                         var msgCount;
 
                         for (j=0; j<messageCountData.length; j++) {
@@ -218,7 +218,7 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                         //ChatRoom Message List
-                        //Darren- JM.Message.getGroupConversationHistoryMessage(chatRoom.messageHandler);
+                        //Darren 20180123- JM.Message.getGroupConversationHistoryMessage(chatRoom.messageHandler);
 
                         //Update User Read Status & Time
                         //note: if Event status=finish or User=create_user or User has readed, do not update Event Status
@@ -241,9 +241,9 @@ $("#viewEventContent").pagecontainer({
                         }
                     }
 
-                    //Darren-
+                    //Darren 20180123-
                     loadingMask("hide");
-                    QForum.VIEW.replyButtonFooter("viewEventContent");
+                    QForum.VIEW.createReplyUI(data['Content'].chatroom_id, "viewEventContent");
 
                 } else if (resultCode === "014904") {
                     loadingMask("hide");
@@ -265,6 +265,8 @@ $("#viewEventContent").pagecontainer({
 
         };
 
+        //Darren 20180123-
+        /*
         window.chatRoomListView = function(action) {
             action = action || null;
 
@@ -363,6 +365,7 @@ $("#viewEventContent").pagecontainer({
             loadingMask("hide");
             footerFixed();
         };
+        */
 
         function updateEventStatus() {
             //Update 1. [event_status] 2. [read_time]
@@ -720,7 +723,7 @@ $("#viewEventContent").pagecontainer({
             $('#msgText').prop('placeholder', langStr["str_096"] /*"請輸入訊息"*/);
             $("#msgText").val("");
 
-            chatRoom.resetBadge();
+            //Darren 20180123- chatRoom.resetBadge();
 
             //Chagne Action Title
             if (projectName === "ITS") {
@@ -837,8 +840,8 @@ $("#viewEventContent").pagecontainer({
             if (uploadText) {
                 loadingMask("show");
 
-                //Darren- JM.Message.sendGroupTextMessage(msg, chatRoom.messageHandler);
-                chatRoom.sendNewMsg = true;
+                //Darren 20180123- JM.Message.sendGroupTextMessage(msg, chatRoom.messageHandler);
+                //Darren 20180123- chatRoom.sendNewMsg = true;
                 $("#msgText").val("");
             }
 
@@ -848,10 +851,10 @@ $("#viewEventContent").pagecontainer({
 
             if (uploadImg) {
                 loadingMask("show");
-                chatRoom.localPhotoUrl = photoUrl;
+                //Darren 20180123- chatRoom.localPhotoUrl = photoUrl;
 
-                //Darren- JM.Message.sendGroupImageMessage(photoUrl, chatRoom.messageHandler);
-                chatRoom.sendNewMsg = true;
+                //Darren 20180123- JM.Message.sendGroupImageMessage(photoUrl, chatRoom.messageHandler);
+                //Darren 20180123- chatRoom.sendNewMsg = true;
             }
 
         });

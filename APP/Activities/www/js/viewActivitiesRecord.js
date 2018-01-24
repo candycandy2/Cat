@@ -2,7 +2,10 @@
 
 $("#viewActivitiesRecord").pagecontainer({
     create: function (event, ui) {
-        //page init
+        /********************************** variable *************************************/
+        var currentID, currentNo, currentModel;
+        /********************************** function *************************************/
+        //獲取報名記錄
         window.ActivitiesRecordQuery = function () {
 
             this.successCallback = function (data) {
@@ -53,6 +56,33 @@ $("#viewActivitiesRecord").pagecontainer({
 
         };
 
+
+        //取消報名
+        window.ActivitiesRecordCancelQuery = function () {
+
+            this.successCallback = function (data) {
+                console.log(data);
+
+                if (data["ResultCode"] == "045913") {
+                    ActivitiesListQuery();
+                    ActivitiesRecordQuery();
+
+                } else if (data["ResultCode"] == "045914") {
+                    //報名取消失敗
+                    popupMsgInit('.recordFailMsg');
+                }
+
+                loadingMask("hide");
+            };
+
+            this.failCallback = function (data) { };
+
+            var __construct = function () {
+                CustomAPI("POST", true, "Activities_Signup_Cancel", self.successCallback, self.failCallback, activitiesRecordCancelQueryData, "");
+            }();
+
+        };
+
         /********************************** page event *************************************/
         $("#viewActivitiesRecord").on("pagebeforeshow", function (event, ui) {
             if (viewRecordInit) {
@@ -73,25 +103,36 @@ $("#viewActivitiesRecord").pagecontainer({
 
         //取消報名
         $(document).on("click", ".record-delete", function () {
-            loadingMask("show");
-            var acID = $(this).parent().attr("data-id");
-            var siNo = $(this).parent().attr("data-no");
-            var model = $(this).parent().attr("data-model");
+            currentID = $(this).parent().attr("data-id");
+            currentNo = $(this).parent().attr("data-no");
+            currentModel = $(this).parent().attr("data-model");
 
-            activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
-                + acID
+            recordActName = $(this).parent().prev().children("div:eq(1)").text();
+            recordTeamName = $(this).parent().prev().children("div:eq(0)").text();
+
+            $(".recordSignupMsg .header-title").text(recordActName);
+            $(".recordSignupMsg .main-paragraph").text(recordTeamName);
+            popupMsgInit('.recordSignupMsg');
+
+        });
+
+
+        $("#recordSignup").on("click", function () {
+            loadingMask("show");
+            activitiesRecordCancelQueryData = '<LayoutHeader><ActivitiesID>'
+                + currentID
                 + '</ActivitiesID><SignupNo>'
-                + siNo
+                + currentNo
                 + '</SignupNo><SignupModel>'
-                + model
+                + currentModel
                 + '</SignupModel><EmployeeNo>'
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';
 
-            console.log(activitiesSignupCancelQueryData);
+            console.log(activitiesRecordCancelQueryData);
 
-            ActivitiesSignupCancelQuery();
-
+            ActivitiesRecordCancelQuery();
         });
+
     }
 });

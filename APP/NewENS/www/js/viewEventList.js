@@ -45,6 +45,7 @@ $("#viewEventList").pagecontainer({
                         projectName = data["Content"][0].Project;
                         $("#projectType").hide();
                     }
+
                     changeProject("setOption");
 
                     //Set Event Type Selected Option
@@ -55,6 +56,10 @@ $("#viewEventList").pagecontainer({
                     }
 
                     showEventAdd();
+
+                    //Darren 20180123-
+                    setQForumBoardID();
+
                 } else if (resultCode === "014923") {
                     $("#noUseAuthorityPopup").popup("open");
                 }
@@ -272,6 +277,8 @@ $("#viewEventList").pagecontainer({
         function getMessageCount(chatroomIDList) {
             var self = this;
 
+            //Darren 20180123-
+            /*
             var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
             var chatroomListParameter = "<chatroom_list>";
 
@@ -318,6 +325,23 @@ $("#viewEventList").pagecontainer({
             var __construct = function() {
                 CustomAPI("POST", true, "getMessageCount", self.successCallback, self.failCallback, queryData, "");
             }();
+            */
+            window.messageCountData = [];
+            var openEventDetail = false;
+
+            if (openEventFromQPlay) {
+                openEventDetail = true;
+            } else {
+                eventListView();
+            }
+
+            if (openEventDetail) {
+                //Open Event Detail from QPlay
+                var eventDetail = new getEventDetail(eventRowID);
+                $.mobile.changePage('#viewEventContent');
+
+                openEventFromQPlay = false;
+            }
 
         }
 
@@ -821,10 +845,17 @@ $("#viewEventList").pagecontainer({
                     }
 
                     showEventAdd();
+
+                    //Darren 20180123-
+                    setQForumBoardID();
                 }
             }
 
         };
+
+        function setQForumBoardID() {
+            QForum.METHOD.setBoardID();
+        }
 
         /********************************** page event *************************************/
         $("#viewEventList").one("pagebeforeshow", function(event, ui) {
@@ -1085,7 +1116,7 @@ $("#viewEventList").pagecontainer({
             var paddingBottom = parseInt(document.documentElement.clientWidth * 18 / 100, 10);
             $("#viewEventList").css("padding-bottom", paddingBottom + "px");
 
-            chatRoom.resetBadge();
+            //Darren 20180123- chatRoom.resetBadge();
         });
 
         /********************************** dom event *************************************/
