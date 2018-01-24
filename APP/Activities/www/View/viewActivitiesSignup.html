@@ -39,56 +39,52 @@
         <div id="viewFamilySignup" data-model="3">
             <div class="team-signup-title">
                 <div>
-                    <img src="img/event_date.png">
+                    <img src="img/event_date.png" id="familySignupThumbnail">
                 </div>
                 <div class="font-style10 font-color2">
-                    <div>[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
-                    <div style="margin-top:2.14vw;">您尚可報名人數：3人</div>
+                    <div id="familySignupName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                    <div style="margin-top:2.14vw;">
+                        <span>您尚可報名人數：</span>
+                        <span id="familyLimitPlace">3</span>
+                        <span>人</span>
+                    </div>
                 </div>
             </div>
             <div class="peraon-manage-signuped font-style11 font-color2">*本活動須同仁本人一同前往</div>
             <div class="family-signup-set-title font-style11 font-color1">請先填寫同仁報名資訊</div>
             <div class="family-signup-basic font-style7 font-color1">
-                <span>王小明</span>/
-                <span>同仁</span>/
-                <span>男</span>/
-                <span>F123456789</span>/
-                <span>1980-12-01</span>
+                <span id="familyEmpName">王小明</span>
+                <span> /</span>
+                <span id="familyEmpRlts">同仁</span>
+                <span> /</span>
+                <span id="familyEmpGender">男</span>
+                <span> /</span>
+                <span id="familyEmpID">F123456789</span>
+                <span> / </span>
+                <span id="familyEmpBirth">1980-12-01</span>
             </div>
             <!--自定義欄位-->
             <div class="family-signup-custom-field">
-                <div class="custom-field">
-                    <label for="" class="font-style11">活動建議</label>
-                    <textarea name="" id="" data-role="none" class="input-textarea"></textarea>
-                </div>
-                <div class="custom-field">
+                <!-- <div class="custom-field">
+                    <label for="" class="font-style11">自助餐</label>
+                    <div>
+                        <div><img src="img/checkbox_n.png" style="width:4vw;height:4vw;"><span>西瓜</span></div>
+                        <div><img src="img/checkbox_n.png" style="width:4vw;height:4vw;"><span>蘋果</span></div>
+                        <div><img src="img/checkbox_n.png" style="width:4vw;height:4vw;"><span>香蕉</span></div>
+                        <div><img src="img/checkbox_n.png" style="width:4vw;height:4vw;"><span>葡萄</span></div>
+                    </div>
+                </div> -->
+                <!-- <div class="custom-field">
                     <label for="" class="font-style11">搭車地點</label>
                     <div>請選取</div>
                 </div>
                 <div class="custom-field">
                     <label for="" class="font-style11">option1</label>
                     <input name="" id="" type="text" data-role="none" class="input-text">
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">option2</label>
-                    <input name="" id="" type="text" data-role="none" class="input-text">
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">option3</label>
-                    <input name="" id="" type="text" data-role="none" class="input-text">
-                </div>
-                <!-- <div class="custom-field">
-                    <label for="" class="font-style11">午餐</label>
-                    <input name="aaa" id="r1" type="radio" value="面條" class="input-radio">
-                    <label for="r1" class="radio-label">面條</label>
-                    <input name="aaa" id="r2" type="radio" value="米飯" class="input-radio">
-                    <label for="r2" class="radio-label">米飯</label>
-                    <input name="aaa" id="r3" type="radio" value="漢堡" class="input-radio">
-                    <label for="r3" class="radio-label">漢堡</label>
                 </div> -->
             </div>
             <div class="blank-container-before-footer"></div>
-            <div class="person-footer font-style3 btn-disabled">
+            <div id="selectFamilyBtn" class="person-footer font-style3 btn-disabled">
                 <span>選擇眷屬</span>
             </div>
         </div>
