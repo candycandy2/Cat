@@ -103,6 +103,7 @@ gulp.task('install', shell.task([
   'cordova plugin remove cordova-plugin-customurlscheme',
   'cordova plugin remove cordova-plugin-qsecurity',
   'cordova plugin remove cordova-plugin-whitelist',
+  'cordova plugin remove cordova-plugin-splashscreen',
   'cordova plugin remove cordova-plugin-inappbrowser',
   //'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
