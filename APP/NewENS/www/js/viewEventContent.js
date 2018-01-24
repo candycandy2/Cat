@@ -243,7 +243,7 @@ $("#viewEventContent").pagecontainer({
 
                     //Darren 20180123-
                     loadingMask("hide");
-                    QForum.VIEW.replyButtonFooter(data['Content'].chatroom_id, "viewEventContent");
+                    QForum.VIEW.createReplyUI(data['Content'].chatroom_id, "viewEventContent");
 
                 } else if (resultCode === "014904") {
                     loadingMask("hide");
