@@ -130,11 +130,16 @@
 
 .custom-field {
     border-bottom: 1px solid #d6d6d6;
+    padding-bottom: 2.14vw;
 }
 
 .custom-field > label:nth-of-type(1) {
     padding:4.3vw 0vw 2.14vw 0vw;
     color: #0f0f0f; 
+}
+
+#viewActivitiesSignup .tpl-dropdown-list {
+    padding: 0 !important;
 }
 
 .input-textarea {
@@ -148,14 +153,14 @@
     margin-bottom: 2.14vw;
 }
 
-.input-text {
+.familySignupText {
     width: 89vw;
     height: 10vw;
     margin-top: 2.14vw;
     border: 1px solid #d6d6d6;
     outline: none;
     padding-left: 3.17vw;
-    margin-bottom: 2.14vw;
+    /* margin-bottom: 2.14vw; */
 }
 
 .input-radio {
