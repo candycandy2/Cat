@@ -854,7 +854,7 @@ $("#viewEventList").pagecontainer({
         };
 
         function setQForumBoardID() {
-            QForum.setBoardID();
+            QForum.METHOD.setBoardID();
         }
 
         /********************************** page event *************************************/
