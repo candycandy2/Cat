@@ -799,12 +799,25 @@ $("#viewLeaveSubmit").pagecontainer({
             checkLeaveBeforePreview();
         });
 
-        //實時獲取多行文本值
-        $("#leaveReason").on("keyup", function() {
-            leaveReason = $.trim($(this).val()); //review by alan
+        function GetReason() {
+            leaveReason = $.trim($("#leaveReason").val()); //review by alan
 
             //檢查是否可以預覽送簽
             checkLeaveBeforePreview();
+        }
+
+        var timeoutGetReason = null;
+        //實時獲取多行文本值
+        $("#leaveReason").on("keyup", function() {
+
+            if (timeoutGetReason != null) {
+                clearTimeout(timeoutGetReason);
+                timeoutGetReason = null;
+            }
+            timeoutGetReason = setTimeout(function() {
+                GetReason();
+            }, 2000);
+
         });
 
         //清除請假申請
