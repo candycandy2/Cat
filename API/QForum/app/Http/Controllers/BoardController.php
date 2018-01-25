@@ -38,8 +38,7 @@ class BoardController extends Controller
      */
     public function getBoardList(Request $request)
     {
-        $xml=simplexml_load_string($request['strXml']);
-        $data = json_decode(json_encode($xml),TRUE);
+        $data = parent::getData($request);
         $empNo = $data['emp_no'];
         $userData = $this->userService->getUserData($empNo);
         $company = $userData->company;
