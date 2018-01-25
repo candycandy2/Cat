@@ -69,7 +69,7 @@ gulp.task('copyIOSLaunchImages', function() {
 
 // copy resource files needed by iOS X
 gulp.task('copyRes', function() {
-    return gulp.src('../component/res/**/*', {base: '../component/res/'})
+    return gulp.src('../component/res_source/**/*', {base: '../component/res_source/'})
         .pipe(gulp.dest('res/', { overwrite: true }));
 });
 
