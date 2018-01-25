@@ -49,6 +49,28 @@ if (process.env.env === "test") {
     env.set({productionextra: "1"});
 }
 
+env.set({AndroidScreen: "'<splash src=\"res/screen/android/splash-land-hdpi.png\" density=\"land-hdpi\"/>'\
+                         '<splash src=\"res/screen/android/splash-land-ldpi.png\" density=\"land-ldpi\"/>'\
+                         '<splash src=\"res/screen/android/splash-land-mdpi.png\" density=\"land-mdpi\"/>'\
+                         '<splash src=\"res/screen/android/splash-land-xhdpi.png\" density=\"land-xhdpi\"/>'\
+                         '<splash src=\"res/screen/android/splash-port-hdpi.png\" density=\"port-hdpi\"/>'\
+                         '<splash src=\"res/screen/android/splash-port-ldpi.png\" density=\"port-ldpi\"/>'\
+                         '<splash src=\"res/screen/android/splash-port-mdpi.png\" density=\"port-mdpi\"/>'\
+                         '<splash src=\"res/screen/android/splash-port-xhdpi.png\" density=\"port-xhdpi\"/>'"});
+
+env.set({iOSScreen: "'<splash src=\"res/screen/ios/Default@2x~iphone~anyany.png\" />'\
+                     '<splash src=\"res/screen/ios/Default@2x~iphone~comany.png\" />'\
+                     '<splash src=\"res/screen/ios/Default@2x~iphone~comcom.png\" />'\
+                     '<splash src=\"res/screen/ios/Default@3x~iphone~anyany.png\" />'\
+                     '<splash src=\"res/screen/ios/Default@3x~iphone~anycom.png\" />'\
+                     '<splash src=\"res/screen/ios/Default@3x~iphone~comany.png\" />'\
+                     '<splash src=\"res/screen/ios/Default@2x~ipad~anyany.png\" />'\
+                     '<splash src=\"res/screen/ios/Default@2x~ipad~comany.png\" />'"});
+
+env.set({PreferenceValue: "'<preference name=\"ShowSplashScreenSpinner\" value=\"false\" />'\
+                           '<preference name=\"SplashScreenDelay\" value=\"0\" />'\
+                           '<preference name=\"FadeSplashScreen\" value=\"false\" />'\
+                           '<preference name=\"FadeSplashScreenDuration\" value=\"0\" />'"});
 //Common Task
 
 //copy image for Android / iOS
@@ -69,7 +91,7 @@ gulp.task('copyIOSLaunchImages', function() {
 
 // copy resource files needed by iOS X
 gulp.task('copyRes', function() {
-    return gulp.src('../component/res/**/*', {base: '../component/res/'})
+    return gulp.src('../component/res_source/**/*', {base: '../component/res_source/'})
         .pipe(gulp.dest('res/', { overwrite: true }));
 });
 
