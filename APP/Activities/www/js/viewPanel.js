@@ -32,10 +32,10 @@ $(document).one("pagebeforeshow", function() {
     $("#mypanel #mypanelviewActivitiesList").css("background", "#503f81");
     $("#mypanel #mypanelviewActivitiesList").css("color", "#fff");
 
-    if (device.platform === "iOS") {
-        $("#mypanelviewActivitiesList").css("margin-top", "20px");
-        $(".page-mask").css("top", "20px");
-    }
+    // if (device.platform === "iOS") {
+    //     $("#mypanelviewActivitiesList").css("margin-top", "20px");
+    //     $(".page-mask").css("top", "20px");
+    // }
 
     $("#mypanel #mypanelviewActivitiesList").on("click", function() {
         changePageByPanel("viewActivitiesList", true);

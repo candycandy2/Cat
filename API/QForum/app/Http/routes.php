@@ -16,6 +16,7 @@ Route::group(['prefix' => 'v101/QForum','middleware' => ['api','verify.basic']],
     Route::POST('/newPost','PostController@newPost');
     Route::POST('/deletePost','PostController@deletePost');
     Route::POST('/getPostList','PostController@getPostList');
+    Route::POST('/modifyPost','PostController@modifyPost');
     Route::POST('/getPostDetails','PostController@getPostDetails');
     Route::POST('/newComment','CommentController@newComment');
     Route::POST('/modifyComment','CommentController@modifyComment');

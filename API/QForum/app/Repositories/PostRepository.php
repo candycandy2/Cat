@@ -18,6 +18,10 @@ class PostRepository
         return $this->post->insert($data);
     }
 
+    public function modifyPost($postId, Array $data){
+        return $this->post->where('row_id',$postId)->update($data);
+    }
+
     public function softDeletePost($postId, $userData){
         $now = date('Y-m-d H:i:s',time());
         return $this->post

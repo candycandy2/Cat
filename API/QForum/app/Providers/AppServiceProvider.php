@@ -57,6 +57,11 @@ class AppServiceProvider extends ServiceProvider
             return $this->checkBoardIsOPtnWithPostId($value);
         });
 
+        Validator::extend('is_my_post', function($attribute, $value, $params, $validator){
+            $empNo = $params[0];
+            return $this->IsMyPost($empNo, $value);
+        });
+    
         Validator::replacer('greater_than', function($message, $attribute, $rule, $params) {
             return ResultCode::_047905_FieldFormatError;
         });
@@ -92,6 +97,10 @@ class AppServiceProvider extends ServiceProvider
 
         Validator::replacer('parent_board_is_open', function($message, $attribute, $rule, $params) {
             return ResultCode::_047911_BoardIsClosed;
+        });
+
+        Validator::replacer('is_my_post', function($message, $attribute, $rule, $params) {
+            return ResultCode::_047906_FieldFormatError;
         });
 
         Validator::replacer('required', function($message, $attribute, $rule, $params) {
@@ -244,31 +253,32 @@ class AppServiceProvider extends ServiceProvider
         return false; 
     }
 
-    private function IsMyPost($postId, $empNo){
-        $postRs = \DB::table("qp_post")
-                    ->where('row_id','=',$postId)
-                    ->join('qp_user','qp_post.created_user','=', 'qp_user.row_id')
-                    ->select('qp_user.emp_no as emp_no',
-                            'board_id',
-                            'qp_post.created_user as post_creator')
-                    ->first();
-        if($postRs->emp_no == $postRs->post_creator){
-            return true;
+    private function IsMyPost( $empNo, $postId){
+        $user = \DB::table("qp_user")->where('emp_no', $empNo)->select('row_id')->first();
+        if(!is_null($user)){
+            $post = \DB::table("qp_post")
+                        ->where("row_id",$postId)
+                        ->where("created_user", $user->row_id)
+                        ->get();
+            if(count($post) > 0){
+                return true;
+            }
         }
         return false; 
     }
 
 
-    private function IsMyComment($commrntId, $empNo){
-        $commentRs = \DB::table("qp_comment")
-                    ->where('row_id','=',$postId)
-                    ->join('qp_user','qp_comment.created_user','=', 'qp_user.row_id')
-                    ->select('qp_user.emp_no as emp_no',
-                            'board_id',
-                            'qp_comment.created_user as comment_creator')
-                    ->first();
-        if($postRs->emp_no == $postRs->comment_creator){
-            return true;
+    private function IsMyComment( $empNo, $commrntId){
+        $user = \DB::table("qp_user")->where('emp_no', $empNo)->select('row_id')->first();
+        if(!is_null($user)){
+            $comment = \DB::table("qp_comment")
+                        ->where("row_id",$commrntId)
+                        ->where("created_user", $user->row_id)
+                        ->get();
+            if(count($comment) > 0){
+                return true;
+            }
+
         }
         return false; 
     }
@@ -287,7 +297,7 @@ class AppServiceProvider extends ServiceProvider
                 ->where('row_id', '=', $boardId)
                 ->select('status')
                 ->first();
-        if($board->status == 'Y'){
+        if(!is_null($board) && $board->status == 'Y'){
             return true;
         }
         return false; 
@@ -298,7 +308,8 @@ class AppServiceProvider extends ServiceProvider
                 ->where('row_id', '=', $postId)
                 ->select('status')
                 ->first();
-        if($post->status == 'Y'){
+
+        if(!is_null($post) && $post->status == 'Y'){
             return true;
         }
         return false; 
