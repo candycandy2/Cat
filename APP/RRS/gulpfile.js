@@ -94,7 +94,7 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 
 //ex: gulp install --env test
-gulp.task('install', shell.task([
+gulp.task('install', ['copyRes'], shell.task([
   'cordova plugin remove cordova-plugin-device',
   //'cordova plugin remove cordova-plugin-console',
   //'cordova plugin remove cordova-plugin-appversion',
@@ -123,7 +123,7 @@ gulp.task('install', shell.task([
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
-gulp.task('jenkinsinstall', shell.task([
+gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add ../../plugins/cordova-plugin-device',

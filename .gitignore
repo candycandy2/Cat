@@ -23,6 +23,7 @@ APP/*/package-lock.json
 node_modules/*
 APP/*/template.html
 APP/*/function.js
+APP/*/res
 
 # Xcode
 #
@@ -101,4 +102,3 @@ storage
 package-lock.json
 /qplay/.env
 /API/QChat/public/upload
-
