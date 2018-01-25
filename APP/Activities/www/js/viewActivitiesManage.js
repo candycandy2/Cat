@@ -1,8 +1,11 @@
 
 $("#viewActivitiesManage").pagecontainer({
     create: function (event, ui) {
+        /********************************** variable *************************************/
         var resultArr = [];
         var cancelModel, cancelActName, cancelID, cancelNo, cancelTeamName;
+
+        
         /********************************** function *************************************/
         //報名管理
         window.ActivitiesSignupManageQuery = function (model) {
