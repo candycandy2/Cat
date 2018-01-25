@@ -23,6 +23,9 @@ var panel = htmlContent
         +   '<div class="panel-content view-hide" id="mypanelviewActivitiesManage">'
         +       '<span class="panel-text">管理</span>'
         +   '</div>'
+        +   '<div class="panel-content view-hide" id="mypanelviewSelectFamily">'
+        +       '<span class="panel-text">選擇眷屬</span>'
+        +   '</div>'
         +'</div>'
         +'<div class="page-mask view-hide"></div>';
 

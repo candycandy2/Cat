@@ -1,9 +1,12 @@
 
 $("#viewActivitiesDetail").pagecontainer({
     create: function (event, ui) {
-        /********************************** function *************************************/
+        /********************************** variable *************************************/
         var isFull, isRepeatSignup, isSignup, actModel, actID, modelName, viewName;
+        var lastSignupID, lastManageID;
 
+
+        /********************************** function *************************************/
         //活動詳情
         window.ActivitiesDetailQuery = function (status) {
 
@@ -133,7 +136,35 @@ $("#viewActivitiesDetail").pagecontainer({
                 //已報名同類活動，不能報名該活動
                 popupMsgInit('.signupedSameMsg');
             } else if (isRepeatSignup == "N" && !$(this).hasClass("btn-disabled")) {
-                activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
+                if(lastSignupID == actID) {
+                    changePageByPanel("viewActivitiesSignup", true);
+                } else {
+                    activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
+                        + actID
+                        + '</ActivitiesID><SignupModel>'
+                        + actModel
+                        + '</SignupModel><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo></LayoutHeader>';
+
+                    //console.log(activitiesSignupQueryData);
+
+                    ActivitiesSignupQuery(actModel);
+
+                    showViewByModel("viewActivitiesSignup", actModel);
+                    changePageByPanel("viewActivitiesSignup", true);
+                    lastSignupID = actID;
+                }
+            }
+
+        });
+
+        //點擊 "報名管理" 跳轉到編輯頁
+        $(".detail-manage-btn").on("click", function () {
+            if(lastManageID == actID) {
+                changePageByPanel("viewActivitiesManage", true);
+            } else {
+                activitiesSignupManageQueryData = '<LayoutHeader><ActivitiesID>'
                     + actID
                     + '</ActivitiesID><SignupModel>'
                     + actModel
@@ -141,33 +172,15 @@ $("#viewActivitiesDetail").pagecontainer({
                     + myEmpNo
                     + '</EmployeeNo></LayoutHeader>';
 
-                //console.log(activitiesSignupQueryData);
+                //console.log(activitiesSignupManageQueryData);
 
-                ActivitiesSignupQuery(actModel);
+                ActivitiesSignupManageQuery(actModel);
 
-                showViewByModel("viewActivitiesSignup", actModel);
-                changePageByPanel("viewActivitiesSignup", true);
+                showViewByModel("viewActivitiesManage", actModel);
+                changePageByPanel("viewActivitiesManage", true);
+                lastManageID = actID;
             }
-
-        });
-
-        //點擊 "報名管理" 跳轉到編輯頁
-        $(".detail-manage-btn").on("click", function () {
-            activitiesSignupManageQueryData = '<LayoutHeader><ActivitiesID>'
-                + actID
-                + '</ActivitiesID><SignupModel>'
-                + actModel
-                + '</SignupModel><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo></LayoutHeader>';
-
-            //console.log(activitiesSignupManageQueryData);
-
-            ActivitiesSignupManageQuery(actModel);
-
-            showViewByModel("viewActivitiesManage", actModel);
-            changePageByPanel("viewActivitiesManage", true);
-
+            
         });
 
 
