@@ -26,8 +26,10 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
     // review
     function requestError(data) {
         errorHandler(data,requestAction);
-        if (failCallback) {
-            failCallback();
+        if (requestAction != "addAppLog") {
+            if (failCallback) {
+                failCallback();
+            }
         }
     }
 
