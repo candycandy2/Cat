@@ -571,7 +571,7 @@ function getAddAppLog() {
     var __construct = function() {
         loginData["versionName"] = AppVersion.version;
         //if (loginData["versionName"].indexOf("Development") !== -1 || loginData["versionName"].indexOf("Staging") !== -1) {
-            QPlayAPI("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "");
+            QPlayAPIEx("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "","low",1000);
         //}
     }();
 
@@ -882,7 +882,7 @@ function checkAppVersion() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPIEx("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr,"high",30000);
     }();
 }
 
