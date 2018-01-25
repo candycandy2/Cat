@@ -38,16 +38,19 @@ class Forum
      */
     public function newPost($project, $empNo, $postId, $title, $content, $queryParam)
     {       
+        $apiFunction = 'newPost';
+
         $board = CommonUtil::getBoardId($project);
         $xml = new \SimpleXMLElement('<xml/>');
         $layoutHeader = $xml->addChild('LayoutHeader');
         $layoutHeader->addChild('emp_no', $empNo);
+        $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
         $layoutHeader->addChild('board_id', $board->board_id);
         $layoutHeader->addChild('post_id', $postId);
         $layoutHeader->addChild('post_title', $title);
         $layoutHeader->addChild('content', $content);
         $data = array("strXml"=>$xml->LayoutHeader->asXML());
-        $apiFunction = 'newPost';
+        
         return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);
     }
 
@@ -58,12 +61,38 @@ class Forum
      */
     public function getPostId($empNo, $queryParam)
     {
+        
+        $apiFunction = 'getPostId';
+
         $xml = new \SimpleXMLElement('<xml/>');
         $layoutHeader = $xml->addChild('LayoutHeader');
         $layoutHeader->addChild('emp_no', $empNo);
+        $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
         $data = array("strXml"=>$xml->LayoutHeader->asXML());
-        $apiFunction = 'getPostId';
+        
         return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);
+    }
+
+    /**
+     * 更新貼文
+     * @param  string $empNo      員工編號
+     * @param  array  $queryParam 
+     * @return json
+     */
+    public function modifyPost($project, $empNo, $postId, $title, $content, $queryParam){
+        
+        $apiFunction = 'modifyPost';
+        
+        $board = CommonUtil::getBoardId($project);
+        $xml = new \SimpleXMLElement('<xml/>');
+        $layoutHeader = $xml->addChild('LayoutHeader');
+        $layoutHeader->addChild('emp_no', $empNo);
+        $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
+        $layoutHeader->addChild('post_id', $postId);
+        $layoutHeader->addChild('post_title', $title);
+        $layoutHeader->addChild('content', $content);
+        $data = array("strXml"=>$xml->LayoutHeader->asXML());
+        return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);  
     }
 
     /**

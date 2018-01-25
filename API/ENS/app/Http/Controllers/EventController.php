@@ -355,7 +355,8 @@ class EventController extends Controller
             $lang           = trim((string)$xml->lang[0]);
             $needPush       = trim((string)$xml->need_push[0]);
             $project        = trim((string)$xml->project[0]);
-            $eventDesc     = trim((string)$xml->event_desc[0]);
+            $eventTitle     = trim((string)$xml->event_title[0]);
+            $eventDesc      = trim((string)$xml->event_desc[0]);
             $relatedId      = trim((string) $xml->related_event_row_id[0]);
             $completeDate   = trim((string) $xml->estimated_complete_date[0]);
             $eventTypeParameterValue   = trim((string) $xml->event_type_parameter_value[0]);
@@ -363,7 +364,8 @@ class EventController extends Controller
             $queryParam =  array(
                 'lang'      => $lang,
                 'need_push' => $needPush,
-                'project'   => $project
+                'project'   => $project,
+                'uuid' => (isset($input['uuid']))?$input['uuid']:""
                 );
 
             if(!in_array($project, Config::get('app.ens_project'))){
@@ -379,7 +381,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if($lang == "" || $needPush == "" || $project =="" || $eventId == "" || $eventDesc == ""){
+            if($lang == "" || $needPush == "" || $project =="" || $eventId == "" || $eventTitle == "" || $eventDesc == ""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
@@ -420,7 +422,7 @@ class EventController extends Controller
                     'Content'=>""]);
                 }
             }
-            //更新關聯事件
+            //檢查關聯事件
             if($relatedId!=""){
                 $verifyResult = $Verify->checkRelatedEvent($project, $relatedId, $this->eventService, $eventId);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
@@ -430,7 +432,23 @@ class EventController extends Controller
                     return $result;
                 }
             }
-            
+
+            //Step 1. modifyPost
+            $eventData = $this->eventService->getEventDetail($project, $eventId, $empNo);
+
+            $modifyPostRs = json_decode($this->eventService->modifyPost($project,
+                                                         $empNo,
+                                                         $eventData['chatroom_id'],
+                                                         (string)$xml->event_title[0],
+                                                         (string)$xml->event_desc[0],
+                                                         $queryParam));
+            if($modifyPostRs->ResultCode != ResultCode::_1_reponseSuccessful){
+                 return $result = response()->json(['ResultCode'=>$modifyPostRs->ResultCode,
+                'Message'=>"更新Post失敗",
+                'Content'=>""]);
+            }
+
+            //Step2. updateEvent
            $updateField = array('event_type_parameter_value',
                                   'event_title','event_desc',
                                   'estimated_complete_date',

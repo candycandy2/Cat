@@ -59,8 +59,7 @@ class PostController extends Controller
      */
     public function newPost(Request $request)
     {
-        $xml=simplexml_load_string($request['strXml']);
-        $data = json_decode(json_encode($xml),TRUE);
+        $data = parent::getData($request);
         $rules = [
             'board_id' => 'required|numeric|board_is_open|board_auth:'.$data['emp_no'],
             'post_id' => 'required|string|size:32',
@@ -106,8 +105,7 @@ class PostController extends Controller
      */
     public function deletePost(Request $request)
     {
-        $xml=simplexml_load_string($request['strXml']);
-        $data = json_decode(json_encode($xml),TRUE);
+        $data = parent::getData($request);
 
         $validator = Validator::make($data , [
             'post_id' => 'required|string|size:32|post_exist|post_auth:'.$data['emp_no'].'|post_owner:'.$data['emp_no'],
@@ -134,8 +132,7 @@ class PostController extends Controller
      */
     public function getPostList(Request $request)
     {
-        $xml=simplexml_load_string($request['strXml']);
-        $data = json_decode(json_encode($xml),TRUE);
+        $data = parent::getData($request);
 
         $validator = Validator::make($data , [
             'board_id'=> 'required|numeric|board_auth:'.$data['emp_no']
@@ -155,9 +152,8 @@ class PostController extends Controller
      */
     public function getPostDetails(Request $request)
     {
-        $xml=simplexml_load_string($request['strXml']);
-        $data = json_decode(json_encode($xml),TRUE);
-        
+
+        $data = parent::getData($request);
         $boardId =  (isset($data['board_id']))?$data['board_id']:null;
         $replyFromSeq =  (isset($data['reply_from_seq']))?$data['reply_from_seq']:null;
 
@@ -227,4 +223,5 @@ class PostController extends Controller
         }
         
     }
+
 }
