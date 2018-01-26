@@ -11,6 +11,7 @@ use App\Services\BoardService;
 use App\Services\CommentService;
 use App\lib\ResultCode;
 use App\Http\Requests;
+use App\lib\Verify;
 
 class CommentController extends Controller
 {
@@ -43,7 +44,7 @@ class CommentController extends Controller
     {
         $data = parent::getData($request);
         $rules = [
-            'post_id' => 'required|string|size:32|post_exist|parent_board_is_open|post_is_open|post_auth:'.$data['emp_no'],
+            'post_id' => 'required|string|size:32',
             'content' => 'required|string',
             'file_list' => 'sometimes|required|array'
         ];
@@ -53,19 +54,24 @@ class CommentController extends Controller
              return response()->json(['ResultCode'=>$validator->errors()->first(),
                                       'Message'=>""], 200);
         }   
+        
+        $verifyResult = Verify::verifyBoarStatus($data['emp_no'], null, $data['post_id'], null);
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+            return response()->json(["ResultCode"=>$verifyResult["code"],
+                                     "Message"=> $verifyResult["message"],
+                                     "Content"=>""], 200);
+        }
 
         $empNo = $data['emp_no'];
-        $fileList = isset($data['file_list'])?$data['file_list']:null;
         $userData = $this->userService->getUserData($empNo);
         //new Post and add attach
         \DB::beginTransaction();
         try{
             $commentId = $this->commentService->newComment($data, $userData);
-            $data['comment_id'] = $commentId;
-            if(is_array($fileList)){             
-                $attavhResult = $this->attachService->addAttach($data, $userData);
+            $fileData = isset($data['file_list'])?$data['file_list']:null;
+            if(!is_null($fileData)){      
+                $attavhResult = $this->attachService->addAttach($postId, $commentId, $fileData, $userData->row_id);
             }
-
             \DB::commit();
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
@@ -83,7 +89,45 @@ class CommentController extends Controller
      */
     public function modifyComment(Request $request)
     {
-        //
+        $data = parent::getData($request);
+        $rules = [
+            'comment_id' => 'required|numeric|is_my_comment:'.$data['emp_no'],
+            'content' => 'required|string',
+            'file_list' => 'sometimes|required|array'
+        ];
+    
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>""], 200);
+        }
+        
+        $verifyResult = Verify::verifyBoarStatus($data['emp_no'], null, null, $data['comment_id']);
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+            return response()->json(["ResultCode"=>$verifyResult["code"],
+                                     "Message"=> $verifyResult["message"],
+                                     "Content"=>""], 200);
+        }
+
+        \DB::beginTransaction();
+        try{
+            $emoNo = $data['emp_no'];
+            $commentId = $data['comment_id'];
+            $content = $data['content'];
+            $userData = $this->userService->getUserData($emoNo);
+            $this->commentService->modifyComment($commentId, $content, $userData->row_id);
+            $comment = $this->commentService->getComment($commentId);
+            $postId = $comment->post_id;
+            $fileData = isset($data['file_list'])?$data['file_list']:[];
+            $this->attachService->modifyAttach($postId, $commentId, $fileData, $userData->row_id);
+            \DB::commit();
+            return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"Success",
+                        'Content'=>""]);
+        } catch (\Exception $e){
+            \DB::rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -92,8 +136,43 @@ class CommentController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function deleteComment($id)
+    public function deleteComment(Request $request)
     {
-        //
+        $data = parent::getData($request);
+        $rules = [
+            'comment_id' => 'required|numeric|is_my_comment:'.$data['emp_no']
+        ];
+    
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>""], 200);
+        }
+
+        $verifyResult = Verify::verifyBoarStatus($data['emp_no'], null, null, $data['comment_id']);
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+            return response()->json(["ResultCode"=>$verifyResult["code"],
+                                     "Message"=> $verifyResult["message"],
+                                     "Content"=>""], 200);
+        }
+
+        \DB::beginTransaction();
+        try{
+            $emoNo = $data['emp_no'];
+            $commentId = $data['comment_id'];
+            $comment = $this->commentService->getComment($data['comment_id']);
+            $postId = $comment->post_id;
+            $userData = $this->userService->getUserData($emoNo);
+            $userId = $userData->row_id;
+            $this->commentService->softDeleteComment($commentId, $userId);
+            $this->attachService->deleteAttach($postId, $commentId, $userId);
+            \DB::commit();
+            return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"Success",
+                        'Content'=>""]);
+        } catch (\Exception $e){
+            \DB::rollBack();
+            throw $e;
+        }
     }
 }

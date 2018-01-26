@@ -20,6 +20,13 @@ class Controller extends BaseController
     }
 
     private function arrange($v){
-        return (is_array($v) && isset($v[0]))?$v[0]:$v;
+        if(is_array($v)){
+            if(isset($v['file'])){
+                return (is_array($v['file']))?$v['file']:(array)$v['file'];
+            }else if(isset($v[0])){
+                return $v[0];
+            }
+        }
+        return $v;
     }
 }

@@ -18,13 +18,20 @@ class AttachRepository
         return $this->attach->insert($data);
     }
 
-    public function softDeleteAttach($postId, $keepData, $userId){
+    public function softDeleteAttach($postId, $commentId, $keepData, $userId){
         $now = date('Y-m-d H:i:s',time());
-        return $this->attach->where('post_id', $postId)->whereNotIn('file_url', $keepData)->update([
+        $query = $this->attach
+               ->where('post_id', $postId)
+               ->where('comment_id', $commentId);
+               if(count($keepData) > 0){
+                    $query = $query->whereNotIn('file_url', $keepData);
+               }
+               $query = $query->update([
                 'updated_user' => $userId,
                 'updated_at' => $now,
                 'deleted_at' => $now
             ]);
+        return $query;
     }
 
     
