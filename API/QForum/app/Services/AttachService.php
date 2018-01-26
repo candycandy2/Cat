@@ -12,19 +12,15 @@ class AttachService
         $this->attachRepository = $attachRepository;
     }
 
-    public function addAttach(Array $data, $userData){
+    public function addAttach($postId, $commentId, Array $fileData, $userId){
         $now = date('Y-m-d H:i:s',time());
-        $postId = $data['post_id'];
-        $commentId = isset($data['comment_id'])?$data['comment_id']:NULL; 
-        $fileData = $data['file_list']['file'];
-        $fileData = (is_array($fileData))?$fileData:(array)$fileData;
         $insertData = [];
         foreach ($fileData as $fileUrl) {
             $insertData[] = [
-                'post_id' => $data['post_id'],
+                'post_id' => $postId,
                 'comment_id' => $commentId,
                 'file_url' => $fileUrl,
-                'created_user' => $userData->row_id,
+                'created_user' => $userId,
                 'created_at'=> $now
                 ];
         }
@@ -35,43 +31,33 @@ class AttachService
         return $this->attachRepository->getAttach($postId, $commentId);
     }
 
-    public function modifyAttach(Array $data, $userData){
+    public function modifyAttach($postId, $commentId, Array $fileData, $userId){
 
         $now = date('Y-m-d H:i:s',time());
-        $fileList = isset($data['file_list'])?$data['file_list']:null;
-        $commentId = isset($data['comment_id'])?$data['comment_id']:0;
-        $postId = $data['post_id'];
-        $fileData = [];
-        if(!is_null($fileList)){
-            $fileData = $data['file_list']['file'];
-            $fileData = (is_array($fileData))?$fileData:(array)$fileData;
-        }
-        $attachements = $this->getAttach($postId);
+        $attachements = $this->getAttach($postId, $commentId);
         $keepData = array_intersect($fileData, $attachements);
         $deleteData = array_diff($attachements, $keepData);
         $insertData = array_diff($fileData, $keepData);
-        $addAttach =[];
-        // $deleteAttach =[];
-        // foreach ($deleteData as $fileUrl) {
-        //     $deleteAttach[] = [
-        //         'updated_user' => $userData->row_id,
-        //         'updated_at' => $now,
-        //         'deleted_at' => $now
-        //     ];
-        // }
-        
-        $deleteRs = $this->attachRepository->softDeleteAttach($postId, $keepData, $userData->row_id);
+        $addAttach =[];        
+        $deleteRs = $this->attachRepository->softDeleteAttach($postId, $commentId, $keepData, $userId);
 
         foreach ($insertData as $fileUrl) {
             $addAttach[] = [
-                'post_id' => $data['post_id'],
+                'post_id' => $postId,
                 'comment_id' => $commentId,
                 'file_url' => $fileUrl,
-                'created_user' => $userData->row_id,
+                'created_user' => $userId,
                 'created_at'=> $now
             ];
         }
 
         $insertRs = $this->attachRepository->addAttach($addAttach);
+    }
+
+    public function deleteAttach($postId, $commentId, $userId){
+        $now = date('Y-m-d H:i:s',time());
+        $postId = $postId;
+        $keepData = [];
+        $deleteRs = $this->attachRepository->softDeleteAttach($postId, $commentId, $keepData, $userId);
     }
 }

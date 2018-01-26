@@ -12,7 +12,7 @@ use App\Services\BoardService;
 use App\Services\CommentService;
 use Webpatser\Uuid\Uuid;
 use App\lib\ResultCode;
-
+use App\lib\Verify;
 
 
 class PostController extends Controller
@@ -61,7 +61,7 @@ class PostController extends Controller
     {
         $data = parent::getData($request);
         $rules = [
-            'board_id' => 'required|numeric|board_is_open|board_auth:'.$data['emp_no'],
+            'board_id' => 'required|numeric|',
             'post_id' => 'required|string|size:32',
             'post_title' => 'required|string|max:99',
             'content' => 'required|string',
@@ -74,18 +74,25 @@ class PostController extends Controller
                                       'Message'=>""], 200);
         }
 
+        //post尚未存在qp_post，不須驗證，第二個參數寫null
+        $verifyResult = Verify::verifyBoarStatus($data['emp_no'], $data['board_id'], null, null);
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+            return response()->json(["ResultCode"=>$verifyResult["code"],
+                                     "Message"=> $verifyResult["message"],
+                                     "Content"=>""], 200);
+        }
+
         $postId = $data['post_id'];
-        $fileList = isset($data['file_list'])?$data['file_list']:null;
+        $fileData = isset($data['file_list'])?$data['file_list']:null;
         $empNo = $data['emp_no'];
         $userData = $this->userService->getUserData($empNo);
         //new Post and add attach
         \DB::beginTransaction();
         try{
             $newPostResult = $this->postService->newPost($data, $userData);
-            if(is_array($fileList)){
-                $attachResult = $this->attachService->addAttach($data, $userData);
+            if(!is_null($fileData)){
+                $attachResult = $this->attachService->addAttach($postId, $commentId, $fileData, $userData->row_id);
             }
-
             \DB::commit();
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
@@ -108,20 +115,35 @@ class PostController extends Controller
         $data = parent::getData($request);
 
         $validator = Validator::make($data , [
-            'post_id' => 'required|string|size:32|post_exist|post_auth:'.$data['emp_no'].'|post_owner:'.$data['emp_no'],
+            'post_id' => 'required|string|size:32|
+                          post_exist|post_owner:'.$data['emp_no'],
         ]);
 
         if ($validator->fails()) {
              return response()->json(['ResultCode'=>$validator->errors()->first(),
                                       'Message'=>""], 200);
         }
-        $postId = $data['post_id'];
-        $userData = $this->userService->getUserData($data['emp_no']);
-        $this->postService->softDeletePost($postId, $userData);
 
-        return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                    'Message'=>"Success",
-                    'Content'=>""]);
+        $verifyResult = Verify::verifyBoarStatus($data['emp_no'], null, $data['post_id'], null);
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+            return response()->json(["ResultCode"=>$verifyResult["code"],
+                                     "Message"=> $verifyResult["message"],
+                                     "Content"=>""], 200);
+        }
+
+        \DB::beginTransaction();
+        try{
+            $postId = $data['post_id'];
+            $userData = $this->userService->getUserData($data['emp_no']);
+            $this->postService->softDeletePost($postId, $userData);
+            $this->attachService->deleteAttach($postId, 0, $userData->row_id);
+            return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"Success",
+                        'Content'=>""]);
+        } catch (\Exception $e){
+            \DB::rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -135,13 +157,27 @@ class PostController extends Controller
         $data = parent::getData($request);
 
         $validator = Validator::make($data , [
-            'board_id'=> 'required|numeric|board_auth:'.$data['emp_no']
+            'board_id'=> 'required|numeric'
         ]);
 
         if ($validator->fails()) {
              return response()->json(['ResultCode'=>$validator->errors()->first(),
                                       'Message'=>""], 200);
         }
+
+        $verifyResult = Verify::verifyBoarStatus($data['emp_no'], $data['board_id'], null, null);
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+            return response()->json(["ResultCode"=>$verifyResult["code"],
+                                     "Message"=> $verifyResult["message"],
+                                     "Content"=>""], 200);
+        }
+
+        $postList = $this->postService->getPostList($data['board_id']);
+        
+        return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                    'Message'=>"Success",
+                    'Content'=>$postList]);
+
     }
 
     /**
@@ -158,8 +194,8 @@ class PostController extends Controller
         $replyFromSeq =  (isset($data['reply_from_seq']))?$data['reply_from_seq']:null;
 
         $validator = Validator::make($data , [
-            'board_id' => 'required|numeric|board_is_open|board_auth:'.$data['emp_no'],
-            'post_id' => 'required|string|size:32|post_is_open|belone_board:'.$boardId,
+            'board_id' => 'required|numeric',
+            'post_id' => 'required|string|size:32',
             'reply_from_seq' => 'required|numeric|min:1',
             'reply_to_seq' => 'required|numeric|greater_than:'.$replyFromSeq
         ]);
@@ -167,6 +203,13 @@ class PostController extends Controller
         if ($validator->fails()) {
              return response()->json(['ResultCode'=>$validator->errors()->first(),
                                       'Message'=>""], 200);
+        }
+
+        $verifyResult = Verify::verifyBoarStatus($data['emp_no'], $data['board_id'], $data['post_id'], null);
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+            return response()->json(["ResultCode"=>$verifyResult["code"],
+                                     "Message"=> $verifyResult["message"],
+                                     "Content"=>""], 200);
         }
 
         $postId = $data['post_id'];
@@ -192,11 +235,10 @@ class PostController extends Controller
      */
     public function modifyPost(Request $request){
         
-        $xml=simplexml_load_string($request['strXml']);
-        $data = json_decode(json_encode($xml),TRUE);
+        $data = parent::getData($request);
 
         $validator = Validator::make($data , [
-            'post_id' => 'required|string|size:32|parent_board_is_open|post_exist|post_is_open|is_my_post:'.$data['emp_no'],
+            'post_id' => 'required|string|size:32|is_my_post:'.$data['emp_no'],
             'post_title' => 'required|string|max:99',
             'content' => 'required',
             'file_list' => 'sometimes|required|array',
@@ -206,12 +248,21 @@ class PostController extends Controller
              return response()->json(['ResultCode'=>$validator->errors()->first(),
                                       'Message'=>""], 200);
         }
+        
+        $verifyResult = Verify::verifyBoarStatus($data['emp_no'], null, $data['post_id'], null);
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
+            return response()->json(["ResultCode"=>$verifyResult["code"],
+                                     "Message"=> $verifyResult["message"],
+                                     "Content"=>""], 200);
+        }
+
         \DB::beginTransaction();
         try{
             
             $userData = $this->userService->getUserData($data['emp_no']);
+            $fileData = isset($data['file_list'])?$data['file_list']:[];
             $this->postService->modifyPost($data, $userData);
-            $this->attachService->modifyAttach($data, $userData);
+            $this->attachService->modifyAttach($data['post_id'], 0, $fileData, $userData->row_id);
             
             \DB::commit();
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
@@ -223,5 +274,4 @@ class PostController extends Controller
         }
         
     }
-
 }

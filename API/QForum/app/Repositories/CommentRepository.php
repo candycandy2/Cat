@@ -19,6 +19,10 @@ class CommentRepository
         return $this->comment->insertGetId($data);
     }
 
+    public function getComment($commentId){
+        return $this->comment::find($commentId);
+    }
+
     public function getComments($postId ,$from, $to){
         return $this->comment->where('post_id','=',$postId)
                      ->join('qp_user','qp_user.row_id', '=', 'qp_comment.created_user')
@@ -47,5 +51,9 @@ class CommentRepository
                                'qp_comment.status as reply_status',
                                'qp_comment.deleted_at as reply_delete_time')
                     ->count();
+    }
+
+    public function modifyComment($commentId, Array $data){
+        return $this->comment->where('row_id', $commentId)->update($data);
     }
 }
