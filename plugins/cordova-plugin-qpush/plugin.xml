@@ -44,7 +44,6 @@
         <config-file target="*PushConfig.plist" parent="APP_KEY">
             <string>$API_KEY</string>
         </config-file>
-
         <hook type="after_platform_add" src="hooks/iosEnablePush.js" />
         <hook type="after_plugin_install" src="hooks/iosEnablePush.js" />
         <hook type="before_plugin_uninstall" src="hooks/iosDisablePush.js" />
@@ -147,6 +146,7 @@
             <!-- Required. Enable it you can get statistics data with channel -->
             <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default" />
             <meta-data android:name="JPUSH_APPKEY" android:value="$API_KEY" />
+            <provider android:authorities="${applicationId}.DataProvider" android:name="cn.jpush.android.service.DataProvider" android:exported="true" />
         </config-file>
         <source-file src="src/android/MyReceiver.java" target-dir="src/org/apache/cordova/qpush" />
         <source-file src="src/android/QPushPlugin.java" target-dir="src/org/apache/cordova/qpush" />
