@@ -177,7 +177,7 @@ var app = {
                 $('.main-GetQPush').css('top', (screen.height - $('.main-GetQPush').height()) / 4);
 
             if (checkTimerCount >= 60) {
-                stopCheck();
+                //stopCheck();
                 $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
                 $("#viewMaintain").addClass("ui-page ui-page-theme-a ui-page-active");
             }
