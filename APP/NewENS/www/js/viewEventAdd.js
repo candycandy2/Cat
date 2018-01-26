@@ -248,19 +248,19 @@ $("#viewEventAdd").pagecontainer({
             //Type:
             //ITS> 緊急通報 / 一般通報
             //RM> A級事件 / B級事件 / C級事件 / 預警事件 / 資訊分享
-            if (data.event_type === langStr["str_068"] /*"緊急通報"*/ ) {
+            if (data.event_type === "緊急通報" ) {
                 $("#eventLevel" + projectName).val("1");
-            } else if (data.event_type === langStr["str_069"] /*"一般通報"*/ ) {
+            } else if (data.event_type === "一般通報" ) {
                 $("#eventLevel" + projectName).val("2");
-            } else if (data.event_type === langStr["str_070"] /*"A級事件"*/ ) {
+            } else if (data.event_type === "A級事件" ) {
                 $("#eventLevel" + projectName).val("3");
-            } else if (data.event_type === langStr["str_071"] /*"B級事件"*/ ) {
+            } else if (data.event_type === "B級事件" ) {
                 $("#eventLevel" + projectName).val("4");
-            } else if (data.event_type === langStr["str_072"] /*"C級事件"*/ ) {
+            } else if (data.event_type === "C級事件" ) {
                 $("#eventLevel" + projectName).val("5");
-            } else if (data.event_type === langStr["str_073"] /*"預警事件"*/ ) {
+            } else if (data.event_type === "預警事件" ) {
                 $("#eventLevel" + projectName).val("6");
-            } else if (data.event_type === langStr["str_074"] /*"資訊分享"*/ ) {
+            } else if (data.event_type === "資訊分享" ) {
                 $("#eventLevel" + projectName).val("7");
             }
 
@@ -760,7 +760,7 @@ $("#viewEventAdd").pagecontainer({
                 defaultEventLevel = "1";
 
                 if (prevPageID === "viewEventContent") {
-                    if (eventContentData.event_type === langStr["str_069"] /*"一般通報"*/ ) {
+                    if (eventContentData.event_type === "一般通報" ) {
                         defaultEventLevel = "2";
                     }
                 }
@@ -786,13 +786,13 @@ $("#viewEventAdd").pagecontainer({
                 defaultEventLevel = "3";
 
                 if (prevPageID === "viewEventContent") {
-                    if (eventContentData.event_type === langStr["str_071"] /*"B級事件"*/ ) {
+                    if (eventContentData.event_type === "B級事件" ) {
                         defaultEventLevel = "4";
-                    } else if (eventContentData.event_type === langStr["str_072"] /*"C級事件"*/ ) {
+                    } else if (eventContentData.event_type === "C級事件" ) {
                         defaultEventLevel = "5";
-                    } else if (eventContentData.event_type === langStr["str_073"] /*"預警事件"*/ ) {
+                    } else if (eventContentData.event_type === "預警事件" ) {
                         defaultEventLevel = "6";
-                    } else if (eventContentData.event_type === langStr["str_074"] /*"資訊分享"*/ ) {
+                    } else if (eventContentData.event_type === "資訊分享" ) {
                         defaultEventLevel = "7";
                     }
                 }
