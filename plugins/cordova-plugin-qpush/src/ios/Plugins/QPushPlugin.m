@@ -17,22 +17,48 @@ static NSString *const JP_APP_ISPRODUCTION = @"IsProduction";
 static NSString *const JP_APP_ISIDFA = @"IsIDFA";
 static NSString *const JPushConfigFileName = @"PushConfig";
 static NSDictionary *_launchOptions = nil;
+static NSString* registrationID = @"";
+static NSInteger registrationIDFailcode = 0;
 
 @implementation QPushPlugin
 +(void)registerForRemoteNotification{
+    
+    NSString *advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    
+    //2.1.9版本新增获取registration id block接口。
+    [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationIDReturn) {
+        if(resCode == 0){
+            NSLog(@"registrationID获取成功：%@",registrationIDReturn);
+            registrationID = registrationIDReturn;
+        }
+        else{
+            NSLog(@"registrationID获取失败，code：%d",resCode);
+            registrationIDFailcode = resCode;
+        }
+    }];
+    
+    // 3.0.0及以后版本注册可以这样写，也可以继续用旧的注册方式
+    JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+    entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound;
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
         //可以添加自定义categories
-        [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-                                                          UIUserNotificationTypeSound |
-                                                          UIUserNotificationTypeAlert)
-                                              categories:nil];
-    } else {
-        //categories 必须为nil
-        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                          UIRemoteNotificationTypeSound |
-                                                          UIRemoteNotificationTypeAlert)
-                                              categories:nil];
+        //    if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
+        //      NSSet<UNNotificationCategory *> *categories;
+        //      entity.categories = categories;
+        //    }
+        //    else {
+        //      NSSet<UIUserNotificationCategory *> *categories;
+        //      entity.categories = categories;
+        //    }
     }
+    [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+    NSLog(@"registerForRemoteNotificationConfig");
+    
+    //如不需要使用IDFA，advertisingIdentifier 可为nil
+    //    [JPUSHService setupWithOption:launchOptions appKey:appKey
+    //                          channel:channel
+    //                 apsForProduction:isProduction
+    //            advertisingIdentifier:advertisingId];
 }
 
 -(void)initial:(CDVInvokedUrlCommand*)command{
@@ -92,8 +118,8 @@ static NSDictionary *_launchOptions = nil;
 
 #pragma mark- 获得RegistrationID
 -(void)getRegistrationID:(CDVInvokedUrlCommand*)command{
-    NSString* registrationID = [JPUSHService registrationID];
-    NSLog(@"### getRegistrationID %@",registrationID);
+    //NSString* registrationID = [JPUSHService registrationID];
+    //NSLog(@"### getRegistrationID %@",registrationID);
     [self handleResultWithValue:registrationID command:command];
 }
 
@@ -232,3 +258,4 @@ static NSDictionary *_launchOptions = nil;
     }
 }
 @end
+

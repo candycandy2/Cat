@@ -60,7 +60,8 @@
 .menu,
 .back-list,
 .back-detail,
-.back-family {
+.back-family,
+.back-select {
     width: 4.934VW;
 }
 
@@ -138,19 +139,26 @@
     color: #0f0f0f; 
 }
 
+.custom-field-checkbox > div {
+    /* width: 92.58vw; */
+    height: 5vw;
+    padding: 2.14vw 0;
+    line-height: 5vw;
+}
+
+.family-signup-checkbox {
+    width: 4vw;
+    height: 4vw;
+    margin-right: 3.28vw;
+    vertical-align: middle;
+}
+
 #viewActivitiesSignup .tpl-dropdown-list {
     padding: 0 !important;
 }
 
-.input-textarea {
-    resize: none;
-    width: 85vw;
-    height: 9.17vw;
-    border: 1px solid #d6d6d6;
-    overflow-y: auto;
+input[type="text"] {
     -webkit-appearance: none;
-    padding-left: 3.17vw;
-    margin-bottom: 2.14vw;
 }
 
 .familySignupText {
@@ -160,7 +168,6 @@
     border: 1px solid #d6d6d6;
     outline: none;
     padding-left: 3.17vw;
-    /* margin-bottom: 2.14vw; */
 }
 
 .input-radio {

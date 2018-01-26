@@ -288,7 +288,7 @@ public class QPushPlugin extends CordovaPlugin {
     }
 
     void init(JSONArray data, CallbackContext callbackContext) {
-        JPushInterface.init(this.cordova.getActivity().getApplicationContext());
+        //JPushInterface.init(this.cordova.getActivity().getApplicationContext());
     }
 
     void setDebugMode(JSONArray data, CallbackContext callbackContext) {

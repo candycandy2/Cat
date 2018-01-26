@@ -56,12 +56,15 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<platform name="android">' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
+                            process.env.AndroidScreen +
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
+                            process.env.iOSScreen +
                         '</platform>' +
+                        process.env.PreferenceValue +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
 
@@ -72,7 +75,7 @@ gulp.task('config', function(){
 
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
-gulp.task('install', shell.task([
+gulp.task('install', ['copyRes'], shell.task([
 
   //These following steps only cancel in first time you run this task.
   //After first time finished this task, you should run these steps in this task all the time.
@@ -100,11 +103,12 @@ gulp.task('install', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
   'cordova plugin add cordova-plugin-whitelist',
   'cordova plugin add phonegap-plugin-mobile-accessibility',
+  'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
   'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file'
 ]));
 
-gulp.task('jenkinsinstall', shell.task([
+gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add ../../plugins/cordova-plugin-device',
@@ -118,6 +122,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-whitelist',
   'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
+  'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));

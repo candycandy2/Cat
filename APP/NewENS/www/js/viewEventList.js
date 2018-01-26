@@ -391,19 +391,19 @@ $("#viewEventList").pagecontainer({
                 var event_type = eventListData[i].event_type;
                 var className;
                 eventListMsg.find(".event-list-msg-top .link .icon").hide();
-                if (event_type === langStr["str_069"] /*"一般通報"*/) {
+                if (event_type === "一般通報") {
                     className = "normal";
-                } else if (event_type === langStr["str_068"] /*"緊急通報"*/) {
+                } else if (event_type === "緊急通報") {
                     className = "urgent";
-                } else if (event_type === langStr["str_070"] /*"A級事件"*/) {
+                } else if (event_type === "A級事件") {
                     className = "rm-a-class";
-                } else if (event_type === langStr["str_071"] /*"B級事件"*/) {
+                } else if (event_type === "B級事件") {
                     className = "rm-b-class";
-                } else if (event_type === langStr["str_072"] /*"C級事件"*/) {
+                } else if (event_type === "C級事件") {
                     className = "rm-c-class";
-                } else if (event_type === langStr["str_073"] /*"預警事件"*/) {
+                } else if (event_type === "預警事件") {
                     className = "rm-prevent-event";
-                } else if (event_type === langStr["str_074"] /*"資訊分享"*/) {
+                } else if (event_type === "資訊分享") {
                     className = "rm-info-share";
                 }
                 eventListMsg.find(".event-list-msg-top .link ." + className).show();
@@ -414,7 +414,7 @@ $("#viewEventList").pagecontainer({
 
                     var widthEventNumber = parseInt(eventListData[i].event_row_id.toString().length * 3 * document.documentElement.clientWidth / 100, 10);
                     var widthImg = parseInt(5 * document.documentElement.clientWidth / 100, 10);
-                    if (event_type === langStr["str_069"] /*"一般通報"*/) {
+                    if (event_type === "一般通報") {
                         widthImg = 0;
                     }
                     eventListMsg.find(".event-list-msg-top .link-event").css("margin-left", (widthEventNumber + widthImg) + "px");
@@ -424,7 +424,7 @@ $("#viewEventList").pagecontainer({
 
                 //Status: 未完成 / 完成
                 var event_status = eventListData[i].event_status;
-                if (event_status === langStr["str_091"] /*"完成"*/) {
+                if (event_status === "完成") {
                     eventListMsg.find(".event-list-msg-top .event-status .done").show();
                     eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
                 }
@@ -529,19 +529,19 @@ $("#viewEventList").pagecontainer({
             var className;
 
             eventMemberList.siblings(".header").find(".number .icon").hide();
-            if (event_type === langStr["str_069"] /*"一般通報"*/) {
+            if (event_type === "一般通報") {
                 className = "normal";
-            } else if (event_type === langStr["str_068"] /*"緊急通報"*/) {
+            } else if (event_type === "緊急通報") {
                 className = "urgent";
-            } else if (event_type === langStr["str_070"] /*"A級事件"*/) {
+            } else if (event_type === "A級事件") {
                 className = "rm-a-class";
-            } else if (event_type === langStr["str_071"] /*"B級事件"*/) {
+            } else if (event_type === "B級事件") {
                 className = "rm-b-class";
-            } else if (event_type === langStr["str_072"] /*"C級事件"*/) {
+            } else if (event_type === "C級事件") {
                 className = "rm-c-class";
-            } else if (event_type === langStr["str_073"] /*"預警事件"*/) {
+            } else if (event_type === "預警事件") {
                 className = "rm-prevent-event";
-            } else if (event_type === langStr["str_074"] /*"資訊分享"*/) {
+            } else if (event_type === "資訊分享") {
                 className = "rm-info-share";
             }
             eventMemberList.siblings(".header").find(".number ." + className).show();
@@ -606,19 +606,19 @@ $("#viewEventList").pagecontainer({
             var className;
 
             eventFunctionList.siblings(".header").find(".number .icon").hide();
-            if (event_type === langStr["str_069"] /*"一般通報"*/) {
+            if (event_type === "一般通報") {
                 className = "normal";
-            } else if (event_type === langStr["str_068"] /*"緊急通報"*/) {
+            } else if (event_type === "緊急通報") {
                 className = "urgent";
-            } else if (event_type === langStr["str_070"] /*"A級事件"*/) {
+            } else if (event_type === "A級事件") {
                 className = "rm-a-class";
-            } else if (event_type === langStr["str_071"] /*"B級事件"*/) {
+            } else if (event_type === "B級事件") {
                 className = "rm-b-class";
-            } else if (event_type === langStr["str_072"] /*"C級事件"*/) {
+            } else if (event_type === "C級事件") {
                 className = "rm-c-class";
-            } else if (event_type === langStr["str_073"] /*"預警事件"*/) {
+            } else if (event_type === "預警事件") {
                 className = "rm-prevent-event";
-            } else if (event_type === langStr["str_074"] /*"資訊分享"*/) {
+            } else if (event_type === "資訊分享") {
                 className = "rm-info-share";
             }
             eventFunctionList.siblings(".header").find(".number ." + className).show();
@@ -639,7 +639,7 @@ $("#viewEventList").pagecontainer({
             var eventFunctionListAfterHTML = eventFunctionList.siblings(".main").find("template#tplEventFunctionListAfter").html();
 
             for (var i=0; i<data.task_detail.length; i++) {
-                if (data.task_detail[i].task_status === langStr["str_091"] /*"完成"*/) {
+                if (data.task_detail[i].task_status === "完成") {
                     //After Done
                     var completeTime = new Date(data.task_detail[i].close_task_date * 1000);
                     var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +

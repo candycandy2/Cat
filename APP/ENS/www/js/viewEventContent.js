@@ -52,7 +52,7 @@ $("#viewEventContent").pagecontainer({
 
                         //Status: 未完成 / 完成
                         var event_status = data['Content'].event_status;
-                        if (event_status === langStr["str_091"]/*"完成"*/) {
+                        if (event_status === "完成") {
                             eventListMsg.find(".event-list-msg-top .event-status .done").show();
                             eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
                             $("#eventEdit").hide();
@@ -105,7 +105,7 @@ $("#viewEventContent").pagecontainer({
 
                             var widthEventNumber = parseInt(data['Content'].event_row_id.toString().length * 3 * document.documentElement.clientWidth / 100, 10);
                             var widthImg = parseInt(5 * document.documentElement.clientWidth / 100, 10);
-                            if (event_type === langStr["str_069"]/*"一般通報"*/) {
+                            if (event_type === "一般通報") {
                                 widthImg = 0;
                             }
                             eventListMsg.find(".event-list-msg-top .link-event").css("margin-left", (widthEventNumber + widthImg) + "px");
@@ -122,19 +122,19 @@ $("#viewEventContent").pagecontainer({
                         var event_type = data['Content'].event_type;
 
                         eventListMsg.find(".event-list-msg-top .link .icon").hide();
-                        if (event_type === langStr["str_069"]/*"一般通報"*/) {
+                        if (event_type === "一般通報") {
                             className = "normal";
-                        } else if (event_type === langStr["str_068"]/*"緊急通報"*/) {
+                        } else if (event_type === "緊急通報") {
                             className = "urgent";
-                        } else if (event_type === langStr["str_070"]/*"A級事件"*/) {
+                        } else if (event_type === "A級事件") {
                             className = "rm-a-class";
-                        } else if (event_type === langStr["str_071"]/*"B級事件"*/) {
+                        } else if (event_type === "B級事件") {
                             className = "rm-b-class";
-                        } else if (event_type === langStr["str_072"]/*"C級事件"*/) {
+                        } else if (event_type === "C級事件") {
                             className = "rm-c-class";
-                        } else if (event_type === langStr["str_073"]/*"預警事件"*/) {
+                        } else if (event_type === "預警事件") {
                             className = "rm-prevent-event";
-                        } else if (event_type === langStr["str_074"]/*"資訊分享"*/) {
+                        } else if (event_type === "資訊分享") {
                             className = "rm-info-share";
                         }
                         eventListMsg.find(".event-list-msg-top .link ." + className).show();
@@ -190,7 +190,7 @@ $("#viewEventContent").pagecontainer({
                         var eventTaskListAfterHTML = $("#contentEventContent").find("template#tplEventTaskListAfter").html();
 
                         for (var i=0; i<data['Content'].task_detail.length; i++) {
-                            if (data['Content'].task_detail[i].task_status === langStr["str_032"] /*"未完成"*/) {
+                            if (data['Content'].task_detail[i].task_status === "未完成") {
                                 //Before Done
                                 var eventTaskList = $(eventTaskListBeforeHTML);
                             } else {

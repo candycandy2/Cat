@@ -6,7 +6,7 @@ var activitiesListQueryData, activitiesDetailQueryData, activitiesSignupQueryDat
     activitiesRecordCancelQueryData, activitiesSignupFamilyQueryData, activitiesSignupEmployeeQueryData,
     activitiesRecordQueryData, activitiesFamilyQueryData, activitiesFamilyAddQueryData,
     activitiesFamilyUpdateQueryData, activitiesFamilyDeleteQueryData;
-var pageList = ["viewPanel", "viewActivitiesList", "viewActivitiesRecord", "viewMyFamilyDatum", "viewActivitiesDetail", "viewActivitiesSignup", "viewActivitiesManage"];
+var pageList = ["viewPanel", "viewActivitiesList", "viewActivitiesRecord", "viewMyFamilyDatum", "viewActivitiesDetail", "viewActivitiesSignup", "viewActivitiesManage", "viewSelectFamily"];
 var pageVisitedList = ["viewActivitiesList"];
 var initialAppName = "Activities";
 var appKeyOriginal = "appactivities";
