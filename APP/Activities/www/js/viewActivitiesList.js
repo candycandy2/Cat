@@ -1,6 +1,10 @@
 
 $("#viewActivitiesList").pagecontainer({
     create: function (event, ui) {
+        /********************************** variable *************************************/
+        var lastActNo;
+
+
         /********************************** function *************************************/
         window.ActivitiesListQuery = function () {
 
@@ -82,16 +86,20 @@ $("#viewActivitiesList").pagecontainer({
 
         $(document).on("click", ".activity-list", function () {
             var actNo = $(this).attr("data-id");
-            activitiesDetailQueryData = '<LayoutHeader><ActivitiesID>'
-                + actNo
-                + '</ActivitiesID><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo></LayoutHeader>';
+            if(lastActNo == actNo) {
+                changePageByPanel("viewActivitiesDetail", true);
+            } else {
+                activitiesDetailQueryData = '<LayoutHeader><ActivitiesID>'
+                    + actNo
+                    + '</ActivitiesID><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo></LayoutHeader>';
 
-            var actStatus = $(this).attr("data-status");
+                var actStatus = $(this).attr("data-status");
 
-            ActivitiesDetailQuery(actStatus);
-
+                ActivitiesDetailQuery(actStatus);
+                lastActNo = actNo;
+            }
         });
 
         //從編輯也返回詳情頁

@@ -363,6 +363,22 @@ class EventService
         return $newPostRes;
    }
 
+   /**
+    * 修改貼文
+    * @param  string $project    專案名稱
+    * @param  string $empNo      員工編號
+    * @param  string $postId     貼文id
+    * @param  string $title      事件標題
+    * @param  string $content    事件內容
+    * @param  array $queryParam  url query param
+    * @return json
+    */
+   public function modifyPost($project, $empNo, $postId, $title, $content, $queryParam){
+    
+        $modifyPostRes = $this->forum->modifyPost($project, $empNo, $postId, $title, $content, $queryParam);
+        return $modifyPostRes;
+   }
+
     /**
      * 建立事件聊天室
      * @param  Array  $eventUsers 事件參與人資訊清單

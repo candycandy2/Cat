@@ -63,13 +63,16 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
                             '<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
+                            process.env.AndroidScreen +
                         '</platform>' +
                         '<platform name="ios">' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
                             '<preference name="iosPersistentFileLocation" value="Compatibility" />' +
+                            process.env.iOSScreen +
                         '</platform>' +
+                        process.env.PreferenceValue +
                         '<plugin name="cordova-connectivity-monitor" spec="~1.2.2" />' +
                     '</widget>';
 
@@ -80,7 +83,7 @@ gulp.task('config', function(){
 
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
-gulp.task('install', shell.task([
+gulp.task('install', ['copyRes'], shell.task([
   'cordova plugin remove jpush-phonegap-plugin',
   'cordova plugin remove jmessage-phonegap-plugin',
   'cordova plugin remove cordova-plugin-device',
@@ -111,12 +114,13 @@ gulp.task('install', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-camera',
   'cordova plugin add cordova-plugin-ios-camera-permissions --save',
   'cordova plugin add phonegap-plugin-mobile-accessibility',
+  'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
   'cordova plugin add ../../plugins/jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey,
   'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file'
 ]));
 
-gulp.task('jenkinsinstall', shell.task([
+gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add ../../plugins/cordova-plugin-device',
@@ -133,6 +137,7 @@ gulp.task('jenkinsinstall', shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --save',
   'cordova plugin add ../../plugins/jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey,
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
+  'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
   'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
