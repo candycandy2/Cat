@@ -23,8 +23,10 @@
         </config-file>
         <header-file src="src/ios/Plugins/QPushPlugin.h" />
         <source-file src="src/ios/Plugins/QPushPlugin.m" />
+        <header-file src="src/ios/lib/JPushNotificationExtensionService.h" />
         <header-file src="src/ios/lib/JPUSHService.h" />
-        <source-file src="src/ios/lib/jpush-ios-2.2.0.a" framework="true" />
+        <source-file src="src/ios/lib/jcore-ios-1.1.7.a" framework="true" />
+        <source-file src="src/ios/lib/jpush-ios-3.0.8.a" framework="true" />
         <header-file src="src/ios/Plugins/AppDelegate+QPush.h" />
         <source-file src="src/ios/Plugins/AppDelegate+QPush.m" />
         <resource-file src="src/ios/PushConfig.plist" />
