@@ -150,8 +150,6 @@
         </config-file>
         <source-file src="src/android/MyReceiver.java" target-dir="src/org/apache/cordova/qpush" />
         <source-file src="src/android/QPushPlugin.java" target-dir="src/org/apache/cordova/qpush" />
-        <source-file src="src/android/test_notification_layout.xml" target-dir="res/layout" />
-        <source-file src="src/android/jpush_notification_icon.png" target-dir="res/drawable" />
         <source-file src="src/android/PushApplication.java" target-dir="src/org/apache/cordova/qpush" />
         <!-- Rich Push resources  -->
         <source-file src="src/android/res/values/jpush_style.xml" target-dir="res/values" />
