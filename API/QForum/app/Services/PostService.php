@@ -73,4 +73,8 @@ class PostService
     public function getPostDetails($boardId, $postId){
         return $this->postRepository->getPostDetails($boardId, $postId);
     }
+
+    public function getPostList($boardId){
+        return $this->postRepository->getPostListByBoard($boardId);
+    }
 }
