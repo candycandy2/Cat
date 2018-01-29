@@ -275,7 +275,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     white-space: normal;
     text-overflow: clip;
     overflow: auto;
-    text-align: left;
+    text-align: center;
 }
 
 .brand-GetQPush-content {

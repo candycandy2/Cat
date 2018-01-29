@@ -854,7 +854,23 @@ $("#viewEventList").pagecontainer({
         };
 
         function setQForumBoardID() {
-            QForum.METHOD.setBoardID();
+            window.retrySetQForumBoardID = setInterval(function() {
+                if (typeof QForum !== "undefined") {
+
+                    if (typeof window.stopRetrySetQForumBoardID !== "undefined") {
+                        window.stopRetrySetQForumBoardID();
+                    }
+
+                    QForum.METHOD.setBoardID();
+                }
+            }, 500);
+
+            window.stopRetrySetQForumBoardID = function() {
+                if (window.retrySetQForumBoardID != null) {
+                    clearInterval(window.retrySetQForumBoardID);
+                    window.retrySetQForumBoardID = null;
+                }
+            };
         }
 
         /********************************** page event *************************************/
