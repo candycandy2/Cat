@@ -44,6 +44,7 @@ window.initialSuccess = function() {
     $.mobile.changePage('#viewEventList');
 
     //Darren 20180123- chatRoom.resetBadge();
+    //QForum.initial();
 }
 
 //Darren 20180123-
