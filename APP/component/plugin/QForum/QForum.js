@@ -128,13 +128,29 @@ var QForum = {
         setBoardID: function() {
             if (appKeyOriginal == "appens") {
 
-                for (var i=0; i<QForum.boardList.length; i++) {
-                    if (QForum.boardList[i].board_type_name == "ENS") {
-                        if (QForum.boardList[i].board_name == projectName) {
-                            QForum.boardID = QForum.boardList[i].board_id;
+                window.retrySetBoardID = setInterval(function() {
+                    if (QForum.boardList.length > 0) {
+
+                        if (typeof window.stopRetrySetBoardID !== "undefined") {
+                            window.stopRetrySetBoardID();
+                        }
+
+                        for (var i=0; i<QForum.boardList.length; i++) {
+                            if (QForum.boardList[i].board_type_name == "ENS") {
+                                if (QForum.boardList[i].board_name == projectName) {
+                                    QForum.boardID = QForum.boardList[i].board_id;
+                                }
+                            }
                         }
                     }
-                }
+                }, 500);
+
+                window.stopRetrySetBoardID = function() {
+                    if (window.retrySetBoardID != null) {
+                        clearInterval(window.retrySetBoardID);
+                        window.retrySetBoardID = null;
+                    }
+                };
 
             } else {
                 QForum.boardID = boardID;
@@ -407,7 +423,6 @@ var QForum = {
 
                 //Clear list-data
                 if (QForum.replyLastID == 1) {
-                    $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data .QForum.reply-select").off("change");
                     $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
                 }
 
@@ -548,75 +563,36 @@ var QForum = {
 
         },
         replySelect: function() {
-console.log("@@@@@@@--replySelect");
+
             $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data .QForum.reply-select").off("change");
 
-            setTimeout(function() {
-                $(document).on({
-                    change: function(event) {
-                        var self = this;
+            $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data .QForum.reply-select").one("change", function() {
+                var self = this;
 
-                        setTimeout(function() {
-                            console.log("@@@@@@@--replySelect--change");
+                setTimeout(function() {
+                    QForum.commentID = $(self).parents(".QForum.list-data").prop("id");
+                    console.log("commentID:"+QForum.commentID);
 
-                            QForum.commentID = $(event.target).parents(".QForum.list-data").prop("id");
-                            console.log("commentID:"+QForum.commentID);
+                    var action = $(self).val();
+                    console.log($(self).val());
 
-                            var action = $(self).val();
-                            console.log($(self).val());
+                    $("#" + QForum.commentID + " .QForum.reply-select option:eq(0)").prop("selected", true);
 
-                            $("#" + QForum.commentID + " .QForum.reply-select option:eq(0)").prop("selected", true);
-
-                            if (action === "edit") {
-                                QForum.VIEW.replyFullScreenPopup("update");
-                            } else if (action === "delete") {
-                                QForum.VIEW.deleteConfirmPopup();
-                            }
-                        }, 500);
+                    if (action === "edit") {
+                        QForum.VIEW.replyFullScreenPopup("update");
+                    } else if (action === "delete") {
+                        QForum.VIEW.deleteConfirmPopup();
                     }
-                }, "#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data .QForum.reply-select");
-            }, 500);
+
+                    QForum.EVENT.replySelect();
+                }, 500);
+            });
 
         },
         replyButtonClick: function() {
 
             $(document).on({
                 vclick: function(event) {
-                    /*
-                    //Clear ckeditor content
-                    QForum.METHOD.clearEditorContent("");
-                    $(".QForum-Content.reply-fullscreen-popup").show();
-
-                    //Resize Editor
-                    var width = parseInt(document.documentElement.clientWidth * 92 / 100, 10);
-                    var height = parseInt(document.documentElement.clientHeight * 82 / 100, 10);
-
-                    //Auto set top of .cke_chrome / .cke_top
-                    var hederHeight = parseInt(document.documentElement.clientWidth * 13.1 / 100, 10);
-                    var marginTop = parseInt(document.documentElement.clientWidth * 2.73 / 100, 10);
-                    var toolBarHeight = 42;
-
-                    //For iOS, overlap
-                    if (device.platform === "iOS") {
-                        height -= 20;
-                        hederHeight += 20;
-                    }
-
-                    //For small size screen, toolbar become 2 lines
-                    if ($(".cke_top").height() > 33) {
-                        //height -= 33;
-                    }
-
-                    window.CKEDITOR.instances.editor.resize(width, height);
-
-                    $(".QForum-Content.reply-fullscreen-popup .main .cke_chrome").css({
-                        "top": (hederHeight + marginTop + toolBarHeight) + "px"
-                    });
-
-                    $(".QForum-Content.reply-fullscreen-popup .main .cke_top").css({
-                        "top": hederHeight + "px"
-                    });
-                    */
                     setTimeout(function() {
                         QForum.VIEW.replyFullScreenPopup("new");
                     }, 500);
