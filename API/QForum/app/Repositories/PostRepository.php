@@ -58,15 +58,18 @@ class PostRepository
     }
 
     public function getPostListByBoard($boardId){
-        return $this->post->where('board_id',$boardId)
-                          ->join('qp_board','qp_board.row_id', '=', 'qp_post.board_id')
+        return $this->post
+                    ->where('qp_post.board_id',$boardId)
+                    ->where('qp_post.status','Y')
+                    ->join('qp_board','qp_board.row_id', '=', 'qp_post.board_id')
+                    ->join('qp_user','qp_user.row_id','=','qp_post.created_user')
                     ->select('qp_board.row_id as board_id',
                             'qp_board.board_name as board_name',
                             'qp_board.status as board_status',
                             'qp_post.row_id as post_id',
                             'qp_post.post_title as post_title',
                             'qp_post.content as post_content',
-                            'qp_user.row_id as post_creator',
+                            'qp_user.login_id as post_creator',
                             'qp_post.created_at as post_create_time',
                             'qp_post.updated_at as post_update_time',
                             'qp_post.status as post_status',

@@ -80,6 +80,62 @@ class Verify
     }
 
 
+    public static function verifyBoarStatus($empNo, $boardId, $postId, $commentId){
+        $auth = false;
+        $data = null;
+        if(isset($commentId)){
+            $data = self::getCommentInfo($commentId);
+        }else if(isset($postId)){
+            $data = self::getPostInfo($postId);
+        }else if(isset($boardId)){
+            $data = self::getBoardInfo($boardId);
+        }
+        if(!is_null($data)){
+            if($data->public_type == 1){ //開放給全集團
+                $auth =  true;
+            }else if($data->public_type == 2){//開放給特定公司
+                $companys = \DB::table("qp_board_company")->where('board_id', '=', $data->board_id)
+                ->lists('qp_board_company.company');
+                if(count($companys) > 0){
+                    $user = \DB::table("qp_user")
+                            ->where('emp_no', '=', $empNo)
+                            ->whereIn('company',$companys)
+                            ->select('row_id','company')->get();
+                    if(count($user) > 0){
+                         $auth =  true;
+                    }
+                }
+            }else if($data->public_type == 3){//開放給特定用戶
+                $user = \DB::table("qp_board_user")
+                        ->where('board_id', '=', $data->board_id)
+                        ->where('emp_no',$empNo)
+                        ->select('row_id')->get();
+                if(count($user) > 0){
+                     $auth =  true;
+                }
+            }
+        }
+        if(!$auth){
+              return array("code"=>ResultCode::_047904_NoAuthorityToAccessThisBoard,
+                          "message"=>"沒有該討論版權限"); 
+        }
+        if($data->board_status == 'N'){
+             return array("code"=>ResultCode::_047911_BoardIsClosed,
+                          "message"=>"討論版已關閉"); 
+        }
+        if(isset($data->post_status) && $data->post_status == 'N'){
+             return array("code"=>ResultCode::_047910_PostIsClosed,
+                          "message"=>"貼文已關閉"); 
+        }
+        if(isset($data->vomment_status) && $data->comment_status == 'N'){
+             return array("code"=>ResultCode::_047912_CommentIsDeleted,
+                          "message"=>"回應已刪除"); 
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
     /**
      * 檢查用戶狀態
      * @param  String $empNo 員工編號
@@ -97,5 +153,40 @@ class Verify
             $result = false; //用户不存在
         }
         return $result;
+    }
+
+
+    private static function getBoardInfo($boardId){
+         return \DB::table("qp_board")
+                      ->where('row_id', '=', $boardId)
+                      ->select('row_id as board_id',
+                               'public_type',
+                               'status as board_status')
+                      ->first();
+    }
+    private static function getPostInfo($postId){
+        return \DB::table("qp_post")
+                      ->where('qp_post.row_id', '=', $postId)
+                      ->join('qp_board', 'qp_board.row_id', '=', 'qp_post.board_id')
+                      ->select('qp_board.row_id as board_id',
+                               'qp_board.public_type',
+                               'qp_board.status as board_status',
+                               'qp_post.status as post_status')
+                      ->first();
+    }
+
+    private static function getCommentInfo($commentId){
+        return \DB::table("qp_comment")
+                      ->where('qp_comment.row_id', '=', $commentId)
+                      ->join('qp_post', 'qp_post.row_id', '=', 'qp_comment.post_id')
+                      ->join('qp_board', 'qp_board.row_id', '=', 'qp_post.board_id')
+                      ->select('qp_board.row_id as board_id',
+                               'qp_board.public_type',
+                               'qp_board.status as board_status',
+                               'qp_post.status as post_status',
+                               'qp_post.row_id as post_id',
+                               'qp_comment.status as comment_status'
+                               )
+                      ->first();
     }
 }

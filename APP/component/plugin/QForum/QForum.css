@@ -68,6 +68,9 @@
 .QForum-Content .QForum.header .QForum.left {
     width: 20vw;
     height: 5.958vw;
+    position: relative;
+    top: -3.238vw;
+    padding: 3.238vw 0;
 }
 
 .QForum-Content .QForum.header .QForum.header-icon {
@@ -88,7 +91,9 @@
 .QForum-Content .QForum.header .QForum.right {
     width: 20vw;
     text-align: right;
-    padding-right: 3.71vw;
+    position: relative;
+    top: -3.238vw;
+    padding: 3.238vw 3.71vw 3.238vw 0;
 }
 
 .QForum-Content .QForum.main .cke_top {
@@ -156,4 +161,23 @@
     color: #666666;
     display: block;
     margin-bottom: 4.3vw;
+}
+
+.QForum-Content.reply-listview .QForum.list-data .QForum.reply-select {
+    /*
+    display: none;
+    padding: 5px;
+    font-size: 4.18vw;
+    left: -10vw;
+    background-position-y: 40%;
+    position: relative;
+    */
+    outline: none;
+    border: 0;
+    background: url('../../img/component/btn_more.png') left transparent;
+    background-size: 5.958vw 5.958vw;
+    background-repeat: no-repeat;
+    -webkit-appearance: none;
+    width: 5.958vw;
+    color: rgba(0, 0, 0, 0);
 }
