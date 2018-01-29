@@ -9,6 +9,10 @@
 namespace App\lib;
 use Illuminate\Support\Facades\Input;
 use App\Models\QP_User as QP_User;
+use App\Models\QP_Project as QP_Project;
+use App\Models\QP_Board as QP_Board;
+use App\Models\QP_Post as QP_Post;
+use App\Models\QP_Comment as QP_Comment;
 use App\lib\ResultCode as ResultCode;
 use Request;
 use DB;
@@ -28,10 +32,11 @@ class Verify
      *
      * 2. 確認json格式 
      *     a.最外層一定要包strXml這個參數, 名稱大小寫皆不可更改
-     *     {"strXml":"<LayoutHeader><emp_no>0407731</emp_no></LayoutHeader>"}
+     *     {"strXml":"<LayoutHeader><emp_no>0407731</emp_no><source></source></LayoutHeader>"}
      *
      * 3. 確認以下必要參數是否傳遞
      *     a. emp_no
+     *     b. source 呼叫的來源app
      *
      */
     public static function verify()
@@ -57,12 +62,11 @@ class Verify
              return array("code"=>ResultCode::_047916_InputXmlFormatIsInvalid,
             "message"=>"傳入的xml格式錯誤, Server端無法解析");
         }
-        if(count($xml->emp_no) != 1){
-              return array('code'=>ResultCode::_047905_FieldFormatError,
-                'message'=>"欄位格式錯誤");
-        }
+
         $empNo = trim((string)$xml->emp_no[0]);
-        if($empNo == "" ){
+        $source = trim((string)$xml->source[0]);
+
+        if($empNo == "" || $source ==""){
              return array("code"=>ResultCode::_047903_MandatoryFieldLost,
                 "message"=>"必填字段缺失");
         }
@@ -73,6 +77,10 @@ class Verify
         if(!self::checkUserStatusByUserEmpNo($empNo)) {
             return array("code"=>ResultCode::_047908_AccountNotExist,
                 "message"=>"帳號不存在");
+        }
+        if(!self::checkSourceProjectExist($source)) {
+            return array("code"=>ResultCode::_047913_SourceProjectIsNotExist,
+                "message"=>"來源專案不存在");
         }
         
         return array("code"=>ResultCode::_1_reponseSuccessful,
@@ -127,7 +135,7 @@ class Verify
              return array("code"=>ResultCode::_047910_PostIsClosed,
                           "message"=>"貼文已關閉"); 
         }
-        if(isset($data->vomment_status) && $data->comment_status == 'N'){
+        if(isset($data->comment_status) && $data->comment_status == 'N'){
              return array("code"=>ResultCode::_047912_CommentIsDeleted,
                           "message"=>"回應已刪除"); 
         }
@@ -155,18 +163,27 @@ class Verify
         return $result;
     }
 
+    public static function checkSourceProjectExist($appKey){
+        $result = true;
+        $userList = QP_Project::where('app_key', '=', $appKey)
+            -> select('row_id', 'app_key')->get();
+
+        if(count($userList) < 1) {
+            $result = false; //project不存在
+        }
+        return $result;
+    }
 
     private static function getBoardInfo($boardId){
-         return \DB::table("qp_board")
-                      ->where('row_id', '=', $boardId)
+         return QP_Board::where('row_id', '=', $boardId)
                       ->select('row_id as board_id',
                                'public_type',
                                'status as board_status')
                       ->first();
     }
+
     private static function getPostInfo($postId){
-        return \DB::table("qp_post")
-                      ->where('qp_post.row_id', '=', $postId)
+        return QP_Post::where('qp_post.row_id', '=', $postId)
                       ->join('qp_board', 'qp_board.row_id', '=', 'qp_post.board_id')
                       ->select('qp_board.row_id as board_id',
                                'qp_board.public_type',
@@ -176,8 +193,7 @@ class Verify
     }
 
     private static function getCommentInfo($commentId){
-        return \DB::table("qp_comment")
-                      ->where('qp_comment.row_id', '=', $commentId)
+        return QP_Comment::where('qp_comment.row_id', '=', $commentId)
                       ->join('qp_post', 'qp_post.row_id', '=', 'qp_comment.post_id')
                       ->join('qp_board', 'qp_board.row_id', '=', 'qp_post.board_id')
                       ->select('qp_board.row_id as board_id',
