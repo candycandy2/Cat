@@ -107,7 +107,7 @@ gulp.task('install', ['copyRes'], shell.task([
   'cordova plugin add phonegap-plugin-mobile-accessibility',
   'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
   'cordova plugin add jmessage-phonegap-plugin@3.0.23 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
-  'cordova plugin add jpush-phonegap-plugin@3.2.13 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
+  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushQChatAPPKey,
   'cordova plugin add cordova-plugin-file@5.0.0'
 ]));
 
@@ -128,7 +128,7 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
   'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
   'cordova plugin add jmessage-phonegap-plugin@3.0.23 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
-  'cordova plugin add jpush-phonegap-plugin@3.2.13 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
+  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushQChatAPPKey,
   'cordova plugin add cordova-plugin-file@5.0.0'
 ]));
 
