@@ -6,6 +6,7 @@ use App\lib\ResultCode;
 use App\lib\Verify;
 use Illuminate\Support\Facades\Input;
 use App\lib\CommonUtil;
+use App\lib\Forum;
 use App\lib\Message;
 
 class MessageController extends Controller
@@ -49,19 +50,18 @@ class MessageController extends Controller
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                 'Message'=>"必填欄位缺失",
                 'Content'=>""]);
-            }
-
-            if(!is_numeric($chatroomIdStr)){
-                return $result = response()->json(['ResultCode'=>ResultCode::_014920_chatroomIdInvalid,
-                'Message'=>"傳入的聊天室編號無法識別",
-                'Content'=>""]);
-            }  
+            } 
         }
-        $qMessage = new Message();
-        $getMessageCountRes =  json_decode($qMessage->getMessageCount($chatRoomList));
         
-        return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
-                'Content'=>$getMessageCountRes->Content]);
+        $qforum = new Forum();
+        $getMessageCountRes =  $qforum->getCommentCount($chatRoomList);
+        $result = [];
+        foreach ($getMessageCountRes as $record) {
+            $result[] = array('target_id'=>$record->post_id,
+                            'count'=>$record->count);
+        }
+        return response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
+                'Content'=>$result]);
 
     }
 }
