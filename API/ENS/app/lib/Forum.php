@@ -83,7 +83,6 @@ class Forum
         
         $apiFunction = 'modifyPost';
         
-        $board = CommonUtil::getBoardId($project);
         $xml = new \SimpleXMLElement('<xml/>');
         $layoutHeader = $xml->addChild('LayoutHeader');
         $layoutHeader->addChild('emp_no', $empNo);
@@ -93,6 +92,18 @@ class Forum
         $layoutHeader->addChild('content', $content);
         $data = array("strXml"=>$xml->LayoutHeader->asXML());
         return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);  
+    }
+
+    public function deletePost($empNo, $postId, $queryParam ){
+        $apiFunction = 'deletePost';
+        
+        $xml = new \SimpleXMLElement('<xml/>');
+        $layoutHeader = $xml->addChild('LayoutHeader');
+        $layoutHeader->addChild('emp_no', $empNo);
+        $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
+        $layoutHeader->addChild('post_id', $postId);
+        $data = array("strXml"=>$xml->LayoutHeader->asXML());
+        return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);
     }
 
     /**
