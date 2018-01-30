@@ -16,6 +16,13 @@ var QForum = {
     replyLastID: 0,
     replyDataRange: 10,
     commentID: "",
+    commentAction: "",
+    commentActionText: {
+        "new": "回覆已送出",
+        "update": "回覆已送出",
+        "delete": "回覆已刪除"
+    },
+    commentDeleteText: "留言已刪除",
     initial: function() {
 
         //Load CSS
@@ -250,7 +257,7 @@ var QForum = {
             }(replyCallback));
         },
         newComment: function(content) {
-            (function() {
+            (function(content) {
 
                 loadingMask("show");
 
@@ -263,7 +270,7 @@ var QForum = {
 
                 var queryDataParameter = QForum.createXMLDataString(queryDataObj);
 
-                //Check if comment has img or not.
+                //Check if comment has img which was upload by QStorage.
                 var fileListParameter = "";
                 var uploadDatas = QStorage.getUploadDatas();
 
@@ -281,19 +288,106 @@ var QForum = {
 
                 var queryData = "<LayoutHeader>" + queryDataParameter + fileListParameter + "</LayoutHeader>";
 
-                console.log(queryData);
-
                 var successCallback = function(data) {
-                    //Clear File Path of Upload Data in QStorage
-                    QStorage.clearUploadDatas();
+                    var resultCode = data['ResultCode'];
 
-                    //Refresh Reply ListView
-                    QForum.API.getPostDetails(true);
+                    if (resultCode === "1") {
+                        //Clear File Path of Upload Data in QStorage
+                        QStorage.clearUploadDatas();
+
+                        //Refresh Reply ListView
+                        QForum.API.getPostDetails(true);
+                    }
                 };
 
                 var failCallback = function(data) {};
 
                 QForum.CustomAPI("POST", true, "newComment", successCallback, failCallback, queryData, "");
+
+            }(content));
+        },
+        modifyComment: function(content) {
+            (function(content) {
+
+                loadingMask("show");
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    source: window.appKey,
+                    comment_id: QForum.commentID,
+                    content: content
+                };
+
+                var queryDataParameter = QForum.createXMLDataString(queryDataObj);
+
+                //Set editor content in hide-content, then check it.
+                $(".QForum-Content.reply-fullscreen-popup .QForum.main .QForum.hide-content").html(content);
+
+                //Check if comment has img exist.
+                var fileListParameter = "";
+                var imgDomArray = $(".QForum-Content.reply-fullscreen-popup .QForum.main .QForum.hide-content").find("img");
+
+                if (imgDomArray.length > 0) {
+
+                    fileListParameter = "<file_list>";
+
+                    for (var i=0; i<imgDomArray.length; i++) {
+                        fileListParameter += "<file>" + imgDomArray[i].src + "</file>";
+                    }
+
+                    fileListParameter += "</file_list>";
+
+                }
+
+                var queryData = "<LayoutHeader>" + queryDataParameter + fileListParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+                        //Clear File Path of Upload Data in QStorage
+                        QStorage.clearUploadDatas();
+
+                        //Refresh Reply ListView
+                        QForum.API.getPostDetails(true);
+                    }
+                };
+
+                var failCallback = function(data) {};
+
+                QForum.CustomAPI("POST", true, "modifyComment", successCallback, failCallback, queryData, "");
+
+            }(content));
+        },
+        deleteComment: function() {
+            (function() {
+
+                loadingMask("show");
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    source: window.appKey,
+                    comment_id: QForum.commentID
+                };
+
+                var queryDataParameter = QForum.createXMLDataString(queryDataObj);
+                var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+                        //Clear File Path of Upload Data in QStorage
+                        QStorage.clearUploadDatas();
+
+                        //Refresh Reply ListView
+                        QForum.API.getPostDetails(true);
+                    }
+                };
+
+                var failCallback = function(data) {};
+
+                QForum.CustomAPI("POST", true, "deleteComment", successCallback, failCallback, queryData, "");
 
             }());
         }
@@ -360,23 +454,28 @@ var QForum = {
                         //Clear ckeditor content
                         QForum.METHOD.clearEditorContent("");
 
+                        QForum.commentAction = "new";
                         showPopup = true;
 
                     } else if (action === "update") {
 
                         //Set ckeditor content
-                        var htmlContent = $("#" + QForum.commentID + " .QForum.content").html();
+                        var htmlContent = $("#comment-" + QForum.commentID + " .QForum.content").html();
                         QForum.METHOD.clearEditorContent(htmlContent);
 
+                        //Set Submit Button
+                        $("#replySubmit.QForum").removeClass("none-work");
+
+                        QForum.commentAction = "update";
                         showPopup = true;
-                        //$(".QForum-Content.reply-fullscreen-popup").show();
+
                     }
                 }
 
             }
 
             if (showPopup) {
-                
+
                 $(".QForum-Content.reply-fullscreen-popup").show();
 
                 //Resize Editor
@@ -422,7 +521,7 @@ var QForum = {
                 }
 
                 //Clear list-data
-                if (QForum.replyLastID == 1) {
+                if (QForum.replyLastID == 0) {
                     $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
                 }
 
@@ -430,6 +529,7 @@ var QForum = {
 
                 for (var i=0; i<replyDataList.length; i++) {
                     (function(i, replyDataList) {
+
                         var tempDate = dateFormatYMD(replyDataList[i].reply_create_time);
                         var createTime = new Date(tempDate);
                         var createTimeConvert = createTime.TimeZoneConvert();
@@ -441,11 +541,43 @@ var QForum = {
                         replyListData.find(".time .time-1").html(createTimeConvert);
                         replyListData.find(".content").html(replyDataList[i].reply_content);
 
+                        //Check if this comment has been delete or edit
+                        if (replyDataList[i].reply_delete_time != null) {
+
+                            replyListData.find(".content").html("<span class='delete-text'>" + QForum.commentDeleteText + "</span>");
+
+                            tempDate = dateFormatYMD(replyDataList[i].reply_delete_time);
+                            createTime = new Date(tempDate);
+                            createTimeConvert = createTime.TimeZoneConvert();
+                            createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
+
+                            replyListData.find(".time .time-2 .text-time").html(createTimeConvert);
+                            replyListData.find(".time .time-2 .text-delete").removeClass("hide");
+                            replyListData.find(".time .time-2").removeClass("hide");
+
+                        } else if (replyDataList[i].reply_update_time != null) {
+
+                            tempDate = dateFormatYMD(replyDataList[i].reply_update_time);
+                            createTime = new Date(tempDate);
+                            createTimeConvert = createTime.TimeZoneConvert();
+                            createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
+
+                            replyListData.find(".time .time-2 .text-time").html(createTimeConvert);
+                            replyListData.find(".time .time-2 .text-edit").removeClass("hide");
+                            replyListData.find(".time .time-2").removeClass("hide");
+
+                        }
+
+                        //Only current user can edit/delete comment
+                        if (replyDataList[i].reply_user === loginData["loginid"]) {
+                            replyListData.find(".title .button").removeClass("hide");
+                        }
+
                         $("#" + QForum.pageID + " .QForum-Content.reply-listview").append(replyListData);
 
                         //Set QForum.replyLastID
                         if (i == (replyDataList.length - 1)) {
-                            QForum.METHOD.setReplyLastID(replyDataList[i].sequence_id);
+                            //QForum.METHOD.setReplyLastID(replyDataList[i].sequence_id);
 
                             //Hide Reply-Fullscreen Popup
                             $(".QForum-Content.reply-fullscreen-popup").hide();
@@ -453,9 +585,10 @@ var QForum = {
 
                             //Reply Succes show Prompt
                             if (replyCallback) {
-                                QForum.VIEW.promptPopup("回覆已送出");
+                                QForum.VIEW.promptPopup(QForum.commentActionText[QForum.commentAction]);
                             }
                         }
+
                     }(i, replyDataList));
                 }
 
@@ -542,7 +675,13 @@ var QForum = {
                 vclick: function() {
                     setTimeout(function() {
                         if (!$(this).hasClass("none-work")) {
-                            QForum.API.newComment(QForum.METHOD.getEditorContent());
+
+                            if (QForum.commentAction === "new") {
+                                QForum.API.newComment(QForum.METHOD.getEditorContent());
+                            } else if (QForum.commentAction === "update") {
+                                QForum.API.modifyComment(QForum.METHOD.getEditorContent());
+                            }
+
                         }
                     }, 500);
                 }
@@ -570,18 +709,21 @@ var QForum = {
                 var self = this;
 
                 setTimeout(function() {
-                    QForum.commentID = $(self).parents(".QForum.list-data").prop("id");
+                    QForum.commentID = $(self).parents(".QForum.list-data").prop("id").substr(8);
                     console.log("commentID:"+QForum.commentID);
 
                     var action = $(self).val();
                     console.log($(self).val());
 
-                    $("#" + QForum.commentID + " .QForum.reply-select option:eq(0)").prop("selected", true);
+                    $("#comment-" + QForum.commentID + " .QForum.reply-select option:eq(0)").prop("selected", true);
 
                     if (action === "edit") {
                         QForum.VIEW.replyFullScreenPopup("update");
                     } else if (action === "delete") {
+
+                        QForum.commentAction = "delete";
                         QForum.VIEW.deleteConfirmPopup();
+
                     }
 
                     QForum.EVENT.replySelect();
@@ -609,6 +751,9 @@ var QForum = {
 
                         if (dom.hasClass("cancel") || dom.parent().hasClass("cancel")) {
                             $("#QForumDeleteConfirmPopup").popup("close");
+                        } else if (dom.hasClass("confirm") || dom.parent().hasClass("confirm")) {
+                            $("#QForumDeleteConfirmPopup").popup("close");
+                            QForum.API.deleteComment();
                         }
                     }, 500);
                 }
