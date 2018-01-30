@@ -379,6 +379,18 @@ class EventService
         return $modifyPostRes;
    }
 
+   /**
+    * 刪除貼文
+    * @param  string $empNo  員工編號
+    * @param  string $postId 貼文id
+    * @param  array $queryParam  url query param
+    * @return json
+    */
+   public function deletePost($empNo, $postId, $queryParam ){
+        $deleteRes = $this->forum->deletePost($empNo, $postId, $queryParam );
+        return $deleteRes;
+   }
+
     /**
      * 建立事件聊天室
      * @param  Array  $eventUsers 事件參與人資訊清單
