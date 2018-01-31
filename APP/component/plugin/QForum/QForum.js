@@ -9,6 +9,7 @@ var QForum = {
     appKey: "appqforum",
     appSecretKey: "c40a5073000796596c2ba5e70579b1e6",
     viewList: ["footer", "popup", "replyListView"],
+    dependency: [QStorage],
     boardList: [],
     boardID: 0,
     postID: "",
@@ -23,54 +24,90 @@ var QForum = {
         "delete": "回覆已刪除"
     },
     commentDeleteText: "留言已刪除",
+    deviceOriginalSize: {
+        "width": 0,
+        "height": 0
+    },
+    editorOriginalSize: {
+        "width": 0,
+        "height": 0
+    },
     initial: function() {
 
-        //Load CSS
-        var link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = "plugin/QForum/QForum.css";
-        document.head.appendChild(link);
+        //Handle dependency
+        window.retryCheckDependency = setInterval(function() {
+            for (var i=0; i<QForum.dependency.length; i++) {
+                if (typeof QForum.dependency[i] !== "undefined") {
 
-        //According to the Parent versionName, decide APPKey > [dev] / [test] / []
-        if (loginData["versionName"].indexOf("Staging") !== -1) {
-            QForum.appKey = "appqforumtest";
-        } else if (loginData["versionName"].indexOf("Development") !== -1) {
-            QForum.appKey = "appqforumdev";
-        } else {
-            QForum.appKey = "appqforum";
-        }
-
-        //Check if QForum is be used as plugin.
-        if (window.appKey == QForum.appKey) {
-
-        } else {
-
-        }
-
-        //Load View
-        $.map(QForum.viewList, function(value, key) {
-            (function(viewID, viewIndex) {
-                $.get("plugin/QForum/view/" + viewID + ".html", function(data) {
-
-                    $.mobile.pageContainer.append(data);
-
-                    if ((viewIndex + 1) == QForum.viewList.length) {
-                        //Create Prompt Popup
-                        QForum.VIEW.promptPopup();
-
-                        //Create Delete Confirm Popup
-                        QForum.VIEW.deleteConfirmPopup();
+                    if ((i + 1) == QForum.dependency.length) {
+                        if (typeof window.stopCheckDependency !== "undefined") {
+                            window.stopCheckDependency();
+                            checkDependencyFinish();
+                        }
                     }
 
-                }, "html");
-            }(value, key));
-        });
+                }
+            }
+        }, 100);
 
-        //Get Board List
-        QForum.API.getBoardList();
+        window.stopCheckDependency = function() {
+            if (window.retryCheckDependency != null) {
+                clearInterval(window.retryCheckDependency);
+                window.retryCheckDependency = null;
+            }
+        };
 
-        //QStorage Initial
-        QStorage.initial();
+        var checkDependencyFinish = function() {
+            //Load CSS
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "plugin/QForum/QForum.css";
+            document.head.appendChild(link);
+
+            //According to the Parent versionName, decide APPKey > [dev] / [test] / []
+            if (loginData["versionName"].indexOf("Staging") !== -1) {
+                QForum.appKey = "appqforumtest";
+            } else if (loginData["versionName"].indexOf("Development") !== -1) {
+                QForum.appKey = "appqforumdev";
+            } else {
+                QForum.appKey = "appqforum";
+            }
+
+            //Check if QForum is be used as plugin.
+            if (window.appKey == QForum.appKey) {
+
+            } else {
+
+            }
+
+            //Load View
+            $.map(QForum.viewList, function(value, key) {
+                (function(viewID, viewIndex) {
+                    $.get("plugin/QForum/view/" + viewID + ".html", function(data) {
+
+                        $.mobile.pageContainer.append(data);
+
+                        if ((viewIndex + 1) == QForum.viewList.length) {
+                            //Create Prompt Popup
+                            QForum.VIEW.promptPopup();
+
+                            //Create Delete Confirm Popup
+                            QForum.VIEW.deleteConfirmPopup();
+                        }
+
+                    }, "html");
+                }(value, key));
+            });
+
+            //Get Board List
+            QForum.API.getBoardList();
+
+            //QStorage Initial
+            QStorage.initial();
+
+            //Window Resize Event - For detect keyboard show up
+            QForum.EVENT.detectKeyboardShowUp();
+        }
 
     },
     getSignature: function(action, signatureTime) {
@@ -498,6 +535,9 @@ var QForum = {
                     //height -= 33;
                 }
 
+                QForum.editorOriginalSize.width = width;
+                QForum.editorOriginalSize.height = height;
+
                 window.CKEDITOR.instances.editor.resize(width, height);
 
                 $(".QForum-Content.reply-fullscreen-popup .main .cke_chrome").css({
@@ -652,6 +692,30 @@ var QForum = {
         }
     },
     EVENT: {
+        detectKeyboardShowUp: function() {
+            //Prevent
+
+            QForum.deviceOriginalSize.width = $(window).width();
+            QForum.deviceOriginalSize.height = $(window).height();
+
+            $(window).resize(function() {
+                console.log("=================window resize");
+                var newWindowWidth = $(window).width();
+                var newWindowHeight = $(window).height();
+
+                if (newWindowHeight == QForum.deviceOriginalSize.height) {
+                    console.log("--------------------keyboard hide");
+
+                    $("#" + QForum.pageID).show();
+                } else if (newWindowHeight < QForum.deviceOriginalSize.height) {
+                    console.log("--------------------keyboard show up");
+
+                    $("#" + QForum.pageID).hide();
+                }
+
+            });
+
+        },
         editorKeyIn: function() {
 
             window.CKEDITOR.instances.editor.on('key', function(e) {
