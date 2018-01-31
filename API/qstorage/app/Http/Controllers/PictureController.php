@@ -53,7 +53,7 @@ class PictureController extends Controller
         $ext = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
         $folderName = uniqid();
         $fullSizeName = $folderName. '_full.'. $ext;
-        $node = $appKey. DIRECTORY_SEPARATOR. 'picture'. $path. $folderName;
+        $node = $appKey. DIRECTORY_SEPARATOR. 'picture'. DIRECTORY_SEPARATOR. $path. DIRECTORY_SEPARATOR.$folderName;
         $destinationPath = public_path($node);
         $urlNode = str_replace(DIRECTORY_SEPARATOR, '/', $node).'/';
 
