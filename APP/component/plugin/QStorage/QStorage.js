@@ -92,7 +92,8 @@ var QStorage = {
             "App-Key": QStorage.appKey,
             "Signature-Time": signatureTime,
             "Signature": signatureInBase64,
-            "Account": loginData["emp_no"]
+            "Account": loginData["emp_no"],
+            "Resource-ID": QForum.boardID + "/" + QForum.postID
         };
 
         options.headers = headers;
