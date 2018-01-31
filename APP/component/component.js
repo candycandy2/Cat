@@ -135,7 +135,8 @@ var app = {
         //[device] data ready to get on this step.
         setTimeout(function() {
             readConfig();
-        }, 2000);
+            addPlugin();
+        }, 0);
 
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
@@ -330,8 +331,6 @@ $(document).one("pagebeforecreate", function() {
     script.type = "text/javascript";
     script.src = "plugin/config.js";
     document.head.appendChild(script);
-
-    addPlugin();
 
     //According to the data [pageList] which set in index.js ,
     //add Page JS into index.html
