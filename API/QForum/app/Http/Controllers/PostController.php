@@ -115,8 +115,7 @@ class PostController extends Controller
         $data = parent::getData($request);
 
         $validator = Validator::make($data , [
-            'post_id' => 'required|string|size:32|
-                          post_exist|post_owner:'.$data['emp_no'],
+            'post_id' => 'required|string|size:32|post_owner:'.$data['emp_no'],
         ]);
 
         if ($validator->fails()) {
@@ -137,6 +136,7 @@ class PostController extends Controller
             $userData = $this->userService->getUserData($data['emp_no']);
             $this->postService->softDeletePost($postId, $userData);
             $this->attachService->deleteAttach($postId, 0, $userData->row_id);
+            \DB::commit();
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
                         'Content'=>""]);

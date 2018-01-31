@@ -6,24 +6,18 @@ namespace App\lib;
 
 use App\lib\CommonUtil;
 use Config;
-use App\Model\QP_Board;
+use App\Model\QP_Comment as QP_Comment;
 
 class Forum
 {   
-     const _998002_userAlreadyExist = "998002";  //用戶已註冊
-    /**
-     * 貼文資訊
-     * @var array
-     */
-    protected $postDetails;
-
-
+    
     /**
      * 取得貼文資訊
      * @return array
      */
-    public static function getPostDetails(){
-        return $this->postDetails;
+    public function getCommentCount(Array $postIds){
+        return QP_Comment::whereIn('post_id',$postIds)
+                    ->selectRaw('post_id, count(*) as count')->groupBy('post_id')->get();
     }
 
     /**
@@ -83,7 +77,6 @@ class Forum
         
         $apiFunction = 'modifyPost';
         
-        $board = CommonUtil::getBoardId($project);
         $xml = new \SimpleXMLElement('<xml/>');
         $layoutHeader = $xml->addChild('LayoutHeader');
         $layoutHeader->addChild('emp_no', $empNo);
@@ -93,6 +86,25 @@ class Forum
         $layoutHeader->addChild('content', $content);
         $data = array("strXml"=>$xml->LayoutHeader->asXML());
         return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);  
+    }
+
+    /**
+     * 刪除貼文
+     * @param  string $empNo      員工編號
+     * @param  string $postId     貼文id
+     * @param  array  $queryParam url 參數
+     * @return json
+     */
+    public function deletePost($empNo, $postId, $queryParam ){
+        $apiFunction = 'deletePost';
+        
+        $xml = new \SimpleXMLElement('<xml/>');
+        $layoutHeader = $xml->addChild('LayoutHeader');
+        $layoutHeader->addChild('emp_no', $empNo);
+        $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
+        $layoutHeader->addChild('post_id', $postId);
+        $data = array("strXml"=>$xml->LayoutHeader->asXML());
+        return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);
     }
 
     /**

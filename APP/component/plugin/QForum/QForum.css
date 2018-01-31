@@ -21,6 +21,10 @@
     margin-top: 13.1vw;
 }
 
+.QForum-Content.reply-fullscreen-popup .QForum.main .QForum.hide-content {
+    display: none;
+}
+
 .QForum-Content.prompt-popup {
     position: absolute;
     top: 0;
@@ -150,6 +154,10 @@
     text-align: right;
 }
 
+.QForum-Content.reply-listview .QForum.list-data .QForum.button.hide {
+    display: none;
+}
+
 .QForum-Content.reply-listview .QForum.list-data .QForum.button .QForum.button-icon {
     width: 5.958vw;
     height: 5.958vw;
@@ -164,14 +172,6 @@
 }
 
 .QForum-Content.reply-listview .QForum.list-data .QForum.reply-select {
-    /*
-    display: none;
-    padding: 5px;
-    font-size: 4.18vw;
-    left: -10vw;
-    background-position-y: 40%;
-    position: relative;
-    */
     outline: none;
     border: 0;
     background: url('../../img/component/btn_more.png') left transparent;
@@ -180,4 +180,9 @@
     -webkit-appearance: none;
     width: 5.958vw;
     color: rgba(0, 0, 0, 0);
+}
+
+.QForum-Content.reply-listview .QForum.list-data .QForum.content .delete-text {
+    font-size: 3.14vw;
+    color: #666666;
 }

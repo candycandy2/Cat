@@ -68,6 +68,7 @@ class CommentController extends Controller
         \DB::beginTransaction();
         try{
             $commentId = $this->commentService->newComment($data, $userData);
+            $postId = $data['post_id'];
             $fileData = isset($data['file_list'])?$data['file_list']:null;
             if(!is_null($fileData)){      
                 $attavhResult = $this->attachService->addAttach($postId, $commentId, $fileData, $userData->row_id);

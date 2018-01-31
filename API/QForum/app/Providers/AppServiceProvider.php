@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::replacer('post_owner', function($message, $attribute, $rule, $params) {
-            return ResultCode::_047906_FieldFormatError;
+            return ResultCode::_047906_OnlyCanModifyYourOwnPost;
         });
 
         Validator::replacer('is_my_post', function($message, $attribute, $rule, $params) {
