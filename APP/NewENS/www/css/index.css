@@ -26,6 +26,10 @@ a {
     margin-top: 0;
 }
 
+.ui-popup-screen.ui-overlay-b.in {
+    margin-top: 20px;
+}
+
 /*new class*/
 .event-list-msg-top .description {
     font-size: 4.18vw;
