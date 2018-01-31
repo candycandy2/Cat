@@ -374,9 +374,7 @@ function adjustPageMarginTop() {
         }
 
         if (device.platform === "iOS") {
-            if (versionCompare(device.version, "11.0", "") === 1) {} else {
-                mainMarginTop = mainMarginTop + 20;
-            }
+            mainMarginTop = mainMarginTop + 20;
         }
 
         $(".page-main").css({
