@@ -394,7 +394,8 @@ input[type="text"] {
 }
 
 /******************************************* viewActivitiesSignup **************************************/
-#viewActivitiesSignup .page-main > div {
+#viewActivitiesSignup .page-main > div,
+#viewSelectFamily .page-main > div {
     width: 92.58vw;
     min-height: 30vw;
     margin-top: 5vw;
@@ -1041,6 +1042,7 @@ input[type="text"] {
     border-radius: 5px;
     outline: none;
     text-indent: 3.2vw;
+    background: #f9f9f9;
     border: 1px solid #d6d6d6;
 }
 

@@ -2,13 +2,15 @@
 $("#viewSelectFamily").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-
+        var familyFieldArr = [];
 
         /********************************** function *************************************/
-        window.ActivitiesSignupFamilyQuery = function () {
+        window.ActivitiesSignupFamilyQuery = function (arr) {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
+                familyFieldArr = arr;
+                console.log(familyFieldArr);
 
                 if(data["ResultCode"] == "1") {
                     
