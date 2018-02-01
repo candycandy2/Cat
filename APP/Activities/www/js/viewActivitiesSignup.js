@@ -6,15 +6,17 @@ $("#viewActivitiesSignup").pagecontainer({
         var limitPlace, currentPlace;     //限制人數和目前人數
         var teamName, departNo, submitID, submitModel;
         var memberNoArr = [];
+        var familyFieldArr = [];
         var timeoutCheckFamilySignup = null;
         var selectLength = 0, textLength = 0, checkboxLength = 0;
-        var selectClassName = "familySignupSelect";
+        //var selectClassName = "familySignupSelect";
         var checkboxArr = [];
         var employeeData = {
             id: "employee-popup",
             option: [],
             title: '<input type="search" id="searchBar" />',
-            defaultText: "請選擇",
+            //defaultText: "請選擇",
+            defaultText: langStr["str_040"],
             changeDefaultText: true,
             attr: {
                 class: "tpl-dropdown-list-icon-arrow"
@@ -49,42 +51,51 @@ $("#viewActivitiesSignup").pagecontainer({
                         $("#familyEmpGender").text(signupObj["EmployeeGender"]);
                         $("#familyEmpID").text(signupObj["EmpoyeeID"]);
                         $("#familyEmpBirth").text(signupObj["EmployeeBirthday"]);
+                        submitID = signupObj["ActivitiesID"];
+                        //選擇眷屬頁面
+                        $("#familySelectThumbnail").attr("src", signupObj["ActivitiesImage"]);
+                        $("#familySelectName").text(signupObj["ActivitiesName"]);
+                        $("#familySelectLimitPlace").text(signupObj["LimitPlaces"]);
 
                         //处理自定义栏位
-                        var fieldArr = getCustomField(signupObj);
-                        // var fieldArr = [{
+                        familyFieldArr = getCustomField(signupObj);
+                        // familyFieldArr = [{
                         //     "ColumnName": "自助餐",
                         //     "ColumnType": "Multiple",
-                        //     "ColumnItem": "火鍋;燒烤;拉麪"
+                        //     "ColumnItem": "火鍋;燒烤;拉麪",
+                        //     "ColumnAnswer": ""
                         // },
                         // {
                         //     "ColumnName": "攜帶人數",
                         //     "ColumnType": "Select",
-                        //     "ColumnItem": "1;2;3;4;5;6"
+                        //     "ColumnItem": "1;2;3;4;5;6",
+                        //     "ColumnAnswer": ""
                         // },
                         // {
                         //     "ColumnName": "意見",
                         //     "ColumnType": "Text",
-                        //     "ColumnItem": ""
+                        //     "ColumnItem": "",
+                        //     "ColumnAnswer": ""
                         // },
                         // {
-                        //     "ColumnName": "回程",
-                        //     "ColumnType": "Select",
-                        //     "ColumnItem": "飛機;火車;汽車;遊艇"
+                        //     "ColumnName": "建議",
+                        //     "ColumnType": "Text",
+                        //     "ColumnItem": "",
+                        //     "ColumnAnswer": ""
                         // }];
-                        ///var fieldArr = [];
-                        for (var i in fieldArr) {
-                            if (fieldArr[i]["ColumnType"] == "Select") {
+                        ///familyFieldArr = [];
+                        for (var i in familyFieldArr) {
+                            if (familyFieldArr[i]["ColumnType"] == "Select") {
                                 selectLength++;
-                                setSelectCustomField(fieldArr, i, "viewActivitiesSignup", selectClassName, "family-signup-custom-field");
+                                setSelectCustomField(familyFieldArr, i, "viewActivitiesSignup", "familySignupSelect", "family-signup-custom-field");
 
-                            } else if (fieldArr[i]["ColumnType"] == "Text") {
+                            } else if (familyFieldArr[i]["ColumnType"] == "Text") {
                                 textLength++;
-                                setTextCustomField(fieldArr, i, "familySignupText", "family-signup-custom-field");
+                                setTextCustomField(familyFieldArr, i, "familySignupText", "family-signup-custom-field");
 
-                            } else if (fieldArr[i]["ColumnType"] == "Multiple") {
+                            } else if (familyFieldArr[i]["ColumnType"] == "Multiple") {
                                 checkboxLength++;
-                                setCheckboxCustomField(fieldArr, i, "family-signup-custom-field");
+                                setCheckboxCustomField(familyFieldArr, i, "family-signup-custom-field");
 
                             }
                         }
@@ -178,14 +189,26 @@ $("#viewActivitiesSignup").pagecontainer({
                 console.log(data);
 
                 if (data['ResultCode'] == "045911") {
+                    //重新獲取報名列表
                     ActivitiesListQuery();
-                    ActivitiesRecordQuery();
+                    
                     //跳轉
                     $.each($("#openList .activity-list"), function (index, item) {
                         if ($(item).attr("data-id") == submitID) {
                             $(item).trigger("click");
                         }
                     });
+
+                    //清空欄位值
+                    memberNoArr = [];
+                    $("#departNo").val("");
+                    $("#teamName").val("");
+                    $(".team-signup-employee-list").empty();
+                    $("#sendTeamSignup").addClass("btn-disabled");
+
+                    //重新獲取報名記錄
+                    ActivitiesRecordQuery();
+
                 } else if (data['ResultCode'] == "045912") {
                     //失敗，報名組數超過剩餘名額
                     popupMsgInit('.overLimitMsg');
@@ -258,6 +281,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     "ColumnName": arr["ColumnName_" + i],
                     "ColumnType": arr["ColumnType_" + i],
                     "ColumnItem": arr["ColumnItem_" + i],
+                    "ColumnAnswer": ""
                 });
             }
 
@@ -343,12 +367,22 @@ $("#viewActivitiesSignup").pagecontainer({
             checkboxArr.push(mutipleObj);
         }
 
+        //記錄所選欄位的值
+        function setFieldValue(name, value) {
+            for(var i in familyFieldArr) {
+                if(name == familyFieldArr[i]["ColumnName"]) {
+                    familyFieldArr[i]["ColumnAnswer"] = value;
+                    break;
+                }
+            }
+        }
+
         //檢查所有欄位是否爲空
         function checkFamilyForm() {
             //select
             var selLength = 0;
-            if ($("." + selectClassName + " select").length > 0) {
-                $.each($("." + selectClassName + " select"), function (index, item) {
+            if ($(".familySignupSelect select").length > 0) {
+                $.each($(".familySignupSelect select"), function (index, item) {
                     if ($(item).val() !== langStr["str_040"]) {
                         selLength++;
                     } else {
@@ -542,21 +576,31 @@ $("#viewActivitiesSignup").pagecontainer({
 
 
         /*********************************** family signup ***********************************/
-        //獲取自定義欄位slecet值
-        $(document).on("change", "." + selectClassName + " select", function () {
-            //console.log($(this).val());
+        //select
+        $(".family-signup-custom-field").on("change", ".familySignupSelect select", function () {
+            var selfName = $(this).parent().prev().text();
+            var selfVal = $(this).val();        
+
+            //檢查表單
             checkFamilyForm();
+            //記錄欄位值
+            setFieldValue(selfName, selfVal);
         });
 
-        //獲取自定義欄位Text值
+        //text
         $(document).on("keyup", ".familySignupText", function () {
-            //console.log($(this).val());
+            var selfName = $(this).prev().text();
+            var selfVal = $(this).val();
+
             if (timeoutCheckFamilySignup != null) {
                 clearTimeout(timeoutCheckFamilySignup);
                 timeoutCheckFamilySignup = null;
             }
             timeoutCheckFamilySignup = setTimeout(function () {
+                //檢查表單
                 checkFamilyForm();
+                //記錄欄位值
+                setFieldValue(selfName, selfVal);
             }, 2000);
 
         });
@@ -588,18 +632,32 @@ $("#viewActivitiesSignup").pagecontainer({
                 $(this).find("img").attr("src", "img/radio_n.png");
             }
 
+            //檢查表單
             checkFamilyForm();
+
+            var checkboxVal = "";
+            for(var i in checkboxArr){
+                if(name == checkboxArr[i]["name"]) {
+                    checkboxVal = checkboxArr[i]["value"].join(";");
+                }
+            }
+
+            //記錄欄位值
+            setFieldValue(name, checkboxVal);
+
         });
 
         //點擊“選擇眷屬”
         $("#selectFamilyBtn").on("click", function() {
             if(!$("#selectFamilyBtn").hasClass("btn-disabled")) {
-                activitiesSignupFamilyQueryData = '<LayoutHeader><EmployeeNo>'
+                activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
+                    + submitID
+                    + '</ActivitiesID><EmployeeNo>'
                     + myEmpNo
                     + '</EmployeeNo><IsSignup>N</IsSignup></LayoutHeader>';
 
-                console.log(activitiesSignupFamilyQueryData);
-                ActivitiesSignupFamilyQuery();
+                //console.log(activitiesSignupFamilyQueryData);
+                ActivitiesSignupFamilyQuery(familyFieldArr);
 
                 //跳轉
                 changePageByPanel("viewSelectFamily", true);
