@@ -392,14 +392,12 @@ class EventController extends Controller
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
             }
-            
-            $eventList = $this->eventService->getEventDetail($project, $eventId, $empNo);
+            $eventList = $this->eventRepository->getEventDetail($project, $eventId, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
                 'Content'=>'']);
             }
-
             if($eventTypeParameterValue != ""){
              $parameterMap =  CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
                 if(!in_array($eventTypeParameterValue, array_keys($parameterMap))){
@@ -434,11 +432,9 @@ class EventController extends Controller
             }
 
             //Step 1. modifyPost
-            $eventData = $this->eventService->getEventDetail($project, $eventId, $empNo);
-
             $modifyPostRs = json_decode($this->eventService->modifyPost($project,
-                                                         $empNo,
-                                                         $eventData['chatroom_id'],
+                                                         $eventList->created_user,
+                                                          $eventList->chatroom_id,
                                                          (string)$xml->event_title[0],
                                                          (string)$xml->event_desc[0],
                                                          $queryParam));
