@@ -79,4 +79,23 @@ class BasicInfoRepository
         ->where('project', '=', $project)
         ->delete();
     }
+
+    /**
+     * 將excel析出的raw data 整理成資料庫批量寫入的格式
+     * @param  String $project project
+     * @param  Array $data 解析檔案得到的資料陣列
+     * @return Array
+     */
+    public function arrangeInsertData($project, $uploadData){
+        $nowTimestamp = time();
+        $now = date('Y-m-d H:i:s',$nowTimestamp);
+        $insertData['project'] =  $project;
+        $insertData['location'] = $uploadData['location'];
+        $insertData['function'] = $uploadData['function'];
+        $insertData['emp_no'] = $uploadData['empno'];
+        $insertData['master'] = $uploadData['master'];
+        $insertData['created_user'] = \Auth::user()->row_id;
+        $insertData['created_at'] = $now;
+        return $insertData;
+    }
 }
