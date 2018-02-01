@@ -40,9 +40,10 @@ class BoardController extends Controller
     {
         $data = parent::getData($request);
         $empNo = $data['emp_no'];
+        $source = $data['source'];
         $userData = $this->userService->getUserData($empNo);
         $company = $userData->company;
-        $boards = $this->boardService->getUserBoards($empNo,  $company );
+        $boards = $this->boardService->getUserBoards($empNo,  $company, $source);
          return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
                         'Content'=>$boards]);
