@@ -257,7 +257,7 @@ $("#viewMain2-1").pagecontainer({
             var searchtext = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='(" +lat+","+lon+ ")') and u='c'"
             $.getJSON("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json").success(function(data){
                 weatherResults = data.query.results.channel;
-                $('#temp').html( weatherResults.location.city + ", " + weatherResults.item.condition.text + ", " + weatherResults.item.condition.temp + "°C");
+                $('#weather').html( weatherResults.location.city + ", " + weatherResults.item.condition.text + ", " + weatherResults.item.condition.temp + "°C");
             });
         }
 
