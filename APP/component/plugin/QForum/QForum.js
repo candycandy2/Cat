@@ -9,6 +9,7 @@ var QForum = {
     appKey: "appqforum",
     appSecretKey: "c40a5073000796596c2ba5e70579b1e6",
     viewList: ["footer", "popup", "replyListView"],
+    dependency: [QStorage],
     boardList: [],
     boardID: 0,
     postID: "",
@@ -16,54 +17,97 @@ var QForum = {
     replyLastID: 0,
     replyDataRange: 10,
     commentID: "",
+    commentAction: "",
+    commentActionText: {
+        "new": "回覆已送出",
+        "update": "回覆已送出",
+        "delete": "回覆已刪除"
+    },
+    commentDeleteText: "留言已刪除",
+    deviceOriginalSize: {
+        "width": 0,
+        "height": 0
+    },
+    editorOriginalSize: {
+        "width": 0,
+        "height": 0
+    },
     initial: function() {
 
-        //Load CSS
-        var link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = "plugin/QForum/QForum.css";
-        document.head.appendChild(link);
+        //Handle dependency
+        window.retryCheckDependency = setInterval(function() {
+            for (var i=0; i<QForum.dependency.length; i++) {
+                if (typeof QForum.dependency[i] !== "undefined") {
 
-        //According to the Parent versionName, decide APPKey > [dev] / [test] / []
-        if (loginData["versionName"].indexOf("Staging") !== -1) {
-            QForum.appKey = "appqforumtest";
-        } else if (loginData["versionName"].indexOf("Development") !== -1) {
-            QForum.appKey = "appqforumdev";
-        } else {
-            QForum.appKey = "appqforum";
-        }
-
-        //Check if QForum is be used as plugin.
-        if (window.appKey == QForum.appKey) {
-
-        } else {
-
-        }
-
-        //Load View
-        $.map(QForum.viewList, function(value, key) {
-            (function(viewID, viewIndex) {
-                $.get("plugin/QForum/view/" + viewID + ".html", function(data) {
-
-                    $.mobile.pageContainer.append(data);
-
-                    if ((viewIndex + 1) == QForum.viewList.length) {
-                        //Create Prompt Popup
-                        QForum.VIEW.promptPopup();
-
-                        //Create Delete Confirm Popup
-                        QForum.VIEW.deleteConfirmPopup();
+                    if ((i + 1) == QForum.dependency.length) {
+                        if (typeof window.stopCheckDependency !== "undefined") {
+                            window.stopCheckDependency();
+                            checkDependencyFinish();
+                        }
                     }
 
-                }, "html");
-            }(value, key));
-        });
+                }
+            }
+        }, 100);
 
-        //Get Board List
-        QForum.API.getBoardList();
+        window.stopCheckDependency = function() {
+            if (window.retryCheckDependency != null) {
+                clearInterval(window.retryCheckDependency);
+                window.retryCheckDependency = null;
+            }
+        };
 
-        //QStorage Initial
-        QStorage.initial();
+        var checkDependencyFinish = function() {
+            //Load CSS
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "plugin/QForum/QForum.css";
+            document.head.appendChild(link);
+
+            //According to the Parent versionName, decide APPKey > [dev] / [test] / []
+            if (loginData["versionName"].indexOf("Staging") !== -1) {
+                QForum.appKey = "appqforumtest";
+            } else if (loginData["versionName"].indexOf("Development") !== -1) {
+                QForum.appKey = "appqforumdev";
+            } else {
+                QForum.appKey = "appqforum";
+            }
+
+            //Check if QForum is be used as plugin.
+            if (window.appKey == QForum.appKey) {
+
+            } else {
+
+            }
+
+            //Load View
+            $.map(QForum.viewList, function(value, key) {
+                (function(viewID, viewIndex) {
+                    $.get("plugin/QForum/view/" + viewID + ".html", function(data) {
+
+                        $.mobile.pageContainer.append(data);
+
+                        if ((viewIndex + 1) == QForum.viewList.length) {
+                            //Create Prompt Popup
+                            QForum.VIEW.promptPopup();
+
+                            //Create Delete Confirm Popup
+                            QForum.VIEW.deleteConfirmPopup();
+                        }
+
+                    }, "html");
+                }(value, key));
+            });
+
+            //Get Board List
+            QForum.API.getBoardList();
+
+            //QStorage Initial
+            QStorage.initial();
+
+            //Window Resize Event - For detect keyboard show up
+            QForum.EVENT.detectKeyboardShowUp();
+        }
 
     },
     getSignature: function(action, signatureTime) {
@@ -128,13 +172,29 @@ var QForum = {
         setBoardID: function() {
             if (appKeyOriginal == "appens") {
 
-                for (var i=0; i<QForum.boardList.length; i++) {
-                    if (QForum.boardList[i].board_type_name == "ENS") {
-                        if (QForum.boardList[i].board_name == projectName) {
-                            QForum.boardID = QForum.boardList[i].board_id;
+                window.retrySetBoardID = setInterval(function() {
+                    if (QForum.boardList.length > 0) {
+
+                        if (typeof window.stopRetrySetBoardID !== "undefined") {
+                            window.stopRetrySetBoardID();
+                        }
+
+                        for (var i=0; i<QForum.boardList.length; i++) {
+                            if (QForum.boardList[i].board_type_name == "ENS") {
+                                if (QForum.boardList[i].board_name == projectName) {
+                                    QForum.boardID = QForum.boardList[i].board_id;
+                                }
+                            }
                         }
                     }
-                }
+                }, 500);
+
+                window.stopRetrySetBoardID = function() {
+                    if (window.retrySetBoardID != null) {
+                        clearInterval(window.retrySetBoardID);
+                        window.retrySetBoardID = null;
+                    }
+                };
 
             } else {
                 QForum.boardID = boardID;
@@ -234,7 +294,7 @@ var QForum = {
             }(replyCallback));
         },
         newComment: function(content) {
-            (function() {
+            (function(content) {
 
                 loadingMask("show");
 
@@ -247,7 +307,7 @@ var QForum = {
 
                 var queryDataParameter = QForum.createXMLDataString(queryDataObj);
 
-                //Check if comment has img or not.
+                //Check if comment has img which was upload by QStorage.
                 var fileListParameter = "";
                 var uploadDatas = QStorage.getUploadDatas();
 
@@ -265,19 +325,106 @@ var QForum = {
 
                 var queryData = "<LayoutHeader>" + queryDataParameter + fileListParameter + "</LayoutHeader>";
 
-                console.log(queryData);
-
                 var successCallback = function(data) {
-                    //Clear File Path of Upload Data in QStorage
-                    QStorage.clearUploadDatas();
+                    var resultCode = data['ResultCode'];
 
-                    //Refresh Reply ListView
-                    QForum.API.getPostDetails(true);
+                    if (resultCode === "1") {
+                        //Clear File Path of Upload Data in QStorage
+                        QStorage.clearUploadDatas();
+
+                        //Refresh Reply ListView
+                        QForum.API.getPostDetails(true);
+                    }
                 };
 
                 var failCallback = function(data) {};
 
                 QForum.CustomAPI("POST", true, "newComment", successCallback, failCallback, queryData, "");
+
+            }(content));
+        },
+        modifyComment: function(content) {
+            (function(content) {
+
+                loadingMask("show");
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    source: window.appKey,
+                    comment_id: QForum.commentID,
+                    content: content
+                };
+
+                var queryDataParameter = QForum.createXMLDataString(queryDataObj);
+
+                //Set editor content in hide-content, then check it.
+                $(".QForum-Content.reply-fullscreen-popup .QForum.main .QForum.hide-content").html(content);
+
+                //Check if comment has img exist.
+                var fileListParameter = "";
+                var imgDomArray = $(".QForum-Content.reply-fullscreen-popup .QForum.main .QForum.hide-content").find("img");
+
+                if (imgDomArray.length > 0) {
+
+                    fileListParameter = "<file_list>";
+
+                    for (var i=0; i<imgDomArray.length; i++) {
+                        fileListParameter += "<file>" + imgDomArray[i].src + "</file>";
+                    }
+
+                    fileListParameter += "</file_list>";
+
+                }
+
+                var queryData = "<LayoutHeader>" + queryDataParameter + fileListParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+                        //Clear File Path of Upload Data in QStorage
+                        QStorage.clearUploadDatas();
+
+                        //Refresh Reply ListView
+                        QForum.API.getPostDetails(true);
+                    }
+                };
+
+                var failCallback = function(data) {};
+
+                QForum.CustomAPI("POST", true, "modifyComment", successCallback, failCallback, queryData, "");
+
+            }(content));
+        },
+        deleteComment: function() {
+            (function() {
+
+                loadingMask("show");
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    source: window.appKey,
+                    comment_id: QForum.commentID
+                };
+
+                var queryDataParameter = QForum.createXMLDataString(queryDataObj);
+                var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+                        //Clear File Path of Upload Data in QStorage
+                        QStorage.clearUploadDatas();
+
+                        //Refresh Reply ListView
+                        QForum.API.getPostDetails(true);
+                    }
+                };
+
+                var failCallback = function(data) {};
+
+                QForum.CustomAPI("POST", true, "deleteComment", successCallback, failCallback, queryData, "");
 
             }());
         }
@@ -344,23 +491,28 @@ var QForum = {
                         //Clear ckeditor content
                         QForum.METHOD.clearEditorContent("");
 
+                        QForum.commentAction = "new";
                         showPopup = true;
 
                     } else if (action === "update") {
 
                         //Set ckeditor content
-                        var htmlContent = $("#" + QForum.commentID + " .QForum.content").html();
+                        var htmlContent = $("#comment-" + QForum.commentID + " .QForum.content").html();
                         QForum.METHOD.clearEditorContent(htmlContent);
 
+                        //Set Submit Button
+                        $("#replySubmit.QForum").removeClass("none-work");
+
+                        QForum.commentAction = "update";
                         showPopup = true;
-                        //$(".QForum-Content.reply-fullscreen-popup").show();
+
                     }
                 }
 
             }
 
             if (showPopup) {
-                
+
                 $(".QForum-Content.reply-fullscreen-popup").show();
 
                 //Resize Editor
@@ -382,6 +534,9 @@ var QForum = {
                 if ($(".cke_top").height() > 33) {
                     //height -= 33;
                 }
+
+                QForum.editorOriginalSize.width = width;
+                QForum.editorOriginalSize.height = height;
 
                 window.CKEDITOR.instances.editor.resize(width, height);
 
@@ -406,8 +561,7 @@ var QForum = {
                 }
 
                 //Clear list-data
-                if (QForum.replyLastID == 1) {
-                    $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data .QForum.reply-select").off("change");
+                if (QForum.replyLastID == 0) {
                     $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
                 }
 
@@ -415,6 +569,7 @@ var QForum = {
 
                 for (var i=0; i<replyDataList.length; i++) {
                     (function(i, replyDataList) {
+
                         var tempDate = dateFormatYMD(replyDataList[i].reply_create_time);
                         var createTime = new Date(tempDate);
                         var createTimeConvert = createTime.TimeZoneConvert();
@@ -426,11 +581,43 @@ var QForum = {
                         replyListData.find(".time .time-1").html(createTimeConvert);
                         replyListData.find(".content").html(replyDataList[i].reply_content);
 
+                        //Check if this comment has been delete or edit
+                        if (replyDataList[i].reply_delete_time != null) {
+
+                            replyListData.find(".content").html("<span class='delete-text'>" + QForum.commentDeleteText + "</span>");
+
+                            tempDate = dateFormatYMD(replyDataList[i].reply_delete_time);
+                            createTime = new Date(tempDate);
+                            createTimeConvert = createTime.TimeZoneConvert();
+                            createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
+
+                            replyListData.find(".time .time-2 .text-time").html(createTimeConvert);
+                            replyListData.find(".time .time-2 .text-delete").removeClass("hide");
+                            replyListData.find(".time .time-2").removeClass("hide");
+
+                        } else if (replyDataList[i].reply_update_time != null) {
+
+                            tempDate = dateFormatYMD(replyDataList[i].reply_update_time);
+                            createTime = new Date(tempDate);
+                            createTimeConvert = createTime.TimeZoneConvert();
+                            createTimeConvert = createTimeConvert.substr(0, parseInt(createTimeConvert.length - 3, 10));
+
+                            replyListData.find(".time .time-2 .text-time").html(createTimeConvert);
+                            replyListData.find(".time .time-2 .text-edit").removeClass("hide");
+                            replyListData.find(".time .time-2").removeClass("hide");
+
+                        }
+
+                        //Only current user can edit/delete comment
+                        if (replyDataList[i].reply_user === loginData["loginid"]) {
+                            replyListData.find(".title .button").removeClass("hide");
+                        }
+
                         $("#" + QForum.pageID + " .QForum-Content.reply-listview").append(replyListData);
 
                         //Set QForum.replyLastID
                         if (i == (replyDataList.length - 1)) {
-                            QForum.METHOD.setReplyLastID(replyDataList[i].sequence_id);
+                            //QForum.METHOD.setReplyLastID(replyDataList[i].sequence_id);
 
                             //Hide Reply-Fullscreen Popup
                             $(".QForum-Content.reply-fullscreen-popup").hide();
@@ -438,9 +625,10 @@ var QForum = {
 
                             //Reply Succes show Prompt
                             if (replyCallback) {
-                                QForum.VIEW.promptPopup("回覆已送出");
+                                QForum.VIEW.promptPopup(QForum.commentActionText[QForum.commentAction]);
                             }
                         }
+
                     }(i, replyDataList));
                 }
 
@@ -504,6 +692,30 @@ var QForum = {
         }
     },
     EVENT: {
+        detectKeyboardShowUp: function() {
+            //Prevent
+
+            QForum.deviceOriginalSize.width = $(window).width();
+            QForum.deviceOriginalSize.height = $(window).height();
+
+            $(window).resize(function() {
+                console.log("=================window resize");
+                var newWindowWidth = $(window).width();
+                var newWindowHeight = $(window).height();
+
+                if (newWindowHeight == QForum.deviceOriginalSize.height) {
+                    console.log("--------------------keyboard hide");
+
+                    $("#" + QForum.pageID).show();
+                } else if (newWindowHeight < QForum.deviceOriginalSize.height) {
+                    console.log("--------------------keyboard show up");
+
+                    $("#" + QForum.pageID).hide();
+                }
+
+            });
+
+        },
         editorKeyIn: function() {
 
             window.CKEDITOR.instances.editor.on('key', function(e) {
@@ -527,7 +739,13 @@ var QForum = {
                 vclick: function() {
                     setTimeout(function() {
                         if (!$(this).hasClass("none-work")) {
-                            QForum.API.newComment(QForum.METHOD.getEditorContent());
+
+                            if (QForum.commentAction === "new") {
+                                QForum.API.newComment(QForum.METHOD.getEditorContent());
+                            } else if (QForum.commentAction === "update") {
+                                QForum.API.modifyComment(QForum.METHOD.getEditorContent());
+                            }
+
                         }
                     }, 500);
                 }
@@ -548,75 +766,39 @@ var QForum = {
 
         },
         replySelect: function() {
-console.log("@@@@@@@--replySelect");
+
             $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data .QForum.reply-select").off("change");
 
-            setTimeout(function() {
-                $(document).on({
-                    change: function(event) {
-                        var self = this;
+            $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data .QForum.reply-select").one("change", function() {
+                var self = this;
 
-                        setTimeout(function() {
-                            console.log("@@@@@@@--replySelect--change");
+                setTimeout(function() {
+                    QForum.commentID = $(self).parents(".QForum.list-data").prop("id").substr(8);
+                    console.log("commentID:"+QForum.commentID);
 
-                            QForum.commentID = $(event.target).parents(".QForum.list-data").prop("id");
-                            console.log("commentID:"+QForum.commentID);
+                    var action = $(self).val();
+                    console.log($(self).val());
 
-                            var action = $(self).val();
-                            console.log($(self).val());
+                    $("#comment-" + QForum.commentID + " .QForum.reply-select option:eq(0)").prop("selected", true);
 
-                            $("#" + QForum.commentID + " .QForum.reply-select option:eq(0)").prop("selected", true);
+                    if (action === "edit") {
+                        QForum.VIEW.replyFullScreenPopup("update");
+                    } else if (action === "delete") {
 
-                            if (action === "edit") {
-                                QForum.VIEW.replyFullScreenPopup("update");
-                            } else if (action === "delete") {
-                                QForum.VIEW.deleteConfirmPopup();
-                            }
-                        }, 500);
+                        QForum.commentAction = "delete";
+                        QForum.VIEW.deleteConfirmPopup();
+
                     }
-                }, "#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data .QForum.reply-select");
-            }, 500);
+
+                    QForum.EVENT.replySelect();
+                }, 500);
+            });
 
         },
         replyButtonClick: function() {
 
             $(document).on({
                 vclick: function(event) {
-                    /*
-                    //Clear ckeditor content
-                    QForum.METHOD.clearEditorContent("");
-                    $(".QForum-Content.reply-fullscreen-popup").show();
-
-                    //Resize Editor
-                    var width = parseInt(document.documentElement.clientWidth * 92 / 100, 10);
-                    var height = parseInt(document.documentElement.clientHeight * 82 / 100, 10);
-
-                    //Auto set top of .cke_chrome / .cke_top
-                    var hederHeight = parseInt(document.documentElement.clientWidth * 13.1 / 100, 10);
-                    var marginTop = parseInt(document.documentElement.clientWidth * 2.73 / 100, 10);
-                    var toolBarHeight = 42;
-
-                    //For iOS, overlap
-                    if (device.platform === "iOS") {
-                        height -= 20;
-                        hederHeight += 20;
-                    }
-
-                    //For small size screen, toolbar become 2 lines
-                    if ($(".cke_top").height() > 33) {
-                        //height -= 33;
-                    }
-
-                    window.CKEDITOR.instances.editor.resize(width, height);
-
-                    $(".QForum-Content.reply-fullscreen-popup .main .cke_chrome").css({
-                        "top": (hederHeight + marginTop + toolBarHeight) + "px"
-                    });
-
-                    $(".QForum-Content.reply-fullscreen-popup .main .cke_top").css({
-                        "top": hederHeight + "px"
-                    });
-                    */
                     setTimeout(function() {
                         QForum.VIEW.replyFullScreenPopup("new");
                     }, 500);
@@ -633,6 +815,9 @@ console.log("@@@@@@@--replySelect");
 
                         if (dom.hasClass("cancel") || dom.parent().hasClass("cancel")) {
                             $("#QForumDeleteConfirmPopup").popup("close");
+                        } else if (dom.hasClass("confirm") || dom.parent().hasClass("confirm")) {
+                            $("#QForumDeleteConfirmPopup").popup("close");
+                            QForum.API.deleteComment();
                         }
                     }, 500);
                 }

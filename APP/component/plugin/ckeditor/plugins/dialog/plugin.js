@@ -392,7 +392,6 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 
                 if (item.id == "txtUrl" || item.id == "txtWidth" || item.id == "txtHeight") {
                     console.log(item._.inputId);
-                    console.log($("#" + item.id));
 
                     if (item.id == "txtUrl") {
                         if (!findTextURL) {
@@ -626,13 +625,13 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
                         //horizontal
                         if (data.thumbnail_1024_width > limitHorizontalWidthPX) {
                             width = limitHorizontalWidthPX;
-                            height = (limitHorizontalWidthPX * data.thumbnail_1024_height / data.thumbnail_1024_width);
+                            height = parseInt(limitHorizontalWidthPX * data.thumbnail_1024_height / data.thumbnail_1024_width, 10);
                         }
                     } else {
                         //vertical
                         if (data.thumbnail_1024_width > limitVerticalWidthPX) {
                             width = limitVerticalWidthPX;
-                            height = (limitVerticalWidthPX * data.thumbnail_1024_height / data.thumbnail_1024_width);
+                            height = parseInt(limitVerticalWidthPX * data.thumbnail_1024_height / data.thumbnail_1024_width, 10);
                         }
                     }
 

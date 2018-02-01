@@ -180,7 +180,7 @@ class EventController extends Controller
         } catch (\Exception $e){
             \DB::rollBack();
             if(isset($chatroomId)){
-                $this->eventService->deleteChatRoom($chatroomId);
+               $deleteRes =  $this->eventService->deletePost($empNo, $chatroomId, $queryParam);
             }
             throw $e;
         }
