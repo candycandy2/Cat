@@ -84,22 +84,18 @@ $("#viewActivitiesList").pagecontainer({
 
         });
 
-        $(document).on("click", ".activity-list", function () {
+
+        $("#viewActivitiesContent").on("click", ".activity-list", function(e) {
             var actNo = $(this).attr("data-id");
-            if(lastActNo == actNo) {
-                changePageByPanel("viewActivitiesDetail", true);
-            } else {
-                activitiesDetailQueryData = '<LayoutHeader><ActivitiesID>'
-                    + actNo
-                    + '</ActivitiesID><EmployeeNo>'
-                    + myEmpNo
-                    + '</EmployeeNo></LayoutHeader>';
+            var actStatus = $(this).attr("data-status");
 
-                var actStatus = $(this).attr("data-status");
+            activitiesDetailQueryData = '<LayoutHeader><ActivitiesID>'
+                + actNo
+                + '</ActivitiesID><EmployeeNo>'
+                + myEmpNo
+                + '</EmployeeNo></LayoutHeader>';
 
-                ActivitiesDetailQuery(actStatus);
-                lastActNo = actNo;
-            }
+            ActivitiesDetailQuery(actStatus);
         });
 
         //從編輯也返回詳情頁
