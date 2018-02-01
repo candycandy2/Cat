@@ -193,6 +193,17 @@ var tplJS = {
                 }
             }
 
+            //For QForum
+            if ($(e.target).hasClass("QForum-Content")) {
+                $(e.target).css({
+                    'touch-action': 'auto'
+                });
+
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 0);
+            }
+
             if (preventScroll) {
                 e.preventDefault();
                 e.stopPropagation();
