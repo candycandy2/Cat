@@ -118,14 +118,18 @@ $("#viewActivitiesManage").pagecontainer({
                 console.log(data);
 
                 if (data["ResultCode"] == "045913") {
+                    //重新獲取活動列表
                     ActivitiesListQuery();
-                    ActivitiesRecordQuery();
+                    
                     //跳轉
                     $.each($("#openList .activity-list"), function(index, item) {
                         if($(item).attr("data-id") == cancelID) {
                             $(item).trigger("click");
                         }
                     });
+
+                    //重新獲取報名記錄
+                    ActivitiesRecordQuery();
 
                 } else if (data["ResultCode"] == "045914") {
                     //報名取消失敗
