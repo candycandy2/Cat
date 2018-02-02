@@ -11,7 +11,7 @@ $("#viewActivitiesDetail").pagecontainer({
         window.ActivitiesDetailQuery = function (status) {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activityObj = data["Content"][0];
@@ -62,7 +62,7 @@ $("#viewActivitiesDetail").pagecontainer({
                         var imgWidth = $(item).attr("width");
                         var imgHeight = $(item).attr("height");
                         var imgRatio = (imgWidth / imgHeight).toFixed(2);
-                        //console.log(imgRatio);
+                        
                         $(item).css("width", "92.58vw");
                         $(item).css("height", 92.58 / imgRatio + "vw");
 
@@ -92,7 +92,7 @@ $("#viewActivitiesDetail").pagecontainer({
                 } else {
                     $(item).hide();
                 }
-            });
+            });         
         }
 
         //根絕不同活動類型，show不同按鈕
@@ -133,10 +133,12 @@ $("#viewActivitiesDetail").pagecontainer({
 
         //點擊 "開始報名" 跳轉到編輯頁
         $(".detail-signup-btn").on("click", function () {
-            if (isRepeatSignup == "Y" && !$(this).hasClass("btn-disabled")) {
+            var self = $(this).hasClass("btn-disabled");
+            if (isRepeatSignup == "Y" && !self) {
                 //已報名同類活動，不能報名該活動
                 popupMsgInit('.signupedSameMsg');
-            } else if (isRepeatSignup == "N" && !$(this).hasClass("btn-disabled")) {
+            } else if (isRepeatSignup == "N" && !self) {
+                //1.呼叫活動報名API
                 activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
                     + actID
                     + '</ActivitiesID><SignupModel>'
@@ -146,18 +148,35 @@ $("#viewActivitiesDetail").pagecontainer({
                     + '</EmployeeNo></LayoutHeader>';
 
                 //console.log(activitiesSignupQueryData);
-
                 ActivitiesSignupQuery(actModel);
 
+                //根據不同活動類型，展示不同頁面，並跳轉
                 showViewByModel("viewActivitiesSignup", actModel);
-                changePageByPanel("viewActivitiesSignup", true);
+                setTimeout(function() {
+                    changePageByPanel("viewActivitiesSignup", true);
+                }, 500);
 
+                //2.如果是眷屬報名管理，呼叫選擇眷屬API
+                if(actModel == "3") {
+                    activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
+                    + actID
+                    + '</ActivitiesID><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><IsSignup>'
+                    + isSignup
+                    + '</IsSignup></LayoutHeader>';
+
+                    //console.log(activitiesSignupFamilyQueryData);
+                    ActivitiesSignupFamilyQuery(isSignup);
+                }
+                
             }
 
         });
 
         //點擊 "報名管理" 跳轉到編輯頁
         $(".detail-manage-btn").on("click", function () {
+            //1.呼叫眷屬報名管理API
             activitiesSignupManageQueryData = '<LayoutHeader><ActivitiesID>'
                 + actID
                 + '</ActivitiesID><SignupModel>'
@@ -167,12 +186,28 @@ $("#viewActivitiesDetail").pagecontainer({
                 + '</EmployeeNo></LayoutHeader>';
 
             //console.log(activitiesSignupManageQueryData);
-
             ActivitiesSignupManageQuery(actModel);
 
+            //根據不同活動類型，展示不同頁面，並跳轉
             showViewByModel("viewActivitiesManage", actModel);
-            changePageByPanel("viewActivitiesManage", true);
-            
+            setTimeout(function() {
+                changePageByPanel("viewActivitiesManage", true);
+            }, 500);
+
+            //2.如果是眷屬報名管理，呼叫選擇眷屬API
+            if(actModel == "3") {
+                activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
+                + actID
+                + '</ActivitiesID><EmployeeNo>'
+                + myEmpNo
+                + '</EmployeeNo><IsSignup>'
+                + isSignup
+                + '</IsSignup></LayoutHeader>';
+
+                //console.log(activitiesSignupFamilyQueryData);
+                ActivitiesSignupFamilyQuery(isSignup);
+            }
+
         });
 
 
