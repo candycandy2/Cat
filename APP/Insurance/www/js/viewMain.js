@@ -113,6 +113,7 @@ $("#viewMain").pagecontainer({
                     }
                 }
             );*/
+            //PluginName: cordova-plugin-file-transfer to download file
             fileSrvc.download(encodeURI('https://www.ib.gov.tw/websitedowndoc?file=chib/201412250001.pdf&filedisplay=201412250001.pdf'), function(err, nativeURL){
              /* open file here.. we get nativeURL to open*/
             });
