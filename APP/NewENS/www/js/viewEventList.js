@@ -277,8 +277,6 @@ $("#viewEventList").pagecontainer({
         function getMessageCount(chatroomIDList) {
             var self = this;
 
-            //Darren 20180123-
-            /*
             var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
             var chatroomListParameter = "<chatroom_list>";
 
@@ -325,23 +323,6 @@ $("#viewEventList").pagecontainer({
             var __construct = function() {
                 CustomAPI("POST", true, "getMessageCount", self.successCallback, self.failCallback, queryData, "");
             }();
-            */
-            window.messageCountData = [];
-            var openEventDetail = false;
-
-            if (openEventFromQPlay) {
-                openEventDetail = true;
-            } else {
-                eventListView();
-            }
-
-            if (openEventDetail) {
-                //Open Event Detail from QPlay
-                var eventDetail = new getEventDetail(eventRowID);
-                $.mobile.changePage('#viewEventContent');
-
-                openEventFromQPlay = false;
-            }
 
         }
 
