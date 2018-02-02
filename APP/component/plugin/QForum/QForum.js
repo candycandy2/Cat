@@ -32,6 +32,7 @@ var QForum = {
         "width": 0,
         "height": 0
     },
+    iOSTriggerKeyboardEvent: false,
     initial: function() {
 
         //Handle dependency
@@ -768,7 +769,7 @@ var QForum = {
 
                     setTimeout(function() {
                         tplJS.preventPageScroll();
-                    }, 0);
+                    }, 150);
 
                     setTimeout(function() {
                         $('html, body').animate({
@@ -779,7 +780,7 @@ var QForum = {
                             "top": 0,
                             "height": (window.innerHeight - 20)
                         });
-                    }, 0);
+                    }, 200);
 
                     //Prevent [blur] event not trigger
                     window.checkiOSKeyboardHide = setInterval(function() {
@@ -815,7 +816,10 @@ var QForum = {
                 var self = this;
 
                 if (device.platform === "iOS") {
-                    tplJS.recoveryPageScroll();
+                    if (!QForum.iOSTriggerKeyboardEvent) {
+                        tplJS.recoveryPageScroll();
+                        QForum.iOSTriggerKeyboardEvent = true;
+                    }
                 }
 
                 setTimeout(function() {
@@ -828,6 +832,10 @@ var QForum = {
 
                 if (device.platform === "iOS") {
                     setTimeout(function() {
+                        tplJS.preventPageScroll();
+                    }, 50);
+
+                    setTimeout(function() {
                         $('html, body').animate({
                             scrollTop: 0
                         }, 0);
@@ -836,7 +844,7 @@ var QForum = {
                             "top": 0,
                             "height": (window.innerHeight - 20)
                         });
-                    }, 0);
+                    }, 100);
                 }
             });
 
