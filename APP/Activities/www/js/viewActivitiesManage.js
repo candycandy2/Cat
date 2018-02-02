@@ -11,7 +11,7 @@ $("#viewActivitiesManage").pagecontainer({
         window.ActivitiesSignupManageQuery = function (model) {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 //取消報名的活動類型
                 cancelModel = model;
@@ -21,6 +21,9 @@ $("#viewActivitiesManage").pagecontainer({
                     } else if (model == "3") {
 
                     } else if (model == "4") {
+                        //初始化
+                        $("#expandAllTeam").attr("src", "img/all_list_down.png");
+
                         var manageArr = data["Content"];
                         cancelActName = manageArr[0]["ActivitiesName"];
                         $("#teamManageThumbnail").attr("src", manageArr[0]["ActivitiesImage"]);
@@ -71,7 +74,7 @@ $("#viewActivitiesManage").pagecontainer({
                             }
 
                         }
-                        console.log(resultArr);
+                        //console.log(resultArr);
 
                         //生成html
                         var manageContent = "";
@@ -115,7 +118,7 @@ $("#viewActivitiesManage").pagecontainer({
         window.ActivitiesSignupCancelQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "045913") {
                     //重新獲取活動列表
@@ -205,23 +208,26 @@ $("#viewActivitiesManage").pagecontainer({
         });
 
         //展開隊伍
-        $(document).on("click", ".list-img", function () {
+        $("#teamTable").on("click", ".list-img", function () {
+            var self = $(this);
             var src = $(this).attr("src").split("/")[1];
+            var parentNode = $(this).parent().parent();
+
             if (src == "list_down.png") {
-                $(this).attr("src", "img/list_up.png");
-                $(this).parent().parent().css("border-bottom", "0");
-                $(this).parent().parent().next().css("border-bottom", "1px solid #f6f6f6");
-                $(this).parent().parent().next().show();
+                self.attr("src", "img/list_up.png");
+                parentNode.css("border-bottom", "0");
+                parentNode.next().css("border-bottom", "1px solid #d6d6d6");
+                parentNode.next().show();
             } else {
-                $(this).attr("src", "img/list_down.png");
-                $(this).parent().parent().css("border-bottom", "1px solid #f6f6f6");
-                $(this).parent().parent().next().css("border-bottom", "0");
-                $(this).parent().parent().next().hide();
+                self.attr("src", "img/list_down.png");
+                parentNode.css("border-bottom", "1px solid #d6d6d6");
+                parentNode.next().css("border-bottom", "0");
+                parentNode.next().hide();
             }
         });
 
-        //展開所有
-        $(".all-list-img").on("click", function () {
+        //展開所有隊伍
+        $("#expandAllTeam").on("click", function () {
             var src = $(this).attr("src").split("/")[1];
             if (src == "all_list_down.png") {
                 $.each($(".list-img"), function (index, item) {
@@ -241,7 +247,7 @@ $("#viewActivitiesManage").pagecontainer({
         });
 
         //取消組隊報名
-        $(document).on("click", ".team-delete", function () {
+        $("#teamTable").on("click", ".team-delete", function () {
             cancelID = $(this).attr("data-id");
             cancelNo = $(this).attr("data-no");
             cancelTeamName;
@@ -261,7 +267,7 @@ $("#viewActivitiesManage").pagecontainer({
 
         //確定取消報名
         $("#cancelSignup").on("click", function () {
-            loadingMask("show");
+            //loadingMask("show");
             activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + cancelID
                 + '</ActivitiesID><SignupNo>'
@@ -272,7 +278,7 @@ $("#viewActivitiesManage").pagecontainer({
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';
 
-            console.log(activitiesSignupCancelQueryData);
+            //console.log(activitiesSignupCancelQueryData);
 
             ActivitiesSignupCancelQuery();
         });

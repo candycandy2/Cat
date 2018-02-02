@@ -385,7 +385,7 @@ $("#viewMyFamilyDatum").pagecontainer({
 
         //確定刪除
         $("#confirmDeleteFamilyBtn").on("click", function () {
-            loadingMask("show");
+            //loadingMask("show");
             activitiesFamilyDeleteQueryData = '<LayoutHeader><EmployeeNo>'
                 + myEmpNo
                 + '</EmployeeNo><FamilyNo>'
@@ -472,7 +472,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         //儲存按鈕
         $(".family-save-btn").on("click", function () {
             if (checkFormByFamily()) {
-                loadingMask("show");
+                //loadingMask("show");
                 if (addOrUpdate) {
                     activitiesFamilyAddQueryData = '<LayoutHeader><EmployeeNo>'
                         + myEmpNo
