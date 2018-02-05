@@ -162,7 +162,8 @@ input[type="text"] {
 }
 
 .familySignupText,
-.familySelectText {
+.familySelectText,
+.personSignupText {
     width: 89vw;
     height: 10vw;
     margin-top: 2.14vw;
@@ -415,10 +416,9 @@ input[type="text"] {
     border-bottom: 1px solid #d6d6d6;
 }
 
-.person-signup-notice {
-    line-height: 1.25;
+.person-signup-remark {
     margin-top: 4.3vw;
-    margin-bottom: 0.6vw;
+    line-height: 1.5;
 }
 
 .person-footer {

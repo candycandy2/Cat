@@ -16,21 +16,24 @@
         <div id="viewPersonSignup" data-model="1">
             <div class="team-signup-title">
                 <div>
-                    <img src="img/event_date.png">
+                    <img src="img/event_date.png" id="personSignupThumbnail">
                 </div>
-                <div class="font-style10 font-color2">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                <div class="font-style10 font-color2" id="personSignupName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
             </div>
             <div class="person-signup-set-title font-style11 font-color1">請設定您的報名資料</div>
-            <div class="person-signup-set-people font-style3 font-color1">報名人數：1人</div>
+            <div class="person-signup-set-people font-style3 font-color1">
+                <span>報名人數：</span><span id="personLimitPlace"></span>
+            </div>
             <!--自定義欄位-->
-            <div></div>
-            <div class="person-signup-notice font-style11 font-color4">
-                <span>*完成報名後，若需更改報名資料，請直接與欄位上更改後，再點選[更改資料]按鍵</span>
+            <div class="person-signup-custom-field">
+
             </div>
-            <div class="font-style11 font-color4">
-                <span>*若需取消所有報名名單，請直接點選[取消報名]按鍵</span>
+            <!--提示信息-->
+            <div class="person-signup-remark font-style11 font-color4">
+                
             </div>
-            <div class="person-footer font-style3">
+            <div class="blank-container-before-footer"></div>
+            <div id="personSignupBtn" class="person-footer font-style3 btn-disabled">
                 <span>開始報名</span>
             </div>
         </div>
