@@ -77,19 +77,19 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', ['copyRes'], shell.task([
-  'cordova plugin remove cordova-plugin-device',
-  //'cordova plugin remove cordova-plugin-console',
-  //'cordova plugin remove cordova-plugin-appversion',
-  'cordova plugin remove cordova-plugin-app-update',
-  'cordova plugin remove cordova-plugin-android-permissions',
-  'cordova plugin remove cordova-plugin-customurlscheme',
-  'cordova plugin remove cordova-plugin-qsecurity',
-  'cordova plugin remove cordova-plugin-whitelist',
-  'cordova plugin remove phonegap-plugin-mobile-accessibility',
-  'cordova plugin remove cordova-plugin-inappbrowser',
-  //'cordova plugin remove cordova-plugin-file',
-  'cordova platform rm ios',
-  'cordova platform rm android',
+  // 'cordova plugin remove cordova-plugin-device',
+  // //'cordova plugin remove cordova-plugin-console',
+  // //'cordova plugin remove cordova-plugin-appversion',
+  // 'cordova plugin remove cordova-plugin-app-update',
+  // 'cordova plugin remove cordova-plugin-android-permissions',
+  // 'cordova plugin remove cordova-plugin-customurlscheme',
+  // 'cordova plugin remove cordova-plugin-qsecurity',
+  // 'cordova plugin remove cordova-plugin-whitelist',
+  // 'cordova plugin remove phonegap-plugin-mobile-accessibility',
+  // 'cordova plugin remove cordova-plugin-inappbrowser',
+  // //'cordova plugin remove cordova-plugin-file',
+  // 'cordova platform rm ios',
+  // 'cordova platform rm android',
   'cordova platform add ios',
   'cordova platform add android',
   'cordova plugin add cordova-plugin-device',
@@ -120,6 +120,7 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-proguard',
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
   'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
+  'cordova plugin add cordova-plugin-document-viewer',
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));

@@ -44,45 +44,55 @@ $("#viewMain").pagecontainer({
           alert("Sorry! Cannot view document.");
         }
 
-        function fileSrvc() {
-            return {
-                download: download
-            };
-            var download = function(url, callback) {
-                /* Get file extantion from URL*/
-                var ext = url.split('.').pop();
-                /* Generate file name */
-                var fileInternal = new Date().getTime() + '.' + ext;
-                /* Detect device */
-                var iosDevice = navigator.userAgent.match(/(iPhone|iPod|iPad)/i);
-                CordovaSrvc.ready.then(function() {
-                    requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
-                        var fileTransfer = new FileTransfer();
-                        var downloadPath;
-                        /* Download path for iOS and android are different */
-                        if (iosDevice !== null) {
-                            downloadPath = fileSystem.root.toURL() + fileInternal;
-                        } else {
-                            downloadPath = cordova.file.externalDataDirectory + fileInternal;
-                        }
-
-                        fileTransfer.download(
-                            url,
-                            downloadPath,
-                            function(file) {
-                                callback(null, file.nativeURL);
-                            },
-                            function(error) {
-                                callback(error);
-                            },
-                            true
-                        );
-                    }, function(error) {
-                        callback(error);
-                    });
-                });
-            };
+        /*function  onErrorCreateFile(error){
+            console.log("文件创建失败！")
         }
+ 
+        //FileSystem加载失败回调
+        function  onErrorLoadFs(error){
+          console.log("文件系统加载失败！")
+        }
+
+        function writeFile(fileEntry, dataObj) {
+            fileEntry.createWriter(function (fileWriter) {
+                fileWriter.onwriteend = function() {
+                    console.log("Successful file read...");
+                };
+                fileWriter.onerror = function (e) {
+                    console.log("Failed file read: " + e.toString());
+                };
+                fileWriter.write(dataObj);
+            });
+        }*/
+
+        /*function fileDownload(url) {
+            var ext = url.split('.').pop();
+            var fileInternal = new Date().getTime() + '.' + ext;
+            var fileTransfer = new FileTransfer();
+            var downloadPath;
+            var iosDevice = navigator.userAgent.match(/(iPhone|iPod|iPad)/i);
+
+            if (iosDevice !== null) {
+                downloadPath = fileSystem.root.toURL() + fileInternal;
+            } else {
+                downloadPath = cordova.file.externalDataDirectory + fileInternal;
+            }
+
+            fileTransfer.download(
+                url,
+                downloadPath,
+                function(file) {
+                    callback(null, file.nativeURL);
+                },
+                function(error) {
+                    console.log("download error source " + error.source);
+                    console.log("download error target " + error.target);
+                    console.log("download error code" + error.code);
+                    //callback(error);
+                }
+            );
+
+        }*/
 
         /********************************** page event *************************************/
         $("#viewMain").on("pagebeforeshow", function(event, ui) {
@@ -95,13 +105,33 @@ $("#viewMain").pagecontainer({
         });
 
         $("#openPDF").on('click', function() {
-            /*var fileName = files[0];
+            var fileName = files[0];
             url = buildAssetsUrl(fileName);
-            //PluginName: cordova-plugin-document-viewer
-            cordova.plugins.SitewaertsDocumentViewer.viewDocument(url, mimeType, options, "", "", onMissingApp, onError);
-            */
+            if (device.platform === "iOS") {
+                //PluginName: cordova-plugin-document-viewer
+                cordova.plugins.SitewaertsDocumentViewer.viewDocument(url, mimeType, options, "", "", onMissingApp, onError);
+            }else {
+                /*var downloadPath;
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
+                    console.log('file system open: ' + fs.name);
+                    
+                    fs.root.getFile("InsuranceRights.pdf", { create: true, exclusive: false }, function (fileEntry) {
+
+                        console.log("fileEntry is file?" + fileEntry.isFile.toString());
+                        console.log("fileEntry is :" +fileEntry);
+                        writeFile(fileEntry, null);
+                        console.log("fileEntry.toURL is :" +fileEntry.toURL());
+                        console.log("fileEntry..fullPath is :" +fileEntry.fullPath);
+                        downloadPath = fileEntry.toURL();
+
+                    }, onErrorCreateFile);
+                }, onErrorLoadFs);*/
+                window.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf"), '_system');
+            }           
             //PluginName: cordova-plugin-file-opener2
-            /*cordova.plugins.fileOpener2.open(
+            /*
+            url = '/InsuranceRights.pdf';
+            cordova.plugins.fileOpener2.open(
                 url, // You can also use a Cordova-style file uri: cdvfile://localhost/persistent/Download/starwars.pdf
                 mimeType, 
                 { 
@@ -112,11 +142,13 @@ $("#viewMain").pagecontainer({
                         console.log('file opened successfully');                
                     }
                 }
-            );*/
+            );
             //PluginName: cordova-plugin-file-transfer to download file
-            fileSrvc.download(encodeURI('https://www.ib.gov.tw/websitedowndoc?file=chib/201412250001.pdf&filedisplay=201412250001.pdf'), function(err, nativeURL){
-             /* open file here.. we get nativeURL to open*/
+            /*fileSrvc.download(encodeURI('http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf'), function(err, nativeURL){
             });
+            */
+            //fileDownload('http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf');
+            
         });
     }
 });
