@@ -33,6 +33,11 @@ var QForum = {
         "height": 0
     },
     iOSTriggerKeyboardEvent: false,
+    editor: {
+        editable: null,
+        selection: null,
+        range: null
+    },
     initial: function() {
 
         //Handle dependency
@@ -340,6 +345,16 @@ var QForum = {
 
                         //Refresh Reply ListView
                         QForum.API.getPostDetails(true);
+
+                        if (device.platform === "iOS") {
+                            window.CKEDITOR.instances.editor.resize(QForum.editorOriginalSize.width, QForum.editorOriginalSize.height);
+
+                            $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - 20) );
+
+                            $("#" + QForum.pageID).addClass("ui-page-active");
+
+                            window.stopCheckiOSKeyboardHide();
+                        }
                     }
                 };
 
@@ -711,6 +726,12 @@ var QForum = {
 
             if (device.platform === "Android") {
                 $(window).resize(function() {
+
+                    if (typeof $(".QForum-Content.reply-fullscreen-popup").css("display") === "undefined" || 
+                        $(".QForum-Content.reply-fullscreen-popup").css("display") == "none") {
+                        return;
+                    }
+
                     var newWindowWidth = $(window).width();
                     var newWindowHeight = $(window).height();
                     var headerHeight = $(".QForum-Content.reply-fullscreen-popup .QForum.header").height();
@@ -733,10 +754,16 @@ var QForum = {
 
                         $("#" + QForum.pageID).removeClass("ui-page-active");
                     }
+
                 });
             } else if (device.platform === "iOS") {
                 window.CKEDITOR.instances.editor.on("blur", function(e) {
+
                     console.log("--------------------keyboard hide");
+
+                    if (typeof $(".QForum-Content.reply-fullscreen-popup").css("display") === "undefined") {
+                        return;
+                    }
 
                     setTimeout(function() {
 
@@ -747,10 +774,20 @@ var QForum = {
                         $("#" + QForum.pageID).addClass("ui-page-active");
 
                     }, 100);
+
                 });
 
                 window.CKEDITOR.instances.editor.on("focus", function(e) {
+
                     console.log("--------------------keyboard show up");
+
+                    //QForum.editor.editable = window.CKEDITOR.instances.editor.editable();
+                    //QForum.editor.selection = window.CKEDITOR.instances.editor.getSelection();
+                    //QForum.editor.range = QForum.editor.selection.getRanges()[0];
+
+                    if (typeof $(".QForum-Content.reply-fullscreen-popup").css("display") === "undefined") {
+                        return;
+                    }
 
                     var headerHeight = $(".QForum-Content.reply-fullscreen-popup .QForum.header").height();
                     var toolbarHeight = $(".QForum-Content.reply-fullscreen-popup .QForum.main .cke_top").height();
@@ -787,6 +824,10 @@ var QForum = {
                         if (window.innerHeight >= document.documentElement.clientHeight) {
                             if (typeof window.stopCheckiOSKeyboardHide !== "undefined") {
 
+                                if (typeof $(".QForum-Content.reply-fullscreen-popup").css("display") === "undefined") {
+                                    return;
+                                }
+
                                 window.CKEDITOR.instances.editor.resize(QForum.editorOriginalSize.width, QForum.editorOriginalSize.height);
 
                                 $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - 20) );
@@ -798,6 +839,7 @@ var QForum = {
                             }
                         }
                     }, 100);
+
                 });
 
                 window.stopCheckiOSKeyboardHide = function() {
