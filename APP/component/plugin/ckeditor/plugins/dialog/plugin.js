@@ -403,9 +403,74 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
                         $("#" + item._.inputId).val(window.ckeditorIMAGE.imageWidth);
                     } else if (item.id == "txtHeight") {
                         $("#" + item._.inputId).val(window.ckeditorIMAGE.imageHeight);
+
+                        //Darren - For QForum in iOS
+                        if (device.platform === "iOS") {
+
+                            loadingMask("show");
+
+                            setTimeout(function() {
+
+                                //Darren - create new img dom
+                                window.element = new CKEDITOR.dom.element("img");
+                                element.setAttributes({
+                                    "src": window.ckeditorIMAGE.imageServerURL,
+                                    "width": window.ckeditorIMAGE.imageWidth,
+                                    "height": window.ckeditorIMAGE.imageHeight
+                                });
+
+                                //Darren - add img dom in specific selection
+                                window.editable = window.CKEDITOR.instances.editor.editable();
+                                editable.insertElementIntoRange(element, QForum.editor.range);
+
+                                //Darren - copy content of editor
+                                var editorContent = window.CKEDITOR.instances.editor.getData();
+                                console.log(editorContent);
+
+                                //Darren - remove the img dom which in wrong position
+                                $("<div id='tempEditorContent' style='display:none;'>" + editorContent + "</div>").appendTo("body");
+                                $("#tempEditorContent").find("img[src='" + window.ckeditorIMAGE.imageServerURL + "']")[0].remove();
+
+                                //Darren - destory editor
+                                window.CKEDITOR.instances.editor.destroy();
+
+                                //Darren - new create editor
+                                CKEDITOR.replace("editor");
+
+                                //Darren - set content
+                                window.CKEDITOR.instances.editor.setData($("#tempEditorContent").html());
+                                $("#tempEditorContent").remove();
+
+                                //Darren - re-bind editor event
+                                QForum.EVENT.detectKeyboardShowUp();
+
+                                setTimeout(function() {
+                                    //Resize UI
+                                    var hederHeight = parseInt(document.documentElement.clientWidth * 13.1 / 100, 10);
+                                    var marginTop = parseInt(document.documentElement.clientWidth * 2.73 / 100, 10);
+                                    var toolBarHeight = 42;
+
+                                    $(".QForum-Content.reply-fullscreen-popup .main .cke_chrome").css({
+                                        "top": (hederHeight + marginTop + toolBarHeight + 15) + "px"
+                                    });
+
+                                    $(".QForum-Content.reply-fullscreen-popup .main .cke_top").css({
+                                        "top": (hederHeight + 15) + "px"
+                                    });
+
+                                    window.CKEDITOR.instances.editor.resize(QForum.editorOriginalSize.width, QForum.editorOriginalSize.height);
+
+                                    loadingMask("hide");
+
+                                }, 500);
+                        }, 2000);
+                        }
                     }
 
-                    loadingMask("hide");
+                    if (device.platform !== "iOS") {
+                        loadingMask("hide");
+                    }
+
                     window.ckeditorIMAGE.fire("hide");
                 }
 
@@ -1191,7 +1256,9 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 					// Fixed iOS focus issue (https://dev.ckeditor.com/ticket/12381).
 					// Keep in mind that editor.focus() does not work in this case.
 					if ( CKEDITOR.env.iOS ) {
-						editor.window.focus();
+                        if (typeof editor.window !== "undefined") {
+						  editor.window.focus();
+                        }
 					}
 				}, 0 );
 
@@ -3258,6 +3325,12 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 		 */
 		openDialog: function( dialogName, callback ) {
             console.log("-----------------openDialog");
+
+            //Darren - get editor selection of cursor
+            QForum.editor.selection = window.CKEDITOR.instances.editor.getSelection();
+            QForum.editor.range = QForum.editor.selection.getRanges()[0];
+            console.log(QForum.editor.range);
+
 			var dialog = null, dialogDefinitions = CKEDITOR.dialog._.dialogDefinitions[ dialogName ];
 
 			if ( CKEDITOR.dialog._.currentTop === null ){
