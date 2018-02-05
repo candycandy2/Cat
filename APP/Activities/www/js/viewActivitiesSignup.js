@@ -5,10 +5,13 @@ $("#viewActivitiesSignup").pagecontainer({
         var timeoutQueryEmployee = null;
         var limitPlace, currentPlace;     //限制人數和目前人數
         var teamName, departNo, submitID, submitModel;
+        var personSubmitPlace;
         var memberNoArr = [];
+        var personFieldArr = [];
         var familyFieldArr = [];
         var fieldArr = [];
         var timeoutCheckFamilySignup = null;
+        var timeoutCheckPersonSignup = null;
         var selectLength = 0, textLength = 0, checkboxLength = 0;
         //var selectClassName = "familySignupSelect";
         var checkboxArr = [];
@@ -35,10 +38,44 @@ $("#viewActivitiesSignup").pagecontainer({
                 submitModel = model;
                 if (data["ResultCode"] == "1") {
                     var signupObj = data["Content"][0];
+                    submitID = signupObj["ActivitiesID"];
 
                     if (model == "1") {
+                        //页面初始化
+                        $("#personLimitPlace").empty();
+                        $("#person-popup-option-popup").remove();
+                        $(".person-signup-custom-field").empty();
+                        for (var i = 0; i < 5; i++) {
+                            $("#column-popup-personSignupSelect-" + i + "-option-screen").remove();
+                            $("#column-popup-personSignupSelect-" + i + "-option-popup").remove();
+                        }
+                        $("#personSignupBtn").addClass("btn-disabled");
+                        //赋值
+                        $("#personSignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
+                        $("#personSignupName").text(signupObj["ActivitiesName"]);
+                        $(".person-signup-remark").empty().append("<div>" + signupObj["ActivitiesRemarks"] + "</div>");
+                        //根据限制人数动态生成报名人数栏位
+                        selectPersonByLimit(signupObj["LimitPlaces"]);
 
+                        //獲取自定義欄位數組並去空
+                        personFieldArr = getCustomField(signupObj);
+                        if (personFieldArr.length == 0) {
+                            $("#personSignupBtn").removeClass("btn-disabled");
+                        } else {
+                            //根據欄位類型，生成不同欄位
+                            for (var i in personFieldArr) {
+                                if (personFieldArr[i]["ColumnType"] == "Select") {
+                                    setSelectCustomField(personFieldArr, i, "viewActivitiesSignup", "personSignupSelect", "person-signup-custom-field");
 
+                                } else if (personFieldArr[i]["ColumnType"] == "Text") {
+                                    setTextCustomField(personFieldArr, i, "personSignupText", "person-signup-custom-field");
+
+                                } else if (personFieldArr[i]["ColumnType"] == "Multiple") {
+                                    setCheckboxCustomField(personFieldArr, i, "personSignupCheckbox", "person-signup-custom-field");
+
+                                }
+                            }
+                        }
 
                     } else if (model == "3") {
                         //頁面初始化
@@ -58,7 +95,7 @@ $("#viewActivitiesSignup").pagecontainer({
                         $("#familyEmpGender").text(signupObj["EmployeeGender"]);
                         $("#familyEmpID").text(signupObj["EmpoyeeID"]);
                         $("#familyEmpBirth").text(signupObj["EmployeeBirthday"]);
-                        submitID = signupObj["ActivitiesID"];
+
                         //選擇眷屬頁面
                         $("#familySelectThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#familySelectName").text(signupObj["ActivitiesName"]);
@@ -107,7 +144,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
                             } else if (familyFieldArr[i]["ColumnType"] == "Multiple") {
                                 checkboxLength++;
-                                setCheckboxCustomField(familyFieldArr, i, "family-signup-custom-field");
+                                setCheckboxCustomField(familyFieldArr, i, "familySignupCheckbox", "family-signup-custom-field");
 
                             }
                         }
@@ -122,9 +159,6 @@ $("#viewActivitiesSignup").pagecontainer({
                         //記錄已添加人數
                         limitPlace = signupObj["LimitPlaces"];
                         currentPlace = 0;
-
-                        //報名參數
-                        submitID = signupObj["ActivitiesID"];
 
                     } else if (model == "5") {
 
@@ -177,7 +211,6 @@ $("#viewActivitiesSignup").pagecontainer({
                     }
 
                     $(".select-family-tbody").empty().append(selectContent);
-
 
                 }
 
@@ -241,7 +274,7 @@ $("#viewActivitiesSignup").pagecontainer({
         window.ActivitiesSignupConfirmQuery = function () {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 if (data['ResultCode'] == "045911") {
                     //重新獲取報名列表
@@ -317,6 +350,41 @@ $("#viewActivitiesSignup").pagecontainer({
             }, 100);
         }
 
+        //个人报名根据限制人数生成dropdownlist
+        function selectPersonByLimit(limit) {
+            //1.转换成number类型
+            limit = Number(limit);
+
+            //2.select
+            var personData = {
+                id: "person-popup",
+                option: [],
+                title: '',
+                defaultText: "1",
+                changeDefaultText: true,
+                attr: {
+                    class: "tpl-dropdown-list-icon-arrow"
+                }
+            };
+
+            //3.popup
+            for (var i = 1; i <= limit; i++) {
+                personData["option"][i - 1] = {};
+                personData["option"][i - 1]["value"] = i;
+                personData["option"][i - 1]["text"] = i;
+            }
+
+            //4.dropdownlist
+            tplJS.DropdownList("viewActivitiesSignup", "personLimitPlace", "prepend", "typeB", personData);
+
+            //5.默认选中“1”
+            $.each($("#person-popup-option-list li"), function (index, item) {
+                if ($(item).text() == "1") {
+                    $(item).trigger("click");
+                }
+            });
+        }
+
         //檢查組隊報名所有欄位
         function checkFieldByTeam() {
             if (currentPlace > 0 && $.trim($("#departNo").val()) !== "" && $.trim($("#teamName").val()) !== "") {
@@ -331,6 +399,7 @@ $("#viewActivitiesSignup").pagecontainer({
         //获取所有自定义栏位
         function getCustomField(arr) {
             var list = [];
+            //最多5个自定义栏位
             for (var i = 1; i < 6; i++) {
                 list.push({
                     "ColumnName": arr["ColumnName_" + i],
@@ -376,7 +445,7 @@ $("#viewActivitiesSignup").pagecontainer({
         function setSelectCustomField(arr, i, page, id, container) {
             //1.聲明dropdownlist對象
             var columnData = {
-                id: "column-popup-" + i,
+                id: "column-popup-" + id + "-" + i,
                 option: [],
                 title: '',
                 defaultText: langStr["str_040"],
@@ -429,7 +498,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     var checkHtml = "";
                     for (var j in arr[i]["ColumnType"]) {
                         checkHtml += '<div class="' + className + '-checkbox-' + j
-                            + '"><img src="img/radio_n.png" class="family-signup-checkbox"><span>'
+                            + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
                             + arr[i]["ColumnType"][j]
                             + '</span></div>';
                     }
@@ -454,21 +523,20 @@ $("#viewActivitiesSignup").pagecontainer({
         }
 
         //生成Checkbox自定義欄位
-        function setCheckboxCustomField(arr, i, content) {
+        function setCheckboxCustomField(arr, i, id, content) {
             //先處理checkbox所有選項
             var mutipleArr = arr[i]["ColumnItem"].split(";");
             var mutipleContent = "";
             for (var j in mutipleArr) {
-                mutipleContent += '<div data-name="checkbox'
-                    + i
-                    + '"><img src="img/radio_n.png" class="family-signup-checkbox"><span>'
+                mutipleContent += '<div data-name="checkbox-' + id + '-' + i
+                    + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
                     + mutipleArr[j]
                     + '</span></div>';
             }
 
             var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
                 + arr[i]["ColumnName"]
-                + '</label><div class="custom-field-checkbox font-style3 font-color1">';
+                + '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + id + '-' + i + '">';
 
             $("." + content).append(fieldContent + mutipleContent + "</div><div>");
 
@@ -491,7 +559,7 @@ $("#viewActivitiesSignup").pagecontainer({
             }
         }
 
-        //檢查所有欄位是否爲空
+        //檢查眷属报名所有欄位是否爲空
         function checkFamilyForm() {
             //select
             var selLength = 0;
@@ -534,6 +602,33 @@ $("#viewActivitiesSignup").pagecontainer({
             } else {
                 $("#selectFamilyBtn").addClass("btn-disabled");
             }
+        }
+
+        //记录个人报名自定义栏位值，并检查是否为空
+        function saveValueAndCheckPersonForm(arr, name, value, bool) {
+            //bool为true，添加checkbox;若为false，删除checkbox;若为other，text和select赋值
+            for (var i in arr) {
+                if (name == arr[i]["ColumnName"] && bool == true) {
+                    arr[i]["ColumnAnswer"] += (";" + value);
+                } else if (name == arr[i]["ColumnName"] && bool == false) {
+                    arr[i]["ColumnAnswer"] = arr[i]["ColumnAnswer"].replace(";" + value, "");
+                } else if (name == arr[i]["ColumnName"] && bool == null) {
+                    arr[i]["ColumnAnswer"] = value;
+                }
+            }
+
+            //检查表单是否为空
+            for (var i in arr) {
+                if (arr[i]["ColumnAnswer"] == "") {
+                    $("#personSignupBtn").addClass("btn-disabled");
+                    break;
+                } else {
+                    $("#personSignupBtn").removeClass("btn-disabled");
+                }
+            }
+
+            //console.log(personFieldArr);
+
         }
 
         /********************************** page event *************************************/
@@ -715,24 +810,24 @@ $("#viewActivitiesSignup").pagecontainer({
                 checkFamilyForm();
                 //記錄欄位值
                 setFieldValue(selfName, selfVal);
-            }, 2000);
+            }, 1000);
 
         });
 
         //checkbox
         $(".family-signup-custom-field").on("click", ".custom-field-checkbox > div", function () {
-            var src = $(this).find("img").attr("src").split("/")[1];
+            var src = $(this).find("img").attr("src");
             var name = $(this).parent().prev().text();
             var value = $(this).children("span").text();
 
-            if (src == "radio_n.png") {
+            if (src == "img/checkbox_n.png") {
                 for (var i in checkboxArr) {
                     if (name == checkboxArr[i]["name"]) {
                         checkboxArr[i]["value"].push(value);
                     }
                 }
 
-                $(this).find("img").attr("src", "img/radio_s.png");
+                $(this).find("img").attr("src", "img/checkbox_s.png");
             } else {
                 for (var i in checkboxArr) {
                     for (var j in checkboxArr[i]["value"]) {
@@ -743,7 +838,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     }
                 }
 
-                $(this).find("img").attr("src", "img/radio_n.png");
+                $(this).find("img").attr("src", "img/checkbox_n.png");
             }
 
             //檢查表單
@@ -768,6 +863,92 @@ $("#viewActivitiesSignup").pagecontainer({
                 changePageByPanel("viewSelectFamily", true);
             }
         });
+
+
+        /*********************************** person signup ***********************************/
+        //選擇人數dropdownlist
+        $("#personLimitPlace").on("change", "select", function () {
+            personSubmitPlace = $(this).val();
+        });
+
+        //select
+        $(".person-signup-custom-field").on("change", ".personSignupSelect select", function () {
+            var selfName = $(this).parent().prev().text();
+            var selfVal = $(this).val();
+            //保存栏位值并检查表单
+            saveValueAndCheckPersonForm(personFieldArr, selfName, selfVal, null);
+        });
+
+        //text
+        $(".person-signup-custom-field").on("keyup", ".personSignupText", function () {
+            var selfName = $(this).prev().text();
+            var selfVal = $(this).val();
+
+            if (timeoutCheckPersonSignup != null) {
+                clearTimeout(timeoutCheckPersonSignup);
+                timeoutCheckPersonSignup = null;
+            }
+            timeoutCheckPersonSignup = setTimeout(function () {
+                //保存栏位值并检查表单
+                saveValueAndCheckPersonForm(personFieldArr, selfName, selfVal, null);
+            }, 1000);
+
+        });
+
+        //checkbox
+        $(".person-signup-custom-field").on("click", ".custom-field-checkbox > div", function () {
+            var src = $(this).find("img").attr("src");
+            var name = $(this).parent().prev().text();
+            var value = $(this).children("span").text();
+
+            if (src == "img/checkbox_n.png") {
+                //保存栏位值并检查表单
+                saveValueAndCheckPersonForm(personFieldArr, name, value, true);
+                $(this).find("img").attr("src", "img/checkbox_s.png");
+            } else {
+                //保存栏位值并检查表单
+                saveValueAndCheckPersonForm(personFieldArr, name, value, false);
+                $(this).find("img").attr("src", "img/checkbox_n.png");
+            }
+
+        });
+
+        //開始報名
+        $("#personSignupBtn").on("click", function () {
+            var self = $(this).hasClass("btn-disbaled");
+            if (!self) {
+                for (var i in personFieldArr) {
+                    if (personFieldArr[i]["ColumnType"] == "Multiple") {
+                        var StrLength = personFieldArr[i]["ColumnAnswer"].length;
+                        personFieldArr[i]["ColumnAnswer"] = personFieldArr[i]["ColumnAnswer"].substring(1, StrLength);
+                    }
+                }
+
+                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                    + submitID
+                    + '</ActivitiesID><SignupModel>'
+                    + submitModel
+                    + '</SignupModel><SignupPlaces>'
+                    + personSubmitPlace
+                    + '</SignupPlaces><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><ColumnAnswer_1>'
+                    + (personFieldArr[0] == undefined ? "" : personFieldArr[0]["ColumnAnswer"])
+                    + '</ColumnAnswer_1><ColumnAnswer_2>'
+                    + (personFieldArr[1] == undefined ? "" : personFieldArr[1]["ColumnAnswer"])
+                    + '</ColumnAnswer_2><ColumnAnswer_3>'
+                    + (personFieldArr[2] == undefined ? "" : personFieldArr[2]["ColumnAnswer"])
+                    + '</ColumnAnswer_3><ColumnAnswer_4>'
+                    + (personFieldArr[3] == undefined ? "" : personFieldArr[3]["ColumnAnswer"])
+                    + '</ColumnAnswer_4><ColumnAnswer_5>'
+                    + (personFieldArr[4] == undefined ? "" : personFieldArr[4]["ColumnAnswer"])
+                    + '</ColumnAnswer_5></LayoutHeader>';
+
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery();
+            }
+        });
+
 
     }
 });
