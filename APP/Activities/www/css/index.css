@@ -161,7 +161,8 @@ input[type="text"] {
     -webkit-appearance: none;
 }
 
-.familySignupText {
+.familySignupText,
+.familySelectText {
     width: 89vw;
     height: 10vw;
     margin-top: 2.14vw;
@@ -545,7 +546,7 @@ input[type="text"] {
     color: #323232;
     font-weight: normal;
     font-size: 3.349vw !important;
-    border-bottom: 1px solid #d6d6d6;
+    border-bottom: 1px solid #989898;
 }
 
 #teamTable tr:nth-of-type(2n+2) {
@@ -553,7 +554,7 @@ input[type="text"] {
     color: #323232;
     font-weight: normal;
     font-size: 3.349vw !important;
-    border-bottom: 1px solid #f6f6f6;
+    border-bottom: 1px solid #d6d6d6;
 }
 
 #teamTable tr:nth-of-type(2n+3) {
@@ -856,6 +857,99 @@ input[type="text"] {
 .cancelSignupMsg .ui-content>.main .main-paragraph,
 .recordSignupMsg .ui-content>.main .main-paragraph {
     text-align: left !important;
+}
+
+/******************************************* viewSelectFamily **************************************/
+.select-family-title {
+    padding: 4vw 0 2.14vw 0;
+}
+
+.select-family-thead {
+    width: 92.58vw;
+    height: 12.077vw;
+    border-bottom: 1px solid #989898;
+}
+
+.select-family-thead > div {
+    float: left;
+}
+
+.select-family-thead > div:nth-of-type(1),
+.select-family-thead > div:nth-of-type(5) {
+    width: 10.545vw;
+}
+
+.select-family-thead > div:nth-of-type(2),
+.select-family-thead > div:nth-of-type(3),
+.select-family-thead > div:nth-of-type(4) {
+    width: 23.83vw;
+    line-height: 12.077vw;
+    text-align: center;
+}
+
+.family-all-checkbox-expand {
+    width: 5.463vw;
+    height: 5.463vw;
+    margin-left: 2.541vw;
+    margin-top: 3.307vw;
+}
+
+.family-checkbox-img {
+    width: 5.463vw;
+    height: 5.463vw;
+    margin-left: 2.541vw;
+    margin-top: 5.037vw;
+}
+
+.family-expand-img {
+    width: 4vw;
+    height: 4vw;
+    margin-left: 3.272vw;
+    margin-top: 5.768vw;
+}
+
+.select-family-tbody > div {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.select-family-tr {
+    width: 92.58vw;
+    height: 15.538vw;
+}
+
+.select-family-tr > div {
+    float: left;
+}
+
+.select-family-tr > div:nth-of-type(1),
+.select-family-tr > div:nth-of-type(5) {
+    width: 10.545vw;
+}
+
+.select-family-tr > div:nth-of-type(2),
+.select-family-tr > div:nth-of-type(3),
+.select-family-tr > div:nth-of-type(4) {
+    width: 23.83vw;
+    line-height: 15.538vw;
+    text-align: center;
+}
+
+.select-family-remark {
+    margin-top: 4.3vw;
+    line-height: 1.5;
+}
+
+.select-family-detail {
+    display: none;
+}
+
+.select-family-id {
+    padding: 2.14vw 0;
+}
+
+.select-family-birth {
+    padding-bottom: 2.14vw;
+    border-bottom: 1px solid #d6d6d6;
 }
 
 /***************************************** viewActivitiesRecord *************************************/

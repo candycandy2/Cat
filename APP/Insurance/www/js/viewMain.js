@@ -44,6 +44,46 @@ $("#viewMain").pagecontainer({
           alert("Sorry! Cannot view document.");
         }
 
+        function fileSrvc() {
+            return {
+                download: download
+            };
+            var download = function(url, callback) {
+                /* Get file extantion from URL*/
+                var ext = url.split('.').pop();
+                /* Generate file name */
+                var fileInternal = new Date().getTime() + '.' + ext;
+                /* Detect device */
+                var iosDevice = navigator.userAgent.match(/(iPhone|iPod|iPad)/i);
+                CordovaSrvc.ready.then(function() {
+                    requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+                        var fileTransfer = new FileTransfer();
+                        var downloadPath;
+                        /* Download path for iOS and android are different */
+                        if (iosDevice !== null) {
+                            downloadPath = fileSystem.root.toURL() + fileInternal;
+                        } else {
+                            downloadPath = cordova.file.externalDataDirectory + fileInternal;
+                        }
+
+                        fileTransfer.download(
+                            url,
+                            downloadPath,
+                            function(file) {
+                                callback(null, file.nativeURL);
+                            },
+                            function(error) {
+                                callback(error);
+                            },
+                            true
+                        );
+                    }, function(error) {
+                        callback(error);
+                    });
+                });
+            };
+        }
+
         /********************************** page event *************************************/
         $("#viewMain").on("pagebeforeshow", function(event, ui) {
 
@@ -55,10 +95,28 @@ $("#viewMain").pagecontainer({
         });
 
         $("#openPDF").on('click', function() {
-            var fileName = files[0];
+            /*var fileName = files[0];
             url = buildAssetsUrl(fileName);
-            // Methods in "" are onShow and onClose.
+            //PluginName: cordova-plugin-document-viewer
             cordova.plugins.SitewaertsDocumentViewer.viewDocument(url, mimeType, options, "", "", onMissingApp, onError);
+            */
+            //PluginName: cordova-plugin-file-opener2
+            /*cordova.plugins.fileOpener2.open(
+                url, // You can also use a Cordova-style file uri: cdvfile://localhost/persistent/Download/starwars.pdf
+                mimeType, 
+                { 
+                    error : function(e) { 
+                        console.log('Error status: ' + e.status + ' - Error message: ' + e.message);
+                    },
+                    success : function () {
+                        console.log('file opened successfully');                
+                    }
+                }
+            );*/
+            //PluginName: cordova-plugin-file-transfer to download file
+            fileSrvc.download(encodeURI('https://www.ib.gov.tw/websitedowndoc?file=chib/201412250001.pdf&filedisplay=201412250001.pdf'), function(err, nativeURL){
+             /* open file here.. we get nativeURL to open*/
+            });
         });
     }
 });

@@ -9,7 +9,7 @@ $("#viewActivitiesRecord").pagecontainer({
         window.ActivitiesRecordQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var recordArr = data["Content"];
@@ -61,7 +61,7 @@ $("#viewActivitiesRecord").pagecontainer({
         window.ActivitiesRecordCancelQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "045913") {
                     ActivitiesListQuery();
@@ -101,8 +101,8 @@ $("#viewActivitiesRecord").pagecontainer({
 
         });
 
-        //取消報名
-        $(document).on("click", ".record-delete", function () {
+        //取消報名-popup
+        $("#viewRecordList").on("click", ".record-delete", function () {
             currentID = $(this).parent().attr("data-id");
             currentNo = $(this).parent().attr("data-no");
             currentModel = $(this).parent().attr("data-model");
@@ -116,9 +116,9 @@ $("#viewActivitiesRecord").pagecontainer({
 
         });
 
-
-        $("#recordSignup").on("click", function () {
-            loadingMask("show");
+        //確定取消報名-API
+        $("#confirmCancelRecord").on("click", function () {
+            //loadingMask("show");
             activitiesRecordCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + currentID
                 + '</ActivitiesID><SignupNo>'
@@ -129,7 +129,7 @@ $("#viewActivitiesRecord").pagecontainer({
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';
 
-            console.log(activitiesRecordCancelQueryData);
+            //console.log(activitiesRecordCancelQueryData);
 
             ActivitiesRecordCancelQuery();
         });
