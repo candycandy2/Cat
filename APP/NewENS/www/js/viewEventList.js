@@ -57,7 +57,7 @@ $("#viewEventList").pagecontainer({
 
                     showEventAdd();
 
-                    //Darren 20180123-
+                    //QForum
                     setQForumBoardID();
 
                 } else if (resultCode === "014923") {
@@ -827,7 +827,7 @@ $("#viewEventList").pagecontainer({
 
                     showEventAdd();
 
-                    //Darren 20180123-
+                    //QForum
                     setQForumBoardID();
                 }
             }
@@ -1113,7 +1113,6 @@ $("#viewEventList").pagecontainer({
             var paddingBottom = parseInt(document.documentElement.clientWidth * 18 / 100, 10);
             $("#viewEventList").css("padding-bottom", paddingBottom + "px");
 
-            //Darren 20180123- chatRoom.resetBadge();
         });
 
         /********************************** dom event *************************************/
