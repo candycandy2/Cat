@@ -1,0 +1,109 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-document-viewer@0.9.7",
+        "scope": null,
+        "escapedName": "cordova-plugin-document-viewer",
+        "name": "cordova-plugin-document-viewer",
+        "rawSpec": "0.9.7",
+        "spec": "0.9.7",
+        "type": "version"
+      },
+      ""
+    ]
+  ],
+  "_from": "cordova-plugin-document-viewer@0.9.7",
+  "_id": "cordova-plugin-document-viewer@0.9.7",
+  "_inCache": true,
+  "_location": "/cordova-plugin-document-viewer",
+  "_nodeVersion": "6.11.4",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-plugin-document-viewer-0.9.7.tgz_1509960566825_0.02674963721074164"
+  },
+  "_npmUser": {
+    "name": "regnete",
+    "email": "schauerte@sitewaerts.de"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-document-viewer@0.9.7",
+    "scope": null,
+    "escapedName": "cordova-plugin-document-viewer",
+    "name": "cordova-plugin-document-viewer",
+    "rawSpec": "0.9.7",
+    "spec": "0.9.7",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-document-viewer/-/cordova-plugin-document-viewer-0.9.7.tgz",
+  "_shasum": "1b93b42aa6d8d7666e000da9e9e312459d47a4cf",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-document-viewer@0.9.7",
+  "_where": "",
+  "author": {
+    "name": "Felix Schauerte"
+  },
+  "bugs": {
+    "url": "https://github.com/sitewaerts/cordova-plugin-document-viewer/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-document-viewer",
+    "platforms": [
+      "android",
+      "ios",
+      "windows"
+    ]
+  },
+  "dependencies": {},
+  "description": "PDF Document viewer cordova plugin for iOS, Android and Windows 8.1 + 10.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "1b93b42aa6d8d7666e000da9e9e312459d47a4cf",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-document-viewer/-/cordova-plugin-document-viewer-0.9.7.tgz"
+  },
+  "engines": {
+    "cordovaDependencies": {
+      "0.9.7": {
+        "cordova": ">=3.7.0",
+        "cordova-windows": ">=4.4.0"
+      }
+    }
+  },
+  "gitHead": "8a6958c2643a80ab5d995d3a36d49bfe5589fad3",
+  "homepage": "https://github.com/sitewaerts/cordova-plugin-document-viewer#readme",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova",
+    "cordova-android",
+    "cordova-ios",
+    "cordova-windows",
+    "pdf"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "regnete",
+      "email": "schauerte@sitewaerts.de"
+    },
+    {
+      "name": "esch",
+      "email": "kontakt@sitewaerts.de"
+    }
+  ],
+  "name": "cordova-plugin-document-viewer",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sitewaerts/cordova-plugin-document-viewer.git"
+  },
+  "scripts": {},
+  "version": "0.9.7"
+}
