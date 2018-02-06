@@ -105,13 +105,13 @@ $("#viewMain").pagecontainer({
         });
 
         $("#openPDF").on('click', function() {
-            var fileName = files[0];
+            /*var fileName = files[0];
             url = buildAssetsUrl(fileName);
             if (device.platform === "iOS") {
                 //PluginName: cordova-plugin-document-viewer
                 cordova.plugins.SitewaertsDocumentViewer.viewDocument(url, mimeType, options, "", "", onMissingApp, onError);
             }else {
-                /*var downloadPath;
+                var downloadPath;
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
                     console.log('file system open: ' + fs.name);
                     
@@ -127,7 +127,8 @@ $("#viewMain").pagecontainer({
                     }, onErrorCreateFile);
                 }, onErrorLoadFs);*/
                 window.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf"), '_system');
-            }           
+                //cordova.InAppBrowser.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf"), '_system', 'location=no');
+            //}           
             //PluginName: cordova-plugin-file-opener2
             /*
             url = '/InsuranceRights.pdf';
