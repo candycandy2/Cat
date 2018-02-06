@@ -42,6 +42,7 @@ var QForum = {
         range: null
     },
     lastBodyScrollTop: 0,
+    lastCommentOffsetTop: 0,
     initial: function() {
 
         //Handle dependency
@@ -533,6 +534,10 @@ var QForum = {
 
             } else {
 
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 0);
+
                 if (action != null) {
                     if (action === "new") {
 
@@ -610,7 +615,7 @@ var QForum = {
 
                 //Clear list-data
                 if (QForum.replyLastID == 1) {
-                    //$("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
+                    $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
                 }
 
                 //Combine Reply Content
@@ -689,6 +694,16 @@ var QForum = {
                             //Hide Reply-Fullscreen Popup
                             console.log("========reply listview");
                             $(".QForum-Content.reply-fullscreen-popup").hide();
+
+                            //Recovery Scroll Behavior, then scroll to the last postion, don't scroll to top.
+                            var lastCommentOffsetTop = QForum.lastCommentOffsetTop;
+
+                            tplJS.recoveryPageScroll();
+
+                            $("html body").animate({
+                                scrollTop: lastCommentOffsetTop
+                            }, 0);
+
                             loadingMask("hide");
 
                             //Reply Succes show Prompt
@@ -948,6 +963,7 @@ var QForum = {
                         if ($(el).prop("sequence").length !== 0) {
 
                             var sequence = parseInt($(el).prop("sequence"), 10);
+                            QForum.lastCommentOffsetTop = $(el).offset().top;
 
                             var rect = el.getBoundingClientRect();
                             if (
@@ -959,6 +975,8 @@ var QForum = {
 
                                 //Scroll top to bottom
                                 if (bodyScrollTop > QForum.lastBodyScrollTop) {
+                                    console.log("Scroll top to bottom");
+
                                     if (sequence >= QForum.replyLastID && sequence >= QForum.replyDataRange) {
 
                                         if (sequence == QForum.replyDataRange) {
@@ -985,6 +1003,8 @@ var QForum = {
 
                                 //Scorll bottom to top
                                 if (bodyScrollTop < QForum.lastBodyScrollTop) {
+                                    console.log("Scorll bottom to top");
+
                                     if (sequence < QForum.replyLastID) {
 
                                         if ((sequence - QForum.replyDataRange) == 0) {
