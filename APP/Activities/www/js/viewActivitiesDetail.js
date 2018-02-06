@@ -3,7 +3,7 @@ $("#viewActivitiesDetail").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
         var isFull, isRepeatSignup, isSignup, actModel, actID, modelName, viewName;
-        var lastSignupID, lastManageID;
+        //var lastSignupID, lastManageID;
 
 
         /********************************** function *************************************/
@@ -35,24 +35,24 @@ $("#viewActivitiesDetail").pagecontainer({
                     if (status == "Y") {
                         if (isSignup == "Y" && actModel !== 4) {
                             //管理
-                            showBtnByID("alreadyBtn", isSignup);
+                            showBtnByModel("alreadyBtn", isSignup);
                         } else if (isSignup == "Y" && isFull == "N" && actModel == 4) {
                             //報名、管理
-                            showBtnByID("continueBtn", isSignup);
+                            showBtnByModel("continueBtn", isSignup);
                         } else if (isSignup == "Y" && isFull == "Y" && actModel == 4) {
                             //管理
-                            showBtnByID("alreadyBtn", isSignup);
+                            showBtnByModel("alreadyBtn", isSignup);
                         } else if (isSignup == "N" && isFull == "Y") {
                             //已滿額
-                            showBtnByID("fullBtn", isSignup);
+                            showBtnByModel("fullBtn", isSignup);
                         } else if (isSignup == "N" && isFull == "N") {
                             //報名 
-                            showBtnByID("beginBtn", isSignup);
+                            showBtnByModel("beginBtn", isSignup);
                             $("#beginBtn").removeClass("btn-disabled");
                         }
                     } else if (status == "N") {
                         //未開放報名的活動，反灰且不可選“我要報名”
-                        showBtnByID("beginBtn", isSignup);
+                        showBtnByModel("beginBtn", isSignup);
                         $("#beginBtn").addClass("btn-disabled");
                     }
 
@@ -84,19 +84,8 @@ $("#viewActivitiesDetail").pagecontainer({
 
         };
 
-        //根據不同活動類型，show不同頁面
-        function showViewByModel(view, model) {
-            $.each($("#" + view + " .page-main > div"), function (index, item) {
-                if ($(item).attr("data-model") == model) {
-                    $(item).show();
-                } else {
-                    $(item).hide();
-                }
-            });         
-        }
-
         //根絕不同活動類型，show不同按鈕
-        function showBtnByID(btn, bl) {
+        function showBtnByModel(btn, bl) {
             $.each($(".detail-footer > div"), function (index, item) {
                 if ($(item).attr("id") == btn) {
                     $(item).show();
@@ -134,43 +123,40 @@ $("#viewActivitiesDetail").pagecontainer({
         //點擊 "開始報名" 跳轉到編輯頁
         $(".detail-signup-btn").on("click", function () {
             var self = $(this).hasClass("btn-disabled");
-            if (isRepeatSignup == "Y" && !self) {
-                //已報名同類活動，不能報名該活動
-                popupMsgInit('.signupedSameMsg');
-            } else if (isRepeatSignup == "N" && !self) {
-                //1.呼叫活動報名API
-                activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
-                    + actID
-                    + '</ActivitiesID><SignupModel>'
-                    + actModel
-                    + '</SignupModel><EmployeeNo>'
-                    + myEmpNo
-                    + '</EmployeeNo></LayoutHeader>';
-
-                //console.log(activitiesSignupQueryData);
-                ActivitiesSignupQuery(actModel);
-
-                //根據不同活動類型，展示不同頁面，並跳轉
-                showViewByModel("viewActivitiesSignup", actModel);
-                setTimeout(function() {
-                    changePageByPanel("viewActivitiesSignup", true);
-                }, 500);
-
-                //2.如果是眷屬報名管理，呼叫選擇眷屬API
-                if(actModel == "3") {
-                    activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
-                    + actID
-                    + '</ActivitiesID><EmployeeNo>'
-                    + myEmpNo
-                    + '</EmployeeNo><IsSignup>'
-                    + isSignup
-                    + '</IsSignup></LayoutHeader>';
-
-                    //console.log(activitiesSignupFamilyQueryData);
-                    ActivitiesSignupFamilyQuery(isSignup);
+            if(!self) {
+                if (isRepeatSignup == "Y" && actModel != "4") {
+                    //已報名同類活動，不能報名該活動
+                    popupMsgInit('.signupedSameMsg');
+                } else {
+                    //1.呼叫活動報名API
+                    activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
+                        + actID
+                        + '</ActivitiesID><SignupModel>'
+                        + actModel
+                        + '</SignupModel><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo></LayoutHeader>';
+    
+                    //console.log(activitiesSignupQueryData);
+                    ActivitiesSignupQuery(actModel);
+    
+                    //2.如果是眷屬報名管理，呼叫選擇眷屬API
+                    if(actModel == "3") {
+                        activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
+                        + actID
+                        + '</ActivitiesID><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo><IsSignup>'
+                        + isSignup
+                        + '</IsSignup></LayoutHeader>';
+    
+                        //console.log(activitiesSignupFamilyQueryData);
+                        ActivitiesSignupFamilyQuery(isSignup);
+                    }
+                    
                 }
-                
             }
+            
 
         });
 
@@ -187,12 +173,6 @@ $("#viewActivitiesDetail").pagecontainer({
 
             //console.log(activitiesSignupManageQueryData);
             ActivitiesSignupManageQuery(actModel);
-
-            //根據不同活動類型，展示不同頁面，並跳轉
-            showViewByModel("viewActivitiesManage", actModel);
-            setTimeout(function() {
-                changePageByPanel("viewActivitiesManage", true);
-            }, 500);
 
             //2.如果是眷屬報名管理，呼叫選擇眷屬API
             if(actModel == "3") {
