@@ -1,7 +1,7 @@
 git checkout master
 
 # ------ add release tag ------
-git tag -a v1.3.3.$BUILD_NUMBER.Develop.BackEnd -m "v1.3.3.$BUILD_NUMBER[Develop] BackEnd"
+git tag -a v1.4.1.$BUILD_NUMBER.Develop.BackEnd -m "v1.4.1.$BUILD_NUMBER[Develop] BackEnd"
 git push origin --tags
 
 chmod -R o=rx *
@@ -85,7 +85,7 @@ sshpass -p "readrsync" rsync -vh deploy.jenkins rsyncuser@10.82.246.95:/var/www/
 
 git pull
 git add qplay/deploy.jenkins
-git commit -m "v1.3.3.$BUILD_NUMBER[Develop] BackEnd"
+git commit -m "v1.4.1.$BUILD_NUMBER[Develop] BackEnd"
 git push
 
 # ======== qplay End ========

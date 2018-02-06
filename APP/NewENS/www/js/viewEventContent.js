@@ -149,7 +149,6 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member .text").html(userSeenCount);
 
                         //Message Count
-                        //Darren 20180123- chatRoom.setChatroomID(data['Content'].chatroom_id);
                         var msgCount;
 
                         for (j=0; j<messageCountData.length; j++) {
@@ -218,7 +217,6 @@ $("#viewEventContent").pagecontainer({
                         eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                         //ChatRoom Message List
-                        //Darren 20180123- JM.Message.getGroupConversationHistoryMessage(chatRoom.messageHandler);
 
                         //Update User Read Status & Time
                         //note: if Event status=finish or User=create_user or User has readed, do not update Event Status
@@ -241,7 +239,7 @@ $("#viewEventContent").pagecontainer({
                         }
                     }
 
-                    //Darren 20180123-
+                    //QForum
                     loadingMask("hide");
                     QForum.VIEW.createReplyUI(data['Content'].chatroom_id, "viewEventContent");
 
@@ -264,108 +262,6 @@ $("#viewEventContent").pagecontainer({
             }();
 
         };
-
-        //Darren 20180123-
-        /*
-        window.chatRoomListView = function(action) {
-            action = action || null;
-
-            var messages = chatRoom.Messages[chatRoom.nowChatRoomID];
-
-            if (messages.length > 0) {
-
-                $("#msgContentHR").show();
-                $(".message-content").show();
-                $("#messageContent .message-data-list").remove();
-
-                //Message List
-                var messageListHTML = $("template#tplMessageList").html();
-                var msgCount = 0;
-                var latestUser;
-                var latstMsg;
-                photoData = {};
-
-                for (var i=0; i<messages.length; i++) {
-
-                    //Only display [text] or [image], do not display [event message]
-                    if (messages[i]["msg_type"] !== "text" && messages[i]["msg_type"] !== "image") {
-                        continue;
-                    }
-
-                    msgCount++;
-
-                    var messageList = $(messageListHTML);
-
-                    messageList.find(".user").html(messages[i]["from_id"]);
-                    messageList.find(".datetime").html(messages[i]["ctimeText"]);
-
-                    if (messages[i]["msg_type"] === "text") {
-                        messageList.find(".text").removeClass("hide");
-                        messageList.find(".text").html(messages[i]["msg_body"]["text"]);
-                    } else if (messages[i]["msg_type"] === "image") {
-                        messageList.find(".image").removeClass("hide");
-
-                        if (messages[i]["msg_body"]["media_id"].indexOf("file:") != -1) {
-                            messageList.find(".image img").prop("src", messages[i]["msg_body"]["media_id"]);
-                        } else {
-                            //messageList.find(".image img").prop("src", "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"]);
-                            var dataArray = messages[i]["msg_body"]["media_id"].split("/");
-                            var idArray = dataArray[3].split(".");
-                            photoData[idArray[0]] = "http://media.file.jpush.cn/" + messages[i]["msg_body"]["media_id"];
-
-                            messageList.find(".image img").prop("src", "img/component/ajax-loader.gif");
-                            messageList.find(".image img").prop("id", idArray[0]);
-                            //messageList.find(".image img").prop("src", "https://dl.im.jiguang.cn/qiniu/image/j/54BAF99DD8326F50087B260036BFE6A9");
-                        }
-
-                        messageList.find(".image img").data("width", messages[i]["msg_body"]["width"]);
-                        messageList.find(".image img").data("height", messages[i]["msg_body"]["height"]);
-                    }
-
-                    if ((i+1) == messages.length) {
-                        messageList.find(".ui-hr").remove();
-                        latestUser = messages[i]["from_id"];
-
-                        if (messages[i]["msg_type"] === "text") {
-                            latstMsg = messages[i]["msg_body"]["text"];
-                        } else if (messages[i]["msg_type"] === "image") {
-                            latstMsg = langStr["str_094"]; //"上傳了一張圖片";
-                        }
-                    }
-
-                    $("#messageContent").append(messageList);
-                }
-
-                //Message-preview
-                if (action === "showPreview") {
-                    $(".message-preview").html(latestUser + " : " + latstMsg);
-                    $(".message-preview").show();
-                } else {
-                    $(".message-preview").html("");
-                    $(".message-preview").hide();
-                }
-
-                //The count of [text] or [image] messages = 0
-                if (msgCount === 0) {
-                    $("#msgContentHR").hide();
-                    $(".message-content").hide();
-                }
-
-            } else {
-                //The count of messages = 0
-                $("#msgContentHR").hide();
-                $(".message-content").hide();
-            }
-
-            if ($(".previewImageDiv").css("display") === "block") {
-                $(".previewImageDiv").hide();
-                $(".previewImageDiv-AddHeight").hide();
-            }
-
-            loadingMask("hide");
-            footerFixed();
-        };
-        */
 
         function updateEventStatus() {
             //Update 1. [event_status] 2. [read_time]
@@ -595,8 +491,6 @@ $("#viewEventContent").pagecontainer({
             //Photo Confirm - Button Event
             $("#photoCancel").on("click", function() {
                 confirmPhotoClose();
-                $("#openCameraPhotoLibrary").popup("option", "dismissible", true);
-                $("#openCameraPhotoLibrary").popup("open");
             });
 
             $("#photoConfirm").on("click", function() {
@@ -620,9 +514,6 @@ $("#viewEventContent").pagecontainer({
             var image = document.getElementById('finalImage');
             image.src = photoUrl;
             uploadPhoto = true;
-
-            $(".previewImageDiv").show();
-            $(".previewImageDiv-AddHeight").show();
 
             $(".event-content-photo-full-screen").remove();
 
@@ -699,13 +590,6 @@ $("#viewEventContent").pagecontainer({
 
             tplJS.Popup("viewEventContent", "contentEventContent", "append", eventFinishedConfirmData);
 
-            //UI Popup : Open Camera / Photo Library
-            var openCameraPhotoLibraryData = {
-                id: "openCameraPhotoLibrary",
-                content: $("template#tplOpenCameraPhotoLibrary").html()
-            };
-
-            tplJS.Popup("viewEventContent", "contentEventContent", "append", openCameraPhotoLibraryData);
         });
 
         $("#viewEventContent").on("pageshow", function(event, ui) {
@@ -718,13 +602,6 @@ $("#viewEventContent").pagecontainer({
                 }
             }
 
-            $(".previewImageDiv").hide();
-            $(".previewImageDiv-AddHeight").hide();
-            $('#msgText').prop('placeholder', langStr["str_096"] /*"請輸入訊息"*/);
-            $("#msgText").val("");
-
-            //Darren 20180123- chatRoom.resetBadge();
-
             //Chagne Action Title
             if (projectName === "ITS") {
                 $(".langStr023").show();
@@ -735,34 +612,6 @@ $("#viewEventContent").pagecontainer({
             }
         });
         /********************************** dom event *************************************/
-
-        //Open Photo Library
-        $(document).on("click", "#viewEventContent #cameraButton", function() {
-            $("#openCameraPhotoLibrary").popup("option", "dismissible", true);
-            $("#openCameraPhotoLibrary").popup("open");
-        });
-
-        $(document).on({
-            click: function(event) {
-                if ($(event.target).parent().hasClass("cancel")) {
-                    var openType = "PHOTOLIBRARY";
-                } else if ($(event.target).parent().hasClass("confirm")) {
-                    var openType = "CAMERA";
-                }
-
-                $("#openCameraPhotoLibrary").popup("close");
-                openFilePicker(openType);
-            }
-        }, "#openCameraPhotoLibrary");
-
-        //Photo - Small Preview
-        $(document).on("click", ".previewImageDiv .delete-button", function() {
-            uploadPhoto = false;
-            $(".previewImageDiv").hide();
-            $(".previewImageDiv-AddHeight").hide();
-
-            footerFixed();
-        });
 
         //Photo - FullScreen Preview
         $(document).on("click", "#finalImage", function() {
@@ -825,40 +674,6 @@ $("#viewEventContent").pagecontainer({
             footerFixed();
         });
 
-        //Chatroom Msg Button
-        $(document).on("click", "#msgButton", function() {
-
-            var uploadText = true;
-            var msg = $("#msgText").val();
-
-            var uploadImg = false;
-
-            if (msg.length === 0) {
-                uploadText = false;
-            }
-
-            if (uploadText) {
-                loadingMask("show");
-
-                //Darren 20180123- JM.Message.sendGroupTextMessage(msg, chatRoom.messageHandler);
-                //Darren 20180123- chatRoom.sendNewMsg = true;
-                $("#msgText").val("");
-            }
-
-            if ($(".previewImageDiv").css("display") === "block") {
-                uploadImg = true;
-            }
-
-            if (uploadImg) {
-                loadingMask("show");
-                //Darren 20180123- chatRoom.localPhotoUrl = photoUrl;
-
-                //Darren 20180123- JM.Message.sendGroupImageMessage(photoUrl, chatRoom.messageHandler);
-                //Darren 20180123- chatRoom.sendNewMsg = true;
-            }
-
-        });
-
         //Chatroom msg-image click full screen
         $(document).on("click", ".chat-img", function() {
             var imageWidth = $(this).data("width");
@@ -894,19 +709,6 @@ $("#viewEventContent").pagecontainer({
             }
 
             footerFixed();
-        });
-
-        //iOS open keyboard
-        $(document).on("click", "#msgText", function() {
-            if (device.platform === "iOS") {
-                $(".ui-footer").removeClass("ui-footer-fixed");
-                var scrollHeight = $("body")[0].scrollHeight - $("#viewEventContent .ui-footer").height() - $("#viewEventContent .ui-header").height();
-                $(window).scrollTop(scrollHeight);
-            }
-        });
-
-        $(document).on("focusout", "#msgText", function() {
-            $(".ui-footer").addClass("ui-footer-fixed");
         });
 
     }
