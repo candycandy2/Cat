@@ -127,7 +127,6 @@ $("#viewMain").pagecontainer({
                     }, onErrorCreateFile);
                 }, onErrorLoadFs);*/
                 window.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf"), '_system');
-                //cordova.InAppBrowser.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf"), '_system', 'location=no');
             //}           
             //PluginName: cordova-plugin-file-opener2
             /*
