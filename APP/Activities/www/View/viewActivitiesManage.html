@@ -16,26 +16,32 @@
         <div id="viewPersonManage" data-model="1">
             <div class="team-signup-title">
                 <div>
-                    <img src="img/event_date.png">
+                    <img src="img/event_date.png" id="personManageThumbnail">
                 </div>
-                <div class="font-style10 font-color2">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                <div class="font-style10 font-color2" id="personManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
             </div>
             <div class="peraon-manage-signuped font-style11 font-color4">
-                <span>目前活動名額已額滿，</span>
-                <span>您已報名本項活動：1人</span>
+                <span id="personIsFull">目前活動名額已額滿，</span>
+                <span>您已報名本項活動：</span>
+                <span id="personSignupedPlace">1</span>
+                <span>人</span>
             </div>
             <div class="person-signup-set-title font-style11 font-color1">請設定您的報名資料</div>
-            <div class="person-signup-set-people font-style3 font-color1">報名人數：1人</div>
+            <div class="person-signup-set-people font-style3 font-color1">
+                <span>報名人數：</span>
+                <span id="personManagePlace"></span>
+            </div>
             <!--自定義欄位-->
-            <div></div>
-            <div class="person-signup-notice font-style11 font-color4">
-                <span>*完成報名後，若需更改報名資料，請直接與欄位上更改後，再點選[更改資料]按鍵</span>
+            <div class="person-manage-custom-field">
+
             </div>
-            <div class="font-style11 font-color4">
-                <span>*若需取消所有報名名單，請直接點選[取消報名]按鍵</span>
+            <!--提示信息-->
+            <div class="person-manage-remark font-style11">
+                
             </div>
+            <div class="blank-container-before-footer"></div>
             <div class="person-footer font-style3 two-btn-inline">
-                <span>取消報名</span><span>更改資料</span>
+                <span id="cancelPersonSignup">取消報名</span><span id="updatePersonSignup">更改資料</span>
             </div>
         </div>
 
@@ -244,7 +250,7 @@
                         <!--不取消-->
                         <span class="langStr" data-id="str_046"></span>
                     </div>
-                    <div class="btn-cancel" id="cancelSignup">
+                    <div class="btn-cancel" id="confirmCancelSignup">
                         <!--取消-->
                         <span class="langStr" data-id="str_045"></span>
                     </div>

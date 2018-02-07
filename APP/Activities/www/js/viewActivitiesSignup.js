@@ -32,7 +32,7 @@ $("#viewActivitiesSignup").pagecontainer({
         window.ActivitiesSignupQuery = function (model) {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 //報名提交的活動類型
                 submitModel = model;
@@ -164,13 +164,16 @@ $("#viewActivitiesSignup").pagecontainer({
 
                     }
 
-
-
+                    //根據不同活動類型，展示不同頁面，並跳轉
+                    showViewByModel("viewActivitiesSignup", model);
+                    setTimeout(function() {
+                        changePageByPanel("viewActivitiesSignup", true);
+                    }, 500);
 
                 } else if (data["ResultCode"] == "045910") {
-
+                    //已報名同類活動，不能報名該活動
+                    popupMsgInit('.signupedSameMsg');
                 }
-
 
                 loadingMask("hide");
             };
@@ -187,7 +190,7 @@ $("#viewActivitiesSignup").pagecontainer({
         window.ActivitiesSignupFamilyQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var selectFamilyArr = data["Content"];
@@ -274,7 +277,7 @@ $("#viewActivitiesSignup").pagecontainer({
         window.ActivitiesSignupConfirmQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['ResultCode'] == "045911") {
                     //重新獲取報名列表
@@ -286,6 +289,7 @@ $("#viewActivitiesSignup").pagecontainer({
                             $(item).trigger("click");
                         }
                     });
+                    $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
 
                     //清空欄位值
                     memberNoArr = [];
@@ -299,7 +303,12 @@ $("#viewActivitiesSignup").pagecontainer({
 
                 } else if (data['ResultCode'] == "045912") {
                     //失敗，報名組數超過剩餘名額
-                    popupMsgInit('.overLimitMsg');
+                    if(submitModel == "4") {
+                        $(".overLimitMsg .main-paragraph").text(langStr["str_025"]);
+                    } else {
+                        $(".overLimitMsg .main-paragraph").text(langStr["str_024"]);
+                    }
+                    popupMsgInit(".overLimitMsg");
                 }
 
                 loadingMask("hide");
@@ -396,27 +405,7 @@ $("#viewActivitiesSignup").pagecontainer({
             }
         }
 
-        //获取所有自定义栏位
-        function getCustomField(arr) {
-            var list = [];
-            //最多5个自定义栏位
-            for (var i = 1; i < 6; i++) {
-                list.push({
-                    "ColumnName": arr["ColumnName_" + i],
-                    "ColumnType": arr["ColumnType_" + i],
-                    "ColumnItem": arr["ColumnItem_" + i],
-                    "ColumnAnswer": ""
-                });
-            }
-
-            for (var i = 0; i < list.length; i++) {
-                if (list[i]["ColumnName"] == "") {
-                    list.splice(i, 1);
-                    i--;
-                }
-            }
-            return list;
-        }
+        
 
         function customFieldByItem(arr) {
             var list = [];
@@ -528,7 +517,7 @@ $("#viewActivitiesSignup").pagecontainer({
             var mutipleArr = arr[i]["ColumnItem"].split(";");
             var mutipleContent = "";
             for (var j in mutipleArr) {
-                mutipleContent += '<div data-name="checkbox-' + id + '-' + i
+                mutipleContent += '<div data-name="checkbox-' + id + '-' + j
                     + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
                     + mutipleArr[j]
                     + '</span></div>';
@@ -761,7 +750,8 @@ $("#viewActivitiesSignup").pagecontainer({
         });
 
         $("#sendTeamSignup").on("click", function () {
-            if (!$(this).hasClass("btn-disabled")) {
+            var self = $(this).hasClass("btn-disabled");
+            if (!self) {
                 //loadingMask("show");
                 activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                     + submitID
