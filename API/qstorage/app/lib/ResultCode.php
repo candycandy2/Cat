@@ -28,7 +28,7 @@ abstract class ResultCode
     const _997903_FieldFormatError = "997903"; //欄位格式錯誤
     const _997904_AccountNotExist = "997904"; //帳號不存在
     const _997907_UploadDataTypeIsNotAllow = "997907"; //上傳類型不符規定
-    const _997908_FileSizeExceedsTheAllowableLimit = "997909"; //上传档案超过大小限制
+    const _997908_FileSizeExceedsTheAllowableLimit = "997908"; //上传档案超过大小限制
     const _997909_NoFileToDelete = "997909"; //查無檔案可刪除
     const _997910_uuidNotExist = "997910"; //uuid不存在
     const _997998_NoAuthorityToDeleteThisFile = "997998";  //沒有權限刪除此檔案
