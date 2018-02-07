@@ -1037,8 +1037,9 @@ var QForum = {
 
             $(document).on({
                 vclick: function() {
-                    setTimeout(function() {
-                        if (!$(this).hasClass("none-work")) {
+
+                    if (!$(this).hasClass("none-work")) {
+                        setTimeout(function() {
 
                             if (QForum.commentAction === "new") {
                                 QForum.API.newComment(QForum.METHOD.getEditorContent());
@@ -1046,8 +1047,9 @@ var QForum = {
                                 QForum.API.modifyComment(QForum.METHOD.getEditorContent());
                             }
 
-                        }
-                    }, 500);
+                        }, 500);
+                    }
+
                 }
             }, "#replySubmit.QForum");
 
