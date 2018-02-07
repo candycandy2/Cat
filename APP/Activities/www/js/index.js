@@ -71,3 +71,37 @@ function changePageByPanel(pageId, panel) {
     }
     $("#mypanel").panel("close");
 }
+
+//根據不同活動類型，show不同頁面
+function showViewByModel(view, model) {
+    $.each($("#" + view + " .page-main > div"), function (index, item) {
+        if ($(item).attr("data-model") == model) {
+            $(item).show();
+        } else {
+            $(item).hide();
+        }
+    });
+}
+
+//獲取所有自定義欄位並放入數組當中
+function getCustomField(obj) {
+    var list = [];
+    //最多5个自定义栏位
+    for (var i = 1; i < 6; i++) {
+        list.push({
+            "ColumnName": obj["ColumnName_" + i],
+            "ColumnType": obj["ColumnType_" + i],
+            "ColumnItem": obj["ColumnItem_" + i],
+            "ColumnAnswer": obj["ColumnAnswer_" + i] == undefined ? "" : obj["ColumnAnswer_" + i]
+        });
+    }
+
+    //去除空白欄位
+    for (var i = 0; i < list.length; i++) {
+        if (list[i]["ColumnName"] == "") {
+            list.splice(i, 1);
+            i--;
+        }
+    }
+    return list;
+}

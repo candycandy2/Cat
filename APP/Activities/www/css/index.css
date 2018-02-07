@@ -91,14 +91,14 @@
 
 .two-btn-inline > span:nth-of-type(1) {
     display: inline-block;
-    width: 49vw;
+    width: 49.7vw;
     height: 10.656vw;
     border-right: 1px solid #ffffff;
 }
 
 .two-btn-inline > span:nth-of-type(2) {
     display: inline-block;
-    width: 49vw;
+    width: 49.7vw;
     height: 10.656vw;
 }
 
@@ -163,7 +163,8 @@ input[type="text"] {
 
 .familySignupText,
 .familySelectText,
-.personSignupText {
+.personSignupText,
+.personManageText {
     width: 89vw;
     height: 10vw;
     margin-top: 2.14vw;
@@ -189,6 +190,24 @@ input[type="text"] {
 .blank-container-before-footer {
     width: 95.28vw;
     height: 12vw;
+}
+
+.popup-msg-style {
+    width: 28VW;
+    height: 4VW;
+    margin: auto;
+    opacity: 0.9;
+    padding: 6.2VW 1VW 6.2VW 1VW;
+    position: fixed;
+    top: 70vw;
+    left: 36vw;
+    background-color: #666;
+    border-radius: 1.5px;
+    color: #F0F0F0;
+    font-size: 3.6VW;
+    text-align: center;
+    z-index: 2;
+    display: none;
 }
 
 /************************************** viewActivitiesList ******************************************/
@@ -857,6 +876,11 @@ input[type="text"] {
 .cancelSignupMsg .ui-content>.main .main-paragraph,
 .recordSignupMsg .ui-content>.main .main-paragraph {
     text-align: left !important;
+}
+
+.person-manage-remark {
+    margin-top: 4.3vw;
+    line-height: 1.5;
 }
 
 /******************************************* viewSelectFamily **************************************/
