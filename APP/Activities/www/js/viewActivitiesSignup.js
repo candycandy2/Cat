@@ -32,7 +32,7 @@ $("#viewActivitiesSignup").pagecontainer({
         window.ActivitiesSignupQuery = function (model) {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 //報名提交的活動類型
                 submitModel = model;
@@ -161,7 +161,9 @@ $("#viewActivitiesSignup").pagecontainer({
                         currentPlace = 0;
 
                     } else if (model == "5") {
-
+                        //賦值
+                        $("#timeSignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
+                        $("#timeSignupName").text(signupObj["ActivitiesName"]);
                     }
 
                     //根據不同活動類型，展示不同頁面，並跳轉
@@ -274,7 +276,7 @@ $("#viewActivitiesSignup").pagecontainer({
         };
 
         //活動報名送出
-        window.ActivitiesSignupConfirmQuery = function () {
+        window.ActivitiesSignupConfirmQuery = function (actID) {
 
             this.successCallback = function (data) {
                 //console.log(data);
@@ -285,7 +287,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
                     //跳轉
                     $.each($("#openList .activity-list"), function (index, item) {
-                        if ($(item).attr("data-id") == submitID) {
+                        if ($(item).attr("data-id") == actID) {
                             $(item).trigger("click");
                         }
                     });
@@ -616,7 +618,7 @@ $("#viewActivitiesSignup").pagecontainer({
                 }
             }
 
-            //console.log(personFieldArr);
+            //console.log(arr);
 
         }
 
@@ -768,7 +770,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</MemberEmpNo></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery();
+                ActivitiesSignupConfirmQuery(submitID);
             }
 
         });
@@ -905,15 +907,8 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //開始報名
         $("#personSignupBtn").on("click", function () {
-            var self = $(this).hasClass("btn-disbaled");
+            var self = $(this).hasClass("btn-disabled");
             if (!self) {
-                for (var i in personFieldArr) {
-                    if (personFieldArr[i]["ColumnType"] == "Multiple") {
-                        var StrLength = personFieldArr[i]["ColumnAnswer"].length;
-                        personFieldArr[i]["ColumnAnswer"] = personFieldArr[i]["ColumnAnswer"].substring(1, StrLength);
-                    }
-                }
-
                 activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                     + submitID
                     + '</ActivitiesID><SignupModel>'
@@ -935,7 +930,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</ColumnAnswer_5></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery();
+                ActivitiesSignupConfirmQuery(submitID);
             }
         });
 
