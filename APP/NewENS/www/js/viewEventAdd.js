@@ -76,13 +76,6 @@ $("#viewEventAdd").pagecontainer({
                         var selectedValue = $(this).val();
                         relatedEventList(selectedValue);
                     });
-
-                    if (action === "edit") {
-                        editEvent(eventContentData);
-                    } else {
-                        loadingMask("hide");
-                    }
-
                 } else {
                     //off event which set in template.js
                     $(document).off("click", "#eventAdditional" + ID);
@@ -90,7 +83,11 @@ $("#viewEventAdd").pagecontainer({
                     $(document).on("click", "#eventAdditional" + ID, function() {
                         $("#noRelatedEventExist").popup("open");
                     });
+                }
 
+                if (action === "edit") {
+                    editEvent(eventContentData);
+                } else {
                     loadingMask("hide");
                 }
             };
