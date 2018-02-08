@@ -164,7 +164,8 @@ input[type="text"] {
 .familySignupText,
 .familySelectText,
 .personSignupText,
-.personManageText {
+.personManageText,
+.timeSignupText {
     width: 89vw;
     height: 10vw;
     margin-top: 2.14vw;
@@ -753,7 +754,7 @@ input[type="text"] {
     padding: 4vw 0 2.14vw 0; 
 }
 
-#timeSignupTable,
+/* #timeSignupTable,
 #timeManageTable {
     border-collapse: collapse;
 }
@@ -778,7 +779,7 @@ input[type="text"] {
 #timeSignupTable tr:nth-of-type(n+2) {
     height: 15.538vw;
     border-bottom: 1px solid #d6d6d6;
-}
+} */
 
 .time-signup-thead {
     width: 92.58vw;
@@ -846,38 +847,42 @@ input[type="text"] {
     width: 92.58vw;
 }
 
-.time-manage-signuped1 {
+.time-manage-title {
     width: 100%;
     padding: 4vw 0 4vw 0;
 }
 
-.time-manage-signuped2 {
+.time-manage-remark {
     width: 100%;
     padding-bottom: 4vw;
     border-bottom: 1px solid #d6d6d6;
 }
 
-.time-manage-signuped3 {
+.time-manage-detail {
     width: 100%;
     padding: 4vw 0 2.14vw 0;
 }
 
-.time-manage-signuped4 {
+.time-manage-field {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.time-manage-info {
     width: 100%;
     padding-bottom: 2.14vw;
 }
 
-.time-manage-signuped5 {
+.time-manage-place {
     width: 100%;
     padding: 4.3vw 0 2.14vw 0;
 }
 
-.time-manage-line {
+/* .time-manage-line {
     width: 92.58vw;
     height: 1px;
     background-color: #d6d6d6;
     overflow: hidden;  
-}
+} */
 
 #timeManageTable tr {
     height: 8.05vw;
