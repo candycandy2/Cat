@@ -59,6 +59,8 @@ var QStorage = {
             if (resultData["ResultCode"] === "1") {
                 callback(resultData["Content"]);
                 QStorage.uploadImgDatas.push(resultData["Content"].thumbnail_1024_url);
+            } else if (resultData["ResultCode"] === "997908") {
+                //Data size over 10MB
             }
         }
 

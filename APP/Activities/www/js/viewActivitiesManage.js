@@ -37,6 +37,7 @@ $("#viewActivitiesManage").pagecontainer({
                         $("#personIsFull").css("display", manageObj["IsFull"] == "Y" ? "block" : "none");
                         $("#personSignupedPlace").text(manageObj["SignupPlaces"]);
                         $(".person-manage-remark").empty().append("<div>" + manageObj["ActivitiesRemarks"] + "</div>");
+                        //dropdownlist
                         personDropdownlist(manageObj["LimitPlaces"], manageObj["SignupPlaces"]);
                         personManageArr = getCustomField(manageObj);
 
@@ -49,8 +50,6 @@ $("#viewActivitiesManage").pagecontainer({
                                 setTextCustomField(personManageArr, i, "personManageText", "person-manage-custom-field");
 
                             } else if (personManageArr[i]["ColumnType"] == "Multiple") {
-                                //加字符“;”用於之後檢查表單是否爲空
-                                personManageArr[i]["ColumnAnswer"] = ";" + personManageArr[i]["ColumnAnswer"];
                                 setCheckboxCustomField(personManageArr, i, "personManageCheckbox", "person-manage-custom-field");
 
                             }
@@ -60,6 +59,7 @@ $("#viewActivitiesManage").pagecontainer({
                         currentActName = manageObj["ActivitiesName"];
                         currentCancelContent = manageObj["EmployeeName"] + " / " + "同仁" + " / " + manageObj["SignupPlaces"] + "人";
                         cancelID = manageObj["ActivitiesID"];
+                        cancelNo = manageObj["SignupNo"];
 
                     } else if (model == "3") {
 
@@ -180,6 +180,7 @@ $("#viewActivitiesManage").pagecontainer({
                             $(item).trigger("click");
                         }
                     });
+                    $("#cancelSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
 
                     //重新獲取報名記錄
                     ActivitiesRecordQuery();
@@ -383,6 +384,7 @@ $("#viewActivitiesManage").pagecontainer({
                 }
             }
 
+            console.log(arr);
         }
 
 
@@ -467,7 +469,7 @@ $("#viewActivitiesManage").pagecontainer({
 
         //確定取消報名
         $("#confirmCancelSignup").on("click", function () {
-            //loadingMask("show");
+            loadingMask("show");
             activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + cancelID
                 + '</ActivitiesID><SignupNo>'
@@ -479,8 +481,8 @@ $("#viewActivitiesManage").pagecontainer({
                 + '</EmployeeNo></LayoutHeader>';
 
             //console.log(activitiesSignupCancelQueryData);
-
             ActivitiesSignupCancelQuery();
+
         });
 
 
@@ -538,6 +540,36 @@ $("#viewActivitiesManage").pagecontainer({
             $(".cancelSignupMsg .header-title").text(currentActName);
             $(".cancelSignupMsg .main-paragraph").text(currentCancelContent);
             popupMsgInit('.cancelSignupMsg');
+        });
+
+        //更改資料
+        $("#updatePersonSignup").on("click", function () {
+            var self = $(this).hasClass("btn-disabled");
+            if (!self) {
+                loadingMask("show");
+                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                    + cancelID
+                    + '</ActivitiesID><SignupModel>'
+                    + cancelModel
+                    + '</SignupModel><SignupPlaces>'
+                    + submitSignupPlace
+                    + '</SignupPlaces><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><ColumnAnswer_1>'
+                    + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
+                    + '</ColumnAnswer_1><ColumnAnswer_2>'
+                    + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
+                    + '</ColumnAnswer_2><ColumnAnswer_3>'
+                    + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
+                    + '</ColumnAnswer_3><ColumnAnswer_4>'
+                    + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
+                    + '</ColumnAnswer_4><ColumnAnswer_5>'
+                    + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
+                    + '</ColumnAnswer_5></LayoutHeader>';
+
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(cancelID);
+            }
         });
 
     }

@@ -780,6 +780,58 @@ input[type="text"] {
     border-bottom: 1px solid #d6d6d6;
 }
 
+.time-signup-thead {
+    width: 92.58vw;
+    height: 12.077vw;
+    border-bottom: 1px solid #989898;
+}
+
+.time-signup-thead > div {
+    float: left;
+    height: 12.077vw;
+    text-align: center;
+    line-height: 12.077vw;
+}
+
+.time-signup-thead > div:nth-of-type(1) {
+    width: 9.912vw;
+}
+
+.time-signup-thead > div:nth-of-type(2),
+.time-signup-thead > div:nth-of-type(3),
+.time-signup-thead > div:nth-of-type(4) {
+    width: 27.556vw;
+}
+
+.time-signup-tr {
+    width: 92.58vw;
+    height: 15.538vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.time-signup-tr > div {
+    float: left;
+    height: 15.538vw;
+    text-align: center;
+    line-height: 15.538vw;
+}
+
+.time-signup-tr > div:nth-of-type(1) {
+    width: 9.912vw;
+}
+
+.time-signup-tr > div:nth-of-type(2),
+.time-signup-tr > div:nth-of-type(3),
+.time-signup-tr > div:nth-of-type(4) {
+    width: 27.556vw;
+}
+
+.time-signup-radio {
+    width: 4.5vw;
+    height: 4.5vw;
+    margin-top: 5.5vw;
+}
+
 /***************************************** viewActivitiesManage ************************************/
 
 #viewActivitiesManage .page-main > div {
@@ -789,7 +841,7 @@ input[type="text"] {
     margin-left: 3.71vw;
 }
 
-.peraon-manage-signuped {
+.person-manage-signuped {
     margin-top: 4vw;
     width: 92.58vw;
 }
