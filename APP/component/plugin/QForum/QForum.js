@@ -43,6 +43,11 @@ var QForum = {
     },
     lastBodyScrollTop: 0,
     lastCommentOffsetTop: 0,
+    pullRefresh: {
+        startTop: 0,
+        endTop: 0,
+        moveCount: 0
+    },
     initial: function() {
 
         //Handle dependency
@@ -122,6 +127,9 @@ var QForum = {
             }
 
         }
+
+        //Page Pull to Refresh Event
+        QForum.EVENT.pagePullRefresh();
 
     },
     getSignature: function(action, signatureTime) {
@@ -959,6 +967,7 @@ var QForum = {
                 var bodyScrollTop = $("body").scrollTop();
 
                 if (activePageID === QForum.pageID) {
+
                     $(".QForum-Content.reply-listview .list-data").each(function(index, el) {
                         if ($(el).prop("sequence").length !== 0) {
 
@@ -1030,6 +1039,63 @@ var QForum = {
                 }
 
             });
+        },
+        pagePullRefresh: function() {
+
+            $(document).on({
+                touchstart: function(event) {
+                    QForum.pullRefresh.startTop = $("body").scrollTop();
+                },
+                touchmove: function(event) {
+                    QForum.pullRefresh.moveCount++;
+                    e.preventDefault();
+                },
+                touchend: function(event) {
+
+                    QForum.pullRefresh.endTop = $("body").scrollTop();
+
+                    if (QForum.pullRefresh.startTop == 0 && QForum.pullRefresh.startTop == QForum.pullRefresh.endTop && QForum.pullRefresh.endTop == 0) {
+                        console.log(QForum.pullRefresh.startTop);
+                        console.log(QForum.pullRefresh.endTop);
+
+                        if (QForum.pullRefresh.moveCount > 5) {
+                            console.log("=========== pull to refresh");
+
+                            $("<div id='pullRefreshImg' style='width:32px; height:32px; border-radius:50%; border:1px solid #A7A7A7;'><img src='img/pullRefresh.gif' width='32' height='32'></div>").css({
+                                "position": "absolute",
+                                "top": 0,
+                                "left": "45%",
+                                "opacity": 0
+                            }).appendTo("body").stop().animate({
+                                "top": 150,
+                                "opacity": 1
+                            }, 500, function() {
+
+                                setTimeout(function() {
+
+                                    $("#pullRefreshImg").stop().animate({
+                                        "top": 0,
+                                        "opacity": 0
+                                    }, 500, function() {
+                                        $("#pullRefreshImg").remove();
+
+                                        //Recovery Data to default setting.
+                                        QForum.METHOD.setReplyLastID(1);
+                                        QForum.lastCommentOffsetTop = 0;
+
+                                        QForum.API.getPostDetails();
+                                    })
+
+                                }, 1000);
+
+                            })
+
+                            QForum.pullRefresh.moveCount = 0;
+                        }
+                    }
+                }
+            }, "body");
+
         },
         replySubmit: function() {
 
