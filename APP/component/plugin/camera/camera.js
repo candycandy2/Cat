@@ -28,6 +28,25 @@ var CameraPlugin = {
     renderHTML: function() {
 
         //UI Popup : Image size overflow
+        var notSupportPanoramasData = {
+            id: "notSupportPanoramas",
+            content: $("template#tplNotSupportPanoramas").html()
+        };
+
+        tplJS.Popup(null, null, "append", notSupportPanoramasData);
+
+        $(document).on({
+            click: function(event) {
+                if ($(event.target).hasClass("confirm") || $(event.target).parent().hasClass("confirm")) {
+                    $("#notSupportPanoramas").popup("close");
+
+                    footerFixed();
+                    loadingMask("hide");
+                }
+            }
+        }, "#notSupportPanoramas");
+
+        //UI Popup : Image size overflow
         var imageSizeOverflowData = {
             id: "imageSizeOverflow",
             content: $("template#tplImageSizeOverflow").html()
@@ -78,42 +97,68 @@ var CameraPlugin = {
 
         navigator.camera.getPicture(function cameraSuccess(imageUri) {
 
-            //For JMessage upload image, the path is diff in iOS / Android
-            //Android > [/storage/emulated/0/DCIM/Camera/XXX.jpg]
-            //iOS > [/var/mobile/Containers/Data/Application/7DC5CDFF-6581-4AD3-B165-B604EBAB1250/tmp/XXX.jpg]
-            if (device.platform === "iOS") {
-                var imageRealURL = imageUri.substr(7);
-            }
+            //Check if the image type is [panoramas], CKEditor doesn't support it.
+            $("<img id='cameraTempImage' style='display:none;' src='" + imageUri + "'>").load(function() {
 
-            if (device.platform === "Android") {
-                var imageRealURL = imageUri.substr(7);
-            }
+                $(this).appendTo("body");
 
-            //cordova-plugin-camera: if select photo from PHOTOLIBRARY, it will return /storage/XXX.jpg?12345678
-            //JMessage only accept the path [/storage/XXX.jpg], so, need to ignore the string [?12345678]
-            var imageRealURLArray = imageRealURL.split("?");
-            CameraPlugin.imageUploadURL = imageRealURLArray[0];
+                var checkImgSize = true;
+                var imgWidth = $("#cameraTempImage").width();
+                var imgHeight = $("#cameraTempImage").height();
 
-            //After select image, check the size.
-            window.resolveLocalFileSystemURL(imageUri, function success(fileEntry) {
-                console.log(fileEntry);
+                if (imgWidth > imgHeight) {
+                    if (imgWidth / imgHeight > 4) {
+                        //Image type is [panoramas]
+                        checkImgSize = false;
 
-                fileEntry.file(function(fileObj) {
-                    console.log(fileObj);
-
-                    var sizeMB = (parseInt(fileObj.size, 10) / 1024 / 1024).toFixed(2);
-                    console.log("sizeMB----:"+sizeMB);
-
-                    if (sizeMB > CameraPlugin.imageMaxSize) {
-                        $("#imageSizeOverflow").popup("open");
-                        callback("sizeOverflow", CameraPlugin.imageUploadURL);
-                    } else {
-                        callback("sizeOK", CameraPlugin.imageUploadURL);
+                        $("#notSupportPanoramas").popup("open");
                     }
-                });
+                }
 
-            }, function () {
-                // error
+                if (checkImgSize) {
+
+                    //For JMessage upload image, the path is diff in iOS / Android
+                    //Android > [/storage/emulated/0/DCIM/Camera/XXX.jpg]
+                    //iOS > [/var/mobile/Containers/Data/Application/7DC5CDFF-6581-4AD3-B165-B604EBAB1250/tmp/XXX.jpg]
+                    if (device.platform === "iOS") {
+                        var imageRealURL = imageUri.substr(7);
+                    }
+
+                    if (device.platform === "Android") {
+                        var imageRealURL = imageUri.substr(7);
+                    }
+
+                    //cordova-plugin-camera: if select photo from PHOTOLIBRARY, it will return /storage/XXX.jpg?12345678
+                    //JMessage only accept the path [/storage/XXX.jpg], so, need to ignore the string [?12345678]
+                    var imageRealURLArray = imageRealURL.split("?");
+                    CameraPlugin.imageUploadURL = imageRealURLArray[0];
+
+                    //After select image, check the size.
+                    window.resolveLocalFileSystemURL(imageUri, function success(fileEntry) {
+                        console.log(fileEntry);
+
+                        fileEntry.file(function(fileObj) {
+                            console.log(fileObj);
+
+                            var sizeMB = (parseInt(fileObj.size, 10) / 1024 / 1024).toFixed(2);
+                            console.log("sizeMB----:"+sizeMB);
+
+                            if (sizeMB > CameraPlugin.imageMaxSize) {
+                                $("#imageSizeOverflow").popup("open");
+                                callback("sizeOverflow", CameraPlugin.imageUploadURL);
+                            } else {
+                                callback("sizeOK", CameraPlugin.imageUploadURL);
+                            }
+                        });
+
+                    }, function () {
+                        // error
+                    });
+
+                }
+
+                $("#cameraTempImage").remove();
+
             });
 
         }, function cameraError(error) {
