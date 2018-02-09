@@ -128,9 +128,6 @@ var QForum = {
 
         }
 
-        //Page Pull to Refresh Event
-        QForum.EVENT.pagePullRefresh();
-
     },
     getSignature: function(action, signatureTime) {
         if (action === "getTime") {
@@ -490,6 +487,9 @@ var QForum = {
 
             //Window Scroll Event
             QForum.EVENT.windowScroll();
+
+            //Page Pull to Refresh Event
+            QForum.EVENT.pagePullRefresh();
 
         },
         replyButtonFooter: function() {
@@ -1048,7 +1048,6 @@ var QForum = {
                 },
                 touchmove: function(event) {
                     QForum.pullRefresh.moveCount++;
-                    e.preventDefault();
                 },
                 touchend: function(event) {
 
@@ -1069,14 +1068,14 @@ var QForum = {
                             }).appendTo("body").stop().animate({
                                 "top": 150,
                                 "opacity": 1
-                            }, 500, function() {
+                            }, 250, function() {
 
                                 setTimeout(function() {
 
                                     $("#pullRefreshImg").stop().animate({
                                         "top": 0,
                                         "opacity": 0
-                                    }, 500, function() {
+                                    }, 250, function() {
                                         $("#pullRefreshImg").remove();
 
                                         //Recovery Data to default setting.
@@ -1086,7 +1085,7 @@ var QForum = {
                                         QForum.API.getPostDetails();
                                     })
 
-                                }, 1000);
+                                }, 1500);
 
                             })
 
@@ -1094,7 +1093,7 @@ var QForum = {
                         }
                     }
                 }
-            }, "body");
+            }, "#" + QForum.pageID);
 
         },
         replySubmit: function() {
