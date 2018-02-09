@@ -264,7 +264,7 @@ $("#viewActivitiesSignup").pagecontainer({
                             + selectFamilyArr[i]["FamilyID"]
                             + '</span><span> / </span><span>'
                             + selectFamilyArr[i]["FamilyBirthday"]
-                            + '</span></div><div class="select-family-field">' + selectFieldByFamily(fieldArr, i, "family-select") + '</div></div></div>';
+                            + '</span></div><div class="select-family-field">' + $(".family-signup-custom-field").html() + '</div></div></div>';
                     }
 
                     $(".select-family-tbody").empty().append(selectContent);
@@ -591,28 +591,7 @@ $("#viewActivitiesSignup").pagecontainer({
         //     checkboxArr.push(mutipleObj);
         // }
 
-        //按時段編號排序
-        function sortByTimeID(prop1) {
-            return function (obj1, obj2) {
-                //time
-                var val1 = obj1[prop1];
-                var val2 = obj2[prop1];
-
-                //轉換成numer類型
-                if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
-                    val1 = Number(val1);
-                    val2 = Number(val2);
-                }
-
-                if (val1 < val2) {
-                    return -1;
-                } else if (val1 > val2) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        }
+        
 
         //檢查時段是否選擇
         function checkTimeRadio() {

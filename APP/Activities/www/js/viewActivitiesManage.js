@@ -155,6 +155,11 @@ $("#viewActivitiesManage").pagecontainer({
                         var timeContent = '';
                         for (var i in timeArr) {
                             if (timeArr[i]["IsSignupTime"] != "") {
+                                //取消报名信息
+                                currentActName = timeArr[i]["ActivitiesName"];
+                                currentCancelContent = timeArr[i]["EmployeeName"] + " / " + "同仁" + " / 1人";
+                                cancelNo = timeArr[i]["SignupNo"];
+                                //动态生成栏位
                                 timeContent += '<div class="time-manage-info"><span>報名時段：</span><span>'
                                     + timeArr[i]["IsSignupTime"] + '</span></div>';
                                 if (timeArr[i]["ColumnAnswer_1"] != "") {
@@ -182,12 +187,40 @@ $("#viewActivitiesManage").pagecontainer({
                                         + timeArr[i]["ColumnName_5"] + '：</span><span>'
                                         + timeArr[i]["ColumnAnswer_5"] + '</span></div>';
                                 }
+                                break;
                             }
                         }
                         $(".time-manage-field").empty().append(timeContent);
 
                         //展示所有時段
-                        
+                        var timeShortArr = [];
+                        for(var i in timeArr) {
+                            timeShortArr.push({
+                                "TimeSort": timeArr[i]["TimeSort"],
+                                "SignupTime": timeArr[i]["SignupTime"],
+                                "QuotaPlaces": timeArr[i]["QuotaPlaces"],
+                                "RemainingPlaces": timeArr[i]["RemainingPlaces"]
+                            });
+                        }
+                        timeShortArr.sort(sortByTimeID("TimeSort"));
+
+                        var timeShortContent = "";
+                        for(var i in timeShortArr) {
+                            timeShortContent += '<div class="time-manage-tr" data-sort="'
+                                + timeShortArr[i]["TimeSort"]
+                                + '"><div>'
+                                + timeShortArr[i]["SignupTime"]
+                                + '</div><div>'
+                                + timeShortArr[i]["QuotaPlaces"]
+                                + '</div><div>'
+                                + timeShortArr[i]["RemainingPlaces"]
+                                + '</div></div>';
+                        }
+                        $(".time-manage-tbody").empty().append(timeShortContent);
+
+                        //取消报名
+                        cancelID = timeObj["ActivitiesID"];
+
                     }
 
                     //根據不同活動類型，展示不同頁面，並跳轉
@@ -614,6 +647,13 @@ $("#viewActivitiesManage").pagecontainer({
                 //console.log(activitiesSignupConfirmQueryData);
                 ActivitiesSignupConfirmQuery(cancelID);
             }
+        });
+
+        //取消报名-popup
+        $("#cancelTimeSignup").on("click", function() {
+            $(".cancelSignupMsg .header-title").text(currentActName);
+            $(".cancelSignupMsg .main-paragraph").text(currentCancelContent);
+            popupMsgInit('.cancelSignupMsg');
         });
 
     }

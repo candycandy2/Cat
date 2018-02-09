@@ -754,33 +754,6 @@ input[type="text"] {
     padding: 4vw 0 2.14vw 0; 
 }
 
-/* #timeSignupTable,
-#timeManageTable {
-    border-collapse: collapse;
-}
-
-#timeSignupTable tr:nth-of-type(1) {
-    height: 12.8vw;
-    border-bottom: 1px solid #989898;
-}
-
-#timeSignupTable tr > td:nth-of-type(1) {
-    width: 7.92vw;
-    vertical-align: middle;
-}
-
-#timeSignupTable tr > td:nth-of-type(2),
-#timeSignupTable tr > td:nth-of-type(3),
-#timeSignupTable tr > td:nth-of-type(4) {
-    width: 26.57vw;
-    text-align: center;
-}
-
-#timeSignupTable tr:nth-of-type(n+2) {
-    height: 15.538vw;
-    border-bottom: 1px solid #d6d6d6;
-} */
-
 .time-signup-thead {
     width: 92.58vw;
     height: 12.077vw;
@@ -834,7 +807,6 @@ input[type="text"] {
 }
 
 /***************************************** viewActivitiesManage ************************************/
-
 #viewActivitiesManage .page-main > div {
     width: 92.58vw;
     min-height: 30vw;
@@ -877,33 +849,30 @@ input[type="text"] {
     padding: 4.3vw 0 2.14vw 0;
 }
 
-/* .time-manage-line {
+.time-manage-thead {
     width: 92.58vw;
-    height: 1px;
-    background-color: #d6d6d6;
-    overflow: hidden;  
-} */
-
-#timeManageTable tr {
     height: 8.05vw;
-    color: #323232;
-}
-
-#timeManageTable tr:nth-of-type(1) {
-    font-weight: normal;
-    font-size: 3.349vw !important;
     border-bottom: 1px solid #989898;
 }
 
-#timeManageTable tr:nth-of-type(n+2) {
-    font-weight: normal;
-    font-size: 3.55vw !important;
+.time-manage-thead > div {
+    width: 30.86vw;
+    float: left;
+    text-align: center;
+    line-height: 8.05vw;
+}
+
+.time-manage-tr {
+    width: 92.58vw;
+    height: 8.05vw;
     border-bottom: 1px solid #d6d6d6;
 }
 
-#timeManageTable tr > td {
+.time-manage-tr > div {
     width: 30.86vw;
+    float: left;
     text-align: center;
+    line-height: 8.05vw;
 }
 
 .cancelSignupMsg >.ui-content,
@@ -933,6 +902,7 @@ input[type="text"] {
 .cancelSignupMsg .ui-content>.main .main-paragraph,
 .recordSignupMsg .ui-content>.main .main-paragraph {
     text-align: left !important;
+    line-height: 1.5;
 }
 
 .person-manage-remark {

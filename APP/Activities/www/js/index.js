@@ -219,3 +219,26 @@ function saveValueAndCheckForm(arr, name, value, bool, btn) {
 
     //console.log(arr);
 }
+
+//按時段編號排序
+function sortByTimeID(prop1) {
+    return function (obj1, obj2) {
+        //time
+        var val1 = obj1[prop1];
+        var val2 = obj2[prop1];
+
+        //轉換成numer類型
+        if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+            val1 = Number(val1);
+            val2 = Number(val2);
+        }
+
+        if (val1 < val2) {
+            return -1;
+        } else if (val1 > val2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+}

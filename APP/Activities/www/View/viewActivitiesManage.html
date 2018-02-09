@@ -20,7 +20,7 @@
                 </div>
                 <div class="font-style10 font-color2" id="personManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
             </div>
-            <div class="peraon-manage-signuped font-style11 font-color4">
+            <div class="person-manage-signuped font-style11 font-color4">
                 <!--目前活動名額已額滿，-->
                 <span id="personIsFull" class="langStr" data-id="str_069"></span>
                 <!--您已報名本項活動：-->
@@ -69,7 +69,7 @@
                     </div>
                 </div>
             </div>
-            <div class="peraon-manage-signuped font-style11 font-color2">
+            <div class="person-manage-signuped font-style11 font-color2">
                 <!--*本活動須同仁本人一同前往-->
                 <span class="langStr" data-id="str_059"></span>
             </div>
@@ -138,6 +138,10 @@
             </div>
             <!--自定義欄位-->
             <div class="time-manage-field font-style7 font-color1">
+                <!-- <div class="time-manage-info">
+                    <span>报名时段：</span>
+                    <span>12:00~13:00</span>
+                </div>
                 <div class="time-manage-info">
                     <span>活動建議：</span>
                     <span>無意見</span>
@@ -145,56 +149,41 @@
                 <div class="time-manage-info">
                     <span>搭車地點：</span>
                     <span>QTY</span>
-                </div>
-                <div class="time-manage-info">
-                    <span>問題1：</span>
-                    <span>test</span>
-                </div>
-                <div class="time-manage-info">
-                    <span>午餐：</span>
-                    <span>A</span>
-                </div>
-                <div class="time-manage-info">
-                    <span>問題2：</span>
-                    <span>test test</span>
-                </div>
+                </div> -->
             </div>
-            <!-- <div class="time-manage-line"></div> -->
-            <div class="time-manage-place">
+            <div class="time-manage-place font-style11 font-color1">
                 <!--活動時段與名額如下-->
                 <span class="langStr" data-id="str_073"></span>
             </div>
-            <div>
-                <table data-role="none" id="timeManageTable">
-                    <tr>
-                        <td>時段</td>
-                        <td>提供名額</td>
-                        <td>剩餘名額</td>
-                    </tr>
-                    <tr>
-                        <td>08:00-10:00</td>
-                        <td>100</td>
-                        <td>10</td>
-                    </tr>
-                    <tr>
-                        <td>10:00-12:00</td>
-                        <td>100</td>
-                        <td>50</td>
-                    </tr>
-                    <tr>
-                        <td>14:00-16:00</td>
-                        <td>100</td>
-                        <td>70</td>
-                    </tr>
-                    <tr>
-                        <td>16:00-18:00</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                </table>
+            <div class="time-manage-thead font-style11 font-color2">
+                <div>时段</div>
+                <div>提供名额</div>
+                <div>剩余名额</div>
+            </div>
+            <div class="time-manage-tbody font-style7 font-color2">
+                <div class="time-manage-tr">
+                    <div>08:00~10:00</div>
+                    <div>100</div>
+                    <div>100</div>
+                </div>
+                <div class="time-manage-tr">
+                    <div>10:00~12:00</div>
+                    <div>100</div>
+                    <div>100</div>
+                </div>
+                <div class="time-manage-tr">
+                    <div>14:00~16:00</div>
+                    <div>100</div>
+                    <div>100</div>
+                </div>
+                <div class="time-manage-tr">
+                    <div>16:00~18:00</div>
+                    <div>100</div>
+                    <div>100</div>
+                </div>
             </div>
             <div class="blank-container-before-footer"></div>
-            <div class="person-footer font-style3">
+            <div id="cancelTimeSignup" class="person-footer font-style3">
                 <span>取消報名</span>
             </div>
         </div>
