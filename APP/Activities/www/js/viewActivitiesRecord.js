@@ -66,6 +66,7 @@ $("#viewActivitiesRecord").pagecontainer({
                 if (data["ResultCode"] == "045913") {
                     ActivitiesListQuery();
                     ActivitiesRecordQuery();
+                    $("#signupCancelMsg").fadeIn(100).delay(2000).fadeOut(100);
 
                 } else if (data["ResultCode"] == "045914") {
                     //報名取消失敗
@@ -87,7 +88,6 @@ $("#viewActivitiesRecord").pagecontainer({
         $("#viewActivitiesRecord").on("pagebeforeshow", function (event, ui) {
             if (viewRecordInit) {
                 //ActivitiesRecordQuery();
-
                 viewRecordInit = false;
             }
         });
@@ -130,7 +130,6 @@ $("#viewActivitiesRecord").pagecontainer({
                 + '</EmployeeNo></LayoutHeader>';
 
             //console.log(activitiesRecordCancelQueryData);
-
             ActivitiesRecordCancelQuery();
         });
 
