@@ -485,12 +485,6 @@ var QForum = {
             //Create Reply Button
             QForum.VIEW.replyButtonFooter();
 
-            //Window Scroll Event
-            QForum.EVENT.windowScroll();
-
-            //Page Pull to Refresh Event
-            QForum.EVENT.pagePullRefresh();
-
         },
         replyButtonFooter: function() {
 
@@ -500,6 +494,12 @@ var QForum = {
 
                 //Bind Event
                 QForum.EVENT.replyButtonClick();
+
+                //Window Scroll Event
+                QForum.EVENT.windowScroll();
+
+                //Page Pull to Refresh Event
+                QForum.EVENT.pagePullRefresh();
 
                 //Create FullScreen Reply Editor Popup
                 QForum.VIEW.replyFullScreenPopup();
@@ -1042,56 +1042,72 @@ var QForum = {
         },
         pagePullRefresh: function() {
 
+            //tplJS.Popup will trigger this event, so check if there is any popup displayed now.
+
             $(document).on({
                 touchstart: function(event) {
-                    QForum.pullRefresh.startTop = $("body").scrollTop();
+                    if (!checkPopupShown()) QForum.pullRefresh.startTop = $("body").scrollTop();
                 },
                 touchmove: function(event) {
-                    QForum.pullRefresh.moveCount++;
+                    if (!checkPopupShown()) QForum.pullRefresh.moveCount++;
                 },
                 touchend: function(event) {
 
-                    QForum.pullRefresh.endTop = $("body").scrollTop();
+                    if (!checkPopupShown()) QForum.pullRefresh.endTop = $("body").scrollTop();
 
-                    if (QForum.pullRefresh.startTop == 0 && QForum.pullRefresh.startTop == QForum.pullRefresh.endTop && QForum.pullRefresh.endTop == 0) {
-                        console.log(QForum.pullRefresh.startTop);
-                        console.log(QForum.pullRefresh.endTop);
+                    setTimeout(function() {
 
-                        if (QForum.pullRefresh.moveCount > 5) {
-                            console.log("=========== pull to refresh");
+                        if (!checkPopupShown() && QForum.pullRefresh.startTop == 0 && QForum.pullRefresh.startTop == QForum.pullRefresh.endTop && QForum.pullRefresh.endTop == 0) {
+                            console.log(QForum.pullRefresh.startTop);
+                            console.log(QForum.pullRefresh.endTop);
 
-                            $("<div id='pullRefreshImg' style='width:32px; height:32px; border-radius:50%; border:1px solid #A7A7A7;'><img src='img/pullRefresh.gif' width='32' height='32'></div>").css({
-                                "position": "absolute",
-                                "top": 0,
-                                "left": "45%",
-                                "opacity": 0
-                            }).appendTo("body").stop().animate({
-                                "top": 150,
-                                "opacity": 1
-                            }, 250, function() {
+                            if (QForum.pullRefresh.moveCount > 5) {
+                                console.log("=========== pull to refresh");
 
-                                setTimeout(function() {
+                                $("<div id='pullRefreshImg' style='width:32px; height:32px; border-radius:50%; border:1px solid #A7A7A7;'><img src='img/pullRefresh.gif' width='32' height='32'></div>").css({
+                                    "position": "absolute",
+                                    "top": 0,
+                                    "left": "45%",
+                                    "opacity": 0
+                                }).appendTo("body").stop(true).animate({
+                                    "top": 150,
+                                    "opacity": 1
+                                }, 250, function() {
 
-                                    $("#pullRefreshImg").stop().animate({
-                                        "top": 0,
-                                        "opacity": 0
-                                    }, 250, function() {
-                                        $("#pullRefreshImg").remove();
+                                    $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                                        'touch-action': 'none'
+                                    });
 
-                                        //Recovery Data to default setting.
-                                        QForum.METHOD.setReplyLastID(1);
-                                        QForum.lastCommentOffsetTop = 0;
+                                    setTimeout(function() {
 
-                                        QForum.API.getPostDetails();
-                                    })
+                                        $("#pullRefreshImg").stop(true).animate({
+                                            "top": 0,
+                                            "opacity": 0
+                                        }, 250, function() {
+                                            $("#pullRefreshImg").remove();
 
-                                }, 1500);
+                                            //Recovery Data to default setting.
+                                            QForum.METHOD.setReplyLastID(1);
+                                            QForum.lastCommentOffsetTop = 0;
 
-                            })
+                                            QForum.API.getPostDetails();
 
+                                            $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                                                'touch-action': 'auto'
+                                            });
+                                        })
+
+                                    }, 1500);
+
+                                })
+
+                                QForum.pullRefresh.moveCount = 0;
+                            }
+                        } else {
                             QForum.pullRefresh.moveCount = 0;
                         }
-                    }
+
+                    }, 1000);
                 }
             }, "#" + QForum.pageID);
 
