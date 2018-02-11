@@ -151,7 +151,7 @@ $("#viewActivitiesDetail").pagecontainer({
                         + '</IsSignup></LayoutHeader>';
     
                         //console.log(activitiesSignupFamilyQueryData);
-                        ActivitiesSignupFamilyQuery(isSignup);
+                        ActivitiesSignupFamilyQuery(actID, actModel, isSignup);
                     }
                     
                 }
@@ -185,7 +185,7 @@ $("#viewActivitiesDetail").pagecontainer({
                 + '</IsSignup></LayoutHeader>';
 
                 //console.log(activitiesSignupFamilyQueryData);
-                ActivitiesSignupFamilyQuery(isSignup);
+                ActivitiesSignupFamilyQuery(actID, actModel, isSignup);
             }
 
         });

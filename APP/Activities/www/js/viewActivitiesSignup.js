@@ -11,7 +11,7 @@ $("#viewActivitiesSignup").pagecontainer({
         var personFieldArr = [];
         var familyFieldArr = [];
         var timeFieldArr = [];
-        var fieldArr = [];
+        //var fieldArr = [];
         var timeoutCheckFamilySignup = null;
         var timeoutCheckPersonSignup = null;
         var timeoutCheckTimeSignup = null;
@@ -88,7 +88,7 @@ $("#viewActivitiesSignup").pagecontainer({
                             $("#column-popup-" + i + "-option-popup").remove();
                         }
                         $("#selectFamilyBtn").addClass("btn-disabled");
-                        selectLength = 0, textLength = 0, checkboxLength = 0;
+                        //selectLength = 0, textLength = 0, checkboxLength = 0;
 
                         $("#familySignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#familySignupName").text(signupObj["ActivitiesName"]);
@@ -104,10 +104,11 @@ $("#viewActivitiesSignup").pagecontainer({
                         $("#familySelectName").text(signupObj["ActivitiesName"]);
                         $("#familySelectLimitPlace").text(signupObj["LimitPlaces"]);
                         $(".select-family-remark").empty().append("<div>" + signupObj["ActivitiesRemarks"] + "</div>");
+                        //因爲眷屬報名必須包含本人，所以可攜帶眷屬數量=總數量-1
+                        selectFamilyLimit = signupObj["LimitPlaces"] - 1;
 
                         //处理自定义栏位，放入數組中
                         familyFieldArr = getCustomField(signupObj);
-
                         // familyFieldArr = [{
                         //     "ColumnName": "自助餐",
                         //     "ColumnType": "Multiple",
@@ -132,8 +133,8 @@ $("#viewActivitiesSignup").pagecontainer({
                         //     "ColumnItem": "",
                         //     "ColumnAnswer": ""
                         // }];
-                        ///familyFieldArr = [];
-                        fieldArr = customFieldByItem(familyFieldArr);
+
+                        //fieldArr = customFieldByItem(familyFieldArr);
 
                         //根據欄位類型，生成不同欄位
                         for (var i in familyFieldArr) {
@@ -240,48 +241,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
         };
 
-        //選擇眷屬
-        window.ActivitiesSignupFamilyQuery = function () {
-
-            this.successCallback = function (data) {
-                //console.log(data);
-
-                if (data["ResultCode"] == "1") {
-                    var selectFamilyArr = data["Content"];
-                    var selectContent = "";
-                    for (var i in selectFamilyArr) {
-                        selectContent += '<div><div class="select-family-tr"><div><img src="img/checkbox_n.png" class="family-checkbox-img"></div><div>'
-                            + selectFamilyArr[i]["FamilyName"]
-                            + '</div><div>'
-                            + selectFamilyArr[i]["FamilyRelationshipDesc"]
-                            + '</div><div>'
-                            + selectFamilyArr[i]["FamilyGenderDesc"]
-                            + '</div><div><img src="img/list_down.png" class="family-expand-img"></div></div><div class="select-family-detail"><div class="select-family-id font-style12 font-color2"><span>'
-                            + langStr["str_048"]
-                            + '</span><span> / </span><span>'
-                            + langStr["str_049"]
-                            + '</span></div><div class="select-family-birth font-style11 font-color1"><span>'
-                            + selectFamilyArr[i]["FamilyID"]
-                            + '</span><span> / </span><span>'
-                            + selectFamilyArr[i]["FamilyBirthday"]
-                            + '</span></div><div class="select-family-field">' + $(".family-signup-custom-field").html() + '</div></div></div>';
-                    }
-
-                    $(".select-family-tbody").empty().append(selectContent);
-
-                }
-
-                loadingMask("hide");
-            };
-
-            this.failCallback = function (data) { };
-
-            var __construct = function () {
-                CustomAPI("POST", true, "Activities_Signup_Family", self.successCallback, self.failCallback, activitiesSignupFamilyQueryData, "");
-            }();
-
-        };
-
         //查詢員工，添加成員
         window.ActivitiesSignupEmployeeQuery = function () {
 
@@ -336,6 +295,10 @@ $("#viewActivitiesSignup").pagecontainer({
                     //重新獲取報名列表
                     ActivitiesListQuery();
 
+                    //跳轉前刪除訪問頁面數組最後2個
+                    pageVisitedList.pop();
+                    pageVisitedList.pop();
+
                     //跳轉
                     $.each($("#openList .activity-list"), function (index, item) {
                         if ($(item).attr("data-id") == actID) {
@@ -344,13 +307,15 @@ $("#viewActivitiesSignup").pagecontainer({
                     });
                     $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
 
-                    //清空欄位值
-                    memberNoArr = [];
-                    $("#departNo").val("");
-                    $("#teamName").val("");
-                    $(".team-signup-employee-list").empty();
-                    $("#sendTeamSignup").addClass("btn-disabled");
-
+                    //如果報名成功的是“組隊報名”才需要清空欄位值
+                    if(submitModel == "4") {
+                        memberNoArr = [];
+                        $("#departNo").val("");
+                        $("#teamName").val("");
+                        $(".team-signup-employee-list").empty();
+                        $("#sendTeamSignup").addClass("btn-disabled");
+                    }
+                    
                     //重新獲取報名記錄
                     ActivitiesRecordQuery();
 
@@ -810,6 +775,27 @@ $("#viewActivitiesSignup").pagecontainer({
         //點擊“選擇眷屬”
         $("#selectFamilyBtn").on("click", function () {
             if (!$("#selectFamilyBtn").hasClass("btn-disabled")) {
+                //初始化
+                $(".select-family-field").empty();
+
+                //給所有眷屬添加自定義欄位和值
+                $.each($(".select-family-field"), function(index, item) {
+                    //根據欄位類型，生成不同欄位
+                    for (var i in familyFieldArr) {
+                        if (familyFieldArr[i]["ColumnType"] == "Select") {
+                            setSelectCustomField2(index, familyFieldArr, i, "viewSelectFamily", "familySelect", $(item));
+
+                        } else if (familyFieldArr[i]["ColumnType"] == "Text") {
+                            setTextCustomField2(index, familyFieldArr, i, "familySelectText", $(item));
+
+                        } else if (familyFieldArr[i]["ColumnType"] == "Multiple") {
+                            setCheckboxCustomField2(index, familyFieldArr, i, "familySelectCheckbox", $(item));
+                        }
+                    }
+                });
+
+                //console.log(familyFieldArr);
+
                 //跳轉
                 changePageByPanel("viewSelectFamily", true);
             }
