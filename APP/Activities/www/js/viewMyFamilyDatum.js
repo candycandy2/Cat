@@ -224,6 +224,7 @@ $("#viewMyFamilyDatum").pagecontainer({
 
             $("#relationshipDropdownlist").empty();
             tplJS.DropdownList("viewMyFamilyDatum", "relationshipDropdownlist", "prepend", "typeB", relationshipData);
+            //$("#relationship-popup-option").attr("data-dismissible", "true");
 
             //性別
             genderData["option"][0] = {};
@@ -235,6 +236,7 @@ $("#viewMyFamilyDatum").pagecontainer({
 
             $("#genderDropdownlist").empty();
             tplJS.DropdownList("viewMyFamilyDatum", "genderDropdownlist", "prepend", "typeB", genderData);
+            //$("#gender-popup-option").attr("data-dismissible", "true");
         }
 
         //檢查所有欄位是否爲空
@@ -347,12 +349,13 @@ $("#viewMyFamilyDatum").pagecontainer({
                 setDropdownlistByFamily();
                 //ActivitiesFamilyQuery();
                 viewFamilyInit = false;
+
             }
 
         });
 
         $("#viewMyFamilyDatum").on("pageshow", function (event, ui) {
-
+            
         });
 
         /******************************** datetimepicker ***********************************/
@@ -570,6 +573,17 @@ $("#viewMyFamilyDatum").pagecontainer({
         $("#familyID").on("keyup", function () {
             checkFormByFamily();
         });
+
+        //點擊外部，關閉popup
+        // $("#viewMyFamilyDatum").on("click", "#relationship-popup-option-screen", function() {
+        //     $("#relationship-popup-option-popup").hide();
+        //     $("#relationship-popup-option-screen").hide();
+        // });
+
+        // $("#viewMyFamilyDatum").on("click", "#gender-popup-option-screen", function() {
+        //     $("#gender-popup-option-popup").hide();
+        //     $("#gender-popup-option-screen").hide();
+        // });
 
     }
 });
