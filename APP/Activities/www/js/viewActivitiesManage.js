@@ -252,6 +252,10 @@ $("#viewActivitiesManage").pagecontainer({
                     //重新獲取活動列表
                     ActivitiesListQuery();
 
+                    //跳轉前刪除訪問頁面數組最後2個
+                    pageVisitedList.pop();
+                    pageVisitedList.pop();
+
                     //跳轉
                     $.each($("#openList .activity-list"), function (index, item) {
                         if ($(item).attr("data-id") == cancelID) {
