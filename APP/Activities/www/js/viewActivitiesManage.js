@@ -37,6 +37,7 @@ $("#viewActivitiesManage").pagecontainer({
                         $("#personIsFull").css("display", manageObj["IsFull"] == "Y" ? "block" : "none");
                         $("#personSignupedPlace").text(manageObj["SignupPlaces"]);
                         $(".person-manage-remark").empty().append("<div>" + manageObj["ActivitiesRemarks"] + "</div>");
+                        //dropdownlist
                         personDropdownlist(manageObj["LimitPlaces"], manageObj["SignupPlaces"]);
                         personManageArr = getCustomField(manageObj);
 
@@ -49,8 +50,6 @@ $("#viewActivitiesManage").pagecontainer({
                                 setTextCustomField(personManageArr, i, "personManageText", "person-manage-custom-field");
 
                             } else if (personManageArr[i]["ColumnType"] == "Multiple") {
-                                //加字符“;”用於之後檢查表單是否爲空
-                                personManageArr[i]["ColumnAnswer"] = ";" + personManageArr[i]["ColumnAnswer"];
                                 setCheckboxCustomField(personManageArr, i, "personManageCheckbox", "person-manage-custom-field");
 
                             }
@@ -60,18 +59,21 @@ $("#viewActivitiesManage").pagecontainer({
                         currentActName = manageObj["ActivitiesName"];
                         currentCancelContent = manageObj["EmployeeName"] + " / " + "同仁" + " / " + manageObj["SignupPlaces"] + "人";
                         cancelID = manageObj["ActivitiesID"];
+                        cancelNo = manageObj["SignupNo"];
 
                     } else if (model == "3") {
 
                     } else if (model == "4") {
+                        var manageArr = data["Content"];
                         //初始化
                         $("#expandAllTeam").attr("src", "img/all_list_down.png");
 
-                        var manageArr = data["Content"];
-                        cancelActName = manageArr[0]["ActivitiesName"];
+                        //賦值
                         $("#teamManageThumbnail").attr("src", manageArr[0]["ActivitiesImage"]);
                         $("#teamManageName").text(manageArr[0]["ActivitiesName"]);
                         $("#teamSignupedPlaces").text(manageArr[0]["SignupTeam"]);
+                        //取消報名的活動名稱
+                        cancelActName = manageArr[0]["ActivitiesName"];
 
                         //簡化數據
                         var simplifyArr = [];
@@ -142,6 +144,82 @@ $("#viewActivitiesManage").pagecontainer({
 
 
                     } else if (model == "5") {
+                        var timeObj = data["Content"][0];
+                        var timeArr = data["Content"];
+
+                        //賦值
+                        $("#timeManageThumbnail").attr("src", timeObj["ActivitiesImage"]);
+                        $("#timeManageName").text(timeObj["ActivitiesName"]);
+
+                        //展示所有欄位
+                        var timeContent = '';
+                        for (var i in timeArr) {
+                            if (timeArr[i]["IsSignupTime"] != "") {
+                                //取消报名信息
+                                currentActName = timeArr[i]["ActivitiesName"];
+                                currentCancelContent = timeArr[i]["EmployeeName"] + " / " + "同仁" + " / 1人";
+                                cancelNo = timeArr[i]["SignupNo"];
+                                //动态生成栏位
+                                timeContent += '<div class="time-manage-info"><span>報名時段：</span><span>'
+                                    + timeArr[i]["IsSignupTime"] + '</span></div>';
+                                if (timeArr[i]["ColumnAnswer_1"] != "") {
+                                    timeContent += '<div class="time-manage-info"><span>'
+                                        + timeArr[i]["ColumnName_1"] + '：</span><span>'
+                                        + timeArr[i]["ColumnAnswer_1"] + '</span></div>';
+                                }
+                                if (timeArr[i]["ColumnAnswer_2"] != "") {
+                                    timeContent += '<div class="time-manage-info"><span>'
+                                        + timeArr[i]["ColumnName_2"] + '：</span><span>'
+                                        + timeArr[i]["ColumnAnswer_2"] + '</span></div>';
+                                }
+                                if (timeArr[i]["ColumnAnswer_3"] != "") {
+                                    timeContent += '<div class="time-manage-info"><span>'
+                                        + timeArr[i]["ColumnName_3"] + '：</span><span>'
+                                        + timeArr[i]["ColumnAnswer_3"] + '</span></div>';
+                                }
+                                if (timeArr[i]["ColumnAnswer_4"] != "") {
+                                    timeContent += '<div class="time-manage-info"><span>'
+                                        + timeArr[i]["ColumnName_4"] + '：</span><span>'
+                                        + timeArr[i]["ColumnAnswer_4"] + '</span></div>';
+                                }
+                                if (timeArr[i]["ColumnAnswer_5"] != "") {
+                                    timeContent += '<div class="time-manage-info"><span>'
+                                        + timeArr[i]["ColumnName_5"] + '：</span><span>'
+                                        + timeArr[i]["ColumnAnswer_5"] + '</span></div>';
+                                }
+                                break;
+                            }
+                        }
+                        $(".time-manage-field").empty().append(timeContent);
+
+                        //展示所有時段
+                        var timeShortArr = [];
+                        for(var i in timeArr) {
+                            timeShortArr.push({
+                                "TimeSort": timeArr[i]["TimeSort"],
+                                "SignupTime": timeArr[i]["SignupTime"],
+                                "QuotaPlaces": timeArr[i]["QuotaPlaces"],
+                                "RemainingPlaces": timeArr[i]["RemainingPlaces"]
+                            });
+                        }
+                        timeShortArr.sort(sortByTimeID("TimeSort"));
+
+                        var timeShortContent = "";
+                        for(var i in timeShortArr) {
+                            timeShortContent += '<div class="time-manage-tr" data-sort="'
+                                + timeShortArr[i]["TimeSort"]
+                                + '"><div>'
+                                + timeShortArr[i]["SignupTime"]
+                                + '</div><div>'
+                                + timeShortArr[i]["QuotaPlaces"]
+                                + '</div><div>'
+                                + timeShortArr[i]["RemainingPlaces"]
+                                + '</div></div>';
+                        }
+                        $(".time-manage-tbody").empty().append(timeShortContent);
+
+                        //取消报名
+                        cancelID = timeObj["ActivitiesID"];
 
                     }
 
@@ -180,6 +258,7 @@ $("#viewActivitiesManage").pagecontainer({
                             $(item).trigger("click");
                         }
                     });
+                    $("#cancelSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
 
                     //重新獲取報名記錄
                     ActivitiesRecordQuery();
@@ -273,117 +352,117 @@ $("#viewActivitiesManage").pagecontainer({
         }
 
         //生成Select-dropdownlist欄位
-        function setSelectCustomField(arr, i, page, id, container) {
-            //1.聲明dropdownlist對象
-            var columnData = {
-                id: "column-popup-" + id + "-" + i,
-                option: [],
-                title: '',
-                defaultText: langStr["str_040"],
-                changeDefaultText: true,
-                attr: {
-                    class: "tpl-dropdown-list-icon-arrow"
-                }
-            };
+        // function setSelectCustomField(arr, i, page, id, container) {
+        //     //1.聲明dropdownlist對象
+        //     var columnData = {
+        //         id: "column-popup-" + id + "-" + i,
+        //         option: [],
+        //         title: '',
+        //         defaultText: langStr["str_040"],
+        //         changeDefaultText: true,
+        //         attr: {
+        //             class: "tpl-dropdown-list-icon-arrow"
+        //         }
+        //     };
 
-            //2.生成html
-            var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-                + arr[i]["ColumnName"]
-                + '</label><div id="' + id + i + '" class="' + id + '"></div></div>';
+        //     //2.生成html
+        //     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
+        //         + arr[i]["ColumnName"]
+        //         + '</label><div id="' + id + i + '" class="' + id + '"></div></div>';
 
-            //3.append
-            $("." + container).append(fieldContent);
+        //     //3.append
+        //     $("." + container).append(fieldContent);
 
-            //4.取value值
-            var valueArr = arr[i]["ColumnItem"].split(";");
+        //     //4.取value值
+        //     var valueArr = arr[i]["ColumnItem"].split(";");
 
-            //5.动态生成popup
-            for (var j in valueArr) {
-                columnData["option"][j] = {};
-                columnData["option"][j]["value"] = valueArr[j];
-                columnData["option"][j]["text"] = valueArr[j];
-            }
+        //     //5.动态生成popup
+        //     for (var j in valueArr) {
+        //         columnData["option"][j] = {};
+        //         columnData["option"][j]["value"] = valueArr[j];
+        //         columnData["option"][j]["text"] = valueArr[j];
+        //     }
 
-            //6.生成dropdownlist
-            tplJS.DropdownList(page, id + i, "prepend", "typeB", columnData);
+        //     //6.生成dropdownlist
+        //     tplJS.DropdownList(page, id + i, "prepend", "typeB", columnData);
 
-            //7.如果有值，選中默認值
-            if (arr[i]["ColumnAnswer"] != "") {
-                $.each($("#column-popup-" + id + "-" + i + "-option-list li"), function (index, item) {
-                    if (arr[i]["ColumnAnswer"] == $(item).text()) {
-                        $(item).trigger("click");
-                    }
-                });
-            }
-        }
+        //     //7.如果有值，選中默認值
+        //     if (arr[i]["ColumnAnswer"] != "") {
+        //         $.each($("#column-popup-" + id + "-" + i + "-option-list li"), function (index, item) {
+        //             if (arr[i]["ColumnAnswer"] == $(item).text()) {
+        //                 $(item).trigger("click");
+        //             }
+        //         });
+        //     }
+        // }
 
-        //生成Text欄位
-        function setTextCustomField(arr, i, id, container) {
-            var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-                + arr[i]["ColumnName"]
-                + '</label><input id="' + id + i + '" type="text" data-role="none" class="' + id + '" value="'
-                + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
-                + '"></div>';
+        // //生成Text欄位
+        // function setTextCustomField(arr, i, id, container) {
+        //     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
+        //         + arr[i]["ColumnName"]
+        //         + '</label><input id="' + id + i + '" type="text" data-role="none" class="' + id + '" value="'
+        //         + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
+        //         + '"></div>';
 
-            $("." + container).append(fieldContent);
-        }
+        //     $("." + container).append(fieldContent);
+        // }
 
-        //生成Checkbox自定義欄位
-        function setCheckboxCustomField(arr, i, id, content) {
-            //先處理checkbox所有選項
-            var mutipleArr = arr[i]["ColumnItem"].split(";");
-            var mutipleContent = "";
+        // //生成Checkbox自定義欄位
+        // function setCheckboxCustomField(arr, i, id, content) {
+        //     //先處理checkbox所有選項
+        //     var mutipleArr = arr[i]["ColumnItem"].split(";");
+        //     var mutipleContent = "";
 
-            for (var j in mutipleArr) {
-                mutipleContent += '<div data-name="checkbox-' + id + '-' + j
-                    + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
-                    + mutipleArr[j]
-                    + '</span></div>';
-            }
+        //     for (var j in mutipleArr) {
+        //         mutipleContent += '<div data-name="checkbox-' + id + '-' + j
+        //             + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
+        //             + mutipleArr[j]
+        //             + '</span></div>';
+        //     }
 
-            var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-                + arr[i]["ColumnName"]
-                + '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + id + '-' + i + '">';
+        //     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
+        //         + arr[i]["ColumnName"]
+        //         + '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + id + '-' + i + '">';
 
-            $("." + content).append(fieldContent + mutipleContent + "</div><div>");
+        //     $("." + content).append(fieldContent + mutipleContent + "</div><div>");
 
-            //選中默認值
-            if (arr[i]["ColumnAnswer"] != "") {
-                var valueArr = arr[i]["ColumnAnswer"].split(";");
-                $.each($(".checkbox-" + id + "-" + i + " span"), function (index, item) {
-                    for (var j in valueArr) {
-                        if ($(item).text() == valueArr[j]) {
-                            $(item).prev().attr("src", "img/checkbox_s.png");
-                        }
-                    }
-                });
-            }
+        //     //選中默認值
+        //     if (arr[i]["ColumnAnswer"] != "") {
+        //         var valueArr = arr[i]["ColumnAnswer"].split(";");
+        //         $.each($(".checkbox-" + id + "-" + i + " span"), function (index, item) {
+        //             for (var j in valueArr) {
+        //                 if ($(item).text() == valueArr[j]) {
+        //                     $(item).prev().attr("src", "img/checkbox_s.png");
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }
 
-        }
+        // function saveValueAndCheckForm(arr, name, value, bool, btn) {
+        //     //bool为true，添加checkbox;若为false，删除checkbox;若为other，text和select赋值
+        //     for (var i in arr) {
+        //         if (name == arr[i]["ColumnName"] && bool == true) {
+        //             arr[i]["ColumnAnswer"] += (";" + value);
+        //         } else if (name == arr[i]["ColumnName"] && bool == false) {
+        //             arr[i]["ColumnAnswer"] = arr[i]["ColumnAnswer"].replace(";" + value, "");
+        //         } else if (name == arr[i]["ColumnName"] && bool == null) {
+        //             arr[i]["ColumnAnswer"] = value;
+        //         }
+        //     }
 
-        function saveValueAndCheckForm(arr, name, value, bool, btn) {
-            //bool为true，添加checkbox;若为false，删除checkbox;若为other，text和select赋值
-            for (var i in arr) {
-                if (name == arr[i]["ColumnName"] && bool == true) {
-                    arr[i]["ColumnAnswer"] += (";" + value);
-                } else if (name == arr[i]["ColumnName"] && bool == false) {
-                    arr[i]["ColumnAnswer"] = arr[i]["ColumnAnswer"].replace(";" + value, "");
-                } else if (name == arr[i]["ColumnName"] && bool == null) {
-                    arr[i]["ColumnAnswer"] = value;
-                }
-            }
+        //     //检查表单是否为空
+        //     for (var i in arr) {
+        //         if (arr[i]["ColumnAnswer"] == "") {
+        //             $("#" + btn).addClass("btn-disabled");
+        //             break;
+        //         } else {
+        //             $("#" + btn).removeClass("btn-disabled");
+        //         }
+        //     }
 
-            //检查表单是否为空
-            for (var i in arr) {
-                if (arr[i]["ColumnAnswer"] == "") {
-                    $("#" + btn).addClass("btn-disabled");
-                    break;
-                } else {
-                    $("#" + btn).removeClass("btn-disabled");
-                }
-            }
-
-        }
+        //     //console.log(arr);
+        // }
 
 
         /********************************** page event *************************************/
@@ -467,7 +546,7 @@ $("#viewActivitiesManage").pagecontainer({
 
         //確定取消報名
         $("#confirmCancelSignup").on("click", function () {
-            //loadingMask("show");
+            loadingMask("show");
             activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + cancelID
                 + '</ActivitiesID><SignupNo>'
@@ -479,8 +558,8 @@ $("#viewActivitiesManage").pagecontainer({
                 + '</EmployeeNo></LayoutHeader>';
 
             //console.log(activitiesSignupCancelQueryData);
-
             ActivitiesSignupCancelQuery();
+
         });
 
 
@@ -535,6 +614,43 @@ $("#viewActivitiesManage").pagecontainer({
 
         //取消報名-popup
         $("#cancelPersonSignup").on("click", function () {
+            $(".cancelSignupMsg .header-title").text(currentActName);
+            $(".cancelSignupMsg .main-paragraph").text(currentCancelContent);
+            popupMsgInit('.cancelSignupMsg');
+        });
+
+        //更改資料
+        $("#updatePersonSignup").on("click", function () {
+            var self = $(this).hasClass("btn-disabled");
+            if (!self) {
+                loadingMask("show");
+                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                    + cancelID
+                    + '</ActivitiesID><SignupModel>'
+                    + cancelModel
+                    + '</SignupModel><SignupPlaces>'
+                    + submitSignupPlace
+                    + '</SignupPlaces><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><ColumnAnswer_1>'
+                    + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
+                    + '</ColumnAnswer_1><ColumnAnswer_2>'
+                    + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
+                    + '</ColumnAnswer_2><ColumnAnswer_3>'
+                    + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
+                    + '</ColumnAnswer_3><ColumnAnswer_4>'
+                    + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
+                    + '</ColumnAnswer_4><ColumnAnswer_5>'
+                    + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
+                    + '</ColumnAnswer_5></LayoutHeader>';
+
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(cancelID);
+            }
+        });
+
+        //取消报名-popup
+        $("#cancelTimeSignup").on("click", function() {
             $(".cancelSignupMsg .header-title").text(currentActName);
             $(".cancelSignupMsg .main-paragraph").text(currentCancelContent);
             popupMsgInit('.cancelSignupMsg');

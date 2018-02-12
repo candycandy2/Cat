@@ -4,6 +4,7 @@ $("#viewActivitiesRecord").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
         var currentID, currentNo, currentModel;
+        var recordArr = [];
         /********************************** function *************************************/
         //獲取報名記錄
         window.ActivitiesRecordQuery = function () {
@@ -12,7 +13,7 @@ $("#viewActivitiesRecord").pagecontainer({
                 //console.log(data);
 
                 if (data["ResultCode"] == "1") {
-                    var recordArr = data["Content"];
+                    recordArr = data["Content"];
                     var recordContent = "";
 
                     for (var i in recordArr) {
@@ -107,11 +108,25 @@ $("#viewActivitiesRecord").pagecontainer({
             currentNo = $(this).parent().attr("data-no");
             currentModel = $(this).parent().attr("data-model");
 
-            recordActName = $(this).parent().prev().children("div:eq(1)").text();
-            recordTeamName = $(this).parent().prev().children("div:eq(0)").text();
+            var recordActName = '', recordTeamName = '';
+            for (var i in recordArr) {
+                if (currentID == recordArr[i]["ActivitiesID"]) {
+                    recordActName = recordArr[i]["ActivitiesName"];
+
+                    if (recordArr[i]["SignupModel"] == "1") {
+                        recordTeamName = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span>';
+                    } else if (recordArr[i]["SignupModel"] == "3") {
+                        recordTeamName += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span><br>';
+                    } else if (recordArr[i]["SignupModel"] == "4") {
+                        recordTeamName = '<span>' + recordArr[i]["SignupTeamName"] + '</span>';
+                    } else if (recordArr[i]["SignupModel"] == "5") {
+                        recordTeamName = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人 / ' + recordArr[i]["SignupTime"] + '</span>';
+                    }
+                }
+            }
 
             $(".recordSignupMsg .header-title").text(recordActName);
-            $(".recordSignupMsg .main-paragraph").text(recordTeamName);
+            $(".recordSignupMsg .main-paragraph").empty().append(recordTeamName);
             popupMsgInit('.recordSignupMsg');
 
         });

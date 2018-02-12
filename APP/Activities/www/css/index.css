@@ -164,7 +164,8 @@ input[type="text"] {
 .familySignupText,
 .familySelectText,
 .personSignupText,
-.personManageText {
+.personManageText,
+.timeSignupText {
     width: 89vw;
     height: 10vw;
     margin-top: 2.14vw;
@@ -753,35 +754,59 @@ input[type="text"] {
     padding: 4vw 0 2.14vw 0; 
 }
 
-#timeSignupTable,
-#timeManageTable {
-    border-collapse: collapse;
-}
-
-#timeSignupTable tr:nth-of-type(1) {
-    height: 12.8vw;
+.time-signup-thead {
+    width: 92.58vw;
+    height: 12.077vw;
     border-bottom: 1px solid #989898;
 }
 
-#timeSignupTable tr > td:nth-of-type(1) {
-    width: 7.92vw;
-    vertical-align: middle;
-}
-
-#timeSignupTable tr > td:nth-of-type(2),
-#timeSignupTable tr > td:nth-of-type(3),
-#timeSignupTable tr > td:nth-of-type(4) {
-    width: 26.57vw;
+.time-signup-thead > div {
+    float: left;
+    height: 12.077vw;
     text-align: center;
+    line-height: 12.077vw;
 }
 
-#timeSignupTable tr:nth-of-type(n+2) {
+.time-signup-thead > div:nth-of-type(1) {
+    width: 9.912vw;
+}
+
+.time-signup-thead > div:nth-of-type(2),
+.time-signup-thead > div:nth-of-type(3),
+.time-signup-thead > div:nth-of-type(4) {
+    width: 27.556vw;
+}
+
+.time-signup-tr {
+    width: 92.58vw;
     height: 15.538vw;
     border-bottom: 1px solid #d6d6d6;
 }
 
-/***************************************** viewActivitiesManage ************************************/
+.time-signup-tr > div {
+    float: left;
+    height: 15.538vw;
+    text-align: center;
+    line-height: 15.538vw;
+}
 
+.time-signup-tr > div:nth-of-type(1) {
+    width: 9.912vw;
+}
+
+.time-signup-tr > div:nth-of-type(2),
+.time-signup-tr > div:nth-of-type(3),
+.time-signup-tr > div:nth-of-type(4) {
+    width: 27.556vw;
+}
+
+.time-signup-radio {
+    width: 4.5vw;
+    height: 4.5vw;
+    margin-top: 5.5vw;
+}
+
+/***************************************** viewActivitiesManage ************************************/
 #viewActivitiesManage .page-main > div {
     width: 92.58vw;
     min-height: 30vw;
@@ -789,64 +814,65 @@ input[type="text"] {
     margin-left: 3.71vw;
 }
 
-.peraon-manage-signuped {
+.person-manage-signuped {
     margin-top: 4vw;
     width: 92.58vw;
 }
 
-.time-manage-signuped1 {
+.time-manage-title {
     width: 100%;
     padding: 4vw 0 4vw 0;
 }
 
-.time-manage-signuped2 {
+.time-manage-remark {
     width: 100%;
     padding-bottom: 4vw;
     border-bottom: 1px solid #d6d6d6;
 }
 
-.time-manage-signuped3 {
+.time-manage-detail {
     width: 100%;
     padding: 4vw 0 2.14vw 0;
 }
 
-.time-manage-signuped4 {
+.time-manage-field {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.time-manage-info {
     width: 100%;
     padding-bottom: 2.14vw;
 }
 
-.time-manage-signuped5 {
+.time-manage-place {
     width: 100%;
     padding: 4.3vw 0 2.14vw 0;
 }
 
-.time-manage-line {
+.time-manage-thead {
     width: 92.58vw;
-    height: 1px;
-    background-color: #d6d6d6;
-    overflow: hidden;  
-}
-
-#timeManageTable tr {
     height: 8.05vw;
-    color: #323232;
-}
-
-#timeManageTable tr:nth-of-type(1) {
-    font-weight: normal;
-    font-size: 3.349vw !important;
     border-bottom: 1px solid #989898;
 }
 
-#timeManageTable tr:nth-of-type(n+2) {
-    font-weight: normal;
-    font-size: 3.55vw !important;
+.time-manage-thead > div {
+    width: 30.86vw;
+    float: left;
+    text-align: center;
+    line-height: 8.05vw;
+}
+
+.time-manage-tr {
+    width: 92.58vw;
+    height: 8.05vw;
     border-bottom: 1px solid #d6d6d6;
 }
 
-#timeManageTable tr > td {
+.time-manage-tr > div {
     width: 30.86vw;
+    float: left;
     text-align: center;
+    line-height: 8.05vw;
 }
 
 .cancelSignupMsg >.ui-content,
@@ -876,6 +902,7 @@ input[type="text"] {
 .cancelSignupMsg .ui-content>.main .main-paragraph,
 .recordSignupMsg .ui-content>.main .main-paragraph {
     text-align: left !important;
+    line-height: 1.5;
 }
 
 .person-manage-remark {

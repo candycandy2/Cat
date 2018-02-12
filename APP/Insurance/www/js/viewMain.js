@@ -44,6 +44,11 @@ $("#viewMain").pagecontainer({
           alert("Sorry! Cannot view document.");
         }
 
+        function openInAppBrowser(href){
+            event.preventDefault();
+            cordova.InAppBrowser.open(href, '_system', 'location=yes');
+        }
+
         /*function  onErrorCreateFile(error){
             console.log("文件创建失败！")
         }
@@ -104,7 +109,7 @@ $("#viewMain").pagecontainer({
 
         });
 
-        $("#openPDF").on('click', function() {
+        //$("#openPDF").on('click', function() {
             /*var fileName = files[0];
             url = buildAssetsUrl(fileName);
             if (device.platform === "iOS") {
@@ -126,7 +131,7 @@ $("#viewMain").pagecontainer({
 
                     }, onErrorCreateFile);
                 }, onErrorLoadFs);*/
-                window.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf"), '_system');
+               // window.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf"), '_system');
             //}           
             //PluginName: cordova-plugin-file-opener2
             /*
@@ -149,6 +154,6 @@ $("#viewMain").pagecontainer({
             */
             //fileDownload('http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf');
             
-        });
+        //});
     }
 });

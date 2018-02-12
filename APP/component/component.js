@@ -391,12 +391,12 @@ $(document).one("pagebeforecreate", function() {
                 width: window.screen.width * ratio,
                 height: window.screen.height * ratio
             };
-            /*if (screen.width === 1125 && screen.height === 2436) { 
-                $('meta[name=viewport]').attr('content', 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover');
-                $('body').attr('style', '-webkit-text-size-adjust: 100%; font-family: "Heiti TC"; padding-top: env(safe-area-inset-top)!important;');
-            }*/
-
-            $('.page-header').addClass('ios-fix-overlap');
+            if (screen.width === 1125 && screen.height === 2436) { 
+                //$('meta[name=viewport]').attr('content', 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover');
+                $('.page-header').addClass('ios-fix-overlap-iX');
+            }else {
+                $('.page-header').addClass('ios-fix-overlap');
+            }          
             $('.ios-fix-overlap-div').css('display', 'block');
 
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');

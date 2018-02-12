@@ -6,13 +6,16 @@ $("#viewActivitiesSignup").pagecontainer({
         var limitPlace, currentPlace;     //限制人數和目前人數
         var teamName, departNo, submitID, submitModel;
         var personSubmitPlace;
+        var timeID;
         var memberNoArr = [];
         var personFieldArr = [];
         var familyFieldArr = [];
-        var fieldArr = [];
+        var timeFieldArr = [];
+        //var fieldArr = [];
         var timeoutCheckFamilySignup = null;
         var timeoutCheckPersonSignup = null;
-        var selectLength = 0, textLength = 0, checkboxLength = 0;
+        var timeoutCheckTimeSignup = null;
+        //var selectLength = 0, textLength = 0, checkboxLength = 0;
         //var selectClassName = "familySignupSelect";
         var checkboxArr = [];
         var employeeData = {
@@ -32,7 +35,7 @@ $("#viewActivitiesSignup").pagecontainer({
         window.ActivitiesSignupQuery = function (model) {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 //報名提交的活動類型
                 submitModel = model;
@@ -85,7 +88,7 @@ $("#viewActivitiesSignup").pagecontainer({
                             $("#column-popup-" + i + "-option-popup").remove();
                         }
                         $("#selectFamilyBtn").addClass("btn-disabled");
-                        selectLength = 0, textLength = 0, checkboxLength = 0;
+                        //selectLength = 0, textLength = 0, checkboxLength = 0;
 
                         $("#familySignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#familySignupName").text(signupObj["ActivitiesName"]);
@@ -101,10 +104,11 @@ $("#viewActivitiesSignup").pagecontainer({
                         $("#familySelectName").text(signupObj["ActivitiesName"]);
                         $("#familySelectLimitPlace").text(signupObj["LimitPlaces"]);
                         $(".select-family-remark").empty().append("<div>" + signupObj["ActivitiesRemarks"] + "</div>");
+                        //因爲眷屬報名必須包含本人，所以可攜帶眷屬數量=總數量-1
+                        selectFamilyLimit = signupObj["LimitPlaces"] - 1;
 
                         //处理自定义栏位，放入數組中
                         familyFieldArr = getCustomField(signupObj);
-
                         // familyFieldArr = [{
                         //     "ColumnName": "自助餐",
                         //     "ColumnType": "Multiple",
@@ -129,21 +133,18 @@ $("#viewActivitiesSignup").pagecontainer({
                         //     "ColumnItem": "",
                         //     "ColumnAnswer": ""
                         // }];
-                        ///familyFieldArr = [];
-                        fieldArr = customFieldByItem(familyFieldArr);
+
+                        //fieldArr = customFieldByItem(familyFieldArr);
 
                         //根據欄位類型，生成不同欄位
                         for (var i in familyFieldArr) {
                             if (familyFieldArr[i]["ColumnType"] == "Select") {
-                                selectLength++;
                                 setSelectCustomField(familyFieldArr, i, "viewActivitiesSignup", "familySignupSelect", "family-signup-custom-field");
 
                             } else if (familyFieldArr[i]["ColumnType"] == "Text") {
-                                textLength++;
                                 setTextCustomField(familyFieldArr, i, "familySignupText", "family-signup-custom-field");
 
                             } else if (familyFieldArr[i]["ColumnType"] == "Multiple") {
-                                checkboxLength++;
                                 setCheckboxCustomField(familyFieldArr, i, "familySignupCheckbox", "family-signup-custom-field");
 
                             }
@@ -161,7 +162,61 @@ $("#viewActivitiesSignup").pagecontainer({
                         currentPlace = 0;
 
                     } else if (model == "5") {
+                        //頁面初始化
+                        $(".time-signup-custom-field").empty();
+                        for (var i = 0; i < 5; i++) {
+                            $("#column-popup-timeSignupSelect-" + i + "-option-screen").remove();
+                            $("#column-popup-timeSignupSelect-" + i + "-option-popup").remove();
+                        }
+                        $("#timeSignupBtn").addClass("btn-disabled");
+                        //賦值
+                        $("#timeSignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
+                        $("#timeSignupName").text(signupObj["ActivitiesName"]);
 
+                        //1.獲取各時段
+                        var timeArr = [];
+                        for(var i in data["Content"]) {
+                            timeArr.push({
+                                "TimeSort": data["Content"][i]["TimeSort"],
+                                "TimeID": data["Content"][i]["TimeID"],
+                                "SignupTime": data["Content"][i]["SignupTime"],
+                                "QuotaPlaces": data["Content"][i]["QuotaPlaces"],
+                                "RemainingPlaces": data["Content"][i]["RemainingPlaces"]
+                            });
+                        }
+                        //2.排序
+                        timeArr.sort(sortByTimeID("TimeSort"));
+                        //console.log(timeArr);
+                        
+                        //3.生成html
+                        var timeContent = "";
+                        for(var i in timeArr) {
+                            timeContent += '<div class="time-signup-tr"><div data-id="'
+                                + timeArr[i]["TimeID"]
+                                + '"><img src="img/radio_n.png" class="time-signup-radio"></div><div>'
+                                + timeArr[i]["SignupTime"]
+                                + '</div><div>'
+                                + timeArr[i]["QuotaPlaces"]
+                                + '</div><div>'
+                                + timeArr[i]["RemainingPlaces"]
+                                + '</div></div>';
+                        }
+                        $(".time-signup-tbody").empty().append(timeContent);
+
+                        //自定義欄位
+                        timeFieldArr = getCustomField(signupObj);
+                        for (var i in timeFieldArr) {
+                            if (timeFieldArr[i]["ColumnType"] == "Select") {
+                                setSelectCustomField(timeFieldArr, i, "viewActivitiesSignup", "timeSignupSelect", "time-signup-custom-field");
+
+                            } else if (timeFieldArr[i]["ColumnType"] == "Text") {
+                                setTextCustomField(timeFieldArr, i, "timeSignupText", "time-signup-custom-field");
+
+                            } else if (timeFieldArr[i]["ColumnType"] == "Multiple") {
+                                setCheckboxCustomField(timeFieldArr, i, "timeSignupCheckbox", "time-signup-custom-field");
+
+                            }
+                        }
                     }
 
                     //根據不同活動類型，展示不同頁面，並跳轉
@@ -182,49 +237,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
             var __construct = function () {
                 CustomAPI("POST", false, "Activities_Signup", self.successCallback, self.failCallback, activitiesSignupQueryData, "");
-            }();
-
-        };
-
-        //選擇眷屬
-        window.ActivitiesSignupFamilyQuery = function () {
-
-            this.successCallback = function (data) {
-                //console.log(data);
-
-                if (data["ResultCode"] == "1") {
-                    var selectFamilyArr = data["Content"];
-                    var selectContent = "";
-                    for (var i in selectFamilyArr) {
-                        selectContent += '<div><div class="select-family-tr"><div><img src="img/checkbox_n.png" class="family-checkbox-img"></div><div>'
-                            + selectFamilyArr[i]["FamilyName"]
-                            + '</div><div>'
-                            + selectFamilyArr[i]["FamilyRelationshipDesc"]
-                            + '</div><div>'
-                            + selectFamilyArr[i]["FamilyGenderDesc"]
-                            + '</div><div><img src="img/list_down.png" class="family-expand-img"></div></div><div class="select-family-detail"><div class="select-family-id font-style12 font-color2"><span>'
-                            + langStr["str_048"]
-                            + '</span><span> / </span><span>'
-                            + langStr["str_049"]
-                            + '</span></div><div class="select-family-birth font-style11 font-color1"><span>'
-                            + selectFamilyArr[i]["FamilyID"]
-                            + '</span><span> / </span><span>'
-                            + selectFamilyArr[i]["FamilyBirthday"]
-                            + '</span></div><div class="select-family-field">' + selectFieldByFamily(fieldArr, i, "family-select") + '</div></div></div>';
-                    }
-
-                    $(".select-family-tbody").empty().append(selectContent);
-
-                }
-
-
-                loadingMask("hide");
-            };
-
-            this.failCallback = function (data) { };
-
-            var __construct = function () {
-                CustomAPI("POST", true, "Activities_Signup_Family", self.successCallback, self.failCallback, activitiesSignupFamilyQueryData, "");
             }();
 
         };
@@ -274,7 +286,7 @@ $("#viewActivitiesSignup").pagecontainer({
         };
 
         //活動報名送出
-        window.ActivitiesSignupConfirmQuery = function () {
+        window.ActivitiesSignupConfirmQuery = function (actID) {
 
             this.successCallback = function (data) {
                 //console.log(data);
@@ -283,21 +295,27 @@ $("#viewActivitiesSignup").pagecontainer({
                     //重新獲取報名列表
                     ActivitiesListQuery();
 
+                    //跳轉前刪除訪問頁面數組最後2個
+                    pageVisitedList.pop();
+                    pageVisitedList.pop();
+
                     //跳轉
                     $.each($("#openList .activity-list"), function (index, item) {
-                        if ($(item).attr("data-id") == submitID) {
+                        if ($(item).attr("data-id") == actID) {
                             $(item).trigger("click");
                         }
                     });
                     $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
 
-                    //清空欄位值
-                    memberNoArr = [];
-                    $("#departNo").val("");
-                    $("#teamName").val("");
-                    $(".team-signup-employee-list").empty();
-                    $("#sendTeamSignup").addClass("btn-disabled");
-
+                    //如果報名成功的是“組隊報名”才需要清空欄位值
+                    if(submitModel == "4") {
+                        memberNoArr = [];
+                        $("#departNo").val("");
+                        $("#teamName").val("");
+                        $(".team-signup-employee-list").empty();
+                        $("#sendTeamSignup").addClass("btn-disabled");
+                    }
+                    
                     //重新獲取報名記錄
                     ActivitiesRecordQuery();
 
@@ -431,40 +449,40 @@ $("#viewActivitiesSignup").pagecontainer({
         }
 
         //生成Select-dropdownlist欄位
-        function setSelectCustomField(arr, i, page, id, container) {
-            //1.聲明dropdownlist對象
-            var columnData = {
-                id: "column-popup-" + id + "-" + i,
-                option: [],
-                title: '',
-                defaultText: langStr["str_040"],
-                changeDefaultText: true,
-                attr: {
-                    class: "tpl-dropdown-list-icon-arrow"
-                }
-            };
+        // function setSelectCustomField(arr, i, page, id, container) {
+        //     //1.聲明dropdownlist對象
+        //     var columnData = {
+        //         id: "column-popup-" + id + "-" + i,
+        //         option: [],
+        //         title: '',
+        //         defaultText: langStr["str_040"],
+        //         changeDefaultText: true,
+        //         attr: {
+        //             class: "tpl-dropdown-list-icon-arrow"
+        //         }
+        //     };
 
-            //2.生成html
-            var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-                + arr[i]["ColumnName"]
-                + '</label><div id="' + id + i + '" class="' + id + '"></div></div>';
+        //     //2.生成html
+        //     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
+        //         + arr[i]["ColumnName"]
+        //         + '</label><div id="' + id + i + '" class="' + id + '"></div></div>';
 
-            //3.append
-            $("." + container).append(fieldContent);
+        //     //3.append
+        //     $("." + container).append(fieldContent);
 
-            //4.取value值
-            var valueArr = arr[i]["ColumnItem"].split(";");
+        //     //4.取value值
+        //     var valueArr = arr[i]["ColumnItem"].split(";");
 
-            //5.动态生成popup
-            for (var j in valueArr) {
-                columnData["option"][j] = {};
-                columnData["option"][j]["value"] = valueArr[j];
-                columnData["option"][j]["text"] = valueArr[j];
-            }
+        //     //5.动态生成popup
+        //     for (var j in valueArr) {
+        //         columnData["option"][j] = {};
+        //         columnData["option"][j]["value"] = valueArr[j];
+        //         columnData["option"][j]["text"] = valueArr[j];
+        //     }
 
-            //6.生成dropdownlist
-            tplJS.DropdownList(page, id + i, "prepend", "typeB", columnData);
-        }
+        //     //6.生成dropdownlist
+        //     tplJS.DropdownList(page, id + i, "prepend", "typeB", columnData);
+        // }
 
         //生成每個眷屬的自定義欄位-select
         function selectFieldByFamily(arr, familyID, className) {
@@ -503,121 +521,59 @@ $("#viewActivitiesSignup").pagecontainer({
         }
 
         //生成Text自定義欄位
-        function setTextCustomField(arr, i, id, container) {
-            var fieldContent = '<div class="custom-field"><label for="' + id + i + '" class="font-style11 font-color1">'
-                + arr[i]["ColumnName"]
-                + '</label><input name="' + id + i + '" id="' + id + i + '" type="text" data-role="none" class="' + id + '"></div>';
+        // function setTextCustomField(arr, i, id, container) {
+        //     var fieldContent = '<div class="custom-field"><label for="' + id + i + '" class="font-style11 font-color1">'
+        //         + arr[i]["ColumnName"]
+        //         + '</label><input name="' + id + i + '" id="' + id + i + '" type="text" data-role="none" class="' + id + '"></div>';
 
-            $("." + container).append(fieldContent);
-        }
+        //     $("." + container).append(fieldContent);
+        // }
 
-        //生成Checkbox自定義欄位
-        function setCheckboxCustomField(arr, i, id, content) {
-            //先處理checkbox所有選項
-            var mutipleArr = arr[i]["ColumnItem"].split(";");
-            var mutipleContent = "";
-            for (var j in mutipleArr) {
-                mutipleContent += '<div data-name="checkbox-' + id + '-' + j
-                    + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
-                    + mutipleArr[j]
-                    + '</span></div>';
-            }
+        // //生成Checkbox自定義欄位
+        // function setCheckboxCustomField(arr, i, id, content) {
+        //     //先處理checkbox所有選項
+        //     var mutipleArr = arr[i]["ColumnItem"].split(";");
+        //     var mutipleContent = "";
+        //     for (var j in mutipleArr) {
+        //         mutipleContent += '<div data-name="checkbox-' + id + '-' + j
+        //             + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
+        //             + mutipleArr[j]
+        //             + '</span></div>';
+        //     }
 
-            var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-                + arr[i]["ColumnName"]
-                + '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + id + '-' + i + '">';
+        //     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
+        //         + arr[i]["ColumnName"]
+        //         + '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + id + '-' + i + '">';
 
-            $("." + content).append(fieldContent + mutipleContent + "</div><div>");
+        //     $("." + content).append(fieldContent + mutipleContent + "</div><div>");
 
-            //生成checkbox的value對象，初始value爲空，打勾添加，打叉刪除
-            var mutipleObj = {
-                "name": arr[i]["ColumnName"],
-                "value": []
-            };
+        //     //生成checkbox的value對象，初始value爲空，打勾添加，打叉刪除
+        //     var mutipleObj = {
+        //         "name": arr[i]["ColumnName"],
+        //         "value": []
+        //     };
 
-            checkboxArr.push(mutipleObj);
-        }
+        //     checkboxArr.push(mutipleObj);
+        // }
 
-        //記錄所選欄位的值
-        function setFieldValue(name, value) {
-            for (var i in familyFieldArr) {
-                if (name == familyFieldArr[i]["ColumnName"]) {
-                    familyFieldArr[i]["ColumnAnswer"] = value;
-                    break;
+        
+
+        //檢查時段是否選擇
+        function checkTimeRadio() {
+            var radioLength = 0;
+            $.each($(".time-signup-tbody .time-signup-radio"), function(index, item) {
+                if($(item).attr("src") == "img/radio_s.png") {
+                    radioLength++;
                 }
-            }
-        }
+            });
 
-        //檢查眷属报名所有欄位是否爲空
-        function checkFamilyForm() {
-            //select
-            var selLength = 0;
-            if ($(".family-signup-custom-field .familySignupSelect select").length > 0) {
-                $.each($(".familySignupSelect select"), function (index, item) {
-                    if ($(item).val() !== langStr["str_040"]) {
-                        selLength++;
-                    } else {
-                        selLength--;
-                    }
-                });
-            }
-
-            //text
-            var texLength = 0;
-            if ($(".family-signup-custom-field .familySignupText").length > 0) {
-                $.each($(".familySignupText"), function (index, item) {
-                    if ($.trim($(item).val()) !== "") {
-                        texLength++;
-                    } else {
-                        texLength--;
-                    }
-                });
-            }
-
-            //checkbox
-            var cheLength = 0;
-            if (checkboxArr.length > 0) {
-                for (var i in checkboxArr) {
-                    if (checkboxArr[i]["value"].length > 0) {
-                        cheLength++;
-                    } else {
-                        cheLength--;
-                    }
-                }
-            }
-
-            if (selLength == selectLength && texLength == textLength && cheLength == checkboxLength) {
-                $("#selectFamilyBtn").removeClass("btn-disabled");
+            if(radioLength > 0) {
+                //$("#timeSignupBtn").removeClass("btn-disabled");
+                return true;
             } else {
-                $("#selectFamilyBtn").addClass("btn-disabled");
+                //$("#timeSignupBtn").addClass("btn-disabled");
+                return false;
             }
-        }
-
-        //记录个人报名自定义栏位值，并检查是否为空
-        function saveValueAndCheckPersonForm(arr, name, value, bool) {
-            //bool为true，添加checkbox;若为false，删除checkbox;若为other，text和select赋值
-            for (var i in arr) {
-                if (name == arr[i]["ColumnName"] && bool == true) {
-                    arr[i]["ColumnAnswer"] += (";" + value);
-                } else if (name == arr[i]["ColumnName"] && bool == false) {
-                    arr[i]["ColumnAnswer"] = arr[i]["ColumnAnswer"].replace(";" + value, "");
-                } else if (name == arr[i]["ColumnName"] && bool == null) {
-                    arr[i]["ColumnAnswer"] = value;
-                }
-            }
-
-            //检查表单是否为空
-            for (var i in arr) {
-                if (arr[i]["ColumnAnswer"] == "") {
-                    $("#personSignupBtn").addClass("btn-disabled");
-                    break;
-                } else {
-                    $("#personSignupBtn").removeClass("btn-disabled");
-                }
-            }
-
-            //console.log(personFieldArr);
-
         }
 
         /********************************** page event *************************************/
@@ -752,7 +708,7 @@ $("#viewActivitiesSignup").pagecontainer({
         $("#sendTeamSignup").on("click", function () {
             var self = $(this).hasClass("btn-disabled");
             if (!self) {
-                //loadingMask("show");
+                loadingMask("show");
                 activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                     + submitID
                     + '</ActivitiesID><SignupModel>'
@@ -768,7 +724,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</MemberEmpNo></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery();
+                ActivitiesSignupConfirmQuery(submitID);
             }
 
         });
@@ -780,10 +736,7 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfName = $(this).parent().prev().text();
             var selfVal = $(this).val();
 
-            //檢查表單
-            checkFamilyForm();
-            //記錄欄位值
-            setFieldValue(selfName, selfVal);
+            saveValueAndCheckForm(familyFieldArr, selfName, selfVal, null, "selectFamilyBtn");
         });
 
         //text
@@ -796,10 +749,7 @@ $("#viewActivitiesSignup").pagecontainer({
                 timeoutCheckFamilySignup = null;
             }
             timeoutCheckFamilySignup = setTimeout(function () {
-                //檢查表單
-                checkFamilyForm();
-                //記錄欄位值
-                setFieldValue(selfName, selfVal);
+                saveValueAndCheckForm(familyFieldArr, selfName, selfVal, null, "selectFamilyBtn");
             }, 1000);
 
         });
@@ -811,44 +761,41 @@ $("#viewActivitiesSignup").pagecontainer({
             var value = $(this).children("span").text();
 
             if (src == "img/checkbox_n.png") {
-                for (var i in checkboxArr) {
-                    if (name == checkboxArr[i]["name"]) {
-                        checkboxArr[i]["value"].push(value);
-                    }
-                }
-
+                //保存栏位值并检查表单
+                saveValueAndCheckForm(familyFieldArr, name, value, true, "selectFamilyBtn");
                 $(this).find("img").attr("src", "img/checkbox_s.png");
             } else {
-                for (var i in checkboxArr) {
-                    for (var j in checkboxArr[i]["value"]) {
-                        if (name == checkboxArr[i]["name"] && value == checkboxArr[i]["value"][j]) {
-                            checkboxArr[i]["value"].splice(j, 1);
-                            break;
-                        }
-                    }
-                }
-
+                //保存栏位值并检查表单
+                saveValueAndCheckForm(familyFieldArr, name, value, false, "selectFamilyBtn");
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
-
-            //檢查表單
-            checkFamilyForm();
-
-            var checkboxVal = "";
-            for (var i in checkboxArr) {
-                if (name == checkboxArr[i]["name"]) {
-                    checkboxVal = checkboxArr[i]["value"].join(";");
-                }
-            }
-
-            //記錄欄位值
-            setFieldValue(name, checkboxVal);
 
         });
 
         //點擊“選擇眷屬”
         $("#selectFamilyBtn").on("click", function () {
             if (!$("#selectFamilyBtn").hasClass("btn-disabled")) {
+                //初始化
+                $(".select-family-field").empty();
+
+                //給所有眷屬添加自定義欄位和值
+                $.each($(".select-family-field"), function(index, item) {
+                    //根據欄位類型，生成不同欄位
+                    for (var i in familyFieldArr) {
+                        if (familyFieldArr[i]["ColumnType"] == "Select") {
+                            setSelectCustomField2(index, familyFieldArr, i, "viewSelectFamily", "familySelect", $(item));
+
+                        } else if (familyFieldArr[i]["ColumnType"] == "Text") {
+                            setTextCustomField2(index, familyFieldArr, i, "familySelectText", $(item));
+
+                        } else if (familyFieldArr[i]["ColumnType"] == "Multiple") {
+                            setCheckboxCustomField2(index, familyFieldArr, i, "familySelectCheckbox", $(item));
+                        }
+                    }
+                });
+
+                //console.log(familyFieldArr);
+
                 //跳轉
                 changePageByPanel("viewSelectFamily", true);
             }
@@ -866,7 +813,7 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfName = $(this).parent().prev().text();
             var selfVal = $(this).val();
             //保存栏位值并检查表单
-            saveValueAndCheckPersonForm(personFieldArr, selfName, selfVal, null);
+            saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
         });
 
         //text
@@ -880,7 +827,7 @@ $("#viewActivitiesSignup").pagecontainer({
             }
             timeoutCheckPersonSignup = setTimeout(function () {
                 //保存栏位值并检查表单
-                saveValueAndCheckPersonForm(personFieldArr, selfName, selfVal, null);
+                saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
             }, 1000);
 
         });
@@ -893,11 +840,11 @@ $("#viewActivitiesSignup").pagecontainer({
 
             if (src == "img/checkbox_n.png") {
                 //保存栏位值并检查表单
-                saveValueAndCheckPersonForm(personFieldArr, name, value, true);
+                saveValueAndCheckForm(personFieldArr, name, value, true, "personSignupBtn");
                 $(this).find("img").attr("src", "img/checkbox_s.png");
             } else {
                 //保存栏位值并检查表单
-                saveValueAndCheckPersonForm(personFieldArr, name, value, false);
+                saveValueAndCheckForm(personFieldArr, name, value, false, "personSignupBtn");
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
 
@@ -905,15 +852,9 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //開始報名
         $("#personSignupBtn").on("click", function () {
-            var self = $(this).hasClass("btn-disbaled");
+            var self = $(this).hasClass("btn-disabled");
             if (!self) {
-                for (var i in personFieldArr) {
-                    if (personFieldArr[i]["ColumnType"] == "Multiple") {
-                        var StrLength = personFieldArr[i]["ColumnAnswer"].length;
-                        personFieldArr[i]["ColumnAnswer"] = personFieldArr[i]["ColumnAnswer"].substring(1, StrLength);
-                    }
-                }
-
+                loadingMask("show");
                 activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                     + submitID
                     + '</ActivitiesID><SignupModel>'
@@ -935,7 +876,129 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</ColumnAnswer_5></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery();
+                ActivitiesSignupConfirmQuery(submitID);
+            }
+        });
+
+
+        /*********************************** time signup ***********************************/
+        //radio
+        $(".time-signup-tbody").on("click", ".time-signup-radio", function() {
+            var src = $(this).attr("src");
+            timeID = $(this).parent().attr("data-id");
+
+            //1.先將所有radio變爲空
+            $(".time-signup-radio").attr("src", "img/radio_n.png");
+
+            //2.再把點擊的變爲非空
+            if(src == "img/radio_n.png") {
+                $(this).attr("src", "img/radio_s.png"); 
+            } else {
+                $(this).attr("src", "img/radio_n.png");
+            }
+
+            //检查表单
+            if(checkTimeRadio()) {
+                for (var i in timeFieldArr) {
+                    if (timeFieldArr[i]["ColumnAnswer"] == "") {
+                        $("#timeSignupBtn").addClass("btn-disabled");
+                        break;
+                    } else {
+                        $("#timeSignupBtn").removeClass("btn-disabled");
+                    }
+                }
+            } else {
+                $("#timeSignupBtn").addClass("btn-disabled");
+            }
+            
+        });
+
+        //select
+        $(".time-signup-custom-field").on("change", ".timeSignupSelect select", function () {
+            var selfName = $(this).parent().prev().text();
+            var selfVal = $(this).val();
+            //保存栏位值并检查表单
+            if(checkTimeRadio()) {
+                saveValueAndCheckForm(timeFieldArr, selfName, selfVal, null, "timeSignupBtn");
+            } else {
+                $("#timeSignupBtn").addClass("btn-disabled");
+            }
+            
+        });
+
+        //text
+        $(".time-signup-custom-field").on("keyup", ".timeSignupText", function () {
+            var selfName = $(this).prev().text();
+            var selfVal = $(this).val();
+
+            if (timeoutCheckTimeSignup != null) {
+                clearTimeout(timeoutCheckTimeSignup);
+                timeoutCheckTimeSignup = null;
+            }
+            timeoutCheckTimeSignup = setTimeout(function () {
+                //保存栏位值并检查表单
+                if(checkTimeRadio()) {
+                    saveValueAndCheckForm(timeFieldArr, selfName, selfVal, null, "timeSignupBtn");
+                } else {
+                    $("#timeSignupBtn").addClass("btn-disabled");
+                }
+            }, 1000);
+
+        });
+
+        //checkbox
+        $(".time-signup-custom-field").on("click", ".custom-field-checkbox > div", function () {
+            var src = $(this).find("img").attr("src");
+            var selfName = $(this).parent().prev().text();
+            var selfVal = $(this).children("span").text();
+
+            if (src == "img/checkbox_n.png") {
+                //保存栏位值并检查表单
+                if(checkTimeRadio()) {
+                    saveValueAndCheckForm(timeFieldArr, selfName, selfVal, true, "timeSignupBtn");
+                } else {
+                    $("#timeSignupBtn").addClass("btn-disabled");
+                }
+                $(this).find("img").attr("src", "img/checkbox_s.png");
+            } else {
+                //保存栏位值并检查表单
+                if(checkTimeRadio()) {
+                    saveValueAndCheckForm(timeFieldArr, selfName, selfVal, false, "timeSignupBtn");
+                } else {
+                    $("#timeSignupBtn").addClass("btn-disabled");
+                }
+                $(this).find("img").attr("src", "img/checkbox_n.png");
+            }
+
+        });
+
+        //確定送出
+        $("#timeSignupBtn").on("click", function() {
+            var self = $(this).hasClass("btn-disabled");
+            if(!self) {
+                loadingMask("show");
+                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                    + submitID
+                    + '</ActivitiesID><SignupModel>'
+                    + submitModel
+                    + '</SignupModel><SignupPlaces>1</SignupPlaces><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><ColumnAnswer_1>'
+                    + (timeFieldArr[0] == undefined ? "" : timeFieldArr[0]["ColumnAnswer"])
+                    + '</ColumnAnswer_1><ColumnAnswer_2>'
+                    + (timeFieldArr[1] == undefined ? "" : timeFieldArr[1]["ColumnAnswer"])
+                    + '</ColumnAnswer_2><ColumnAnswer_3>'
+                    + (timeFieldArr[2] == undefined ? "" : timeFieldArr[2]["ColumnAnswer"])
+                    + '</ColumnAnswer_3><ColumnAnswer_4>'
+                    + (timeFieldArr[3] == undefined ? "" : timeFieldArr[3]["ColumnAnswer"])
+                    + '</ColumnAnswer_4><ColumnAnswer_5>'
+                    + (timeFieldArr[4] == undefined ? "" : timeFieldArr[4]["ColumnAnswer"])
+                    + '</ColumnAnswer_5><TimeID>'
+                    + timeID
+                    + '</TimeID></LayoutHeader>';
+
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(submitID);
             }
         });
 
