@@ -180,6 +180,10 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     margin-top: 20px;
 }
 
+.ios-fix-overlap-iX {
+    margin-top: 30px;
+}
+
 .ios-fix-overlap-div {
     height: 20px;
     width: 100%;
@@ -190,7 +194,6 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
     background-color: #FFF;
     display: none;
 }
-
 /*Fix - Android text in ui-btn, the vertical does not in middle*/
 .android-fix-btn-text-middle {
     position: relative;
