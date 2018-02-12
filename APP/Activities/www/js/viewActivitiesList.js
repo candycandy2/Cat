@@ -6,6 +6,7 @@ $("#viewActivitiesList").pagecontainer({
 
 
         /********************************** function *************************************/
+        //獲取活動列表
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
