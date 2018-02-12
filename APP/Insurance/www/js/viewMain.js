@@ -44,11 +44,6 @@ $("#viewMain").pagecontainer({
           alert("Sorry! Cannot view document.");
         }
 
-        function openInAppBrowser(href){
-            event.preventDefault();
-            cordova.InAppBrowser.open(href, '_system', 'location=yes');
-        }
-
         /*function  onErrorCreateFile(error){
             console.log("文件创建失败！")
         }
