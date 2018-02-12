@@ -182,6 +182,7 @@ body *:not(input):not(textarea){ -webkit-user-select: none;}
 
 .ios-fix-overlap-iX {
     margin-top: 30px;
+    z-index: 0;
 }
 
 .ios-fix-overlap-div {
