@@ -17,7 +17,6 @@ class BasicInfoController extends Controller
     protected $basicInfoService;
     protected $enUserGroupRepository;
     protected $userRepository;
-    protected $message;
 
     /**
      * 建構子，初始化引入相關服務
@@ -25,12 +24,13 @@ class BasicInfoController extends Controller
      * @param EnUserGroupRepository $enUserGroupRepository ENS管理員
      * @param UserRepository $userRepository 用戶
      */
-    public function __construct(BasicInfoService $basicInfoService, EnUserGroupRepository $enUserGroupRepository, UserRepository $userRepository)
+    public function __construct(BasicInfoService $basicInfoService,
+                                EnUserGroupRepository $enUserGroupRepository,
+                                UserRepository $userRepository)
     {
         $this->basicInfoService = $basicInfoService;
         $this->enUserGroupRepository = $enUserGroupRepository;
         $this->userRepository = $userRepository;
-        $this->message = new MessageUtil();
     }
 
     /**
