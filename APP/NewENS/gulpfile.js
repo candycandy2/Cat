@@ -72,6 +72,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
                             '<preference name="iosPersistentFileLocation" value="Compatibility" />' +
+                            '<preference name="DisallowOverscroll" value="true" />' +
                             process.env.iOSScreen +
                         '</platform>' +
                         process.env.PreferenceValue +
