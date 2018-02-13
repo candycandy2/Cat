@@ -36,11 +36,13 @@ class appLogController extends Controller
             $input[strtolower($k)] = $v;
         }
         //驗證uuid
-        if(!isset($input["uuid"]) || !$Verify->chkUuidExist($input["uuid"])) {
-            $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
-            'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
-            'content'=>''];
-            return response()->json($result);
+        if(isset($input["uuid"])){
+            if(!$Verify->chkUuidExist($input["uuid"])){
+              $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
+                'content'=>''];
+                return response()->json($result);  
+            }
         }
              
         $request = Request::instance();
@@ -67,7 +69,7 @@ class appLogController extends Controller
             $ip = CommonUtil::getIP();
             $logMode = Config::get('app.log_mode');
             $logList = $jsonContent['log_list'];
-            $uuid = $input["uuid"];
+            $uuid = (isset($input["uuid"]))?$input["uuid"]:null;
             
 
             //Mysql

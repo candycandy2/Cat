@@ -137,7 +137,16 @@ class CommonUtil
             -> where('qp_user.resign', '=', 'N')
             -> where('qp_user.login_id', '=', $loginId)
             -> where('qp_user.user_domain', '=', $domain)
-            -> select('qp_user.row_id')->get();
+            -> select('qp_user.row_id',
+                      'qp_user.login_id',
+                      'qp_user.company',
+                      'qp_user.site_code',
+                      'qp_user.ext_no',
+                      'qp_user.emp_no',
+                      'qp_user.emp_name',
+                      'qp_user.user_domain',
+                      'qp_user.department',
+                      'qp_user.email')->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -802,6 +811,11 @@ class CommonUtil
                 break;
         }
         return $key;
+    }
+
+    public static function getRealAppName($appKey){
+        $env = strtolower(Config::get('app.env'));
+        return substr($appKey,3,strlen($appKey)-strlen($env)-3);
     }
 
 }

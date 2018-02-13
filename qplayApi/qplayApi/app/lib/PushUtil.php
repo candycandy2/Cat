@@ -66,11 +66,18 @@ class PushUtil
         return $result;
     }
 
-    public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '', $send_by_tag = false) {
+    public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '', $send_by_tag = false, $appKey = null) {
         $result = array();
         $result["result"] = true;
         $response = null;
-        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        if(is_null($appKey)){
+            $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        }else{
+            $appName = CommonUtil::getRealAppName($appKey);
+            $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
+            $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
+            $client = new JPush($appId, $masterSecret);
+        }
         try {
             $platform = array('ios', 'android');
             $alert = $message;
@@ -119,10 +126,10 @@ class PushUtil
             }
         } catch (APIConnectionException $e) {
             $result["result"] = false;
-            $result["info"] = "APIConnection Exception occurred";
+            $result["info"] = "APIConnection Exception occurred".$e;
         }catch (APIRequestException $e) {
             $result["result"] = false;
-            $result["info"] = "APIRequest Exception occurred";
+            $result["info"] = "APIRequest Exception occurred:".$e;
         }catch (JPushException $e) {
             $result["result"] = false;
             $result["info"] = "JPush Exception occurred";
@@ -136,12 +143,19 @@ class PushUtil
         return $result;
     }
 
-    public static function PushScheduleMessageWithJPushWebAPI($schedule_name, $schedule_datetime, $message, $to, $parameter = '', $send_by_tag = false) {
+    public static function PushScheduleMessageWithJPushWebAPI($schedule_name, $schedule_datetime, $message, $to, $parameter = '', $send_by_tag = false, $appKey = null) {
         $result = array();
         $result["result"] = true;
         $result["info"] = "success";
         $response = null;
-        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        if(is_null($appKey)){
+            $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        }else{
+            $appName = CommonUtil::getRealAppName($appKey);
+            $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
+            $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
+            $client = new JPush($appId, $masterSecret);
+        }
         try {
             $platform = array('ios', 'android');
             $alert = $message;
@@ -255,11 +269,18 @@ class PushUtil
         }
     }
 
-    public static function AddTagsWithJPushWebAPI($registrationId, $tag) {
+    public static function AddTagsWithJPushWebAPI($registrationId, $tag, $appKey=null) {
         $result = array();
         $result["result"] = true;
         $response = null;
-        $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        if(is_null($appKey)){
+            $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        }else{
+            $appName = CommonUtil::getRealAppName($appKey);
+            $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
+            $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
+            $client = new JPush($appId, $masterSecret);
+        }
         try {
             $device = $client->device();
             $device->addDevicesToTag($tag, $registrationId);
