@@ -15,11 +15,11 @@ $("#viewSelectFamily").pagecontainer({
         window.ActivitiesSignupFamilyQuery = function (id, model, isSignup, arr) {
 
             this.successCallback = function (data) {
-                console.log(arr);
-                console.log(data);
+                //console.log(arr);
+                //console.log(data);
 
                 actID = id, actModel = model;
-                if (data["ResultCode"] == "1") {
+                if (data["ResultCode"] == "1" && isSignup == "N") {
                     //初始化
                     $(".select-family-field").empty();
                     for (var i = 0; i < data["Content"].length; i++) {
@@ -76,6 +76,7 @@ $("#viewSelectFamily").pagecontainer({
                     for (var i = 0; i < 5;) {
                         for (var j = 1; j < 6; j++) {
                             answerObj["FamilyNo"] = "";
+                            answerObj["IsSignup"] = "N";
                             answerObj["ColumnName_" + j] = arr[i] == undefined ? "" : arr[i]["ColumnName"];
                             answerObj["ColumnType_" + j] = arr[i] == undefined ? "" : arr[i]["ColumnType"];
                             answerObj["ColumnItem_" + j] = arr[i] == undefined ? "" : arr[i]["ColumnItem"];
@@ -86,14 +87,17 @@ $("#viewSelectFamily").pagecontainer({
 
                     //每個眷屬生成一個自定義欄位值對象，並放入數組
                     familyAllList = [];
-                    for(var i in selectFamilyArr) {
-                        answerObj["FamilyNo"] = selectFamilyArr[i]["FamilyNo"];
-                        familyAllList.push(answerObj);
+                    for (var i in selectFamilyArr) {
+                        var oneObj = $.extend({}, answerObj);
+                        oneObj["FamilyNo"] = selectFamilyArr[i]["FamilyNo"];
+                        familyAllList.push(oneObj);
                     }
                     console.log(familyAllList);
 
                     //跳轉
                     changePageByPanel("viewSelectFamily", true);
+                } else if (data["ResultCode"] == "1" && isSignup == "Y") {
+                    console.log(data);
                 }
 
                 loadingMask("hide");
@@ -183,15 +187,17 @@ $("#viewSelectFamily").pagecontainer({
             //2.再檢查checkbox欄位是否爲空，爲空不能選擇眷屬
             var flag2 = true;
             var checkboxSelectCount = 0;
-            $.each(borderNode.find(".select-family-field .custom-field .family-signup-checkbox"), function (index, item) {
-                if ($(item).attr("src") == "img/checkbox_s.png") {
-                    checkboxSelectCount++;
+            if ($(".select-family-field .custom-field .family-signup-checkbox").length > 0) {
+                $.each(borderNode.find(".select-family-field .custom-field .family-signup-checkbox"), function (index, item) {
+                    if ($(item).attr("src") == "img/checkbox_s.png") {
+                        checkboxSelectCount++;
+                    }
+                });
+                if (checkboxSelectCount > 0) {
+                    flag2 = true;
+                } else {
+                    flag2 = false;
                 }
-            });
-            if (checkboxSelectCount > 0) {
-                flag2 = true;
-            } else {
-                flag2 = false;
             }
 
             //3.檢查目前已選擇的checkbox
@@ -206,25 +212,25 @@ $("#viewSelectFamily").pagecontainer({
             if (flag1 && flag2 && familySelected < selectFamilyLimit && src == "img/checkbox_n.png") {
                 self.attr("src", "img/checkbox_s.png");
 
-                //欄位值添加到數組
-                // familyList.push({
-                //     "familyNo": familyNo,
-                //     "ColumnAnswer_1": "",
-                //     "ColumnAnswer_2": "",
-                //     "ColumnAnswer_3": "",
-                //     "ColumnAnswer_4": "",
-                //     "ColumnAnswer_5": ""
-                // });
+                //改變報名狀態爲“Y”
+                for (var i in familyAllList) {
+                    if (familyNo == familyAllList[i]["FamilyNo"]) {
+                        familyAllList[i]["IsSignup"] = "Y";
+                    }
+                }
+
             } else if (src == "img/checkbox_s.png") {
                 self.attr("src", "img/checkbox_n.png");
 
-                //欄位值從數組中刪除
-                // for (var i in familyList) {
-                //     if (familyList[i]["familyNo"] == familyNo) {
-                //         familyList.splice(i, 1);
-                //     }
-                // }
+                //改變報名狀態爲“N”
+                for (var i in familyAllList) {
+                    if (familyNo == familyAllList[i]["FamilyNo"]) {
+                        familyAllList[i]["IsSignup"] = "N";
+                    }
+                }
             }
+
+            //console.log(familyAllList);
 
         });
 
@@ -255,6 +261,132 @@ $("#viewSelectFamily").pagecontainer({
         });
 
         //Select欄位值改變
-        $(".")
+        $(".select-family-tbody").on("change", ".custom-field select", function () {
+            var familyNo = $(this).parent().parent().parent().parent().prev().find(".family-checkbox-img").parent().attr("data-no");
+            var columnName = $(this).parent().prev().text();
+            var columnAnswer = $(this).val();
+
+            if (familyAllList.length != 0) {
+                for (var i in familyAllList) {
+                    if (familyNo == familyAllList[i]["FamilyNo"]) {
+                        for (var j = 1; j < 6; j++) {
+                            if (columnName == familyAllList[i]["ColumnName_" + j]) {
+                                familyAllList[i]["ColumnAnswer_" + j] = columnAnswer;
+                                break;
+                            }
+                        }
+                    }
+                }
+                //console.log(familyAllList);
+            }
+        });
+
+        //Text欄位值改變
+        $(".select-family-tbody").on("change", ".custom-field input", function () {
+            var familyNo = $(this).parent().parent().parent().prev().find(".family-checkbox-img").parent().attr("data-no");
+            var columnName = $(this).prev().text();
+            var columnAnswer = $.trim($(this).val());
+
+            if (familyAllList.length != 0) {
+                for (var i in familyAllList) {
+                    if (familyNo == familyAllList[i]["FamilyNo"]) {
+                        for (var j = 1; j < 6; j++) {
+                            if (columnName == familyAllList[i]["ColumnName_" + j]) {
+                                familyAllList[i]["ColumnAnswer_" + j] = columnAnswer;
+                                break;
+                            }
+                        }
+                    }
+                }
+                //console.log(familyAllList);
+            }
+
+            //如果自定義欄位的Text值爲空，則眷屬的checkbox也不能選擇
+            if(columnAnswer == "" && $(this).parent().parent().parent().prev().find(".family-checkbox-img").attr("src") == "img/checkbox_s.png") {
+                $(this).parent().parent().parent().prev().find(".family-checkbox-img").trigger("click");
+            }
+        });
+
+        //Checkbox欄位值改變
+        $(".select-family-tbody").on("click", ".custom-field-checkbox > div", function () {
+            var familyNo = $(this).parent().parent().parent().parent().prev().find(".family-checkbox-img").parent().attr("data-no");
+            var columnName = $(this).parent().prev().text();
+            var columnAnswer = "";
+
+            var src = $(this).find("img").attr("src");
+            if (src == "img/checkbox_n.png") {
+                $(this).find("img").attr("src", "img/checkbox_s.png");
+
+                $.each($(this).parent().find("div"), function (index, item) {
+                    if ($(item).find("img").attr("src") == "img/checkbox_s.png") {
+                        columnAnswer += (";" + $(item).text());
+                    }
+                });
+
+            } else {
+                $(this).find("img").attr("src", "img/checkbox_n.png");
+
+                $.each($(this).parent().find("div"), function (index, item) {
+                    if ($(item).find("img").attr("src") == "img/checkbox_s.png") {
+                        columnAnswer += (";" + $(item).text());
+                    }
+                });
+            }
+
+            if (familyAllList.length != 0) {
+                for (var i in familyAllList) {
+                    if (familyNo == familyAllList[i]["FamilyNo"]) {
+                        for (var j = 1; j < 6; j++) {
+                            if (columnName == familyAllList[i]["ColumnName_" + j]) {
+                                familyAllList[i]["ColumnAnswer_" + j] = columnAnswer;
+                                break;
+                            }
+                        }
+                    }
+                }
+                //console.log(familyAllList);
+            }
+
+            //如果自定義欄位的checkbox都未選擇，則眷屬的checkbox也不能選擇
+            if(columnAnswer == "" && $(this).parent().parent().parent().parent().prev().find(".family-checkbox-img").attr("src") == "img/checkbox_s.png") {
+                $(this).parent().parent().parent().parent().prev().find(".family-checkbox-img").trigger("click");
+            }
+        });
+
+        //確定送出
+        $("#familySignupBtn").on("click", function() {
+            var familyQuery = "";
+            for(var i in familyAllList) {
+                if(familyAllList[i]["IsSignup"] == "Y") {
+                    familyQuery += '<FamilyList><ActivitiesID>'
+                        + actID
+                        + '</ActivitiesID><SignupPlaces>1</SignupPlaces><EmployeeNo>'
+                        + myEmpNo+'</EmployeeNo><FamilyNo>'
+                        + familyAllList[i]["FamilyNo"]
+                        + '</FamilyNo><ColumnAnswer_1>'
+                        + familyAllList[i]["ColumnAnswer_1"]
+                        + '</ColumnAnswer_1><ColumnAnswer_2>'
+                        + familyAllList[i]["ColumnAnswer_2"]
+                        + '</ColumnAnswer_2><ColumnAnswer_3>'
+                        + familyAllList[i]["ColumnAnswer_3"]
+                        + '</ColumnAnswer_3><ColumnAnswer_4>'
+                        + familyAllList[i]["ColumnAnswer_4"]
+                        + '</ColumnAnswer_4><ColumnAnswer_5>'
+                        + familyAllList[i]["ColumnAnswer_5"]
+                        + '</ColumnAnswer_5></FamilyList>';
+                }
+            }
+
+            activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
+                + actModel
+                + '</SignupModel>'
+                + familyQuery
+                + '</LayoutHeader>';
+
+            console.log(activitiesSignupConfirmQueryData);
+            //ActivitiesSignupConfirmQuery(actID);
+        });
+
+
     }
 });
