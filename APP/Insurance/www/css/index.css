@@ -1,4 +1,8 @@
 /********************************** override jQuery Mobile *************************************/
+#viewQRScanner {
+     background: none;
+}
+
 hr {
     border: 0;
     height: 1px;
