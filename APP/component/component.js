@@ -392,8 +392,9 @@ $(document).one("pagebeforecreate", function() {
                 height: window.screen.height * ratio
             };
             if (screen.width === 1125 && screen.height === 2436) { 
-                //$('meta[name=viewport]').attr('content', 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover');
                 $('.page-header').addClass('ios-fix-overlap-iX');
+                $('.ios-fix-overlap-div').css('background-color', '#492f7f');
+                $('.ios-fix-overlap-div').css('height', '30px');
             }else {
                 $('.page-header').addClass('ios-fix-overlap');
             }          
@@ -912,7 +913,18 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            $('.page-header').addClass('ios-fix-overlap');
+            var ratio = window.devicePixelRatio || 1;
+            var screen = {
+                width: window.screen.width * ratio,
+                height: window.screen.height * ratio
+            };
+            if (screen.width === 1125 && screen.height === 2436) { 
+                $('.page-header').addClass('ios-fix-overlap-iX');
+                $('.ios-fix-overlap-div').css('background-color', '#492f7f');
+                $('.ios-fix-overlap-div').css('height', '30px');
+            }else {
+                $('.page-header').addClass('ios-fix-overlap');
+            }          
             $('.ios-fix-overlap-div').css('display', 'block');
         }
     };
