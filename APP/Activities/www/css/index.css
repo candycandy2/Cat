@@ -165,7 +165,8 @@ input[type="text"] {
 .familySelectText,
 .personSignupText,
 .personManageText,
-.timeSignupText {
+.timeSignupText,
+.familyManageText {
     width: 89vw;
     height: 10vw;
     margin-top: 2.14vw;

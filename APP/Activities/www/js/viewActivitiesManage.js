@@ -4,6 +4,7 @@ $("#viewActivitiesManage").pagecontainer({
         /********************************** variable *************************************/
         var resultArr = [];
         var personManageArr = [];
+        var familyManageFieldArr = [];
         var timeoutCheckPersonManage = null;
         var cancelModel, cancelActName, cancelID, cancelNo, cancelTeamName;
         var submitSignupPlace, currentActName, currentCancelContent;
@@ -62,6 +63,33 @@ $("#viewActivitiesManage").pagecontainer({
                         cancelNo = manageObj["SignupNo"];
 
                     } else if (model == "3") {
+                        var manageObj = data["Content"][0];
+                        //賦值
+                        $("#familyManageThumbnail").attr("src", manageObj["ActivitiesImage"]);
+                        $("#familyManageName").text(manageObj["ActivitiesName"]);
+                        $("#familyManageLimit").text(manageObj["LimitPlaces"]);
+                        $("#familyManageEmpName").text(manageObj["EmployeeName"]);
+                        $("#familyManageRlts").text(manageObj["EmployeeRelationship"]);
+                        $("#familyManageGender").text(manageObj["EmployeeGender"]);
+                        $("#familyManageID").text(manageObj["EmpoyeeID"]);
+                        $("#familyManageBirth").text(manageObj["EmployeeBirthday"]);
+                        cancelID = manageObj["ActivitiesID"];
+
+                        familyManageFieldArr = getCustomField(manageObj);
+
+                        //根據欄位類型，生成不同欄位
+                        for (var i in familyManageFieldArr) {
+                            if (familyManageFieldArr[i]["ColumnType"] == "Select") {
+                                setSelectCustomField(familyManageFieldArr, i, "viewActivitiesManage", "familyManageSelect", "family-manage-custom-field");
+
+                            } else if (familyManageFieldArr[i]["ColumnType"] == "Text") {
+                                setTextCustomField(familyManageFieldArr, i, "familyManageText", "family-manage-custom-field");
+
+                            } else if (familyManageFieldArr[i]["ColumnType"] == "Multiple") {
+                                setCheckboxCustomField(familyManageFieldArr, i, "familyManageCheckbox", "family-manage-custom-field");
+
+                            }
+                        }
 
                     } else if (model == "4") {
                         var manageArr = data["Content"];
@@ -355,119 +383,6 @@ $("#viewActivitiesManage").pagecontainer({
             });
         }
 
-        //生成Select-dropdownlist欄位
-        // function setSelectCustomField(arr, i, page, id, container) {
-        //     //1.聲明dropdownlist對象
-        //     var columnData = {
-        //         id: "column-popup-" + id + "-" + i,
-        //         option: [],
-        //         title: '',
-        //         defaultText: langStr["str_040"],
-        //         changeDefaultText: true,
-        //         attr: {
-        //             class: "tpl-dropdown-list-icon-arrow"
-        //         }
-        //     };
-
-        //     //2.生成html
-        //     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-        //         + arr[i]["ColumnName"]
-        //         + '</label><div id="' + id + i + '" class="' + id + '"></div></div>';
-
-        //     //3.append
-        //     $("." + container).append(fieldContent);
-
-        //     //4.取value值
-        //     var valueArr = arr[i]["ColumnItem"].split(";");
-
-        //     //5.动态生成popup
-        //     for (var j in valueArr) {
-        //         columnData["option"][j] = {};
-        //         columnData["option"][j]["value"] = valueArr[j];
-        //         columnData["option"][j]["text"] = valueArr[j];
-        //     }
-
-        //     //6.生成dropdownlist
-        //     tplJS.DropdownList(page, id + i, "prepend", "typeB", columnData);
-
-        //     //7.如果有值，選中默認值
-        //     if (arr[i]["ColumnAnswer"] != "") {
-        //         $.each($("#column-popup-" + id + "-" + i + "-option-list li"), function (index, item) {
-        //             if (arr[i]["ColumnAnswer"] == $(item).text()) {
-        //                 $(item).trigger("click");
-        //             }
-        //         });
-        //     }
-        // }
-
-        // //生成Text欄位
-        // function setTextCustomField(arr, i, id, container) {
-        //     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-        //         + arr[i]["ColumnName"]
-        //         + '</label><input id="' + id + i + '" type="text" data-role="none" class="' + id + '" value="'
-        //         + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
-        //         + '"></div>';
-
-        //     $("." + container).append(fieldContent);
-        // }
-
-        // //生成Checkbox自定義欄位
-        // function setCheckboxCustomField(arr, i, id, content) {
-        //     //先處理checkbox所有選項
-        //     var mutipleArr = arr[i]["ColumnItem"].split(";");
-        //     var mutipleContent = "";
-
-        //     for (var j in mutipleArr) {
-        //         mutipleContent += '<div data-name="checkbox-' + id + '-' + j
-        //             + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
-        //             + mutipleArr[j]
-        //             + '</span></div>';
-        //     }
-
-        //     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-        //         + arr[i]["ColumnName"]
-        //         + '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + id + '-' + i + '">';
-
-        //     $("." + content).append(fieldContent + mutipleContent + "</div><div>");
-
-        //     //選中默認值
-        //     if (arr[i]["ColumnAnswer"] != "") {
-        //         var valueArr = arr[i]["ColumnAnswer"].split(";");
-        //         $.each($(".checkbox-" + id + "-" + i + " span"), function (index, item) {
-        //             for (var j in valueArr) {
-        //                 if ($(item).text() == valueArr[j]) {
-        //                     $(item).prev().attr("src", "img/checkbox_s.png");
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }
-
-        // function saveValueAndCheckForm(arr, name, value, bool, btn) {
-        //     //bool为true，添加checkbox;若为false，删除checkbox;若为other，text和select赋值
-        //     for (var i in arr) {
-        //         if (name == arr[i]["ColumnName"] && bool == true) {
-        //             arr[i]["ColumnAnswer"] += (";" + value);
-        //         } else if (name == arr[i]["ColumnName"] && bool == false) {
-        //             arr[i]["ColumnAnswer"] = arr[i]["ColumnAnswer"].replace(";" + value, "");
-        //         } else if (name == arr[i]["ColumnName"] && bool == null) {
-        //             arr[i]["ColumnAnswer"] = value;
-        //         }
-        //     }
-
-        //     //检查表单是否为空
-        //     for (var i in arr) {
-        //         if (arr[i]["ColumnAnswer"] == "") {
-        //             $("#" + btn).addClass("btn-disabled");
-        //             break;
-        //         } else {
-        //             $("#" + btn).removeClass("btn-disabled");
-        //         }
-        //     }
-
-        //     //console.log(arr);
-        // }
-
 
         /********************************** page event *************************************/
         $("#viewActivitiesManage").on("pagebeforeshow", function (event, ui) {
@@ -653,12 +568,32 @@ $("#viewActivitiesManage").pagecontainer({
             }
         });
 
+
+        /************************************ Time *************************************/
         //取消报名-popup
         $("#cancelTimeSignup").on("click", function() {
             $(".cancelSignupMsg .header-title").text(currentActName);
             $(".cancelSignupMsg .main-paragraph").text(currentCancelContent);
             popupMsgInit('.cancelSignupMsg');
         });
+
+
+        /************************************ Family *************************************/
+        $("#manageSelectFamilyBtn").on("click", function() {
+            if (!$("#manageSelectFamilyBtn").hasClass("btn-disabled")) {
+                activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
+                    + cancelID
+                    + '</ActivitiesID><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><IsSignup>Y</IsSignup></LayoutHeader>';
+
+                //console.log(activitiesSignupFamilyQueryData);
+                ActivitiesSignupFamilyQuery(cancelID, cancelModel, "Y", familyManageFieldArr);
+
+            }
+        });
+
+
 
     }
 });
