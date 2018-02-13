@@ -109,7 +109,6 @@ Route::any('report/reportDetail/getMessageReadReport', ['middleware' => 'auth','
 Route::any('ENSMaintain/getBasicInfo', ['middleware' => 'auth','uses'=>'ENSMaintain\BasicInfoController@getBasicInfo']);
 Route::any('ENSMaintain/getUserGroupInfo', ['middleware' => 'auth','uses'=>'ENSMaintain\BasicInfoController@getUserGroupInfo']);
 Route::any('ENSMaintain/uploadBasicInfo', ['middleware' => 'auth','uses'=>'ENSMaintain\BasicInfoController@uploadBasicInfo']);
-Route::any('ENSMaintain/registerSuperUser', ['middleware' => 'auth','uses'=>'ENSMaintain\BasicInfoController@registerSuperUser']);
 
 Route::any('auth/login', function() {
     return view("auth/login");
