@@ -1,3 +1,3 @@
 
 /*global variable, function*/
-var pageList = ["viewMain","viewTalk"];
+var pageList = ["viewMain","viewTalk", "viewQRScanner"];
