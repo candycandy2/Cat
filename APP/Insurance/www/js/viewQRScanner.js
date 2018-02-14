@@ -20,7 +20,6 @@ $("#viewQRScanner").pagecontainer({
         function displayContents(err, text){
             if(err){
                 // an error occurred, or the scan was canceled (error code `6`) 
-                console.error(err._message);
             } else {
                 // The scan completed, display the contents of the QR code: 
                 alert(text);
