@@ -1,7 +1,15 @@
 /********************************** override jQuery Mobile *************************************/
 #viewQRScanner {
-     background: none;
+     background: none!important;
 }
+
+.qr-scan-guides {
+    width: 60vw;
+    min-height: 60vw;
+    margin-top: 30%;
+    margin-left: 20%;
+    position: fixed;
+}    
 
 hr {
     border: 0;
