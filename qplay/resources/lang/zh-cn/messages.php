@@ -399,6 +399,7 @@ return [
     'ERR_USER_RESIGNED' => '已离职',
     'ERR_USER_SUSPENDED' => '已停权',
     'ERR_ROW_DATA_ERROR' => '第 %s 列发现资料错误',
+    'ERR_SHEET_NOT_EXIST' => '页签 %s 不存在',
 
 	'DESIGNATED'=>'指定人员',
 	'MESSAGE_SCHEDULE_PUSH'=>'定时推送',

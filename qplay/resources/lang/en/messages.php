@@ -402,6 +402,7 @@ return [
     'ERR_USER_RESIGNED' => 'resigned',
     'ERR_USER_SUSPENDED' => 'suspended',
     'ERR_ROW_DATA_ERROR' => 'No.%s column found incorrect data',
+    'ERR_SHEET_NOT_EXIST' => 'sheet %s not exist',
 
     'DESIGNATED'=>'Designated',
     'MESSAGE_SCHEDULE_PUSH'=>'Schedule',

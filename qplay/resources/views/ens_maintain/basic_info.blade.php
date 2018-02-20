@@ -35,7 +35,7 @@ $ensProjects = \Config('app.ens_project');
             <table id="basicInfoTable" 
                 data-toggle="table" data-pagination="true"  
                 data-striped="true" data-page-size="20" data-page-list="[10,20,50]"
-                data-show-refresh="true" data-row-style="rowStyle" data-search="true"
+                data-show-refresh="true" data-row-style="rowStyle" data-search="true"  data-height="600"
                 data-click-edit="false"
                 data-unique-id="row_id"
                 data-url="">

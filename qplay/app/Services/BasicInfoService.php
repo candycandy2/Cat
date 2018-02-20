@@ -63,8 +63,24 @@ class BasicInfoService
         $chkField = array('member'=>['EmpNo','Ext','Function','Location','PIC','Master'],
                           'group'=>['EmpNo', 'Ext', 'Group','PIC']);
         $data = [];
+        $lossSheet = [];
         $fieldMsg = "";
+        $sheetMsg = "";
         $dataMsg = "";
+        
+        $sheetNames = Excel::load($file)->getSheetNames();
+        if(!in_array('member', $sheetNames)){
+            $lossSheet[]='member';
+        }
+        if(!in_array('group', $sheetNames)){
+           $lossSheet[]='group';
+        } 
+        if(count($lossSheet) > 0){
+            $sheetMsg = str_replace('%s', implode('、',  $lossSheet), trans('messages.ERR_SHEET_NOT_EXIST'));
+            return ['ResultCode'=>ResultCode::_000919_validateError,
+                        'Message'=>"validate error",
+                        'Content'=> $sheetMsg ];
+        }
         foreach ($chkField as $sheetName => $field) {
             $data = $this->getExcelData($file, $sheetName );
             $fieldErr = $this->validateField($field, $data['excelTitle']);
@@ -101,6 +117,7 @@ class BasicInfoService
         $insertDataArray  = ['member'=>[],'group'=>[]];
         $boardUserArray = [];
         $boardId = $this->getBoardIdByProject($project)->board_id;
+
         Excel::selectSheets('member')->load($file, function($reader) use (&$insertDataArray, &$boardUserArray, $project, $boardId) {
             $data = $reader->toArray();      
             foreach ($data as $key => $uploadData) {
@@ -109,7 +126,7 @@ class BasicInfoService
             }
         });
 
-         Excel::selectSheets('group')->load($file, function($reader) use (&$insertDataArray, &$boardUserArray, $project, $boardId) {
+        Excel::selectSheets('group')->load($file, function($reader) use (&$insertDataArray, &$boardUserArray, $project, $boardId) {
             $data = $reader->toArray();      
             foreach ($data as $key => $uploadData) {
                 $insertDataArray['group'][] = $this->enUserGroupRepository->arrangeInsertData($project, $uploadData);
