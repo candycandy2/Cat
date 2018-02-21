@@ -122,6 +122,10 @@ $("#viewMain").pagecontainer({
             $.mobile.changePage('#viewQRScanner');
         });
 
+        $("#QRCode").on('click', function() {
+            $.mobile.changePage('#viewQRCodeCreate');
+        });
+
         //$("#openPDF").on('click', function() {
             /*var fileName = files[0];
             url = buildAssetsUrl(fileName);
