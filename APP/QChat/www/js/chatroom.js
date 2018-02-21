@@ -348,7 +348,8 @@ var JM = {
             var params = {
                 'type': "group",
                 'groupId': chatroomID,
-                'username': loginData["loginid"]
+                'username': loginData["loginid"],
+                'appKey': JM.key
             };
 
             window.JMessage.getConversation(params, function(data) {
