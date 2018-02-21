@@ -83,12 +83,11 @@ $("#viewMyInfoEdit").pagecontainer({
                 var realData = block[1].split(",")[1];// In this case "iVBORw0KGg...."
 
                 // The path where the file will be created
-                var folderpath = "file:///storage/emulated/0/";
+                var folderpath = cordova.file.cacheDirectory;
                 // The name of your file, note that you need to know if is .png,.jpeg etc
                 var filename = "myimage.png";
 
                 savebase64AsImageFile(folderpath, filename, realData, "image/png");
-
             });
 
             avatarCropClose();
@@ -273,7 +272,7 @@ $("#viewMyInfoEdit").pagecontainer({
             click: function() {
                 CameraPlugin.openFilePicker("PHOTOLIBRARY", avatarCrop);
             }
-        }, "#viewMyInfoEditContent .my-photo-edit");
+        }, "#viewMyInfoEditContent .chatroom-info-photo-content");
 
         $(document).on({
             click: function() {
