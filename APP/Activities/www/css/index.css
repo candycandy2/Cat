@@ -65,9 +65,9 @@
     width: 4.934VW;
 }
 
-.page-main {
-    /* padding: 5vw 3.71vw 0 3.71vw; */
-}
+/* .page-main {
+    padding: 5vw 3.71vw 0 3.71vw;
+} */
 
 .font-color1 {
     color: #0f0f0f;
@@ -644,12 +644,12 @@ input[type="text"] {
     margin: 0px;
 }
 
-#employee-popup-option-popup ul::-webkit-scrollbar-track {
-    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+/* #employee-popup-option-popup ul::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    padding: 10px;*/
-}
+    padding: 10px;
+} */
 
 #employee-popup-option-popup ul::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
@@ -984,6 +984,7 @@ input[type="text"] {
     width: 23.83vw;
     line-height: 15.538vw;
     text-align: center;
+    overflow: hidden;
 }
 
 .select-family-remark {
