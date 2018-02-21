@@ -10,7 +10,7 @@ $("#viewActivitiesRecord").pagecontainer({
         window.ActivitiesRecordQuery = function () {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     recordArr = data["Content"];
@@ -144,7 +144,7 @@ $("#viewActivitiesRecord").pagecontainer({
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';
 
-            //console.log(activitiesRecordCancelQueryData);
+            console.log(activitiesRecordCancelQueryData);
             ActivitiesRecordCancelQuery();
         });
 
