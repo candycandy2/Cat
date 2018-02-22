@@ -193,27 +193,32 @@ $("#viewActivitiesManage").pagecontainer({
                                 if (timeArr[i]["ColumnAnswer_1"] != "") {
                                     timeContent += '<div class="time-manage-info"><span>'
                                         + timeArr[i]["ColumnName_1"] + '：</span><span>'
-                                        + timeArr[i]["ColumnAnswer_1"] + '</span></div>';
+                                        //+ timeArr[i]["ColumnAnswer_1"] + '</span></div>';
+                                        + (timeArr[i]["ColumnType_1"] == "Multiple" ? timeArr[i]["ColumnAnswer_1"].substr(1, timeArr[i]["ColumnAnswer_1"].length) : timeArr[i]["ColumnAnswer_1"]) + '</span></div>';
                                 }
                                 if (timeArr[i]["ColumnAnswer_2"] != "") {
                                     timeContent += '<div class="time-manage-info"><span>'
                                         + timeArr[i]["ColumnName_2"] + '：</span><span>'
-                                        + timeArr[i]["ColumnAnswer_2"] + '</span></div>';
+                                        //+ timeArr[i]["ColumnAnswer_2"] + '</span></div>';
+                                        + (timeArr[i]["ColumnType_2"] == "Multiple" ? timeArr[i]["ColumnAnswer_2"].substr(1, timeArr[i]["ColumnAnswer_2"].length) : timeArr[i]["ColumnAnswer_2"]) + '</span></div>';
                                 }
                                 if (timeArr[i]["ColumnAnswer_3"] != "") {
                                     timeContent += '<div class="time-manage-info"><span>'
                                         + timeArr[i]["ColumnName_3"] + '：</span><span>'
-                                        + timeArr[i]["ColumnAnswer_3"] + '</span></div>';
+                                        //+ timeArr[i]["ColumnAnswer_3"] + '</span></div>';
+                                        + (timeArr[i]["ColumnType_3"] == "Multiple" ? timeArr[i]["ColumnAnswer_3"].substr(1, timeArr[i]["ColumnAnswer_3"].length) : timeArr[i]["ColumnAnswer_3"]) + '</span></div>';
                                 }
                                 if (timeArr[i]["ColumnAnswer_4"] != "") {
                                     timeContent += '<div class="time-manage-info"><span>'
                                         + timeArr[i]["ColumnName_4"] + '：</span><span>'
-                                        + timeArr[i]["ColumnAnswer_4"] + '</span></div>';
+                                        //+ timeArr[i]["ColumnAnswer_4"] + '</span></div>';
+                                        + (timeArr[i]["ColumnType_4"] == "Multiple" ? timeArr[i]["ColumnAnswer_4"].substr(1, timeArr[i]["ColumnAnswer_4"].length) : timeArr[i]["ColumnAnswer_4"]) + '</span></div>';
                                 }
                                 if (timeArr[i]["ColumnAnswer_5"] != "") {
                                     timeContent += '<div class="time-manage-info"><span>'
                                         + timeArr[i]["ColumnName_5"] + '：</span><span>'
-                                        + timeArr[i]["ColumnAnswer_5"] + '</span></div>';
+                                        //+ timeArr[i]["ColumnAnswer_5"] + '</span></div>';
+                                        + (timeArr[i]["ColumnType_5"] == "Multiple" ? timeArr[i]["ColumnAnswer_5"].substr(1, timeArr[i]["ColumnAnswer_5"].length) : timeArr[i]["ColumnAnswer_5"]) + '</span></div>';
                                 }
                                 break;
                             }
@@ -222,7 +227,7 @@ $("#viewActivitiesManage").pagecontainer({
 
                         //展示所有時段
                         var timeShortArr = [];
-                        for(var i in timeArr) {
+                        for (var i in timeArr) {
                             timeShortArr.push({
                                 "TimeSort": timeArr[i]["TimeSort"],
                                 "SignupTime": timeArr[i]["SignupTime"],
@@ -233,7 +238,7 @@ $("#viewActivitiesManage").pagecontainer({
                         timeShortArr.sort(sortByTimeID("TimeSort"));
 
                         var timeShortContent = "";
-                        for(var i in timeShortArr) {
+                        for (var i in timeShortArr) {
                             timeShortContent += '<div class="time-manage-tr" data-sort="'
                                 + timeShortArr[i]["TimeSort"]
                                 + '"><div>'
@@ -564,14 +569,14 @@ $("#viewActivitiesManage").pagecontainer({
                     + '</ColumnAnswer_5></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(cancelID);
+                ActivitiesSignupConfirmQuery(cancelID, "N");
             }
         });
 
 
         /************************************ Time *************************************/
         //取消报名-popup
-        $("#cancelTimeSignup").on("click", function() {
+        $("#cancelTimeSignup").on("click", function () {
             $(".cancelSignupMsg .header-title").text(currentActName);
             $(".cancelSignupMsg .main-paragraph").text(currentCancelContent);
             popupMsgInit('.cancelSignupMsg');
@@ -579,7 +584,8 @@ $("#viewActivitiesManage").pagecontainer({
 
 
         /************************************ Family *************************************/
-        $("#manageSelectFamilyBtn").on("click", function() {
+        //眷屬管理
+        $("#manageSelectFamilyBtn").on("click", function () {
             if (!$("#manageSelectFamilyBtn").hasClass("btn-disabled")) {
                 activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
                     + cancelID
@@ -588,12 +594,25 @@ $("#viewActivitiesManage").pagecontainer({
                     + '</EmployeeNo><IsSignup>Y</IsSignup></LayoutHeader>';
 
                 //console.log(activitiesSignupFamilyQueryData);
-                ActivitiesSignupFamilyQuery(cancelID, cancelModel, "Y", familyManageFieldArr);
+                ActivitiesSignupFamilyQuery(cancelID, cancelModel, "Y", familyManageFieldArr, "");
 
             }
         });
 
+        //取消眷屬報名
+        $("#manageCancelSignupBtn").on("click", function() {
+            loadingMask("show");
+            activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
+                + cancelID
+                + '</ActivitiesID><SignupModel>'
+                + cancelModel
+                + '</SignupModel><EmployeeNo>'
+                + myEmpNo
+                + '</EmployeeNo></LayoutHeader>';
 
+            console.log(activitiesSignupCancelQueryData);
+            ActivitiesSignupCancelQuery();
+        });
 
     }
 });

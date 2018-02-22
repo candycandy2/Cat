@@ -285,10 +285,10 @@ $("#viewActivitiesSignup").pagecontainer({
         };
 
         //活動報名送出
-        window.ActivitiesSignupConfirmQuery = function (actID) {
+        window.ActivitiesSignupConfirmQuery = function (actID, newAct) {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 if (data['ResultCode'] == "045911") {
                     //重新獲取報名列表
@@ -304,7 +304,11 @@ $("#viewActivitiesSignup").pagecontainer({
                             $(item).trigger("click");
                         }
                     });
-                    $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                    if (newAct == "Y") {
+                        $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                    } else if (newAct == "N") {
+                        $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                    }
 
                     //如果報名成功的是“組隊報名”才需要清空欄位值
                     if (submitModel == "4") {
@@ -610,7 +614,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</MemberEmpNo></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID);
+                ActivitiesSignupConfirmQuery(submitID, "Y");
             }
 
         });
@@ -661,6 +665,27 @@ $("#viewActivitiesSignup").pagecontainer({
         //點擊“選擇眷屬”，呼叫API
         $("#selectFamilyBtn").on("click", function () {
             if (!$("#selectFamilyBtn").hasClass("btn-disabled")) {
+                //1.本人信息
+                var answerList = "";
+                for (var i = 1; i < 6; i++) {
+                    answerList += '<ColumnAnswer_' + i + '>'
+                        + (familyFieldArr[i - 1] != undefined ? familyFieldArr[i - 1]["ColumnAnswer"] : "")
+                        + '</ColumnAnswer_' + i + '>';
+                }
+
+                var familyList = '<FamilyList><ActivitiesID>'
+                    + submitID
+                    + '</ActivitiesID><SignupPlaces>1</SignupPlaces><EmployeeNo>'
+                    + myEmpNo 
+                    + '</EmployeeNo><FamilyNo>'
+                    + myEmpNo
+                    + '</FamilyNo>'
+                    + answerList
+                    + '</FamilyList>';
+
+                //console.log(familyList);
+
+                //2.API信息
                 activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
                     + submitID
                     + '</ActivitiesID><EmployeeNo>'
@@ -668,8 +693,8 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</EmployeeNo><IsSignup>N</IsSignup></LayoutHeader>';
 
                 //console.log(activitiesSignupFamilyQueryData);
-                ActivitiesSignupFamilyQuery(submitID, submitModel, "N", familyFieldArr);
-
+                ActivitiesSignupFamilyQuery(submitID, submitModel, "N", familyFieldArr, familyList);
+                
             }
         });
 
@@ -748,7 +773,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</ColumnAnswer_5></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID);
+                ActivitiesSignupConfirmQuery(submitID, "Y");
             }
         });
 
@@ -862,7 +887,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</TimeID></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID);
+                ActivitiesSignupConfirmQuery(submitID, "Y");
             }
         });
 

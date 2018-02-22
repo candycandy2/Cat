@@ -316,10 +316,19 @@ $("#viewChatroom").pagecontainer({
                     //message: text or image
                     var messageContent = "";
 
+console.log(data);
+console.log(data.latestMessage);
                     if (data.latestMessage.type === "text") {
                         messageContent = data.latestMessage.text;
                     } else if (data.latestMessage.type === "image") {
                         messageContent = data.latestMessage.from.username + " 上傳了一張圖片";
+                    }
+
+                    //For iOS, sometimes API-getConversation won't return [unreadCount]
+                    var unreadCount = 0;
+
+                    if (typeof data.unreadCount !== "undefined") {
+                        unreadCount = data.unreadCount;
                     }
 
                     var tempData = {
@@ -327,7 +336,7 @@ $("#viewChatroom").pagecontainer({
                         name: data.target.name,
                         name_changed: nameChanged,
                         owner: data.target.owner,
-                        unread_count: data.unreadCount,
+                        unread_count: unreadCount,
                         member: memberData,
                         last_message: {
                             create_time: data.latestMessage.createTime,

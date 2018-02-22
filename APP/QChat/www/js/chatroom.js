@@ -269,7 +269,7 @@ var JM = {
         getGroupInfo: function(groupID, callback) {
 
             var params = {
-                'id': groupID
+                'id': groupID.toString()
             };
 
             window.JMessage.getGroupInfo(params, function(data) {
@@ -286,7 +286,7 @@ var JM = {
         getGroupMembers: function(groupID, callback) {
 
             var params = {
-                'id': groupID
+                'id': groupID.toString()
             };
 
             window.JMessage.getGroupMembers(params, function(data) {
@@ -303,7 +303,7 @@ var JM = {
         exitGroup: function(callback) {
 
             var params = {
-                'id': JM.chatroomID
+                'id': JM.chatroomID.toString()
             };
 
             window.JMessage.exitGroup(params, function(data) {
@@ -322,7 +322,7 @@ var JM = {
 
             var params = {
                 'type': "group",
-                'groupId': chatroomID,
+                'groupId': chatroomID.toString(),
                 'username': loginData["loginid"],
                 'appKey': "f1007b6d14755a1e17e74195"
             };
@@ -347,8 +347,9 @@ var JM = {
 
             var params = {
                 'type': "group",
-                'groupId': chatroomID,
-                'username': loginData["loginid"]
+                'groupId': chatroomID.toString(),
+                'username': loginData["loginid"],
+                'appKey': JM.key
             };
 
             window.JMessage.getConversation(params, function(data) {
@@ -380,7 +381,7 @@ var JM = {
 
             var params = {
                 'type': "group",
-                'groupId': chatroomID
+                'groupId': chatroomID.toString()
             };
 
             window.JMessage.resetUnreadMessageCount(params, function(data) {
@@ -395,7 +396,7 @@ var JM = {
         addGroupMembers: function(groupID, memberArray, callback) {
 
             var params = {
-                'id': groupID,
+                'id': groupID.toString(),
                 'usernameArray': memberArray,
                 'appKey': JM.key
             };
@@ -431,7 +432,7 @@ var JM = {
         updateGroupInfo: function(groupID, newName, newDesc, callback) {
 
             var params = {
-                'id': groupID,
+                'id': groupID.toString(),
                 'newName': newName,
                 'newDesc': newDesc
             };
@@ -454,7 +455,7 @@ var JM = {
 
             var params = {
                 'type': "group",
-                'groupId': chatroomID,
+                'groupId': chatroomID.toString(),
                 'from': from,
                 'limit': limit
             };
@@ -476,11 +477,11 @@ var JM = {
 
             var params = {
                 'type': "group",
-                'groupId': chatroomID,
+                'groupId': chatroomID.toString(),
                 'text': text,
                 'extras': {
                     chatroom_id: chatroomID,
-                    event: event,
+                    event: event.toString(),
                     action: action
                 },
                 'messageSendingOptions': MessageSendingOptions
@@ -503,7 +504,7 @@ var JM = {
 
             var params = {
                 'type': "group",
-                'groupId': chatroomID,
+                'groupId': chatroomID.toString(),
                 'path': imgPath,
                 'extras': {
                     chatroom_id: chatroomID,
@@ -528,7 +529,7 @@ var JM = {
 
             var params = {
                 'type': "group",
-                'groupId': chatroomID,
+                'groupId': chatroomID.toString(),
                 'username': loginData["loginid"],
                 'appKey': JM.key,
                 'messageId': msgID

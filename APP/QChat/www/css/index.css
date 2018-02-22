@@ -684,6 +684,7 @@ input[type=checkbox]:checked + label {
 #viewChatroomContent .date {
     background-color: #2C89BC;
     width: max-content;
+    width: -webkit-max-content;
     font-size: 3.14vw;
     color: #FFFFFF;
     text-align: center;
@@ -708,6 +709,7 @@ input[type=checkbox]:checked + label {
     font-size: 2.93vw;
     color: #666666;
     width: max-content;
+    width: -webkit-max-content;
 }
 
 #viewChatroomContent .img {
@@ -959,6 +961,7 @@ input[type=checkbox]:checked + label {
 .chatroom-info-photo {
     width: 25.466vw;
     height: 25.466vw;
+    z-index: 1;
 }
 
 .chatroom-info-name {
@@ -1087,6 +1090,7 @@ input[type=checkbox]:checked + label {
     position: relative;
     border-radius: 50%;
     overflow: hidden;
+    z-index: 1;
 }
 
 #viewMyInfoEditContent .my-photo-edit {
@@ -1098,6 +1102,7 @@ input[type=checkbox]:checked + label {
     padding: 1vw 2vw;
     height: 4vw;
     width: 6.28vw;
+    z-index: 1;
 }
 
 #viewMyInfoEditContent .my-photo-edit-background {
