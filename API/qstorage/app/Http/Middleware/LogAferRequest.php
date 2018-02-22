@@ -46,8 +46,9 @@ class LogAferRequest
                 $userId = $userInfo->row_id;
             }
         }
-
-        $ACTION = explode('@',$this->route->getActionName())[1];
+        $tmpUrlArr = explode('/', $request->path());
+        unset($tmpUrlArr[0]);
+        $ACTION = implode('/',$tmpUrlArr);
         Logger::logApi($userId, $ACTION,
         response()->json(apache_response_headers()), json_decode($response->getContent()));
     }
