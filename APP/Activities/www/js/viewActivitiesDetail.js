@@ -133,13 +133,15 @@ $("#viewActivitiesDetail").pagecontainer({
 
         //點擊 "開始報名" 跳轉到編輯頁
         $(".detail-signup-btn").on("click", function () {
-            var self = $(this).hasClass("btn-disabled");
-            if(!self) {
+            var selfClass = $(this).hasClass("btn-disabled");
+
+            if(!selfClass) {
                 if (isRepeatSignup == "Y" && actModel != "4") {
                     //已報名同類活動，不能報名該活動
                     popupMsgInit('.signupedSameMsg');
                 } else {
-                    //呼叫活動報名API
+                    loadingMask("show");
+
                     activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
                         + actID
                         + '</ActivitiesID><SignupModel>'
@@ -158,7 +160,8 @@ $("#viewActivitiesDetail").pagecontainer({
 
         //點擊 "報名管理" 跳轉到編輯頁
         $(".detail-manage-btn").on("click", function () {
-            //呼叫報名管理API
+            loadingMask("show");
+
             activitiesSignupManageQueryData = '<LayoutHeader><ActivitiesID>'
                 + actID
                 + '</ActivitiesID><SignupModel>'
@@ -171,9 +174,6 @@ $("#viewActivitiesDetail").pagecontainer({
             ActivitiesSignupManageQuery(actModel);
 
         });
-
-
-
 
 
     }

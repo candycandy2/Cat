@@ -58,7 +58,7 @@ $("#viewActivitiesSignup").pagecontainer({
                         $("#personSignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#personSignupName").text(signupObj["ActivitiesName"]);
                         $(".person-signup-remark").empty().append("<div>" + signupObj["ActivitiesRemarks"] + "</div>");
-                        //根据限制人数动态生成报名人数栏位
+                        //根据限制人数动态生成报名人数dropdownlist栏位
                         selectPersonByLimit(signupObj["LimitPlaces"]);
 
                         //獲取自定義欄位數組並去空
@@ -150,6 +150,7 @@ $("#viewActivitiesSignup").pagecontainer({
                         }
 
                     } else if (model == "4") {
+                        //賦值
                         $("#teamSignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#teamSignupName").text(signupObj["ActivitiesName"]);
                         $("#teamCurrentPlace").text("0");
@@ -544,21 +545,35 @@ $("#viewActivitiesSignup").pagecontainer({
         // 4. 點擊員工，添加到html
         $("#viewActivitiesSignup").on("click", "#employee-popup-option ul li", function (e) {
             var self = $(this);
-            var employeeList = '<div class="team-employee-list" data-id="'
-                + self.attr("value")
-                + '"><span>'
-                + self.children("div").eq(0).text()
-                + '</span><span>'
-                + self.children("div").eq(1).text()
-                + '</span><span><img src="img/delete.png" class="team-signup-delete"></span></div>';
 
-            $(".team-signup-employee-list").append(employeeList);
-            currentPlace++;
-            $("#teamCurrentPlace").text(currentPlace);
-            //將被添加員工的工號放入數組當中
-            memberNoArr.push(self.attr("value"));
-            //檢查欄位
-            checkFieldByTeam();
+            //判斷是否重複添加
+            var count = 0;
+            for(var i in memberNoArr) {
+                if(self.attr("value") == memberNoArr[i]) {
+                    count++;
+                    break;
+                }
+            }
+
+            //如果沒有重複添加，才能添加
+            if(count == 0) {
+                var employeeList = '<div class="team-employee-list" data-id="'
+                    + self.attr("value")
+                    + '"><span>'
+                    + self.children("div").eq(0).text()
+                    + '</span><span>'
+                    + self.children("div").eq(1).text()
+                    + '</span><span><img src="img/delete.png" class="team-signup-delete"></span></div>';
+
+                $(".team-signup-employee-list").append(employeeList);
+                currentPlace++;
+                $("#teamCurrentPlace").text(currentPlace);
+                //將被添加員工的工號放入數組當中
+                memberNoArr.push(self.attr("value"));
+                //檢查欄位
+                checkFieldByTeam();
+            }
+            
         });
 
         // 5. 刪除組隊成員
@@ -596,9 +611,11 @@ $("#viewActivitiesSignup").pagecontainer({
         });
 
         $("#sendTeamSignup").on("click", function () {
-            var self = $(this).hasClass("btn-disabled");
-            if (!self) {
+            var selfClass = $(this).hasClass("btn-disabled");
+
+            if (!selfClass) {
                 loadingMask("show");
+                
                 activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                     + submitID
                     + '</ActivitiesID><SignupModel>'
@@ -664,7 +681,11 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //點擊“選擇眷屬”，呼叫API
         $("#selectFamilyBtn").on("click", function () {
-            if (!$("#selectFamilyBtn").hasClass("btn-disabled")) {
+            var selfClass = $(this).hasClass("btn-disabled");
+
+            if (!selfClass) {
+                loadingMask("show");
+
                 //1.本人信息
                 var answerList = "";
                 for (var i = 1; i < 6; i++) {
@@ -749,9 +770,11 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //開始報名
         $("#personSignupBtn").on("click", function () {
-            var self = $(this).hasClass("btn-disabled");
-            if (!self) {
+            var selfClass = $(this).hasClass("btn-disabled");
+
+            if (!selfClass) {
                 loadingMask("show");
+
                 activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                     + submitID
                     + '</ActivitiesID><SignupModel>'
@@ -863,9 +886,11 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //確定送出
         $("#timeSignupBtn").on("click", function () {
-            var self = $(this).hasClass("btn-disabled");
-            if (!self) {
+            var selfClass = $(this).hasClass("btn-disabled");
+
+            if (!selfClass) {
                 loadingMask("show");
+
                 activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                     + submitID
                     + '</ActivitiesID><SignupModel>'

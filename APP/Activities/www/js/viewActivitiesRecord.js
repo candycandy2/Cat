@@ -10,12 +10,13 @@ $("#viewActivitiesRecord").pagecontainer({
         window.ActivitiesRecordQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     recordArr = data["Content"];
-                    var recordContent = "";
 
+                    //動態生成html
+                    var recordContent = "";
                     for (var i in recordArr) {
                         recordContent += '<div class="record-list"><div class="font-style10 font-color2"><div>'
                             + recordArr[i]["SignupName"]
@@ -42,6 +43,7 @@ $("#viewActivitiesRecord").pagecontainer({
                     $("#viewRecordsNone").hide();
 
                 } else if (data["ResultCode"] == "045909") {
+                    $("#viewRecordList").empty();
                     $("#viewRecordsNone").show();
                 }
 
@@ -117,11 +119,14 @@ $("#viewActivitiesRecord").pagecontainer({
                         recordTeamName = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span>';
                     } else if (recordArr[i]["SignupModel"] == "3") {
                         recordTeamName += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span><br>';
-                    } else if (recordArr[i]["SignupModel"] == "4") {
-                        recordTeamName = '<span>' + recordArr[i]["SignupTeamName"] + '</span>';
                     } else if (recordArr[i]["SignupModel"] == "5") {
                         recordTeamName = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人 / ' + recordArr[i]["SignupTime"] + '</span>';
                     }
+                }
+
+                //組隊報名可以申請多次，所以不能用活動編號判斷，需要用報名編號判斷
+                if(currentNo == recordArr[i]["SignupNo"] && recordArr[i]["SignupModel"] == "4") {
+                    recordTeamName = '<span>' + recordArr[i]["SignupTeamName"] + '</span>';
                 }
             }
 
@@ -133,18 +138,19 @@ $("#viewActivitiesRecord").pagecontainer({
 
         //確定取消報名-API
         $("#confirmCancelRecord").on("click", function () {
-            //loadingMask("show");
+            loadingMask("show");
+
             activitiesRecordCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + currentID
                 + '</ActivitiesID><SignupNo>'
-                + currentNo
+                + (currentModel == "3" ? "" : currentNo)
                 + '</SignupNo><SignupModel>'
                 + currentModel
                 + '</SignupModel><EmployeeNo>'
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';
 
-            console.log(activitiesRecordCancelQueryData);
+            //console.log(activitiesRecordCancelQueryData);
             ActivitiesRecordCancelQuery();
         });
 
