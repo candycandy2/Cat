@@ -3,7 +3,7 @@ $("#viewMyFamilyDatum").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         var familyArr = [];
-        var addOrUpdate;
+        var addFamilyOrNot;
         var familyNo = "", familyName = "", familyID = "", familyBirth = "", relationshipNo = "", genderNo = "";
         var relationshipData = {
             id: "relationship-popup",
@@ -376,7 +376,7 @@ $("#viewMyFamilyDatum").pagecontainer({
 
         //返回到眷屬列表，彈窗popup
         $("#viewMyFamilyDatum .back-family").on("click", function () {
-            if (addOrUpdate) {
+            if (addFamilyOrNot) {
                 popupMsgInit('.confirmCancelAddFamily');
             } else {
                 $(".confirmCancelEditFamily .main-paragraph").text(familyName);
@@ -399,7 +399,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         $(".family-add-img").on("click", function () {
             clearFormByFamily();
             changeViewToDetail();
-            addOrUpdate = true;
+            addFamilyOrNot = true;
             checkFormByFamily();
             $("#familyName").removeAttr("readonly");
         });
@@ -437,12 +437,10 @@ $("#viewMyFamilyDatum").pagecontainer({
                 }
             }
 
-
-
             //2.跳轉
             familyName = $(this).children("div:first-child").children("span:first-child").text();
             changeViewToDetail();
-            addOrUpdate = false;
+            addFamilyOrNot = false;
             checkFormByFamily();
             $("#familyName").attr("readonly", "readonly");
         });
@@ -451,7 +449,8 @@ $("#viewMyFamilyDatum").pagecontainer({
         $(".family-save-btn").on("click", function () {
             if (checkFormByFamily()) {
                 loadingMask("show");
-                if (addOrUpdate) {
+
+                if (addFamilyOrNot) {
                     activitiesFamilyAddQueryData = '<LayoutHeader><EmployeeNo>'
                         + myEmpNo
                         + '</EmployeeNo><FamilyID>'

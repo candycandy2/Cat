@@ -606,5 +606,29 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "str_077",
+    "definition": "開放時間:e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_078",
+    "definition": "名額:e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_079",
+    "definition": "剩餘:e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]

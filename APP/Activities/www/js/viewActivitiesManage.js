@@ -6,6 +6,7 @@ $("#viewActivitiesManage").pagecontainer({
         var personManageArr = [];
         var familyManageFieldArr = [];
         var timeoutCheckPersonManage = null;
+        var timeoutCheckFamilyManage = null;
         var cancelModel, cancelActName, cancelID, cancelNo, cancelTeamName;
         var submitSignupPlace, currentActName, currentCancelContent;
 
@@ -24,13 +25,14 @@ $("#viewActivitiesManage").pagecontainer({
 
                         //初始化
                         $("#personManagePlace").empty();
+                        $("#person-manage-option-screen").remove();
                         $("#person-manage-option-popup").remove();
-                        $("#updatePersonSignup").removeClass("btn-disabled");
                         $(".person-manage-custom-field").empty();
                         for (var i = 0; i < 5; i++) {
                             $("#column-popup-personManageSelect-" + i + "-option-screen").remove();
                             $("#column-popup-personManageSelect-" + i + "-option-popup").remove();
                         }
+                        $("#updatePersonSignup").removeClass("btn-disabled");
 
                         //賦值
                         $("#personManageThumbnail").attr("src", manageObj["ActivitiesImage"]);
@@ -40,9 +42,9 @@ $("#viewActivitiesManage").pagecontainer({
                         $(".person-manage-remark").empty().append("<div>" + manageObj["ActivitiesRemarks"] + "</div>");
                         //dropdownlist
                         personDropdownlist(manageObj["LimitPlaces"], manageObj["SignupPlaces"]);
-                        personManageArr = getCustomField(manageObj);
 
                         //根據欄位類型，生成不同欄位
+                        personManageArr = getCustomField(manageObj);
                         for (var i in personManageArr) {
                             if (personManageArr[i]["ColumnType"] == "Select") {
                                 setSelectCustomField(personManageArr, i, "viewActivitiesManage", "personManageSelect", "person-manage-custom-field");
@@ -64,6 +66,13 @@ $("#viewActivitiesManage").pagecontainer({
 
                     } else if (model == "3") {
                         var manageObj = data["Content"][0];
+                        //初始化
+                        $(".family-manage-custom-field").empty();
+                        for (var i = 0; i < 5; i++) {
+                            $("#column-popup-familyManageSelect-" + i + "-option-screen").remove();
+                            $("#column-popup-familyManageSelect-" + i + "-option-popup").remove();
+                        }
+
                         //賦值
                         $("#familyManageThumbnail").attr("src", manageObj["ActivitiesImage"]);
                         $("#familyManageName").text(manageObj["ActivitiesName"]);
@@ -75,9 +84,8 @@ $("#viewActivitiesManage").pagecontainer({
                         $("#familyManageBirth").text(manageObj["EmployeeBirthday"]);
                         cancelID = manageObj["ActivitiesID"];
 
-                        familyManageFieldArr = getCustomField(manageObj);
-
                         //根據欄位類型，生成不同欄位
+                        familyManageFieldArr = getCustomField(manageObj);
                         for (var i in familyManageFieldArr) {
                             if (familyManageFieldArr[i]["ColumnType"] == "Select") {
                                 setSelectCustomField(familyManageFieldArr, i, "viewActivitiesManage", "familyManageSelect", "family-manage-custom-field");
@@ -223,7 +231,7 @@ $("#viewActivitiesManage").pagecontainer({
                                 break;
                             }
                         }
-                        $(".time-manage-field").empty().append(timeContent);
+                        $(".time-manage-custom-field").empty().append(timeContent);
 
                         //展示所有時段
                         var timeShortArr = [];
@@ -471,6 +479,7 @@ $("#viewActivitiesManage").pagecontainer({
         //確定取消報名
         $("#confirmCancelSignup").on("click", function () {
             loadingMask("show");
+            
             activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + cancelID
                 + '</ActivitiesID><SignupNo>'
@@ -545,9 +554,11 @@ $("#viewActivitiesManage").pagecontainer({
 
         //更改資料
         $("#updatePersonSignup").on("click", function () {
-            var self = $(this).hasClass("btn-disabled");
-            if (!self) {
+            var selfClass = $(this).hasClass("btn-disabled");
+
+            if (!selfClass) {
                 loadingMask("show");
+
                 activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                     + cancelID
                     + '</ActivitiesID><SignupModel>'
@@ -584,9 +595,75 @@ $("#viewActivitiesManage").pagecontainer({
 
 
         /************************************ Family *************************************/
+        //select
+        $(".family-manage-custom-field").on("change", ".familyManageSelect select", function () {
+            var selfName = $(this).parent().prev().text();
+            var selfVal = $(this).val();
+
+            saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
+        });
+
+        //text
+        $(".family-manage-custom-field").on("keyup", ".familyManageText", function () {
+            var selfName = $(this).prev().text();
+            var selfVal = $(this).val();
+
+            if (timeoutCheckFamilyManage != null) {
+                clearTimeout(timeoutCheckFamilyManage);
+                timeoutCheckFamilyManage = null;
+            }
+            timeoutCheckFamilyManage = setTimeout(function () {
+                saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
+            }, 1000);
+
+        });
+
+        //checkbox
+        $(".family-manage-custom-field").on("click", ".custom-field-checkbox > div", function () {
+            var src = $(this).find("img").attr("src");
+            var name = $(this).parent().prev().text();
+            var value = $(this).children("span").text();
+
+            if (src == "img/checkbox_n.png") {
+                //保存栏位值并检查表单
+                saveValueAndCheckForm(familyManageFieldArr, name, value, true, "manageSelectFamilyBtn");
+                $(this).find("img").attr("src", "img/checkbox_s.png");
+            } else {
+                //保存栏位值并检查表单
+                saveValueAndCheckForm(familyManageFieldArr, name, value, false, "manageSelectFamilyBtn");
+                $(this).find("img").attr("src", "img/checkbox_n.png");
+            }
+
+        });
+
         //眷屬管理
         $("#manageSelectFamilyBtn").on("click", function () {
-            if (!$("#manageSelectFamilyBtn").hasClass("btn-disabled")) {
+            var selfClass = $(this).hasClass("btn-disabled");
+
+            if (!selfClass) {
+                loadingMask("show");
+
+                //1.個人信息
+                var answerList = "";
+                for (var i = 1; i < 6; i++) {
+                    answerList += '<ColumnAnswer_' + i + '>'
+                        + (familyManageFieldArr[i - 1] != undefined ? familyManageFieldArr[i - 1]["ColumnAnswer"] : "")
+                        + '</ColumnAnswer_' + i + '>';
+                }
+
+                var familyList = '<FamilyList><ActivitiesID>'
+                    + cancelID
+                    + '</ActivitiesID><SignupPlaces>1</SignupPlaces><EmployeeNo>'
+                    + myEmpNo 
+                    + '</EmployeeNo><FamilyNo>'
+                    + myEmpNo
+                    + '</FamilyNo>'
+                    + answerList
+                    + '</FamilyList>';
+
+                //console.log(familyList);
+
+                //2.API信息
                 activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
                     + cancelID
                     + '</ActivitiesID><EmployeeNo>'
@@ -594,7 +671,7 @@ $("#viewActivitiesManage").pagecontainer({
                     + '</EmployeeNo><IsSignup>Y</IsSignup></LayoutHeader>';
 
                 //console.log(activitiesSignupFamilyQueryData);
-                ActivitiesSignupFamilyQuery(cancelID, cancelModel, "Y", familyManageFieldArr, "");
+                ActivitiesSignupFamilyQuery(cancelID, cancelModel, "Y", familyManageFieldArr, familyList);
 
             }
         });
@@ -602,15 +679,16 @@ $("#viewActivitiesManage").pagecontainer({
         //取消眷屬報名
         $("#manageCancelSignupBtn").on("click", function() {
             loadingMask("show");
+
             activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + cancelID
-                + '</ActivitiesID><SignupModel>'
+                + '</ActivitiesID><SignupNo></SignupNo><SignupModel>'
                 + cancelModel
                 + '</SignupModel><EmployeeNo>'
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';
 
-            console.log(activitiesSignupCancelQueryData);
+            //console.log(activitiesSignupCancelQueryData);
             ActivitiesSignupCancelQuery();
         });
 
