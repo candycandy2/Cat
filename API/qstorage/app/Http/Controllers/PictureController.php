@@ -16,7 +16,7 @@ class PictureController extends Controller
      * 透過此API可以上傳圖片到QStorage的專案資料夾中
      * @return json
      */
-    public function uploaPicture(Request $request){
+    public function uploadPicture(Request $request){
   
         $contentType = $request->header('Content-Type');
         $appKey = $request->header('app-key');
