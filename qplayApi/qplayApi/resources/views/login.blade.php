@@ -166,7 +166,7 @@
                             <tr>
                                 <td>
                                     <select class="login_control" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext" style="border-color: #1f1f1f; padding: .4em">
-                                        <option value="" selected disabled></option>
+                                        <option value="" selected></option>
                                         <option value="BENQ">BenQ</option>
                                         <option value="QGROUP">Qisda</option>
                                     </select>
@@ -273,6 +273,7 @@
             if(!login_lang_list){
                 return;
             }
+            $("#ddlCompany option:selected").attr('selected', false);
             $("#ddlCompany option").eq(0).text(login_lang_list["COMPANY"]);
             $("#ddlCompany-button > span").text(login_lang_list["COMPANY"]);
             $("#tbxName").attr("placeholder",login_lang_list["NAME"]);
@@ -284,6 +285,16 @@
             $("#messageContainer").text(login_lang_list["ERROR"]);
             $("#info_cell_verify").text(login_lang_list["VERIFY_SUCCESS"]);
             $("#info_cell_logout").text(login_lang_list["LOGOUT"]);
+            if(window.localStorage){
+                if(window.localStorage.getItem("userName") !== null){
+                     $("#tbxName").val(window.localStorage.getItem("userName"));
+                }
+                if(window.localStorage.getItem("company") !== null){  
+                    var $selectCompany =  $("#ddlCompany option[value='" + window.localStorage.getItem("company") + "']");
+                    $selectCompany.attr('selected', true);
+                    $("#ddlCompany-button > span").text($selectCompany.text());
+                }
+            }
         }
 
         var getLanguage = function(){
@@ -325,10 +336,13 @@
         }
 
         var tryLogin = function () {
+            
             var userName = $("#tbxName").val();
             var password = encodeURIComponent($("#tbxPassword").val());
             var company = $("#ddlCompany").val();
+
             if(!$.trim(userName) || !$.trim(password) || !$.trim(company)) {
+
                 showMessage("MSG_INFO_ERROR");
                 return;
             }
@@ -427,6 +441,7 @@
                 success: function (d, status, xhr) {
                     HideLoading();
                     if(d.result_code && d.result_code == 1) {
+                        saveLoginInfo(loginId, domain);
                         LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
                                 + '"uuid" : "' + d.content.uuid + '", '
                                 + '"redirect-uri" : "' + d.content.redirect_uri + '", '
@@ -486,6 +501,7 @@
                 success: function (d, status, xhr) {
                     HideLoading();
                     if(d.result_code && d.result_code == 1) {
+                        saveLoginInfo(loginId, domain);
                         LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
                                 + '"uuid" : "' + d.content.uuid + '", '
                                 + '"redirect-uri" : "' + d.content.redirect_uri + '", '
@@ -545,6 +561,17 @@
             }(),
         }
 
+        var saveLoginInfo = function(userName, company){
+            if(window.localStorage){
+                if(window.localStorage.getItem("userName") === null|| window.localStorage.getItem("userName") != userName){
+                    window.localStorage.setItem("userName", userName);            
+                }
+                if(window.localStorage.getItem("company") === null || window.localStorage.getItem("company") != company){
+                    window.localStorage.setItem("company", company);
+                }
+            }
+        }
+
         function getSignature(action, signatureTime) {
             if (action === "getTime") {
                 return Math.round(new Date().getTime()/1000);
@@ -557,5 +584,3 @@
 
     </script>
 @endsection
-
-
