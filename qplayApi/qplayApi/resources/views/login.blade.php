@@ -340,14 +340,6 @@
             var userName = $("#tbxName").val();
             var password = encodeURIComponent($("#tbxPassword").val());
             var company = $("#ddlCompany").val();
-            if(window.localStorage){
-                if(window.localStorage.getItem("userName") === null|| window.localStorage.getItem("userName") != userName){
-                    window.localStorage.setItem("userName", userName);            
-                }
-                if(window.localStorage.getItem("company") === null || window.localStorage.getItem("company") != company){
-                    window.localStorage.setItem("company", company);
-                }
-            }
 
             if(!$.trim(userName) || !$.trim(password) || !$.trim(company)) {
 
@@ -449,6 +441,7 @@
                 success: function (d, status, xhr) {
                     HideLoading();
                     if(d.result_code && d.result_code == 1) {
+                        saveLoginInfo(loginId, domain);
                         LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
                                 + '"uuid" : "' + d.content.uuid + '", '
                                 + '"redirect-uri" : "' + d.content.redirect_uri + '", '
@@ -508,6 +501,7 @@
                 success: function (d, status, xhr) {
                     HideLoading();
                     if(d.result_code && d.result_code == 1) {
+                        saveLoginInfo(loginId, domain);
                         LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
                                 + '"uuid" : "' + d.content.uuid + '", '
                                 + '"redirect-uri" : "' + d.content.redirect_uri + '", '
@@ -565,6 +559,17 @@
                     iPad: u.indexOf('iPad') > -1, //是否iPad
                 };
             }(),
+        }
+
+        var saveLoginInfo = function(userName, company){
+            if(window.localStorage){
+                if(window.localStorage.getItem("userName") === null|| window.localStorage.getItem("userName") != userName){
+                    window.localStorage.setItem("userName", userName);            
+                }
+                if(window.localStorage.getItem("company") === null || window.localStorage.getItem("company") != company){
+                    window.localStorage.setItem("company", company);
+                }
+            }
         }
 
         function getSignature(action, signatureTime) {
