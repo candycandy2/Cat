@@ -669,12 +669,19 @@ input[type="text"] {
     display: none;
 }
 
-.queryNoEmployee>.ui-content {
+.queryNoEmployee>.ui-content,
+.signupNoFinish>.ui-content {
     padding: 0 !important;
 }
 
-.queryNoEmployee .ui-content>.header {
+.queryNoEmployee .ui-content>.header,
+.signupNoFinish .ui-content>.header {
     margin-top: 10%;
+}
+
+.queryNoEmployee .ui-content>.main,
+.signupNoFinish .ui-content>.main {
+    margin-top: 5%;
 }
 
 .overLimitMsg >.ui-content {
@@ -1219,17 +1226,17 @@ input[type="text"] {
     background-position: 50vw 3vw;
 }
 
-.confirmDeteteFamily >.ui-content,
+.confirmDeleteFamily >.ui-content,
 .confirmCancelEditFamily >.ui-content {
     padding: 0 !important;
 }
 
-.confirmDeteteFamily .ui-content>.header,
+.confirmDeleteFamily .ui-content>.header,
 .confirmCancelEditFamily .ui-content>.header {
     margin-top: 10%;
 }
 
-.confirmDeteteFamily .ui-content>.main,
+.confirmDeleteFamily .ui-content>.main,
 .confirmCancelEditFamily .ui-content>.main {
     margin-top: 6%;
 }

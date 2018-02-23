@@ -7,7 +7,7 @@ $("#viewSelectFamily").pagecontainer({
         var expandImgSrcN = "img/list_down.png";
         var expandImgSrcY = "img/list_up.png";
         //var familySelected = 0;
-        var actID, actModel, familyListBySelf;
+        var actID, actModel, actSignup, familyListBySelf;
         var familyAllList = [];
 
         /********************************** function *************************************/
@@ -16,10 +16,10 @@ $("#viewSelectFamily").pagecontainer({
 
             this.successCallback = function (data) {
                 //console.log(arr);
-                //console.log(data);
+                console.log(data);
 
-                actID = id, actModel = model, familyListBySelf = content;
-                if (data["ResultCode"] == "1" && isSignup == "N") {
+                actID = id, actModel = model, actSignup = isSignup, familyListBySelf = content;
+                if (data["ResultCode"] == "1") {
                     //初始化
                     $(".select-family-field").empty();
                     for (var i = 0; i < data["Content"].length; i++) {
@@ -31,7 +31,7 @@ $("#viewSelectFamily").pagecontainer({
 
                     //動態生成html
                     var selectFamilyArr = data["Content"].sort(sortByRelationship("FamilyRelationship", "FamilyName"));
-                    
+
                     var selectContent = "";
                     for (var i in selectFamilyArr) {
                         selectContent += '<div><div class="select-family-tr"><div data-no="'
@@ -56,50 +56,97 @@ $("#viewSelectFamily").pagecontainer({
 
                     $(".select-family-tbody").empty().append(selectContent);
 
-                    //給所有眷屬添加自定義欄位和值
-                    $.each($(".select-family-field"), function (index, item) {
-                        //根據欄位類型，生成不同欄位
-                        for (var i in arr) {
-                            if (arr[i]["ColumnType"] == "Select") {
-                                setSelectCustomField2(index, arr, i, "viewSelectFamily", "familySelect", $(item));
+                    //分爲已報名和未報名，未報名沒有answer，已報名有answer
+                    if (actSignup == "N") {
+                        //給所有眷屬添加自定義欄位和值
+                        $.each($(".select-family-field"), function (index, item) {
+                            //根據欄位類型，生成不同欄位
+                            for (var i in arr) {
+                                if (arr[i]["ColumnType"] == "Select") {
+                                    setSelectCustomField2(index, arr, i, "viewSelectFamily", "familySelect", $(item));
 
-                            } else if (arr[i]["ColumnType"] == "Text") {
-                                setTextCustomField2(index, arr, i, "familySelectText", $(item));
+                                } else if (arr[i]["ColumnType"] == "Text") {
+                                    setTextCustomField2(index, arr, i, "familySelectText", $(item));
 
-                            } else if (arr[i]["ColumnType"] == "Multiple") {
-                                setCheckboxCustomField2(index, arr, i, "familySelectCheckbox", $(item));
+                                } else if (arr[i]["ColumnType"] == "Multiple") {
+                                    setCheckboxCustomField2(index, arr, i, "familySelectCheckbox", $(item));
+                                }
+                            }
+                        });
+
+                        //欄位值對象
+                        var answerObj = {};
+                        for (var i = 0; i < 5;) {
+                            for (var j = 1; j < 6; j++) {
+                                answerObj["FamilyNo"] = "";
+                                answerObj["IsSignup"] = "N";
+                                answerObj["ColumnName_" + j] = (arr[i] == undefined ? "" : arr[i]["ColumnName"]);
+                                answerObj["ColumnType_" + j] = (arr[i] == undefined ? "" : arr[i]["ColumnType"]);
+                                answerObj["ColumnItem_" + j] = (arr[i] == undefined ? "" : arr[i]["ColumnItem"]);
+                                answerObj["ColumnAnswer_" + j] = (arr[i] == undefined ? "" : arr[i]["ColumnAnswer"]);
+                                i++;
                             }
                         }
-                    });
 
-                    //欄位值對象
-                    var answerObj = {};
-                    for (var i = 0; i < 5;) {
-                        for (var j = 1; j < 6; j++) {
-                            answerObj["FamilyNo"] = "";
-                            answerObj["IsSignup"] = "N";
-                            answerObj["ColumnName_" + j] = arr[i] == undefined ? "" : arr[i]["ColumnName"];
-                            answerObj["ColumnType_" + j] = arr[i] == undefined ? "" : arr[i]["ColumnType"];
-                            answerObj["ColumnItem_" + j] = arr[i] == undefined ? "" : arr[i]["ColumnItem"];
-                            answerObj["ColumnAnswer_" + j] = arr[i] == undefined ? "" : arr[i]["ColumnAnswer"];
-                            i++;
+                        //每個眷屬生成一個自定義欄位值對象，並放入數組
+                        familyAllList = [];
+                        for (var i in selectFamilyArr) {
+                            var oneObj = $.extend({}, answerObj);
+                            oneObj["FamilyNo"] = selectFamilyArr[i]["FamilyNo"];
+                            familyAllList.push(oneObj);
                         }
-                    }
+                        //console.log(familyAllList);
 
-                    //每個眷屬生成一個自定義欄位值對象，並放入數組
-                    familyAllList = [];
-                    for (var i in selectFamilyArr) {
-                        var oneObj = $.extend({}, answerObj);
-                        oneObj["FamilyNo"] = selectFamilyArr[i]["FamilyNo"];
-                        familyAllList.push(oneObj);
+                    } else if (actSignup == "Y") {
+                        //給所有眷屬添加自定義欄位和值
+                        $.each($(".select-family-field"), function (index, item) {
+                            //根據欄位類型，生成不同欄位
+                            for (var i in arr) {
+                                if (arr[i]["ColumnType"] == "Select") {
+                                    setSelectCustomField2(index, arr, i, "viewSelectFamily", "familySelect", $(item));
+
+                                } else if (arr[i]["ColumnType"] == "Text") {
+                                    setTextCustomField2(index, arr, i, "familySelectText", $(item));
+
+                                } else if (arr[i]["ColumnType"] == "Multiple") {
+                                    setCheckboxCustomField2(index, arr, i, "familySelectCheckbox", $(item));
+                                }
+                            }
+                        });
+
+                        //改變已報名的眷屬的欄位值，並勾選
+                        //1.找到已報名的眷屬
+                        for (var i in selectFamilyArr) {
+                            if (selectFamilyArr[i]["IsSignup"] == "Y") {
+                                $.each($(".family-checkbox-img"), function (index, item) {
+                                    if (selectFamilyArr[i]["FamilyNo"] == $(item).parent().attr("data-no")) {
+                                        //$(item).trigger("click");
+                                        for (var j = 1; j < 6; j++) {
+                                            if (selectFamilyArr[i]["ColumnType_" + j] == "Select") {
+                                                $.each($("#column-popup-" + i + "-familySelect-" + (j - 1) + "-option-list li"), function (ind, ite) {
+                                                    if ($(ite).text() == selectFamilyArr[i]["ColumnAnswer_" + j]) {
+                                                        $(ite).trigger("click");
+                                                    }
+                                                });
+                                            } else if (selectFamilyArr[i]["ColumnType_" + j] == "Text") {
+                                                $(item).parent().parent().next().find(".select-family-field .custom-field:eq(" + (j - 1) + ") input").val(selectFamilyArr[i]["ColumnAnswer_" + j]);
+                                            } else if (selectFamilyArr[i]["ColumnType_" + j] == "Multiple") {
+                                                
+                                            }
+                                        }
+
+                                    }
+                                });
+                            }
+                        }
+
+
                     }
-                    //console.log(familyAllList);
 
                     //跳轉
                     changePageByPanel("viewSelectFamily", true);
 
-                } else if (data["ResultCode"] == "1" && isSignup == "Y") {
-                    console.log(data);
+
                 }
 
                 loadingMask("hide");
@@ -146,7 +193,12 @@ $("#viewSelectFamily").pagecontainer({
         /********************************** signup *************************************/
         //返回眷屬報名或報名管理
         $("#viewSelectFamily .back-select").on("click", function () {
-            changePageByPanel("viewActivitiesSignup", false);
+            if (actSignup == "Y") {
+                changePageByPanel("viewActivitiesManage", false);
+            } else {
+                changePageByPanel("viewActivitiesSignup", false);
+            }
+
         });
 
         //展開眷屬資料-img
@@ -211,7 +263,7 @@ $("#viewSelectFamily").pagecontainer({
                 }
             });
 
-            //4.再檢查是否小於限制
+            //4.再檢查是否小於限制，並改變是否報名的狀態
             if (flag1 && flag2 && familySelected < selectFamilyLimit && src == "img/checkbox_n.png") {
                 self.attr("src", "img/checkbox_s.png");
 
@@ -240,7 +292,7 @@ $("#viewSelectFamily").pagecontainer({
                     count++;
                 }
             });
-            if(count == 0 && $("#selectAllFamily").attr("src") == "img/checkbox_s.png") {
+            if (count == 0 && $("#selectAllFamily").attr("src") == "img/checkbox_s.png") {
                 $("#selectAllFamily").attr("src", "img/checkbox_n.png");
             }
 
@@ -442,7 +494,7 @@ $("#viewSelectFamily").pagecontainer({
 
 
         /********************************** manage *************************************/
-        
+
 
 
     }

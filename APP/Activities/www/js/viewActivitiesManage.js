@@ -7,15 +7,14 @@ $("#viewActivitiesManage").pagecontainer({
         var familyManageFieldArr = [];
         var timeoutCheckPersonManage = null;
         var timeoutCheckFamilyManage = null;
-        var cancelModel, cancelActName, cancelID, cancelNo, cancelTeamName;
-        var submitSignupPlace, currentActName, currentCancelContent;
+        var cancelModel, cancelActName, cancelID, cancelNo, cancelContent, submitSignupPlace;
 
         /********************************** function *************************************/
         //報名管理
         window.ActivitiesSignupManageQuery = function (model) {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 //取消報名的活動類型
                 cancelModel = model;
@@ -59,8 +58,8 @@ $("#viewActivitiesManage").pagecontainer({
                         }
 
                         //取消報名
-                        currentActName = manageObj["ActivitiesName"];
-                        currentCancelContent = manageObj["EmployeeName"] + " / " + "同仁" + " / " + manageObj["SignupPlaces"] + "人";
+                        cancelActName = manageObj["ActivitiesName"];
+                        cancelContent = manageObj["EmployeeName"] + " / " + "同仁" + " / " + manageObj["SignupPlaces"] + "人";
                         cancelID = manageObj["ActivitiesID"];
                         cancelNo = manageObj["SignupNo"];
 
@@ -82,7 +81,14 @@ $("#viewActivitiesManage").pagecontainer({
                         $("#familyManageGender").text(manageObj["EmployeeGender"]);
                         $("#familyManageID").text(manageObj["EmpoyeeID"]);
                         $("#familyManageBirth").text(manageObj["EmployeeBirthday"]);
-                        cancelID = manageObj["ActivitiesID"];
+
+                        //選擇眷屬頁面
+                        $("#familySelectThumbnail").attr("src", manageObj["ActivitiesImage"]);
+                        $("#familySelectName").text(manageObj["ActivitiesName"]);
+                        $("#familySelectLimitPlace").text(manageObj["LimitPlaces"]);
+                        $(".select-family-remark").empty().append("<div>" + manageObj["ActivitiesRemarks"] + "</div>");
+                        //因爲眷屬報名必須包含本人，所以可攜帶眷屬數量=總數量-1
+                        selectFamilyLimit = manageObj["LimitPlaces"] - 1;
 
                         //根據欄位類型，生成不同欄位
                         familyManageFieldArr = getCustomField(manageObj);
@@ -98,6 +104,18 @@ $("#viewActivitiesManage").pagecontainer({
 
                             }
                         }
+
+                        //取消報名
+                        cancelID = manageObj["ActivitiesID"];
+                        cancelActName = manageObj["ActivitiesName"];
+                        cancelContent = "";
+                        //取消眷屬報名只能去報名記錄裏面查找
+                        for (var i in recordArr) {
+                            if (cancelID == recordArr[i]["ActivitiesID"]) {
+                                cancelContent += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span><br>';
+                            }
+                        }
+                        
 
                     } else if (model == "4") {
                         var manageArr = data["Content"];
@@ -192,8 +210,8 @@ $("#viewActivitiesManage").pagecontainer({
                         for (var i in timeArr) {
                             if (timeArr[i]["IsSignupTime"] != "") {
                                 //取消报名信息
-                                currentActName = timeArr[i]["ActivitiesName"];
-                                currentCancelContent = timeArr[i]["EmployeeName"] + " / " + "同仁" + " / 1人";
+                                cancelActName = timeArr[i]["ActivitiesName"];
+                                cancelContent = timeArr[i]["EmployeeName"] + " / " + "同仁" + " / 1人 / " + timeArr[i]["IsSignupTime"];
                                 cancelNo = timeArr[i]["SignupNo"];
                                 //动态生成栏位
                                 timeContent += '<div class="time-manage-info"><span>報名時段：</span><span>'
@@ -461,29 +479,29 @@ $("#viewActivitiesManage").pagecontainer({
         $("#teamTable").on("click", ".team-delete", function () {
             cancelID = $(this).attr("data-id");
             cancelNo = $(this).attr("data-no");
-            cancelTeamName;
 
             for (var i in resultArr) {
                 if (cancelNo == resultArr[i]["TeamID"]) {
-                    cancelTeamName = resultArr[i]["TeamName"];
+                    cancelContent = resultArr[i]["TeamName"];
                     break;
                 }
             }
 
             $(".cancelSignupMsg .header-title").text(cancelActName);
-            $(".cancelSignupMsg .main-paragraph").text(cancelTeamName);
+            $(".cancelSignupMsg .main-paragraph").empty().text(cancelContent);
             popupMsgInit('.cancelSignupMsg');
 
         });
 
-        //確定取消報名
+        //確定取消報名（所有類型活動）
         $("#confirmCancelSignup").on("click", function () {
             loadingMask("show");
             
             activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + cancelID
                 + '</ActivitiesID><SignupNo>'
-                + cancelNo
+                //+ cancelNo
+                + (cancelModel == "3" ? "" : cancelNo)
                 + '</SignupNo><SignupModel>'
                 + cancelModel
                 + '</SignupModel><EmployeeNo>'
@@ -545,10 +563,10 @@ $("#viewActivitiesManage").pagecontainer({
 
         });
 
-        //取消報名-popup
+        //取消個人報名-popup
         $("#cancelPersonSignup").on("click", function () {
-            $(".cancelSignupMsg .header-title").text(currentActName);
-            $(".cancelSignupMsg .main-paragraph").text(currentCancelContent);
+            $(".cancelSignupMsg .header-title").text(cancelActName);
+            $(".cancelSignupMsg .main-paragraph").empty().text(cancelContent);
             popupMsgInit('.cancelSignupMsg');
         });
 
@@ -586,10 +604,10 @@ $("#viewActivitiesManage").pagecontainer({
 
 
         /************************************ Time *************************************/
-        //取消报名-popup
+        //取消時段报名-popup
         $("#cancelTimeSignup").on("click", function () {
-            $(".cancelSignupMsg .header-title").text(currentActName);
-            $(".cancelSignupMsg .main-paragraph").text(currentCancelContent);
+            $(".cancelSignupMsg .header-title").text(cancelActName);
+            $(".cancelSignupMsg .main-paragraph").empty().text(cancelContent);
             popupMsgInit('.cancelSignupMsg');
         });
 
@@ -676,20 +694,11 @@ $("#viewActivitiesManage").pagecontainer({
             }
         });
 
-        //取消眷屬報名
-        $("#manageCancelSignupBtn").on("click", function() {
-            loadingMask("show");
-
-            activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
-                + cancelID
-                + '</ActivitiesID><SignupNo></SignupNo><SignupModel>'
-                + cancelModel
-                + '</SignupModel><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo></LayoutHeader>';
-
-            //console.log(activitiesSignupCancelQueryData);
-            ActivitiesSignupCancelQuery();
+        //取消眷屬報名-popup
+        $("#cancelFamilySignup").on("click", function() {
+            $(".cancelSignupMsg .header-title").text(cancelActName);
+            $(".cancelSignupMsg .main-paragraph").empty().append(cancelContent);
+            popupMsgInit('.cancelSignupMsg');
         });
 
     }
