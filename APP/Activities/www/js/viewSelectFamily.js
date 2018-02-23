@@ -7,7 +7,7 @@ $("#viewSelectFamily").pagecontainer({
         var expandImgSrcN = "img/list_down.png";
         var expandImgSrcY = "img/list_up.png";
         //var familySelected = 0;
-        var actID, actModel, personFamilyList;
+        var actID, actModel, familyListBySelf;
         var familyAllList = [];
 
         /********************************** function *************************************/
@@ -18,7 +18,7 @@ $("#viewSelectFamily").pagecontainer({
                 //console.log(arr);
                 //console.log(data);
 
-                actID = id, actModel = model, personFamilyList = content;
+                actID = id, actModel = model, familyListBySelf = content;
                 if (data["ResultCode"] == "1" && isSignup == "N") {
                     //初始化
                     $(".select-family-field").empty();
@@ -30,8 +30,8 @@ $("#viewSelectFamily").pagecontainer({
                     }
 
                     //動態生成html
-                    var selectFamilyArr = data["Content"];
-                    //console.log(selectFamilyArr);
+                    var selectFamilyArr = data["Content"].sort(sortByRelationship("FamilyRelationship", "FamilyName"));
+                    
                     var selectContent = "";
                     for (var i in selectFamilyArr) {
                         selectContent += '<div><div class="select-family-tr"><div data-no="'
@@ -97,6 +97,7 @@ $("#viewSelectFamily").pagecontainer({
 
                     //跳轉
                     changePageByPanel("viewSelectFamily", true);
+
                 } else if (data["ResultCode"] == "1" && isSignup == "Y") {
                     console.log(data);
                 }
@@ -279,7 +280,7 @@ $("#viewSelectFamily").pagecontainer({
                 });
             }
 
-            console.log(familyAllList);
+            //console.log(familyAllList);
         });
 
         //展開全部眷屬資料
@@ -404,6 +405,7 @@ $("#viewSelectFamily").pagecontainer({
         //確定送出
         $("#familySignupBtn").on("click", function () {
             loadingMask("show");
+
             var familyQuery = "";
             for (var i in familyAllList) {
                 if (familyAllList[i]["IsSignup"] == "Y") {
@@ -430,7 +432,7 @@ $("#viewSelectFamily").pagecontainer({
             activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
                 + actModel
                 + '</SignupModel>'
-                + personFamilyList
+                + familyListBySelf
                 + familyQuery
                 + '</LayoutHeader>';
 
