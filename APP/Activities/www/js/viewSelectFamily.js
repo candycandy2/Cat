@@ -7,18 +7,18 @@ $("#viewSelectFamily").pagecontainer({
         var expandImgSrcN = "img/list_down.png";
         var expandImgSrcY = "img/list_up.png";
         //var familySelected = 0;
-        var actID, actModel;
+        var actID, actModel, familyListBySelf;
         var familyAllList = [];
 
         /********************************** function *************************************/
         //選擇眷屬
-        window.ActivitiesSignupFamilyQuery = function (id, model, isSignup, arr) {
+        window.ActivitiesSignupFamilyQuery = function (id, model, isSignup, arr, content) {
 
             this.successCallback = function (data) {
                 //console.log(arr);
                 //console.log(data);
 
-                actID = id, actModel = model;
+                actID = id, actModel = model, familyListBySelf = content;
                 if (data["ResultCode"] == "1" && isSignup == "N") {
                     //初始化
                     $(".select-family-field").empty();
@@ -30,7 +30,8 @@ $("#viewSelectFamily").pagecontainer({
                     }
 
                     //動態生成html
-                    var selectFamilyArr = data["Content"];
+                    var selectFamilyArr = data["Content"].sort(sortByRelationship("FamilyRelationship", "FamilyName"));
+                    
                     var selectContent = "";
                     for (var i in selectFamilyArr) {
                         selectContent += '<div><div class="select-family-tr"><div data-no="'
@@ -92,10 +93,11 @@ $("#viewSelectFamily").pagecontainer({
                         oneObj["FamilyNo"] = selectFamilyArr[i]["FamilyNo"];
                         familyAllList.push(oneObj);
                     }
-                    console.log(familyAllList);
+                    //console.log(familyAllList);
 
                     //跳轉
                     changePageByPanel("viewSelectFamily", true);
+
                 } else if (data["ResultCode"] == "1" && isSignup == "Y") {
                     console.log(data);
                 }
@@ -141,6 +143,7 @@ $("#viewSelectFamily").pagecontainer({
 
         });
 
+        /********************************** signup *************************************/
         //返回眷屬報名或報名管理
         $("#viewSelectFamily .back-select").on("click", function () {
             changePageByPanel("viewActivitiesSignup", false);
@@ -230,8 +233,54 @@ $("#viewSelectFamily").pagecontainer({
                 }
             }
 
+            //5.如果未選擇，且全選已鉤，則全選反選
+            var count = 0;
+            $.each($(".family-checkbox-img"), function (index, item) {
+                if ($(item).attr("src") == "img/checkbox_s.png") {
+                    count++;
+                }
+            });
+            if(count == 0 && $("#selectAllFamily").attr("src") == "img/checkbox_s.png") {
+                $("#selectAllFamily").attr("src", "img/checkbox_n.png");
+            }
+
             //console.log(familyAllList);
 
+        });
+
+        //選擇所有眷屬
+        $("#selectAllFamily").on("click", function () {
+            var self = $(this);
+            var src = $(this).attr("src");
+
+            if (src == "img/checkbox_n.png") {
+                self.attr("src", "img/checkbox_s.png");
+
+                var selectedFamilyCount = 0;
+                $.each($(".select-family-tr .family-checkbox-img"), function (index, item) {
+                    if ($(item).attr("src") == "img/checkbox_s.png") {
+                        //記錄已選擇的眷屬數量
+                        selectedFamilyCount++;
+                    }
+
+                    //當已選擇人數少於限制人數，且未選擇的眷屬，才能被選擇
+                    if ($(item).attr("src") == "img/checkbox_n.png" && selectedFamilyCount < selectFamilyLimit) {
+                        $(item).trigger("click");
+                        selectedFamilyCount++;
+                    }
+                });
+
+            } else {
+                self.attr("src", "img/checkbox_n.png");
+
+                $.each($(".select-family-tr .family-checkbox-img"), function (index, item) {
+                    if ($(item).attr("src") == "img/checkbox_s.png") {
+                        $(item).trigger("click");
+                    }
+                });
+            }
+
+            //console.log(familyAllList);
         });
 
         //展開全部眷屬資料
@@ -302,7 +351,7 @@ $("#viewSelectFamily").pagecontainer({
             }
 
             //如果自定義欄位的Text值爲空，則眷屬的checkbox也不能選擇
-            if(columnAnswer == "" && $(this).parent().parent().parent().prev().find(".family-checkbox-img").attr("src") == "img/checkbox_s.png") {
+            if (columnAnswer == "" && $(this).parent().parent().parent().prev().find(".family-checkbox-img").attr("src") == "img/checkbox_s.png") {
                 $(this).parent().parent().parent().prev().find(".family-checkbox-img").trigger("click");
             }
         });
@@ -348,20 +397,23 @@ $("#viewSelectFamily").pagecontainer({
             }
 
             //如果自定義欄位的checkbox都未選擇，則眷屬的checkbox也不能選擇
-            if(columnAnswer == "" && $(this).parent().parent().parent().parent().prev().find(".family-checkbox-img").attr("src") == "img/checkbox_s.png") {
+            if (columnAnswer == "" && $(this).parent().parent().parent().parent().prev().find(".family-checkbox-img").attr("src") == "img/checkbox_s.png") {
                 $(this).parent().parent().parent().parent().prev().find(".family-checkbox-img").trigger("click");
             }
         });
 
         //確定送出
-        $("#familySignupBtn").on("click", function() {
+        $("#familySignupBtn").on("click", function () {
+            loadingMask("show");
+
             var familyQuery = "";
-            for(var i in familyAllList) {
-                if(familyAllList[i]["IsSignup"] == "Y") {
+            for (var i in familyAllList) {
+                if (familyAllList[i]["IsSignup"] == "Y") {
                     familyQuery += '<FamilyList><ActivitiesID>'
                         + actID
                         + '</ActivitiesID><SignupPlaces>1</SignupPlaces><EmployeeNo>'
-                        + myEmpNo+'</EmployeeNo><FamilyNo>'
+                        + myEmpNo
+                        + '</EmployeeNo><FamilyNo>'
                         + familyAllList[i]["FamilyNo"]
                         + '</FamilyNo><ColumnAnswer_1>'
                         + familyAllList[i]["ColumnAnswer_1"]
@@ -380,12 +432,17 @@ $("#viewSelectFamily").pagecontainer({
             activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
                 + actModel
                 + '</SignupModel>'
+                + familyListBySelf
                 + familyQuery
                 + '</LayoutHeader>';
 
-            console.log(activitiesSignupConfirmQueryData);
-            //ActivitiesSignupConfirmQuery(actID);
+            //console.log(activitiesSignupConfirmQueryData);
+            ActivitiesSignupConfirmQuery(actID, "Y");
         });
+
+
+        /********************************** manage *************************************/
+        
 
 
     }

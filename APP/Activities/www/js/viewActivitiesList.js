@@ -10,7 +10,7 @@ $("#viewActivitiesList").pagecontainer({
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activitiesArr = data["Content"];
@@ -27,11 +27,11 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style11"><span>名額:'
+                                + '</div><div class="font-style11"><span class="langStr" data-id="str_078"></span><span>'
                                 + activitiesArr[i]["QuotaPlaces"]
-                                + '</span>&nbsp;&nbsp;&nbsp;<span>剩餘:'
+                                + '</span>&nbsp;&nbsp;&nbsp;<span class="langStr" data-id="str_079"></span><span>'
                                 + activitiesArr[i]["RemainingPlaces"]
-                                + '</span></div><div class="font-style11"><span>報名期間:'
+                                + '</span></div><div class="font-style11"><span class="langStr" data-id="str_052"></span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
 
@@ -44,11 +44,11 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style11"><span>名額:'
+                                + '</div><div class="font-style11"><span class="langStr" data-id="str_078"></span><span>'
                                 + activitiesArr[i]["QuotaPlaces"]
-                                + '</span>&nbsp;&nbsp;&nbsp;<span>剩餘:'
+                                + '</span>&nbsp;&nbsp;&nbsp;<span class="langStr" data-id="str_079"></span><span>'
                                 + activitiesArr[i]["RemainingPlaces"]
-                                + '</span></div><div class="font-style11"><span>報名期間:'
+                                + '</span></div><div class="font-style11"><span class="langStr" data-id="str_077"></span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
                         }
@@ -85,8 +85,10 @@ $("#viewActivitiesList").pagecontainer({
 
         });
 
-
+        //點擊活動列表進入詳情頁
         $("#viewActivitiesContent").on("click", ".activity-list", function(e) {
+            loadingMask("show");
+
             var actNo = $(this).attr("data-id");
             var actStatus = $(this).attr("data-status");
 

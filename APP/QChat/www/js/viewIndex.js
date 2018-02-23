@@ -305,11 +305,11 @@ $("#viewIndex").pagecontainer({
                         if (action === "receiveMessage") {
 
                             //Check if new chatroom
-                            if (JM.data.chatroom[chatroom.extras.chatroom_id] !== undefined) {
-                                window.processChatroomData(chatroom, "getConversations", false, true);
-                            } else {
-                                window.getConversation(chatroom.extras.chatroom_id, false, true);
-                            }
+                            //if (JM.data.chatroom[chatroom.extras.chatroom_id] !== undefined) {
+                            //    window.processChatroomData(chatroom, "getConversations", false, true);
+                            //} else {
+                                window.getConversation(chatroom.extras.chatroom_id, true, true);
+                            //}
 
                         } else if (action === "getConversation") {
                             window.processChatroomData(chatroom, "getConversation", true, false);
@@ -879,6 +879,12 @@ $("#viewIndex").pagecontainer({
 
             tplJS.Popup(null, null, "append", confirmDeleteFriendPopupData);
 
+            //---------------------iOS UI---------------------
+            if (device.platform === "iOS") {
+                $("#viewIndex .page-main .search-index-content").css({
+                    "padding-top": "20px"
+                });
+            }
         });
 
         $("#viewIndex").on("pagebeforeshow", function(event, ui) {

@@ -3,7 +3,7 @@ $("#viewMyFamilyDatum").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         var familyArr = [];
-        var addOrUpdate;
+        var addFamilyOrNot;
         var familyNo = "", familyName = "", familyID = "", familyBirth = "", relationshipNo = "", genderNo = "";
         var relationshipData = {
             id: "relationship-popup",
@@ -31,7 +31,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         //眷屬資料
         window.ActivitiesFamilyQuery = function () {
 
-            this.successCallback = function (data) {  
+            this.successCallback = function (data) {
                 //console.log(data);
 
                 familyArr = [];
@@ -288,7 +288,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             $("#viewMyFamilyDatum .back-family").hide();
             $("#viewFamilyEdit").hide();
             $("#viewMyFamilyDatum .menu").show();
-            if(familyArr.length == 0) {
+            if (familyArr.length == 0) {
                 $("#viewFamilyNone").show();
             } else {
                 $("#viewFamilyList").show();
@@ -299,11 +299,11 @@ $("#viewMyFamilyDatum").pagecontainer({
         //“編輯”和“新增”的跳轉
         function changeViewToDetail() {
             $("#viewMyFamilyDatum .menu").hide();
-            if(familyArr.length == 0) {
+            if (familyArr.length == 0) {
                 $("#viewFamilyNone").hide();
             } else {
                 $("#viewFamilyList").hide();
-            } 
+            }
             $(".family-add-img").hide();
             $("#viewMyFamilyDatum .back-family").show();
             $("#viewFamilyEdit").show();
@@ -315,31 +315,6 @@ $("#viewMyFamilyDatum").pagecontainer({
                 var val1 = obj1[prop];
                 var val2 = obj2[prop];
                 return val1.localeCompare(val2, "zh");
-            }
-        }
-
-        //先按照關係排序，關係一樣再按照中文姓名排序
-        function sortByRelationship(prop1, prop2) {
-            return function (obj1, obj2) {
-                //relationship
-                var val1 = obj1[prop1];
-                var val2 = obj2[prop1];
-                //familyname
-                var value1 = obj1[prop2];
-                var value2 = obj2[prop2];
-                //轉換成numer類型
-                if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
-                    val1 = Number(val1);
-                    val2 = Number(val2);
-                }
-
-                if (val1 < val2) {
-                    return -1;
-                } else if (val1 > val2) {
-                    return 1;
-                } else {
-                    return value1.localeCompare(value2, "zh");
-                }
             }
         }
 
@@ -355,7 +330,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         $("#viewMyFamilyDatum").on("pageshow", function (event, ui) {
-            
+
         });
 
         /******************************** datetimepicker ***********************************/
@@ -388,7 +363,7 @@ $("#viewMyFamilyDatum").pagecontainer({
 
         //確定刪除
         $("#confirmDeleteFamilyBtn").on("click", function () {
-            //loadingMask("show");
+            loadingMask("show");
             activitiesFamilyDeleteQueryData = '<LayoutHeader><EmployeeNo>'
                 + myEmpNo
                 + '</EmployeeNo><FamilyNo>'
@@ -401,7 +376,7 @@ $("#viewMyFamilyDatum").pagecontainer({
 
         //返回到眷屬列表，彈窗popup
         $("#viewMyFamilyDatum .back-family").on("click", function () {
-            if (addOrUpdate) {
+            if (addFamilyOrNot) {
                 popupMsgInit('.confirmCancelAddFamily');
             } else {
                 $(".confirmCancelEditFamily .main-paragraph").text(familyName);
@@ -424,7 +399,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         $(".family-add-img").on("click", function () {
             clearFormByFamily();
             changeViewToDetail();
-            addOrUpdate = true;
+            addFamilyOrNot = true;
             checkFormByFamily();
             $("#familyName").removeAttr("readonly");
         });
@@ -462,12 +437,10 @@ $("#viewMyFamilyDatum").pagecontainer({
                 }
             }
 
-
-
             //2.跳轉
             familyName = $(this).children("div:first-child").children("span:first-child").text();
             changeViewToDetail();
-            addOrUpdate = false;
+            addFamilyOrNot = false;
             checkFormByFamily();
             $("#familyName").attr("readonly", "readonly");
         });
@@ -475,8 +448,9 @@ $("#viewMyFamilyDatum").pagecontainer({
         //儲存按鈕
         $(".family-save-btn").on("click", function () {
             if (checkFormByFamily()) {
-                //loadingMask("show");
-                if (addOrUpdate) {
+                loadingMask("show");
+
+                if (addFamilyOrNot) {
                     activitiesFamilyAddQueryData = '<LayoutHeader><EmployeeNo>'
                         + myEmpNo
                         + '</EmployeeNo><FamilyID>'
@@ -565,6 +539,23 @@ $("#viewMyFamilyDatum").pagecontainer({
             familyID = $.trim($(this).val());
         });
 
+        //限制只能輸入字母和數字
+        // $("#familyName").on("keydown", function (event) {
+        //     if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // });
+
+        // $("#familyID").on("keydown", function (event) {
+        //     if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // });
+
         //檢查表單（姓名和身份證）是否符合提交要求
         $("#familyName").on("keyup", function () {
             checkFormByFamily();
@@ -586,4 +577,6 @@ $("#viewMyFamilyDatum").pagecontainer({
         // });
 
     }
+
+    
 });

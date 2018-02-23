@@ -122,6 +122,83 @@ $("#viewMain").pagecontainer({
             $.mobile.changePage('#viewQRScanner');
         });
 
+        $("#QRCode").on('click', function() {
+            $.mobile.changePage('#viewQRCodeCreate');
+        });
+
+        $("#Fingerprint").on('click', function() {
+            //$.mobile.changePage('#viewFingerprint');
+            if (device.platform === "iOS") {
+                window.plugins.touchid.isAvailable(
+                    function() {
+                        //alert('Available!')
+                        window.plugins.touchid.verifyFingerprint(
+                            'Please scan your fingerprint', // this will be shown in the native scanner popup
+                            function(msg) {
+                                alert('ok: ' + msg);
+                            }, // success handler: fingerprint accepted
+                            function(msg) {
+                                alert('Something is wrong: ' + JSON.stringify(msg));
+                            } // error handler with errorcode and localised reason
+                        );
+                    }, // success handler: TouchID available
+                    function(msg) {
+                        alert('TouchID is not available.' )
+                    } // error handler: no TouchID available
+                );
+                
+            }else {
+                FingerprintAuth.isAvailable(function (result) {
+
+                    console.log("FingerprintAuth available: " + JSON.stringify(result));
+                    
+                    // If has fingerprint device and has fingerprints registered
+                    if (result.isAvailable == true && result.hasEnrolledFingerprints == true) {
+
+                        // Check the docs to know more about the encryptConfig object :)
+                        var encryptConfig = {
+                            clientId: "myAppName",
+                            username: "currentUser",
+                            password: "currentUserPassword",
+                            maxAttempts: 5,
+                            locale: "en_US",
+                            dialogTitle: "Hey dude, your finger",
+                            dialogMessage: "Put your finger on the device",
+                            dialogHint: "No one will steal your identity, promised"
+                        }; // See config object for required parameters
+
+                        // Set config and success callback
+                        FingerprintAuth.encrypt(encryptConfig, function(_fingerResult){
+                            console.log("successCallback(): " + JSON.stringify(_fingerResult));
+                            if (_fingerResult.withFingerprint) {
+                                console.log("Successfully encrypted credentials.");
+                                console.log("Encrypted credentials: " + result.token);  
+                            } else if (_fingerResult.withBackup) {
+                                console.log("Authenticated with backup password");
+                            }
+                        // Error callback
+                        }, function(err){
+                                if (err === "Cancelled") {
+                                console.log("FingerprintAuth Dialog Cancelled!");
+                            } else {
+                                console.log("FingerprintAuth Error: " + err);
+                            }
+                        });
+                    }
+
+                /**
+                * @return {
+                *      isAvailable:boolean,
+                *      isHardwareDetected:boolean,
+                *      hasEnrolledFingerprints:boolean
+                *   }
+                */
+                }, function (message) {
+                    console.log("isAvailableError(): " + message);
+                });
+            }
+        });
+
         //$("#openPDF").on('click', function() {
             /*var fileName = files[0];
             url = buildAssetsUrl(fileName);
