@@ -43,11 +43,6 @@ var QForum = {
     },
     lastBodyScrollTop: 0,
     lastCommentOffsetTop: 0,
-    pullRefresh: {
-        startTop: 0,
-        endTop: 0,
-        moveCount: 0
-    },
     initial: function() {
 
         //Handle dependency
@@ -275,10 +270,11 @@ var QForum = {
                 }
             };
         },
-        getPostDetails: function(replyCallback) {
+        getPostDetails: function(replyCallback, pullRefresh) {
             replyCallback = replyCallback || false;
+            pullRefresh = pullRefresh || false;
 
-            (function(replyCallback) {
+            (function(replyCallback, pullRefresh) {
 
                 if (QForum.getPostDetailsProcessing) {
                     return;
@@ -310,7 +306,7 @@ var QForum = {
                         //window.postContent = data["Content"].post_content;
                         //window.postCreateTime = data["Content"].post_create_time;
                         QForum.replyCount = data["Content"].reply_count;
-                        QForum.VIEW.replyListView(data["Content"].reply_list, replyCallback);
+                        QForum.VIEW.replyListView(data["Content"].reply_list, replyCallback, pullRefresh);
                     }
 
                 };
@@ -321,7 +317,7 @@ var QForum = {
 
                 QForum.getPostDetailsProcessing = true;
 
-            }(replyCallback));
+            }(replyCallback, pullRefresh));
         },
         newComment: function(content) {
             (function(content) {
@@ -492,17 +488,34 @@ var QForum = {
                 var replyButtonFooterHTML = $($("template#tplQForumReplyButtonFooter").html());
                 $("#" + QForum.pageID).append(replyButtonFooterHTML).trigger("create");
 
-                //Bind Event
-                QForum.EVENT.replyButtonClick();
+                if (device.platform === "iOS") {
+                    setTimeout(function() {
+                        //Bind Event
+                        QForum.EVENT.replyButtonClick();
 
-                //Window Scroll Event
-                QForum.EVENT.windowScroll();
+                        //Window Scroll Event
+                        QForum.EVENT.windowScroll();
 
-                //Page Pull to Refresh Event
-                QForum.EVENT.pagePullRefresh();
+                        //Page Pull to Refresh Event
+                        QForum.EVENT.pagePullRefresh();
 
-                //Create FullScreen Reply Editor Popup
-                QForum.VIEW.replyFullScreenPopup();
+                        //Create FullScreen Reply Editor Popup
+                        QForum.VIEW.replyFullScreenPopup();
+                    }, 1000);
+                } else {
+                    //Bind Event
+                    QForum.EVENT.replyButtonClick();
+
+                    //Window Scroll Event
+                    QForum.EVENT.windowScroll();
+
+                    //Page Pull to Refresh Event
+                    QForum.EVENT.pagePullRefresh();
+
+                    //Create FullScreen Reply Editor Popup
+                    QForum.VIEW.replyFullScreenPopup();
+                }
+
             }
 
             QForum.API.getPostDetails();
@@ -611,7 +624,7 @@ var QForum = {
             }
 
         },
-        replyListView: function(replyDataList, replyCallback) {
+        replyListView: function(replyDataList, replyCallback, pullRefresh) {
 
             if (replyDataList.length > 0) {
                 if ($("#" + QForum.pageID + " .QForum-Content.reply-listview").length == 0) {
@@ -703,14 +716,17 @@ var QForum = {
                             console.log("========reply listview");
                             $(".QForum-Content.reply-fullscreen-popup").hide();
 
-                            //Recovery Scroll Behavior, then scroll to the last postion, don't scroll to top.
-                            var lastCommentOffsetTop = QForum.lastCommentOffsetTop;
+                            //If Pull Refresh now, don't set position.
+                            if (!QForum.pullRefresh.callAPI && !pullRefresh) {
+                                //Recovery Scroll Behavior, then scroll to the last postion, don't scroll to top.
+                                var lastCommentOffsetTop = QForum.lastCommentOffsetTop;
 
-                            tplJS.recoveryPageScroll();
+                                tplJS.recoveryPageScroll();
 
-                            $("html body").animate({
-                                scrollTop: lastCommentOffsetTop
-                            }, 0);
+                                $("html body").animate({
+                                    scrollTop: lastCommentOffsetTop
+                                }, 0);
+                            }
 
                             loadingMask("hide");
 
@@ -962,6 +978,10 @@ var QForum = {
                     return;
                 }
 
+                if (!QForum.pullRefresh.finish) {
+                    return;
+                }
+
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
                 var activePageID = activePage[0].id;
                 var bodyScrollTop = $("body").scrollTop();
@@ -1044,6 +1064,11 @@ var QForum = {
 
             //tplJS.Popup will trigger this event, so check if there is any popup displayed now.
 
+            var mainMarginTopText = $("#" + QForum.pageID + " .page-main").css("margin-top");
+            QForum.mainMarginTop = parseInt(mainMarginTopText.substr(0, mainMarginTopText.length - 2), 10);
+
+            //Ver 1.
+            /*
             $(document).on({
                 touchstart: function(event) {
                     if (!checkPopupShown()) QForum.pullRefresh.startTop = $("body").scrollTop();
@@ -1057,22 +1082,60 @@ var QForum = {
 
                     setTimeout(function() {
 
-                        if (!checkPopupShown() && QForum.pullRefresh.startTop == 0 && QForum.pullRefresh.startTop == QForum.pullRefresh.endTop && QForum.pullRefresh.endTop == 0) {
+                        //Check if PullFefresh is working now
+                        var mainMarginTopText = $("#" + QForum.pageID + " .page-main").css("margin-top");
+                        var mainMarginTopNow = parseInt(mainMarginTopText.substr(0, mainMarginTopText.length - 2), 10);
+
+                        if (!checkPopupShown() 
+                            && QForum.pullRefresh.startTop == 0 
+                            && QForum.pullRefresh.startTop == QForum.pullRefresh.endTop 
+                            && QForum.pullRefresh.endTop == 0
+                            && QForum.mainMarginTop == mainMarginTopNow) {
                             console.log(QForum.pullRefresh.startTop);
                             console.log(QForum.pullRefresh.endTop);
 
                             if (QForum.pullRefresh.moveCount > 5) {
                                 console.log("=========== pull to refresh");
 
-                                $("<div id='pullRefreshImg' style='width:32px; height:32px; border-radius:50%; border:1px solid #A7A7A7;'><img src='img/pullRefresh.gif' width='32' height='32'></div>").css({
-                                    "position": "absolute",
-                                    "top": 0,
-                                    "left": "45%",
-                                    "opacity": 0
-                                }).appendTo("body").stop(true).animate({
-                                    "top": 150,
-                                    "opacity": 1
-                                }, 250, function() {
+                                if (device.platform === "iOS") {
+                                    var fixedTop = 20;
+                                } else {
+                                    var fixedTop = 0;
+                                }
+
+                                var gifWidth = parseInt(document.documentElement.clientWidth * 6.95 / 100, 10);
+                                var gifHeight = parseInt(document.documentElement.clientWidth * 3.75 / 100, 10);
+                                var gifLeft = parseInt((document.documentElement.clientWidth - gifWidth) / 2, 10);
+                                var pullRefreshHeight = parseInt(document.documentElement.clientWidth * 4.17 / 100 + fixedTop, 10);
+                                var pullRefreshPaddingTop = parseInt(document.documentElement.clientWidth * 2.78 / 100, 10);
+                                var headerHeight = parseInt($("#" + QForum.pageID + " .page-header").height() + fixedTop, 10);
+
+                                if ($("#pullRefreshImg").length == 0) {
+                                    $("<div id='pullRefreshImg'><img src='img/pullRefresh.gif' width='" + gifWidth + "' height='" + gifHeight + "'></div>").css({
+                                        "position": "absolute",
+                                        "top": headerHeight + "px",
+                                        "left": gifLeft + "px",
+                                        "opacity": 0,
+                                        "width": gifWidth + "px",
+                                        "height": gifHeight + "px",
+                                        "padding-top": pullRefreshPaddingTop + "px"
+                                    }).appendTo("body");
+                                }
+
+                                $("#" + QForum.pageID + " .page-main").stop(true).animate({
+                                    "margin-top": pullRefreshHeight
+                                }, 50, function() {
+
+                                    $("#pullRefreshImg").css({
+                                        "opacity": 1
+                                    });
+
+                                    //Recovery Data to default setting.
+                                    QForum.METHOD.setReplyLastID(1);
+                                    QForum.lastCommentOffsetTop = 0;
+
+                                    //Refrsh Data
+                                    QForum.API.getPostDetails();
 
                                     $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
                                         'touch-action': 'none'
@@ -1080,26 +1143,21 @@ var QForum = {
 
                                     setTimeout(function() {
 
-                                        $("#pullRefreshImg").stop(true).animate({
-                                            "top": 0,
+                                        $("#pullRefreshImg").css({
                                             "opacity": 0
+                                        });
+
+                                        $("#" + QForum.pageID + " .page-main").stop(true).animate({
+                                            "margin-top": QForum.mainMarginTop
                                         }, 250, function() {
-                                            $("#pullRefreshImg").remove();
-
-                                            //Recovery Data to default setting.
-                                            QForum.METHOD.setReplyLastID(1);
-                                            QForum.lastCommentOffsetTop = 0;
-
-                                            QForum.API.getPostDetails();
-
                                             $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
                                                 'touch-action': 'auto'
                                             });
-                                        })
+                                        });
 
                                     }, 1500);
 
-                                })
+                                });
 
                                 QForum.pullRefresh.moveCount = 0;
                             }
@@ -1107,7 +1165,239 @@ var QForum = {
                             QForum.pullRefresh.moveCount = 0;
                         }
 
-                    }, 1000);
+                    }, 250);
+                }
+            }, "#" + QForum.pageID);
+            */
+
+            //Ver 2.
+            QForum.pullRefresh = {};
+            QForum.pullRefresh.finish = true;
+            QForum.pullRefresh.touchMovePX = 0;
+            QForum.pullRefresh.touchMoveLastPX = 0;
+            QForum.pullRefresh.pullRefreshTop = 0;
+            QForum.pullRefresh.startTop = 0;
+            QForum.pullRefresh.pageMainZIndex = "";
+            QForum.pullRefresh.callAPI = false;
+            QForum.pullRefresh.arrivalBottom = false;
+
+            if (device.platform === "iOS") {
+                var fixedTop = 20;
+            } else {
+                var fixedTop = 0;
+            }
+
+            var gifWidth = parseInt(document.documentElement.clientWidth * 6.95 / 100, 10);
+            var gifHeight = parseInt(document.documentElement.clientWidth * 3.75 / 100, 10);
+            var gifLeft = parseInt((document.documentElement.clientWidth - gifWidth) / 2, 10);
+            var pullRefreshHeight = parseInt(document.documentElement.clientWidth * 4.17 / 100 + fixedTop, 10);
+            var pullRefreshPaddingTop = parseInt(document.documentElement.clientWidth * 2.78 / 100, 10);
+            var headerHeight = parseInt($("#" + QForum.pageID + " .page-header").height() + fixedTop, 10);
+            var movePX = parseInt(document.documentElement.clientHeight * 0.005, 10);
+
+            $(document).on({
+                touchstart: function(event) {
+
+                    QForum.pullRefresh.startTop = $("body").scrollTop();
+
+                    if (!checkPopupShown() && QForum.pullRefresh.startTop == 0) {
+
+                        QForum.pullRefresh.finish = false;
+
+                        QForum.pullRefresh.pageMainZIndex = $("#" + QForum.pageID + " .page-main").css("z-index");
+
+                        if (QForum.pullRefresh.startTop == 0) {
+                            $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                                'touch-action': 'none'
+                            });
+                        }
+
+                        if ($("#pullRefreshImg").length == 0) {
+                            $("<div id='pullRefreshImg'><img src='img/pullRefresh.png' width='" + gifWidth + "' height='" + gifHeight + "'></div>").css({
+                                "position": "fixed",
+                                "top": headerHeight + "px",
+                                "left": gifLeft + "px",
+                                "opacity": 0,
+                                "width": gifWidth + "px",
+                                "height": gifHeight + "px",
+                                "padding-top": pullRefreshPaddingTop + "px",
+                                "z-index": 1
+                            }).appendTo("body");
+                        } else {
+                            $("#pullRefreshImg").html("<img src='img/pullRefresh.png' width='" + gifWidth + "' height='" + gifHeight + "'>");
+                        }
+
+                        $("#" + QForum.pageID + " .page-main").css({
+                            "margin-top": (pullRefreshPaddingTop + fixedTop) + "px",
+                            "z-index": 10
+                        });
+
+                    }
+
+                },
+                touchmove: function(event) {
+
+                    var startPullRefresh = $("#pullRefreshImg").css("opacity");
+
+                    if (!checkPopupShown() && !QForum.pullRefresh.finish) {
+
+                        if (QForum.pullRefresh.touchMoveLastPX == 0) {
+                            QForum.pullRefresh.touchMoveLastPX = parseInt(event.originalEvent.touches[0].clientY, 10);
+                        } else {
+
+                            QForum.pullRefresh.touchMovePX = event.originalEvent.changedTouches[0].clientY;
+
+                            if (QForum.pullRefresh.touchMovePX > QForum.pullRefresh.touchMoveLastPX) {
+
+                                $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                                    'touch-action': 'none'
+                                });
+
+                                $("#pullRefreshImg").css({
+                                    "opacity": 1
+                                });
+
+                                //Refrsh Data
+                                if (!QForum.pullRefresh.callAPI) {
+                                    QForum.API.getPostDetails(false, true);
+                                }
+
+                                QForum.pullRefresh.touchMoveLastPX = parseInt(QForum.pullRefresh.touchMovePX, 10);
+
+                                QForum.pullRefresh.pullRefreshTop = QForum.pullRefresh.pullRefreshTop + Math.abs(Math.round(QForum.pullRefresh.touchMovePX - QForum.pullRefresh.touchMoveLastPX));
+
+                                QForum.pullRefresh.pullRefreshTop += movePX;
+
+                                var maxTouchMoveHeight = parseInt(document.documentElement.clientHeight * 8 / 100, 10);
+
+                                if (QForum.pullRefresh.pullRefreshTop > maxTouchMoveHeight) {
+
+                                    QForum.pullRefresh.arrivalBottom = true;
+
+                                    QForum.pullRefresh.pullRefreshTop = maxTouchMoveHeight;
+
+                                    //For Cordova in iOS, gif or CSS Animate can not work during touchmove
+                                    $("#pullRefreshImg").html("");
+                                    $("#pullRefreshImg").html("<img src='img/pullRefresh.gif' width='" + gifWidth + "' height='" + gifHeight + "'>");
+
+                                    $("<div id='tempFullScreen'></div>").css({
+                                        "width": "100%",
+                                        "height": "100%",
+                                        "z-index": 9999,
+                                        "touch-action": "none"
+                                    }).appendTo("body");
+
+                                    setTimeout(function() {
+                                        $("#tempFullScreen").remove();
+                                    }, 1000);
+
+                                }
+
+                                $("#" + QForum.pageID + " .page-main").css({
+                                    "margin-top": (QForum.pullRefresh.pullRefreshTop + pullRefreshPaddingTop + fixedTop) + "px"
+                                });
+
+                            } else {
+
+                                if (startPullRefresh == "1") {
+
+                                    QForum.pullRefresh.touchMoveLastPX = parseInt(QForum.pullRefresh.touchMovePX, 10);
+
+                                    QForum.pullRefresh.pullRefreshTop = QForum.pullRefresh.pullRefreshTop - Math.abs(Math.round(QForum.pullRefresh.touchMoveLastPX - QForum.pullRefresh.touchMovePX));
+
+                                    QForum.pullRefresh.pullRefreshTop -= movePX;
+
+                                    if ((QForum.pullRefresh.pullRefreshTop - pullRefreshPaddingTop) < 0) {
+                                        QForum.pullRefresh.pullRefreshTop = 0;
+
+                                        $("#pullRefreshImg").css({
+                                            "opacity": 0
+                                        });
+
+                                        $("#" + QForum.pageID + " .page-main").css({
+                                            "margin-top": QForum.mainMarginTop + "px",
+                                            "z-index": QForum.pullRefresh.pageMainZIndex
+                                        });
+
+                                        $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                                            'touch-action': 'auto'
+                                        });
+
+                                        $('html, body').animate({
+                                            scrollTop: 0
+                                        }, 0);
+
+                                    }
+
+                                    $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                                        'touch-action': 'none'
+                                    });
+
+                                    $("#" + QForum.pageID + " .page-main").css({
+                                        "margin-top": (QForum.pullRefresh.pullRefreshTop) + "px"
+                                    });
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                },
+                touchend: function(event) {
+
+                    var startPullRefresh = $("#pullRefreshImg").css("opacity");
+
+                    if (startPullRefresh == "1") {
+
+                        if (QForum.pullRefresh.arrivalBottom) {
+                            var delayTime = 1000;
+                        } else {
+                            var delayTime = 0;
+                        }
+
+                        setTimeout(function() {
+                            $("#pullRefreshImg").css({
+                                "opacity": 0
+                            });
+
+                            $("#" + QForum.pageID + " .page-main").css({
+                                "margin-top": QForum.mainMarginTop + "px",
+                                "z-index": QForum.pullRefresh.pageMainZIndex
+                            });
+
+                            $('html, body').animate({
+                                scrollTop: 0
+                            }, 0);
+
+                            $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                                'touch-action': 'auto'
+                            });
+
+                            QForum.pullRefresh.pullRefreshTop = 0;
+                            QForum.pullRefresh.touchMoveLastPX = 0;
+
+                            $('html, body').animate({
+                                scrollTop: 0
+                            }, 0, function() {
+                                QForum.pullRefresh.finish = true;
+                            });
+
+                        }, delayTime);
+
+                        QForum.pullRefresh.arrivalBottom = false;
+
+                    } else {
+                        $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
+                            'touch-action': 'auto'
+                        });
+
+                        QForum.pullRefresh.finish = true;
+                    }
+
+                    QForum.pullRefresh.callAPI = false;
+
                 }
             }, "#" + QForum.pageID);
 
