@@ -14,10 +14,11 @@ var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
 var myEmpNo = "1501005";
-//var myEmpNo = "1705055";
-var selectFamilyLimit = 0;  //選擇眷屬的人數限制
+var addFamilyOrNot;    //眷屬資料是新增還是編輯
+var recordArr = [];    //活動記錄列表
+var selectFamilyLimit = 0;    //選擇眷屬的人數限制
 var viewSignupInit = true, viewFamilyInit = true, viewRecordInit = true;
-
+//var myEmpNo = "1705055";
 
 window.initialSuccess = function () {
     // 1. get activities list
@@ -48,6 +49,12 @@ function onBackKeyDown() {
         $('#' + popupID).popup("close");
     } else if ($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel("close");
+    } else if (activePageID == "viewActivitiesSignup") {
+        popupMsgInit('.signupNoFinish');
+    } else if (activePageID == "viewMyFamilyDatum" && $("#viewFamilyEdit").css("display") == "block" && addFamilyOrNot == true) {
+        popupMsgInit('.confirmCancelAddFamily');
+    } else if (activePageID == "viewMyFamilyDatum" && $("#viewFamilyEdit").css("display") == "block" && addFamilyOrNot == false) {
+        popupMsgInit('.confirmCancelEditFamily');
     } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
     } else {

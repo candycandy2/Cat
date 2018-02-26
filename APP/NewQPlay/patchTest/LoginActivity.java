@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -45,6 +46,12 @@ public class LoginActivity extends Activity {
         webview.setLongClickable(false);
         webview.addJavascriptInterface(new LoginJavaScriptInterface(), "LoginWebview");
         new CustomConfigXmlParser().parse(webview.getContext());
+        webview.getSettings().setDomStorageEnabled(true);
+        webview.getSettings().setDatabaseEnabled(true);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            String databasePath = this.getApplicationContext().getDir("database", webview.getContext().MODE_PRIVATE).getPath();
+            webview.getSettings().setDatabasePath(databasePath);
+        }
         webview.loadUrl(serverUrl);
     }
 
