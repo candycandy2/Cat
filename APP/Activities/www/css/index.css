@@ -407,13 +407,22 @@ input[type="text"] {
     display: none;
 }
 
-.signupedSameMsg >.ui-content {
+.signupedSameMsg >.ui-content,
+.finishedFamilySignup >.ui-content {
     padding: 0 !important;
 }
 
 .signupedSameMsg .ui-content>.main,
 .signupedSameMsg .ui-content>.footer {
     margin-top: 12%;
+}
+
+.finishedFamilySignup .ui-content>.header {
+    margin-top: 8%;
+}
+
+.finishedFamilySignup .ui-content>.main {
+    margin-top: 2%;
 }
 
 /******************************************* viewActivitiesSignup **************************************/
@@ -1093,6 +1102,7 @@ input[type="text"] {
     right: 6.727vw;
     width: 13.848vw;
     height: 13.848vw;
+    z-index: 1;
 }
 
 .family-add-img img {

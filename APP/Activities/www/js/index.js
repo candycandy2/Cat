@@ -18,7 +18,7 @@ var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var recordArr = [];    //活動記錄列表
 var selectFamilyLimit = 0;    //選擇眷屬的人數限制
 var viewSignupInit = true, viewFamilyInit = true, viewRecordInit = true;
-//var myEmpNo = "1705055";
+//var myEmpNo = "0207357";
 
 window.initialSuccess = function () {
     // 1. get activities list

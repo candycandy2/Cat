@@ -130,9 +130,9 @@ $("#viewSelectFamily").pagecontainer({
                                                 });
                                             } else if (selectFamilyArr[i]["ColumnType_" + j] == "Text") {
                                                 $(item).parent().parent().next().find(".select-family-field .custom-field:eq(" + (j - 1) + ") input").val(selectFamilyArr[i]["ColumnAnswer_" + j]);
-                                            } else if (selectFamilyArr[i]["ColumnType_" + j] == "Multiple") {
+                                            }// else if (selectFamilyArr[i]["ColumnType_" + j] == "Multiple") {
                                                 
-                                            }
+                                            // }
                                         }
 
                                     }
@@ -489,7 +489,7 @@ $("#viewSelectFamily").pagecontainer({
                 + '</LayoutHeader>';
 
             //console.log(activitiesSignupConfirmQueryData);
-            ActivitiesSignupConfirmQuery(actID, "Y");
+            ActivitiesSignupConfirmQuery(actID, actModel, "Y");
         });
 
 

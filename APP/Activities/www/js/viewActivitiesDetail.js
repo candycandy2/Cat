@@ -175,6 +175,11 @@ $("#viewActivitiesDetail").pagecontainer({
 
         });
 
+        //測試popup
+        // $("#detailThumbnail").on("click", function() {
+        //     popupMsgInit('.finishedFamilySignup');
+        // });
+
 
     }
 });
