@@ -27,7 +27,7 @@
                         <span class="langStr" data-id="str_050"></span>
                         <span id="detailPlace">無上限</span>&nbsp;&nbsp;
                         <!-- 參與名額限制(人/組):-->
-                        <span class="langStr" data-id="str_051"></span>
+                        <span id="detailMax" class="langStr" data-id="str_051"></span>
                         <span id="detailLimit">5</span>
                     </div>
                     <div class="font-style11 font-color2">
@@ -77,11 +77,15 @@
             <!--報名已取消-->
             <span class="langStr" data-id="str_019"></span>
         </div>
+        <div class="popup-msg-style" id="updateSuccessMsg">
+            <!--已完成修改-->
+            <span class="langStr" data-id="str_018"></span>
+        </div>
         
     </div>
 
     <!--已報名同類活動-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupedSameMsg" for="signupedSameMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupedSameMsg" for="signupedSameMsg" id="signupedSameMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">

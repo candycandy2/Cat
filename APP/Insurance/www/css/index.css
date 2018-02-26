@@ -1,4 +1,36 @@
 /********************************** override jQuery Mobile *************************************/
+#viewQRScanner {
+     background: none!important;
+}
+
+.qr-scan-guides {
+    width: 60vw;
+    min-height: 60vw;
+    margin-top: 30%;
+    margin-left: 20%;
+    position: fixed;
+}  
+
+#qrcode {
+  width:160px;
+  height:160px;
+  margin-top:15px;
+  margin-left:50px;
+}
+
+#qrcode img {
+    width: 30px;
+}
+
+.comment-scanbox {
+    width: 70vw;
+    min-height: 60vw;
+    margin-top: 110vw;
+    margin-left: 15%;
+    position: fixed;
+    color: #C0C0C0
+}  
+
 hr {
     border: 0;
     height: 1px;

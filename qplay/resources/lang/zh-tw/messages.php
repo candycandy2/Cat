@@ -402,6 +402,7 @@ return [
     'ERR_USER_RESIGNED' => '已離職',
     'ERR_USER_SUSPENDED' => '已停權',
     'ERR_ROW_DATA_ERROR' => '第 %s 列發現資料錯誤',
+    'ERR_SHEET_NOT_EXIST' => '頁籤 %s 不存在',
 
     'DESIGNATED'=>'指定人員',
     'MESSAGE_SCHEDULE_PUSH'=>'定時推送',

@@ -4,6 +4,7 @@ $("#viewActivitiesRecord").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
         var currentID, currentNo, currentModel;
+        
         /********************************** function *************************************/
         //獲取報名記錄
         window.ActivitiesRecordQuery = function () {
@@ -12,9 +13,10 @@ $("#viewActivitiesRecord").pagecontainer({
                 //console.log(data);
 
                 if (data["ResultCode"] == "1") {
-                    var recordArr = data["Content"];
-                    var recordContent = "";
+                    recordArr = data["Content"];
 
+                    //動態生成html
+                    var recordContent = "";
                     for (var i in recordArr) {
                         recordContent += '<div class="record-list"><div class="font-style10 font-color2"><div>'
                             + recordArr[i]["SignupName"]
@@ -41,6 +43,7 @@ $("#viewActivitiesRecord").pagecontainer({
                     $("#viewRecordsNone").hide();
 
                 } else if (data["ResultCode"] == "045909") {
+                    $("#viewRecordList").empty();
                     $("#viewRecordsNone").show();
                 }
 
@@ -107,22 +110,40 @@ $("#viewActivitiesRecord").pagecontainer({
             currentNo = $(this).parent().attr("data-no");
             currentModel = $(this).parent().attr("data-model");
 
-            recordActName = $(this).parent().prev().children("div:eq(1)").text();
-            recordTeamName = $(this).parent().prev().children("div:eq(0)").text();
+            var recordActName = '', recordContent = '';
+            for (var i in recordArr) {
+                if (currentID == recordArr[i]["ActivitiesID"]) {
+                    recordActName = recordArr[i]["ActivitiesName"];
+
+                    if (recordArr[i]["SignupModel"] == "1") {
+                        recordContent = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span>';
+                    } else if (recordArr[i]["SignupModel"] == "3") {
+                        recordContent += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span><br>';
+                    } else if (recordArr[i]["SignupModel"] == "5") {
+                        recordContent = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人 / ' + recordArr[i]["SignupTime"] + '</span>';
+                    }
+                }
+
+                //組隊報名可以申請多次，所以不能用活動編號判斷，需要用報名編號判斷
+                if(currentNo == recordArr[i]["SignupNo"] && recordArr[i]["SignupModel"] == "4") {
+                    recordContent = '<span>' + recordArr[i]["SignupTeamName"] + '</span>';
+                }
+            }
 
             $(".recordSignupMsg .header-title").text(recordActName);
-            $(".recordSignupMsg .main-paragraph").text(recordTeamName);
+            $(".recordSignupMsg .main-paragraph").empty().append(recordContent);
             popupMsgInit('.recordSignupMsg');
 
         });
 
         //確定取消報名-API
         $("#confirmCancelRecord").on("click", function () {
-            //loadingMask("show");
+            loadingMask("show");
+
             activitiesRecordCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + currentID
                 + '</ActivitiesID><SignupNo>'
-                + currentNo
+                + (currentModel == "3" ? "" : currentNo)
                 + '</SignupNo><SignupModel>'
                 + currentModel
                 + '</SignupModel><EmployeeNo>'

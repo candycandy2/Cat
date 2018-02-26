@@ -31,14 +31,14 @@
                 <span class="font-style12 font-color2">(若名單已勾選，表示是您已經報名的名單)</span>
             </div>
             <div class="select-family-thead">
-                <div><img src="img/checkbox_n.png" class="family-all-checkbox-expand"></div>
+                <div><img src="img/checkbox_n.png" id="selectAllFamily" class="family-all-checkbox-expand"></div>
                 <div>姓名</div>
                 <div>關係</div>
                 <div>性別</div>
-                <div><img src="img/all_list_down.png" class="family-all-checkbox-expand"></div>
+                <div><img src="img/all_list_down.png" id="expandAllFamily" class="family-all-checkbox-expand"></div>
             </div>
             <div class="select-family-tbody">
-                <div>
+                <!-- <div>
                     <div class="select-family-tr">
                         <div><img src="img/checkbox_s.png" class="family-checkbox-img"></div>
                         <div>王小美</div>
@@ -57,7 +57,6 @@
                             <span> / </span>
                             <span>1980-12-05</span>
                         </div>
-                        <!--自定義欄位-->
                         <div class="select-family-field">
                             <div class="custom-field">
                                 <label class="font-style11 font-color1">搭車地點</label>
@@ -79,13 +78,43 @@
                         <div><img src="img/list_down.png" class="family-expand-img"></div>
                     </div>
                     <div class="select-family-detail" style="display:none;"></div>
-                </div>  
+                </div>   -->
             </div>
             <div class="select-family-remark font-style12 font-color2"></div>
+            <div class="blank-container-before-footer"></div>
+            <div id="familySignupBtn" class="person-footer font-style3">
+                <span>确定送出</span>
+            </div>
         </div>
         
+    </div>
 
-        
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupedAllMsg" for="signupedAllMsg" id="signupedAllMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--您已報名其他場次-->
+                    <span class="langStr" data-id="str_021"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
