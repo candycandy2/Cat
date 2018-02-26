@@ -2,7 +2,7 @@
 $("#viewActivitiesList").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-        var lastActNo;
+        //var lastActNo;
 
 
         /********************************** function *************************************/
@@ -10,7 +10,7 @@ $("#viewActivitiesList").pagecontainer({
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activitiesArr = data["Content"];
@@ -46,8 +46,6 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesName"]
                                 + '</div><div class="font-style11"><span class="langStr" data-id="str_078"></span><span>'
                                 + activitiesArr[i]["QuotaPlaces"]
-                                + '</span>&nbsp;&nbsp;&nbsp;<span class="langStr" data-id="str_079"></span><span>'
-                                + activitiesArr[i]["RemainingPlaces"]
                                 + '</span></div><div class="font-style11"><span class="langStr" data-id="str_077"></span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';

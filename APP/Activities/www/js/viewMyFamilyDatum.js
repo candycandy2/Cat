@@ -3,7 +3,6 @@ $("#viewMyFamilyDatum").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         var familyArr = [];
-        var addFamilyOrNot;
         var familyNo = "", familyName = "", familyID = "", familyBirth = "", relationshipNo = "", genderNo = "";
         var relationshipData = {
             id: "relationship-popup",
@@ -357,8 +356,8 @@ $("#viewMyFamilyDatum").pagecontainer({
         $(document).on("click", ".family-delete", function () {
             familyNo = $(this).parent().prev().attr("data-id");
             familyName = $(this).parent().prev().children("div:first-child").children("span:first-child").text();
-            $(".confirmDeteteFamily .main-paragraph").text(familyName);
-            popupMsgInit('.confirmDeteteFamily');
+            $(".confirmDeleteFamily .main-paragraph").text(familyName);
+            popupMsgInit('.confirmDeleteFamily');
         });
 
         //確定刪除
@@ -379,7 +378,6 @@ $("#viewMyFamilyDatum").pagecontainer({
             if (addFamilyOrNot) {
                 popupMsgInit('.confirmCancelAddFamily');
             } else {
-                $(".confirmCancelEditFamily .main-paragraph").text(familyName);
                 popupMsgInit('.confirmCancelEditFamily');
             }
 
@@ -441,6 +439,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             familyName = $(this).children("div:first-child").children("span:first-child").text();
             changeViewToDetail();
             addFamilyOrNot = false;
+            $(".confirmCancelEditFamily .main-paragraph").text(familyName);
             checkFormByFamily();
             $("#familyName").attr("readonly", "readonly");
         });

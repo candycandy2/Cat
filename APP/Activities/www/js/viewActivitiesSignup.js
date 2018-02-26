@@ -2,19 +2,14 @@
 $("#viewActivitiesSignup").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-        var timeoutQueryEmployee = null;
+        var timeoutQueryEmployee = null, timeoutCheckFamilySignup = null, timeoutCheckPersonSignup = null, timeoutCheckTimeSignup = null;
         var limitPlace, currentPlace;     //限制人數和目前人數
         var teamName, departNo, submitID, submitModel;
-        var personSubmitPlace;
-        var timeID;
-        var memberNoArr = [];
-        var personFieldArr = [];
-        var familyFieldArr = [];
-        var timeFieldArr = [];
-        var timeoutCheckFamilySignup = null;
-        var timeoutCheckPersonSignup = null;
-        var timeoutCheckTimeSignup = null;
-        var radioFlag = false;
+        var personSubmitPlace;    //個人報名人數
+        var timeID;    //時段編號
+        var memberNoArr = [];    //組隊報名成員數組
+        var personFieldArr = [], familyFieldArr = [], timeFieldArr = [];    //自定義欄位 
+        var radioFlag = false;    //時段是否選擇
         //var selectClassName = "familySignupSelect";
         //var checkboxArr = [];
         var employeeData = {
@@ -34,7 +29,7 @@ $("#viewActivitiesSignup").pagecontainer({
         window.ActivitiesSignupQuery = function (model) {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 //報名提交的活動類型
                 submitModel = model;
@@ -289,7 +284,7 @@ $("#viewActivitiesSignup").pagecontainer({
         window.ActivitiesSignupConfirmQuery = function (actID, newAct) {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['ResultCode'] == "045911") {
                     //重新獲取報名列表
@@ -486,8 +481,13 @@ $("#viewActivitiesSignup").pagecontainer({
 
         });
 
-        //從報名頁返回詳情頁
+        //從報名頁返回詳情頁-popup
         $("#viewActivitiesSignup .back-detail").on("click", function () {
+            popupMsgInit('.signupNoFinish');
+        });
+
+        //確定取消報名，返回上一頁
+        $("#cancelSignupBtn").on("click", function() {
             changePageByPanel("viewActivitiesDetail", false);
         });
 

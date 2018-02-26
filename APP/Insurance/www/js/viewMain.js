@@ -2,6 +2,12 @@ var files = ["InsuranceRights.pdf"];
 var url = "";
 var mimeType = "application/pdf";
 var options = {};
+var encryptConfig = {
+    clientId: "myAppName",
+    username: "currentUser",
+    password: "currentUserPassword"
+};
+
 $("#viewMain").pagecontainer({
     create: function(event, ui) {
         //page init
@@ -58,6 +64,43 @@ $("#viewMain").pagecontainer({
             // Android, a denial isn't permanent unless the user checks the "Don't 
             // ask again" box.) We can ask again at the next relevant opportunity. 
           }
+        }
+        //cordova-plugin-android-fingerprint-auth
+        /*function successCallback(result) {
+            console.log("successCallback(): " + JSON.stringify(result));
+            if (result.withFingerprint) {
+                console.log("Successfully encrypted credentials.");
+                console.log("Encrypted credentials: " + result.token);  
+            } else if (result.withBackup) {
+                console.log("Authenticated with backup password");
+            }
+        }
+
+        function errorCallback(error) {
+            if (error === FingerprintAuth.ERRORS.FINGERPRINT_CANCELLED) {
+                console.log("FingerprintAuth Dialog Cancelled!");
+            } else {
+                console.log("FingerprintAuth Error: " + error);
+            }
+        }*/
+        function successCallback(){
+            alert("Authentication successfull");
+        }
+
+        function errorCallback(err){
+            alert("Authentication invalid " + err);
+        }
+
+        function isAvailableSuccess(result) {
+            alert("Fingerprint available");
+            window.Fingerprint.show({
+              clientId: "Fingerprint-Demo",
+              clientSecret: "password"
+            }, successCallback, errorCallback);        
+        }
+     
+        function isAvailableError(message) {
+          alert(message);
         }
 
         /*function buildAssetsUrl(fileName)
@@ -148,54 +191,10 @@ $("#viewMain").pagecontainer({
                 );
                 
             }else {
-                FingerprintAuth.isAvailable(function (result) {
-
-                    console.log("FingerprintAuth available: " + JSON.stringify(result));
-                    
-                    // If has fingerprint device and has fingerprints registered
-                    if (result.isAvailable == true && result.hasEnrolledFingerprints == true) {
-
-                        // Check the docs to know more about the encryptConfig object :)
-                        var encryptConfig = {
-                            clientId: "myAppName",
-                            username: "currentUser",
-                            password: "currentUserPassword",
-                            maxAttempts: 5,
-                            locale: "en_US",
-                            dialogTitle: "Hey dude, your finger",
-                            dialogMessage: "Put your finger on the device",
-                            dialogHint: "No one will steal your identity, promised"
-                        }; // See config object for required parameters
-
-                        // Set config and success callback
-                        FingerprintAuth.encrypt(encryptConfig, function(_fingerResult){
-                            console.log("successCallback(): " + JSON.stringify(_fingerResult));
-                            if (_fingerResult.withFingerprint) {
-                                console.log("Successfully encrypted credentials.");
-                                console.log("Encrypted credentials: " + result.token);  
-                            } else if (_fingerResult.withBackup) {
-                                console.log("Authenticated with backup password");
-                            }
-                        // Error callback
-                        }, function(err){
-                                if (err === "Cancelled") {
-                                console.log("FingerprintAuth Dialog Cancelled!");
-                            } else {
-                                console.log("FingerprintAuth Error: " + err);
-                            }
-                        });
-                    }
-
-                /**
-                * @return {
-                *      isAvailable:boolean,
-                *      isHardwareDetected:boolean,
-                *      hasEnrolledFingerprints:boolean
-                *   }
-                */
-                }, function (message) {
-                    console.log("isAvailableError(): " + message);
-                });
+                //cordova-plugin-fingerprint-aio
+                Fingerprint.isAvailable(isAvailableSuccess, isAvailableError);
+                //cordova-plugin-android-fingerprint-auth
+                //FingerprintAuth.encrypt(encryptConfig, successCallback, errorCallback);
             }
         });
 
