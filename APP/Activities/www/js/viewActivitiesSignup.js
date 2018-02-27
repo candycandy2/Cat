@@ -145,6 +145,13 @@ $("#viewActivitiesSignup").pagecontainer({
                         }
 
                     } else if (model == "4") {
+                        //初始化
+                        memberNoArr = [];
+                        $("#departNo").val("");
+                        $("#teamName").val("");
+                        $(".team-signup-employee-list").empty();
+                        $("#sendTeamSignup").addClass("btn-disabled");
+
                         //賦值
                         $("#teamSignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#teamSignupName").text(signupObj["ActivitiesName"]);
@@ -281,7 +288,7 @@ $("#viewActivitiesSignup").pagecontainer({
         };
 
         //活動報名送出
-        window.ActivitiesSignupConfirmQuery = function (actID, newAct) {
+        window.ActivitiesSignupConfirmQuery = function (actID, model, newAct) {
 
             this.successCallback = function (data) {
                 //console.log(data);
@@ -300,27 +307,34 @@ $("#viewActivitiesSignup").pagecontainer({
                             $(item).trigger("click");
                         }
                     });
-                    if (newAct == "Y") {
-                        $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
-                    } else if (newAct == "N") {
-                        $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
-                    }
+
+                    setTimeout(function() {
+                        if (newAct == "Y") {
+                            if(model == "3") {
+                                popupMsgInit('.finishedFamilySignup');
+                            } else {
+                                $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                            }
+                        } else if (newAct == "N") {
+                            $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                        }
+                    }, 1000);
 
                     //如果報名成功的是“組隊報名”才需要清空欄位值
-                    if (submitModel == "4") {
-                        memberNoArr = [];
-                        $("#departNo").val("");
-                        $("#teamName").val("");
-                        $(".team-signup-employee-list").empty();
-                        $("#sendTeamSignup").addClass("btn-disabled");
-                    }
+                    // if (model == "4") {
+                    //     memberNoArr = [];
+                    //     $("#departNo").val("");
+                    //     $("#teamName").val("");
+                    //     $(".team-signup-employee-list").empty();
+                    //     $("#sendTeamSignup").addClass("btn-disabled");
+                    // }
 
                     //重新獲取報名記錄
                     ActivitiesRecordQuery();
 
                 } else if (data['ResultCode'] == "045912") {
                     //失敗，報名組數超過剩餘名額
-                    if (submitModel == "4") {
+                    if (model == "4") {
                         $(".overLimitMsg .main-paragraph").text(langStr["str_025"]);
                     } else {
                         $(".overLimitMsg .main-paragraph").text(langStr["str_024"]);
@@ -555,7 +569,7 @@ $("#viewActivitiesSignup").pagecontainer({
                 }
             }
 
-            //如果沒有重複添加，才能添加
+            //一個隊伍不能重複添加相同隊員
             if(count == 0) {
                 var employeeList = '<div class="team-employee-list" data-id="'
                     + self.attr("value")
@@ -631,7 +645,9 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</MemberEmpNo></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, "Y");
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
+
+                console.log(memberNoArr);
             }
 
         });
@@ -796,7 +812,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</ColumnAnswer_5></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, "Y");
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
             }
         });
 
@@ -912,7 +928,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</TimeID></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, "Y");
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
             }
         });
 
