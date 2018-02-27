@@ -390,8 +390,10 @@ $(document).one("pagebeforecreate", function() {
                 $('.page-header').addClass('ios-fix-overlap-iX');
                 $('.ios-fix-overlap-div').css('background-color', '#492f7f');
                 $('.ios-fix-overlap-div').css('height', '30px');
+                StatusBar.styleLightContent();
             } else {
                 $('.page-header').addClass('ios-fix-overlap');
+                StatusBar.styleDefault();
             }          
             $('.ios-fix-overlap-div').css('display', 'block');
 
@@ -925,8 +927,10 @@ function setWhiteList() {
                 $('.page-header').addClass('ios-fix-overlap-iX');
                 $('.ios-fix-overlap-div').css('background-color', '#492f7f');
                 $('.ios-fix-overlap-div').css('height', '30px');
+                StatusBar.styleLightContent();
             } else {
                 $('.page-header').addClass('ios-fix-overlap');
+                StatusBar.styleDefault();
             }
             $('.ios-fix-overlap-div').css('display', 'block');
         }
