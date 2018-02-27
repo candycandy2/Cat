@@ -374,14 +374,7 @@ function adjustPageMarginTop() {
         }
 
         if (device.platform === "iOS") {
-
-            if (checkiPhoneX()) {
-                var iOSFixedTop = 30;
-            } else {
-                var iOSFixedTop = 20;
-            }
-
-            mainMarginTop = mainMarginTop + iOSFixedTop;
+            mainMarginTop = mainMarginTop + iOSFixedTopPX();
         }
 
         $(".page-main").css({
@@ -480,5 +473,13 @@ function checkiPhoneX() {
         return true;
     } else {
         return false;
+    }
+}
+
+function iOSFixedTopPX() {
+    if (checkiPhoneX()) {
+        return 30;
+    } else {
+        return 20;
     }
 }
