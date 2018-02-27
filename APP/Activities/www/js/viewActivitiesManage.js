@@ -14,7 +14,7 @@ $("#viewActivitiesManage").pagecontainer({
         window.ActivitiesSignupManageQuery = function (model) {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 //取消報名的活動類型
                 cancelModel = model;
@@ -65,6 +65,7 @@ $("#viewActivitiesManage").pagecontainer({
 
                     } else if (model == "3") {
                         var manageObj = data["Content"][0];
+
                         //初始化
                         $(".family-manage-custom-field").empty();
                         for (var i = 0; i < 5; i++) {
@@ -115,7 +116,7 @@ $("#viewActivitiesManage").pagecontainer({
                                 cancelContent += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span><br>';
                             }
                         }
-                        
+
 
                     } else if (model == "4") {
                         var manageArr = data["Content"];
@@ -138,42 +139,61 @@ $("#viewActivitiesManage").pagecontainer({
                                 "TeamDept": item["TeamDept"],
                                 "TeamName": item["TeamName"],
                                 "TeamNo": item["TeamNo"],
-                                "TeamMember": item["TeamMemberDept"] + " " + item["TeamMember"]
+                                "TeamMember": item["TeamMemberDept"] + "  " + item["TeamMember"]
                             });
                         });
 
                         //相同Team合併
-                        resultArr = [];
-                        for (var i = 0; i < simplifyArr.length;) {
-                            if (i >= simplifyArr.length - 1) {
-                                if (i == simplifyArr.length - 1) {
-                                    resultArr.push(mergeItemBySameTeam(simplifyArr[i], null, "TeamMember"));
-                                }
-                                break;
-                            }
-                            //如果TeamID相同，合併對象；如果不同Team，直接添加到新數組
-                            if (simplifyArr[i]["TeamID"] == simplifyArr[i + 1]["TeamID"]) {
-                                var mergedItem = mergeItemBySameTeam(simplifyArr[i], simplifyArr[i + 1], "TeamMember");
-                                var exist = false;
-                                for (var j = 0; j < resultArr.length; j++) {
-                                    if (resultArr[j]["TeamID"] == mergedItem["TeamID"]) {
-                                        resultArr[j] = mergeItemBySameTeam(resultArr[j], mergedItem, "TeamMember");
-                                        exist = true;
-                                        break;
-                                    }
-                                }
-                                if (!exist) {
-                                    resultArr.push(mergedItem);
-                                }
+                        // resultArr = [];
+                        // for (var i = 0; i < simplifyArr.length;) {
+                        //     if (i >= simplifyArr.length - 1) {
+                        //         if (i == simplifyArr.length - 1) {
+                        //             resultArr.push(mergeItemBySameTeam(simplifyArr[i], null, "TeamMember"));
+                        //         }
+                        //         break;
+                        //     }
+                        //     //如果TeamID相同，合併對象；如果不同Team，直接添加到新數組
+                        //     if (simplifyArr[i]["TeamID"] == simplifyArr[i + 1]["TeamID"]) {
+                        //         var mergedItem = mergeItemBySameTeam(simplifyArr[i], simplifyArr[i + 1], "TeamMember");
+                        //         var exist = false;
+                        //         for (var j = 0; j < resultArr.length; j++) {
+                        //             if (resultArr[j]["TeamID"] == mergedItem["TeamID"]) {
+                        //                 resultArr[j] = mergeItemBySameTeam(resultArr[j], mergedItem, "TeamMember");
+                        //                 exist = true;
+                        //                 break;
+                        //             }
+                        //         }
+                        //         if (!exist) {
+                        //             resultArr.push(mergedItem);
+                        //         }
 
-                                i += 2;
-                            } else {
-                                resultArr.push(mergeItemBySameTeam(simplifyArr[i], null, "TeamMember"));
-                                i += 1;
-                            }
+                        //         i += 2;
+                        //     } else {
+                        //         resultArr.push(mergeItemBySameTeam(simplifyArr[i], null, "TeamMember"));
+                        //         i += 1;
+                        //     }
 
-                        }
+                        // }
                         //console.log(resultArr);
+
+                        //合并属性值相同的对象
+
+                        //1.临时数组
+                        var temp = [];
+                        $.each(simplifyArr, function(index, item) {
+                            var tempKey = item["TeamID"];
+
+                            if(typeof temp[tempKey] == "undefined") {
+                                temp[tempKey] = item;
+                            } else {
+                                temp[tempKey]["TeamMember"] += "<br>" + item["TeamMember"];
+                            }
+                        });
+                        resultArr = [];
+                        for(var i in temp) {
+                            resultArr.push(temp[i]);
+                        }
+                        //console.log(resultArr); 
 
                         //生成html
                         var manageContent = "";
@@ -185,7 +205,7 @@ $("#viewActivitiesManage").pagecontainer({
                                 + '</td><td></td><td>'
                                 + resultArr[i]["TeamName"]
                                 + '</td><td><img src="img/list_down.png" class="list-img"></td></tr><tr style="display:none;"><td></td><td></td><td></td><td>'
-                                + resultArr[i]["Member"]
+                                + resultArr[i]["TeamMember"]
                                 + '</td><td><img src="img/delete.png" class="team-delete" data-id="'
                                 + resultArr[i]["ActivitiesID"]
                                 + '" data-no="'
@@ -213,38 +233,18 @@ $("#viewActivitiesManage").pagecontainer({
                                 cancelActName = timeArr[i]["ActivitiesName"];
                                 cancelContent = timeArr[i]["EmployeeName"] + " / " + "同仁" + " / 1人 / " + timeArr[i]["IsSignupTime"];
                                 cancelNo = timeArr[i]["SignupNo"];
+                                cancelID = timeArr[i]["ActivitiesID"];
                                 //动态生成栏位
                                 timeContent += '<div class="time-manage-info"><span>報名時段：</span><span>'
                                     + timeArr[i]["IsSignupTime"] + '</span></div>';
-                                if (timeArr[i]["ColumnAnswer_1"] != "") {
-                                    timeContent += '<div class="time-manage-info"><span>'
-                                        + timeArr[i]["ColumnName_1"] + '：</span><span>'
-                                        //+ timeArr[i]["ColumnAnswer_1"] + '</span></div>';
-                                        + (timeArr[i]["ColumnType_1"] == "Multiple" ? timeArr[i]["ColumnAnswer_1"].substr(1, timeArr[i]["ColumnAnswer_1"].length) : timeArr[i]["ColumnAnswer_1"]) + '</span></div>';
-                                }
-                                if (timeArr[i]["ColumnAnswer_2"] != "") {
-                                    timeContent += '<div class="time-manage-info"><span>'
-                                        + timeArr[i]["ColumnName_2"] + '：</span><span>'
-                                        //+ timeArr[i]["ColumnAnswer_2"] + '</span></div>';
-                                        + (timeArr[i]["ColumnType_2"] == "Multiple" ? timeArr[i]["ColumnAnswer_2"].substr(1, timeArr[i]["ColumnAnswer_2"].length) : timeArr[i]["ColumnAnswer_2"]) + '</span></div>';
-                                }
-                                if (timeArr[i]["ColumnAnswer_3"] != "") {
-                                    timeContent += '<div class="time-manage-info"><span>'
-                                        + timeArr[i]["ColumnName_3"] + '：</span><span>'
-                                        //+ timeArr[i]["ColumnAnswer_3"] + '</span></div>';
-                                        + (timeArr[i]["ColumnType_3"] == "Multiple" ? timeArr[i]["ColumnAnswer_3"].substr(1, timeArr[i]["ColumnAnswer_3"].length) : timeArr[i]["ColumnAnswer_3"]) + '</span></div>';
-                                }
-                                if (timeArr[i]["ColumnAnswer_4"] != "") {
-                                    timeContent += '<div class="time-manage-info"><span>'
-                                        + timeArr[i]["ColumnName_4"] + '：</span><span>'
-                                        //+ timeArr[i]["ColumnAnswer_4"] + '</span></div>';
-                                        + (timeArr[i]["ColumnType_4"] == "Multiple" ? timeArr[i]["ColumnAnswer_4"].substr(1, timeArr[i]["ColumnAnswer_4"].length) : timeArr[i]["ColumnAnswer_4"]) + '</span></div>';
-                                }
-                                if (timeArr[i]["ColumnAnswer_5"] != "") {
-                                    timeContent += '<div class="time-manage-info"><span>'
-                                        + timeArr[i]["ColumnName_5"] + '：</span><span>'
-                                        //+ timeArr[i]["ColumnAnswer_5"] + '</span></div>';
-                                        + (timeArr[i]["ColumnType_5"] == "Multiple" ? timeArr[i]["ColumnAnswer_5"].substr(1, timeArr[i]["ColumnAnswer_5"].length) : timeArr[i]["ColumnAnswer_5"]) + '</span></div>';
+
+                                for (var j = 1; j < 6; j++) {
+                                    if (timeArr[i]["ColumnAnswer_" + j] != "") {
+                                        timeContent += '<div class="time-manage-info"><span>'
+                                            + timeArr[i]["ColumnName_" + j] + '：</span><span>'
+                                            //+ timeArr[i]["ColumnAnswer_" + j] + '</span></div>';
+                                            + (timeArr[i]["ColumnType_" + j] == "Multiple" ? timeArr[i]["ColumnAnswer_" + j].substr(1, timeArr[i]["ColumnAnswer_" + j].length) : timeArr[i]["ColumnAnswer_" + j]) + '</span></div>';
+                                    }
                                 }
                                 break;
                             }
@@ -276,9 +276,6 @@ $("#viewActivitiesManage").pagecontainer({
                                 + '</div></div>';
                         }
                         $(".time-manage-tbody").empty().append(timeShortContent);
-
-                        //取消报名
-                        cancelID = timeObj["ActivitiesID"];
 
                     }
 
@@ -366,7 +363,7 @@ $("#viewActivitiesManage").pagecontainer({
         //合併對象
         function mergeItemBySameTeam(obj1, obj2, param) {
             var obj = {};
-            if (obj2 !== null) {
+            if (obj2 != null) {
                 obj["Member"] = obj1[param] + "<br>" + obj2[param];
             } else {
                 obj["Member"] = obj1[param];
@@ -496,7 +493,7 @@ $("#viewActivitiesManage").pagecontainer({
         //確定取消報名（所有類型活動）
         $("#confirmCancelSignup").on("click", function () {
             loadingMask("show");
-            
+
             activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                 + cancelID
                 + '</ActivitiesID><SignupNo>'
@@ -598,7 +595,7 @@ $("#viewActivitiesManage").pagecontainer({
                     + '</ColumnAnswer_5></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(cancelID, "N");
+                ActivitiesSignupConfirmQuery(cancelID, cancelModel, "N");
             }
         });
 
@@ -672,7 +669,7 @@ $("#viewActivitiesManage").pagecontainer({
                 var familyList = '<FamilyList><ActivitiesID>'
                     + cancelID
                     + '</ActivitiesID><SignupPlaces>1</SignupPlaces><EmployeeNo>'
-                    + myEmpNo 
+                    + myEmpNo
                     + '</EmployeeNo><FamilyNo>'
                     + myEmpNo
                     + '</FamilyNo>'
@@ -695,7 +692,7 @@ $("#viewActivitiesManage").pagecontainer({
         });
 
         //取消眷屬報名-popup
-        $("#cancelFamilySignup").on("click", function() {
+        $("#cancelFamilySignup").on("click", function () {
             $(".cancelSignupMsg .header-title").text(cancelActName);
             $(".cancelSignupMsg .main-paragraph").empty().append(cancelContent);
             popupMsgInit('.cancelSignupMsg');
