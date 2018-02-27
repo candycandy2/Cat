@@ -18,7 +18,7 @@ $("#viewActivitiesRecord").pagecontainer({
                     //動態生成html
                     var recordContent = "";
                     for (var i in recordArr) {
-                        recordContent += '<div class="record-list"><div class="font-style10 font-color2"><div>'
+                        recordContent += '<div class="record-list"><div class="font-style10 font-color2 record-detail"><div>'
                             + recordArr[i]["SignupName"]
                             + ' / '
                             + recordArr[i]["SignupRelationship"]
@@ -102,6 +102,11 @@ $("#viewActivitiesRecord").pagecontainer({
         /********************************** dom event *************************************/
         $("#viewActivitiesRecord").keypress(function (event) {
 
+        });
+
+        //報名記錄內容
+        $("#viewRecordList").on("click", ".record-detail", function() {
+            
         });
 
         //取消報名-popup
