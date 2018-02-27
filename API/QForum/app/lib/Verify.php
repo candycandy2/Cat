@@ -165,10 +165,10 @@ class Verify
 
     public static function checkSourceProjectExist($appKey){
         $result = true;
-        $userList = QP_Project::where('app_key', '=', $appKey)
+        $projList = QP_Project::where('app_key', '=', $appKey)
             -> select('row_id', 'app_key')->get();
 
-        if(count($userList) < 1) {
+        if(count($projList) < 1) {
             $result = false; //project不存在
         }
         return $result;
