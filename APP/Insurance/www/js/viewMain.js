@@ -31,40 +31,6 @@ $("#viewMain").pagecontainer({
 
         };
 
-        function displayContents(err, text){
-            if(err){
-                // an error occurred, or the scan was canceled (error code `6`) 
-                //window.console.log(error);
-            } else {
-                // The scan completed, display the contents of the QR code: 
-                alert(text);
-            }
-        }
-
-        function onDone(err, status){
-          if (err) {
-           // here we can handle errors and clean up any loose ends. 
-           console.error(err);
-          }
-          if (status.authorized) {
-            // W00t, you have camera access and the scanner is initialized. 
-            // QRscanner.show() should feel very fast. 
-            QRScanner.scan(displayContents);
-            QRScanner.show(function(status){
-              console.log(status);
-              alert(status);
-            });
-
-          } else if (status.denied) {
-           // The video preview will remain black, and scanning is disabled. We can 
-           // try to ask the user to change their mind, but we'll have to send them 
-           // to their device settings with `QRScanner.openSettings()`. 
-          } else {
-            // we didn't get permission, but we didn't get permanently denied. (On 
-            // Android, a denial isn't permanent unless the user checks the "Don't 
-            // ask again" box.) We can ask again at the next relevant opportunity. 
-          }
-        }
         //cordova-plugin-android-fingerprint-auth
         /*function successCallback(result) {
             console.log("successCallback(): " + JSON.stringify(result));
@@ -83,14 +49,15 @@ $("#viewMain").pagecontainer({
                 console.log("FingerprintAuth Error: " + error);
             }
         }*/
-        function successCallback(){
+        /*function successCallback(){
             alert("Authentication successfull");
         }
 
         function errorCallback(err){
             alert("Authentication invalid " + err);
-        }
+        }*/
 
+        /*
         function isAvailableSuccess(result) {
             alert("Fingerprint available");
             window.Fingerprint.show({
@@ -101,7 +68,7 @@ $("#viewMain").pagecontainer({
      
         function isAvailableError(message) {
           alert(message);
-        }
+        }*/
 
         /*function buildAssetsUrl(fileName)
         {
@@ -161,14 +128,6 @@ $("#viewMain").pagecontainer({
 
         });
 
-        $("#QRCamera").on('click', function() {
-            $.mobile.changePage('#viewQRScanner');
-        });
-
-        $("#QRCode").on('click', function() {
-            $.mobile.changePage('#viewQRCodeCreate');
-        });
-
         $("#Fingerprint").on('click', function() {
             //$.mobile.changePage('#viewFingerprint');
             if (device.platform === "iOS") {
@@ -186,15 +145,23 @@ $("#viewMain").pagecontainer({
                         );
                     }, // success handler: TouchID available
                     function(msg) {
-                        alert('TouchID is not available.' )
+                        alert('TouchID is not available.')
                     } // error handler: no TouchID available
                 );
-                
             }else {
-                //cordova-plugin-fingerprint-aio
-                Fingerprint.isAvailable(isAvailableSuccess, isAvailableError);
-                //cordova-plugin-android-fingerprint-auth
-                //FingerprintAuth.encrypt(encryptConfig, successCallback, errorCallback);
+                /*//cordova-plugin-fingerprint-aio
+                Fingerprint.isAvailable(isAvailableSuccess, isAvailableError);*/
+                /*//cordova-plugin-android-fingerprint-auth
+                FingerprintAuth.encrypt(encryptConfig, successCallback, errorCallback);*/
+                /*//cordova-keyguard-plugin
+                navigator.keyguard = true; 
+                window.addEventListener('keyguard', function (state) {                   
+                    alert('State:'+ state);
+                });*/
+                /*
+                //cordova-plugin-screen-locker
+                window.screenLocker.unlock(successCallback, errorCallback, 0);
+                */
             }
         });
 
