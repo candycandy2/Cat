@@ -122,7 +122,7 @@ $("#viewChatroom").pagecontainer({
             $('<div class="message-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             if (device.platform === "iOS") {
-                $(".message-photo-full-screen img").css("padding-top", "20px");
+                $(".message-photo-full-screen img").css("padding-top", iOSFixedTopPX() + "px");
             }
 
             $(".message-photo-full-screen").css("top", $(document).scrollTop());
@@ -167,7 +167,7 @@ $("#viewChatroom").pagecontainer({
             var buttonHeight = $(".message-photo-full-screen .button-content").height();
 
             if (device.platform === "iOS") {
-                $(".message-photo-full-screen").css("margin-top", "20px");
+                $(".message-photo-full-screen").css("margin-top", iOSFixedTopPX() + "px");
             }
 
             $(".message-photo-full-screen #fullScreenImg").css("padding-top", buttonHeight + "px");
@@ -870,7 +870,7 @@ console.log(data.latestMessage);
                 var scrollPageTop = $("#msg" + last_view_msg_id).offset().top - ($(window).height() - headerHeight - footerHeight);
 
                 if (device.platform === "iOS") {
-                    scrollPageTop -= 20;
+                    scrollPageTop -= iOSFixedTopPX();
                 }
 
                 $('html, body').animate({
