@@ -30,7 +30,7 @@ class Forum
      * @param  String $queryParam 從customApi 帶過來的urlparam
      * @return json
      */
-    public function newPost($project, $empNo, $postId, $title, $content, $queryParam)
+    public function newPost($project, $empNo, $postId, $refId, $title, $content, $queryParam)
     {       
         $apiFunction = 'newPost';
 
@@ -41,6 +41,7 @@ class Forum
         $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
         $layoutHeader->addChild('board_id', $board->board_id);
         $layoutHeader->addChild('post_id', $postId);
+        $layoutHeader->addChild('ref_id', $refId);
         $layoutHeader->addChild('post_title', $title);
         $layoutHeader->addChild('content', $content);
         $data = array("strXml"=>$xml->LayoutHeader->asXML());
