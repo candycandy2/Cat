@@ -446,7 +446,7 @@ $("#viewEventList").pagecontainer({
                         var headerHeight = $("#viewEventList .page-header").height();
                         var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
                         if (device.platform === "iOS") {
-                            scrollPageTop -= 20;
+                            scrollPageTop -= iOSFixedTopPX();
                         }
 
                         $('html, body').animate({
@@ -1065,12 +1065,12 @@ $("#viewEventList").pagecontainer({
 
                     if (device.platform === "iOS") {
                         var heightView = parseInt(document.documentElement.clientHeight * 100 / 100, 10);
-                        var heightPanel = heightView - 20;
+                        var heightPanel = heightView - iOSFixedTopPX();
 
                         $("#projectSelect").css({
                             'min-height': heightPanel + 'px',
                             'max-height': heightPanel + 'px',
-                            'margin-top': '20px'
+                            'margin-top': iOSFixedTopPX() + 'px'
                         });
                     }
 
