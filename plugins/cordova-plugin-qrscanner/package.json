@@ -10,7 +10,7 @@
         "spec": "latest",
         "type": "tag"
       },
-      "/Users/samuel.hsieh/Documents/GitHub/EnterpriseAPPPlatform/APP/Insurance"
+      ""
     ]
   ],
   "_from": "cordova-plugin-qrscanner@latest",
@@ -45,7 +45,7 @@
   "_shasum": "6d6ba13d0bb49e370daa4958d77c8aa76d8ca356",
   "_shrinkwrap": null,
   "_spec": "cordova-plugin-qrscanner",
-  "_where": "/Users/samuel.hsieh/Documents/GitHub/EnterpriseAPPPlatform/APP/Insurance",
+  "_where": "",
   "author": {
     "name": "Jason Dreyzehner"
   },
