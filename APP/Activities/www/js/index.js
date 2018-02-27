@@ -13,14 +13,17 @@ var appKeyOriginal = "appactivities";
 var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
+var myNumber = "";
 var myEmpNo = "1501005";
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var recordArr = [];    //活動記錄列表
 var selectFamilyLimit = 0;    //選擇眷屬的人數限制
-var viewSignupInit = true, viewFamilyInit = true, viewRecordInit = true;
+var viewSignupInit = true, viewFamilyInit = true;
 //var myEmpNo = "0207357";
 
 window.initialSuccess = function () {
+    myNumber = localStorage.getItem("emp_no");
+
     // 1. get activities list
     activitiesListQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';
     ActivitiesListQuery();
@@ -252,6 +255,7 @@ function setCheckboxCustomField(arr, i, id, container) {
             for (var j in valueArr) {
                 if ($(item).text() == valueArr[j]) {
                     $(item).prev().attr("src", "img/checkbox_s.png");
+                    //$(item).prev().trigger("click");
                 }
             }
         });

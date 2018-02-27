@@ -3,15 +3,14 @@ $("#viewActivitiesSignup").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
         var timeoutQueryEmployee = null, timeoutCheckFamilySignup = null, timeoutCheckPersonSignup = null, timeoutCheckTimeSignup = null;
-        var limitPlace, currentPlace;     //限制人數和目前人數
         var teamName, departNo, submitID, submitModel;
+        var limitPlace, currentPlace;     //組隊報名限制人數和目前已選人數
         var personSubmitPlace;    //個人報名人數
         var timeID;    //時段編號
         var memberNoArr = [];    //組隊報名成員數組
         var personFieldArr = [], familyFieldArr = [], timeFieldArr = [];    //自定義欄位 
         var radioFlag = false;    //時段是否選擇
-        //var selectClassName = "familySignupSelect";
-        //var checkboxArr = [];
+
         var employeeData = {
             id: "employee-popup",
             option: [],
@@ -29,7 +28,7 @@ $("#viewActivitiesSignup").pagecontainer({
         window.ActivitiesSignupQuery = function (model) {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 //報名提交的活動類型
                 submitModel = model;
@@ -105,6 +104,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
                         //处理自定义栏位，放入數組中
                         familyFieldArr = getCustomField(signupObj);
+                        //測試數據
                         // familyFieldArr = [{
                         //     "ColumnName": "自助餐",
                         //     "ColumnType": "Multiple",
@@ -308,9 +308,9 @@ $("#viewActivitiesSignup").pagecontainer({
                         }
                     });
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         if (newAct == "Y") {
-                            if(model == "3") {
+                            if (model == "3") {
                                 popupMsgInit('.finishedFamilySignup');
                             } else {
                                 $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
@@ -318,16 +318,7 @@ $("#viewActivitiesSignup").pagecontainer({
                         } else if (newAct == "N") {
                             $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
                         }
-                    }, 1000);
-
-                    //如果報名成功的是“組隊報名”才需要清空欄位值
-                    // if (model == "4") {
-                    //     memberNoArr = [];
-                    //     $("#departNo").val("");
-                    //     $("#teamName").val("");
-                    //     $(".team-signup-employee-list").empty();
-                    //     $("#sendTeamSignup").addClass("btn-disabled");
-                    // }
+                    }, 1500);
 
                     //重新獲取報名記錄
                     ActivitiesRecordQuery();
@@ -435,7 +426,7 @@ $("#viewActivitiesSignup").pagecontainer({
         }
 
         //時段報名存值
-        function saveValueForArr(arr, name, value, bool) {
+        function saveValueForTimeArr(arr, name, value, bool) {
             //bool为true，添加checkbox;若为false，删除checkbox;若为other，text和select赋值
             for (var i in arr) {
                 if (name == arr[i]["ColumnName"] && bool == true) {
@@ -449,7 +440,7 @@ $("#viewActivitiesSignup").pagecontainer({
         }
 
         //判斷時段報名answer是否有空
-        function checkFormForArr(arr) {
+        function checkFormForTimeArr(arr) {
             var count = 0;
             for (var i in arr) {
                 if (arr[i]["ColumnAnswer"] == "") {
@@ -469,7 +460,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //時段報名根據欄位值和單選判斷按鈕是否可用
         function removeOrAddClass(flag, arr, btn) {
-            if (flag && checkFormForArr(arr)) {
+            if (flag && checkFormForTimeArr(arr)) {
                 $("#" + btn).removeClass("btn-disabled");
             } else {
                 $("#" + btn).addClass("btn-disabled");
@@ -501,7 +492,7 @@ $("#viewActivitiesSignup").pagecontainer({
         });
 
         //確定取消報名，返回上一頁
-        $("#cancelSignupBtn").on("click", function() {
+        $("#cancelSignupBtn").on("click", function () {
             changePageByPanel("viewActivitiesDetail", false);
         });
 
@@ -562,15 +553,15 @@ $("#viewActivitiesSignup").pagecontainer({
 
             //判斷是否重複添加
             var count = 0;
-            for(var i in memberNoArr) {
-                if(self.attr("value") == memberNoArr[i]) {
+            for (var i in memberNoArr) {
+                if (self.attr("value") == memberNoArr[i]) {
                     count++;
                     break;
                 }
             }
 
             //一個隊伍不能重複添加相同隊員
-            if(count == 0) {
+            if (count == 0) {
                 var employeeList = '<div class="team-employee-list" data-id="'
                     + self.attr("value")
                     + '"><span>'
@@ -587,7 +578,7 @@ $("#viewActivitiesSignup").pagecontainer({
                 //檢查欄位
                 checkFieldByTeam();
             }
-            
+
         });
 
         // 5. 刪除組隊成員
@@ -629,7 +620,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
             if (!selfClass) {
                 loadingMask("show");
-                
+
                 activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                     + submitID
                     + '</ActivitiesID><SignupModel>'
@@ -646,8 +637,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
                 //console.log(activitiesSignupConfirmQueryData);
                 ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
-
-                console.log(memberNoArr);
             }
 
         });
@@ -713,7 +702,7 @@ $("#viewActivitiesSignup").pagecontainer({
                 var familyList = '<FamilyList><ActivitiesID>'
                     + submitID
                     + '</ActivitiesID><SignupPlaces>1</SignupPlaces><EmployeeNo>'
-                    + myEmpNo 
+                    + myEmpNo
                     + '</EmployeeNo><FamilyNo>'
                     + myEmpNo
                     + '</FamilyNo>'
@@ -731,7 +720,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
                 //console.log(activitiesSignupFamilyQueryData);
                 ActivitiesSignupFamilyQuery(submitID, submitModel, "N", familyFieldArr, familyList);
-                
+
             }
         });
 
@@ -856,7 +845,7 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfName = $(this).parent().prev().text();
             var selfVal = $(this).val();
             //保存栏位值
-            saveValueForArr(timeFieldArr, selfName, selfVal, null);
+            saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
             //判斷radio和arr書否有空值
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
 
@@ -873,7 +862,7 @@ $("#viewActivitiesSignup").pagecontainer({
             }
             timeoutCheckTimeSignup = setTimeout(function () {
                 //保存栏位值
-                saveValueForArr(timeFieldArr, selfName, selfVal, null);
+                saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
             }, 1000);
             //判斷radio和arr書否有空值
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
@@ -887,11 +876,11 @@ $("#viewActivitiesSignup").pagecontainer({
 
             if (src == "img/checkbox_n.png") {
                 //保存栏位值
-                saveValueForArr(timeFieldArr, selfName, selfVal, true);
+                saveValueForTimeArr(timeFieldArr, selfName, selfVal, true);
                 $(this).find("img").attr("src", "img/checkbox_s.png");
             } else {
                 //刪除栏位值
-                saveValueForArr(timeFieldArr, selfName, selfVal, false);
+                saveValueForTimeArr(timeFieldArr, selfName, selfVal, false);
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
 

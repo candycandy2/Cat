@@ -2,7 +2,6 @@
 $("#viewActivitiesList").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-        //var lastActNo;
 
 
         /********************************** function *************************************/
@@ -10,7 +9,7 @@ $("#viewActivitiesList").pagecontainer({
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activitiesArr = data["Content"];
@@ -54,7 +53,7 @@ $("#viewActivitiesList").pagecontainer({
 
                     $("#openList").empty().append(openContent).children("div:last-child").remove();
                     $("#closeList").empty().append(closeContent).children("div:last-child").remove();
-                    
+
                 } else if (data["ResultCode"] == "045901") {
                     $("#viewActivitiesContent").hide();
                     $("#viewActivitiesNone").show();
@@ -78,13 +77,17 @@ $("#viewActivitiesList").pagecontainer({
 
         });
 
+        $("#viewActivitiesList").on("pageshow", function (event, ui) {
+
+        });
+
         /********************************** dom event *************************************/
         $("#viewActivitiesList").keypress(function (event) {
 
         });
 
         //點擊活動列表進入詳情頁
-        $("#viewActivitiesContent").on("click", ".activity-list", function(e) {
+        $("#viewActivitiesContent").on("click", ".activity-list", function (e) {
             loadingMask("show");
 
             var actNo = $(this).attr("data-id");
