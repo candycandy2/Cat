@@ -366,13 +366,7 @@ var QForum = {
                         if (device.platform === "iOS") {
                             window.CKEDITOR.instances.editor.resize(QForum.editorOriginalSize.width, QForum.editorOriginalSize.height);
 
-                            if (checkiPhoneX()) {
-                                var iOSFixedTop = 30;
-                            } else {
-                                var iOSFixedTop = 20;
-                            }
-
-                            $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - iOSFixedTop) );
+                            $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - iOSFixedTopPX()) );
 
                             $("#" + QForum.pageID).addClass("ui-page-active");
 
@@ -539,17 +533,11 @@ var QForum = {
                 //For iOS, overlap
                 if (device.platform === "iOS") {
 
-                    if (checkiPhoneX()) {
-                        var iOSFixedTop = 30;
-                    } else {
-                        var iOSFixedTop = 20;
-                    }
-
-                    var height = parseInt(document.documentElement.clientHeight - iOSFixedTop, 10);
+                    var height = parseInt(document.documentElement.clientHeight - iOSFixedTopPX(), 10);
 
                     $(".QForum-Content.reply-fullscreen-popup").css({
                         "height": height + "px",
-                        "margin-top": iOSFixedTop + "px"
+                        "margin-top": iOSFixedTopPX() + "px"
                     });
                 }
 
@@ -613,15 +601,8 @@ var QForum = {
 
                 //For iOS, overlap
                 if (device.platform === "iOS") {
-
-                    if (checkiPhoneX()) {
-                        var iOSFixedTop = 30;
-                    } else {
-                        var iOSFixedTop = 20;
-                    }
-
-                    height -= iOSFixedTop;
-                    hederHeight += iOSFixedTop;
+                    height -= iOSFixedTopPX();
+                    hederHeight += iOSFixedTopPX();
                 }
 
                 //For small size screen, toolbar become 2 lines
@@ -777,17 +758,11 @@ var QForum = {
                 //For iOS, overlap
                 if (device.platform === "iOS") {
 
-                    if (checkiPhoneX()) {
-                        var iOSFixedTop = 30;
-                    } else {
-                        var iOSFixedTop = 20;
-                    }
-
-                    var height = parseInt(document.documentElement.clientHeight - iOSFixedTop, 10);
+                    var height = parseInt(document.documentElement.clientHeight - iOSFixedTopPX(), 10);
 
                     $(".QForum-Content.prompt-popup").css({
                         "height": height + "px",
-                        "margin-top": iOSFixedTop + "px"
+                        "margin-top": iOSFixedTopPX() + "px"
                     });
                 }
 
@@ -866,12 +841,6 @@ var QForum = {
                 });
             } else if (device.platform === "iOS") {
 
-                if (checkiPhoneX()) {
-                    var iOSFixedTop = 30;
-                } else {
-                    var iOSFixedTop = 20;
-                }
-
                 window.CKEDITOR.instances.editor.on("blur", function(e) {
 
                     console.log("--------------------keyboard hide");
@@ -884,7 +853,7 @@ var QForum = {
 
                         window.CKEDITOR.instances.editor.resize(QForum.editorOriginalSize.width, QForum.editorOriginalSize.height);
 
-                        $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - iOSFixedTop) );
+                        $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - iOSFixedTopPX()) );
 
                         $("#" + QForum.pageID).addClass("ui-page-active");
 
@@ -907,7 +876,7 @@ var QForum = {
                     setTimeout(function() {
 
                         var editorTempWidth = $("#cke_editor").width();
-                        var editorTempHeight = parseInt(window.innerHeight - headerHeight - toolbarHeight - marginTopBottom - iOSFixedTop, 10);
+                        var editorTempHeight = parseInt(window.innerHeight - headerHeight - toolbarHeight - marginTopBottom - iOSFixedTopPX(), 10);
 
                         window.CKEDITOR.instances.editor.resize(editorTempWidth, editorTempHeight);
 
@@ -926,7 +895,7 @@ var QForum = {
 
                         $(".QForum-Content.reply-fullscreen-popup").css({
                             "top": 0,
-                            "height": (window.innerHeight - iOSFixedTop)
+                            "height": (window.innerHeight - iOSFixedTopPX())
                         });
                     }, 200);
 
@@ -941,7 +910,7 @@ var QForum = {
 
                                 window.CKEDITOR.instances.editor.resize(QForum.editorOriginalSize.width, QForum.editorOriginalSize.height);
 
-                                $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - iOSFixedTop) );
+                                $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - iOSFixedTopPX()) );
 
                                 $("#" + QForum.pageID).addClass("ui-page-active");
 
@@ -1217,11 +1186,7 @@ var QForum = {
             QForum.pullRefresh.arrivalBottom = false;
 
             if (device.platform === "iOS") {
-                if (checkiPhoneX()) {
-                    var fixedTop = 30;
-                } else {
-                    var fixedTop = 20;
-                }
+                var fixedTop = iOSFixedTopPX();
             } else {
                 var fixedTop = 0;
             }
