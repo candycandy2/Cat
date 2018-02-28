@@ -2,7 +2,7 @@
 $("#viewSelectFamily").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-        var actID, actModel, actSignup, familyListBySelf;
+        var actID, actModel, familyListBySelf, timeoutSelectFamily = null;
         var familyAllList = [];
 
         /********************************** function *************************************/
@@ -13,7 +13,7 @@ $("#viewSelectFamily").pagecontainer({
                 //console.log(arr);
                 //console.log(data);
 
-                actID = id, actModel = model, actSignup = isSignup, familyListBySelf = content;
+                actID = id, actModel = model, familyIsSignup = isSignup, familyListBySelf = content;
                 if (data["ResultCode"] == "1") {
                     //初始化
                     $(".select-family-field").empty();
@@ -23,6 +23,8 @@ $("#viewSelectFamily").pagecontainer({
                             $("#column-popup-" + i + "-familySelect-" + j + "-option-popup").remove();
                         }
                     }
+                    $("#selectAllFamily").attr("src", "img/checkbox_n.png");
+                    $("#expandAllFamily").attr("src", "img/all_list_down.png");
 
                     //數組按照關係排序
                     var selectFamilyArr = data["Content"].sort(sortByRelationship("FamilyRelationship", "FamilyName"));
@@ -84,7 +86,7 @@ $("#viewSelectFamily").pagecontainer({
                     });
 
                     //如果是已報名的活動，增加“IsSignup”字段，並修改已報名眷屬的欄位值
-                    if (actSignup == "Y") {
+                    if (familyIsSignup == "Y") {
                         for (var i in selectFamilyArr) {
                             if (selectFamilyArr[i]["IsSignup"] == "Y") {
                                 $.each($(".family-checkbox-img"), function (index, item) {
@@ -125,9 +127,9 @@ $("#viewSelectFamily").pagecontainer({
                     for (var i in selectFamilyArr) {
                         var oneObj = {};
                         //如果已報名，IsSignup根據字段；如果未報名，所有眷屬初始狀態IsSignup=“N”
-                        if (actSignup == "Y") {
+                        if (familyIsSignup == "Y") {
                             oneObj["IsSignup"] = selectFamilyArr[i]["IsSignup"];
-                        } else if (actSignup == "N") {
+                        } else if (familyIsSignup == "N") {
                             oneObj["IsSignup"] = "N";
                         }
                         oneObj["FamilyNo"] = selectFamilyArr[i]["FamilyNo"];
@@ -169,14 +171,18 @@ $("#viewSelectFamily").pagecontainer({
         });
 
         /********************************** signup *************************************/
-        //返回眷屬報名或報名管理
+        //返回眷屬報名或報名管理-popup
         $("#viewSelectFamily .back-select").on("click", function () {
-            if (actSignup == "Y") {
+            if (familyIsSignup == "Y") {
                 changePageByPanel("viewActivitiesManage", false);
             } else {
-                changePageByPanel("viewActivitiesSignup", false);
+                popupMsgInit('.selectNoFinish');
             }
+        });
 
+        //確定返回報名頁面
+        $("#cancelSelectBtn").on("click", function() {
+            changePageByPanel("viewActivitiesSignup", false);
         });
 
         //展開眷屬資料-img
@@ -202,6 +208,7 @@ $("#viewSelectFamily").pagecontainer({
             var src = $(this).attr("src");
             var familyNo = $(this).parent().attr("data-no");
             var borderNode = $(this).parent().parent().next();
+            var expandNode = $(this).parent().parent().find(".family-expand-img");
 
             //1.先檢查input欄位是否爲空，爲空不能選擇該眷屬
             var flag1 = true;
@@ -263,7 +270,7 @@ $("#viewSelectFamily").pagecontainer({
                 }
             }
 
-            //5.如果未選擇，且全選已鉤，則全選反選
+            //5.如果所有checkbox都未選擇，且全選已選，則全選取消
             var count = 0;
             $.each($(".family-checkbox-img"), function (index, item) {
                 if ($(item).attr("src") == "img/checkbox_s.png") {
@@ -271,8 +278,14 @@ $("#viewSelectFamily").pagecontainer({
                 }
             });
             if (count == 0 && $("#selectAllFamily").attr("src") == "img/checkbox_s.png") {
-                $("#selectAllFamily").attr("src", "img/checkbox_n.png");
+                $("#selectAllFamily").trigger("click");
             }
+
+            //6.展開被選擇的眷屬
+            if(src == "img/checkbox_n.png" && expandNode.attr("src") == "img/list_down.png") {
+                expandNode.trigger("click");
+            }
+
             //console.log(familyAllList);
         });
 
@@ -297,6 +310,11 @@ $("#viewSelectFamily").pagecontainer({
                         selectedFamilyCount++;
                     }
                 });
+
+                //全選並展開所有
+                if($("#expandAllFamily").attr("src") == "img/all_list_down.png") {
+                    $("#expandAllFamily").trigger("click");
+                }
 
             } else {
                 self.attr("src", "img/checkbox_n.png");
