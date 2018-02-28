@@ -4,6 +4,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         /********************************** function *************************************/
         var familyArr = [];
         var familyNo = "", familyName = "", familyID = "", familyBirth = "", relationshipNo = "", genderNo = "";
+        var timeoutFamilyName = null, timeoutFamilyID = null;
         var relationshipData = {
             id: "relationship-popup",
             option: [],
@@ -494,39 +495,29 @@ $("#viewMyFamilyDatum").pagecontainer({
             }
         });
 
-        //獲取表單（姓名和身份證）的值
-        $("#familyName").on("change", function () {
-            familyName = $.trim($(this).val());
-        });
-
-        $("#familyID").on("change", function () {
-            familyID = $.trim($(this).val());
-        });
-
-        //限制只能輸入字母和數字
-        // $("#familyName").on("keydown", function (event) {
-        //     if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-        // });
-
-        // $("#familyID").on("keydown", function (event) {
-        //     if ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-        // });
-
         //檢查表單（姓名和身份證）是否符合提交要求
         $("#familyName").on("keyup", function () {
-            checkFormByFamily();
+            familyName = $.trim($(this).val());
+
+            if (timeoutFamilyName != null) {
+                clearTimeout(timeoutFamilyName);
+                timeoutFamilyName = null;
+            }
+            timeoutFamilyName = setTimeout(function () {
+                checkFormByFamily();
+            }, 2000);
         });
 
         $("#familyID").on("keyup", function () {
-            checkFormByFamily();
+            familyID = $.trim($(this).val());
+
+            if (timeoutFamilyID != null) {
+                clearTimeout(timeoutFamilyID);
+                timeoutFamilyID = null;
+            }
+            timeoutFamilyID = setTimeout(function () {
+                checkFormByFamily();
+            }, 2000);
         });
 
 

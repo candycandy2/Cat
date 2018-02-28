@@ -18,6 +18,7 @@ var myEmpNo = "1501005";
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var recordArr = [];    //活動記錄列表
 var selectFamilyLimit = 0;    //選擇眷屬的人數限制
+var familyIsSignup;    //眷屬是否報名
 var viewSignupInit = true, viewFamilyInit = true;
 //var myEmpNo = "0207357";
 
@@ -58,6 +59,8 @@ function onBackKeyDown() {
         popupMsgInit('.confirmCancelAddFamily');
     } else if (activePageID == "viewMyFamilyDatum" && $("#viewFamilyEdit").css("display") == "block" && addFamilyOrNot == false) {
         popupMsgInit('.confirmCancelEditFamily');
+    } else if (activePageID == "viewSelectFamily" && familyIsSignup == "N") {
+        popupMsgInit('.selectNoFinish');
     } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
     } else {

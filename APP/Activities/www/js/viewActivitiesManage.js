@@ -369,13 +369,11 @@ $("#viewActivitiesManage").pagecontainer({
             if (src == "list_down.png") {
                 self.attr("src", "img/list_up.png");
                 parentNode.css("border-bottom", "0");
-                parentNode.next().css("border-bottom", "1px solid #d6d6d6");
                 parentNode.next().show();
             } else {
                 self.attr("src", "img/list_down.png");
                 parentNode.css("border-bottom", "1px solid #d6d6d6");
-                parentNode.next().css("border-bottom", "0");
-                parentNode.next().hide();
+                parentNode.next().hide();   
             }
         });
 

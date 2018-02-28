@@ -2,7 +2,8 @@
 $("#viewActivitiesSignup").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-        var timeoutQueryEmployee = null, timeoutCheckFamilySignup = null, timeoutCheckPersonSignup = null, timeoutCheckTimeSignup = null;
+        var timeoutQueryEmployee = null, timeoutCheckFamilySignup = null, timeoutCheckPersonSignup = null;
+        var timeoutDepartNo = null, timeoutTeamName = null, timeoutCheckTimeSignup = null;
         var teamName, departNo, submitID, submitModel;
         var limitPlace, currentPlace;     //組隊報名限制人數和目前已選人數
         var personSubmitPlace;    //個人報名人數
@@ -311,12 +312,20 @@ $("#viewActivitiesSignup").pagecontainer({
                     setTimeout(function () {
                         if (newAct == "Y") {
                             if (model == "3") {
+                                //已完成報名
+                                $(".finishedFamilySignup .header-title").text(langStr["str_017"]);
                                 popupMsgInit('.finishedFamilySignup');
                             } else {
                                 $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
                             }
                         } else if (newAct == "N") {
-                            $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                            if (model == "3") {
+                                //已完成修改
+                                $(".finishedFamilySignup .header-title").text(langStr["str_018"]);
+                                popupMsgInit('.finishedFamilySignup');
+                            } else {
+                                $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                            }
                         }
                     }, 1500);
 
@@ -600,21 +609,32 @@ $("#viewActivitiesSignup").pagecontainer({
 
         /*********************************** team signup ***********************************/
         $("#departNo").on("keyup", function () {
-            checkFieldByTeam();
+            departNo = $.trim($(this).val());
+
+            if (timeoutDepartNo != null) {
+                clearTimeout(timeoutDepartNo);
+                timeoutDepartNo = null;
+            }
+            timeoutDepartNo = setTimeout(function () {
+                checkFieldByTeam();
+            }, 2000);
+
         });
 
         $("#teamName").on("keyup", function () {
-            checkFieldByTeam();
-        });
-
-        $("#departNo").on("change", function () {
-            departNo = $.trim($(this).val());
-        });
-
-        $("#teamName").on("change", function () {
             teamName = $.trim($(this).val());
+
+            if (timeoutTeamName != null) {
+                clearTimeout(timeoutTeamName);
+                timeoutTeamName = null;
+            }
+            timeoutTeamName = setTimeout(function () {
+                checkFieldByTeam();
+            }, 2000);
+
         });
 
+        //組隊報名申請
         $("#sendTeamSignup").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
 
