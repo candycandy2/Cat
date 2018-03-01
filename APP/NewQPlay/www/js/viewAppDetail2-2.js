@@ -108,9 +108,9 @@ $("#viewAppDetail2-2").pagecontainer({
             //Auto resize appDetailPicList
             if (device.platform === "iOS") {
                 var tempHeight = $("#appDetailPicList").height();
-                $("#appDetailPicList").css("height", parseInt(tempHeight + 20, 10) + "px");
+                $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
                 tempHeight = $("#appDetailPicListContent").height();
-                $("#appDetailPicListContent").css("height", parseInt(tempHeight + 20, 10) + "px");
+                $("#appDetailPicListContent").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
             }
 
             //Auto resize appDetailPicListContent

@@ -8,6 +8,7 @@
     padding: 0 !important;
 }
 
+
 /********************************************** mypanel *********************************************/
 
 #mypanel {
@@ -50,6 +51,7 @@
     z-index: 1001;
     background: rgba(0, 0, 0, 0.5);
 }
+
 
 /********************************************** public ***********************************************/
 
@@ -212,6 +214,7 @@ input[type="text"] {
     display: none;
 }
 
+
 /************************************** viewActivitiesList ******************************************/
 
 .open-title div,
@@ -304,7 +307,6 @@ input[type="text"] {
     background-color: #d6d6d6;
     overflow: hidden;
 }
-
 
 #viewActivitiesNone {
     width: 100vw;
@@ -591,6 +593,7 @@ input[type="text"] {
     color: #666666;
     font-weight: normal;
     font-size: 3.55vw !important;
+    border-bottom: 1px solid #d6d6d6;
 }
 
 #teamTable td:nth-of-type(1) {
@@ -679,25 +682,30 @@ input[type="text"] {
 }
 
 .queryNoEmployee>.ui-content,
-.signupNoFinish>.ui-content {
+.signupNoFinish>.ui-content,
+.selectNoFinish>.ui-content {
     padding: 0 !important;
 }
 
 .queryNoEmployee .ui-content>.header,
-.signupNoFinish .ui-content>.header {
+.signupNoFinish .ui-content>.header,
+.selectNoFinish .ui-content>.header {
     margin-top: 10%;
 }
 
 .queryNoEmployee .ui-content>.main,
-.signupNoFinish .ui-content>.main {
+.signupNoFinish .ui-content>.main,
+.selectNoFinish .ui-content>.main {
     margin-top: 5%;
 }
 
-.overLimitMsg >.ui-content {
+.signupOverLimitMsg >.ui-content,
+.manageOverLimitMsg >.ui-content {
     padding: 0 !important;
 }
 
-.overLimitMsg .ui-content>.main {
+.signupOverLimitMsg .ui-content>.main,
+.manageOverLimitMsg .ui-content>.main {
     padding: 0 10vw;
     margin-top: 10%;
     line-height: 1.5;
@@ -1077,8 +1085,6 @@ input[type="text"] {
     background-color: #d6d6d6;
     overflow: hidden;
 }
-
-
 
 
 /******************************************* viewMyFamilyDatum **************************************/

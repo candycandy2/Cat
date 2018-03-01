@@ -126,6 +126,8 @@
                 <div class="font-style10 font-color2" id="timeManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
             </div>
             <div class="time-manage-title font-style11 font-color4">
+                <!--目前活動名額已額滿，-->
+                <span id="timeIsFull" class="langStr" data-id="str_069"></span>
                 <!--您已報名本項活動：-->
                 <span class="langStr" data-id="str_070"></span>
                 <span>1</span>
@@ -201,6 +203,8 @@
                 <div class="font-style10 font-color2" id="teamManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
             </div>
             <div class="team-manage-signuped font-style11 font-color4">
+                <!--目前活動名額已額滿，-->
+                <span id="teamIsFull" class="langStr" data-id="str_069"></span>
                 <!--您已報名本項活動：-->
                 <span class="langStr" data-id="str_070"></span>
                 <span id="teamSignupedPlaces">2</span>
@@ -281,6 +285,34 @@
 
     </div>
 
+    <!--人數超過剩餘名額-popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup manageOverLimitMsg" for="manageOverLimitMsg" id="manageOverLimitMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--很抱歉，您報名的人數超過剩餘名額，請重新報名-->
+                    <span class="langStr" data-id="str_024"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel" id="manageOverBtn">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--確定取消報名-popup-->
     <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelSignupMsg" for="cancelSignupMsg" id="cancelSignupMsg">

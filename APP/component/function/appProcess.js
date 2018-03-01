@@ -374,7 +374,7 @@ function adjustPageMarginTop() {
         }
 
         if (device.platform === "iOS") {
-            mainMarginTop = mainMarginTop + 20;
+            mainMarginTop = mainMarginTop + iOSFixedTopPX();
         }
 
         $(".page-main").css({
@@ -386,6 +386,13 @@ function adjustPageMarginTop() {
 function footerFixed() {
     $(".ui-footer").removeClass("ui-fixed-hidden");
     $(".ui-header").removeClass("ui-fixed-hidden");
+
+    $(".ui-footer").removeClass("slideup");
+    $(".ui-header").removeClass("slidedown");
+
+    $('.ui-page-active.ui-page').css({
+        'height': "100%"
+    });
 }
 
 function waterMark() {
@@ -453,4 +460,26 @@ function addPlugin() {
         }(value, key));
     });
 
+}
+
+function checkiPhoneX() {
+    var ratio = window.devicePixelRatio || 1;
+    var screen = {
+        width: window.screen.width * ratio,
+        height: window.screen.height * ratio
+    };
+
+    if (screen.width === 1125 && screen.height === 2436) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function iOSFixedTopPX() {
+    if (checkiPhoneX()) {
+        return 30;
+    } else {
+        return 20;
+    }
 }
