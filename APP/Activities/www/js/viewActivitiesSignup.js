@@ -300,8 +300,15 @@ $("#viewActivitiesSignup").pagecontainer({
                     ActivitiesListQuery();
 
                     //跳轉前刪除訪問頁面數組最後2個
-                    pageVisitedList.pop();
-                    pageVisitedList.pop();
+                    if (model == "3") {
+                        for (var i = 0; i < 3; i++) {
+                            pageVisitedList.pop();
+                        }
+                    } else {
+                        for (var i = 0; i < 2; i++) {
+                            pageVisitedList.pop();
+                        }
+                    }
 
                     //跳轉
                     $.each($("#openList .activity-list"), function (index, item) {
@@ -552,13 +559,20 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //報名失敗提示popup，如果已額滿就跳轉
         $("#signupOverBtn").on("click", function () {
-            if(actIsFull == "Y") {
+            if (actIsFull == "Y") {
                 //如果已額滿，重新獲取活動列表
                 ActivitiesListQuery();
 
                 //跳轉前刪除訪問頁面數組最後2個
-                pageVisitedList.pop();
-                pageVisitedList.pop();
+                if (submitModel == "3") {
+                    for (var i = 0; i < 3; i++) {
+                        pageVisitedList.pop();
+                    }
+                } else {
+                    for (var i = 0; i < 2; i++) {
+                        pageVisitedList.pop();
+                    }
+                }
 
                 //跳轉
                 $.each($("#openList .activity-list"), function (index, item) {
