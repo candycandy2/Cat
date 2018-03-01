@@ -1117,12 +1117,18 @@ input[type="text"] {
 }
 
 .family-save-btn {
-    position: fixed;
+    /* position: fixed;
     top: 4.5vw;
     right: 3.71vw;
     z-index: 1000;
     color: #ffffff !important;
+    opacity: 0.6; */
     opacity: 0.6;
+    display: inline-block;
+    position: absolute;
+    color: #ffffff !important;
+    top: 4.5vw;
+    right: 3.71vw;
 }
 
 #viewFamilyList {
