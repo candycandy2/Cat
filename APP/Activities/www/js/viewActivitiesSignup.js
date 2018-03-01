@@ -11,6 +11,7 @@ $("#viewActivitiesSignup").pagecontainer({
         var memberNoArr = [];    //組隊報名成員數組
         var personFieldArr = [], familyFieldArr = [], timeFieldArr = [];    //自定義欄位 
         var radioFlag = false;    //時段是否選擇
+        var actIsFull = "";    //活動是否額滿
 
         var employeeData = {
             id: "employee-popup",
@@ -333,13 +334,34 @@ $("#viewActivitiesSignup").pagecontainer({
                     ActivitiesRecordQuery();
 
                 } else if (data['ResultCode'] == "045912") {
-                    //失敗，報名組數超過剩餘名額
-                    if (model == "4") {
-                        $(".overLimitMsg .main-paragraph").text(langStr["str_025"]);
-                    } else {
-                        $(".overLimitMsg .main-paragraph").text(langStr["str_024"]);
+                    //先獲取該活動是否額滿，如果未額滿停留在本頁（報名頁面）；如果已額滿，返回詳情頁
+                    activitiesIsFullQueryData = '<LayoutHeader><ActivitiesID>'
+                        + actID
+                        + '</ActivitiesID><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo></LayoutHeader>';
+
+                    ActivitiesIsFullQuery(newAct, model);
+
+                    //報名和管理的彈窗不一致
+                    if (newAct == "Y") {
+                        //失敗，報名組數超過剩餘名額
+                        if (model == "4") {
+                            $(".signupOverLimitMsg .main-paragraph").text(langStr["str_025"]);
+                        } else {
+                            $(".signupOverLimitMsg .main-paragraph").text(langStr["str_024"]);
+                        }
+                        popupMsgInit(".signupOverLimitMsg");
+
+                    } else if (newAct == "N") {
+                        if (model == "4") {
+                            $(".manageOverLimitMsg .main-paragraph").text(langStr["str_025"]);
+                        } else {
+                            $(".manageOverLimitMsg .main-paragraph").text(langStr["str_024"]);
+                        }
+                        popupMsgInit(".manageOverLimitMsg");
                     }
-                    popupMsgInit(".overLimitMsg");
+
                 }
 
                 loadingMask("hide");
@@ -349,6 +371,29 @@ $("#viewActivitiesSignup").pagecontainer({
 
             var __construct = function () {
                 CustomAPI("POST", true, "Activities_Signup_Confirm", self.successCallback, self.failCallback, activitiesSignupConfirmQueryData, "");
+            }();
+
+        };
+
+        //報名失敗，查詢該活動是否額滿
+        window.ActivitiesIsFullQuery = function () {
+
+            this.successCallback = function (data) {
+                //console.log(data);
+
+                if (data["ResultCode"] == "1") {
+                    actIsFull = data["Content"][0]["IsFull"];
+
+                }
+
+                loadingMask("hide");
+
+            };
+
+            this.failCallback = function (data) { };
+
+            var __construct = function () {
+                CustomAPI("POST", false, "Activities_Detail", self.successCallback, self.failCallback, activitiesIsFullQueryData, "");
             }();
 
         };
@@ -503,6 +548,25 @@ $("#viewActivitiesSignup").pagecontainer({
         //確定取消報名，返回上一頁
         $("#cancelSignupBtn").on("click", function () {
             changePageByPanel("viewActivitiesDetail", false);
+        });
+
+        //報名失敗提示popup，如果已額滿就跳轉
+        $("#signupOverBtn").on("click", function () {
+            if(actIsFull == "Y") {
+                //如果已額滿，重新獲取活動列表
+                ActivitiesListQuery();
+
+                //跳轉前刪除訪問頁面數組最後2個
+                pageVisitedList.pop();
+                pageVisitedList.pop();
+
+                //跳轉
+                $.each($("#openList .activity-list"), function (index, item) {
+                    if ($(item).attr("data-id") == actID) {
+                        $(item).trigger("click");
+                    }
+                });
+            }
         });
 
         /******************************* employee component ********************************/

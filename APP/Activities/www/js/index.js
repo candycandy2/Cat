@@ -5,7 +5,7 @@ var activitiesListQueryData, activitiesDetailQueryData, activitiesSignupQueryDat
     activitiesSignupManageQueryData, activitiesSignupConfirmQueryData, activitiesSignupCancelQueryData,
     activitiesRecordCancelQueryData, activitiesSignupFamilyQueryData, activitiesSignupEmployeeQueryData,
     activitiesRecordQueryData, activitiesFamilyQueryData, activitiesFamilyAddQueryData,
-    activitiesFamilyUpdateQueryData, activitiesFamilyDeleteQueryData;
+    activitiesFamilyUpdateQueryData, activitiesFamilyDeleteQueryData, activitiesIsFullQueryData;
 var pageList = ["viewPanel", "viewActivitiesList", "viewActivitiesRecord", "viewMyFamilyDatum", "viewActivitiesDetail", "viewActivitiesSignup", "viewActivitiesManage", "viewSelectFamily"];
 var pageVisitedList = ["viewActivitiesList"];
 var initialAppName = "Activities";
@@ -13,17 +13,16 @@ var appKeyOriginal = "appactivities";
 var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
-var myNumber = "";
-var myEmpNo = "1501005";
+//var myEmpNo = "1501005";
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var recordArr = [];    //活動記錄列表
 var selectFamilyLimit = 0;    //選擇眷屬的人數限制
 var familyIsSignup;    //眷屬是否報名
 var viewSignupInit = true, viewFamilyInit = true;
-//var myEmpNo = "0207357";
+var myEmpNo = "";
 
 window.initialSuccess = function () {
-    myNumber = localStorage.getItem("emp_no");
+    myEmpNo = localStorage.getItem("emp_no");
 
     // 1. get activities list
     activitiesListQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';

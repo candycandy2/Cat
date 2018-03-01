@@ -699,11 +699,13 @@ input[type="text"] {
     margin-top: 5%;
 }
 
-.overLimitMsg >.ui-content {
+.signupOverLimitMsg >.ui-content,
+.manageOverLimitMsg >.ui-content {
     padding: 0 !important;
 }
 
-.overLimitMsg .ui-content>.main {
+.signupOverLimitMsg .ui-content>.main,
+.manageOverLimitMsg .ui-content>.main {
     padding: 0 10vw;
     margin-top: 10%;
     line-height: 1.5;

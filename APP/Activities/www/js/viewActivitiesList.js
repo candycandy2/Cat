@@ -90,11 +90,11 @@ $("#viewActivitiesList").pagecontainer({
         $("#viewActivitiesContent").on("click", ".activity-list", function (e) {
             loadingMask("show");
 
-            var actNo = $(this).attr("data-id");
+            var actID = $(this).attr("data-id");
             var actStatus = $(this).attr("data-status");
 
             activitiesDetailQueryData = '<LayoutHeader><ActivitiesID>'
-                + actNo
+                + actID
                 + '</ActivitiesID><EmployeeNo>'
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';

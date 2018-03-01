@@ -10,7 +10,7 @@ $("#viewActivitiesManage").pagecontainer({
 
         /********************************** function *************************************/
         //報名管理
-        window.ActivitiesSignupManageQuery = function (model) {
+        window.ActivitiesSignupManageQuery = function (model, isFull) {
 
             this.successCallback = function (data) {
                 //console.log(data);
@@ -35,7 +35,7 @@ $("#viewActivitiesManage").pagecontainer({
                         //賦值
                         $("#personManageThumbnail").attr("src", manageObj["ActivitiesImage"]);
                         $("#personManageName").text(manageObj["ActivitiesName"]);
-                        $("#personIsFull").css("display", manageObj["IsFull"] == "Y" ? "block" : "none");
+                        $("#personIsFull").css("display", isFull == "Y" ? "block" : "none");
                         $("#personSignupedPlace").text(manageObj["SignupPlaces"]);
                         $(".person-manage-remark").empty().append("<div>" + manageObj["ActivitiesRemarks"] + "</div>");
                         //dropdownlist
@@ -126,6 +126,7 @@ $("#viewActivitiesManage").pagecontainer({
                         $("#teamManageThumbnail").attr("src", manageArr[0]["ActivitiesImage"]);
                         $("#teamManageName").text(manageArr[0]["ActivitiesName"]);
                         $("#teamSignupedPlaces").text(manageArr[0]["SignupTeam"]);
+                        $("#teamIsFull").css("display", isFull == "Y" ? "block" : "none");
                         //取消報名的活動名稱
                         cancelActName = manageArr[0]["ActivitiesName"];
 
@@ -188,6 +189,7 @@ $("#viewActivitiesManage").pagecontainer({
                         //賦值
                         $("#timeManageThumbnail").attr("src", timeObj["ActivitiesImage"]);
                         $("#timeManageName").text(timeObj["ActivitiesName"]);
+                        $("#timeIsFull").css("display", isFull == "Y" ? "block" : "none");
 
                         //展示所有欄位
                         var timeContent = '';
