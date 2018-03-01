@@ -16,7 +16,7 @@ $("#viewMyInfoEdit").pagecontainer({
             $('<div class="message-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             if (device.platform === "iOS") {
-                $(".message-photo-full-screen img").css("padding-top", "20px");
+                $(".message-photo-full-screen img").css("padding-top", iOSFixedTopPX() + "px");
             }
 
             $(".message-photo-full-screen").css("top", $(document).scrollTop());

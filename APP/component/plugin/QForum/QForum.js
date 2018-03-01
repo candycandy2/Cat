@@ -366,7 +366,7 @@ var QForum = {
                         if (device.platform === "iOS") {
                             window.CKEDITOR.instances.editor.resize(QForum.editorOriginalSize.width, QForum.editorOriginalSize.height);
 
-                            $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - 20) );
+                            $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - iOSFixedTopPX()) );
 
                             $("#" + QForum.pageID).addClass("ui-page-active");
 
@@ -532,11 +532,12 @@ var QForum = {
 
                 //For iOS, overlap
                 if (device.platform === "iOS") {
-                    var height = parseInt(document.documentElement.clientHeight - 20, 10);
+
+                    var height = parseInt(document.documentElement.clientHeight - iOSFixedTopPX(), 10);
 
                     $(".QForum-Content.reply-fullscreen-popup").css({
                         "height": height + "px",
-                        "margin-top": "20px"
+                        "margin-top": iOSFixedTopPX() + "px"
                     });
                 }
 
@@ -600,8 +601,8 @@ var QForum = {
 
                 //For iOS, overlap
                 if (device.platform === "iOS") {
-                    height -= 20;
-                    hederHeight += 20;
+                    height -= iOSFixedTopPX();
+                    hederHeight += iOSFixedTopPX();
                 }
 
                 //For small size screen, toolbar become 2 lines
@@ -756,11 +757,12 @@ var QForum = {
 
                 //For iOS, overlap
                 if (device.platform === "iOS") {
-                    var height = parseInt(document.documentElement.clientHeight - 20, 10);
+
+                    var height = parseInt(document.documentElement.clientHeight - iOSFixedTopPX(), 10);
 
                     $(".QForum-Content.prompt-popup").css({
                         "height": height + "px",
-                        "margin-top": "20px"
+                        "margin-top": iOSFixedTopPX() + "px"
                     });
                 }
 
@@ -838,6 +840,7 @@ var QForum = {
 
                 });
             } else if (device.platform === "iOS") {
+
                 window.CKEDITOR.instances.editor.on("blur", function(e) {
 
                     console.log("--------------------keyboard hide");
@@ -850,7 +853,7 @@ var QForum = {
 
                         window.CKEDITOR.instances.editor.resize(QForum.editorOriginalSize.width, QForum.editorOriginalSize.height);
 
-                        $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - 20) );
+                        $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - iOSFixedTopPX()) );
 
                         $("#" + QForum.pageID).addClass("ui-page-active");
 
@@ -873,7 +876,7 @@ var QForum = {
                     setTimeout(function() {
 
                         var editorTempWidth = $("#cke_editor").width();
-                        var editorTempHeight = parseInt(window.innerHeight - headerHeight - toolbarHeight - marginTopBottom - 20, 10);
+                        var editorTempHeight = parseInt(window.innerHeight - headerHeight - toolbarHeight - marginTopBottom - iOSFixedTopPX(), 10);
 
                         window.CKEDITOR.instances.editor.resize(editorTempWidth, editorTempHeight);
 
@@ -892,7 +895,7 @@ var QForum = {
 
                         $(".QForum-Content.reply-fullscreen-popup").css({
                             "top": 0,
-                            "height": (window.innerHeight - 20)
+                            "height": (window.innerHeight - iOSFixedTopPX())
                         });
                     }, 200);
 
@@ -907,7 +910,7 @@ var QForum = {
 
                                 window.CKEDITOR.instances.editor.resize(QForum.editorOriginalSize.width, QForum.editorOriginalSize.height);
 
-                                $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - 20) );
+                                $(".QForum-Content.reply-fullscreen-popup").height( (window.innerHeight - iOSFixedTopPX()) );
 
                                 $("#" + QForum.pageID).addClass("ui-page-active");
 
@@ -970,7 +973,7 @@ var QForum = {
         },
         windowScroll: function() {
             //Depend on the comment in window's view, decide the sequence to call API getPostDetails
-
+/*
             window.addEventListener("scroll", function() {
 
                 if (typeof $(".QForum-Content.reply-fullscreen-popup").css("display") === "undefined" || 
@@ -1059,6 +1062,7 @@ var QForum = {
                 }
 
             });
+*/
         },
         pagePullRefresh: function() {
 
@@ -1182,7 +1186,7 @@ var QForum = {
             QForum.pullRefresh.arrivalBottom = false;
 
             if (device.platform === "iOS") {
-                var fixedTop = 20;
+                var fixedTop = iOSFixedTopPX();
             } else {
                 var fixedTop = 0;
             }

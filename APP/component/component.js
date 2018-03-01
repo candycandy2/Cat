@@ -386,17 +386,14 @@ $(document).one("pagebeforecreate", function() {
             }
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
         } else if (device.platform === "iOS") {
-            var ratio = window.devicePixelRatio || 1;
-            var screen = {
-                width: window.screen.width * ratio,
-                height: window.screen.height * ratio
-            };
-            if (screen.width === 1125 && screen.height === 2436) { 
+            if (checkiPhoneX()) {
                 $('.page-header').addClass('ios-fix-overlap-iX');
                 $('.ios-fix-overlap-div').css('background-color', '#492f7f');
                 $('.ios-fix-overlap-div').css('height', '30px');
-            }else {
+                StatusBar.styleLightContent();
+            } else {
                 $('.page-header').addClass('ios-fix-overlap');
+                StatusBar.styleDefault();
             }          
             $('.ios-fix-overlap-div').css('display', 'block');
 
@@ -484,6 +481,19 @@ $(document).one("pagebeforecreate", function() {
             getAppLogParam();
         }
     });
+
+    //iOS - Prevent header/footer position error
+    $(document).on({
+        touchstart: function(event) {
+            footerFixed();
+        },
+        touchmove: function(event) {
+            footerFixed();
+        },
+        touchend: function(event) {
+            footerFixed();
+        }
+    }, "body");
 });
 
 /********************************** QPlay APP function *************************************/
@@ -913,18 +923,15 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            var ratio = window.devicePixelRatio || 1;
-            var screen = {
-                width: window.screen.width * ratio,
-                height: window.screen.height * ratio
-            };
-            if (screen.width === 1125 && screen.height === 2436) { 
+            if (checkiPhoneX()) {
                 $('.page-header').addClass('ios-fix-overlap-iX');
                 $('.ios-fix-overlap-div').css('background-color', '#492f7f');
                 $('.ios-fix-overlap-div').css('height', '30px');
-            }else {
+                StatusBar.styleLightContent();
+            } else {
                 $('.page-header').addClass('ios-fix-overlap');
-            }          
+                StatusBar.styleDefault();
+            }
             $('.ios-fix-overlap-div').css('display', 'block');
         }
     };

@@ -2,11 +2,10 @@
 $("#viewActivitiesManage").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-        var resultArr = [];
-        var personManageArr = [];
-        var familyManageFieldArr = [];
-        var timeoutCheckPersonManage = null;
-        var timeoutCheckFamilyManage = null;
+        var teamResultArr = [];    //已報名隊伍
+        var personManageArr = [];    //個人報名管理所有欄位
+        var familyManageFieldArr = [];    //眷屬報名管理所有欄位
+        var timeoutCheckPersonManage = null, timeoutCheckFamilyManage = null;
         var cancelModel, cancelActName, cancelID, cancelNo, cancelContent, submitSignupPlace;
 
         /********************************** function *************************************/
@@ -14,7 +13,7 @@ $("#viewActivitiesManage").pagecontainer({
         window.ActivitiesSignupManageQuery = function (model) {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 //取消報名的活動類型
                 cancelModel = model;
@@ -143,73 +142,38 @@ $("#viewActivitiesManage").pagecontainer({
                             });
                         });
 
-                        //相同Team合併
-                        // resultArr = [];
-                        // for (var i = 0; i < simplifyArr.length;) {
-                        //     if (i >= simplifyArr.length - 1) {
-                        //         if (i == simplifyArr.length - 1) {
-                        //             resultArr.push(mergeItemBySameTeam(simplifyArr[i], null, "TeamMember"));
-                        //         }
-                        //         break;
-                        //     }
-                        //     //如果TeamID相同，合併對象；如果不同Team，直接添加到新數組
-                        //     if (simplifyArr[i]["TeamID"] == simplifyArr[i + 1]["TeamID"]) {
-                        //         var mergedItem = mergeItemBySameTeam(simplifyArr[i], simplifyArr[i + 1], "TeamMember");
-                        //         var exist = false;
-                        //         for (var j = 0; j < resultArr.length; j++) {
-                        //             if (resultArr[j]["TeamID"] == mergedItem["TeamID"]) {
-                        //                 resultArr[j] = mergeItemBySameTeam(resultArr[j], mergedItem, "TeamMember");
-                        //                 exist = true;
-                        //                 break;
-                        //             }
-                        //         }
-                        //         if (!exist) {
-                        //             resultArr.push(mergedItem);
-                        //         }
-
-                        //         i += 2;
-                        //     } else {
-                        //         resultArr.push(mergeItemBySameTeam(simplifyArr[i], null, "TeamMember"));
-                        //         i += 1;
-                        //     }
-
-                        // }
-                        //console.log(resultArr);
-
                         //合并属性值相同的对象
-
-                        //1.临时数组
                         var temp = [];
-                        $.each(simplifyArr, function(index, item) {
+                        $.each(simplifyArr, function (index, item) {
                             var tempKey = item["TeamID"];
 
-                            if(typeof temp[tempKey] == "undefined") {
+                            if (typeof temp[tempKey] == "undefined") {
                                 temp[tempKey] = item;
                             } else {
                                 temp[tempKey]["TeamMember"] += "<br>" + item["TeamMember"];
                             }
                         });
-                        resultArr = [];
-                        for(var i in temp) {
-                            resultArr.push(temp[i]);
+                        teamResultArr = [];
+                        for (var i in temp) {
+                            teamResultArr.push(temp[i]);
                         }
-                        //console.log(resultArr); 
+                        //console.log(teamResultArr); 
 
                         //生成html
                         var manageContent = "";
-                        for (var i in resultArr) {
+                        for (var i in teamResultArr) {
                             manageContent += '<tr><td>'
-                                + resultArr[i]["TeamNo"]
+                                + teamResultArr[i]["TeamNo"]
                                 + '</td><td>'
-                                + resultArr[i]["TeamDept"]
+                                + teamResultArr[i]["TeamDept"]
                                 + '</td><td></td><td>'
-                                + resultArr[i]["TeamName"]
+                                + teamResultArr[i]["TeamName"]
                                 + '</td><td><img src="img/list_down.png" class="list-img"></td></tr><tr style="display:none;"><td></td><td></td><td></td><td>'
-                                + resultArr[i]["TeamMember"]
+                                + teamResultArr[i]["TeamMember"]
                                 + '</td><td><img src="img/delete.png" class="team-delete" data-id="'
-                                + resultArr[i]["ActivitiesID"]
+                                + teamResultArr[i]["ActivitiesID"]
                                 + '" data-no="'
-                                + resultArr[i]["TeamID"]
+                                + teamResultArr[i]["TeamID"]
                                 + '"></td></tr>';
                         }
 
@@ -339,43 +303,6 @@ $("#viewActivitiesManage").pagecontainer({
 
         };
 
-
-
-        window.APIRequest = function () {
-
-            var self = this;
-
-            this.successCallback = function (data) {
-                loadingMask("hide");
-
-                var resultcode = data['ResultCode'];
-                //do something
-            };
-
-            this.failCallback = function (data) { };
-
-            var __construct = function () {
-                //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
-            }();
-
-        };
-
-        //合併對象
-        function mergeItemBySameTeam(obj1, obj2, param) {
-            var obj = {};
-            if (obj2 != null) {
-                obj["Member"] = obj1[param] + "<br>" + obj2[param];
-            } else {
-                obj["Member"] = obj1[param];
-            }
-            obj["ActivitiesID"] = obj1["ActivitiesID"];
-            obj["TeamDept"] = obj1["TeamDept"];
-            obj["TeamID"] = obj1["TeamID"];
-            obj["TeamName"] = obj1["TeamName"];
-            obj["TeamNo"] = obj1["TeamNo"];
-            return obj;
-        }
-
         //个人报名根据限制人数生成dropdownlist
         function personDropdownlist(limit, check) {
             //1.转换成number类型
@@ -442,13 +369,11 @@ $("#viewActivitiesManage").pagecontainer({
             if (src == "list_down.png") {
                 self.attr("src", "img/list_up.png");
                 parentNode.css("border-bottom", "0");
-                parentNode.next().css("border-bottom", "1px solid #d6d6d6");
                 parentNode.next().show();
             } else {
                 self.attr("src", "img/list_down.png");
                 parentNode.css("border-bottom", "1px solid #d6d6d6");
-                parentNode.next().css("border-bottom", "0");
-                parentNode.next().hide();
+                parentNode.next().hide();   
             }
         });
 
@@ -477,9 +402,9 @@ $("#viewActivitiesManage").pagecontainer({
             cancelID = $(this).attr("data-id");
             cancelNo = $(this).attr("data-no");
 
-            for (var i in resultArr) {
-                if (cancelNo == resultArr[i]["TeamID"]) {
-                    cancelContent = resultArr[i]["TeamName"];
+            for (var i in teamResultArr) {
+                if (cancelNo == teamResultArr[i]["TeamID"]) {
+                    cancelContent = teamResultArr[i]["TeamName"];
                     break;
                 }
             }

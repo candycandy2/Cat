@@ -48,7 +48,8 @@
         <div id="viewFamilyEdit">
             <div class="family-input-div">
                 <label for="familyName">姓名</label>
-                <input type="text" name="familyName" id="familyName" maxlength="12" data-role="none" class="family-input">
+                <input type="text" name="familyName" id="familyName" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\. ]/g,'')"
+                    onpaste="return false;" oncontextmenu="return false;" maxlength="12" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
                 <label for="familyRelationship">關係</label>
@@ -60,7 +61,8 @@
             </div>
             <div class="family-input-div">
                 <label for="familyID">身份證</label>
-                <input type="text" name="familyID" id="familyID" maxlength="12" data-role="none" class="family-input">
+                <input type="text" name="familyID" id="familyID" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')" onpaste="return false;"
+                    oncontextmenu="return false;" maxlength="20" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
                 <label for="familyBirth">生日</label>
@@ -78,11 +80,12 @@
             <img src="img/floating_add.png">
         </div>
 
-        
+
     </div>
 
     <!--確定刪除眷屬資料-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeleteFamily" for="confirmDeleteFamily" id="confirmDeleteFamily">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeleteFamily" for="confirmDeleteFamily"
+        id="confirmDeleteFamily">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -114,7 +117,8 @@
     </div>
 
     <!--確定取消新增-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelAddFamily" for="confirmCancelAddFamily" id="confirmCancelAddFamily">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelAddFamily" for="confirmCancelAddFamily"
+        id="confirmCancelAddFamily">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -146,7 +150,8 @@
     </div>
 
     <!--確定取消編輯-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelEditFamily" for="confirmCancelEditFamily" id="confirmCancelEditFamily">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelEditFamily" for="confirmCancelEditFamily"
+        id="confirmCancelEditFamily">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -178,7 +183,8 @@
     </div>
 
     <!--新增眷屬資料失敗/更新眷屬資料失敗/刪除眷屬資料失敗-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup familyErrorMsg" for="familyErrorMsg" id="familyErrorMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup familyErrorMsg" for="familyErrorMsg"
+        id="familyErrorMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">

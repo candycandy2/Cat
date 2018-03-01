@@ -513,15 +513,15 @@ $("#viewNewChatroom").pagecontainer({
             //---------------------iOS UI---------------------
             if (device.platform === "iOS") {
                 $("#viewNewChatroom .page-main .search-user-content").css({
-                    "padding-top": "20px"
+                    "padding-top": iOSFixedTopPX() + "px"
                 });
 
                 $("#viewNewChatroom .page-main .search-user-button").css({
-                    "top": parseInt(document.documentElement.clientWidth * 2.468 / 100 + 20, 10) + "px"
+                    "top": parseInt(document.documentElement.clientWidth * 2.468 / 100 + iOSFixedTopPX(), 10) + "px"
                 });
 
                 $("#viewNewChatroom .page-main .search-user-clear-content").css({
-                    "top": "20px"
+                    "top": iOSFixedTopPX() + "px"
                 });
             }
 

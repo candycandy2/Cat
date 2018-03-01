@@ -3,7 +3,6 @@ $("#viewActivitiesDetail").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
         var isFull, isRepeatSignup, isSignup, actModel, actID;
-        //var lastSignupID, lastManageID;
 
 
         /********************************** function *************************************/
@@ -57,12 +56,12 @@ $("#viewActivitiesDetail").pagecontainer({
                     }
 
 
-                    //處理圖片大小問題
+                    //處理活動圖片大小
                     $.each($("#detailContent img"), function (index, item) {
                         var imgWidth = $(item).attr("width");
                         var imgHeight = $(item).attr("height");
                         var imgRatio = (imgWidth / imgHeight).toFixed(2);
-                        
+
                         $(item).css("width", "92.58vw");
                         $(item).css("height", 92.58 / imgRatio + "vw");
 
@@ -103,7 +102,7 @@ $("#viewActivitiesDetail").pagecontainer({
             }
 
             //如果是組隊報名，不顯示報名限制
-            if(model == "4") {
+            if (model == "4") {
                 $("#detailMax").hide();
                 $("#detailLimit").hide();
             } else {
@@ -135,7 +134,7 @@ $("#viewActivitiesDetail").pagecontainer({
         $(".detail-signup-btn").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
 
-            if(!selfClass) {
+            if (!selfClass) {
                 if (isRepeatSignup == "Y" && actModel != "4") {
                     //已報名同類活動，不能報名該活動
                     popupMsgInit('.signupedSameMsg');
@@ -149,10 +148,10 @@ $("#viewActivitiesDetail").pagecontainer({
                         + '</SignupModel><EmployeeNo>'
                         + myEmpNo
                         + '</EmployeeNo></LayoutHeader>';
-    
+
                     //console.log(activitiesSignupQueryData);
                     ActivitiesSignupQuery(actModel);
-                    
+
                 }
             }
 
@@ -175,10 +174,6 @@ $("#viewActivitiesDetail").pagecontainer({
 
         });
 
-        //測試popup
-        // $("#detailThumbnail").on("click", function() {
-        //     popupMsgInit('.finishedFamilySignup');
-        // });
 
 
     }

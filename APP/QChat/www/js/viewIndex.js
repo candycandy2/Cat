@@ -882,7 +882,7 @@ $("#viewIndex").pagecontainer({
             //---------------------iOS UI---------------------
             if (device.platform === "iOS") {
                 $("#viewIndex .page-main .search-index-content").css({
-                    "padding-top": "20px"
+                    "padding-top": iOSFixedTopPX() + "px"
                 });
             }
         });
