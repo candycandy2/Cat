@@ -404,7 +404,7 @@ function onBackKeyDown() {
 
     } else if (activePageID === "viewEventContent") {
 
-        if (checkPopupShown()) {console.log("----B");
+        if (checkPopupShown()) {
             $('#' + popupID).popup('close');
             footerFixed();
         } else {
