@@ -241,10 +241,5 @@ $("#viewMain").pagecontainer({
                 $(this).remove()
             })
         })
-
-        /*$('li .edit-btn').on('touchend', function(e) {
-            e.preventDefault()
-            $(this).parents('li').children('a').html('edited')
-        })*/
     }
 });
