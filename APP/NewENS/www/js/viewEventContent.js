@@ -474,7 +474,7 @@ $("#viewEventContent").pagecontainer({
             $('<div class="event-content-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             if (device.platform === "iOS") {
-                $(".event-content-photo-full-screen img").css("padding-top", "20px");
+                $(".event-content-photo-full-screen img").css("padding-top", iOSFixedTopPX() + "px");
             }
 
             $(".event-content-photo-full-screen").css("top", $(document).scrollTop());
@@ -533,7 +533,7 @@ $("#viewEventContent").pagecontainer({
             var buttonHeight = $(".event-content-photo-full-screen .button-content").height();
 
             if (device.platform === "iOS") {
-                $(".event-content-photo-full-screen").css("margin-top", "20px");
+                $(".event-content-photo-full-screen").css("margin-top", iOSFixedTopPX() + "px");
             }
 
             $(".event-content-photo-full-screen #fullScreenImg").css("padding-top", buttonHeight + "px");

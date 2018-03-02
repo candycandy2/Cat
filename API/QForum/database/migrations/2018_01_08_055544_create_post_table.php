@@ -14,6 +14,7 @@ class CreatePostTable extends Migration
     {
         Schema::create('qp_post', function (Blueprint $table) {
             $table->string('row_id',50)->unique();
+            $table->string('ref_id', 50);
             $table->integer('board_id');
             $table->string('post_title', 250);
             $table->string('from_id', 250);

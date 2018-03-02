@@ -350,7 +350,7 @@ $("#viewEventAdd").pagecontainer({
             var pageScrollHeight = $(".ui-page.ui-page-active").scrollTop();
 
             if (device.platform === "iOS") {
-                pageScrollHeight += 20;
+                pageScrollHeight += iOSFixedTopPX();
             }
             var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight, 10);
             var left = parseInt((clientWidth - widthPopup), 10);

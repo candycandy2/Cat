@@ -89,6 +89,7 @@
         
     </div>
 
+    <!--您已報名其他場次-popup-->
     <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupedAllMsg" for="signupedAllMsg" id="signupedAllMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -111,6 +112,41 @@
                     <div class="btn-cancel">
                         <!--關閉-->
                         <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--報名未完成-popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup selectNoFinish" for="selectNoFinish" id="selectNoFinish">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--報名未完成-->
+                        <span class="langStr" data-id="str_022"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--確定回到上一頁-->
+                    <span class="langStr" data-id="str_023"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="cancelSelectBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
                     </div>
                 </div>
             </div>

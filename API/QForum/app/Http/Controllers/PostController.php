@@ -84,6 +84,7 @@ class PostController extends Controller
 
         $postId = $data['post_id'];
         $fileData = isset($data['file_list'])?$data['file_list']:null;
+        $refId = isset($data['ref_id'])?$data['ref_id']:null;
         $empNo = $data['emp_no'];
         $userData = $this->userService->getUserData($empNo);
         //new Post and add attach

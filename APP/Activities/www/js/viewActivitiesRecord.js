@@ -4,7 +4,7 @@ $("#viewActivitiesRecord").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
         var currentID, currentNo, currentModel;
-        
+
         /********************************** function *************************************/
         //獲取報名記錄
         window.ActivitiesRecordQuery = function () {
@@ -89,10 +89,7 @@ $("#viewActivitiesRecord").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesRecord").on("pagebeforeshow", function (event, ui) {
-            if (viewRecordInit) {
-                //ActivitiesRecordQuery();
-                viewRecordInit = false;
-            }
+
         });
 
         $("#viewActivitiesRecord").on("pageshow", function (event, ui) {
@@ -105,8 +102,8 @@ $("#viewActivitiesRecord").pagecontainer({
         });
 
         //報名記錄內容
-        $("#viewRecordList").on("click", ".record-detail", function() {
-            
+        $("#viewRecordList").on("click", ".record-detail", function () {
+
         });
 
         //取消報名-popup
@@ -115,6 +112,7 @@ $("#viewActivitiesRecord").pagecontainer({
             currentNo = $(this).parent().attr("data-no");
             currentModel = $(this).parent().attr("data-model");
 
+            //取消報名popup彈窗內容
             var recordActName = '', recordContent = '';
             for (var i in recordArr) {
                 if (currentID == recordArr[i]["ActivitiesID"]) {
@@ -130,7 +128,7 @@ $("#viewActivitiesRecord").pagecontainer({
                 }
 
                 //組隊報名可以申請多次，所以不能用活動編號判斷，需要用報名編號判斷
-                if(currentNo == recordArr[i]["SignupNo"] && recordArr[i]["SignupModel"] == "4") {
+                if (currentNo == recordArr[i]["SignupNo"] && recordArr[i]["SignupModel"] == "4") {
                     recordContent = '<span>' + recordArr[i]["SignupTeamName"] + '</span>';
                 }
             }

@@ -30,7 +30,7 @@ class Forum
      * @param  String $queryParam 從customApi 帶過來的urlparam
      * @return json
      */
-    public function newPost($project, $empNo, $postId, $title, $content, $queryParam)
+    public function newPost($project, $empNo, $postId, $refId, $title, $content, $queryParam)
     {       
         $apiFunction = 'newPost';
 
@@ -41,11 +41,12 @@ class Forum
         $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
         $layoutHeader->addChild('board_id', $board->board_id);
         $layoutHeader->addChild('post_id', $postId);
+        $layoutHeader->addChild('ref_id', $refId);
         $layoutHeader->addChild('post_title', $title);
         $layoutHeader->addChild('content', $content);
         $data = array("strXml"=>$xml->LayoutHeader->asXML());
         
-        return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);
+        return $result = $this->callQForumAPI($apiFunction, $queryParam, $data);
     }
 
     /**
@@ -64,7 +65,7 @@ class Forum
         $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
         $data = array("strXml"=>$xml->LayoutHeader->asXML());
         
-        return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);
+        return $result = $this->callQForumAPI($apiFunction, $queryParam, $data);
     }
 
     /**
@@ -85,7 +86,7 @@ class Forum
         $layoutHeader->addChild('post_title', $title);
         $layoutHeader->addChild('content', $content);
         $data = array("strXml"=>$xml->LayoutHeader->asXML());
-        return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);  
+        return $result = $this->callQForumAPI($apiFunction, $queryParam, $data);  
     }
 
     /**
@@ -104,7 +105,7 @@ class Forum
         $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
         $layoutHeader->addChild('post_id', $postId);
         $data = array("strXml"=>$xml->LayoutHeader->asXML());
-        return $result = $this->callQmessageAPI($apiFunction, $queryParam, $data);
+        return $result = $this->callQForumAPI($apiFunction, $queryParam, $data);
     }
 
     /**
@@ -113,7 +114,7 @@ class Forum
      * @param  Array $data        傳送的參數
      * @return json
      */
-    private function callQmessageAPI($apiFunction,  Array $queryParam, $data=null){
+    private function callQForumAPI($apiFunction,  Array $queryParam, $data=null){
          $signatureTime = time();
          $data = json_encode($data);
          $url = Config::get('app.qforum_api_server').$apiFunction.'?'.http_build_query($queryParam);

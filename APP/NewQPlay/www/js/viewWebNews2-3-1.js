@@ -126,7 +126,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                     var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height() + 5;
 
                     if (device.platform === "iOS") {
-                        portalHeaderHeight += 20;
+                        portalHeaderHeight += iOSFixedTopPX();
                     }
 
                     $("#PortalContent").css("padding-top", "0px");
@@ -273,7 +273,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                         var limitPercent = matrix[0];
 
                         if (device.platform === "iOS") {
-                            headerHeight += 20;
+                            headerHeight += iOSFixedTopPX();
                         }
 
                         if ((canvasHeight * matrix[0] - scrollTop) < (screenHeight * limitPercent - headerHeight - portalHeaderHeight)) {
@@ -568,7 +568,7 @@ $("#viewWebNews2-3-1").pagecontainer({
             }
 
             if (device.platform === "iOS") {
-                var portalHeaderTop = parseInt(document.documentElement.clientWidth * 13 / 100, 10) + 20;
+                var portalHeaderTop = parseInt(document.documentElement.clientWidth * 13 / 100, 10) + iOSFixedTopPX();
                 $("#viewWebNews2-3-1 .portal-header").css("top", portalHeaderTop);
             }
         });

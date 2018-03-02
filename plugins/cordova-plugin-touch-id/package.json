@@ -10,7 +10,7 @@
         "spec": "latest",
         "type": "tag"
       },
-      "/Users/samuel.hsieh/Documents/GitHub/EnterpriseAPPPlatform/APP/Insurance"
+      ""
     ]
   ],
   "_from": "cordova-plugin-touch-id@latest",
@@ -45,7 +45,7 @@
   "_shasum": "7d06aca6672f2ee322c7db81ef8cc76d3e58713f",
   "_shrinkwrap": null,
   "_spec": "cordova-plugin-touch-id",
-  "_where": "/Users/samuel.hsieh/Documents/GitHub/EnterpriseAPPPlatform/APP/Insurance",
+  "_where": "",
   "author": {
     "name": "Eddy Verbruggen",
     "email": "eddyverbruggen@gmail.com",

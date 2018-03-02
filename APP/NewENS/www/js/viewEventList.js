@@ -421,7 +421,7 @@ $("#viewEventList").pagecontainer({
                 eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                 //Message Count
-                var msgCount;
+                var msgCount = 0;
                 for (j=0; j<messageCountData.length; j++) {
                     if (messageCountData[j]["target_id"] === eventListData[i].chatroom_id) {
                         msgCount = messageCountData[j]["count"];
@@ -429,7 +429,7 @@ $("#viewEventList").pagecontainer({
                     }
                 }
 
-                if (msgCount == 0) msgCount = "";
+                if (msgCount == 0) msgCount = "0";
                 eventListMsg.find(".message .count").html(msgCount);
 
                 $("#reportDiv").append(eventListMsg);
@@ -446,7 +446,7 @@ $("#viewEventList").pagecontainer({
                         var headerHeight = $("#viewEventList .page-header").height();
                         var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
                         if (device.platform === "iOS") {
-                            scrollPageTop -= 20;
+                            scrollPageTop -= iOSFixedTopPX();
                         }
 
                         $('html, body').animate({
@@ -1065,12 +1065,12 @@ $("#viewEventList").pagecontainer({
 
                     if (device.platform === "iOS") {
                         var heightView = parseInt(document.documentElement.clientHeight * 100 / 100, 10);
-                        var heightPanel = heightView - 20;
+                        var heightPanel = heightView - iOSFixedTopPX();
 
                         $("#projectSelect").css({
                             'min-height': heightPanel + 'px',
                             'max-height': heightPanel + 'px',
-                            'margin-top': '20px'
+                            'margin-top': iOSFixedTopPX() + 'px'
                         });
                     }
 

@@ -156,24 +156,26 @@ class EventController extends Controller
                 'uuid' => (isset($input['uuid']))?$input['uuid']:""
                 );
             
+            //Step1.get post id as chatroomId
+            $chatroomId = $this->eventService->getPostId($empNo, $queryParam);
+
+            //Step2. create event
+            $data['chatroom_id'] = $chatroomId;
+            $eventId = $this->eventService->newEvent($empNo, $data, $taskUserList, $eventUser, $queryParam);
+
+            //Step3. new post
             $title = $data['event_title'];
             $content = $data['event_desc'];
-            $newPostRs = json_decode($this->eventService->newPost($data['project'], $empNo, $title, $content, $queryParam));
-
+            $newPostRs = json_decode($this->eventService->newPost($data['project'], $empNo, $chatroomId, $eventId, $title, $content, $queryParam));
             if($newPostRs->ResultCode != ResultCode::_1_reponseSuccessful){
                  return $result = response()->json(['ResultCode'=>$newPostRs->ResultCode,
                 'Message'=>"新增Post失敗",
                 'Content'=>""]);
             }
-
-            //Step2. create event
-            $chatroomId = $newPostRs->Content->post_id;
-            $data['chatroom_id'] = $chatroomId;
-            $eventId = $this->eventService->newEvent($empNo, $data, $taskUserList, $eventUser, $queryParam);
             \DB::commit();
 
-            //Step3. send push
-            $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
+            // //Step4. send push
+            // $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                 'Content'=>$title]);
 

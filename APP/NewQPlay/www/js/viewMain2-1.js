@@ -293,12 +293,12 @@ $("#viewMain2-1").pagecontainer({
 
                     if (device.platform === "iOS") {
                         var heightView = parseInt(document.documentElement.clientHeight * 100 / 100, 10);
-                        var heightPanel = heightView - 20;
+                        var heightPanel = heightView - iOSFixedTopPX();
 
                         $("#eventTypeSelect").css({
                             'min-height': heightPanel + 'px',
                             'max-height': heightPanel + 'px',
-                            'margin-top': '20px'
+                            'margin-top': iOSFixedTopPX() + 'px'
                         });
                     }
                 },
