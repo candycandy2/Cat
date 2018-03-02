@@ -812,10 +812,18 @@ class CommonUtil
         }
         return $key;
     }
-
-    public static function getRealAppName($appKey){
-        $env = strtolower(Config::get('app.env'));
-        return substr($appKey,3,strlen($appKey)-strlen($env)-3);
+ 
+    /**
+     * 過濾掉環境變數，取得原始app專案名稱
+     * @param  String $appKey 加上環境變數後的appKey
+     * @return String         ex : appqplaydev，處理後會回傳qplqy
+     */
+    public static function getProjectName($appKey){
+        $projectName = preg_replace("/^app/", '',$appKey);
+        if(Config::get('app.env')!= 'production' ){
+            $projectName = preg_replace("/".Config::get('app.env')."$/", '',trim($projectName));
+        }
+        return trim($projectName);
     }
 
 }

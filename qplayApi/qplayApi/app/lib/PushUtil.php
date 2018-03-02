@@ -73,7 +73,7 @@ class PushUtil
         if(is_null($appKey)){
             $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
         }else{
-            $appName = CommonUtil::getRealAppName($appKey);
+            $appName = CommonUtil::getProjectName($appKey);
             $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
             $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
             $client = new JPush($appId, $masterSecret);
@@ -151,7 +151,7 @@ class PushUtil
         if(is_null($appKey)){
             $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
         }else{
-            $appName = CommonUtil::getRealAppName($appKey);
+            $appName = CommonUtil::getProjectName($appKey);
             $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
             $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
             $client = new JPush($appId, $masterSecret);
@@ -276,7 +276,7 @@ class PushUtil
         if(is_null($appKey)){
             $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
         }else{
-            $appName = CommonUtil::getRealAppName($appKey);
+            $appName = CommonUtil::getProjectName($appKey);
             $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
             $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
             $client = new JPush($appId, $masterSecret);
