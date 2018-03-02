@@ -436,6 +436,7 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 
                                 //Darren - new create editor
                                 CKEDITOR.replace("editor");
+                                QForum.EVENT.editorKeyIn();
 
                                 //Darren - set content
                                 window.CKEDITOR.instances.editor.setData($("#tempEditorContent").html());

@@ -9,7 +9,7 @@ $("#viewActivitiesList").pagecontainer({
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activitiesArr = data["Content"];
@@ -77,9 +77,6 @@ $("#viewActivitiesList").pagecontainer({
 
         });
 
-        $("#viewActivitiesList").on("pageshow", function (event, ui) {
-
-        });
 
         /********************************** dom event *************************************/
         $("#viewActivitiesList").keypress(function (event) {
@@ -90,11 +87,11 @@ $("#viewActivitiesList").pagecontainer({
         $("#viewActivitiesContent").on("click", ".activity-list", function (e) {
             loadingMask("show");
 
-            var actNo = $(this).attr("data-id");
+            var actID = $(this).attr("data-id");
             var actStatus = $(this).attr("data-status");
 
             activitiesDetailQueryData = '<LayoutHeader><ActivitiesID>'
-                + actNo
+                + actID
                 + '</ActivitiesID><EmployeeNo>'
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';

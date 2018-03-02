@@ -421,7 +421,7 @@ $("#viewEventList").pagecontainer({
                 eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                 //Message Count
-                var msgCount;
+                var msgCount = 0;
                 for (j=0; j<messageCountData.length; j++) {
                     if (messageCountData[j]["target_id"] === eventListData[i].chatroom_id) {
                         msgCount = messageCountData[j]["count"];
@@ -429,7 +429,7 @@ $("#viewEventList").pagecontainer({
                     }
                 }
 
-                if (msgCount == 0) msgCount = "";
+                if (msgCount == 0) msgCount = "0";
                 eventListMsg.find(".message .count").html(msgCount);
 
                 $("#reportDiv").append(eventListMsg);
