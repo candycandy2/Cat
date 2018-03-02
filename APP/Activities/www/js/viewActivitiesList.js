@@ -26,11 +26,11 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style11"><span class="langStr" data-id="str_078"></span><span>'
+                                + '</div><div class="font-style12"><span class="langStr" data-id="str_078"></span><span>'
                                 + activitiesArr[i]["QuotaPlaces"]
                                 + '</span>&nbsp;&nbsp;&nbsp;<span class="langStr" data-id="str_079"></span><span>'
                                 + activitiesArr[i]["RemainingPlaces"]
-                                + '</span></div><div class="font-style11"><span class="langStr" data-id="str_052"></span><span>'
+                                + '</span></div><div class="font-style12"><span class="langStr" data-id="str_052"></span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
 
@@ -43,9 +43,9 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style11"><span class="langStr" data-id="str_078"></span><span>'
+                                + '</div><div class="font-style12"><span class="langStr" data-id="str_078"></span><span>'
                                 + activitiesArr[i]["QuotaPlaces"]
-                                + '</span></div><div class="font-style11"><span class="langStr" data-id="str_077"></span><span>'
+                                + '</span></div><div class="font-style12"><span class="langStr" data-id="str_077"></span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
                         }

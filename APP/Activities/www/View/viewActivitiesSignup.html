@@ -47,7 +47,7 @@
                 </div>
                 <div class="font-style10 font-color2">
                     <div id="familySignupName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
-                    <div style="margin-top:2.14vw;">
+                    <div class="family-info">
                         <!--您尚可報名人數：-->
                         <span class="langStr" data-id="str_057"></span>
                         <span id="familyLimitPlace">3</span>
@@ -77,27 +77,7 @@
             </div>
             <!--自定義欄位-->
             <div class="family-signup-custom-field">
-                <!-- <div class="custom-field">
-                    <label class="font-style11 font-color1">水果</label>
-                    <div class="custom-field-checkbox font-style3 font-color1">
-                        <div data-name="checkbox1">
-                            <img src="img/radio_n.png" class="family-signup-checkbox">
-                            <span>西瓜</span>
-                        </div>
-                        <div data-name="checkbox1">
-                            <img src="img/radio_n.png" class="family-signup-checkbox">
-                            <span>蘋果</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11 font-color1">搭車地點</label>
-                    <div>請選取</div>
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11 font-color1">option1</label>
-                    <input name="" id="" type="text" data-role="none" class="input-text">
-                </div> -->
+
             </div>
             <div class="blank-container-before-footer"></div>
             <div id="selectFamilyBtn" class="person-footer font-style3 btn-disabled">
@@ -119,7 +99,7 @@
             </div>
             <!--time table-->
             <div class="time-signup-thead font-style11 font-color2">
-                <div style="color:#f9f9f9;">r</div>
+                <div class="font-color6">0</div>
                 <div>
                     <!--時段-->
                     <span class="langStr" data-id="str_062"></span>
@@ -133,22 +113,14 @@
                     <span class="langStr" data-id="str_064"></span>
                 </div>
             </div>
+            <!--所有時段-->
             <div class="time-signup-tbody font-style7 font-color2">
-                <!-- <div class="time-signup-tr">
-                    <div data-id="1701"><img src="img/radio_n.png" class="time-signup-radio"></div>
-                    <div>08:00-10:00</div>
-                    <div>100</div>
-                    <div>100</div>
-                </div>
-                <div class="time-signup-tr">
-                    <div data-id="1702"><img src="img/radio_n.png" class="time-signup-radio"></div>
-                    <div>10:00-12:00</div>
-                    <div>100</div>
-                    <div>100</div>
-                </div> -->
+
             </div>
             <!--自定義欄位-->
-            <div class="time-signup-custom-field"></div>
+            <div class="time-signup-custom-field">
+
+            </div>
             <div class="blank-container-before-footer"></div>
             <div id="timeSignupBtn" class="person-footer font-style3 btn-disabled">
                 <span>确定送出</span>
@@ -200,12 +172,10 @@
             </div>
             <!--API 搜索成員，動態生成-->
             <div class="team-signup-employee-list">
-                <!-- <div class="team-employee-list">
-                    <span>BI40</span><span>Ming Wang</span><span><img src="img/delete.png" class="team-signup-delete"></span>
-                </div> -->
+
             </div>
             <!--dropdownlist: hidden-->
-            <div id="employeeDropdownlist" style="display:none;"></div>
+            <div id="employeeDropdownlist" class="view-hide"></div>
             <!--remark-->
             <div id="teamRemark" class="font-style12 font-color2 team-signup-remark"></div>
             <div class="blank-container-before-footer"></div>
@@ -217,7 +187,8 @@
     </div>
 
     <!--查無員工資料-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup queryNoEmployee" for="queryNoEmployee" id="queryNoEmployee">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup queryNoEmployee" for="queryNoEmployee"
+        id="queryNoEmployee">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -247,8 +218,41 @@
         </div>
     </div>
 
+    <!--此同仁已存在隊伍裡-popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup memberRepeat" for="memberRepeat"
+        id="memberRepeat">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--此同仁已存在隊伍裡-->
+                        <span class="langStr" data-id="str_086"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--請重新選擇-->
+                    <span class="langStr" data-id="str_087"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--人/組數超過剩餘名額-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupOverLimitMsg" for="signupOverLimitMsg" id="signupOverLimitMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupOverLimitMsg" for="signupOverLimitMsg"
+        id="signupOverLimitMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -277,7 +281,8 @@
     </div>
 
     <!--報名未完成-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupNoFinish" for="signupNoFinish" id="signupNoFinish">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupNoFinish" for="signupNoFinish"
+        id="signupNoFinish">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
