@@ -32,8 +32,25 @@
     color: #C0C0C0
 }  
 
-.list3 li {
-    background: #97d7e8;
+.behind {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+}
+
+.behind a.ui-btn {
+    width: 100px;
+    margin: 0px;
+    float: right;
+    border: none;
+}
+
+.behind a.delete-btn, .behind a.delete-btn:active, .behind a.delete-btn:visited, .behind a.delete-btn:focus, .behind a.delete-btn:hover {
+    color: white;
+    background-color: red;
+    text-shadow: none;
 }
 
 hr {
@@ -46,7 +63,7 @@ hr {
 h1 {
     font-size: 5.5vw;
 }
-
+.js 
 a {
     color: inherit !important;
     text-decoration: none !important;
