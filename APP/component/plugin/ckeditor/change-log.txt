@@ -7,6 +7,7 @@
 ---C. Then update image by APP/component/plugin/QStorage/QStorage.js, Server will return qriginal_url
 ---D. User qriginal_url to set in dialog-image, then trigger window.ckeditorIMAGE.fire("ok")
 ---E. After all, display image on ckeditor.
+---F. For iOS, destory/new editor after add image. Re-bind keyin/change event.
 
 2. config.js
 ---A. config.toolbarGroups > set toolbar icon
