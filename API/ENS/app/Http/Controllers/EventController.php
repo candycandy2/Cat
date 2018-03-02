@@ -172,10 +172,18 @@ class EventController extends Controller
                 'Message'=>"新增Post失敗",
                 'Content'=>""]);
             }
+
+            //Step4. subscribe post
+            $subscribePostRs = json_decode($this->eventService->subscribePost($empNo, $chatroomId, $eventUser, $queryParam));
+            if($subscribePostRs->ResultCode != ResultCode::_1_reponseSuccessful){
+                 return $result = response()->json(['ResultCode'=>$subscribePostRs->ResultCode,
+                'Message'=>"訂閱Post失敗",
+                'Content'=>""]);
+            }
             \DB::commit();
 
-            // //Step4. send push
-            // $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
+            //Step4. send push Message
+            $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                 'Content'=>$title]);
 

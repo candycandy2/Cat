@@ -21,17 +21,18 @@ class Push
      * @param  Array  $queryParam 
      * @return json               訊息推播結果
      */
-    public function sendPushMessage($from, Array $to, $title, $text, Array $queryParam)
+    public function sendPushMessage($from, Array $to, $title, $text, $extra, Array $queryParam)
     {       
             $apiFunction = 'sendPushMessage';
             $signatureTime = time();
             $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'ens');
             $queryParam['app_key'] = $appKey;
+            $queryParam['qplay_message_list'] = 'N';
             $url = Config::get('app.qplay_api_server').$apiFunction.'?'.http_build_query($queryParam);
             $header = array('Content-Type: application/json',
                         'App-Key: '.$appKey,
                         'Signature-Time: '.$signatureTime,
-                        'Signature: '.CommonUtil::getSignature($signatureTime));
+                        'Signature: '.CommonUtil::getCustomSignature($signatureTime));
             $data = array(
                         'template_id' =>'0',
                         'message_title' => $title,
@@ -42,8 +43,8 @@ class Push
                         'message_source' => CommonUtil::getProjectName($appKey),
                         'source_user_id' => $from,
                         'destination_user_id' => $to,
-                        'destination_role_id' => array(
-                            )
+                        'destination_role_id' => array(),
+                        'extra' => $extra
                         );
             $data = json_encode($data);
             $result = CommonUtil::callAPI('POST', $url,  $header, $data);
@@ -61,12 +62,12 @@ class Push
         
         $template = array('title'=>'','text'=>'');
         $project = $queryParam['project'];
-        $callbackApp = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
-        $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'ens');
-        $url = $appKey.'://callbackApp='.$callbackApp.'&action=openevent&eventID='.$event['event_row_id'].'&project='.$project;
+        // $callbackApp = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
+        // $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'ens');
+        // $url = $appKey.'://callbackApp='.$callbackApp.'&action=openevent&eventID='.$event['event_row_id'].'&project='.$project;
 
-        $template['text'] =$event['event_desc'].'<br><a href="'.$url.'">查看事件詳細資料</a>';
-
+        //$template['text'] =$event['event_desc'].'<br><a href="'.$url.'">查看事件詳細資料</a>';
+        $template['text'] =$event['event_desc'];
         switch ($action) {
             case 'new':
             case 'update':
