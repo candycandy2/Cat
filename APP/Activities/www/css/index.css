@@ -91,6 +91,10 @@
     color: #2c89bc;
 }
 
+.font-color6 {
+    color: #f9f9f9;
+}
+
 .two-btn-inline > span:nth-of-type(1) {
     display: inline-block;
     width: 49.7vw;
@@ -683,19 +687,25 @@ input[type="text"] {
 
 .queryNoEmployee>.ui-content,
 .signupNoFinish>.ui-content,
-.selectNoFinish>.ui-content {
+.selectNoFinish>.ui-content,
+.updateNoFinish>.ui-content,
+.memberRepeat>.ui-content {
     padding: 0 !important;
 }
 
 .queryNoEmployee .ui-content>.header,
 .signupNoFinish .ui-content>.header,
-.selectNoFinish .ui-content>.header {
+.selectNoFinish .ui-content>.header,
+.updateNoFinish .ui-content>.header,
+.memberRepeat .ui-content>.header {
     margin-top: 10%;
 }
 
 .queryNoEmployee .ui-content>.main,
 .signupNoFinish .ui-content>.main,
-.selectNoFinish .ui-content>.main {
+.selectNoFinish .ui-content>.main,
+.updateNoFinish .ui-content>.main,
+.memberRepeat .ui-content>.main {
     margin-top: 5%;
 }
 
@@ -763,7 +773,6 @@ input[type="text"] {
     margin-left: 2.541vw;
 }
 
-
 .family-signup-set-title {
     margin-top: 5vw;
     width: 92.58vw;
@@ -773,6 +782,10 @@ input[type="text"] {
     margin-top: 2.14vw;
     padding-bottom: 2.14vw;
     border-bottom: 1px solid #d6d6d6;
+}
+
+.family-info {
+    margin-top: 2.14vw;
 }
 
 .time-signup-select {
@@ -1027,6 +1040,11 @@ input[type="text"] {
 .select-family-birth {
     padding-bottom: 2.14vw;
     border-bottom: 1px solid #d6d6d6;
+}
+
+.select-family-none {
+    padding-top: 4.3vw;
+    padding-bottom: 4.3vw;
 }
 
 /***************************************** viewActivitiesRecord *************************************/

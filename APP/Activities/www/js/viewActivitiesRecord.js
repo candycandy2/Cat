@@ -61,7 +61,7 @@ $("#viewActivitiesRecord").pagecontainer({
 
 
         //取消報名
-        window.ActivitiesRecordCancelQuery = function () {
+        window.ActivitiesRecordCancelQuery = function (model) {
 
             this.successCallback = function (data) {
                 //console.log(data);
@@ -69,6 +69,9 @@ $("#viewActivitiesRecord").pagecontainer({
                 if (data["ResultCode"] == "045913") {
                     ActivitiesListQuery();
                     ActivitiesRecordQuery();
+                    if (model == "3") {
+                        ActivitiesFamilyQuery();
+                    }
                     $("#signupCancelMsg").fadeIn(100).delay(2000).fadeOut(100);
 
                 } else if (data["ResultCode"] == "045914") {
@@ -154,7 +157,7 @@ $("#viewActivitiesRecord").pagecontainer({
                 + '</EmployeeNo></LayoutHeader>';
 
             //console.log(activitiesRecordCancelQueryData);
-            ActivitiesRecordCancelQuery();
+            ActivitiesRecordCancelQuery(currentModel);
         });
 
     }

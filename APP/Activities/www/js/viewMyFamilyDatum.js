@@ -264,6 +264,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         //“取消編輯”和“取消新增”的跳轉
         function changeViewToList() {
             $("#viewMyFamilyDatum .back-family").hide();
+            $(".family-save-btn").hide();
             $("#viewFamilyEdit").hide();
             $("#viewMyFamilyDatum .menu").show();
             if (familyArr.length == 0) {
@@ -284,6 +285,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             }
             $(".family-add-img").hide();
             $("#viewMyFamilyDatum .back-family").show();
+            $(".family-save-btn").show();
             $("#viewFamilyEdit").show();
         }
 
@@ -298,7 +300,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         $("#viewMyFamilyDatum").on("pageshow", function (event, ui) {
-
+            
         });
 
         /******************************** datetimepicker ***********************************/
