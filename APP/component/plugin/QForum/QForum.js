@@ -1016,7 +1016,7 @@ var QForum = {
         },
         windowScroll: function() {
             //Depend on the comment in window's view, decide the sequence to call API getPostDetails
-/*
+
             window.addEventListener("scroll", function() {
 
                 if (typeof $(".QForum-Content.reply-fullscreen-popup").css("display") === "undefined" || 
@@ -1105,7 +1105,7 @@ var QForum = {
                 }
 
             });
-*/
+
         },
         pagePullRefresh: function() {
 
@@ -1252,7 +1252,7 @@ var QForum = {
             $(document).on({
                 touchstart: function(event) {
 
-                    QForum.pullRefresh.startTop = $("body").scrollTop();
+                    QForum.pullRefresh.startTop = $("#" + QForum.pageID).scrollTop();
 
                     if (!checkPopupShown() && QForum.pullRefresh.startTop == 0) {
 
@@ -1313,6 +1313,7 @@ var QForum = {
 
                                 //Refrsh Data
                                 if (!QForum.pullRefresh.callAPI) {
+                                    QForum.METHOD.setReplyLastID(1);
                                     QForum.API.getPostDetails(false, true);
                                 }
 
@@ -1349,7 +1350,7 @@ var QForum = {
                                                     QForum.pullRefresh.iOSStartPlayPNG = true;
 
                                                     if (i == 1) {
-                                                        $("#pullRefreshImg").html("<img src='plugin/QForum/img/pullrefresh0" + i + ".png' width='" + gifWidth + "' height='" + gifHeight + "'>");
+                                                        $("#pullRefreshImg").html("<img src='plugin/QForum/img/pullrefresh" + i + ".png' width='" + gifWidth + "' height='" + gifHeight + "'>");
 
                                                         QForum.pullRefresh.iOSPngIndex++;
                                                         iOSPlayPNG(QForum.pullRefresh.iOSPngIndex);
@@ -1357,11 +1358,11 @@ var QForum = {
 
                                                         setTimeout(function(){
 
-                                                            $("#pullRefreshImg").html("<img src='plugin/QForum/img/pullrefresh0" + i + ".png' width='" + gifWidth + "' height='" + gifHeight + "'>");
+                                                            $("#pullRefreshImg").html("<img src='plugin/QForum/img/pullrefresh" + i + ".png' width='" + gifWidth + "' height='" + gifHeight + "'>");
 
                                                             QForum.pullRefresh.iOSPngIndex++;
 
-                                                            if (QForum.pullRefresh.iOSPngIndex <= 9) {
+                                                            if (QForum.pullRefresh.iOSPngIndex <= 18) {
                                                                 iOSPlayPNG(QForum.pullRefresh.iOSPngIndex);
                                                             } else {
                                                                 QForum.pullRefresh.iOSStartPlayPNG = false;
@@ -1469,7 +1470,7 @@ var QForum = {
                         if (QForum.pullRefresh.arrivalBottom) {
                             if (device.platform === "iOS") {
                                 QForum.pullRefresh.iOSStartPlayPNG = false;
-                                var delayTime = 2000;
+                                var delayTime = 1500;
                             } else {
                                 var delayTime = 500;
                             }
