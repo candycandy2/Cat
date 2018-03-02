@@ -54,6 +54,8 @@ function onBackKeyDown() {
         $("#mypanel").panel("close");
     } else if (activePageID == "viewActivitiesSignup") {
         popupMsgInit('.signupNoFinish');
+    } else if (activePageID == "viewActivitiesManage") {
+        popupMsgInit('.updateNoFinish');
     } else if (activePageID == "viewMyFamilyDatum" && $("#viewFamilyEdit").css("display") == "block" && addFamilyOrNot == true) {
         popupMsgInit('.confirmCancelAddFamily');
     } else if (activePageID == "viewMyFamilyDatum" && $("#viewFamilyEdit").css("display") == "block" && addFamilyOrNot == false) {

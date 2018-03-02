@@ -75,7 +75,7 @@ $("#viewActivitiesManage").pagecontainer({
                         //賦值
                         $("#familyManageThumbnail").attr("src", manageObj["ActivitiesImage"]);
                         $("#familyManageName").text(manageObj["ActivitiesName"]);
-                        $("#familyManageLimit").text(manageObj["LimitPlaces"]);
+                        $("#familyManageLimit").text(Number(manageObj["LimitPlaces"]) - Number(manageObj["SignupPlaces"]));
                         $("#familyManageEmpName").text(manageObj["EmployeeName"]);
                         $("#familyManageRlts").text(manageObj["EmployeeRelationship"]);
                         $("#familyManageGender").text(manageObj["EmployeeGender"]);
@@ -85,10 +85,11 @@ $("#viewActivitiesManage").pagecontainer({
                         //選擇眷屬頁面
                         $("#familySelectThumbnail").attr("src", manageObj["ActivitiesImage"]);
                         $("#familySelectName").text(manageObj["ActivitiesName"]);
-                        $("#familySelectLimitPlace").text(manageObj["LimitPlaces"]);
+                        $("#familySelectLimitPlace").text(Number(manageObj["LimitPlaces"]) - Number(manageObj["SignupPlaces"]));
                         $(".select-family-remark").empty().append("<div>" + manageObj["ActivitiesRemarks"] + "</div>");
+
                         //因爲眷屬報名必須包含本人，所以可攜帶眷屬數量=總數量-1
-                        selectFamilyLimit = manageObj["LimitPlaces"] - 1;
+                        selectFamilyLimit = Number(manageObj["LimitPlaces"]) - 1;
 
                         //根據欄位類型，生成不同欄位
                         familyManageFieldArr = getCustomField(manageObj);
@@ -265,7 +266,7 @@ $("#viewActivitiesManage").pagecontainer({
         };
 
         //取消報名
-        window.ActivitiesSignupCancelQuery = function () {
+        window.ActivitiesSignupCancelQuery = function (model) {
 
             this.successCallback = function (data) {
                 //console.log(data);
@@ -275,8 +276,9 @@ $("#viewActivitiesManage").pagecontainer({
                     ActivitiesListQuery();
 
                     //跳轉前刪除訪問頁面數組最後2個
-                    pageVisitedList.pop();
-                    pageVisitedList.pop();
+                    for (var i = 0; i < 2; i++) {
+                        pageVisitedList.pop();
+                    }
 
                     //跳轉
                     $.each($("#openList .activity-list"), function (index, item) {
@@ -288,6 +290,9 @@ $("#viewActivitiesManage").pagecontainer({
 
                     //重新獲取報名記錄
                     ActivitiesRecordQuery();
+                    if (model == "3") {
+                        ActivitiesFamilyQuery();
+                    }
 
                 } else if (data["ResultCode"] == "045914") {
                     //報名取消失敗
@@ -357,6 +362,11 @@ $("#viewActivitiesManage").pagecontainer({
 
         //從管理頁返回詳情頁
         $("#viewActivitiesManage .back-detail").on("click", function () {
+            popupMsgInit('.updateNoFinish');
+        });
+
+        //確定返回上一頁
+        $("#cancelUpdateBtn").on("click", function () {
             changePageByPanel("viewActivitiesDetail", false);
         });
 
@@ -375,7 +385,7 @@ $("#viewActivitiesManage").pagecontainer({
             } else {
                 self.attr("src", "img/list_down.png");
                 parentNode.css("border-bottom", "1px solid #d6d6d6");
-                parentNode.next().hide();   
+                parentNode.next().hide();
             }
         });
 
@@ -433,7 +443,7 @@ $("#viewActivitiesManage").pagecontainer({
                 + '</EmployeeNo></LayoutHeader>';
 
             //console.log(activitiesSignupCancelQueryData);
-            ActivitiesSignupCancelQuery();
+            ActivitiesSignupCancelQuery(cancelModel);
 
         });
 
@@ -522,7 +532,7 @@ $("#viewActivitiesManage").pagecontainer({
                     + '</ColumnAnswer_5></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(cancelID, cancelModel, "N");
+                ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
             }
         });
 
