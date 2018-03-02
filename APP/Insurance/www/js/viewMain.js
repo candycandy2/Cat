@@ -7,6 +7,12 @@ var encryptConfig = {
     username: "currentUser",
     password: "currentUserPassword"
 };
+var a3 = Swiped.init({
+    query: '.list3 li',
+    list: true,
+    left: 70,
+    right: 100
+});
 
 $("#viewMain").pagecontainer({
     create: function(event, ui) {

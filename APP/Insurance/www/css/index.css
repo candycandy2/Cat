@@ -1,4 +1,5 @@
 /********************************** override jQuery Mobile *************************************/
+
 #viewQRScanner {
      background: none!important;
 }
@@ -30,6 +31,10 @@
     position: fixed;
     color: #C0C0C0
 }  
+
+.list3 li {
+    background: #97d7e8;
+}
 
 hr {
     border: 0;

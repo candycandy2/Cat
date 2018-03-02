@@ -7,13 +7,13 @@ var activitiesListQueryData, activitiesDetailQueryData, activitiesSignupQueryDat
     activitiesRecordQueryData, activitiesFamilyQueryData, activitiesFamilyAddQueryData,
     activitiesFamilyUpdateQueryData, activitiesFamilyDeleteQueryData, activitiesIsFullQueryData;
 var pageList = ["viewPanel", "viewActivitiesList", "viewActivitiesRecord", "viewMyFamilyDatum", "viewActivitiesDetail", "viewActivitiesSignup", "viewActivitiesManage", "viewSelectFamily"];
-var pageVisitedList = ["viewActivitiesList"];
 var initialAppName = "Activities";
 var appKeyOriginal = "appactivities";
 var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
 //var myEmpNo = "1501005";
+var pageVisitedList = ["viewActivitiesList"];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var recordArr = [];    //活動記錄列表
 var selectFamilyLimit = 0;    //選擇眷屬的人數限制

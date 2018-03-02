@@ -408,7 +408,15 @@ function onBackKeyDown() {
             $('#' + popupID).popup('close');
             footerFixed();
         } else {
-            $.mobile.changePage('#viewEventList');
+
+            if ($(".QForum-Content.reply-fullscreen-popup").length > 0) {
+                if ($(".QForum-Content.reply-fullscreen-popup").css("display") === "block") {
+                    $(".QForum-Content.reply-fullscreen-popup").hide();
+                }
+            } else {
+                $.mobile.changePage('#viewEventList');
+            }
+
         }
 
     } else if (activePageID === "viewEventAdd") {
