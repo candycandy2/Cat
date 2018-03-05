@@ -30,7 +30,9 @@ window.initialSuccess = function() {
     }
 
     //QPush
-    QPush.initial();
+    QPush.initial({
+        "pushCallback": QPushCallback
+    });
 
     $.get('img/component/img_qplay.svg', function(svg){
         $('body').append(svg);
@@ -447,5 +449,23 @@ function handleOpenByScheme(queryData) {
         } else {
             openEventFromQPlay = true;
         }
+    }
+}
+
+//QPush callback function
+function QPushCallback(pushData) {
+    console.log(pushData);
+
+    if (typeof pushData["event_id"] !== "undefined") {
+        if (getEventListFinish) {
+            $.mobile.changePage('#viewEventContent');
+            var eventDetail = new getEventDetail(pushData["event_id"]);
+        } else {
+            openEventFromQPlay = true;
+        }
+    }
+
+    if (typeof pushData["project"] !== "undefined") {
+        changeProject("change", pushData["project"]);
     }
 }

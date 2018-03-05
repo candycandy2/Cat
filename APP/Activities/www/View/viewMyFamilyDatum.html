@@ -49,7 +49,7 @@
         <div id="viewFamilyEdit">
             <div class="family-input-div">
                 <label for="familyName">姓名</label>
-                <input type="text" name="familyName" id="familyName" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\. ]/g,'')"
+                <input type="text" name="familyName" id="familyName" onkeyup="value=value.replace(/[^\a-\z\A-\Z\u4E00-\u9FA5\. ]/g,'')"
                     onpaste="return false;" oncontextmenu="return false;" maxlength="12" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
