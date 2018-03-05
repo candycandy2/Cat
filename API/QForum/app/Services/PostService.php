@@ -23,7 +23,7 @@ class PostService
         $insertData = [
                 'board_id' => $data['board_id'],
                 'row_id' => $data['post_id'],
-                'ref_id' => $data['ref_id'],
+                'ref_id' => isset($data['ref_id'])?$data['ref_id']:null,
                 'post_title' => $data['post_title'],
                 'content' => html_entity_decode($data['content'], ENT_QUOTES),
                 'from_id' => $userData->login_id,
