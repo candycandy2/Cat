@@ -33,7 +33,7 @@ if (process.env.env === "test") {
     env.set({QPushAPPKey: "6e51cf3c174910d247ac76f3"});
 }
 
-env.set({pluginConfig: 'ckeditor,camera,QStorage,QForum'});
+env.set({pluginConfig: 'ckeditor,camera,QStorage,QForum,QPush'});
 
 /*-----------------------------------------edit config.xml------------------------------------------*/
 var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appens" + process.env.appNameDecorate + "</string>";
