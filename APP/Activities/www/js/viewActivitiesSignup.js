@@ -12,7 +12,7 @@ $("#viewActivitiesSignup").pagecontainer({
         var personFieldArr = [], familyFieldArr = [], timeFieldArr = [];    //自定義欄位 
         var radioFlag = false;    //時段是否選擇
         var actIsFull = "";    //活動是否額滿
-        var empPopupStatus = true;    //搜索員工popup狀態
+        var empPopupStatus = true;    //搜索員工popup是否重複
 
         var employeeData = {
             id: "employee-popup",
@@ -297,6 +297,7 @@ $("#viewActivitiesSignup").pagecontainer({
             this.successCallback = function (data) {
                 //console.log(data);
 
+                activityStatus = "", activityModel = model;
                 if (data['ResultCode'] == "045911") {
                     //重新獲取報名列表
                     ActivitiesListQuery();
@@ -319,25 +320,31 @@ $("#viewActivitiesSignup").pagecontainer({
                         }
                     });
 
-                    setTimeout(function () {
-                        if (isSignup == "N") {
-                            if (model == "3") {
-                                //已完成報名
-                                $(".finishedFamilySignup .header-text").text(langStr["str_017"]);
-                                popupMsgInit('.finishedFamilySignup');
-                            } else {
-                                $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
-                            }
-                        } else if (isSignup == "Y") {
-                            if (model == "3") {
-                                //已完成修改
-                                $(".finishedFamilySignup .header-text").text(langStr["str_018"]);
-                                popupMsgInit('.finishedFamilySignup');
-                            } else {
-                                $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
-                            }
-                        }
-                    }, 1500);
+                    //提示信息
+                    // setTimeout(function () {
+                    //     if (isSignup == "N") {
+                    //         if (model == "3") {
+                    //             //已完成報名
+                    //             $(".finishedFamilySignup .header-text").text(langStr["str_017"]);
+                    //             popupMsgInit('.finishedFamilySignup');
+                    //         } else {
+                    //             $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                    //         }
+                    //     } else if (isSignup == "Y") {
+                    //         if (model == "3") {
+                    //             //已完成修改
+                    //             $(".finishedFamilySignup .header-text").text(langStr["str_018"]);
+                    //             popupMsgInit('.finishedFamilySignup');
+                    //         } else {
+                    //             $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                    //         }
+                    //     }
+                    // }, 1500);
+                    if (isSignup == "N") {
+                        activityStatus = "Y";
+                    } else if (isSignup == "Y") {
+                        activityStatus = "N";
+                    }
 
                     //重新獲取報名記錄和眷屬資料
                     ActivitiesRecordQuery();
@@ -600,7 +607,6 @@ $("#viewActivitiesSignup").pagecontainer({
         $("#viewActivitiesSignup").on("popupafteropen", "#employee-popup-option", function () {
             $("#searchBar").val("");
             $("#employee-popup-option-list").empty();
-            //resizePopup("employee-popup-option");
 
             if ($("#loaderQuery").length <= 0) {
                 $("#employee-popup-option-popup .ui-content").append('<img id="loaderQuery" src="img/query-loader.gif">');
@@ -679,7 +685,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
         // 5. 關閉查詢popup後，不能添加相同同仁提示
         $("#viewActivitiesSignup").on("popupafterclose", "#employee-popup-option", function () {
-            if(!empPopupStatus) {
+            if (!empPopupStatus) {
                 popupMsgInit('.memberRepeat');
             }
             empPopupStatus = true;
