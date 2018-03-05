@@ -569,11 +569,12 @@ class EventService
 
        $from = $this->getPushUserListByEmpNoArr(array($empNo))[0];
        $event = $this->getEventDetail($queryParam['project'], $eventId, $empNo);
-       $extra = 'event_id='.$eventId;
+       $extra = array("event_id"=>$eventId,
+                      "project"=>$queryParam['project']);
        $template = $this->push->getPushMessageTemplate($action, $event, $queryParam);
        $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['title'])));
        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['text'])));
-       $pushResult = $this->push->sendPushMessage($from, $to,$title, $text, $extra, $queryParam);
+       $pushResult = $this->push->sendPushMessage($from, $to,$title, $text, json_encode($extra), $queryParam);
 
        $result = json_decode($pushResult);
        return $result;

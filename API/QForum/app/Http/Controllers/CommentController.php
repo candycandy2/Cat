@@ -87,8 +87,8 @@ class CommentController extends Controller
             \DB::commit();
             
             //Send Push Message
-            $title = $postData->post_title;
-            $text = $userData->login_id.'發表了一篇評論';
+            $title = $userData->login_id.' 回覆了「'.$postData->post_title.'」';
+            $text = $data['content'];
             $lang = (is_null($request->input('lang')))?"en-us":$request->input('lang');
             $pushRes = $this->sendPushMessage($source, $lang, $postData, $userData, $title, $text);
 
@@ -145,8 +145,8 @@ class CommentController extends Controller
             \DB::commit();
            
             //Send Push Message
-            $title = $postData->post_title;
-            $text = $userData->login_id.'修改了他的評論';
+            $title = $userData->login_id.' 回覆了「'.$postData->post_title.'」';
+            $text = $content;
             $lang = (is_null($request->input('lang')))?"en-us":$request->input('lang');
             $this->sendPushMessage($source, $lang, $postData, $userData, $title, $text);
 
@@ -218,12 +218,13 @@ class CommentController extends Controller
         $subscribeUser =  $this->subscribeService->getSubscribePostUser($postData->post_id);
 
         if(count($subscribeUser) > 0){
-            $extra = 'post_id='.$postData->post_id.',ref_id='.$postData->ref_id;
+            $extra = array("post_id"=>$postData->post_id,
+                           "ref_id"=>$postData->ref_id);
             $to = [];
             foreach ($subscribeUser as $userInfo) {
                 $to[] = $userInfo->user_domain.'\\'.$userInfo->login_id;
             }
-            return $this->push->sendPushMessage($from, $to, $title, $text, $extra, $queryParam);
+            return $this->push->sendPushMessage($from, $to, $title, $text, json_encode($extra), $queryParam);
         }else{
             return false;
         }

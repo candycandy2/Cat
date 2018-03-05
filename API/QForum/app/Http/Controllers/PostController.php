@@ -14,7 +14,6 @@ use Webpatser\Uuid\Uuid;
 use App\lib\ResultCode;
 use App\lib\Verify;
 
-
 class PostController extends Controller
 {
     
@@ -81,10 +80,8 @@ class PostController extends Controller
                                      "Message"=> $verifyResult["message"],
                                      "Content"=>""], 200);
         }
-
         $postId = $data['post_id'];
         $fileData = isset($data['file_list'])?$data['file_list']:null;
-        $refId = isset($data['ref_id'])?$data['ref_id']:null;
         $empNo = $data['emp_no'];
         $userData = $this->userService->getUserData($empNo);
         //new Post and add attach
