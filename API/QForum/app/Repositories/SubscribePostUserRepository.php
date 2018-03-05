@@ -19,7 +19,10 @@ class SubscribePostUserRepository
     }
 
     public function getSubscribePostUser($postId){
-        return $this->subscribePostUser->where('post_id',$postId)->get();
+        return $this->subscribePostUser->where('post_id',$postId)
+                                        ->join('qp_user','qp_user.emp_no','=','qp_subscribe_post_user.emp_no')
+                                        ->select('qp_user.emp_no','qp_user.user_domain','qp_user.login_id')
+                                        ->get();
     }
 
 }

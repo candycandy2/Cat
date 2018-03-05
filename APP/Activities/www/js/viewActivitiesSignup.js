@@ -12,6 +12,7 @@ $("#viewActivitiesSignup").pagecontainer({
         var personFieldArr = [], familyFieldArr = [], timeFieldArr = [];    //自定義欄位 
         var radioFlag = false;    //時段是否選擇
         var actIsFull = "";    //活動是否額滿
+        var empPopupStatus = true;    //搜索員工popup狀態
 
         var employeeData = {
             id: "employee-popup",
@@ -99,10 +100,11 @@ $("#viewActivitiesSignup").pagecontainer({
                         //選擇眷屬頁面
                         $("#familySelectThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#familySelectName").text(signupObj["ActivitiesName"]);
-                        $("#familySelectLimitPlace").text(signupObj["LimitPlaces"]);
+                        $("#familySelectLimitPlace").text(Number(signupObj["LimitPlaces"]) - 1);
                         $(".select-family-remark").empty().append("<div>" + signupObj["ActivitiesRemarks"] + "</div>");
+
                         //因爲眷屬報名必須包含本人，所以可攜帶眷屬數量=總數量-1
-                        selectFamilyLimit = signupObj["LimitPlaces"] - 1;
+                        selectFamilyLimit = Number(signupObj["LimitPlaces"]) - 1;
 
                         //处理自定义栏位，放入數組中
                         familyFieldArr = getCustomField(signupObj);
@@ -290,7 +292,7 @@ $("#viewActivitiesSignup").pagecontainer({
         };
 
         //活動報名送出
-        window.ActivitiesSignupConfirmQuery = function (actID, model, newAct) {
+        window.ActivitiesSignupConfirmQuery = function (actID, model, isSignup) {
 
             this.successCallback = function (data) {
                 //console.log(data);
@@ -318,18 +320,18 @@ $("#viewActivitiesSignup").pagecontainer({
                     });
 
                     setTimeout(function () {
-                        if (newAct == "Y") {
+                        if (isSignup == "N") {
                             if (model == "3") {
                                 //已完成報名
-                                $(".finishedFamilySignup .header-title").text(langStr["str_017"]);
+                                $(".finishedFamilySignup .header-text").text(langStr["str_017"]);
                                 popupMsgInit('.finishedFamilySignup');
                             } else {
                                 $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
                             }
-                        } else if (newAct == "N") {
+                        } else if (isSignup == "Y") {
                             if (model == "3") {
                                 //已完成修改
-                                $(".finishedFamilySignup .header-title").text(langStr["str_018"]);
+                                $(".finishedFamilySignup .header-text").text(langStr["str_018"]);
                                 popupMsgInit('.finishedFamilySignup');
                             } else {
                                 $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
@@ -337,8 +339,11 @@ $("#viewActivitiesSignup").pagecontainer({
                         }
                     }, 1500);
 
-                    //重新獲取報名記錄
+                    //重新獲取報名記錄和眷屬資料
                     ActivitiesRecordQuery();
+                    if (model == "3") {
+                        ActivitiesFamilyQuery();
+                    }
 
                 } else if (data['ResultCode'] == "045912") {
                     //先獲取該活動是否額滿，如果未額滿停留在本頁（報名頁面）；如果已額滿，返回詳情頁
@@ -348,10 +353,10 @@ $("#viewActivitiesSignup").pagecontainer({
                         + myEmpNo
                         + '</EmployeeNo></LayoutHeader>';
 
-                    ActivitiesIsFullQuery(newAct, model);
+                    ActivitiesIsFullQuery();
 
                     //報名和管理的彈窗不一致
-                    if (newAct == "Y") {
+                    if (isSignup == "N") {
                         //失敗，報名組數超過剩餘名額
                         if (model == "4") {
                             $(".signupOverLimitMsg .main-paragraph").text(langStr["str_025"]);
@@ -360,7 +365,7 @@ $("#viewActivitiesSignup").pagecontainer({
                         }
                         popupMsgInit(".signupOverLimitMsg");
 
-                    } else if (newAct == "N") {
+                    } else if (isSignup == "Y") {
                         if (model == "4") {
                             $(".manageOverLimitMsg .main-paragraph").text(langStr["str_025"]);
                         } else {
@@ -664,11 +669,23 @@ $("#viewActivitiesSignup").pagecontainer({
                 memberNoArr.push(self.attr("value"));
                 //檢查欄位
                 checkFieldByTeam();
+
+                empPopupStatus = true;
+            } else {
+                empPopupStatus = false;
             }
 
         });
 
-        // 5. 刪除組隊成員
+        // 5. 關閉查詢popup後，不能添加相同同仁提示
+        $("#viewActivitiesSignup").on("popupafterclose", "#employee-popup-option", function () {
+            if(!empPopupStatus) {
+                popupMsgInit('.memberRepeat');
+            }
+            empPopupStatus = true;
+        });
+
+        // 6. 刪除組隊成員
         $("#viewActivitiesSignup").on("click", ".team-signup-delete", function () {
             var empNo = $(this).parent().parent().attr("data-id");
             $(this).parent().parent().remove();
@@ -734,7 +751,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</MemberEmpNo></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
             }
 
         });
@@ -899,7 +916,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</ColumnAnswer_5></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
             }
         });
 
@@ -1015,7 +1032,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</TimeID></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
             }
         });
 

@@ -2302,7 +2302,7 @@ SQL;
         $app_key = $input["app_key"];
         //推播時使用的key
         $pushAppKey = ($showInMessageList)?CommonUtil::getContextAppKey():$app_key;
-        
+
         $need_push = trim(strtoupper($input["need_push"]));
         if($need_push != "Y" && $need_push != "N") {
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
@@ -2360,7 +2360,7 @@ SQL;
                         return response()->json($result);
                     }
                 }
-
+                $extraParam = (!array_key_exists('extra', $jsonContent))?"":$jsonContent['extra'];
                 $sourceUseId = $jsonContent['source_user_id'];
 
                 $userid = explode('\\', $sourceUseId)[1];
@@ -2435,9 +2435,10 @@ SQL;
                                         'company_label'=>$companyStr,
                                         'push_flag'=>'0'
                                     ]);
+                                $extraParam = $newMessageSendId;
                             }else{
                                 $newMessageSendId = $this->appPushService
-                                ->newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url, $companyStr);
+                                ->newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url,  $extraParam, $companyStr);
                             }
                             $countFlag = 0;
                             if($need_push == "Y") {
@@ -2450,9 +2451,9 @@ SQL;
                                 }
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId, true, $pushAppKey);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $extraParam, true, $pushAppKey);
                                 } else {
-                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, true, $pushAppKey);
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $extraParam, true, $pushAppKey);
                                 }
 
                                 if(!$result["result"]) {
@@ -2557,9 +2558,10 @@ SQL;
                                         'need_push'=>$need_push_db,
                                         'push_flag'=>'0'
                                     ]);
+                                $extraParam = $newMessageSendId;
                             }else{
                                 $newMessageSendId = $this->appPushService
-                                ->newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url);
+                                ->newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url,  $extraParam);
                             }
                             $hasSentUserIdList = array();
                             $real_push_user_list = array();
@@ -2668,9 +2670,9 @@ SQL;
                                 }
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId, false, $pushAppKey);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $extraParam, false, $pushAppKey);
                                 } else {
-                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, false, $pushAppKey);
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $extraParam, false, $pushAppKey);
                                 }
                                 if(!$result["result"]) {
                                     if($showInMessageList){

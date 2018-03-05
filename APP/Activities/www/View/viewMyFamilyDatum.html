@@ -3,15 +3,15 @@
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none">
             <img src="img/menu.png" class="menu">
-            <img src="img/back.png" class="back-family" style="display:none;">
+            <img src="img/back.png" class="back-family view-hide">
         </a>
         <div class="header-style">
             <div class="ui-title">
                 <!--我的眷屬資料-->
-                <span class="langStr" data-id="str_004"></span>                
-            </div>            
+                <span class="langStr" data-id="str_004"></span>
+            </div>
         </div>
-        <div class="family-save-btn font-style10">儲存</div>
+        <div class="family-save-btn font-style10" style="display:none;">儲存</div>
     </div>
     <div data-role="main" class="page-main">
         <!--1.暫無眷屬資料-->
@@ -70,10 +70,8 @@
                 <input name="familyBirth" id="familyBirth" data-role="none" class="family-input-calendar" readonly>
             </div>
             <!--dropdownlist: hidden-->
-            <div id="relationshipDropdownlist" style="display:none;"></div>
-            <div id="genderDropdownlist" style="display:none;"></div>
-            <!--fixed save string-->
-            <!-- <div class="family-save-btn font-style10">儲存</div> -->
+            <div id="relationshipDropdownlist" class="view-hide"></div>
+            <div id="genderDropdownlist" class="view-hide"></div>
         </div>
 
         <!--4.fixed add img-->

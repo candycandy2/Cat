@@ -18,7 +18,6 @@ var projectName = "ITS";
 errorCodeArray = ["014999"];
 
 window.initialSuccess = function() {
-    window.JPush.init();
 
     window.ENSJPushAppKey = "c96ae87b304de281b976d0ea";
     window.ENSJPushSecretKey = "5292cabae5da19de1b8c5b9c";
@@ -29,6 +28,9 @@ window.initialSuccess = function() {
         window.ENSJPushAppKey = "6e51cf3c174910d247ac76f3";
         window.ENSJPushSecretKey = "335a12f8b4b9d71c9d813e7d";
     }
+
+    //QPush
+    QPush.initial();
 
     $.get('img/component/img_qplay.svg', function(svg){
         $('body').append(svg);
@@ -41,6 +43,7 @@ window.initialSuccess = function() {
     checkEventTemplateData("check");
 
     $.mobile.changePage('#viewEventList');
+
 }
 
 //1. Each data has its own life-cycle.
