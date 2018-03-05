@@ -51,7 +51,8 @@ class PostRepository
                     'qp_post.created_at as post_create_time',
                     'qp_post.updated_at as post_update_time',
                     'qp_post.deleted_at as post_delete_time',
-                    'qp_post.status as post_status'
+                    'qp_post.status as post_status',
+                    'qp_post.ref_id as ref_id'
                 )
            ->first();
         return $query;

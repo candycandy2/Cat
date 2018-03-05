@@ -9,9 +9,12 @@ use App\Services\UserService;
 use App\Services\AttachService;
 use App\Services\BoardService;
 use App\Services\CommentService;
+use App\Services\SubscribeService;
 use App\lib\ResultCode;
-use App\Http\Requests;
+use App\lib\Push;
 use App\lib\Verify;
+use App\lib\CommonUtil;
+use App\Http\Requests;
 
 class CommentController extends Controller
 {
@@ -20,18 +23,24 @@ class CommentController extends Controller
     protected $attachService;
     protected $boardService;
     protected $commentService;
+    protected $subscribeService;
+    protected $push;
 
     public function __construct(PostService $postService,
                                 UserService $userService,
                                 AttachService $attachService,
                                 BoardService $boardService,
-                                CommentService $commentService)
+                                CommentService $commentService,
+                                SubscribeService $subscribeService,
+                                Push $push)
     {
         $this->postService = $postService;
         $this->userService = $userService;
         $this->attachService = $attachService;
         $this->boardService = $boardService;
         $this->commentService = $commentService;
+        $this->subscribeService = $subscribeService;
+        $this->push = $push;
     }
 
 
@@ -63,20 +72,30 @@ class CommentController extends Controller
         }
 
         $empNo = $data['emp_no'];
+        $source = $data['source'];
         $userData = $this->userService->getUserData($empNo);
         //new Post and add attach
         \DB::beginTransaction();
         try{
             $commentId = $this->commentService->newComment($data, $userData);
             $postId = $data['post_id'];
+            $postData = $this->postService->getPostData($postId);
             $fileData = isset($data['file_list'])?$data['file_list']:null;
             if(!is_null($fileData)){      
                 $attavhResult = $this->attachService->addAttach($postId, $commentId, $fileData, $userData->row_id);
             }
             \DB::commit();
+            
+            //Send Push Message
+            $title = $postData->post_title;
+            $text = $userData->login_id.'發表了一篇評論';
+            $lang = (is_null($request->input('lang')))?"en-us":$request->input('lang');
+            $pushRes = $this->sendPushMessage($source, $lang, $postData, $userData, $title, $text);
+
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
                         'Content'=>array("comment_id"=> $commentId )]);
+           
         } catch (\Exception $e){
             \DB::rollBack();
             throw $e;
@@ -115,13 +134,22 @@ class CommentController extends Controller
             $emoNo = $data['emp_no'];
             $commentId = $data['comment_id'];
             $content = $data['content'];
+            $source = $data['source'];
             $userData = $this->userService->getUserData($emoNo);
             $this->commentService->modifyComment($commentId, $content, $userData->row_id);
             $comment = $this->commentService->getComment($commentId);
             $postId = $comment->post_id;
+            $postData = $this->postService->getPostData($postId);
             $fileData = isset($data['file_list'])?$data['file_list']:[];
             $this->attachService->modifyAttach($postId, $commentId, $fileData, $userData->row_id);
             \DB::commit();
+           
+            //Send Push Message
+            $title = $postData->post_title;
+            $text = $userData->login_id.'修改了他的評論';
+            $lang = (is_null($request->input('lang')))?"en-us":$request->input('lang');
+            $this->sendPushMessage($source, $lang, $postData, $userData, $title, $text);
+
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"Success",
                         'Content'=>""]);
@@ -174,6 +202,30 @@ class CommentController extends Controller
         } catch (\Exception $e){
             \DB::rollBack();
             throw $e;
+        }
+    }
+
+    private function sendPushMessage($source, $lang, $postData, $userData, $title, $text){
+        $queryParam =  array(
+                'app_key'   => $source,
+                'lang'      => $lang,
+                'need_push' => 'Y',
+                );
+
+        $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($title)));
+        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($text)));
+        $from = $userData->user_domain.'\\'.$userData->login_id;
+        $subscribeUser =  $this->subscribeService->getSubscribePostUser($postData->post_id);
+
+        if(count($subscribeUser) > 0){
+            $extra = 'post_id='.$postData->post_id.',ref_id='.$postData->ref_id;
+            $to = [];
+            foreach ($subscribeUser as $userInfo) {
+                $to[] = $userInfo->user_domain.'\\'.$userInfo->login_id;
+            }
+            return $this->push->sendPushMessage($from, $to, $title, $text, $extra, $queryParam);
+        }else{
+            return false;
         }
     }
 }

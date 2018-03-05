@@ -12,6 +12,11 @@ class SubscribeService
         $this->subscribePostUserRepository = $subscribePostUserRepository;
     }
 
+    /**
+     * 訂閱貼文
+     * @param  array $data      request data
+     * @param  object $userData 使用者資料
+     */
     public function subscribePost($data, $userData){
         $oldSubscribeUser = $this->subscribePostUserRepository->getSubscribePostUser($data['post_id'])->pluck('emp_no')->toArray();
         $now = date('Y-m-d H:i:s',time());
@@ -27,5 +32,14 @@ class SubscribeService
             $insertDataArr[] = $insertData;
         }
        return $this->subscribePostUserRepository->subscribePost($insertDataArr);
+    }
+
+    /**
+     * 取得特定貼文訂閱人
+     * @param  string $postId 貼文id
+     * @return mixed
+     */
+    public function getSubscribePostUser($postId){
+        return $this->subscribePostUserRepository->getSubscribePostUser($postId);
     }
 }

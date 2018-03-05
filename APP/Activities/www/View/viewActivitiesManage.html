@@ -60,7 +60,7 @@
                 </div>
                 <div class="font-style10 font-color2">
                     <div id="familyManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
-                    <div style="margin-top:2.14vw;">
+                    <div class="family-info">
                         <!--您尚可報名人數：-->
                         <span class="langStr" data-id="str_057"></span>
                         <span id="familyManageLimit">5</span>
@@ -90,26 +90,7 @@
             </div>
             <!--自定義欄位-->
             <div class="family-manage-custom-field">
-                <!-- <div class="custom-field">
-                    <label for="" class="font-style11">活動建議</label>
-                    <textarea name="" id="" data-role="none" class="input-textarea"></textarea>
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">搭車地點</label>
-                    <div>請選取</div>
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">option1</label>
-                    <input name="" id="" type="text" data-role="none" class="input-text">
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">option2</label>
-                    <input name="" id="" type="text" data-role="none" class="input-text">
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">option3</label>
-                    <input name="" id="" type="text" data-role="none" class="input-text">
-                </div> -->
+                
             </div>
             <div class="blank-container-before-footer"></div>
             <div class="person-footer font-style3 two-btn-inline">
@@ -144,49 +125,29 @@
             </div>
             <!--自定義欄位-->
             <div class="time-manage-custom-field font-style7 font-color1">
-                <!-- <div class="time-manage-info">
-                    <span>报名时段：</span>
-                    <span>12:00~13:00</span>
-                </div>
-                <div class="time-manage-info">
-                    <span>活動建議：</span>
-                    <span>無意見</span>
-                </div>
-                <div class="time-manage-info">
-                    <span>搭車地點：</span>
-                    <span>QTY</span>
-                </div> -->
+                
             </div>
             <div class="time-manage-place font-style11 font-color1">
                 <!--活動時段與名額如下-->
                 <span class="langStr" data-id="str_073"></span>
             </div>
             <div class="time-manage-thead font-style11 font-color2">
-                <div>时段</div>
-                <div>提供名额</div>
-                <div>剩余名额</div>
+                <div>
+                    <!--時段-->
+                    <span class="langStr" data-id="str_062"></span>
+                </div>
+                <div>
+                    <!--提供名额-->
+                    <span class="langStr" data-id="str_063"></span>
+                </div>
+                <div>
+                    <!--剩余名额-->
+                    <span class="langStr" data-id="str_064"></span>
+                </div>
             </div>
+            <!--選擇時段-->
             <div class="time-manage-tbody font-style7 font-color2">
-                <!-- <div class="time-manage-tr">
-                    <div>08:00~10:00</div>
-                    <div>100</div>
-                    <div>100</div>
-                </div>
-                <div class="time-manage-tr">
-                    <div>10:00~12:00</div>
-                    <div>100</div>
-                    <div>100</div>
-                </div>
-                <div class="time-manage-tr">
-                    <div>14:00~16:00</div>
-                    <div>100</div>
-                    <div>100</div>
-                </div>
-                <div class="time-manage-tr">
-                    <div>16:00~18:00</div>
-                    <div>100</div>
-                    <div>100</div>
-                </div> -->
+                
             </div>
             <div class="blank-container-before-footer"></div>
             <div id="cancelTimeSignup" class="person-footer font-style3">
@@ -235,53 +196,10 @@
                             <img src="img/all_list_down.png" id="expandAllTeam" class="all-list-img">
                         </td>
                     </tr>
-                    <!-- <tr>
-                        <td>1</td>
-                        <td>AI30</td>
-                        <td></td>
-                        <td>衝衝衝第一名</td>
-                        <td>
-                            <img src="img/list_down.png" class="list-img">
-                        </td>
-                    </tr>
-                    <tr style="display:none;">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>B140 Alan Tu
-                            <br>B140 Wendy Shih
-                            <br>A141 Samuel Hsieh
-                        </td>
-                        <td>
-                            <img src="img/delete.png" class="team-delete">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>BI40</td>
-                        <td></td>
-                        <td>只要我們說第二名每人敢說自己是第一名</td>
-                        <td>
-                            <img src="img/list_down.png" class="list-img">
-                        </td>
-                    </tr>
-                    <tr style="display:none;">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>B140 Alan Tu
-                            <br>B140 Vinny YC Tang
-                            <br>B140 Jennifer Y Wang
-                            <br>BI40 Darren K Ti
-                        </td>
-                        <td>
-                            <img src="img/delete.png" class="team-delete">
-                        </td>
-                    </tr> -->
+                    
                 </table>
             </div>
         </div>
-
 
     </div>
 
@@ -374,5 +292,40 @@
             </div>
         </div>
     </div>
+
+    <!--修改未完成-popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup updateNoFinish" for="updateNoFinish" id="updateNoFinish">
+            <div data-role="main" class="ui-content">
+                <div class="header">
+                    <div class="font-style3 header-title-main">
+                        <span class='header-icon hidden'>
+                            <img src="img/urgent.png">
+                        </span>
+                        <span class="header-text">
+                            <!--修改未完成-->
+                            <span class="langStr" data-id="str_085"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="main">
+                    <p class="main-paragraph font-style3">
+                        <!--確定回到上一頁-->
+                        <span class="langStr" data-id="str_023"></span>
+                    </p>
+                </div>
+                <div class="footer">
+                    <div class="btn-two font-style1 btnArea">
+                        <div class="btn-cancel">
+                            <!--取消-->
+                            <span class="langStr" data-id="com_023"></span>
+                        </div>
+                        <div class="btn-cancel" id="cancelUpdateBtn">
+                            <!--確定-->
+                            <span class="langStr" data-id="com_016"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 </div>
