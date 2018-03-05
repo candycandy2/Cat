@@ -801,7 +801,7 @@ class AppMaintainController extends Controller
                 'app_key'=>$appkey,
                 'api_version'=>$customApi['api_version'],
                 'api_action'=>$customApi['api_action'],
-                'api_url'=>$customApi['api_url'],
+                'api_url'=>trim($customApi['api_url']),
                 );
             if(isset($customApi['row_id'])){
                 $data['row_id'] = $customApi['row_id'];
@@ -823,7 +823,7 @@ class AppMaintainController extends Controller
             $updatedRow = QP_App_Custom_Api::find($value['row_id']);
             $updatedRow->api_version = $value['api_version'];
             $updatedRow->api_action = $value['api_action'];
-            $updatedRow->api_url = $value['api_url'];
+            $updatedRow->api_url = trim($value['api_url']);
             $updatedRow->updated_user = $value['updated_user'];
             $updatedRow->save();
         }
