@@ -62,11 +62,6 @@ class Push
         
         $template = array('title'=>'','text'=>'');
         $project = $queryParam['project'];
-        // $callbackApp = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
-        // $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'ens');
-        // $url = $appKey.'://callbackApp='.$callbackApp.'&action=openevent&eventID='.$event['event_row_id'].'&project='.$project;
-
-        //$template['text'] =$event['event_desc'].'<br><a href="'.$url.'">查看事件詳細資料</a>';
         $template['text'] =$event['event_desc'];
         switch ($action) {
             case 'new':

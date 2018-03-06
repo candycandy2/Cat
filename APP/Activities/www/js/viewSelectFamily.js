@@ -186,16 +186,16 @@ $("#viewSelectFamily").pagecontainer({
         /********************************** signup *************************************/
         //返回眷屬報名或報名管理-popup
         $("#viewSelectFamily .back-select").on("click", function () {
-            if (familyIsSignup == "Y") {
-                changePageByPanel("viewActivitiesManage", false);
-            } else {
-                popupMsgInit('.selectNoFinish');
-            }
+            popupMsgInit('.selectNoFinish');
         });
 
         //確定返回報名頁面
         $("#cancelSelectBtn").on("click", function () {
-            changePageByPanel("viewActivitiesSignup", false);
+            if(familyIsSignup == "Y") {
+                changePageByPanel("viewActivitiesManage", false);
+            } else if(familyIsSignup == "N") {
+                changePageByPanel("viewActivitiesSignup", false);
+            }
         });
 
         //展開眷屬資料-img

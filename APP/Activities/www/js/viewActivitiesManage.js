@@ -286,7 +286,9 @@ $("#viewActivitiesManage").pagecontainer({
                             $(item).trigger("click");
                         }
                     });
-                    $("#cancelSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+
+                    //取消報名成功標記
+                    activityStatus = "C";
 
                     //重新獲取報名記錄
                     ActivitiesRecordQuery();
@@ -362,7 +364,11 @@ $("#viewActivitiesManage").pagecontainer({
 
         //從管理頁返回詳情頁
         $("#viewActivitiesManage .back-detail").on("click", function () {
-            popupMsgInit('.updateNoFinish');
+            if(cancelModel == "1" || cancelModel == "3") {
+                popupMsgInit('.updateNoFinish');
+            } else {
+                changePageByPanel("viewActivitiesDetail", false);
+            }
         });
 
         //確定返回上一頁
