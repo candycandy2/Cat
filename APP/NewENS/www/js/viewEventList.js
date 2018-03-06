@@ -438,23 +438,7 @@ $("#viewEventList").pagecontainer({
             loadingMask("hide");
             eventListData = null;
 
-            //Scroll to the specific Event List position
-            if (typeof eventRowID != 'undefined') {
-                if (eventRowID != null) {
-                    //If Project changed, eventRowID will not exist
-                    if ($("#event-list-msg-" + eventRowID).length != 0) {
-                        var headerHeight = $("#viewEventList .page-header").height();
-                        var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
-                        if (device.platform === "iOS") {
-                            scrollPageTop -= iOSFixedTopPX();
-                        }
-
-                        $('html, body').animate({
-                            scrollTop: scrollPageTop
-                        }, 0);
-                    }
-                }
-            }
+            scrollToSpecificEvent();
         }
 
         function memberListView(sortType, project) {
@@ -495,6 +479,26 @@ $("#viewEventList").pagecontainer({
             $(".event-member-data-list ul li:last-child").css({
                 "margin-bottom": 0
             });
+        }
+
+        function scrollToSpecificEvent() {
+            //Scroll to the specific Event List position
+            if (typeof eventRowID != 'undefined') {
+                if (eventRowID != null) {
+                    //If Project changed, eventRowID will not exist
+                    if ($("#event-list-msg-" + eventRowID).length != 0) {
+                        var headerHeight = $("#viewEventList .page-header").height();
+                        var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
+                        if (device.platform === "iOS") {
+                            scrollPageTop -= iOSFixedTopPX();
+                        }
+
+                        $("#viewEventList").animate({
+                            scrollTop: scrollPageTop
+                        }, 0);
+                    }
+                }
+            }
         }
 
         window.memberListPopup = function(data) {
@@ -567,13 +571,17 @@ $("#viewEventList").pagecontainer({
             tplJS.Popup(null, null, "append", eventMemberListData);
 
             $("#eventMemberList").popup("open");
-            footerFixed();
+            //footerFixed();
             loadingMask("hide");
 
             //Center title content
             var widthImg = $(".event-member-list ." + className + " .img-text .img").width();
             var widthText = $(".event-member-list ." + className + " .img-text .text").width();
             $(".event-member-list .img-text").width(widthImg + widthText);
+
+            $(document).on("popupafterclose", "#eventMemberList", function() {
+                scrollToSpecificEvent();
+            });
         };
 
         window.functionListPopup = function(data) {
@@ -655,13 +663,17 @@ $("#viewEventList").pagecontainer({
             tplJS.Popup(null, null, "append", eventFunctionListData);
 
             $("#eventFunctionList").popup("open");
-            footerFixed();
+            //footerFixed();
             loadingMask("hide");
 
             //Center title content
             var widthImg = $(".event-member-list ." + className + " .img-text .img").width();
             var widthText = $(".event-member-list ." + className + " .img-text .text").width();
             $(".event-member-list .img-text").width(widthImg + widthText);
+
+            $(document).on("popupafterclose", "#eventFunctionList", function() {
+                scrollToSpecificEvent();
+            });
         };
 
         function showEventAdd() {
@@ -711,7 +723,7 @@ $("#viewEventList").pagecontainer({
 
             if (openData) {
                 loadingMask("show");
-                $(".loader").css("top", "0px");
+                //$(".loader").css("top", "0px");
                 var eventDetail = new getEventDetail(eventID, action);
             }
         };
