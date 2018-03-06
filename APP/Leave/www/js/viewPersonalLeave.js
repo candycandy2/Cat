@@ -240,7 +240,7 @@ $("#viewPersonalLeave").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPI("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "");
+                CustomAPIEx("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "", 60*60, );
             }();
         };
 
@@ -344,7 +344,7 @@ $("#viewPersonalLeave").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
+                CustomAPIEx("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
             }();
 
         };
@@ -374,7 +374,7 @@ $("#viewPersonalLeave").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPI("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
+                CustomAPIEx("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
             }();
         };
 
