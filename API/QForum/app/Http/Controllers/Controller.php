@@ -23,7 +23,10 @@ class Controller extends BaseController
         if(is_array($v)){
             if(isset($v['file'])){
                 return (is_array($v['file']))?$v['file']:(array)$v['file'];
-            }else if(isset($v[0])){
+            }else if(isset($v['subscribe_user'])){
+                return (is_array($v['subscribe_user']))?$v['subscribe_user']:(array)$v['subscribe_user'];
+            }
+            else if(isset($v[0])){
                 return $v[0];
             }
         }

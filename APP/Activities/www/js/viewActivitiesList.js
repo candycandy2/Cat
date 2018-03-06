@@ -9,7 +9,7 @@ $("#viewActivitiesList").pagecontainer({
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activitiesArr = data["Content"];
@@ -26,11 +26,17 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style11"><span class="langStr" data-id="str_078"></span><span>'
+                                + '</div><div class="font-style12"><span>'
+                                + langStr["str_078"]
+                                + '</span><span>'
                                 + activitiesArr[i]["QuotaPlaces"]
-                                + '</span>&nbsp;&nbsp;&nbsp;<span class="langStr" data-id="str_079"></span><span>'
+                                + '</span>&nbsp;&nbsp;&nbsp;<span>'
+                                + langStr["str_079"]
+                                + '</span><span>'
                                 + activitiesArr[i]["RemainingPlaces"]
-                                + '</span></div><div class="font-style11"><span class="langStr" data-id="str_052"></span><span>'
+                                + '</span></div><div class="font-style12"><span>'
+                                + langStr["str_052"]
+                                + '</span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
 
@@ -43,9 +49,13 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style11"><span class="langStr" data-id="str_078"></span><span>'
+                                + '</div><div class="font-style12"><span>'
+                                + langStr["str_078"]
+                                + '</span><span>'
                                 + activitiesArr[i]["QuotaPlaces"]
-                                + '</span></div><div class="font-style11"><span class="langStr" data-id="str_077"></span><span>'
+                                + '</span></div><div class="font-style12"><span>'
+                                + langStr["str_077"]
+                                + '</span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
                         }
@@ -77,9 +87,6 @@ $("#viewActivitiesList").pagecontainer({
 
         });
 
-        $("#viewActivitiesList").on("pageshow", function (event, ui) {
-
-        });
 
         /********************************** dom event *************************************/
         $("#viewActivitiesList").keypress(function (event) {
@@ -90,11 +97,11 @@ $("#viewActivitiesList").pagecontainer({
         $("#viewActivitiesContent").on("click", ".activity-list", function (e) {
             loadingMask("show");
 
-            var actNo = $(this).attr("data-id");
+            var actID = $(this).attr("data-id");
             var actStatus = $(this).attr("data-status");
 
             activitiesDetailQueryData = '<LayoutHeader><ActivitiesID>'
-                + actNo
+                + actID
                 + '</ActivitiesID><EmployeeNo>'
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';
@@ -102,9 +109,9 @@ $("#viewActivitiesList").pagecontainer({
             ActivitiesDetailQuery(actStatus);
         });
 
-        //從編輯也返回詳情頁
-        $("#viewActivitiesList .back-detail").on("click", function () {
-            changePageByPanel("viewActivitiesDetail", false);
-        });
+        //從編輯頁返回詳情頁
+        // $("#viewActivitiesList .back-detail").on("click", function () {
+        //     changePageByPanel("viewActivitiesDetail", false);
+        // });
     }
 });

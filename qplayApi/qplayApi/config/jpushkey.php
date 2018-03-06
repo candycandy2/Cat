@@ -21,6 +21,9 @@ return [
             'app_id'=>'f1007b6d14755a1e17e74195',
             'master_secret'=>'1c33fd43b7c962ebaf14893a'
         ],
-
+        'ens'=>[
+            'app_id'=>'6e51cf3c174910d247ac76f3',
+            'master_secret'=>'335a12f8b4b9d71c9d813e7d'
+        ]
     ],
 ];

@@ -2,7 +2,7 @@
 $("#viewActivitiesDetail").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-        var isFull, isRepeatSignup, isSignup, actModel, actID;
+        var isFull = "", isRepeatSignup = "", isSignup = "", actModel = "", actID = "";
 
 
         /********************************** function *************************************/
@@ -32,23 +32,47 @@ $("#viewActivitiesDetail").pagecontainer({
 
                     //根據是否報名，是否滿額等條件判斷顯示不同按鈕
                     if (status == "Y") {
-                        if (isSignup == "Y" && actModel !== 4) {
-                            //管理
-                            showBtnByModel("alreadyBtn", isSignup, actModel);
-                        } else if (isSignup == "Y" && isFull == "N" && actModel == 4) {
-                            //報名、管理
-                            showBtnByModel("continueBtn", isSignup, actModel);
-                        } else if (isSignup == "Y" && isFull == "Y" && actModel == 4) {
-                            //管理
-                            showBtnByModel("alreadyBtn", isSignup, actModel);
-                        } else if (isSignup == "N" && isFull == "Y") {
-                            //已滿額
-                            showBtnByModel("fullBtn", isSignup, actModel);
-                        } else if (isSignup == "N" && isFull == "N") {
-                            //報名 
-                            showBtnByModel("beginBtn", isSignup, actModel);
-                            $("#beginBtn").removeClass("btn-disabled");
+                        // if (isSignup == "Y" && actModel !== 4) {
+                        //     //管理
+                        //     showBtnByModel("alreadyBtn", isSignup, actModel);
+                        // } else if (isSignup == "Y" && isFull == "N" && actModel == 4) {
+                        //     //報名、管理
+                        //     showBtnByModel("continueBtn", isSignup, actModel);
+                        // } else if (isSignup == "Y" && isFull == "Y" && actModel == 4) {
+                        //     //管理
+                        //     showBtnByModel("alreadyBtn", isSignup, actModel);
+                        // } else if (isSignup == "N" && isFull == "Y") {
+                        //     //已滿額
+                        //     showBtnByModel("fullBtn", isSignup, actModel);
+                        // } else if (isSignup == "N" && isFull == "N") {
+                        //     //報名 
+                        //     showBtnByModel("beginBtn", isSignup, actModel);
+                        //     $("#beginBtn").removeClass("btn-disabled");
+                        // }
+
+                        if (isSignup == "Y") {
+                            if (actModel == "4" && isFull == "N") {
+                                //報名+管理
+                                showBtnByModel("continueBtn", isSignup, actModel);
+                            } else if (actModel == "4" && isFull == "Y") {
+                                //滿額+管理
+                                showBtnByModel("onlyBtn", isSignup, actModel);
+                            } else {
+                                //管理
+                                showBtnByModel("alreadyBtn", isSignup, actModel);
+                            }
+
+                        } else if (isSignup == "N") {
+                            if (isFull == "Y") {
+                                //滿額
+                                showBtnByModel("fullBtn", isSignup, actModel);
+                            } else if (isFull == "N") {
+                                //報名 
+                                showBtnByModel("beginBtn", isSignup, actModel);
+                                $("#beginBtn").removeClass("btn-disabled");
+                            }
                         }
+
                     } else if (status == "N") {
                         //未開放報名的活動，反灰且不可選“我要報名”
                         showBtnByModel("beginBtn", isSignup, actModel);
@@ -117,7 +141,30 @@ $("#viewActivitiesDetail").pagecontainer({
         });
 
         $("#viewActivitiesDetail").on("pageshow", function (event, ui) {
+            //報名成功
+            if (activityStatus == "Y") {
+                if (activityModel == "3") {
+                    $(".finishedFamilySignup .header-text").text(langStr["str_017"]);
+                    popupMsgInit('.finishedFamilySignup');
+                } else {
+                    $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                }
 
+            //修改成功
+            } else if (activityStatus == "N") {
+                if (activityModel == "3") {
+                    $(".finishedFamilySignup .header-text").text(langStr["str_018"]);
+                    popupMsgInit('.finishedFamilySignup');
+                } else {
+                    $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                }
+
+            //取消成功
+            } else if(activityStatus == "C") {
+                $("#cancelSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+            }
+            
+            activityStatus = "";
         });
 
         /********************************** dom event *************************************/
@@ -170,7 +217,7 @@ $("#viewActivitiesDetail").pagecontainer({
                 + '</EmployeeNo></LayoutHeader>';
 
             //console.log(activitiesSignupManageQueryData);
-            ActivitiesSignupManageQuery(actModel);
+            ActivitiesSignupManageQuery(actModel, isFull);
 
         });
 

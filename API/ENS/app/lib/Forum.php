@@ -109,6 +109,30 @@ class Forum
     }
 
     /**
+     * 訂閱貼文
+     * @param  string $empNo            員工編號
+     * @param  string $postId           貼文id
+     * @param  array  $subscribeUser    訂閱者
+     * @param  array  $queryParam       url 參數
+     * @return json
+     */
+    public function subscribePost($empNo, $postId, $subscribeUsers, $queryParam){
+        $apiFunction = 'subscribePost';
+        
+        $xml = new \SimpleXMLElement('<xml/>');
+        $layoutHeader = $xml->addChild('LayoutHeader');
+        $layoutHeader->addChild('emp_no', $empNo);
+        $layoutHeader->addChild('source', CommonUtil::getContextAppKey(\Config('app.env'), 'ens'));
+        $layoutHeader->addChild('post_id', $postId);
+        $subscribeUserList = $layoutHeader->addChild('subscribe_user_list');
+        foreach ($subscribeUsers as $user) {
+            $subscribeUserList->addChild('subscribe_user',$user);
+        }
+        $data = array("strXml"=>$xml->LayoutHeader->asXML());
+        return $result = $this->callQForumAPI($apiFunction, $queryParam, $data);
+    }
+
+    /**
      * 呼叫QForumAPI
      * @param  String $apiFunction 呼叫的function名稱
      * @param  Array $data        傳送的參數

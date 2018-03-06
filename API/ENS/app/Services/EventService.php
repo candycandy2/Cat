@@ -383,17 +383,30 @@ class EventService
         return $modifyPostRes;
    }
 
-   /**
+    /**
     * 刪除貼文
     * @param  string $empNo  員工編號
     * @param  string $postId 貼文id
     * @param  array $queryParam  url query param
     * @return json
     */
-   public function deletePost($empNo, $postId, $queryParam ){
+    public function deletePost($empNo, $postId, $queryParam ){
         $deleteRes = $this->forum->deletePost($empNo, $postId, $queryParam );
         return $deleteRes;
-   }
+    }
+
+    /**
+     * 訂閱貼文
+     * @param  string $empNo          員工編號
+     * @param  string $postId         貼文id
+     * @param  array  $subscribeUsers 訂閱用戶
+     * @param  array  $queryParam     url參數
+     * @return json
+     */
+    public function subscribePost($empNo, $postId, $subscribeUsers, $queryParam){
+        $subscribeRes = $this->forum->subscribePost($empNo, $postId, $subscribeUsers, $queryParam);
+        return $subscribeRes;
+    }
 
     /**
      * 建立事件聊天室
@@ -556,11 +569,12 @@ class EventService
 
        $from = $this->getPushUserListByEmpNoArr(array($empNo))[0];
        $event = $this->getEventDetail($queryParam['project'], $eventId, $empNo);
-       
+       $extra = array("event_id"=>$eventId,
+                      "project"=>$queryParam['project']);
        $template = $this->push->getPushMessageTemplate($action, $event, $queryParam);
        $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['title'])));
        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['text'])));
-       $pushResult = $this->push->sendPushMessage($from, $to,$title, $text, $queryParam);
+       $pushResult = $this->push->sendPushMessage($from, $to,$title, $text, json_encode($extra), $queryParam);
 
        $result = json_decode($pushResult);
        return $result;

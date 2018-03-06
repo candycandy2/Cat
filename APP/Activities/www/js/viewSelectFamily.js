@@ -14,8 +14,10 @@ $("#viewSelectFamily").pagecontainer({
                 //console.log(data);
 
                 actID = id, actModel = model, familyIsSignup = isSignup, familyListBySelf = content;
-                if (data["ResultCode"] == "1") {
+                if (data["ResultCode"] == "1" && data["Content"] != "") {
                     //初始化
+                    $(".select-family-title").show();
+                    $(".select-family-thead").show();
                     $(".select-family-field").empty();
                     for (var i = 0; i < data["Content"].length; i++) {
                         for (var j = 0; j < 5; j++) {
@@ -146,6 +148,17 @@ $("#viewSelectFamily").pagecontainer({
                     //跳轉
                     changePageByPanel("viewSelectFamily", true);
 
+                } else {
+                    familyAllList = [];
+                    $(".select-family-title").hide();
+                    $(".select-family-thead").hide();
+                    $("#selectAllFamily").attr("src", "img/checkbox_n.png");
+                    $("#expandAllFamily").attr("src", "img/all_list_down.png");
+                    $(".select-family-tbody").empty().append("<div class='select-family-none font-style6'>暫無眷屬資料，可直接報名<div>");
+
+                    //跳轉
+                    changePageByPanel("viewSelectFamily", true);
+
                 }
 
                 loadingMask("hide");
@@ -173,16 +186,16 @@ $("#viewSelectFamily").pagecontainer({
         /********************************** signup *************************************/
         //返回眷屬報名或報名管理-popup
         $("#viewSelectFamily .back-select").on("click", function () {
-            if (familyIsSignup == "Y") {
-                changePageByPanel("viewActivitiesManage", false);
-            } else {
-                popupMsgInit('.selectNoFinish');
-            }
+            popupMsgInit('.selectNoFinish');
         });
 
         //確定返回報名頁面
-        $("#cancelSelectBtn").on("click", function() {
-            changePageByPanel("viewActivitiesSignup", false);
+        $("#cancelSelectBtn").on("click", function () {
+            if(familyIsSignup == "Y") {
+                changePageByPanel("viewActivitiesManage", false);
+            } else if(familyIsSignup == "N") {
+                changePageByPanel("viewActivitiesSignup", false);
+            }
         });
 
         //展開眷屬資料-img
@@ -282,7 +295,7 @@ $("#viewSelectFamily").pagecontainer({
             }
 
             //6.展開被選擇的眷屬
-            if(src == "img/checkbox_n.png" && expandNode.attr("src") == "img/list_down.png") {
+            if (src == "img/checkbox_n.png" && expandNode.attr("src") == "img/list_down.png") {
                 expandNode.trigger("click");
             }
 
@@ -312,7 +325,7 @@ $("#viewSelectFamily").pagecontainer({
                 });
 
                 //全選並展開所有
-                if($("#expandAllFamily").attr("src") == "img/all_list_down.png") {
+                if ($("#expandAllFamily").attr("src") == "img/all_list_down.png") {
                     $("#expandAllFamily").trigger("click");
                 }
 
@@ -453,25 +466,27 @@ $("#viewSelectFamily").pagecontainer({
             loadingMask("show");
 
             var familyQuery = "";
-            for (var i in familyAllList) {
-                if (familyAllList[i]["IsSignup"] == "Y") {
-                    familyQuery += '<FamilyList><ActivitiesID>'
-                        + actID
-                        + '</ActivitiesID><SignupPlaces>1</SignupPlaces><EmployeeNo>'
-                        + myEmpNo
-                        + '</EmployeeNo><FamilyNo>'
-                        + familyAllList[i]["FamilyNo"]
-                        + '</FamilyNo><ColumnAnswer_1>'
-                        + familyAllList[i]["ColumnAnswer_1"]
-                        + '</ColumnAnswer_1><ColumnAnswer_2>'
-                        + familyAllList[i]["ColumnAnswer_2"]
-                        + '</ColumnAnswer_2><ColumnAnswer_3>'
-                        + familyAllList[i]["ColumnAnswer_3"]
-                        + '</ColumnAnswer_3><ColumnAnswer_4>'
-                        + familyAllList[i]["ColumnAnswer_4"]
-                        + '</ColumnAnswer_4><ColumnAnswer_5>'
-                        + familyAllList[i]["ColumnAnswer_5"]
-                        + '</ColumnAnswer_5></FamilyList>';
+            if (familyAllList.length > 0) {
+                for (var i in familyAllList) {
+                    if (familyAllList[i]["IsSignup"] == "Y") {
+                        familyQuery += '<FamilyList><ActivitiesID>'
+                            + actID
+                            + '</ActivitiesID><SignupPlaces>1</SignupPlaces><EmployeeNo>'
+                            + myEmpNo
+                            + '</EmployeeNo><FamilyNo>'
+                            + familyAllList[i]["FamilyNo"]
+                            + '</FamilyNo><ColumnAnswer_1>'
+                            + familyAllList[i]["ColumnAnswer_1"]
+                            + '</ColumnAnswer_1><ColumnAnswer_2>'
+                            + familyAllList[i]["ColumnAnswer_2"]
+                            + '</ColumnAnswer_2><ColumnAnswer_3>'
+                            + familyAllList[i]["ColumnAnswer_3"]
+                            + '</ColumnAnswer_3><ColumnAnswer_4>'
+                            + familyAllList[i]["ColumnAnswer_4"]
+                            + '</ColumnAnswer_4><ColumnAnswer_5>'
+                            + familyAllList[i]["ColumnAnswer_5"]
+                            + '</ColumnAnswer_5></FamilyList>';
+                    }
                 }
             }
 
@@ -483,7 +498,7 @@ $("#viewSelectFamily").pagecontainer({
                 + '</LayoutHeader>';
 
             //console.log(activitiesSignupConfirmQueryData);
-            ActivitiesSignupConfirmQuery(actID, actModel, "Y");
+            ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
         });
 
 

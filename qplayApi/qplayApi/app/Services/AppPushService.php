@@ -22,7 +22,7 @@ class AppPushService
         
     }
 
-    public function newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url, $company_label=null)
+    public function newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url,  $extraParam, $company_label=null)
     {
          $now = date('Y-m-d H:i:s',time());
          $data = [         
@@ -39,6 +39,7 @@ class AppPushService
                     'message_text' => $message_text,
                     'message_html' => $message_html,
                     'message_url'  =>  $message_url,
+                    'extra' => $extraParam,
                     'jpush_error_code' => null,
                     'created_user' => $sourceUserInfo->row_id,
                     'updated_user' => null,

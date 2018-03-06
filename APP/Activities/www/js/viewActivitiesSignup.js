@@ -11,6 +11,8 @@ $("#viewActivitiesSignup").pagecontainer({
         var memberNoArr = [];    //組隊報名成員數組
         var personFieldArr = [], familyFieldArr = [], timeFieldArr = [];    //自定義欄位 
         var radioFlag = false;    //時段是否選擇
+        var actIsFull = "";    //活動是否額滿
+        var empPopupStatus = true;    //搜索員工popup是否重複
 
         var employeeData = {
             id: "employee-popup",
@@ -98,10 +100,11 @@ $("#viewActivitiesSignup").pagecontainer({
                         //選擇眷屬頁面
                         $("#familySelectThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#familySelectName").text(signupObj["ActivitiesName"]);
-                        $("#familySelectLimitPlace").text(signupObj["LimitPlaces"]);
+                        $("#familySelectLimitPlace").text(Number(signupObj["LimitPlaces"]) - 1);
                         $(".select-family-remark").empty().append("<div>" + signupObj["ActivitiesRemarks"] + "</div>");
+
                         //因爲眷屬報名必須包含本人，所以可攜帶眷屬數量=總數量-1
-                        selectFamilyLimit = signupObj["LimitPlaces"] - 1;
+                        selectFamilyLimit = Number(signupObj["LimitPlaces"]) - 1;
 
                         //处理自定义栏位，放入數組中
                         familyFieldArr = getCustomField(signupObj);
@@ -289,18 +292,26 @@ $("#viewActivitiesSignup").pagecontainer({
         };
 
         //活動報名送出
-        window.ActivitiesSignupConfirmQuery = function (actID, model, newAct) {
+        window.ActivitiesSignupConfirmQuery = function (actID, model, isSignup) {
 
             this.successCallback = function (data) {
                 //console.log(data);
 
+                activityStatus = "", activityModel = model;
                 if (data['ResultCode'] == "045911") {
                     //重新獲取報名列表
                     ActivitiesListQuery();
 
                     //跳轉前刪除訪問頁面數組最後2個
-                    pageVisitedList.pop();
-                    pageVisitedList.pop();
+                    if (model == "3") {
+                        for (var i = 0; i < 3; i++) {
+                            pageVisitedList.pop();
+                        }
+                    } else {
+                        for (var i = 0; i < 2; i++) {
+                            pageVisitedList.pop();
+                        }
+                    }
 
                     //跳轉
                     $.each($("#openList .activity-list"), function (index, item) {
@@ -309,37 +320,67 @@ $("#viewActivitiesSignup").pagecontainer({
                         }
                     });
 
-                    setTimeout(function () {
-                        if (newAct == "Y") {
-                            if (model == "3") {
-                                //已完成報名
-                                $(".finishedFamilySignup .header-title").text(langStr["str_017"]);
-                                popupMsgInit('.finishedFamilySignup');
-                            } else {
-                                $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
-                            }
-                        } else if (newAct == "N") {
-                            if (model == "3") {
-                                //已完成修改
-                                $(".finishedFamilySignup .header-title").text(langStr["str_018"]);
-                                popupMsgInit('.finishedFamilySignup');
-                            } else {
-                                $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
-                            }
-                        }
-                    }, 1500);
+                    //提示信息
+                    // setTimeout(function () {
+                    //     if (isSignup == "N") {
+                    //         if (model == "3") {
+                    //             //已完成報名
+                    //             $(".finishedFamilySignup .header-text").text(langStr["str_017"]);
+                    //             popupMsgInit('.finishedFamilySignup');
+                    //         } else {
+                    //             $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                    //         }
+                    //     } else if (isSignup == "Y") {
+                    //         if (model == "3") {
+                    //             //已完成修改
+                    //             $(".finishedFamilySignup .header-text").text(langStr["str_018"]);
+                    //             popupMsgInit('.finishedFamilySignup');
+                    //         } else {
+                    //             $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                    //         }
+                    //     }
+                    // }, 1500);
+                    if (isSignup == "N") {
+                        activityStatus = "Y";
+                    } else if (isSignup == "Y") {
+                        activityStatus = "N";
+                    }
 
-                    //重新獲取報名記錄
+                    //重新獲取報名記錄和眷屬資料
                     ActivitiesRecordQuery();
+                    if (model == "3") {
+                        ActivitiesFamilyQuery();
+                    }
 
                 } else if (data['ResultCode'] == "045912") {
-                    //失敗，報名組數超過剩餘名額
-                    if (model == "4") {
-                        $(".overLimitMsg .main-paragraph").text(langStr["str_025"]);
-                    } else {
-                        $(".overLimitMsg .main-paragraph").text(langStr["str_024"]);
+                    //先獲取該活動是否額滿，如果未額滿停留在本頁（報名頁面）；如果已額滿，返回詳情頁
+                    activitiesIsFullQueryData = '<LayoutHeader><ActivitiesID>'
+                        + actID
+                        + '</ActivitiesID><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo></LayoutHeader>';
+
+                    ActivitiesIsFullQuery();
+
+                    //報名和管理的彈窗不一致
+                    if (isSignup == "N") {
+                        //失敗，報名組數超過剩餘名額
+                        if (model == "4") {
+                            $(".signupOverLimitMsg .main-paragraph").text(langStr["str_025"]);
+                        } else {
+                            $(".signupOverLimitMsg .main-paragraph").text(langStr["str_024"]);
+                        }
+                        popupMsgInit(".signupOverLimitMsg");
+
+                    } else if (isSignup == "Y") {
+                        if (model == "4") {
+                            $(".manageOverLimitMsg .main-paragraph").text(langStr["str_025"]);
+                        } else {
+                            $(".manageOverLimitMsg .main-paragraph").text(langStr["str_024"]);
+                        }
+                        popupMsgInit(".manageOverLimitMsg");
                     }
-                    popupMsgInit(".overLimitMsg");
+
                 }
 
                 loadingMask("hide");
@@ -349,6 +390,29 @@ $("#viewActivitiesSignup").pagecontainer({
 
             var __construct = function () {
                 CustomAPI("POST", true, "Activities_Signup_Confirm", self.successCallback, self.failCallback, activitiesSignupConfirmQueryData, "");
+            }();
+
+        };
+
+        //報名失敗，查詢該活動是否額滿
+        window.ActivitiesIsFullQuery = function () {
+
+            this.successCallback = function (data) {
+                //console.log(data);
+
+                if (data["ResultCode"] == "1") {
+                    actIsFull = data["Content"][0]["IsFull"];
+
+                }
+
+                loadingMask("hide");
+
+            };
+
+            this.failCallback = function (data) { };
+
+            var __construct = function () {
+                CustomAPI("POST", false, "Activities_Detail", self.successCallback, self.failCallback, activitiesIsFullQueryData, "");
             }();
 
         };
@@ -505,6 +569,32 @@ $("#viewActivitiesSignup").pagecontainer({
             changePageByPanel("viewActivitiesDetail", false);
         });
 
+        //報名失敗提示popup，如果已額滿就跳轉
+        $("#signupOverBtn").on("click", function () {
+            if (actIsFull == "Y") {
+                //如果已額滿，重新獲取活動列表
+                ActivitiesListQuery();
+
+                //跳轉前刪除訪問頁面數組最後2個
+                if (submitModel == "3") {
+                    for (var i = 0; i < 3; i++) {
+                        pageVisitedList.pop();
+                    }
+                } else {
+                    for (var i = 0; i < 2; i++) {
+                        pageVisitedList.pop();
+                    }
+                }
+
+                //跳轉
+                $.each($("#openList .activity-list"), function (index, item) {
+                    if ($(item).attr("data-id") == actID) {
+                        $(item).trigger("click");
+                    }
+                });
+            }
+        });
+
         /******************************* employee component ********************************/
         // 1. 點擊“新增名單”，觸發dropdownlist的click事件，可以彈出popup
         $(".add-team-member").on("click", function () {
@@ -517,7 +607,6 @@ $("#viewActivitiesSignup").pagecontainer({
         $("#viewActivitiesSignup").on("popupafteropen", "#employee-popup-option", function () {
             $("#searchBar").val("");
             $("#employee-popup-option-list").empty();
-            //resizePopup("employee-popup-option");
 
             if ($("#loaderQuery").length <= 0) {
                 $("#employee-popup-option-popup .ui-content").append('<img id="loaderQuery" src="img/query-loader.gif">');
@@ -586,11 +675,23 @@ $("#viewActivitiesSignup").pagecontainer({
                 memberNoArr.push(self.attr("value"));
                 //檢查欄位
                 checkFieldByTeam();
+
+                empPopupStatus = true;
+            } else {
+                empPopupStatus = false;
             }
 
         });
 
-        // 5. 刪除組隊成員
+        // 5. 關閉查詢popup後，不能添加相同同仁提示
+        $("#viewActivitiesSignup").on("popupafterclose", "#employee-popup-option", function () {
+            if (!empPopupStatus) {
+                popupMsgInit('.memberRepeat');
+            }
+            empPopupStatus = true;
+        });
+
+        // 6. 刪除組隊成員
         $("#viewActivitiesSignup").on("click", ".team-signup-delete", function () {
             var empNo = $(this).parent().parent().attr("data-id");
             $(this).parent().parent().remove();
@@ -656,7 +757,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</MemberEmpNo></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
             }
 
         });
@@ -821,7 +922,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</ColumnAnswer_5></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
             }
         });
 
@@ -937,7 +1038,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + '</TimeID></LayoutHeader>';
 
                 //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, submitModel, "Y");
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
             }
         });
 
