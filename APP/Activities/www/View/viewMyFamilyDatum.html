@@ -11,7 +11,10 @@
                 <span class="langStr" data-id="str_004"></span>
             </div>
         </div>
-        <div class="family-save-btn font-style10" style="display:none;">儲存</div>
+        <div class="family-save-btn font-style10" style="display:none;">
+            <!--儲存-->
+            <span class="langStr" data-id="str_016"></span>
+        </div>
     </div>
     <div data-role="main" class="page-main">
         <!--1.暫無眷屬資料-->
@@ -48,25 +51,40 @@
         <!--3.新增和編輯頁面-->
         <div id="viewFamilyEdit">
             <div class="family-input-div">
-                <label for="familyName">姓名</label>
+                <label for="familyName">
+                    <!--姓名-->
+                    <span class="langStr" data-id="str_080"></span>
+                </label>
                 <input type="text" name="familyName" id="familyName" onkeyup="value=value.replace(/[^\a-\z\A-\Z\u4E00-\u9FA5\. ]/g,'')"
                     onpaste="return false;" oncontextmenu="return false;" maxlength="12" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
-                <label for="familyRelationship">關係</label>
+                <label for="familyRelationship">
+                    <!--關係-->
+                    <span class="langStr" data-id="str_081"></span>
+                </label>
                 <input type="text" name="familyRelationship" id="familyRelationship" data-role="none" class="family-input-dropdown" readonly>
             </div>
             <div class="family-input-div">
-                <label for="familyGender">性別</label>
+                <label for="familyGender">
+                    <!--性別-->
+                    <span class="langStr" data-id="str_082"></span>
+                </label>
                 <input type="text" name="familyGender" id="familyGender" data-role="none" class="family-input-dropdown" readonly>
             </div>
             <div class="family-input-div">
-                <label for="familyID">身份證</label>
+                <label for="familyID">
+                    <!--身份證-->
+                    <span class="langStr" data-id="str_101"></span>
+                </label>
                 <input type="text" name="familyID" id="familyID" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')" onpaste="return false;"
                     oncontextmenu="return false;" maxlength="20" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
-                <label for="familyBirth">生日</label>
+                <label for="familyBirth">
+                    <!--生日-->
+                    <span class="langStr" data-id="str_049"></span>
+                </label>
                 <input name="familyBirth" id="familyBirth" data-role="none" class="family-input-calendar" readonly>
             </div>
             <!--dropdownlist: hidden-->
@@ -83,7 +101,7 @@
     </div>
 
     <!--確定刪除眷屬資料-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeleteFamily" for="confirmDeleteFamily"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmDeleteFamily" for="confirmDeleteFamily"
         id="confirmDeleteFamily">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -98,7 +116,7 @@
                 </div>
             </div>
             <div class="main">
-                <p class="main-paragraph font-style3">林小美</p>
+                <p class="main-paragraph font-style3"></p>
             </div>
             <div class="footer">
                 <div class="btn-two font-style1 btnArea">
@@ -116,7 +134,7 @@
     </div>
 
     <!--確定取消新增-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelAddFamily" for="confirmCancelAddFamily"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmCancelAddFamily" for="confirmCancelAddFamily"
         id="confirmCancelAddFamily">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -149,7 +167,7 @@
     </div>
 
     <!--確定取消編輯-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelEditFamily" for="confirmCancelEditFamily"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmCancelEditFamily" for="confirmCancelEditFamily"
         id="confirmCancelEditFamily">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -164,7 +182,7 @@
                 </div>
             </div>
             <div class="main">
-                <p class="main-paragraph font-style3">林小美</p>
+                <p class="main-paragraph font-style3"></p>
             </div>
             <div class="footer">
                 <div class="btn-two font-style1 btnArea">
@@ -182,7 +200,7 @@
     </div>
 
     <!--新增眷屬資料失敗/更新眷屬資料失敗/刪除眷屬資料失敗-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup familyErrorMsg" for="familyErrorMsg"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup familyErrorMsg" for="familyErrorMsg"
         id="familyErrorMsg">
         <div data-role="main" class="ui-content">
             <div class="header">

@@ -320,7 +320,6 @@ function saveValueAndCheckForm(arr, name, value, bool, btn) {
             $("#" + btn).removeClass("btn-disabled");
         }
     }
-
     //console.log(arr);
 }
 
