@@ -390,9 +390,11 @@ function footerFixed() {
     $(".ui-footer").removeClass("slideup");
     $(".ui-header").removeClass("slidedown");
 
-    $('.ui-page-active.ui-page').css({
-        'height': "100%"
-    });
+    if (!checkPopupShown()) {
+        $('.ui-page-active.ui-page').css({
+            'height': "100%"
+        });
+    }
 }
 
 function waterMark() {
