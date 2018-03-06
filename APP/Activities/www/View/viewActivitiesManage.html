@@ -44,7 +44,7 @@
             </div>
             <!--提示信息-->
             <div class="person-manage-remark font-style11">
-                
+
             </div>
             <div class="blank-container-before-footer"></div>
             <div class="person-footer font-style3 two-btn-inline">
@@ -97,7 +97,7 @@
             </div>
             <!--自定義欄位-->
             <div class="family-manage-custom-field">
-                
+
             </div>
             <div class="blank-container-before-footer"></div>
             <div class="person-footer font-style3 two-btn-inline">
@@ -125,7 +125,7 @@
                 <span id="timeIsFull" class="langStr" data-id="str_069"></span>
                 <!--您已報名本項活動：-->
                 <span class="langStr" data-id="str_070"></span>
-                <span></span>
+                <span>1</span>
                 <!--人-->
                 <span class="langStr" data-id="str_058"></span>
             </div>
@@ -139,7 +139,7 @@
             </div>
             <!--自定義欄位-->
             <div class="time-manage-custom-field font-style7 font-color1">
-                
+
             </div>
             <div class="time-manage-place font-style11 font-color1">
                 <!--活動時段與名額如下-->
@@ -161,7 +161,7 @@
             </div>
             <!--選擇時段-->
             <div class="time-manage-tbody font-style7 font-color2">
-                
+
             </div>
             <div class="blank-container-before-footer"></div>
             <div id="cancelTimeSignup" class="person-footer font-style3">
@@ -211,7 +211,7 @@
                             <img src="img/all_list_down.png" id="expandAllTeam" class="all-list-img">
                         </td>
                     </tr>
-                    
+
                 </table>
             </div>
         </div>
@@ -219,7 +219,8 @@
     </div>
 
     <!--人數超過剩餘名額-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup manageOverLimitMsg" for="manageOverLimitMsg" id="manageOverLimitMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup manageOverLimitMsg"
+        for="manageOverLimitMsg" id="manageOverLimitMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -248,7 +249,8 @@
     </div>
 
     <!--確定取消報名-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelSignupMsg" for="cancelSignupMsg" id="cancelSignupMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup cancelSignupMsg"
+        for="cancelSignupMsg" id="cancelSignupMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -281,7 +283,8 @@
     </div>
 
     <!--報名取消失敗-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelFailMsg" for="cancelFailMsg" id="cancelFailMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup cancelFailMsg"
+        for="cancelFailMsg" id="cancelFailMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -309,38 +312,39 @@
     </div>
 
     <!--修改未完成-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup updateNoFinish" for="updateNoFinish" id="updateNoFinish">
-            <div data-role="main" class="ui-content">
-                <div class="header">
-                    <div class="font-style3 header-title-main">
-                        <span class='header-icon hidden'>
-                            <img src="img/urgent.png">
-                        </span>
-                        <span class="header-text">
-                            <!--修改未完成-->
-                            <span class="langStr" data-id="str_085"></span>
-                        </span>
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup updateNoFinish"
+        for="updateNoFinish" id="updateNoFinish">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--修改未完成-->
+                        <span class="langStr" data-id="str_085"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--確定回到上一頁-->
+                    <span class="langStr" data-id="str_023"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
                     </div>
-                </div>
-                <div class="main">
-                    <p class="main-paragraph font-style3">
-                        <!--確定回到上一頁-->
-                        <span class="langStr" data-id="str_023"></span>
-                    </p>
-                </div>
-                <div class="footer">
-                    <div class="btn-two font-style1 btnArea">
-                        <div class="btn-cancel">
-                            <!--取消-->
-                            <span class="langStr" data-id="com_023"></span>
-                        </div>
-                        <div class="btn-cancel" id="cancelUpdateBtn">
-                            <!--確定-->
-                            <span class="langStr" data-id="com_016"></span>
-                        </div>
+                    <div class="btn-cancel" id="cancelUpdateBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
 </div>

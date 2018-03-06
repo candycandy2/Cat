@@ -104,7 +104,7 @@ $("#viewActivitiesRecord").pagecontainer({
 
         });
 
-        //報名記錄內容
+        //報名記錄詳情
         $("#viewRecordList").on("click", ".record-detail", function () {
 
         });
