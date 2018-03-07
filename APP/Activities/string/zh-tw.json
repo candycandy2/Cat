@@ -806,5 +806,21 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "str_102",
+    "definition": "*您已設定保留眷屬資料供活動報名使用，資料會於在職期間保留於系統中，但您可隨時於系統中刪除",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_103",
+    "definition": "*請注意，當眷屬報名的活動尚未結束時，無法刪除資料",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]

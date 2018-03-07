@@ -453,19 +453,37 @@ function handleOpenByScheme(queryData) {
 }
 
 //QPush callback function
-function QPushCallback(pushData) {
+function QPushCallback(action, pushData) {
     console.log(pushData);
 
-    if (typeof pushData["event_id"] !== "undefined") {
-        if (getEventListFinish) {
-            $.mobile.changePage('#viewEventContent');
-            var eventDetail = new getEventDetail(pushData["event_id"]);
-        } else {
-            openEventFromQPlay = true;
-        }
-    }
+    //pushData["event_id"] > For ENS, new event
+    //pushData["ref_id"] > For QForum, new comment
 
-    if (typeof pushData["project"] !== "undefined") {
-        changeProject("change", pushData["project"]);
+    if (action === "open") {
+        var changePage = false;
+        var eventID = "";
+
+        if (typeof pushData["event_id"] !== "undefined") {
+            changePage = true;
+            eventID = pushData["event_id"];
+        }
+
+        if (typeof pushData["ref_id"] !== "undefined") {
+            changePage = true;
+            eventID = pushData["ref_id"];
+        }
+
+        if (changePage) {
+            if (getEventListFinish) {
+                $.mobile.changePage('#viewEventContent');
+                var eventDetail = new getEventDetail(eventID);
+            } else {
+                openEventFromQPlay = true;
+            }
+        }
+
+        if (typeof pushData["project"] !== "undefined") {
+            changeProject("change", pushData["project"]);
+        }
     }
 }

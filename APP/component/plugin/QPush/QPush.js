@@ -30,7 +30,7 @@ var QPush = {
                 extra = event.extras;
             }
 
-            QPush.pushCallback(QPush.getExtras(extra));
+            QPush.pushCallback("open", QPush.getExtras(extra));
 
             console.log("openNotification");
             console.log(event);
@@ -47,7 +47,7 @@ var QPush = {
                 extra = event.extras;
             }
 
-            QPush.pushCallback(QPush.getExtras(extra));
+            QPush.pushCallback("receive", QPush.getExtras(extra));
 
             console.log("receiveNotification");
             console.log(event);
