@@ -38,6 +38,7 @@ $("#viewMyFamilyDatum").pagecontainer({
                 if (data["ResultCode"] == "1") {
                     //排序
                     familyArr = data["Content"].sort(sortByRelationship("FamilyRelationship", "FamilyName"));
+                    var familyRemark = data["Content"][0]["FamilyRemark"];
 
                     var familyList = "";
                     for (var i in familyArr) {
@@ -72,6 +73,7 @@ $("#viewMyFamilyDatum").pagecontainer({
                     }
 
                     $("#familyList").empty().append(familyList).children("div:last-child").remove();
+                    $(".family-notice").empty().append("<div>" + familyRemark + "</div>");
 
                 } else if (data["ResultCode"] == "045902") {
                     $("#viewFamilyList").hide();
@@ -300,7 +302,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         $("#viewMyFamilyDatum").on("pageshow", function (event, ui) {
-            
+
         });
 
         /******************************** datetimepicker ***********************************/

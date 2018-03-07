@@ -39,15 +39,12 @@
                 <span id="personManagePlace"></span>
             </div>
             <!--自定義欄位-->
-            <div class="person-manage-custom-field">
-
-            </div>
+            <div class="person-manage-custom-field"></div>
             <!--提示信息-->
-            <div class="person-manage-remark font-style11">
-
-            </div>
+            <div class="person-manage-remark font-style11"></div>
             <div class="blank-container-before-footer"></div>
-            <div class="person-footer font-style3 two-btn-inline">
+            <!--footer-->
+            <div id="personManageBtn" class="person-footer font-style3 two-btn-inline">
                 <div id="cancelPersonSignup">
                     <!--取消報名-->
                     <span class="langStr" data-id="str_009"></span>
@@ -96,11 +93,10 @@
                 <span id="familyManageBirth"></span>
             </div>
             <!--自定義欄位-->
-            <div class="family-manage-custom-field">
-
-            </div>
+            <div class="family-manage-custom-field"></div>
             <div class="blank-container-before-footer"></div>
-            <div class="person-footer font-style3 two-btn-inline">
+            <!--footer-->
+            <div id="familyManageBtn" class="person-footer font-style3 two-btn-inline">
                 <div id="cancelFamilySignup">
                     <!--取消報名-->
                     <span class="langStr" data-id="str_009"></span>
@@ -138,9 +134,7 @@
                 <span class="langStr" data-id="str_072"></span>
             </div>
             <!--自定義欄位-->
-            <div class="time-manage-custom-field font-style7 font-color1">
-
-            </div>
+            <div class="time-manage-custom-field font-style7 font-color1"></div>
             <div class="time-manage-place font-style11 font-color1">
                 <!--活動時段與名額如下-->
                 <span class="langStr" data-id="str_073"></span>
@@ -160,10 +154,9 @@
                 </div>
             </div>
             <!--選擇時段-->
-            <div class="time-manage-tbody font-style7 font-color2">
-
-            </div>
+            <div class="time-manage-tbody font-style7 font-color2"></div>
             <div class="blank-container-before-footer"></div>
+            <!--footer-->
             <div id="cancelTimeSignup" class="person-footer font-style3">
                 <!--取消報名-->
                 <span class="langStr" data-id="str_009"></span>
@@ -219,7 +212,7 @@
     </div>
 
     <!--人數超過剩餘名額-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup manageOverLimitMsg"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup manageOverLimitMsg"
         for="manageOverLimitMsg" id="manageOverLimitMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -249,7 +242,7 @@
     </div>
 
     <!--確定取消報名-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup cancelSignupMsg"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelSignupMsg"
         for="cancelSignupMsg" id="cancelSignupMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -283,7 +276,7 @@
     </div>
 
     <!--報名取消失敗-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup cancelFailMsg"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelFailMsg"
         for="cancelFailMsg" id="cancelFailMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -312,7 +305,7 @@
     </div>
 
     <!--修改未完成-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup updateNoFinish"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup updateNoFinish"
         for="updateNoFinish" id="updateNoFinish">
         <div data-role="main" class="ui-content">
             <div class="header">

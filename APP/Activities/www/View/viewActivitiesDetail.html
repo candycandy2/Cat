@@ -12,7 +12,6 @@
         </div>
     </div>
     <div data-role="main" class="page-main">
-        <!--1.活動詳情(未報名)-->
         <div id="activityDetail">
             <div class="detail-header">
                 <div class="detail-header-img">
@@ -49,10 +48,9 @@
             </div>
             <div class="detail-line"></div>
             <!--Activities Content-->
-            <div id="detailContent" class="detail-main">
-                <!--img-->
-            </div>
+            <div id="detailContent" class="detail-main"></div>
             <div class="blank-container-before-footer"></div>
+            <!--footer-->
             <div class="detail-footer font-style3">
                 <div id="beginBtn" class="detail-signup-btn">
                     <!--開始報名-->
@@ -85,7 +83,7 @@
                 <div id="fullBtn" class="btn-disabled">
                     <!--目前活動名額已額滿-->
                     <span class="langStr" data-id="str_020"></span>
-                </div> 
+                </div>
             </div>
         </div>
 
@@ -101,11 +99,12 @@
             <!--已完成修改-->
             <span class="langStr" data-id="str_018"></span>
         </div>
-        
+
     </div>
 
     <!--已報名同類活動-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup signupedSameMsg" for="signupedSameMsg" id="signupedSameMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupedSameMsg" for="signupedSameMsg"
+        id="signupedSameMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -134,7 +133,8 @@
     </div>
 
     <!--已完成報名（眷屬）-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup finishedFamilySignup" for="finishedFamilySignup" id="finishedFamilySignup">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup finishedFamilySignup" for="finishedFamilySignup"
+        id="finishedFamilySignup">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -163,5 +163,5 @@
             </div>
         </div>
     </div>
-    
+
 </div>

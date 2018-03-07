@@ -109,9 +109,6 @@ $("#viewActivitiesList").pagecontainer({
             ActivitiesDetailQuery(actStatus);
         });
 
-        //從編輯頁返回詳情頁
-        // $("#viewActivitiesList .back-detail").on("click", function () {
-        //     changePageByPanel("viewActivitiesDetail", false);
-        // });
+        
     }
 });
