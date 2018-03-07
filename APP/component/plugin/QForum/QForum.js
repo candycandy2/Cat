@@ -729,7 +729,9 @@ var QForum = {
                                 //Recovery Scroll Behavior, then scroll to the last postion, don't scroll to top.
                                 var lastCommentOffsetTop = QForum.lastCommentOffsetTop;
 
-                                tplJS.recoveryPageScroll();
+                                if (!checkPopupShown()) {
+                                    tplJS.recoveryPageScroll();
+                                }
 
                                 $("html body").animate({
                                     scrollTop: lastCommentOffsetTop

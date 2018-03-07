@@ -24,7 +24,7 @@ $("#viewActivitiesRecord").pagecontainer({
                             + recordArr[i]["SignupRelationship"]
                             + ' / '
                             + recordArr[i]["SignupPlaces"]
-                            + (recordArr[i]["SignupModel"] == "4" ? "組" : "人")
+                            + (recordArr[i]["SignupModel"] == "4" ? langStr["str_074"] : langStr["str_058"])
                             + '</div><div>'
                             + recordArr[i]["ActivitiesName"]
                             + '</div></div><div data-id="'
@@ -104,7 +104,7 @@ $("#viewActivitiesRecord").pagecontainer({
 
         });
 
-        //報名記錄內容
+        //報名記錄詳情
         $("#viewRecordList").on("click", ".record-detail", function () {
 
         });
@@ -122,11 +122,11 @@ $("#viewActivitiesRecord").pagecontainer({
                     recordActName = recordArr[i]["ActivitiesName"];
 
                     if (recordArr[i]["SignupModel"] == "1") {
-                        recordContent = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span>';
+                        recordContent = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + langStr["str_058"] + '</span>';
                     } else if (recordArr[i]["SignupModel"] == "3") {
-                        recordContent += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span><br>';
+                        recordContent += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + langStr["str_058"] + '</span><br>';
                     } else if (recordArr[i]["SignupModel"] == "5") {
-                        recordContent = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人 / ' + recordArr[i]["SignupTime"] + '</span>';
+                        recordContent = '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + langStr["str_058"] + ' / ' + recordArr[i]["SignupTime"] + '</span>';
                     }
                 }
 

@@ -58,7 +58,7 @@ $("#viewActivitiesManage").pagecontainer({
 
                         //取消報名
                         cancelActName = manageObj["ActivitiesName"];
-                        cancelContent = manageObj["EmployeeName"] + " / " + "同仁" + " / " + manageObj["SignupPlaces"] + "人";
+                        cancelContent = manageObj["EmployeeName"] + " / " + langStr["str_088"] + " / " + manageObj["SignupPlaces"] + langStr["str_058"];
                         cancelID = manageObj["ActivitiesID"];
                         cancelNo = manageObj["SignupNo"];
 
@@ -113,7 +113,7 @@ $("#viewActivitiesManage").pagecontainer({
                         //取消眷屬報名只能去報名記錄裏面查找
                         for (var i in recordArr) {
                             if (cancelID == recordArr[i]["ActivitiesID"]) {
-                                cancelContent += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span><br>';
+                                cancelContent += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + langStr["str_058"] + '</span><br>';
                             }
                         }
 
@@ -198,11 +198,11 @@ $("#viewActivitiesManage").pagecontainer({
                             if (timeArr[i]["IsSignupTime"] != "") {
                                 //取消报名信息
                                 cancelActName = timeArr[i]["ActivitiesName"];
-                                cancelContent = timeArr[i]["EmployeeName"] + " / " + "同仁" + " / 1人 / " + timeArr[i]["IsSignupTime"];
+                                cancelContent = timeArr[i]["EmployeeName"] + " / " + langStr["str_088"] + " / 1" + langStr["str_058"] + " / " + timeArr[i]["IsSignupTime"];
                                 cancelNo = timeArr[i]["SignupNo"];
                                 cancelID = timeArr[i]["ActivitiesID"];
                                 //动态生成栏位
-                                timeContent += '<div class="time-manage-info"><span>報名時段：</span><span>'
+                                timeContent += '<div class="time-manage-info"><span>' + langStr["str_089"] + '</span><span>'
                                     + timeArr[i]["IsSignupTime"] + '</span></div>';
 
                                 for (var j = 1; j < 6; j++) {
@@ -210,7 +210,8 @@ $("#viewActivitiesManage").pagecontainer({
                                         timeContent += '<div class="time-manage-info"><span>'
                                             + timeArr[i]["ColumnName_" + j] + '：</span><span>'
                                             //+ timeArr[i]["ColumnAnswer_" + j] + '</span></div>';
-                                            + (timeArr[i]["ColumnType_" + j] == "Multiple" ? timeArr[i]["ColumnAnswer_" + j].substr(1, timeArr[i]["ColumnAnswer_" + j].length) : timeArr[i]["ColumnAnswer_" + j]) + '</span></div>';
+                                            + (timeArr[i]["ColumnType_" + j] == "Multiple" ? timeArr[i]["ColumnAnswer_" + j].substr(1, timeArr[i]["ColumnAnswer_" + j].length) : timeArr[i]["ColumnAnswer_" + j])
+                                            + '</span></div>';
                                     }
                                 }
                                 break;
@@ -286,7 +287,9 @@ $("#viewActivitiesManage").pagecontainer({
                             $(item).trigger("click");
                         }
                     });
-                    $("#cancelSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+
+                    //取消報名成功標記
+                    activityStatus = "C";
 
                     //重新獲取報名記錄
                     ActivitiesRecordQuery();
@@ -362,7 +365,11 @@ $("#viewActivitiesManage").pagecontainer({
 
         //從管理頁返回詳情頁
         $("#viewActivitiesManage .back-detail").on("click", function () {
-            popupMsgInit('.updateNoFinish');
+            if (cancelModel == "1" || cancelModel == "3") {
+                popupMsgInit('.updateNoFinish');
+            } else {
+                changePageByPanel("viewActivitiesDetail", false);
+            }
         });
 
         //確定返回上一頁

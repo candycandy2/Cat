@@ -5,7 +5,7 @@
 //-- 1. cordova-plugin-jpush
 //
 var QPush = {
-    initial: function() {
+    initial: function(config) {
         //JPush Initial
         window.JPush.init();
 
@@ -15,7 +15,7 @@ var QPush = {
                 console.log(data);
 
                 loginData.pushToken = data;
-                QForum.API.sendPushToken(data);
+                QPush.sendPushToken(data);
             });
         }
 
@@ -29,6 +29,8 @@ var QPush = {
                 //alertContent = event.aps.alert
                 extra = event.extras;
             }
+
+            QPush.pushCallback("open", QPush.getExtras(extra));
 
             console.log("openNotification");
             console.log(event);
@@ -45,9 +47,14 @@ var QPush = {
                 extra = event.extras;
             }
 
+            QPush.pushCallback("receive", QPush.getExtras(extra));
+
             console.log("receiveNotification");
             console.log(event);
         }, false);
+
+        //Set Config
+        QPush.pushCallback = config["pushCallback"];
     },
     sendPushToken: function(token) {
         (function(token) {
@@ -67,5 +74,12 @@ var QPush = {
             QPlayAPI("POST", "sendPushToken", successCallback, failCallback, null, queryStr);
 
         }(token));
+    },
+    getExtras: function(data) {
+        console.log(data["Parameter"]);
+
+        var JSONData = JSON.parse(data["Parameter"]);
+
+        return JSONData;
     }
 };

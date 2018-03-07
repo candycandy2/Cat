@@ -30,7 +30,9 @@ window.initialSuccess = function() {
     }
 
     //QPush
-    QPush.initial();
+    QPush.initial({
+        "pushCallback": QPushCallback
+    });
 
     $.get('img/component/img_qplay.svg', function(svg){
         $('body').append(svg);
@@ -446,6 +448,42 @@ function handleOpenByScheme(queryData) {
             var eventDetail = new getEventDetail(eventRowID);
         } else {
             openEventFromQPlay = true;
+        }
+    }
+}
+
+//QPush callback function
+function QPushCallback(action, pushData) {
+    console.log(pushData);
+
+    //pushData["event_id"] > For ENS, new event
+    //pushData["ref_id"] > For QForum, new comment
+
+    if (action === "open") {
+        var changePage = false;
+        var eventID = "";
+
+        if (typeof pushData["event_id"] !== "undefined") {
+            changePage = true;
+            eventID = pushData["event_id"];
+        }
+
+        if (typeof pushData["ref_id"] !== "undefined") {
+            changePage = true;
+            eventID = pushData["ref_id"];
+        }
+
+        if (changePage) {
+            if (getEventListFinish) {
+                $.mobile.changePage('#viewEventContent');
+                var eventDetail = new getEventDetail(eventID);
+            } else {
+                openEventFromQPlay = true;
+            }
+        }
+
+        if (typeof pushData["project"] !== "undefined") {
+            changeProject("change", pushData["project"]);
         }
     }
 }

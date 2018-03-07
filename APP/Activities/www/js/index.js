@@ -18,7 +18,7 @@ var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var recordArr = [];    //活動記錄列表
 var selectFamilyLimit = 0;    //選擇眷屬的人數限制
 var familyIsSignup;    //眷屬是否報名
-var viewSignupInit = true, viewFamilyInit = true;
+var viewSignupInit = true, viewFamilyInit = true, activityStatus = "", activityModel = "";
 var myEmpNo = "";
 
 window.initialSuccess = function () {
@@ -54,13 +54,13 @@ function onBackKeyDown() {
         $("#mypanel").panel("close");
     } else if (activePageID == "viewActivitiesSignup") {
         popupMsgInit('.signupNoFinish');
-    } else if (activePageID == "viewActivitiesManage") {
+    } else if (activePageID == "viewActivitiesManage" && ($("#viewPersonManage").css("display") == "block" || $("#viewFamilyManage").css("display") == "block")) {
         popupMsgInit('.updateNoFinish');
     } else if (activePageID == "viewMyFamilyDatum" && $("#viewFamilyEdit").css("display") == "block" && addFamilyOrNot == true) {
         popupMsgInit('.confirmCancelAddFamily');
     } else if (activePageID == "viewMyFamilyDatum" && $("#viewFamilyEdit").css("display") == "block" && addFamilyOrNot == false) {
         popupMsgInit('.confirmCancelEditFamily');
-    } else if (activePageID == "viewSelectFamily" && familyIsSignup == "N") {
+    } else if (activePageID == "viewSelectFamily") {
         popupMsgInit('.selectNoFinish');
     } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
@@ -215,7 +215,7 @@ function setSelectCustomField2(index, arr, i, page, id, $container) {
 function setTextCustomField(arr, i, id, container) {
     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
         + arr[i]["ColumnName"]
-        + '</label><input id="' + id + i + '" type="text" data-role="none" class="' + id + '" value="'
+        + '</label><input id="' + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" data-role="none" class="' + id + '" value="'
         + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
         + '"></div>';
 
@@ -226,7 +226,7 @@ function setTextCustomField(arr, i, id, container) {
 function setTextCustomField2(index, arr, i, id, $container) {
     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
         + arr[i]["ColumnName"]
-        + '</label><input id="' + index + id + i + '" type="text" data-role="none" class="' + id + '" value="'
+        + '</label><input id="' + index + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" data-role="none" class="' + id + '" value="'
         + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
         + '"></div>';
 
@@ -320,7 +320,6 @@ function saveValueAndCheckForm(arr, name, value, bool, btn) {
             $("#" + btn).removeClass("btn-disabled");
         }
     }
-
     //console.log(arr);
 }
 
@@ -370,4 +369,15 @@ function sortByRelationship(prop1, prop2) {
             return value1.localeCompare(value2, "zh");
         }
     }
+}
+
+//禁止文本框輸入特殊字符
+function stripScript(str) {
+    var pattern = new RegExp("[&'<>”“‘’\"]");
+    var s = str.value;
+    var rs = "";
+    for (var i = 0; i < s.length; i++) {
+        rs = rs + s.substr(i, 1).replace(pattern, '');
+    }
+    str.value = rs;
 }

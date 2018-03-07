@@ -2,7 +2,7 @@
 $("#viewActivitiesDetail").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-        var isFull, isRepeatSignup, isSignup, actModel, actID;
+        var isFull = "", isRepeatSignup = "", isSignup = "", actModel = "", actID = "";
 
 
         /********************************** function *************************************/
@@ -141,7 +141,30 @@ $("#viewActivitiesDetail").pagecontainer({
         });
 
         $("#viewActivitiesDetail").on("pageshow", function (event, ui) {
+            //報名成功
+            if (activityStatus == "Y") {
+                if (activityModel == "3") {
+                    $(".finishedFamilySignup .header-text").text(langStr["str_017"]);
+                    popupMsgInit('.finishedFamilySignup');
+                } else {
+                    $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                }
 
+            //修改成功
+            } else if (activityStatus == "N") {
+                if (activityModel == "3") {
+                    $(".finishedFamilySignup .header-text").text(langStr["str_018"]);
+                    popupMsgInit('.finishedFamilySignup');
+                } else {
+                    $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+                }
+
+            //取消成功
+            } else if(activityStatus == "C") {
+                $("#cancelSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
+            }
+            
+            activityStatus = "";
         });
 
         /********************************** dom event *************************************/
