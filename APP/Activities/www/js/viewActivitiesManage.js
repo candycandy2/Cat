@@ -35,7 +35,7 @@ $("#viewActivitiesManage").pagecontainer({
                         //賦值
                         $("#personManageThumbnail").attr("src", manageObj["ActivitiesImage"]);
                         $("#personManageName").text(manageObj["ActivitiesName"]);
-                        $("#personIsFull").css("display", isFull == "Y" ? "block" : "none");
+                        $("#personIsFull").css("display", isFull == "Y" ? "inline" : "none");
                         $("#personSignupedPlace").text(manageObj["SignupPlaces"]);
                         $(".person-manage-remark").empty().append("<div>" + manageObj["ActivitiesRemarks"] + "</div>");
                         //dropdownlist
@@ -117,7 +117,6 @@ $("#viewActivitiesManage").pagecontainer({
                             }
                         }
 
-
                     } else if (model == "4") {
                         var manageArr = data["Content"];
                         //初始化
@@ -127,7 +126,7 @@ $("#viewActivitiesManage").pagecontainer({
                         $("#teamManageThumbnail").attr("src", manageArr[0]["ActivitiesImage"]);
                         $("#teamManageName").text(manageArr[0]["ActivitiesName"]);
                         $("#teamSignupedPlaces").text(manageArr[0]["SignupTeam"]);
-                        $("#teamIsFull").css("display", isFull == "Y" ? "block" : "none");
+                        $("#teamIsFull").css("display", isFull == "Y" ? "inline" : "none");
                         //取消報名的活動名稱
                         cancelActName = manageArr[0]["ActivitiesName"];
 
@@ -182,7 +181,6 @@ $("#viewActivitiesManage").pagecontainer({
                         $("#teamTable tr:first-child").nextAll().remove();
                         $("#teamTable").append(manageContent);
 
-
                     } else if (model == "5") {
                         var timeObj = data["Content"][0];
                         var timeArr = data["Content"];
@@ -190,7 +188,7 @@ $("#viewActivitiesManage").pagecontainer({
                         //賦值
                         $("#timeManageThumbnail").attr("src", timeObj["ActivitiesImage"]);
                         $("#timeManageName").text(timeObj["ActivitiesName"]);
-                        $("#timeIsFull").css("display", isFull == "Y" ? "block" : "none");
+                        $("#timeIsFull").css("display", isFull == "Y" ? "inline" : "none");
 
                         //展示所有欄位
                         var timeContent = '';
@@ -543,6 +541,14 @@ $("#viewActivitiesManage").pagecontainer({
             }
         });
 
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $(".person-manage-custom-field").on("focus", "input", function() {
+        //     $("#personManageBtn").hide();
+        // });
+
+        // $(".person-manage-custom-field").on("blur", "input", function() {
+        //     $("#personManageBtn").show();
+        // });
 
         /************************************ Time *************************************/
         //取消時段报名-popup
@@ -641,6 +647,15 @@ $("#viewActivitiesManage").pagecontainer({
             $(".cancelSignupMsg .main-paragraph").empty().append(cancelContent);
             popupMsgInit('.cancelSignupMsg');
         });
+
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $(".family-manage-custom-field").on("focus", "input", function() {
+        //     $("#familyManageBtn").hide();
+        // });
+
+        // $(".family-manage-custom-field").on("blur", "input", function() {
+        //     $("#familyManageBtn").show();
+        // });
 
     }
 });
