@@ -11,7 +11,7 @@
                 <span class="langStr" data-id="str_004"></span>
             </div>
         </div>
-        <div class="family-save-btn font-style10" style="display:none;">
+        <div class="family-save-btn font-style10 view-hide">
             <!--儲存-->
             <span class="langStr" data-id="str_016"></span>
         </div>
@@ -38,16 +38,8 @@
                 </div>
                 <div class="activity-line"></div> -->
             </div>
-            <div class="family-notice">
-                <div class="font-style12 fon-color2">
-                    <!--*您已設定保留眷屬資料供活動報名使用，資料會於在職期間保留於系統中，但您可隨時於系統中刪除-->
-                    <span class="langStr" data-id="str_102"></span>
-                </div>
-                <div class="font-style12 font-color4">
-                    <!--*請注意，當眷屬報名的活動尚未結束時，無法刪除資料-->
-                    <span class="langStr" data-id="str_103"></span>
-                </div>
-            </div>
+            <!--remark-->
+            <div class="family-notice font-style12"></div>
         </div>
 
         <!--3.新增和編輯頁面-->
@@ -103,7 +95,7 @@
     </div>
 
     <!--確定刪除眷屬資料-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmDeleteFamily" for="confirmDeleteFamily"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeleteFamily" for="confirmDeleteFamily"
         id="confirmDeleteFamily">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -136,7 +128,7 @@
     </div>
 
     <!--確定取消新增-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmCancelAddFamily" for="confirmCancelAddFamily"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelAddFamily" for="confirmCancelAddFamily"
         id="confirmCancelAddFamily">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -169,7 +161,7 @@
     </div>
 
     <!--確定取消編輯-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup confirmCancelEditFamily" for="confirmCancelEditFamily"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelEditFamily" for="confirmCancelEditFamily"
         id="confirmCancelEditFamily">
         <div data-role="main" class="ui-content">
             <div class="header">
@@ -202,7 +194,7 @@
     </div>
 
     <!--新增眷屬資料失敗/更新眷屬資料失敗/刪除眷屬資料失敗-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup familyErrorMsg" for="familyErrorMsg"
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup familyErrorMsg" for="familyErrorMsg"
         id="familyErrorMsg">
         <div data-role="main" class="ui-content">
             <div class="header">

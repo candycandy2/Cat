@@ -501,7 +501,14 @@ $("#viewSelectFamily").pagecontainer({
             ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
         });
 
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $(".select-family-tbody").on("focus", "input", function() {
+        //     $("#familySignupBtn").hide();
+        // });
 
+        // $(".select-family-tbody").on("blur", "input", function() {
+        //     $("#familySignupBtn").show();
+        // });
 
     }
 });

@@ -15,7 +15,7 @@ gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="d25ce2f1-a55f-4f4a-8e3c-5c57929c990f" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="024702c2-acb7-4fc5-a9c7-c5bc7dd7a6c3" --packageType="enterprise"
 
 pwd
 cd ../QPlayDailyBuild-Acc-BenQEIS-NewENS/APP/EIS

@@ -320,26 +320,7 @@ $("#viewActivitiesSignup").pagecontainer({
                         }
                     });
 
-                    //提示信息
-                    // setTimeout(function () {
-                    //     if (isSignup == "N") {
-                    //         if (model == "3") {
-                    //             //已完成報名
-                    //             $(".finishedFamilySignup .header-text").text(langStr["str_017"]);
-                    //             popupMsgInit('.finishedFamilySignup');
-                    //         } else {
-                    //             $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
-                    //         }
-                    //     } else if (isSignup == "Y") {
-                    //         if (model == "3") {
-                    //             //已完成修改
-                    //             $(".finishedFamilySignup .header-text").text(langStr["str_018"]);
-                    //             popupMsgInit('.finishedFamilySignup');
-                    //         } else {
-                    //             $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
-                    //         }
-                    //     }
-                    // }, 1500);
+                    //記錄活動狀態
                     if (isSignup == "N") {
                         activityStatus = "Y";
                     } else if (isSignup == "Y") {
@@ -762,6 +743,14 @@ $("#viewActivitiesSignup").pagecontainer({
 
         });
 
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $("#viewTeamSignup").on("focus", "input", function() {
+        //     $("#sendTeamSignup").hide();
+        // });
+
+        // $("#viewTeamSignup").on("blur", "input", function() {
+        //     $("#sendTeamSignup").show();
+        // });
 
         /*********************************** family signup ***********************************/
         //select
@@ -845,6 +834,14 @@ $("#viewActivitiesSignup").pagecontainer({
             }
         });
 
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $(".family-signup-custom-field").on("focus", "input", function() {
+        //     $("#selectFamilyBtn").hide();
+        // });
+
+        // $(".family-signup-custom-field").on("blur", "input", function() {
+        //     $("#selectFamilyBtn").show();
+        // });
 
         /*********************************** person signup ***********************************/
         //選擇人數dropdownlist
@@ -925,6 +922,15 @@ $("#viewActivitiesSignup").pagecontainer({
                 ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
             }
         });
+
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $(".person-signup-custom-field").on("focus", "input", function() {
+        //     $("#personSignupBtn").hide();
+        // });
+
+        // $(".person-signup-custom-field").on("blur", "input", function() {
+        //     $("#personSignupBtn").show();
+        // });
 
 
         /*********************************** time signup ***********************************/
@@ -1041,6 +1047,15 @@ $("#viewActivitiesSignup").pagecontainer({
                 ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
             }
         });
+
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $(".time-signup-custom-field").on("focus", "input", function() {
+        //     $("#timeSignupBtn").hide();
+        // });
+
+        // $(".time-signup-custom-field").on("blur", "input", function() {
+        //     $("#timeSignupBtn").show();
+        // });
 
 
     }
