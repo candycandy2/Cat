@@ -12,6 +12,7 @@ var appKeyOriginal = "appactivities";
 var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
+//var myEmpNo = "0207379";
 //var myEmpNo = "1501005";
 var pageVisitedList = ["viewActivitiesList"];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯

@@ -311,7 +311,7 @@ input[type="text"] {
 #viewActivitiesNone {
     width: 100vw;
     text-align: center;
-    line-height: 150vw;
+    line-height: 125vw;
     margin: 0vw 0vw;
     display: none;
 }
@@ -319,7 +319,6 @@ input[type="text"] {
 /**************************************** viewActivitiesDetail ***************************************/
 #activityDetail {
     width: 92.58vw;
-    /* margin-top: 5vw; */
     margin-left: 3.71vw;
 }
 
@@ -345,7 +344,6 @@ input[type="text"] {
 .detail-header-img img {
     width: 14.5vw;
     height: 14.5vw;
-    border:1px solid #cccccc;
 }
 
 .detail-header-info {
@@ -424,8 +422,6 @@ input[type="text"] {
 #viewActivitiesSignup .page-main > div,
 #viewSelectFamily .page-main > div {
     width: 92.58vw;
-    /* min-height: 30vw;
-    margin-top: 5vw; */
     margin-left: 3.71vw;
 }
 
@@ -729,12 +725,12 @@ input[type="text"] {
 }
 
 .team-employee-list > span:nth-of-type(1) {
-    width: 18.908vw;
+    width: 24.908vw;
     padding-left: 3.71vw;
 }
 
 .team-employee-list > span:nth-of-type(2) {
-    width: 62vw;
+    width: 56vw;
 }
 
 .team-signup-delete {
@@ -834,8 +830,6 @@ input[type="text"] {
 /***************************************** viewActivitiesManage ************************************/
 #viewActivitiesManage .page-main > div {
     width: 92.58vw;
-    /* min-height: 30vw;
-    margin-top: 5vw; */
     margin-left: 3.71vw;
 }
 
@@ -1040,8 +1034,6 @@ input[type="text"] {
 
 #viewRecordList {
     width: 100vw;
-    /* min-height: 15vw; */
-    /* margin-top: 5vw; */
     margin-bottom: 4vw;
     background: #ffffff;
 }
@@ -1049,7 +1041,7 @@ input[type="text"] {
 #viewRecordsNone {
     width: 100vw;
     text-align: center;
-    line-height: 150vw;
+    line-height: 125vw;
     margin: 0vw 0vw;
     display: none;
 }
@@ -1071,6 +1063,11 @@ input[type="text"] {
 
 .record-list > div:nth-of-type(1) > div:nth-of-type(2) {
     margin-top: 1.16vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .record-list > div:nth-of-type(2) {
@@ -1099,7 +1096,7 @@ input[type="text"] {
 #viewFamilyNone {
     width: 100vw;
     text-align: center;
-    line-height: 150vw;
+    line-height: 125vw;
     margin: 0vw 0vw;
     display: none;
 }
