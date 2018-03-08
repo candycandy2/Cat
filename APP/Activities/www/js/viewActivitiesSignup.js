@@ -871,6 +871,8 @@ $("#viewActivitiesSignup").pagecontainer({
                 saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
             }, 1000);
 
+            console.log(selfVal);
+
         });
 
         //checkbox

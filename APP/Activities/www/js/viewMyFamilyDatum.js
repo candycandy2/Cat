@@ -373,6 +373,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             addFamilyOrNot = true;
             checkFormByFamily();
             $("#familyName").removeAttr("readonly");
+            $("#familyName").css("background", "#f9f9f9");
         });
 
         //修改眷屬，跳轉到編輯頁
@@ -415,6 +416,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             $(".confirmCancelEditFamily .main-paragraph").text(familyName);
             checkFormByFamily();
             $("#familyName").attr("readonly", "readonly");
+            $("#familyName").css("background", "#cccccc");
         });
 
         //儲存按鈕

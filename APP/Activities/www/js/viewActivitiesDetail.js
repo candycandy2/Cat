@@ -10,7 +10,7 @@ $("#viewActivitiesDetail").pagecontainer({
         window.ActivitiesDetailQuery = function (status) {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activityObj = data["Content"][0];
