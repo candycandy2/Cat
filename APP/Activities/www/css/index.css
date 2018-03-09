@@ -218,6 +218,14 @@ input[type="text"] {
     display: none;
 }
 
+.page-main .page-date {
+    font-family: Arial;
+    height: 1vw;
+    color: #0f0f0f;
+    text-align: center;
+    width: 80%;
+    margin: 1vw auto 0;
+}
 
 /************************************** viewActivitiesList ******************************************/
 
@@ -745,7 +753,7 @@ input[type="text"] {
 }
 
 .list-img {
-    width: 4vw;
+    width: 4.5vw;
     height: 4vw;
     margin-left: 2.541vw;
 }

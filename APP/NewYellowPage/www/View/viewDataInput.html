@@ -6,7 +6,6 @@
             <h1 class="ui-title"><div>Yellow Page</div></h1>
         </div>
     </div>
-
     <div data-role="main" class="page-main" id="DataInputMain">
         <div data-role="tabs">
             <div class="ui-margin-public" style="text-align: center;">
@@ -26,57 +25,55 @@
         </div>
         <div class="ui-margin-public" id="pageOne">
             <div class="ui-field-contain">
-
-                <label for="Company">
+                <label for="Company">
                     <h4>
                         <!--公司名稱-->
                         <span class="langStr" data-id="str_003"></span>
                     </h4>
                 </label>
-
-                 <select name="Company" id="Company">
+                <select name="Company" id="Company">
                     <option value="All Company">All Company</option>
                 </select>
-            <!--
+                <!--
                 <span id ="CompanyChoose"> </span>
             -->
-            <!--   mark for 20170612-->
+                <!--   mark for 20170612-->
             </div>
             <div class="ui-field-contain">
-                <label for="CName-title">
+                <label for="CName-title">
                     <h4>
                         <!--中文姓名-->
                         <span class="langStr" data-id="str_004"></span>
                     </h4>
                 </label>
-                <input data-maxlength="10" name="CName" id="CName" type="text" onkeyup="this.value=this.value.replace(/[^\W]/g,'')" maxlength="10" />
+                <input data-maxlength="10" name="CName" id="CName" type="text" onkeyup="this.value=this.value.replace(/[^\W]/g,'')" maxlength="10" />
             </div>
             <div class="ui-field-contain">
-                <label for="EName-title">
+                <label for="EName-title">
                     <h4>
                         <!--英文姓名-->
                         <span class="langStr" data-id="str_005"></span>
                     </h4>
                 </label>
-                <input data-maxlength="13" name="EName" id="EName" type="text" style="text-transform:capitalize;"/>
+                <input data-maxlength="13" name="EName" id="EName" type="text" style="text-transform:capitalize;" />
             </div>
             <div class="ui-field-contain">
-                <label for="Department-title">
+                <label for="Department-title">
                     <h4>
                         <!--部門名稱-->
                         <span class="langStr" data-id="str_006"></span>
                     </h4>
                 </label>
-                <input data-maxlength="7" name="Department" id="Department" type="text" style="text-transform:uppercase;"/>
+                <input data-maxlength="7" name="Department" id="Department" type="text" style="text-transform:uppercase;" />
             </div>
             <div class="ui-field-contain">
-                <label for="ExtNum-title">
+                <label for="ExtNum-title">
                     <h4>
                         <!--分機號碼-->
                         <span class="langStr" data-id="str_007"></span>
                     </h4>
                 </label>
-                <input data-maxlength="10" name="ExtNum" id="ExtNum" type="text" />
+                <input data-maxlength="10" name="ExtNum" id="ExtNum" type="text" />
             </div>
             <div class="btn-area">
                 <a href="#" id="callQuery">
@@ -92,7 +89,6 @@
         <div class="ui-margin-public" id="pageTwo">
             <!-- Start of viewPhonebook -->
             <div class="ios-fix-overlap-div"></div>
-
             <div data-role="main" class="page-main" id="phoneBook">
                 <div class="phoneBook-btnArea">
                     <a href="#" id="phonebookEdit">
@@ -108,18 +104,18 @@
                                         <span class="langStr" data-id="com_023"></span>
                                     </a>
                                 </li>
-                                <li><a href="#" id="phoneDelete" class="noneSelect">
-                                    <!--刪除-->
-                                    <span class="langStr" data-id="str_011"></span>
-                                </a></li>
+                                <li>
+                                    <a href="#" id="phoneDelete" class="noneSelect">
+                                        <!--刪除-->
+                                        <span class="langStr" data-id="str_011"></span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <ul data-role="listview" data-icon="false" class="q-result-grid" id="myPhonebookList">
                 </ul>
-
-
                 <template id="tplaskQuePhonebook">
                     <div class="header font-style3">
                         <!--請輸入查詢條件!!-->
@@ -127,14 +123,13 @@
                     </div>
                     <div class="footer">
                         <div class="btn-one font-style8">
-                            <div id="confirm" class= "confirm">
+                            <div id="confirm" class="confirm">
                                 <!--確定-->
                                 <span class="langStr" data-id="com_016"></span>
                             </div>
                         </div>
                     </div>
                 </template>
-
                 <template id="tplaskDelPhonebook">
                     <div class="header font-style3">
                         <!--是否刪除選擇的聯絡人?!!!~-->
@@ -146,7 +141,7 @@
                                 <!--取消-->
                                 <span class="langStr" data-id="com_023"></span>
                             </div>
-                            <div id= "confirm" class= "btn-confirm">
+                            <div id="confirm" class="btn-confirm">
                                 <!--確定-->
                                 <span class="langStr" data-id="com_016"></span>
                             </div>
@@ -155,7 +150,7 @@
                 </template>
             </div>
             <!-- myphonebook confirm delete -->
-        <!--
+            <!--
             <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup phonebookDeleteConfirm" id="phonebookDeleteConfirm" ;>
                 <div data-role="main" class="ui-content" >
                     <div style="height: 25VW">
@@ -174,47 +169,45 @@
                 </div>
             </div>
         -->
-
-        <div class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b"        data-dismissible="false" id='noQueryConditionRule'>
-            <div class="header font-style3" >
-                <div class="font-style3 header-title-main noqueryconditioncss">
-                    <!--請輸入查詢條件!-->
-                    <span class="langStr" data-id="str_012"></span>
-                </div>
-            </div>
-            <hr class="ui-hr ui-hr-bottom">
-            <div class="footer">
-                <div class="btn-one font-style0">
-                    <center class="confirm confirmfornoquery">
-                        <!--確認-->
-                        <span class="langStr" data-id="str_014"></span>
-                    </center>
-                </div>
-            </div>
-        </div>
-        <!-- Candy -->
-         <div class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b"       data-dismissible="false" id='phonebookDeleteConfirmRule'>
-            <div class="header font-style3" >
-                <div class="font-style3 header-title-main deletecondition">
-                    <!--是否刪除選擇的聯絡人?!-->
-                    <span class="langStr" data-id="str_013"></span>
-                </div>
-            </div>
-            <hr class="ui-hr ui-hr-bottom">
-            <div class="footer">
-                <div class="btn-two font-style0">
-
-                    <div class="cancel" style="padding-top: 3vw; padding-left: 14vw;color: #2c89bc">
-                        <!--取消-->
-                        <span class="langStr" data-id="com_023"></span>
+            <div class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" id='noQueryConditionRule'>
+                <div class="header font-style3">
+                    <div class="font-style3 header-title-main noqueryconditioncss">
+                        <!--請輸入查詢條件!-->
+                        <span class="langStr" data-id="str_012"></span>
                     </div>
-                    <div class="btn-confirm" style="padding-top: 3vw; padding-left: 14vw;color: #2c89bc">
-                        <!--確認-->
-                        <span class="langStr" data-id="str_014"></span>
+                </div>
+                <hr class="ui-hr ui-hr-bottom">
+                <div class="footer">
+                    <div class="btn-one font-style0">
+                        <center class="confirm confirmfornoquery">
+                            <!--確認-->
+                            <span class="langStr" data-id="str_014"></span>
+                        </center>
                     </div>
                 </div>
             </div>
-        </div>
+            <!-- Candy -->
+            <div class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" id='phonebookDeleteConfirmRule'>
+                <div class="header font-style3">
+                    <div class="font-style3 header-title-main deletecondition">
+                        <!--是否刪除選擇的聯絡人?!-->
+                        <span class="langStr" data-id="str_013"></span>
+                    </div>
+                </div>
+                <hr class="ui-hr ui-hr-bottom">
+                <div class="footer">
+                    <div class="btn-two font-style0">
+                        <div class="cancel" style="padding-top: 3vw; padding-left: 14vw;color: #2c89bc">
+                            <!--取消-->
+                            <span class="langStr" data-id="com_023"></span>
+                        </div>
+                        <div class="btn-confirm" style="padding-top: 3vw; padding-left: 14vw;color: #2c89bc">
+                            <!--確認-->
+                            <span class="langStr" data-id="str_014"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- if no data in phonoe book -->
             <div class="error-msg hidden">
                 <!--您尚未加入任何聯絡資訊-->
