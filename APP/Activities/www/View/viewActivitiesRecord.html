@@ -12,6 +12,9 @@
         </div>
     </div>
     <div data-role="main" class="page-main">
+        <!-- pull refresh -->
+        <div class="pull-record"></div>
+
         <!--1.暫無報名記錄-->
         <div id="viewRecordsNone" class="font-style12 font-color3">
             <span class="langStr" data-id="str_035"></span>
@@ -100,5 +103,33 @@
         </div>
     </div>
 
+    <!--報名時間已過期-popup-->
+    <div data-role="popup" data-history="false" data-dismissible="false" data-overlay-theme="b" class="app-popup recordTimeOverMsg"
+        for="recordTimeOverMsg" id="recordTimeOverMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--目前活動報名時間已過期-->
+                        <span class="langStr" data-id="str_105"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel" id="recordTimeOverBtn">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
