@@ -3,7 +3,7 @@
 $("#viewActivitiesRecord").pagecontainer({
     create: function (event, ui) {
         /********************************** variable *************************************/
-        var currentID, currentNo, currentModel;
+        var currentID, currentNo, currentModel, recordOverTime;
 
         /********************************** function *************************************/
         //獲取報名記錄
@@ -33,6 +33,8 @@ $("#viewActivitiesRecord").pagecontainer({
                             + recordArr[i]["SignupNo"]
                             + '" data-model="'
                             + recordArr[i]["SignupModel"]
+                            + '" data-over="'
+                            + recordArr[i]["Deadline"]
                             + '">'
                             + (recordArr[i]["CanCancel"] == "Y" ? '<img src="img/delete.png" class="record-delete">' : '')
                             + '</div></div><div class="record-line"></div>';
@@ -92,7 +94,15 @@ $("#viewActivitiesRecord").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesRecord").on("pagebeforeshow", function (event, ui) {
-
+            /**** PullToRefresh ****/
+            PullToRefresh.init({
+                mainElement: '.pull-record',
+                onRefresh: function () {
+                    loadingMask("show");
+                    //重新获取報名記錄
+                    ActivitiesRecordQuery();
+                }
+            });
         });
 
         $("#viewActivitiesRecord").on("pageshow", function (event, ui) {
@@ -102,6 +112,12 @@ $("#viewActivitiesRecord").pagecontainer({
         /********************************** dom event *************************************/
         $("#viewActivitiesRecord").keypress(function (event) {
 
+        });
+
+        //超時關閉popup，並返回活動列表
+        $("#recordTimeOverBtn").on("click", function () {
+            //重新獲取報名記錄
+            ActivitiesRecordQuery();
         });
 
         //報名記錄詳情
@@ -114,6 +130,7 @@ $("#viewActivitiesRecord").pagecontainer({
             currentID = $(this).parent().attr("data-id");
             currentNo = $(this).parent().attr("data-no");
             currentModel = $(this).parent().attr("data-model");
+            recordOverTime = timeConversion($(this).parent().attr("data-over"));
 
             //取消報名popup彈窗內容
             var recordActName = '', recordContent = '';
@@ -144,20 +161,31 @@ $("#viewActivitiesRecord").pagecontainer({
 
         //確定取消報名-API
         $("#confirmCancelRecord").on("click", function () {
-            loadingMask("show");
+            //先判斷是否超時
+            var nowTime = getTimeNow();
+            if (nowTime - recordOverTime < 0) {
+                loadingMask("show");
 
-            activitiesRecordCancelQueryData = '<LayoutHeader><ActivitiesID>'
-                + currentID
-                + '</ActivitiesID><SignupNo>'
-                + (currentModel == "3" ? "" : currentNo)
-                + '</SignupNo><SignupModel>'
-                + currentModel
-                + '</SignupModel><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo></LayoutHeader>';
+                activitiesRecordCancelQueryData = '<LayoutHeader><ActivitiesID>'
+                    + currentID
+                    + '</ActivitiesID><SignupNo>'
+                    + (currentModel == "3" ? "" : currentNo)
+                    + '</SignupNo><SignupModel>'
+                    + currentModel
+                    + '</SignupModel><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo></LayoutHeader>';
 
-            //console.log(activitiesRecordCancelQueryData);
-            ActivitiesRecordCancelQuery(currentModel);
+                //console.log(activitiesRecordCancelQueryData);
+                ActivitiesRecordCancelQuery(currentModel);
+            } else {
+                //超時提示
+                setTimeout(function() {
+                    popupMsgInit('.recordTimeOverMsg');
+                }, 500);
+                
+            }
+
         });
 
     }

@@ -9,7 +9,7 @@ $("#viewActivitiesList").pagecontainer({
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
-                //console.log(data);
+                console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activitiesArr = data["Content"];
@@ -86,7 +86,7 @@ $("#viewActivitiesList").pagecontainer({
         $("#viewActivitiesList").on("pagebeforeshow", function (event, ui) {
             /**** PullToRefresh ****/
             PullToRefresh.init({
-                mainElement: '.page-date',
+                mainElement: '.pull-list',
                 onRefresh: function () {
                     loadingMask("show");
                     //重新获取活动列表

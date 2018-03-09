@@ -465,12 +465,22 @@ $("#viewMyFamilyDatum").pagecontainer({
 
         //關係dropdownlist-popup
         $("#familyRelationship").on("click", function () {
-            $("#relationship-popup").trigger("click");
+            $("#familyName").blur();
+            $("#familyID").blur();
+            setTimeout(function () {
+                $("#relationship-popup").trigger("click");
+            }, 200);
+
         });
 
         //性別dropdownlist-popup
         $("#familyGender").on("click", function () {
-            $("#gender-popup").trigger("click");
+            $("#familyName").blur();
+            $("#familyID").blur();
+            setTimeout(function () {
+                $("#gender-popup").trigger("click");
+            }, 200);
+
         });
 
         //點擊關係列表，觸發change事件
