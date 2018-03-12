@@ -9,7 +9,7 @@ $("#viewActivitiesList").pagecontainer({
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activitiesArr = data["Content"];
@@ -29,7 +29,6 @@ $("#viewActivitiesList").pagecontainer({
                                 + '</div><div class="font-style12"><span>'
                                 + langStr["str_078"]
                                 + '</span><span>'
-                                //+ activitiesArr[i]["QuotaPlaces"]
                                 + (activitiesArr[i]["SignupModel"] == 4 ? langStr["str_104"] : activitiesArr[i]["QuotaPlaces"])
                                 + '</span>&nbsp;&nbsp;&nbsp;&nbsp;'
                                 + (activitiesArr[i]["SignupModel"] == 4 ? "" : '<span>' + langStr["str_079"] + '</span><span>' + activitiesArr[i]["RemainingPlaces"] + '</span>')
@@ -51,7 +50,6 @@ $("#viewActivitiesList").pagecontainer({
                                 + '</div><div class="font-style12"><span>'
                                 + langStr["str_078"]
                                 + '</span><span>'
-                                //+ activitiesArr[i]["QuotaPlaces"]
                                 + (activitiesArr[i]["SignupModel"] == 4 ? langStr["str_104"] : activitiesArr[i]["QuotaPlaces"])
                                 + '</span></div><div class="font-style12"><span>'
                                 + langStr["str_077"]
