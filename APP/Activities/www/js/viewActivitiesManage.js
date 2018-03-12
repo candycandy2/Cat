@@ -375,6 +375,15 @@ $("#viewActivitiesManage").pagecontainer({
             changePageByPanel("viewActivitiesDetail", false);
         });
 
+        //超時關閉popup，並返回活動列表
+        $("#manageTimeOverBtn").on("click", function () {
+            //重新獲取活動列表
+            ActivitiesListQuery();
+            pageVisitedList.pop();
+            //跳轉
+            changePageByPanel("viewActivitiesList", false);
+        });
+
 
         /************************************ Team *************************************/
         //展開隊伍
@@ -434,21 +443,32 @@ $("#viewActivitiesManage").pagecontainer({
 
         //確定取消報名（所有類型活動）
         $("#confirmCancelSignup").on("click", function () {
-            loadingMask("show");
+            //先判斷是否超時
+            var nowTime = getTimeNow();
+            if (nowTime - overTime < 0) {
+                loadingMask("show");
 
-            activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
-                + cancelID
-                + '</ActivitiesID><SignupNo>'
-                //+ cancelNo
-                + (cancelModel == "3" ? "" : cancelNo)
-                + '</SignupNo><SignupModel>'
-                + cancelModel
-                + '</SignupModel><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo></LayoutHeader>';
+                activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
+                    + cancelID
+                    + '</ActivitiesID><SignupNo>'
+                    //+ cancelNo
+                    + (cancelModel == "3" ? "" : cancelNo)
+                    + '</SignupNo><SignupModel>'
+                    + cancelModel
+                    + '</SignupModel><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo></LayoutHeader>';
 
-            //console.log(activitiesSignupCancelQueryData);
-            ActivitiesSignupCancelQuery(cancelModel);
+                //console.log(activitiesSignupCancelQueryData);
+                ActivitiesSignupCancelQuery(cancelModel);
+
+            } else {
+                //超時提示
+                setTimeout(function() {
+                    popupMsgInit('.manageTimeOverMsg');
+                }, 500);
+                
+            }
 
         });
 
@@ -514,30 +534,39 @@ $("#viewActivitiesManage").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                loadingMask("show");
+                //先判斷是否超時
+                var nowTime = getTimeNow();
+                if (nowTime - overTime < 0) {
+                    loadingMask("show");
 
-                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                    + cancelID
-                    + '</ActivitiesID><SignupModel>'
-                    + cancelModel
-                    + '</SignupModel><SignupPlaces>'
-                    + submitSignupPlace
-                    + '</SignupPlaces><EmployeeNo>'
-                    + myEmpNo
-                    + '</EmployeeNo><ColumnAnswer_1>'
-                    + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
-                    + '</ColumnAnswer_1><ColumnAnswer_2>'
-                    + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
-                    + '</ColumnAnswer_2><ColumnAnswer_3>'
-                    + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
-                    + '</ColumnAnswer_3><ColumnAnswer_4>'
-                    + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
-                    + '</ColumnAnswer_4><ColumnAnswer_5>'
-                    + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
-                    + '</ColumnAnswer_5></LayoutHeader>';
+                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                        + cancelID
+                        + '</ActivitiesID><SignupModel>'
+                        + cancelModel
+                        + '</SignupModel><SignupPlaces>'
+                        + submitSignupPlace
+                        + '</SignupPlaces><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo><ColumnAnswer_1>'
+                        + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
+                        + '</ColumnAnswer_1><ColumnAnswer_2>'
+                        + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
+                        + '</ColumnAnswer_2><ColumnAnswer_3>'
+                        + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
+                        + '</ColumnAnswer_3><ColumnAnswer_4>'
+                        + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
+                        + '</ColumnAnswer_4><ColumnAnswer_5>'
+                        + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
+                        + '</ColumnAnswer_5></LayoutHeader>';
 
-                //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
+                    //console.log(activitiesSignupConfirmQueryData);
+                    ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
+
+                } else {
+                    //超時提示
+                    popupMsgInit('.manageTimeOverMsg');
+                }
+
             }
         });
 

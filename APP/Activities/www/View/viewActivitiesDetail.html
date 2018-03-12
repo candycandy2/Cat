@@ -84,6 +84,10 @@
                     <!--目前活動名額已額滿-->
                     <span class="langStr" data-id="str_020"></span>
                 </div>
+                <div id="overBtn" class="btn-disabled">
+                    <!--目前活動報名時間已過期-->
+                    <span class="langStr" data-id="str_105"></span>
+                </div>
             </div>
         </div>
 
@@ -158,6 +162,35 @@
                     <div class="btn-cancel">
                         <!--好，我知道了-->
                         <span class="langStr" data-id="str_029"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--報名時間已過期-popup-->
+    <div data-role="popup" data-history="false" data-dismissible="false" data-overlay-theme="b" class="app-popup detailTimeOverMsg"
+        for="detailTimeOverMsg" id="detailTimeOverMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--目前活動報名時間已過期-->
+                        <span class="langStr" data-id="str_105"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel" id="detailTimeOverBtn">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
                     </div>
                 </div>
             </div>

@@ -19,7 +19,8 @@ var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var recordArr = [];    //活動記錄列表
 var selectFamilyLimit = 0;    //選擇眷屬的人數限制
 var familyIsSignup;    //眷屬是否報名
-var viewSignupInit = true, viewFamilyInit = true, activityStatus = "", activityModel = "";
+var viewSignupInit = true, viewFamilyInit = true, activityStatus = "", activityModel = "", activityID = "";
+var overTime = "";
 var myEmpNo = "";
 
 window.initialSuccess = function () {
@@ -51,6 +52,36 @@ function onBackKeyDown() {
     if (checkPopupShown()) {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
+
+        //如果是超時popup,重新獲取活動列表
+        if (popupID == "detailTimeOverMsg") {
+            $("#detailTimeOverBtn").trigger("click");
+        } else if (popupID == "signupTimeOverMsg") {
+            $("#signupTimeOverBtn").trigger("click");
+        } else if (popupID == "manageTimeOverMsg") {
+            $("#manageTimeOverBtn").trigger("click");
+        } else if (popupID == "selectTimeOverMsg") {
+            $("#selectTimeOverBtn").trigger("click");
+        } else if (popupID == "recordTimeOverMsg") {
+            $("#recordTimeOverBtn").trigger("click");
+        } else if (popupID == "signupOverLimitMsg") {
+            ActivitiesListQuery();
+            if (activityModel == "3") {
+                for (var i = 0; i < 3; i++) {
+                    pageVisitedList.pop();
+                }
+            } else {
+                for (var i = 0; i < 2; i++) {
+                    pageVisitedList.pop();
+                }
+            }
+            $.each($("#openList .activity-list"), function (index, item) {
+                if ($(item).attr("data-id") == activityID) {
+                    $(item).trigger("click");
+                }
+            });
+        }
+        
     } else if ($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel("close");
     } else if (activePageID == "viewActivitiesSignup") {
@@ -399,4 +430,22 @@ function stripScript(str) {
         rs = rs + s.substr(i, 1).replace(pattern, '');
     }
     str.value = rs;
+}
+
+//獲取當前時間，並轉換成int類型
+function getTimeNow() {
+    var time = new Date(Date.now());
+    var currentYear = time.getFullYear();
+    var currentMonth = ((time.getMonth() + 1) < 10) ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1);
+    var currentDate = (time.getDate() < 10) ? "0" + time.getDate() : time.getDate();
+    var currentHour = (time.getHours() < 10 ? "0" + time.getHours() : time.getHours());
+    var currentMin = time.getMinutes();
+    var timeNow = parseInt(currentYear + currentMonth + currentDate + currentHour + currentMin);
+    return timeNow;
+}
+
+//處理活動結束時間，並轉換成int類型
+function timeConversion(str) {
+    var time = str.replace(/\//g, "").replace(/:/g, "").replace(/ /g, "");
+    return parseInt(time);
 }

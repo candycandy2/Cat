@@ -576,11 +576,23 @@ $("#viewActivitiesSignup").pagecontainer({
             }
         });
 
+        //超時關閉popup，並返回活動列表
+        $("#signupTimeOverBtn").on("click", function () {
+            //重新獲取活動列表
+            ActivitiesListQuery();
+            pageVisitedList.pop();
+            //跳轉
+            changePageByPanel("viewActivitiesList", false);
+        });
+
         /******************************* employee component ********************************/
         // 1. 點擊“新增名單”，觸發dropdownlist的click事件，可以彈出popup
         $(".add-team-member").on("click", function () {
             if (currentPlace < limitPlace) {
                 $("#employee-popup").trigger("click");
+            } else {
+                //提示成員已滿
+                //popupMsgInit('.memberFullMsg');
             }
         });
 
@@ -721,24 +733,33 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                loadingMask("show");
+                //先判斷是否超時
+                var nowTime = getTimeNow();
+                if (nowTime - overTime < 0) {
+                    loadingMask("show");
 
-                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                    + submitID
-                    + '</ActivitiesID><SignupModel>'
-                    + submitModel
-                    + '</SignupModel><EmployeeNo>'
-                    + myEmpNo
-                    + '</EmployeeNo><TeamName>'
-                    + teamName
-                    + '</TeamName><TeamDept>'
-                    + departNo
-                    + '</TeamDept><MemberEmpNo>'
-                    + memberNoArr.join(",")
-                    + '</MemberEmpNo></LayoutHeader>';
+                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                        + submitID
+                        + '</ActivitiesID><SignupModel>'
+                        + submitModel
+                        + '</SignupModel><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo><TeamName>'
+                        + teamName
+                        + '</TeamName><TeamDept>'
+                        + departNo
+                        + '</TeamDept><MemberEmpNo>'
+                        + memberNoArr.join(",")
+                        + '</MemberEmpNo></LayoutHeader>';
 
-                //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
+                    //console.log(activitiesSignupConfirmQueryData);
+                    ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
+
+                } else {
+                    //超時提示
+                    popupMsgInit('.signupTimeOverMsg');
+                }
+
             }
 
         });
@@ -898,30 +919,39 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                loadingMask("show");
+                //先判斷是否超時
+                var nowTime = getTimeNow();
+                if (nowTime - overTime < 0) {
+                    loadingMask("show");
 
-                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                    + submitID
-                    + '</ActivitiesID><SignupModel>'
-                    + submitModel
-                    + '</SignupModel><SignupPlaces>'
-                    + personSubmitPlace
-                    + '</SignupPlaces><EmployeeNo>'
-                    + myEmpNo
-                    + '</EmployeeNo><ColumnAnswer_1>'
-                    + (personFieldArr[0] == undefined ? "" : personFieldArr[0]["ColumnAnswer"])
-                    + '</ColumnAnswer_1><ColumnAnswer_2>'
-                    + (personFieldArr[1] == undefined ? "" : personFieldArr[1]["ColumnAnswer"])
-                    + '</ColumnAnswer_2><ColumnAnswer_3>'
-                    + (personFieldArr[2] == undefined ? "" : personFieldArr[2]["ColumnAnswer"])
-                    + '</ColumnAnswer_3><ColumnAnswer_4>'
-                    + (personFieldArr[3] == undefined ? "" : personFieldArr[3]["ColumnAnswer"])
-                    + '</ColumnAnswer_4><ColumnAnswer_5>'
-                    + (personFieldArr[4] == undefined ? "" : personFieldArr[4]["ColumnAnswer"])
-                    + '</ColumnAnswer_5></LayoutHeader>';
+                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                        + submitID
+                        + '</ActivitiesID><SignupModel>'
+                        + submitModel
+                        + '</SignupModel><SignupPlaces>'
+                        + personSubmitPlace
+                        + '</SignupPlaces><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo><ColumnAnswer_1>'
+                        + (personFieldArr[0] == undefined ? "" : personFieldArr[0]["ColumnAnswer"])
+                        + '</ColumnAnswer_1><ColumnAnswer_2>'
+                        + (personFieldArr[1] == undefined ? "" : personFieldArr[1]["ColumnAnswer"])
+                        + '</ColumnAnswer_2><ColumnAnswer_3>'
+                        + (personFieldArr[2] == undefined ? "" : personFieldArr[2]["ColumnAnswer"])
+                        + '</ColumnAnswer_3><ColumnAnswer_4>'
+                        + (personFieldArr[3] == undefined ? "" : personFieldArr[3]["ColumnAnswer"])
+                        + '</ColumnAnswer_4><ColumnAnswer_5>'
+                        + (personFieldArr[4] == undefined ? "" : personFieldArr[4]["ColumnAnswer"])
+                        + '</ColumnAnswer_5></LayoutHeader>';
 
-                //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
+                    //console.log(activitiesSignupConfirmQueryData);
+                    ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
+
+                } else {
+                    //超時提示
+                    popupMsgInit('.signupTimeOverMsg');
+                }
+
             }
         });
 
@@ -1023,30 +1053,39 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                loadingMask("show");
+                //先判斷是否超時
+                var nowTime = getTimeNow();
+                if (nowTime - overTime < 0) {
+                    loadingMask("show");
 
-                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                    + submitID
-                    + '</ActivitiesID><SignupModel>'
-                    + submitModel
-                    + '</SignupModel><SignupPlaces>1</SignupPlaces><EmployeeNo>'
-                    + myEmpNo
-                    + '</EmployeeNo><ColumnAnswer_1>'
-                    + (timeFieldArr[0] == undefined ? "" : timeFieldArr[0]["ColumnAnswer"])
-                    + '</ColumnAnswer_1><ColumnAnswer_2>'
-                    + (timeFieldArr[1] == undefined ? "" : timeFieldArr[1]["ColumnAnswer"])
-                    + '</ColumnAnswer_2><ColumnAnswer_3>'
-                    + (timeFieldArr[2] == undefined ? "" : timeFieldArr[2]["ColumnAnswer"])
-                    + '</ColumnAnswer_3><ColumnAnswer_4>'
-                    + (timeFieldArr[3] == undefined ? "" : timeFieldArr[3]["ColumnAnswer"])
-                    + '</ColumnAnswer_4><ColumnAnswer_5>'
-                    + (timeFieldArr[4] == undefined ? "" : timeFieldArr[4]["ColumnAnswer"])
-                    + '</ColumnAnswer_5><TimeID>'
-                    + timeID
-                    + '</TimeID></LayoutHeader>';
+                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                        + submitID
+                        + '</ActivitiesID><SignupModel>'
+                        + submitModel
+                        + '</SignupModel><SignupPlaces>1</SignupPlaces><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo><ColumnAnswer_1>'
+                        + (timeFieldArr[0] == undefined ? "" : timeFieldArr[0]["ColumnAnswer"])
+                        + '</ColumnAnswer_1><ColumnAnswer_2>'
+                        + (timeFieldArr[1] == undefined ? "" : timeFieldArr[1]["ColumnAnswer"])
+                        + '</ColumnAnswer_2><ColumnAnswer_3>'
+                        + (timeFieldArr[2] == undefined ? "" : timeFieldArr[2]["ColumnAnswer"])
+                        + '</ColumnAnswer_3><ColumnAnswer_4>'
+                        + (timeFieldArr[3] == undefined ? "" : timeFieldArr[3]["ColumnAnswer"])
+                        + '</ColumnAnswer_4><ColumnAnswer_5>'
+                        + (timeFieldArr[4] == undefined ? "" : timeFieldArr[4]["ColumnAnswer"])
+                        + '</ColumnAnswer_5><TimeID>'
+                        + timeID
+                        + '</TimeID></LayoutHeader>';
 
-                //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
+                    //console.log(activitiesSignupConfirmQueryData);
+                    ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
+
+                } else {
+                    //超時提示
+                    popupMsgInit('.signupTimeOverMsg');
+                }
+
             }
         });
 

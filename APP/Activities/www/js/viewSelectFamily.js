@@ -178,10 +178,26 @@ $("#viewSelectFamily").pagecontainer({
 
         });
 
+        $("#viewSelectFamily").on("pageshow", function (event, ui) {
+
+        });
+
         /********************************** dom event *************************************/
         $("#viewSelectFamily").keypress(function (event) {
 
         });
+
+        //超時關閉popup，並返回活動列表
+        $("#selectTimeOverBtn").on("click", function () {
+            //如果已額滿，重新獲取活動列表
+            ActivitiesListQuery();
+            for (var i = 0; i < 2; i++) {
+                pageVisitedList.pop();
+            }
+            //跳轉
+            changePageByPanel("viewActivitiesList", false);
+        });
+
 
         /********************************** signup *************************************/
         //返回眷屬報名或報名管理-popup
@@ -191,9 +207,9 @@ $("#viewSelectFamily").pagecontainer({
 
         //確定返回報名頁面
         $("#cancelSelectBtn").on("click", function () {
-            if(familyIsSignup == "Y") {
+            if (familyIsSignup == "Y") {
                 changePageByPanel("viewActivitiesManage", false);
-            } else if(familyIsSignup == "N") {
+            } else if (familyIsSignup == "N") {
                 changePageByPanel("viewActivitiesSignup", false);
             }
         });
@@ -490,15 +506,24 @@ $("#viewSelectFamily").pagecontainer({
                 }
             }
 
-            activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
-                + actModel
-                + '</SignupModel>'
-                + familyListBySelf
-                + familyQuery
-                + '</LayoutHeader>';
+            //先判斷是否超時
+            var nowTime = getTimeNow();
+            if (nowTime - overTime < 0) {
+                activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
+                    + actModel
+                    + '</SignupModel>'
+                    + familyListBySelf
+                    + familyQuery
+                    + '</LayoutHeader>';
 
-            //console.log(activitiesSignupConfirmQueryData);
-            ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
+
+            } else {
+                //超時提示
+                popupMsgInit('.selectTimeOverMsg');
+            }
+
         });
 
         //footer fixed定位会因为虚拟键盘展开影响页面大小
