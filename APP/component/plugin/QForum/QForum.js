@@ -1019,7 +1019,7 @@ var QForum = {
         windowScroll: function() {
             //Depend on the comment in window's view, decide the sequence to call API getPostDetails
 
-            window.addEventListener("scroll", function() {
+            $("#" + QForum.pageID).scroll(function() {
 
                 if (typeof $(".QForum-Content.reply-fullscreen-popup").css("display") === "undefined" || 
                     $(".QForum-Content.reply-fullscreen-popup").css("display") == "block") {
@@ -1032,7 +1032,7 @@ var QForum = {
 
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
                 var activePageID = activePage[0].id;
-                var bodyScrollTop = $("body").scrollTop();
+                var bodyScrollTop = $("#" + QForum.pageID).scrollTop();
 
                 if (activePageID === QForum.pageID) {
 
@@ -1051,7 +1051,7 @@ var QForum = {
                             ) {
 
                                 //Scroll top to bottom
-                                if (bodyScrollTop > QForum.lastBodyScrollTop) {
+                                if (bodyScrollTop >= QForum.lastBodyScrollTop) {
                                     console.log("Scroll top to bottom");
 
                                     if (sequence >= QForum.replyLastID && sequence >= QForum.replyDataRange) {
@@ -1091,8 +1091,8 @@ var QForum = {
                                             return;
                                         }
 
-                                        if ((sequence % QForum.replyCount) == 0) {
-                                            QForum.METHOD.setReplyLastID((sequence - QForum.replyCount + 1));
+                                        if ((sequence % QForum.replyDataRange) == 0) {
+                                            QForum.METHOD.setReplyLastID((sequence - QForum.replyDataRange + 1));
                                             QForum.API.getPostDetails();
                                         }
 
