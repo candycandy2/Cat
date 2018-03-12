@@ -31,7 +31,7 @@ var panel = htmlContent
     + '</div>'
     + '</div>'
     + '<div class="page-mask view-hide"></div>';
-var touchmoveStatus;
+
 $(document).one("pagebeforeshow", function () {
     $.mobile.pageContainer.prepend(panel);
     $("#mypanel").panel().enhanceWithin();
@@ -70,6 +70,4 @@ $(document).one("pagebeforeshow", function () {
     $(document).on("panelbeforeclose", "#mypanel", function () {
         $(".page-mask").hide();
     });
-
-    
 });
