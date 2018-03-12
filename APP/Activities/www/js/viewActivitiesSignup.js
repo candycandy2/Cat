@@ -64,17 +64,23 @@ $("#viewActivitiesSignup").pagecontainer({
                             $("#personSignupBtn").removeClass("btn-disabled");
                         } else {
                             //根據欄位類型，生成不同欄位
+                            var noAnswerCount = 0;
                             for (var i in personFieldArr) {
                                 if (personFieldArr[i]["ColumnType"] == "Select") {
-                                    setSelectCustomField(personFieldArr, i, "viewActivitiesSignup", "personSignupSelect", "person-signup-custom-field");
+                                    noAnswerCount = setSelectCustomField(personFieldArr, i, "viewActivitiesSignup", "personSignupSelect", "person-signup-custom-field", noAnswerCount);
 
                                 } else if (personFieldArr[i]["ColumnType"] == "Text") {
-                                    setTextCustomField(personFieldArr, i, "personSignupText", "person-signup-custom-field");
+                                    noAnswerCount = setTextCustomField(personFieldArr, i, "personSignupText", "person-signup-custom-field", noAnswerCount);
 
                                 } else if (personFieldArr[i]["ColumnType"] == "Multiple") {
-                                    setCheckboxCustomField(personFieldArr, i, "personSignupCheckbox", "person-signup-custom-field");
+                                    noAnswerCount = setCheckboxCustomField(personFieldArr, i, "personSignupCheckbox", "person-signup-custom-field", noAnswerCount);
 
                                 }
+                            }
+
+                            //如果有欄位值爲空，按鈕不可用
+                            if (noAnswerCount > 0) {
+                                $("#personSignupBtn").addClass("btn-disabled");
                             }
                         }
 
@@ -135,18 +141,29 @@ $("#viewActivitiesSignup").pagecontainer({
                         // }];
 
                         //根據欄位類型，生成不同欄位
-                        for (var i in familyFieldArr) {
-                            if (familyFieldArr[i]["ColumnType"] == "Select") {
-                                setSelectCustomField(familyFieldArr, i, "viewActivitiesSignup", "familySignupSelect", "family-signup-custom-field");
+                        if (familyFieldArr.length == 0) {
+                            $("#selectFamilyBtn").removeClass("btn-disabled");
+                        } else {
+                            var noAnswerCount = 0;
+                            for (var i in familyFieldArr) {
+                                if (familyFieldArr[i]["ColumnType"] == "Select") {
+                                    noAnswerCount = setSelectCustomField(familyFieldArr, i, "viewActivitiesSignup", "familySignupSelect", "family-signup-custom-field", noAnswerCount);
 
-                            } else if (familyFieldArr[i]["ColumnType"] == "Text") {
-                                setTextCustomField(familyFieldArr, i, "familySignupText", "family-signup-custom-field");
+                                } else if (familyFieldArr[i]["ColumnType"] == "Text") {
+                                    noAnswerCount = setTextCustomField(familyFieldArr, i, "familySignupText", "family-signup-custom-field", noAnswerCount);
 
-                            } else if (familyFieldArr[i]["ColumnType"] == "Multiple") {
-                                setCheckboxCustomField(familyFieldArr, i, "familySignupCheckbox", "family-signup-custom-field");
+                                } else if (familyFieldArr[i]["ColumnType"] == "Multiple") {
+                                    noAnswerCount = setCheckboxCustomField(familyFieldArr, i, "familySignupCheckbox", "family-signup-custom-field", noAnswerCount);
 
+                                }
+                            }
+
+                            //如果有欄位值爲空，按鈕不可用
+                            if (noAnswerCount > 0) {
+                                $("#selectFamilyBtn").addClass("btn-disabled");
                             }
                         }
+
 
                     } else if (model == "4") {
                         //初始化
@@ -211,18 +228,29 @@ $("#viewActivitiesSignup").pagecontainer({
 
                         //自定義欄位
                         timeFieldArr = getCustomField(signupObj);
-                        for (var i in timeFieldArr) {
-                            if (timeFieldArr[i]["ColumnType"] == "Select") {
-                                setSelectCustomField(timeFieldArr, i, "viewActivitiesSignup", "timeSignupSelect", "time-signup-custom-field");
+                        if (timeFieldArr.length == 0) {
+                            $("#timeSignupBtn").removeClass("btn-disabled");
+                        } else {
+                            var noAnswerCount = 0;
+                            for (var i in timeFieldArr) {
+                                if (timeFieldArr[i]["ColumnType"] == "Select") {
+                                    noAnswerCount = setSelectCustomField(timeFieldArr, i, "viewActivitiesSignup", "timeSignupSelect", "time-signup-custom-field", noAnswerCount);
 
-                            } else if (timeFieldArr[i]["ColumnType"] == "Text") {
-                                setTextCustomField(timeFieldArr, i, "timeSignupText", "time-signup-custom-field");
+                                } else if (timeFieldArr[i]["ColumnType"] == "Text") {
+                                    noAnswerCount = setTextCustomField(timeFieldArr, i, "timeSignupText", "time-signup-custom-field", noAnswerCount);
 
-                            } else if (timeFieldArr[i]["ColumnType"] == "Multiple") {
-                                setCheckboxCustomField(timeFieldArr, i, "timeSignupCheckbox", "time-signup-custom-field");
+                                } else if (timeFieldArr[i]["ColumnType"] == "Multiple") {
+                                    noAnswerCount = setCheckboxCustomField(timeFieldArr, i, "timeSignupCheckbox", "time-signup-custom-field", noAnswerCount);
 
+                                }
+                            }
+
+                            //如果有欄位值爲空，按鈕不可用
+                            if (noAnswerCount > 0) {
+                                $("#timeSignupBtn").addClass("btn-disabled");
                             }
                         }
+
                     }
 
                     //根據不同活動類型，展示不同頁面，並跳轉
@@ -702,6 +730,7 @@ $("#viewActivitiesSignup").pagecontainer({
         });
 
         /*********************************** team signup ***********************************/
+        //輸入部門代碼
         $("#departNo").on("keyup", function () {
             departNo = $.trim($(this).val());
 
@@ -715,6 +744,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
         });
 
+        //輸入隊伍名稱
         $("#teamName").on("keyup", function () {
             teamName = $.trim($(this).val());
 
@@ -891,8 +921,6 @@ $("#viewActivitiesSignup").pagecontainer({
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
             }, 1000);
-
-            console.log(selfVal);
 
         });
 
