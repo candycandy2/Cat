@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="367" id="com.qplay.appqchatdev" ios-CFBundleVersion="367" version="1.0.0.367[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="370" id="com.qplay.appqchatdev" ios-CFBundleVersion="370" version="1.0.0.370[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QChat</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -75,6 +75,7 @@
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="This app needs read/write-access photo library access" />
     </plugin>
     <plugin name="cordova-plugin-proguard" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-proguard" />
+    <plugin name="cordova-plugin-network-information" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/cordova-plugin-network-information" />
     <plugin name="phonegap-plugin-mobile-accessibility" spec="file:///Users/samuel.hsieh/.jenkins/workspace/QPlayDailyBuild-QChat-QisdaEIS-Massage/plugins/phonegap-plugin-mobile-accessibility" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.0" />
     <plugin name="jmessage-phonegap-plugin" spec="^3.0.23">
