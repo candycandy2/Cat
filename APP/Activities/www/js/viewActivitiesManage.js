@@ -43,18 +43,29 @@ $("#viewActivitiesManage").pagecontainer({
 
                         //根據欄位類型，生成不同欄位
                         personManageArr = getCustomField(manageObj);
-                        for (var i in personManageArr) {
-                            if (personManageArr[i]["ColumnType"] == "Select") {
-                                setSelectCustomField(personManageArr, i, "viewActivitiesManage", "personManageSelect", "person-manage-custom-field");
+                        if (personManageArr.length == 0) {
+                            $("#updatePersonSignup").removeClass("btn-disabled");
+                        } else {
+                            var noAnswerCount = 0;
+                            for (var i in personManageArr) {
+                                if (personManageArr[i]["ColumnType"] == "Select") {
+                                    noAnswerCount = setSelectCustomField(personManageArr, i, "viewActivitiesManage", "personManageSelect", "person-manage-custom-field", noAnswerCount);
 
-                            } else if (personManageArr[i]["ColumnType"] == "Text") {
-                                setTextCustomField(personManageArr, i, "personManageText", "person-manage-custom-field");
+                                } else if (personManageArr[i]["ColumnType"] == "Text") {
+                                    noAnswerCount = setTextCustomField(personManageArr, i, "personManageText", "person-manage-custom-field", noAnswerCount);
 
-                            } else if (personManageArr[i]["ColumnType"] == "Multiple") {
-                                setCheckboxCustomField(personManageArr, i, "personManageCheckbox", "person-manage-custom-field");
+                                } else if (personManageArr[i]["ColumnType"] == "Multiple") {
+                                    noAnswerCount = setCheckboxCustomField(personManageArr, i, "personManageCheckbox", "person-manage-custom-field", noAnswerCount);
 
+                                }
+                            }
+
+                            //如果有欄位值爲空，按鈕不可用
+                            if (noAnswerCount > 0) {
+                                $("#updatePersonSignup").addClass("btn-disabled");
                             }
                         }
+
 
                         //取消報名
                         cancelActName = manageObj["ActivitiesName"];
@@ -93,18 +104,29 @@ $("#viewActivitiesManage").pagecontainer({
 
                         //根據欄位類型，生成不同欄位
                         familyManageFieldArr = getCustomField(manageObj);
-                        for (var i in familyManageFieldArr) {
-                            if (familyManageFieldArr[i]["ColumnType"] == "Select") {
-                                setSelectCustomField(familyManageFieldArr, i, "viewActivitiesManage", "familyManageSelect", "family-manage-custom-field");
+                        if (familyManageFieldArr.length == 0) {
+                            $("#manageSelectFamilyBtn").removeClass("btn-disabled");
+                        } else {
+                            var noAnswerCount = 0;
+                            for (var i in familyManageFieldArr) {
+                                if (familyManageFieldArr[i]["ColumnType"] == "Select") {
+                                    noAnswerCount = setSelectCustomField(familyManageFieldArr, i, "viewActivitiesManage", "familyManageSelect", "family-manage-custom-field", noAnswerCount);
 
-                            } else if (familyManageFieldArr[i]["ColumnType"] == "Text") {
-                                setTextCustomField(familyManageFieldArr, i, "familyManageText", "family-manage-custom-field");
+                                } else if (familyManageFieldArr[i]["ColumnType"] == "Text") {
+                                    noAnswerCount = setTextCustomField(familyManageFieldArr, i, "familyManageText", "family-manage-custom-field", noAnswerCount);
 
-                            } else if (familyManageFieldArr[i]["ColumnType"] == "Multiple") {
-                                setCheckboxCustomField(familyManageFieldArr, i, "familyManageCheckbox", "family-manage-custom-field");
+                                } else if (familyManageFieldArr[i]["ColumnType"] == "Multiple") {
+                                    noAnswerCount = setCheckboxCustomField(familyManageFieldArr, i, "familyManageCheckbox", "family-manage-custom-field", noAnswerCount);
 
+                                }
+                            }
+
+                            //如果有欄位值爲空，按鈕不可用
+                            if (noAnswerCount > 0) {
+                                $("#manageSelectFamilyBtn").addClass("btn-disabled");
                             }
                         }
+
 
                         //取消報名
                         cancelID = manageObj["ActivitiesID"];
@@ -464,10 +486,10 @@ $("#viewActivitiesManage").pagecontainer({
 
             } else {
                 //超時提示
-                setTimeout(function() {
+                setTimeout(function () {
                     popupMsgInit('.manageTimeOverMsg');
                 }, 500);
-                
+
             }
 
         });
@@ -477,7 +499,6 @@ $("#viewActivitiesManage").pagecontainer({
         //dropdownlist
         $("#personManagePlace").on("change", "select", function () {
             submitSignupPlace = $(this).val();
-
         });
 
         //select

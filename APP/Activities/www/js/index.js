@@ -81,7 +81,7 @@ function onBackKeyDown() {
                 }
             });
         }
-        
+
     } else if ($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel("close");
     } else if (activePageID == "viewActivitiesSignup") {
@@ -154,7 +154,7 @@ function getCustomField(obj) {
 }
 
 //生成Select-dropdownlist欄位
-function setSelectCustomField(arr, i, page, id, container) {
+function setSelectCustomField(arr, i, page, id, container, count) {
     //1.聲明dropdownlist對象
     var columnData = {
         id: "column-popup-" + id + "-" + i,
@@ -195,7 +195,12 @@ function setSelectCustomField(arr, i, page, id, container) {
                 $(item).trigger("click");
             }
         });
+    } else {
+        count++;
     }
+
+    //8.返回count
+    return count;
 }
 
 //選擇眷屬的select
@@ -244,7 +249,7 @@ function setSelectCustomField2(index, arr, i, page, id, $container) {
 }
 
 //生成Text欄位
-function setTextCustomField(arr, i, id, container) {
+function setTextCustomField(arr, i, id, container, count) {
     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
         + arr[i]["ColumnName"]
         + '</label><input id="' + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" data-role="none" class="' + id + '" value="'
@@ -252,6 +257,13 @@ function setTextCustomField(arr, i, id, container) {
         + '"></div>';
 
     $("." + container).append(fieldContent);
+
+    if(arr[i]["ColumnAnswer"] == ""){
+        count++;
+    }
+
+    //8.返回count
+    return count;
 }
 
 //選擇眷屬的Text
@@ -266,7 +278,7 @@ function setTextCustomField2(index, arr, i, id, $container) {
 }
 
 //生成Checkbox自定義欄位
-function setCheckboxCustomField(arr, i, id, container) {
+function setCheckboxCustomField(arr, i, id, container, count) {
     //先處理checkbox所有選項
     var mutipleArr = arr[i]["ColumnItem"].split(";");
     var mutipleContent = "";
@@ -295,7 +307,12 @@ function setCheckboxCustomField(arr, i, id, container) {
                 }
             }
         });
+    } else {
+        count++;
     }
+
+    //8.返回count
+    return count;
 }
 
 //選擇眷屬的Checkbox
