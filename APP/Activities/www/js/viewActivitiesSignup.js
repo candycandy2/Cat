@@ -742,6 +742,8 @@ $("#viewActivitiesSignup").pagecontainer({
                 checkFieldByTeam();
             }, 2000);
 
+            console.log(departNo);
+
         });
 
         //輸入隊伍名稱
@@ -823,7 +825,7 @@ $("#viewActivitiesSignup").pagecontainer({
             }
             timeoutCheckFamilySignup = setTimeout(function () {
                 saveValueAndCheckForm(familyFieldArr, selfName, selfVal, null, "selectFamilyBtn");
-            }, 1000);
+            }, 2000);
 
         });
 
@@ -920,7 +922,7 @@ $("#viewActivitiesSignup").pagecontainer({
             timeoutCheckPersonSignup = setTimeout(function () {
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
-            }, 1000);
+            }, 2000);
 
         });
 
@@ -1050,7 +1052,7 @@ $("#viewActivitiesSignup").pagecontainer({
             timeoutCheckTimeSignup = setTimeout(function () {
                 //保存栏位值
                 saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
-            }, 1000);
+            }, 2000);
             //判斷radio和arr書否有空值
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
         });
