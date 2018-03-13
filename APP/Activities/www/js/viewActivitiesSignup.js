@@ -228,28 +228,25 @@ $("#viewActivitiesSignup").pagecontainer({
 
                         //自定義欄位
                         timeFieldArr = getCustomField(signupObj);
-                        if (timeFieldArr.length == 0) {
-                            $("#timeSignupBtn").removeClass("btn-disabled");
-                        } else {
-                            var noAnswerCount = 0;
-                            for (var i in timeFieldArr) {
-                                if (timeFieldArr[i]["ColumnType"] == "Select") {
-                                    noAnswerCount = setSelectCustomField(timeFieldArr, i, "viewActivitiesSignup", "timeSignupSelect", "time-signup-custom-field", noAnswerCount);
+                        var noAnswerCount = 0;
+                        for (var i in timeFieldArr) {
+                            if (timeFieldArr[i]["ColumnType"] == "Select") {
+                                noAnswerCount = setSelectCustomField(timeFieldArr, i, "viewActivitiesSignup", "timeSignupSelect", "time-signup-custom-field", noAnswerCount);
 
-                                } else if (timeFieldArr[i]["ColumnType"] == "Text") {
-                                    noAnswerCount = setTextCustomField(timeFieldArr, i, "timeSignupText", "time-signup-custom-field", noAnswerCount);
+                            } else if (timeFieldArr[i]["ColumnType"] == "Text") {
+                                noAnswerCount = setTextCustomField(timeFieldArr, i, "timeSignupText", "time-signup-custom-field", noAnswerCount);
 
-                                } else if (timeFieldArr[i]["ColumnType"] == "Multiple") {
-                                    noAnswerCount = setCheckboxCustomField(timeFieldArr, i, "timeSignupCheckbox", "time-signup-custom-field", noAnswerCount);
+                            } else if (timeFieldArr[i]["ColumnType"] == "Multiple") {
+                                noAnswerCount = setCheckboxCustomField(timeFieldArr, i, "timeSignupCheckbox", "time-signup-custom-field", noAnswerCount);
 
-                                }
-                            }
-
-                            //如果有欄位值爲空，按鈕不可用
-                            if (noAnswerCount > 0) {
-                                $("#timeSignupBtn").addClass("btn-disabled");
                             }
                         }
+
+                        //如果有欄位值爲空，按鈕不可用
+                        if (noAnswerCount > 0) {
+                            $("#timeSignupBtn").addClass("btn-disabled");
+                        }
+                        
 
                     }
 
@@ -741,8 +738,6 @@ $("#viewActivitiesSignup").pagecontainer({
             timeoutDepartNo = setTimeout(function () {
                 checkFieldByTeam();
             }, 2000);
-
-            console.log(departNo);
 
         });
 
