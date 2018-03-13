@@ -477,6 +477,8 @@ var QForum = {
             QForum.METHOD.setPostID(postID);
             QForum.METHOD.setPageID(pageID);
             QForum.METHOD.setReplyLastID(1);
+            QForum.lastCommentOffsetTop = 0;
+            $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
 
             //Create Reply Button
             QForum.VIEW.replyButtonFooter();
@@ -637,7 +639,7 @@ var QForum = {
                 }
 
                 //Clear list-data
-                if (QForum.replyLastID == 1) {
+                if (QForum.replyLastID == 1 && pullRefresh) {
                     $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
                 }
 
@@ -733,7 +735,7 @@ var QForum = {
                                     tplJS.recoveryPageScroll();
                                 }
 
-                                $("html body").animate({
+                                $("#" + QForum.pageID + " .page-main").animate({
                                     scrollTop: lastCommentOffsetTop
                                 }, 0);
                             }
@@ -1044,10 +1046,10 @@ var QForum = {
 
                             var rect = el.getBoundingClientRect();
                             if (
-                                rect.top >= 0 &&
-                                rect.left >= 0 &&
-                                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && 
-                                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                                parseInt(rect.top, 10) >= 0 &&
+                                parseInt(rect.left, 10) >= 0 &&
+                                parseInt(rect.bottom, 10) <= (window.innerHeight || document.documentElement.clientHeight) && 
+                                parseInt(rect.right, 10) <= (window.innerWidth || document.documentElement.clientWidth)
                             ) {
 
                                 //Scroll top to bottom
