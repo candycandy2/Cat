@@ -426,23 +426,6 @@ function stripScript(str) {
     var s = str.value;
     var rs = "";
 
-    // var reg = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|\uD83D[\uDE80-\uDEFF]/g;
-    // if(s.match(reg)) {
-    //     s = s.replace(reg, '');
-    // }
-    // var patt = /[\ud800-\udbff][\udc00-\udfff]/g; // 检测utf16字符正则  
-    // s = s.replace(patt, function (char) {
-    //     var H, L, code;
-    //     if (char.length === 2) {
-    //         H = char.charCodeAt(0); // 取出高位  
-    //         L = char.charCodeAt(1); // 取出低位  
-    //         code = (H - 0xD800) * 0x400 + 0x10000 + L - 0xDC00; // 转换算法  
-    //         return "&#" + code + ";";
-    //     } else {
-    //         return char;
-    //     }
-    // });
-
     for (var i = 0; i < s.length; i++) {
         rs = rs + s.substr(i, 1).replace(pattern, '');
     }
