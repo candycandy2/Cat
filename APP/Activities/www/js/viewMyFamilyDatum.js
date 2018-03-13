@@ -32,7 +32,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         window.ActivitiesFamilyQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 familyArr = [];
                 if (data["ResultCode"] == "1") {

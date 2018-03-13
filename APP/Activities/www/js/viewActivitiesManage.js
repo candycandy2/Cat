@@ -66,7 +66,6 @@ $("#viewActivitiesManage").pagecontainer({
                             }
                         }
 
-
                         //取消報名
                         cancelActName = manageObj["ActivitiesName"];
                         cancelContent = manageObj["EmployeeName"] + " / " + langStr["str_088"] + " / " + manageObj["SignupPlaces"] + langStr["str_058"];
@@ -521,7 +520,7 @@ $("#viewActivitiesManage").pagecontainer({
             timeoutCheckPersonManage = setTimeout(function () {
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personManageArr, selfName, selfVal, null, "updatePersonSignup");
-            }, 1000);
+            }, 2000);
 
         });
 
@@ -629,7 +628,7 @@ $("#viewActivitiesManage").pagecontainer({
             }
             timeoutCheckFamilyManage = setTimeout(function () {
                 saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
-            }, 1000);
+            }, 2000);
 
         });
 
