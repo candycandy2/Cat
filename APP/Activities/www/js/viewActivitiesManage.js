@@ -510,14 +510,17 @@ $("#viewActivitiesManage").pagecontainer({
 
         //text
         $(".person-manage-custom-field").on("keyup", ".personManageText", function () {
-            var selfName = $(this).prev().text();
-            var selfVal = $(this).val();
+            var self = $(this);
+            // var selfName = $(this).prev().text();
+            // var selfVal = $(this).val();
 
             if (timeoutCheckPersonManage != null) {
                 clearTimeout(timeoutCheckPersonManage);
                 timeoutCheckPersonManage = null;
             }
             timeoutCheckPersonManage = setTimeout(function () {
+                var selfName = self.prev().text();
+                var selfVal = $.trim(self.val());
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personManageArr, selfName, selfVal, null, "updatePersonSignup");
             }, 2000);
@@ -619,14 +622,18 @@ $("#viewActivitiesManage").pagecontainer({
 
         //text
         $(".family-manage-custom-field").on("keyup", ".familyManageText", function () {
-            var selfName = $(this).prev().text();
-            var selfVal = $(this).val();
+            var self = $(this);
+            // var selfName = $(this).prev().text();
+            // var selfVal = $(this).val();
 
             if (timeoutCheckFamilyManage != null) {
                 clearTimeout(timeoutCheckFamilyManage);
                 timeoutCheckFamilyManage = null;
             }
             timeoutCheckFamilyManage = setTimeout(function () {
+                var selfName = self.prev().text();
+                var selfVal = $.trim(self.val());
+                //保存栏位值并检查表单
                 saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
             }, 2000);
 

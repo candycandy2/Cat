@@ -145,7 +145,7 @@ $("#viewSelectFamily").pagecontainer({
                             oneObj["ColumnName_" + j] = selectFamilyArr[i]["ColumnName_" + j];
                             oneObj["ColumnType_" + j] = selectFamilyArr[i]["ColumnType_" + j];
                             oneObj["ColumnItem_" + j] = selectFamilyArr[i]["ColumnItem_" + j];
-                            oneObj["ColumnAnswer_" + j] = selectFamilyArr[i]["ColumnAnswer_" + j];
+                            oneObj["ColumnAnswer_" + j] = (selectFamilyArr[i]["ColumnAnswer_" + j] == "undefined" ? "" : selectFamilyArr[i]["ColumnAnswer_" + j]);
                         }
                         familyAllList.push(oneObj);
                     }
@@ -410,15 +410,17 @@ $("#viewSelectFamily").pagecontainer({
 
         //Text欄位值改變
         $(".select-family-tbody").on("keyup", ".custom-field input", function () {
+            var self = $(this);
             var familyNo = $(this).parent().parent().parent().prev().find(".family-checkbox-img").parent().attr("data-no");
             var columnName = $(this).prev().text();
-            var columnAnswer = $.trim($(this).val());
+            // var columnAnswer = $.trim($(this).val());
 
             if (timeoutSelectFamily != null) {
                 clearTimeout(timeoutSelectFamily);
                 timeoutSelectFamily = null;
             }
             timeoutSelectFamily = setTimeout(function () {
+                var columnAnswer = $.trim(self.val());
                 if (familyAllList.length != 0) {
                     for (var i in familyAllList) {
                         if (familyNo == familyAllList[i]["FamilyNo"]) {
