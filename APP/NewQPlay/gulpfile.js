@@ -209,6 +209,7 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-whitelist',
     'cordova plugin add ../../plugins/cordova-plugin-inappbrowser',
     'cordova plugin add ../../plugins/cordova-plugin-proguard',
+    'cordova plugin add ../../plugins/cordova-plugin-network-information',
     'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
     'cordova plugin add ../../plugins/cordova-plugin-geolocation',
     'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
