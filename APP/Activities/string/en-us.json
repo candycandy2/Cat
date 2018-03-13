@@ -9,7 +9,7 @@
   },
   {
     "term": "str_002",
-    "definition": "活動報名e",
+    "definition": "Sign up activities",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -17,7 +17,7 @@
   },
   {
     "term": "str_003",
-    "definition": "報名記錄e",
+    "definition": "Sign up records",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -25,7 +25,7 @@
   },
   {
     "term": "str_004",
-    "definition": "我的眷屬資料e",
+    "definition": "My family dependents information",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,7 @@
   },
   {
     "term": "str_005",
-    "definition": "已開放：e",
+    "definition": "Opened：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -41,7 +41,7 @@
   },
   {
     "term": "str_006",
-    "definition": "未來：e",
+    "definition": "Future：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -49,7 +49,7 @@
   },
   {
     "term": "str_007",
-    "definition": "開始報名e",
+    "definition": "Sign up",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -57,7 +57,7 @@
   },
   {
     "term": "str_008",
-    "definition": "報名管理e",
+    "definition": "Management",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -65,7 +65,7 @@
   },
   {
     "term": "str_009",
-    "definition": "取消報名e",
+    "definition": "Call off",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -73,7 +73,7 @@
   },
   {
     "term": "str_010",
-    "definition": "更改資料e",
+    "definition": "Change information",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -81,7 +81,7 @@
   },
   {
     "term": "str_011",
-    "definition": "確定送出e",
+    "definition": "Confirm",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -89,7 +89,7 @@
   },
   {
     "term": "str_012",
-    "definition": "選擇眷屬e",
+    "definition": "Select family dependents",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -97,7 +97,7 @@
   },
   {
     "term": "str_013",
-    "definition": "送出名單e",
+    "definition": "Send out name list",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -105,7 +105,7 @@
   },
   {
     "term": "str_014",
-    "definition": "新增名單e",
+    "definition": "Add into name list",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -113,7 +113,7 @@
   },
   {
     "term": "str_015",
-    "definition": "我要報名e",
+    "definition": "I want to sign up",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -121,7 +121,7 @@
   },
   {
     "term": "str_016",
-    "definition": "儲存e",
+    "definition": "Save",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -129,7 +129,7 @@
   },
   {
     "term": "str_017",
-    "definition": "已完成報名e",
+    "definition": "Signed up",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -137,7 +137,7 @@
   },
   {
     "term": "str_018",
-    "definition": "已完成修改e",
+    "definition": "Modified",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -145,7 +145,7 @@
   },
   {
     "term": "str_019",
-    "definition": "報名已取消e",
+    "definition": "Called off",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -153,7 +153,7 @@
   },
   {
     "term": "str_020",
-    "definition": "目前活動名額已額滿e",
+    "definition": "Activity quota is full now",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -161,7 +161,7 @@
   },
   {
     "term": "str_021",
-    "definition": "您已報名其他場次e",
+    "definition": "You had signed up other session",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -169,7 +169,7 @@
   },
   {
     "term": "str_022",
-    "definition": "報名未完成e",
+    "definition": "Sign up incompletely",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -177,7 +177,7 @@
   },
   {
     "term": "str_023",
-    "definition": "確定回到上一頁？e",
+    "definition": "Back to the last page？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -185,7 +185,7 @@
   },
   {
     "term": "str_024",
-    "definition": "很抱歉，您報名的人數超過剩餘名額，請重新報名e",
+    "definition": "Sorry ! The number of applicants exceeds remaining quota, please sign up again",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -193,7 +193,7 @@
   },
   {
     "term": "str_025",
-    "definition": "很抱歉，您報名的組數超過剩餘名額，請重新報名e",
+    "definition": "Sorry ! The group of applicants exceeds remaining quota, please sign up again",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -201,7 +201,7 @@
   },
   {
     "term": "str_026",
-    "definition": "連線失敗e",
+    "definition": "Connection failed",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -209,7 +209,7 @@
   },
   {
     "term": "str_027",
-    "definition": "請確認網路連線e",
+    "definition": "Please check network connection",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -225,7 +225,7 @@
   },
   {
     "term": "str_029",
-    "definition": "好，我知道了e",
+    "definition": "OK, got it",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -233,7 +233,7 @@
   },
   {
     "term": "str_030",
-    "definition": "確定取消報名e",
+    "definition": "Ok to called off ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -241,7 +241,7 @@
   },
   {
     "term": "str_031",
-    "definition": "確定取消編輯？e",
+    "definition": "Ok to cancel the edit ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "str_032",
-    "definition": "確定刪除眷屬資料？e",
+    "definition": "Ok to delete information of family dependents",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -818,6 +818,30 @@
   {
     "term": "str_103",
     "definition": "*請注意，當眷屬報名的活動尚未結束時，無法刪除資料e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_104",
+    "definition": "團隊e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_105",
+    "definition": "目前活動報名時間已過期e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_106",
+    "definition": "隊伍成員已滿，不能繼續新增e",
     "context": "",
     "term_plural": "",
     "reference": "",

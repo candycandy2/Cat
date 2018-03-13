@@ -35,7 +35,7 @@
             <div class="person-signup-remark font-style11"></div>
             <div class="blank-container-before-footer"></div>
             <!--footer-->
-            <div id="personSignupBtn" class="person-footer font-style3 btn-disabled">
+            <div id="personSignupBtn" class="person-footer font-style3">
                 <!--開始報名-->
                 <span class="langStr" data-id="str_007"></span>
             </div>
@@ -81,7 +81,7 @@
             <div class="family-signup-custom-field"></div>
             <div class="blank-container-before-footer"></div>
             <!--footer-->
-            <div id="selectFamilyBtn" class="person-footer font-style3 btn-disabled">
+            <div id="selectFamilyBtn" class="person-footer font-style3">
                 <!--選擇眷屬-->
                 <span class="langStr" data-id="str_012"></span>
             </div>
@@ -121,7 +121,7 @@
             <div class="time-signup-custom-field"></div>
             <div class="blank-container-before-footer"></div>
             <!--footer-->
-            <div id="timeSignupBtn" class="person-footer font-style3 btn-disabled">
+            <div id="timeSignupBtn" class="person-footer font-style3">
                 <!--確定送出-->
                 <span class="langStr" data-id="str_011"></span>
             </div>
@@ -257,8 +257,8 @@
     </div>
 
     <!--人/組數超過剩餘名額-popup-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupOverLimitMsg" for="signupOverLimitMsg"
-        id="signupOverLimitMsg">
+    <div data-role="popup" data-history="false" data-dismissible="false" data-overlay-theme="b" class="app-popup signupOverLimitMsg"
+        for="signupOverLimitMsg" id="signupOverLimitMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -316,6 +316,64 @@
                     <div class="btn-cancel" id="cancelSignupBtn">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--報名時間已過期-popup-->
+    <div data-role="popup" data-history="false" data-dismissible="false" data-overlay-theme="b" class="app-popup signupTimeOverMsg"
+        for="signupTimeOverMsg" id="signupTimeOverMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--目前活動報名時間已過期-->
+                        <span class="langStr" data-id="str_105"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel" id="signupTimeOverBtn">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--隊伍成員已滿-popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup memberFullMsg" for="memberFullMsg" id="memberFullMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--隊伍成員已滿，不能繼續新增-->
+                    <span class="langStr" data-id="str_106"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
                     </div>
                 </div>
             </div>

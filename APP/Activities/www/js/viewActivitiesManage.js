@@ -43,18 +43,29 @@ $("#viewActivitiesManage").pagecontainer({
 
                         //根據欄位類型，生成不同欄位
                         personManageArr = getCustomField(manageObj);
-                        for (var i in personManageArr) {
-                            if (personManageArr[i]["ColumnType"] == "Select") {
-                                setSelectCustomField(personManageArr, i, "viewActivitiesManage", "personManageSelect", "person-manage-custom-field");
+                        if (personManageArr.length == 0) {
+                            $("#updatePersonSignup").removeClass("btn-disabled");
+                        } else {
+                            var noAnswerCount = 0;
+                            for (var i in personManageArr) {
+                                if (personManageArr[i]["ColumnType"] == "Select") {
+                                    noAnswerCount = setSelectCustomField(personManageArr, i, "viewActivitiesManage", "personManageSelect", "person-manage-custom-field", noAnswerCount);
 
-                            } else if (personManageArr[i]["ColumnType"] == "Text") {
-                                setTextCustomField(personManageArr, i, "personManageText", "person-manage-custom-field");
+                                } else if (personManageArr[i]["ColumnType"] == "Text") {
+                                    noAnswerCount = setTextCustomField(personManageArr, i, "personManageText", "person-manage-custom-field", noAnswerCount);
 
-                            } else if (personManageArr[i]["ColumnType"] == "Multiple") {
-                                setCheckboxCustomField(personManageArr, i, "personManageCheckbox", "person-manage-custom-field");
+                                } else if (personManageArr[i]["ColumnType"] == "Multiple") {
+                                    noAnswerCount = setCheckboxCustomField(personManageArr, i, "personManageCheckbox", "person-manage-custom-field", noAnswerCount);
 
+                                }
+                            }
+
+                            //如果有欄位值爲空，按鈕不可用
+                            if (noAnswerCount > 0) {
+                                $("#updatePersonSignup").addClass("btn-disabled");
                             }
                         }
+
 
                         //取消報名
                         cancelActName = manageObj["ActivitiesName"];
@@ -93,18 +104,29 @@ $("#viewActivitiesManage").pagecontainer({
 
                         //根據欄位類型，生成不同欄位
                         familyManageFieldArr = getCustomField(manageObj);
-                        for (var i in familyManageFieldArr) {
-                            if (familyManageFieldArr[i]["ColumnType"] == "Select") {
-                                setSelectCustomField(familyManageFieldArr, i, "viewActivitiesManage", "familyManageSelect", "family-manage-custom-field");
+                        if (familyManageFieldArr.length == 0) {
+                            $("#manageSelectFamilyBtn").removeClass("btn-disabled");
+                        } else {
+                            var noAnswerCount = 0;
+                            for (var i in familyManageFieldArr) {
+                                if (familyManageFieldArr[i]["ColumnType"] == "Select") {
+                                    noAnswerCount = setSelectCustomField(familyManageFieldArr, i, "viewActivitiesManage", "familyManageSelect", "family-manage-custom-field", noAnswerCount);
 
-                            } else if (familyManageFieldArr[i]["ColumnType"] == "Text") {
-                                setTextCustomField(familyManageFieldArr, i, "familyManageText", "family-manage-custom-field");
+                                } else if (familyManageFieldArr[i]["ColumnType"] == "Text") {
+                                    noAnswerCount = setTextCustomField(familyManageFieldArr, i, "familyManageText", "family-manage-custom-field", noAnswerCount);
 
-                            } else if (familyManageFieldArr[i]["ColumnType"] == "Multiple") {
-                                setCheckboxCustomField(familyManageFieldArr, i, "familyManageCheckbox", "family-manage-custom-field");
+                                } else if (familyManageFieldArr[i]["ColumnType"] == "Multiple") {
+                                    noAnswerCount = setCheckboxCustomField(familyManageFieldArr, i, "familyManageCheckbox", "family-manage-custom-field", noAnswerCount);
 
+                                }
+                            }
+
+                            //如果有欄位值爲空，按鈕不可用
+                            if (noAnswerCount > 0) {
+                                $("#manageSelectFamilyBtn").addClass("btn-disabled");
                             }
                         }
+
 
                         //取消報名
                         cancelID = manageObj["ActivitiesID"];
@@ -375,6 +397,15 @@ $("#viewActivitiesManage").pagecontainer({
             changePageByPanel("viewActivitiesDetail", false);
         });
 
+        //超時關閉popup，並返回活動列表
+        $("#manageTimeOverBtn").on("click", function () {
+            //重新獲取活動列表
+            ActivitiesListQuery();
+            pageVisitedList.pop();
+            //跳轉
+            changePageByPanel("viewActivitiesList", false);
+        });
+
 
         /************************************ Team *************************************/
         //展開隊伍
@@ -434,21 +465,32 @@ $("#viewActivitiesManage").pagecontainer({
 
         //確定取消報名（所有類型活動）
         $("#confirmCancelSignup").on("click", function () {
-            loadingMask("show");
+            //先判斷是否超時
+            var nowTime = getTimeNow();
+            if (nowTime - overTime < 0) {
+                loadingMask("show");
 
-            activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
-                + cancelID
-                + '</ActivitiesID><SignupNo>'
-                //+ cancelNo
-                + (cancelModel == "3" ? "" : cancelNo)
-                + '</SignupNo><SignupModel>'
-                + cancelModel
-                + '</SignupModel><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo></LayoutHeader>';
+                activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
+                    + cancelID
+                    + '</ActivitiesID><SignupNo>'
+                    //+ cancelNo
+                    + (cancelModel == "3" ? "" : cancelNo)
+                    + '</SignupNo><SignupModel>'
+                    + cancelModel
+                    + '</SignupModel><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo></LayoutHeader>';
 
-            //console.log(activitiesSignupCancelQueryData);
-            ActivitiesSignupCancelQuery(cancelModel);
+                //console.log(activitiesSignupCancelQueryData);
+                ActivitiesSignupCancelQuery(cancelModel);
+
+            } else {
+                //超時提示
+                setTimeout(function () {
+                    popupMsgInit('.manageTimeOverMsg');
+                }, 500);
+
+            }
 
         });
 
@@ -457,7 +499,6 @@ $("#viewActivitiesManage").pagecontainer({
         //dropdownlist
         $("#personManagePlace").on("change", "select", function () {
             submitSignupPlace = $(this).val();
-
         });
 
         //select
@@ -514,30 +555,39 @@ $("#viewActivitiesManage").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                loadingMask("show");
+                //先判斷是否超時
+                var nowTime = getTimeNow();
+                if (nowTime - overTime < 0) {
+                    loadingMask("show");
 
-                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                    + cancelID
-                    + '</ActivitiesID><SignupModel>'
-                    + cancelModel
-                    + '</SignupModel><SignupPlaces>'
-                    + submitSignupPlace
-                    + '</SignupPlaces><EmployeeNo>'
-                    + myEmpNo
-                    + '</EmployeeNo><ColumnAnswer_1>'
-                    + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
-                    + '</ColumnAnswer_1><ColumnAnswer_2>'
-                    + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
-                    + '</ColumnAnswer_2><ColumnAnswer_3>'
-                    + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
-                    + '</ColumnAnswer_3><ColumnAnswer_4>'
-                    + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
-                    + '</ColumnAnswer_4><ColumnAnswer_5>'
-                    + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
-                    + '</ColumnAnswer_5></LayoutHeader>';
+                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                        + cancelID
+                        + '</ActivitiesID><SignupModel>'
+                        + cancelModel
+                        + '</SignupModel><SignupPlaces>'
+                        + submitSignupPlace
+                        + '</SignupPlaces><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo><ColumnAnswer_1>'
+                        + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
+                        + '</ColumnAnswer_1><ColumnAnswer_2>'
+                        + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
+                        + '</ColumnAnswer_2><ColumnAnswer_3>'
+                        + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
+                        + '</ColumnAnswer_3><ColumnAnswer_4>'
+                        + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
+                        + '</ColumnAnswer_4><ColumnAnswer_5>'
+                        + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
+                        + '</ColumnAnswer_5></LayoutHeader>';
 
-                //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
+                    //console.log(activitiesSignupConfirmQueryData);
+                    ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
+
+                } else {
+                    //超時提示
+                    popupMsgInit('.manageTimeOverMsg');
+                }
+
             }
         });
 

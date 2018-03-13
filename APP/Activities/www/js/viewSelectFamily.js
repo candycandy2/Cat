@@ -11,7 +11,7 @@ $("#viewSelectFamily").pagecontainer({
 
             this.successCallback = function (data) {
                 //console.log(arr);
-                //console.log(data);
+                console.log(data);
 
                 actID = id, actModel = model, familyIsSignup = isSignup, familyListBySelf = content;
                 if (data["ResultCode"] == "1" && data["Content"] != "") {
@@ -65,7 +65,6 @@ $("#viewSelectFamily").pagecontainer({
                             + selectFamilyArr[i]["FamilyID"]
                             + '</span><span> / </span><span>'
                             + selectFamilyArr[i]["FamilyBirthday"]
-                            //+ '</span></div><div class="select-family-field">' + $(".family-signup-custom-field").html() + '</div></div></div>';
                             + '</span></div><div class="select-family-field"></div></div></div>';
                     }
 
@@ -96,26 +95,32 @@ $("#viewSelectFamily").pagecontainer({
                                         $(item).trigger("click");
 
                                         for (var j = 1; j < 6; j++) {
-                                            if (selectFamilyArr[i]["ColumnType_" + j] == "Select") {
-                                                $.each($("#column-popup-" + i + "-familySelect-" + (j - 1) + "-option-list li"), function (ind, ite) {
-                                                    if ($(ite).text() == selectFamilyArr[i]["ColumnAnswer_" + j]) {
-                                                        $(ite).trigger("click");
-                                                    }
-                                                });
-                                            } else if (selectFamilyArr[i]["ColumnType_" + j] == "Text") {
-                                                $(item).parent().parent().next().find(".select-family-field .custom-field:eq(" + (j - 1) + ") input").val(selectFamilyArr[i]["ColumnAnswer_" + j]);
-                                            } else if (selectFamilyArr[i]["ColumnType_" + j] == "Multiple") {
-                                                var valueArr = selectFamilyArr[i]["ColumnAnswer_" + j].split(";");
-                                                //恢復所有checkbox爲未選
-                                                $(".checkbox-" + i + "-familySelectCheckbox-" + (j - 1) + " img").attr("src", "img/checkbox_n.png");
-                                                $.each($(".checkbox-" + i + "-familySelectCheckbox-" + (j - 1) + " span"), function (indexs, items) {
-                                                    for (var k in valueArr) {
-                                                        if ($(items).text() == valueArr[k]) {
-                                                            $(items).prev().attr("src", "img/checkbox_s.png");
+                                            if (selectFamilyArr[i]["ColumnAnswer_" + j] != "undefined") {
+                                                if (selectFamilyArr[i]["ColumnType_" + j] == "Select" && selectFamilyArr[i]["ColumnAnswer_" + j] != "") {
+                                                    $.each($("#column-popup-" + i + "-familySelect-" + (j - 1) + "-option-list li"), function (ind, ite) {
+                                                        if ($(ite).text() == selectFamilyArr[i]["ColumnAnswer_" + j]) {
+                                                            $(ite).trigger("click");
                                                         }
-                                                    }
-                                                });
+                                                    });
+
+                                                } else if (selectFamilyArr[i]["ColumnType_" + j] == "Text" && selectFamilyArr[i]["ColumnAnswer_" + j] != "") {
+                                                    $(item).parent().parent().next().find(".select-family-field .custom-field:eq(" + (j - 1) + ") input").val(selectFamilyArr[i]["ColumnAnswer_" + j]);
+
+                                                } else if (selectFamilyArr[i]["ColumnType_" + j] == "Multiple" && selectFamilyArr[i]["ColumnAnswer_" + j] != "") {
+                                                    var valueArr = selectFamilyArr[i]["ColumnAnswer_" + j].split(";");
+                                                    //恢復所有checkbox爲未選
+                                                    $(".checkbox-" + i + "-familySelectCheckbox-" + (j - 1) + " img").attr("src", "img/checkbox_n.png");
+                                                    $.each($(".checkbox-" + i + "-familySelectCheckbox-" + (j - 1) + " span"), function (indexs, items) {
+                                                        for (var k in valueArr) {
+                                                            if ($(items).text() == valueArr[k]) {
+                                                                $(items).prev().attr("src", "img/checkbox_s.png");
+                                                            }
+                                                        }
+                                                    });
+
+                                                }
                                             }
+
                                         }
 
                                     }
@@ -178,10 +183,26 @@ $("#viewSelectFamily").pagecontainer({
 
         });
 
+        $("#viewSelectFamily").on("pageshow", function (event, ui) {
+
+        });
+
         /********************************** dom event *************************************/
         $("#viewSelectFamily").keypress(function (event) {
 
         });
+
+        //超時關閉popup，並返回活動列表
+        $("#selectTimeOverBtn").on("click", function () {
+            //如果已額滿，重新獲取活動列表
+            ActivitiesListQuery();
+            for (var i = 0; i < 2; i++) {
+                pageVisitedList.pop();
+            }
+            //跳轉
+            changePageByPanel("viewActivitiesList", false);
+        });
+
 
         /********************************** signup *************************************/
         //返回眷屬報名或報名管理-popup
@@ -191,9 +212,9 @@ $("#viewSelectFamily").pagecontainer({
 
         //確定返回報名頁面
         $("#cancelSelectBtn").on("click", function () {
-            if(familyIsSignup == "Y") {
+            if (familyIsSignup == "Y") {
                 changePageByPanel("viewActivitiesManage", false);
-            } else if(familyIsSignup == "N") {
+            } else if (familyIsSignup == "N") {
                 changePageByPanel("viewActivitiesSignup", false);
             }
         });
@@ -490,15 +511,24 @@ $("#viewSelectFamily").pagecontainer({
                 }
             }
 
-            activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
-                + actModel
-                + '</SignupModel>'
-                + familyListBySelf
-                + familyQuery
-                + '</LayoutHeader>';
+            //先判斷是否超時
+            var nowTime = getTimeNow();
+            if (nowTime - overTime < 0) {
+                activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
+                    + actModel
+                    + '</SignupModel>'
+                    + familyListBySelf
+                    + familyQuery
+                    + '</LayoutHeader>';
 
-            //console.log(activitiesSignupConfirmQueryData);
-            ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
+
+            } else {
+                //超時提示
+                popupMsgInit('.selectTimeOverMsg');
+            }
+
         });
 
         //footer fixed定位会因为虚拟键盘展开影响页面大小

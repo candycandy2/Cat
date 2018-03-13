@@ -19,7 +19,8 @@ var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var recordArr = [];    //活動記錄列表
 var selectFamilyLimit = 0;    //選擇眷屬的人數限制
 var familyIsSignup;    //眷屬是否報名
-var viewSignupInit = true, viewFamilyInit = true, activityStatus = "", activityModel = "";
+var viewSignupInit = true, viewFamilyInit = true, activityStatus = "", activityModel = "", activityID = "";
+var overTime = "";
 var myEmpNo = "";
 
 window.initialSuccess = function () {
@@ -51,6 +52,36 @@ function onBackKeyDown() {
     if (checkPopupShown()) {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
+
+        //如果是超時popup,重新獲取活動列表
+        if (popupID == "detailTimeOverMsg") {
+            $("#detailTimeOverBtn").trigger("click");
+        } else if (popupID == "signupTimeOverMsg") {
+            $("#signupTimeOverBtn").trigger("click");
+        } else if (popupID == "manageTimeOverMsg") {
+            $("#manageTimeOverBtn").trigger("click");
+        } else if (popupID == "selectTimeOverMsg") {
+            $("#selectTimeOverBtn").trigger("click");
+        } else if (popupID == "recordTimeOverMsg") {
+            $("#recordTimeOverBtn").trigger("click");
+        } else if (popupID == "signupOverLimitMsg") {
+            ActivitiesListQuery();
+            if (activityModel == "3") {
+                for (var i = 0; i < 3; i++) {
+                    pageVisitedList.pop();
+                }
+            } else {
+                for (var i = 0; i < 2; i++) {
+                    pageVisitedList.pop();
+                }
+            }
+            $.each($("#openList .activity-list"), function (index, item) {
+                if ($(item).attr("data-id") == activityID) {
+                    $(item).trigger("click");
+                }
+            });
+        }
+
     } else if ($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel("close");
     } else if (activePageID == "viewActivitiesSignup") {
@@ -123,7 +154,7 @@ function getCustomField(obj) {
 }
 
 //生成Select-dropdownlist欄位
-function setSelectCustomField(arr, i, page, id, container) {
+function setSelectCustomField(arr, i, page, id, container, count) {
     //1.聲明dropdownlist對象
     var columnData = {
         id: "column-popup-" + id + "-" + i,
@@ -164,7 +195,12 @@ function setSelectCustomField(arr, i, page, id, container) {
                 $(item).trigger("click");
             }
         });
+    } else {
+        count++;
     }
+
+    //8.返回count
+    return count;
 }
 
 //選擇眷屬的select
@@ -213,7 +249,7 @@ function setSelectCustomField2(index, arr, i, page, id, $container) {
 }
 
 //生成Text欄位
-function setTextCustomField(arr, i, id, container) {
+function setTextCustomField(arr, i, id, container, count) {
     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
         + arr[i]["ColumnName"]
         + '</label><input id="' + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" data-role="none" class="' + id + '" value="'
@@ -221,6 +257,13 @@ function setTextCustomField(arr, i, id, container) {
         + '"></div>';
 
     $("." + container).append(fieldContent);
+
+    if(arr[i]["ColumnAnswer"] == ""){
+        count++;
+    }
+
+    //8.返回count
+    return count;
 }
 
 //選擇眷屬的Text
@@ -235,7 +278,7 @@ function setTextCustomField2(index, arr, i, id, $container) {
 }
 
 //生成Checkbox自定義欄位
-function setCheckboxCustomField(arr, i, id, container) {
+function setCheckboxCustomField(arr, i, id, container, count) {
     //先處理checkbox所有選項
     var mutipleArr = arr[i]["ColumnItem"].split(";");
     var mutipleContent = "";
@@ -264,7 +307,12 @@ function setCheckboxCustomField(arr, i, id, container) {
                 }
             }
         });
+    } else {
+        count++;
     }
+
+    //8.返回count
+    return count;
 }
 
 //選擇眷屬的Checkbox
@@ -377,8 +425,44 @@ function stripScript(str) {
     var pattern = new RegExp("[&'<>”“‘’\"]");
     var s = str.value;
     var rs = "";
+
+    // var reg = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|\uD83D[\uDE80-\uDEFF]/g;
+    // if(s.match(reg)) {
+    //     s = s.replace(reg, '');
+    // }
+    // var patt = /[\ud800-\udbff][\udc00-\udfff]/g; // 检测utf16字符正则  
+    // s = s.replace(patt, function (char) {
+    //     var H, L, code;
+    //     if (char.length === 2) {
+    //         H = char.charCodeAt(0); // 取出高位  
+    //         L = char.charCodeAt(1); // 取出低位  
+    //         code = (H - 0xD800) * 0x400 + 0x10000 + L - 0xDC00; // 转换算法  
+    //         return "&#" + code + ";";
+    //     } else {
+    //         return char;
+    //     }
+    // });
+
     for (var i = 0; i < s.length; i++) {
         rs = rs + s.substr(i, 1).replace(pattern, '');
     }
     str.value = rs;
+}
+
+//獲取當前時間，並轉換成int類型
+function getTimeNow() {
+    var time = new Date(Date.now());
+    var currentYear = time.getFullYear();
+    var currentMonth = ((time.getMonth() + 1) < 10) ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1);
+    var currentDate = (time.getDate() < 10) ? "0" + time.getDate() : time.getDate();
+    var currentHour = (time.getHours() < 10 ? "0" + time.getHours() : time.getHours());
+    var currentMin = time.getMinutes();
+    var timeNow = parseInt(currentYear + currentMonth + currentDate + currentHour + currentMin);
+    return timeNow;
+}
+
+//處理活動結束時間，並轉換成int類型
+function timeConversion(str) {
+    var time = str.replace(/\//g, "").replace(/:/g, "").replace(/ /g, "");
+    return parseInt(time);
 }

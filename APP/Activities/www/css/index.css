@@ -14,6 +14,7 @@
 #mypanel {
     background-color: #CECECE;
     box-shadow: 0 0 0;
+    position: fixed;
     z-index: 1002;
 }
 
@@ -98,14 +99,14 @@
 
 .two-btn-inline > div:nth-of-type(1) {
     float: left;
-    width: 49.7vw;
+    width: 49.9vw;
     height: 10.656vw;
-    border-right: 1px solid #ffffff;
+    border-right: 0.1vw solid #ffffff;
 }
 
 .two-btn-inline > div:nth-of-type(2) {
     float: left;
-    width: 49.7vw;
+    width: 49.9vw;
     height: 10.656vw;
 }
 
@@ -218,6 +219,20 @@ input[type="text"] {
     display: none;
 }
 
+.pull-list,
+.pull-record {
+    font-family: Arial;
+    height: 0.2vw;
+    color: #0f0f0f;
+    text-align: center;
+    width: 80%;
+    margin: 1vw auto 0;
+}
+
+.dont-touch-move {
+    overflow: hidden;
+    height: 100%;
+}
 
 /************************************** viewActivitiesList ******************************************/
 
@@ -380,6 +395,7 @@ input[type="text"] {
 
 .detail-main {
     width: 92.58vw;
+    min-height: 30vw;
     margin-top: 4vw;
     margin-bottom: 2vw;
 }
@@ -694,7 +710,8 @@ input[type="text"] {
 }
 
 .signupOverLimitMsg >.ui-content,
-.manageOverLimitMsg >.ui-content {
+.manageOverLimitMsg >.ui-content,
+.memberFullMsg >.ui-content {
     padding: 0 !important;
 }
 
@@ -702,6 +719,16 @@ input[type="text"] {
 .manageOverLimitMsg .ui-content>.main {
     padding: 0 10vw;
     margin-top: 10%;
+    line-height: 1.5;
+}
+
+.memberFullMsg .ui-content>.header {
+    margin-top: 5%;
+}
+
+.memberFullMsg .ui-content>.main {
+    padding: 0 8vw;
+    margin-top: 12%;
     line-height: 1.5;
 }
 
@@ -745,7 +772,7 @@ input[type="text"] {
 }
 
 .list-img {
-    width: 4vw;
+    width: 4.5vw;
     height: 4vw;
     margin-left: 2.541vw;
 }
@@ -1258,20 +1285,35 @@ input[type="text"] {
 .confirmCancelAddFamily >.ui-content,
 .familyErrorMsg >.ui-content,
 .cancelFailMsg >.ui-content,
-.recordFailMsg >.ui-content {
+.recordFailMsg >.ui-content,
+.detailTimeOverMsg >.ui-content,
+.signupTimeOverMsg >.ui-content,
+.manageTimeOverMsg >.ui-content,
+.selectTimeOverMsg >.ui-content,
+.recordTimeOverMsg >.ui-content {
     padding: 0 !important;
 }
 
 .confirmCancelAddFamily .ui-content>.header,
 .familyErrorMsg .ui-content>.header,
 .cancelFailMsg .ui-content>.header,
-.recordFailMsg .ui-content>.header {
+.recordFailMsg .ui-content>.header,
+.detailTimeOverMsg .ui-content>.header,
+.signupTimeOverMsg .ui-content>.header,
+.manageTimeOverMsg .ui-content>.header,
+.selectTimeOverMsg .ui-content>.header,
+.recordTimeOverMsg .ui-content>.header {
     margin-top: 14%;
 }
 
 .confirmCancelAddFamily .ui-content>.main,
 .familyErrorMsg .ui-content>.main,
 .cancelFailMsg .ui-content>.main,
-.recordFailMsg .ui-content>.main {
+.recordFailMsg .ui-content>.main,
+.detailTimeOverMsg .ui-content>.main,
+.signupTimeOverMsg .ui-content>.main,
+.manageTimeOverMsg .ui-content>.main,
+.selectTimeOverMsg .ui-content>.main,
+.recordTimeOverMsg .ui-content>.main {
     margin-top: 12%;
 }

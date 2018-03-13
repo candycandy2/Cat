@@ -29,12 +29,10 @@ $("#viewActivitiesList").pagecontainer({
                                 + '</div><div class="font-style12"><span>'
                                 + langStr["str_078"]
                                 + '</span><span>'
-                                + activitiesArr[i]["QuotaPlaces"]
-                                + '</span>&nbsp;&nbsp;&nbsp;<span>'
-                                + langStr["str_079"]
-                                + '</span><span>'
-                                + activitiesArr[i]["RemainingPlaces"]
-                                + '</span></div><div class="font-style12"><span>'
+                                + (activitiesArr[i]["SignupModel"] == 4 ? langStr["str_104"] : activitiesArr[i]["QuotaPlaces"])
+                                + '</span>&nbsp;&nbsp;&nbsp;&nbsp;'
+                                + (activitiesArr[i]["SignupModel"] == 4 ? "" : '<span>' + langStr["str_079"] + '</span><span>' + activitiesArr[i]["RemainingPlaces"] + '</span>')
+                                + '</div><div class="font-style12"><span>'
                                 + langStr["str_052"]
                                 + '</span><span>'
                                 + activitiesArr[i]["SignupDate"]
@@ -52,7 +50,7 @@ $("#viewActivitiesList").pagecontainer({
                                 + '</div><div class="font-style12"><span>'
                                 + langStr["str_078"]
                                 + '</span><span>'
-                                + activitiesArr[i]["QuotaPlaces"]
+                                + (activitiesArr[i]["SignupModel"] == 4 ? langStr["str_104"] : activitiesArr[i]["QuotaPlaces"])
                                 + '</span></div><div class="font-style12"><span>'
                                 + langStr["str_077"]
                                 + '</span><span>'
@@ -84,7 +82,15 @@ $("#viewActivitiesList").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesList").on("pagebeforeshow", function (event, ui) {
-
+            /**** PullToRefresh ****/
+            PullToRefresh.init({
+                mainElement: '.pull-list',
+                onRefresh: function () {
+                    loadingMask("show");
+                    //重新获取活动列表
+                    ActivitiesListQuery();
+                }
+            });
         });
 
 
@@ -109,6 +115,6 @@ $("#viewActivitiesList").pagecontainer({
             ActivitiesDetailQuery(actStatus);
         });
 
-        
+
     }
 });
