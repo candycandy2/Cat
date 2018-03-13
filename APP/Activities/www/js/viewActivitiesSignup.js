@@ -635,7 +635,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
         // 3. 搜索員工，2秒後呼叫API，返回查詢信息
         $("#viewActivitiesSignup").on("keyup", "#searchBar", function (e) {
-            var self = $(this).val();
+            var self = $("#searchBar").val();
             if (self.length == 0) {
                 $("#loaderQuery").hide();
                 $("#employee-popup-option-list").hide();
@@ -729,13 +729,12 @@ $("#viewActivitiesSignup").pagecontainer({
         /*********************************** team signup ***********************************/
         //輸入部門代碼
         $("#departNo").on("keyup", function () {
-            departNo = $.trim($(this).val());
-
             if (timeoutDepartNo != null) {
                 clearTimeout(timeoutDepartNo);
                 timeoutDepartNo = null;
             }
             timeoutDepartNo = setTimeout(function () {
+                departNo = $.trim($("#departNo").val());
                 checkFieldByTeam();
             }, 2000);
 
@@ -743,13 +742,12 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //輸入隊伍名稱
         $("#teamName").on("keyup", function () {
-            teamName = $.trim($(this).val());
-
             if (timeoutTeamName != null) {
                 clearTimeout(timeoutTeamName);
                 timeoutTeamName = null;
             }
             timeoutTeamName = setTimeout(function () {
+                teamName = $.trim($("#teamName").val());
                 checkFieldByTeam();
             }, 2000);
 
@@ -811,14 +809,18 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //text
         $(".family-signup-custom-field").on("keyup", ".familySignupText", function () {
-            var selfName = $(this).prev().text();
-            var selfVal = $(this).val();
+            var self = $(this);
+            // var selfName = $(this).prev().text();
+            // var selfVal = $(this).val();
 
             if (timeoutCheckFamilySignup != null) {
                 clearTimeout(timeoutCheckFamilySignup);
                 timeoutCheckFamilySignup = null;
             }
             timeoutCheckFamilySignup = setTimeout(function () {
+                var selfName = self.prev().text();
+                var selfVal = $.trim(self.val());
+                //保存栏位值并检查表单
                 saveValueAndCheckForm(familyFieldArr, selfName, selfVal, null, "selectFamilyBtn");
             }, 2000);
 
@@ -907,14 +909,17 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //text
         $(".person-signup-custom-field").on("keyup", ".personSignupText", function () {
-            var selfName = $(this).prev().text();
-            var selfVal = $(this).val();
+            var self = $(this);
+            // var selfName = $(this).prev().text();
+            // var selfVal = $(this).val();
 
             if (timeoutCheckPersonSignup != null) {
                 clearTimeout(timeoutCheckPersonSignup);
                 timeoutCheckPersonSignup = null;
             }
             timeoutCheckPersonSignup = setTimeout(function () {
+                var selfName = self.prev().text();
+                var selfVal = $.trim(self.val());
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
             }, 2000);
@@ -1037,14 +1042,17 @@ $("#viewActivitiesSignup").pagecontainer({
 
         //text
         $(".time-signup-custom-field").on("keyup", ".timeSignupText", function () {
-            var selfName = $(this).prev().text();
-            var selfVal = $(this).val();
+            var self = $(this);
+            // var selfName = $(this).prev().text();
+            // var selfVal = $(this).val();
 
             if (timeoutCheckTimeSignup != null) {
                 clearTimeout(timeoutCheckTimeSignup);
                 timeoutCheckTimeSignup = null;
             }
             timeoutCheckTimeSignup = setTimeout(function () {
+                var selfName = self.prev().text();
+                var selfVal = $.trim(self.val());
                 //保存栏位值
                 saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
             }, 2000);
