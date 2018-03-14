@@ -196,26 +196,53 @@ gulp.task('install', ['copyRes'], shell.task([
 
 gulp.task('jenkinsinstall', ['copyRes'], shell.task([
     'cordova platform add ios',
-    'cordova platform add android',
+    'cordova platform add android@6.3.0',
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + process.env.apiServerURL + 'qplayApi/public/qplayauth_register',
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + process.env.QPushAPPKey,
-    'cordova plugin add ../../plugins/cordova-plugin-device',
+    'cordova plugin add ../../plugins/cordova-plugin-device',//
     //'cordova plugin add cordova-plugin-console@1.0.5',
-    'cordova plugin add ../../plugins/cordova-plugin-appversion',
-    'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,
+    'cordova plugin add ../../plugins/cordova-plugin-appversion',//
+    'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,//
     'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-    'cordova plugin add ../../plugins/cordova-plugin-app-update',
-    'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
+    'cordova plugin add ../../plugins/cordova-plugin-app-update',//
+    'cordova plugin add ../../plugins/cordova-plugin-android-permissions',//
     'cordova plugin add ../../plugins/cordova-plugin-whitelist',
     'cordova plugin add ../../plugins/cordova-plugin-inappbrowser',
-    'cordova plugin add ../../plugins/cordova-plugin-proguard',
+    'cordova plugin add ../../plugins/cordova-plugin-proguard',//
     'cordova plugin add ../../plugins/cordova-plugin-network-information',
     'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
     'cordova plugin add ../../plugins/cordova-plugin-geolocation',
     'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
     'cordova plugin add ../../plugins/cordova-plugin-statusbar',
-    'cordova plugin add ../../plugins/cordova-plugin-appavailability'//,
+    'cordova plugin add ../../plugins/cordova-plugin-appavailability'
     //'cordova plugin add cordova-plugin-file@4.3.1'
+]));
+
+
+gulp.task('devinstall', ['copyRes'], shell.task([
+    'rm -f *.json',
+    'rm -f -R ./platforms/',
+    'rm -f -R ./plugins/',
+    'rm -f -R ./node_modules/',
+    'cordova platform add android@7.1.0',
+    'gulp config  --vname 1.0.0.alantest --env dev --vcode 855',
+    'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + process.env.apiServerURL + 'qplayApi/public/qplayauth_register',
+    'cordova plugin add cordova-plugin-device',
+    'cordova plugin add ../../plugins/cordova-plugin-appversion',//
+    //'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,//
+    //'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
+    //'cordova plugin add cordova-plugin-app-update',//
+    'cordova plugin add cordova-plugin-android-permissions',//
+    'cordova plugin add cordova-plugin-whitelist',
+    //'cordova plugin add cordova-plugin-inappbrowser',
+    //'cordova plugin add cordova-plugin-proguard',//
+    'cordova plugin add cordova-plugin-network-information',
+    //'cordova plugin add phonegap-plugin-mobile-accessibility',
+    //'cordova plugin add cordova-plugin-geolocation',
+    //'cordova plugin add cordova-plugin-splashscreen',
+    'cordova plugin add cordova-plugin-statusbar',
+    //'cordova plugin add cordova-plugin-appavailability',
+    'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + process.env.QPushAPPKey
 ]));
 
 gulp.task('patch', function() {
