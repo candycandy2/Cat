@@ -35,7 +35,7 @@ $("#viewActivitiesManage").pagecontainer({
                         //賦值
                         $("#personManageThumbnail").attr("src", manageObj["ActivitiesImage"]);
                         $("#personManageName").text(manageObj["ActivitiesName"]);
-                        $("#personIsFull").css("display", isFull == "Y" ? "block" : "none");
+                        $("#personIsFull").css("display", isFull == "Y" ? "inline" : "none");
                         $("#personSignupedPlace").text(manageObj["SignupPlaces"]);
                         $(".person-manage-remark").empty().append("<div>" + manageObj["ActivitiesRemarks"] + "</div>");
                         //dropdownlist
@@ -43,22 +43,32 @@ $("#viewActivitiesManage").pagecontainer({
 
                         //根據欄位類型，生成不同欄位
                         personManageArr = getCustomField(manageObj);
-                        for (var i in personManageArr) {
-                            if (personManageArr[i]["ColumnType"] == "Select") {
-                                setSelectCustomField(personManageArr, i, "viewActivitiesManage", "personManageSelect", "person-manage-custom-field");
+                        if (personManageArr.length == 0) {
+                            $("#updatePersonSignup").removeClass("btn-disabled");
+                        } else {
+                            var noAnswerCount = 0;
+                            for (var i in personManageArr) {
+                                if (personManageArr[i]["ColumnType"] == "Select") {
+                                    noAnswerCount = setSelectCustomField(personManageArr, i, "viewActivitiesManage", "personManageSelect", "person-manage-custom-field", noAnswerCount);
 
-                            } else if (personManageArr[i]["ColumnType"] == "Text") {
-                                setTextCustomField(personManageArr, i, "personManageText", "person-manage-custom-field");
+                                } else if (personManageArr[i]["ColumnType"] == "Text") {
+                                    noAnswerCount = setTextCustomField(personManageArr, i, "personManageText", "person-manage-custom-field", noAnswerCount);
 
-                            } else if (personManageArr[i]["ColumnType"] == "Multiple") {
-                                setCheckboxCustomField(personManageArr, i, "personManageCheckbox", "person-manage-custom-field");
+                                } else if (personManageArr[i]["ColumnType"] == "Multiple") {
+                                    noAnswerCount = setCheckboxCustomField(personManageArr, i, "personManageCheckbox", "person-manage-custom-field", noAnswerCount);
 
+                                }
+                            }
+
+                            //如果有欄位值爲空，按鈕不可用
+                            if (noAnswerCount > 0) {
+                                $("#updatePersonSignup").addClass("btn-disabled");
                             }
                         }
 
                         //取消報名
                         cancelActName = manageObj["ActivitiesName"];
-                        cancelContent = manageObj["EmployeeName"] + " / " + "同仁" + " / " + manageObj["SignupPlaces"] + "人";
+                        cancelContent = manageObj["EmployeeName"] + " / " + langStr["str_088"] + " / " + manageObj["SignupPlaces"] + langStr["str_058"];
                         cancelID = manageObj["ActivitiesID"];
                         cancelNo = manageObj["SignupNo"];
 
@@ -93,18 +103,29 @@ $("#viewActivitiesManage").pagecontainer({
 
                         //根據欄位類型，生成不同欄位
                         familyManageFieldArr = getCustomField(manageObj);
-                        for (var i in familyManageFieldArr) {
-                            if (familyManageFieldArr[i]["ColumnType"] == "Select") {
-                                setSelectCustomField(familyManageFieldArr, i, "viewActivitiesManage", "familyManageSelect", "family-manage-custom-field");
+                        if (familyManageFieldArr.length == 0) {
+                            $("#manageSelectFamilyBtn").removeClass("btn-disabled");
+                        } else {
+                            var noAnswerCount = 0;
+                            for (var i in familyManageFieldArr) {
+                                if (familyManageFieldArr[i]["ColumnType"] == "Select") {
+                                    noAnswerCount = setSelectCustomField(familyManageFieldArr, i, "viewActivitiesManage", "familyManageSelect", "family-manage-custom-field", noAnswerCount);
 
-                            } else if (familyManageFieldArr[i]["ColumnType"] == "Text") {
-                                setTextCustomField(familyManageFieldArr, i, "familyManageText", "family-manage-custom-field");
+                                } else if (familyManageFieldArr[i]["ColumnType"] == "Text") {
+                                    noAnswerCount = setTextCustomField(familyManageFieldArr, i, "familyManageText", "family-manage-custom-field", noAnswerCount);
 
-                            } else if (familyManageFieldArr[i]["ColumnType"] == "Multiple") {
-                                setCheckboxCustomField(familyManageFieldArr, i, "familyManageCheckbox", "family-manage-custom-field");
+                                } else if (familyManageFieldArr[i]["ColumnType"] == "Multiple") {
+                                    noAnswerCount = setCheckboxCustomField(familyManageFieldArr, i, "familyManageCheckbox", "family-manage-custom-field", noAnswerCount);
 
+                                }
+                            }
+
+                            //如果有欄位值爲空，按鈕不可用
+                            if (noAnswerCount > 0) {
+                                $("#manageSelectFamilyBtn").addClass("btn-disabled");
                             }
                         }
+
 
                         //取消報名
                         cancelID = manageObj["ActivitiesID"];
@@ -113,10 +134,9 @@ $("#viewActivitiesManage").pagecontainer({
                         //取消眷屬報名只能去報名記錄裏面查找
                         for (var i in recordArr) {
                             if (cancelID == recordArr[i]["ActivitiesID"]) {
-                                cancelContent += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + '人</span><br>';
+                                cancelContent += '<span>' + recordArr[i]["SignupName"] + ' / ' + recordArr[i]["SignupRelationship"] + ' / ' + recordArr[i]["SignupPlaces"] + langStr["str_058"] + '</span><br>';
                             }
                         }
-
 
                     } else if (model == "4") {
                         var manageArr = data["Content"];
@@ -127,7 +147,7 @@ $("#viewActivitiesManage").pagecontainer({
                         $("#teamManageThumbnail").attr("src", manageArr[0]["ActivitiesImage"]);
                         $("#teamManageName").text(manageArr[0]["ActivitiesName"]);
                         $("#teamSignupedPlaces").text(manageArr[0]["SignupTeam"]);
-                        $("#teamIsFull").css("display", isFull == "Y" ? "block" : "none");
+                        $("#teamIsFull").css("display", isFull == "Y" ? "inline" : "none");
                         //取消報名的活動名稱
                         cancelActName = manageArr[0]["ActivitiesName"];
 
@@ -182,7 +202,6 @@ $("#viewActivitiesManage").pagecontainer({
                         $("#teamTable tr:first-child").nextAll().remove();
                         $("#teamTable").append(manageContent);
 
-
                     } else if (model == "5") {
                         var timeObj = data["Content"][0];
                         var timeArr = data["Content"];
@@ -190,7 +209,7 @@ $("#viewActivitiesManage").pagecontainer({
                         //賦值
                         $("#timeManageThumbnail").attr("src", timeObj["ActivitiesImage"]);
                         $("#timeManageName").text(timeObj["ActivitiesName"]);
-                        $("#timeIsFull").css("display", isFull == "Y" ? "block" : "none");
+                        $("#timeIsFull").css("display", isFull == "Y" ? "inline" : "none");
 
                         //展示所有欄位
                         var timeContent = '';
@@ -198,11 +217,11 @@ $("#viewActivitiesManage").pagecontainer({
                             if (timeArr[i]["IsSignupTime"] != "") {
                                 //取消报名信息
                                 cancelActName = timeArr[i]["ActivitiesName"];
-                                cancelContent = timeArr[i]["EmployeeName"] + " / " + "同仁" + " / 1人 / " + timeArr[i]["IsSignupTime"];
+                                cancelContent = timeArr[i]["EmployeeName"] + " / " + langStr["str_088"] + " / 1" + langStr["str_058"] + " / " + timeArr[i]["IsSignupTime"];
                                 cancelNo = timeArr[i]["SignupNo"];
                                 cancelID = timeArr[i]["ActivitiesID"];
                                 //动态生成栏位
-                                timeContent += '<div class="time-manage-info"><span>報名時段：</span><span>'
+                                timeContent += '<div class="time-manage-info"><span>' + langStr["str_089"] + '</span><span>'
                                     + timeArr[i]["IsSignupTime"] + '</span></div>';
 
                                 for (var j = 1; j < 6; j++) {
@@ -210,7 +229,8 @@ $("#viewActivitiesManage").pagecontainer({
                                         timeContent += '<div class="time-manage-info"><span>'
                                             + timeArr[i]["ColumnName_" + j] + '：</span><span>'
                                             //+ timeArr[i]["ColumnAnswer_" + j] + '</span></div>';
-                                            + (timeArr[i]["ColumnType_" + j] == "Multiple" ? timeArr[i]["ColumnAnswer_" + j].substr(1, timeArr[i]["ColumnAnswer_" + j].length) : timeArr[i]["ColumnAnswer_" + j]) + '</span></div>';
+                                            + (timeArr[i]["ColumnType_" + j] == "Multiple" ? timeArr[i]["ColumnAnswer_" + j].substr(1, timeArr[i]["ColumnAnswer_" + j].length) : timeArr[i]["ColumnAnswer_" + j])
+                                            + '</span></div>';
                                     }
                                 }
                                 break;
@@ -364,7 +384,7 @@ $("#viewActivitiesManage").pagecontainer({
 
         //從管理頁返回詳情頁
         $("#viewActivitiesManage .back-detail").on("click", function () {
-            if(cancelModel == "1" || cancelModel == "3") {
+            if (cancelModel == "1" || cancelModel == "3") {
                 popupMsgInit('.updateNoFinish');
             } else {
                 changePageByPanel("viewActivitiesDetail", false);
@@ -374,6 +394,15 @@ $("#viewActivitiesManage").pagecontainer({
         //確定返回上一頁
         $("#cancelUpdateBtn").on("click", function () {
             changePageByPanel("viewActivitiesDetail", false);
+        });
+
+        //超時關閉popup，並返回活動列表
+        $("#manageTimeOverBtn").on("click", function () {
+            //重新獲取活動列表
+            ActivitiesListQuery();
+            pageVisitedList.pop();
+            //跳轉
+            changePageByPanel("viewActivitiesList", false);
         });
 
 
@@ -435,21 +464,32 @@ $("#viewActivitiesManage").pagecontainer({
 
         //確定取消報名（所有類型活動）
         $("#confirmCancelSignup").on("click", function () {
-            loadingMask("show");
+            //先判斷是否超時
+            var nowTime = getTimeNow();
+            if (nowTime - overTime < 0) {
+                loadingMask("show");
 
-            activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
-                + cancelID
-                + '</ActivitiesID><SignupNo>'
-                //+ cancelNo
-                + (cancelModel == "3" ? "" : cancelNo)
-                + '</SignupNo><SignupModel>'
-                + cancelModel
-                + '</SignupModel><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo></LayoutHeader>';
+                activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
+                    + cancelID
+                    + '</ActivitiesID><SignupNo>'
+                    //+ cancelNo
+                    + (cancelModel == "3" ? "" : cancelNo)
+                    + '</SignupNo><SignupModel>'
+                    + cancelModel
+                    + '</SignupModel><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo></LayoutHeader>';
 
-            //console.log(activitiesSignupCancelQueryData);
-            ActivitiesSignupCancelQuery(cancelModel);
+                //console.log(activitiesSignupCancelQueryData);
+                ActivitiesSignupCancelQuery(cancelModel);
+
+            } else {
+                //超時提示
+                setTimeout(function () {
+                    popupMsgInit('.manageTimeOverMsg');
+                }, 500);
+
+            }
 
         });
 
@@ -458,7 +498,6 @@ $("#viewActivitiesManage").pagecontainer({
         //dropdownlist
         $("#personManagePlace").on("change", "select", function () {
             submitSignupPlace = $(this).val();
-
         });
 
         //select
@@ -471,17 +510,20 @@ $("#viewActivitiesManage").pagecontainer({
 
         //text
         $(".person-manage-custom-field").on("keyup", ".personManageText", function () {
-            var selfName = $(this).prev().text();
-            var selfVal = $(this).val();
+            var self = $(this);
+            // var selfName = $(this).prev().text();
+            // var selfVal = $(this).val();
 
             if (timeoutCheckPersonManage != null) {
                 clearTimeout(timeoutCheckPersonManage);
                 timeoutCheckPersonManage = null;
             }
             timeoutCheckPersonManage = setTimeout(function () {
+                var selfName = self.prev().text();
+                var selfVal = $.trim(self.val());
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personManageArr, selfName, selfVal, null, "updatePersonSignup");
-            }, 1000);
+            }, 2000);
 
         });
 
@@ -515,33 +557,50 @@ $("#viewActivitiesManage").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                loadingMask("show");
+                //先判斷是否超時
+                var nowTime = getTimeNow();
+                if (nowTime - overTime < 0) {
+                    loadingMask("show");
 
-                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                    + cancelID
-                    + '</ActivitiesID><SignupModel>'
-                    + cancelModel
-                    + '</SignupModel><SignupPlaces>'
-                    + submitSignupPlace
-                    + '</SignupPlaces><EmployeeNo>'
-                    + myEmpNo
-                    + '</EmployeeNo><ColumnAnswer_1>'
-                    + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
-                    + '</ColumnAnswer_1><ColumnAnswer_2>'
-                    + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
-                    + '</ColumnAnswer_2><ColumnAnswer_3>'
-                    + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
-                    + '</ColumnAnswer_3><ColumnAnswer_4>'
-                    + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
-                    + '</ColumnAnswer_4><ColumnAnswer_5>'
-                    + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
-                    + '</ColumnAnswer_5></LayoutHeader>';
+                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                        + cancelID
+                        + '</ActivitiesID><SignupModel>'
+                        + cancelModel
+                        + '</SignupModel><SignupPlaces>'
+                        + submitSignupPlace
+                        + '</SignupPlaces><EmployeeNo>'
+                        + myEmpNo
+                        + '</EmployeeNo><ColumnAnswer_1>'
+                        + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
+                        + '</ColumnAnswer_1><ColumnAnswer_2>'
+                        + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
+                        + '</ColumnAnswer_2><ColumnAnswer_3>'
+                        + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
+                        + '</ColumnAnswer_3><ColumnAnswer_4>'
+                        + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
+                        + '</ColumnAnswer_4><ColumnAnswer_5>'
+                        + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
+                        + '</ColumnAnswer_5></LayoutHeader>';
 
-                //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
+                    //console.log(activitiesSignupConfirmQueryData);
+                    ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
+
+                } else {
+                    //超時提示
+                    popupMsgInit('.manageTimeOverMsg');
+                }
+
             }
         });
 
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $(".person-manage-custom-field").on("focus", "input", function() {
+        //     $("#personManageBtn").hide();
+        // });
+
+        // $(".person-manage-custom-field").on("blur", "input", function() {
+        //     $("#personManageBtn").show();
+        // });
 
         /************************************ Time *************************************/
         //取消時段报名-popup
@@ -563,16 +622,20 @@ $("#viewActivitiesManage").pagecontainer({
 
         //text
         $(".family-manage-custom-field").on("keyup", ".familyManageText", function () {
-            var selfName = $(this).prev().text();
-            var selfVal = $(this).val();
+            var self = $(this);
+            // var selfName = $(this).prev().text();
+            // var selfVal = $(this).val();
 
             if (timeoutCheckFamilyManage != null) {
                 clearTimeout(timeoutCheckFamilyManage);
                 timeoutCheckFamilyManage = null;
             }
             timeoutCheckFamilyManage = setTimeout(function () {
+                var selfName = self.prev().text();
+                var selfVal = $.trim(self.val());
+                //保存栏位值并检查表单
                 saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
-            }, 1000);
+            }, 2000);
 
         });
 
@@ -640,6 +703,15 @@ $("#viewActivitiesManage").pagecontainer({
             $(".cancelSignupMsg .main-paragraph").empty().append(cancelContent);
             popupMsgInit('.cancelSignupMsg');
         });
+
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $(".family-manage-custom-field").on("focus", "input", function() {
+        //     $("#familyManageBtn").hide();
+        // });
+
+        // $(".family-manage-custom-field").on("blur", "input", function() {
+        //     $("#familyManageBtn").show();
+        // });
 
     }
 });

@@ -477,6 +477,8 @@ var QForum = {
             QForum.METHOD.setPostID(postID);
             QForum.METHOD.setPageID(pageID);
             QForum.METHOD.setReplyLastID(1);
+            QForum.lastCommentOffsetTop = 0;
+            $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
 
             //Create Reply Button
             QForum.VIEW.replyButtonFooter();
@@ -637,7 +639,7 @@ var QForum = {
                 }
 
                 //Clear list-data
-                if (QForum.replyLastID == 1) {
+                if (QForum.replyLastID == 1 && pullRefresh) {
                     $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
                 }
 
@@ -729,9 +731,11 @@ var QForum = {
                                 //Recovery Scroll Behavior, then scroll to the last postion, don't scroll to top.
                                 var lastCommentOffsetTop = QForum.lastCommentOffsetTop;
 
-                                tplJS.recoveryPageScroll();
+                                if (!checkPopupShown()) {
+                                    tplJS.recoveryPageScroll();
+                                }
 
-                                $("html body").animate({
+                                $("#" + QForum.pageID + " .page-main").animate({
                                     scrollTop: lastCommentOffsetTop
                                 }, 0);
                             }
@@ -1017,7 +1021,7 @@ var QForum = {
         windowScroll: function() {
             //Depend on the comment in window's view, decide the sequence to call API getPostDetails
 
-            window.addEventListener("scroll", function() {
+            $("#" + QForum.pageID).scroll(function() {
 
                 if (typeof $(".QForum-Content.reply-fullscreen-popup").css("display") === "undefined" || 
                     $(".QForum-Content.reply-fullscreen-popup").css("display") == "block") {
@@ -1030,7 +1034,7 @@ var QForum = {
 
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
                 var activePageID = activePage[0].id;
-                var bodyScrollTop = $("body").scrollTop();
+                var bodyScrollTop = $("#" + QForum.pageID).scrollTop();
 
                 if (activePageID === QForum.pageID) {
 
@@ -1042,14 +1046,14 @@ var QForum = {
 
                             var rect = el.getBoundingClientRect();
                             if (
-                                rect.top >= 0 &&
-                                rect.left >= 0 &&
-                                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && 
-                                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                                parseInt(rect.top, 10) >= 0 &&
+                                parseInt(rect.left, 10) >= 0 &&
+                                parseInt(rect.bottom, 10) <= (window.innerHeight || document.documentElement.clientHeight) && 
+                                parseInt(rect.right, 10) <= (window.innerWidth || document.documentElement.clientWidth)
                             ) {
 
                                 //Scroll top to bottom
-                                if (bodyScrollTop > QForum.lastBodyScrollTop) {
+                                if (bodyScrollTop >= QForum.lastBodyScrollTop) {
                                     console.log("Scroll top to bottom");
 
                                     if (sequence >= QForum.replyLastID && sequence >= QForum.replyDataRange) {
@@ -1089,8 +1093,8 @@ var QForum = {
                                             return;
                                         }
 
-                                        if ((sequence % QForum.replyCount) == 0) {
-                                            QForum.METHOD.setReplyLastID((sequence - QForum.replyCount + 1));
+                                        if ((sequence % QForum.replyDataRange) == 0) {
+                                            QForum.METHOD.setReplyLastID((sequence - QForum.replyDataRange + 1));
                                             QForum.API.getPostDetails();
                                         }
 

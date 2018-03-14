@@ -228,6 +228,7 @@ var tplJS = {
             "overflow-y": "auto"
         });
         */
+
         $('body').css('overflow', 'auto').off('touchmove');
         $('.ui-page-active.ui-page').css({
             'height': tplJS.originalUIPageScrollHeight,
@@ -470,10 +471,17 @@ var tplJS = {
             $(this).find("div[data-role='main'] .main").height(popupMainHeight);
             $(this).find("div[data-role='main'] .main ul").height(popupMainHeight);
 
+            if (device.platform === "Android") {
+                var marginTop = 0;
+            } else {
+                var marginTop = 20;
+            }
+
             $('.ui-popup-screen.in').animate({
                 'overflow-y': 'hidden',
                 'touch-action': 'none',
-                'height': $(window).height()
+                'height': $(window).height(),
+                'margin-top': marginTop + 'px'
             }, 0, function() {
                 var top = $(".ui-popup-screen.in").offset().top;
                 if (top < 0) {
@@ -492,21 +500,23 @@ var tplJS = {
         $(document).off("popupbeforeposition", "#" + popupID);
         $(document).on("popupbeforeposition", "#" + popupID, function() {
             tplJS.preventPageScroll();
+
+            if (device.platform === "iOS") {
+                $("body").animate({
+                    "scrollTop": 0
+                }, 0);
+            }
+        });
+
+        //For data-dismissible=true
+        $(document).on("popupafterclose", "#" + popupID, function() {
+            tplJS.recoveryPageScroll();
         });
 
         //Initialize Popup
         $('#' + popupID).popup();
 
         $(document).on("click", "#" + data.id, function() {
-            //Scroll Page to top
-            /*
-            $("#" + pageID).animate({
-                "scrollTop": 0
-            }, 0, function() {
-                $('#' + popupID).popup('open');
-                tplJS.preventPageScroll();
-            });
-            */
             $('#' + popupID).popup('open');
         });
 
@@ -744,10 +754,18 @@ var tplJS = {
         });
 
         $(document).on("popupafteropen", "#" + data.id, function() {
+
+            if (device.platform === "Android") {
+                var marginTop = 0;
+            } else {
+                var marginTop = 20;
+            }
+
             $('.ui-popup-screen.in').animate({
                 'overflow-y': 'hidden',
                 'touch-action': 'none',
-                'height': $(window).height()
+                'height': $(window).height(),
+                'margin-top': marginTop + 'px'
             }, 0, function() {
                 var top = $(".ui-popup-screen.in").offset().top;
                 if (top < 0) {
@@ -761,18 +779,16 @@ var tplJS = {
             var popupHeight = $(this).outerHeight();
             var top = (viewHeight - popupHeight) / 2;
             $(this).parent().css("top", top + "px");
+
+            if (device.platform === "iOS") {
+                $("body").animate({
+                    "scrollTop": 0
+                }, 0);
+            }
         });
 
         $(document).off("popupbeforeposition", "#" + data.id);
         $(document).on("popupbeforeposition", "#" + data.id, function() {
-            //Scroll Page to top
-            /*
-            $.mobile.activePage.animate({
-                "scrollTop": 0
-            }, 0, function() {
-                tplJS.preventPageScroll();
-            });
-            */
             tplJS.preventPageScroll();
         });
 

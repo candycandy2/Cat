@@ -15,14 +15,14 @@
         <div>
             <div class="team-signup-title">
                 <div>
-                    <img src="img/event_date.png" id="familySelectThumbnail">
+                    <img src="img/blank.png" id="familySelectThumbnail">
                 </div>
                 <div class="font-style10 font-color2">
-                    <div id="familySelectName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                    <div id="familySelectName"></div>
                     <div class="family-info">
                         <!--您尚可報名人數：-->
                         <span class="langStr" data-id="str_057"></span>
-                        <span id="familySelectLimitPlace">3</span>
+                        <span id="familySelectLimitPlace"></span>
                         <!--人-->
                         <span class="langStr" data-id="str_058"></span>
                     </div>
@@ -56,13 +56,14 @@
                 </div>
                 <div><img src="img/all_list_down.png" id="expandAllFamily" class="family-all-checkbox-expand"></div>
             </div>
-            <div class="select-family-tbody">
-                
-            </div>
+            <!--自定義欄位-->
+            <div class="select-family-tbody"></div>
             <div class="select-family-remark font-style12 font-color2"></div>
             <div class="blank-container-before-footer"></div>
+            <!--footer-->
             <div id="familySignupBtn" class="person-footer font-style3">
-                <span>确定送出</span>
+                <!--確定送出-->
+                <span class="langStr" data-id="str_011"></span>
             </div>
         </div>
         
@@ -126,6 +127,35 @@
                     <div class="btn-cancel" id="cancelSelectBtn">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--報名時間已過期-popup-->
+    <div data-role="popup" data-history="false" data-dismissible="false" data-overlay-theme="b" class="app-popup selectTimeOverMsg"
+        for="selectTimeOverMsg" id="selectTimeOverMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--目前活動報名時間已過期-->
+                        <span class="langStr" data-id="str_105"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel" id="selectTimeOverBtn">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
                     </div>
                 </div>
             </div>

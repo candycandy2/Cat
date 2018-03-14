@@ -32,12 +32,13 @@ $("#viewMyFamilyDatum").pagecontainer({
         window.ActivitiesFamilyQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 familyArr = [];
                 if (data["ResultCode"] == "1") {
                     //排序
                     familyArr = data["Content"].sort(sortByRelationship("FamilyRelationship", "FamilyName"));
+                    var familyRemark = data["Content"][0]["FamilyRemark"];
 
                     var familyList = "";
                     for (var i in familyArr) {
@@ -72,6 +73,7 @@ $("#viewMyFamilyDatum").pagecontainer({
                     }
 
                     $("#familyList").empty().append(familyList).children("div:last-child").remove();
+                    $(".family-notice").empty().append("<div>" + familyRemark + "</div>");
 
                 } else if (data["ResultCode"] == "045902") {
                     $("#viewFamilyList").hide();
@@ -176,31 +178,31 @@ $("#viewMyFamilyDatum").pagecontainer({
             //關係
             relationshipData["option"][0] = {};
             relationshipData["option"][0]["value"] = "1";
-            relationshipData["option"][0]["text"] = "配偶";
+            relationshipData["option"][0]["text"] = langStr["str_090"];
             relationshipData["option"][1] = {};
             relationshipData["option"][1]["value"] = "2";
-            relationshipData["option"][1]["text"] = "子女";
+            relationshipData["option"][1]["text"] = langStr["str_091"];
             relationshipData["option"][2] = {};
             relationshipData["option"][2]["value"] = "3";
-            relationshipData["option"][2]["text"] = "父母";
+            relationshipData["option"][2]["text"] = langStr["str_092"];
             relationshipData["option"][3] = {};
             relationshipData["option"][3]["value"] = "4";
-            relationshipData["option"][3]["text"] = "配偶父母";
+            relationshipData["option"][3]["text"] = langStr["str_093"];
             relationshipData["option"][4] = {};
             relationshipData["option"][4]["value"] = "5";
-            relationshipData["option"][4]["text"] = "兄弟";
+            relationshipData["option"][4]["text"] = langStr["str_094"];
             relationshipData["option"][5] = {};
             relationshipData["option"][5]["value"] = "6";
-            relationshipData["option"][5]["text"] = "姊妹";
+            relationshipData["option"][5]["text"] = langStr["str_095"];
             relationshipData["option"][6] = {};
             relationshipData["option"][6]["value"] = "7";
-            relationshipData["option"][6]["text"] = "祖父母";
+            relationshipData["option"][6]["text"] = langStr["str_096"];
             relationshipData["option"][7] = {};
             relationshipData["option"][7]["value"] = "8";
-            relationshipData["option"][7]["text"] = "外祖父母";
+            relationshipData["option"][7]["text"] = langStr["str_097"];
             relationshipData["option"][8] = {};
             relationshipData["option"][8]["value"] = "9";
-            relationshipData["option"][8]["text"] = "其他親友";
+            relationshipData["option"][8]["text"] = langStr["str_098"];
 
             $("#relationshipDropdownlist").empty();
             tplJS.DropdownList("viewMyFamilyDatum", "relationshipDropdownlist", "prepend", "typeB", relationshipData);
@@ -208,10 +210,10 @@ $("#viewMyFamilyDatum").pagecontainer({
             //性別
             genderData["option"][0] = {};
             genderData["option"][0]["value"] = "0";
-            genderData["option"][0]["text"] = "女";
+            genderData["option"][0]["text"] = langStr["str_099"];
             genderData["option"][1] = {};
             genderData["option"][1]["value"] = "1";
-            genderData["option"][1]["text"] = "男";
+            genderData["option"][1]["text"] = langStr["str_100"];
 
             $("#genderDropdownlist").empty();
             tplJS.DropdownList("viewMyFamilyDatum", "genderDropdownlist", "prepend", "typeB", genderData);
@@ -300,7 +302,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         $("#viewMyFamilyDatum").on("pageshow", function (event, ui) {
-            
+
         });
 
         /******************************** datetimepicker ***********************************/
@@ -371,6 +373,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             addFamilyOrNot = true;
             checkFormByFamily();
             $("#familyName").removeAttr("readonly");
+            $("#familyName").css("background", "#f9f9f9");
         });
 
         //修改眷屬，跳轉到編輯頁
@@ -413,6 +416,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             $(".confirmCancelEditFamily .main-paragraph").text(familyName);
             checkFormByFamily();
             $("#familyName").attr("readonly", "readonly");
+            $("#familyName").css("background", "#cccccc");
         });
 
         //儲存按鈕
@@ -461,12 +465,22 @@ $("#viewMyFamilyDatum").pagecontainer({
 
         //關係dropdownlist-popup
         $("#familyRelationship").on("click", function () {
-            $("#relationship-popup").trigger("click");
+            $("#familyName").blur();
+            $("#familyID").blur();
+            setTimeout(function () {
+                $("#relationship-popup").trigger("click");
+            }, 200);
+
         });
 
         //性別dropdownlist-popup
         $("#familyGender").on("click", function () {
-            $("#gender-popup").trigger("click");
+            $("#familyName").blur();
+            $("#familyID").blur();
+            setTimeout(function () {
+                $("#gender-popup").trigger("click");
+            }, 200);
+
         });
 
         //點擊關係列表，觸發change事件
@@ -499,25 +513,23 @@ $("#viewMyFamilyDatum").pagecontainer({
 
         //檢查表單（姓名和身份證）是否符合提交要求
         $("#familyName").on("keyup", function () {
-            familyName = $.trim($(this).val());
-
             if (timeoutFamilyName != null) {
                 clearTimeout(timeoutFamilyName);
                 timeoutFamilyName = null;
             }
             timeoutFamilyName = setTimeout(function () {
+                familyName = $.trim($("#familyName").val());
                 checkFormByFamily();
             }, 2000);
         });
 
         $("#familyID").on("keyup", function () {
-            familyID = $.trim($(this).val());
-
             if (timeoutFamilyID != null) {
                 clearTimeout(timeoutFamilyID);
                 timeoutFamilyID = null;
             }
             timeoutFamilyID = setTimeout(function () {
+                familyID = $.trim($("#familyID").val());
                 checkFormByFamily();
             }, 2000);
         });

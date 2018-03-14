@@ -65,7 +65,6 @@ $("#viewSelectFamily").pagecontainer({
                             + selectFamilyArr[i]["FamilyID"]
                             + '</span><span> / </span><span>'
                             + selectFamilyArr[i]["FamilyBirthday"]
-                            //+ '</span></div><div class="select-family-field">' + $(".family-signup-custom-field").html() + '</div></div></div>';
                             + '</span></div><div class="select-family-field"></div></div></div>';
                     }
 
@@ -96,26 +95,32 @@ $("#viewSelectFamily").pagecontainer({
                                         $(item).trigger("click");
 
                                         for (var j = 1; j < 6; j++) {
-                                            if (selectFamilyArr[i]["ColumnType_" + j] == "Select") {
-                                                $.each($("#column-popup-" + i + "-familySelect-" + (j - 1) + "-option-list li"), function (ind, ite) {
-                                                    if ($(ite).text() == selectFamilyArr[i]["ColumnAnswer_" + j]) {
-                                                        $(ite).trigger("click");
-                                                    }
-                                                });
-                                            } else if (selectFamilyArr[i]["ColumnType_" + j] == "Text") {
-                                                $(item).parent().parent().next().find(".select-family-field .custom-field:eq(" + (j - 1) + ") input").val(selectFamilyArr[i]["ColumnAnswer_" + j]);
-                                            } else if (selectFamilyArr[i]["ColumnType_" + j] == "Multiple") {
-                                                var valueArr = selectFamilyArr[i]["ColumnAnswer_" + j].split(";");
-                                                //恢復所有checkbox爲未選
-                                                $(".checkbox-" + i + "-familySelectCheckbox-" + (j - 1) + " img").attr("src", "img/checkbox_n.png");
-                                                $.each($(".checkbox-" + i + "-familySelectCheckbox-" + (j - 1) + " span"), function (indexs, items) {
-                                                    for (var k in valueArr) {
-                                                        if ($(items).text() == valueArr[k]) {
-                                                            $(items).prev().attr("src", "img/checkbox_s.png");
+                                            if (selectFamilyArr[i]["ColumnAnswer_" + j] != "undefined") {
+                                                if (selectFamilyArr[i]["ColumnType_" + j] == "Select" && selectFamilyArr[i]["ColumnAnswer_" + j] != "") {
+                                                    $.each($("#column-popup-" + i + "-familySelect-" + (j - 1) + "-option-list li"), function (ind, ite) {
+                                                        if ($(ite).text() == selectFamilyArr[i]["ColumnAnswer_" + j]) {
+                                                            $(ite).trigger("click");
                                                         }
-                                                    }
-                                                });
+                                                    });
+
+                                                } else if (selectFamilyArr[i]["ColumnType_" + j] == "Text" && selectFamilyArr[i]["ColumnAnswer_" + j] != "") {
+                                                    $(item).parent().parent().next().find(".select-family-field .custom-field:eq(" + (j - 1) + ") input").val(selectFamilyArr[i]["ColumnAnswer_" + j]);
+
+                                                } else if (selectFamilyArr[i]["ColumnType_" + j] == "Multiple" && selectFamilyArr[i]["ColumnAnswer_" + j] != "") {
+                                                    var valueArr = selectFamilyArr[i]["ColumnAnswer_" + j].split(";");
+                                                    //恢復所有checkbox爲未選
+                                                    $(".checkbox-" + i + "-familySelectCheckbox-" + (j - 1) + " img").attr("src", "img/checkbox_n.png");
+                                                    $.each($(".checkbox-" + i + "-familySelectCheckbox-" + (j - 1) + " span"), function (indexs, items) {
+                                                        for (var k in valueArr) {
+                                                            if ($(items).text() == valueArr[k]) {
+                                                                $(items).prev().attr("src", "img/checkbox_s.png");
+                                                            }
+                                                        }
+                                                    });
+
+                                                }
                                             }
+
                                         }
 
                                     }
@@ -140,7 +145,7 @@ $("#viewSelectFamily").pagecontainer({
                             oneObj["ColumnName_" + j] = selectFamilyArr[i]["ColumnName_" + j];
                             oneObj["ColumnType_" + j] = selectFamilyArr[i]["ColumnType_" + j];
                             oneObj["ColumnItem_" + j] = selectFamilyArr[i]["ColumnItem_" + j];
-                            oneObj["ColumnAnswer_" + j] = selectFamilyArr[i]["ColumnAnswer_" + j];
+                            oneObj["ColumnAnswer_" + j] = (selectFamilyArr[i]["ColumnAnswer_" + j] == "undefined" ? "" : selectFamilyArr[i]["ColumnAnswer_" + j]);
                         }
                         familyAllList.push(oneObj);
                     }
@@ -178,12 +183,26 @@ $("#viewSelectFamily").pagecontainer({
 
         });
 
+        $("#viewSelectFamily").on("pageshow", function (event, ui) {
+
+        });
+
         /********************************** dom event *************************************/
         $("#viewSelectFamily").keypress(function (event) {
 
         });
 
-        /********************************** signup *************************************/
+        //超時關閉popup，並返回活動列表
+        $("#selectTimeOverBtn").on("click", function () {
+            //如果已額滿，重新獲取活動列表
+            ActivitiesListQuery();
+            for (var i = 0; i < 2; i++) {
+                pageVisitedList.pop();
+            }
+            //跳轉
+            changePageByPanel("viewActivitiesList", false);
+        });
+
         //返回眷屬報名或報名管理-popup
         $("#viewSelectFamily .back-select").on("click", function () {
             popupMsgInit('.selectNoFinish');
@@ -191,9 +210,9 @@ $("#viewSelectFamily").pagecontainer({
 
         //確定返回報名頁面
         $("#cancelSelectBtn").on("click", function () {
-            if(familyIsSignup == "Y") {
+            if (familyIsSignup == "Y") {
                 changePageByPanel("viewActivitiesManage", false);
-            } else if(familyIsSignup == "N") {
+            } else if (familyIsSignup == "N") {
                 changePageByPanel("viewActivitiesSignup", false);
             }
         });
@@ -390,29 +409,39 @@ $("#viewSelectFamily").pagecontainer({
         });
 
         //Text欄位值改變
-        $(".select-family-tbody").on("change", ".custom-field input", function () {
+        $(".select-family-tbody").on("keyup", ".custom-field input", function () {
+            var self = $(this);
             var familyNo = $(this).parent().parent().parent().prev().find(".family-checkbox-img").parent().attr("data-no");
             var columnName = $(this).prev().text();
-            var columnAnswer = $.trim($(this).val());
+            // var columnAnswer = $.trim($(this).val());
 
-            if (familyAllList.length != 0) {
-                for (var i in familyAllList) {
-                    if (familyNo == familyAllList[i]["FamilyNo"]) {
-                        for (var j = 1; j < 6; j++) {
-                            if (columnName == familyAllList[i]["ColumnName_" + j]) {
-                                familyAllList[i]["ColumnAnswer_" + j] = columnAnswer;
-                                break;
+            if (timeoutSelectFamily != null) {
+                clearTimeout(timeoutSelectFamily);
+                timeoutSelectFamily = null;
+            }
+            timeoutSelectFamily = setTimeout(function () {
+                var columnAnswer = $.trim(self.val());
+                if (familyAllList.length != 0) {
+                    for (var i in familyAllList) {
+                        if (familyNo == familyAllList[i]["FamilyNo"]) {
+                            for (var j = 1; j < 6; j++) {
+                                if (columnName == familyAllList[i]["ColumnName_" + j]) {
+                                    familyAllList[i]["ColumnAnswer_" + j] = columnAnswer;
+                                    break;
+                                }
                             }
                         }
                     }
+                    //console.log(familyAllList);
                 }
-                //console.log(familyAllList);
-            }
 
-            //如果自定義欄位的Text值爲空，則眷屬的checkbox也不能選擇
-            if (columnAnswer == "" && $(this).parent().parent().parent().prev().find(".family-checkbox-img").attr("src") == "img/checkbox_s.png") {
-                $(this).parent().parent().parent().prev().find(".family-checkbox-img").trigger("click");
-            }
+                //如果自定義欄位的Text值爲空，則眷屬的checkbox也不能選擇
+                if (columnAnswer == "" && $(this).parent().parent().parent().prev().find(".family-checkbox-img").attr("src") == "img/checkbox_s.png") {
+                    $(this).parent().parent().parent().prev().find(".family-checkbox-img").trigger("click");
+                }
+
+            }, 2000);
+
         });
 
         //Checkbox欄位值改變
@@ -490,18 +519,34 @@ $("#viewSelectFamily").pagecontainer({
                 }
             }
 
-            activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
-                + actModel
-                + '</SignupModel>'
-                + familyListBySelf
-                + familyQuery
-                + '</LayoutHeader>';
+            //先判斷是否超時
+            var nowTime = getTimeNow();
+            if (nowTime - overTime < 0) {
+                activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
+                    + actModel
+                    + '</SignupModel>'
+                    + familyListBySelf
+                    + familyQuery
+                    + '</LayoutHeader>';
 
-            //console.log(activitiesSignupConfirmQueryData);
-            ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
+
+            } else {
+                //超時提示
+                popupMsgInit('.selectTimeOverMsg');
+            }
+
         });
 
+        //footer fixed定位会因为虚拟键盘展开影响页面大小
+        // $(".select-family-tbody").on("focus", "input", function() {
+        //     $("#familySignupBtn").hide();
+        // });
 
+        // $(".select-family-tbody").on("blur", "input", function() {
+        //     $("#familySignupBtn").show();
+        // });
 
     }
 });

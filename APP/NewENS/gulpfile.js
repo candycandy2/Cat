@@ -87,7 +87,6 @@ gulp.task('config', function(){
 /*-------------------------------------------------------------------------------------------------*/
 //ex: gulp install --env test
 gulp.task('install', ['copyRes'], shell.task([
-    /*
   'cordova plugin remove jpush-phonegap-plugin',
   'cordova plugin remove cordova-plugin-device',
   'cordova plugin remove cordova-plugin-app-update',
@@ -98,12 +97,15 @@ gulp.task('install', ['copyRes'], shell.task([
   'cordova plugin remove cordova-plugin-inappbrowser',
   'cordova plugin remove cordova-plugin-camera',
   'cordova plugin remove cordova-plugin-ios-camera-permissions',
+  'cordova plugin remove cordova-plugin-file-transfer',
+  'cordova plugin remove cordova-plugin-statusbar',
+  'cordova plugin remove cordova-plugin-splashscreen',
+  'cordova plugin remove phonegap-plugin-mobile-accessibility',
   //'cordova plugin remove cordova-plugin-file',
   'cordova platform rm ios',
   'cordova platform rm android',
-  */
   'cordova platform add ios',
-  'cordova platform add android',
+  'cordova platform add android@6.3.0',
   'cordova plugin add cordova-plugin-device',
   'cordova plugin add ../../plugins/cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
@@ -116,7 +118,8 @@ gulp.task('install', ['copyRes'], shell.task([
   'cordova plugin add cordova-plugin-ios-camera-permissions --save',
   'cordova plugin add phonegap-plugin-mobile-accessibility',
   'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
-  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey,
+  'cordova plugin add cordova-plugin-jcore@1.1.12',
+  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey + " --nofetch",
   'cordova plugin add ../../plugins/cordova-plugin-statusbar',
   'cordova plugin add cordova-plugin-file-transfer'
   //'cordova plugin add cordova-plugin-file'
@@ -124,7 +127,7 @@ gulp.task('install', ['copyRes'], shell.task([
 
 gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova platform add ios',
-  'cordova platform add android',
+  'cordova platform add android@6.3.0',
   'cordova plugin add ../../plugins/cordova-plugin-device',
   'cordova plugin add ../../plugins/cordova-plugin-appversion',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
@@ -136,9 +139,11 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
   'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --save',
+  'cordova plugin add ../../plugins/cordova-plugin-network-information',
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
   'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
-  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey,
+  'cordova plugin add cordova-plugin-jcore@1.1.12',
+  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushAPPKey + " --nofetch",
   'cordova plugin add ../../plugins/cordova-plugin-statusbar',
   'cordova plugin add cordova-plugin-file-transfer'
   //'cordova plugin add cordova-plugin-file@4.3.1'

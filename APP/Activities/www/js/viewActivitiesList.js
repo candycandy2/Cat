@@ -26,11 +26,15 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style12"><span class="langStr" data-id="str_078"></span><span>'
-                                + activitiesArr[i]["QuotaPlaces"]
-                                + '</span>&nbsp;&nbsp;&nbsp;<span class="langStr" data-id="str_079"></span><span>'
-                                + activitiesArr[i]["RemainingPlaces"]
-                                + '</span></div><div class="font-style12"><span class="langStr" data-id="str_052"></span><span>'
+                                + '</div><div class="font-style12"><span>'
+                                + langStr["str_078"]
+                                + '</span><span>'
+                                + (activitiesArr[i]["SignupModel"] == 4 ? langStr["str_104"] : activitiesArr[i]["QuotaPlaces"])
+                                + '</span>&nbsp;&nbsp;&nbsp;&nbsp;'
+                                + (activitiesArr[i]["SignupModel"] == 4 ? "" : '<span>' + langStr["str_079"] + '</span><span>' + activitiesArr[i]["RemainingPlaces"] + '</span>')
+                                + '</div><div class="font-style12"><span>'
+                                + langStr["str_052"]
+                                + '</span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
 
@@ -43,9 +47,13 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style12"><span class="langStr" data-id="str_078"></span><span>'
-                                + activitiesArr[i]["QuotaPlaces"]
-                                + '</span></div><div class="font-style12"><span class="langStr" data-id="str_077"></span><span>'
+                                + '</div><div class="font-style12"><span>'
+                                + langStr["str_078"]
+                                + '</span><span>'
+                                + (activitiesArr[i]["SignupModel"] == 4 ? langStr["str_104"] : activitiesArr[i]["QuotaPlaces"])
+                                + '</span></div><div class="font-style12"><span>'
+                                + langStr["str_077"]
+                                + '</span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
                         }
@@ -74,7 +82,15 @@ $("#viewActivitiesList").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesList").on("pagebeforeshow", function (event, ui) {
-
+            /**** PullToRefresh ****/
+            PullToRefresh.init({
+                mainElement: '.pull-list',
+                onRefresh: function () {
+                    loadingMask("show");
+                    //重新获取活动列表
+                    ActivitiesListQuery();
+                }
+            });
         });
 
 
@@ -99,9 +115,6 @@ $("#viewActivitiesList").pagecontainer({
             ActivitiesDetailQuery(actStatus);
         });
 
-        //從編輯頁返回詳情頁
-        // $("#viewActivitiesList .back-detail").on("click", function () {
-        //     changePageByPanel("viewActivitiesDetail", false);
-        // });
+
     }
 });

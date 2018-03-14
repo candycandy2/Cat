@@ -394,7 +394,7 @@ $(document).one("pagebeforecreate", function() {
             } else {
                 $('.page-header').addClass('ios-fix-overlap');
                 StatusBar.styleDefault();
-            }          
+            }
             $('.ios-fix-overlap-div').css('display', 'block');
 
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
@@ -590,6 +590,7 @@ function getAddAppLog() {
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
 function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
+    var checkTokenValidResult = false;
     successCallback = successCallback || null;
     tokenValid = tokenValid || null;
     data = data || null;
@@ -647,6 +648,7 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
                             hideInitialPage();
                         } else {
                             doSuccessCallback = true;
+                            checkTokenValidResult = true;
                         }
                     }
                 }
@@ -659,6 +661,8 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
             }
         }
     }
+
+    return checkTokenValidResult;
 }
 
 function readConfig() {
