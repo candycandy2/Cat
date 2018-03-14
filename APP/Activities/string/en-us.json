@@ -217,7 +217,7 @@
   },
   {
     "term": "str_028",
-    "definition": "爲讓福委會資源有效運用，非因公缺席者，每人將扣款活動成本費e",
+    "definition": "For utilizing resource effectively absent by non work-related reason will be charged activity cost",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "str_033",
-    "definition": "確定取消新增？e",
+    "definition": "Ok to abort adding ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -265,7 +265,7 @@
   },
   {
     "term": "str_034",
-    "definition": "目前沒有任何活動e",
+    "definition": "No any activity now",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -273,7 +273,7 @@
   },
   {
     "term": "str_035",
-    "definition": "僅顯示尚未結束的報名記錄e",
+    "definition": "Only display activity registration records which is ongoing",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -281,7 +281,7 @@
   },
   {
     "term": "str_036",
-    "definition": "目前沒有眷屬資料e",
+    "definition": "No family dependents information",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -289,7 +289,7 @@
   },
   {
     "term": "str_037",
-    "definition": "活動尚未結束無法刪除e",
+    "definition": "Undeletable due to activity is in progress",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -297,7 +297,7 @@
   },
   {
     "term": "str_038",
-    "definition": "查無員工資料e",
+    "definition": "No employee information",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -305,7 +305,7 @@
   },
   {
     "term": "str_039",
-    "definition": "查請重新搜索e",
+    "definition": "Please search again",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -313,7 +313,7 @@
   },
   {
     "term": "str_040",
-    "definition": "請選擇e",
+    "definition": "Please select",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -321,7 +321,7 @@
   },
   {
     "term": "str_041",
-    "definition": "新增眷屬資料失敗e",
+    "definition": "Fail to create family dependents information",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -329,7 +329,7 @@
   },
   {
     "term": "str_042",
-    "definition": "更新眷屬資料失敗e",
+    "definition": "Fail to update family dependents information",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "str_043",
-    "definition": "刪除眷屬資料失敗e",
+    "definition": "Fail to delete family dependents information",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -345,7 +345,7 @@
   },
   {
     "term": "str_044",
-    "definition": "關閉e",
+    "definition": "Close",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "str_045",
-    "definition": "取消e",
+    "definition": "Cancel",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -361,7 +361,7 @@
   },
   {
     "term": "str_046",
-    "definition": "不取消e",
+    "definition": "Don't cancel",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -369,7 +369,7 @@
   },
   {
     "term": "str_047",
-    "definition": "報名取消失敗e",
+    "definition": "Fail to call off",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -377,7 +377,7 @@
   },
   {
     "term": "str_048",
-    "definition": "身份證字號e",
+    "definition": "ID number",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -385,7 +385,7 @@
   },
   {
     "term": "str_049",
-    "definition": "生日e",
+    "definition": "Birthday",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -393,7 +393,7 @@
   },
   {
     "term": "str_050",
-    "definition": "總名額(人/組):e",
+    "definition": "Total number(person/group):",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -401,7 +401,7 @@
   },
   {
     "term": "str_051",
-    "definition": "參與名額限制(人/組):e",
+    "definition": "Participator limitation(person/group):",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -409,7 +409,7 @@
   },
   {
     "term": "str_052",
-    "definition": "報名期間:e",
+    "definition": "Sign up period:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -417,7 +417,7 @@
   },
   {
     "term": "str_053",
-    "definition": "已報名(人/組):e",
+    "definition": "Signed up(person/group):",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -425,7 +425,7 @@
   },
   {
     "term": "str_054",
-    "definition": "您已報名本項活動(人/組):e",
+    "definition": "Have signed up this activity(person/group):",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -433,7 +433,7 @@
   },
   {
     "term": "str_055",
-    "definition": "請設定您的報名資料e",
+    "definition": "Please setup your registration information",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -441,7 +441,7 @@
   },
   {
     "term": "str_056",
-    "definition": "報名人數:e",
+    "definition": "Number of applicants:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -449,7 +449,7 @@
   },
   {
     "term": "str_057",
-    "definition": "您尚可報名人數:e",
+    "definition": "Available number of applicants:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -457,7 +457,7 @@
   },
   {
     "term": "str_058",
-    "definition": "人e",
+    "definition": "Person",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -465,7 +465,7 @@
   },
   {
     "term": "str_059",
-    "definition": "*本活動須同仁本人一同前往e",
+    "definition": "*Employee must be present in this activity",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -473,7 +473,7 @@
   },
   {
     "term": "str_060",
-    "definition": "請先填寫同仁報名資訊e",
+    "definition": "Please fill in emplyee registration information first",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -481,7 +481,7 @@
   },
   {
     "term": "str_061",
-    "definition": "請選取報名時段e",
+    "definition": "Please select registration period",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -489,7 +489,7 @@
   },
   {
     "term": "str_062",
-    "definition": "時段e",
+    "definition": "Period",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -497,7 +497,7 @@
   },
   {
     "term": "str_063",
-    "definition": "提供名額e",
+    "definition": "Quota",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -505,7 +505,7 @@
   },
   {
     "term": "str_064",
-    "definition": "剩餘名額e",
+    "definition": "Quota left",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -513,7 +513,7 @@
   },
   {
     "term": "str_065",
-    "definition": "新增團隊e",
+    "definition": "Add team",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -521,7 +521,7 @@
   },
   {
     "term": "str_066",
-    "definition": "部門代碼e",
+    "definition": "Department code",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -529,7 +529,7 @@
   },
   {
     "term": "str_067",
-    "definition": "隊伍e",
+    "definition": "Team",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -537,7 +537,7 @@
   },
   {
     "term": "str_068",
-    "definition": "成員e",
+    "definition": "Member",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -545,7 +545,7 @@
   },
   {
     "term": "str_069",
-    "definition": "目前活動名額已額滿,e",
+    "definition": "Activity is filled now,",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -553,7 +553,7 @@
   },
   {
     "term": "str_070",
-    "definition": "您已報名本項活動:e",
+    "definition": "You have signed up this activity:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -561,7 +561,7 @@
   },
   {
     "term": "str_071",
-    "definition": "*您已完成報名，若需變更時段，請先取消報名後再重新報名e",
+    "definition": "*Signed up, if you need to change period, cancle registration and sign up again",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -569,7 +569,7 @@
   },
   {
     "term": "str_072",
-    "definition": "以下是您的報名資料e",
+    "definition": "Your registration information is as follows",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -577,7 +577,7 @@
   },
   {
     "term": "str_073",
-    "definition": "活動時段與名額如下e",
+    "definition": "Period and quota of activities are as follows",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -585,7 +585,7 @@
   },
   {
     "term": "str_074",
-    "definition": "組e",
+    "definition": "Group",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -593,7 +593,7 @@
   },
   {
     "term": "str_075",
-    "definition": "編號e",
+    "definition": "Number",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -601,7 +601,7 @@
   },
   {
     "term": "str_076",
-    "definition": "隊名e",
+    "definition": "Team name",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -609,7 +609,7 @@
   },
   {
     "term": "str_077",
-    "definition": "開放時間:e",
+    "definition": "Time to sign up:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -617,7 +617,7 @@
   },
   {
     "term": "str_078",
-    "definition": "名額:e",
+    "definition": "Quota:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -625,7 +625,7 @@
   },
   {
     "term": "str_079",
-    "definition": "剩餘:e",
+    "definition": "Quota left:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -633,7 +633,7 @@
   },
   {
     "term": "str_080",
-    "definition": "姓名e",
+    "definition": "Name",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -641,7 +641,7 @@
   },
   {
     "term": "str_081",
-    "definition": "關係e",
+    "definition": "Relation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -649,7 +649,7 @@
   },
   {
     "term": "str_082",
-    "definition": "性別e",
+    "definition": "Sex",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -657,7 +657,7 @@
   },
   {
     "term": "str_083",
-    "definition": "請勾選同行眷屬e",
+    "definition": "Please check family dependents to join",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -665,7 +665,7 @@
   },
   {
     "term": "str_084",
-    "definition": "若名單已勾選，表示是您已經報名的名單e",
+    "definition": "Checked names denote the signed up name list",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -673,7 +673,7 @@
   },
   {
     "term": "str_085",
-    "definition": "修改未完成e",
+    "definition": "Modification is incomplete",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -681,7 +681,7 @@
   },
   {
     "term": "str_086",
-    "definition": "此同仁已存在隊伍裡e",
+    "definition": "This colleague is always a team member",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -689,7 +689,7 @@
   },
   {
     "term": "str_087",
-    "definition": "請重新選擇e",
+    "definition": "Please select again",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -697,7 +697,7 @@
   },
   {
     "term": "str_088",
-    "definition": "同仁e",
+    "definition": "Colleague",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -705,7 +705,7 @@
   },
   {
     "term": "str_089",
-    "definition": "報名時段:e",
+    "definition": "Registration periods:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -713,7 +713,7 @@
   },
   {
     "term": "str_090",
-    "definition": "配偶e",
+    "definition": "Spouse",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -721,7 +721,7 @@
   },
   {
     "term": "str_091",
-    "definition": "子女e",
+    "definition": "Children",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -729,7 +729,7 @@
   },
   {
     "term": "str_092",
-    "definition": "父母e",
+    "definition": "Parents",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -737,7 +737,7 @@
   },
   {
     "term": "str_093",
-    "definition": "配偶父母e",
+    "definition": "Parents-in-law",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -745,7 +745,7 @@
   },
   {
     "term": "str_094",
-    "definition": "兄弟e",
+    "definition": "Brother",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -753,7 +753,7 @@
   },
   {
     "term": "str_095",
-    "definition": "姊妹e",
+    "definition": "Sister",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -761,7 +761,7 @@
   },
   {
     "term": "str_096",
-    "definition": "祖父母e",
+    "definition": "Grandparents",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -769,7 +769,7 @@
   },
   {
     "term": "str_097",
-    "definition": "外祖父母e",
+    "definition": "Maternal grandparents",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -777,7 +777,7 @@
   },
   {
     "term": "str_098",
-    "definition": "其他親友e",
+    "definition": "Other relatives and friends",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -785,7 +785,7 @@
   },
   {
     "term": "str_099",
-    "definition": "女e",
+    "definition": "Female",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -793,7 +793,7 @@
   },
   {
     "term": "str_100",
-    "definition": "男e",
+    "definition": "Male",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -801,7 +801,7 @@
   },
   {
     "term": "str_101",
-    "definition": "身份證e",
+    "definition": "ID number",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -809,7 +809,7 @@
   },
   {
     "term": "str_102",
-    "definition": "*您已設定保留眷屬資料供活動報名使用，資料會於在職期間保留於系統中，但您可隨時於系統中刪除e",
+    "definition": "*You have reserved family dependents information for signning up activity, system will keep information when you are in service, but you can delete them anytime",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -817,7 +817,7 @@
   },
   {
     "term": "str_103",
-    "definition": "*請注意，當眷屬報名的活動尚未結束時，無法刪除資料e",
+    "definition": "*Attention! When activity is on going, you cann't delete family dependents who join it",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -825,7 +825,7 @@
   },
   {
     "term": "str_104",
-    "definition": "團隊e",
+    "definition": "Team",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -833,7 +833,7 @@
   },
   {
     "term": "str_105",
-    "definition": "目前活動報名時間已過期e",
+    "definition": "Activity registration time is expired now",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -841,7 +841,7 @@
   },
   {
     "term": "str_106",
-    "definition": "隊伍成員已滿，不能繼續新增e",
+    "definition": "Team is full, can't add more member",
     "context": "",
     "term_plural": "",
     "reference": "",

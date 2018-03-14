@@ -513,25 +513,23 @@ $("#viewMyFamilyDatum").pagecontainer({
 
         //檢查表單（姓名和身份證）是否符合提交要求
         $("#familyName").on("keyup", function () {
-            familyName = $.trim($(this).val());
-
             if (timeoutFamilyName != null) {
                 clearTimeout(timeoutFamilyName);
                 timeoutFamilyName = null;
             }
             timeoutFamilyName = setTimeout(function () {
+                familyName = $.trim($("#familyName").val());
                 checkFormByFamily();
             }, 2000);
         });
 
         $("#familyID").on("keyup", function () {
-            familyID = $.trim($(this).val());
-
             if (timeoutFamilyID != null) {
                 clearTimeout(timeoutFamilyID);
                 timeoutFamilyID = null;
             }
             timeoutFamilyID = setTimeout(function () {
+                familyID = $.trim($("#familyID").val());
                 checkFormByFamily();
             }, 2000);
         });
