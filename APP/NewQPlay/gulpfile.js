@@ -229,7 +229,7 @@ gulp.task('devinstall', ['copyRes'], shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --variable LOGIN_URL=' + process.env.apiServerURL + 'qplayApi/public/qplayauth_register',
     'cordova plugin add cordova-plugin-device',
     'cordova plugin add ../../plugins/cordova-plugin-appversion',//
-    'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,//
+    //'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,//
     //'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
     //'cordova plugin add cordova-plugin-app-update',//
     'cordova plugin add cordova-plugin-android-permissions',//
