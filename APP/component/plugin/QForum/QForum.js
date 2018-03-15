@@ -186,22 +186,15 @@ var QForum = {
         setBoardID: function() {
             if (appKeyOriginal == "appens") {
 
-                //window.retrySetBoardID = setInterval(function() {
-                    if (QForum.boardList.length > 0) {
-
-                        //if (typeof window.stopRetrySetBoardID !== "undefined") {
-                        //    window.stopRetrySetBoardID();
-                        //}
-
-                        for (var i=0; i<QForum.boardList.length; i++) {
-                            if (QForum.boardList[i].board_type_name == "ENS") {
-                                if (QForum.boardList[i].board_name == projectName) {
-                                    QForum.boardID = QForum.boardList[i].board_id;
-                                }
+                if (QForum.boardList.length > 0) {
+                    for (var i=0; i<QForum.boardList.length; i++) {
+                        if (QForum.boardList[i].board_type_name == "ENS") {
+                            if (QForum.boardList[i].board_name == projectName) {
+                                QForum.boardID = QForum.boardList[i].board_id;
                             }
                         }
                     }
-                //}, 500);
+                }
 
                 /*
                 window.stopRetrySetBoardID = function() {
@@ -478,8 +471,12 @@ var QForum = {
             QForum.METHOD.setPageID(pageID);
             QForum.METHOD.setReplyLastID(1);
             QForum.lastCommentOffsetTop = 0;
-//console.log("##############remove 1");
+
             $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
+
+            if (typeof QForum.pullRefresh !== "undefined") {
+                QForum.pullRefresh.firstTouch = true;
+            }
 
             //Create Reply Button
             QForum.VIEW.replyButtonFooter();
@@ -641,7 +638,6 @@ var QForum = {
 
                 //Clear list-data
                 if (QForum.replyLastID == 1 && pullRefresh) {
-//console.log("##############remove 2");
                     $("#" + QForum.pageID + " .QForum-Content.reply-listview .QForum.list-data").remove();
                 }
 
@@ -730,22 +726,9 @@ var QForum = {
                             }
 
                             if (!pullRefreshCallAPI && !pullRefresh) {
-                                //Recovery Scroll Behavior, then scroll to the last postion, don't scroll to top.
-                                var lastCommentOffsetTop = QForum.lastCommentOffsetTop;
-
-                                if (replyCallback) {
-                                    lastCommentOffsetTop = 0;
-                                }
-
                                 if (!checkPopupShown()) {
                                     tplJS.recoveryPageScroll();
                                 }
-
-                                //if (device.platform === "Android") {
-                                //    $("#" + QForum.pageID + " .page-main").animate({
-                                //        scrollTop: lastCommentOffsetTop
-                                //    }, 0);
-                                //}
                             }
 
                             $("#" + QForum.pageID).css({
@@ -767,6 +750,10 @@ var QForum = {
                             //Reply Succes show Prompt
                             if (replyCallback) {
                                 QForum.VIEW.promptPopup(QForum.commentActionText[QForum.commentAction]);
+
+                                $("#" + QForum.pageID + " .page-main").animate({
+                                    scrollTop: 0
+                                }, 0);
                             }
                         }
 
@@ -776,7 +763,6 @@ var QForum = {
                 //Bind Event
                 QForum.EVENT.replySelect();
             } else {
-//console.log("##############remove 3");
                 $("#" + QForum.pageID + " .QForum-Content.reply-listview").remove();
             }
 
@@ -1053,91 +1039,100 @@ var QForum = {
             $("#" + selector).off("scroll");
 
             $("#" + selector).scroll(function() {
-//console.log("-------1");
+
                 if (typeof $(".QForum-Content.reply-fullscreen-popup").css("display") === "undefined" || 
                     $(".QForum-Content.reply-fullscreen-popup").css("display") == "block") {
                     return;
                 }
-//console.log("-------2");
-                if (!QForum.pullRefresh.finish) {
+
+                if (!QForum.pullRefresh.finish || QForum.getPostDetailsProcessing) {
                     return;
                 }
-//console.log("-------3");
+
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
                 var activePageID = activePage[0].id;
                 var bodyScrollTop = $("#" + selector).scrollTop();
+                var footerHeight = $(".QForum-Content.ui-footer").height();
 
                 if (activePageID === QForum.pageID) {
-//console.log("-------4");
+
                     $(".QForum-Content.reply-listview .list-data").each(function(index, el) {
                         if ($(el).prop("sequence").length !== 0) {
 
                             var sequence = parseInt($(el).prop("sequence"), 10);
                             QForum.lastCommentOffsetTop = $(el).offset().top;
-//console.log("-------5");
+
                             var rect = el.getBoundingClientRect();
-/*
-if (sequence == 10) {
-    console.log("sequence=====:"+sequence);
-    if (parseInt(rect.top, 10) >= 0) console.log("===A");
-    if (parseInt(rect.left, 10) >= 0) console.log("===B");
-    if (parseInt(rect.bottom, 10) <= (window.innerHeight || document.documentElement.clientHeight)) console.log("===C");
-    if (parseInt(rect.right, 10) <= (window.innerWidth || document.documentElement.clientWidth)) console.log("===D");
-}
-*/
                             if (
-                                parseInt(rect.top, 10) >= 0 &&
-                                parseInt(rect.left, 10) >= 0 &&
-                                parseInt(rect.bottom, 10) <= (window.innerHeight || document.documentElement.clientHeight) && 
-                                parseInt(rect.right, 10) <= (window.innerWidth || document.documentElement.clientWidth)
+                                (parseInt(rect.top, 10) <= (window.innerHeight || document.documentElement.clientHeight) &&
+                                parseInt(rect.left, 10) >= 0) ||
+                                (parseInt(rect.bottom - footerHeight, 10) <= (window.innerHeight || document.documentElement.clientHeight) &&
+                                parseInt(rect.right, 10) <= (window.innerWidth || document.documentElement.clientWidth))
                             ) {
-//console.log("-------6");
+
                                 //Scroll top to bottom
                                 if (bodyScrollTop >= QForum.lastBodyScrollTop) {
-                                    console.log("Scroll top to bottom");
-//console.log("-------7");
-                                    if (sequence >= QForum.replyLastID && sequence >= QForum.replyDataRange) {
-//console.log("-------8");
-                                        if (sequence == QForum.replyDataRange) {
-                                            QForum.METHOD.setReplyLastID((sequence + 1));
-                                            QForum.API.getPostDetails();
+                                    if (
+                                        parseInt(rect.top, 10) <= (window.innerHeight || document.documentElement.clientHeight) &&
+                                        parseInt(rect.left, 10) >= 0
+                                    ) {
+                                        //console.log("Scroll top to bottom");
+                                        if (sequence >= QForum.replyLastID && sequence >= QForum.replyDataRange) {
 
-                                            return;
-                                        } else {
-                                            if ((QForum.replyLastID + QForum.replyDataRange - 1) <= QForum.replyCount) {
-                                                var rangeLimit = (QForum.replyLastID + QForum.replyDataRange - 1);
+                                            if (sequence == QForum.replyDataRange) {
+                                                QForum.METHOD.setReplyLastID((sequence + 1));
+                                                QForum.API.getPostDetails();
 
-                                                if (sequence >= rangeLimit && sequence != QForum.replyCount) {
-                                                    QForum.METHOD.setReplyLastID((sequence + 1));
-                                                    QForum.API.getPostDetails();
+                                                return;
+                                            } else {
+                                                if ((QForum.replyLastID + QForum.replyDataRange - 1) <= QForum.replyCount) {
+                                                    var rangeLimit = (QForum.replyLastID + QForum.replyDataRange - 1);
 
-                                                    return;
+                                                    if (sequence >= rangeLimit && sequence != QForum.replyCount) {
+                                                        QForum.METHOD.setReplyLastID((sequence + 1));
+                                                        QForum.API.getPostDetails();
+
+                                                        return;
+                                                    }
+
                                                 }
-
                                             }
-                                        }
 
+                                        }
                                     }
                                 }
 
                                 //Scorll bottom to top
                                 if (bodyScrollTop < QForum.lastBodyScrollTop) {
-                                    console.log("Scorll bottom to top");
 
-                                    if (sequence < QForum.replyLastID) {
+                                    if (
+                                        rect.bottom > 0 &&
+                                        parseInt(rect.bottom - footerHeight, 10) <= (window.innerHeight || document.documentElement.clientHeight) &&
+                                        parseInt(rect.right, 10) <= (window.innerWidth || document.documentElement.clientWidth)
+                                    ) {
+                                        //console.log("Scorll bottom to top");
+                                        if (sequence < QForum.replyLastID) {
 
-                                        if ((sequence - QForum.replyDataRange) == 0) {
-                                            QForum.METHOD.setReplyLastID(1);
-                                            QForum.API.getPostDetails();
+                                            if ((sequence % QForum.replyDataRange) == 0) {
 
-                                            return;
+                                                if (QForum.replyLastID - 1 - sequence == 0) {
+                                                    QForum.METHOD.setReplyLastID((sequence - QForum.replyDataRange + 1));
+                                                    QForum.API.getPostDetails();
+
+                                                    return;
+                                                } else if ((sequence - QForum.replyDataRange) == 0) {
+
+                                                    if (parseInt(QForum.replyLastID / sequence, 10) == 1) {
+                                                        QForum.METHOD.setReplyLastID(1);
+                                                        QForum.API.getPostDetails();
+
+                                                        return;
+                                                    }
+                                                }
+
+                                            }
+
                                         }
-
-                                        if ((sequence % QForum.replyDataRange) == 0) {
-                                            QForum.METHOD.setReplyLastID((sequence - QForum.replyDataRange + 1));
-                                            QForum.API.getPostDetails();
-                                        }
-
                                     }
                                 }
                             }
@@ -1160,6 +1155,7 @@ if (sequence == 10) {
 
             //Ver 2.
             QForum.pullRefresh = {};
+            QForum.pullRefresh.firstTouch = true;
             QForum.pullRefresh.finish = true;
             QForum.pullRefresh.touchMovePX = 0;
             QForum.pullRefresh.touchMoveLastPX = 0;
@@ -1199,8 +1195,8 @@ if (sequence == 10) {
 
                     QForum.pullRefresh.startTop = $("#" + selector).scrollTop();
 
-                    if (!checkPopupShown() && QForum.pullRefresh.startTop == 0) {
-//console.log("------------A");
+                    if (!checkPopupShown() && QForum.pullRefresh.startTop == 0 && !QForum.pullRefresh.firstTouch) {
+
                         QForum.pullRefresh.finish = false;
 
                         QForum.pullRefresh.pageMainZIndex = $("#" + QForum.pageID + " .page-main").css("z-index");
@@ -1236,20 +1232,22 @@ if (sequence == 10) {
                 },
                 touchmove: function(event) {
 
+                    QForum.pullRefresh.startTop = $("#" + selector).scrollTop();
+
+                    var pageHeaderHeight = $("#" + QForum.pageID + " .page-header").height();
                     var startPullRefresh = $("#pullRefreshImg").css("opacity");
 
-                    if (!checkPopupShown() && !QForum.pullRefresh.finish) {
-//console.log("------------B");
+                    if (!checkPopupShown() && !QForum.pullRefresh.finish && (QForum.pullRefresh.startTop < pageHeaderHeight) &&
+                        !QForum.pullRefresh.firstTouch) {
+
                         if (QForum.pullRefresh.touchMoveLastPX == 0) {
                             QForum.pullRefresh.touchMoveLastPX = parseInt(event.originalEvent.touches[0].clientY, 10);
                         } else {
-//console.log("------------C");
+
                             QForum.pullRefresh.touchMovePX = event.originalEvent.changedTouches[0].clientY;
 
                             if (QForum.pullRefresh.touchMovePX > QForum.pullRefresh.touchMoveLastPX) {
-//console.log("------------D");
-//console.log("QForum.pullRefresh.touchMovePX:"+QForum.pullRefresh.touchMovePX);
-//console.log("QForum.pullRefresh.touchMoveLastPX:"+QForum.pullRefresh.touchMoveLastPX);
+
                                 $('body, .ui-page-active.ui-page, .ui-page-active .page-main, .ui-page-active .ui-tabs').css({
                                     'touch-action': 'none'
                                 });
@@ -1472,6 +1470,8 @@ if (sequence == 10) {
                     }
 
                     QForum.pullRefresh.callAPI = false;
+
+                    QForum.pullRefresh.firstTouch = false;
 
                 }
             }, "#" + selector);
