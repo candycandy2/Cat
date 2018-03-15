@@ -41,7 +41,7 @@
   },
   {
     "term": "str_006",
-    "definition": "Future：",
+    "definition": "Oncoming：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -233,7 +233,7 @@
   },
   {
     "term": "str_030",
-    "definition": "Ok to called off ?",
+    "definition": "OK to call off ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -241,7 +241,7 @@
   },
   {
     "term": "str_031",
-    "definition": "Ok to cancel the edit ?",
+    "definition": "OK to cancel the edit ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "str_032",
-    "definition": "Ok to delete information of family dependents",
+    "definition": "OK to delete information of family dependents ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "str_033",
-    "definition": "Ok to abort adding ?",
+    "definition": "OK to abort adding ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -289,7 +289,7 @@
   },
   {
     "term": "str_037",
-    "definition": "Undeletable due to activity is in progress",
+    "definition": "Undeletable. Activity is in progress",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -801,7 +801,7 @@
   },
   {
     "term": "str_101",
-    "definition": "ID number",
+    "definition": "ID",
     "context": "",
     "term_plural": "",
     "reference": "",
