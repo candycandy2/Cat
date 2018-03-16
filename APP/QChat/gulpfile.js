@@ -26,6 +26,8 @@ env.set({APP_NAME: "QChat"});
 var requireDir = require('require-dir');
 var gulpTask = requireDir('../component/gulpTask/');
 
+env.set({pluginConfig: 'camera,QPush'});
+
 /*-----------------------------------------edit config.xml------------------------------------------*/
 var schemeSetting = "<string>appqplay" + process.env.appNameDecorate + "</string><string>appqchat" + process.env.appNameDecorate + "</string>";
 
@@ -96,19 +98,19 @@ gulp.task('install', ['copyRes'], shell.task([
   'cordova platform rm android',
   'cordova platform add ios',
   'cordova platform add android',
-  'cordova plugin add cordova-plugin-device',
+  'cordova plugin add cordova-plugin-device@2.0.1',
   'cordova plugin add ../../plugins/cordova-plugin-app-update',
-  'cordova plugin add cordova-plugin-android-permissions',
-  'cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=appqchat' + process.env.appNameDecorate,
+  'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
+  'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appqchat' + process.env.appNameDecorate,
   'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add cordova-plugin-whitelist',
-  'cordova plugin add cordova-plugin-inappbrowser',
+  'cordova plugin add ../../plugins/cordova-plugin-whitelist',
+  'cordova plugin add ../../plugins/cordova-plugin-inappbrowser',
   'cordova plugin add ../../plugins/cordova-plugin-camera',
-  'cordova plugin add cordova-plugin-ios-camera-permissions --save',
-  'cordova plugin add phonegap-plugin-mobile-accessibility',
+  'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --save',
+  'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
   'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
-  'cordova plugin add jmessage-phonegap-plugin@3.0.23 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
-  'cordova plugin add ../../plugins/jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushQChatAPPKey + " --nofetch",
+  'cordova plugin add jmessage-phonegap-plugin --variable APP_KEY=' + process.env.QPushQChatAPPKey,
+  'cordova plugin add jpush-phonegap-plugin --variable APP_KEY=' + process.env.QPushQChatAPPKey,
   'cordova plugin add ../../plugins/cordova-plugin-statusbar',
   'cordova plugin add cordova-plugin-file@5.0.0'
 ]));
