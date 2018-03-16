@@ -78,7 +78,11 @@ var QPush = {
     getExtras: function(data) {
         console.log(data["Parameter"]);
 
-        var JSONData = JSON.parse(data["Parameter"]);
+        if (window.appKeyOriginal === "appqchat") {
+            var JSONData = data["Parameter"];
+        } else {
+            var JSONData = JSON.parse(data["Parameter"]);
+        }
 
         return JSONData;
     }
