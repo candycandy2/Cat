@@ -350,19 +350,17 @@ function setCheckboxCustomField2(index, arr, i, id, $container) {
 
 //檢查所有自定義欄位是否爲空，並保存數據
 function saveValueAndCheckForm(arr, name, value, bool, btn) {
-    if (name != null) {
-        //bool为true，添加checkbox;若为false，删除checkbox;若为other，text和select赋值
-        for (var i in arr) {
-            if (name == arr[i]["ColumnName"] && bool == true) {
-                arr[i]["ColumnAnswer"] += (";" + value);
-                break;
-            } else if (name == arr[i]["ColumnName"] && bool == false) {
-                arr[i]["ColumnAnswer"] = arr[i]["ColumnAnswer"].replace(";" + value, "");
-                break;
-            } else if (name == arr[i]["ColumnName"] && bool == null) {
-                arr[i]["ColumnAnswer"] = value;
-                break;
-            }
+    //bool为true，添加checkbox;若为false，删除checkbox;若为other，text和select赋值
+    for (var i in arr) {
+        if (name == arr[i]["ColumnName"] && bool == true) {
+            arr[i]["ColumnAnswer"] += (";" + value);
+            break;
+        } else if (name == arr[i]["ColumnName"] && bool == false) {
+            arr[i]["ColumnAnswer"] = arr[i]["ColumnAnswer"].replace(";" + value, "");
+            break;
+        } else if (name == arr[i]["ColumnName"] && bool == null) {
+            arr[i]["ColumnAnswer"] = value;
+            break;
         }
     }
 
