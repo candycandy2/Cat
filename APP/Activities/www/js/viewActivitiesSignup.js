@@ -882,7 +882,7 @@ $("#viewActivitiesSignup").pagecontainer({
                     + answerList
                     + '</FamilyList>';
 
-                console.log(familyList);
+                //console.log(familyList);
 
                 //2.API信息
                 activitiesSignupFamilyQueryData = '<LayoutHeader><ActivitiesID>'
