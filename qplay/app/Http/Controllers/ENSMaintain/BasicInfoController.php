@@ -17,7 +17,6 @@ class BasicInfoController extends Controller
     protected $basicInfoService;
     protected $enUserGroupRepository;
     protected $userRepository;
-    protected $message;
 
     /**
      * 建構子，初始化引入相關服務
@@ -25,12 +24,13 @@ class BasicInfoController extends Controller
      * @param EnUserGroupRepository $enUserGroupRepository ENS管理員
      * @param UserRepository $userRepository 用戶
      */
-    public function __construct(BasicInfoService $basicInfoService, EnUserGroupRepository $enUserGroupRepository, UserRepository $userRepository)
+    public function __construct(BasicInfoService $basicInfoService,
+                                EnUserGroupRepository $enUserGroupRepository,
+                                UserRepository $userRepository)
     {
         $this->basicInfoService = $basicInfoService;
         $this->enUserGroupRepository = $enUserGroupRepository;
         $this->userRepository = $userRepository;
-        $this->message = new MessageUtil();
     }
 
     /**
@@ -41,6 +41,16 @@ class BasicInfoController extends Controller
        $input = Input::get();
        $project = $input['project'];
        return $this->basicInfoService->getBasicInfo($project);
+    }
+
+    /**
+     * 取得管理者資訊
+     * @return mixed
+     */
+    public function getUserGroupInfo(){
+       $input = Input::get();
+       $project = $input['project'];
+       return $this->basicInfoService->getUserGroupInfo($project);   
     }
 
 
@@ -77,10 +87,6 @@ class BasicInfoController extends Controller
             $validRes = $this->basicInfoService->validateUploadBasicInfo($input['basicInfoFile']);
             if($validRes['ResultCode'] == ResultCode::_1_reponseSuccessful){
                $this->basicInfoService->importBasicInfo($project, $input['basicInfoFile']);
-               $registerManager = $this->registerSuperUserToMessage($project)->getData();
-               if($registerManager->ResultCode != ResultCode::_1_reponseSuccessful){
-                    return $registerManager;
-               }
                \DB::commit();
                return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful]);
             }else{
@@ -93,45 +99,6 @@ class BasicInfoController extends Controller
             'Message'=>$e->getMessage()]);
         }
       
-    }
-
-    public function registerSuperUser(Request $request){
-
-        if(\Auth::user() == null || \Auth::user()->login_id == null || \Auth::user()->login_id == "")
-        {
-            return null;
-        }
-        
-        $this->setLanguage();   
-        $input = $request->all();
-        
-        $project = $input['project'];
-        return $this->registerSuperUserToMessage($project);
-    }
-
-    /**
-     * 向QMessage註冊主管與管理員
-     * @return json
-     */
-    private function registerSuperUserToMessage($project){
-        
-        $users = $this->enUserGroupRepository->getSuperUserLoginIdNotRegister($project);
-        if(count($users) == 0){
-            return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
-                'Message'=>trans('messages.ERR_NO_USER_TO_REGISTER'),'Content'=>'']);
-        }
-        $registeredUser = [];
-        foreach ($users as $user) {
-            $res = $this->message->register($user->login_id);
-            $resultCode = json_decode($res)->ResultCode;
-            if( $resultCode  == ResultCode::_1_reponseSuccessful || $resultCode  == '998002'){
-                 $this->userRepository->updateUserByLoginId($user->login_id, array('register_message'=>'Y'));
-                 $registeredUser[] = $user->login_id;
-            }else{
-                return response()->json($res);
-            }
-        }
-        return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,'Message'=>trans('messages.USER_REGISTER_SUCCESS'),'Content'=>implode(',',$registeredUser)]);
     }
 
     /**

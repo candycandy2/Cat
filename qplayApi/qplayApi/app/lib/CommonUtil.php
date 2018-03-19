@@ -137,7 +137,16 @@ class CommonUtil
             -> where('qp_user.resign', '=', 'N')
             -> where('qp_user.login_id', '=', $loginId)
             -> where('qp_user.user_domain', '=', $domain)
-            -> select('qp_user.row_id')->get();
+            -> select('qp_user.row_id',
+                      'qp_user.login_id',
+                      'qp_user.company',
+                      'qp_user.site_code',
+                      'qp_user.ext_no',
+                      'qp_user.emp_no',
+                      'qp_user.emp_name',
+                      'qp_user.user_domain',
+                      'qp_user.department',
+                      'qp_user.email')->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -802,6 +811,19 @@ class CommonUtil
                 break;
         }
         return $key;
+    }
+ 
+    /**
+     * 過濾掉環境變數，取得原始app專案名稱
+     * @param  String $appKey 加上環境變數後的appKey
+     * @return String         ex : appqplaydev，處理後會回傳qplqy
+     */
+    public static function getProjectName($appKey){
+        $projectName = preg_replace("/^app/", '',$appKey);
+        if(Config::get('app.env')!= 'production' ){
+            $projectName = preg_replace("/".Config::get('app.env')."$/", '',trim($projectName));
+        }
+        return trim($projectName);
     }
 
 }

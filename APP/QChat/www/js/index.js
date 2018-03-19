@@ -29,7 +29,10 @@ window.initialSuccess = function() {
         QChatJPushSecretKey = "1c33fd43b7c962ebaf14893a";
     }
 
-    window.JPush.init();
+    //QPush
+    QPush.initial({
+        "pushCallback": QPushCallback
+    });
 
     //Bind JMessage Listener Event
     if (!bindJMEvent) {
@@ -353,38 +356,36 @@ function onResume() {
     //When APP in foreground, check if the view is chatroom, then stop receive the Push Notification
 }
 
-//JPush - for push from QPlay Server
-document.addEventListener("jpush.openNotification", function (event) {
-    if (device.platform == "Android") {
-        console.log(event.extras.Parameter);
-        var extras = event.extras.Parameter;
-        var parameter = extras.split("=");
+//QPush callback function - for push from QPlay Server (Friend Invite / Accept)
+function QPushCallback(action, pushData) {
+    console.log(pushData);
 
-        if (parameter[1] === "acceptQInvitation") {
-            prevPageID = "viewFriendInvite";
-            window.getQFriend();
-            $.mobile.changePage('#viewIndex');
-        } else if (parameter[1] === "sendQInvitation") {
-            window.getQFriend("receiveInvite");
+    if (action === "open") {
+        if (device.platform == "Android") {
+            var parameter = pushData.split("=");
+
+            if (parameter[1] === "acceptQInvitation") {
+                prevPageID = "viewFriendInvite";
+                window.getQFriend();
+                $.mobile.changePage('#viewIndex');
+            } else if (parameter[1] === "sendQInvitation") {
+                window.getQFriend("receiveInvite");
+            }
+        } else {
+
         }
-    } else {
-        console.log(event.aps.alert);
-    }
-}, false);
+    } else if (action === "receive") {
+        if (device.platform == "Android") {
+            var parameter = pushData.split("=");
 
-document.addEventListener("jpush.receiveNotification", function (event) {
-    if (device.platform == "Android") {
-        console.log(event.extras.Parameter);
-        var extras = event.extras.Parameter;
-        var parameter = extras.split("=");
+            if (parameter[1] === "sendQInvitation" || parameter[1] === "acceptQInvitation") {
+                window.getQFriend();
+            }
+        } else {
 
-        if (parameter[1] === "sendQInvitation" || parameter[1] === "acceptQInvitation") {
-            window.getQFriend();
         }
-    } else {
-        console.log(event.aps.alert);
     }
-}, false);
+}
 
 //JMessage - Event Listener
 document.addEventListener("jpush.receiveMessage", function (event) {
@@ -464,5 +465,5 @@ window.syncRoamingMessage = function(data) {
     console.log("----syncRoamingMessage");
     console.log(data);
 
-    window.getConversation(data.target.id, false, true);
+    window.getConversation(data.conversation.target.id, false, true);
 };

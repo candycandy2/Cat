@@ -374,9 +374,7 @@ function adjustPageMarginTop() {
         }
 
         if (device.platform === "iOS") {
-            if (versionCompare(device.version, "11.0", "") === 1) {} else {
-                mainMarginTop = mainMarginTop + 20;
-            }
+            mainMarginTop = mainMarginTop + iOSFixedTopPX();
         }
 
         $(".page-main").css({
@@ -388,6 +386,15 @@ function adjustPageMarginTop() {
 function footerFixed() {
     $(".ui-footer").removeClass("ui-fixed-hidden");
     $(".ui-header").removeClass("ui-fixed-hidden");
+
+    $(".ui-footer").removeClass("slideup");
+    $(".ui-header").removeClass("slidedown");
+
+    if (!checkPopupShown()) {
+        $('.ui-page-active.ui-page').css({
+            'height': "100%"
+        });
+    }
 }
 
 function waterMark() {
@@ -408,12 +415,13 @@ function waterMark() {
 }
 
 function addPlugin() {
-    $(document).one("pageshow", function() {
+    //window.pluginList set in plugin/config.js
+    // 1.[ckeditor] need to add during "pageshow"
+    // 2.other plugin add after Device Ready
+    $.map(window.pluginList, function(value, key) {
+        (function(pluginName, pluginIndex) {
 
-        //window.pluginList set in plugin/config.js
-        $.map(window.pluginList, function(value, key) {
-            (function(pluginName) {
-
+            if (pluginName != "ckeditor") {
                 $.get("plugin/" + pluginName + "/" + pluginName + ".js").done(function() {
 
                     var script = document.createElement("script");
@@ -424,9 +432,56 @@ function addPlugin() {
                 }).fail(function() {
                     console.log("----------------plugin " + pluginName + ": file does not exist");
                 });
+            }
 
-            }(value));
-        });
+            if ((pluginIndex + 1) == window.pluginList.length) {
 
+                $(document).one("pageshow", function() {
+                    $.map(window.pluginList, function(value, key) {
+                        (function(pluginName) {
+
+                            if (pluginName == "ckeditor") {
+                                $.get("plugin/" + pluginName + "/" + pluginName + ".js").done(function() {
+
+                                    var script = document.createElement("script");
+                                    script.type = "text/javascript";
+                                    script.src = "plugin/" + pluginName + "/" + pluginName + ".js";
+                                    document.head.appendChild(script);
+
+                                }).fail(function() {
+                                    console.log("----------------plugin " + pluginName + ": file does not exist");
+                                });
+                            }
+
+                        }(value));
+                    });
+                });
+
+            }
+
+        }(value, key));
     });
+
+}
+
+function checkiPhoneX() {
+    var ratio = window.devicePixelRatio || 1;
+    var screen = {
+        width: window.screen.width * ratio,
+        height: window.screen.height * ratio
+    };
+
+    if (screen.width === 1125 && screen.height === 2436) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function iOSFixedTopPX() {
+    if (checkiPhoneX()) {
+        return 30;
+    } else {
+        return 20;
+    }
 }

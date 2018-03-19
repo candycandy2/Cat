@@ -57,7 +57,7 @@ $("#viewEventList").pagecontainer({
 
                     showEventAdd();
 
-                    //Darren 20180123-
+                    //QForum
                     setQForumBoardID();
 
                 } else if (resultCode === "014923") {
@@ -277,8 +277,6 @@ $("#viewEventList").pagecontainer({
         function getMessageCount(chatroomIDList) {
             var self = this;
 
-            //Darren 20180123-
-            /*
             var queryDataParameter = "<emp_no>" + loginData["emp_no"] + "</emp_no>";
             var chatroomListParameter = "<chatroom_list>";
 
@@ -325,23 +323,6 @@ $("#viewEventList").pagecontainer({
             var __construct = function() {
                 CustomAPI("POST", true, "getMessageCount", self.successCallback, self.failCallback, queryData, "");
             }();
-            */
-            window.messageCountData = [];
-            var openEventDetail = false;
-
-            if (openEventFromQPlay) {
-                openEventDetail = true;
-            } else {
-                eventListView();
-            }
-
-            if (openEventDetail) {
-                //Open Event Detail from QPlay
-                var eventDetail = new getEventDetail(eventRowID);
-                $.mobile.changePage('#viewEventContent');
-
-                openEventFromQPlay = false;
-            }
 
         }
 
@@ -391,19 +372,19 @@ $("#viewEventList").pagecontainer({
                 var event_type = eventListData[i].event_type;
                 var className;
                 eventListMsg.find(".event-list-msg-top .link .icon").hide();
-                if (event_type === langStr["str_069"] /*"一般通報"*/) {
+                if (event_type === "一般通報") {
                     className = "normal";
-                } else if (event_type === langStr["str_068"] /*"緊急通報"*/) {
+                } else if (event_type === "緊急通報") {
                     className = "urgent";
-                } else if (event_type === langStr["str_070"] /*"A級事件"*/) {
+                } else if (event_type === "A級事件") {
                     className = "rm-a-class";
-                } else if (event_type === langStr["str_071"] /*"B級事件"*/) {
+                } else if (event_type === "B級事件") {
                     className = "rm-b-class";
-                } else if (event_type === langStr["str_072"] /*"C級事件"*/) {
+                } else if (event_type === "C級事件") {
                     className = "rm-c-class";
-                } else if (event_type === langStr["str_073"] /*"預警事件"*/) {
+                } else if (event_type === "預警事件") {
                     className = "rm-prevent-event";
-                } else if (event_type === langStr["str_074"] /*"資訊分享"*/) {
+                } else if (event_type === "資訊分享") {
                     className = "rm-info-share";
                 }
                 eventListMsg.find(".event-list-msg-top .link ." + className).show();
@@ -414,7 +395,7 @@ $("#viewEventList").pagecontainer({
 
                     var widthEventNumber = parseInt(eventListData[i].event_row_id.toString().length * 3 * document.documentElement.clientWidth / 100, 10);
                     var widthImg = parseInt(5 * document.documentElement.clientWidth / 100, 10);
-                    if (event_type === langStr["str_069"] /*"一般通報"*/) {
+                    if (event_type === "一般通報") {
                         widthImg = 0;
                     }
                     eventListMsg.find(".event-list-msg-top .link-event").css("margin-left", (widthEventNumber + widthImg) + "px");
@@ -424,7 +405,7 @@ $("#viewEventList").pagecontainer({
 
                 //Status: 未完成 / 完成
                 var event_status = eventListData[i].event_status;
-                if (event_status === langStr["str_091"] /*"完成"*/) {
+                if (event_status === "完成") {
                     eventListMsg.find(".event-list-msg-top .event-status .done").show();
                     eventListMsg.find(".event-list-msg-top .event-status .unfinished").hide();
                 }
@@ -440,7 +421,7 @@ $("#viewEventList").pagecontainer({
                 eventListMsg.find(".event-list-msg-bottom .member-done .text").html(taskCount);
 
                 //Message Count
-                var msgCount;
+                var msgCount = 0;
                 for (j=0; j<messageCountData.length; j++) {
                     if (messageCountData[j]["target_id"] === eventListData[i].chatroom_id) {
                         msgCount = messageCountData[j]["count"];
@@ -448,7 +429,7 @@ $("#viewEventList").pagecontainer({
                     }
                 }
 
-                if (msgCount == 0) msgCount = "";
+                if (msgCount == 0) msgCount = "0";
                 eventListMsg.find(".message .count").html(msgCount);
 
                 $("#reportDiv").append(eventListMsg);
@@ -457,23 +438,7 @@ $("#viewEventList").pagecontainer({
             loadingMask("hide");
             eventListData = null;
 
-            //Scroll to the specific Event List position
-            if (typeof eventRowID != 'undefined') {
-                if (eventRowID != null) {
-                    //If Project changed, eventRowID will not exist
-                    if ($("#event-list-msg-" + eventRowID).length != 0) {
-                        var headerHeight = $("#viewEventList .page-header").height();
-                        var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
-                        if (device.platform === "iOS") {
-                            scrollPageTop -= 20;
-                        }
-
-                        $('html, body').animate({
-                            scrollTop: scrollPageTop
-                        }, 0);
-                    }
-                }
-            }
+            scrollToSpecificEvent();
         }
 
         function memberListView(sortType, project) {
@@ -516,6 +481,26 @@ $("#viewEventList").pagecontainer({
             });
         }
 
+        function scrollToSpecificEvent() {
+            //Scroll to the specific Event List position
+            if (typeof eventRowID != 'undefined') {
+                if (eventRowID != null) {
+                    //If Project changed, eventRowID will not exist
+                    if ($("#event-list-msg-" + eventRowID).length != 0) {
+                        var headerHeight = $("#viewEventList .page-header").height();
+                        var scrollPageTop = $("#event-list-msg-" + eventRowID).offset().top - headerHeight;
+                        if (device.platform === "iOS") {
+                            scrollPageTop -= iOSFixedTopPX();
+                        }
+
+                        $("#viewEventList").animate({
+                            scrollTop: scrollPageTop
+                        }, 0);
+                    }
+                }
+            }
+        }
+
         window.memberListPopup = function(data) {
 
             //Event Member List Popup
@@ -529,19 +514,19 @@ $("#viewEventList").pagecontainer({
             var className;
 
             eventMemberList.siblings(".header").find(".number .icon").hide();
-            if (event_type === langStr["str_069"] /*"一般通報"*/) {
+            if (event_type === "一般通報") {
                 className = "normal";
-            } else if (event_type === langStr["str_068"] /*"緊急通報"*/) {
+            } else if (event_type === "緊急通報") {
                 className = "urgent";
-            } else if (event_type === langStr["str_070"] /*"A級事件"*/) {
+            } else if (event_type === "A級事件") {
                 className = "rm-a-class";
-            } else if (event_type === langStr["str_071"] /*"B級事件"*/) {
+            } else if (event_type === "B級事件") {
                 className = "rm-b-class";
-            } else if (event_type === langStr["str_072"] /*"C級事件"*/) {
+            } else if (event_type === "C級事件") {
                 className = "rm-c-class";
-            } else if (event_type === langStr["str_073"] /*"預警事件"*/) {
+            } else if (event_type === "預警事件") {
                 className = "rm-prevent-event";
-            } else if (event_type === langStr["str_074"] /*"資訊分享"*/) {
+            } else if (event_type === "資訊分享") {
                 className = "rm-info-share";
             }
             eventMemberList.siblings(".header").find(".number ." + className).show();
@@ -586,13 +571,17 @@ $("#viewEventList").pagecontainer({
             tplJS.Popup(null, null, "append", eventMemberListData);
 
             $("#eventMemberList").popup("open");
-            footerFixed();
+            //footerFixed();
             loadingMask("hide");
 
             //Center title content
             var widthImg = $(".event-member-list ." + className + " .img-text .img").width();
             var widthText = $(".event-member-list ." + className + " .img-text .text").width();
             $(".event-member-list .img-text").width(widthImg + widthText);
+
+            $(document).on("popupafterclose", "#eventMemberList", function() {
+                scrollToSpecificEvent();
+            });
         };
 
         window.functionListPopup = function(data) {
@@ -606,19 +595,19 @@ $("#viewEventList").pagecontainer({
             var className;
 
             eventFunctionList.siblings(".header").find(".number .icon").hide();
-            if (event_type === langStr["str_069"] /*"一般通報"*/) {
+            if (event_type === "一般通報") {
                 className = "normal";
-            } else if (event_type === langStr["str_068"] /*"緊急通報"*/) {
+            } else if (event_type === "緊急通報") {
                 className = "urgent";
-            } else if (event_type === langStr["str_070"] /*"A級事件"*/) {
+            } else if (event_type === "A級事件") {
                 className = "rm-a-class";
-            } else if (event_type === langStr["str_071"] /*"B級事件"*/) {
+            } else if (event_type === "B級事件") {
                 className = "rm-b-class";
-            } else if (event_type === langStr["str_072"] /*"C級事件"*/) {
+            } else if (event_type === "C級事件") {
                 className = "rm-c-class";
-            } else if (event_type === langStr["str_073"] /*"預警事件"*/) {
+            } else if (event_type === "預警事件") {
                 className = "rm-prevent-event";
-            } else if (event_type === langStr["str_074"] /*"資訊分享"*/) {
+            } else if (event_type === "資訊分享") {
                 className = "rm-info-share";
             }
             eventFunctionList.siblings(".header").find(".number ." + className).show();
@@ -639,7 +628,7 @@ $("#viewEventList").pagecontainer({
             var eventFunctionListAfterHTML = eventFunctionList.siblings(".main").find("template#tplEventFunctionListAfter").html();
 
             for (var i=0; i<data.task_detail.length; i++) {
-                if (data.task_detail[i].task_status === langStr["str_091"] /*"完成"*/) {
+                if (data.task_detail[i].task_status === "完成") {
                     //After Done
                     var completeTime = new Date(data.task_detail[i].close_task_date * 1000);
                     var completeTimeText = completeTime.getFullYear() + "/" + padLeft(parseInt(completeTime.getMonth() + 1, 10), 2) + "/" +
@@ -674,13 +663,17 @@ $("#viewEventList").pagecontainer({
             tplJS.Popup(null, null, "append", eventFunctionListData);
 
             $("#eventFunctionList").popup("open");
-            footerFixed();
+            //footerFixed();
             loadingMask("hide");
 
             //Center title content
             var widthImg = $(".event-member-list ." + className + " .img-text .img").width();
             var widthText = $(".event-member-list ." + className + " .img-text .text").width();
             $(".event-member-list .img-text").width(widthImg + widthText);
+
+            $(document).on("popupafterclose", "#eventFunctionList", function() {
+                scrollToSpecificEvent();
+            });
         };
 
         function showEventAdd() {
@@ -730,7 +723,7 @@ $("#viewEventList").pagecontainer({
 
             if (openData) {
                 loadingMask("show");
-                $(".loader").css("top", "0px");
+                //$(".loader").css("top", "0px");
                 var eventDetail = new getEventDetail(eventID, action);
             }
         };
@@ -846,7 +839,7 @@ $("#viewEventList").pagecontainer({
 
                     showEventAdd();
 
-                    //Darren 20180123-
+                    //QForum
                     setQForumBoardID();
                 }
             }
@@ -854,7 +847,23 @@ $("#viewEventList").pagecontainer({
         };
 
         function setQForumBoardID() {
-            QForum.METHOD.setBoardID();
+            window.retrySetQForumBoardID = setInterval(function() {
+                if (typeof QForum !== "undefined") {
+
+                    if (typeof window.stopRetrySetQForumBoardID !== "undefined") {
+                        window.stopRetrySetQForumBoardID();
+                    }
+
+                    QForum.METHOD.setBoardID();
+                }
+            }, 500);
+
+            window.stopRetrySetQForumBoardID = function() {
+                if (window.retrySetQForumBoardID != null) {
+                    clearInterval(window.retrySetQForumBoardID);
+                    window.retrySetQForumBoardID = null;
+                }
+            };
         }
 
         /********************************** page event *************************************/
@@ -1068,12 +1077,12 @@ $("#viewEventList").pagecontainer({
 
                     if (device.platform === "iOS") {
                         var heightView = parseInt(document.documentElement.clientHeight * 100 / 100, 10);
-                        var heightPanel = heightView - 20;
+                        var heightPanel = heightView - iOSFixedTopPX();
 
                         $("#projectSelect").css({
                             'min-height': heightPanel + 'px',
                             'max-height': heightPanel + 'px',
-                            'margin-top': '20px'
+                            'margin-top': iOSFixedTopPX() + 'px'
                         });
                     }
 
@@ -1116,7 +1125,6 @@ $("#viewEventList").pagecontainer({
             var paddingBottom = parseInt(document.documentElement.clientWidth * 18 / 100, 10);
             $("#viewEventList").css("padding-bottom", paddingBottom + "px");
 
-            //Darren 20180123- chatRoom.resetBadge();
         });
 
         /********************************** dom event *************************************/

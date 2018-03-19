@@ -6,8 +6,8 @@ $ensProjects = \Config('app.ens_project');
 @include("layouts.lang")
 @extends('layouts.admin_template')
 @section('content')
-
-<div class="container">
+    
+<div  class="col-lg-12 col-xs-12">
     <h1></h1>
     <div id="toolbarbasicInfo" class="form-group" class="pull-right">
         <form class="form-inline " role="form">
@@ -23,31 +23,60 @@ $ensProjects = \Config('app.ens_project');
       
             <div class="form-group">
                  <button type="button" id="importBasicIfo" class="btn btn-primary openDialog" data-loading-text="Processing...">{{trans('messages.IMPORT_BASIC_INFO')}}</button>
-                 <button type="button" id="registerSuperUser" class="btn btn-warning" data-loading-text="Processing...">{{trans('messages.NEW_ADMIN_REGISTER_TO_MESSAGE')}}</button>
             </div>
          </form>
     </div>
-    <table id="basicInfoTable" 
-           data-toggle="table" data-pagination="true"  
-           data-striped="true" data-page-size="20" data-page-list="[10,20,50]"
-           data-show-refresh="true" data-row-style="rowStyle" data-search="true"
-           data-click-edit="false"
-           data-unique-id="row_id"
-           data-url="">
-        <thead>
-        <tr>
-            <th data-field="row_number" data-sortable="true">#</th>
-            <th data-field="location" data-sortable="true" data-editable="input">Location</th>
-            <th data-field="function" data-sortable="true" data-editable="input">Function</th>
-            <th data-field="login_id" data-sortable="true" data-editable="input">PIC</th>
-            <th data-field="emp_no"   data-sortable="true" data-editable="input">EmpNo</th>
-            <th data-field="master"   data-sortable="true" data-editable="input">Master</th>
-            <th data-field="status" data-sortable="true" data-formatter="statusFormatter" data-search-formatter="false">{{trans('messages.AUTH')}}</th>
-            <th data-field="resign" data-sortable="true" data-formatter="resignFormatter" data-search-formatter="false">{{trans('messages.RESIGN')}}</th>
-            <th data-field="register_user_id" data-sortable="true" data-formatter="registerFormatter" data-search-formatter="false">{{trans('messages.REGISTED_QPLAY')}}</th>
-        </tr>
-        </thead>
-    </table>
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#tab_content_member" data-toggle="tab">成員資訊</a></li>
+        <li role="presentation"><a href="#tab_content_admin_group" data-toggle="tab">管理者資訊</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab_content_member">
+            <table id="basicInfoTable" 
+                data-toggle="table" data-pagination="true"  
+                data-striped="true" data-page-size="20" data-page-list="[10,20,50]"
+                data-show-refresh="true" data-row-style="rowStyle" data-search="true"  data-height="600"
+                data-click-edit="false"
+                data-unique-id="row_id"
+                data-url="">
+                <thead>
+                    <tr>
+                        <th data-field="row_number" data-sortable="true">#</th>
+                        <th data-field="location" data-sortable="true" data-editable="input">Location</th>
+                        <th data-field="function" data-sortable="true" data-editable="input">Function</th>
+                        <th data-field="login_id" data-sortable="true" data-editable="input">PIC</th>
+                        <th data-field="emp_no"   data-sortable="true" data-editable="input">EmpNo</th>
+                        <th data-field="master"   data-sortable="true" data-editable="input">Master</th>
+                        <th data-field="status" data-sortable="true" data-formatter="statusFormatter" data-search-formatter="false">{{trans('messages.AUTH')}}</th>
+                        <th data-field="resign" data-sortable="true" data-formatter="resignFormatter" data-search-formatter="false">{{trans('messages.RESIGN')}}</th>
+                        <th data-field="register_user_id" data-sortable="true" data-formatter="registerFormatter" data-search-formatter="false">{{trans('messages.REGISTED_QPLAY')}}</th>
+                    </tr>
+                </thead>
+            </table>
+        </div> 
+        <div class="tab-pane fade" id="tab_content_admin_group">
+            <table id="userGroupTable" 
+                data-toggle="table" data-pagination="true"  
+                data-striped="true" data-page-size="20" data-page-list="[10,20,50]"
+                data-show-refresh="true" data-row-style="rowStyle" data-search="true"
+                data-click-edit="false"
+                data-unique-id="row_id"
+                data-url="">
+                <thead>
+                    <tr>
+                        <th data-field="row_number" data-sortable="true">#</th>
+                        <th data-field="login_id" data-sortable="true" data-editable="input">PIC</th>
+                        <th data-field="emp_no"   data-sortable="true" data-editable="input">EmpNo</th>
+                        <th data-field="usergroup"   data-sortable="true" data-editable="input">Group</th>
+                        <th data-field="status" data-sortable="true" data-formatter="statusFormatter" data-search-formatter="false">{{trans('messages.AUTH')}}</th>
+                        <th data-field="resign" data-sortable="true" data-formatter="resignFormatter" data-search-formatter="false">{{trans('messages.RESIGN')}}</th>
+                        <th data-field="register_user_id" data-sortable="true" data-formatter="registerFormatter" data-search-formatter="false">{{trans('messages.REGISTED_QPLAY')}}</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    
 </div>
 
 
@@ -123,9 +152,11 @@ $ensProjects = \Config('app.ens_project');
         }
         var project = $('#selectProject option:selected').val();
         $('#basicInfoTable').bootstrapTable({ url: 'ENSMaintain/getBasicInfo?project=' + project});
+        $('#userGroupTable').bootstrapTable({ url: 'ENSMaintain/getUserGroupInfo?project=' + project});
         $('#selectProject').on('change', function() {
             window.location="{{asset('basicInfo')}}?project=" + this.value;
-        })
+        });
+       
 
          $('#save').click(function(){
             $('#dialog').modal('hide');
@@ -150,35 +181,14 @@ $ensProjects = \Config('app.ens_project');
                     }else{
                         showMessageDialog("{{trans('messages.ERROR')}}","{{trans('messages.IMPORT_DATA_FAILED')}}" + "," +  "{{trans('messages.ERR_PLEASE_CONACT_ADMIN')}}");
                     }
-                    $('#importBasicIfo').button('reset');
-                },
-                error: function (e) {
-                    alert(e.responseText);
-                    $('#importBasicIfo').button('reset');
-                }
-            });
-        });
 
-        $('#registerSuperUser').click(function(){
-            $('#registerSuperUser').button('loading');
-            var mydata = {project:$('#selectProject option:selected').val()};
-            var mydataStr = $.toJSON(mydata);
-            $.ajax({
-                url: "ENSMaintain/registerSuperUser",
-                type: "POST",
-                data: mydataStr,
-                contentType: "application/json",
-                success: function (d, status, xhr) {
-                    if(d.ResultCode == 1) {
-                       showMessageDialog("{{trans('messages.MSG_OPERATION_SUCCESS')}}",d.Message,d.Content.replace(/,/g,"</br>"),true);
-                    }else{
-                        showMessageDialog("{{trans('messages.ERROR')}}" + "," + "{{trans('message.ERR_REGISTER_FAILED')}}" + "," + "{{trans('messages.ERR_PLEASE_CONACT_ADMIN')}}");
-                    }
-                    $('#registerSuperUser').button('reset');
+                    $('#importBasicIfo').button('reset');
+                    $('#basicInfoTable').bootstrapTable('refresh');
+                    $('#userGroupTable').bootstrapTable('refresh');
                 },
                 error: function (e) {
                     alert(e.responseText);
-                    $('#registerSuperUser').button('reset');
+                    $('#importBasicIfo').button('reset');
                 }
             });
         });

@@ -59,6 +59,8 @@ var QStorage = {
             if (resultData["ResultCode"] === "1") {
                 callback(resultData["Content"]);
                 QStorage.uploadImgDatas.push(resultData["Content"].thumbnail_1024_url);
+            } else if (resultData["ResultCode"] === "997908") {
+                //Data size over 10MB
             }
         }
 
@@ -92,7 +94,8 @@ var QStorage = {
             "App-Key": QStorage.appKey,
             "Signature-Time": signatureTime,
             "Signature": signatureInBase64,
-            "Account": loginData["emp_no"]
+            "Account": loginData["emp_no"],
+            "Resource-ID": QForum.boardID + "/" + QForum.postID
         };
 
         options.headers = headers;

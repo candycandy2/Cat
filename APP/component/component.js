@@ -135,7 +135,8 @@ var app = {
         //[device] data ready to get on this step.
         setTimeout(function() {
             readConfig();
-        }, 2000);
+            addPlugin();
+        }, 0);
 
         //for touch overflow content Enabled
         $.mobile.touchOverflowEnabled = true;
@@ -176,8 +177,9 @@ var app = {
             if (window.orientation === 90 || window.orientation === -90)
                 $('.main-GetQPush').css('top', (screen.height - $('.main-GetQPush').height()) / 4);
 
-            if (checkTimerCount >= 60) {
-                stopCheck();
+            //review by alan
+            if (checkTimerCount >= 90) { //Sometimes, it will be over 90 seconds
+                //stopCheck();//keep to GetRegistradionID in the background
                 $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
                 $("#viewMaintain").addClass("ui-page ui-page-theme-a ui-page-active");
             }
@@ -330,8 +332,6 @@ $(document).one("pagebeforecreate", function() {
     script.src = "plugin/config.js";
     document.head.appendChild(script);
 
-    addPlugin();
-
     //According to the data [pageList] which set in index.js ,
     //add Page JS into index.html
     $.map(pageList, function(value, key) {
@@ -386,21 +386,17 @@ $(document).one("pagebeforecreate", function() {
             }
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Microsoft JhengHei");
         } else if (device.platform === "iOS") {
-            var ratio = window.devicePixelRatio || 1;
-            var screen = {
-                width: window.screen.width * ratio,
-                height: window.screen.height * ratio
-            };
-            /*if (screen.width === 1125 && screen.height === 2436) { 
-                $('meta[name=viewport]').attr('content', 'user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, viewport-fit=cover');
-                $('body').attr('style', '-webkit-text-size-adjust: 100%; font-family: "Heiti TC"; padding-top: env(safe-area-inset-top)!important;');
-            }*/
-            if (versionCompare(device.version, "11.0", "") === 1) {
-
+            if (checkiPhoneX()) {
+                $('.page-header').addClass('ios-fix-overlap-iX');
+                $('.ios-fix-overlap-div').css('background-color', '#492f7f');
+                $('.ios-fix-overlap-div').css('height', '30px');
+                StatusBar.styleLightContent();
             } else {
                 $('.page-header').addClass('ios-fix-overlap');
-                $('.ios-fix-overlap-div').css('display', 'block');
+                StatusBar.styleDefault();
             }
+            $('.ios-fix-overlap-div').css('display', 'block');
+
             $('.ui-page:not(#viewInitial)').addClass('ui-page-ios');
             $("body, input, select, textarea, button, .ui-btn").css("font-family", "Heiti TC");
         }
@@ -485,6 +481,19 @@ $(document).one("pagebeforecreate", function() {
             getAppLogParam();
         }
     });
+
+    //iOS - Prevent header/footer position error
+    $(document).on({
+        touchstart: function(event) {
+            footerFixed();
+        },
+        touchmove: function(event) {
+            footerFixed();
+        },
+        touchend: function(event) {
+            footerFixed();
+        }
+    }, "body");
 });
 
 /********************************** QPlay APP function *************************************/
@@ -493,40 +502,40 @@ function getAppLogParam() {
     //localStorage.clear();
     loginData["versionName"] = AppVersion.version;
     //if (loginData["versionName"].indexOf("Development") !== -1 || loginData["versionName"].indexOf("Staging") !== -1) {
-        var ADAccount = loginData['loginid'];
-        if (loginData.uuid.length > 0 && ADAccount.length > 0) {
-            var packageName = "com.qplay." + appKey;
-            var pagename = $.mobile.activePage.attr('id');
-            var appLogData = JSON.parse(localStorage.getItem('appLogData'));
-            var objLogList = new Object();
-            if (appKey != null && pagename != null) {
-                objLogList.page_name = $.mobile.activePage.attr('id');
-                objLogList.page_action = "enterPage";
-                objLogList.start_time = new Date().getTime();
-                objLogList.period = "";
-                objLogList.device_type = device.platform.toLowerCase();
-                if (appLogData == null || appLogData.log_list.length == 0) {
-                    jsonData = {
-                        login_id: ADAccount,
-                        package_name: packageName,
-                        log_list: [objLogList]
-                    };
-                } else if (objLogList.page_name == appLogData.log_list[appLogData.log_list.length - 1].page_name) {
-                    appLogData.login_id = ADAccount;
-                    appLogData.package_name = packageName;
-                    appLogData.log_list.push(objLogList);
-                    jsonData = appLogData;
-                } else {
-                    appLogData.login_id = ADAccount;
-                    appLogData.package_name = packageName;
-                    var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length - 1].start_time;
-                    appLogData.log_list[appLogData.log_list.length - 1].period = pagePeriod;
-                    appLogData.log_list.push(objLogList);
-                    jsonData = appLogData;
-                }
-                localStorage.setItem('appLogData', JSON.stringify(jsonData));
+    var ADAccount = loginData['loginid'];
+    if (loginData.uuid.length > 0 && ADAccount.length > 0) {
+        var packageName = "com.qplay." + appKey;
+        var pagename = $.mobile.activePage.attr('id');
+        var appLogData = JSON.parse(localStorage.getItem('appLogData'));
+        var objLogList = new Object();
+        if (appKey != null && pagename != null) {
+            objLogList.page_name = $.mobile.activePage.attr('id');
+            objLogList.page_action = "enterPage";
+            objLogList.start_time = new Date().getTime();
+            objLogList.period = "";
+            objLogList.device_type = device.platform.toLowerCase();
+            if (appLogData == null || appLogData.log_list.length == 0) {
+                jsonData = {
+                    login_id: ADAccount,
+                    package_name: packageName,
+                    log_list: [objLogList]
+                };
+            } else if (objLogList.page_name == appLogData.log_list[appLogData.log_list.length - 1].page_name) {
+                appLogData.login_id = ADAccount;
+                appLogData.package_name = packageName;
+                appLogData.log_list.push(objLogList);
+                jsonData = appLogData;
+            } else {
+                appLogData.login_id = ADAccount;
+                appLogData.package_name = packageName;
+                var pagePeriod = objLogList.start_time - appLogData.log_list[appLogData.log_list.length - 1].start_time;
+                appLogData.log_list[appLogData.log_list.length - 1].period = pagePeriod;
+                appLogData.log_list.push(objLogList);
+                jsonData = appLogData;
             }
+            localStorage.setItem('appLogData', JSON.stringify(jsonData));
         }
+    }
     //}
 }
 
@@ -571,7 +580,7 @@ function getAddAppLog() {
     var __construct = function() {
         loginData["versionName"] = AppVersion.version;
         //if (loginData["versionName"].indexOf("Development") !== -1 || loginData["versionName"].indexOf("Staging") !== -1) {
-            QPlayAPI("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "");
+        QPlayAPIEx("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "", "low", 1000);
         //}
     }();
 
@@ -581,6 +590,7 @@ function getAddAppLog() {
 //Check if Token Valid is less than 1 hour || expired || invalid || not exist
 function checkTokenValid(resultCode, tokenValid, successCallback, data) {
 
+    var checkTokenValidResult = false;
     successCallback = successCallback || null;
     tokenValid = tokenValid || null;
     data = data || null;
@@ -638,6 +648,7 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
                             hideInitialPage();
                         } else {
                             doSuccessCallback = true;
+                            checkTokenValidResult = true;
                         }
                     }
                 }
@@ -650,6 +661,8 @@ function checkTokenValid(resultCode, tokenValid, successCallback, data) {
             }
         }
     }
+
+    return checkTokenValidResult;
 }
 
 function readConfig() {
@@ -882,7 +895,7 @@ function checkAppVersion() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
+        QPlayAPIEx("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr, "high", 30000);
     }();
 }
 
@@ -914,10 +927,16 @@ function setWhiteList() {
         }
 
         if (device.platform === "iOS") {
-            if (versionCompare(device.version, "11.0", "") === 1) {} else {
+            if (checkiPhoneX()) {
+                $('.page-header').addClass('ios-fix-overlap-iX');
+                $('.ios-fix-overlap-div').css('background-color', '#492f7f');
+                $('.ios-fix-overlap-div').css('height', '30px');
+                StatusBar.styleLightContent();
+            } else {
                 $('.page-header').addClass('ios-fix-overlap');
-                $('.ios-fix-overlap-div').css('display', 'block');
+                StatusBar.styleDefault();
             }
+            $('.ios-fix-overlap-div').css('display', 'block');
         }
     };
 
@@ -1211,49 +1230,4 @@ function handleOpenURL(url) {
         }
     }
 
-}
-
-function versionCompare(v1, v2, options) {
-    var lexicographical = options && options.lexicographical,
-        zeroExtend = options && options.zeroExtend,
-        v1parts = v1.split('.'),
-        v2parts = v2.split('.');
-
-    function isValidPart(x) {
-        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
-    }
-
-    if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
-        return NaN;
-    }
-
-    if (zeroExtend) {
-        while (v1parts.length < v2parts.length) v1parts.push("0");
-        while (v2parts.length < v1parts.length) v2parts.push("0");
-    }
-
-    if (!lexicographical) {
-        v1parts = v1parts.map(Number);
-        v2parts = v2parts.map(Number);
-    }
-
-    for (var i = 0; i < v1parts.length; ++i) {
-        if (v2parts.length == i) {
-            return 1;
-        }
-
-        if (v1parts[i] == v2parts[i]) {
-            continue;
-        } else if (v1parts[i] > v2parts[i]) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-
-    if (v1parts.length != v2parts.length) {
-        return -1;
-    }
-
-    return 0;
 }

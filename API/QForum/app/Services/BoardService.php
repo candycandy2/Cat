@@ -18,8 +18,8 @@ class BoardService
      * @param  String $company 公司名稱
      * @return mixed
      */
-    public function getUserBoards($empNo, $company){
-        $result = $this->boardRepository->getUserBoards($empNo, $company);
+    public function getUserBoards($empNo, $company, $source){
+        $result = $this->boardRepository->getUserBoards($empNo, $company, $source);
         $boards = [];
         foreach ($result as $board) {
             $boardList = [];

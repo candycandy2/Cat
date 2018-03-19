@@ -12,5 +12,5 @@
 */
 
 Route::group(['prefix' => 'v101/picture','middleware' => ['api','locale','verify.basic','log.api']], function () {
-    Route::POST('/upload','PictureController@uploaPicture');
+    Route::POST('/upload','PictureController@uploadPicture');
 });

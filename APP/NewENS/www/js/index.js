@@ -18,7 +18,6 @@ var projectName = "ITS";
 errorCodeArray = ["014999"];
 
 window.initialSuccess = function() {
-    window.JPush.init();
 
     window.ENSJPushAppKey = "c96ae87b304de281b976d0ea";
     window.ENSJPushSecretKey = "5292cabae5da19de1b8c5b9c";
@@ -30,6 +29,11 @@ window.initialSuccess = function() {
         window.ENSJPushSecretKey = "335a12f8b4b9d71c9d813e7d";
     }
 
+    //QPush
+    QPush.initial({
+        "pushCallback": QPushCallback
+    });
+
     $.get('img/component/img_qplay.svg', function(svg){
         $('body').append(svg);
     }, 'text');
@@ -37,231 +41,12 @@ window.initialSuccess = function() {
     loadingMask("show");
 
     changeProject("check");
-    //Darren 20180123- chatRoom.initialData();
     processLocalData.initialData();
     checkEventTemplateData("check");
 
     $.mobile.changePage('#viewEventList');
 
-    //Darren 20180123- chatRoom.resetBadge();
 }
-
-//Darren 20180123-
-/*
-var chatRoom = {
-    nowChatRoomID: "",
-    Messages: {},
-    sendNewMsg: false,
-    localPhotoUrl: "",
-    setChatroomID: function(ID) {
-        this.nowChatRoomID = ID;
-        JM.chatroomID = ID;
-
-        JM.Chatroom.getGroupInfo();
-    },
-    initialData: function() {
-        if (window.localStorage.getItem("Messages") !== null) {
-            var tempDate = window.localStorage.getItem("Messages");
-            chatRoom.Messages = JSON.parse(tempDate);
-        }
-    },
-    updateLocalStorage: function() {
-        window.localStorage.setItem("Messages", JSON.stringify(chatRoom.Messages));
-    },
-    messageHandler: function(type, data) {
-        console.log("------------messageHandler");
-        console.log(data);
-
-        //For API getGroupConversationHistoryMessage
-        //if (type === "group") {
-            if (chatRoom.Messages[chatRoom.nowChatRoomID] === undefined) {
-                chatRoom.Messages[chatRoom.nowChatRoomID] = [];
-            }
-
-            if (data.messages.length == 0) {
-                loadingMask("hide");
-                chatRoomListView();
-                return;
-            }
-
-            for (var i=0; i<data.messages.length; i++) {
-
-                //
-                if (device.platform === "iOS") {
-                    var messageTimestamp = data.messages[i].create_time;
-                } else if (device.platform === "Android") {
-                    var messageTimestamp = data.messages[i].msg_ctime;
-                }
-
-                if (messageTimestamp.toString().length == 10) {
-                    messageTimestamp = messageTimestamp.toString() + "000";
-                }
-                messageTimestamp = parseInt(messageTimestamp, 10);
-                //
-                var messageTimestamp = data.messages[i].msg_ctime;
-
-                var createTime = new Date(messageTimestamp);
-                var objData = {
-                    msg_id: data.messages[i].msgid,
-                    ctime: messageTimestamp,
-                    ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
-                        padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
-                        padLeft(createTime.getMinutes(), 2),
-                    from_id: data.messages[i].from_id,
-                    msg_type: data.messages[i].msg_type,
-                    msg_body: data.messages[i].msg_body
-                };
-
-                if (chatRoom.Messages[chatRoom.nowChatRoomID].length == 0) {
-                    chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
-                } else {
-                    var localDataLength = chatRoom.Messages[chatRoom.nowChatRoomID].length
-                    var localDataLatestCTime = chatRoom.Messages[chatRoom.nowChatRoomID][localDataLength - 1]["ctime"];
-
-                    if (messageTimestamp == localDataLatestCTime) {
-                        chatRoom.Messages[chatRoom.nowChatRoomID].pop();
-                        chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
-                    } else if (messageTimestamp > localDataLatestCTime) {
-                        chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
-                    } else {
-
-                        var dataIndex = 0;
-                        var pushData = true;
-                        var tempData = [];
-
-                        for (var j=0; j<localDataLength; j++) {
-                            var localCTime = chatRoom.Messages[chatRoom.nowChatRoomID][j]["ctime"];
-
-                            if (localCTime < messageTimestamp) {
-                                tempData.push(chatRoom.Messages[chatRoom.nowChatRoomID][j]);
-                                dataIndex = j;
-                            } else if (localCTime == messageTimestamp) {
-                                pushData = false;
-                                tempData.push(objData);
-                            } else if (localCTime > messageTimestamp) {
-                                if (j == 0) {
-                                    tempData.push(objData);
-                                    tempData.push(chatRoom.Messages[chatRoom.nowChatRoomID][j]);
-                                }
-                            }
-                        }
-
-                        if (pushData) {
-                            dataIndex = dataIndex + 1;
-                            tempData.splice(dataIndex, 0, objData);
-                        }
-
-                        chatRoom.Messages[chatRoom.nowChatRoomID] = tempData;
-                    }
-
-                }
-            }
-
-            chatRoom.updateLocalStorage();
-        //}
-
-        //For sendGroupTextMessage / sendGroupImageMessage
-        //
-        if (type === "single") {
-            if (chatRoom.Messages[chatRoom.nowChatRoomID] === undefined) {
-                chatRoom.Messages[chatRoom.nowChatRoomID] = [];
-            }
-
-            var parseData = JSON.parse(data);
-
-            if (device.platform === "iOS") {
-                var createTime = new Date(parseData.create_time);
-                var objData = {
-                    msg_id: "",
-                    ctime: parseData.create_time,
-                    ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
-                        padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
-                        padLeft(createTime.getMinutes(), 2),
-                    from_id: parseData.from_id,
-                    msg_type: parseData.msg_type,
-                    msg_body: parseData.msg_body
-                };
-
-                if (parseData.msg_type === "image") {
-                    objData["msg_body"]["media_id"] = chatRoom.localPhotoUrl;
-                }
-            }
-
-            if (device.platform === "Android") {
-                var createTime = new Date(parseData.createTimeInMillis);
-                var objData = {
-                    msg_id: "",
-                    ctime: parseData.createTimeInMillis,
-                    ctimeText: createTime.getFullYear() + "/" + padLeft(parseInt(createTime.getMonth() + 1, 10), 2) + "/" +
-                        padLeft(createTime.getUTCDate(), 2) + " " + padLeft(createTime.getHours(), 2) + ":" +
-                        padLeft(createTime.getMinutes(), 2),
-                    from_id: parseData.fromID,
-                    msg_type: parseData.msgTypeString,
-                    msg_body: parseData.content
-                };
-
-                if (parseData.msgTypeString === "image") {
-                    objData["msg_body"]["media_id"] = chatRoom.localPhotoUrl;
-                }
-            }
-
-            chatRoom.Messages[chatRoom.nowChatRoomID].push(objData);
-        }
-        //
-
-        chatRoom.refreshMsg();
-    },
-    refreshMsg: function() {
-        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-        var activePageID = activePage[0].id;
-
-        if (activePageID === "viewEventContent") {
-            if (chatRoom.sendNewMsg) {
-                chatRoomListView("showPreview");
-                chatRoom.sendNewMsg = false;
-            } else {
-                chatRoomListView();
-            }
-        }
-    },
-    loadImg: function() {
-        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-        var activePageID = activePage[0].id;
-
-        if (activePageID === "viewEventContent") {
-            $("#messageContent .message-data-list .chat-img").each(function(index, el) {
-                if ($(el).prop("src").length !== 0) {
-
-                    var rect = el.getBoundingClientRect();
-                    if (
-                        rect.top >= 0 &&
-                        rect.left >= 0 &&
-                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && //or $(window).height() //
-                        rect.right <= (window.innerWidth || document.documentElement.clientWidth) //or $(window).width() //
-                    ) {
-                        var ID = $(el).prop("id");
-                        $("#" + ID).prop("src", photoData[ID]);
-                    }
-
-                }
-            });
-        }
-    },
-    resetBadge: function() {
-        //For iOS
-        window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function(data) {
-            console.log(data)
-        });
-
-        window.plugins.jPushPlugin.resetBadge();
-        window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
-    }
-};
-
-window.addEventListener("scroll", function() {
-    chatRoom.loadImg();
-});
-*/
 
 //1. Each data has its own life-cycle.
 //2. Every time before call API, check the life-cycle timestamp first.
@@ -628,7 +413,15 @@ function onBackKeyDown() {
             $('#' + popupID).popup('close');
             footerFixed();
         } else {
-            $.mobile.changePage('#viewEventList');
+
+            if ($(".QForum-Content.reply-fullscreen-popup").length > 0) {
+                if ($(".QForum-Content.reply-fullscreen-popup").css("display") === "block") {
+                    $(".QForum-Content.reply-fullscreen-popup").hide();
+                }
+            } else {
+                $.mobile.changePage('#viewEventList');
+            }
+
         }
 
     } else if (activePageID === "viewEventAdd") {
@@ -655,6 +448,42 @@ function handleOpenByScheme(queryData) {
             var eventDetail = new getEventDetail(eventRowID);
         } else {
             openEventFromQPlay = true;
+        }
+    }
+}
+
+//QPush callback function
+function QPushCallback(action, pushData) {
+    console.log(pushData);
+
+    //pushData["event_id"] > For ENS, new event
+    //pushData["ref_id"] > For QForum, new comment
+
+    if (action === "open") {
+        var changePage = false;
+        var eventID = "";
+
+        if (typeof pushData["event_id"] !== "undefined") {
+            changePage = true;
+            eventID = pushData["event_id"];
+        }
+
+        if (typeof pushData["ref_id"] !== "undefined") {
+            changePage = true;
+            eventID = pushData["ref_id"];
+        }
+
+        if (changePage) {
+            if (getEventListFinish) {
+                $.mobile.changePage('#viewEventContent');
+                var eventDetail = new getEventDetail(eventID);
+            } else {
+                openEventFromQPlay = true;
+            }
+        }
+
+        if (typeof pushData["project"] !== "undefined") {
+            changeProject("change", pushData["project"]);
         }
     }
 }

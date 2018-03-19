@@ -26,6 +26,10 @@ a {
     margin-top: 0;
 }
 
+.ui-popup-screen.ui-overlay-b.in {
+    margin-top: 20px;
+}
+
 /*new class*/
 .event-list-msg-top .description {
     font-size: 4.18vw;
@@ -805,51 +809,6 @@ input[type=radio]:checked + label {
     margin-bottom: 0;
 }
 
-.event-content-footer.ui-bar-inherit {
-    background-color: #2C89BC;
-    height: 12.88vw;
-}
-
-.event-content-footer > div {
-    float: left;
-}
-
-.event-content-footer .right, .event-content-footer .left {
-    width: 17vw;
-    height: 100%;
-}
-
-.event-content-footer .center {
-    width: 66vw;
-    height: 8.134;
-    padding-top: 2.373vw;
-}
-
-.event-content-footer .center .ui-input-text {
-    margin: 0;
-}
-
-#msgText {
-    height: 8.134vw;
-    font-size: 4.18vw;
-    min-height: 8vw;
-}
-
-.event-content-footer .left {
-    padding-top: 3.29vw;
-}
-
-.event-content-footer .left .camera {
-    margin: 0 auto;
-}
-
-.event-content-footer .right {
-    color: #FFF;
-    font-size: 4.18vw;
-    padding-top: 4.1vw;
-    text-align: center;
-}
-
 .event-content-photo-full-screen {
     position: absolute;
     top: 0;
@@ -893,72 +852,6 @@ input[type=radio]:checked + label {
     z-index: 1100;
 }
 
-.previewImageDiv-AddHeight {
-    width: 100vw;
-    height: 25vw;
-}
-
-.previewImageDiv {
-    position: fixed;
-    left: 0;
-    bottom: 12.88vw;
-    width: 100vw;
-    height: 25vw;
-    background-color: #676766;
-}
-
-.previewImageDiv span {
-    display: inline-block;
-}
-
-.previewImageDiv .left {
-    width: 88vw;
-}
-
-.previewImageDiv .right {
-    vertical-align: top;
-    padding: 2vw 0 0 2vw;
-    width: 7vw;
-    height: 30%;
-}
-
-#finalImage {
-    width: 20vw;
-    height: 20vw;
-    margin: 2.5vw 0 0 2.5vw;
-}
-
-.message-content .message-user-datetime {
-    margin-bottom: 0.98vw;
-}
-
-.message-content .user {
-    color: #0f0f0f;
-    display: inline-block;
-    width: 53%;
-}
-
-.message-content .datetime {
-    color: #989898;
-    display: inline-block;
-    width: 45%;
-    text-align: right;
-}
-
-.message-content .text {
-    color: #323232;
-}
-
 .ui-hr-message {
     margin: 2.73vw 0;
-}
-
-.message-preview {
-    position: fixed;
-    left: 0;
-    bottom: 12.88vw;
-    width: 100%;
-    background-color: rgba(15, 15, 15, 0.4);
-    color: #f9f9f9;
-    padding: 2.73vw 3.71vw;
 }

@@ -42,6 +42,10 @@ class CommentService
         return $this->commentRepository->getComments($postId ,$from, $to);
     }
 
+    public function getComment($commentId){
+        return $this->commentRepository->getComment($commentId);
+    }
+
     /**
      * 取得該貼文的評論總數
      * @param  string $postId 貼文id
@@ -49,5 +53,39 @@ class CommentService
      */
     public function getCommentCount($postId){
         return $this->commentRepository->getCommentCount($postId);
+    }
+
+
+    /**
+     * 修改評論
+     * @param  Array  $data     貼文內容
+     * @param  Object $userData 用戶資料
+     * @return boolean
+     */
+    public function modifyComment($commentId, $content, $userId){
+        $now = date('Y-m-d H:i:s',time());
+        $updateData = [
+                'content' => html_entity_decode($content, ENT_QUOTES),
+                'updated_user' => $userId,
+                'updated_at'=> $now
+                ];
+        return $this->commentRepository->modifyComment($commentId, $updateData);
+    }
+
+    /**
+     * 刪除評論
+     * @param  int $commentId 評論id
+     * @param  int $userId    qp_user.row_id
+     * @return boolean
+     */
+    public function softDeleteComment($commentId, $userId){
+        $now = date('Y-m-d H:i:s',time());
+        $updateData = [
+                'status' => 'N',
+                'deleted_at'=>$now,
+                'updated_user' => $userId,
+                'updated_at'=> $now
+                ];
+        return $this->commentRepository->modifyComment($commentId, $updateData);   
     }
 }

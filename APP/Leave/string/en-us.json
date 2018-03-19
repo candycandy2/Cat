@@ -249,7 +249,7 @@
   },
   {
     "term": "str_032",
-    "definition": "Can request separately, available from 30 days before marriage to 90 days after, base date is registration date",
+    "definition": "Can request separately, available from 30 days before marriage to 90 days after, Base Date is registration date",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -745,7 +745,7 @@
   },
   {
     "term": "str_095",
-    "definition": "If the base date is not listed below, please check whether the form includes the date you need has been approved.",
+    "definition": "If the Base Date is not listed below, please check whether the form includes the date you need has been approved.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1105,7 +1105,7 @@
   },
   {
     "term": "str_140",
-    "definition": "Select base date (From) first",
+    "definition": "Select Base Date first",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1113,7 +1113,7 @@
   },
   {
     "term": "str_141",
-    "definition": "Select other base date (From)",
+    "definition": "Select other Base Date",
     "context": "",
     "term_plural": "",
     "reference": "",

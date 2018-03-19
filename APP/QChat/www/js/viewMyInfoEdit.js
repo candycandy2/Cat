@@ -7,6 +7,14 @@ $("#viewMyInfoEdit").pagecontainer({
         var timer;
 
         /********************************** function *************************************/
+        function cameraPluginCallback(status, imageUploadURL) {
+            if (status == "sizeOverflow") {
+
+            } else {
+                avatarCrop(imageUploadURL);
+            }
+        }
+
         function avatarCrop(imageUploadURL) {
 
             var buttonHeight = parseFloat($(window).height() * 0.1306).toFixed(2);
@@ -16,7 +24,7 @@ $("#viewMyInfoEdit").pagecontainer({
             $('<div class="message-photo-full-screen">' + imageContent + buttonContent + '</div').appendTo("body");
 
             if (device.platform === "iOS") {
-                $(".message-photo-full-screen img").css("padding-top", "20px");
+                $(".message-photo-full-screen img").css("padding-top", iOSFixedTopPX() + "px");
             }
 
             $(".message-photo-full-screen").css("top", $(document).scrollTop());
@@ -83,12 +91,11 @@ $("#viewMyInfoEdit").pagecontainer({
                 var realData = block[1].split(",")[1];// In this case "iVBORw0KGg...."
 
                 // The path where the file will be created
-                var folderpath = "file:///storage/emulated/0/";
+                var folderpath = cordova.file.cacheDirectory;
                 // The name of your file, note that you need to know if is .png,.jpeg etc
                 var filename = "myimage.png";
 
                 savebase64AsImageFile(folderpath, filename, realData, "image/png");
-
             });
 
             avatarCropClose();
@@ -271,9 +278,9 @@ $("#viewMyInfoEdit").pagecontainer({
 
         $(document).on({
             click: function() {
-                CameraPlugin.openFilePicker("PHOTOLIBRARY", avatarCrop);
+                CameraPlugin.openFilePicker("PHOTOLIBRARY", cameraPluginCallback);
             }
-        }, "#viewMyInfoEditContent .my-photo-edit");
+        }, "#viewMyInfoEditContent .chatroom-info-photo-content");
 
         $(document).on({
             click: function() {

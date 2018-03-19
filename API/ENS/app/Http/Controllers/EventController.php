@@ -156,23 +156,33 @@ class EventController extends Controller
                 'uuid' => (isset($input['uuid']))?$input['uuid']:""
                 );
             
+            //Step1.get post id as chatroomId
+            $chatroomId = $this->eventService->getPostId($empNo, $queryParam);
+
+            //Step2. create event
+            $data['chatroom_id'] = $chatroomId;
+            $eventId = $this->eventService->newEvent($empNo, $data, $taskUserList, $eventUser, $queryParam);
+
+            //Step3. new post
             $title = $data['event_title'];
             $content = $data['event_desc'];
-            $newPostRs = json_decode($this->eventService->newPost($data['project'], $empNo, $title, $content, $queryParam));
-
+            $newPostRs = json_decode($this->eventService->newPost($data['project'], $empNo, $chatroomId, $eventId, $title, $content, $queryParam));
             if($newPostRs->ResultCode != ResultCode::_1_reponseSuccessful){
                  return $result = response()->json(['ResultCode'=>$newPostRs->ResultCode,
                 'Message'=>"新增Post失敗",
                 'Content'=>""]);
             }
 
-            //Step2. create event
-            $chatroomId = $newPostRs->Content->post_id;
-            $data['chatroom_id'] = $chatroomId;
-            $eventId = $this->eventService->newEvent($empNo, $data, $taskUserList, $eventUser, $queryParam);
+            //Step4. subscribe post
+            $subscribePostRs = json_decode($this->eventService->subscribePost($empNo, $chatroomId, $eventUser, $queryParam));
+            if($subscribePostRs->ResultCode != ResultCode::_1_reponseSuccessful){
+                 return $result = response()->json(['ResultCode'=>$subscribePostRs->ResultCode,
+                'Message'=>"訂閱Post失敗",
+                'Content'=>""]);
+            }
             \DB::commit();
 
-            //Step3. send push
+            //Step4. send push Message
             $sendPushMessageRes = $this->eventService->sendPushMessageToEventUser($eventId, $queryParam, $empNo, 'new');
             return $result = response()->json(['ResultCode'=>ResultCode::_014901_reponseSuccessful,
                 'Content'=>$title]);
@@ -180,7 +190,7 @@ class EventController extends Controller
         } catch (\Exception $e){
             \DB::rollBack();
             if(isset($chatroomId)){
-                $this->eventService->deleteChatRoom($chatroomId);
+               $deleteRes =  $this->eventService->deletePost($empNo, $chatroomId, $queryParam);
             }
             throw $e;
         }
@@ -355,7 +365,8 @@ class EventController extends Controller
             $lang           = trim((string)$xml->lang[0]);
             $needPush       = trim((string)$xml->need_push[0]);
             $project        = trim((string)$xml->project[0]);
-            $eventDesc     = trim((string)$xml->event_desc[0]);
+            $eventTitle     = trim((string)$xml->event_title[0]);
+            $eventDesc      = trim((string)$xml->event_desc[0]);
             $relatedId      = trim((string) $xml->related_event_row_id[0]);
             $completeDate   = trim((string) $xml->estimated_complete_date[0]);
             $eventTypeParameterValue   = trim((string) $xml->event_type_parameter_value[0]);
@@ -363,7 +374,8 @@ class EventController extends Controller
             $queryParam =  array(
                 'lang'      => $lang,
                 'need_push' => $needPush,
-                'project'   => $project
+                'project'   => $project,
+                'uuid' => (isset($input['uuid']))?$input['uuid']:""
                 );
 
             if(!in_array($project, Config::get('app.ens_project'))){
@@ -379,7 +391,7 @@ class EventController extends Controller
                     'Content'=>""]);
             }
 
-            if($lang == "" || $needPush == "" || $project =="" || $eventId == "" || $eventDesc == ""){
+            if($lang == "" || $needPush == "" || $project =="" || $eventId == "" || $eventTitle == "" || $eventDesc == ""){
                 return $result = response()->json(['ResultCode'=>ResultCode::_014903_mandatoryFieldLost,
                     'Message'=>"必填欄位缺失",
                     'Content'=>""]);
@@ -390,14 +402,12 @@ class EventController extends Controller
                     'Message'=>"欄位格式錯誤",
                     'Content'=>""]);
             }
-            
-            $eventList = $this->eventService->getEventDetail($project, $eventId, $empNo);
+            $eventList = $this->eventRepository->getEventDetail($project, $eventId, $empNo);
             if(count($eventList) == 0){
                  return $result = response()->json(['ResultCode'=>ResultCode::_014904_noEventData,
                 'Message'=>'查無事件資料',
                 'Content'=>'']);
             }
-
             if($eventTypeParameterValue != ""){
              $parameterMap =  CommonUtil::getParameterMapByType($this->eventService::EVENT_TYPE);
                 if(!in_array($eventTypeParameterValue, array_keys($parameterMap))){
@@ -420,7 +430,7 @@ class EventController extends Controller
                     'Content'=>""]);
                 }
             }
-            //更新關聯事件
+            //檢查關聯事件
             if($relatedId!=""){
                 $verifyResult = $Verify->checkRelatedEvent($project, $relatedId, $this->eventService, $eventId);
                 if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
@@ -430,7 +440,21 @@ class EventController extends Controller
                     return $result;
                 }
             }
-            
+
+            //Step 1. modifyPost
+            $modifyPostRs = json_decode($this->eventService->modifyPost($project,
+                                                         $eventList->created_user,
+                                                          $eventList->chatroom_id,
+                                                         (string)$xml->event_title[0],
+                                                         (string)$xml->event_desc[0],
+                                                         $queryParam));
+            if($modifyPostRs->ResultCode != ResultCode::_1_reponseSuccessful){
+                 return $result = response()->json(['ResultCode'=>$modifyPostRs->ResultCode,
+                'Message'=>"更新Post失敗",
+                'Content'=>""]);
+            }
+
+            //Step2. updateEvent
            $updateField = array('event_type_parameter_value',
                                   'event_title','event_desc',
                                   'estimated_complete_date',

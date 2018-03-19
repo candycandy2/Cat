@@ -16,26 +16,43 @@
         <div id="viewPersonManage" data-model="1">
             <div class="team-signup-title">
                 <div>
-                    <img src="img/event_date.png">
+                    <img src="img/blank.png" id="personManageThumbnail">
                 </div>
-                <div class="font-style10 font-color2">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                <div class="font-style10 font-color2" id="personManageName"></div>
             </div>
-            <div class="peraon-manage-signuped font-style11 font-color4">
-                <span>目前活動名額已額滿，</span>
-                <span>您已報名本項活動：1人</span>
+            <div class="person-manage-signuped font-style11 font-color4">
+                <!--目前活動名額已額滿，-->
+                <span id="personIsFull" class="langStr" data-id="str_069"></span>
+                <!--您已報名本項活動：-->
+                <span class="langStr" data-id="str_070"></span>
+                <span id="personSignupedPlace"></span>
+                <!--人-->
+                <span class="langStr" data-id="str_058"></span>
             </div>
-            <div class="person-signup-set-title font-style11 font-color1">請設定您的報名資料</div>
-            <div class="person-signup-set-people font-style3 font-color1">報名人數：1人</div>
+            <div class="person-signup-set-title font-style11 font-color1">
+                <!--請設定您的報名資料-->
+                <span class="langStr" data-id="str_055"></span>
+            </div>
+            <div class="person-signup-set-people font-style3 font-color1">
+                <!--報名人數：-->
+                <span class="langStr" data-id="str_056"></span>
+                <span id="personManagePlace"></span>
+            </div>
             <!--自定義欄位-->
-            <div></div>
-            <div class="person-signup-notice font-style11 font-color4">
-                <span>*完成報名後，若需更改報名資料，請直接與欄位上更改後，再點選[更改資料]按鍵</span>
-            </div>
-            <div class="font-style11 font-color4">
-                <span>*若需取消所有報名名單，請直接點選[取消報名]按鍵</span>
-            </div>
-            <div class="person-footer font-style3 two-btn-inline">
-                <span>取消報名</span><span>更改資料</span>
+            <div class="person-manage-custom-field"></div>
+            <!--提示信息-->
+            <div class="person-manage-remark font-style11"></div>
+            <div class="blank-container-before-footer"></div>
+            <!--footer-->
+            <div id="personManageBtn" class="person-footer font-style3 two-btn-inline">
+                <div id="cancelPersonSignup">
+                    <!--取消報名-->
+                    <span class="langStr" data-id="str_009"></span>
+                </div>
+                <div id="updatePersonSignup">
+                    <!--更改資料-->
+                    <span class="langStr" data-id="str_010"></span>
+                </div>
             </div>
         </div>
 
@@ -43,48 +60,51 @@
         <div id="viewFamilyManage" data-model="3">
             <div class="team-signup-title">
                 <div>
-                    <img src="img/event_date.png">
+                    <img src="img/blank.png" id="familyManageThumbnail">
                 </div>
                 <div class="font-style10 font-color2">
-                    <div>[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
-                    <div style="margin-top:2.14vw;">您尚可報名人數：3人</div>
+                    <div id="familyManageName"></div>
+                    <div class="family-info">
+                        <!--您尚可報名人數：-->
+                        <span class="langStr" data-id="str_057"></span>
+                        <span id="familyManageLimit"></span>
+                        <!--人-->
+                        <span class="langStr" data-id="str_058"></span>
+                    </div>
                 </div>
             </div>
-            <div class="peraon-manage-signuped font-style11 font-color2">*本活動須同仁本人一同前往</div>
-            <div class="family-signup-set-title font-style11 font-color1">請先填寫同仁報名資訊</div>
+            <div class="person-manage-signuped font-style11 font-color2">
+                <!--*本活動須同仁本人一同前往-->
+                <span class="langStr" data-id="str_059"></span>
+            </div>
+            <div class="family-signup-set-title font-style11 font-color1">
+                <!--請先填寫同仁報名資訊-->
+                <span class="langStr" data-id="str_060"></span>
+            </div>
             <div class="family-signup-basic font-style7 font-color1">
-                <span>王小明</span>/
-                <span>同仁</span>/
-                <span>男</span>/
-                <span>F123456789</span>/
-                <span>1980-12-01</span>
+                <span id="familyManageEmpName"></span>
+                <span> / </span>
+                <span id="familyManageRlts"></span>
+                <span> / </span>
+                <span id="familyManageGender"></span>
+                <span> / </span>
+                <span id="familyManageID"></span>
+                <span> / </span>
+                <span id="familyManageBirth"></span>
             </div>
             <!--自定義欄位-->
-            <div class="family-manage-custom-field">
-                <div class="custom-field">
-                    <label for="" class="font-style11">活動建議</label>
-                    <textarea name="" id="" data-role="none" class="input-textarea"></textarea>
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">搭車地點</label>
-                    <div>請選取</div>
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">option1</label>
-                    <input name="" id="" type="text" data-role="none" class="input-text">
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">option2</label>
-                    <input name="" id="" type="text" data-role="none" class="input-text">
-                </div>
-                <div class="custom-field">
-                    <label for="" class="font-style11">option3</label>
-                    <input name="" id="" type="text" data-role="none" class="input-text">
-                </div>
-            </div>
+            <div class="family-manage-custom-field"></div>
             <div class="blank-container-before-footer"></div>
-            <div class="person-footer font-style3 two-btn-inline">
-                <span>取消報名</span><span>选择眷属</span>
+            <!--footer-->
+            <div id="familyManageBtn" class="person-footer font-style3 two-btn-inline">
+                <div id="cancelFamilySignup">
+                    <!--取消報名-->
+                    <span class="langStr" data-id="str_009"></span>
+                </div>
+                <div id="manageSelectFamilyBtn">
+                    <!--選擇眷屬-->
+                    <span class="langStr" data-id="str_012"></span>
+                </div>
             </div>
         </div>
 
@@ -92,53 +112,54 @@
         <div id="viewTimeManage" data-model="5">
             <div class="team-signup-title">
                 <div>
-                    <img src="img/event_date.png" id="timeManageThumbnail">
+                    <img src="img/blank.png" id="timeManageThumbnail">
                 </div>
-                <div class="font-style10 font-color2" id="timeManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                <div class="font-style10 font-color2" id="timeManageName"></div>
             </div>
-            <div class="time-manage-signuped1 font-style11 font-color4">您已報名本項活動：1人</div>
-            <div class="time-manage-signuped2 font-style12 font-color2">*您已完成報名，若需變更時段，請先取消報名後再重新報名</div>
-            <div class="time-manage-signuped3 font-style11 font-color2">以下是您的報名資料</div>
+            <div class="time-manage-title font-style11 font-color4">
+                <!--目前活動名額已額滿，-->
+                <span id="timeIsFull" class="langStr" data-id="str_069"></span>
+                <!--您已報名本項活動：-->
+                <span class="langStr" data-id="str_070"></span>
+                <span>1</span>
+                <!--人-->
+                <span class="langStr" data-id="str_058"></span>
+            </div>
+            <div class="time-manage-remark font-style12 font-color2">
+                <!--*您已完成報名，若需變更時段，請先取消報名後再重新報名-->
+                <span class="langStr" data-id="str_071"></span>
+            </div>
+            <div class="time-manage-detail font-style11 font-color2">
+                <!--以下是您的報名資料-->
+                <span class="langStr" data-id="str_072"></span>
+            </div>
             <!--自定義欄位-->
-            <div class="time-manage-signuped4 font-style7 font-color1">活動建議：大叔大叔大叔大叔</div>
-            <div class="time-manage-signuped4 font-style7 font-color1">搭車地點：QTY</div>
-            <div class="time-manage-signuped4 font-style7 font-color1">問題1：test</div>
-            <div class="time-manage-signuped4 font-style7 font-color1">午餐：A</div>
-            <div class="time-manage-signuped4 font-style7 font-color1">問題2：test test</div>
-            <div class="time-manage-line"></div>
-            <div class="time-manage-signuped5">活動時段與名額如下</div>
-            <div>
-                <table data-role="none" id="timeManageTable">
-                    <tr>
-                        <td>時段</td>
-                        <td>提供名額</td>
-                        <td>剩餘名額</td>
-                    </tr>
-                    <tr>
-                        <td>08:00-10:00</td>
-                        <td>100</td>
-                        <td>10</td>
-                    </tr>
-                    <tr>
-                        <td>10:00-12:00</td>
-                        <td>100</td>
-                        <td>50</td>
-                    </tr>
-                    <tr>
-                        <td>14:00-16:00</td>
-                        <td>100</td>
-                        <td>70</td>
-                    </tr>
-                    <tr>
-                        <td>16:00-18:00</td>
-                        <td>100</td>
-                        <td>100</td>
-                    </tr>
-                </table>
+            <div class="time-manage-custom-field font-style7 font-color1"></div>
+            <div class="time-manage-place font-style11 font-color1">
+                <!--活動時段與名額如下-->
+                <span class="langStr" data-id="str_073"></span>
             </div>
+            <div class="time-manage-thead font-style11 font-color2">
+                <div>
+                    <!--時段-->
+                    <span class="langStr" data-id="str_062"></span>
+                </div>
+                <div>
+                    <!--提供名额-->
+                    <span class="langStr" data-id="str_063"></span>
+                </div>
+                <div>
+                    <!--剩余名额-->
+                    <span class="langStr" data-id="str_064"></span>
+                </div>
+            </div>
+            <!--選擇時段-->
+            <div class="time-manage-tbody font-style7 font-color2"></div>
             <div class="blank-container-before-footer"></div>
-            <div class="person-footer font-style3">
-                <span>取消報名</span>
+            <!--footer-->
+            <div id="cancelTimeSignup" class="person-footer font-style3">
+                <!--取消報名-->
+                <span class="langStr" data-id="str_009"></span>
             </div>
         </div>
 
@@ -146,82 +167,83 @@
         <div id="viewTeamManage" data-model="4">
             <div class="team-signup-title">
                 <div>
-                    <img src="img/event_date.png" id="teamManageThumbnail">
+                    <img src="img/blank.png" id="teamManageThumbnail">
                 </div>
-                <div class="font-style10 font-color2" id="teamManageName">[創意人文]羅馬競技場-9/14（一）台北3F體育館</div>
+                <div class="font-style10 font-color2" id="teamManageName"></div>
             </div>
             <div class="team-manage-signuped font-style11 font-color4">
-                <span>您已報名本項活動：</span>
-                <span id="teamSignupedPlaces">2</span>
-                <span>組</span>
+                <!--目前活動名額已額滿，-->
+                <span id="teamIsFull" class="langStr" data-id="str_069"></span>
+                <!--您已報名本項活動：-->
+                <span class="langStr" data-id="str_070"></span>
+                <span id="teamSignupedPlaces"></span>
+                <!--組-->
+                <span class="langStr" data-id="str_074"></span>
             </div>
-            <div class="team-manage-signuped font-style11 font-color1">以下是您的報名資料</div>
+            <div class="team-manage-signuped font-style11 font-color1">
+                <!--以下是您的報名資料-->
+                <span class="langStr" data-id="str_072"></span>
+            </div>
             <div id="teamTableContainer">
                 <table data-role="none" id="teamTable">
                     <tr>
-                        <td>編號</td>
-                        <td>部門代碼</td>
-                        <td></td>
-                        <td>隊名</td>
                         <td>
-                            <img src="img/all_list_down.png" class="all-list-img">
+                            <!--編號-->
+                            <span class="langStr" data-id="str_075"></span>
+                        </td>
+                        <td>
+                            <!--部門代碼-->
+                            <span class="langStr" data-id="str_066"></span>
+                        </td>
+                        <td></td>
+                        <td>
+                            <!--隊名-->
+                            <span class="langStr" data-id="str_076"></span>
+                        </td>
+                        <td>
+                            <img src="img/all_list_down.png" id="expandAllTeam" class="all-list-img">
                         </td>
                     </tr>
-                    <!-- <tr>
-                        <td>1</td>
-                        <td>AI30</td>
-                        <td></td>
-                        <td>衝衝衝第一名</td>
-                        <td>
-                            <img src="img/list_down.png" class="list-img">
-                        </td>
-                    </tr>
-                    <tr style="display:none;">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>B140 Alan Tu
-                            <br>B140 Wendy Shih
-                            <br>A141 Samuel Hsieh
-                        </td>
-                        <td>
-                            <img src="img/delete.png" class="team-delete">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>BI40</td>
-                        <td></td>
-                        <td>只要我們說第二名每人敢說自己是第一名</td>
-                        <td>
-                            <img src="img/list_down.png" class="list-img">
-                        </td>
-                    </tr>
-                    <tr style="display:none;">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>B140 Alan Tu
-                            <br>B140 Vinny YC Tang
-                            <br>B140 Jennifer Y Wang
-                            <br>BI40 Darren K Ti
-                        </td>
-                        <td>
-                            <img src="img/delete.png" class="team-delete">
-                        </td>
-                    </tr> -->
+
                 </table>
             </div>
         </div>
 
-        <!--5.选择眷属-->
-        <div></div>
-
     </div>
 
+    <!--人數超過剩餘名額-popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup manageOverLimitMsg" for="manageOverLimitMsg"
+        id="manageOverLimitMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--很抱歉，您報名的人數超過剩餘名額，請重新報名-->
+                    <span class="langStr" data-id="str_024"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel" id="manageOverBtn">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!--確定取消報名-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelSignupMsg" for="cancelSignupMsg">
+    <!--確定取消報名-popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelSignupMsg" for="cancelSignupMsg"
+        id="cancelSignupMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -244,7 +266,7 @@
                         <!--不取消-->
                         <span class="langStr" data-id="str_046"></span>
                     </div>
-                    <div class="btn-cancel" id="cancelSignup">
+                    <div class="btn-cancel" id="confirmCancelSignup">
                         <!--取消-->
                         <span class="langStr" data-id="str_045"></span>
                     </div>
@@ -253,8 +275,8 @@
         </div>
     </div>
 
-    <!--報名取消失敗-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelFailMsg" for="cancelFailMsg">
+    <!--報名取消失敗-popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup cancelFailMsg" for="cancelFailMsg" id="cancelFailMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -273,6 +295,71 @@
             <div class="footer">
                 <div class="btn-one font-style1 btnArea">
                     <div class="btn-cancel">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--修改未完成-popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup updateNoFinish" for="updateNoFinish"
+        id="updateNoFinish">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--修改未完成-->
+                        <span class="langStr" data-id="str_085"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--確定回到上一頁-->
+                    <span class="langStr" data-id="str_023"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="cancelUpdateBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--報名時間已過期-popup-->
+    <div data-role="popup" data-history="false" data-dismissible="false" data-overlay-theme="b" class="app-popup manageTimeOverMsg"
+        for="manageTimeOverMsg" id="manageTimeOverMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--目前活動報名時間已過期-->
+                        <span class="langStr" data-id="str_105"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel" id="manageTimeOverBtn">
                         <!--關閉-->
                         <span class="langStr" data-id="str_044"></span>
                     </div>

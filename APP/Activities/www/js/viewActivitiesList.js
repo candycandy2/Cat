@@ -1,11 +1,15 @@
 
 $("#viewActivitiesList").pagecontainer({
     create: function (event, ui) {
+        /********************************** variable *************************************/
+
+
         /********************************** function *************************************/
+        //獲取活動列表
         window.ActivitiesListQuery = function () {
 
             this.successCallback = function (data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data["ResultCode"] == "1") {
                     var activitiesArr = data["Content"];
@@ -22,11 +26,15 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style11"><span>名額:'
-                                + activitiesArr[i]["QuotaPlaces"]
-                                + '</span>&nbsp;&nbsp;&nbsp;<span>剩餘:'
-                                + activitiesArr[i]["RemainingPlaces"]
-                                + '</span></div><div class="font-style11"><span>報名期間:'
+                                + '</div><div class="font-style12"><span>'
+                                + langStr["str_078"]
+                                + '</span><span>'
+                                + (activitiesArr[i]["SignupModel"] == 4 ? langStr["str_104"] : activitiesArr[i]["QuotaPlaces"])
+                                + '</span>&nbsp;&nbsp;&nbsp;&nbsp;'
+                                + (activitiesArr[i]["SignupModel"] == 4 ? "" : '<span>' + langStr["str_079"] + '</span><span>' + activitiesArr[i]["RemainingPlaces"] + '</span>')
+                                + '</div><div class="font-style12"><span>'
+                                + langStr["str_052"]
+                                + '</span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
 
@@ -39,11 +47,13 @@ $("#viewActivitiesList").pagecontainer({
                                 + activitiesArr[i]["ActivitiesImage"]
                                 + '"></div><div class="activity-list-info font-color2"><div class="font-style10">'
                                 + activitiesArr[i]["ActivitiesName"]
-                                + '</div><div class="font-style11"><span>名額:'
-                                + activitiesArr[i]["QuotaPlaces"]
-                                + '</span>&nbsp;&nbsp;&nbsp;<span>剩餘:'
-                                + activitiesArr[i]["RemainingPlaces"]
-                                + '</span></div><div class="font-style11"><span>報名期間:'
+                                + '</div><div class="font-style12"><span>'
+                                + langStr["str_078"]
+                                + '</span><span>'
+                                + (activitiesArr[i]["SignupModel"] == 4 ? langStr["str_104"] : activitiesArr[i]["QuotaPlaces"])
+                                + '</span></div><div class="font-style12"><span>'
+                                + langStr["str_077"]
+                                + '</span><span>'
                                 + activitiesArr[i]["SignupDate"]
                                 + '</span></div></div></div><div class="activity-line"></div>';
                         }
@@ -51,7 +61,7 @@ $("#viewActivitiesList").pagecontainer({
 
                     $("#openList").empty().append(openContent).children("div:last-child").remove();
                     $("#closeList").empty().append(closeContent).children("div:last-child").remove();
-                    
+
                 } else if (data["ResultCode"] == "045901") {
                     $("#viewActivitiesContent").hide();
                     $("#viewActivitiesNone").show();
@@ -72,31 +82,39 @@ $("#viewActivitiesList").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesList").on("pagebeforeshow", function (event, ui) {
-
+            /**** PullToRefresh ****/
+            PullToRefresh.init({
+                mainElement: '.pull-list',
+                onRefresh: function () {
+                    loadingMask("show");
+                    //重新获取活动列表
+                    ActivitiesListQuery();
+                }
+            });
         });
+
 
         /********************************** dom event *************************************/
         $("#viewActivitiesList").keypress(function (event) {
 
         });
 
-        $(document).on("click", ".activity-list", function () {
-            var actNo = $(this).attr("data-id");
+        //點擊活動列表進入詳情頁
+        $("#viewActivitiesContent").on("click", ".activity-list", function (e) {
+            loadingMask("show");
+
+            var actID = $(this).attr("data-id");
+            var actStatus = $(this).attr("data-status");
+
             activitiesDetailQueryData = '<LayoutHeader><ActivitiesID>'
-                + actNo
+                + actID
                 + '</ActivitiesID><EmployeeNo>'
                 + myEmpNo
                 + '</EmployeeNo></LayoutHeader>';
 
-            var actStatus = $(this).attr("data-status");
-
             ActivitiesDetailQuery(actStatus);
-
         });
 
-        //從編輯也返回詳情頁
-        $("#viewActivitiesList .back-detail").on("click", function () {
-            changePageByPanel("viewActivitiesDetail", false);
-        });
+
     }
 });

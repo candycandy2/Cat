@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\lib\CommonUtil;
 use App\lib\FilePath;
 use App\lib\PushUtil;
+use App\Services\AppPushService;
 use Illuminate\Support\Facades\Input;
 use Mockery\CountValidator\Exception;
 use Request;
@@ -15,7 +16,14 @@ use DB;
 
 
 class qplayController extends Controller
-{
+{   
+    protected $appPushService;
+
+    public function __construct(AppPushService $appPushService)
+    {
+        $this->appPushService = $appPushService;
+    }
+
     public function getIpInfo()
     {
         $input = Input::get();
@@ -2011,9 +2019,9 @@ SQL;
     }
 
     public function sendPushToken()
-    {
+    {   
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyWithCustomerAppKey();
 
         $input = Input::get();
         $request = Request::instance();
@@ -2134,16 +2142,16 @@ SQL;
                         'created_at'=>$now,
                         'device_type'=>$deviceType]);
                 }
+                if($projectId == 1){
+                    //Register to JPush Tag
+                    $tag = PushUtil::GetTagByUserInfo($userInfo);
+                    $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
 
-                //Register to JPush Tag
-                $tag = PushUtil::GetTagByUserInfo($userInfo);
-                $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
-
-                if(!$pushResult["result"]) {
-                    \DB::rollBack();
-                    throw new Exception(trans('messages.MSG_ADD_TAG_TO_JPUSH_FAILED'), 1);
+                    if(!$pushResult["result"]) {
+                        \DB::rollBack();
+                        throw new Exception(trans('messages.MSG_ADD_TAG_TO_JPUSH_FAILED'), 1);
+                    }
                 }
-
                 \DB::commit();
             } catch (\Exception $e) {
                 \DB::rollBack();
@@ -2285,7 +2293,16 @@ SQL;
             $push_time_utc = trim($input["push_time_utc"]);
         }
 
+        $showInMessageList=true;
+        if(array_key_exists('qplay_message_list', $input))
+        {
+            $showInMessageList = (trim($input["qplay_message_list"])=='Y')?true:false;
+        }
+
         $app_key = $input["app_key"];
+        //推播時使用的key
+        $pushAppKey = ($showInMessageList)?CommonUtil::getContextAppKey():$app_key;
+
         $need_push = trim(strtoupper($input["need_push"]));
         if($need_push != "Y" && $need_push != "N") {
             $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
@@ -2343,7 +2360,7 @@ SQL;
                         return response()->json($result);
                     }
                 }
-
+                $extraParam = (!array_key_exists('extra', $jsonContent))?"":$jsonContent['extra'];
                 $sourceUseId = $jsonContent['source_user_id'];
 
                 $userid = explode('\\', $sourceUseId)[1];
@@ -2397,26 +2414,32 @@ SQL;
 
                         \DB::beginTransaction();
                         try {
-                            $newMessageId = \DB::table("qp_message")
-                                -> insertGetId([
-                                    'template_id'=>$template_id, 'visible'=>'Y',
-                                    'message_type'=>$message_type, 'message_title'=>$message_title,
-                                    'message_text'=>$message_text, 'message_html'=>$message_html,
-                                    'message_url'=>$message_url, 'message_source'=>$message_source,
-                                    'created_user'=>$sourceUserInfo->row_id,
-                                    'created_at'=>$now,
-                                ]);
+                            if($showInMessageList){
+                                $newMessageId = \DB::table("qp_message")
+                                    -> insertGetId([
+                                        'template_id'=>$template_id, 'visible'=>'Y',
+                                        'message_type'=>$message_type, 'message_title'=>$message_title,
+                                        'message_text'=>$message_text, 'message_html'=>$message_html,
+                                        'message_url'=>$message_url, 'message_source'=>$message_source,
+                                        'created_user'=>$sourceUserInfo->row_id,
+                                        'created_at'=>$now,
+                                    ]);
 
-                            $newMessageSendId = \DB::table("qp_message_send")
-                                -> insertGetId([
-                                    'message_row_id'=>$newMessageId,
-                                    'source_user_row_id'=>$sourceUserInfo->row_id,
-                                    'created_user'=>$sourceUserInfo->row_id,
-                                    'created_at'=>$now,
-                                    'need_push'=>$need_push_db,
-                                    'company_label'=>$companyStr,
-                                    'push_flag'=>'0'
-                                ]);
+                                $newMessageSendId = \DB::table("qp_message_send")
+                                    -> insertGetId([
+                                        'message_row_id'=>$newMessageId,
+                                        'source_user_row_id'=>$sourceUserInfo->row_id,
+                                        'created_user'=>$sourceUserInfo->row_id,
+                                        'created_at'=>$now,
+                                        'need_push'=>$need_push_db,
+                                        'company_label'=>$companyStr,
+                                        'push_flag'=>'0'
+                                    ]);
+                                $extraParam = $newMessageSendId;
+                            }else{
+                                $newMessageSendId = $this->appPushService
+                                ->newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url,  $extraParam, $companyStr);
+                            }
                             $countFlag = 0;
                             if($need_push == "Y") {
                                 $to = [];
@@ -2427,21 +2450,25 @@ SQL;
                                     }
                                 }
 
-
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId, true);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $extraParam, true, $pushAppKey);
                                 } else {
-                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId, true);
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $extraParam, true, $pushAppKey);
                                 }
 
                                 if(!$result["result"]) {
-                                    \DB::table("qp_message_send")
+                                    if($showInMessageList){
+                                        \DB::table("qp_message_send")
                                         -> where(['row_id'=>$newMessageSendId])
                                         -> update([
                                             'jpush_error_code'=>$result["info"],
                                             'updated_user'=>$sourceUserInfo->row_id,
                                             'updated_at'=>$now
                                         ]);
+                                    }else{
+                                        $this->appPushService
+                                             ->updatePushMessageStatus($sourceUserInfo, $newMessageSendId, $result);
+                                    }
                                     \DB::commit();
                                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                                         'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),
@@ -2511,26 +2538,31 @@ SQL;
 
                         \DB::beginTransaction();
                         try {
-                            $newMessageId = \DB::table("qp_message")
-                                -> insertGetId([
-                                    'template_id'=>$template_id, 'visible'=>'Y',
-                                    'message_type'=>$message_type, 'message_title'=>$message_title,
-                                    'message_text'=>$message_text, 'message_html'=>$message_html,
-                                    'message_url'=>$message_url, 'message_source'=>$message_source,
-                                    'created_user'=>$sourceUserInfo->row_id,
-                                    'created_at'=>$now,
-                                ]);
+                            if($showInMessageList){
+                                $newMessageId = \DB::table("qp_message")
+                                    -> insertGetId([
+                                        'template_id'=>$template_id, 'visible'=>'Y',
+                                        'message_type'=>$message_type, 'message_title'=>$message_title,
+                                        'message_text'=>$message_text, 'message_html'=>$message_html,
+                                        'message_url'=>$message_url, 'message_source'=>$message_source,
+                                        'created_user'=>$sourceUserInfo->row_id,
+                                        'created_at'=>$now,
+                                    ]);
 
-                            $newMessageSendId = \DB::table("qp_message_send")
-                                -> insertGetId([
-                                    'message_row_id'=>$newMessageId,
-                                    'source_user_row_id'=>$sourceUserInfo->row_id,
-                                    'created_user'=>$sourceUserInfo->row_id,
-                                    'created_at'=>$now,
-                                    'need_push'=>$need_push_db,
-                                    'push_flag'=>'0'
-                                ]);
-
+                                $newMessageSendId = \DB::table("qp_message_send")
+                                    -> insertGetId([
+                                        'message_row_id'=>$newMessageId,
+                                        'source_user_row_id'=>$sourceUserInfo->row_id,
+                                        'created_user'=>$sourceUserInfo->row_id,
+                                        'created_at'=>$now,
+                                        'need_push'=>$need_push_db,
+                                        'push_flag'=>'0'
+                                    ]);
+                                $extraParam = $newMessageSendId;
+                            }else{
+                                $newMessageSendId = $this->appPushService
+                                ->newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url,  $extraParam);
+                            }
                             $hasSentUserIdList = array();
                             $real_push_user_list = array();
 
@@ -2554,31 +2586,33 @@ SQL;
                                         ["uuid"=>$destinationUserInfo->row_id]
                                     ];
                                 }
-                                foreach ($destinationUserInfo->uuidList as $uuid) {
-                                    \DB::table("qp_user_message")
-                                        -> insertGetId([
-                                            'project_row_id'=>$projectInfo->row_id,
-                                            'user_row_id'=>$destinationUserInfo->row_id,
-                                            'uuid'=> is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
-                                            'message_send_row_id'=>$newMessageSendId,
-                                            'created_user'=>$sourceUserInfo->row_id,
-                                            'created_at'=>$now
-                                        ]);
+                                if($showInMessageList){
+                                    foreach ($destinationUserInfo->uuidList as $uuid) {
+                                        \DB::table("qp_user_message")
+                                            -> insertGetId([
+                                                'project_row_id'=>$projectInfo->row_id,
+                                                'user_row_id'=>$destinationUserInfo->row_id,
+                                                'uuid'=> is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
+                                                'message_send_row_id'=>$newMessageSendId,
+                                                'created_user'=>$sourceUserInfo->row_id,
+                                                'created_at'=>$now
+                                            ]);
+                                    }
                                 }
-
                                 $hasSentUserIdList[] = $destinationUserInfo->row_id;
                                 $real_push_user_list[] = $destinationUserInfo->row_id;
                             }
 
                             foreach ($destinationRoleInfoList as $destinationRoleInfo) {
-                                \DB::table("qp_role_message")
+                                if($showInMessageList){
+                                    \DB::table("qp_role_message")
                                     -> insertGetId([
                                         'project_row_id'=>$projectInfo->row_id, 'role_row_id'=>$destinationRoleInfo->row_id,
                                         'message_send_row_id'=>$newMessageSendId,
                                         'created_user'=>$sourceUserInfo->row_id,
                                         'created_at'=>$now
                                     ]);
-
+                                }
                                 $sql = 'select * from qp_user where row_id in (select user_row_id from qp_user_role where role_row_id = '.$destinationRoleInfo->row_id.' )';
                                 $userInRoleList = DB::select($sql, []);
                                 foreach ($userInRoleList as $userRoleInfo) {
@@ -2593,16 +2627,18 @@ SQL;
                                                     ["uuid"=>$userRowId]
                                                 ];
                                             }
-                                            foreach ($thisUserInfo->uuidList as $uuid) {
-                                                \DB::table("qp_user_message")
-                                                    -> insertGetId([
-                                                        'project_row_id'=>$projectInfo->row_id,
-                                                        'user_row_id'=>$userRowId,
-                                                        'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
-                                                        'message_send_row_id'=>$newMessageSendId,
-                                                        'created_user'=>$sourceUserInfo->row_id,
-                                                        'created_at'=>$now
-                                                    ]);
+                                            if($showInMessageList){
+                                                foreach ($thisUserInfo->uuidList as $uuid) {
+                                                    \DB::table("qp_user_message")
+                                                        -> insertGetId([
+                                                            'project_row_id'=>$projectInfo->row_id,
+                                                            'user_row_id'=>$userRowId,
+                                                            'uuid'=>is_array($uuid)?$uuid["uuid"]:$uuid->uuid,
+                                                            'message_send_row_id'=>$newMessageSendId,
+                                                            'created_user'=>$sourceUserInfo->row_id,
+                                                            'created_at'=>$now
+                                                        ]);
+                                                }
                                             }
                                             $hasSentUserIdList[] = $userRowId;
                                             $real_push_user_list[] = $userRowId;
@@ -2614,10 +2650,12 @@ SQL;
                             if($need_push == "Y") {
                                 $to = [];
                                 $newCountFlag = 0;
+                                $pushProjectId = ($showInMessageList)?1:$projectInfo->row_id;
                                 foreach ($real_push_user_list as $uId) {
                                     $userPushList = \DB::table("qp_user")
                                         ->join("qp_register","qp_register.user_row_id","=","qp_user.row_id")
                                         ->join("qp_push_token","qp_push_token.register_row_id","=","qp_register.row_id")
+                                        ->where("qp_push_token.project_row_id", $pushProjectId)
                                         ->where("qp_user.row_id", "=", $uId)
                                         ->where("qp_user.status","=","Y")
                                         ->where("qp_user.resign","=","N")
@@ -2632,18 +2670,23 @@ SQL;
                                 }
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $newMessageSendId);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $extraParam, false, $pushAppKey);
                                 } else {
-                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $newMessageSendId);
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $extraParam, false, $pushAppKey);
                                 }
                                 if(!$result["result"]) {
-                                    \DB::table("qp_message_send")
+                                    if($showInMessageList){
+                                        \DB::table("qp_message_send")
                                         -> where(['row_id'=>$newMessageSendId])
                                         -> update([
                                             'jpush_error_code'=>$result["info"],
                                             'updated_user'=>$sourceUserInfo->row_id,
                                             'updated_at'=>$now
                                         ]);
+                                    }else{
+                                        $this->appPushService
+                                             ->updatePushMessageStatus($sourceUserInfo, $newMessageSendId, $result);
+                                    }
                                     \DB::commit();
                                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                                         'message'=>trans("messages.MSG_SEND_PUSH_MESSAGE_SUCCESS"),

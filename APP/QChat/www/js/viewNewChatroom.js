@@ -508,6 +508,25 @@ $("#viewNewChatroom").pagecontainer({
         };
 
         /********************************** page event *************************************/
+        $("#viewNewChatroom").one("pagebeforeshow", function(event, ui) {
+
+            //---------------------iOS UI---------------------
+            if (device.platform === "iOS") {
+                $("#viewNewChatroom .page-main .search-user-content").css({
+                    "padding-top": iOSFixedTopPX() + "px"
+                });
+
+                $("#viewNewChatroom .page-main .search-user-button").css({
+                    "top": parseInt(document.documentElement.clientWidth * 2.468 / 100 + iOSFixedTopPX(), 10) + "px"
+                });
+
+                $("#viewNewChatroom .page-main .search-user-clear-content").css({
+                    "top": iOSFixedTopPX() + "px"
+                });
+            }
+
+        });
+
         $("#viewNewChatroom").on("pagebeforeshow", function(event, ui) {
 
             //Recovery Search User Input UI

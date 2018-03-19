@@ -77,11 +77,21 @@ class toolController extends Controller
             try{
                 $jsonContent = json_decode($content, true);
                 $uuidList = $jsonContent['uuid_list'];
+                $registerInfo = \DB::table("qp_register")
+                ->whereIn('qp_register.uuid', $uuidList)
+                ->select('row_id','user_row_id')
+                ->get();
+                $registerList = [];
+                $userIdList = [];
+                foreach ($registerInfo as $register) {
+                   $registerList[] = $register->row_id;
+                   $userIdList[] = $register->user_row_id;
+                }
                 \DB::table("qp_register")
                 -> whereIn('uuid', $uuidList)
                 -> delete();
                 \DB::table("qp_push_token")
-                -> whereIn('push_token', $uuidList)
+                -> whereIn('register_row_id', $registerList)
                 -> delete();
                 \DB::table("qp_session")
                 -> whereIn('uuid', $uuidList)

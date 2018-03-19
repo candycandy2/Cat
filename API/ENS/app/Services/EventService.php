@@ -347,21 +347,66 @@ class EventService
         }
    }
 
+    public function getPostId($empNo, $queryParam){
+        $postIdRs = json_decode($this->forum->getPostId($empNo, $queryParam));
+        $postId = $postIdRs->Content;
+        return $postId;
+    }
    /**
     * 新增貼文
     * @param  string $project    專案名稱
     * @param  string $empNo      員工編號
+    * @param  string $refId      參考欄位id
     * @param  string $title      事件標題
     * @param  string $content    事件內容
     * @param  array $queryParam  url query param
     * @return json
     */
-   public function newPost($project, $empNo, $title, $content, $queryParam){
-        $postIdRs = json_decode($this->forum->getPostId($empNo, $queryParam));
-        $postId = $postIdRs->Content;
-        $newPostRes = $this->forum->newPost($project, $empNo, $postId, $title, $content, $queryParam);
+   public function newPost($project, $empNo,  $postId, $refId, $title, $content, $queryParam){
+        $newPostRes = $this->forum->newPost($project, $empNo, $postId, $refId, $title, $content, $queryParam);
         return $newPostRes;
    }
+
+   /**
+    * 修改貼文
+    * @param  string $project    專案名稱
+    * @param  string $empNo      員工編號
+    * @param  string $postId     貼文id
+    * @param  string $title      事件標題
+    * @param  string $content    事件內容
+    * @param  array $queryParam  url query param
+    * @return json
+    */
+   public function modifyPost($project, $empNo, $postId, $title, $content, $queryParam){
+    
+        $modifyPostRes = $this->forum->modifyPost($project, $empNo, $postId, $title, $content, $queryParam);
+        return $modifyPostRes;
+   }
+
+    /**
+    * 刪除貼文
+    * @param  string $empNo  員工編號
+    * @param  string $postId 貼文id
+    * @param  array $queryParam  url query param
+    * @return json
+    */
+    public function deletePost($empNo, $postId, $queryParam ){
+        $deleteRes = $this->forum->deletePost($empNo, $postId, $queryParam );
+        return $deleteRes;
+    }
+
+    /**
+     * 訂閱貼文
+     * @param  string $empNo          員工編號
+     * @param  string $postId         貼文id
+     * @param  array  $subscribeUsers 訂閱用戶
+     * @param  array  $queryParam     url參數
+     * @return json
+     */
+    public function subscribePost($empNo, $postId, $subscribeUsers, $queryParam){
+        $subscribeRes = $this->forum->subscribePost($empNo, $postId, $subscribeUsers, $queryParam);
+        return $subscribeRes;
+    }
 
     /**
      * 建立事件聊天室
@@ -524,11 +569,12 @@ class EventService
 
        $from = $this->getPushUserListByEmpNoArr(array($empNo))[0];
        $event = $this->getEventDetail($queryParam['project'], $eventId, $empNo);
-       
+       $extra = array("event_id"=>$eventId,
+                      "project"=>$queryParam['project']);
        $template = $this->push->getPushMessageTemplate($action, $event, $queryParam);
        $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['title'])));
        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($template['text'])));
-       $pushResult = $this->push->sendPushMessage($from, $to,$title, $text, $queryParam);
+       $pushResult = $this->push->sendPushMessage($from, $to,$title, $text, json_encode($extra), $queryParam);
 
        $result = json_decode($pushResult);
        return $result;
