@@ -511,21 +511,27 @@ $("#viewActivitiesManage").pagecontainer({
         //text
         $(".person-manage-custom-field").on("keyup", ".personManageText", function () {
             var self = $(this);
-            // var selfName = $(this).prev().text();
-            // var selfVal = $(this).val();
+            var selfName = $(this).prev().text();
 
             if (timeoutCheckPersonManage != null) {
                 clearTimeout(timeoutCheckPersonManage);
                 timeoutCheckPersonManage = null;
             }
             timeoutCheckPersonManage = setTimeout(function () {
-                var selfName = self.prev().text();
                 var selfVal = $.trim(self.val());
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personManageArr, selfName, selfVal, null, "updatePersonSignup");
-            }, 2000);
+            }, 1000);
 
         });
+
+        //失去焦點再次更新欄位值
+        // $(".person-manage-custom-field").on("blur", ".personManageText", function () {
+        //     var selfName = $(this).prev().text();
+        //     var selfVal = $.trim($(this).val());
+        //     //保存栏位值并检查表单
+        //     saveValueAndCheckForm(personManageArr, selfName, selfVal, null, "updatePersonSignup");
+        // });
 
         //checkbox
         $(".person-manage-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -561,6 +567,8 @@ $("#viewActivitiesManage").pagecontainer({
                 var nowTime = getTimeNow();
                 if (nowTime - overTime < 0) {
                     loadingMask("show");
+                    //呼叫API前，再次更新欄位值
+                    getTextValueBeforeCall("person", "manage", "personManageText", personManageArr);
 
                     activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                         + cancelID
@@ -623,21 +631,27 @@ $("#viewActivitiesManage").pagecontainer({
         //text
         $(".family-manage-custom-field").on("keyup", ".familyManageText", function () {
             var self = $(this);
-            // var selfName = $(this).prev().text();
-            // var selfVal = $(this).val();
+            var selfName = $(this).prev().text();
 
             if (timeoutCheckFamilyManage != null) {
                 clearTimeout(timeoutCheckFamilyManage);
                 timeoutCheckFamilyManage = null;
             }
             timeoutCheckFamilyManage = setTimeout(function () {
-                var selfName = self.prev().text();
                 var selfVal = $.trim(self.val());
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
-            }, 2000);
+            }, 1000);
 
         });
+
+        //失去焦點再次更新欄位值
+        // $(".family-manage-custom-field").on("blur", ".familyManageText", function () {
+        //     var selfName = $(this).prev().text();
+        //     var selfVal = $.trim($(this).val());
+        //     //保存栏位值并检查表单
+        //     saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
+        // });
 
         //checkbox
         $(".family-manage-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -663,6 +677,8 @@ $("#viewActivitiesManage").pagecontainer({
 
             if (!selfClass) {
                 loadingMask("show");
+                //呼叫API前，再次更新欄位值
+                getTextValueBeforeCall("family", "manage", "familyManageText", familyManageFieldArr);
 
                 //1.個人信息
                 var answerList = "";

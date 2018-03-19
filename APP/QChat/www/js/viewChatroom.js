@@ -92,6 +92,22 @@ $("#viewChatroom").pagecontainer({
                 $("#myTempImage").remove();
             }
 
+            loadImage(action, photoLocalPath);
+        }
+
+        function cameraPluginCallback(status, imageUploadURL) {
+            photoLocalPath = imageUploadURL;
+
+            if (status == "sizeOverflow") {
+
+            } else {
+                loadImage("upload", photoLocalPath);
+            }
+        }
+
+        function loadImage(action, imageUploadURL) {
+            photoLocalPath = imageUploadURL;
+
             $("<img id='myTempImage' style='display:none;' src='" + photoLocalPath + "'>").load(function() {
                 $(this).appendTo("#tempImage");
 
@@ -1135,13 +1151,13 @@ console.log(data.latestMessage);
 
         $(document).on({
             click: function() {
-                CameraPlugin.openFilePicker("CAMERA", tempImage);
+                CameraPlugin.openFilePicker("CAMERA", cameraPluginCallback);
             }
         }, "#photoCamera");
 
         $(document).on({
             click: function() {
-                CameraPlugin.openFilePicker("PHOTOLIBRARY", tempImage);
+                CameraPlugin.openFilePicker("PHOTOLIBRARY", cameraPluginCallback);
             }
         }, "#photoLibrary");
 
