@@ -188,4 +188,43 @@ class PostController extends Controller
                     'Content'=>$post]);
 
     }
+
+    /**
+     * 透過此API可以修改自己的貼文
+     * @param  Request $request 
+     * @return json
+     */
+    public function modifyPost(Request $request){
+        
+        $xml=simplexml_load_string($request['strXml']);
+        $data = json_decode(json_encode($xml),TRUE);
+
+        $validator = Validator::make($data , [
+            'post_id' => 'required|string|size:32|parent_board_is_open|post_exist|post_is_open|is_my_post:'.$data['emp_no'],
+            'post_title' => 'required|string|max:99',
+            'content' => 'required',
+            'file_list' => 'sometimes|required|array',
+        ]);
+
+        if($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>""], 200);
+        }
+        \DB::beginTransaction();
+        try{
+            
+            $userData = $this->userService->getUserData($data['emp_no']);
+            $this->postService->modifyPost($data, $userData);
+            $this->attachService->modifyAttach($data, $userData);
+            
+            \DB::commit();
+            return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+                        'Message'=>"Success",
+                        'Content'=>""]);
+        } catch (\Exception $e){
+            \DB::rollBack();
+            throw $e;
+        }
+        
+    }
 }

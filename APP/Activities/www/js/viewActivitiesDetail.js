@@ -129,10 +129,10 @@ $("#viewActivitiesDetail").pagecontainer({
 
         //點擊 "開始報名" 跳轉到編輯頁
         $(".detail-signup-btn").on("click", function () {
-            if (isRepeatSignup == "Y") {
+            if (isRepeatSignup == "Y" && !$(this).hasClass("btn-disabled")) {
                 //已報名同類活動，不能報名該活動
                 popupMsgInit('.signupedSameMsg');
-            } else if (isRepeatSignup == "N") {
+            } else if (isRepeatSignup == "N" && !$(this).hasClass("btn-disabled")) {
                 activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
                     + actID
                     + '</ActivitiesID><SignupModel>'
