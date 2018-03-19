@@ -107,20 +107,20 @@ gulp.task('install', ['copyRes'], shell.task([
 gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova platform add ios',
   'cordova platform add android',
-  'cordova plugin add ../../plugins/cordova-plugin-device',
+  'cordova plugin add ../../plugins/cordova-plugin-device --nofetch',
   //'cordova plugin add cordova-plugin-console',
-  'cordova plugin add ../../plugins/cordova-plugin-appversion',
-  'cordova plugin add ../../plugins/cordova-plugin-app-update',
-  'cordova plugin add ../../plugins/cordova-plugin-android-permissions',
-  'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --variable URL_SCHEME=appeis' + process.env.appNameDecorate,
-  'cordova plugin add ../../plugins/cordova-plugin-qsecurity --variable SCHEME_SETTING="' + schemeSetting + '"',
-  'cordova plugin add ../../plugins/cordova-plugin-whitelist',
-  'cordova plugin add ../../plugins/cordova-plugin-proguard',
-  'cordova plugin add ../../plugins/cordova-plugin-network-information',
-  'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility',
-  'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
-  'cordova plugin add ../../plugins/cordova-plugin-statusbar',
-  'cordova plugin add ../../plugins/cordova-plugin-inappbrowser'
+  'cordova plugin add ../../plugins/cordova-plugin-appversion --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-app-update --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-android-permissions --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --nofetch --variable URL_SCHEME=appeis' + process.env.appNameDecorate,
+  'cordova plugin add ../../plugins/cordova-plugin-qsecurity --nofetch --variable SCHEME_SETTING="' + schemeSetting + '"',
+  'cordova plugin add ../../plugins/cordova-plugin-whitelist --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-proguard --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-network-information --nofetch',
+  'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-splashscreen --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-statusbar --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-inappbrowser --nofetch'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
