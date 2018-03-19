@@ -465,5 +465,5 @@ window.syncRoamingMessage = function(data) {
     console.log("----syncRoamingMessage");
     console.log(data);
 
-    window.getConversation(data.target.id, false, true);
+    window.getConversation(data.conversation.target.id, false, true);
 };
