@@ -423,6 +423,8 @@ $("#viewMyFamilyDatum").pagecontainer({
         $(".family-save-btn").on("click", function () {
             if (checkFormByFamily()) {
                 loadingMask("show");
+                familyName = $.trim($("#familyName").val());
+                familyID = $.trim($("#familyID").val());
 
                 if (addFamilyOrNot) {
                     activitiesFamilyAddQueryData = '<LayoutHeader><EmployeeNo>'
@@ -520,7 +522,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             timeoutFamilyName = setTimeout(function () {
                 familyName = $.trim($("#familyName").val());
                 checkFormByFamily();
-            }, 2000);
+            }, 1000);
         });
 
         $("#familyID").on("keyup", function () {
@@ -531,7 +533,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             timeoutFamilyID = setTimeout(function () {
                 familyID = $.trim($("#familyID").val());
                 checkFormByFamily();
-            }, 2000);
+            }, 1000);
         });
 
 

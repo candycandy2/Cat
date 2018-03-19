@@ -258,7 +258,7 @@ function setTextCustomField(arr, i, id, container, count) {
 
     $("." + container).append(fieldContent);
 
-    if(arr[i]["ColumnAnswer"] == ""){
+    if (arr[i]["ColumnAnswer"] == "") {
         count++;
     }
 
@@ -267,10 +267,11 @@ function setTextCustomField(arr, i, id, container, count) {
 }
 
 //選擇眷屬的Text
-function setTextCustomField2(index, arr, i, id, $container) {
+function setTextCustomField2(index, arr, i, id, $container, num) {
     var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
         + arr[i]["ColumnName"]
-        + '</label><input id="' + index + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" data-role="none" class="' + id + '" value="'
+        + '</label><input id="' + index + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" '
+        + 'data-no="' + num + '" data-role="none" class="' + id + '" value="'
         + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
         + '"></div>';
 
@@ -353,23 +354,43 @@ function saveValueAndCheckForm(arr, name, value, bool, btn) {
     for (var i in arr) {
         if (name == arr[i]["ColumnName"] && bool == true) {
             arr[i]["ColumnAnswer"] += (";" + value);
+            break;
         } else if (name == arr[i]["ColumnName"] && bool == false) {
             arr[i]["ColumnAnswer"] = arr[i]["ColumnAnswer"].replace(";" + value, "");
+            break;
         } else if (name == arr[i]["ColumnName"] && bool == null) {
             arr[i]["ColumnAnswer"] = value;
+            break;
         }
     }
 
     //检查表单是否为空
+    var count = 0;
     for (var i in arr) {
         if (arr[i]["ColumnAnswer"] == "") {
-            $("#" + btn).addClass("btn-disabled");
-            break;
-        } else {
-            $("#" + btn).removeClass("btn-disabled");
+            count++;
         }
     }
+
+    if (count > 0) {
+        $("#" + btn).addClass("btn-disabled");
+    } else {
+        $("#" + btn).removeClass("btn-disabled");
+    }
     //console.log(arr);
+}
+
+//呼叫API之前，再次更新Text欄位值
+function getTextValueBeforeCall(model, status, className, arr) {
+    $.each($("." + model + "-" + status + "-custom-field ." + className), function (index, item) {
+        var columnName = $(item).prev().text();
+        for (var i in arr) {
+            if (columnName == arr[i]["ColumnName"]) {
+                arr[i]["ColumnAnswer"] = $.trim($(item).val());
+                break;
+            }
+        }
+    });
 }
 
 //按時段編號排序

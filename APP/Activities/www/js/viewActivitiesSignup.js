@@ -510,10 +510,13 @@ $("#viewActivitiesSignup").pagecontainer({
             for (var i in arr) {
                 if (name == arr[i]["ColumnName"] && bool == true) {
                     arr[i]["ColumnAnswer"] += (";" + value);
+                    break;
                 } else if (name == arr[i]["ColumnName"] && bool == false) {
                     arr[i]["ColumnAnswer"] = arr[i]["ColumnAnswer"].replace(";" + value, "");
+                    break;
                 } else if (name == arr[i]["ColumnName"] && bool == null) {
                     arr[i]["ColumnAnswer"] = value;
+                    break;
                 }
             }
         }
@@ -736,7 +739,7 @@ $("#viewActivitiesSignup").pagecontainer({
             timeoutDepartNo = setTimeout(function () {
                 departNo = $.trim($("#departNo").val());
                 checkFieldByTeam();
-            }, 2000);
+            }, 1000);
 
         });
 
@@ -749,7 +752,7 @@ $("#viewActivitiesSignup").pagecontainer({
             timeoutTeamName = setTimeout(function () {
                 teamName = $.trim($("#teamName").val());
                 checkFieldByTeam();
-            }, 2000);
+            }, 1000);
 
         });
 
@@ -762,6 +765,8 @@ $("#viewActivitiesSignup").pagecontainer({
                 var nowTime = getTimeNow();
                 if (nowTime - overTime < 0) {
                     loadingMask("show");
+                    teamName = $.trim($("#teamName").val());
+                    departNo = $.trim($("#departNo").val());
 
                     activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                         + submitID
@@ -803,28 +808,34 @@ $("#viewActivitiesSignup").pagecontainer({
         $(".family-signup-custom-field").on("change", ".familySignupSelect select", function () {
             var selfName = $(this).parent().prev().text();
             var selfVal = $(this).val();
-
+            //保存栏位值并检查表单
             saveValueAndCheckForm(familyFieldArr, selfName, selfVal, null, "selectFamilyBtn");
         });
 
         //text
         $(".family-signup-custom-field").on("keyup", ".familySignupText", function () {
             var self = $(this);
-            // var selfName = $(this).prev().text();
-            // var selfVal = $(this).val();
+            var selfName = $(this).prev().text();
 
             if (timeoutCheckFamilySignup != null) {
                 clearTimeout(timeoutCheckFamilySignup);
                 timeoutCheckFamilySignup = null;
             }
             timeoutCheckFamilySignup = setTimeout(function () {
-                var selfName = self.prev().text();
                 var selfVal = $.trim(self.val());
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(familyFieldArr, selfName, selfVal, null, "selectFamilyBtn");
-            }, 2000);
+            }, 1000);
 
         });
+
+        //失去焦點再次更新欄位值
+        // $(".family-signup-custom-field").on("blur", ".familySignupText", function () {
+        //     var selfName = $(this).prev().text();
+        //     var selfVal = $.trim($(this).val());
+        //     //保存栏位值并检查表单
+        //     saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "selectFamilyBtn");
+        // });
 
         //checkbox
         $(".family-signup-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -850,6 +861,8 @@ $("#viewActivitiesSignup").pagecontainer({
 
             if (!selfClass) {
                 loadingMask("show");
+                //呼叫API前，再次更新欄位值
+                getTextValueBeforeCall("family", "signup", "familySignupText", familyFieldArr);
 
                 //1.本人信息
                 var answerList = "";
@@ -910,21 +923,27 @@ $("#viewActivitiesSignup").pagecontainer({
         //text
         $(".person-signup-custom-field").on("keyup", ".personSignupText", function () {
             var self = $(this);
-            // var selfName = $(this).prev().text();
-            // var selfVal = $(this).val();
+            var selfName = $(this).prev().text();
 
             if (timeoutCheckPersonSignup != null) {
                 clearTimeout(timeoutCheckPersonSignup);
                 timeoutCheckPersonSignup = null;
             }
             timeoutCheckPersonSignup = setTimeout(function () {
-                var selfName = self.prev().text();
                 var selfVal = $.trim(self.val());
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
-            }, 2000);
+            }, 1000);
 
         });
+
+        //失去焦點再次更新欄位值
+        // $(".person-signup-custom-field").on("blur", ".personSignupText", function () {
+        //     var selfName = $(this).prev().text();
+        //     var selfVal = $.trim($(this).val());
+        //     //保存栏位值并检查表单
+        //     saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
+        // });
 
         //checkbox
         $(".person-signup-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -944,7 +963,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
         });
 
-        //開始報名
+        //个人報名
         $("#personSignupBtn").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
 
@@ -953,6 +972,8 @@ $("#viewActivitiesSignup").pagecontainer({
                 var nowTime = getTimeNow();
                 if (nowTime - overTime < 0) {
                     loadingMask("show");
+                    //呼叫API前，再次更新欄位值
+                    getTextValueBeforeCall("person", "signup", "personSignupText", personFieldArr);
 
                     activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                         + submitID
@@ -1025,7 +1046,7 @@ $("#viewActivitiesSignup").pagecontainer({
                 radioFlag = false;
             }
 
-            //判斷radio和arr書否有空值
+            //檢查時段和欄位是否爲空
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
         });
 
@@ -1035,7 +1056,7 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfVal = $(this).val();
             //保存栏位值
             saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
-            //判斷radio和arr書否有空值
+            //檢查時段和欄位是否爲空
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
 
         });
@@ -1043,22 +1064,30 @@ $("#viewActivitiesSignup").pagecontainer({
         //text
         $(".time-signup-custom-field").on("keyup", ".timeSignupText", function () {
             var self = $(this);
-            // var selfName = $(this).prev().text();
-            // var selfVal = $(this).val();
+            var selfName = $(this).prev().text();
 
             if (timeoutCheckTimeSignup != null) {
                 clearTimeout(timeoutCheckTimeSignup);
                 timeoutCheckTimeSignup = null;
             }
             timeoutCheckTimeSignup = setTimeout(function () {
-                var selfName = self.prev().text();
                 var selfVal = $.trim(self.val());
                 //保存栏位值
                 saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
-            }, 2000);
-            //判斷radio和arr書否有空值
+            }, 1000);
+            //檢查時段和欄位是否爲空
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
         });
+
+        //失去焦點再次更新欄位值
+        // $(".time-signup-custom-field").on("blur", ".timeSignupText", function () {
+        //     var selfName = $(this).prev().text();
+        //     var selfVal = $.trim($(this).val());
+        //     //保存栏位值
+        //     saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
+        //     //檢查時段和欄位是否爲空
+        //     removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
+        // });
 
         //checkbox
         $(".time-signup-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -1076,7 +1105,7 @@ $("#viewActivitiesSignup").pagecontainer({
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
 
-            //判斷radio和arr書否有空值
+            //檢查時段和欄位是否爲空
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
 
         });
@@ -1090,6 +1119,8 @@ $("#viewActivitiesSignup").pagecontainer({
                 var nowTime = getTimeNow();
                 if (nowTime - overTime < 0) {
                     loadingMask("show");
+                    //呼叫API前，再次更新欄位值
+                    getTextValueBeforeCall("time", "signup", "timeSignupText", timeFieldArr);
 
                     activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
                         + submitID
