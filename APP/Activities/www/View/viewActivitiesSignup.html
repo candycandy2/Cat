@@ -144,16 +144,20 @@
                 <span class="langStr" data-id="str_066"></span>
             </div>
             <div class="team-signup-input">
-                <input type="text" id="departNo" maxlength="10" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'')" onpaste="return false;"
-                    oncontextmenu="return false;" data-role="none" class="input-text-full">
+                <!-- <input type="text" id="departNo" maxlength="10" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'')" onpaste="return false;"
+                    oncontextmenu="return false;" data-role="none" class="input-text-full"> -->
+                <input type="text" id="departNo" maxlength="10" onkeyup="stripScript(this)" onpaste="return false;" oncontextmenu="return false;"
+                    data-role="none" class="input-text-full">
             </div>
             <div class="font-style11 font-color1">
                 <!--隊伍-->
                 <span class="langStr" data-id="str_067"></span>
             </div>
             <div class="team-signup-input">
-                <input type="text" id="teamName" maxlength="50" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'')" onpaste="return false;"
-                    oncontextmenu="return false;" data-role="none" class="input-text-full">
+                <!-- <input type="text" id="teamName" maxlength="50" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,'')" onpaste="return false;"
+                    oncontextmenu="return false;" data-role="none" class="input-text-full"> -->
+                <input type="text" id="teamName" maxlength="50" onkeyup="stripScript(this)" onpaste="return false;" oncontextmenu="return false;"
+                    data-role="none" class="input-text-full">
             </div>
             <div class="font-style11 font-color1">
                 <!--成員-->
