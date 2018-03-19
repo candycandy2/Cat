@@ -7,6 +7,14 @@ $("#viewMyInfoEdit").pagecontainer({
         var timer;
 
         /********************************** function *************************************/
+        function cameraPluginCallback(status, imageUploadURL) {
+            if (status == "sizeOverflow") {
+
+            } else {
+                avatarCrop(imageUploadURL);
+            }
+        }
+
         function avatarCrop(imageUploadURL) {
 
             var buttonHeight = parseFloat($(window).height() * 0.1306).toFixed(2);
@@ -270,7 +278,7 @@ $("#viewMyInfoEdit").pagecontainer({
 
         $(document).on({
             click: function() {
-                CameraPlugin.openFilePicker("PHOTOLIBRARY", avatarCrop);
+                CameraPlugin.openFilePicker("PHOTOLIBRARY", cameraPluginCallback);
             }
         }, "#viewMyInfoEditContent .chatroom-info-photo-content");
 
