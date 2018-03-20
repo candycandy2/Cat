@@ -308,8 +308,17 @@ $("#viewIndex").pagecontainer({
                             //if (JM.data.chatroom[chatroom.extras.chatroom_id] !== undefined) {
                             //    window.processChatroomData(chatroom, "getConversations", false, true);
                             //} else {
-                                window.getConversation(chatroom.extras.chatroom_id, true, true);
+                            //    window.getConversation(chatroom.extras.chatroom_id, true, true);
                             //}
+
+                            var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+                            var activePageID = activePage[0].id;
+
+                            if (activePageID === "viewChatroom") {
+                                window.getConversation(chatroom.extras.chatroom_id, true, true);
+                            } else {
+                                window.getConversation(chatroom.extras.chatroom_id, false, true);
+                            }
 
                         } else if (action === "getConversation") {
                             window.processChatroomData(chatroom, "getConversation", true, false);

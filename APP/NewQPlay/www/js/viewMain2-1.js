@@ -140,14 +140,19 @@ $("#viewMain2-1").pagecontainer({
 
             var __construct = function() {
 
+                var limitSeconds = 1 * 60 * 60 * 24;
                 var QueryAppListData = JSON.parse(window.localStorage.getItem('QueryAppListData'));
-                if (QueryAppListData === null || checkDataExpired(QueryAppListData['lastUpdateTime'], 1, 'dd')) {
+                if (loginData["versionName"].indexOf("Staging") !== -1) {
+                    limitSeconds = 1;
+                } else if (loginData["versionName"].indexOf("Development") !== -1) {
+                    limitSeconds = 1;
+                }
+                if (QueryAppListData === null || checkDataExpired(QueryAppListData['lastUpdateTime'], limitSeconds, 'ss')) {
                     QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
                 } else {
                     var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
                     FillAppList(responsecontent);
                 }
-
 
             }();
 
@@ -250,18 +255,18 @@ $("#viewMain2-1").pagecontainer({
                 }
             }
         }
-        
+
         function locationSuccess(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
-            var searchtext = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='(" +lat+","+lon+ ")') and u='c'"
-            $.getJSON("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json").success(function(data){
+            var searchtext = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='(" + lat + "," + lon + ")') and u='c'"
+            $.getJSON("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json").success(function(data) {
                 weatherResults = data.query.results.channel;
-                $('#weather').html( weatherResults.location.city + ", " + weatherResults.item.condition.text + ", " + weatherResults.item.condition.temp + "°C");
+                $('#weather').html(weatherResults.location.city + ", " + weatherResults.item.condition.text + ", " + weatherResults.item.condition.temp + "°C");
             });
         }
 
-        function locationError(error){
+        function locationError(error) {
             console.warn('ERROR(' + error.code + '): ' + error.message);
         }
 
@@ -341,10 +346,10 @@ $("#viewMain2-1").pagecontainer({
                 }
             });
 
-            $(document).ready(function(){
+            $(document).ready(function() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
-                }              
+                }
             });
         });
 

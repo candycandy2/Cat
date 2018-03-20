@@ -101,6 +101,7 @@ function onBackKeyDown() {
     }
 }
 
+//模擬菜單切換頁面
 function changePageByPanel(pageId, panel) {
     if ($.mobile.activePage[0].id !== pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
@@ -254,7 +255,7 @@ function setTextCustomField(arr, i, id, container, count) {
         + arr[i]["ColumnName"]
         + '</label><input id="' + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" data-role="none" class="' + id + '" value="'
         + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
-        + '"></div>';
+        + '" oncut="return false;" onpaste="return false;" oncontextmenu="return false;"></div>';
 
     $("." + container).append(fieldContent);
 
@@ -273,7 +274,7 @@ function setTextCustomField2(index, arr, i, id, $container, num) {
         + '</label><input id="' + index + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" '
         + 'data-no="' + num + '" data-role="none" class="' + id + '" value="'
         + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
-        + '"></div>';
+        + '" oncut="return false;" onpaste="return false;" oncontextmenu="return false;"></div>';
 
     $container.append(fieldContent);
 }
