@@ -465,31 +465,6 @@ $("#viewSelectFamily").pagecontainer({
 
         });
 
-        // $(".select-family-tbody").on("blur", ".custom-field input", function () {
-        //     var self = $(this);
-        //     var familyNo = $(this).parent().parent().parent().prev().find(".family-checkbox-img").parent().attr("data-no");
-        //     var columnName = $(this).prev().text();
-        //     var columnAnswer = $.trim($(this).val());
-
-        //     if (familyAllList.length != 0) {
-        //         for (var i in familyAllList) {
-        //             if (familyNo == familyAllList[i]["FamilyNo"]) {
-        //                 for (var j = 1; j < 6; j++) {
-        //                     if (columnName == familyAllList[i]["ColumnName_" + j]) {
-        //                         familyAllList[i]["ColumnAnswer_" + j] = columnAnswer;
-        //                         break;
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-
-        //     //如果自定義欄位的Text值爲空，則眷屬的checkbox也不能選擇
-        //     if (columnAnswer == "" && $(this).parent().parent().parent().prev().find(".family-checkbox-img").attr("src") == "img/checkbox_s.png") {
-        //         $(this).parent().parent().parent().prev().find(".family-checkbox-img").trigger("click");
-        //     }
-        // });
-
         //Checkbox欄位值改變
         $(".select-family-tbody").on("click", ".custom-field-checkbox > div", function () {
             var familyNo = $(this).parent().parent().parent().parent().prev().find(".family-checkbox-img").parent().attr("data-no");
@@ -588,14 +563,6 @@ $("#viewSelectFamily").pagecontainer({
 
         });
 
-        //footer fixed定位会因为虚拟键盘展开影响页面大小
-        // $(".select-family-tbody").on("focus", "input", function() {
-        //     $("#familySignupBtn").hide();
-        // });
-
-        // $(".select-family-tbody").on("blur", "input", function() {
-        //     $("#familySignupBtn").show();
-        // });
 
     }
 });
