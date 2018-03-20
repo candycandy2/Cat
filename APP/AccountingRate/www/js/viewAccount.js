@@ -383,11 +383,17 @@ $("#viewAccount").pagecontainer({
             if (i > 0) {
                 NewshowMonth.sort().reverse();
                 //[12,11,1] => ["201801","201712","201711"]
+                //["201803"]
                 NewshowMonth.splice(2);
                 //[12,11] => ["201801","201712"]
+                //["201803"]
                 NewshowMonth.reverse();
                 //[11,12] => ["201712","201801"]
-                showDataMonth = [parseInt(NewshowMonth[0].substring(4, 6)), parseInt(NewshowMonth[1].substring(4, 6))];
+                //["201803"]
+                if(NewshowMonth.length > 1)
+                    showDataMonth = [parseInt(NewshowMonth[0].substring(4, 6)), parseInt(NewshowMonth[1].substring(4, 6))];
+                else if(NewshowMonth.length > 0)
+                    showDataMonth = [parseInt(NewshowMonth[0].substring(4, 6))];
                 window.localStorage.setItem("showDataMonth", JSON.stringify(showDataMonth));
             }
 
