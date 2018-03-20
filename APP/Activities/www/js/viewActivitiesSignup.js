@@ -732,28 +732,46 @@ $("#viewActivitiesSignup").pagecontainer({
 
         /*********************************** team signup ***********************************/
         //輸入部門代碼
-        $("#departNo").on("keyup", function () {
-            if (timeoutDepartNo != null) {
-                clearTimeout(timeoutDepartNo);
-                timeoutDepartNo = null;
+        $("#departNo").on("keyup", function (event) {
+            // if (timeoutDepartNo != null) {
+            //     clearTimeout(timeoutDepartNo);
+            //     timeoutDepartNo = null;
+            // }
+            // timeoutDepartNo = setTimeout(function () {
+            //     departNo = $.trim($("#departNo").val());
+            //     checkFieldByTeam();
+            // }, 1000);
+            var pattern = /([^a-zA-Z0-9\-\u4e00-\u9fa5]*)[a-zA-Z0-9\-\u4e00-\u9fa5]*([^a-zA-Z0-9\-\u4e00-\u9fa5]*)/;
+            var residue = event.currentTarget.value.match(pattern);
+            if (residue[1] !== "" || residue[2] !== "") {
+                $("#departNo").val($("#departNo").val().replace(residue[1], ""));
+                $("#departNo").val($("#departNo").val().replace(residue[2], ""));
             }
-            timeoutDepartNo = setTimeout(function () {
-                departNo = $.trim($("#departNo").val());
-                checkFieldByTeam();
-            }, 1000);
+
+            departNo = $.trim($("#departNo").val());
+            checkFieldByTeam();
 
         });
 
         //輸入隊伍名稱
-        $("#teamName").on("keyup", function () {
-            if (timeoutTeamName != null) {
-                clearTimeout(timeoutTeamName);
-                timeoutTeamName = null;
+        $("#teamName").on("keyup", function (event) {
+            // if (timeoutTeamName != null) {
+            //     clearTimeout(timeoutTeamName);
+            //     timeoutTeamName = null;
+            // }
+            // timeoutTeamName = setTimeout(function () {
+            //     teamName = $.trim($("#teamName").val());
+            //     checkFieldByTeam();
+            // }, 1000);
+            var pattern = /([^a-zA-Z0-9_\-\.\u4e00-\u9fa5]*)[a-zA-Z0-9_\-\.\u4e00-\u9fa5]*([^a-zA-Z0-9_\-\.\u4e00-\u9fa5]*)/;
+            var residue = event.currentTarget.value.match(pattern);
+            if (residue[1] !== "" || residue[2] !== "") {
+                $("#teamName").val($("#teamName").val().replace(residue[1], ""));
+                $("#teamName").val($("#teamName").val().replace(residue[2], ""));
             }
-            timeoutTeamName = setTimeout(function () {
-                teamName = $.trim($("#teamName").val());
-                checkFieldByTeam();
-            }, 1000);
+
+            teamName = $.trim($("#teamName").val());
+            checkFieldByTeam();
 
         });
 
@@ -898,14 +916,6 @@ $("#viewActivitiesSignup").pagecontainer({
             }
         });
 
-        //footer fixed定位会因为虚拟键盘展开影响页面大小
-        // $(".family-signup-custom-field").on("focus", "input", function() {
-        //     $("#selectFamilyBtn").hide();
-        // });
-
-        // $(".family-signup-custom-field").on("blur", "input", function() {
-        //     $("#selectFamilyBtn").show();
-        // });
 
         /*********************************** person signup ***********************************/
         //選擇人數dropdownlist
@@ -937,14 +947,6 @@ $("#viewActivitiesSignup").pagecontainer({
             }, 1000);
 
         });
-
-        //失去焦點再次更新欄位值
-        // $(".person-signup-custom-field").on("blur", ".personSignupText", function () {
-        //     var selfName = $(this).prev().text();
-        //     var selfVal = $.trim($(this).val());
-        //     //保存栏位值并检查表单
-        //     saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
-        // });
 
         //checkbox
         $(".person-signup-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -1006,15 +1008,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
             }
         });
-
-        //footer fixed定位会因为虚拟键盘展开影响页面大小
-        // $(".person-signup-custom-field").on("focus", "input", function() {
-        //     $("#personSignupBtn").hide();
-        // });
-
-        // $(".person-signup-custom-field").on("blur", "input", function() {
-        //     $("#personSignupBtn").show();
-        // });
 
 
         /*********************************** time signup ***********************************/
@@ -1080,16 +1073,6 @@ $("#viewActivitiesSignup").pagecontainer({
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
         });
 
-        //失去焦點再次更新欄位值
-        // $(".time-signup-custom-field").on("blur", ".timeSignupText", function () {
-        //     var selfName = $(this).prev().text();
-        //     var selfVal = $.trim($(this).val());
-        //     //保存栏位值
-        //     saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
-        //     //檢查時段和欄位是否爲空
-        //     removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
-        // });
-
         //checkbox
         $(".time-signup-custom-field").on("click", ".custom-field-checkbox > div", function () {
             var src = $(this).find("img").attr("src");
@@ -1154,14 +1137,6 @@ $("#viewActivitiesSignup").pagecontainer({
             }
         });
 
-        //footer fixed定位会因为虚拟键盘展开影响页面大小
-        // $(".time-signup-custom-field").on("focus", "input", function() {
-        //     $("#timeSignupBtn").hide();
-        // });
-
-        // $(".time-signup-custom-field").on("blur", "input", function() {
-        //     $("#timeSignupBtn").show();
-        // });
 
 
     }

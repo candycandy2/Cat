@@ -525,14 +525,6 @@ $("#viewActivitiesManage").pagecontainer({
 
         });
 
-        //失去焦點再次更新欄位值
-        // $(".person-manage-custom-field").on("blur", ".personManageText", function () {
-        //     var selfName = $(this).prev().text();
-        //     var selfVal = $.trim($(this).val());
-        //     //保存栏位值并检查表单
-        //     saveValueAndCheckForm(personManageArr, selfName, selfVal, null, "updatePersonSignup");
-        // });
-
         //checkbox
         $(".person-manage-custom-field").on("click", ".custom-field-checkbox > div", function () {
             var src = $(this).find("img").attr("src");
@@ -601,14 +593,6 @@ $("#viewActivitiesManage").pagecontainer({
             }
         });
 
-        //footer fixed定位会因为虚拟键盘展开影响页面大小
-        // $(".person-manage-custom-field").on("focus", "input", function() {
-        //     $("#personManageBtn").hide();
-        // });
-
-        // $(".person-manage-custom-field").on("blur", "input", function() {
-        //     $("#personManageBtn").show();
-        // });
 
         /************************************ Time *************************************/
         //取消時段报名-popup
@@ -644,14 +628,6 @@ $("#viewActivitiesManage").pagecontainer({
             }, 1000);
 
         });
-
-        //失去焦點再次更新欄位值
-        // $(".family-manage-custom-field").on("blur", ".familyManageText", function () {
-        //     var selfName = $(this).prev().text();
-        //     var selfVal = $.trim($(this).val());
-        //     //保存栏位值并检查表单
-        //     saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
-        // });
 
         //checkbox
         $(".family-manage-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -720,14 +696,6 @@ $("#viewActivitiesManage").pagecontainer({
             popupMsgInit('.cancelSignupMsg');
         });
 
-        //footer fixed定位会因为虚拟键盘展开影响页面大小
-        // $(".family-manage-custom-field").on("focus", "input", function() {
-        //     $("#familyManageBtn").hide();
-        // });
-
-        // $(".family-manage-custom-field").on("blur", "input", function() {
-        //     $("#familyManageBtn").show();
-        // });
 
     }
 });
