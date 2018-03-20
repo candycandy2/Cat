@@ -6,7 +6,7 @@ $("#viewActivitiesSignup").pagecontainer({
         var timeoutDepartNo = null, timeoutTeamName = null, timeoutCheckTimeSignup = null;
         var teamName, departNo, submitID, submitModel;
         var limitPlace, currentPlace;     //組隊報名限制人數和目前已選人數
-        var personSubmitPlace;    //個人報名人數
+        var personSubmitPlace = "1";    //個人報名人數
         var timeID;    //時段編號
         var memberNoArr = [];    //組隊報名成員數組
         var personFieldArr = [], familyFieldArr = [], timeFieldArr = [];    //自定義欄位 
@@ -195,6 +195,7 @@ $("#viewActivitiesSignup").pagecontainer({
                         //賦值
                         $("#timeSignupThumbnail").attr("src", signupObj["ActivitiesImage"]);
                         $("#timeSignupName").text(signupObj["ActivitiesName"]);
+                        radioFlag = false;
 
                         //1.獲取各時段
                         var timeArr = [];
