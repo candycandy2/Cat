@@ -733,45 +733,27 @@ $("#viewActivitiesSignup").pagecontainer({
         /*********************************** team signup ***********************************/
         //輸入部門代碼
         $("#departNo").on("keyup", function (event) {
-            // if (timeoutDepartNo != null) {
-            //     clearTimeout(timeoutDepartNo);
-            //     timeoutDepartNo = null;
-            // }
-            // timeoutDepartNo = setTimeout(function () {
-            //     departNo = $.trim($("#departNo").val());
-            //     checkFieldByTeam();
-            // }, 1000);
-            var pattern = /([^a-zA-Z0-9\-\u4e00-\u9fa5]*)[a-zA-Z0-9\-\u4e00-\u9fa5]*([^a-zA-Z0-9\-\u4e00-\u9fa5]*)/;
-            var residue = event.currentTarget.value.match(pattern);
-            if (residue[1] !== "" || residue[2] !== "") {
-                $("#departNo").val($("#departNo").val().replace(residue[1], ""));
-                $("#departNo").val($("#departNo").val().replace(residue[2], ""));
+            if (timeoutDepartNo != null) {
+                clearTimeout(timeoutDepartNo);
+                timeoutDepartNo = null;
             }
-
-            departNo = $.trim($("#departNo").val());
-            checkFieldByTeam();
+            timeoutDepartNo = setTimeout(function () {
+                departNo = $.trim($("#departNo").val());
+                checkFieldByTeam();
+            }, 1000);
 
         });
 
         //輸入隊伍名稱
         $("#teamName").on("keyup", function (event) {
-            // if (timeoutTeamName != null) {
-            //     clearTimeout(timeoutTeamName);
-            //     timeoutTeamName = null;
-            // }
-            // timeoutTeamName = setTimeout(function () {
-            //     teamName = $.trim($("#teamName").val());
-            //     checkFieldByTeam();
-            // }, 1000);
-            var pattern = /([^a-zA-Z0-9_\-\.\u4e00-\u9fa5]*)[a-zA-Z0-9_\-\.\u4e00-\u9fa5]*([^a-zA-Z0-9_\-\.\u4e00-\u9fa5]*)/;
-            var residue = event.currentTarget.value.match(pattern);
-            if (residue[1] !== "" || residue[2] !== "") {
-                $("#teamName").val($("#teamName").val().replace(residue[1], ""));
-                $("#teamName").val($("#teamName").val().replace(residue[2], ""));
+            if (timeoutTeamName != null) {
+                clearTimeout(timeoutTeamName);
+                timeoutTeamName = null;
             }
-
-            teamName = $.trim($("#teamName").val());
-            checkFieldByTeam();
+            timeoutTeamName = setTimeout(function () {
+                teamName = $.trim($("#teamName").val());
+                checkFieldByTeam();
+            }, 1000);
 
         });
 
