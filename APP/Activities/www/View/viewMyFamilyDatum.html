@@ -51,8 +51,8 @@
                 </label>
                 <!-- <input type="text" name="familyName" id="familyName" onkeyup="value=value.replace(/[^\a-\z\A-\Z\u4E00-\u9FA5\. ]/g,'')"
                     onpaste="return false;" oncontextmenu="return false;" maxlength="12" data-role="none" class="family-input"> -->
-                <input type="text" name="familyName" id="familyName" onkeyup="stripScript(this)" onpaste="return false;" oncontextmenu="return false;"
-                    maxlength="12" data-role="none" class="family-input">
+                <input type="text" name="familyName" id="familyName" onkeyup="stripScript(this)" oncut="return false;" onpaste="return false;"
+                    oncontextmenu="return false;" maxlength="12" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
                 <label for="familyRelationship">
@@ -75,7 +75,7 @@
                 </label>
                 <!-- <input type="text" name="familyID" id="familyID" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')" onpaste="return false;"
                     oncontextmenu="return false;" maxlength="20" data-role="none" class="family-input"> -->
-                <input type="text" name="familyID" id="familyID" onpaste="return false;" oncontextmenu="return false;"
+                <input type="text" name="familyID" id="familyID" oncut="return false;" onpaste="return false;" oncontextmenu="return false;"
                     maxlength="20" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
