@@ -101,6 +101,7 @@ function onBackKeyDown() {
     }
 }
 
+//模擬菜單切換頁面
 function changePageByPanel(pageId, panel) {
     if ($.mobile.activePage[0].id !== pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");

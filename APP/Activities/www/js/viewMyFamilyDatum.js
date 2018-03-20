@@ -514,7 +514,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         //檢查表單（姓名和身份證）是否符合提交要求
-        $("#familyName").on("keyup", function () {
+        $("#familyName").on("keyup", function (event) {
             if (timeoutFamilyName != null) {
                 clearTimeout(timeoutFamilyName);
                 timeoutFamilyName = null;
@@ -523,17 +523,27 @@ $("#viewMyFamilyDatum").pagecontainer({
                 familyName = $.trim($("#familyName").val());
                 checkFormByFamily();
             }, 1000);
+
         });
 
-        $("#familyID").on("keyup", function () {
-            if (timeoutFamilyID != null) {
-                clearTimeout(timeoutFamilyID);
-                timeoutFamilyID = null;
+        $("#familyID").on("keyup", function (event) {
+            // if (timeoutFamilyID != null) {
+            //     clearTimeout(timeoutFamilyID);
+            //     timeoutFamilyID = null;
+            // }
+            // timeoutFamilyID = setTimeout(function () {
+            //     familyID = $.trim($("#familyID").val());
+            //     checkFormByFamily();
+            // }, 1000);
+            var pattern = /([^a-zA-Z0-9]*)[a-zA-Z0-9]*([^a-zA-Z0-9]*)/;
+            var residue = event.currentTarget.value.match(pattern);
+            if (residue[1] !== "" || residue[2] !== "") {
+                $("#familyID").val($("#familyID").val().replace(residue[1], ""));
+                $("#familyID").val($("#familyID").val().replace(residue[2], ""));
             }
-            timeoutFamilyID = setTimeout(function () {
-                familyID = $.trim($("#familyID").val());
-                checkFormByFamily();
-            }, 1000);
+
+            familyID = $.trim($("#familyID").val());
+            checkFormByFamily();
         });
 
 
