@@ -53,7 +53,7 @@ class CommentController extends Controller
     {
         $data = parent::getData($request);
         $rules = [
-            'post_id' => 'required|string|size:32',
+            'post_id' => 'required|string',
             'content' => 'required|string',
             'file_list' => 'sometimes|required|array'
         ];

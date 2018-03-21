@@ -13,6 +13,7 @@ use App\Services\CommentService;
 use Webpatser\Uuid\Uuid;
 use App\lib\ResultCode;
 use App\lib\Verify;
+use App\Models\QP_Post;
 
 class PostController extends Controller
 {
@@ -44,9 +45,13 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getPostId(Request $request)
-    {   
-       $uuid = str_replace("-", "", Uuid::generate());
-       return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+    { 
+
+        $uuid =  substr(md5(uniqid()), 8, 16);
+        while(QP_Post::where('row_id', $uuid)->exists()) {
+            $uuid = substr(md5(uniqid()), 8, 16);
+        }
+        return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                     'Message'=>"",
                     'Content'=>$uuid]);
     }
@@ -60,8 +65,8 @@ class PostController extends Controller
     {
         $data = parent::getData($request);
         $rules = [
-            'board_id' => 'required|numeric|',
-            'post_id' => 'required|string|size:32',
+            'board_id' => 'required|numeric',
+            'post_id' => 'required|string',
             'post_title' => 'required|string|max:99',
             'content' => 'required|string',
             'file_list' => 'sometimes|required|array',
@@ -113,7 +118,7 @@ class PostController extends Controller
         $data = parent::getData($request);
 
         $validator = Validator::make($data , [
-            'post_id' => 'required|string|size:32|post_owner:'.$data['emp_no'],
+            'post_id' => 'required|string|post_owner:'.$data['emp_no'],
         ]);
 
         if ($validator->fails()) {
@@ -193,7 +198,7 @@ class PostController extends Controller
 
         $validator = Validator::make($data , [
             'board_id' => 'required|numeric',
-            'post_id' => 'required|string|size:32',
+            'post_id' => 'required|string',
             'reply_from_seq' => 'required|numeric|min:1',
             'reply_to_seq' => 'required|numeric|greater_than:'.$replyFromSeq
         ]);
@@ -236,7 +241,7 @@ class PostController extends Controller
         $data = parent::getData($request);
 
         $validator = Validator::make($data , [
-            'post_id' => 'required|string|size:32|is_my_post:'.$data['emp_no'],
+            'post_id' => 'required|string|is_my_post:'.$data['emp_no'],
             'post_title' => 'required|string|max:99',
             'content' => 'required',
             'file_list' => 'sometimes|required|array',
