@@ -41,14 +41,12 @@ $("#viewActivitiesRecord").pagecontainer({
                     }
 
                     $("#viewRecordList").empty().append(recordContent).children("div:last-child").remove();
-
                     $("#viewRecordsNone").hide();
 
                 } else if (data["ResultCode"] == "045909") {
                     $("#viewRecordList").empty();
                     $("#viewRecordsNone").show();
                 }
-
 
                 loadingMask("hide");
             };
@@ -114,9 +112,8 @@ $("#viewActivitiesRecord").pagecontainer({
 
         });
 
-        //超時關閉popup，並返回活動列表
+        //超時關閉popup
         $("#recordTimeOverBtn").on("click", function () {
-            //重新獲取報名記錄
             ActivitiesRecordQuery();
         });
 
