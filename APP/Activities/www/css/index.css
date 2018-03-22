@@ -66,8 +66,14 @@
     -o-user-select: none;
 }
 
-input[type="text"] {
-    -webkit-user-select: auto; /*webkit浏览器*/
+input[type="text"],
+input[type="search"] {
+    -webkit-user-select: auto;
+}
+
+.overflow-scrolling-touch {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .menu-btn {

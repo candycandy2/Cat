@@ -3,39 +3,48 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
         <div id="container" class="header-style">
-            <div id="center" class="ui-title">IM</div>
+            <div id="center" class="ui-title">
+                <span class="langStr" data-id="str_001"></span>
+            </div>
         </div>
     </div>
     <div data-role="main" class="page-main" style="line-height: initial !important;">
-        <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="a">
-            <li><a href="#viewTalk">聊天室一<span class="ui-li-count">22</span></a></li>
-            <li><a href="#viewTalk1">聊天室二<span class="ui-li-count">3</span></a></li>
-            <li><a href="#viewTalk2">聊天室三<span class="ui-li-count">５</span></a></li>
-            <li><a href="#viewTalk3">聊天室四<span class="ui-li-count">7</span></a></li>
-            <li><a id="QRCamera">Open QRCode Camera</a></li>
-            <li><a id="QRCode">Create QRCode</a></li>
-            <li><a id="Fingerprint">Detect Fingerprint</a></li>
-            <li><a id="openPDF">View PDF</a></li>
-        </ul>
-    </div>
-    <div data-role="content">
-        <ul data-role="listview" class="swipe-delete">
-            <li>
-                <div class="behind">
-                    <a href="#" class="ui-btn delete-btn">Delete</a>
-                    <!--<a href="#" class="ui-btn edit-btn pull-left">Edit</a>-->
+        <div class="ui-margin-public" style="text-align: center;">
+            <div id="reserveTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50w">
+                <input type="radio" name="tab" id="tab1" value="tab1" checked="checked">
+                <label for="tab1">
+                    <!--健保-->
+                    <span class="langStr" data-id="str_002"></span>
+                </label>
+                <input type="radio" name="tab" id="tab2" value="tab2">
+                <label for="tab2">
+                    <!--勞保-->
+                    <span class="langStr" data-id="str_003"></span>
+                </label>
+                <input type="radio" name="tab" id="tab3" value="tab3">
+                <label for="tab3">
+                    <!--團保-->
+                    <span class="langStr" data-id="str_004"></span>
+                </label>
+            </div>
+        </div>
+        <div class="ui-margin-insurance-main" id="pageOne">
+            <div id="health-insurance">
+                <div class="font-style11" style="color:#0F0F0F;margin-bottom:2.14vw;">
+                    <!-- 投保資格 -->
+                    <span class="langStr" data-id="str_005"></span>
+                </div>              
+                <div class="health-insurance-content font-style7">
+                    <div style="margin-bottom:2.33vw;">
+                        <!-- 投保資格 內容01-->
+                        <span class="langStr" data-id="str_006"></span>
+                    </div>
+                    <div style="margin-bottom:3vw;">
+                        <!-- 投保資格 內容02-->
+                        <span class="langStr" data-id="str_007"></span>
+                    </div>
                 </div>
-                <a href="#">Delete me 1</a>
-            </li>
-            <li>
-                <div class="behind">
-                    <a href="#" class="ui-btn delete-btn">Delete</a>
-                    <!--<a href="#" class="ui-btn edit-btn pull-left">Edit</a>-->
-                </div>
-                <a href="#">Delete me 2</a>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
-    <iframe src="http://qplaydev.benq.com/insurance/html/insuranceInfo.html" style="width:93VW; height:75VH; border-style: none;"></iframe>
-    <!--<iframe src="../InsuranceInfo/insuranceInfo.html" style="width:93VW; height:75VH; border-style: none;"></iframe>-->
 </div>
