@@ -214,15 +214,13 @@ $("#viewSelectFamily").pagecontainer({
         });
 
         //超時關閉popup，並返回活動列表
-        $("#selectTimeOverBtn").on("click", function () {
-            //如果已額滿，重新獲取活動列表
-            ActivitiesListQuery();
-            for (var i = 0; i < 2; i++) {
-                pageVisitedList.pop();
-            }
-            //跳轉
-            changePageByPanel("viewActivitiesList", false);
-        });
+        // $("#selectTimeOverBtn").on("click", function () {
+        //     for (var i = 0; i < 2; i++) {
+        //         pageVisitedList.pop();
+        //     }
+        //     //跳轉
+        //     changePageByPanel("viewActivitiesList", false);
+        // });
 
         //返回眷屬報名或報名管理-popup
         $("#viewSelectFamily .back-select").on("click", function () {
@@ -511,7 +509,7 @@ $("#viewSelectFamily").pagecontainer({
             }
         });
 
-        //確定送出
+        //眷屬報名
         $("#familySignupBtn").on("click", function () {
             loadingMask("show");
 
@@ -543,26 +541,28 @@ $("#viewSelectFamily").pagecontainer({
                 }
             }
 
-            //先判斷是否超時
-            var nowTime = getTimeNow();
-            if (nowTime - overTime < 0) {
-                activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
-                    + actModel
-                    + '</SignupModel>'
-                    + familyListBySelf
-                    + familyQuery
-                    + '</LayoutHeader>';
+            // //先判斷是否超時
+            // var nowTime = getTimeNow();
+            // if (nowTime - overTime < 0) {
+            activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
+                + actModel
+                + '</SignupModel>'
+                + familyListBySelf
+                + familyQuery
+                + '</LayoutHeader>';
 
-                //console.log(activitiesSignupConfirmQueryData);
-                ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
+            //console.log(activitiesSignupConfirmQueryData);
+            ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
 
-            } else {
-                //超時提示
-                popupMsgInit('.selectTimeOverMsg');
-            }
+            // } else {
+            //     //超時提示，並重新獲取活動列表
+            //     popupMsgInit('.selectTimeOverMsg');
+            //     ActivitiesListQuery();
+            // }
 
         });
 
 
+        
     }
 });
