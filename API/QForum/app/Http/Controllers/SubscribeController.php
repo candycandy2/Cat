@@ -33,7 +33,7 @@ class SubscribeController extends Controller
 
         $data = parent::getData($request);
         $validator = Validator::make($data , [
-            'post_id' => 'required|string|size:32',
+            'post_id' => 'required|string',
             'subscribe_user_list' => 'required|array',
         ]);
         if($validator->fails()) {
