@@ -186,9 +186,11 @@ class ChatRoomController extends Controller
             //私聊，檢查是否已存在私聊聊天室，直接回傳既有聊天室id；不存在則繼續新增聊天室
             if($descData['group_message'] == 'N' && count($targetUserList) == 1){
                 $privateGroupId = $this->chatRoomService->getPrivateGroup($fromEmpNo,$targetUserList[0]);
-                return $result = response()->json(['ResultCode'=>ResultCode::_025933_PrivateChatroomAlreadyExist,
+                if(isset($privateGroupId) && $privateGroupId!=""){
+                    return $result = response()->json(['ResultCode'=>ResultCode::_025933_PrivateChatroomAlreadyExist,
                     'Message'=>"私聊聊天室已存在",
                     'Content'=>""]);
+                }
             }
             
             // 2. save chatroom information to DB
