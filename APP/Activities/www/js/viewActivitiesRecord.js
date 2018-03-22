@@ -95,14 +95,14 @@ $("#viewActivitiesRecord").pagecontainer({
         /********************************** page event *************************************/
         $("#viewActivitiesRecord").on("pagebeforeshow", function (event, ui) {
             /**** PullToRefresh ****/
-            PullToRefresh.init({
-                mainElement: '.pull-record',
-                onRefresh: function () {
-                    loadingMask("show");
-                    //重新获取報名記錄
-                    ActivitiesRecordQuery();
-                }
-            });
+            // PullToRefresh.init({
+            //     mainElement: '.pull-record',
+            //     onRefresh: function () {
+            //         loadingMask("show");
+            //         //重新获取報名記錄
+            //         ActivitiesRecordQuery();
+            //     }
+            // });
         });
 
         $("#viewActivitiesRecord").on("pageshow", function (event, ui) {
