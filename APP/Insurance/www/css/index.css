@@ -1,37 +1,4 @@
 /********************************** override jQuery Mobile *************************************/
-
-#viewQRScanner {
-     background: none!important;
-}
-
-.qr-scan-guides {
-    width: 60vw;
-    min-height: 60vw;
-    margin-top: 30%;
-    margin-left: 20%;
-    position: fixed;
-}  
-
-#qrcode {
-  width:160px;
-  height:160px;
-  margin-top:15px;
-  margin-left:50px;
-}
-
-#qrcode img {
-    width: 30px;
-}
-
-.comment-scanbox {
-    width: 70vw;
-    min-height: 60vw;
-    margin-top: 110vw;
-    margin-left: 15%;
-    position: fixed;
-    color: #C0C0C0
-}  
-
 .behind {
         width: 100%;
         height: 100%;
@@ -88,16 +55,6 @@ a {
     margin-left: auto !important;
 }
 
-#myReserve .ui-block-a {
-    text-align: left;
-}
-
-#myReserve .ui-block-a span,
-#myReserve .ui-block-b span {
-    display: inline-table;
-    margin-bottom: 5px;
-}
-
 #navbar ul li a {
     line-height: 90%;
 }
@@ -122,12 +79,6 @@ a {
     padding: 2.8vw 0 2.6vw;
 }
 
-#reserveDateSelect div.ui-bar-a {
-    background-color: initial;
-}
-
-#reserveDateSelect .ui-bar>div:nth-of-type(1){ padding-top: 1.692vw; height: 4VH;}
-
 .ui-radio-30 div.ui-radio {
     width: 33%;
 }
@@ -136,76 +87,42 @@ a {
     width: 50%;
 }
 
-#reserveSettingArea a:link {
-    text-decoration: none;
-    color: black;
-}
-
-#reserveTab > div > div.ui-radio label {
+#mainTab > div > div.ui-radio label {
     line-height: 1;
     border: 1px solid #2a88bc !important;
     border-left-width: 0 !important;
     background-color: #fff !important;
 }
 
-#reserveTab > div > div.ui-radio:nth-of-type(1) label{
+#mainTab > div > div.ui-radio:nth-of-type(1) label{
     border-left-width: 1px !important;
 }
 
-#reserveTab > div > div.ui-radio label.ui-btn-active {
+#mainTab > div > div.ui-radio label.ui-btn-active {
     background-color: #2a88bc !important;
     color: white !important;
 }
 
-#reserveTab.ui-radio-50w div.ui-radio {
+#mainTab.ui-radio-50w div.ui-radio {
     width: 30.6vw !important;
 }
 
-#pageThree, #pageTwo, #pageOne{ margin-top: 4.3vw !important;}
-#pageTwo{ margin-left: 0 !important; margin-right: 0 !important;}
+#pageOne, #pageTwo, #pageThree{ margin-left: 0 !important; margin-right: 0 !important;}
+
 
 #pageOne div.ui-select {
-    width: 30vw !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    display: inline-block;
-}
-
-#pageTwo div.ui-select {
     width: 45vw !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding: 3vh 0 3vh 0;
 }
 
-#reserveDateSelect div.ui-bar {
-    text-align: left;
-    border-style: solid;
-    border-color: #d6d6d6;
-    border-width: 0px 1px 1px 0px;
-    padding: 0 1.3vw 0 2vw;
-}
-
-#reserveDateSelect > div.ui-grid-c {
-    border-style: solid;
-    border-color: #d6d6d6;
-    border-width: 1px 0px 0px 1px;
-    background-color: #fff;
-}
-
-#reserveDateSelect div.ui-bar div:nth-child(2) {
-    font-size: 3.14vw;
-    margin-top: 1vw;
-}
-
-#reserveDateSelect div.ui-bar div:nth-child(2):not(.timeRemind){ padding-bottom: 1.021vw;}
-
 .ui-mobile .ui-page-active{ min-height: 100vh !important;}
 
 .ui-header .ui-title{ padding: 3.238vw 0; font-size: 4.39vw; font-weight: normal;}
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
-#reserveTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
-#reserveBtn{ margin: 4.3vw auto 0 !important; padding: 1.8vw 0; height: auto;}
+
+#mainTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 
 body {
   margin: 0;
@@ -258,6 +175,12 @@ pre {
   padding: 10px 0;
 }
 
+.reserveInfo{ overflow: hidden; padding: 4vw 6.71vw 3vw; display: flex; align-items: center; position: relative;}
+.reserveInfo-area{ float: left; vertical-align: middle; display: inline-block;}
+.reserve-area-time{ margin: 0 0 2.14vw 3.71vw;}
+#today-reserve-area{ margin-bottom: 6.44vw;}
+#today-reserve-area .reserveInfo{ background-color: #fff;}
+
 /********************************** public area *************************************/
 *{ box-sizing: border-box;}
 .hide{ display: none;}
@@ -307,15 +230,6 @@ pre {
     font-size: 3.349vw;
 }
 
-div.square {
-    width: 3vw;
-    height: 1.5vw;
-}
-
-.square.ui-color-reserve{ background-color: #d4d4d4 !important;}
-.square.ui-color-myreserve{ background-color: #b3d6d1 !important;}
-#reserveColorDiagram > div{ vertical-align: middle;}
-
 .ui-margin-public {
     margin: 1.8vw 3.71vw 0 !important;
     font-size: 4.18vw;
@@ -325,17 +239,16 @@ div.square {
     margin: 5vw 3.71vw 0 !important;
 }
 
-#health-insurance .health-insurance-content{ background-color: #ffffff;}
-
 .health-insurance-content {
-    padding: 3vw 0 3vw 3vw;
-    margin-bottom: 5vw;
+    padding: 3vw 3.71vw 3vw 6.71vw;
     color:#323232;
 }
 
-#viewNewSetting .ui-margin-public{ margin-top: 5.97vw !important;}
-#newSettingFloor{ font-size: 4.18vw;}
-#pageOne .scrollmenu{ margin-bottom: 0.99vw;}
+#insurance-main .health-insurance-content{ background-color: #ffffff;}
+
+.insurance-main-title { color:#0F0F0F; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
+.labor-insurance-remark  { color:#666666; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
+
 
 .title-icon {
     height: 5.957vw;
@@ -386,44 +299,6 @@ div.square {
     border-style: solid !important;
 }
 
-.btn-myreserve {
-    border-radius: 40px;
-    border-radius: 40px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    color: white;
-    width: 22vw;
-    height: 4.5vh;
-    line-height: 5vh;
-    text-align: center;
-    background-color: transparent;
-    color: white;
-    border-width: 1px;
-    border-color: white;
-    border-style: solid;
-    display: inline-block;
-}
-
-.myreserve-margin {
-    font-size: 2.8vh;
-    margin: 1.7vh 4.8vw;
-}
-
-.myreserve-height {
-    height: 10.7vh;
-    line-height: 10.7vh;
-}
-
-.setting-delete {
-    position: absolute;
-    right: 6vw;
-    display: inline-block;
-    width: 22vw;
-    height: 4vh;
-    line-height: 4.5vh;
-    margin-top: -0.5vh;
-}
-
 .setting-img {
     height: 2.5vh;
     margin-left: 2vw;
@@ -434,43 +309,6 @@ div.square {
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-}
-
-.quick-reserve-margin {
-    text-align: center;
-    margin: 4.5vh auto 3vh auto;
-}
-
-.quick-reserve-msg-icon {
-    background: url(../img/select.png) no-repeat;
-    width: 5vw;
-    height: 3vh;
-    background-size: 5vw 3vh;
-}
-
-.quick-reserve-warn-icon {
-    background: url(../img/warn_icon.png) no-repeat;
-    width: 5vw;
-    height: 3vh;
-    background-size: 5vw 3vh;
-}
-
-.quick-reserve-setting-icon {
-    background: url(../img/setting.png) no-repeat;
-    width: 7.2vw;
-    height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-}
-
-.quick-reserve-setting-icon {
-    background: url(../img/setting.png) no-repeat;
-    width: 7.2vw;
-    height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
-    background-repeat: no-repeat;
-    vertical-align: middle;
 }
 
 .cntIcon {
@@ -603,16 +441,6 @@ hr.ui-color-green {
     font-size: 5.5vw !important;
 }
 
-.ui-color-reserve {
-    background-color: #eaeaea !important;
-}
-
-.ui-color-myreserve {
-    background-color: #CBF1EC !important;
-}
-
-.ui-color-myreserve .timeRemind, .ui-color-reserve .timeRemind{ display: none;}
-
 .ui-linear-gradient-gary {
     background: -webkit-linear-gradient(#a1a3a5, #747679);
     background: -o-linear-gradient(#a1a3a5, #747679);
@@ -652,22 +480,6 @@ div.scrollmenu a {
     border-style: solid;
     border-width: 0px 1px 0px 0px;
     border-color: #d6d6d6 !important;
-}
-
-#scrollDate a,
-#quickReserveScrollDate a {
-    padding: 3vw 0;
-    width:30%;
-    font-weight: normal;
-}
-
-#scrollDate a{ padding: 2.894vw 0 2.567vw; margin-left: -4px;}
-#scrollDate a:nth-of-type(1){ margin-left: 0;}
-
-#reserveRoom a {
-    padding: 3vw 0;
-    font-weight: normal;
-    width: 22%;
 }
 
 .hover {
