@@ -71,6 +71,10 @@ input[type="search"] {
     -webkit-user-select: auto;
 }
 
+.overflow-scrolling-touch {
+    -webkit-overflow-scrolling: touch;
+}
+
 .menu-btn {
     margin-top: 3.238vw;
 }

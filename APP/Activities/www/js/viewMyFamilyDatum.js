@@ -546,8 +546,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             checkFormByFamily();
         });
 
+        
 
     }
-
-
 });
