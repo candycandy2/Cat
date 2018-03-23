@@ -22,6 +22,10 @@ var panel = htmlContent
         //+       '<span class="panel-text">2017 行事曆</span>'
         +       '<span class="panel-text">' + langStr["str_006"] + '</span>'
         +   '</div>'
+        +   '<div class="panel-content" id="mypanelviewPersonalLeave_1">'
+        //+       '<span class="panel-text">NEW 個人假勤</span>'
+        +       '<span class="panel-text">NEW 個人假勤</span>'
+        +   '</div>'
         +'</div>'
         +'<div class="page-mask" style="display: none;"></div>';
 
@@ -55,6 +59,10 @@ $(document).one("pagebeforeshow", function() {
 
     $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {
         changePageByPanel("viewHolidayCalendar");
+    });
+
+    $("#mypanel #mypanelviewPersonalLeave_1").on("click", function() {
+        changePageByPanel("viewPersonalLeave_1");
     });
 
     $(".menu-btn .leaveMenu").on("click", function() {
