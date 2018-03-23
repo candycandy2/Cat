@@ -91,6 +91,11 @@ $("#viewActivitiesList").pagecontainer({
             //         ActivitiesListQuery();
             //     }
             // });
+            if(viewListInit) {
+                viewListInit = false;
+            } else {
+                ActivitiesListQuery();
+            }
         });
 
 
@@ -116,5 +121,6 @@ $("#viewActivitiesList").pagecontainer({
         });
 
 
+        
     }
 });

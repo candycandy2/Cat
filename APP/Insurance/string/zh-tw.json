@@ -86,5 +86,309 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "str_012",
+    "definition": "變更申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_013",
+    "definition": "若您或眷屬變更姓名時，需將身分證正反影本傳遞至各廠區保險承辦人申請變更。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_014",
+    "definition": "國外就醫自墊醫療費用核退申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_015",
+    "definition": "1.若您出國期間因緊急傷病須於當地就醫者，可檢付收據與診斷證明書等文件",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_016",
+    "definition": "2.申請核退醫療費，申請流程與應附文件請詳閱「保險管理系統」中理賠作業之「申請流程」",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_017",
+    "definition": "*員工可享有生育、傷病、殘障、家屬死亡、本人死亡、老年六項給付之權益，申請流程與應附文件請詳閱「保險管理系統」中 理賠作業之「申請流程」。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_018",
+    "definition": "生育補助",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_019",
+    "definition": "1.女性員工才可申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_020",
+    "definition": "2.加入勞保滿280日分娩者或181日後早產者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_021",
+    "definition": "3.按前6個月平均投保薪資為標準，給付30日",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_022",
+    "definition": "傷病給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_023",
+    "definition": "1.因工作受傷或為職業病，可申請傷病給付，自不能工作且正在治療中第四日起給付開始發給(可給付住院與門診期間)",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_024",
+    "definition": "2.若為普通傷病，可申請傷病給付，於自住院診療且不能工作之第四日起開始發給(僅給付住院期間)",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_025",
+    "definition": "3.按前6個月平均投保薪資為標準，給付50% - 70%(若傷病期間仍取原有薪資，則不給付)",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_026",
+    "definition": "4.因工作受傷可使用勞保門診與住院，必須到HR 拿門診或住院單申請單",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_027",
+    "definition": "殘障給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_028",
+    "definition": "1.若經治療終止後，經健保醫院審定為永久殘廢者可請領殘障給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_029",
+    "definition": "2.分成15級160項給付1 - 40個月，因公加五成且最高給付60 個月，由醫師認定自認殘日起2年得請領",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_030",
+    "definition": "家屬死亡給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_031",
+    "definition": "1.員工之父母、配偶或子女死亡時得請領喪葬津貼",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_032",
+    "definition": "2.按前6個月平均投保薪資為標準，父母或配偶死亡給付3個月。未滿12歲子女(含剛生即死)死亡給付1.5個月﹔滿12歲子女死亡給付2.5個月。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_033",
+    "definition": "本人死亡給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_034",
+    "definition": "1.按前6個月平均投保薪資為標準，給付喪葬津貼5個月",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_035",
+    "definition": "2.投保年資1年以下者加10個月遺屬津貼，年資1至2年者加20個月，年資2年以上者加30個月。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_036",
+    "definition": "3.本人公傷事故死亡不論年資均另加40個月遺屬津貼。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_037",
+    "definition": "老年給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_038",
+    "definition": "1. 請領資格:",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_039",
+    "definition": "(1)參加勞保滿1年且男性滿60歲，女性滿55歲者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_040",
+    "definition": "(2)參加勞保滿15年且滿55歲者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_041",
+    "definition": "(3)參加勞保滿25年且滿50歲者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_042",
+    "definition": "(4)於同一公司參加勞保滿25年者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_043",
+    "definition": "(5)擔任經中央主管機關核定具有危險、堅強體力等特殊性質之工作滿5年且年滿55歲者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_044",
+    "definition": "2.給付按前3年平均投保薪資為標準，保險年資合計每滿一年發給一個月，年資合計超過十五年者，其超過部分，每滿一年發給二個月，最高以四十五個月為限，滿半年者以一年計﹔年逾六十歲繼續工作者，其逾六十歲以後之保險年資最多以五年計",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_045",
+    "definition": "公司團保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_046",
+    "definition": "員工於入職第一天起即享有壽險、意外傷害險、意外醫療險、住院醫療險、癌症醫療險。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_047",
+    "definition": "員工自費保險",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_048",
+    "definition": "此為員工自選保險方案，員工可以自費方式加保本人與眷屬之綜合險或意外險之保險，詳細保單內容請見「保險管理系統」”員工保險概覽”中「員工自費保險」之介紹。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_049",
+    "definition": "方案詳情",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]

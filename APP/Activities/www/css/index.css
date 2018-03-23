@@ -72,7 +72,6 @@ input[type="search"] {
 }
 
 .overflow-scrolling-touch {
-    overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
 
