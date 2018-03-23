@@ -34,10 +34,31 @@ $("#viewMain").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMain").on("pagebeforeshow", function(event, ui) {
-
+            $('#pageOne').show();
+            $('#pageTwo').hide();
+            $('#pageThree').hide();
         });
 
         /********************************** dom event *************************************/
+        $('#mainTab').change(function() {
+            timeQueue = {};
+            var tabValue = $("#mainTab :radio:checked").val();
+            if (tabValue == 'tab1') {
+                $('#pageOne').show();
+                $('#pageTwo').hide();
+                $('#pageThree').hide();
+              
+            } else if (tabValue == 'tab2') {
+                $('#pageTwo').show();
+                $('#pageOne').hide();
+                $('#pageThree').hide();
+                
+            } else {
+                $('#pageThree').show();
+                $('#pageOne').hide();
+                $('#pageTwo').hide();
+            }
+        });
 
         $("#openPDF").on('click', function() {
             window.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf"), '_system');          
