@@ -74,7 +74,7 @@ Use form post to upload file,please keep the content-type **multipart/from-data*
  **2. Get  SaS Token  With Permission**
 ##### Resuest
 ```
-GET /picture/sastoken/{resource}
+GET /sastoken/{resource}
 ```
 ##### Url Parameter
 ```
@@ -83,8 +83,8 @@ GET /picture/sastoken/{resource}
 - resource : resource type. allow 'container','blob'
 - lang  :  Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
 - uuid :  Mobile uuid that has been registered
-- start :  Signed start date. allow ISO date String 
-- expiry : Signed expiry date. allow ISO date string
+- start :  Signed start date. allow ISO date String ex:2018-03-16T03:30:00Z
+- expiry : Signed expiry date. allow ISO date string ex:2018-03-17T12:30:00Z
 - sp :  Signed permission .allow r,w
 ```js
 var dt = new Date(new Date());
