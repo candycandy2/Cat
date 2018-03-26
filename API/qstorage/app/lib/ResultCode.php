@@ -23,7 +23,7 @@ abstract class ResultCode
     const _999999_unknownError = '999999';  //其他未知錯誤
     
     //QStorage
-    const _997901_TheLengthOfFieldIsTooLong = "997902"; //欄位長度太長
+    const _997901_TheLengthOfFieldIsTooLong = "997901"; //欄位長度太長
     const _997902_MandatoryFieldLost = "997902"; //必填字段缺失
     const _997903_FieldFormatError = "997903"; //欄位格式錯誤
     const _997904_AccountNotExist = "997904"; //帳號不存在
