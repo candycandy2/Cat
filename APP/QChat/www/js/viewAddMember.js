@@ -38,7 +38,7 @@ $("#viewAddMember").pagecontainer({
                             for (var i=0; i<empNumberArray.length; i++) {
                                 $.each(JM.data.chatroom_user, function(name, data){
                                     if (data.emp_no == empNumberArray[i]) {
-                                        window.sendTextMessage(nowChatroomID, loginData["loginid"] + "將" + name + "加入聊天室", true, "memberEvent");
+                                        window.sendTextMessage(nowChatroomID, loginData["loginid"] + "將" + name + "加入聊天室", true, "memberAdd");
                                     }
                                 });
                             }
@@ -49,12 +49,6 @@ $("#viewAddMember").pagecontainer({
                             window.getGroupMembers(nowChatroomID, JM.data.chatroom[nowChatroomID].is_group, "chatroomInfo");
 
                         }, 1000);
-                    } else {
-                        var callback = function(parameter) {
-                            addQMember(parameter);
-                        };
-
-                        window.handleAPIError(APIName, resultCode, callback, empNumberArray);
                     }
                 };
 
@@ -329,13 +323,37 @@ $("#viewAddMember").pagecontainer({
             click: function() {
                 if (!$(this).hasClass("none-work")) {
 
-                    var empNumberArray = [];
+                    (function() {
 
-                    $("#viewAddMember .new-chatroom-footer .data-list").each(function(index, element) {
-                        empNumberArray.push($(element).prop("id").substr(3));
-                    });
+                        var empNameArray = [];
 
-                    addQMember(empNumberArray);
+                        $("#viewAddMember .new-chatroom-footer .data-list").each(function(index, element) {
+                            var empNumber = $(element).prop("id").substr(3).toString();
+
+                            $.each(JM.data.chatroom_user, function(name, data) {
+                                if (empNumber === data["emp_no"]) {
+                                    empNameArray.push(name);
+                                    return;
+                                }
+                            });
+                        });
+
+                        var callback = function(status) {
+                            if (status === "success") {
+
+                                var empNumberArray = [];
+
+                                for (var i=0; i<empNameArray.length; i++) {
+                                    empNumberArray.push(JM.data.chatroom_user[empNameArray[i]].emp_no);
+                                }
+
+                                addQMember(empNumberArray);
+
+                            }
+                        };
+
+                        JM.Chatroom.addGroupMembers(nowChatroomID, empNameArray, callback);
+                    }());
 
                 }
             }

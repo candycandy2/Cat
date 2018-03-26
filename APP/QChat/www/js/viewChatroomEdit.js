@@ -11,7 +11,7 @@ $("#viewChatroomEdit").pagecontainer({
 
         function editChatroom() {
             var chatroomEditName = $("#chatroomEditName").val();
-            window.setQChatroom(nowChatroomID, "name", chatroomEditName);
+            window.updateGroupInfo(nowChatroomID, "name", chatroomEditName);
         }
 
         /********************************** page event *************************************/
