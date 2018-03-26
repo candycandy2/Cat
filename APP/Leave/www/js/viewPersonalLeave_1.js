@@ -1,49 +1,4 @@
-var leaveid = "", leaveType = "", agentid = "";
-var beginDate = "", endDate = "", beginTime = "", endTime = "";
-var viewPersonalLeaveBeforeshow = false;
-var viewPersonalLeaveShow = false;
-var leaveTimetab = "leaveTime-tab1";
-var leaveTypeSelected = false;
-var timoutQueryEmployeeData = null;
 var calendarData = false;
-var quickLeaveList = [];
-var allLeaveList = [];
-var allLeaveCategroyStr = langStr["str_122"]; //所有類別
-
-var leaveTypeData = {
-    id: "leaveType-popup",
-    option: [],
-    title: "",
-    defaultText: langStr["str_069"],
-    changeDefaultText: true,
-    attr: {
-        class: "tpl-dropdown-list-icon-arrow"
-    }
-};
-
-var agentData = {
-    id: "agent-popup",
-    option: [],
-    title: '<input type="search" id="searchBar" />',
-    //defaultText: langStr["str_069"],
-    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
-    changeDefaultText: true,
-    attr: {
-        class: "tpl-dropdown-list-icon-arrow"
-    }
-};
-
-var categroyData = {
-    id: "categroy-popup",
-    option: [],
-    title: "",
-    //defaultText: langStr["str_069"],
-    defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
-    changeDefaultText : true,
-    attr: {
-        class: "tpl-dropdown-list-icon-arrow"
-    }
-};
 
 $("#viewPersonalLeave_1").pagecontainer({
     create: function(event, ui) {

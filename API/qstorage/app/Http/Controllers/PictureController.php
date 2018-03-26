@@ -133,6 +133,49 @@ class PictureController extends Controller
 
     }
 
+    public function deleteFile(Request $request){
+        $contentType = $request->header('Content-Type');
+       
+        if(!$request->isJson()){
+            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
+                "message"=> "Content-Type錯誤");
+        }
+
+        $validator = \Validator::make($request->all(), [
+        'fileUrls'=>'required'
+        ],
+        [
+            'required' => ResultCode::_999001_requestParameterLostOrIncorrect
+        ]);
+
+        if ($validator->fails()) {
+             return response()->json(['ResultCode'=>$validator->errors()->first(),
+                                      'Message'=>trans('result_code.'.$validator->errors()->first())], 200);
+        }
+
+        $fileUrls = $request->get("fileUrls");
+        foreach ($fileUrls as $value) {
+            $str = preg_replace('/^https{0,1}:\/\//', '', $value);
+            $temp = explode('/',$str);
+            $account = explode('.',$temp[0])[0];
+            $containerName = $temp[1];
+            $delContainerName = 'delete-'.$containerName;
+            unset($temp[0]);
+            unset($temp[1]);
+            $blobName = implode('/',$temp);
+            if($account == $this->azureBlobService->getAccountName()){
+                if(!$this->azureBlobService->checkContainerExist($delContainerName)){
+                    $this->azureBlobService->createContainer($delContainerName);
+                }
+                $this->azureBlobService->softDeleteFile($delContainerName, $blobName, $containerName, $blobName);
+            }
+        }
+        return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
+            'Message'=>"",
+            'Content'=>""]);
+
+    }
+
     private function getCompressSetting(){
         return ['1024'=>30];
     }
