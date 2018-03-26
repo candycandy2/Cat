@@ -176,11 +176,12 @@ window.initialSuccess = function() {
 
                 var name = window.personalPopupUserID;
                 var desc = "need_history=Y;group_message=N;name_changed=N";
-                var empNumberArray = [JM.data.chatroom_user[window.personalPopupUserID].emp_no];
+                var empNameArray = [window.personalPopupUserID];
 
                 //Create chatroom
                 loadingMask("show");
-                window.newQChatroom(name, desc, empNumberArray);
+
+                window.checkQPrivateChat(JM.data.chatroom_user[window.personalPopupUserID].emp_no, name, desc, empNameArray);
 
             }
 
@@ -403,32 +404,77 @@ window.receiveMessage = function(data) {
     //var doAction = true;
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
+    var getHistory = false;
 
     if (!$.isEmptyObject(data.extras)) {
 
+        if (activePageID === "viewChatroom") {
+            getHistory = true;
+        }
+
         if (data.extras.event === "false") {
-            if (activePageID === "viewChatroom") {
-                window.getConversation(data.extras.chatroom_id, true, true);
-            } else {
-                window.getConversation(data.extras.chatroom_id, false, true);
-            }
+            window.getConversation(data.extras.chatroom_id, getHistory, true);
         } else if (data.type === "text" && data.extras.event === "true") {
 
-            window.getGroupIds("receiveMessage", data);
-            /*
+            var refreshGroupMember = false;
+
             if (data.extras.action === "newChatroom") {
-                if (activePageID === "viewIndex") {
-                    window.getGroupIds("receiveMessage", data);
-                }
-            } else if (data.extras.action === "memberEvent") {
+                window.getGroupIds("receiveMessage", data);
+            } else if (data.extras.action === "memberAdd") {
+
+                refreshGroupMember = true;
+                window.getGroupIds("memberAdd", data);
+
+            } else if (data.extras.action === "memberRemove") {
+
+                refreshGroupMember = true;
+                window.getGroupIds("memberRemove", data);
+
+            } else if (data.extras.action === "memberLeave") {
+
+                //Wait for JMessage.Event["group_member_exit"],
+                //then call getGroupMembers to refresh member list.
+                refreshGroupMember = false;
+                window.getGroupIds("memberLeave", data);
+
+            }
+
+            //Update Chatroom title
+            if (refreshGroupMember) {
                 if (activePageID === "viewChatroom") {
-                    window.getConversation(data.extras.chatroom_id, true, true);
-                } else {
-                    window.getConversation(data.extras.chatroom_id, false, true);
+                    window.getGroupMembers(data.extras.chatroom_id, true, "getConversation");
+                } else if (activePageID === "viewIndex") {
+                    window.getGroupMembers(data.extras.chatroom_id, true, "chatroomListView");
                 }
             }
-            */
         }
+    } else if (data.type === "event") {
+
+        if (data.eventType === "group_member_removed") {
+            //JMessage Event Message - Current User has been removed
+            if (data.usernames[0] === loginData["loginid"]) {
+                delete JM.data.chatroom[data.target.id];
+                delete JM.data.chatroom_message_history[data.target.id];
+                JM.updateLocalStorage();
+
+                $("#chatroomListContent #chatroomList" + data.target.id).remove();
+                $("#chatroomListContent #chatroomHR" + data.target.id).remove();
+
+                //If User in viewChatroom / viewChatroomInfo / viewChatroomEdit / viewAddMember, redirect to viewIndex
+                if (activePageID === "viewChatroom" || activePageID === "viewChatroomInfo" || activePageID === "viewChatroomEdit" || 
+                    activePageID === "viewAddMember") {
+                    $.mobile.changePage('#viewIndex');
+                }
+            }
+        } else if (data.eventType === "group_member_exit") {
+            //JMessage Event Message - Chatroom member leave.
+            if (activePageID === "viewChatroom") {
+                window.getGroupMembers(data.target.id, true, "getConversation");
+            } else if (activePageID === "viewIndex") {
+                window.getGroupMembers(data.target.id, true, "chatroomListView");
+            }
+        }
+
     }
 };
 
