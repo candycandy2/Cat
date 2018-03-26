@@ -87,7 +87,7 @@ class PictureController extends Controller
         $sasToken = $this->azureBlobService
                          ->generateBlobServiceSharedAccessSignatureToken(AzureBlobService::RESOURCE_TYPE_CONTAINER,
                                                                         $containerName,
-                                                                        AzureBlobService::RESOURCE_PERMISSION_READ,
+                                                                        'r',
                                                                         $signedExpiry,
                                                                         $signedStart);
         //4.arrange original image information 
