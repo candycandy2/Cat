@@ -6,7 +6,7 @@ var panel = htmlContent
         //+       '<span class="panel-text">請假申請</span>'
         +       '<span class="panel-text">' + langStr["str_002"] + '</span>'
         +   '</div>'
-        +   '<div class="panel-content" id="mypanelviewPersonalLeave_1">'
+        +   '<div class="panel-content" id="mypanelviewPersonalLeaveCalendar">'
         //+       '<span class="panel-text">個人假勤</span>'
         +       '<span class="panel-text">' + langStr["str_001"] + '</span>'
         +   '</div>'
@@ -61,8 +61,8 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewHolidayCalendar");
     });
 
-    $("#mypanel #mypanelviewPersonalLeave_1").on("click", function() {
-        changePageByPanel("viewPersonalLeave_1");
+    $("#mypanel #mypanelviewPersonalLeaveCalendar").on("click", function() {
+        changePageByPanel("viewPersonalLeaveCalendar");
     });
 
     $(".menu-btn .leaveMenu").on("click", function() {
