@@ -101,7 +101,7 @@
     font-size: 4.4VW;
 }
 
-#viewPersonalLeave .infoContent ul,
+#viewPersonalLeaveCalendar .infoContent ul,
 #viewHolidayCalendar .infoList ul {
     list-style-type: none;
     display: inline;
