@@ -60,8 +60,8 @@ $("#viewMain").pagecontainer({
             }
         });
 
-        $("#openPDF").on('click', function() {
-            window.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/InsuranceRights.pdf"), '_system');          
+        $("#groupIndurancePDF").on('click', function() {
+            window.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/GroupInsurance.pdf"), '_system');          
         });       
 
     }

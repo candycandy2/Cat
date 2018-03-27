@@ -182,6 +182,16 @@ pre {
 #today-reserve-area .reserveInfo{ background-color: #fff;}
 
 /********************************** public area *************************************/
+
+.leaveMenu {
+    width: 4.934VW;
+}
+
+#backMain {
+    width: 4.934VW;
+    display: none;
+}
+
 *{ box-sizing: border-box;}
 .hide{ display: none;}
 
@@ -643,4 +653,18 @@ div.scrollmenu a {
     height: 3vh;
     background-size: 6vw 3vh;
     background-repeat: no-repeat;
+}
+
+/********************************** viewMain *************************************/
+
+#groupIndurancePDF {
+    color:#2e89bc;
+    margin-left:3.71vw;
+    display: flex;
+}
+
+.dowloadPDF {
+    margin-left:2.066vw;
+    width: 8%;
+    align-self: center;
 }

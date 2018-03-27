@@ -1,6 +1,6 @@
 var calendarData = false;
 
-$("#viewPersonalLeave_1").pagecontainer({
+$("#viewPersonalLeaveCalendar").pagecontainer({
     create: function(event, ui) {
 
 
@@ -68,7 +68,7 @@ $("#viewPersonalLeave_1").pagecontainer({
 
         $(document).ready(function() {
             prslvsCalendar = new Calendar({
-                renderTo: "#viewPersonalLeave_1 #myCalendar",
+                renderTo: "#viewPersonalLeaveCalendar #myCalendar",
                 id: "viewPersonalLeave-calendar",
                 language: "default",
                 show_days: true,
@@ -95,11 +95,11 @@ $("#viewPersonalLeave_1").pagecontainer({
         });
 
         /********************************** page event *************************************/
-        $("#viewPersonalLeave_1").one("pagebeforeshow", function(event, ui) {
+        $("#viewPersonalLeaveCalendar").one("pagebeforeshow", function(event, ui) {
 
         });
 
-        $("#viewPersonalLeave_1").on("pageshow", function(event, ui) {
+        $("#viewPersonalLeaveCalendar").on("pageshow", function(event, ui) {
             loadingMask("hide");
         });
 
@@ -196,7 +196,7 @@ $("#viewPersonalLeave_1").pagecontainer({
                     }
     
                     $(".tooltip").remove();
-                    $("#viewPersonalLeave_1").append('<div class="tooltip" style="width:' + divWidth + '; top:' + tooltipTop + 'px; ' + tooltipHorizontalPosition + '">' + myHolidayData[dayNumber] + '</div>');
+                    $("#viewPersonalLeaveCalendar").append('<div class="tooltip" style="width:' + divWidth + '; top:' + tooltipTop + 'px; ' + tooltipHorizontalPosition + '">' + myHolidayData[dayNumber] + '</div>');
     
                     if (isLeave) {
                         $(".tooltip").find("table").css({
