@@ -164,7 +164,6 @@ $("#viewActivitiesSignup").pagecontainer({
                             }
                         }
 
-
                     } else if (model == "4") {
                         //初始化
                         memberNoArr = [];
@@ -247,7 +246,6 @@ $("#viewActivitiesSignup").pagecontainer({
                         if (noAnswerCount > 0) {
                             $("#timeSignupBtn").addClass("btn-disabled");
                         }
-                        
 
                     }
 
@@ -297,7 +295,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
                     $("#employee-popup-option-list").show();
                     $("#loaderQuery").hide();
-
 
                 } else if (data["ResultCode"] == "045915") {
                     //查無員工資料
@@ -409,7 +406,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
                 if (data["ResultCode"] == "1") {
                     actIsFull = data["Content"][0]["IsFull"];
-
                 }
 
                 loadingMask("hide");
@@ -550,6 +546,7 @@ $("#viewActivitiesSignup").pagecontainer({
             }
         }
 
+
         /********************************** page event *************************************/
         $("#viewActivitiesSignup").on("pagebeforeshow", function (event, ui) {
             if (viewSignupInit) {
@@ -563,6 +560,7 @@ $("#viewActivitiesSignup").pagecontainer({
         $("#viewActivitiesSignup").on("pageshow", function (event, ui) {
 
         });
+
 
         /********************************** dom event *************************************/
         $("#viewActivitiesSignup").keypress(function (event) {
@@ -606,13 +604,11 @@ $("#viewActivitiesSignup").pagecontainer({
         });
 
         //超時關閉popup，並返回活動列表
-        $("#signupTimeOverBtn").on("click", function () {
-            //重新獲取活動列表
-            ActivitiesListQuery();
-            pageVisitedList.pop();
-            //跳轉
-            changePageByPanel("viewActivitiesList", false);
-        });
+        // $("#signupTimeOverBtn").on("click", function () {
+        //     pageVisitedList.pop();
+        //     //跳轉
+        //     changePageByPanel("viewActivitiesList", false);
+        // });
 
         /******************************* employee component ********************************/
         // 1. 點擊“新增名單”，觸發dropdownlist的click事件，可以彈出popup
@@ -757,52 +753,45 @@ $("#viewActivitiesSignup").pagecontainer({
 
         });
 
-        //組隊報名申請
+        //組隊報名
         $("#sendTeamSignup").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                //先判斷是否超時
-                var nowTime = getTimeNow();
-                if (nowTime - overTime < 0) {
-                    loadingMask("show");
-                    teamName = $.trim($("#teamName").val());
-                    departNo = $.trim($("#departNo").val());
+                // //先判斷是否超時
+                // var nowTime = getTimeNow();
+                // if (nowTime - overTime < 0) {
+                loadingMask("show");
+                teamName = $.trim($("#teamName").val());
+                departNo = $.trim($("#departNo").val());
 
-                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                        + submitID
-                        + '</ActivitiesID><SignupModel>'
-                        + submitModel
-                        + '</SignupModel><EmployeeNo>'
-                        + myEmpNo
-                        + '</EmployeeNo><TeamName>'
-                        + teamName
-                        + '</TeamName><TeamDept>'
-                        + departNo
-                        + '</TeamDept><MemberEmpNo>'
-                        + memberNoArr.join(",")
-                        + '</MemberEmpNo></LayoutHeader>';
+                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                    + submitID
+                    + '</ActivitiesID><SignupModel>'
+                    + submitModel
+                    + '</SignupModel><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><TeamName>'
+                    + teamName
+                    + '</TeamName><TeamDept>'
+                    + departNo
+                    + '</TeamDept><MemberEmpNo>'
+                    + memberNoArr.join(",")
+                    + '</MemberEmpNo></LayoutHeader>';
 
-                    //console.log(activitiesSignupConfirmQueryData);
-                    ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
 
-                } else {
-                    //超時提示
-                    popupMsgInit('.signupTimeOverMsg');
-                }
+                // } else {
+                //     //超時提示，並重新獲取活動列表
+                //     popupMsgInit('.signupTimeOverMsg');
+                //     ActivitiesListQuery();
+                // }
 
             }
 
         });
 
-        //footer fixed定位会因为虚拟键盘展开影响页面大小
-        // $("#viewTeamSignup").on("focus", "input", function() {
-        //     $("#sendTeamSignup").hide();
-        // });
-
-        // $("#viewTeamSignup").on("blur", "input", function() {
-        //     $("#sendTeamSignup").show();
-        // });
 
         /*********************************** family signup ***********************************/
         //select
@@ -829,14 +818,6 @@ $("#viewActivitiesSignup").pagecontainer({
             }, 1000);
 
         });
-
-        //失去焦點再次更新欄位值
-        // $(".family-signup-custom-field").on("blur", ".familySignupText", function () {
-        //     var selfName = $(this).prev().text();
-        //     var selfVal = $.trim($(this).val());
-        //     //保存栏位值并检查表单
-        //     saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "selectFamilyBtn");
-        // });
 
         //checkbox
         $(".family-signup-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -953,40 +934,41 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                //先判斷是否超時
-                var nowTime = getTimeNow();
-                if (nowTime - overTime < 0) {
-                    loadingMask("show");
-                    //呼叫API前，再次更新欄位值
-                    getTextValueBeforeCall("person", "signup", "personSignupText", personFieldArr);
+                // //先判斷是否超時
+                // var nowTime = getTimeNow();
+                // if (nowTime - overTime < 0) {
+                loadingMask("show");
+                //呼叫API前，再次更新欄位值
+                getTextValueBeforeCall("person", "signup", "personSignupText", personFieldArr);
 
-                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                        + submitID
-                        + '</ActivitiesID><SignupModel>'
-                        + submitModel
-                        + '</SignupModel><SignupPlaces>'
-                        + personSubmitPlace
-                        + '</SignupPlaces><EmployeeNo>'
-                        + myEmpNo
-                        + '</EmployeeNo><ColumnAnswer_1>'
-                        + (personFieldArr[0] == undefined ? "" : personFieldArr[0]["ColumnAnswer"])
-                        + '</ColumnAnswer_1><ColumnAnswer_2>'
-                        + (personFieldArr[1] == undefined ? "" : personFieldArr[1]["ColumnAnswer"])
-                        + '</ColumnAnswer_2><ColumnAnswer_3>'
-                        + (personFieldArr[2] == undefined ? "" : personFieldArr[2]["ColumnAnswer"])
-                        + '</ColumnAnswer_3><ColumnAnswer_4>'
-                        + (personFieldArr[3] == undefined ? "" : personFieldArr[3]["ColumnAnswer"])
-                        + '</ColumnAnswer_4><ColumnAnswer_5>'
-                        + (personFieldArr[4] == undefined ? "" : personFieldArr[4]["ColumnAnswer"])
-                        + '</ColumnAnswer_5></LayoutHeader>';
+                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                    + submitID
+                    + '</ActivitiesID><SignupModel>'
+                    + submitModel
+                    + '</SignupModel><SignupPlaces>'
+                    + personSubmitPlace
+                    + '</SignupPlaces><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><ColumnAnswer_1>'
+                    + (personFieldArr[0] == undefined ? "" : personFieldArr[0]["ColumnAnswer"])
+                    + '</ColumnAnswer_1><ColumnAnswer_2>'
+                    + (personFieldArr[1] == undefined ? "" : personFieldArr[1]["ColumnAnswer"])
+                    + '</ColumnAnswer_2><ColumnAnswer_3>'
+                    + (personFieldArr[2] == undefined ? "" : personFieldArr[2]["ColumnAnswer"])
+                    + '</ColumnAnswer_3><ColumnAnswer_4>'
+                    + (personFieldArr[3] == undefined ? "" : personFieldArr[3]["ColumnAnswer"])
+                    + '</ColumnAnswer_4><ColumnAnswer_5>'
+                    + (personFieldArr[4] == undefined ? "" : personFieldArr[4]["ColumnAnswer"])
+                    + '</ColumnAnswer_5></LayoutHeader>';
 
-                    //console.log(activitiesSignupConfirmQueryData);
-                    ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
 
-                } else {
-                    //超時提示
-                    popupMsgInit('.signupTimeOverMsg');
-                }
+                // } else {
+                //     //超時提示，並重新獲取活動列表
+                //     popupMsgInit('.signupTimeOverMsg');
+                //     ActivitiesListQuery();
+                // }
 
             }
         });
@@ -1034,7 +1016,6 @@ $("#viewActivitiesSignup").pagecontainer({
             saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
             //檢查時段和欄位是否爲空
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
-
         });
 
         //text
@@ -1051,8 +1032,10 @@ $("#viewActivitiesSignup").pagecontainer({
                 //保存栏位值
                 saveValueForTimeArr(timeFieldArr, selfName, selfVal, null);
             }, 1000);
+
             //檢查時段和欄位是否爲空
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
+
         });
 
         //checkbox
@@ -1076,45 +1059,46 @@ $("#viewActivitiesSignup").pagecontainer({
 
         });
 
-        //確定送出
+        //時段報名
         $("#timeSignupBtn").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                //先判斷是否超時
-                var nowTime = getTimeNow();
-                if (nowTime - overTime < 0) {
-                    loadingMask("show");
-                    //呼叫API前，再次更新欄位值
-                    getTextValueBeforeCall("time", "signup", "timeSignupText", timeFieldArr);
+                // //先判斷是否超時
+                // var nowTime = getTimeNow();
+                // if (nowTime - overTime < 0) {
+                loadingMask("show");
+                //呼叫API前，再次更新欄位值
+                getTextValueBeforeCall("time", "signup", "timeSignupText", timeFieldArr);
 
-                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                        + submitID
-                        + '</ActivitiesID><SignupModel>'
-                        + submitModel
-                        + '</SignupModel><SignupPlaces>1</SignupPlaces><EmployeeNo>'
-                        + myEmpNo
-                        + '</EmployeeNo><ColumnAnswer_1>'
-                        + (timeFieldArr[0] == undefined ? "" : timeFieldArr[0]["ColumnAnswer"])
-                        + '</ColumnAnswer_1><ColumnAnswer_2>'
-                        + (timeFieldArr[1] == undefined ? "" : timeFieldArr[1]["ColumnAnswer"])
-                        + '</ColumnAnswer_2><ColumnAnswer_3>'
-                        + (timeFieldArr[2] == undefined ? "" : timeFieldArr[2]["ColumnAnswer"])
-                        + '</ColumnAnswer_3><ColumnAnswer_4>'
-                        + (timeFieldArr[3] == undefined ? "" : timeFieldArr[3]["ColumnAnswer"])
-                        + '</ColumnAnswer_4><ColumnAnswer_5>'
-                        + (timeFieldArr[4] == undefined ? "" : timeFieldArr[4]["ColumnAnswer"])
-                        + '</ColumnAnswer_5><TimeID>'
-                        + timeID
-                        + '</TimeID></LayoutHeader>';
+                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                    + submitID
+                    + '</ActivitiesID><SignupModel>'
+                    + submitModel
+                    + '</SignupModel><SignupPlaces>1</SignupPlaces><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><ColumnAnswer_1>'
+                    + (timeFieldArr[0] == undefined ? "" : timeFieldArr[0]["ColumnAnswer"])
+                    + '</ColumnAnswer_1><ColumnAnswer_2>'
+                    + (timeFieldArr[1] == undefined ? "" : timeFieldArr[1]["ColumnAnswer"])
+                    + '</ColumnAnswer_2><ColumnAnswer_3>'
+                    + (timeFieldArr[2] == undefined ? "" : timeFieldArr[2]["ColumnAnswer"])
+                    + '</ColumnAnswer_3><ColumnAnswer_4>'
+                    + (timeFieldArr[3] == undefined ? "" : timeFieldArr[3]["ColumnAnswer"])
+                    + '</ColumnAnswer_4><ColumnAnswer_5>'
+                    + (timeFieldArr[4] == undefined ? "" : timeFieldArr[4]["ColumnAnswer"])
+                    + '</ColumnAnswer_5><TimeID>'
+                    + timeID
+                    + '</TimeID></LayoutHeader>';
 
-                    //console.log(activitiesSignupConfirmQueryData);
-                    ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
 
-                } else {
-                    //超時提示
-                    popupMsgInit('.signupTimeOverMsg');
-                }
+                // } else {
+                //     //超時提示，並重新獲取活動列表
+                //     popupMsgInit('.signupTimeOverMsg');
+                //     ActivitiesListQuery();
+                // }
 
             }
         });

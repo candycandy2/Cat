@@ -1,0 +1,749 @@
+{
+	"variables": [],
+	"info": {
+		"name": "QPlay Api test - Production",
+		"_postman_id": "7f663c7c-ece5-ad72-41f9-6bd0cc9d00a2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login-production",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var testing = 0;",
+							"",
+							"postman.clearGlobalVariable(\"login_token\");",
+							"postman.clearGlobalVariable(\"spm_fail_code\");",
+							"postman.clearGlobalVariable(\"spm_fail_message\");",
+							"postman.clearGlobalVariable(\"next_request\");",
+							"",
+							"console.log(\"Response Time : \" + responseTime);",
+							"postman.setGlobalVariable(\"spm_response_time\", responseTime);",
+							"",
+							"if (responseCode.code === 200) {",
+							"    var jsonData = JSON.parse(responseBody);",
+							"",
+							"    tests[\"ResultCode\"] = jsonData.result_code === 1;",
+							"    tests[\"Message\"] = jsonData.message === \"Login Success\";",
+							"",
+							"    postman.setGlobalVariable(\"spm_fail_code\", jsonData.result_code);",
+							"    postman.setGlobalVariable(\"spm_fail_message\", jsonData.message);",
+							"",
+							"    if (jsonData.result_code === 1) {",
+							"        var jsonContent = jsonData.content;",
+							"        postman.setGlobalVariable(\"login_token\", jsonContent.token);",
+							"",
+							"        if (testing === 1) {",
+							"            console.log(\"call login sendPushMessage\")",
+							"            postman.setGlobalVariable(\"next_request\", \"getAppList-production\");",
+							"            postman.setNextRequest(\"sendPushMessage-production\");",
+							"        }",
+							"        else {",
+							"            postman.setNextRequest(\"getAppList-production\");",
+							"        }",
+							"    }",
+							"    else {",
+							"        console.log(\"call login error with response code 200\");",
+							"        postman.setGlobalVariable(\"next_request\", null); // login fail, need not run rest of collection",
+							"        postman.setNextRequest(\"sendPushMessage-production\");",
+							"    }",
+							"}",
+							"else {",
+							"    postman.setGlobalVariable(\"spm_fail_code\", responseCode.code);",
+							"    postman.setGlobalVariable(\"spm_fail_message\", responseCode.name);",
+							"    console.log(responseCode.code);",
+							"    console.log(responseCode.name);",
+							"    postman.setGlobalVariable(\"next_request\", null); // login fail, need not run rest of collection",
+							"    postman.setNextRequest(\"sendPushMessage-production\");",
+							"}",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.clearGlobalVariable(\"qlogintimenow\");",
+							"postman.clearGlobalVariable(\"qlogintimesignature\");",
+							"postman.clearGlobalVariable(\"login_token\");",
+							"",
+							"var timeInSeconds = parseInt((new Date()).getTime() / 1000);",
+							"postman.setGlobalVariable(\"qlogintimenow\", timeInSeconds);",
+							"",
+							"var appSecretKey = \"swexuc453refebraXecujeruBraqAc4e\";",
+							"var signature = CryptoJS.HmacSHA256(timeInSeconds.toString(), appSecretKey);",
+							"var base64sha256 = CryptoJS.enc.Base64.stringify(signature);",
+							"postman.setGlobalVariable(\"qlogintimesignature\", base64sha256);",
+							"",
+							"postman.setGlobalVariable(\"spm_destination_user_id\", \"\\\"Qgroup\\\\\\\\Samuel.Hsieh\\\",\\\"BenQ\\\\\\\\Alan.Tu\\\",\\\"BenQ\\\\\\\\Marvin.Lin\\\",\\\"BenQ\\\\\\\\Mulin.Chuang\\\",\\\"BenQ\\\\\\\\Steven.Yan\\\",\\\"Qgroup\\\\\\\\Hakkinen.YW.Fu\\\",\\\"Qgroup\\\\\\\\Eee.Tsai\\\"\");",
+							"//postman.setGlobalVariable(\"spm_destination_user_id\", \"\\\"Qgroup\\\\\\\\Samuel.Hsieh\\\"\");",
+							"postman.setGlobalVariable(\"spm_app_name\", \"QPlay\");",
+							"postman.setGlobalVariable(\"spm_api_name\", \"login\");",
+							"var currDateTime = new Date().toLocaleString();",
+							"postman.setGlobalVariable(\"spm_test_datetime\", currDateTime);",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://qplay.benq.com/qplayApi/public/v101/qplay/login?lang=en-us&uuid=1104a897929f1df900d&device_type=android",
+					"protocol": "https",
+					"host": [
+						"qplay",
+						"benq",
+						"com"
+					],
+					"path": [
+						"qplayApi",
+						"public",
+						"v101",
+						"qplay",
+						"login"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "en-us",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "uuid",
+							"value": "1104a897929f1df900d",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "device_type",
+							"value": "android",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "App-Key",
+						"value": "appqplay",
+						"description": ""
+					},
+					{
+						"key": "Signature-Time",
+						"value": "{{qlogintimenow}}",
+						"description": ""
+					},
+					{
+						"key": "Signature",
+						"value": "{{qlogintimesignature}}",
+						"description": ""
+					},
+					{
+						"key": "domain",
+						"value": "qgroup",
+						"description": ""
+					},
+					{
+						"key": "loginid",
+						"value": "Samuel.Hsieh",
+						"description": ""
+					},
+					{
+						"key": "password",
+						"value": "Vul4gk4u xj4",
+						"description": ""
+					},
+					{
+						"key": "redirect-uri",
+						"value": "http://benQ.com.tw",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "getAppList-production",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var testing = 0;",
+							"",
+							"postman.clearGlobalVariable(\"spm_fail_code\");",
+							"postman.clearGlobalVariable(\"spm_fail_message\");",
+							"",
+							"console.log(\"Response Time : \" + responseTime);",
+							"postman.setGlobalVariable(\"spm_response_time\", responseTime);",
+							"",
+							"if (responseCode.code === 200) {",
+							"    var jsonData = JSON.parse(responseBody);",
+							"",
+							"    tests[\"ResultCode\"] = jsonData.result_code === 1;",
+							"    tests[\"Message\"] = jsonData.message === \"Call Service Success\";",
+							"    ",
+							"    postman.setGlobalVariable(\"spm_fail_code\", jsonData.result_code);",
+							"    postman.setGlobalVariable(\"spm_fail_message\", jsonData.message);",
+							"",
+							"    if (jsonData.result_code === 1) {",
+							"        if (testing === 1) {",
+							"            console.log(\"call getAppList sendPushMessage\")",
+							"            postman.setGlobalVariable(\"next_request\", \"QueryCompanyData-production\");",
+							"            postman.setNextRequest(\"sendPushMessage-production\");",
+							"        }",
+							"        else {",
+							"            postman.setNextRequest(\"QueryCompanyData-production\");",
+							"        }",
+							"    }",
+							"    else {",
+							"        console.log(\"call getAppList error with response code 200\");",
+							"        postman.setGlobalVariable(\"next_request\", \"QueryCompanyData-production\");",
+							"        postman.setNextRequest(\"sendPushMessage-production\");",
+							"    }",
+							"}",
+							"else {",
+							"    postman.setGlobalVariable(\"spm_fail_code\", responseCode.code);",
+							"    postman.setGlobalVariable(\"spm_fail_message\", responseCode.name);",
+							"    console.log(responseCode.code);",
+							"    console.log(responseCode.name);",
+							"    postman.setGlobalVariable(\"next_request\", \"QueryCompanyData-production\");",
+							"    postman.setNextRequest(\"sendPushMessage-production\");",
+							"}",
+							"",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.clearGlobalVariable(\"getapplisttimenow\");",
+							"postman.clearGlobalVariable(\"getapplisttimesignature\");",
+							"",
+							"var timeInSeconds = parseInt((new Date()).getTime() / 1000);",
+							"postman.setGlobalVariable(\"getapplisttimenow\", timeInSeconds);",
+							"",
+							"var appSecretKey = \"swexuc453refebraXecujeruBraqAc4e\";",
+							"var signature = CryptoJS.HmacSHA256(timeInSeconds.toString(), appSecretKey);",
+							"var base64sha256 = CryptoJS.enc.Base64.stringify(signature);",
+							"postman.setGlobalVariable(\"getapplisttimesignature\", base64sha256);",
+							"",
+							"postman.setGlobalVariable(\"spm_destination_user_id\", \"\\\"Qgroup\\\\\\\\Samuel.Hsieh\\\",\\\"BenQ\\\\\\\\Alan.Tu\\\",\\\"BenQ\\\\\\\\Marvin.Lin\\\",\\\"BenQ\\\\\\\\Mulin.Chuang\\\",\\\"BenQ\\\\\\\\Steven.Yan\\\",\\\"Qgroup\\\\\\\\Hakkinen.YW.Fu\\\",\\\"Qgroup\\\\\\\\Eee.Tsai\\\"\");",
+							"//postman.setGlobalVariable(\"spm_destination_user_id\", \"\\\"Qgroup\\\\\\\\Samuel.Hsieh\\\"\");",
+							"postman.setGlobalVariable(\"spm_app_name\", \"QPlay\");",
+							"postman.setGlobalVariable(\"spm_api_name\", \"getAppList\");",
+							"var currDateTime = new Date().toLocaleString();",
+							"postman.setGlobalVariable(\"spm_test_datetime\", currDateTime);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://qplay.benq.com/qplayApi/public/v101/qplay/getAppList?lang=en-us&uuid=1104a897929f1df900d",
+					"protocol": "https",
+					"host": [
+						"qplay",
+						"benq",
+						"com"
+					],
+					"path": [
+						"qplayApi",
+						"public",
+						"v101",
+						"qplay",
+						"getAppList"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "en-us",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "uuid",
+							"value": "1104a897929f1df900d",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "app-key",
+						"value": "appqplay",
+						"description": ""
+					},
+					{
+						"key": "signature-time",
+						"value": "{{getapplisttimenow}}",
+						"description": ""
+					},
+					{
+						"key": "signature",
+						"value": "{{getapplisttimesignature}}",
+						"description": ""
+					},
+					{
+						"key": "token",
+						"value": "{{login_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "QueryCompanyData-production",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var testing = 0;",
+							"",
+							"postman.clearGlobalVariable(\"spm_fail_code\");",
+							"postman.clearGlobalVariable(\"spm_fail_message\");",
+							"",
+							"console.log(\"Response Time : \" + responseTime);",
+							"postman.setGlobalVariable(\"spm_response_time\", responseTime);",
+							"",
+							"if (responseCode.code === 200) {",
+							"    var jsonData = JSON.parse(responseBody);",
+							"    ",
+							"    tests[\"ResultCode\"] = jsonData.ResultCode === \"1\";",
+							"    tests[\"Message\"] = jsonData.Message === \"OK\";",
+							"",
+							"    postman.setGlobalVariable(\"spm_fail_code\", jsonData.ResultCode);",
+							"    postman.setGlobalVariable(\"spm_fail_message\", jsonData.Message);",
+							"",
+							"    if (jsonData.ResultCode === \"1\") {",
+							"        if (testing === 1) {",
+							"            console.log(\"call QueryCompanyData sendPushMessage\");",
+							"            postman.setGlobalVariable(\"next_request\", \"ListAllMeetingRoom-production\");",
+							"            postman.setNextRequest(\"sendPushMessage-production\");",
+							"        }",
+							"        else {",
+							"            postman.setNextRequest(\"ListAllMeetingRoom-production\");",
+							"        }",
+							"    }",
+							"    else {",
+							"        console.log(\"call QueryCompanyData error with response code 200\");",
+							"        postman.setGlobalVariable(\"next_request\", \"ListAllMeetingRoom-production\");",
+							"        postman.setNextRequest(\"sendPushMessage-production\");",
+							"    }",
+							"}",
+							"else {",
+							"    postman.setGlobalVariable(\"spm_fail_code\", responseCode.code);",
+							"    postman.setGlobalVariable(\"spm_fail_message\", responseCode.name);",
+							"    console.log(responseCode.code);",
+							"    console.log(responseCode.name);",
+							"    postman.setGlobalVariable(\"next_request\", \"ListAllMeetingRoom-production\");",
+							"    postman.setNextRequest(\"sendPushMessage-production\");",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.clearGlobalVariable(\"querycdtimenow\");",
+							"postman.clearGlobalVariable(\"querycdtimesignature\");",
+							"",
+							"var timeInSeconds = parseInt((new Date()).getTime() / 1000);",
+							"postman.setGlobalVariable(\"querycdtimenow\", timeInSeconds);",
+							"",
+							"var appSecretKey = \"c103dd9568f8493187e02d4680e1bf2f\";",
+							"var signature = CryptoJS.HmacSHA256(timeInSeconds.toString(), appSecretKey);",
+							"var base64sha256 = CryptoJS.enc.Base64.stringify(signature);",
+							"postman.setGlobalVariable(\"querycdtimesignature\", base64sha256);",
+							"",
+							"postman.setGlobalVariable(\"spm_destination_user_id\", \"\\\"Qgroup\\\\\\\\Samuel.Hsieh\\\",\\\"BenQ\\\\\\\\Alan.Tu\\\",\\\"BenQ\\\\\\\\Marvin.Lin\\\",\\\"BenQ\\\\\\\\Mulin.Chuang\\\",\\\"BenQ\\\\\\\\Steven.Yan\\\",\\\"Qgroup\\\\\\\\Hakkinen.YW.Fu\\\",\\\"Qgroup\\\\\\\\Eee.Tsai\\\"\");",
+							"//postman.setGlobalVariable(\"spm_destination_user_id\", \"\\\"Qgroup\\\\\\\\Samuel.Hsieh\\\"\");",
+							"postman.setGlobalVariable(\"spm_app_name\", \"YellowPage\");",
+							"postman.setGlobalVariable(\"spm_api_name\", \"QueryCompanyData\");",
+							"var currDateTime = new Date().toLocaleString();",
+							"postman.setGlobalVariable(\"spm_test_datetime\", currDateTime);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://qplay.benq.com/qplayApi/public/v101/custom/appyellowpage/QueryCompanyData?lang=en-us&uuid=1104a897929f1df900d",
+					"protocol": "https",
+					"host": [
+						"qplay",
+						"benq",
+						"com"
+					],
+					"path": [
+						"qplayApi",
+						"public",
+						"v101",
+						"custom",
+						"appyellowpage",
+						"QueryCompanyData"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "en-us",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "uuid",
+							"value": "1104a897929f1df900d",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "app-key",
+						"value": "appyellowpage",
+						"description": ""
+					},
+					{
+						"key": "signature-time",
+						"value": "{{querycdtimenow}}",
+						"description": ""
+					},
+					{
+						"key": "signature",
+						"value": "{{querycdtimesignature}}",
+						"description": ""
+					},
+					{
+						"key": "token",
+						"value": "{{login_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "ListAllMeetingRoom-production",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var testing = 0;",
+							"",
+							"postman.clearGlobalVariable(\"spm_fail_code\");",
+							"postman.clearGlobalVariable(\"spm_fail_message\");",
+							"",
+							"console.log(\"Response Time : \" + responseTime);",
+							"postman.setGlobalVariable(\"spm_response_time\", responseTime);",
+							"",
+							"if (responseCode.code === 200) {",
+							"    var jsonData = JSON.parse(responseBody);",
+							"",
+							"    tests[\"ResultCode\"] = jsonData.ResultCode === \"1\";",
+							"    tests[\"Message\"] = jsonData.Message === \"OK\";",
+							"    ",
+							"    postman.setGlobalVariable(\"spm_fail_code\", jsonData.ResultCode);",
+							"    postman.setGlobalVariable(\"spm_fail_message\", jsonData.Message);",
+							"",
+							"    if (jsonData.ResultCode === \"1\") {",
+							"        if (testing === 1) {",
+							"            console.log(\"call ListAllMeetingRoom sendPushMessage\");",
+							"            postman.setGlobalVariable(\"next_request\", null);",
+							"            postman.setNextRequest(\"sendPushMessage-production\");",
+							"        }",
+							"        else {",
+							"            postman.setNextRequest(null);",
+							"        }",
+							"    }",
+							"    else {",
+							"        console.log(\"call ListAllMeetingRoom error with response code 200\");",
+							"        postman.setGlobalVariable(\"next_request\", null);",
+							"        postman.setNextRequest(\"sendPushMessage-production\");",
+							"    }",
+							"}",
+							"else {",
+							"    postman.setGlobalVariable(\"spm_fail_code\", responseCode.code);",
+							"    postman.setGlobalVariable(\"spm_fail_message\", responseCode.name);",
+							"    console.log(responseCode.code);",
+							"    console.log(responseCode.name);",
+							"    postman.setGlobalVariable(\"next_request\", null);",
+							"    postman.setNextRequest(\"sendPushMessage-production\");",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.clearGlobalVariable(\"querymrtimenow\");",
+							"postman.clearGlobalVariable(\"querymrtimesignature\");",
+							"",
+							"var timeInSeconds = parseInt((new Date()).getTime() / 1000);",
+							"postman.setGlobalVariable(\"querymrtimenow\", timeInSeconds);",
+							"",
+							"var appSecretKey = \"2e936812e205445490efb447da16ca13\";",
+							"var signature = CryptoJS.HmacSHA256(timeInSeconds.toString(), appSecretKey);",
+							"var base64sha256 = CryptoJS.enc.Base64.stringify(signature);",
+							"postman.setGlobalVariable(\"querymrtimesignature\", base64sha256);",
+							"",
+							"postman.setGlobalVariable(\"spm_destination_user_id\", \"\\\"Qgroup\\\\\\\\Samuel.Hsieh\\\",\\\"BenQ\\\\\\\\Alan.Tu\\\",\\\"BenQ\\\\\\\\Marvin.Lin\\\",\\\"BenQ\\\\\\\\Mulin.Chuang\\\",\\\"BenQ\\\\\\\\Steven.Yan\\\",\\\"Qgroup\\\\\\\\Hakkinen.YW.Fu\\\",\\\"Qgroup\\\\\\\\Eee.Tsai\\\"\");",
+							"//postman.setGlobalVariable(\"spm_destination_user_id\", \"\\\"Qgroup\\\\\\\\Samuel.Hsieh\\\"\");",
+							"postman.setGlobalVariable(\"spm_app_name\", \"RRS\");",
+							"postman.setGlobalVariable(\"spm_api_name\", \"ListAllMeetingRoom\");",
+							"var currDateTime = new Date().toLocaleString();",
+							"postman.setGlobalVariable(\"spm_test_datetime\", currDateTime);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://qplay.benq.com/qplayApi/public/v101/custom/apprrs/ListAllMeetingRoom?lang=en-us&uuid=1104a897929f1df900d",
+					"protocol": "https",
+					"host": [
+						"qplay",
+						"benq",
+						"com"
+					],
+					"path": [
+						"qplayApi",
+						"public",
+						"v101",
+						"custom",
+						"apprrs",
+						"ListAllMeetingRoom"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "en-us",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "uuid",
+							"value": "1104a897929f1df900d",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "app-key",
+						"value": "apprrs",
+						"description": ""
+					},
+					{
+						"key": "signature-time",
+						"value": "{{querymrtimenow}}",
+						"description": ""
+					},
+					{
+						"key": "signature",
+						"value": "{{querymrtimesignature}}",
+						"description": ""
+					},
+					{
+						"key": "token",
+						"value": "{{login_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "sendPushMessage-production",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var nextRequest = postman.getGlobalVariable(\"next_request\");",
+							"",
+							"postman.setNextRequest(nextRequest);",
+							"",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.clearGlobalVariable(\"sendpushtimenow\");",
+							"postman.clearGlobalVariable(\"sendpushtimesignature\");",
+							"",
+							"var timeInSeconds = parseInt((new Date()).getTime() / 1000);",
+							"postman.setGlobalVariable(\"sendpushtimenow\", timeInSeconds);",
+							"",
+							"var appSecretKey = \"swexuc453refebraXecujeruBraqAc4e\";",
+							"var signature = CryptoJS.HmacSHA256(timeInSeconds.toString(), appSecretKey);",
+							"var base64sha256 = CryptoJS.enc.Base64.stringify(signature);",
+							"postman.setGlobalVariable(\"sendpushtimesignature\", base64sha256);",
+							"",
+							"var appName = postman.getGlobalVariable(\"spm_app_name\");",
+							"var apiName = postman.getGlobalVariable(\"spm_api_name\");",
+							"var testTime = postman.getGlobalVariable(\"spm_test_datetime\");",
+							"var failMessage = postman.getGlobalVariable(\"spm_fail_message\");",
+							"var failCode = postman.getGlobalVariable(\"spm_fail_code\");",
+							"var responseTime = postman.getGlobalVariable(\"spm_response_time\");",
+							"",
+							"var pushtitle = \"ERROR - \" + appName + \" api \" + \"\\\"\" + apiName + \"\\\"\" + \" test failed !\";",
+							"var pushtitle_escape = escape(pushtitle);",
+							"var pushtitle_escape_base64 = btoa(pushtitle_escape);",
+							"postman.setGlobalVariable(\"spm_message_title\", pushtitle_escape_base64);",
+							"",
+							"var pushmessage = \"API : \" + apiName + \"<BR>\" + \"Env : Production\" + \"<BR>\" + \"Time : \" + testTime + \"<BR>\" + \"Error Code : \" + failCode + \"<BR>\" + \"Error Message : \" + failMessage + \"<BR>\" + \"Response Time : \" + responseTime + \" msec\";",
+							"var pushmessage_escape = escape(pushmessage);",
+							"var pushmessage_escape_base64 = btoa(pushmessage_escape);",
+							"postman.setGlobalVariable(\"spm_message_text\", pushmessage_escape_base64);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://qplay.benq.com/qplayApi/public/v101/qplay/sendPushMessage?lang=en-us&need_push=Y&app_key=appqplay",
+					"protocol": "https",
+					"host": [
+						"qplay",
+						"benq",
+						"com"
+					],
+					"path": [
+						"qplayApi",
+						"public",
+						"v101",
+						"qplay",
+						"sendPushMessage"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "en-us",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "need_push",
+							"value": "Y",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "app_key",
+							"value": "appqplay",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "app-key",
+						"value": "appqplay",
+						"description": ""
+					},
+					{
+						"key": "signature-time",
+						"value": "{{sendpushtimenow}}",
+						"description": ""
+					},
+					{
+						"key": "signature",
+						"value": "{{sendpushtimesignature}}",
+						"description": ""
+					},
+					{
+						"key": "token",
+						"value": "{{login_token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"template_id\": \"0\",\r\n    \"message_title\": \"{{spm_message_title}}\",\r\n    \"message_type\": \"event\",\r\n    \"message_text\": \"{{spm_message_text}}\",\r\n    \"message_html\": \"\",\r\n    \"message_url\": \"\",\r\n    \"message_source\": \"qplay\",\r\n    \"source_user_id\": \"Qgroup\\\\Samuel.Hsieh\",\r\n    \"destination_user_id\": [{{spm_destination_user_id}}],\r\n    \"destination_role_id\": []\r\n}"
+				},
+				"description": null
+			},
+			"response": []
+		}
+	]
+}

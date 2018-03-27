@@ -297,9 +297,54 @@ $("#viewNewChatroom").pagecontainer({
             $("div#userList" + listViewIndex).find(".img-content img").show();
         };
 
-        window.newQChatroom = function(name, desc, empNumberArray) {
-            (function(name, desc, empNumberArray) {
+        window.checkQPrivateChat = function(empNumber, chatroomName, chatroomDesc, empNameArray) {
+            (function(empNumber, chatroomName, chatroomDesc, empNameArray) {
 
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    destination_emp_no: empNumber
+                };
+
+                var queryData = "<LayoutHeader>" + createXMLDataString(queryDataObj) + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+                        console.log("==========checkQPrivateChat success");
+
+                        $("#userInfoPopup").popup("close");
+
+                        if (data['Content'].group_id === null) {
+                            //Chatroom does not exist
+                            JM.Chatroom.createGroup(chatroomName, chatroomDesc, empNameArray);
+
+                            JM.newCreate = true;
+                        } else {
+                            //Chatroom has created
+                            JM.chatroomID = data['Content'].group_id;
+
+                            JM.newCreate = false;
+
+                            //change page to chatroom
+                            setTimeout(function(){
+                                $.mobile.changePage('#viewChatroom');
+                            }, 1000);
+                        }
+                    }
+                };
+
+                var failCallback = function(data) {};
+
+                CustomAPI("POST", true, "checkQPrivateChat", successCallback, failCallback, queryData, "");
+
+            }(empNumber, chatroomName, chatroomDesc, empNameArray));
+        };
+
+        window.newQChatroom = function(groupID, name, desc, empNameArray) {
+            (function(groupID, name, desc, empNameArray) {
+
+                /*
                 //Max length of name is 32
                 var chatroomName = name.substr(0, 31);
 
@@ -341,12 +386,53 @@ $("#viewNewChatroom").pagecontainer({
                         }, 5000);
                     }
                 };
+                */
+
+                var queryDataObj = {
+                    emp_no: loginData["emp_no"],
+                    group_id: groupID,
+                    chatroom_name: name,
+                    chatroom_desc: desc
+                };
+
+                var queryDataParameter = createXMLDataString(queryDataObj);
+
+                var memberList = "";
+                for (var i=0; i<empNameArray.length; i++) {
+                    var tempDataObj = {
+                        destination_emp_no: JM.data.chatroom_user[empNameArray[i]].emp_no
+                    };
+                    memberList = memberList + createXMLDataString(tempDataObj);
+                }
+                var memberListParameter = "<member_list>" + memberList + "</member_list>";
+
+                var queryData = "<LayoutHeader>" + queryDataParameter + memberListParameter + "</LayoutHeader>";
+
+                var successCallback = function(data) {
+                    var resultCode = data['ResultCode'];
+
+                    if (resultCode === "1") {
+                        console.log("==========new chatroom success");
+
+                        //$("#userInfoPopup").popup("close");
+
+                        JM.chatroomID = groupID;
+
+                        //Add groupID into window.groupsArray
+                        window.groupsArray.push(JM.chatroomID);
+
+                        //change page to chatroom
+                        setTimeout(function(){
+                            $.mobile.changePage('#viewChatroom');
+                        }, 5000);
+                    }
+                };
 
                 var failCallback = function(data) {};
 
                 CustomAPI("POST", true, "newQChatroom", successCallback, failCallback, queryData, "");
 
-            }(name, desc, empNumberArray));
+            }(groupID, name, desc, empNameArray));
         };
 
         function setCreateChatroomButton(status) {
@@ -714,17 +800,20 @@ $("#viewNewChatroom").pagecontainer({
                     var name = "";
                     var desc = "need_history=Y;";
                     var empNumberArray = [];
+                    var empNameArray = [];
 
                     $("#viewNewChatroom .new-chatroom-footer .data-list").each(function(index, element) {
-                        name = name + $(element).find(".user-name").data("userName") + ", ";
-                        empNumberArray.push($(element).prop("id").substr(3));
+                        var userName = $(element).find(".user-name").data("userName");
+                        name = name + userName + ", ";
+
+                        empNameArray.push(userName);
                     });
 
-                    if (empNumberArray.length == 1) {
+                    if (empNameArray.length == 1) {
                         var chatroomName = name.substr(0, name.length - 2);
                         desc = desc + "group_message=N;";
-                    } else if (empNumberArray.length > 1) {
-                        var chatroomName = loginData["loginid"] + ", " + name.substr(0, name.length - 2);
+                    } else if (empNameArray.length > 1) {
+                        var chatroomName = name.substr(0, name.length - 2);
                         desc = desc + "group_message=Y;";
                     }
 
@@ -733,7 +822,14 @@ $("#viewNewChatroom").pagecontainer({
 
                     //Create chatroom
                     loadingMask("show");
-                    window.newQChatroom(chatroomName, desc, empNumberArray);
+
+                    if (empNameArray.length == 1) {
+                        window.checkQPrivateChat(JM.data.chatroom_user[empNameArray[0]].emp_no, chatroomName, desc, empNameArray);
+                    } else if (empNameArray.length > 1) {
+                        JM.Chatroom.createGroup(chatroomName, desc, empNameArray);
+
+                        JM.newCreate = true;
+                    }
 
                 }
             }
