@@ -4,6 +4,7 @@
 ### Authentication
 ##### Resuest Header
 ```
+Content-Type:multipart/form-data
 app-key:appqforumdev
 signature-Time:1520329467
 signature:kTC59b6mTvgiaabWpZ5Jvi9Xqj/XmqGrWACw4VGOxI=
@@ -38,7 +39,7 @@ Use form post to upload file,please keep the content-type **multipart/from-data*
  ```
  curl -F 'files=@D:temp\img\testimage.jpeg'
  ```
-##### Response
+##### Response Body
 ```json
 {
   "ResultCode": "1",
@@ -70,9 +71,54 @@ Use form post to upload file,please keep the content-type **multipart/from-data*
 997905|Upload data type is not allow
 997908|File size exceeds the allowable limit
 997999|Unknown Error
+**2.Delete picture by url**
+##### Request
+```
+GET /picture/delete
+```
+##### Url Parameter
+```
+?lang=en-us&uuid=1517bfd3f7a87ab988
+``` 
+- lang  :  Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
+- uuid :  Mobile uuid that has been registered
+##### Request Header
+``` 
+Content-Type:application/json
+app-key:appqforumdev
+Signature-Time:1522045522
+Signature:UjU4St75nHvDC2mmWR7ZjBhV4Yd6d/zSDr/B2opjR5E=
+account:1607279
+``` 
+##### Request Body
+```json
+{"fileUrls":[
+  "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-5dd5d090b10ddabf/5ab493cb1263b/5ab493cb1263b_1024.jpg",
+  "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa7810f13643/5aa7810f13643_1024.jpg",
+  "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa784c79b1e0/5aa784c79b1e0_1024.jpg"
+]} 
+``` 
+##### Response Body
+```json
+{
+    "ResultCode": "1",
+    "Message": "",
+    "Content": ""
+}
+```
+##### Response Data
+| Result Code | Descriptopn |
+|--|--|
+|1 | Success. Return sas token in 'Content'
+997902|Mandatory Field Lost
+997903|Field Format Error
+997904|Account Not Exist
+999006|Input format is invalid
+997999|Unknown Error
 
- **2. Get  SaS Token  With Permission**
-##### Resuest
+### Access Security API
+ **1. Get  SaS Token  With Permission**
+##### Request
 ```
 GET /sastoken/{resource}
 ```
@@ -80,7 +126,6 @@ GET /sastoken/{resource}
 ```
 ?lang=en-us&uuid=1517bfd3f7a87ab988&start=2018-03-13T07:30:00Z&expiry=2018-03-15T08:00:00Z&sp=r
 ``` 
-- resource : resource type. allow 'container','blob'
 - lang  :  Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
 - uuid :  Mobile uuid that has been registered
 - start :  Signed start date. allow ISO date String ex:2018-03-16T03:30:00Z
@@ -96,7 +141,7 @@ target:appqforumdev-picture-13-76f99fb4f1a24d29
 blob-name:5aa7810f13643/5aa7810f13643_1024.jpg
 ``` 
 - target : Which container(blob) sas token you want to get.
-##### Response
+##### Response Body
 ```json
 {
   "ResultCode": "1",
