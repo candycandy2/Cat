@@ -36,9 +36,9 @@ resource-id:1/bb2cbbc0eb8411e7b4f300016cd4175c
  - resource-id : This id must discuss with qstorage PM, that will determine where the file located.
 ##### Request Params
 Use form post to upload file,please keep the content-type **multipart/from-data**,this is a example use curl
- ```
+```
  curl -F 'files=@D:temp\img\testimage.jpeg'
- ```
+```
 ##### Response Body
 ```json
 {
