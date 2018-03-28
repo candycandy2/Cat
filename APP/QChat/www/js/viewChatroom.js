@@ -803,7 +803,7 @@ $("#viewChatroom").pagecontainer({
                             for (var i=0; i<textArray.length; i++) {
 
                                 if (textArray[i].toLowerCase().indexOf("http") != -1) {
-                                    messageText = messageText + " " + "<a href='#' onclick=\"window.open('" + textArray[i] + "', '_system');\">" + textArray[i] + "</a>";
+                                    messageText = messageText + " " + "<a href='#' class='msg-link' onclick=\"window.open('" + textArray[i] + "', '_system');\">" + textArray[i] + "</a>";
                                 } else {
                                     messageText = messageText + " " + textArray[i];
                                 }
@@ -890,10 +890,8 @@ $("#viewChatroom").pagecontainer({
             var last_view_msg_id = JM.data.chatroom[nowChatroomID].last_view_msg_id;
 
             if ($("#msg" + last_view_msg_id).length != 0) {
-                var headerHeight = $("#viewChatroom .page-header").height();
-                var footerHeight = $("#viewChatroom .ui-header").height();
-                var msgHeight = $("#msg" + last_view_msg_id).height();
-                var scrollPageTop = $("#msg" + last_view_msg_id).offset().top;
+
+                var scrollPageTop = document.getElementById("viewChatroom").scrollHeight;
 
                 if (device.platform === "iOS") {
                     scrollPageTop -= iOSFixedTopPX();
@@ -1197,6 +1195,10 @@ $("#viewChatroom").pagecontainer({
  
             $("#viewChatroomContent .msg").each(function(index, el) {
                 if ($(el).prop("id").length !== 0) {
+
+                    if ($(el).prop("id").indexOf("ImgLoad") != -1) {
+                        return;
+                    }
 
                     var last_view_msg_id = getMsgNumber(JM.data.chatroom[nowChatroomID].last_view_msg_id);
                     var ID = $(el).prop("id").substr(3);
