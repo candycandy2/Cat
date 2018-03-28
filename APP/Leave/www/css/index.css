@@ -101,7 +101,7 @@
     font-size: 4.4VW;
 }
 
-#viewPersonalLeave .infoContent ul,
+#viewPersonalLeaveCalendar .infoContent ul,
 #viewHolidayCalendar .infoList ul {
     list-style-type: none;
     display: inline;
@@ -393,7 +393,7 @@ html body .ui-group-theme-a a:visited {
 
 .apply-container {
     width: 93.6vw;
-    margin-left: 3.2vw;
+    margin-left: 3.71vw;
 }
 
 .apply-date {
