@@ -40,7 +40,7 @@ class JobController extends Controller
             if($lastEndTime != ""){
                 $dt = DateTime::createFromFormat("Y-m-d H:i:s", $lastEndTime);
                 if($dt === false || array_sum($dt->getLastErrors()) >0 ){
-                    $result = ['ResultCode'=>ResultCode::_025903_MandatoryFieldLost,
+                    $result = ['ResultCode'=>ResultCode::_047903_MandatoryFieldLost,
                                              'Message'=>'the parameter end_time error or blank!'];
                     return response()->json($result);
                 }
@@ -52,25 +52,26 @@ class JobController extends Controller
                 $urls[]=$attach->file_url;
                 $lastDeleteAt = $attach->deleted_at;
             }
-
-            $qstorage = new Qstorage();
-            $data = array("fileUrls"=>$urls);
-            $deleteRs = json_decode($qstorage->deleteAttach($data));
-            if($deleteRs->ResultCode != ResultCode::_1_reponseSuccessful){
-                $result = ['ResultCode'=>ResultCode::_047930_CallAPIFailedOrErrorOccurs,
-                                             'Message'=>['error'=>$deleteRs->ResultCode,
-                                                         'Message'=>$deleteRs->Message
-                                                        ]
-                           ];
-                    return response()->json($result);
+            if(count($urls) > 0){
+                $qstorage = new Qstorage();
+                $data = array("fileUrls"=>$urls);
+                $deleteRs = json_decode($qstorage->deleteAttach($data));
+                if($deleteRs->ResultCode != ResultCode::_1_reponseSuccessful){
+                    $result = ['ResultCode'=>ResultCode::_047930_CallAPIFailedOrErrorOccurs,
+                                                 'Message'=>['error'=>$deleteRs->ResultCode,
+                                                             'Message'=>$deleteRs->Message
+                                                            ]
+                               ];
+                        return response()->json($result);
+                }
+                //更新結束時間
+                $this->parameterRepository->updateLastQueryTime($lastDeleteAt);
             }
-            //更新結束時間
-            $this->parameterRepository->updateLastQueryTime($lastDeleteAt);
             \DB::commit();
 
             return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                             'Message'=>"Success",
-                            'Content'=>"delete picture count :".count($urls)]);
+                            'Content'=>['execute'=>count($urls)]]);
 
         }catch (\Exception $e) {
              \DB::rollBack();
