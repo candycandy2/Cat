@@ -146,14 +146,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | QPlay Api Server
+    | Api Server
     |--------------------------------------------------------------------------
     |
-    | Here you may configure the qply api server settings for your application.
-    |
+    | Here you may configure the api server settings for your application.
+    | 
     */
    
     'qplay_api_server' => env('QPLAY_API_SERVER'),
+    'qstorage_api_server' => env('QSTORAGE_API_SERVER'),
 
     /*
     |--------------------------------------------------------------------------
