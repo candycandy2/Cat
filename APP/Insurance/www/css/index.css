@@ -183,13 +183,29 @@ pre {
 
 /********************************** public area *************************************/
 
-.leaveMenu {
+.insuranceMenu {
     width: 4.934VW;
 }
 
 #backMain {
     width: 4.934VW;
     display: none;
+}
+
+#mypanel {
+    background-color: #CECECE;
+    box-shadow: 0 0 0;
+    z-index: 1002;
+}
+
+.page-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 *{ box-sizing: border-box;}
@@ -667,4 +683,31 @@ div.scrollmenu a {
     margin-left:2.066vw;
     width: 8%;
     align-self: center;
+}
+
+/********************************************** mypanel *********************************************/
+
+#mypanel .panel-content {
+    background-color: #f6f6f6;
+    color: #0f0f0f;
+    font-size: 3.97VW;
+    font-family: Arial;
+    padding: 4.3vw 0 3.71vw 3.71vw;
+}
+
+#mypanel .panel-content {
+    border-bottom: solid;
+    border-bottom-color: #e4e4e4;
+    border-bottom-width: 0.1VH;
+}
+
+#mypanel #mypanelviewInsuranceInfo {
+    border-bottom: solid;
+    border-bottom-color: #666;
+    border-bottom-width: 0.1VH;
+}
+
+#mypanel div.panel-content:hover {
+    background-color: #503f81;
+    color: #fff;
 }
