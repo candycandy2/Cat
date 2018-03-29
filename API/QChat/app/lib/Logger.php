@@ -64,7 +64,7 @@ public static function logApi($userId, $action, $responseHeader, $responseBody) 
             $log->request_header= self::unicodeDecode(json_encode($requestHeaderInfo));
             $log->request_body= self::unicodeDecode($request_body);
             $log->response_header= self::unicodeDecode(json_encode($responseHeader));
-            $log->response_body= self::unicodeDecode(json_encode($responseBody));
+            $log->response_body= self::unicodeDecode(json_encode($responseBody,JSON_UNESCAPED_UNICODE));
             $log->created_at= $now;
             $log->save();
         }

@@ -36,9 +36,9 @@ resource-id:1/bb2cbbc0eb8411e7b4f300016cd4175c
  - resource-id : This id must discuss with qstorage PM, that will determine where the file located.
 ##### Request Params
 Use form post to upload file,please keep the content-type **multipart/from-data**,this is a example use curl
- ```
+```
  curl -F 'files=@D:temp\img\testimage.jpeg'
- ```
+```
 ##### Response Body
 ```json
 {
@@ -71,6 +71,7 @@ Use form post to upload file,please keep the content-type **multipart/from-data*
 997905|Upload data type is not allow
 997908|File size exceeds the allowable limit
 997999|Unknown Error
+
 **2.Delete picture by url**
 ##### Request
 ```
@@ -117,7 +118,7 @@ account:1607279
 997999|Unknown Error
 
 ### Access Security API
- **1. Get  SaS Token  With Permission**
+ **3. Get  SaS Token  With Permission**
 ##### Request
 ```
 GET /sastoken/{resource}
