@@ -124,11 +124,10 @@ class AzureBlobServiceUnitTest extends TestCase
     {   
         /** arrange */
         $fileUrls = [
-                    "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-5dd5d090b10ddabf/5ab493cb1263b/5ab493cb1263b_1024.jpg",
-                    "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa7810f13643/5aa7810f13643_1024.jpg"
+                    "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa79ec483d2c/5aa79ec483d2c_1024.jpg"
                   ];
         
-        foreach ($fileUrl as $value) {
+        foreach ($fileUrls as $value) {
             $str = preg_replace('/^https{0,1}:\/\//', '', $value);
             $temp = explode('/',$str);
             $account = explode('.',$temp[0])[0];
@@ -141,10 +140,7 @@ class AzureBlobServiceUnitTest extends TestCase
                 if(!$this->target->checkContainerExist($delContainerName)){
                     $this->target->createContainer($delContainerName);
                 }
-               
-                $this->target->softDeleteFile($delContainerName, $blobName, $containerName, $blobName);
-                     
-              
+                $this->target->softDeleteFile($delContainerName, $blobName, $containerName, $blobName); 
             }
         }
 
