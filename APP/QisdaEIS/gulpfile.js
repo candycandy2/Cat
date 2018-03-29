@@ -107,7 +107,7 @@ gulp.task('install', ['copyRes'], shell.task([
 
 gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova platform add ios',
-  'cordova platform add android',
+  'cordova platform add android@6.3.0',
   'cordova plugin add ../../plugins/cordova-plugin-device --nofetch',
   //'cordova plugin add cordova-plugin-console',
   'cordova plugin add ../../plugins/cordova-plugin-appversion --nofetch',
