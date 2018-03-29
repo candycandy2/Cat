@@ -35,10 +35,19 @@ class AttachRepository
     }
 
     
-    public function getAttach($postId, $commentId=0){
+    public function getAttach($postId, $commentId = 0){
         return $this->attach->where('post_id',$postId)
                             ->where('comment_id', $commentId)
                             ->where('deleted_at', null)
                             ->lists('file_url')->toArray();
+    }
+
+    public function getDeletedAttach($lastDeleteAt = ""){
+        $query = $this->attach->whereNotNull('deleted_at');
+        if($lastDeleteAt != ""){
+            $query = $query->where('deleted_at', '>', $lastDeleteAt);
+        }
+        $query = $query->orderBy('deleted_at','asc')->get();
+        return $query;
     }
 }

@@ -11,7 +11,7 @@ use App\Services\BoardService;
 class BoardController extends Controller
 {
 
-     protected $postService;
+     protected $userService;
      protected $boardService;
 
     public function __construct(UserService $userService,
