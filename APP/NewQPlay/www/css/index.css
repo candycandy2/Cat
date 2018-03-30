@@ -78,11 +78,8 @@
 }
 
 #weather {
-    /*font-size: 2.3vh; */
     font-size: 4vw;
     padding: 1em; 
-    /*margin-top: 10px; 
-    margin-bottom: -30px;*/
     margin-top: 5vw; 
     margin-bottom: -12vw;
 }
@@ -185,10 +182,8 @@ input[type=radio]:checked + label {
 /* app list / detail */
 .app-list-category {
     color: #0F0F0F;
-    /*font-size: 2.9vh;*/
     display: inline-block;
     line-height: 0;
-    /*margin-bottom: 2.5vh;*/
     font-size: 5vw;
     margin-bottom: 4.39vw;
 }
