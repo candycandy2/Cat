@@ -429,10 +429,10 @@ $("#viewPersonalLeave").pagecontainer({
                     var tab1Status = document.getElementById("tab-1").style.display;
                     var tab2Status = document.getElementById("tab-2").style.display;
 
-                    if (tab2Status == "block") {
+                    if (tab2Status !== "none") {
                         //after custom API
                         checkLeftDaysByQuickLeave(quickLeaveLeft);
-                    } else if (tab1Status == "block") {
+                    } else if (tab1Status == !"none") {
                         //after custom API
                         checkLeftDaysNoBasedate(quickLeaveLeft);
                     }
@@ -481,14 +481,14 @@ $("#viewPersonalLeave").pagecontainer({
                             //var visitedPage = visitedPageList[visitedPageList.length - 1];
                             var tab1Status = document.getElementById("tab-1").style.display;
                             var tab2Status = document.getElementById("tab-2").style.display;
-                            if (tab2Status == "block") {
+                            if (tab2Status !== "none") {
                                 //viewPersonalLeave
                                 $("#agent-popup-option-list").empty().append(agentList);
                                 resizePopup("agent-popup-option");
 
                                 $("#agent-popup-option-list").show();
                                 $("#queryLoader").hide();
-                            } else if (tab1Status == "block") {
+                            } else if (tab1Status !== "none") {
                                 //viewLeaveSubmit
                                 $("#leave-agent-popup-option-list").empty().append(agentList);
                                 resizePopup("leave-agent-popup-option");
