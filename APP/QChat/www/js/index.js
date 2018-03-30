@@ -347,7 +347,7 @@ function onPause() {
     console.log("======-------pause");
 
     //When APP in background, need to receive the Push Notification
-    JM.Chatroom.exitConversation();
+    JM.Chatroom.exitConversation(JM.chatroomID);
 }
 
 //Handle APP foreground event
@@ -359,6 +359,7 @@ function onResume() {
 
 //QPush callback function - for push from QPlay Server (Friend Invite / Accept)
 function QPushCallback(action, pushData) {
+    console.log("--QPushCallback");
     console.log(pushData);
 
     if (action === "open") {
@@ -374,6 +375,31 @@ function QPushCallback(action, pushData) {
             }
         } else {
 
+            //iOS
+            if (!$.isEmptyObject(pushData)) {
+                //Data from JMessage
+                JM.chatroomID = pushData.chatroom_id;
+
+                if (prevPageID === "viewChatroom") {
+                    $.mobile.changePage('#viewChatroom', {
+                        reloadPage: true
+                    });
+                }
+
+                $.mobile.changePage('#viewChatroom');
+            } else {
+                //Data from QPlay Server
+                var parameter = pushData.split("=");
+
+                if (parameter[1] === "acceptQInvitation") {
+                    prevPageID = "viewFriendInvite";
+                    window.getQFriend();
+                    $.mobile.changePage('#viewIndex');
+                } else if (parameter[1] === "sendQInvitation") {
+                    window.getQFriend("receiveInvite");
+                }
+            }
+
         }
     } else if (action === "receive") {
         if (device.platform == "Android") {
@@ -384,19 +410,20 @@ function QPushCallback(action, pushData) {
             }
         } else {
 
+            //iOS - Receive Event in JPush, only listener from QPlay Server, ignore JMessage
+            if (typeof pushData !== "object") {
+                var parameter = pushData.split("=");
+
+                if (parameter[1] === "sendQInvitation" || parameter[1] === "acceptQInvitation") {
+                    window.getQFriend();
+                }
+            }
+
         }
     }
 }
 
 //JMessage - Event Listener
-document.addEventListener("jpush.receiveMessage", function (event) {
-    if (device.platform == "Android") {
-        console.log(event.extras.Parameter);
-    } else {
-        console.log(event.content);
-    }
-}, false);
-
 window.receiveMessage = function(data) {
     console.log("----receiveMessage");
     console.log(data);
@@ -479,6 +506,7 @@ window.receiveMessage = function(data) {
 };
 
 window.clickMessageNotification = function(data) {
+    //iOS will not trigger this event!!
     console.log("----clickMessageNotification");
     console.log(data);
 
