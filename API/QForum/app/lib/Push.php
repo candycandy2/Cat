@@ -5,8 +5,6 @@
 namespace App\lib;
 
 use App\lib\CommonUtil;
-use App\Repositories\EventRepository;
-use App\Repositories\UserRepository;
 use Config;
 
 class Push
