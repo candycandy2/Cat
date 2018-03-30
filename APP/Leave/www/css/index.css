@@ -49,15 +49,15 @@
 }
 
 .page-main .page-tabs {
-    margin: 0VH 3.71VW 0VH 3.71VW;
+    margin: 0 3.71VW 0 3.71VW;
 }
 
 .page-main .tabs-title {
-    height: 5VH;
-    font-size: 2.5VH;
+    height: 8.7vw;
+    font-size: 4.39vw;
     font-family: Arial;
     font-weight: 300;
-    line-height: 5.6VH;
+    line-height: 9.8vw;
     text-align: center;
     background-color: #FFFFFF;
     padding: 0px;
@@ -124,7 +124,7 @@
 .infoContent ul>li>div:nth-of-type(2) {
     float: right;
     /* margin-top: -3.5VH; */
-    margin-top: -3VH;
+    margin-top: -6.14VW;
     margin-right: 6.71VW;
 }
 
