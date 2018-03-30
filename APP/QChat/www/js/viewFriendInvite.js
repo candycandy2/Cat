@@ -95,6 +95,15 @@ $("#viewFriendInvite").pagecontainer({
         }
 
         /********************************** page event *************************************/
+        $("#viewFriendInvite").one("pagebeforeshow", function(event, ui) {
+            //---------------------iOS UI---------------------
+            if (device.platform === "iOS") {
+                $("#viewFriendInvite .page-main").css({
+                    "padding-top": (iOSFixedTopPX() - 10) + "px"
+                });
+            }
+        });
+
         $("#viewFriendInvite").on("pagebeforeshow", function(event, ui) {
             //no data
             var noData = $($("template#tplNoData").html());

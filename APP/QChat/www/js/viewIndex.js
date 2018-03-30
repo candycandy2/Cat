@@ -953,7 +953,7 @@ $("#viewIndex").pagecontainer({
             }
 
             //When leave chatroom, need to receive the Push Notification
-            JM.Chatroom.exitConversation();
+            JM.Chatroom.exitConversation(JM.chatroomID);
 
             prevPageID = "viewIndex";
         });
