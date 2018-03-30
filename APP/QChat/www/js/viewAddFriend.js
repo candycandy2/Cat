@@ -100,6 +100,25 @@ $("#viewAddFriend").pagecontainer({
         };
 
         /********************************** page event *************************************/
+        $("#viewAddFriend").one("pagebeforeshow", function(event, ui) {
+
+            //---------------------iOS UI---------------------
+            if (device.platform === "iOS") {
+                $("#viewAddFriend .page-main .search-user-content").css({
+                    "padding-top": iOSFixedTopPX() + "px"
+                });
+
+                $("#viewAddFriend .page-main .search-user-button").css({
+                    "top": parseInt(document.documentElement.clientWidth * 2.468 / 100 + iOSFixedTopPX(), 10) + "px"
+                });
+
+                $("#viewAddFriend .page-main .search-user-clear-content").css({
+                    "top": iOSFixedTopPX() + "px"
+                });
+            }
+
+        });
+
         $("#viewAddFriend").on("pagebeforeshow", function(event, ui) {
 
             //Search Recommend User

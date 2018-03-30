@@ -350,9 +350,22 @@ var JM = {
             });
 
         },
-        exitConversation: function() {
+        exitConversation: function(chatroomID) {
+            console.log("---exitConversation");
 
-            window.JMessage.exitConversation();
+            var params = {
+                'type': "group",
+                'groupId': chatroomID.toString(),
+                'appKey': JM.key
+            };
+
+            window.JMessage.exitConversation(params, function(data) {
+                console.log("---exitConversation success");
+                console.log(data);
+            }, function(errorStr) {
+                console.log("----exitConversation Error");
+                console.log(errorStr);
+            });
 
         },
         getConversation: function(chatroomID, callback) {
