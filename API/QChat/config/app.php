@@ -197,6 +197,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | QPlay Api Server
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the qply api server settings for your application.
+    |
+    */
+   
+    'qplay_api_server' => env('QPLAY_API_SERVER'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Secret Key
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure the a secret_key for your application.
+    | this secret comes from ens project.
+    |
+    */
+    
+    'secret_key' => env('APP_SECRET_KEY'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |
