@@ -39,6 +39,10 @@ a {
 .ui-header-fixed{ position: absolute; z-index: 990;}
 .ui-header-fixed.ui-fixed-hidden{ top: -1px;}
 
+.ui-panel-inner {
+    padding: 0 !important;
+}
+
 .hidden {
     visibility: hidden;
     position: absolute;
