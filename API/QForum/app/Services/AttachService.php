@@ -60,4 +60,8 @@ class AttachService
         $keepData = [];
         $deleteRs = $this->attachRepository->softDeleteAttach($postId, $commentId, $keepData, $userId);
     }
+
+    public function getDeletedAttach($lastDeleteAt=""){
+        return $this->attachRepository->getDeletedAttach($lastDeleteAt);
+    }
 }

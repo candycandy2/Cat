@@ -35,26 +35,26 @@ class AccessController extends Controller
 
         if ($validator->fails()) {
              return response()->json(['ResultCode'=>$validator->errors()->first(),
-                                      'Message'=>trans('result_code.'.$validator->errors()->first())], 412);
+                                      'Message'=>trans('result_code.'.$validator->errors()->first())], 200);
         }
         if(!$request->exists('start') || !$request->exists('expiry')  || !$request->exists('sp') ||
             trim($request->start) == "" || trim($request->expiry) == "" || trim($request->sp) == ""){
             return response()->json(['ResultCode'=> ResultCode::_999001_requestParameterLostOrIncorrect,
                                       'Message'=>trans('result_code.'.ResultCode::_999001_requestParameterLostOrIncorrect)
-                                    ], 412);   
+                                    ], 200);   
         }
 
         if($request->sp != 'r'){
             return response()->json(['ResultCode'=> ResultCode::_999001_requestParameterLostOrIncorrect,
                                       'Message'=>trans('result_code.'.ResultCode::_999001_requestParameterLostOrIncorrect)
-                                    ], 412);   
+                                    ], 200);   
         }
 
         
         if(!in_array($resourceType,array(AzureBlobService::RESOURCE_TYPE_CONTAINER,AzureBlobService::RESOURCE_TYPE_BLOB))){
             return response()->json(['ResultCode'=> ResultCode::_999001_requestParameterLostOrIncorrect,
                                       'Message'=>trans('result_code.'.ResultCode::_999001_requestParameterLostOrIncorrect)
-                                    ], 412);   
+                                    ], 200);   
         }
         
         $result = [];

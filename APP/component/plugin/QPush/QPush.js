@@ -30,10 +30,11 @@ var QPush = {
                 extra = event.extras;
             }
 
-            QPush.pushCallback("open", QPush.getExtras(extra));
-
             console.log("openNotification");
             console.log(event);
+
+            QPush.pushCallback("open", QPush.getExtras(extra));
+
         }, false);
 
         document.addEventListener("jpush.receiveNotification", function (event) {
@@ -47,10 +48,11 @@ var QPush = {
                 extra = event.extras;
             }
 
-            QPush.pushCallback("receive", QPush.getExtras(extra));
-
             console.log("receiveNotification");
             console.log(event);
+
+            QPush.pushCallback("receive", QPush.getExtras(extra));
+
         }, false);
 
         //Set Config
@@ -79,7 +81,20 @@ var QPush = {
         console.log(data["Parameter"]);
 
         if (window.appKeyOriginal === "appqchat") {
-            var JSONData = data["Parameter"];
+            //In QChat (User JMessage + JPush), only iOS will trigger JPush Event,
+            //and the data structure is different with [Only Use JPush]
+            if (device.platform == "iOS") {
+
+                if (data["Parameter"] === undefined) {
+                    //Data from JMessage
+                    var JSONData = data["custom"];
+                } else {
+                    //Data from QPlay Server
+                    var JSONData = data["Parameter"];
+                }
+            } else {
+                var JSONData = data["Parameter"];
+            }
         } else {
             var JSONData = JSON.parse(data["Parameter"]);
         }
