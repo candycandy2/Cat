@@ -17,8 +17,6 @@ $("#viewActivitiesRecord").pagecontainer({
                     //是否需要分割線
                     for (var i = 0; i < recordArr.length; i++) {
                         if (i < recordArr.length - 1) {
-                            var current = recordArr[i];
-                            var next = recordArr[i + 1];
                             if (recordArr[i]["ActivitiesID"] == recordArr[i + 1]["ActivitiesID"] && recordArr[i]["SignupModel"] == "3") {
                                 recordArr[i]["IsLine"] = "N";
                             } else {
