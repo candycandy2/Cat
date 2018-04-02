@@ -315,6 +315,8 @@ input[type="text"] {
 }
 
 .activity-list-info > div:nth-of-type(1) {
+    width: 75vw;
+    height: 8.3vw;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
