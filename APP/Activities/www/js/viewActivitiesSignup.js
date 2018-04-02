@@ -246,7 +246,6 @@ $("#viewActivitiesSignup").pagecontainer({
                         if (noAnswerCount > 0) {
                             $("#timeSignupBtn").addClass("btn-disabled");
                         }
-
                     }
 
                     //根據不同活動類型，展示不同頁面，並跳轉
@@ -603,12 +602,6 @@ $("#viewActivitiesSignup").pagecontainer({
             }
         });
 
-        //超時關閉popup，並返回活動列表
-        // $("#signupTimeOverBtn").on("click", function () {
-        //     pageVisitedList.pop();
-        //     //跳轉
-        //     changePageByPanel("viewActivitiesList", false);
-        // });
 
         /******************************* employee component ********************************/
         // 1. 點擊“新增名單”，觸發dropdownlist的click事件，可以彈出popup
@@ -698,7 +691,6 @@ $("#viewActivitiesSignup").pagecontainer({
             } else {
                 empPopupStatus = false;
             }
-
         });
 
         // 5. 關閉查詢popup後，不能添加相同同仁提示
@@ -737,7 +729,6 @@ $("#viewActivitiesSignup").pagecontainer({
                 departNo = $.trim($("#departNo").val());
                 checkFieldByTeam();
             }, 1000);
-
         });
 
         //輸入隊伍名稱
@@ -750,7 +741,6 @@ $("#viewActivitiesSignup").pagecontainer({
                 teamName = $.trim($("#teamName").val());
                 checkFieldByTeam();
             }, 1000);
-
         });
 
         //組隊報名
@@ -758,9 +748,6 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                // //先判斷是否超時
-                // var nowTime = getTimeNow();
-                // if (nowTime - overTime < 0) {
                 loadingMask("show");
                 teamName = $.trim($("#teamName").val());
                 departNo = $.trim($("#departNo").val());
@@ -781,15 +768,7 @@ $("#viewActivitiesSignup").pagecontainer({
 
                 //console.log(activitiesSignupConfirmQueryData);
                 ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
-
-                // } else {
-                //     //超時提示，並重新獲取活動列表
-                //     popupMsgInit('.signupTimeOverMsg');
-                //     ActivitiesListQuery();
-                // }
-
             }
-
         });
 
 
@@ -816,7 +795,6 @@ $("#viewActivitiesSignup").pagecontainer({
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(familyFieldArr, selfName, selfVal, null, "selectFamilyBtn");
             }, 1000);
-
         });
 
         //checkbox
@@ -834,7 +812,6 @@ $("#viewActivitiesSignup").pagecontainer({
                 saveValueAndCheckForm(familyFieldArr, name, value, false, "selectFamilyBtn");
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
-
         });
 
         //點擊“選擇眷屬”，呼叫API
@@ -875,7 +852,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
                 //console.log(activitiesSignupFamilyQueryData);
                 ActivitiesSignupFamilyQuery(submitID, submitModel, "N", familyFieldArr, familyList);
-
             }
         });
 
@@ -908,7 +884,6 @@ $("#viewActivitiesSignup").pagecontainer({
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personFieldArr, selfName, selfVal, null, "personSignupBtn");
             }, 1000);
-
         });
 
         //checkbox
@@ -926,7 +901,6 @@ $("#viewActivitiesSignup").pagecontainer({
                 saveValueAndCheckForm(personFieldArr, name, value, false, "personSignupBtn");
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
-
         });
 
         //个人報名
@@ -934,9 +908,6 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                // //先判斷是否超時
-                // var nowTime = getTimeNow();
-                // if (nowTime - overTime < 0) {
                 loadingMask("show");
                 //呼叫API前，再次更新欄位值
                 getTextValueBeforeCall("person", "signup", "personSignupText", personFieldArr);
@@ -963,13 +934,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
                 //console.log(activitiesSignupConfirmQueryData);
                 ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
-
-                // } else {
-                //     //超時提示，並重新獲取活動列表
-                //     popupMsgInit('.signupTimeOverMsg');
-                //     ActivitiesListQuery();
-                // }
-
             }
         });
 
@@ -1035,7 +999,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
             //檢查時段和欄位是否爲空
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
-
         });
 
         //checkbox
@@ -1056,7 +1019,6 @@ $("#viewActivitiesSignup").pagecontainer({
 
             //檢查時段和欄位是否爲空
             removeOrAddClass(radioFlag, timeFieldArr, "timeSignupBtn");
-
         });
 
         //時段報名
@@ -1064,9 +1026,6 @@ $("#viewActivitiesSignup").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                // //先判斷是否超時
-                // var nowTime = getTimeNow();
-                // if (nowTime - overTime < 0) {
                 loadingMask("show");
                 //呼叫API前，再次更新欄位值
                 getTextValueBeforeCall("time", "signup", "timeSignupText", timeFieldArr);
@@ -1093,16 +1052,8 @@ $("#viewActivitiesSignup").pagecontainer({
 
                 //console.log(activitiesSignupConfirmQueryData);
                 ActivitiesSignupConfirmQuery(submitID, submitModel, "N");
-
-                // } else {
-                //     //超時提示，並重新獲取活動列表
-                //     popupMsgInit('.signupTimeOverMsg');
-                //     ActivitiesListQuery();
-                // }
-
             }
         });
-
 
 
     }

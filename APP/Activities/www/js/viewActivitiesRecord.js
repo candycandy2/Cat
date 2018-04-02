@@ -14,6 +14,20 @@ $("#viewActivitiesRecord").pagecontainer({
 
                 if (data["ResultCode"] == "1") {
                     recordArr = data["Content"];
+                    //是否需要分割線
+                    for (var i = 0; i < recordArr.length; i++) {
+                        if (i < recordArr.length - 1) {
+                            var current = recordArr[i];
+                            var next = recordArr[i + 1];
+                            if (recordArr[i]["ActivitiesID"] == recordArr[i + 1]["ActivitiesID"] && recordArr[i]["SignupModel"] == "3") {
+                                recordArr[i]["IsLine"] = "N";
+                            } else {
+                                recordArr[i]["IsLine"] = "Y";
+                            }
+                        } else {
+                            recordArr[i]["IsLine"] = "N";
+                        }
+                    }
 
                     //動態生成html
                     var recordContent = "";
@@ -37,10 +51,12 @@ $("#viewActivitiesRecord").pagecontainer({
                             + recordArr[i]["Deadline"]
                             + '">'
                             + (recordArr[i]["CanCancel"] == "Y" ? '<img src="img/delete.png" class="record-delete">' : '')
-                            + '</div></div><div class="record-line"></div>';
+                            + '</div></div><div class="record-line '
+                            + (recordArr[i]["IsLine"] == 'Y' ? 'view-show' : 'view-hide')
+                            + '"></div>';
                     }
 
-                    $("#viewRecordList").empty().append(recordContent).children("div:last-child").remove();
+                    $("#viewRecordList").empty().append(recordContent);
                     $("#viewRecordsNone").hide();
 
                 } else if (data["ResultCode"] == "045909") {
@@ -92,15 +108,7 @@ $("#viewActivitiesRecord").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesRecord").on("pagebeforeshow", function (event, ui) {
-            /**** PullToRefresh ****/
-            // PullToRefresh.init({
-            //     mainElement: '.pull-record',
-            //     onRefresh: function () {
-            //         loadingMask("show");
-            //         //重新获取報名記錄
-            //         ActivitiesRecordQuery();
-            //     }
-            // });
+
         });
 
         $("#viewActivitiesRecord").on("pageshow", function (event, ui) {
@@ -153,16 +161,14 @@ $("#viewActivitiesRecord").pagecontainer({
             $(".recordSignupMsg .header-title").text(recordActName);
             $(".recordSignupMsg .main-paragraph").empty().append(recordContent);
             popupMsgInit('.recordSignupMsg');
-
         });
 
         //確定取消報名-API
         $("#confirmCancelRecord").on("click", function () {
+            loadingMask("show");
             //先判斷是否超時
             var nowTime = getTimeNow();
             if (nowTime - recordOverTime < 0) {
-                loadingMask("show");
-
                 activitiesRecordCancelQueryData = '<LayoutHeader><ActivitiesID>'
                     + currentID
                     + '</ActivitiesID><SignupNo>'
@@ -176,14 +182,14 @@ $("#viewActivitiesRecord").pagecontainer({
                 //console.log(activitiesRecordCancelQueryData);
                 ActivitiesRecordCancelQuery(currentModel);
             } else {
+                loadingMask("hide");
                 //超時提示
-                setTimeout(function() {
+                setTimeout(function () {
                     popupMsgInit('.recordTimeOverMsg');
                 }, 500);
-                
             }
-
         });
+
 
     }
 });
