@@ -1,5 +1,4 @@
 /***************************************override jQuery Mobile***************************************/
-
 .ui-content {
     padding: 0px;
 }
@@ -10,7 +9,6 @@
 
 
 /********************************************** mypanel *********************************************/
-
 #mypanel {
     background-color: #CECECE;
     box-shadow: 0 0 0;
@@ -55,7 +53,6 @@
 
 
 /********************************************** public ***********************************************/
-
 * {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -71,12 +68,12 @@ input[type="search"] {
     -webkit-user-select: auto;
 }
 
-.overflow-scrolling-touch {
+body .page-main {
     -webkit-overflow-scrolling: touch;
 }
 
-.menu-btn {
-    margin-top: 3.238vw;
+.ui-header .ui-btn-left {
+    padding: 4.156vw 0 2.5vw 0 !important;
 }
 
 .menu,
@@ -238,23 +235,13 @@ input[type="text"] {
     display: none;
 }
 
-.pull-list,
-.pull-record {
-    font-family: Arial;
-    height: 0.2vw;
-    color: #0f0f0f;
-    text-align: center;
-    width: 80%;
-    margin: 1vw auto 0;
-}
-
 .dont-touch-move {
     overflow: hidden;
     height: 100%;
 }
 
-/************************************** viewActivitiesList ******************************************/
 
+/************************************** viewActivitiesList ******************************************/
 .open-title div,
 .close-title div {
     width: 100vw;
@@ -315,13 +302,12 @@ input[type="text"] {
 }
 
 .activity-list-info > div:nth-of-type(1) {
-    width: 75vw;
-    height: 8.3vw;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-height: 1.2;
 }
 
 .activity-list-info > div:nth-of-type(2) {
@@ -351,6 +337,7 @@ input[type="text"] {
     margin: 0vw 0vw;
     display: none;
 }
+
 
 /**************************************** viewActivitiesDetail ***************************************/
 #activityDetail {
@@ -456,6 +443,7 @@ input[type="text"] {
     margin-top: 2%;
 }
 
+
 /******************************************* viewActivitiesSignup **************************************/
 #viewActivitiesSignup .page-main > div,
 #viewSelectFamily .page-main > div {
@@ -519,6 +507,11 @@ input[type="text"] {
 .team-signup-title > div:nth-of-type(2) {
     width: 75vw;
     height: 18.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .team-signup-add {
@@ -876,6 +869,7 @@ input[type="text"] {
     margin-top: 5vw;
 }
 
+
 /***************************************** viewActivitiesManage ************************************/
 #viewActivitiesManage .page-main > div {
     width: 92.58vw;
@@ -960,6 +954,11 @@ input[type="text"] {
     padding-bottom: 3.4vw;
     text-align: left;
     border-bottom: 1px dashed #d6d6d6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .cancelSignupMsg .ui-content>.main,
@@ -977,6 +976,7 @@ input[type="text"] {
     margin-top: 4.3vw;
     line-height: 1.5;
 }
+
 
 /******************************************* viewSelectFamily **************************************/
 .select-family-title {
@@ -1079,8 +1079,8 @@ input[type="text"] {
     padding-bottom: 4.3vw;
 }
 
-/***************************************** viewActivitiesRecord *************************************/
 
+/***************************************** viewActivitiesRecord *************************************/
 #viewRecordList {
     width: 100vw;
     margin-bottom: 4vw;
@@ -1141,7 +1141,6 @@ input[type="text"] {
 
 
 /******************************************* viewMyFamilyDatum **************************************/
-
 #viewFamilyNone {
     width: 100vw;
     text-align: center;
@@ -1199,6 +1198,11 @@ input[type="text"] {
 .family-list > div:nth-of-type(1) {
     width: 65vw;
     height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .family-list > div:nth-of-type(1) > div:nth-of-type(2),
@@ -1272,7 +1276,7 @@ input[type="text"] {
     text-indent: 3.2vw;
     border: 1px solid #d6d6d6;
     background: url(../img/dropdown.png) no-repeat;
-    background-size: 6% 20%;
+    background-size: 4vw 2.36vw;
     background-position: 50vw 4vw;
 }
 
@@ -1285,7 +1289,7 @@ input[type="text"] {
     text-indent: 3.2vw;
     border: 1px solid #d6d6d6;
     background: url(../img/calendar.png) no-repeat;
-    background-size: 6% 40%;
+    background-size: 4vw 4vw;
     background-position: 50vw 3vw;
 }
 
@@ -1339,6 +1343,3 @@ input[type="text"] {
 .recordTimeOverMsg .ui-content>.main {
     margin-top: 12%;
 }
-
-
-/*************************************************test***********************************************/
