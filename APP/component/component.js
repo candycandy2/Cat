@@ -333,6 +333,25 @@ $(document).one("pagebeforecreate", function() {
     document.head.appendChild(script);
 
     //According to the data [pageList] which set in index.js ,
+    //add View template into index.html
+    $.map(pageList, function(value, key) {
+        (function(pageID) {
+            $.get("View/" + pageID + ".html", function(data) {
+                $.mobile.pageContainer.append(data);
+                $("#" + pageID).page().enhanceWithin();
+
+                //Show Water Mark
+                //According to the data [waterMarkPageList] which set in index.js
+                if (!(typeof waterMarkPageList === "undefined")) {
+                    if (waterMarkPageList.indexOf(pageID) !== -1) {
+                        $("#" + pageID).css("background-color", "transparent");
+                    }
+                }
+            }, "html");
+        }(value));
+    });
+
+    //According to the data [pageList] which set in index.js ,
     //add Page JS into index.html
     $.map(pageList, function(value, key) {
         (function(pageID) {
@@ -351,25 +370,6 @@ $(document).one("pagebeforecreate", function() {
             script.type = "text/javascript";
             script.src = "js/" + pageID + ".js";
             document.head.appendChild(script);
-        }(value));
-    });
-
-    //According to the data [pageList] which set in index.js ,
-    //add View template into index.html
-    $.map(pageList, function(value, key) {
-        (function(pageID) {
-            $.get("View/" + pageID + ".html", function(data) {
-                $.mobile.pageContainer.append(data);
-                $("#" + pageID).page().enhanceWithin();
-
-                //Show Water Mark
-                //According to the data [waterMarkPageList] which set in index.js
-                if (!(typeof waterMarkPageList === "undefined")) {
-                    if (waterMarkPageList.indexOf(pageID) !== -1) {
-                        $("#" + pageID).css("background-color", "transparent");
-                    }
-                }
-            }, "html");
         }(value));
     });
 
