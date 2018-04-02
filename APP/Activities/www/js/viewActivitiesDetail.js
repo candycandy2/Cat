@@ -160,8 +160,8 @@ $("#viewActivitiesDetail").pagecontainer({
             }
 
             activityStatus = "";
-
         });
+
 
         /********************************** dom event *************************************/
         $("#viewActivitiesDetail").keypress(function (event) {
@@ -183,6 +183,7 @@ $("#viewActivitiesDetail").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
+                loadingMask("show");
                 //先判斷是否超時
                 var nowTime = getTimeNow();
                 if (nowTime - overTime < 0) {
@@ -190,8 +191,6 @@ $("#viewActivitiesDetail").pagecontainer({
                         //已報名同類活動，不能報名該活動
                         popupMsgInit('.signupedSameMsg');
                     } else {
-                        loadingMask("show");
-
                         activitiesSignupQueryData = '<LayoutHeader><ActivitiesID>'
                             + actID
                             + '</ActivitiesID><SignupModel>'
@@ -202,23 +201,19 @@ $("#viewActivitiesDetail").pagecontainer({
 
                         //console.log(activitiesSignupQueryData);
                         ActivitiesSignupQuery(actModel);
-
                     }
-
                 } else {
+                    loadingMask("hide");
                     //超時提示，並重新獲取活動列表
                     popupMsgInit('.detailTimeOverMsg');
                     ActivitiesListQuery();
                 }
-
             }
-
         });
 
         //點擊 "報名管理" 跳轉到編輯頁
         $(".detail-manage-btn").on("click", function () {
             loadingMask("show");
-
             //先判斷是否超時
             var nowTime = getTimeNow();
             if (nowTime - overTime < 0) {
@@ -234,13 +229,12 @@ $("#viewActivitiesDetail").pagecontainer({
                 ActivitiesSignupManageQuery(actModel, isFull);
 
             } else {
+                loadingMask("hide");
                 //超時提示，並重新獲取活動列表
                 popupMsgInit('.detailTimeOverMsg');
                 ActivitiesListQuery();
             }
-
         });
-
 
 
     }

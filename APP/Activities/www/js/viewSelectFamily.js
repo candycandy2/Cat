@@ -213,15 +213,6 @@ $("#viewSelectFamily").pagecontainer({
 
         });
 
-        //超時關閉popup，並返回活動列表
-        // $("#selectTimeOverBtn").on("click", function () {
-        //     for (var i = 0; i < 2; i++) {
-        //         pageVisitedList.pop();
-        //     }
-        //     //跳轉
-        //     changePageByPanel("viewActivitiesList", false);
-        // });
-
         //返回眷屬報名或報名管理-popup
         $("#viewSelectFamily .back-select").on("click", function () {
             popupMsgInit('.selectNoFinish');
@@ -245,11 +236,13 @@ $("#viewSelectFamily").pagecontainer({
             if (src == "img/list_down.png") {
                 self.attr("src", "img/list_up.png");
                 parentNode.parent().css("border-bottom", "0");
-                parentNode.next().show();
+                //parentNode.next().show();
+                parentNode.next().slideDown(500);
             } else {
                 self.attr("src", "img/list_down.png");
                 parentNode.parent().css("border-bottom", "1px solid #d6d6d6");
-                parentNode.next().hide();
+                //parentNode.next().hide();
+                parentNode.next().slideUp(500);
             }
         });
 
@@ -336,8 +329,6 @@ $("#viewSelectFamily").pagecontainer({
             if (src == "img/checkbox_n.png" && expandNode.attr("src") == "img/list_down.png") {
                 expandNode.trigger("click");
             }
-
-            //console.log(familyAllList);
         });
 
         //選擇所有眷屬
@@ -376,8 +367,6 @@ $("#viewSelectFamily").pagecontainer({
                     }
                 });
             }
-
-            //console.log(familyAllList);
         });
 
         //展開全部眷屬資料
@@ -423,7 +412,6 @@ $("#viewSelectFamily").pagecontainer({
                         }
                     }
                 }
-                //console.log(familyAllList);
             }
         });
 
@@ -432,7 +420,6 @@ $("#viewSelectFamily").pagecontainer({
             var self = $(this);
             var familyNo = $(this).parent().parent().parent().prev().find(".family-checkbox-img").parent().attr("data-no");
             var columnName = $(this).prev().text();
-            // var columnAnswer = $.trim($(this).val());
 
             if (timeoutSelectFamily != null) {
                 clearTimeout(timeoutSelectFamily);
@@ -451,7 +438,6 @@ $("#viewSelectFamily").pagecontainer({
                             }
                         }
                     }
-                    //console.log(familyAllList);
                 }
 
                 //如果自定義欄位的Text值爲空，則眷屬的checkbox也不能選擇
@@ -460,7 +446,6 @@ $("#viewSelectFamily").pagecontainer({
                 }
 
             }, 1000);
-
         });
 
         //Checkbox欄位值改變
@@ -500,7 +485,6 @@ $("#viewSelectFamily").pagecontainer({
                         }
                     }
                 }
-                //console.log(familyAllList);
             }
 
             //如果自定義欄位的checkbox都未選擇，則眷屬的checkbox也不能選擇
@@ -512,7 +496,6 @@ $("#viewSelectFamily").pagecontainer({
         //眷屬報名
         $("#familySignupBtn").on("click", function () {
             loadingMask("show");
-
             var familyQuery = "";
             if (familyAllList.length > 0) {
                 //呼叫API前，再次更新已選眷屬欄位值
@@ -541,9 +524,6 @@ $("#viewSelectFamily").pagecontainer({
                 }
             }
 
-            // //先判斷是否超時
-            // var nowTime = getTimeNow();
-            // if (nowTime - overTime < 0) {
             activitiesSignupConfirmQueryData = '<LayoutHeader><SignupModel>'
                 + actModel
                 + '</SignupModel>'
@@ -553,16 +533,8 @@ $("#viewSelectFamily").pagecontainer({
 
             //console.log(activitiesSignupConfirmQueryData);
             ActivitiesSignupConfirmQuery(actID, actModel, familyIsSignup);
-
-            // } else {
-            //     //超時提示，並重新獲取活動列表
-            //     popupMsgInit('.selectTimeOverMsg');
-            //     ActivitiesListQuery();
-            // }
-
         });
 
 
-        
     }
 });
