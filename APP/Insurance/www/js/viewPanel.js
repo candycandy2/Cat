@@ -47,13 +47,13 @@ $(document).one("pagebeforeshow", function() {
 
     $("#mypanel #mypanelviewFamilyData").on("click", function() {
         changePageByPanel("viewFamilyData");
-    });
+    });*/
 
     $("#mypanel #mypanelviewContact").on("click", function() {
         changePageByPanel("viewContact");
     });
 
-    $("#mypanel #mypanelviewInsuranceInfo").on("click", function() {
+    /*$("#mypanel #mypanelviewInsuranceInfo").on("click", function() {
         changePageByPanel("viewInsuranceInfo");
     });*/
 
