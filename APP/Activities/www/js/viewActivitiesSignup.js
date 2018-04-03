@@ -302,7 +302,6 @@ $("#viewActivitiesSignup").pagecontainer({
                 }
 
                 loadingMask("hide");
-
             };
 
             this.failCallback = function (data) { };
@@ -408,7 +407,6 @@ $("#viewActivitiesSignup").pagecontainer({
                 }
 
                 loadingMask("hide");
-
             };
 
             this.failCallback = function (data) { };
@@ -746,7 +744,6 @@ $("#viewActivitiesSignup").pagecontainer({
         //組隊報名
         $("#sendTeamSignup").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
-
             if (!selfClass) {
                 loadingMask("show");
                 teamName = $.trim($("#teamName").val());
@@ -817,7 +814,6 @@ $("#viewActivitiesSignup").pagecontainer({
         //點擊“選擇眷屬”，呼叫API
         $("#selectFamilyBtn").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
-
             if (!selfClass) {
                 loadingMask("show");
                 //呼叫API前，再次更新欄位值
@@ -906,7 +902,6 @@ $("#viewActivitiesSignup").pagecontainer({
         //个人報名
         $("#personSignupBtn").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
-
             if (!selfClass) {
                 loadingMask("show");
                 //呼叫API前，再次更新欄位值
@@ -1024,7 +1019,6 @@ $("#viewActivitiesSignup").pagecontainer({
         //時段報名
         $("#timeSignupBtn").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
-
             if (!selfClass) {
                 loadingMask("show");
                 //呼叫API前，再次更新欄位值
