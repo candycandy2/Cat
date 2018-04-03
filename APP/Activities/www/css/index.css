@@ -68,9 +68,9 @@ input[type="search"] {
     -webkit-user-select: auto;
 }
 
-body .page-main {
+/* body .page-main {
     -webkit-overflow-scrolling: touch;
-}
+} */
 
 .ui-header .ui-btn-left {
     padding: 4.156vw 0 2.5vw 0 !important;
@@ -302,12 +302,15 @@ input[type="text"] {
 }
 
 .activity-list-info > div:nth-of-type(1) {
+    width: 75vw;
+    height: 8.5vw;
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; */
     line-height: 1.2;
+    /* padding-top: 0.75vw; */
 }
 
 .activity-list-info > div:nth-of-type(2) {
@@ -374,11 +377,15 @@ input[type="text"] {
 }
 
 .detail-header-info > div:nth-of-type(1) {
+    width: 75vw;
+    height: 8.5vw;
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    padding-top: 0.75vw; */
+    line-height: 1.2;
 }
 
 .detail-header-info > div:nth-of-type(2) {
@@ -507,11 +514,11 @@ input[type="text"] {
 .team-signup-title > div:nth-of-type(2) {
     width: 75vw;
     height: 18.5vw;
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; */
 }
 
 .team-signup-add {

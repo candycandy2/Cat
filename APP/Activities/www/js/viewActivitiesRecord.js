@@ -163,10 +163,10 @@ $("#viewActivitiesRecord").pagecontainer({
 
         //確定取消報名-API
         $("#confirmCancelRecord").on("click", function () {
-            loadingMask("show");
             //先判斷是否超時
             var nowTime = getTimeNow();
             if (nowTime - recordOverTime < 0) {
+                loadingMask("show");
                 activitiesRecordCancelQueryData = '<LayoutHeader><ActivitiesID>'
                     + currentID
                     + '</ActivitiesID><SignupNo>'
@@ -180,7 +180,6 @@ $("#viewActivitiesRecord").pagecontainer({
                 //console.log(activitiesRecordCancelQueryData);
                 ActivitiesRecordCancelQuery(currentModel);
             } else {
-                loadingMask("hide");
                 //超時提示
                 setTimeout(function () {
                     popupMsgInit('.recordTimeOverMsg');
