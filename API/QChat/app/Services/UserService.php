@@ -134,4 +134,13 @@ class UserService
     public function getQMessageRegister($destinationEmpNo){
         return $this->userRepository->getQMessageRegister($destinationEmpNo);
     }
+
+    /**
+     * 依員工編號取得使用者資訊
+     * @param  Array  $empNoArr 員工編號清單
+     * @return mixed
+     */
+    public function getUserInfoByEmpNo(Array $empNoArr){
+        return $this->userRepository->getUserInfoByEmpNo($empNoArr);
+    }
 }

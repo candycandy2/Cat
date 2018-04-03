@@ -265,8 +265,12 @@ class FriendController extends Controller
                         'Message'=>"已發送過交友邀請",
                         'Content'=>""]);
             }
-
-            $this->friendService->sendQInvitation($fromEmpNo, $targetEmpNo, $this->userId, $reason);
+            $input = Input::get();
+            $queryParam =  array(
+                'lang' =>  (isset($input['lang']))?$input['lang']:"zh-tw",
+                'uuid' => (isset($input['uuid']))?$input['uuid']:""
+                );
+            $this->friendService->sendQInvitation($fromEmpNo, $targetEmpNo, $this->userId, $reason, $queryParam);
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
@@ -321,8 +325,12 @@ class FriendController extends Controller
                         'Message'=>"交友邀請不存在",
                         'Content'=>""]);
             }
-
-            $this->friendService->acceptQInvitation($empNo, $sourceEmpNo, $this->userId);
+            $input = Input::get();
+            $queryParam =  array(
+                'lang' =>  (isset($input['lang']))?$input['lang']:"zh-tw",
+                'uuid' => (isset($input['uuid']))?$input['uuid']:""
+                );
+            $this->friendService->acceptQInvitation($empNo, $sourceEmpNo, $this->userId, $queryParam );
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",
@@ -390,7 +398,12 @@ class FriendController extends Controller
                         'Message'=>"交友邀請不存在",
                         'Content'=>""]);
             }
-            $this->friendService->rejectQInvitation($empNo, $sourceEmpNo, $this->userId, $rejectReason);
+            $input = Input::get();
+            $queryParam =  array(
+                'lang' =>  (isset($input['lang']))?$input['lang']:"zh-tw",
+                'uuid' => (isset($input['uuid']))?$input['uuid']:""
+                );
+            $this->friendService->rejectQInvitation($empNo, $sourceEmpNo, $this->userId, $rejectReason, $queryParam);
             \DB::commit();
             return $result = response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
                         'Message'=>"",

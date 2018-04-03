@@ -82,15 +82,6 @@ $("#viewActivitiesList").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesList").on("pagebeforeshow", function (event, ui) {
-            /**** PullToRefresh ****/
-            // PullToRefresh.init({
-            //     mainElement: '.pull-list',
-            //     onRefresh: function () {
-            //         loadingMask("show");
-            //         //重新获取活动列表
-            //         ActivitiesListQuery();
-            //     }
-            // });
             if(viewListInit) {
                 viewListInit = false;
             } else {
@@ -121,6 +112,5 @@ $("#viewActivitiesList").pagecontainer({
         });
 
 
-        
     }
 });

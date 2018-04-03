@@ -298,13 +298,13 @@ $("#viewMyFamilyDatum").pagecontainer({
                 setDropdownlistByFamily();
                 viewFamilyInit = false;
             }
-
         });
 
         $("#viewMyFamilyDatum").on("pageshow", function (event, ui) {
 
         });
 
+        
         /******************************** datetimepicker ***********************************/
         $('#familyBirth').datetimepicker({
             timepicker: false
@@ -319,6 +319,7 @@ $("#viewMyFamilyDatum").pagecontainer({
             $(this).val(familyBirth);
             checkFormByFamily();
         });
+
 
         /********************************** dom event *************************************/
         $("#viewMyFamilyDatum").keypress(function (event) {
@@ -353,7 +354,6 @@ $("#viewMyFamilyDatum").pagecontainer({
             } else {
                 popupMsgInit('.confirmCancelEditFamily');
             }
-
         });
 
         //確定取消新增，跳轉
@@ -462,7 +462,6 @@ $("#viewMyFamilyDatum").pagecontainer({
                     ActivitiesFamilyUpdateQuery();
                 }
             }
-
         });
 
         //關係dropdownlist-popup
@@ -472,7 +471,6 @@ $("#viewMyFamilyDatum").pagecontainer({
             setTimeout(function () {
                 $("#relationship-popup").trigger("click");
             }, 200);
-
         });
 
         //性別dropdownlist-popup
@@ -482,7 +480,6 @@ $("#viewMyFamilyDatum").pagecontainer({
             setTimeout(function () {
                 $("#gender-popup").trigger("click");
             }, 200);
-
         });
 
         //點擊關係列表，觸發change事件
@@ -523,18 +520,9 @@ $("#viewMyFamilyDatum").pagecontainer({
                 familyName = $.trim($("#familyName").val());
                 checkFormByFamily();
             }, 1000);
-
         });
 
         $("#familyID").on("keyup", function (event) {
-            // if (timeoutFamilyID != null) {
-            //     clearTimeout(timeoutFamilyID);
-            //     timeoutFamilyID = null;
-            // }
-            // timeoutFamilyID = setTimeout(function () {
-            //     familyID = $.trim($("#familyID").val());
-            //     checkFormByFamily();
-            // }, 1000);
             var pattern = /([^a-zA-Z0-9]*)[a-zA-Z0-9]*([^a-zA-Z0-9]*)/;
             var residue = event.currentTarget.value.match(pattern);
             if (residue[1] !== "" || residue[2] !== "") {
@@ -546,7 +534,6 @@ $("#viewMyFamilyDatum").pagecontainer({
             checkFormByFamily();
         });
 
-        
 
     }
 });
