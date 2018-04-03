@@ -68,7 +68,6 @@ $("#viewActivitiesList").pagecontainer({
                 }
 
                 loadingMask("hide");
-
             };
 
             this.failCallback = function (data) { };
@@ -98,7 +97,6 @@ $("#viewActivitiesList").pagecontainer({
         //點擊活動列表進入詳情頁
         $("#viewActivitiesContent").on("click", ".activity-list", function (e) {
             loadingMask("show");
-
             var actID = $(this).attr("data-id");
             var actStatus = $(this).attr("data-status");
 
