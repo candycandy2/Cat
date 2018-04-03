@@ -461,10 +461,10 @@ $("#viewActivitiesManage").pagecontainer({
 
         //確定取消報名（所有類型活動）
         $("#confirmCancelSignup").on("click", function () {
-            loadingMask("show");
             //先判斷是否超時
             var nowTime = getTimeNow();
             if (nowTime - overTime < 0) {
+                loadingMask("show");
                 activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                     + cancelID
                     + '</ActivitiesID><SignupNo>'
@@ -480,7 +480,6 @@ $("#viewActivitiesManage").pagecontainer({
                 ActivitiesSignupCancelQuery(cancelModel);
 
             } else {
-                loadingMask("hide");
                 //超時提示，並重新獲取活動列表
                 setTimeout(function () {
                     popupMsgInit('.manageTimeOverMsg');
@@ -547,7 +546,6 @@ $("#viewActivitiesManage").pagecontainer({
         //更改資料
         $("#updatePersonSignup").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
-
             if (!selfClass) {
                 loadingMask("show");
                 //呼叫API前，再次更新欄位值
@@ -633,7 +631,6 @@ $("#viewActivitiesManage").pagecontainer({
         //眷屬管理
         $("#manageSelectFamilyBtn").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
-
             if (!selfClass) {
                 loadingMask("show");
                 //呼叫API前，再次更新欄位值

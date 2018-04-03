@@ -68,9 +68,9 @@ input[type="search"] {
     -webkit-user-select: auto;
 }
 
-body .page-main {
+/* body .page-main {
     -webkit-overflow-scrolling: touch;
-}
+} */
 
 .ui-header .ui-btn-left {
     padding: 4.156vw 0 2.5vw 0 !important;
