@@ -3,7 +3,8 @@ namespace App\Services;
 use Config;
 use App\Repositories\UserRepository;
 use App\Repositories\FriendMatrixRepository;
-use App\lib\JPush;
+use App\lib\Push;
+use App\lib\CommonUtil;
 
 class FriendService
 {   
@@ -13,11 +14,12 @@ class FriendService
     protected $push;
 
     public function __construct(UserRepository $userRepository,
-                                FriendMatrixRepository $friendMatrixRepository)
+                                FriendMatrixRepository $friendMatrixRepository,
+                                Push $push)
     {
         $this->userRepository = $userRepository;
         $this->friendMatrixRepository = $friendMatrixRepository;
-        $this->push = new JPush(Config::get("app.app_key"),Config::get("app.master_secret"));
+        $this->push = $push;
     }
 
     /**
@@ -40,22 +42,19 @@ class FriendService
      * @param  string $targetEmpNo     受邀者的員工編號
      * @param  string $userId          使者的qp_user.row_id
      * @param  string $inviationReason 邀請原因
+     * @param  Array  $queryParam  query param
      */
-    public function sendQInvitation($fromEmpNo, $targetEmpNo, $userId, $inviationReason=""){
+    public function sendQInvitation($fromEmpNo, $targetEmpNo, $userId, $inviationReason="", $queryParam){
         $this->newFriendShip($fromEmpNo, $targetEmpNo, $userId);
         $this->friendMatrixRepository->sendInvaitation($fromEmpNo, $targetEmpNo,$userId, $inviationReason);
-
-        $tokens=[];
         $pushToken = $this->userRepository->getUserPushToken($targetEmpNo);
         $ownerData = $this->userRepository->getUserData($fromEmpNo);
         $owner = $ownerData->login_id;
-        foreach ($pushToken as $token) {
-             $tokens[] = $token->push_token;
-         }
-        $this->push->setReceiver($tokens)
-             ->setTitle($owner."邀請您成為好友")
-             ->setParameter('action=sendQInvitation')
-             ->send();
+       
+        $title = $owner."邀請您成為好友";
+        $text = $title;
+        $extra = 'action=sendQInvitation';
+        $this->sendPushMessage($fromEmpNo, $targetEmpNo, $title, $text, $extra, $queryParam);
     }
 
     /**
@@ -74,27 +73,22 @@ class FriendService
      * @param  string $empNo       使用者的員工編號
      * @param  string $sourceEmpNo 邀請者的員工編號
      * @param  string $userId      使者的qp_user.row_id
+     * @param  Array  $queryParam  query param
      */
-    public function acceptQInvitation($empNo, $sourceEmpNo, $userId){
+    public function acceptQInvitation($empNo, $sourceEmpNo, $userId, $queryParam){
         /*保護名單接受後即建立雙方關係*/
         //1.接受好友邀請
         $this->friendMatrixRepository->acceptInvitation($empNo, $sourceEmpNo, $userId);
         //2.新增與邀請者的好友關係
         $this->newFriendShip($empNo, $sourceEmpNo, $userId);
         //3.加入邀請者為好友
-        $this->friendMatrixRepository->setFriend($empNo, $sourceEmpNo, $userId);
-
-        $tokens=[];
-        $pushToken = $this->userRepository->getUserPushToken($sourceEmpNo);
         $ownerData = $this->userRepository->getUserData($empNo);
         $owner = $ownerData->login_id;
-        foreach ($pushToken as $token) {
-             $tokens[] = $token->push_token;
-         }
-        $this->push->setReceiver($tokens)
-             ->setTitle($owner."接受您的好友邀請")
-             ->setParameter('action=acceptQInvitation')
-             ->send();
+        $this->friendMatrixRepository->setFriend($empNo, $sourceEmpNo, $userId);
+        $title = $owner."接受您的好友邀請";
+        $text = $title;
+        $extra = 'action=acceptQInvitation';
+        $this->sendPushMessage($empNo, $sourceEmpNo, $title, $text, $extra, $queryParam);
     }
 
 
@@ -104,21 +98,18 @@ class FriendService
      * @param  string $sourceEmpNo 邀請者的員工編號
      * @param  string $userId      使者的qp_user.row_id
      * @param  string $reason      拒絕理由
+     * @param  Array  $queryParam  query param
      */
-    public function rejectQInvitation($empNo, $sourceEmpNo, $userId, $rejectReason){
+    public function rejectQInvitation($empNo, $sourceEmpNo, $userId, $rejectReason, $queryParam){
         $this->friendMatrixRepository->rejectInvitation($empNo, $sourceEmpNo, $userId, $rejectReason);
-        
-        $tokens=[];
         $pushToken = $this->userRepository->getUserPushToken($sourceEmpNo);
         $ownerData = $this->userRepository->getUserData($empNo);
         $owner = $ownerData->login_id;
-        foreach ($pushToken as $token) {
-             $tokens[] = $token->push_token;
-         }
-        $this->push->setReceiver($tokens)
-             ->setTitle($owner."拒絕您的好友邀請")
-             ->setParameter('action=rejectQInvitation')
-             ->send();
+        $title = $owner."拒絕您的好友邀請";
+        $text = $title;
+        $extra = 'action=rejectQInvitation';
+        $this->push->sendPushMessage($empNo, $sourceEmpNo, $title, $text, $extra, $queryParam);
+        
     }
 
     /**
@@ -152,5 +143,21 @@ class FriendService
             $res = $this->friendMatrixRepository->newFriendShip($fromEmpNo, $targetEmpNo, $userId);
         }
         return $res;
+    }
+
+    /**
+     * 發送推播訊息
+     * @param  array $fromEmpNo   寄件者
+     * @param  array $targetEmpNo 收件者
+     * @param  string $title      標題
+     * @param  string $text       內文
+     * @param  string $extra      附加資料
+     */
+    private function sendPushMessage($fromEmpNo, $targetEmpNo, $title, $text, $extra, $queryParam){
+        $to = $this->userRepository->getPushUserListByEmpNoArr((array)$targetEmpNo);
+        $from = $this->userRepository->getPushUserListByEmpNoArr((array)$fromEmpNo);
+        $title = base64_encode(CommonUtil::jsEscape(html_entity_decode($title)));
+        $text = base64_encode(CommonUtil::jsEscape(html_entity_decode($text)));
+        $this->push->sendPushMessage($from[0], $to, $title, $text, $extra, $queryParam);
     }
 }   

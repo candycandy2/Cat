@@ -457,16 +457,14 @@ $("#viewActivitiesManage").pagecontainer({
             $(".cancelSignupMsg .header-title").text(cancelActName);
             $(".cancelSignupMsg .main-paragraph").empty().text(cancelContent);
             popupMsgInit('.cancelSignupMsg');
-
         });
 
         //確定取消報名（所有類型活動）
         $("#confirmCancelSignup").on("click", function () {
+            loadingMask("show");
             //先判斷是否超時
             var nowTime = getTimeNow();
             if (nowTime - overTime < 0) {
-                loadingMask("show");
-
                 activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                     + cancelID
                     + '</ActivitiesID><SignupNo>'
@@ -482,14 +480,13 @@ $("#viewActivitiesManage").pagecontainer({
                 ActivitiesSignupCancelQuery(cancelModel);
 
             } else {
+                loadingMask("hide");
                 //超時提示，並重新獲取活動列表
                 setTimeout(function () {
                     popupMsgInit('.manageTimeOverMsg');
                 }, 500);
                 ActivitiesListQuery();
-
             }
-
         });
 
 
@@ -521,7 +518,6 @@ $("#viewActivitiesManage").pagecontainer({
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personManageArr, selfName, selfVal, null, "updatePersonSignup");
             }, 1000);
-
         });
 
         //checkbox
@@ -539,7 +535,6 @@ $("#viewActivitiesManage").pagecontainer({
                 saveValueAndCheckForm(personManageArr, name, value, false, "updatePersonSignup");
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
-
         });
 
         //取消個人報名-popup
@@ -554,9 +549,6 @@ $("#viewActivitiesManage").pagecontainer({
             var selfClass = $(this).hasClass("btn-disabled");
 
             if (!selfClass) {
-                // //先判斷是否超時
-                // var nowTime = getTimeNow();
-                // if (nowTime - overTime < 0) {
                 loadingMask("show");
                 //呼叫API前，再次更新欄位值
                 getTextValueBeforeCall("person", "manage", "personManageText", personManageArr);
@@ -583,13 +575,6 @@ $("#viewActivitiesManage").pagecontainer({
 
                 //console.log(activitiesSignupConfirmQueryData);
                 ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
-
-                // } else {
-                //     //超時提示，並重新獲取活動列表
-                //     popupMsgInit('.manageTimeOverMsg');
-                //     ActivitiesListQuery();
-                // }
-
             }
         });
 
@@ -608,7 +593,7 @@ $("#viewActivitiesManage").pagecontainer({
         $(".family-manage-custom-field").on("change", ".familyManageSelect select", function () {
             var selfName = $(this).parent().prev().text();
             var selfVal = $(this).val();
-
+            //保存栏位值并检查表单
             saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
         });
 
@@ -626,7 +611,6 @@ $("#viewActivitiesManage").pagecontainer({
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
             }, 1000);
-
         });
 
         //checkbox
@@ -644,7 +628,6 @@ $("#viewActivitiesManage").pagecontainer({
                 saveValueAndCheckForm(familyManageFieldArr, name, value, false, "manageSelectFamilyBtn");
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
-
         });
 
         //眷屬管理
@@ -685,7 +668,6 @@ $("#viewActivitiesManage").pagecontainer({
 
                 //console.log(activitiesSignupFamilyQueryData);
                 ActivitiesSignupFamilyQuery(cancelID, cancelModel, "Y", familyManageFieldArr, familyList);
-
             }
         });
 
@@ -696,7 +678,6 @@ $("#viewActivitiesManage").pagecontainer({
             popupMsgInit('.cancelSignupMsg');
         });
 
-        
 
     }
 });

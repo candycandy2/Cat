@@ -29,7 +29,6 @@ Route::group(['prefix' => 'v101/QChat','middleware' => ['api','verify.basic','lo
     Route::POST('/getQUserChatroom','ChatRoomController@getQUserChatroom');
     Route::POST('/getQUserDetail','UserController@getQUserDetail');
     Route::POST('/setQUserDetail','UserController@setQUserDetail');
-    Route::POST('/sendPushToken','PushController@sendPushToken');
     Route::POST('/getQGroupHistoryMessage','HistoryController@getQGroupHistoryMessage');
 });
 
