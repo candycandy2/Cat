@@ -612,6 +612,18 @@ $("#viewChatroom").pagecontainer({
 
                         $.each(tempData, function(index, data) {
 
+                            //For iOS, JMessage API getHistoryMessage did not retrun serial number of id,
+                            //it return ["msgId_1522980800041051"], it's totally different with Android.
+
+                            if (device.platform === "iOS") {
+                                if (isNaN(parseInt(data.id, 10))) {
+                                    var localHistoryLength = JM.data.chatroom_message_history[chatroomID].length
+                                    var localLatestID = JM.data.chatroom_message_history[chatroomID][localHistoryLength - 1].id;
+
+                                    data.id = parseInt(localLatestID + 1, 10);
+                                }
+                            }
+
                             var pushData = false;
 
                             if (JM.newCreate) {
