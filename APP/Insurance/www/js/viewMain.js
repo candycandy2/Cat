@@ -39,6 +39,10 @@ $("#viewMain").pagecontainer({
             $('#pageThree').hide();
         });
 
+        $("#viewMain").on("pageshow", function(event, ui) {
+            loadingMask("hide");
+        });
+
         /********************************** dom event *************************************/
         $('#mainTab').change(function() {
             timeQueue = {};

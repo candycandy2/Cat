@@ -11,7 +11,7 @@ $("#viewContact").pagecontainer({
             var hrHtmlContent = "";
             var insurHtmlContent = "";
             for (var i=0; i<HR.length; i++){
-                var hrContent = hrHtmlContent;
+                var hrContent = hrHtmlContent
                     + '<li>'
                     +   '<div class="name">'
                     +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + HR[i].eName + '</a></p>'
@@ -37,10 +37,10 @@ $("#viewContact").pagecontainer({
             $('#employeeData').listview('refresh');
 
             for (var i=0; i<insurStaff.length; i++){
-                var insurContent = insurHtmlContent;
+                var insurContent = insurHtmlContent
                     + '<li>'
                     +   '<div class="name">'
-                    +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + insurStaff[i].eName + '</a></p>'
+                    +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + insurStaff[i].cName + '</a></p>'
                     +       '<p><a href="#" value="' + i.toString() + '" name="detailIndex">' + insurStaff[i].site + '</a></p>'
                     +   '</div>'
                     +   '<div class="img-phone divvertical-center">'
@@ -62,6 +62,13 @@ $("#viewContact").pagecontainer({
             $("#insranceStaffData").prepend($(insurHtmlContent)).enhanceWithin();
             $('#insranceStaffData').listview('refresh');
 
+            /*$('a[name="detailIndex"]').click(function(e) {
+                $('.contact-info').hide();
+                $('.contact-detail').show();
+                $('#backContactInfo').show();
+                $('#viewContact .insuranceMenu').hide();
+            });*/
+
         }      
 
         /********************************** page event *************************************/
@@ -72,15 +79,34 @@ $("#viewContact").pagecontainer({
         $("#viewContact").on("pageshow", function(event, ui) {
             loadingMask("hide");
             QueryContactInfo();
+            $('.contact-info').show();
+            $('.contact-detail').hide();
         });
 
         /********************************** dom event *************************************/
-        $('a[name="detailIndex"]').click(function(e) {
+        /*$('a[value]').click(function(e) {
         	$('.contact-info').hide();
             $('.contact-detail').show();
             $('#backContactInfo').show();
             $('#viewContact .insuranceMenu').hide();
+        });*/
+
+        $(document).on("click", "#employeeData .img-info", function() {
+            $('.contact-info').hide();
+            $('.contact-detail').show();
+            $('#backContactInfo').show();
+            $('#viewContact .insuranceMenu').hide();
+            var hrID = $(this).find('div > p > a:nth-child(1)').attr('value');          
         });
+
+         $(document).on("click", "#insranceStaffData .img-info", function() {
+            $('.contact-info').hide();
+            $('.contact-detail').show();
+            $('#backContactInfo').show();
+            $('#viewContact .insuranceMenu').hide();
+            var insurID = $(this).find('div > p > a:nth-child(1)').attr('value');          
+        });
+
 
         $("#backContactInfo").on("click", function() {
             $('.contact-info').show();
