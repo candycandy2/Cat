@@ -54,6 +54,8 @@ $("#viewIndex").pagecontainer({
                     window.JPush.getRegistrationID(function(registrationID) {
                         console.log("JPushPlugin:registrationID is " + registrationID);
 
+                        //Old Version - QChat sendPushToken
+                        /*
                         var queryDataObj = {
                             emp_no: loginData["emp_no"],
                             device_type: device.platform.toLowerCase(),
@@ -74,6 +76,10 @@ $("#viewIndex").pagecontainer({
 
                         var failCallback = function() {};
                         CustomAPI("POST", true, "sendPushToken", successCallback, failCallback, queryData, "");
+                        */
+
+                        //QPlay - senPushToken
+                        //Do it on Plugin-QPush
 
                         window.getGroupIds();
                     });
