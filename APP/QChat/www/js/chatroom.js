@@ -87,10 +87,15 @@ var JM = {
         }, 2000);
 
     },
-    bindEvent: function(receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage) {
+    bindEvent: function(receiveMessage, receiveChatRoomMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage) {
         window.JMessage.addReceiveMessageListener(function (data) {
             console.log("----addReceiveMessageListener");
             receiveMessage(data);
+        });
+
+        window.JMessage.addReceiveChatRoomMessageListener(function (data) {
+            console.log("----addReceiveChatRoomMessageListener");
+            receiveChatRoomMessage(data);
         });
 
         window.JMessage.addClickMessageNotificationListener(function (data) {
@@ -486,7 +491,7 @@ var JM = {
                 'from': from,
                 'limit': limit
             };
-
+console.log(params);
             window.JMessage.getHistoryMessages(params, function(data) {
                 console.log("---getHistoryMessages success");
                 console.log(data);
