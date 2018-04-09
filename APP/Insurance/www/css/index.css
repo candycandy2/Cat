@@ -315,7 +315,6 @@ pre {
 
 .ui-content {
     overflow-x: visible;
-    padding: 0px;
     padding: 0 3.71vw;
 }
 
@@ -803,3 +802,27 @@ div.scrollmenu a {
 .img-info img{ width:6.4vw; height:auto;}
 
 .contactHeading{ margin-top:5vw; margin-bottom:2.14vw;color:#0f0f0f;}
+
+#detailInfo .personalInfo:after{
+    content: '';
+    background-color: #d6d6d6;
+    display: block;
+    width: 92.58vw;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    margin-top: 0.98vw;
+}
+#detailInfo .name {margin-top:6vw;color:#0f0f0f;}
+#detailInfo .site {margin-top:0.98vw;color:#0f0f0f;}
+#detailInfo .personalInfo a{  
+    margin-top:0.98vw;
+    color:#2d89bc;
+    text-decoration: none;
+    font-family: Arial;
+    font-weight: normal !important;
+}
+#detailInfo .personalInfo div{ color:#666666;}
+#detailInfo .phone{margin-top:6vw;}
+#detailInfo .other{margin-top:4.3vw;}
+.margin-personal-info {margin-top:4.3vw;}
