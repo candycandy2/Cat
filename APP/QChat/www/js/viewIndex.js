@@ -930,6 +930,10 @@ $("#viewIndex").pagecontainer({
                 $("#viewIndex .page-main .search-index-content").css({
                     "padding-top": iOSFixedTopPX() + "px"
                 });
+
+                $("#viewIndex .page-main .search-user-content-background").css({
+                    "padding-top": parseInt(document.documentElement.clientWidth * 13 / 100 + iOSFixedTopPX(), 10) + "px"
+                });
             }
         });
 

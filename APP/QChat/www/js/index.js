@@ -36,7 +36,7 @@ window.initialSuccess = function() {
 
     //Bind JMessage Listener Event
     if (!bindJMEvent) {
-        JM.bindEvent(receiveMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage);
+        JM.bindEvent(receiveMessage, receiveChatroomMessage, clickMessageNotification, syncOfflineMessage, loginStateChanged, syncRoamingMessage);
         bindJMEvent = true;
     }
 
@@ -187,6 +187,12 @@ window.initialSuccess = function() {
 
         }
     }, "#userInfoPopup .personal-popup-button");
+
+    //Handle APP background event
+    document.addEventListener("pause", onAPPPause, false);
+
+    //Handle APP foreground event
+    document.addEventListener("resume", onAPPResume, false);
 
 };
 
@@ -343,7 +349,7 @@ function onBackKeyDown() {
 }
 
 //Handle APP background event
-function onPause() {
+function onAPPPause() {
     console.log("======-------pause");
 
     //When APP in background, need to receive the Push Notification
@@ -351,7 +357,7 @@ function onPause() {
 }
 
 //Handle APP foreground event
-function onResume() {
+function onAPPResume() {
     console.log("======-------resume");
 
     //When APP in foreground, check if the view is chatroom, then stop receive the Push Notification
@@ -503,6 +509,11 @@ window.receiveMessage = function(data) {
         }
 
     }
+};
+
+window.receiveChatroomMessage = function(data) {
+    console.log("----receiveChatroomMessage");
+    console.log(data);
 };
 
 window.clickMessageNotification = function(data) {
