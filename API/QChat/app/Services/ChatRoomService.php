@@ -2,7 +2,6 @@
 namespace App\Services;
 
 use App\lib\JMessage;
-use App\lib\JPush;
 use App\Repositories\UserRepository;
 use App\Repositories\ChatRoomRepository;
 use App\lib\CommonUtil;
@@ -15,14 +14,12 @@ class ChatRoomService
     protected $userRepository;
 
     protected $jmessage;
-    protected $jpush;
 
     public function __construct(UserRepository $userRepository, ChatRoomRepository $chatRoomRepository)
     {
         $this->userRepository = $userRepository;
         $this->chatRoomRepository = $chatRoomRepository;
         $this->jmessage = new JMessage(Config::get("app.app_key"),Config::get("app.master_secret"));
-        $this->jpush = new JPush(Config::get("app.app_key"),Config::get("app.master_secret"));
     }
 
     /**
