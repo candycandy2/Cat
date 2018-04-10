@@ -612,6 +612,23 @@ $("#viewChatroom").pagecontainer({
 
                         $.each(tempData, function(index, data) {
 
+                            //For iOS, JMessage API getHistoryMessage did not retrun serial number of id,
+                            //it return ["msgId_1522980800041051"], it's totally different with Android.
+
+                            if (device.platform === "iOS") {
+                                if (isNaN(parseInt(data.id, 10))) {
+                                    var localHistoryLength = JM.data.chatroom_message_history[chatroomID].length;
+
+                                    if (localHistoryLength !== 0) {
+                                        var localLatestID = JM.data.chatroom_message_history[chatroomID][localHistoryLength - 1].id;
+                                    } else {
+                                        var localLatestID = 0;
+                                    }
+
+                                    data.id = parseInt(localLatestID + 1, 10);
+                                }
+                            }
+
                             var pushData = false;
 
                             if (JM.newCreate) {
@@ -1069,6 +1086,21 @@ $("#viewChatroom").pagecontainer({
         }
 
         /********************************** page event *************************************/
+        $("#viewChatroom").one("pagebeforeshow", function(event, ui) {
+
+            //---------------------iOS UI---------------------
+            if (device.platform === "iOS") {
+                $("#viewChatroom .page-main .chatroom-action-content").css({
+                    "top": parseInt(document.documentElement.clientWidth * 13.99 / 100 + iOSFixedTopPX(), 10) + "px"
+                });
+
+                $("#viewChatroom .page-main .chatroom-action-content-background").css({
+                    "top": parseInt(document.documentElement.clientWidth * 13 / 100 + iOSFixedTopPX(), 10) + "px"
+                });
+            }
+
+        });
+
         $("#viewChatroom").on("pagebeforeshow", function(event, ui) {
             cameraButtonSet("close");
             $(".message-preview").hide();
@@ -1095,10 +1127,12 @@ $("#viewChatroom").pagecontainer({
                     window.chatroomTitle();
 
                     //JMessage - getHistoryMessages
-                    getHistoryMessages(nowChatroomID);
+                    //getHistoryMessages(nowChatroomID);
+                    window.getConversation(nowChatroomID, true, false);
                 } else {
                     window.getConversation(nowChatroomID, true, true);
                 }
+
             }
 
             //JMessage - enter conversation

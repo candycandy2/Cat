@@ -185,10 +185,54 @@ pre {
 #today-reserve-area{ margin-bottom: 6.44vw;}
 #today-reserve-area .reserveInfo{ background-color: #fff;}
 
+.q-result-grid {
+    text-align: center;
+}
+
+.q-result-grid > li div {
+    float: left;
+    /*display: flex;*/
+    flex-flow: column wrap;
+    justify-content: center;
+    overflow-wrap: break-word;
+}
+
+.q-result-grid > li p {
+    width: 95%;
+    font-weight: normal;
+    white-space: normal;
+    text-overflow: clip;
+    overflow: auto;
+}
+
+.q-result-grid a {
+    text-decoration: none;
+}
+
+.q-result-grid .company {
+    width: 30%;
+}
+
+.q-result-grid .e-name {
+    width: 40%;
+}
+
+.q-result-grid .c-name {
+    width: 30%;
+}
+
+.img-phone{ padding-right:1.9vw; width: 35vw; top:calc(50% - 15px);}
+.img-phone img{ width:3.5vw; height:auto; vertical-align: middle; margin-right: 1vw;}
+
 /********************************** public area *************************************/
 
 .insuranceMenu {
     width: 4.934VW;
+}
+
+#backContactInfo {
+    width: 4.934VW;
+    display: none;
 }
 
 #backMain {
@@ -267,6 +311,15 @@ pre {
 
 .ui-margin-insurance-main {
     margin: 5vw 3.71vw 0 !important;
+}
+
+.ui-content {
+    overflow-x: visible;
+    padding: 0 3.71vw;
+}
+
+.ui-content .ui-listview {
+    margin: 0px;
 }
 
 .health-insurance-content {
@@ -715,3 +768,61 @@ div.scrollmenu a {
     background-color: #503f81;
     color: #fff;
 }
+
+/********************************************** contactInfo *********************************************/
+
+#employeeData p, #insranceStaffData p{ margin: 0px 2px;font-size: 12px;}
+#employeeData li, #insranceStaffData li{ background-color: transparent; border-top: none; align-items: center; position: relative; border: none; padding: 0 3vw;}
+#employeeData li, #insranceStaffData li{ border-bottom: 1px solid #d6d6d6;}
+#employeeData li:nth-last-of-type(1):after{ display: none;}
+#insranceStaffData li:nth-last-of-type(1):after{ display: none;}
+#employeeData .name, #insranceStaffData .name{ width: 50VW}
+#employeeData .img-phone, #employeeData .tel-num, #insranceStaffData .img-phone, #insranceStaffData .tel-num{ width: 28.8VW}
+#employeeData .img-info, #insranceStaffData .img-info{ width: 7.7VW}
+#employeeData .name p, #insranceStaffData .name p{ margin: 4vw 0 0;}
+#employeeData .name p:nth-of-type(1) a{ color:#0f0f0f; font-size: 4.18vw; font-weight: normal;}
+#insranceStaffData .name p:nth-of-type(1) a{ color:#0f0f0f; font-size: 4.18vw; font-weight: normal;}
+#employeeData .name p:nth-of-type(2){ margin: 0.98vw 0 3vw;}
+#insranceStaffData .name p:nth-of-type(2){ margin: 0.98vw 0 3vw;}
+#employeeData .name p:nth-of-type(2) a{ color:#666; font-size: 3.349vw; font-weight: normal;}
+#insranceStaffData .name p:nth-of-type(2) a{ color:#666; font-size: 3.349vw; font-weight: normal;}
+
+.divvertical-center::before{
+    content:'';
+    width:0;
+    height:100%;
+    display:inline-block;
+    position:relative;
+    vertical-align:middle;
+}
+
+.tel-num{ width: 85%; display: inline-block; vertical-align: middle;}
+.tel-num p{ margin: 0 !important;}
+.tel-num a{ color:#2c89bc; font-size: 3.768vw; font-family:Arial; font-weight: normal;}
+.img-info img{ width:6.4vw; height:auto;}
+
+.contactHeading{ margin-top:5vw; margin-bottom:2.14vw;color:#0f0f0f;}
+
+#detailInfo .personalInfo:after{
+    content: '';
+    background-color: #d6d6d6;
+    display: block;
+    width: 92.58vw;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    margin-top: 0.98vw;
+}
+#detailInfo .name {margin-top:6vw;color:#0f0f0f;}
+#detailInfo .site {margin-top:0.98vw;color:#0f0f0f;}
+#detailInfo .personalInfo a{  
+    margin-top:0.98vw;
+    color:#2d89bc;
+    text-decoration: none;
+    font-family: Arial;
+    font-weight: normal !important;
+}
+#detailInfo .personalInfo div{ color:#666666;}
+#detailInfo .phone{margin-top:6vw;}
+#detailInfo .other{margin-top:4.3vw;}
+.margin-personal-info {margin-top:4.3vw;}

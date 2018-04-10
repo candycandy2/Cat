@@ -213,6 +213,7 @@ input[type=checkbox]:checked + label {
 
 .chatroom-list .group-content {
     width: 58.5vw;
+    height: 7.5vw;
 }
 
 .chatroom-list .group-name {
@@ -227,6 +228,7 @@ input[type=checkbox]:checked + label {
 
 .chatroom-list .count-message {
     width: 16.218vw;
+    height: 4.5vw;
     text-align: right;
     padding-top: 2%;
 }
@@ -572,6 +574,10 @@ input[type=checkbox]:checked + label {
 /*-----------------------------------------------------------------Chatroom*/
 #viewChatroom .page-header {
     border-bottom: none;
+}
+
+#chatroomAction {
+    height: 10vw;
 }
 
 .chatroom-action-content {
