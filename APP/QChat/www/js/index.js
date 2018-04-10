@@ -550,5 +550,9 @@ window.syncRoamingMessage = function(data) {
     console.log("----syncRoamingMessage");
     console.log(data);
 
-    window.getConversation(data.conversation.target.id, false, true);
+    if (device.platform === "iOS") {
+        window.getConversation(data.target.id, false, true);
+    } else {
+        window.getConversation(data.conversation.target.id, false, true);
+    }
 };
