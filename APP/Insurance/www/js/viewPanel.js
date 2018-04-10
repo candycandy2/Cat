@@ -53,9 +53,9 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewContact");
     });
 
-    /*$("#mypanel #mypanelviewInsuranceInfo").on("click", function() {
+    $("#mypanel #mypanelviewInsuranceInfo").on("click", function() {
         changePageByPanel("viewInsuranceInfo");
-    });*/
+    });
 
     $(".menu-btn .insuranceMenu").on("click", function() {
         $("#mypanel").panel("open");
