@@ -25,7 +25,7 @@ gulp config --env dev --vname 1.5.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="e6f796b2-ffb9-4ab7-bc0e-513f789056f8" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="5352e17f-62e3-4055-8888-2b03eabb8c8f" --packageType="enterprise"
 
 pwd
 cd ../QPlayDailyBuild-Relieve-Leave-Parking/APP/Parking
