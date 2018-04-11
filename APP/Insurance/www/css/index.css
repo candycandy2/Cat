@@ -800,10 +800,10 @@ div.scrollmenu a {
 .tel-num p{ margin: 0 !important;}
 .tel-num a{ color:#2c89bc; font-size: 3.768vw; font-family:Arial; font-weight: normal;}
 .img-info img{ width:6.4vw; height:auto;}
-
 .contactHeading{ margin-top:5vw; margin-bottom:2.14vw;color:#0f0f0f;}
 
-#detailInfo .personalInfo:after{
+#detailInfo li { list-style-type: none;}
+#detailInfo li a::after{
     content: '';
     background-color: #d6d6d6;
     display: block;
@@ -813,16 +813,30 @@ div.scrollmenu a {
     left: 0;
     margin-top: 0.98vw;
 }
-#detailInfo .name {margin-top:6vw;color:#0f0f0f;}
-#detailInfo .site {margin-top:0.98vw;color:#0f0f0f;}
-#detailInfo .personalInfo a{  
-    margin-top:0.98vw;
+#detailInfo .name { margin-top:6vw;color:#0f0f0f;}
+#detailInfo .site { margin-top:0.98vw;color:#0f0f0f;}
+#detailInfo li div{ color:#666666;}
+#detailInfo li a{  
     color:#2d89bc;
     text-decoration: none;
     font-family: Arial;
     font-weight: normal !important;
 }
-#detailInfo .personalInfo div{ color:#666666;}
-#detailInfo .phone{margin-top:6vw;}
-#detailInfo .other{margin-top:4.3vw;}
+#detailInfo .phone{margin-top:6vw;margin-bottom: 0.98vw;}
+#detailInfo .other{margin-top:4.3vw;margin-bottom: 0.98vw;}
 .margin-personal-info {margin-top:4.3vw;}
+
+/********************************************** InsuranceInfo *********************************************/
+
+#insranceInfo li { list-style-type: none; padding: 4vw 3vw 0vw 3vw;}
+#insranceInfo li div::after{
+    content: '';
+    background-color: #d6d6d6;
+    display: block;
+    width: 92.58vw;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    margin-top: 4vw;
+}
+#insranceInfo li:nth-last-of-type(1):after{ display: none;}
