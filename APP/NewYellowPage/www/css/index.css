@@ -192,7 +192,7 @@
 }
 
 /**********************  viewDataInput  **********************/
-.ui-field-contain{ /*display: flex;*/ align-items: center; margin-bottom: 12.44vw; padding: 0;}
+.ui-field-contain{ display: flex; align-items: center; margin-bottom: 6.44vw; padding: 0;}
 .ui-field-contain:nth-last-of-type(2){ margin-bottom: 10vw;}
 .btn-area a{ display: block; width: 70%; margin: 0 auto; border-radius: 20px; padding: 2.8vw 0 2.6vw; text-align: center; text-decoration: none;
     border: 1px solid #2c89bc;}
@@ -211,11 +211,11 @@
 #Company-button span{ top: 0; left: 3.2vw; position: absolute; font-weight: normal;}
 .ui-input-text input, #Company-button span{ color: #323232; font-size: 3.768vw;}
 .ui-input-text input{ padding: 0 3.2vw; height: 100%;}
-#pageOne{ margin-top: 10vw !important;}
+#pageOne{ margin-top: 5vw !important;}
 #pageOne h4{ font-weight: normal; margin: 0; color: #0f0f0f; font-size: 3.349vw;}
 #pageOne label, #pageOne .ui-select{ /*float: none; margin: 0;*/}
-#pageOne label{ text-align: right; width: 28%;}
-.ui-field-contain > label~[class*=ui-], .ui-select .ui-btn{ width: 57%;}
+#pageOne label{ text-align: right; width: 21%;}
+.ui-field-contain > label~[class*=ui-], .ui-select .ui-btn{ width: 65%;}
 #Company-button{ width: 100%;}
 
 /**********************  phonebook  **********************/
