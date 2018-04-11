@@ -772,10 +772,10 @@ div.scrollmenu a {
 /********************************************** contactInfo *********************************************/
 
 #employeeData p, #insranceStaffData p{ margin: 0px 2px;font-size: 12px;}
-#employeeData li, #insranceStaffData li{ background-color: transparent; border-top: none; align-items: center; position: relative; border: none; padding: 0 3vw;}
+#employeeData li, #insranceStaffData li{ background-color: transparent; border-top: none; align-items: center; position: relative; border: none; padding: 0 6.71vw;}
 #employeeData li, #insranceStaffData li{ border-bottom: 1px solid #d6d6d6;}
-#employeeData li:nth-last-of-type(1):after{ display: none;}
-#insranceStaffData li:nth-last-of-type(1):after{ display: none;}
+#employeeData li:nth-last-of-type(1){ border-bottom: none;}
+#insranceStaffData li:nth-last-of-type(1){ border-bottom: none;}
 #employeeData .name, #insranceStaffData .name{ width: 50VW}
 #employeeData .img-phone, #employeeData .tel-num, #insranceStaffData .img-phone, #insranceStaffData .tel-num{ width: 28.8VW}
 #employeeData .img-info, #insranceStaffData .img-info{ width: 7.7VW}
@@ -828,15 +828,6 @@ div.scrollmenu a {
 
 /********************************************** InsuranceInfo *********************************************/
 
-#insranceInfo li { list-style-type: none; padding: 4vw 3vw 0vw 3vw;}
-#insranceInfo li div::after{
-    content: '';
-    background-color: #d6d6d6;
-    display: block;
-    width: 92.58vw;
-    height: 1px;
-    bottom: 0;
-    left: 0;
-    margin-top: 4vw;
-}
-#insranceInfo li:nth-last-of-type(1):after{ display: none;}
+#insranceInfo li { list-style-type: none; padding: 4vw 3vw; border-bottom: 1px solid #d6d6d6;}
+#insranceInfo li div{ height: 9.367vw;}
+#insranceInfo li:nth-last-of-type(1){ border-bottom: none;}
