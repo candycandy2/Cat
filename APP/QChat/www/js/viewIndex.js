@@ -352,12 +352,15 @@ $("#viewIndex").pagecontainer({
                                 window.getConversation(chatroom.extras.chatroom_id, getHistory, true);
                             }
                         } else {
+                            /*
                             for (var i=0; i<JM.data.chatroom_sequence.length; i++) {
                                 if (window.groupsArray.indexOf(JM.data.chatroom_sequence[i].toString()) != -1) {
                                     //window.processChatroomData(chatroomData, "getConversations", false, true);
-                                    window.getGroupMembers(JM.data.chatroom_sequence[i], JM.data.chatroom[JM.data.chatroom_sequence[i]].is_group, "chatroomListView");
+                                    //window.getGroupMembers(JM.data.chatroom_sequence[i], JM.data.chatroom[JM.data.chatroom_sequence[i]].is_group, "chatroomListView");
                                 }
                             }
+                            */
+                            window.getConversations();
                         }
                     }
 
@@ -439,6 +442,7 @@ $("#viewIndex").pagecontainer({
 
                     if (status === "success") {
 
+                        /*
                         $("#chatroomListContent .chatroom-list").remove();
                         $("#chatroomListContent .ui-hr-message").remove();
 
@@ -459,6 +463,11 @@ $("#viewIndex").pagecontainer({
                             $("#noChatroom").show();
                         } else {
                             $("#noChatroom").hide();
+                        }
+                        */
+
+                        for (var i=0; i<data.length; i++) {
+                            window.chatroomListView(data[i].target.id);
                         }
                     }
 
@@ -604,11 +613,13 @@ $("#viewIndex").pagecontainer({
                             //chatroomInfo
                             window.processChatroomInfo();
                         } else if (action === "chatroomListView") {
+                            /*
                             if (memberChange) {
                                 window.chatroomListView(chatroomID, "sort");
                             } else {
                                 window.chatroomListView(chatroomID);
                             }
+                            */
                         }
                     }
 
@@ -794,7 +805,7 @@ $("#viewIndex").pagecontainer({
 
                         $("#noChatroom").hide();
 
-                        $("#chatroomListContent").prepend(chatroomList);
+                        $("#chatroomListContent").append(chatroomList);
 
                         if (!chatroomData.is_group) {
                             //If [1 to 1] chatroom, check the chatroom avatar exist or expired
@@ -808,6 +819,14 @@ $("#viewIndex").pagecontainer({
                         return false;
                     }
                 });
+
+                //Set height of chatroomListContent
+                var chatroomListHeight = $("#chatroomListContent .chatroom-list").outerHeight();
+                var paddingHeight = parseInt(document.documentElement.clientWidth * 3 / 100, 10);
+                var chatroomListLength = $("#chatroomListContent .chatroom-list").length;
+                var chatroomListContentHeight = ((chatroomListHeight + paddingHeight) * (chatroomListLength + 1));
+
+                $("#chatroomListContent").height(chatroomListContentHeight);
 
                 //Remember Chatroom Sequence in veiwIndex
                 if (action === "sort") {

@@ -401,6 +401,8 @@ $("#viewChatroom").pagecontainer({
                             }
                         }
                     }
+
+                    window.getConversations();
                 } else {
                     var callback = function(name, desc) {
                         data.target.name = name;
