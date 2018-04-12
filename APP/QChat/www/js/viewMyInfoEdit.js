@@ -221,7 +221,7 @@ $("#viewMyInfoEdit").pagecontainer({
                         var nowDateTime = new Date();
                         var nowTimestamp = nowDateTime.TimeStamp();
 
-                        JM.data.chatroom_user[loginData["loginid"]].avator_download_time = 0;
+                        JM.data.chatroom_user[loginData["loginid"]].avatar_download_time = 0;
                         window.downloadOriginalUserAvatar("index", nowTimestamp, loginData["loginid"]);
                     }
 
@@ -240,10 +240,13 @@ $("#viewMyInfoEdit").pagecontainer({
         /********************************** page event *************************************/
         $("#viewMyInfoEdit").on("pagebeforeshow", function(event, ui) {
 
-            if (JM.data.chatroom_user[loginData["loginid"]].avator_download_time != 0) {
+            if (JM.data.chatroom_user[loginData["loginid"]].avatar_download_time != 0) {
+                /*
                 $("#viewMyInfoEditContent .chatroom-info-photo-content svg").hide();
-                $("#viewMyInfoEditContent .chatroom-info-photo-content img").prop("src", JM.data.chatroom_user[loginData["loginid"]].avator_path);
+                $("#viewMyInfoEditContent .chatroom-info-photo-content img").prop("src", JM.data.chatroom_user[loginData["loginid"]].avatar_path);
                 $("#viewMyInfoEditContent .chatroom-info-photo-content img").show();
+                */
+                window.checkImageExist(JM.data.chatroom_user[loginData["loginid"]].avatar_path, "#viewMyInfoEditContent .chatroom-info-photo-content");
             }
 
             $("#myInfoStatus").val(JM.data.chatroom_user[loginData["loginid"]].memo);

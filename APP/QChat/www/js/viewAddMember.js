@@ -98,9 +98,12 @@ $("#viewAddMember").pagecontainer({
         }
 
         window.addMemberListViewAvatar = function(listViewIndex, avatarPath) {
+            /*
             $("div#userList" + listViewIndex).find(".img-content svg").hide();
             $("div#userList" + listViewIndex).find(".img-content img").prop("src", avatarPath);
             $("div#userList" + listViewIndex).find(".img-content img").show();
+            */
+            window.checkImageExist(avatarPath, "div#userList" + listViewIndex, ".img-content");
         };
 
         function setAddMemberButton(status) {
