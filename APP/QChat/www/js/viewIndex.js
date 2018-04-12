@@ -639,9 +639,12 @@ $("#viewIndex").pagecontainer({
                     //Check if user's avatar exist
                     //If [1 to 1] chatroom, set is become chatroom's avatar
                     if (data.avatarThumbPath.length != 0) {
+                        /*
                         $("#chatroomList" + chatroomID).find(".img-content svg").hide();
                         $("#chatroomList" + chatroomID).find(".img-content img").prop("src", data.avatarThumbPath);
                         $("#chatroomList" + chatroomID).find(".img-content img").show();
+                        */
+                        window.checkImageExist(data.avatarThumbPath, "#chatroomList" + chatroomID, ".img-content");
 
                         JM.data.chatroom[chatroomID].avatar_path = data.avatarThumbPath;
 
@@ -665,7 +668,7 @@ $("#viewIndex").pagecontainer({
             //User Avatar will update after 3 days
             (function(action, nowTimestamp, userID, listViewIndex) {
 
-                var getAvator = false;
+                var getAvatar = false;
 
                 //If User data is null
                 if (JM.data.chatroom_user[userID] == undefined) {
@@ -679,22 +682,22 @@ $("#viewIndex").pagecontainer({
                 }
 
                 //check download time
-                var avator_download_time = JM.data.chatroom_user[userID].avator_download_time;
-                var threeDaysTimeStamp = parseInt(avator_download_time + 60*60*24*3, 10);
+                var avatar_download_time = JM.data.chatroom_user[userID].avatar_download_time;
+                var threeDaysTimeStamp = parseInt(avatar_download_time + 60*60*24*3, 10);
 
-                if (avator_download_time == 0) {
-                    //never get avator
-                    getAvator = true;
+                if (avatar_download_time == 0) {
+                    //never get avatar
+                    getAvatar = true;
                 } else if (nowTimestamp > threeDaysTimeStamp) {
-                    //avator need update
-                    getAvator = true;
+                    //avatar need update
+                    getAvatar = true;
                 }
 
                 var callback = function(status, data) {
                     if (status === "success") {
                         if (data.filePath.length > 0) {
-                            JM.data.chatroom_user[userID].avator_path = data.filePath;
-                            JM.data.chatroom_user[userID].avator_download_time = nowTimestamp;
+                            JM.data.chatroom_user[userID].avatar_path = data.filePath;
+                            JM.data.chatroom_user[userID].avatar_download_time = nowTimestamp;
 
                             JM.updateLocalStorage();
 
@@ -715,24 +718,24 @@ $("#viewIndex").pagecontainer({
                     }
                 };
 
-                if (getAvator) {
+                if (getAvatar) {
                     JM.User.downloadOriginalUserAvatar(userID, callback);
                 } else {
-                    if (JM.data.chatroom_user[userID].avator_path.length > 0) {
-                        //display old avator which had be download before
+                    if (JM.data.chatroom_user[userID].avatar_path.length > 0) {
+                        //display old avatar which had be download before
 
                         if (action === "userListView") {
-                            userListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                            userListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avatar_path);
                         } else if (action === "index") {
-                            indexUserAvatar(JM.data.chatroom_user[userID].avator_path);
+                            indexUserAvatar(JM.data.chatroom_user[userID].avatar_path);
                         } else if (action === "friendListView") {
-                            friendListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                            friendListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avatar_path);
                         } else if (action === "inviteListView") {
-                            inviteListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                            inviteListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avatar_path);
                         } else if (action === "chatroomMemberListView") {
-                            chatroomMemberListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                            chatroomMemberListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avatar_path);
                         } else if (action === "addMemberListView") {
-                            addMemberListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avator_path);
+                            addMemberListViewAvatar(listViewIndex, JM.data.chatroom_user[userID].avatar_path);
                         }
                     }
                 }
@@ -757,21 +760,30 @@ $("#viewIndex").pagecontainer({
         };
 
         function indexUserAvatar(avatarPath) {
+            /*
             $(".personal-content .personal-photo-content svg").hide();
             $(".personal-content .personal-photo-content img").prop("src", avatarPath);
             $(".personal-content .personal-photo-content img").show();
+            */
+            window.checkImageExist(avatarPath, ".personal-content .personal-photo-content");
         }
 
         function friendListViewAvatar(listViewIndex, avatarPath) {
+            /*
             $("#friendList" + listViewIndex).find("svg").hide();
             $("#friendList" + listViewIndex).find("img").prop("src", avatarPath);
             $("#friendList" + listViewIndex).find("img").show();
+            */
+            window.checkImageExist(avatarPath, "#friendList" + listViewIndex, "");
         }
 
         function inviteListViewAvatar(listViewIndex, avatarPath) {
+            /*
             $("#inviteList" + listViewIndex).find("svg").hide();
             $("#inviteList" + listViewIndex).find("img").prop("src", avatarPath);
             $("#inviteList" + listViewIndex).find("img").show();
+            */
+            window.checkImageExist(avatarPath, "#inviteList" + listViewIndex, "");
         }
 
         window.chatroomListView = function(chatroomID, action) {
