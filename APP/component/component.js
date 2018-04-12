@@ -351,27 +351,30 @@ $(document).one("pagebeforecreate", function() {
         }(value));
     });
 
-    //According to the data [pageList] which set in index.js ,
-    //add Page JS into index.html
-    $.map(pageList, function(value, key) {
-        (function(pageID) {
-            /*
-            var s = document.createElement("script");
-            s.type = "text/javascript";
-            s.src = "js/" + pageID + ".js";
-            $("head").append(s);
-            */
 
-            var script = document.createElement("script");
-            // onload fires even when script fails loads with an error.
-            //script.onload = onload;
-            // onerror fires for malformed URLs.
-            //script.onerror = onerror;
-            script.type = "text/javascript";
-            script.src = "js/" + pageID + ".js";
-            document.head.appendChild(script);
-        }(value));
-    });
+    setTimeout(function() {
+        //According to the data [pageList] which set in index.js ,
+        //add Page JS into index.html
+        $.map(pageList, function(value, key) {
+            (function(pageID) {
+                /*
+                var s = document.createElement("script");
+                s.type = "text/javascript";
+                s.src = "js/" + pageID + ".js";
+                $("head").append(s);
+                */
+
+                var script = document.createElement("script");
+                // onload fires even when script fails loads with an error.
+                //script.onload = onload;
+                // onerror fires for malformed URLs.
+                //script.onerror = onerror;
+                script.type = "text/javascript";
+                script.src = "js/" + pageID + ".js";
+                document.head.appendChild(script);
+            }(value));
+        });
+    }, 100);
 
     //For APP scrolling in [Android ver:5], set CSS
     //For font-family, set diff in iOS/Android

@@ -43,17 +43,6 @@ window.initialSuccess = function() {
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
 
-    //行事历
-    queryCalendarData = "<LayoutHeader><Year>"
-                      + currentYear
-                      + "</Year><Month>"
-                      + currentMonth
-                      + "</Month><EmpNo>"
-                      + myEmpNo
-                      + "</EmpNo></LayoutHeader>";
-
-    QueryCalendarData();
-
     //默认设置GetDefaultSetting
     if(localStorage.getItem("leaveDefaultSetting") == null) {
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
