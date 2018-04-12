@@ -230,7 +230,8 @@ pre {
     width: 4.934VW;
 }
 
-#backContactInfo {
+#backContactInfo,
+#backFamilyList {
     width: 4.934VW;
     display: none;
 }
@@ -430,11 +431,6 @@ pre {
     min-height: 100% !important;
 }
 
-
-/*.loader{
-    margin-top: 100vh !important;
-}*/
-
 .word-mid {
     text-align: left;
     vertical-align: sub;
@@ -476,6 +472,10 @@ pre {
     -webkit-appearance: none;
     margin-bottom: 2.14vw !important;
     padding-right: 6.74vw;
+}
+
+.font-color3 {
+    color: #666 !important;
 }
 
 
@@ -831,3 +831,103 @@ div.scrollmenu a {
 #insranceInfo li { list-style-type: none; padding: 4vw 3vw; border-bottom: 1px solid #d6d6d6;}
 #insranceInfo li div{ height: 9.367vw;}
 #insranceInfo li:nth-last-of-type(1){ border-bottom: none;}
+
+/********************************************** FamilyData *********************************************/
+
+.family-save-btn {
+    opacity: 0.6;
+    display: inline-block;
+    position: absolute;
+    color: #ffffff !important;
+    top: 4.5vw;
+    right: 3.71vw;
+    display: none;
+}
+
+#familyList {
+    background: #ffffff;
+}
+
+.family-notice {
+    width: 92.58vw;
+    min-height: 30vw;
+    margin-top: 4.3vw;
+    margin-left: 3.71vw;
+}
+
+.family-notice div {
+    line-height: 1.5;
+}
+
+.family-add-img {
+    position: fixed;
+    bottom: 4.3vw;
+    right: 6.727vw;
+    width: 13.848vw;
+    height: 13.848vw;
+    z-index: 1;
+}
+
+.family-add-img img {
+    width: 13.848vw;
+    height: 13.848vw;
+}
+
+#viewFamilyEdit {
+    width: 92.58vw;
+    height: 150vw;
+    margin-top: 10vw;
+    margin-left: 3.71vw;
+    display: none;
+}
+
+.family-input-div {
+    width: 92.58vw;
+    height: 16vw;
+    margin-bottom: 2vw;
+}
+
+.family-input-div label {
+    width: 20vw;
+    height: 10vw;
+    display: inline-block;
+    text-align: right;
+    line-height: 10vw;
+}
+
+.family-input {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    background: #f9f9f9;
+    border: 1px solid #d6d6d6;
+}
+
+.family-input-dropdown {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../img/dropdown.png) no-repeat;
+    background-size: 4vw 2.36vw;
+    background-position: 50.5vw 4.25vw;
+}
+
+.family-input-calendar {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../img/calendar.png) no-repeat;
+    background-size: 4vw 4vw;
+    background-position: 50.5vw 3.25vw;
+}
