@@ -963,6 +963,10 @@ input[type=checkbox]:checked + label {
     float: left;
 }
 
+.personal-avatar {
+    margin-bottom: 3vw;
+}
+
 .chatroom-info-photo-content {
     width: 25.466vw;
     height: 25.466vw;

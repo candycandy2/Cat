@@ -121,12 +121,12 @@ $("#viewNewChatroom").pagecontainer({
         window.processUserData = function(userData, callback) {
             callback = callback || null;
 
-            var avator_path = "";
-            var avator_download_time = 0;
+            var avatar_path = "";
+            var avatar_download_time = 0;
 
             if (JM.data.chatroom_user[userData.name] !== undefined) {
-                avator_path = JM.data.chatroom_user[userData.name].avator_path;
-                avator_download_time = JM.data.chatroom_user[userData.name].avator_download_time;
+                avatar_path = JM.data.chatroom_user[userData.name].avatar_path;
+                avatar_download_time = JM.data.chatroom_user[userData.name].avatar_download_time;
             } else {
                 JM.data.chatroom_user[userData.name] = {};
             }
@@ -162,8 +162,8 @@ $("#viewNewChatroom").pagecontainer({
                 is_register:            is_register,
                 is_protect:             is_protect,
                 send_invite:            send_invite,
-                avator_path:            avator_path,
-                avator_download_time:   avator_download_time
+                avatar_path:            avatar_path,
+                avatar_download_time:   avatar_download_time
             };
 
             JM.data.chatroom_user[userData.name] = tempData;
@@ -292,9 +292,12 @@ $("#viewNewChatroom").pagecontainer({
         }
 
         window.userListViewAvatar = function(listViewIndex, avatarPath) {
+            /*
             $("div#userList" + listViewIndex).find(".img-content svg").hide();
             $("div#userList" + listViewIndex).find(".img-content img").prop("src", avatarPath);
             $("div#userList" + listViewIndex).find(".img-content img").show();
+            */
+            window.checkImageExist(avatarPath, "div#userList" + listViewIndex, ".img-content");
         };
 
         window.checkQPrivateChat = function(empNumber, chatroomName, chatroomDesc, empNameArray) {
