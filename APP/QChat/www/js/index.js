@@ -304,7 +304,7 @@ function checkImageExist(path, domLevel1, domLevel2) {
                 $(domLevel1 + " img").css("display", showIMG);
             } else {
                 $(domLevel1).find(domLevel2 + " svg").css("display", showSVG);
-                $(domLevel1).find(domLevel2 + " img").prop("src", avatarPath);
+                $(domLevel1).find(domLevel2 + " img").prop("src", path);
                 $(domLevel1).find(domLevel2 + " img").css("display", showIMG);
             }
 
@@ -583,6 +583,7 @@ window.clickMessageNotification = function(data) {
 
         $.mobile.changePage('#viewChatroom');
     }
+
 };
 
 window.syncOfflineMessage = function(data) {
