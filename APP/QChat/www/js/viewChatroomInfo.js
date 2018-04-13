@@ -68,9 +68,12 @@ $("#viewChatroomInfo").pagecontainer({
         };
 
         window.chatroomMemberListViewAvatar = function(listViewIndex, avatarPath) {
+            /*
             $("#chatroomMemberList" + listViewIndex).find(".img-content svg").hide();
             $("#chatroomMemberList" + listViewIndex).find(".img-content img").prop("src", avatarPath);
             $("#chatroomMemberList" + listViewIndex).find(".img-content img").show();
+            */
+            window.checkImageExist(avatarPath, "#chatroomMemberList" + listViewIndex, ".img-content");
         };
 
         window.updateGroupInfo = function(chatroomID, action, name) {

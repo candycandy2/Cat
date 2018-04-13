@@ -576,6 +576,10 @@ input[type=checkbox]:checked + label {
     border-bottom: none;
 }
 
+#chatroomAction {
+    height: 10vw;
+}
+
 .chatroom-action-content {
     margin-top: 2.3vw;
     margin-left: 39vw;
@@ -957,6 +961,10 @@ input[type=checkbox]:checked + label {
 
 .chatroom-info-list .left, .chatroom-info-list .right {
     float: left;
+}
+
+.personal-avatar {
+    margin-bottom: 3vw;
 }
 
 .chatroom-info-photo-content {
