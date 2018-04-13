@@ -82,7 +82,7 @@ class AppVersionService
                         "value"=>null
                         ),
                     );
-         $selectData = array('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status','ready_date', 'created_at');
+         $selectData = array('row_id','device_type', 'version_code', 'version_name', 'url', 'external_app', 'version_log', 'size', 'status','ready_date', 'archived', 'created_at');
          $appVersionList = $this->appVersionRepository->getAppVersion($appId, $deviceType, $whereCondi, $selectData, $offset, $limit, $sort, $order, $search);
 
          $appVersionList = $this->arrangeVersionList($appId, $deviceType, $appVersionList); 
@@ -287,33 +287,41 @@ class AppVersionService
                     throw new \Exception("OTA API deleteAppFileFromPublish Error");
                 }
 
-                //不保留歷史檔案，刪除原始檔案
+                //不保留歷史檔案，刪除上上筆原始檔案
                 if( \Config::get('app.keep_history') == false &&  $deleteHistory == true){
-                    $destinationPath = FilePath::getApkUploadPath($appId,
-                                                                  $deviceType,
-                                                                  $OriPublish->version_code);
+                    $archiveVersion = $this->getArchiveVersion($appId);
+                    if($archiveVersion != null){
+                        $destinationPath = FilePath::getApkUploadPath($appId,
+                                                                      $deviceType,
+                                                                      $archiveVersion['version_code']);
 
-                    if(file_exists($destinationPath)){
-                        $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
-                        $files = new \RecursiveIteratorIterator($it,
-                                     \RecursiveIteratorIterator::CHILD_FIRST);
-                        foreach($files as $file) {
-                            if ($file->isDir()){
-                                rmdir($file->getRealPath());
-                            } else {
-                                unlink($file->getRealPath());
+                        if(file_exists($destinationPath)){
+                            $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+                            $files = new \RecursiveIteratorIterator($it,
+                                         \RecursiveIteratorIterator::CHILD_FIRST);
+                            foreach($files as $file) {
+                                if ($file->isDir()){
+                                    rmdir($file->getRealPath());
+                                } else {
+                                    unlink($file->getRealPath());
+                                }
                             }
+                            rmdir($destinationPath);
                         }
-                        rmdir($destinationPath);
-                    }
 
-                    //remove ota
-                    $tmpHistoryData =  array('app_id'=>$appId,
-                                        'device_type'=>$deviceType,
-                                        'version_code'=>$OriPublish->version_code);
-                    $historyData[] = $tmpHistoryData;
-                    $res = QPlayApi::post('deleteAppFile', json_encode($historyData));
-                    $res = json_decode($res,true);
+                        //remove ota
+                        $tmpHistoryData =  array('app_id'=>$appId,
+                                            'device_type'=>$deviceType,
+                                            'version_code'=>$archiveVersion['version_code']);
+                        $historyData[] = $tmpHistoryData;
+                        $res = QPlayApi::post('deleteAppFile', json_encode($historyData));
+                        $res = json_decode($res,true);
+                        if($res['result_code']!= ResultCode::_1_reponseSuccessful){
+                             throw new \Exception("OTA API deleteAppFile Error");
+                        }
+                        
+                        $this->appVersionRepository->setVersionArchived($archiveVersion['row_id']);
+                    }
                 }
             }
         }
@@ -360,7 +368,6 @@ class AppVersionService
             }
         }
         //remove ota
-        $this->appVersionRepository->deleteAppVersionById($delVersionArr);
         if(count($data) > 0){
             $res = QPlayApi::post('deleteAppFile', json_encode($data));
             
@@ -369,6 +376,7 @@ class AppVersionService
                 throw new \Exception("OTA API deleteAppFile Error");
             }
         }
+        $this->appVersionRepository->deleteAppVersionById($delVersionArr);
     }
 
     /**
@@ -491,8 +499,8 @@ class AppVersionService
            
             $deletePublishFile = true;
 
-            foreach ($versionItems as $value) {    
-                
+            foreach ($versionItems as $value) 
+            {
                 $data = array(
                     'app_row_id'=>$appId,
                     'version_code'=>$value['version_code'],
@@ -503,13 +511,8 @@ class AppVersionService
                     'status'=>$value['status'],
                     'device_type'=>$deviceType,
                 );
-                $deleteHistory = false;
                 if($value['status'] == 'ready'){
-                    //首次上架
-                    if(($value['version_code'] != $appStatus[$deviceType]['versionCode'])){
-                        $data ['ready_date'] = time();
-                        $deleteHistory = true;
-                    }
+                    $data ['ready_date'] = time();
                 }else{
                     $data ['ready_date'] = NULL;
                 }
@@ -535,12 +538,14 @@ class AppVersionService
                     $versionData['device_type'] = $deviceType;
                     $versionData['version_code'] = $value['version_code'];
                     $versionData['file_name'] = $value['url'];
+                    $deleteHistory = false;
+                    if(!isset($value['ready_date'])){//上傳新版本封存歷史版本
+                        $deleteHistory = true;
+                    }
                     $this->deleteApkFileFromPublish($appId, $deviceType,  $deleteHistory);
                     $this->copyAppFileToPublish($appId, $versionData);
                 }
             }
-           
-           
             if($deletePublishFile){
                 $this->deleteApkFileFromPublish($appId, $deviceType, true);
             }
@@ -548,7 +553,21 @@ class AppVersionService
       
         $this->updateVersion($updateArray);
         $this->insertVersion($insertArray);
+    }
 
-         
+    /**
+     * 取得該存區的版本
+     * @param  int $appId qp_app.row_id
+     * @return mixed
+     */
+    private function getArchiveVersion($appId)
+    {
+        $result  = $this->appVersionRepository->getHistoryVersion($appId)->toArray();
+        if(isset($result[0])){
+            return $result[0];
+        }else{
+            return null;
+        }
+
     }
 }
