@@ -248,6 +248,7 @@ return [
     'VERSION_LOG' => '版本描述',
     'UPLOAD_TIME'=>'上傳時間',
     'VERSION_STATUS'=>'狀態',
+    'READY_DATE' => '最近發佈時間',
     'EDIT_VERSION' => '修改版本',
     'FILE_SIZE' => '檔案大小',
     'NEW_VERSION'=>'最新版本',

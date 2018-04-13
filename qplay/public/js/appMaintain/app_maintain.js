@@ -235,33 +235,38 @@ $(function () {
                     
                     var androidGridListArr = [
                                         'gridAndroidVersionList',
-                                        'gridAndroidOnlineVersionList'
+                                        'gridAndroidOnlineVersionList',
+                                        'gridAndroidHistoryVersionList'
                                       ];
                     var iosGridListArr = [
                                         'gridIOSVersionList',
-                                        'gridIOSOnlineVersionList'
+                                        'gridIOSOnlineVersionList',
+                                        'gridIOSHistoryVersionList'
                                       ];
                     var androidNum = 0;
                     for (var k = 0; k < androidGridListArr.length; k++) {
                         var gridList = $("#" + androidGridListArr[k]).bootstrapTable('getData');
                         $.each(gridList, function(i, version) {
-                            $.each(version, function(j,v){
-                                formData.append('versionList[android][' + androidNum + '][' + j + ']',v);
-                            }); 
-                            androidNum ++;
+                            if(version['archived'] != 'Y'){//歷史版本若未封存也須subimt到後端
+                                $.each(version, function(j,v){
+                                    formData.append('versionList[android][' + androidNum + '][' + j + ']',v);
+                                }); 
+                                androidNum ++;
+                            }
                         });
                     }
                     var iosNum = 0;
                     for (var k = 0; k < iosGridListArr.length; k++) {
                         var gridList = $("#" + iosGridListArr[k]).bootstrapTable('getData');
                         $.each(gridList, function(i, version) {
-                            $.each(version, function(j,v){
-                                formData.append('versionList[ios][' + iosNum + '][' + j + ']',v);
-                            }); 
-                            iosNum++;
+                            if(version['archived'] != 'Y'){
+                                $.each(version, function(j,v){
+                                    formData.append('versionList[ios][' + iosNum + '][' + j + ']',v);
+                                }); 
+                                iosNum++;
+                            }
                         });
                     }
-
                     formData.append('delVersionArr',delVersionArr);
 
                     var customApiList =  $("#gridCustomApi").bootstrapTable('getData');
@@ -285,7 +290,6 @@ $(function () {
                         processData: false,
                         success: function (d, status, xhr) {
                             validate = 0;
-                            console.log(d);
                             if(d.result_code == 1) {
                                  showMessageDialog(Messages.MESSAGE,Messages.MSG_OPERATION_SUCCESS);
                                 $('#messageDialog').find('button').click(function(){
@@ -334,11 +338,8 @@ $(function () {
     });
 
     jQuery.validator.addMethod("icon", function(value, element) {
-        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size() + 
-                            $('#gridIOSOnlineVersionList').find('div.switch-success').size() ;
-        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size() + 
-                                $('#gridAndroidOnlineVersionList').find('div.switch-success').size();
-        if(androidPublishCnt + iosPublishCnt ==0){
+        var publishCnt = $('.version-grid').find('div .switch-animate.switch-success').size();
+        if(publishCnt == 0){
             return true;
         }
         if($('.icon-preview').length == 1 && $('.icon-preview').attr('src')!=""){
@@ -348,10 +349,8 @@ $(function () {
     });
 
     jQuery.validator.addMethod("screenshot", function(value, element) {
-        var iosPublishCnt = $('#gridIOSVersionList').find('div.switch-success').size() + 
-                            $('#gridIOSOnlineVersionList').find('div.switch-success').size() ;
-        var androidPublishCnt = $('#gridAndroidVersionList').find('div.switch-success').size() + 
-                                $('#gridAndroidOnlineVersionList').find('div.switch-success').size();
+        var iosPublishCnt = $('.version-grid.ios-grid').find('div .switch-animate.switch-success').size();
+        var androidPublishCnt = $('.version-grid.android-grid').find('div .switch-animate.switch-success').size();
         var ios = new RegExp('^iosScreenUpload_');
         var android = new RegExp('^androidScreenUpload_');
         if($(element).parent().parent().find('li.imgLi').length == 0){
