@@ -474,6 +474,10 @@ pre {
     padding-right: 6.74vw;
 }
 
+.font-color2 {
+    color: #323232;
+}
+
 .font-color3 {
     color: #666 !important;
 }
@@ -833,6 +837,13 @@ div.scrollmenu a {
 #insranceInfo li:nth-last-of-type(1){ border-bottom: none;}
 
 /********************************************** FamilyData *********************************************/
+#viewFamilyNone {
+    width: 100vw;
+    text-align: center;
+    line-height: 125vw;
+    margin: 0vw 0vw;
+    display: none;
+}
 
 .family-save-btn {
     opacity: 0.6;
@@ -846,6 +857,48 @@ div.scrollmenu a {
 
 #familyList {
     background: #ffffff;
+}
+
+.family-list {
+    width: 86.5vw;
+    height: 14.5vw;
+    padding: 3vw 6.71vw;
+}
+
+.family-list > div {
+    float: left;
+}
+
+.family-list ::after {
+    clear: both;
+}
+
+.family-list > div:nth-of-type(1) {
+    width: 85%;
+    height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.family-list > div:nth-of-type(1) > div:nth-of-type(2),
+.family-list > div:nth-of-type(1) > div:nth-of-type(3) {
+    margin-top: 1.16vw;
+}
+
+.family-list > div:nth-of-type(2) {
+    width: 15%;
+    height: 10vw;
+    padding-top: 3.5vw;
+}
+
+.family-edit {
+    width: 6.2vw;
+    height: 6.2vw;
+    margin-left: 17vw;
+    margin-top: 1vw;
 }
 
 .family-notice {
@@ -930,4 +983,12 @@ div.scrollmenu a {
     background: url(../img/calendar.png) no-repeat;
     background-size: 4vw 4vw;
     background-position: 50.5vw 3.25vw;
+}
+
+.activity-line {
+    width: 92.58vw;
+    height: 1px;
+    margin-left: 3.71vw;
+    background-color: #d6d6d6;
+    overflow: hidden;
 }
