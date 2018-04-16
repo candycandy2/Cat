@@ -1,4 +1,5 @@
 
+
 $("#viewFamilyData").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
@@ -17,6 +18,42 @@ $("#viewFamilyData").pagecontainer({
             }
         };
 
+        //API:QueryFamilyData
+        function queryFamilyList() {
+            //replace familyArr's content to data["Content"]
+            var familyArr = JSON.parse(localStorage.getItem('familySettingdata')); 
+            familyArr = [{family_id:"1", name:"王小明", relation:"父母", birthday:"1980/01/01", idtype:"0", idno:"A123456789"},
+                         {family_id:"2", name:"王小美", relation:"父母", birthday:"1981/01/01", idtype:"0", idno:"A123456788"}];  
+            //replace (familyArr != null) to (data["ResultCode"] == "1")       
+            if (familyArr != null) {
+                //familyArr = data["Content"].sort(sortByRelationship("relation", "name"));
+                var familyList = "";
+                //for (var i in familyArr) {
+                for (var i=0; i<familyArr.length; i++ ) {
+                    var ageDate = new Date(Date.now() - new Date(familyArr[i]["birthday"]).getTime()); 
+                    var familyAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+                    familyList += '<div class="family-list"><div class="font-style10 font-color2" data-id="'
+                        + familyArr[i]["family_id"]
+                        + '"><div><span>'
+                        + familyArr[i]["name"]
+                        + '</span>/<span>'
+                        + familyArr[i]["relation"]
+                        + '</span>/<span>'
+                        + familyAge
+                        + '</span></div><div>'
+                        + familyArr[i]["birthday"]
+                        + '</div><div>'
+                        + familyArr[i]["idno"]
+                        + '</div></div><div><img src="img/info.png" class="family-edit"></div></div><div class="activity-line"></div>';
+                }
+                $("#familyList").empty().append(familyList).children("div:last-child").remove();
+            } else {
+                $("#viewFamilyList").hide();
+                $("#viewFamilyNone").show();
+            }
+            loadingMask("hide");
+        }
+
         //檢查所有欄位是否爲空
         function checkFormByFamily() {
             var nameVal = $.trim($("#familyName").val());
@@ -31,6 +68,33 @@ $("#viewFamilyData").pagecontainer({
                 $(".family-save-btn").css("opacity", "0.6");
                 return false;
             }
+        }
+
+         //清空所有欄位
+        function clearFormByFamily() {
+            $("#familyName").val("");
+            $("#familyRelationship").val("");
+            $("#familyGender").val("");
+            $("#familyID").val("");
+            $("#familyBirth").val("");
+            familyNo = "";
+            familyName = "";
+            familyID = "";
+            familyBirth = "";
+            relationshipNo = "";
+            genderNo = "";
+
+            $.each($("#relationship-popup-option-list li"), function (index, item) {
+                if ($(item).hasClass("tpl-dropdown-list-selected")) {
+                    $(item).removeClass("tpl-dropdown-list-selected");
+                }
+            });
+
+            $.each($("#gender-popup-option-list li"), function (index, item) {
+                if ($(item).hasClass("tpl-dropdown-list-selected")) {
+                    $(item).removeClass("tpl-dropdown-list-selected");
+                }
+            });
         }
 
         //“編輯”和“新增”的跳轉
@@ -50,11 +114,11 @@ $("#viewFamilyData").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewFamilyData").on("pagebeforeshow", function (event, ui) {
-
+            queryFamilyList();
         });
 
         $("#viewFamilyData").on("pageshow", function (event, ui) {
-
+            //loadingMask("hide");           
         });
         
         /******************************** datetimepicker ***********************************/
