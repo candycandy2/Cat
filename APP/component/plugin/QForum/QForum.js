@@ -672,6 +672,11 @@ var QForum = {
                         replyListData.find(".time .time-1").html(createTimeConvert);
                         replyListData.find(".content").html(replyDataList[i].reply_content);
 
+                        //Only current user can edit/delete comment
+                        if (replyDataList[i].reply_user === loginData["loginid"]) {
+                            replyListData.find(".title .button").removeClass("hide");
+                        }
+
                         //Check if this comment has been delete or edit
                         if (replyDataList[i].reply_delete_time != null) {
 
@@ -686,6 +691,11 @@ var QForum = {
                             replyListData.find(".time .time-2 .text-delete").removeClass("hide");
                             replyListData.find(".time .time-2").removeClass("hide");
 
+                            //If comment deleted, hide action button
+                            if (replyDataList[i].reply_user === loginData["loginid"]) {
+                                replyListData.find(".title .button").addClass("hide");
+                            }
+
                         } else if (replyDataList[i].reply_update_time != null) {
 
                             tempDate = dateFormatYMD(replyDataList[i].reply_update_time);
@@ -697,11 +707,6 @@ var QForum = {
                             replyListData.find(".time .time-2 .text-edit").removeClass("hide");
                             replyListData.find(".time .time-2").removeClass("hide");
 
-                        }
-
-                        //Only current user can edit/delete comment
-                        if (replyDataList[i].reply_user === loginData["loginid"]) {
-                            replyListData.find(".title .button").removeClass("hide");
                         }
 
                         //Check if data has exist in view
