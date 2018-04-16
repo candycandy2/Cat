@@ -289,7 +289,7 @@ class AppVersionService
 
                 //不保留歷史檔案，刪除上上筆原始檔案
                 if( \Config::get('app.keep_history') == false &&  $deleteHistory == true){
-                    $archiveVersion = $this->getArchiveVersion($appId);
+                    $archiveVersion = $this->getArchiveVersion($appId, $deviceType);
                     if($archiveVersion != null){
                         $destinationPath = FilePath::getApkUploadPath($appId,
                                                                       $deviceType,
@@ -558,11 +558,12 @@ class AppVersionService
     /**
      * 取得該存區的版本
      * @param  int $appId qp_app.row_id
+     * @param  string $deviceType 裝置類型 android|ios
      * @return mixed
      */
-    private function getArchiveVersion($appId)
+    private function getArchiveVersion($appId, $deviceType)
     {
-        $result  = $this->appVersionRepository->getHistoryVersion($appId)->toArray();
+        $result  = $this->appVersionRepository->getHistoryVersion($appId, $deviceType)->toArray();
         if(isset($result[0])){
             return $result[0];
         }else{

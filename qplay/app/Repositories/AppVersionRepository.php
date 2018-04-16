@@ -184,12 +184,15 @@ class AppVersionRepository
 
     /**
      * 取得歷史版本版本
+     * @param $appId qp_app.row_id
+     * @param $deviceType 裝置類型 android|ios
      * @return mixed
      */
-    public function getHistoryVersion($appId){
+    public function getHistoryVersion($appId, $deviceType){
         $versionInfo = QP_App_Version::where('app_row_id', '=', $appId)
                         ->where('status','=', 'cancel')
                         ->where('archived','=', 'N')
+                        ->where('device_type', '=', $deviceType)
                         ->whereNotNull('ready_date')
                         ->orderBy('ready_date', 'desc')
                         ->get();
