@@ -855,13 +855,24 @@ div.scrollmenu a {
     display: none;
 }
 
-#familyList {
-    background: #ffffff;
+.family-cancle-btn {
+    color: #2d89bc;
+    padding: 5vw 3.71vw 2.14vw;
+    display: none;
 }
+
+.family-edit-btn {
+    color: #2d89bc;
+    right: 3.71vw;
+    padding: 5vw 3.71vw 2.14vw;
+    text-align: right;
+}
+
+#familyList {background: #ffffff;}
 
 .family-list {
     width: 86.5vw;
-    height: 14.5vw;
+    height: 20vw;
     padding: 3vw 6.71vw;
 }
 
@@ -986,9 +997,9 @@ div.scrollmenu a {
 }
 
 .activity-line {
-    width: 92.58vw;
+    width: 150vw;
     height: 1px;
-    margin-left: 3.71vw;
+    /*margin-left: 3.71vw;*/
     background-color: #d6d6d6;
     overflow: hidden;
 }

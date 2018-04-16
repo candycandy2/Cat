@@ -99,7 +99,7 @@ $("#viewFamilyData").pagecontainer({
 
         //“編輯”和“新增”的跳轉
         function changeViewToDetail() {
-            $("#viewFamilyData .menu").hide();
+            $("#viewFamilyData .insuranceMenu").hide();
             if (familyArr.length == 0) {
                 $("#viewFamilyNone").hide();
             } else {
@@ -196,6 +196,18 @@ $("#viewFamilyData").pagecontainer({
         //儲存按鈕
         $(".family-save-btn").on("click", function () {
 
+        });
+
+        //編輯按鈕
+        $(".family-edit-btn").on("click", function () {
+            $(".family-edit-btn").hide();
+            $(".family-cancle-btn").show();
+        });
+
+        //取消按鈕
+        $(".family-cancle-btn").on("click", function () {
+            $(".family-cancle-btn").hide();
+            $(".family-edit-btn").show();
         });
 
         //關係dropdownlist-popup
