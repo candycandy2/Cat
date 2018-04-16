@@ -43,11 +43,11 @@ $(document).one("pagebeforeshow", function() {
     /*$("#mypanel #mypanelviewPersonalInsurance").on("click", function() {
         editLeaveForm = false; 
         changePageByPanel("viewPersonalInsurance");
-    });
+    });*/
 
     $("#mypanel #mypanelviewFamilyData").on("click", function() {
         changePageByPanel("viewFamilyData");
-    });*/
+    });
 
     $("#mypanel #mypanelviewContact").on("click", function() {
         changePageByPanel("viewContact");
