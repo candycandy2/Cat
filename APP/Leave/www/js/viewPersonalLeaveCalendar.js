@@ -84,7 +84,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
                         "</Month><EmpNo>" +
                         myEmpNo +
                         "</EmpNo></LayoutHeader>";
-                    throw new Error("call QueryCalendarData.");
+                    //throw new Error("call QueryCalendarData.");
                     //呼叫API
                     QueryCalendarData();
                 },
