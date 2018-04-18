@@ -6,7 +6,13 @@ var appKey = "appcmtwo";
 var appSecretKey = "a8af829aef9dbb69bcaf740a78c45299";
 
 window.initialSuccess = function() {
+
+    $.get('img/component/img_qplay.svg', function(svg){
+        $('body').append(svg);
+    }, 'text');
+
     $.mobile.changePage('#viewMain');
+
 }
 
 //[Android]Handle the back button

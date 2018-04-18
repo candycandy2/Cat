@@ -1,17 +1,251 @@
-<span id="tmp_option_width" class="hidden" style="font-size:2.8vh"></span>
+
 <div data-role="page" id="viewMain">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
-        <div id="container" class="header-style">
-            <div id="center" class="ui-title">CMTwo</div>
+        <a href="#" data-role="none">
+            <div class="q-btn-header" style="width: 5.957vw;" id="menu">
+                <img src="img/nav_humb.png" width="100%" height="100%">
+            </div>
+            <div class="q-btn-header" id="closeDataList">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+            <div class="q-btn-header" id="closeDetailContent">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
+        <div class="header-style">
+            <div class="ui-title">
+                CMSOP4
+            </div>
         </div>
+        <a href="#" data-role="none">
+            <div class="q-btn-header" style="width: 5.957vw;" id="setting">
+                <img src="img/nav_humb.png" width="100%" height="100%">
+            </div>
+        </a>
     </div>
     <div data-role="main" class="page-main" style="line-height: initial !important;">
-        <ul data-role="listview" data-ajax="false" data-inset="true" data-theme="a">
-            <li><a href="#">Listview 1<span class="ui-li-count">22</span></a></li>
-            <li><a href="#">Listview 2<span class="ui-li-count">3</span></a></li>
-            <li><a href="#">Listview 3<span class="ui-li-count">５</span></a></li>
-            <li><a href="#">Listview 4<span class="ui-li-count">7</span></a></li>
-        </ul>
+
+        <div class="search-content">
+            <input type="text" data-role="none" class="searchBar" placeholder="搜尋特約商店">
+            <div class="search-clear-content hide">
+                <svg class="search-clear">
+                    <use xlink:href="#icon-btn_field_clear"></use>
+                </svg>
+            </div>
+        </div>
+
+        <div id="menuList" class="function-list">
+            <div class="header">特約商店</div>
+            <hr class="ui-hr">
+            <div class="item" id="food">餐廳</div>
+            <hr class="ui-hr">
+            <div class="item" id="market">超商</div>
+        </div>
+
+        <div id="settingList" class="function-list">
+            <div class="header">搜尋範圍</div>
+            <hr class="ui-hr">
+            <div class="item" id="regional">區域(1公里內)</div>
+            <hr class="ui-hr">
+            <div class="item" id="wide">廣域(全國)</div>
+        </div>
+
+        <div id="searchList">
+            <template id="tplSearchListItem">
+                <div class="list-item">
+                    <div class="left icon-content">
+                        <svg class="icon">
+                            <use xlink:href="#icon-btn_floating_chatroom"></use>
+                        </svg>
+                    </div>
+                    <div class="right data-content">
+                        <div>
+                            <div class="left name">7-11門市</div>
+                            <div class="right distance">0.15公里</div>
+                        </div>
+                        <div>
+                            <div class="left address-phone">
+                                <div class="address">台北市內湖區內湖路一段</div>
+                                <div class="phone">電話 : (02)2882-5252</div>
+                            </div>
+                            <div class="right button-content">
+                                <div class="left marker-icon">
+                                    <img src="img/marker.png" width="70%" height="70%">
+                                </div>
+                                <div class="right button">
+                                    <span class="arrow-icon"> > </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="ui-hr">
+            </template>
+        </div>
+
+        <div id="detailContent">
+            <div style="text-align: center;">
+                7-11 門市 : 大眾
+            </div>
+            <ul>
+                <li> - 麵包及派類 9 折優惠</li>
+                <li> - 當月壽星來店消費 5500 以上, 加送禮物乙份</li>
+                <li> - 單次團購滿 3000 以上 85 折優惠</li>
+                <li> - 不定期優惠</li>
+            </ul>
+        </div>
+
+        <div id="map" style="width:100vw; height:90vh;"></div>
+
+        <script>
+
+            function initMap() {
+
+                var myStyles = [{
+                    featureType: "poi",
+                    elementType: "labels",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }];
+
+
+                var uluru = {lat: -25.363, lng: 131.044};
+
+                window.map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 18,
+                    center: uluru,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    rotateControl: false,
+                    fullscreenControl: false,
+                    styles: myStyles
+                });
+
+                /*
+                var marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map
+                });
+                */
+
+                /*
+                $.ajax({
+                    type: "POST",
+                    url: "https://maps.googleapis.com/maps/api/geocode/json?address=台北市內湖區基湖路16號&language=zh-TW&key=AIzaSyDfNc3zYF_DVZRjsqJrkxU2-WbjYmPxEjg",
+                    dataType: "json",
+                    cache: false,
+                    success: function(response) {
+                        console.log("success");
+                        console.log(response);
+                    },
+                    error: function(response) {
+                        console.log("error");
+                        console.log(response);
+                    }
+                });
+                */
+
+                window.geocoder = new google.maps.Geocoder();
+                console.log(window.geocoder);
+
+                //geocodeAddress(window.geocoder, window.map, "台北市內湖區基湖路16號");
+                //geocodeAddress(window.geocoder, window.map, "");
+                //geocodeAddress(window.geocoder, window.map, "台北市內湖區瑞光路669號");
+                //geocodeAddress(window.geocoder, window.map, "台北市內湖區基湖路32號");
+                //geocodeAddress(window.geocoder, window.map, "台北市內湖區基湖路18號", "西雅圖");
+
+
+            }
+
+            function geocodeAddress(geocoder, resultsMap, address, name) {
+                //var address = document.getElementById('address').value;
+                //var address = "台北市內湖區基湖路16號";
+
+                geocoder.geocode({'address': address}, function(results, status) {
+
+                    if (status === 'OK') {
+                        resultsMap.setCenter(results[0].geometry.location);
+
+                        /*
+                        var iconImage = {
+                            url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+                            size: new google.maps.Size(20, 32),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(0, 32)
+                        }
+
+                        var shape = {
+                            coords: [1, 1, 1, 20, 18, 20, 18, 1],
+                            type: 'poly'
+                        };
+                        */
+
+                        //var marker = new google.maps.Marker({
+                        window.marker = new google.maps.Marker({
+                            map: resultsMap,
+                            position: results[0].geometry.location,
+                            title: name,
+                            //icon: iconImage,
+                            //shape: shape
+                            icon: "img/markerA.png"
+                        });
+
+                        window.allMarker.push(window.marker);
+
+
+                        //Info Window
+                        var contentString = '<div id="content"> 這個地址是:' + address +'</div>';
+
+                        var infowindow = new google.maps.InfoWindow({
+                            content: contentString
+                        });
+
+                        marker.addListener('click', function() {
+                            //infowindow.open(resultsMap, marker);
+                            marker.setIcon("img/markerB.png");
+                        });
+
+                        /*
+                        setTimeout(function(){
+                            window.marker.setMap(null);
+                        }, 10000);
+                        */
+
+                    } else {
+                        //alert('Geocode was not successful for the following reason: ' + status);
+                    }
+
+                });
+
+            }
+
+            function test() {
+                //jQuery bind Marker title
+                $(".gmnoprint").each(function(index, dom) {
+                    var title = $(dom).prop("title");
+                    if (title.length > 0) {
+                        console.log($(dom).offset());
+                        console.log(title);
+
+                        $(dom).css({
+                            opacity: 1,
+                            overflow: "visible"
+                        });
+
+                        $(dom).find("img").css({
+                            opacity: 0
+                        });
+
+                        $("<div class='test'>" + title + "</div>").appendTo($(dom));
+                    }
+                });
+            }
+
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfNc3zYF_DVZRjsqJrkxU2-WbjYmPxEjg&callback=initMap">
+        </script>
     </div>
 </div>
