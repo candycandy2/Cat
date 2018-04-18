@@ -258,7 +258,7 @@ pre {
     background: rgba(0, 0, 0, 0.5);
 }
 
-*{ box-sizing: border-box;}
+/**{ box-sizing: border-box;}*/
 .hide{ display: none;}
 
 .table{ display: table; width: 100%; border: 1px solid #d6d6d6; text-align: center; padding: 0 3.71vw; color: #323232; background-color: #fff;}
@@ -483,6 +483,13 @@ pre {
     color: #666 !important;
 }
 
+.view-show {
+    display: block;
+}
+
+.view-hide {
+    display: none;
+}
 
 /********************************** color setting *************************************/
 
@@ -873,7 +880,7 @@ div.scrollmenu a {
 
 .family-list {
     width: 86.5vw;
-    height: 20vw;
+    height: 14.5vw;
     padding: 3vw 6.71vw;
 }
 
@@ -886,7 +893,7 @@ div.scrollmenu a {
 }
 
 .family-list > div:nth-of-type(1) {
-    width: 85%;
+    width: 65vw;
     height:14.5vw;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -901,7 +908,7 @@ div.scrollmenu a {
 }
 
 .family-list > div:nth-of-type(2) {
-    width: 15%;
+    width: 21.5vw;
     height: 10vw;
     padding-top: 3.5vw;
 }
@@ -909,14 +916,14 @@ div.scrollmenu a {
 .family-edit {
     width: 6.2vw;
     height: 6.2vw;
-    margin-left: 17vw;
+    margin-left: 14vw;
     margin-top: 1vw;
 }
 
 .family-delete {
     width: 5.2vw;
     height: 5.2vw;
-    margin-left: 17vw;
+    margin-left: 14vw;
     margin-top: 1vw;
     display: none;
 }
@@ -947,10 +954,10 @@ div.scrollmenu a {
 }
 
 #viewFamilyEdit {
-    width: 92.58vw;
+    width: 88.58vw;
     height: 150vw;
     margin-top: 10vw;
-    margin-left: 3.71vw;
+    margin-left: 5.71vw;
     display: none;
 }
 
@@ -977,6 +984,7 @@ div.scrollmenu a {
     text-indent: 3.2vw;
     background: #f9f9f9;
     border: 1px solid #d6d6d6;
+    background-repeat: no-repeat;
 }
 
 .family-input-dropdown {
