@@ -16,7 +16,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
                 var holidayFlag = "2";
                 if (data['ResultCode'] === "1") {
                     //length大于0说明有数据，length等于0说明年份不对没有数据
-                    if(data['Content'].length > 0) {
+                    if (data['Content'].length > 0) {
                         var callbackData = data['Content'][0]["Result"];
                         var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                         var colorTagArry = $("color", htmlDom);
@@ -36,7 +36,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
                         }
 
                         //遍歷假日列表，統一爲藍色
-                        for(var i in myCalendarData[holidayFlag]) {
+                        for (var i in myCalendarData[holidayFlag]) {
                             $("#viewPersonalLeave-calendar #" + myCalendarData[holidayFlag][i]).addClass("weekend");
                         }
 
@@ -44,7 +44,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
                     } else {
                         calendarData = false;
                     }
-                    
+
 
                 }
                 loadingMask("hide");
@@ -53,7 +53,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPIEx("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "", 60*60, );
+                CustomAPIEx("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "", 60 * 60 );
             }();
         };
 
@@ -84,6 +84,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
                         "</Month><EmpNo>" +
                         myEmpNo +
                         "</EmpNo></LayoutHeader>";
+                    //throw new Error("call QueryCalendarData.");
                     //呼叫API
                     QueryCalendarData();
                 },
@@ -112,7 +113,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
             } else if ($("#infoContent-1").css("display") === "block") {
                 $("#infoContent-1").slideUp(500);
                 $("#infoTitle-1").find(".listDown").attr("src", "img/list_down.png");
-                
+
             }
         });
 
@@ -120,7 +121,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
             if ($("#infoContent-3").css("display") === "none") {
                 $("#infoContent-3").slideDown(500);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_up.png");
-                $('html,body').animate({scrollTop:$('#infoContent-3').offset().top}, 1000);
+                $('html,body').animate({ scrollTop: $('#infoContent-3').offset().top }, 1000);
             } else if ($("#infoContent-3").css("display") === "block") {
                 $("#infoContent-3").slideUp(500);
                 $("#infoTitle-3").find(".listDown").attr("src", "img/list_down.png");
@@ -131,7 +132,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
         $(document).on({
             click: function(event) {
                 //只有當calendar=true有數據時才添加 tooltip
-                if(calendarData) {
+                if (calendarData) {
                     var isLeave = false;
                     var isWeekend = false;
                     var isNormal = false;
@@ -145,22 +146,22 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
                     calendarFirstTrTop = parseInt(calendarFirstTrTop + tooltipMarginTop, 10);
                     var clickTdTop = $(event.target).parent().position().top;
                     var tooltipTop;
-    
+
                     //Leave
                     if ($(event.target).parent().hasClass("leave")) {
                         isLeave = true;
                     }
-    
+
                     //Weekend
                     if ($(event.target).parent().hasClass("weekend")) {
                         isWeekend = true;
                     }
-    
+
                     //Normal
                     if (!isLeave && !isWeekend) {
                         isNormal = true;
                     }
-    
+
                     if (isLeave) {
                         divWidth = "48vw";
                         firstTdWidth = "24vw";
@@ -175,7 +176,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
                         divWidthPX = parseInt(document.documentElement.clientWidth * 26 / 100, 10);
                         tooltipTop = parseInt(clickTdTop + tooltipMarginTop, 10);
                     }
-    
+
                     //Tooltip position: left / right
                     var dayIndexInWeek = $(event.target).parent().index(); //0,1,2,3,4,5,6
                     var tooltipPosition = "right";
@@ -184,31 +185,31 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
                     var tdWidth = $(event.target).width();
                     var tdPaddingY = parseInt(document.documentElement.clientWidth * 1.53 / 100, 10);
                     var tooltipMarginY = parseInt(document.documentElement.clientWidth * 2.81 / 100, 10);
-    
+
                     if (dayIndexInWeek >= 3) {
                         tooltipPosition = "left";
                     }
-    
+
                     if (tooltipPosition === "left") {
                         tooltipHorizontalPosition = "left:" + parseInt(tdLeft - divWidthPX - tdPaddingY - tooltipMarginY, 10) + "px;";
                     } else {
                         tooltipHorizontalPosition = "left:" + parseInt(tdLeft + tdWidth - tdPaddingY * 2 + tooltipMarginY, 10) + "px;";
                     }
-    
+
                     $(".tooltip").remove();
                     $("#viewPersonalLeaveCalendar").append('<div class="tooltip" style="width:' + divWidth + '; top:' + tooltipTop + 'px; ' + tooltipHorizontalPosition + '">' + myHolidayData[dayNumber] + '</div>');
-    
+
                     if (isLeave) {
                         $(".tooltip").find("table").css({
                             "width": divWidth,
                             "line-height": "1.2"
                         });
-    
+
                         $(".tooltip").find("table").each(function(index, dom) {
                             $(dom).find("td:eq(0)").css("width", firstTdWidth);
                         });
                     }
-                }      
+                }
 
             }
         }, ".QPlayCalendar");

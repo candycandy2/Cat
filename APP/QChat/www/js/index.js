@@ -89,13 +89,16 @@ window.initialSuccess = function() {
         $("#userInfoPopup .ui-hr-bottom").hide();
         $("#userInfoPopup .button-add-status").hide();
 
-        if (JM.data.chatroom_user[userID].avator_download_time != 0) {
+        if (JM.data.chatroom_user[userID].avatar_download_time != 0) {
+            /*
             $("#userInfoPopup svg.chatroom-info-photo").hide();
-            $("#userInfoPopup img").prop("src", JM.data.chatroom_user[userID].avator_path);
+            $("#userInfoPopup img").prop("src", JM.data.chatroom_user[userID].avatar_path);
             $("#userInfoPopup img").show();
+            */
+            window.checkImageExist(JM.data.chatroom_user[userID].avatar_path, "#userInfoPopup .personal-avatar");
         } else {
-            $("#userInfoPopup img").hide();
-            $("#userInfoPopup svg.chatroom-info-photo").show();
+            $("#userInfoPopup .personal-avatar img").hide();
+            $("#userInfoPopup .personal-avatar svg").css("display", "inline-block");
         }
 
         var memo = "&nbsp;";
@@ -270,6 +273,54 @@ function createXMLDataString(data) {
     });
 
     return XMLDataString;
+}
+
+function checkImageExist(path, domLevel1, domLevel2) {
+    domLevel2 = domLevel2 || null;
+
+    (function(path, domLevel1, domLevel2) {
+
+        var img = new Image();
+
+        var callback = function(exist) {
+
+            if (domLevel1.indexOf("userInfoPopup") == -1) {
+                var display = "block";
+            } else {
+                var display = "inline-block";
+            }
+
+            if (exist) {
+                var showSVG = "none";
+                var showIMG = display;
+            } else {
+                var showSVG = display;
+                var showIMG = "none";
+            }
+
+            if (domLevel2 == null) {
+                $(domLevel1 + " svg").css("display", showSVG);
+                $(domLevel1 + " img").prop("src", path);
+                $(domLevel1 + " img").css("display", showIMG);
+            } else {
+                $(domLevel1).find(domLevel2 + " svg").css("display", showSVG);
+                $(domLevel1).find(domLevel2 + " img").prop("src", path);
+                $(domLevel1).find(domLevel2 + " img").css("display", showIMG);
+            }
+
+        };
+
+        img.onload = function() {
+            callback(true);
+        };
+
+        img.onerror = function() {
+            callback(false);
+        };
+
+        img.src = path;
+
+    }(path, domLevel1, domLevel2));
 }
 
 function handleAPIError(APIName, resultCode, callback, parameter) {
@@ -532,6 +583,7 @@ window.clickMessageNotification = function(data) {
 
         $.mobile.changePage('#viewChatroom');
     }
+
 };
 
 window.syncOfflineMessage = function(data) {

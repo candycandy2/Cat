@@ -4,7 +4,7 @@ var initialAppName = "Insurance";
 var appKeyOriginal = "appinsurance";
 var appKey = "appinsurance";
 var appSecretKey = "e85c0c548016c12b5ef56244067ab616";
-var pageList = ["viewMain", "viewPanel", "viewContact", "viewInsuranceInfo"];
+var pageList = ["viewMain", "viewPanel", "viewContact", "viewInsuranceInfo", "viewFamilyData"];
 var visitedPageList = ["viewMain"];
 
 window.initialSuccess = function() {
@@ -35,4 +35,29 @@ function changePageByPanel(pageId) {
         }
     }
     $("#mypanel").panel("close");
+}
+
+//先按照關係排序，關係一樣再按照中文姓名排序
+function sortByRelationship(prop1, prop2) {
+    return function (obj1, obj2) {
+        //relationship
+        var val1 = obj1[prop1];
+        var val2 = obj2[prop1];
+        //familyname
+        var value1 = obj1[prop2];
+        var value2 = obj2[prop2];
+        //轉換成numer類型
+        if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+            val1 = Number(val1);
+            val2 = Number(val2);
+        }
+
+        if (val1 < val2) {
+            return -1;
+        } else if (val1 > val2) {
+            return 1;
+        } else {
+            return value1.localeCompare(value2, "zh");
+        }
+    }
 }

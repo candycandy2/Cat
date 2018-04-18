@@ -181,4 +181,31 @@ class AppVersionRepository
                     $versionInfo =  $query->get();
         return $versionInfo;
     }
+
+    /**
+     * 取得歷史版本版本
+     * @param $appId qp_app.row_id
+     * @param $deviceType 裝置類型 android|ios
+     * @return mixed
+     */
+    public function getHistoryVersion($appId, $deviceType){
+        $versionInfo = QP_App_Version::where('app_row_id', '=', $appId)
+                        ->where('status','=', 'cancel')
+                        ->where('archived','=', 'N')
+                        ->where('device_type', '=', $deviceType)
+                        ->whereNotNull('ready_date')
+                        ->orderBy('ready_date', 'desc')
+                        ->get();
+        return $versionInfo;
+    }
+
+    /**
+     * 將特定version標示為封存
+     * @param int $versionId qp_version.row_id
+     */
+    public function setVersionArchived($versionId){
+        $version = QP_App_Version::find($versionId);
+        $version->archived = 'Y';
+        $version->save();
+    }
 }

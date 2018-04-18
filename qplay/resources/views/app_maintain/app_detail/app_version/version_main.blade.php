@@ -190,20 +190,19 @@
 <script>
 
 function switchFormatter(value, row) {
-    
-    if(row.ready_date != null && row.status == 'cancel'){
-        if(row.external_app == 1){
-            return '-';
-        }
-        var download_url = row.download_url;
-        if(row.device_type == 'ios'){
-            download_url = download_url.replace("itms-services://?action=download-manifest&url=","");
-            download_url = download_url.replace("manifest.plist", row.url);
-        }
-        return '<a href="'+ download_url + '"><span class="glyphicon glyphicon-download-alt"> download</span></a>';
-    }
     var status = (row.status == 'ready')?'success':'off';
     return'<div class="switch switch-large has-switch" data-version="'+ row.row_id +'" data-name="'+row.version_name+'"><div class="switch-'+ status +' switch-animate"><input type="checkbox"><span class="switch-left switch-success">Publish</span><label class="">&nbsp;</label><span class="switch-right">Unpublish</span></div></div></div>';
+};
+
+function historySwitchFormatter(value, row, index) {
+
+    if(row.archived == 'N')
+    {
+        var status = (row.status == 'ready')?'success':'off';
+        return'<div class="switch switch-large has-switch" data-version="'+ row.row_id +'" data-name="'+row.version_name+'"><div class="switch-'+ status +' switch-animate"><input type="checkbox"><span class="switch-left switch-success">Publish</span><label class="">&nbsp;</label><span class="switch-right">Unpublish</span></div></div></div>';
+    } else {
+        return '<b>Archived</b>';
+    }
 };
 
 function versionNameFormatter(value, row) {
@@ -216,6 +215,14 @@ function versionNameFormatter(value, row) {
 
 function createdDateFormatter(value, row){
     return convertUTCToLocalDateTime(value);
+}
+
+function readyDateFormatter(UNIX_timestamp){
+  if(UNIX_timestamp == null){
+    return null;
+  }
+  var a = new Date(UNIX_timestamp * 1000);
+  return getDateTime(a);
 }
 
 function versionLogDateFormatter(value, row){
@@ -300,10 +307,6 @@ var uploadNewVersion = function(){
     var _validExtension = (device == 'ios')?'ipa':'apk';
     var errors = new Array();
         errors = validRequired(errors, require);
-    //var fileFakePath = $('input[name=versionFile]').val();
-    //console.log($('#versionFile')[0].files[0].name);
-    var fileName = $('#versionFile')[0].files[0].name;
-    
     var versionCode = $('input[name=tbxVersionNo]').val();
     var versionName = $('input[name=tbxVersionName]').val();
     var versionLog = $('textarea[name=tbxVersionLog]').val();
@@ -312,11 +315,10 @@ var uploadNewVersion = function(){
     var $onlineGridList = (device == 'ios')? $('#gridIOSOnlineVersionList'):$('#gridAndroidOnlineVersionList');
     var currentData = $gridList.bootstrapTable('getData');
     var onlineData = $onlineGridList.bootstrapTable('getData');
-
     var regNum = /^\d+$/;
 
     if($('input[name=versionFile]').val().length > 0){
-        var fileExtension = fileName.split('.').pop();
+        var fileExtension = $('#versionFile')[0].files[0].name.split('.').pop();
          if(fileExtension != _validExtension){
             var error = new Error;
             error.field = 'versionFile';
@@ -354,7 +356,7 @@ var uploadNewVersion = function(){
     if(errors.length > 0){
         return false;
     }
-
+    var fileName = $('#versionFile')[0].files[0].name;
     var newVersion = new Object();
     newVersion.device_type = device;
     newVersion.download_url = getApkDownLoadPath(jsAppRowId,device,versionCode,fileName);
@@ -372,7 +374,6 @@ var uploadNewVersion = function(){
     if(typeof currentData[0] != 'undefined'){
         delVersionArr.push(currentData[0].row_id);
     }
-
     currentData.splice(0,1,newVersion);
 
     $gridList.bootstrapTable('load', currentData);
@@ -527,6 +528,16 @@ function ajxValidVersion(errors, mydataStr, field){
      return errors;
 }
 
+function switchPublish(gridId){
+    var data = $('#' + gridId).bootstrapTable('getData');
+    if(data.length > 0 ) {
+        if(data[0].status == 'ready'){
+            data[0].status = 'cancel'; 
+            $('#' + gridId).find('tbody').find('div.switch-success').removeClass('switch-success').addClass('switch-off');
+        }
+    }
+}
+
 $(function () {
     $('body').on('change','.file', function(){showUploadFileName($(this))});
     $('body').on('keypress','input[type=text]', function(){clearError($(this));});
@@ -534,7 +545,6 @@ $(function () {
     $('body').on('change','textarea', function(){clearError($(this));});
     //unpublish
     $('body').on('click','div.switch-success', function(){
-        var index = $(this).parents('tr').data('index');
         $(this).removeClass('switch-success').addClass('switch-off');
         var currentData = $(this).parents('table').bootstrapTable('getData');
         currentData[0].status = 'cancel';
@@ -545,20 +555,23 @@ $(function () {
     });
     //publish
     $('body').on('click','div.switch-off', function(){
-       var index = $(this).parents('tr').data('index');
        $(this).removeClass('switch-off').addClass('switch-success');
         var currentData = $(this).parents('table').bootstrapTable('getData');
-         currentData[0].status = 'ready';
-         if($(this).parents('table').attr('id').search('Online') == -1){
-            var gridId = ( currentData[0].device_type == 'ios')?'gridIOSOnlineVersionList':'gridAndroidOnlineVersionList';
-            var onlineData = $('#' + gridId).bootstrapTable('getData');
-            if(onlineData.length > 0 ) {
-                if(onlineData[0].status == 'ready'){
-                    onlineData[0].status = 'cancel'; 
-                    $('#' + gridId).find('tbody').find('div.switch-success').removeClass('switch-success').addClass('switch-off');
-                }
-            }
+        currentData[0].status = 'ready';
+        var gridList = ['gridAndroidVersionList','gridAndroidOnlineVersionList','gridAndroidHistoryVersionList'];
+        if(currentData[0].device_type == 'ios'){
+            gridList = ['gridIOSVersionList','gridIOSOnlineVersionList','gridIOSHistoryVersionList'];
         }
+        if($(this).parents('table').attr('id').search('Online') >  -1){
+            delete gridList[1];
+        }else if($(this).parents('table').attr('id').search('History') > -1){
+            delete gridList[2];
+        }else{
+            delete gridList[0];
+        }
+        $.each(gridList,function(i, gridId){
+             switchPublish(gridId);
+        });
     });
 
      $('body').on('click','.editVersion',function(e) {  
