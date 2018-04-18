@@ -124,6 +124,7 @@ a {
 .ui-mobile .ui-page-active{ min-height: 100vh !important;}
 
 .ui-header .ui-title{ padding: 3.238vw 0; font-size: 4.39vw; font-weight: normal;}
+.family-add-title { display:none;}
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
 
 #mainTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
@@ -912,6 +913,14 @@ div.scrollmenu a {
     margin-top: 1vw;
 }
 
+.family-delete {
+    width: 5.2vw;
+    height: 5.2vw;
+    margin-left: 17vw;
+    margin-top: 1vw;
+    display: none;
+}
+
 .family-notice {
     width: 92.58vw;
     min-height: 30vw;
@@ -1002,4 +1011,19 @@ div.scrollmenu a {
     /*margin-left: 3.71vw;*/
     background-color: #d6d6d6;
     overflow: hidden;
+}
+
+.confirmDeleteFamily >.ui-content,
+.confirmCancelEditFamily >.ui-content {
+    padding: 0 !important;
+}
+
+.confirmDeleteFamily .ui-content>.header,
+.confirmCancelEditFamily .ui-content>.header {
+    margin-top: 10%;
+}
+
+.confirmDeleteFamily .ui-content>.main,
+.confirmCancelEditFamily .ui-content>.main {
+    margin-top: 6%;
 }
