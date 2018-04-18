@@ -89,6 +89,8 @@ var app = {
             window.MobileAccessibility.usePreferredTextZoom(false);
         }
 
+        cordova.plugins.backgroundMode.setEnabled(true);
+
         //Add Event to Check Network Status
         window.addEventListener("offline", function(e) {
             //review by alan

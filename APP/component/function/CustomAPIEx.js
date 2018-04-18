@@ -1,12 +1,15 @@
 //CustomEx API
+//priority == "high" "low" "", default == "high"
+//expiredTimeSeconds == integer, default == 3600
 
-function CustomAPIEx(requestType, asyncType, requestAction, successCallback, failCallback, queryData, queryStr, expiredTimeSeconds) {
+function CustomAPIEx(requestType, asyncType, requestAction, successCallback, failCallback, queryData, queryStr, expiredTimeSeconds, priority) {
     //queryStr: start with [&], ex: &account=test&pwd=123
 
     failCallback = failCallback || null;
     queryData = queryData || null;
     queryStr = queryStr || "";
     expiredTimeSeconds = expiredTimeSeconds || 60 * 60;
+    priority = priority || "high";
 
     var urlStr = serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr;
 
@@ -33,11 +36,13 @@ function CustomAPIEx(requestType, asyncType, requestAction, successCallback, fai
         //Cache...
     }
 
-    // review
+    // review by alan
     function requestError(data) {
-        errorHandler(data, requestAction);
-        if (failCallback) {
-            failCallback();
+        if (priority != "low") {
+            errorHandler(data, requestAction);
+            if (failCallback != null) {
+                failCallback();
+            }
         }
     }
 
