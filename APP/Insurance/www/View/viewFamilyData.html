@@ -50,33 +50,33 @@
         <!--3.新增和編輯頁面-->
         <div id="viewFamilyEdit">
             <div class="family-input-div">
-                <label for="familyName">
+                <label for="familyInsurName">
                     <!--姓名-->
-                    <span class="langStr" data-id="str_080"></span>
+                    <span class="langStr" data-id="str_076"></span>
                 </label>
                 <!-- <input type="text" name="familyName" id="familyName" onkeyup="value=value.replace(/[^\a-\z\A-\Z\u4E00-\u9FA5\. ]/g,'')"
                     onpaste="return false;" oncontextmenu="return false;" maxlength="12" data-role="none" class="family-input"> -->
-                <input type="text" name="familyName" id="familyName" onkeyup="stripScript(this)" oncut="return false;" onpaste="return false;"
+                <input type="text" name="familyInsurName" id="familInsurName" onkeyup="stripScript(this)" oncut="return false;" onpaste="return false;"
                     oncontextmenu="return false;" maxlength="12" data-role="none" class="family-input">
             </div>
             <div class="family-input-div">
                 <label for="familyRelationship">
                     <!--關係-->
-                    <span class="langStr" data-id="str_081"></span>
+                    <span class="langStr" data-id="str_077"></span>
                 </label>
                 <input type="text" name="familyRelationship" id="familyRelationship" data-role="none" class="family-input-dropdown" readonly>
             </div>
             <div class="family-input-div">
-                <label for="familyGender">
-                    <!--性別-->
-                    <span class="langStr" data-id="str_082"></span>
+                <label for="idType">
+                    <!--證號類別-->
+                    <span class="langStr" data-id="str_078"></span>
                 </label>
-                <input type="text" name="familyGender" id="familyGender" data-role="none" class="family-input-dropdown" readonly>
+                <input type="text" name="idType" id="idType" data-role="none" class="family-input-dropdown" readonly>
             </div>
             <div class="family-input-div">
                 <label for="familyID">
-                    <!--身份證-->
-                    <span class="langStr" data-id="str_101"></span>
+                    <!--身份證號-->
+                    <span class="langStr" data-id="str_079"></span>
                 </label>
                 <!-- <input type="text" name="familyID" id="familyID" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')" onpaste="return false;"
                     oncontextmenu="return false;" maxlength="20" data-role="none" class="family-input"> -->
@@ -86,12 +86,13 @@
             <div class="family-input-div">
                 <label for="familyBirth">
                     <!--生日-->
-                    <span class="langStr" data-id="str_049"></span>
+                    <span class="langStr" data-id="str_080"></span>
                 </label>
                 <input name="familyBirth" id="familyBirth" data-role="none" class="family-input-calendar" readonly>
             </div>
             <!--dropdownlist: hidden-->
             <div id="relationshipDropdownlist" class="view-hide"></div>
+            <div id="typeDropdownlist" class="view-hide"></div>
         </div>
 
         <!--4.fixed add img-->
