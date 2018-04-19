@@ -1,9 +1,9 @@
-
+var familyArr = [{family_id:"1", name:"王小明", relation:"父母", birthday:"1980/01/01", idtype:"0", idno:"A123456789"},
+                {family_id:"2", name:"王小美", relation:"父母", birthday:"1981/01/01", idtype:"0", idno:"A123456788"}]; 
 
 $("#viewFamilyData").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
-        var familyArr = [];
         var familyNo = "", familyName = "", familyID = "", familyBirth = "", relationshipNo = "";
         var timeoutFamilyName = null, timeoutFamilyID = null;
         var relationshipData = {
@@ -21,9 +21,8 @@ $("#viewFamilyData").pagecontainer({
         //API:QueryFamilyData
         function queryFamilyList() {
             //replace familyArr's content to data["Content"]
-            var familyArr = JSON.parse(localStorage.getItem('familySettingdata')); 
-            familyArr = [{family_id:"1", name:"王小明", relation:"父母", birthday:"1980/01/01", idtype:"0", idno:"A123456789"},
-                         {family_id:"2", name:"王小美", relation:"父母", birthday:"1981/01/01", idtype:"0", idno:"A123456788"}];  
+            //var familyArr = JSON.parse(localStorage.getItem('familySettingdata')); 
+ 
             //replace (familyArr != null) to (data["ResultCode"] == "1")       
             if (familyArr != null) {
                 //familyArr = data["Content"].sort(sortByRelationship("relation", "name"));
@@ -44,7 +43,7 @@ $("#viewFamilyData").pagecontainer({
                         + familyArr[i]["birthday"]
                         + '</div><div>'
                         + familyArr[i]["idno"]
-                        + '</div></div><div><img src="img/info.png" class="family-edit"></div></div><div class="activity-line"></div>';
+                        + '</div></div><div><img src="img/info.png" class="family-edit"><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
                 }
                 $("#familyList").empty().append(familyList).children("div:last-child").remove();
             } else {
@@ -106,7 +105,9 @@ $("#viewFamilyData").pagecontainer({
                 $("#viewFamilyList").hide();
             }
             $(".family-add-img").hide();
-            $("#backFamilyList").show();
+            $("#backFamilyList").show();  
+            $(".family-list-title").hide();         
+            $(".family-add-title").show();
             $(".family-save-btn").show();
             $("#viewFamilyEdit").show();
         }
@@ -127,6 +128,21 @@ $("#viewFamilyData").pagecontainer({
         /********************************** dom event *************************************/
         $("#viewFamilyData").keypress(function (event) {
 
+        });
+
+        //刪除眷屬資料彈窗popup
+        $("#familyList").on("click", ".family-delete", function () {
+            familyNo = $(this).parent().prev().attr("data-id");
+            familyName = $(this).parent().prev().children("div:first-child").children("span:first-child").text();
+            $(".confirmDeleteFamily .main-paragraph").text(familyName);
+            popupMsgInit('.confirmDeleteFamily');
+        });
+
+        //確定刪除
+        $("#confirmDeleteFamilyBtn").on("click", function () {
+            loadingMask("show");
+            //API: ModifyFamilyData
+            ActivitiesFamilyDeleteQuery();
         });
 
         //返回到眷屬列表，彈窗popup
@@ -202,12 +218,17 @@ $("#viewFamilyData").pagecontainer({
         $(".family-edit-btn").on("click", function () {
             $(".family-edit-btn").hide();
             $(".family-cancle-btn").show();
+            $(".family-edit").hide();
+            $(".family-delete").show();
         });
 
         //取消按鈕
         $(".family-cancle-btn").on("click", function () {
             $(".family-cancle-btn").hide();
             $(".family-edit-btn").show();
+            $(".family-delete").hide();
+            $(".family-edit").show();
+            
         });
 
         //關係dropdownlist-popup
