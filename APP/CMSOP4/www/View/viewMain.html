@@ -27,7 +27,7 @@
     <div data-role="main" class="page-main" style="line-height: initial !important;">
 
         <div class="search-content">
-            <input type="text" data-role="none" class="searchBar" placeholder="搜尋特約商店">
+            <input type="text" data-role="none" class="searchBar" id="searchStore" placeholder="搜尋特約商店">
             <div class="search-clear-content hide">
                 <svg class="search-clear">
                     <use xlink:href="#icon-btn_field_clear"></use>
@@ -163,72 +163,89 @@
                 //var address = document.getElementById('address').value;
                 //var address = "台北市內湖區基湖路16號";
 
-                geocoder.geocode({'address': address}, function(results, status) {
+                (function(geocoder, resultsMap, address, name) {
+                    geocoder.geocode({'address': address}, function(results, status) {
 
-                    if (status === 'OK') {
-                        resultsMap.setCenter(results[0].geometry.location);
+                        if (status === 'OK') {
+                            resultsMap.setCenter(results[0].geometry.location);
 
-                        /*
-                        var iconImage = {
-                            url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-                            size: new google.maps.Size(20, 32),
-                            origin: new google.maps.Point(0, 0),
-                            anchor: new google.maps.Point(0, 32)
+                            /*
+                            var iconImage = {
+                                url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+                                size: new google.maps.Size(20, 32),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(0, 32)
+                            }
+
+                            var shape = {
+                                coords: [1, 1, 1, 20, 18, 20, 18, 1],
+                                type: 'poly'
+                            };
+                            */
+
+                            var marker = new google.maps.Marker({
+                            //window.marker = new google.maps.Marker({
+                                map: resultsMap,
+                                position: results[0].geometry.location,
+                                title: name,
+                                attribution: {
+                                    source: results[0].geometry.location.toString()
+                                },
+                                //icon: iconImage,
+                                //shape: shape
+                                icon: "img/markerA.png"
+                            });
+
+                            window.allMarker.push(marker);
+
+                            //Info Window
+                            var contentString = '<div id="content"> 這個地址是:' + address +'</div>';
+
+                            var infowindow = new google.maps.InfoWindow({
+                                content: contentString
+                            });
+
+                            marker.addListener('click', function() {
+                                //infowindow.open(resultsMap, marker);
+
+                                //marker.setIcon("img/markerB.png");
+                                markerIcon(marker);
+
+                                markerInCenter(marker);
+                            });
+
+                            marker.addListener('icon_changed', function() {
+                                setTimeout(function(){
+                                    markerText();
+                                }, 500);
+                            });
+
+                            /*
+                            setTimeout(function(){
+                                window.marker.setMap(null);
+                            }, 10000);
+                            */
+
+                        } else {
+                            //alert('Geocode was not successful for the following reason: ' + status);
                         }
 
-                        var shape = {
-                            coords: [1, 1, 1, 20, 18, 20, 18, 1],
-                            type: 'poly'
-                        };
-                        */
-
-                        //var marker = new google.maps.Marker({
-                        window.marker = new google.maps.Marker({
-                            map: resultsMap,
-                            position: results[0].geometry.location,
-                            title: name,
-                            //icon: iconImage,
-                            //shape: shape
-                            icon: "img/markerA.png"
-                        });
-
-                        window.allMarker.push(window.marker);
-
-
-                        //Info Window
-                        var contentString = '<div id="content"> 這個地址是:' + address +'</div>';
-
-                        var infowindow = new google.maps.InfoWindow({
-                            content: contentString
-                        });
-
-                        marker.addListener('click', function() {
-                            //infowindow.open(resultsMap, marker);
-                            marker.setIcon("img/markerB.png");
-                        });
-
-                        /*
-                        setTimeout(function(){
-                            window.marker.setMap(null);
-                        }, 10000);
-                        */
-
-                    } else {
-                        //alert('Geocode was not successful for the following reason: ' + status);
-                    }
-
-                });
+                    });
+                }(geocoder, resultsMap, address, name));
 
             }
 
-            function test() {
+            function markerText() {
+
                 //jQuery bind Marker title
                 $(".gmnoprint").each(function(index, dom) {
-                    var title = $(dom).prop("title");
-                    if (title.length > 0) {
-                        console.log($(dom).offset());
-                        console.log(title);
 
+                    var title = $(dom).prop("title");
+
+                    if (title.length > 0) {
+
+                        //marker.setIcon will recovery the css style,
+                        //so need to change it after every action.
                         $(dom).css({
                             opacity: 1,
                             overflow: "visible"
@@ -238,8 +255,44 @@
                             opacity: 0
                         });
 
-                        $("<div class='test'>" + title + "</div>").appendTo($(dom));
+                        if ($(dom).find(".test").length > 0) {
+                            return;
+                        }
+
+                        $("<div class='test'>[ " + title + " ]</div>").appendTo($(dom));
                     }
+                });
+            }
+
+            function markerIcon(nowMarker) {
+                $(window.allMarker).each(function(index, marker) {
+                    //recovery the icon of all marker
+                    marker.setIcon("img/markerA.png");
+                });
+
+                nowMarker.setIcon("img/markerB.png");
+            }
+
+            function markerInCenter(nowMarker) {
+                window.map.setCenter(nowMarker.getPosition());
+            }
+
+            function positionInCenter(position) {
+
+                $(window.allMarker).each(function(index, marker) {
+                    //find the marker which need to be set in center
+                    if (position == marker.getAttribution().source) {
+                        window.map.setCenter(marker.getPosition());
+
+                        markerIcon(marker);
+                    }
+                });
+
+            }
+
+            function clearAllMarker() {
+                $(window.allMarker).each(function(index, marker) {
+                    marker.setMap(null);
                 });
             }
 
