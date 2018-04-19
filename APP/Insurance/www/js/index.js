@@ -6,6 +6,7 @@ var appKey = "appinsurance";
 var appSecretKey = "e85c0c548016c12b5ef56244067ab616";
 var pageList = ["viewMain", "viewPanel", "viewContact", "viewInsuranceInfo", "viewFamilyData"];
 var visitedPageList = ["viewMain"];
+var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
