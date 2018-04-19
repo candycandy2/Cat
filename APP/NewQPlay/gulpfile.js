@@ -190,6 +190,7 @@ gulp.task('install', ['copyRes'], shell.task([
     'cordova plugin add phonegap-plugin-mobile-accessibility',
     'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
     'cordova plugin add ../../plugins/cordova-plugin-statusbar',
+    'cordova plugin add ../../plugins/cordova-plugin-background-mode',
     'cordova plugin add cordova-plugin-appavailability'//,
     //'cordova plugin add cordova-plugin-file'
 ]));

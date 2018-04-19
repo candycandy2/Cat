@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="896" id="com.qplay.appyellowpagedev" ios-CFBundleVersion="896" version="1.0.0.896[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="897" id="com.qplay.appyellowpagedev" ios-CFBundleVersion="897" version="1.0.0.897[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>YellowPage</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -67,5 +67,6 @@
     <plugin name="phonegap-plugin-mobile-accessibility" spec="../../plugins/phonegap-plugin-mobile-accessibility" />
     <plugin name="cordova-plugin-splashscreen" spec="../../plugins/cordova-plugin-splashscreen" />
     <plugin name="cordova-plugin-statusbar" spec="../../plugins/cordova-plugin-statusbar" />
+    <plugin name="cordova-plugin-background-mode" spec="../../plugins/cordova-plugin-background-mode" />
     <plugin name="cordova-plugin-inappbrowser" spec="../../plugins/cordova-plugin-inappbrowser" />
 </widget>
