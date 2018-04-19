@@ -860,6 +860,7 @@ div.scrollmenu a {
     color: #ffffff !important;
     top: 4.5vw;
     right: 3.71vw;
+    display: none;
 }
 
 .family-cancle-btn {

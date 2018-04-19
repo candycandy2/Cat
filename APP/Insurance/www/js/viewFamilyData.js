@@ -333,6 +333,7 @@ $("#viewFamilyData").pagecontainer({
             queryFamilyList();
             $('#backFamilyList').hide(); 
             $('#viewFamilyData .insuranceMenu').show();
+            $(".family-save-btn").hide();
             $(".family-add-img").show();     
         });
 
