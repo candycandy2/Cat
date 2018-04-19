@@ -2,22 +2,79 @@
 $("#viewMain").pagecontainer({
     create: function(event, ui) {
 
+        var timer;
         var food;
         var market;
+        window.myLocate;
+        window.myLatLng;
         window.allMarker = [];
 
         /********************************** function *************************************/
 
-        function menuChange(action) {
+        function menuChange(type) {
 
             $("#searchList .list-item").hide();
-            $("#searchList ." + action).show();
+            $("#searchList ." + type).show();
             $("#searchList").fadeIn();
 
             $("#menuList").panel("close");
 
             $(".page-header .q-btn-header").hide();
             $("#closeDataList").show();
+
+            //change marker in map
+            clearAllMarker();
+
+            markerChange(type);
+        }
+
+        function markerChange(type) {
+
+            if (type === "food") {
+                for (var i=0; i<food.length; i++) {
+                    geocodeAddress(window.geocoder, window.map, food[i].address, food[i].name);
+
+                    if ((i+1) == food.length) {
+                        setTimeout(function(){
+                            if (typeof myLocate !== "undefined") {
+                                myLocate.setMap(null);
+                            }
+
+                            myLocate = new google.maps.Marker({
+                                position: myLatLng,
+                                map: window.map,
+                                //icon: icons["info"].icon,
+                                label: "!A!"
+                            });
+
+                            window.map.setCenter(myLatLng);
+                        }, 500);
+                    }
+
+                }
+            } else if (type === "market") {
+                for (var i=0; i<market.length; i++) {
+                    geocodeAddress(window.geocoder, window.map, market[i].address, market[i].name);
+
+                    if ((i+1) == market.length) {
+                        setTimeout(function(){
+                            if (typeof myLocate !== "undefined") {
+                                myLocate.setMap(null);
+                            }
+
+                            myLocate = new google.maps.Marker({
+                                position: myLatLng,
+                                map: window.map,
+                                //icon: icons["info"].icon,
+                                label: "!A!"
+                            });
+
+                            window.map.setCenter(myLatLng);
+                        }, 500);
+                    }
+
+                }
+            }
 
         }
 
@@ -111,21 +168,25 @@ $("#viewMain").pagecontainer({
             food = [{
                 name: "丹提咖啡",
                 distance: 0.3,
+                position: "(25.0810692, 121.5636862)",
                 address: "台北市內湖區堤頂大道二段407巷24號",
                 phone: "02 2658 4755"
             }, {
                 name: "西雅圖極品咖啡",
                 distance: 0.017,
+                position: "(25.0810089, 121.56473299999993)",
                 address: "台北市內湖區基湖路18號",
                 phone: "02 8751 2128"
             }, {
                 name: "星巴克",
                 distance: 0.074,
+                position: "(25.0803921, 121.56507120000003)",
                 address: "台北市內湖區基湖路25號",
                 phone: "02 2799 9334"
             }, {
                 name: "珮斯坦咖啡館",
                 distance: 0.092,
+                position: "(25.0813135, 121.56576429999996)",
                 address: "台北市內湖區基湖路3巷1號1樓",
                 phone: "02 8797 8027"
             }];
@@ -133,21 +194,25 @@ $("#viewMain").pagecontainer({
             market = [{
                 name: "全家便利商店-新瑞店",
                 distance: 0.3,
+                position: "(25.081055, 121.56342700000005)",
                 address: "台北市內湖區堤頂大道二段407巷26號",
                 phone: "02 2659 2842"
             }, {
                 name: "萊爾富便利商店",
                 distance: 0.2,
+                position: "(25.079826, 121.56514659999993)",
                 address: "台北市內湖區基湖路35巷11號",
                 phone: "02 8751 8529"
             }, {
                 name: "7-ELEVEN 堤頂店",
                 distance: 0.4,
+                position: "(25.0805365, 121.56295460000001)",
                 address: "台北市內湖區堤頂大道二段411號",
                 phone: "02 2659 7738"
             }, {
                 name: "7-ELEVEN 瑞鑫門市",
                 distance: 0.2,
+                position: "(25.0801026, 121.56640049999999)",
                 address: "台北市內湖區瑞光路580號",
                 phone: "02 2657 9574"
             }];
@@ -160,6 +225,7 @@ $("#viewMain").pagecontainer({
                 searchListItem.addClass("food");
                 searchListItem.find(".name").html(food[i].name);
                 searchListItem.find(".distance").html(food[i].distance + "公里");
+                searchListItem.find(".marker-icon").data("position", food[i].position);
                 searchListItem.find(".address").html(food[i].address);
                 searchListItem.find(".phone").html(food[i].phone);
 
@@ -172,6 +238,7 @@ $("#viewMain").pagecontainer({
                 searchListItem.addClass("market");
                 searchListItem.find(".name").html(market[i].name);
                 searchListItem.find(".distance").html(market[i].distance + "公里");
+                searchListItem.find(".marker-icon").data("position", market[i].position);
                 searchListItem.find(".address").html(market[i].address);
                 searchListItem.find(".phone").html(market[i].phone);
 
@@ -184,6 +251,42 @@ $("#viewMain").pagecontainer({
 
             $("#detailContent").hide();
             $("#closeDetailContent").hide();
+
+            //searchStore event
+            $(document).on({
+                keyup: function() {
+
+                    var text = $(this).val();
+
+                    if (text.length == 0) {
+
+                        if (timer !== null) {
+                            clearTimeout(timer);
+                        }
+
+                        window.map.setCenter(myLatLng);
+                    } else {
+
+                        if (timer !== null) {
+                            clearTimeout(timer);
+                        }
+
+                        timer = setTimeout(function() {
+
+                            $(window.allMarker).each(function(index, marker) {
+                                if (marker.getTitle().indexOf(text) != -1) {
+
+                                    markerIcon(marker);
+                                    markerInCenter(marker);
+
+                                }
+                            });
+
+                        }, 2000);
+
+                    }
+                }
+            }, "#searchStore");
         });
 
         $("#viewMain").on("pagebeforeshow", function(event, ui) {
@@ -223,12 +326,16 @@ $("#viewMain").pagecontainer({
                         };
 
                         //Google Map Marker
-                        var myLatLng = {
+                        window.myLatLng = {
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
                         };
 
-                        var marker = new google.maps.Marker({
+                        if (typeof myLocate !== "undefined") {
+                            myLocate.setMap(null);
+                        }
+
+                        window.myLocate = new google.maps.Marker({
                             position: myLatLng,
                             map: window.map,
                             //icon: icons["info"].icon,
@@ -236,6 +343,7 @@ $("#viewMain").pagecontainer({
                         });
 
                         //Info Window
+                        /*
                         var contentString = '<div id="content2">目前位置</div>';
 
                         var infowindow = new google.maps.InfoWindow({
@@ -245,11 +353,7 @@ $("#viewMain").pagecontainer({
                         marker.addListener('click', function() {
                             infowindow.open(window.map, marker);
                         });
-
-                        //set food in marker
-                        for (var i=0; i<food.length; i++) {
-                            geocodeAddress(window.geocoder, window.map, food[i].address, food[i].name);
-                        }
+                        */
 
                         setTimeout(function(){
                             //set center
@@ -262,6 +366,17 @@ $("#viewMain").pagecontainer({
                         //console.log("------error");
                         alert("------error");
                     };
+
+                    //set food in marker
+                    for (var i=0; i<food.length; i++) {
+                        geocodeAddress(window.geocoder, window.map, food[i].address, food[i].name);
+                    }
+
+                    window.map.addListener('center_changed', function() {
+                        setTimeout(function(){
+                            markerText();
+                        }, 2000);
+                    });
 
                     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {
                         enableHighAccuracy: true
@@ -404,7 +519,21 @@ $("#viewMain").pagecontainer({
             click: function(event) {
                 detailInfo("open");
             }
-        }, "#searchList .list-item .button-content");
+        }, "#searchList .list-item .button");
+
+        //searchList click marker icon
+        $(document).on({
+            click: function(event) {
+                console.log($(this).data("position"));
+                positionInCenter($(this).data("position"));
+
+                $("#searchList").fadeOut();
+
+                $(".page-header .q-btn-header").show();
+                $("#closeDataList").hide();
+                $("#closeDetailContent").hide();
+            }
+        }, "#searchList .list-item .marker-icon");
 
         //close detail info
         $(document).on({
