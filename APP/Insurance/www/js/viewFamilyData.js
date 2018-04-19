@@ -57,6 +57,7 @@ $("#viewFamilyData").pagecontainer({
                         + '</div></div><div><img src="img/info.png" class="family-edit"><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
                 }
                 $("#familyList").empty().append(familyList).children("div:last-child").remove();
+                $("#viewFamilyList").show();
             } else {
                 $("#viewFamilyList").hide();
                 $("#viewFamilyNone").show();
@@ -121,10 +122,11 @@ $("#viewFamilyData").pagecontainer({
         function checkFormByFamily() {
             var nameVal = $.trim($("#familyInsurName").val());
             var relationshipVal = $.trim($("#familyRelationship").val());
+            var typeVal = $.trim($("#idType").val());
             var idVal = $.trim($("#familyID").val());
             var birthVal = $.trim($("#familyBirth").val());
 
-            if (nameVal !== "" && relationshipVal !== "" && idVal !== "" && birthVal !== "") {
+            if (nameVal !== "" && relationshipVal !== "" && idVal !== "" && birthVal !== "" && idVal !== "") {
                 $(".family-save-btn").css("opacity", "1");
                 return true;
             } else {
@@ -191,7 +193,19 @@ $("#viewFamilyData").pagecontainer({
         });
         
         /******************************** datetimepicker ***********************************/
+         $('#familyBirth').datetimepicker({
+            timepicker: false
+        });
 
+        $("#familyBirth").on("click", function () {
+            $('#familyBirth').datetimepicker("show");
+        });
+
+        $("#familyBirth").on("change", function () {
+            familyBirth = $(this).val().substring(0, 10);
+            $(this).val(familyBirth);
+            checkFormByFamily();
+        });
 
         /********************************** dom event *************************************/
         $("#viewFamilyData").keypress(function (event) {
@@ -278,9 +292,23 @@ $("#viewFamilyData").pagecontainer({
             $("#familyInsurName").css("background", "#cccccc");
         });
 
+        function checkTextFormat(){
+            var relationshipVal = $.trim($("#familyRelationship").val());
+            var typeVal = $.trim($("#idType").val());
+            var idVal = $.trim($("#familyID").val());
+            if (typeVal = "身分證") {
+                if (idVal.length != 10) {
+                    $(".familyAddCheckMsg .lengthErr").show();                   
+                    popupMsgInit('.familyAddCheckMsg');
+                } 
+            }
+        }
+
         //儲存按鈕
         $(".family-save-btn").on("click", function () {
-
+            if (checkFormByFamily()) {
+                checkTextFormat();
+            }
         });
 
         //編輯按鈕
@@ -298,6 +326,14 @@ $("#viewFamilyData").pagecontainer({
             $(".family-delete").hide();
             $(".family-edit").show();
             
+        });
+
+        $("#backFamilyList").on("click", function() {
+            $("#viewFamilyEdit").hide();
+            queryFamilyList();
+            $('#backFamilyList').hide(); 
+            $('#viewFamilyData .insuranceMenu').show();
+            $(".family-add-img").show();     
         });
 
         //關係dropdownlist-popup
@@ -369,6 +405,7 @@ $("#viewFamilyData").pagecontainer({
             familyID = $.trim($("#familyID").val());
             checkFormByFamily();
         });
+
 
 
     }

@@ -6,6 +6,7 @@ var appKey = "appinsurance";
 var appSecretKey = "e85c0c548016c12b5ef56244067ab616";
 var pageList = ["viewMain", "viewPanel", "viewContact", "viewInsuranceInfo", "viewFamilyData"];
 var visitedPageList = ["viewMain"];
+var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
 
 window.initialSuccess = function() {
@@ -61,4 +62,16 @@ function sortByRelationship(prop1, prop2) {
             return value1.localeCompare(value2, "zh");
         }
     }
+}
+
+//禁止文本框輸入特殊字符
+function stripScript(str) {
+    var pattern = new RegExp("[&'<>”“‘’\"]");
+    var s = str.value;
+    var rs = "";
+
+    for (var i = 0; i < s.length; i++) {
+        rs = rs + s.substr(i, 1).replace(pattern, '');
+    }
+    str.value = rs;
 }
