@@ -189,7 +189,9 @@ $("#viewFamilyData").pagecontainer({
         });
 
         $("#viewFamilyData").on("pageshow", function (event, ui) {
-            //loadingMask("hide");           
+            //loadingMask("hide");  
+            $(".family-cancle-btn").hide();
+            $(".family-edit-btn").show();         
         });
         
         /******************************** datetimepicker ***********************************/
@@ -296,11 +298,22 @@ $("#viewFamilyData").pagecontainer({
             var relationshipVal = $.trim($("#familyRelationship").val());
             var typeVal = $.trim($("#idType").val());
             var idVal = $.trim($("#familyID").val());
+            var firstID = "ABCDEFGHJKLMNPQRSTUVXYWZIO"  
+
             if (typeVal = "身分證") {
                 if (idVal.length != 10) {
-                    $(".familyAddCheckMsg .lengthErr").show();                   
+                    $(".familyAddCheckMsg .lengthErr").addClass('addInlineBlock');  
+                    $(".familyAddCheckMsg .formatErr").removeClass('addInlineBlock');   
+                    $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
+                    $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');                  
                     popupMsgInit('.familyAddCheckMsg');
-                } 
+                } else if(idVal.search(/^[A-Z](1|2)\d{8}$/i) == -1){
+                    $(".familyAddCheckMsg .lengthErr").removeClass('addInlineBlock');  
+                    $(".familyAddCheckMsg .formatErr").addClass('addInlineBlock');  
+                    $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
+                    $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');  
+                    popupMsgInit('.familyAddCheckMsg');
+                }
             }
         }
 
@@ -334,6 +347,8 @@ $("#viewFamilyData").pagecontainer({
             $('#backFamilyList').hide(); 
             $('#viewFamilyData .insuranceMenu').show();
             $(".family-save-btn").hide();
+            $(".family-cancle-btn").hide();
+            $(".family-edit-btn").show();   
             $(".family-add-img").show();     
         });
 
