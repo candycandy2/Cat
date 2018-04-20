@@ -276,6 +276,8 @@ Google Map
 
 .test {
     position: relative;
-    left: 25px;
+    left: 30px;
     width: 20vw;
+    color: #FF1493;
+    background-color: rgba(255,255,255,0.5);
 }
