@@ -117,6 +117,10 @@ Route::any('404', function() {
     return view("404");
 });
 
+Route::any('test/view', function() {
+    return view("404");
+});
+
 Route::any('/', 'AuthController@checkLogin');
 Route::any('auth/checkLogin', 'AuthController@checkLogin');
 Route::any('auth/login_process', 'AuthController@authenticate');
