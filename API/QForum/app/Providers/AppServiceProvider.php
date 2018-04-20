@@ -28,12 +28,17 @@ class AppServiceProvider extends ServiceProvider
 
         Validator::extend('is_my_post', function($attribute, $value, $params, $validator){
             $empNo = $params[0];
-            return $this->IsMyPost($empNo, $value);
+            return $this->isMyPost($empNo, $value);
         });
 
         Validator::extend('is_my_comment', function($attribute, $value, $params, $validator){
             $empNo = $params[0];
-            return $this->IsMyComment($empNo, $value);
+            return $this->isMyComment($empNo, $value);
+        });
+
+        Validator::extend('is_board_manager', function($attribute, $value, $params, $validator) {
+            $empNo = $params[0];
+            return $this->isBoardManager($empNo, $value);
         });
     
         Validator::replacer('greater_than', function($message, $attribute, $rule, $params) {
@@ -79,6 +84,10 @@ class AppServiceProvider extends ServiceProvider
         Validator::replacer('min', function($message, $attribute, $rule, $params) {
             return ResultCode::_047905_FieldFormatError;
         });
+
+        Validator::replacer('is_board_manager', function($message, $attribute, $rule, $params) {
+            return ResultCode::_047909_OnlyManagerCanModifyTheBoardBasicInformation;
+        });
         
     }
 
@@ -123,7 +132,7 @@ class AppServiceProvider extends ServiceProvider
         return false; 
     }
 
-    private function IsMyPost( $empNo, $postId){
+    private function isMyPost( $empNo, $postId){
         $user = \DB::table("qp_user")->where('emp_no', $empNo)->select('row_id')->first();
         if(!is_null($user)){
             $post = \DB::table("qp_post")
@@ -137,8 +146,7 @@ class AppServiceProvider extends ServiceProvider
         return false; 
     }
 
-
-    private function IsMyComment( $empNo, $commrntId){
+    private function isMyComment( $empNo, $commrntId){
         $user = \DB::table("qp_user")->where('emp_no', $empNo)->select('row_id')->first();
         if(!is_null($user)){
             $comment = \DB::table("qp_comment")
@@ -151,5 +159,16 @@ class AppServiceProvider extends ServiceProvider
 
         }
         return false; 
+    }
+
+    private function isBoardManager($empNo, $boardId){
+        $result = \DB::table("qp_board")
+                    ->where("row_id",$boardId)
+                    ->where("manager", $empNo)
+                    ->get();
+        if(count($result) > 0){
+            return true;
+        }
+        return false;   
     }
 }

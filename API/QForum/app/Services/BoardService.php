@@ -2,14 +2,18 @@
 namespace App\Services;
 
 use App\Repositories\BoardRepository;
+use App\Repositories\BoardTypeRepository;
 
 class BoardService
 {
     protected $boardRepository;
+    protected $boardTypeRepository;
 
-    public function __construct(BoardRepository $boardRepository)
+    public function __construct(BoardRepository $boardRepository,
+                                BoardTypeRepository $boardTypeRepository)
     {
         $this->boardRepository = $boardRepository;
+        $this->boardTypeRepository = $boardTypeRepository;
     }
 
     /**
@@ -33,5 +37,35 @@ class BoardService
             $boards['board_list'][] = $boardList;
         }
         return $boards;
+    }
+
+    /**
+     * 取得討論版類型列表
+     * @return mixed
+     */
+    public function getBoardTypeList(){
+        $result = [];
+         $result['board_type_list'] = $this->boardTypeRepository->getBoardTypeList();
+         return $result;
+    }
+
+    /**
+     * 編輯版資訊
+     * @param  Array  $data     修改資料
+     * @param  mixed $userData  使用者資料
+     * @return 
+     */
+    public function editBoardInfo(Array $data, $userData){
+        $now = date('Y-m-d H:i:s',time());
+        $tmpData = [
+                'board_type_id' => $data['board_type_id'],
+                'board_name' =>(isset($data['board_name']))?$data['board_name']:null,
+                'manager' =>(isset($data['manager_emp_no']))?$data['manager_emp_no']:null,
+                'status' => (isset($data['board_status']))?$data['board_status']:null,
+                'updated_user' => $userData->row_id,
+                'updated_at'=> $now
+                ];
+        $updateData = array_filter($tmpData, function($var){return !is_null($var);});
+        return $this->boardRepository->editBoard($data['board_id'], $updateData);
     }
 }
