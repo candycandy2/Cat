@@ -68,16 +68,16 @@ class BoardController extends Controller
         $data = parent::getData($request);
         $validator = Validator::make($data , [
             'board_id' => 'required|numeric|is_board_manager:'.$data['emp_no'],
-            'board_type_id' => 'required|numeric',
+            'board_type_id' => 'sometimes|numeric',
             'manager' => 'sometimes|string',
-            'board_status' => 'sometimes|in:Y,N'
+            'board_status' => 'sometimes|in:Y,N',
+            'board_name' => 'sometimes|string'
         ]);
 
         if($validator->fails()) {
              return response()->json(['ResultCode'=>$validator->errors()->first(),
                                       'Message'=>""], 200);
         }
-
         $empNo = $data['emp_no'];
 
         if(isset($data['manager'])){

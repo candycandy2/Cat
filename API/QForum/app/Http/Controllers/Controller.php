@@ -28,6 +28,8 @@ class Controller extends BaseController
             }
             else if(isset($v[0])){
                 return $v[0];
+            }else{
+                return null;
             }
         }
         return $v;
