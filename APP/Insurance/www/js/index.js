@@ -8,6 +8,7 @@ var pageList = ["viewMain", "viewPanel", "viewContact", "viewInsuranceInfo", "vi
 var visitedPageList = ["viewMain"];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
+var clickEditSettingID = '';
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];

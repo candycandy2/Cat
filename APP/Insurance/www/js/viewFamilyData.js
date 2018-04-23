@@ -1,5 +1,6 @@
-var familyArr = [{family_id:"1", name:"王小明", relation:"父母", birthday:"1980/01/01", idtype:"0", idno:"A123456789"},
-                {family_id:"2", name:"王小美", relation:"父母", birthday:"1981/01/01", idtype:"0", idno:"A123456788"}]; 
+/*var familyArr = [{family_id:"1", name:"王小明", relation:"父母", birthday:"1980/01/01", idtype:"0", idno:"A123456789"},
+                {family_id:"2", name:"王小美", relation:"父母", birthday:"1981/01/01", idtype:"0", idno:"A123456788"}]; */
+var familyArr = {};
 
 $("#viewFamilyData").pagecontainer({
     create: function (event, ui) {
@@ -32,36 +33,37 @@ $("#viewFamilyData").pagecontainer({
         //API:QueryFamilyData
         function queryFamilyList() {
             //replace familyArr's content to data["Content"]
-            //var familyArr = JSON.parse(localStorage.getItem('familySettingdata')); 
+            familyArr = JSON.parse(localStorage.getItem('familySettingData')); 
  
             //replace (familyArr != null) to (data["ResultCode"] == "1")       
             if (familyArr != null) {
                 //familyArr = data["Content"].sort(sortByRelationship("relation", "name"));
                 var familyList = "";
                 //for (var i in familyArr) {
-                for (var i=0; i<familyArr.length; i++ ) {
-                    var ageDate = new Date(Date.now() - new Date(familyArr[i]["birthday"]).getTime()); 
+                for (var i=0; i<familyArr.content.length; i++ ) {
+                    //replace familyArr.content[i] to familyArr[i]
+                    var ageDate = new Date(Date.now() - new Date(familyArr.content[i]["birthday"]).getTime()); 
                     var familyAge = Math.abs(ageDate.getUTCFullYear() - 1970);
                     familyList += '<div class="family-list"><div class="font-style10 font-color2" data-id="'
-                        + familyArr[i]["family_id"]
+                        + familyArr.content[i]["family_id"]
                         + '"><div><span>'
-                        + familyArr[i]["name"]
+                        + familyArr.content[i]["name"]
                         + '</span>/<span>'
-                        + familyArr[i]["relation"]
+                        + familyArr.content[i]["relation"]
                         + '</span>/<span>'
                         + familyAge
                         + '</span></div><div>'
-                        + familyArr[i]["birthday"]
+                        + familyArr.content[i]["birthday"]
                         + '</div><div>'
-                        + familyArr[i]["idno"]
+                        + familyArr.content[i]["idno"]
                         + '</div></div><div><img src="img/info.png" class="family-edit"><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
                 }
                 $("#familyList").empty().append(familyList).children("div:last-child").remove();
-                $("#viewFamilyList").show();
             } else {
                 $("#viewFamilyList").hide();
                 $("#viewFamilyNone").show();
             }
+            changeViewToList();
             loadingMask("hide");
         }
 
@@ -154,18 +156,36 @@ $("#viewFamilyData").pagecontainer({
                     $(item).removeClass("tpl-dropdown-list-selected");
                 }
             });
-
-            $.each($("#gender-popup-option-list li"), function (index, item) {
+            $.each($("#relationship-popup-option-list li"), function (index, item) {
                 if ($(item).hasClass("tpl-dropdown-list-selected")) {
                     $(item).removeClass("tpl-dropdown-list-selected");
                 }
             });
+
+        }
+
+        //“取消編輯”和“取消新增”的跳轉
+        function changeViewToList() {
+            $('#backFamilyList').hide();
+            $(".family-save-btn").hide();
+            $("#viewFamilyEdit").hide();
+            $('#viewFamilyData .insuranceMenu').show();
+            //After connect to API:QueryFamilyData, delete 'familyArr == null'
+            if ( familyArr == null || familyArr.length == 0) {
+                $("#viewFamilyNone").show();
+            } else {
+                $("#viewFamilyList").show();
+            }
+            $(".family-cancle-btn").hide();
+            $(".family-edit-btn").show();  
+            $(".family-add-img").show();
         }
 
         //“編輯”和“新增”的跳轉
         function changeViewToDetail() {
             $("#viewFamilyData .insuranceMenu").hide();
-            if (familyArr.length == 0) {
+             //After connect to API:QueryFamilyData, delete 'familyArr == null'
+            if ( familyArr == null || familyArr.length == 0) {
                 $("#viewFamilyNone").hide();
             } else {
                 $("#viewFamilyList").hide();
@@ -178,6 +198,42 @@ $("#viewFamilyData").pagecontainer({
             $("#viewFamilyEdit").show();
         }
 
+        //檢查輸入眷屬資料是否有誤
+        function checkTextFormat() {
+            var relationshipVal = $.trim($("#familyRelationship").val());
+            var typeVal = $.trim($("#idType").val());
+            var idVal = $.trim($("#familyID").val());
+            var firstID = "ABCDEFGHJKLMNPQRSTUVXYWZIO"  
+
+            if (typeVal == "身分證") {
+                if (idVal.length != 10) {
+                    $(".familyAddCheckMsg .lengthErr").addClass('addInlineBlock');  
+                    $(".familyAddCheckMsg .formatErr").removeClass('addInlineBlock');   
+                    $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
+                    $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');                  
+                    popupMsgInit('.familyAddCheckMsg');
+                    return false;
+                } else if(idVal.search(/^[A-Z](1|2)\d{8}$/i) == -1){
+                    $(".familyAddCheckMsg .lengthErr").removeClass('addInlineBlock');  
+                    $(".familyAddCheckMsg .formatErr").addClass('addInlineBlock');  
+                    $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
+                    $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');  
+                    popupMsgInit('.familyAddCheckMsg');
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        //根據key value排序
+        function sortDataByKey(sortData, sortKey, asc) {
+            sortData = sortData.sort(function(a, b) {
+                var x = a[sortKey];
+                var y = b[sortKey];
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            });
+        }
 
         /********************************** page event *************************************/
         $("#viewFamilyData").on("pagebeforeshow", function (event, ui) {
@@ -227,15 +283,6 @@ $("#viewFamilyData").pagecontainer({
             loadingMask("show");
             //API: ModifyFamilyData
             ActivitiesFamilyDeleteQuery();
-        });
-
-        //返回到眷屬列表，彈窗popup
-        $("#viewFamilyData .back-family").on("click", function () {
-            if (addFamilyOrNot) {
-                popupMsgInit('.confirmCancelAddFamily');
-            } else {
-                popupMsgInit('.confirmCancelEditFamily');
-            }
         });
 
         //確定取消新增，跳轉
@@ -294,33 +341,49 @@ $("#viewFamilyData").pagecontainer({
             $("#familyInsurName").css("background", "#cccccc");
         });
 
-        function checkTextFormat(){
-            var relationshipVal = $.trim($("#familyRelationship").val());
-            var typeVal = $.trim($("#idType").val());
-            var idVal = $.trim($("#familyID").val());
-            var firstID = "ABCDEFGHJKLMNPQRSTUVXYWZIO"  
-
-            if (typeVal = "身分證") {
-                if (idVal.length != 10) {
-                    $(".familyAddCheckMsg .lengthErr").addClass('addInlineBlock');  
-                    $(".familyAddCheckMsg .formatErr").removeClass('addInlineBlock');   
-                    $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
-                    $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');                  
-                    popupMsgInit('.familyAddCheckMsg');
-                } else if(idVal.search(/^[A-Z](1|2)\d{8}$/i) == -1){
-                    $(".familyAddCheckMsg .lengthErr").removeClass('addInlineBlock');  
-                    $(".familyAddCheckMsg .formatErr").addClass('addInlineBlock');  
-                    $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
-                    $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');  
-                    popupMsgInit('.familyAddCheckMsg');
-                }
-            }
-        }
-
         //儲存按鈕
         $(".family-save-btn").on("click", function () {
-            if (checkFormByFamily()) {
-                checkTextFormat();
+            if (checkFormByFamily() && checkTextFormat()) {
+                loadingMask("show");
+                familyArr = JSON.parse(localStorage.getItem('familySettingData')); 
+                if (clickEditSettingID != '') {
+                    //Edit Status, Update Local Data
+                    familyArr.content = familyArr.content.filter(function(item) {
+                        return item.id != clickEditSettingID;
+                    });
+                }
+                var obj = new Object();
+                if ( familyArr == null || familyArr.content.length == 0) {
+                    obj.family_id = 1 ;
+                } else if (clickEditSettingID != '') {
+                    obj.family_id = clickEditSettingID;
+
+                } else {
+                    sortDataByKey(familyArr.content, 'id', 'asc');
+                    obj.family_id = familyArr['content'][familyArr['content'].length-1].id + 1;
+                }
+                obj.name = $('#familyInsurName').val();
+                obj.relation = $("#familyRelationship").val();
+                obj.idtype = $('#idType').val();
+                obj.idno = $('#familyID').val();
+                obj.birthday = $('#familyBirth').val();
+
+                var jsonData = {};
+                if (familyArr == null) {
+                    jsonData = {
+                        content: [obj]
+                    };
+                } else {
+                    familyArr.content.push(obj);
+                    jsonData = familyArr;
+                }
+
+                localStorage.setItem('familySettingData', JSON.stringify(jsonData));
+
+                clearFormByFamily();
+                checkFormByFamily();
+                clickEditSettingID = '';
+                queryFamilyList(); 
             }
         });
 
@@ -341,15 +404,13 @@ $("#viewFamilyData").pagecontainer({
             
         });
 
-        $("#backFamilyList").on("click", function() {
-            $("#viewFamilyEdit").hide();
-            queryFamilyList();
-            $('#backFamilyList').hide(); 
-            $('#viewFamilyData .insuranceMenu').show();
-            $(".family-save-btn").hide();
-            $(".family-cancle-btn").hide();
-            $(".family-edit-btn").show();   
-            $(".family-add-img").show();     
+        //返回到眷屬列表，彈窗popup
+        $("#backFamilyList").on("click", function () {
+            if (addFamilyOrNot) {
+                popupMsgInit('.confirmCancelAddFamily');
+            } else {
+                popupMsgInit('.confirmCancelEditFamily');
+            }
         });
 
         //關係dropdownlist-popup
