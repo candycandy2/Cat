@@ -222,9 +222,6 @@ pre {
     width: 30%;
 }
 
-.img-phone{ padding-right:1.9vw; width: 35vw; top:calc(50% - 15px);}
-.img-phone img{ width:3.5vw; height:auto; vertical-align: middle; margin-right: 1vw;}
-
 /********************************** public area *************************************/
 
 .insuranceMenu {
@@ -788,9 +785,9 @@ div.scrollmenu a {
 #employeeData li, #insranceStaffData li{ border-bottom: 1px solid #d6d6d6;}
 #employeeData li:nth-last-of-type(1){ border-bottom: none;}
 #insranceStaffData li:nth-last-of-type(1){ border-bottom: none;}
-#employeeData .name, #insranceStaffData .name{ width: 50VW}
-#employeeData .img-phone, #employeeData .tel-num, #insranceStaffData .img-phone, #insranceStaffData .tel-num{ width: 28.8VW}
-#employeeData .img-info, #insranceStaffData .img-info{ width: 7.7VW}
+#employeeData .name, #insranceStaffData .name{ width: 48VW}
+#employeeData .img-phone, #employeeData .tel-num, #insranceStaffData .img-phone, #insranceStaffData .tel-num{ width: 28VW}
+#employeeData .img-info, #insranceStaffData .img-info{ width: 7VW}
 #employeeData .name p, #insranceStaffData .name p{ margin: 4vw 0 0;}
 #employeeData .name p:nth-of-type(1) a{ color:#0f0f0f; font-size: 4.18vw; font-weight: normal;}
 #insranceStaffData .name p:nth-of-type(1) a{ color:#0f0f0f; font-size: 4.18vw; font-weight: normal;}
@@ -798,6 +795,8 @@ div.scrollmenu a {
 #insranceStaffData .name p:nth-of-type(2){ margin: 0.98vw 0 3vw;}
 #employeeData .name p:nth-of-type(2) a{ color:#666; font-size: 3.349vw; font-weight: normal;}
 #insranceStaffData .name p:nth-of-type(2) a{ color:#666; font-size: 3.349vw; font-weight: normal;}
+.img-phone{ padding-right:1.9vw; width: 35vw; top:calc(50% - 15px);padding-top: 5.5vw;}
+.img-phone img{ width:3.5vw; height:auto; vertical-align: middle; margin-right: 1vw;}
 
 .divvertical-center::before{
     content:'';
@@ -985,6 +984,7 @@ div.scrollmenu a {
     background: #f9f9f9;
     border: 1px solid #d6d6d6;
     background-repeat: no-repeat;
+    background-position: 0 !important;
 }
 
 .family-input-dropdown {
@@ -1022,7 +1022,8 @@ div.scrollmenu a {
 }
 
 .confirmDeleteFamily >.ui-content,
-.confirmCancelEditFamily >.ui-content {
+.confirmCancelEditFamily >.ui-content,
+.familyAddCheckMsg >.ui-content {
     padding: 0 !important;
 }
 
@@ -1034,4 +1035,45 @@ div.scrollmenu a {
 .confirmDeleteFamily .ui-content>.main,
 .confirmCancelEditFamily .ui-content>.main {
     margin-top: 6%;
+}
+
+.familyAddCheckMsg >.ui-content>.header { margin-top: 12%;}
+.familyAddCheckMsg >.ui-content>.main { margin-top: 10%;}
+
+.addInlineBlock { display:inline-block;}
+
+.confirmCancelAddFamily >.ui-content,
+.familyErrorMsg >.ui-content,
+.cancelFailMsg >.ui-content,
+.recordFailMsg >.ui-content,
+.detailTimeOverMsg >.ui-content,
+.signupTimeOverMsg >.ui-content,
+.manageTimeOverMsg >.ui-content,
+.selectTimeOverMsg >.ui-content,
+.recordTimeOverMsg >.ui-content {
+    padding: 0 !important;
+}
+
+.confirmCancelAddFamily .ui-content>.header,
+.familyErrorMsg .ui-content>.header,
+.cancelFailMsg .ui-content>.header,
+.recordFailMsg .ui-content>.header,
+.detailTimeOverMsg .ui-content>.header,
+.signupTimeOverMsg .ui-content>.header,
+.manageTimeOverMsg .ui-content>.header,
+.selectTimeOverMsg .ui-content>.header,
+.recordTimeOverMsg .ui-content>.header {
+    margin-top: 14%;
+}
+
+.confirmCancelAddFamily .ui-content>.main,
+.familyErrorMsg .ui-content>.main,
+.cancelFailMsg .ui-content>.main,
+.recordFailMsg .ui-content>.main,
+.detailTimeOverMsg .ui-content>.main,
+.signupTimeOverMsg .ui-content>.main,
+.manageTimeOverMsg .ui-content>.main,
+.selectTimeOverMsg .ui-content>.main,
+.recordTimeOverMsg .ui-content>.main {
+    margin-top: 12%;
 }

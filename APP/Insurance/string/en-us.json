@@ -1,7 +1,799 @@
 [
   {
     "term": "str_001",
-    "definition": "Waiting for the permission of push message, then you can start to use QPlay.",
+    "definition": "保險概要",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_002",
+    "definition": "健保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_003",
+    "definition": "勞保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_004",
+    "definition": "團保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_005",
+    "definition": "投保資格",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_006",
+    "definition": "1.凡是具有中華民國國籍，都應該參加全民健康保險",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  }, 
+  {
+    "term": "str_007",
+    "definition": "2.外籍人士自在台居留滿六個月時起應參加本保險。但有一定雇主的受雇者不受六個月之限制",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  }, 
+  {
+    "term": "str_008",
+    "definition": "3.大陸地區配偶持團聚事由，自在台連續停留滿六個月起依附台灣地區配偶投保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  }, 
+  {
+    "term": "str_009",
+    "definition": "眷屬依附投保申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  }, 
+  {
+    "term": "str_010",
+    "definition": "1.員工之父母親、無業之配偶、未滿20 歲或在學子女皆可依附員工投保健保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  }, 
+  {
+    "term": "str_011",
+    "definition": "2.您可自行至「保險管理系統」【加退保申請作業】之「申請系統」提出申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_012",
+    "definition": "變更申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_013",
+    "definition": "若您或眷屬變更姓名時，需將身分證正反影本傳遞至各廠區保險承辦人申請變更。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_014",
+    "definition": "國外就醫自墊醫療費用核退申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_015",
+    "definition": "1.若您出國期間因緊急傷病須於當地就醫者，可檢付收據與診斷證明書等文件",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_016",
+    "definition": "2.申請核退醫療費，申請流程與應附文件請詳閱「保險管理系統」中理賠作業之「申請流程」",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_017",
+    "definition": "*員工可享有生育、傷病、殘障、家屬死亡、本人死亡、老年六項給付之權益，申請流程與應附文件請詳閱「保險管理系統」中 理賠作業之「申請流程」。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_018",
+    "definition": "生育補助",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_019",
+    "definition": "1.女性員工才可申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_020",
+    "definition": "2.加入勞保滿280日分娩者或181日後早產者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_021",
+    "definition": "3.按前6個月平均投保薪資為標準，給付30日",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_022",
+    "definition": "傷病給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_023",
+    "definition": "1.因工作受傷或為職業病，可申請傷病給付，自不能工作且正在治療中第四日起給付開始發給(可給付住院與門診期間)",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_024",
+    "definition": "2.若為普通傷病，可申請傷病給付，於自住院診療且不能工作之第四日起開始發給(僅給付住院期間)",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_025",
+    "definition": "3.按前6個月平均投保薪資為標準，給付50% - 70%(若傷病期間仍取原有薪資，則不給付)",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_026",
+    "definition": "4.因工作受傷可使用勞保門診與住院，必須到HR 拿門診或住院單申請單",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_027",
+    "definition": "殘障給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_028",
+    "definition": "1.若經治療終止後，經健保醫院審定為永久殘廢者可請領殘障給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_029",
+    "definition": "2.分成15級160項給付1 - 40個月，因公加五成且最高給付60 個月，由醫師認定自認殘日起2年得請領",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_030",
+    "definition": "家屬死亡給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_031",
+    "definition": "1.員工之父母、配偶或子女死亡時得請領喪葬津貼",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_032",
+    "definition": "2.按前6個月平均投保薪資為標準，父母或配偶死亡給付3個月。未滿12歲子女(含剛生即死)死亡給付1.5個月﹔滿12歲子女死亡給付2.5個月。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_033",
+    "definition": "本人死亡給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_034",
+    "definition": "1.按前6個月平均投保薪資為標準，給付喪葬津貼5個月",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_035",
+    "definition": "2.投保年資1年以下者加10個月遺屬津貼，年資1至2年者加20個月，年資2年以上者加30個月。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_036",
+    "definition": "3.本人公傷事故死亡不論年資均另加40個月遺屬津貼。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_037",
+    "definition": "老年給付",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_038",
+    "definition": "1. 請領資格:",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_039",
+    "definition": "(1)參加勞保滿1年且男性滿60歲，女性滿55歲者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_040",
+    "definition": "(2)參加勞保滿15年且滿55歲者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_041",
+    "definition": "(3)參加勞保滿25年且滿50歲者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_042",
+    "definition": "(4)於同一公司參加勞保滿25年者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_043",
+    "definition": "(5)擔任經中央主管機關核定具有危險、堅強體力等特殊性質之工作滿5年且年滿55歲者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_044",
+    "definition": "2.給付按前3年平均投保薪資為標準，保險年資合計每滿一年發給一個月，年資合計超過十五年者，其超過部分，每滿一年發給二個月，最高以四十五個月為限，滿半年者以一年計﹔年逾六十歲繼續工作者，其逾六十歲以後之保險年資最多以五年計",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_045",
+    "definition": "公司團保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_046",
+    "definition": "員工於入職第一天起即享有壽險、意外傷害險、意外醫療險、住院醫療險、癌症醫療險。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_047",
+    "definition": "員工自費保險",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_048",
+    "definition": "此為員工自選保險方案，員工可以自費方式加保本人與眷屬之綜合險或意外險之保險，詳細保單內容請見「保險管理系統」”員工保險概覽”中「員工自費保險」之介紹。",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_049",
+    "definition": "方案詳情",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_050",
+    "definition": "保險概要",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_051",
+    "definition": "個人保險概要",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_052",
+    "definition": "眷屬資料維護",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_053",
+    "definition": "服務窗口",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_054",
+    "definition": "保險小常識",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_055",
+    "definition": "服務窗口",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_056",
+    "definition": "HR聯絡人員",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_057",
+    "definition": "保險公司聯絡人員",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_058",
+    "definition": "保險小常識",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_059",
+    "definition": "社會新鮮人保險怎麼買?重保險輕儲蓄，先定期後終身",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_060",
+    "definition": "20個錯誤的保險觀念",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+    {
+    "term": "str_061",
+    "definition": "保險消費手冊",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_062",
+    "definition": "保險理賠問答大全，看完後你都懂了嗎?",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_063",
+    "definition": "本人健保/勞保/團保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_064",
+    "definition": "眷屬健保在保狀態",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_065",
+    "definition": "健保不在保眷屬",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_066",
+    "definition": "1.員工勞保/健保公司依據政府法令及規章制度辦理",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_067",
+    "definition": "2.在職員工均有投保公司團保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_068",
+    "definition": "3.如欲申請健保停保、復保，請洽HR負責窗口",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_069",
+    "definition": "眷屬資料維護",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_070",
+    "definition": "目前沒有眷屬資料",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_071",
+    "definition": "儲存",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_072",
+    "definition": "編輯",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_073",
+    "definition": "取消",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_074",
+    "definition": "確定刪除眷屬資料?",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_075",
+    "definition": "新增眷屬資料",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_076",
+    "definition": "姓名",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_077",
+    "definition": "關係",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_078",
+    "definition": "證號類別",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_079",
+    "definition": "證號",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_080",
+    "definition": "生日",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_081",
+    "definition": "健保加保申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_082",
+    "definition": "配偶",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_083",
+    "definition": "子女",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_084",
+    "definition": "父母",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_085",
+    "definition": "祖父母",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_086",
+    "definition": "孫子女",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_087",
+    "definition": "外祖父母",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_088",
+    "definition": "外孫子女",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_089",
+    "definition": "曾祖父母",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_090",
+    "definition": "外曾祖父母",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_091",
+    "definition": "配偶父母",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_092",
+    "definition": "身分證",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_093",
+    "definition": "護照",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_094",
+    "definition": "居留證",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_095",
+    "definition": "請選擇",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_096",
+    "definition": "新增失敗，",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_097",
+    "definition": "證號長度錯誤",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_098",
+    "definition": "證號格式錯誤",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_099",
+    "definition": "證號重複",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_100",
+    "definition": "配偶只能一個",
     "context": "",
     "term_plural": "",
     "reference": "",

@@ -83,4 +83,36 @@ class BoardRepository
         return $board->get();
     }
 
+    /**
+     * 編輯討論版
+     * @param  int $boardId 討論版id
+     * @param  Array  $data 更新資料
+     * @return boolean
+     */
+    public function editBoard($boardId, Array $data){
+        return $this->board->where('row_id',$boardId)->update($data);
+    }
+
+    /**
+     * 刪除特定表可使用公司
+     * @param  int $boardId qp_board_company.board_id
+     * @return boolean
+     */
+    public function clearBoardCompany($boardId){
+         return $this->boardCompany->where('row_id',$boardId)->delete();
+    }
+
+    /**
+     * 刪除特定表使用者
+     * @param  int $boardId qp_board_user.board_id
+     * @return boolean
+     */
+    public function clearBoardUser($boardId){
+         return $this->boardUser->where('row_id',$boardId)->delete();
+    }
+
+    public function insertBoardCompany($boardId, $data){
+
+    }
+    public function upsertBoardUser(){}
 }
