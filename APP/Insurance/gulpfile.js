@@ -126,8 +126,8 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility --nofetch',
   'cordova plugin add ../../plugins/cordova-plugin-splashscreen --nofetch',
   //'cordova plugin add ../../plugins/cordova-plugin-document-viewer',
-  'cordova plugin add ../../plugins/cordova-plugin-touch-id --nofetch',
-  'cordova plugin add ../../plugins/cordova-plugin-qrscanner --nofetch',
+//  'cordova plugin add ../../plugins/cordova-plugin-touch-id --nofetch',
+//  'cordova plugin add ../../plugins/cordova-plugin-qrscanner --nofetch',
   'cordova plugin add ../../plugins/cordova-plugin-statusbar --nofetch',
   'cordova plugin add ../../plugins/cordova-plugin-background-mode --nofetch',
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser --nofetch'
