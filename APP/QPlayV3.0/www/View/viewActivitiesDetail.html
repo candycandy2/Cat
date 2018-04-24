@@ -1,0 +1,202 @@
+<div data-role="page" id="viewActivitiesDetail">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn" data-role="none">
+            <img src="img/back.png" class="back-list">
+        </a>
+        <div class="header-style">
+            <div class="ui-title">
+                <!--活動報名-->
+                <span class="langStr" data-id="str_002"></span>
+            </div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main">
+        <div id="activityDetail">
+            <div class="detail-header">
+                <div class="detail-header-img">
+                    <img src="img/blank.png" id="detailThumbnail">
+                </div>
+                <div class="detail-header-info">
+                    <div class="font-style10 font-color2">
+                        <span id="detailName"></span>
+                    </div>
+                    <div class="font-style11 font-color2">
+                        <!--總名額(人/組)-->
+                        <span class="langStr" data-id="str_050"></span>
+                        <span id="detailPlace"></span>&nbsp;&nbsp;
+                    </div>
+                    <div class="font-style11 font-color2">
+                        <!-- 參與名額限制(人/組):-->
+                        <span id="detailMax" class="langStr" data-id="str_051"></span>
+                        <span id="detailLimit"></span>
+                    </div>
+                    <div class="font-style11 font-color2">
+                        <!--報名期間:-->
+                        <span class="langStr" data-id="str_052"></span>
+                        <span id="detailDate"></span>
+                    </div>
+                    <div class="font-style11 font-color2">
+                        <!--已報名(人/組):-->
+                        <span class="langStr" data-id="str_053"></span>
+                        <span id="detailPeople" class="font-color4">1</span>
+                    </div>
+                    <div class="detail-header-signuped font-style11 font-color4">
+                        <!--您已報名本項活動(人/組):-->
+                        <span class="langStr" data-id="str_054"></span>
+                        <span id="detailUser"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-line"></div>
+            <!--Activities Content-->
+            <div id="detailContent" class="detail-main"></div>
+            <div class="blank-container-before-footer"></div>
+            <!--footer-->
+            <div class="detail-footer font-style3">
+                <div id="beginBtn" class="detail-signup-btn">
+                    <!--開始報名-->
+                    <span class="langStr" data-id="str_007"></span>
+                </div>
+                <div id="continueBtn" class="two-btn-inline">
+                    <div class="detail-signup-btn">
+                        <!--我要報名-->
+                        <span class="langStr" data-id="str_015"></span>
+                    </div>
+                    <div class="detail-manage-btn">
+                        <!--報名管理-->
+                        <span class="langStr" data-id="str_008"></span>
+                    </div>
+                </div>
+                <div id="onlyBtn" class="two-btn-inline">
+                    <div class="btn-disabled">
+                        <!--目前活動名額已額滿-->
+                        <span class="langStr" data-id="str_020"></span>
+                    </div>
+                    <div class="detail-manage-btn">
+                        <!--報名管理-->
+                        <span class="langStr" data-id="str_008"></span>
+                    </div>
+                </div>
+                <div id="alreadyBtn" class="detail-manage-btn">
+                    <!--報名管理-->
+                    <span class="langStr" data-id="str_008"></span>
+                </div>
+                <div id="fullBtn" class="btn-disabled">
+                    <!--目前活動名額已額滿-->
+                    <span class="langStr" data-id="str_020"></span>
+                </div>
+                <div id="overBtn" class="btn-disabled">
+                    <!--目前活動報名時間已過期-->
+                    <span class="langStr" data-id="str_105"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-msg-style" id="signupSuccessMsg">
+            <!--已完成報名-->
+            <span class="langStr" data-id="str_017"></span>
+        </div>
+        <div class="popup-msg-style" id="cancelSuccessMsg">
+            <!--報名已取消-->
+            <span class="langStr" data-id="str_019"></span>
+        </div>
+        <div class="popup-msg-style" id="updateSuccessMsg">
+            <!--已完成修改-->
+            <span class="langStr" data-id="str_018"></span>
+        </div>
+
+    </div>
+
+    <!--已報名同類活動-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signupedSameMsg" for="signupedSameMsg"
+        id="signupedSameMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--您已報名其他場次-->
+                    <span class="langStr" data-id="str_021"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--已完成報名（眷屬）-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup finishedFamilySignup" for="finishedFamilySignup"
+        id="finishedFamilySignup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/success.png">
+                    </span>
+                    <span class="header-text">
+                        <!--已完成報名-->
+                        <span class="langStr" data-id="str_017"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--您已報名其他場次-->
+                    <span class="langStr" data-id="str_028"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--好，我知道了-->
+                        <span class="langStr" data-id="str_029"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--報名時間已過期-popup-->
+    <div data-role="popup" data-history="false" data-dismissible="false" data-overlay-theme="b" class="app-popup detailTimeOverMsg"
+        for="detailTimeOverMsg" id="detailTimeOverMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--目前活動報名時間已過期-->
+                        <span class="langStr" data-id="str_105"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel" id="detailTimeOverBtn">
+                        <!--關閉-->
+                        <span class="langStr" data-id="str_044"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
