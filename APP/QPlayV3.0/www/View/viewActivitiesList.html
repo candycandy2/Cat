@@ -1,0 +1,69 @@
+<div data-role="page" id="viewActivitiesList">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn" data-role="none">
+            <img src="img/menu.png" class="menu">
+        </a>
+        <div class="header-style">
+            <div class="ui-title">
+                <!--活動報名-->
+                <span class="langStr" data-id="str_002"></span>
+            </div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main">
+        <!-- pull refresh -->
+        <div class="pull-list"></div>
+
+        <!--1.活動列表-->
+        <div id="viewActivitiesContent">
+            <!--已開放-->
+            <div class="open-title">
+                <div class="font-style11 font-color1">
+                    <!--已開放：-->
+                    <span class="langStr" data-id="str_005"></span>
+                </div>
+                <div></div>
+            </div>
+            <div id="openList">
+                <!-- <div class="activity-list" data-id="1" data-status="Y">
+                    <div class="activity-list-img">
+                        <img src="img/blank.png">
+                    </div>
+                    <div class="activity-list-info font-color2">
+                        <div class="font-style10">[組隊報名] 桃園9/14 活力有氧（時間：17:30-18:30 地點：韻律教室）</div>
+                        <div class="font-style11">
+                            <span>名額:</span>
+                            <span>200</span>&nbsp;&nbsp;
+                            <span>剩餘:</span>
+                            <span>18</span>
+                        </div>
+                        <div class="font-style11">
+                            <span>報名期間:</span>
+                            <span>2017/9/1 13:00 - 2017/9/8 12:00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-line"></div> -->
+            </div>
+
+            <!--未開放-->
+            <div class="close-title">
+                <div></div>
+                <div class="font-style11 font-color1">
+                    <!--未來：-->
+                    <span class="langStr" data-id="str_006"></span>
+                </div>
+                <div></div>
+            </div>
+            <div id="closeList"></div>
+        </div>
+
+        <!--2.目前沒有任何活動-->
+        <div id="viewActivitiesNone" class="font-style12 font-color3">
+            <span class="langStr" data-id="str_034"></span>
+        </div>
+
+    </div>
+
+</div>
