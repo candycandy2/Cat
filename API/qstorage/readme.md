@@ -123,7 +123,6 @@ account:1607279
 ```
 GET /sastoken/{resource}
 ```
-- resource : Which Resource type  that you want to get , allow 'container'、'blob' 
 ##### Url Parameter
 ```
 ?lang=en-us&uuid=1517bfd3f7a87ab988&start=2018-03-13T07:30:00Z&expiry=2018-03-15T08:00:00Z&sp=r
