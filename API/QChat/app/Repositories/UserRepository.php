@@ -256,8 +256,9 @@ class UserRepository
                              'memo',
                              'portrait_path')->get();
     }
+
     /**
-     * 取得使用這註冊QPlay狀態
+     * 取得使用者註冊QPlay狀態
      * @return mixed
      */
     public function getQMessageRegister($destinationEmpNo){
@@ -265,5 +266,33 @@ class UserRepository
                 ->where('emp_no','=', $destinationEmpNo)
                 ->select('register_message')
                 ->first();
+    }
+
+    /**
+    * 根據員工編號產生收件者清單
+    * @param  Array  $empNoArr 員工編號列表
+    * @return Array|array      array('Domain\\LoginId')
+    */
+   public function getPushUserListByEmpNoArr(Array $empNoArr){
+        $userInfo = $this->getUserInfoByEmpNo($empNoArr);
+        $userList = [];
+        foreach ($userInfo as $user) {
+            $userList[] = $user['user_domain']."\\".$user['login_id'];
+        }
+        return $userList;
+   }
+
+    /**
+     * 依員工編號取得使用者資訊
+     * @param  Array  $empNoArr 員工編號清單
+     * @return mixed
+     */
+    public function getUserInfoByEmpNo(Array $empNoArr){
+
+         return $this->user
+         ->whereIn('emp_no', $empNoArr)
+         ->select('row_id','login_id','ext_no','email','emp_no','user_domain')
+         ->orderBy('login_id','asc')
+         ->get();
     }
 }

@@ -29,9 +29,11 @@ function QPlayAPIEx(requestType, requestAction, successCallback, failCallback, q
 
     // review by alan
     function requestError(data) {
-        errorHandler(data, requestAction);
-        if (failCallback && priority != "low") {
-            failCallback();
+        if (priority != "low") {
+            errorHandler(data, requestAction);
+            if (failCallback != null) {
+                failCallback();
+            }
         }
     }
 

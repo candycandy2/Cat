@@ -1,5 +1,4 @@
 /***************************************override jQuery Mobile***************************************/
-
 .ui-content {
     padding: 0px;
 }
@@ -10,7 +9,6 @@
 
 
 /********************************************** mypanel *********************************************/
-
 #mypanel {
     background-color: #CECECE;
     box-shadow: 0 0 0;
@@ -55,22 +53,27 @@
 
 
 /********************************************** public ***********************************************/
-
-* { 
-    -webkit-touch-callout: none; /*系统默认菜单被禁用*/ 
-    -webkit-user-select: none; /*webkit浏览器*/ 
-    -khtml-user-select: none; /*早期浏览器*/ 
-    -moz-user-select: none; /*火狐*/ 
-    -ms-user-select: none; /*IE10*/ 
-    user-select: none; 
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
 }
 
-input { 
-    -webkit-user-select: auto; /*webkit浏览器*/
-} 
+input[type="text"],
+input[type="search"] {
+    -webkit-user-select: auto;
+}
 
-.menu-btn {
-    margin-top: 3.238vw;
+/* body .page-main {
+    -webkit-overflow-scrolling: touch;
+} */
+
+.ui-header .ui-btn-left {
+    padding: 4.156vw 0 2.5vw 0 !important;
 }
 
 .menu,
@@ -232,23 +235,13 @@ input[type="text"] {
     display: none;
 }
 
-.pull-list,
-.pull-record {
-    font-family: Arial;
-    height: 0.2vw;
-    color: #0f0f0f;
-    text-align: center;
-    width: 80%;
-    margin: 1vw auto 0;
-}
-
 .dont-touch-move {
     overflow: hidden;
     height: 100%;
 }
 
-/************************************** viewActivitiesList ******************************************/
 
+/************************************** viewActivitiesList ******************************************/
 .open-title div,
 .close-title div {
     width: 100vw;
@@ -309,11 +302,15 @@ input[type="text"] {
 }
 
 .activity-list-info > div:nth-of-type(1) {
+    width: 75vw;
+    height: 8.5vw;
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; */
+    line-height: 1.2;
+    /* padding-top: 0.75vw; */
 }
 
 .activity-list-info > div:nth-of-type(2) {
@@ -343,6 +340,7 @@ input[type="text"] {
     margin: 0vw 0vw;
     display: none;
 }
+
 
 /**************************************** viewActivitiesDetail ***************************************/
 #activityDetail {
@@ -379,11 +377,15 @@ input[type="text"] {
 }
 
 .detail-header-info > div:nth-of-type(1) {
+    width: 75vw;
+    height: 8.5vw;
     overflow: hidden;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    padding-top: 0.75vw; */
+    line-height: 1.2;
 }
 
 .detail-header-info > div:nth-of-type(2) {
@@ -448,6 +450,7 @@ input[type="text"] {
     margin-top: 2%;
 }
 
+
 /******************************************* viewActivitiesSignup **************************************/
 #viewActivitiesSignup .page-main > div,
 #viewSelectFamily .page-main > div {
@@ -511,6 +514,11 @@ input[type="text"] {
 .team-signup-title > div:nth-of-type(2) {
     width: 75vw;
     height: 18.5vw;
+    /* overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; */
 }
 
 .team-signup-add {
@@ -868,6 +876,7 @@ input[type="text"] {
     margin-top: 5vw;
 }
 
+
 /***************************************** viewActivitiesManage ************************************/
 #viewActivitiesManage .page-main > div {
     width: 92.58vw;
@@ -952,6 +961,11 @@ input[type="text"] {
     padding-bottom: 3.4vw;
     text-align: left;
     border-bottom: 1px dashed #d6d6d6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .cancelSignupMsg .ui-content>.main,
@@ -969,6 +983,7 @@ input[type="text"] {
     margin-top: 4.3vw;
     line-height: 1.5;
 }
+
 
 /******************************************* viewSelectFamily **************************************/
 .select-family-title {
@@ -1071,8 +1086,8 @@ input[type="text"] {
     padding-bottom: 4.3vw;
 }
 
-/***************************************** viewActivitiesRecord *************************************/
 
+/***************************************** viewActivitiesRecord *************************************/
 #viewRecordList {
     width: 100vw;
     margin-bottom: 4vw;
@@ -1133,7 +1148,6 @@ input[type="text"] {
 
 
 /******************************************* viewMyFamilyDatum **************************************/
-
 #viewFamilyNone {
     width: 100vw;
     text-align: center;
@@ -1191,6 +1205,11 @@ input[type="text"] {
 .family-list > div:nth-of-type(1) {
     width: 65vw;
     height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .family-list > div:nth-of-type(1) > div:nth-of-type(2),
@@ -1264,8 +1283,8 @@ input[type="text"] {
     text-indent: 3.2vw;
     border: 1px solid #d6d6d6;
     background: url(../img/dropdown.png) no-repeat;
-    background-size: 6% 20%;
-    background-position: 50vw 4vw;
+    background-size: 4vw 2.36vw;
+    background-position: 50.5vw 4.25vw;
 }
 
 .family-input-calendar {
@@ -1277,8 +1296,8 @@ input[type="text"] {
     text-indent: 3.2vw;
     border: 1px solid #d6d6d6;
     background: url(../img/calendar.png) no-repeat;
-    background-size: 6% 40%;
-    background-position: 50vw 3vw;
+    background-size: 4vw 4vw;
+    background-position: 50.5vw 3.25vw;
 }
 
 .confirmDeleteFamily >.ui-content,
@@ -1331,6 +1350,3 @@ input[type="text"] {
 .recordTimeOverMsg .ui-content>.main {
     margin-top: 12%;
 }
-
-
-/*************************************************test***********************************************/

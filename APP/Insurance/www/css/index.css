@@ -1,37 +1,4 @@
 /********************************** override jQuery Mobile *************************************/
-
-#viewQRScanner {
-     background: none!important;
-}
-
-.qr-scan-guides {
-    width: 60vw;
-    min-height: 60vw;
-    margin-top: 30%;
-    margin-left: 20%;
-    position: fixed;
-}  
-
-#qrcode {
-  width:160px;
-  height:160px;
-  margin-top:15px;
-  margin-left:50px;
-}
-
-#qrcode img {
-    width: 30px;
-}
-
-.comment-scanbox {
-    width: 70vw;
-    min-height: 60vw;
-    margin-top: 110vw;
-    margin-left: 15%;
-    position: fixed;
-    color: #C0C0C0
-}  
-
 .behind {
         width: 100%;
         height: 100%;
@@ -72,6 +39,10 @@ a {
 .ui-header-fixed{ position: absolute; z-index: 990;}
 .ui-header-fixed.ui-fixed-hidden{ top: -1px;}
 
+.ui-panel-inner {
+    padding: 0 !important;
+}
+
 .hidden {
     visibility: hidden;
     position: absolute;
@@ -86,16 +57,6 @@ a {
     text-overflow: initial;
     margin-right: auto !important;
     margin-left: auto !important;
-}
-
-#myReserve .ui-block-a {
-    text-align: left;
-}
-
-#myReserve .ui-block-a span,
-#myReserve .ui-block-b span {
-    display: inline-table;
-    margin-bottom: 5px;
 }
 
 #navbar ul li a {
@@ -122,12 +83,6 @@ a {
     padding: 2.8vw 0 2.6vw;
 }
 
-#reserveDateSelect div.ui-bar-a {
-    background-color: initial;
-}
-
-#reserveDateSelect .ui-bar>div:nth-of-type(1){ padding-top: 1.692vw; height: 4VH;}
-
 .ui-radio-30 div.ui-radio {
     width: 33%;
 }
@@ -136,76 +91,43 @@ a {
     width: 50%;
 }
 
-#reserveSettingArea a:link {
-    text-decoration: none;
-    color: black;
-}
-
-#reserveTab > div > div.ui-radio label {
+#mainTab > div > div.ui-radio label {
     line-height: 1;
     border: 1px solid #2a88bc !important;
     border-left-width: 0 !important;
     background-color: #fff !important;
 }
 
-#reserveTab > div > div.ui-radio:nth-of-type(1) label{
+#mainTab > div > div.ui-radio:nth-of-type(1) label{
     border-left-width: 1px !important;
 }
 
-#reserveTab > div > div.ui-radio label.ui-btn-active {
+#mainTab > div > div.ui-radio label.ui-btn-active {
     background-color: #2a88bc !important;
     color: white !important;
 }
 
-#reserveTab.ui-radio-50w div.ui-radio {
+#mainTab.ui-radio-50w div.ui-radio {
     width: 30.6vw !important;
 }
 
-#pageThree, #pageTwo, #pageOne{ margin-top: 4.3vw !important;}
-#pageTwo{ margin-left: 0 !important; margin-right: 0 !important;}
+#pageOne, #pageTwo, #pageThree{ margin-left: 0 !important; margin-right: 0 !important;}
+
 
 #pageOne div.ui-select {
-    width: 30vw !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    display: inline-block;
-}
-
-#pageTwo div.ui-select {
     width: 45vw !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     padding: 3vh 0 3vh 0;
 }
 
-#reserveDateSelect div.ui-bar {
-    text-align: left;
-    border-style: solid;
-    border-color: #d6d6d6;
-    border-width: 0px 1px 1px 0px;
-    padding: 0 1.3vw 0 2vw;
-}
-
-#reserveDateSelect > div.ui-grid-c {
-    border-style: solid;
-    border-color: #d6d6d6;
-    border-width: 1px 0px 0px 1px;
-    background-color: #fff;
-}
-
-#reserveDateSelect div.ui-bar div:nth-child(2) {
-    font-size: 3.14vw;
-    margin-top: 1vw;
-}
-
-#reserveDateSelect div.ui-bar div:nth-child(2):not(.timeRemind){ padding-bottom: 1.021vw;}
-
 .ui-mobile .ui-page-active{ min-height: 100vh !important;}
 
 .ui-header .ui-title{ padding: 3.238vw 0; font-size: 4.39vw; font-weight: normal;}
+.family-add-title { display:none;}
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
-#reserveTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
-#reserveBtn{ margin: 4.3vw auto 0 !important; padding: 1.8vw 0; height: auto;}
+
+#mainTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 
 body {
   margin: 0;
@@ -258,27 +180,82 @@ pre {
   padding: 10px 0;
 }
 
-/* reserve info */
 .reserveInfo{ overflow: hidden; padding: 4vw 6.71vw 3vw; display: flex; align-items: center; position: relative;}
-.reserveInfo:after{ content: ''; display: block; width: 92.58%; height: 1px; background-color: #d6d6d6; position: absolute; bottom: 0; left: 3.71%;}
-.reserveInfo:nth-last-of-type(1):after{ display: none;}
 .reserveInfo-area{ float: left; vertical-align: middle; display: inline-block;}
-.reserveInfo-area-left{ width: 70%}
-.reserveInfo-area-right{ width: 30%;}
-.reserveInfo-area-time{ margin: 0 0 2.14vw 3.71vw;}
 .reserve-area-time{ margin: 0 0 2.14vw 3.71vw;}
-.btn-area{ text-align: right;}
-.btn-area a{ font-weight: normal; display: inline-block; width: 20%;}
-.btn-area img{ width: 100%; height: auto;}
-.reserveInfo-company, .reserveInfo-time{ display: inline-block;}
-.reserveInfo-company{ margin-right: 4.5vw;}
 #today-reserve-area{ margin-bottom: 6.44vw;}
 #today-reserve-area .reserveInfo{ background-color: #fff;}
-#later-reserve-area{ color: #666;}
-#later-reserve-area .reserveInfo{ background-color: #f6f6f6;}
+
+.q-result-grid {
+    text-align: center;
+}
+
+.q-result-grid > li div {
+    float: left;
+    /*display: flex;*/
+    flex-flow: column wrap;
+    justify-content: center;
+    overflow-wrap: break-word;
+}
+
+.q-result-grid > li p {
+    width: 95%;
+    font-weight: normal;
+    white-space: normal;
+    text-overflow: clip;
+    overflow: auto;
+}
+
+.q-result-grid a {
+    text-decoration: none;
+}
+
+.q-result-grid .company {
+    width: 30%;
+}
+
+.q-result-grid .e-name {
+    width: 40%;
+}
+
+.q-result-grid .c-name {
+    width: 30%;
+}
 
 /********************************** public area *************************************/
-*{ box-sizing: border-box;}
+
+.insuranceMenu {
+    width: 4.934VW;
+}
+
+#backContactInfo,
+#backFamilyList {
+    width: 4.934VW;
+    display: none;
+}
+
+#backMain {
+    width: 4.934VW;
+    display: none;
+}
+
+#mypanel {
+    background-color: #CECECE;
+    box-shadow: 0 0 0;
+    z-index: 1002;
+}
+
+.page-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/**{ box-sizing: border-box;}*/
 .hide{ display: none;}
 
 .table{ display: table; width: 100%; border: 1px solid #d6d6d6; text-align: center; padding: 0 3.71vw; color: #323232; background-color: #fff;}
@@ -326,23 +303,34 @@ pre {
     font-size: 3.349vw;
 }
 
-div.square {
-    width: 3vw;
-    height: 1.5vw;
-}
-
-.square.ui-color-reserve{ background-color: #d4d4d4 !important;}
-.square.ui-color-myreserve{ background-color: #b3d6d1 !important;}
-#reserveColorDiagram > div{ vertical-align: middle;}
-
 .ui-margin-public {
     margin: 1.8vw 3.71vw 0 !important;
     font-size: 4.18vw;
 }
 
-#viewNewSetting .ui-margin-public{ margin-top: 5.97vw !important;}
-#newSettingFloor{ font-size: 4.18vw;}
-#pageOne .scrollmenu{ margin-bottom: 0.99vw;}
+.ui-margin-insurance-main {
+    margin: 5vw 3.71vw 0 !important;
+}
+
+.ui-content {
+    overflow-x: visible;
+    padding: 0 3.71vw;
+}
+
+.ui-content .ui-listview {
+    margin: 0px;
+}
+
+.health-insurance-content {
+    padding: 3vw 3.71vw 3vw 6.71vw;
+    color:#323232;
+}
+
+#insurance-main .health-insurance-content{ background-color: #ffffff;}
+
+.insurance-main-title { color:#0F0F0F; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
+.labor-insurance-remark  { color:#666666; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
+
 
 .title-icon {
     height: 5.957vw;
@@ -393,44 +381,6 @@ div.square {
     border-style: solid !important;
 }
 
-.btn-myreserve {
-    border-radius: 40px;
-    border-radius: 40px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    color: white;
-    width: 22vw;
-    height: 4.5vh;
-    line-height: 5vh;
-    text-align: center;
-    background-color: transparent;
-    color: white;
-    border-width: 1px;
-    border-color: white;
-    border-style: solid;
-    display: inline-block;
-}
-
-.myreserve-margin {
-    font-size: 2.8vh;
-    margin: 1.7vh 4.8vw;
-}
-
-.myreserve-height {
-    height: 10.7vh;
-    line-height: 10.7vh;
-}
-
-.setting-delete {
-    position: absolute;
-    right: 6vw;
-    display: inline-block;
-    width: 22vw;
-    height: 4vh;
-    line-height: 4.5vh;
-    margin-top: -0.5vh;
-}
-
 .setting-img {
     height: 2.5vh;
     margin-left: 2vw;
@@ -441,43 +391,6 @@ div.square {
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-}
-
-.quick-reserve-margin {
-    text-align: center;
-    margin: 4.5vh auto 3vh auto;
-}
-
-.quick-reserve-msg-icon {
-    background: url(../img/select.png) no-repeat;
-    width: 5vw;
-    height: 3vh;
-    background-size: 5vw 3vh;
-}
-
-.quick-reserve-warn-icon {
-    background: url(../img/warn_icon.png) no-repeat;
-    width: 5vw;
-    height: 3vh;
-    background-size: 5vw 3vh;
-}
-
-.quick-reserve-setting-icon {
-    background: url(../img/setting.png) no-repeat;
-    width: 7.2vw;
-    height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-}
-
-.quick-reserve-setting-icon {
-    background: url(../img/setting.png) no-repeat;
-    width: 7.2vw;
-    height: 4.2vh;
-    background-size: 7.2vw 4.2vh;
-    background-repeat: no-repeat;
-    vertical-align: middle;
 }
 
 .cntIcon {
@@ -515,11 +428,6 @@ div.square {
 .min-height-100 {
     min-height: 100% !important;
 }
-
-
-/*.loader{
-    margin-top: 100vh !important;
-}*/
 
 .word-mid {
     text-align: left;
@@ -564,6 +472,21 @@ div.square {
     padding-right: 6.74vw;
 }
 
+.font-color2 {
+    color: #323232;
+}
+
+.font-color3 {
+    color: #666 !important;
+}
+
+.view-show {
+    display: block;
+}
+
+.view-hide {
+    display: none;
+}
 
 /********************************** color setting *************************************/
 
@@ -610,16 +533,6 @@ hr.ui-color-green {
     font-size: 5.5vw !important;
 }
 
-.ui-color-reserve {
-    background-color: #eaeaea !important;
-}
-
-.ui-color-myreserve {
-    background-color: #CBF1EC !important;
-}
-
-.ui-color-myreserve .timeRemind, .ui-color-reserve .timeRemind{ display: none;}
-
 .ui-linear-gradient-gary {
     background: -webkit-linear-gradient(#a1a3a5, #747679);
     background: -o-linear-gradient(#a1a3a5, #747679);
@@ -659,22 +572,6 @@ div.scrollmenu a {
     border-style: solid;
     border-width: 0px 1px 0px 0px;
     border-color: #d6d6d6 !important;
-}
-
-#scrollDate a,
-#quickReserveScrollDate a {
-    padding: 3vw 0;
-    width:30%;
-    font-weight: normal;
-}
-
-#scrollDate a{ padding: 2.894vw 0 2.567vw; margin-left: -4px;}
-#scrollDate a:nth-of-type(1){ margin-left: 0;}
-
-#reserveRoom a {
-    padding: 3vw 0;
-    font-weight: normal;
-    width: 22%;
 }
 
 .hover {
@@ -838,4 +735,345 @@ div.scrollmenu a {
     height: 3vh;
     background-size: 6vw 3vh;
     background-repeat: no-repeat;
+}
+
+/********************************** viewMain *************************************/
+
+#groupIndurancePDF {
+    color:#2e89bc;
+    margin-left:3.71vw;
+    display: flex;
+}
+
+.dowloadPDF {
+    margin-left:2.066vw;
+    width: 8%;
+    align-self: center;
+}
+
+/********************************************** mypanel *********************************************/
+
+#mypanel .panel-content {
+    background-color: #f6f6f6;
+    color: #0f0f0f;
+    font-size: 3.97VW;
+    font-family: Arial;
+    padding: 4.3vw 0 3.71vw 3.71vw;
+}
+
+#mypanel .panel-content {
+    border-bottom: solid;
+    border-bottom-color: #e4e4e4;
+    border-bottom-width: 0.1VH;
+}
+
+#mypanel #mypanelviewInsuranceInfo {
+    border-bottom: solid;
+    border-bottom-color: #666;
+    border-bottom-width: 0.1VH;
+}
+
+#mypanel div.panel-content:hover {
+    background-color: #503f81;
+    color: #fff;
+}
+
+/********************************************** contactInfo *********************************************/
+
+#employeeData p, #insranceStaffData p{ margin: 0px 2px;font-size: 12px;}
+#employeeData li, #insranceStaffData li{ background-color: transparent; border-top: none; align-items: center; position: relative; border: none; padding: 0 6.71vw;}
+#employeeData li, #insranceStaffData li{ border-bottom: 1px solid #d6d6d6;}
+#employeeData li:nth-last-of-type(1){ border-bottom: none;}
+#insranceStaffData li:nth-last-of-type(1){ border-bottom: none;}
+#employeeData .name, #insranceStaffData .name{ width: 48VW}
+#employeeData .img-phone, #employeeData .tel-num, #insranceStaffData .img-phone, #insranceStaffData .tel-num{ width: 28VW}
+#employeeData .img-info, #insranceStaffData .img-info{ width: 7VW}
+#employeeData .name p, #insranceStaffData .name p{ margin: 4vw 0 0;}
+#employeeData .name p:nth-of-type(1) a{ color:#0f0f0f; font-size: 4.18vw; font-weight: normal;}
+#insranceStaffData .name p:nth-of-type(1) a{ color:#0f0f0f; font-size: 4.18vw; font-weight: normal;}
+#employeeData .name p:nth-of-type(2){ margin: 0.98vw 0 3vw;}
+#insranceStaffData .name p:nth-of-type(2){ margin: 0.98vw 0 3vw;}
+#employeeData .name p:nth-of-type(2) a{ color:#666; font-size: 3.349vw; font-weight: normal;}
+#insranceStaffData .name p:nth-of-type(2) a{ color:#666; font-size: 3.349vw; font-weight: normal;}
+.img-phone{ padding-right:1.9vw; width: 35vw; top:calc(50% - 15px);padding-top: 5.5vw;}
+.img-phone img{ width:3.5vw; height:auto; vertical-align: middle; margin-right: 1vw;}
+
+.divvertical-center::before{
+    content:'';
+    width:0;
+    height:100%;
+    display:inline-block;
+    position:relative;
+    vertical-align:middle;
+}
+
+.tel-num{ width: 85%; display: inline-block; vertical-align: middle;}
+.tel-num p{ margin: 0 !important;}
+.tel-num a{ color:#2c89bc; font-size: 3.768vw; font-family:Arial; font-weight: normal;}
+.img-info img{ width:6.4vw; height:auto;}
+.contactHeading{ margin-top:5vw; margin-bottom:2.14vw;color:#0f0f0f;}
+
+#detailInfo li { list-style-type: none;}
+#detailInfo li a::after{
+    content: '';
+    background-color: #d6d6d6;
+    display: block;
+    width: 92.58vw;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    margin-top: 0.98vw;
+}
+#detailInfo .name { margin-top:6vw;color:#0f0f0f;}
+#detailInfo .site { margin-top:0.98vw;color:#0f0f0f;}
+#detailInfo li div{ color:#666666;}
+#detailInfo li a{  
+    color:#2d89bc;
+    text-decoration: none;
+    font-family: Arial;
+    font-weight: normal !important;
+}
+#detailInfo .phone{margin-top:6vw;margin-bottom: 0.98vw;}
+#detailInfo .other{margin-top:4.3vw;margin-bottom: 0.98vw;}
+.margin-personal-info {margin-top:4.3vw;}
+
+/********************************************** InsuranceInfo *********************************************/
+
+#insranceInfo li { list-style-type: none; padding: 4vw 3vw; border-bottom: 1px solid #d6d6d6;}
+#insranceInfo li div{ height: 9.367vw;}
+#insranceInfo li:nth-last-of-type(1){ border-bottom: none;}
+
+/********************************************** FamilyData *********************************************/
+#viewFamilyNone {
+    width: 100vw;
+    text-align: center;
+    line-height: 125vw;
+    margin: 0vw 0vw;
+    display: none;
+}
+
+.family-save-btn {
+    opacity: 0.6;
+    display: inline-block;
+    position: absolute;
+    color: #ffffff !important;
+    top: 4.5vw;
+    right: 3.71vw;
+    display: none;
+}
+
+.family-cancle-btn {
+    color: #2d89bc;
+    padding: 5vw 3.71vw 2.14vw;
+    display: none;
+}
+
+.family-edit-btn {
+    color: #2d89bc;
+    right: 3.71vw;
+    padding: 5vw 3.71vw 2.14vw;
+    text-align: right;
+}
+
+#familyList {background: #ffffff;}
+
+.family-list {
+    width: 86.5vw;
+    height: 14.5vw;
+    padding: 3vw 6.71vw;
+}
+
+.family-list > div {
+    float: left;
+}
+
+.family-list ::after {
+    clear: both;
+}
+
+.family-list > div:nth-of-type(1) {
+    width: 65vw;
+    height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.family-list > div:nth-of-type(1) > div:nth-of-type(2),
+.family-list > div:nth-of-type(1) > div:nth-of-type(3) {
+    margin-top: 1.16vw;
+}
+
+.family-list > div:nth-of-type(2) {
+    width: 21.5vw;
+    height: 10vw;
+    padding-top: 3.5vw;
+}
+
+.family-edit {
+    width: 6.2vw;
+    height: 6.2vw;
+    margin-left: 14vw;
+    margin-top: 1vw;
+}
+
+.family-delete {
+    width: 5.2vw;
+    height: 5.2vw;
+    margin-left: 14vw;
+    margin-top: 1vw;
+    display: none;
+}
+
+.family-notice {
+    width: 92.58vw;
+    min-height: 30vw;
+    margin-top: 4.3vw;
+    margin-left: 3.71vw;
+}
+
+.family-notice div {
+    line-height: 1.5;
+}
+
+.family-add-img {
+    position: fixed;
+    bottom: 4.3vw;
+    right: 6.727vw;
+    width: 13.848vw;
+    height: 13.848vw;
+    z-index: 1;
+}
+
+.family-add-img img {
+    width: 13.848vw;
+    height: 13.848vw;
+}
+
+#viewFamilyEdit {
+    width: 88.58vw;
+    height: 150vw;
+    margin-top: 10vw;
+    margin-left: 5.71vw;
+    display: none;
+}
+
+.family-input-div {
+    width: 92.58vw;
+    height: 16vw;
+    margin-bottom: 2vw;
+}
+
+.family-input-div label {
+    width: 20vw;
+    height: 10vw;
+    display: inline-block;
+    text-align: right;
+    line-height: 10vw;
+}
+
+.family-input {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    background: #f9f9f9;
+    border: 1px solid #d6d6d6;
+    background-repeat: no-repeat;
+    background-position: 0 !important;
+}
+
+.family-input-dropdown {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../img/dropdown.png) no-repeat;
+    background-size: 4vw 2.36vw;
+    background-position: 50.5vw 4.25vw;
+}
+
+.family-input-calendar {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../img/calendar.png) no-repeat;
+    background-size: 4vw 4vw;
+    background-position: 50.5vw 3.25vw;
+}
+
+.activity-line {
+    width: 150vw;
+    height: 1px;
+    /*margin-left: 3.71vw;*/
+    background-color: #d6d6d6;
+    overflow: hidden;
+}
+
+.confirmDeleteFamily >.ui-content,
+.confirmCancelEditFamily >.ui-content,
+.familyAddCheckMsg >.ui-content {
+    padding: 0 !important;
+}
+
+.confirmDeleteFamily .ui-content>.header,
+.confirmCancelEditFamily .ui-content>.header {
+    margin-top: 10%;
+}
+
+.confirmDeleteFamily .ui-content>.main,
+.confirmCancelEditFamily .ui-content>.main {
+    margin-top: 6%;
+}
+
+.familyAddCheckMsg >.ui-content>.header { margin-top: 12%;}
+.familyAddCheckMsg >.ui-content>.main { margin-top: 10%;}
+
+.addInlineBlock { display:inline-block;}
+
+.confirmCancelAddFamily >.ui-content,
+.familyErrorMsg >.ui-content,
+.cancelFailMsg >.ui-content,
+.recordFailMsg >.ui-content,
+.detailTimeOverMsg >.ui-content,
+.signupTimeOverMsg >.ui-content,
+.manageTimeOverMsg >.ui-content,
+.selectTimeOverMsg >.ui-content,
+.recordTimeOverMsg >.ui-content {
+    padding: 0 !important;
+}
+
+.confirmCancelAddFamily .ui-content>.header,
+.familyErrorMsg .ui-content>.header,
+.cancelFailMsg .ui-content>.header,
+.recordFailMsg .ui-content>.header,
+.detailTimeOverMsg .ui-content>.header,
+.signupTimeOverMsg .ui-content>.header,
+.manageTimeOverMsg .ui-content>.header,
+.selectTimeOverMsg .ui-content>.header,
+.recordTimeOverMsg .ui-content>.header {
+    margin-top: 14%;
+}
+
+.confirmCancelAddFamily .ui-content>.main,
+.familyErrorMsg .ui-content>.main,
+.cancelFailMsg .ui-content>.main,
+.recordFailMsg .ui-content>.main,
+.detailTimeOverMsg .ui-content>.main,
+.signupTimeOverMsg .ui-content>.main,
+.manageTimeOverMsg .ui-content>.main,
+.selectTimeOverMsg .ui-content>.main,
+.recordTimeOverMsg .ui-content>.main {
+    margin-top: 12%;
 }

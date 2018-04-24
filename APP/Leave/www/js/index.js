@@ -10,7 +10,7 @@ var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveSubmit", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar"];
+var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var htmlContent = "";
@@ -42,17 +42,6 @@ var dayTable = {
 window.initialSuccess = function() {
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
-
-    //行事历
-    queryCalendarData = "<LayoutHeader><Year>"
-                      + currentYear
-                      + "</Year><Month>"
-                      + currentMonth
-                      + "</Month><EmpNo>"
-                      + myEmpNo
-                      + "</EmpNo></LayoutHeader>";
-
-    QueryCalendarData();
 
     //默认设置GetDefaultSetting
     if(localStorage.getItem("leaveDefaultSetting") == null) {

@@ -3,13 +3,17 @@ var panel = htmlContent
         +'<div data-role="panel" id="mypanel" data-display="overlay">'
         +   '<div class="ios-fix-overlap-div"></div>'
         +   '<div class="panel-content" id="mypanelviewPersonalLeave">'
-        //+       '<span class="panel-text">個人假勤</span>'
-        +       '<span class="panel-text">' + langStr["str_001"] + '</span>'
-        +   '</div>'
-        +   '<div class="panel-content" id="mypanelviewLeaveSubmit">'
         //+       '<span class="panel-text">請假申請</span>'
         +       '<span class="panel-text">' + langStr["str_002"] + '</span>'
         +   '</div>'
+        +   '<div class="panel-content" id="mypanelviewPersonalLeaveCalendar">'
+        //+       '<span class="panel-text">個人假勤</span>'
+        +       '<span class="panel-text">' + langStr["str_001"] + '</span>'
+        +   '</div>'
+        /*+   '<div class="panel-content" id="mypanelviewLeaveSubmit">'
+        //+       '<span class="panel-text">請假申請</span>'
+        +       '<span class="panel-text">' + langStr["str_002"] + '</span>'
+        +   '</div>'*/
         +   '<div class="panel-content" id="mypanelviewLeaveQuery">'
         //+       '<span class="panel-text">請假單查詢 / 銷假</span>'
         +       '<span class="panel-text">' + langStr["str_003"] + '</span>'
@@ -55,6 +59,10 @@ $(document).one("pagebeforeshow", function() {
 
     $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {
         changePageByPanel("viewHolidayCalendar");
+    });
+
+    $("#mypanel #mypanelviewPersonalLeaveCalendar").on("click", function() {
+        changePageByPanel("viewPersonalLeaveCalendar");
     });
 
     $(".menu-btn .leaveMenu").on("click", function() {

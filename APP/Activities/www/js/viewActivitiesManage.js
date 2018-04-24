@@ -126,7 +126,6 @@ $("#viewActivitiesManage").pagecontainer({
                             }
                         }
 
-
                         //取消報名
                         cancelID = manageObj["ActivitiesID"];
                         cancelActName = manageObj["ActivitiesName"];
@@ -377,6 +376,7 @@ $("#viewActivitiesManage").pagecontainer({
 
         });
 
+
         /********************************** dom event *************************************/
         $("#viewActivitiesManage").keypress(function (event) {
 
@@ -398,8 +398,6 @@ $("#viewActivitiesManage").pagecontainer({
 
         //超時關閉popup，並返回活動列表
         $("#manageTimeOverBtn").on("click", function () {
-            //重新獲取活動列表
-            ActivitiesListQuery();
             pageVisitedList.pop();
             //跳轉
             changePageByPanel("viewActivitiesList", false);
@@ -459,7 +457,6 @@ $("#viewActivitiesManage").pagecontainer({
             $(".cancelSignupMsg .header-title").text(cancelActName);
             $(".cancelSignupMsg .main-paragraph").empty().text(cancelContent);
             popupMsgInit('.cancelSignupMsg');
-
         });
 
         //確定取消報名（所有類型活動）
@@ -468,7 +465,6 @@ $("#viewActivitiesManage").pagecontainer({
             var nowTime = getTimeNow();
             if (nowTime - overTime < 0) {
                 loadingMask("show");
-
                 activitiesSignupCancelQueryData = '<LayoutHeader><ActivitiesID>'
                     + cancelID
                     + '</ActivitiesID><SignupNo>'
@@ -484,13 +480,12 @@ $("#viewActivitiesManage").pagecontainer({
                 ActivitiesSignupCancelQuery(cancelModel);
 
             } else {
-                //超時提示
+                //超時提示，並重新獲取活動列表
                 setTimeout(function () {
                     popupMsgInit('.manageTimeOverMsg');
                 }, 500);
-
+                ActivitiesListQuery();
             }
-
         });
 
 
@@ -522,16 +517,7 @@ $("#viewActivitiesManage").pagecontainer({
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(personManageArr, selfName, selfVal, null, "updatePersonSignup");
             }, 1000);
-
         });
-
-        //失去焦點再次更新欄位值
-        // $(".person-manage-custom-field").on("blur", ".personManageText", function () {
-        //     var selfName = $(this).prev().text();
-        //     var selfVal = $.trim($(this).val());
-        //     //保存栏位值并检查表单
-        //     saveValueAndCheckForm(personManageArr, selfName, selfVal, null, "updatePersonSignup");
-        // });
 
         //checkbox
         $(".person-manage-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -548,7 +534,6 @@ $("#viewActivitiesManage").pagecontainer({
                 saveValueAndCheckForm(personManageArr, name, value, false, "updatePersonSignup");
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
-
         });
 
         //取消個人報名-popup
@@ -561,54 +546,36 @@ $("#viewActivitiesManage").pagecontainer({
         //更改資料
         $("#updatePersonSignup").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
-
             if (!selfClass) {
-                //先判斷是否超時
-                var nowTime = getTimeNow();
-                if (nowTime - overTime < 0) {
-                    loadingMask("show");
-                    //呼叫API前，再次更新欄位值
-                    getTextValueBeforeCall("person", "manage", "personManageText", personManageArr);
+                loadingMask("show");
+                //呼叫API前，再次更新欄位值
+                getTextValueBeforeCall("person", "manage", "personManageText", personManageArr);
 
-                    activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
-                        + cancelID
-                        + '</ActivitiesID><SignupModel>'
-                        + cancelModel
-                        + '</SignupModel><SignupPlaces>'
-                        + submitSignupPlace
-                        + '</SignupPlaces><EmployeeNo>'
-                        + myEmpNo
-                        + '</EmployeeNo><ColumnAnswer_1>'
-                        + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
-                        + '</ColumnAnswer_1><ColumnAnswer_2>'
-                        + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
-                        + '</ColumnAnswer_2><ColumnAnswer_3>'
-                        + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
-                        + '</ColumnAnswer_3><ColumnAnswer_4>'
-                        + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
-                        + '</ColumnAnswer_4><ColumnAnswer_5>'
-                        + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
-                        + '</ColumnAnswer_5></LayoutHeader>';
+                activitiesSignupConfirmQueryData = '<LayoutHeader><ActivitiesID>'
+                    + cancelID
+                    + '</ActivitiesID><SignupModel>'
+                    + cancelModel
+                    + '</SignupModel><SignupPlaces>'
+                    + submitSignupPlace
+                    + '</SignupPlaces><EmployeeNo>'
+                    + myEmpNo
+                    + '</EmployeeNo><ColumnAnswer_1>'
+                    + (personManageArr[0] == undefined ? "" : personManageArr[0]["ColumnAnswer"])
+                    + '</ColumnAnswer_1><ColumnAnswer_2>'
+                    + (personManageArr[1] == undefined ? "" : personManageArr[1]["ColumnAnswer"])
+                    + '</ColumnAnswer_2><ColumnAnswer_3>'
+                    + (personManageArr[2] == undefined ? "" : personManageArr[2]["ColumnAnswer"])
+                    + '</ColumnAnswer_3><ColumnAnswer_4>'
+                    + (personManageArr[3] == undefined ? "" : personManageArr[3]["ColumnAnswer"])
+                    + '</ColumnAnswer_4><ColumnAnswer_5>'
+                    + (personManageArr[4] == undefined ? "" : personManageArr[4]["ColumnAnswer"])
+                    + '</ColumnAnswer_5></LayoutHeader>';
 
-                    //console.log(activitiesSignupConfirmQueryData);
-                    ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
-
-                } else {
-                    //超時提示
-                    popupMsgInit('.manageTimeOverMsg');
-                }
-
+                //console.log(activitiesSignupConfirmQueryData);
+                ActivitiesSignupConfirmQuery(cancelID, cancelModel, "Y");
             }
         });
 
-        //footer fixed定位会因为虚拟键盘展开影响页面大小
-        // $(".person-manage-custom-field").on("focus", "input", function() {
-        //     $("#personManageBtn").hide();
-        // });
-
-        // $(".person-manage-custom-field").on("blur", "input", function() {
-        //     $("#personManageBtn").show();
-        // });
 
         /************************************ Time *************************************/
         //取消時段报名-popup
@@ -624,7 +591,7 @@ $("#viewActivitiesManage").pagecontainer({
         $(".family-manage-custom-field").on("change", ".familyManageSelect select", function () {
             var selfName = $(this).parent().prev().text();
             var selfVal = $(this).val();
-
+            //保存栏位值并检查表单
             saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
         });
 
@@ -642,16 +609,7 @@ $("#viewActivitiesManage").pagecontainer({
                 //保存栏位值并检查表单
                 saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
             }, 1000);
-
         });
-
-        //失去焦點再次更新欄位值
-        // $(".family-manage-custom-field").on("blur", ".familyManageText", function () {
-        //     var selfName = $(this).prev().text();
-        //     var selfVal = $.trim($(this).val());
-        //     //保存栏位值并检查表单
-        //     saveValueAndCheckForm(familyManageFieldArr, selfName, selfVal, null, "manageSelectFamilyBtn");
-        // });
 
         //checkbox
         $(".family-manage-custom-field").on("click", ".custom-field-checkbox > div", function () {
@@ -668,13 +626,11 @@ $("#viewActivitiesManage").pagecontainer({
                 saveValueAndCheckForm(familyManageFieldArr, name, value, false, "manageSelectFamilyBtn");
                 $(this).find("img").attr("src", "img/checkbox_n.png");
             }
-
         });
 
         //眷屬管理
         $("#manageSelectFamilyBtn").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
-
             if (!selfClass) {
                 loadingMask("show");
                 //呼叫API前，再次更新欄位值
@@ -709,7 +665,6 @@ $("#viewActivitiesManage").pagecontainer({
 
                 //console.log(activitiesSignupFamilyQueryData);
                 ActivitiesSignupFamilyQuery(cancelID, cancelModel, "Y", familyManageFieldArr, familyList);
-
             }
         });
 
@@ -720,14 +675,6 @@ $("#viewActivitiesManage").pagecontainer({
             popupMsgInit('.cancelSignupMsg');
         });
 
-        //footer fixed定位会因为虚拟键盘展开影响页面大小
-        // $(".family-manage-custom-field").on("focus", "input", function() {
-        //     $("#familyManageBtn").hide();
-        // });
-
-        // $(".family-manage-custom-field").on("blur", "input", function() {
-        //     $("#familyManageBtn").show();
-        // });
 
     }
 });

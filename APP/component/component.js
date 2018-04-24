@@ -89,6 +89,8 @@ var app = {
             window.MobileAccessibility.usePreferredTextZoom(false);
         }
 
+        cordova.plugins.backgroundMode.setEnabled(true);
+
         //Add Event to Check Network Status
         window.addEventListener("offline", function(e) {
             //review by alan
@@ -333,28 +335,6 @@ $(document).one("pagebeforecreate", function() {
     document.head.appendChild(script);
 
     //According to the data [pageList] which set in index.js ,
-    //add Page JS into index.html
-    $.map(pageList, function(value, key) {
-        (function(pageID) {
-            /*
-            var s = document.createElement("script");
-            s.type = "text/javascript";
-            s.src = "js/" + pageID + ".js";
-            $("head").append(s);
-            */
-
-            var script = document.createElement("script");
-            // onload fires even when script fails loads with an error.
-            //script.onload = onload;
-            // onerror fires for malformed URLs.
-            //script.onerror = onerror;
-            script.type = "text/javascript";
-            script.src = "js/" + pageID + ".js";
-            document.head.appendChild(script);
-        }(value));
-    });
-
-    //According to the data [pageList] which set in index.js ,
     //add View template into index.html
     $.map(pageList, function(value, key) {
         (function(pageID) {
@@ -372,6 +352,31 @@ $(document).one("pagebeforecreate", function() {
             }, "html");
         }(value));
     });
+
+
+    setTimeout(function() {
+        //According to the data [pageList] which set in index.js ,
+        //add Page JS into index.html
+        $.map(pageList, function(value, key) {
+            (function(pageID) {
+                /*
+                var s = document.createElement("script");
+                s.type = "text/javascript";
+                s.src = "js/" + pageID + ".js";
+                $("head").append(s);
+                */
+
+                var script = document.createElement("script");
+                // onload fires even when script fails loads with an error.
+                //script.onload = onload;
+                // onerror fires for malformed URLs.
+                //script.onerror = onerror;
+                script.type = "text/javascript";
+                script.src = "js/" + pageID + ".js";
+                document.head.appendChild(script);
+            }(value));
+        });
+    }, 100);
 
     //For APP scrolling in [Android ver:5], set CSS
     //For font-family, set diff in iOS/Android

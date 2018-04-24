@@ -12,14 +12,13 @@ var appKeyOriginal = "appactivities";
 var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
-//var myEmpNo = "0207379";
-//var myEmpNo = "1501005";
 var pageVisitedList = ["viewActivitiesList"];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var recordArr = [];    //活動記錄列表
 var selectFamilyLimit = 0;    //選擇眷屬的人數限制
 var familyIsSignup;    //眷屬是否報名
-var viewSignupInit = true, viewFamilyInit = true, activityStatus = "", activityModel = "", activityID = "";
+var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
+var activityStatus = "", activityModel = "", activityID = "";
 var overTime = "";
 var myEmpNo = "";
 
@@ -101,6 +100,7 @@ function onBackKeyDown() {
     }
 }
 
+//模擬菜單切換頁面
 function changePageByPanel(pageId, panel) {
     if ($.mobile.activePage[0].id !== pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
@@ -254,7 +254,7 @@ function setTextCustomField(arr, i, id, container, count) {
         + arr[i]["ColumnName"]
         + '</label><input id="' + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" data-role="none" class="' + id + '" value="'
         + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
-        + '"></div>';
+        + '" oncut="return false;" onpaste="return false;" oncontextmenu="return false;"></div>';
 
     $("." + container).append(fieldContent);
 
@@ -273,7 +273,7 @@ function setTextCustomField2(index, arr, i, id, $container, num) {
         + '</label><input id="' + index + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" '
         + 'data-no="' + num + '" data-role="none" class="' + id + '" value="'
         + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
-        + '"></div>';
+        + '" oncut="return false;" onpaste="return false;" oncontextmenu="return false;"></div>';
 
     $container.append(fieldContent);
 }

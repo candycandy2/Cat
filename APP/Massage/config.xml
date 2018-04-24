@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="378" id="com.qplay.appmassagedev" ios-CFBundleVersion="378" version="1.0.0.378[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="419" id="com.qplay.appmassagedev" ios-CFBundleVersion="419" version="1.0.0.419[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Massage</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -45,8 +45,6 @@
     <preference name="SplashScreenDelay" value="0" />
     <preference name="FadeSplashScreen" value="false" />
     <preference name="FadeSplashScreenDuration" value="0" />
-    <engine name="ios" spec="~4.5.4" />
-    <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-connectivity-monitor" spec="~1.2.2" />
     <plugin name="cordova-plugin-device" spec="../../plugins/cordova-plugin-device" />
     <plugin name="cordova-plugin-appversion" spec="../../plugins/cordova-plugin-appversion" />
@@ -67,5 +65,8 @@
     <plugin name="phonegap-plugin-mobile-accessibility" spec="../../plugins/phonegap-plugin-mobile-accessibility" />
     <plugin name="cordova-plugin-splashscreen" spec="../../plugins/cordova-plugin-splashscreen" />
     <plugin name="cordova-plugin-statusbar" spec="../../plugins/cordova-plugin-statusbar" />
+    <plugin name="cordova-plugin-background-mode" spec="../../plugins/cordova-plugin-background-mode" />
     <plugin name="cordova-plugin-inappbrowser" spec="../../plugins/cordova-plugin-inappbrowser" />
+    <engine name="ios" spec="~4.5.4" />
+    <engine name="android" spec="~6.3.0" />
 </widget>

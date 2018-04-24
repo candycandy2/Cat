@@ -68,7 +68,6 @@ $("#viewActivitiesList").pagecontainer({
                 }
 
                 loadingMask("hide");
-
             };
 
             this.failCallback = function (data) { };
@@ -82,15 +81,11 @@ $("#viewActivitiesList").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewActivitiesList").on("pagebeforeshow", function (event, ui) {
-            /**** PullToRefresh ****/
-            PullToRefresh.init({
-                mainElement: '.pull-list',
-                onRefresh: function () {
-                    loadingMask("show");
-                    //重新获取活动列表
-                    ActivitiesListQuery();
-                }
-            });
+            if(viewListInit) {
+                viewListInit = false;
+            } else {
+                ActivitiesListQuery();
+            }
         });
 
 
@@ -102,7 +97,6 @@ $("#viewActivitiesList").pagecontainer({
         //點擊活動列表進入詳情頁
         $("#viewActivitiesContent").on("click", ".activity-list", function (e) {
             loadingMask("show");
-
             var actID = $(this).attr("data-id");
             var actStatus = $(this).attr("data-status");
 

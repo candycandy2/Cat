@@ -24,5 +24,9 @@ Route::group(['prefix' => 'v101/QForum','middleware' => ['api','verify.basic']],
     Route::POST('/deleteComment','CommentController@deleteComment');
     Route::POST('/getBoardTypeList','BoardController@getBoardTypeList');
     Route::POST('/getBoardList','BoardController@getBoardList');
-    Route::POST('/editBoard','BoardController@editBoard');
+    Route::POST('/editBoardInfo','BoardController@editBoardInfo');
+});
+
+Route::group(['prefix' => 'v101/QForum','middleware' => ['api']], function () {
+   Route::GET('/deleteAttachJob','JobController@deleteAttachJob'); 
 });

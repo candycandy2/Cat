@@ -79,6 +79,11 @@ gulp.task('copyAndroidImages', function() {
         .pipe(gulp.dest('platforms/android/res/',{overwrite: true}));
 });
 
+gulp.task('copyAndroidVer7Images', function() {
+    return gulp.src('Images/Launch_icon/android/**/*', {base: 'Images/Launch_icon/android/'})
+        .pipe(gulp.dest('platforms/android/app/src/main/res/',{overwrite: true}));
+});
+
 gulp.task('copyIOSImages', function() {
     return gulp.src('Images/Launch_icon/iOS/AppIcon.appiconset/*')
         .pipe(gulp.dest('platforms/ios/' + process.env.APP_NAME + '/Images.xcassets/AppIcon.appiconset/', { overwrite: true }));

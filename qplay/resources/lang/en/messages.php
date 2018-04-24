@@ -248,6 +248,7 @@ return [
     'VERSION_LOG' => 'Version Log',
     'UPLOAD_TIME' => 'Upload time',
     'VERSION_STATUS' => 'Status',
+    'READY_DATE' => 'Last Published',
     'EDIT_VERSION' => 'Edit Version',
     'FILE_SIZE' => 'File Size',
     'NEW_VERSION'=>'Latest Version',

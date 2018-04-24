@@ -30,6 +30,9 @@ abstract class ResultCode
     const _025928_InvitationNotExist = '025928'; //交友邀請不存在
     const _025929_PrivateChatroomCanNotAddMember = '025929'; //私聊聊天室不可新增成員
     const _025930_CallAPIFailedOrErrorOccurs = '025930'; //調用JMessage API出错
+    const _025931_OnlyAllowPrivateChatToCall = '025931'; //僅允許私聊聊天呼叫
+    const _025932_ChatroomIdExist = '025932'; //聊天室Id已存在
+    const _025933_PrivateChatroomAlreadyExist = '025933'; //私聊聊天室已存在
     const _025998_NoData = "025998";  //查無資料
     const _025999_UnknownError = "025999";  //其他未知錯誤  
 }

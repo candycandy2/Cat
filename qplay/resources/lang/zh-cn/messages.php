@@ -247,6 +247,7 @@ return [
     'VERSION_LOG' => '版本描述',
     'UPLOAD_TIME' => '上传时间',
     'VERSION_STATUS' => '状态',
+    'READY_DATE' => '最近发布时间',
     'EDIT_VERSION' => '修改版本',
     'FILE_SIZE' => '档案大小',
     'NEW_VERSION'=>'最新版本',

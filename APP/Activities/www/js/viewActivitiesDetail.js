@@ -69,10 +69,10 @@ $("#viewActivitiesDetail").pagecontainer({
                         }
 
                     } else {
-                        //超時
+                        //超時，並重新獲取活動列表
                         showBtnByModel("overBtn", isSignup, actModel);
+                        ActivitiesListQuery();
                     }
-
 
                     //處理活動圖片大小
                     $.each($("#detailContent img"), function (index, item) {
@@ -91,7 +91,6 @@ $("#viewActivitiesDetail").pagecontainer({
                 }
 
                 loadingMask("hide");
-
             };
 
             this.failCallback = function (data) { };
@@ -129,7 +128,6 @@ $("#viewActivitiesDetail").pagecontainer({
             }
         }
 
-        
 
         /********************************** page event *************************************/
         $("#viewActivitiesDetail").on("pagebeforeshow", function (event, ui) {
@@ -146,7 +144,7 @@ $("#viewActivitiesDetail").pagecontainer({
                     $("#signupSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
                 }
 
-                //修改成功
+            //修改成功
             } else if (activityStatus == "N") {
                 if (activityModel == "3") {
                     $(".finishedFamilySignup .header-text").text(langStr["str_018"]);
@@ -155,14 +153,14 @@ $("#viewActivitiesDetail").pagecontainer({
                     $("#updateSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
                 }
 
-                //取消成功
+            //取消成功
             } else if (activityStatus == "C") {
                 $("#cancelSuccessMsg").fadeIn(100).delay(2000).fadeOut(100);
             }
 
             activityStatus = "";
-
         });
+
 
         /********************************** dom event *************************************/
         $("#viewActivitiesDetail").keypress(function (event) {
@@ -174,10 +172,14 @@ $("#viewActivitiesDetail").pagecontainer({
             changePageByPanel("viewActivitiesList", false);
         });
 
+        //超時關閉popup，並返回活動列表
+        $("#detailTimeOverBtn").on("click", function () {
+            changePageByPanel("viewActivitiesList", false);
+        });
+
         //點擊 "開始報名" 跳轉到編輯頁
         $(".detail-signup-btn").on("click", function () {
             var selfClass = $(this).hasClass("btn-disabled");
-
             if (!selfClass) {
                 //先判斷是否超時
                 var nowTime = getTimeNow();
@@ -198,25 +200,22 @@ $("#viewActivitiesDetail").pagecontainer({
 
                         //console.log(activitiesSignupQueryData);
                         ActivitiesSignupQuery(actModel);
-
                     }
-
                 } else {
-                    //超時提示
+                    //超時提示，並重新獲取活動列表
                     popupMsgInit('.detailTimeOverMsg');
+                    ActivitiesListQuery();
                 }
-
             }
-
         });
 
         //點擊 "報名管理" 跳轉到編輯頁
         $(".detail-manage-btn").on("click", function () {
-            loadingMask("show");
-
             //先判斷是否超時
             var nowTime = getTimeNow();
             if (nowTime - overTime < 0) {
+                loadingMask("show");
+
                 activitiesSignupManageQueryData = '<LayoutHeader><ActivitiesID>'
                     + actID
                     + '</ActivitiesID><SignupModel>'
@@ -229,18 +228,10 @@ $("#viewActivitiesDetail").pagecontainer({
                 ActivitiesSignupManageQuery(actModel, isFull);
 
             } else {
-                //超時提示
+                //超時提示，並重新獲取活動列表
                 popupMsgInit('.detailTimeOverMsg');
+                ActivitiesListQuery();
             }
-
-        });
-
-        //超時關閉popup，並返回活動列表
-        $("#detailTimeOverBtn").on("click", function () {
-            //如果已額滿，重新獲取活動列表
-            ActivitiesListQuery();
-            //跳轉
-            changePageByPanel("viewActivitiesList", false);
         });
 
 

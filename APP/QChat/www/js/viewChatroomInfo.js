@@ -68,15 +68,17 @@ $("#viewChatroomInfo").pagecontainer({
         };
 
         window.chatroomMemberListViewAvatar = function(listViewIndex, avatarPath) {
+            /*
             $("#chatroomMemberList" + listViewIndex).find(".img-content svg").hide();
             $("#chatroomMemberList" + listViewIndex).find(".img-content img").prop("src", avatarPath);
             $("#chatroomMemberList" + listViewIndex).find(".img-content img").show();
+            */
+            window.checkImageExist(avatarPath, "#chatroomMemberList" + listViewIndex, ".img-content");
         };
 
-        window.setQChatroom = function(chatroomID, action, name, pageID) {
-            pageID = pageID || null;
+        window.updateGroupInfo = function(chatroomID, action, name) {
 
-            (function(chatroomID, action, name, pageID) {
+            (function(chatroomID, action, name) {
 
                 //define desc
                 var desc = "";
@@ -106,10 +108,51 @@ $("#viewChatroomInfo").pagecontainer({
                 //Max length of name is 32
                 var chatroomName = name.substr(0, 31);
 
+                var callback = function(status) {
+
+                    if (status === "success") {
+                        JM.data.chatroom[chatroomID].name = chatroomName;
+
+                        if (need_history === "Y") {
+                            JM.data.chatroom[chatroomID].need_history = true;
+                        } else {
+                            JM.data.chatroom[chatroomID].need_history = false;
+                        }
+
+                        if (name_changed === "Y") {
+                            JM.data.chatroom[chatroomID].name_changed = true;
+                        } else {
+                            JM.data.chatroom[chatroomID].name_changed = false;
+                        }
+
+                        JM.updateLocalStorage();
+
+                        if (action === "name") {
+                            $("#viewChatroomInfoContent .chatroom-info-name").html(cutString(63, JM.data.chatroom[chatroomID].name, 4.18, "number", JM.data.chatroom[chatroomID].member.length));
+                            $.mobile.changePage('#viewChatroomInfo');
+                        }
+
+                        loadingMask("hide");
+
+                        setQChatroom(chatroomID, chatroomName, desc);
+                    }
+
+                };
+
+                JM.Chatroom.updateGroupInfo(chatroomID, chatroomName, desc, callback);
+
+            }(chatroomID, action, name));
+
+        };
+
+        function setQChatroom(chatroomID, name, desc) {
+
+            (function(chatroomID, name, desc) {
+
                 var queryDataObj = {
                     emp_no: loginData["emp_no"],
                     group_id: chatroomID,
-                    chatroom_name: chatroomName,
+                    chatroom_name: name,
                     chatroom_desc: desc
                 };
 
@@ -121,36 +164,6 @@ $("#viewChatroomInfo").pagecontainer({
 
                     if (resultCode === "1") {
 
-                        var callback = function(data) {
-                            JM.data.chatroom[data.id].name = data.name;
-
-                            var descArray = data.desc.split(";");
-
-                            //Check if Chatroom need auto read history
-                            var needHistory;
-                            var needHistoryArray = descArray[0].split("=");
-                            if (needHistoryArray[1] === "Y") {
-                                needHistory = true;
-                            } else {
-                                needHistory = false;
-                            }
-
-                            JM.data.chatroom[data.id].need_history = needHistory;
-                            JM.updateLocalStorage();
-
-                            $("#viewChatroomInfoContent .chatroom-info-name").html(cutString(63, JM.data.chatroom[chatroomID].name, 4.18, "number", JM.data.chatroom[chatroomID].member.length));
-                        };
-
-                        window.getGroupInfo("viewChatroomInfo", chatroomID, callback);
-
-                        if (pageID != "viewIndex") {
-                            $.mobile.changePage('#viewChatroomInfo');
-                        } else {
-                            window.getGroupInfo("viewChatroomInfo", chatroomID, callback);
-                        }
-
-                        loadingMask("hide");
-
                     }
                 };
 
@@ -158,8 +171,8 @@ $("#viewChatroomInfo").pagecontainer({
 
                 CustomAPI("POST", true, "setQChatroom", successCallback, failCallback, queryData, "");
 
-            }(chatroomID, action, name, pageID));
-        };
+            }(chatroomID, name, desc));
+        }
 
         window.getGroupInfo = function(action, groupID, callback) {
             (function(action, groupID, callback) {
@@ -181,7 +194,7 @@ $("#viewChatroomInfo").pagecontainer({
             }(action, groupID, callback));
         };
 
-        function removeQMember(action) {
+        window.removeQMember = function(action) {
             (function(action) {
 
                 loadingMask("show");
@@ -196,42 +209,34 @@ $("#viewChatroomInfo").pagecontainer({
                 var tempDataObj = {
                     destination_emp_no: JM.data.chatroom_user[removeMemberName].emp_no
                 };
+
                 var memberList = createXMLDataString(tempDataObj);
                 var memberListParameter = "<member_list>" + memberList + "</member_list>";
 
                 var queryData = "<LayoutHeader>" + queryDataParameter + memberListParameter + "</LayoutHeader>";
 
                 if (action === "exit") {
-                    window.sendTextMessage(loginData["loginid"] + "離開聊天室踢除", true, "memberEvent");
+
+                    delete JM.data.chatroom[nowChatroomID];
+                    delete JM.data.chatroom_message_history[nowChatroomID];
+                    JM.updateLocalStorage();
+
+                } else if (action === "remove") {
+                    window.sendTextMessage(nowChatroomID, loginData["loginid"] + "將" + removeMemberName + "從聊天室踢除", true, "memberRemove");
+                    window.getGroupMembers(nowChatroomID, JM.data.chatroom[nowChatroomID].is_group, "chatroomInfo");
                 }
 
                 var successCallback = function(data) {
                     var resultCode = data['ResultCode'];
 
                     if (resultCode === "1") {
-                        setTimeout(function(){
 
-                            if (action === "remove") {
-                                window.sendTextMessage(nowChatroomID, loginData["loginid"] + "將" + removeMemberName + "從聊天室踢除", true, "memberEvent");
-                                window.getGroupMembers(nowChatroomID, JM.data.chatroom[nowChatroomID].is_group, "chatroomInfo");
-                            } else if (action === "exit") {
-                                delete JM.data.chatroom[nowChatroomID];
-                                delete JM.data.chatroom_message_history[nowChatroomID];
-                                JM.updateLocalStorage();
+                        loadingMask("hide");
 
-                                //window.getConversations();
-                                $.mobile.changePage('#viewIndex');
-                            }
+                        if (action === "exit") {
+                            $.mobile.changePage('#viewIndex');
+                        }
 
-                            loadingMask("hide");
-
-                        }, 1000);
-                    } else {
-                        var callback = function(parameter) {
-                            removeQMember(parameter);
-                        };
-
-                        window.handleAPIError(APIName, resultCode, callback, action);
                     }
                 };
 
@@ -240,7 +245,7 @@ $("#viewChatroomInfo").pagecontainer({
                 CustomAPI("POST", true, "removeQMember", successCallback, failCallback, queryData, "");
 
             }(action));
-        }
+        };
 
         /********************************** page event *************************************/
         $("#viewChatroomInfo").one("pagebeforeshow", function(event, ui) {
@@ -288,7 +293,7 @@ $("#viewChatroomInfo").pagecontainer({
 
                 JM.updateLocalStorage();
 
-                window.setQChatroom(nowChatroomID, "auto_history", JM.data.chatroom[nowChatroomID].name);
+                window.updateGroupInfo(nowChatroomID, "auto_history", JM.data.chatroom[nowChatroomID].name);
             }
         }, "#autoHistorySwitch");
 
@@ -321,15 +326,25 @@ $("#viewChatroomInfo").pagecontainer({
         $(document).on({
             click: function(event) {
 
-                if ($(event.target).hasClass("cancel") || $(event.target).parent().hasClass("cancel")) {
-                    $("#removeMemberConfirm").popup("close");
-                } else if ($(event.target).hasClass("confirm") || $(event.target).parent().hasClass("confirm")) {
-                    $("#removeMemberConfirm").popup("close");
+                (function(event) {
+                    if ($(event.target).hasClass("cancel") || $(event.target).parent().hasClass("cancel")) {
+                        $("#removeMemberConfirm").popup("close");
+                    } else if ($(event.target).hasClass("confirm") || $(event.target).parent().hasClass("confirm")) {
+                        $("#removeMemberConfirm").popup("close");
 
-                    removeQMember("remove");
-                }
+                        var callback = function(status) {
+                            if (status === "success") {
 
-                footerFixed();
+                                removeQMember("remove");
+
+                            }
+                        };
+
+                        JM.Chatroom.removeGroupMembers(nowChatroomID, [removeMemberName], callback);
+                    }
+
+                    footerFixed();
+                }(event));
 
             }
         }, "#removeMemberConfirm");
@@ -344,16 +359,32 @@ $("#viewChatroomInfo").pagecontainer({
         $(document).on({
             click: function(event) {
 
-                if ($(event.target).hasClass("cancel") || $(event.target).parent().hasClass("cancel")) {
-                    $("#exitChatroomConfirm").popup("close");
-                } else if ($(event.target).hasClass("confirm") || $(event.target).parent().hasClass("confirm")) {
-                    $("#exitChatroomConfirm").popup("close");
+                (function(event) {
+                    if ($(event.target).hasClass("cancel") || $(event.target).parent().hasClass("cancel")) {
+                        $("#exitChatroomConfirm").popup("close");
+                    } else if ($(event.target).hasClass("confirm") || $(event.target).parent().hasClass("confirm")) {
+                        $("#exitChatroomConfirm").popup("close");
 
-                    removeMemberName = loginData["loginid"];
-                    removeQMember("exit");
-                }
+                        removeMemberName = loginData["loginid"];
 
-                footerFixed();
+                        var callback = function(status) {
+                            if (status === "success") {
+
+                                removeQMember("exit");
+
+                            }
+                        };
+
+                        window.sendTextMessage(nowChatroomID, loginData["loginid"] + "離開聊天室", true, "memberLeave");
+
+                        setTimeout(function(){
+                            JM.Chatroom.exitGroup(nowChatroomID, callback);
+                        }, 3000);
+
+                    }
+
+                    footerFixed();
+                }(event));
 
             }
         }, "#exitChatroomConfirm");

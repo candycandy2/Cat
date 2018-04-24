@@ -213,6 +213,7 @@ input[type=checkbox]:checked + label {
 
 .chatroom-list .group-content {
     width: 58.5vw;
+    height: 7.5vw;
 }
 
 .chatroom-list .group-name {
@@ -227,6 +228,7 @@ input[type=checkbox]:checked + label {
 
 .chatroom-list .count-message {
     width: 16.218vw;
+    height: 4.5vw;
     text-align: right;
     padding-top: 2%;
 }
@@ -574,6 +576,10 @@ input[type=checkbox]:checked + label {
     border-bottom: none;
 }
 
+#chatroomAction {
+    height: 10vw;
+}
+
 .chatroom-action-content {
     margin-top: 2.3vw;
     margin-left: 39vw;
@@ -852,6 +858,10 @@ input[type=checkbox]:checked + label {
     height: 8.051vw;
 }
 
+.msg-link {
+    word-wrap: break-word;
+}
+
 #viewChatroomContent .msg {
     margin-bottom: 4.3vw;
     clear: both;
@@ -951,6 +961,10 @@ input[type=checkbox]:checked + label {
 
 .chatroom-info-list .left, .chatroom-info-list .right {
     float: left;
+}
+
+.personal-avatar {
+    margin-bottom: 3vw;
 }
 
 .chatroom-info-photo-content {

@@ -204,14 +204,14 @@ function Calendar(options) {
         });
 
         var $currMonthCell = $('<div id="dateTitle"></div>').append($currMonthLabel);
-        var $prevMonthNav = $('<span class="calendar-month-navigation"></span>');
-        var $nextMonthNav = $('<span class="calendar-month-navigation"></span>');
+        var $prevMonthNav = $('<span class="calendar-month-navigation"><img src="img/pre.png" id="left-navigation" class="nav_icon"></span>');
+        var $nextMonthNav = $('<span class="calendar-month-navigation"><img src="img/next.png" id="right-navigation" class="nav_icon"></span>');
         if (typeof(navIcons) === 'object') {
             if ('prev' in navIcons) {
-                $prevMonthNav.html(navIcons.prev);
+                //$prevMonthNav.html(navIcons.prev);
             }
             if ('next' in navIcons) {
-                $nextMonthNav.html(navIcons.next);
+                //$nextMonthNav.html(navIcons.next);
             }
         }
 
