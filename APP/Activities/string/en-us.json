@@ -233,7 +233,7 @@
   },
   {
     "term": "str_030",
-    "definition": "OK to call off ?",
+    "definition": "Your Reservation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "str_045",
-    "definition": "Cancel",
+    "definition": "Remove",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -361,7 +361,7 @@
   },
   {
     "term": "str_046",
-    "definition": "Don't cancel",
+    "definition": "Keep",
     "context": "",
     "term_plural": "",
     "reference": "",
