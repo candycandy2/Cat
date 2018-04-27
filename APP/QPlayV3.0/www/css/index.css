@@ -72,6 +72,31 @@
     word-wrap: break-word !important;
 }
 
+.ui-btn-word {
+    display: none;
+    text-decoration: none;
+}
+
+.ui-btn-word:link {
+    color: #FFFFFF;
+}
+
+.ui-btn-word:visited {
+    color: #FFFFFF;
+}
+
+.ui-btn-word:hover {
+    color: #FFFFFF;
+}
+
+.ui-btn-word:active {
+    color: #FFFFFF;
+}
+
+.btn-header-word {
+    width: 10vw;
+}
+
 .event-list-content.ui-content .ui-listview,
 .event-list-content.ui-panel-inner>.ui-listview {
     margin: 0;
@@ -395,6 +420,13 @@ input[type=radio]:checked + label {
     margin-right: 3.7vw;
 }
 
+.detail-img-style-big {
+    float: left;
+    width: 80vw;
+    height: 80vh;
+    margin-right: 3.7vw;
+}
+
 #viewAppDetail2-2 .page-main {
     background-color: #FFF;
 }
@@ -406,6 +438,23 @@ input[type=radio]:checked + label {
 #viewAppDetail2-2 .bottom {
     clear: both;
     padding: 4vh 3.7vw 6.5vh;
+}
+
+#viewAppDetail2-2 .fix {
+    display: none;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: lightgray;
+}
+
+#viewAppDetail2-2 .fix > div {
+    margin: 20vw 5vw;
+    width: 90%;
+    height: 80vh;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* message list / detail */
