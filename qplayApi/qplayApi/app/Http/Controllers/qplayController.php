@@ -1157,7 +1157,7 @@ class qplayController extends Controller
                     $sql = <<<SQL
 select distinct h.row_id as app_id, p.project_code as app_code,
 h.package_name, c.row_id as category_id, c.app_category, lan.lang_code,
-v.version_code as version, v.version_name,
+v.version_code as version, v.version_log, v.version_name,
 h.security_level,h.avg_score_ios, h.avg_score_android, us.score as user_score,
 h.sequence, v.url, h.icon_url, v.external_app, v.size
 from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id

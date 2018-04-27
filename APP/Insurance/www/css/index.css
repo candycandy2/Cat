@@ -974,6 +974,19 @@ div.scrollmenu a {
     line-height: 10vw;
 }
 
+.family-insur-apply-div {
+    margin-top: 10vw;
+    color:#2e89bc;
+    display: flex;
+    margin-left: 25vw;
+}
+
+.addInsuranceImg { 
+    margin-right: 3.2vw; 
+    align-self:center; 
+    width: 13%;
+}
+
 .family-input {
     width: 56.391vw;
     height: 9.661vw;
