@@ -1,12 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="161" id="com.qplay.appactivitiesdev" ios-CFBundleVersion="161" version="1.0.0.161[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Activities</name>
+<widget android-versionCode="909" id="com.qplay.appqplaydev" ios-CFBundleVersion="909" version="1.0.0.909[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>QPlay</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
     <content src="index.html" />
     <preference name="orientation" value="portrait" />
     <access origin="*" />
-    <access launch-external="yes" origin="tel:*" />
     <allow-navigation href="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -14,8 +13,48 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <allow-intent href="appqplaydev:*" />
-    <allow-intent href="*:*" />
+    <allow-intent href="appyellowpagedev:*" />
+    <allow-intent href="apprrsdev:*" />
+    <allow-intent href="appeisdev:*" />
+    <allow-intent href="appcalendardev:*" />
+    <allow-intent href="appensdev:*" />
+    <allow-intent href="appaccountingratedev:*" />
+    <allow-intent href="appleavedev:*" />
+    <allow-intent href="apprelievedev:*" />
+    <allow-intent href="appmasdev:*" />
+    <allow-intent href="appimdev:*" />
+    <allow-intent href="appcmdev:*" />
+    <allow-intent href="appcmtwodev:*" />
+    <allow-intent href="appeagledev:*" />
+    <allow-intent href="appbadmintondev:*" />
+    <allow-intent href="appqisdaeisdev:*" />
+    <allow-intent href="appqchatdev:*" />
+    <allow-intent href="apprmdev:*" />
+    <allow-intent href="appmassagedev:*" />
+    <allow-intent href="appparkingdev:*" />
+    <allow-intent href="appactivitiesdev:*" />
+    <allow-intent href="appinsurancedev:*" />
+    <allow-intent href="appscheme01dev:*" />
+    <allow-intent href="appscheme02dev:*" />
+    <allow-intent href="appscheme03dev:*" />
+    <allow-intent href="appscheme04dev:*" />
+    <allow-intent href="appscheme05dev:*" />
+    <allow-intent href="appscheme06dev:*" />
+    <allow-intent href="appscheme07dev:*" />
+    <allow-intent href="appscheme08dev:*" />
+    <allow-intent href="appscheme09dev:*" />
+    <allow-intent href="appscheme10dev:*" />
+    <allow-intent href="appscheme11dev:*" />
+    <allow-intent href="appscheme12dev:*" />
+    <allow-intent href="appscheme13dev:*" />
+    <allow-intent href="appscheme14dev:*" />
+    <allow-intent href="appscheme15dev:*" />
+    <allow-intent href="appscheme16dev:*" />
+    <allow-intent href="appscheme17dev:*" />
+    <allow-intent href="appscheme18dev:*" />
+    <allow-intent href="appscheme19dev:*" />
+    <allow-intent href="appscheme20dev:*" />
+    <allow-intent href="qisdasesm:*" />
     <platform name="android">
         <allow-intent href="market:*" />
         <preference name="AndroidLaunchMode" value="singleTask" />
@@ -29,9 +68,13 @@
         <splash density="port-xhdpi" src="res/screen/android/splash-port-xhdpi.png" />
     </platform>
     <platform name="ios">
+        <preference name="BackupWebStorage" value="local" />
         <hook src="hooks/xcode8.js" type="before_compile" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
+        <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+            <string>your custom text here</string>
+        </edit-config>
         <splash src="res/screen/ios/Default@2x~iphone~anyany.png" />
         <splash src="res/screen/ios/Default@2x~iphone~comany.png" />
         <splash src="res/screen/ios/Default@2x~iphone~comcom.png" />
@@ -45,27 +88,35 @@
     <preference name="SplashScreenDelay" value="0" />
     <preference name="FadeSplashScreen" value="false" />
     <preference name="FadeSplashScreenDuration" value="0" />
-    <engine name="ios" spec="~4.5.4" />
-    <engine name="android" spec="~6.3.0" />
-    <plugin name="cordova-connectivity-monitor" spec="~1.2.2" />
+    <plugin name="cordova-plugin-qlogin" spec="../../plugins/cordova-plugin-qlogin">
+        <variable name="LOGIN_URL" value="https://qplaydev.benq.com/qplayApi/public/qplayauth_register" />
+    </plugin>
+    <plugin name="cordova-plugin-qpush" spec="../../plugins/cordova-plugin-qpush">
+        <variable name="API_KEY" value="e343504d536ebce16b70167e" />
+    </plugin>
     <plugin name="cordova-plugin-device" spec="../../plugins/cordova-plugin-device" />
     <plugin name="cordova-plugin-appversion" spec="../../plugins/cordova-plugin-appversion" />
-    <plugin name="cordova-plugin-app-update" spec="../../plugins/cordova-plugin-app-update" />
-    <plugin name="cordova-plugin-android-permissions" spec="../../plugins/cordova-plugin-android-permissions" />
     <plugin name="cordova-plugin-customurlscheme" spec="../../plugins/cordova-plugin-customurlscheme">
-        <variable name="URL_SCHEME" value="appactivitiesdev" />
+        <variable name="URL_SCHEME" value="appqplaydev" />
         <variable name="ANDROID_SCHEME" value=" " />
         <variable name="ANDROID_HOST" value=" " />
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
     <plugin name="cordova-plugin-qsecurity" spec="../../plugins/cordova-plugin-qsecurity">
-        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appactivitiesdev&lt;/string&gt;" />
+        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appyellowpagedev&lt;/string&gt;&lt;string&gt;appcalendardev&lt;/string&gt;&lt;string&gt;apprrsdev&lt;/string&gt;&lt;string&gt;appaccountingratedev&lt;/string&gt;&lt;string&gt;appensdev&lt;/string&gt;&lt;string&gt;appeisdev&lt;/string&gt;&lt;string&gt;appleavedev&lt;/string&gt;&lt;string&gt;apprelievedev&lt;/string&gt;&lt;string&gt;appmasdev&lt;/string&gt;&lt;string&gt;appimdev&lt;/string&gt;&lt;string&gt;appcmdev&lt;/string&gt;&lt;string&gt;appcmtwodev&lt;/string&gt;&lt;string&gt;appeagledev&lt;/string&gt;&lt;string&gt;appbadmintondev&lt;/string&gt;&lt;string&gt;appqisdaeisdev&lt;/string&gt;&lt;string&gt;appqchatdev&lt;/string&gt;&lt;string&gt;apprmdev&lt;/string&gt;&lt;string&gt;appmassagedev&lt;/string&gt;&lt;string&gt;appparkingdev&lt;/string&gt;&lt;string&gt;appactivitiesdev&lt;/string&gt;&lt;string&gt;appinsurancedev&lt;/string&gt;&lt;string&gt;appscheme01dev&lt;/string&gt;&lt;string&gt;appscheme02dev&lt;/string&gt;&lt;string&gt;appscheme03dev&lt;/string&gt;&lt;string&gt;appscheme04dev&lt;/string&gt;&lt;string&gt;appscheme05dev&lt;/string&gt;&lt;string&gt;appscheme06dev&lt;/string&gt;&lt;string&gt;appscheme07dev&lt;/string&gt;&lt;string&gt;appscheme08dev&lt;/string&gt;&lt;string&gt;appscheme09dev&lt;/string&gt;&lt;string&gt;appscheme10dev&lt;/string&gt;&lt;string&gt;appscheme11dev&lt;/string&gt;&lt;string&gt;appscheme12dev&lt;/string&gt;&lt;string&gt;appscheme13dev&lt;/string&gt;&lt;string&gt;appscheme14dev&lt;/string&gt;&lt;string&gt;appscheme15dev&lt;/string&gt;&lt;string&gt;appscheme16dev&lt;/string&gt;&lt;string&gt;appscheme17dev&lt;/string&gt;&lt;string&gt;appscheme18dev&lt;/string&gt;&lt;string&gt;appscheme19dev&lt;/string&gt;&lt;string&gt;appscheme20dev&lt;/string&gt;&lt;string&gt;qisdasesm&lt;/string&gt;" />
     </plugin>
+    <plugin name="cordova-plugin-app-update" spec="../../plugins/cordova-plugin-app-update" />
+    <plugin name="cordova-plugin-android-permissions" spec="../../plugins/cordova-plugin-android-permissions" />
     <plugin name="cordova-plugin-whitelist" spec="../../plugins/cordova-plugin-whitelist" />
+    <plugin name="cordova-plugin-inappbrowser" spec="../../plugins/cordova-plugin-inappbrowser" />
     <plugin name="cordova-plugin-proguard" spec="../../plugins/cordova-plugin-proguard" />
     <plugin name="cordova-plugin-network-information" spec="../../plugins/cordova-plugin-network-information" />
     <plugin name="phonegap-plugin-mobile-accessibility" spec="../../plugins/phonegap-plugin-mobile-accessibility" />
+    <plugin name="cordova-plugin-geolocation" spec="../../plugins/cordova-plugin-geolocation" />
     <plugin name="cordova-plugin-splashscreen" spec="../../plugins/cordova-plugin-splashscreen" />
     <plugin name="cordova-plugin-statusbar" spec="../../plugins/cordova-plugin-statusbar" />
-    <plugin name="cordova-plugin-inappbrowser" spec="../../plugins/cordova-plugin-inappbrowser" />
+    <plugin name="cordova-plugin-background-mode" spec="../../plugins/cordova-plugin-background-mode" />
+    <plugin name="cordova-plugin-appavailability" spec="../../plugins/cordova-plugin-appavailability" />
+    <engine name="ios" spec="~4.5.4" />
+    <engine name="android" spec="~6.3.0" />
 </widget>
