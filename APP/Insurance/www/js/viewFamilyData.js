@@ -47,7 +47,7 @@ $("#viewFamilyData").pagecontainer({
                     //replace familyArr.content[i] to familyArr[i]
                     var ageDate = new Date(Date.now() - new Date(familyArr.content[i]["birthday"]).getTime()); 
                     var familyAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-                    familyList += '<div class="family-list"><div class="font-style10 font-color2" data-id="'
+                    familyList += '<div class="family-list"><div class="font-style7 font-color2" data-id="'
                         + familyArr.content[i]["family_id"]
                         + '"><div><span>'
                         + familyArr.content[i]["name"]
