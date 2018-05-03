@@ -342,7 +342,7 @@ pre {
 }
 
 #insurance-main .health-insurance-content{ background-color: #ffffff;}
-#insurance-main .health-insurance-list{ background-color: #ffffff; color:#323232;}
+#insurance-main .health-insurance-list, #insurance-ownpaid .ownpaid-insurance-list{ background-color: #ffffff; color:#323232;}
 
 .insurance-main-title { color:#0F0F0F; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
 .labor-insurance-remark  { color:#666666; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
@@ -927,6 +927,8 @@ div.scrollmenu a {
     height: 10vw;
     padding-top: 3.5vw;
 }
+
+.empty-list {padding: 3vw 6.71vw;}
 
 .family-edit {
     width: 6.2vw;
