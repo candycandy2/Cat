@@ -218,6 +218,8 @@ $("#viewFamilyData").pagecontainer({
             } else {
                 $("#viewFamilyList").show();
             }
+            $(".family-list-title").show();         
+            $(".family-add-title").hide();
             $(".family-cancle-btn").hide();
             $(".family-edit-btn").show(); 
             $(".family-delete").hide();

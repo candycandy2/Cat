@@ -846,5 +846,37 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "str_107",
+    "definition": "個人保險現況",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_108",
+    "definition": "*自費保險加保、退保，請至保險網申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_109",
+    "definition": "自費一般險(南山)",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_110",
+    "definition": "自費意外險(南山)",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]
