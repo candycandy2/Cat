@@ -1140,7 +1140,7 @@ class qplayController extends Controller
                     $companyAppIdStr = substr($companyAppIdStr, 0, strlen($companyAppIdStr) - 1);
                     $companyAppIdStr = rtrim($companyAppIdStr, ',');
                     $companyAppIdStr = ltrim($companyAppIdStr, ',');
-                    $sql = "select distinct h.row_id as app_id, p.project_code as app_code, h.package_name, c.row_id as category_id, c.app_category, lan.lang_code, v.version_code as version, v.version_name, h.security_level, h.avg_score, us.score as user_score, h.sequence, v.url, h.icon_url, v.external_app, v.size from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id left join qp_user_score us on us.app_head_row_id = h.row_id and us.user_row_id = "
+                    $sql = "select distinct h.row_id as app_id, p.project_code as app_code, h.package_name, c.row_id as category_id, c.app_category, lan.lang_code, v.version_code as version, v.version_name, v.version_log, h.security_level, h.avg_score_ios, h.avg_score_android, us.score as user_score, h.sequence, v.url, h.icon_url, v.external_app, v.size from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id left join qp_user_score us on us.app_head_row_id = h.row_id and us.user_row_id = "
                         . $userInfo->row_id
                         . " left join qp_project p on h.project_row_id = p.row_id left join qp_language lan on h.default_lang_row_id = lan.row_id left join qp_app_category c on h.app_category_row_id = c.row_id left join qp_app_version v on v.app_row_id = h.row_id and v.device_type = '"
                         . $device_type
@@ -1158,7 +1158,7 @@ class qplayController extends Controller
 select distinct h.row_id as app_id, p.project_code as app_code,
 h.package_name, c.row_id as category_id, c.app_category, lan.lang_code,
 v.version_code as version, v.version_name,
-h.security_level,h.avg_score, us.score as user_score,
+h.security_level,h.avg_score_ios, h.avg_score_android, us.score as user_score,
 h.sequence, v.url, h.icon_url, v.external_app, v.size
 from qp_app_head h left join qp_app_line l on l.app_row_id = h.row_id
 left join qp_user_score us on us.app_head_row_id = h.row_id and us.user_row_id = :id3
@@ -1205,8 +1205,10 @@ SQL;
                         'default_lang'=>$appData->lang_code,
                         'app_version'=>$appData->version,
                         'app_version_name'=>$appData->version_name,
+                        'app_version_log'=>$appData->version_log,
                         'security_level'=>$appData->security_level,
-                        'avg_score'=>$appData->avg_score,
+                        'avg_score_ios'=>$appData->avg_score_ios,
+                        'avg_score_android'=>$appData->avg_score_android,
                         'user_score'=>$appData->user_score,
                         'sequence'=>$appData->sequence,
                         'url'=>$appUrl,
