@@ -47,7 +47,7 @@ $("#viewFamilyData").pagecontainer({
                     //replace familyArr.content[i] to familyArr[i]
                     var ageDate = new Date(Date.now() - new Date(familyArr.content[i]["birthday"]).getTime()); 
                     var familyAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-                    familyList += '<div class="family-list"><div class="font-style10 font-color2" data-id="'
+                    familyList += '<div class="family-list"><div class="font-style7 font-color2" data-id="'
                         + familyArr.content[i]["family_id"]
                         + '"><div><span>'
                         + familyArr.content[i]["name"]
@@ -218,8 +218,12 @@ $("#viewFamilyData").pagecontainer({
             } else {
                 $("#viewFamilyList").show();
             }
+            $(".family-list-title").show();         
+            $(".family-add-title").hide();
             $(".family-cancle-btn").hide();
-            $(".family-edit-btn").show();  
+            $(".family-edit-btn").show(); 
+            $(".family-delete").hide();
+            $(".family-edit").show();
             $(".family-add-img").show();
         }
 
@@ -238,6 +242,11 @@ $("#viewFamilyData").pagecontainer({
             $(".family-add-title").show();
             $(".family-save-btn").show();
             $("#viewFamilyEdit").show();
+            if (addFamilyOrNot == true) {
+                $(".family-insur-apply-div").hide();
+            } else {
+                $(".family-insur-apply-div").show();
+            }
         }
 
         //檢查輸入眷屬資料是否有誤
@@ -396,9 +405,9 @@ $("#viewFamilyData").pagecontainer({
 
         //添加眷屬，跳轉到編輯頁
         $(".family-add-img").on("click", function () {
-            clearFormByFamily();
-            changeViewToDetail();
             addFamilyOrNot = true;
+            clearFormByFamily();
+            changeViewToDetail();            
             checkFormByFamily();
             $("#familyInsurName").removeAttr("readonly");
             $("#familyInsurName").css("background", "#f9f9f9");
@@ -442,8 +451,8 @@ $("#viewFamilyData").pagecontainer({
 
             //2.跳轉
             familyInsurName = $(this).parent().siblings().find('span:nth-child(1)').text();
-            changeViewToDetail();
             addFamilyOrNot = false;
+            changeViewToDetail();          
             $(".confirmCancelEditFamily .main-paragraph").text(familyInsurName);
             checkFormByFamily();
         });

@@ -1,0 +1,202 @@
+<!-- Start of news list page UI 2-3 -->
+<div data-role="page" id="viewNewsEvents2-3">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="ui-header page-header">
+        <div class="header-style"><h1 class="ui-title">&nbsp;</h1></div>
+        <a href="#" data-role="none" class="event-type">
+            <div class="q-btn-header" style="width: 5.957vw;">
+                <img src="img/nav_humb.png" width="100%" height="100%">
+            </div>
+        </a>
+        <a href="#" data-role="none" class="ui-btn-right" style="display:none; text-decoration:none; color:#FFFFFF;" id="deleteMessage">
+            <div class="q-btn-header">
+                <img id="deleteImg" src="img/component/delete_nav.png" width="100%" height="100%">
+            </div>
+            <span id="deleteStr">
+                <!--取消-->
+                <span class="langStr" data-id="str_038"></span>
+            </span>
+        </a>
+    </div>
+
+    <div data-role="main" class="ui-content page-main event-list-content" id="eventListContent">
+        <template id="tplEventListNoDataPopup30">
+            <div class="header font-style3">
+                <input type="radio" data-role="none" name="selectDateFrom" id="month" value='month' checked="checked">
+                <label data-role="none" class="overlap-label-icon"></label>
+                <label data-role="none" class="overlap-label-text" for="month">
+                    <!--重新載入30天歷史訊息-->
+                    <span class="langStr" data-id="str_033"></span>
+                </label>
+                <input type="radio" data-role="none" name="selectDateFrom" id="skip" value='skip'>
+                <label data-role="none" class="overlap-label-icon"></label>
+                <label data-role="none" class="overlap-label-text" for="skip">
+                    <!--不載入歷史訊息-->
+                    <span class="langStr" data-id="str_034"></span>
+                </label>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style0">
+                    <div class="confirm " id="selectMsgDateFromOK">
+                      <!--確定-->
+                      <span class="langStr" data-id="str_016"></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template id="tplContactUserPopupdeleteConfirm">
+            <div class="header font-style3">
+                <!--確定刪除通知嗎？-->
+                <span class="langStr" data-id="str_042"></span>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style0">
+                    <div id="cancel">
+                        <span class="langStr" data-id="str_023"></span>
+                    </div>
+                <div id="yes">
+                    <span class="langStr" data-id="str_037"></span>
+                </div>
+                </div>
+            </div>
+        </template>
+
+        <div id="NewsContent" class="list-content">
+            <div id="updateTimeNews" class="update-time" style="display:none;">
+                <!--Latest update-->
+                <span class="langStr" data-id="str_030"></span>
+                <span>: </span>
+                <span class="update-time-str"></span>
+            </div>
+            <ul data-role="listview" id="newslistview">
+
+            </ul>
+            <div id="noNews" class="no-message" style="display:none;">
+                <!--No News-->
+                <span class="langStr" data-id="str_031"></span>
+            </div>
+        </div>
+
+        <div id="EventContent" class="list-content">
+            <div id="updateTimeEvents" class="update-time" style="display:none;">
+                <!--Latest update-->
+                <span class="langStr" data-id="str_030"></span>
+                <span>: </span>
+                <span class="update-time-str"></span>
+            </div>
+            <ul data-role="listview" id="eventlistview">
+
+            </ul>
+            <div id="noEvents" class="no-message" style="display:none;">
+                <!--No Events-->
+                <span class="langStr" data-id="str_032"></span>
+            </div>
+        </div>
+
+        <div id="AnnouncementContent" class="list-content">
+            <div id="updateTimeAnnouncement" class="update-time">
+                <!--Latest update-->
+                <span class="langStr" data-id="str_030"></span>
+                <span>: </span>
+                <span class="update-time-str"></span>
+            </div>
+            <ul data-role="listview" id="AnnouncementListview">
+
+            </ul>
+            <div id="noAnnouncement" class="no-message" style="display:none;">
+                <!--No Events-->
+                <span class="langStr" data-id="str_032"></span>
+            </div>
+        </div>
+
+        <div id="CommunicationContent" class="list-content">
+            <div id="updateTimeCommunication" class="update-time">
+                <!--Latest update-->
+                <span class="langStr" data-id="str_030"></span>
+                <span>: </span>
+                <span class="update-time-str"></span>
+            </div>
+            <ul data-role="listview" id="CommunicationListview">
+
+            </ul>
+            <div id="noCommunication" class="no-message" style="display:none;">
+                <!--No Events-->
+                <span class="langStr" data-id="str_032"></span>
+            </div>
+        </div>
+
+        <div id="CIPContent" class="list-content">
+            <div id="updateTimeCIP" class="update-time">
+                <!--Latest update-->
+                <span class="langStr" data-id="str_030"></span>
+                <span>: </span>
+                <span class="update-time-str"></span>
+            </div>
+            <ul data-role="listview" id="CIPListview">
+
+            </ul>
+            <div id="noCIP" class="no-message" style="display:none;">
+                <!--No Events-->
+                <span class="langStr" data-id="str_032"></span>
+            </div>
+        </div>
+
+        <div id="CSDContent" class="list-content">
+            <div id="updateTimeCSD" class="update-time">
+                <!--Latest update-->
+                <span class="langStr" data-id="str_030"></span>
+                <span>: </span>
+                <span class="update-time-str"></span>
+            </div>
+            <ul data-role="listview" id="CSDListview">
+
+            </ul>
+            <div id="noCSD" class="no-message" style="display:none;">
+                <!--No Events-->
+                <span class="langStr" data-id="str_032"></span>
+            </div>
+        </div>
+
+        <div id="ITSContent" class="list-content">
+            <div id="updateTimeITS" class="update-time">
+                <!--Latest update-->
+                <span class="langStr" data-id="str_030"></span>
+                <span>: </span>
+                <span class="update-time-str"></span>
+            </div>
+            <ul data-role="listview" id="ITSListview">
+
+            </ul>
+            <div id="noITS" class="no-message" style="display:none;">
+                <!--No Events-->
+                <span class="langStr" data-id="str_032"></span>
+            </div>
+        </div>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+        <div data-role="navbar" id="navDelete" style="display:none;">
+            <ul>
+                <li class="del-msg-btn">
+                    <a href="#" class="ui-btn ui-btn-active" data-ajax="false">
+                        <span id="selectMsgAll">
+                            <!--選擇全部-->
+                            <span class="langStr" data-id="str_035"></span>
+                        </span>
+                        <span id="cancelMsgAll" style="display:none;">
+                            <!--取消全部-->
+                            <span class="langStr" data-id="str_036"></span>
+                        </span>
+                    </a>
+                </li>
+                <li id="delMsgBtn" class="del-msg-btn">
+                    <a href="#" class="ui-btn ui-btn-active btn-disabled" data-ajax="false">
+                        <!--刪除-->
+                        <span class="langStr" data-id="str_037"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

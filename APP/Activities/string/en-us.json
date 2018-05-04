@@ -9,7 +9,7 @@
   },
   {
     "term": "str_002",
-    "definition": "Sign up activities",
+    "definition": "Register activities",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -17,7 +17,7 @@
   },
   {
     "term": "str_003",
-    "definition": "Sign up records",
+    "definition": "Register records",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -25,7 +25,7 @@
   },
   {
     "term": "str_004",
-    "definition": "My family dependents information",
+    "definition": "My family dependents",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,7 @@
   },
   {
     "term": "str_005",
-    "definition": "Opened：",
+    "definition": "Opening：",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -49,7 +49,7 @@
   },
   {
     "term": "str_007",
-    "definition": "Sign up",
+    "definition": "Register",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -65,7 +65,7 @@
   },
   {
     "term": "str_009",
-    "definition": "Call off",
+    "definition": "Cancel registration",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -73,7 +73,7 @@
   },
   {
     "term": "str_010",
-    "definition": "Change information",
+    "definition": "Modify registration",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -81,7 +81,7 @@
   },
   {
     "term": "str_011",
-    "definition": "Confirm",
+    "definition": "Submit",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -97,7 +97,7 @@
   },
   {
     "term": "str_013",
-    "definition": "Send out name list",
+    "definition": "Submit",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -105,7 +105,7 @@
   },
   {
     "term": "str_014",
-    "definition": "Add into name list",
+    "definition": "Add members",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -113,7 +113,7 @@
   },
   {
     "term": "str_015",
-    "definition": "I want to sign up",
+    "definition": "I want to register",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -129,7 +129,7 @@
   },
   {
     "term": "str_017",
-    "definition": "Signed up",
+    "definition": "Register successfully",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -137,7 +137,7 @@
   },
   {
     "term": "str_018",
-    "definition": "Modified",
+    "definition": "Modify successfully",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -145,7 +145,7 @@
   },
   {
     "term": "str_019",
-    "definition": "Called off",
+    "definition": "Cancel successfully",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -153,7 +153,7 @@
   },
   {
     "term": "str_020",
-    "definition": "Activity quota is full now",
+    "definition": "The activity is full",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -161,7 +161,7 @@
   },
   {
     "term": "str_021",
-    "definition": "You had signed up other session",
+    "definition": "You have registered other session.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -169,7 +169,7 @@
   },
   {
     "term": "str_022",
-    "definition": "Sign up incompletely",
+    "definition": "Register incompletely.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -177,7 +177,7 @@
   },
   {
     "term": "str_023",
-    "definition": "Back to the last page？",
+    "definition": "Back to the previous page？",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -185,7 +185,7 @@
   },
   {
     "term": "str_024",
-    "definition": "Sorry ! The number of applicants exceeds remaining quota, please sign up again",
+    "definition": "Sorry ! The participator number exceeds available quota, please modify the number and register again.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -193,7 +193,7 @@
   },
   {
     "term": "str_025",
-    "definition": "Sorry ! The group of applicants exceeds remaining quota, please sign up again",
+    "definition": "Sorry ! The group number exceeds available quota, please modify the number and register again.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -201,7 +201,7 @@
   },
   {
     "term": "str_026",
-    "definition": "Connection failed",
+    "definition": "Connection failed.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -209,7 +209,7 @@
   },
   {
     "term": "str_027",
-    "definition": "Please check network connection",
+    "definition": "Please check network connection.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -217,7 +217,7 @@
   },
   {
     "term": "str_028",
-    "definition": "For utilizing resource effectively absent by non work-related reason will be charged activity cost",
+    "definition": "For resource optimization, you will be charged cost if absent for non-business issue.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -233,7 +233,7 @@
   },
   {
     "term": "str_030",
-    "definition": "Your Reservation",
+    "definition": "Your Registration",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -241,7 +241,7 @@
   },
   {
     "term": "str_031",
-    "definition": "OK to cancel the edit ?",
+    "definition": "Discard the edit ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "str_032",
-    "definition": "OK to delete information of family dependents ?",
+    "definition": "OK to delete family dependents ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "str_033",
-    "definition": "OK to abort adding ?",
+    "definition": "OK to abort creating family dependents ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -265,7 +265,7 @@
   },
   {
     "term": "str_034",
-    "definition": "No any activity now",
+    "definition": "No available activity now.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -273,7 +273,7 @@
   },
   {
     "term": "str_035",
-    "definition": "Only display activity registration records which is ongoing",
+    "definition": "Display available activities only.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -281,7 +281,7 @@
   },
   {
     "term": "str_036",
-    "definition": "No family dependents information",
+    "definition": "No family dependents information.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -289,7 +289,7 @@
   },
   {
     "term": "str_037",
-    "definition": "Undeletable. Activity is in progress",
+    "definition": "Undeletable. Activity is in progress.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -297,7 +297,7 @@
   },
   {
     "term": "str_038",
-    "definition": "No employee information",
+    "definition": "No employee information.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -305,7 +305,7 @@
   },
   {
     "term": "str_039",
-    "definition": "Please search again",
+    "definition": "Please search again.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -321,7 +321,7 @@
   },
   {
     "term": "str_041",
-    "definition": "Fail to create family dependents information",
+    "definition": "Fail to create data.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -329,7 +329,7 @@
   },
   {
     "term": "str_042",
-    "definition": "Fail to update family dependents information",
+    "definition": "Fail to update data.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "str_043",
-    "definition": "Fail to delete family dependents information",
+    "definition": "Fail to delete data.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "str_045",
-    "definition": "Remove",
+    "definition": "Cancel it",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -361,7 +361,7 @@
   },
   {
     "term": "str_046",
-    "definition": "Keep",
+    "definition": "Keep it",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -369,7 +369,7 @@
   },
   {
     "term": "str_047",
-    "definition": "Fail to call off",
+    "definition": "Fail to cancel the registration.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -393,7 +393,7 @@
   },
   {
     "term": "str_050",
-    "definition": "Total number(person/group):",
+    "definition": "Quota(person/group):",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -409,7 +409,7 @@
   },
   {
     "term": "str_052",
-    "definition": "Sign up period:",
+    "definition": "Registration period:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -417,7 +417,7 @@
   },
   {
     "term": "str_053",
-    "definition": "Signed up(person/group):",
+    "definition": "Registered(person/group):",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -425,7 +425,7 @@
   },
   {
     "term": "str_054",
-    "definition": "Have signed up this activity(person/group):",
+    "definition": "You have registered this activity(person/group):",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -433,7 +433,7 @@
   },
   {
     "term": "str_055",
-    "definition": "Please setup your registration information",
+    "definition": "Please fill in your registration information.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -441,7 +441,7 @@
   },
   {
     "term": "str_056",
-    "definition": "Number of applicants:",
+    "definition": "Number of participators:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -449,7 +449,7 @@
   },
   {
     "term": "str_057",
-    "definition": "Available number of applicants:",
+    "definition": "Available number of participators:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -465,7 +465,7 @@
   },
   {
     "term": "str_059",
-    "definition": "*Employee must be present in this activity",
+    "definition": "*Employee must participate in this activity.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -473,7 +473,7 @@
   },
   {
     "term": "str_060",
-    "definition": "Please fill in emplyee registration information first",
+    "definition": "Please fill in emplyee registration information first.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -481,7 +481,7 @@
   },
   {
     "term": "str_061",
-    "definition": "Please select registration period",
+    "definition": "Please choose registration period:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -505,7 +505,7 @@
   },
   {
     "term": "str_064",
-    "definition": "Quota left",
+    "definition": "Available",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -513,7 +513,7 @@
   },
   {
     "term": "str_065",
-    "definition": "Add team",
+    "definition": "Your team",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -529,7 +529,7 @@
   },
   {
     "term": "str_067",
-    "definition": "Team",
+    "definition": "Team Name",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -537,7 +537,7 @@
   },
   {
     "term": "str_068",
-    "definition": "Member",
+    "definition": "Members",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -545,7 +545,7 @@
   },
   {
     "term": "str_069",
-    "definition": "Activity is filled now,",
+    "definition": "Activity is full now,",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -553,7 +553,7 @@
   },
   {
     "term": "str_070",
-    "definition": "You have signed up this activity:",
+    "definition": "You have registered this activity:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -561,7 +561,7 @@
   },
   {
     "term": "str_071",
-    "definition": "*Signed up, if you need to change period, cancle registration and sign up again",
+    "definition": "*Register completely, if you want to change period, please cancel registration and register again.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -569,7 +569,7 @@
   },
   {
     "term": "str_072",
-    "definition": "Your registration information is as follows",
+    "definition": "Your registration information is as follows:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -577,7 +577,7 @@
   },
   {
     "term": "str_073",
-    "definition": "Period and quota of activities are as follows",
+    "definition": "Period and quota of activities are as follows:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -609,7 +609,7 @@
   },
   {
     "term": "str_077",
-    "definition": "Time to sign up:",
+    "definition": "Time to register:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -625,7 +625,7 @@
   },
   {
     "term": "str_079",
-    "definition": "Quota left:",
+    "definition": "Available:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -649,7 +649,7 @@
   },
   {
     "term": "str_082",
-    "definition": "Sex",
+    "definition": "Gender",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -665,7 +665,7 @@
   },
   {
     "term": "str_084",
-    "definition": "Checked names denote the signed up name list",
+    "definition": "Checked names are the name list of your registration.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -673,7 +673,7 @@
   },
   {
     "term": "str_085",
-    "definition": "Modification is incomplete",
+    "definition": "Modification is incomplete.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -681,7 +681,7 @@
   },
   {
     "term": "str_086",
-    "definition": "This colleague is always a team member",
+    "definition": "This colleague has been a team member already",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -705,7 +705,7 @@
   },
   {
     "term": "str_089",
-    "definition": "Registration periods:",
+    "definition": "Registration period:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -809,7 +809,7 @@
   },
   {
     "term": "str_102",
-    "definition": "*You have reserved family dependents information for signning up activity, system will keep information when you are in service, but you can delete them anytime",
+    "definition": "*You have reserved family dependents information for regitser activity, system will keep information when you are employed, but you can delete them anytime.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -817,7 +817,7 @@
   },
   {
     "term": "str_103",
-    "definition": "*Attention! When activity is on going, you cann't delete family dependents who join it",
+    "definition": "*Attention! When activity is on going, you cann't delete family dependents who join it.",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -841,7 +841,7 @@
   },
   {
     "term": "str_106",
-    "definition": "Team is full, can't add more member",
+    "definition": "Team is full, you can't add more members.",
     "context": "",
     "term_plural": "",
     "reference": "",
