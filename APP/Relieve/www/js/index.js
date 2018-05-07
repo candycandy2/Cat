@@ -9,10 +9,10 @@ var appSecretKey = "00a87a05c855809a0600388425c55f0b";
 var prevPageID;
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
-var currentYear = time.getFullYear();
-var currentMonth = ((time.getMonth() + 1) < 10) ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1);
-var currentDate = (time.getDate() < 10) ? "0" + time.getDate() : time.getDate();
-var currentDay = time.getDay();
+var currentYear = 0; //need to set default value
+var currentMonth = 0; //need to set default value
+var currentDate = 0; //need to set default value
+var currentDay = 0; //need to set default value
 var arrOtherTimeBlock = [];
 var dayTable = {
     "1": "(一)",
@@ -76,65 +76,25 @@ function popupSchemeMsg(attr, title, content, href1, href2) {
 
 function scorllDateInit(upper) {
     var scrollDate = "";
-    var day = currentDay;
-    var date = currentDate;
-    var month = currentMonth;
-    var year = currentYear;
+    var tomorrow = time;
     for (var i = 0; i < upper; i++) {
-        if (day < 6 && day > 0) {
-            scrollDate += '<a id="' + year + month + date + '" class="ui-link">' + month + '/' + date + '&nbsp;' + dayTable[day] + '</a>';
-            day++;
-            if (day == 6) {
-                day = 1;
-                if ((Number(date) + 3) <= lastDateOfMonth) {
-                    date = ((Number(date) + 3) < 10) ? "0" + (Number(date) + 3) : (Number(date) + 3);
-                } else if ((Number(date) + 3) > lastDateOfMonth) {
-                    if (month == 12) {
-                        year++;
-                        month = "01";
-                    } else {
-                        month = ((Number(month) + 1) < 10) ? "0" + (Number(month) + 1) : Number(month) + 1;
-                    }
-                    date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);
-                }
-            } else if ((Number(date) + 1) <= lastDateOfMonth) {
-                date = ((Number(date) + 1) < 10) ? "0" + (Number(date) + 1) : (Number(date) + 1);
-            } else if ((Number(date) + 1) > lastDateOfMonth) {
-                if (month == 12) {
-                    year++;
-                    month = "01";
-                } else {
-                    month = ((Number(month) + 1) < 10) ? "0" + (Number(month) + 1) : Number(month) + 1;
-                }
-                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
-            }
-        } else if (day == 6) {
-            day = 1;
-            if ((Number(date) + 2) <= lastDateOfMonth) {
-                date = ((Number(date) + 2) < 10) ? "0" + (Number(date) + 2) : (Number(date) + 2);
-            } else if ((Number(date) + 2) > lastDateOfMonth) {
-                if (month == 12) {
-                    year++;
-                    month = "01";
-                } else {
-                    month = ((Number(month) + 1) < 10) ? "0" + (Number(month) + 1) : Number(month) + 1;
-                }
-                date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);
-            }
-        } else if (day == 0) {
-            day = 1;
-            if ((Number(date) + 1) <= lastDateOfMonth) {
-                date = ((Number(date) + 1) < 10) ? "0" + (Number(date) + 1) : (Number(date) + 1);
-            } else if ((Number(date) + 1) > lastDateOfMonth) {
-                if (month == 12) {
-                    year++;
-                    month = "01";
-                } else {
-                    month = ((Number(month) + 1) < 10) ? "0" + (Number(month) + 1) : Number(month) + 1;
-                }
-                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
-            }
+        var year = tomorrow.getFullYear();
+        var month = ((tomorrow.getMonth() + 1) < 10) ? "0" + (tomorrow.getMonth() + 1) : (tomorrow.getMonth() + 1);
+        var date = (tomorrow.getDate() < 10) ? "0" + tomorrow.getDate() : tomorrow.getDate();
+        var day = tomorrow.getDay();
+        if (day == 6 || day == 0) { //bypass weekend
+            tomorrow.setDate(time.getDate() + 1);
+            i--;
+            continue;
         }
+        scrollDate += '<a id="' + year + month + date + '" class="ui-link">' + month + '/' + date + '&nbsp;' + dayTable[day] + '</a>';
+        if (i == 0) { //set first item
+            currentYear = year;
+            currentMonth = month;
+            currentDate = date;
+            currentDay = day;
+        }
+        tomorrow.setDate(time.getDate() + 1);
     }
     $("#scrollDate").html("");
     $("#scrollDate").append(scrollDate).enhanceWithin();
