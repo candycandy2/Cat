@@ -150,53 +150,36 @@ class appVersionController extends Controller
         
         $Verify = new Verify();
         $verifyResult = $Verify->verify();
-
-        $input = Input::all();
-        $request = $request->instance();
-        foreach ($input as $k=>$v) {
-            $input[strtolower($k)] = $v;
-        }
-
-        //通用api參數判斷
-        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "" ||
-           !array_key_exists('app_key', $input) || trim($input["app_key"]) == "" ||
-           !array_key_exists('device_type', $input) || trim($input["device_type"]) == "" || 
-           !in_array($input["device_type"], array('ios','android')))
+        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful)
         {
-            $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
-                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
+            $result = ['result_code'=>$verifyResult["code"],
+                'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
                 'content'=>''];
             return response()->json($result);
         }
 
+        $validator = Validator::make($request->all(), [
+            'uuid'=>'required',
+            'app_key' => 'required',
+            'device_type' => 'required|in:ios,android',
+        ],
+        [
+            'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'in' => ResultCode::_999001_requestParameterLostOrIncorrect
+        ]);
+        if ($validator->fails()) {
+             return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+    
         $uuid = $input['uuid'];
         $appKey = $input['app_key'];
         $deviceType = $input['device_type'];
 
-        if(!$Verify->chkUuidExist($uuid)) {
-            $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
-                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
-                'content'=>''];
-            return response()->json($result);
-        }
-
-        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
-        if($userInfo == null)
+        $verifyUserStatus = $Verify->checkUserStatusByUuid($uuid);
+        if($verifyUserStatus["result_code"] != ResultCode::_1_reponseSuccessful)
         {
-            $result = ["result_code"=>ResultCode::_000901_userNotExistError,
-                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)];
-            $userId = CommonUtil::getUserIdByUUID($uuid);
-            if($userId != null) {
-                $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
-                if($userStatus == 1) {
-                    $result = ["result_code"=>ResultCode::_000901_userNotExistError,
-                        "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)];
-                } else if($userStatus == 2) {
-                    $result = ["result_code"=>ResultCode::_000914_userWithoutRight,
-                        "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
-                }
-            }
-            return response()->json($result);
+            return response()->json($verifyUserStatus);
         }
 
         if(!Verify::chkAppKeyExist($appKey)) {
