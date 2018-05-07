@@ -6,13 +6,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Contracts\Validation;
 use Mockery\CountValidator\Exception;
+use App\Services\AppVersionService;
 use App\lib\ResultCode;
 use App\lib\FilePath;
 use App\lib\CommonUtil;
+use App\lib\Verify;
 use File;
 
 class appVersionController extends Controller
 {   
+
+    protected $appVersionService;
+
+    public function __construct(AppVersionService $appVersionService)
+    {
+        $this->appVersionService = $appVersionService;
+    }
     /**
      * 多筆刪除App相關檔案
      * @return json
@@ -131,6 +140,80 @@ class appVersionController extends Controller
         return response()->json($result);
 
         return $publishFilePath;
+    }
+
+    /**
+     * 取得歷史版本說明
+     * @return json
+     */
+    public function getVersionLog(Request $request){
+        
+        $Verify = new Verify();
+        $verifyResult = $Verify->verify();
+
+        $input = Input::all();
+        $request = $request->instance();
+        foreach ($input as $k=>$v) {
+            $input[strtolower($k)] = $v;
+        }
+
+        //通用api參數判斷
+        if(!array_key_exists('uuid', $input) || trim($input["uuid"]) == "" ||
+           !array_key_exists('app_key', $input) || trim($input["app_key"]) == "" ||
+           !array_key_exists('device_type', $input) || trim($input["device_type"]) == "" || 
+           !in_array($input["device_type"], array('ios','android')))
+        {
+            $result = ['result_code'=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999001_requestParameterLostOrIncorrect),
+                'content'=>''];
+            return response()->json($result);
+        }
+
+        $uuid = $input['uuid'];
+        $appKey = $input['app_key'];
+        $deviceType = $input['device_type'];
+
+        if(!$Verify->chkUuidExist($uuid)) {
+            $result = ['result_code'=>ResultCode::_000911_uuidNotExist,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_000911_uuidNotExist),
+                'content'=>''];
+            return response()->json($result);
+        }
+
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        if($userInfo == null)
+        {
+            $result = ["result_code"=>ResultCode::_000901_userNotExistError,
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)];
+            $userId = CommonUtil::getUserIdByUUID($uuid);
+            if($userId != null) {
+                $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
+                if($userStatus == 1) {
+                    $result = ["result_code"=>ResultCode::_000901_userNotExistError,
+                        "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)];
+                } else if($userStatus == 2) {
+                    $result = ["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)];
+                }
+            }
+            return response()->json($result);
+        }
+
+        if(!Verify::chkAppKeyExist($appKey)) {
+            $result = ['result_code'=>ResultCode::_999010_appKeyIncorrect,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999010_appKeyIncorrect),
+                'content'=>''];
+            return response()->json($result);
+        }
+        
+        $appInfo = CommonUtil::getAppHeaderInfo();
+        $versionLogList =  $this->appVersionService->getVersionLog($appInfo->row_id, $deviceType);
+
+        $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
+                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
+                'content'=>array('version_list'=>$versionLogList)
+            ];
+        return response()->json($result);
     }
 
     /**
