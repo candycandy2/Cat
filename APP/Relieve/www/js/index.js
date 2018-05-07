@@ -9,10 +9,10 @@ var appSecretKey = "00a87a05c855809a0600388425c55f0b";
 var prevPageID;
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
-var currentYear = 0; //need to set default value
-var currentMonth = 0; //need to set default value
-var currentDate = 0; //need to set default value
-var currentDay = 0; //need to set default value
+var firstItemYear = 0; //need to set default value
+var firstItemMonth = 0; //need to set default value
+var firstItemDate = 0; //need to set default value
+var firstItemDay = 0; //need to set default value
 var arrOtherTimeBlock = [];
 var dayTable = {
     "1": "(一)",
@@ -89,10 +89,10 @@ function scorllDateInit(upper) {
         }
         scrollDate += '<a id="' + year + month + date + '" class="ui-link">' + month + '/' + date + '&nbsp;' + dayTable[day] + '</a>';
         if (i == 0) { //set first item
-            currentYear = year;
-            currentMonth = month;
-            currentDate = date;
-            currentDay = day;
+            firstItemYear = year;
+            firstItemMonth = month;
+            firstItemDate = date;
+            firstItemDay = day;
         }
         tomorrow.setDate(time.getDate() + 1);
     }
