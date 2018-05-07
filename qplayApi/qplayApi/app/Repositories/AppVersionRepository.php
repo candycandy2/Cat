@@ -31,4 +31,21 @@ class AppVersionRepository
                ->orderBy('version_code','desc')
                ->get();
     }
+
+
+    /**
+     * 取得目前發佈中的App版本資訊
+     * @param  int      $appId      qp_app_head.row_id
+     * @param  String   $deviceType 裝置類型(ios|android)
+     * @return mixed                
+     */
+    public function getPublishedVersion($appId, $deviceType){
+         return $this->appVersion
+                        ->where('app_row_id','=',$appId)
+                        ->where('device_type','=',$deviceType)
+                        ->where('status','=','ready')
+                        ->select('url','external_app','version_code','version_name')
+                        ->first();
+    }
+
 }

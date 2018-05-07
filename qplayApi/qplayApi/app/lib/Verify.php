@@ -422,6 +422,39 @@ class Verify
 
     }
 
+    /**
+     * 檢查用戶狀態，並取得正確的用戶資訊
+     * @param  string $uuid uuid
+     * @return json
+     */
+    public static function checkUserStatusByUuid($uuid){
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        
+        if($userInfo == null)
+        {
+            $result = ["result_code"=>ResultCode::_000901_userNotExistError,
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError),
+                "content"=>""];
+            $userId = CommonUtil::getUserIdByUUID($uuid);
+            if($userId != null) {
+                $userStatus = CommonUtil::getUserStatusByUserRowID($userId);
+                if($userStatus == 1) {
+                    $result = ["result_code"=>ResultCode::_000901_userNotExistError,
+                        "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError),
+                        "content"=> ""];
+                } else if($userStatus == 2) {
+                    $result = ["result_code"=>ResultCode::_000914_userWithoutRight,
+                        "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight),
+                        "content"=>""];
+                }
+            }
+            return $result;
+        }
+        return array("result_code"=>ResultCode::_1_reponseSuccessful,
+                    "message"=>"",
+                    "content"=>$userInfo);
+    }
+
     /*
     public static function chkSignatureYellowPage($signature, $signatureTime)
     {
