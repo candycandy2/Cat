@@ -835,3 +835,23 @@ input[type=radio]:checked + label {
     padding: 0;
 }
 
+/*************************** plugin ********************************/
+#WeatherWidget {
+    width: 90vw;
+    height: 25vw;
+    background: lightgreen;
+}
+
+#CalendarWidget {
+    width: 90vw;
+    height: 50vw;
+    background: pink;
+}
+
+#APPListWidget {
+    width: 90vw;
+    height: 120vw;
+    overflow-y: auto;
+    background: paleturquoise;
+}
+
