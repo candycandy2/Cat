@@ -866,7 +866,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //預覽送簽按鈕
         $("#previewBtn").on("click", function() {
-            GetReason();//手寫或語音輸入
+            GetReason(); //手寫或語音輸入
             if ($('#previewBtn').hasClass('leavePreview-active-btn')) {
                 //傳值到預覽頁面
                 $("#applyCategroy").text(leaveCategory);
