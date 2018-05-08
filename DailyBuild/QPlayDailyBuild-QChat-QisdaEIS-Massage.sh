@@ -15,7 +15,7 @@ gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="037baadd-11b7-4838-ae04-782ca61fe0c3" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="b3d804e2-3915-46ba-9a54-a53abe8651bb" --packageType="enterprise"
 
 pwd
 cd ../QPlayDailyBuild-QChat-QisdaEIS-Massage/APP/QisdaEIS
