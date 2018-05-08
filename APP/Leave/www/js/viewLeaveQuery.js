@@ -507,7 +507,7 @@ $("#viewLeaveQuery").pagecontainer({
         var timeoutWithdrawReason = null;
         //輸入撤回理由——textarea
         $("#withdrawReason").on("keyup", function() {
-            
+
             if (timeoutWithdrawReason != null) {
                 clearTimeout(timeoutWithdrawReason);
                 timeoutWithdrawReason = null;

@@ -53,7 +53,7 @@ $("#viewPersonalLeaveCalendar").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPIEx("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "", 60 * 60 );
+                CustomAPIEx("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryCalendarData, "", 60 * 60);
             }();
         };
 
