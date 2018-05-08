@@ -197,7 +197,7 @@ function openNetworkDisconnectWindow(status) {
     $('#disconnectNetwork').popup('open');
 }
 
-function errorHandler(data,requestAction) {
+function errorHandler(data, requestAction) {
     console.log('readyState: ' + data.readyState + ' status: ' + data.status + ' statusText: ' + data.statusText);
     //1. status = timeout (Network status display ["canceled"])
     if (data.statusText === "timeout") {
@@ -293,8 +293,21 @@ function getSignature(action, signatureTime) {
     }
 }
 
+var g_loadingMask_finish = true;
+var g_loadingMask_Interval = null;
+
 //Loading Mask
-function loadingMask(action) {
+function loadingMask(action, name) {
+
+    name = name || "empty";
+
+    if (g_loadingMask_Interval == null) {
+        g_loadingMask_Interval = setInterval(function() {
+            if (g_loadingMask_finish == true) {
+                $(".loader").hide();
+            }
+        }, 500);
+    }
     if (action === "show") {
         var scrollHeight = $(window).scrollTop();
 
@@ -304,8 +317,11 @@ function loadingMask(action) {
             $(".loader").show();
             $(".loader").css("top", scrollHeight + "px");
         }
+        g_loadingMask_finish = false;
+        console.log('show by ' + name);
     } else if (action === "hide") {
-        $(".loader").hide();
+        g_loadingMask_finish = true;
+        console.log('hide by ' + name);
     }
 }
 
