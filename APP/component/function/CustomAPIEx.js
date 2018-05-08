@@ -12,6 +12,7 @@ function CustomAPIEx(requestType, asyncType, requestAction, successCallback, fai
     priority = priority || "high";
 
     var urlStr = serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr;
+    var keyItem = urlStr + queryData;
 
     function requestSuccess(data) {
         var checkTokenValidResult = checkTokenValid(data['ResultCode'], data['token_valid'], successCallback, data);
@@ -31,7 +32,7 @@ function CustomAPIEx(requestType, asyncType, requestAction, successCallback, fai
             var contentInfo = [];
             var nowTime = new Date();
             contentInfo.push({ 'result': data, 'time': nowTime });
-            localStorage.setItem(urlStr + queryData, JSON.stringify(contentInfo));
+            localStorage.setItem(keyItem, JSON.stringify(contentInfo));
         }
         //Cache...
     }
@@ -46,7 +47,7 @@ function CustomAPIEx(requestType, asyncType, requestAction, successCallback, fai
         }
     }
 
-    if (localStorage.getItem(urlStr + queryData) === null) {
+    if (localStorage.getItem(keyItem) === null) {
 
         var signatureTime = getSignature("getTime");
         var signatureInBase64 = getSignature("getInBase64", signatureTime);
@@ -70,12 +71,12 @@ function CustomAPIEx(requestType, asyncType, requestAction, successCallback, fai
             error: requestError
         });
     } else {
-        var storageData = JSON.parse(localStorage.getItem(urlStr + queryData));
+        var storageData = JSON.parse(localStorage.getItem(keyItem));
         if (checkDataExpired(storageData[0].time, expiredTimeSeconds, 'ss')) {
-            localStorage.removeItem(urlStr + queryData);
+            localStorage.removeItem(keyItem);
         }
         successCallback(storageData[0].result);
     }
 
-
+    return keyItem;
 }

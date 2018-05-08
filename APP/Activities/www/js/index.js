@@ -31,7 +31,7 @@ window.initialSuccess = function () {
 
     // 2. get family list
     activitiesFamilyQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';
-    ActivitiesFamilyQuery();
+    //ActivitiesFamilyQuery();
 
     // 3. get record list
     activitiesRecordQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';

@@ -1,12 +1,14 @@
 /*var familyArr = [{family_id:"1", name:"王小明", relation:"父母", birthday:"1980/01/01", idtype:"0", idno:"A123456789"},
                 {family_id:"2", name:"王小美", relation:"父母", birthday:"1981/01/01", idtype:"0", idno:"A123456788"}]; */
-var familyArr = {};
+
 
 $("#viewFamilyData").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         var familyNo = "", familyInsurName = "", familyID = "", familyBirth = "", relationshipNo = "", typeNo = "";
         var timeoutFamilyName = null, timeoutFamilyID = null;
+        var familyArr = {};
+        var obj = new Object();
         var relationshipData = {
             id: "relationship-popup",
             option: [],
@@ -33,10 +35,37 @@ $("#viewFamilyData").pagecontainer({
         //API:QueryFamilyData
         function queryFamilyList() {
             //replace familyArr's content to data["Content"]
-            familyArr = JSON.parse(localStorage.getItem('familySettingData')); 
- 
-            //replace (familyArr != null) to (data["ResultCode"] == "1")       
-            if (familyArr != null) {
+            familyArr = JSON.parse(localStorage.getItem('familySettingData'));  
+
+            if (familyArr == null || familyArr.content.length == 0) { 
+                $("#viewFamilyList").hide();
+                $("#viewFamilyNone").show();
+            } else {
+                var familyList = "";
+                //for (var i in familyArr) {
+                for (var i=0; i<familyArr.content.length; i++ ) {
+                    //replace familyArr.content[i] to familyArr[i]
+                    var ageDate = new Date(Date.now() - new Date(familyArr.content[i]["birthday"]).getTime()); 
+                    var familyAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+                    familyList += '<div class="family-list"><div class="font-style7 font-color2" data-id="'
+                        + familyArr.content[i]["family_id"]
+                        + '"><div><span>'
+                        + familyArr.content[i]["name"]
+                        + '</span>/<span>'
+                        + familyArr.content[i]["relation"]
+                        + '</span>/<span>'
+                        + familyAge
+                        + '</span></div><div>'
+                        + familyArr.content[i]["birthday"]
+                        + '</div><div>'
+                        + familyArr.content[i]["idno"]
+                        + '</div></div><div><img src="img/info.png" class="family-edit"><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
+                }
+                $("#familyList").empty().append(familyList).children("div:last-child").remove();
+            }
+            
+            /* //replace (familyArr != null) to (data["ResultCode"] == "1")      
+            if (familyArr != null && familyArr.content != "") {
                 //familyArr = data["Content"].sort(sortByRelationship("relation", "name"));
                 var familyList = "";
                 //for (var i in familyArr) {
@@ -61,10 +90,23 @@ $("#viewFamilyData").pagecontainer({
                 $("#familyList").empty().append(familyList).children("div:last-child").remove();
             } else {
                 $("#viewFamilyList").hide();
-                $("#viewFamilyNone").show();
-            }
+                $("#viewFamilyNone").show(); 
+            }*/
             changeViewToList();
             loadingMask("hide");
+        }
+
+        //刪除眷屬資料 API: ModifyFamilyData 
+        function insuranceFamilyDeleteQuery(){
+            familyArr = JSON.parse(localStorage.getItem('familySettingData'));
+            for (var i=0; i<familyArr.content.length; i++ ) { 
+                if ( familyArr.content[i]["family_id"] == familyNo ) {
+                    familyArr.content.splice(i, 1);
+                }
+            }
+            localStorage.setItem('familySettingData', JSON.stringify(familyArr));
+            queryFamilyList();
+            $('.family-edit-btn').trigger('click');
         }
 
         //生成關係和證號類別的dropdownlist
@@ -156,7 +198,7 @@ $("#viewFamilyData").pagecontainer({
                     $(item).removeClass("tpl-dropdown-list-selected");
                 }
             });
-            $.each($("#relationship-popup-option-list li"), function (index, item) {
+            $.each($("#idType-popup-option-list li"), function (index, item) {
                 if ($(item).hasClass("tpl-dropdown-list-selected")) {
                     $(item).removeClass("tpl-dropdown-list-selected");
                 }
@@ -171,21 +213,25 @@ $("#viewFamilyData").pagecontainer({
             $("#viewFamilyEdit").hide();
             $('#viewFamilyData .insuranceMenu').show();
             //After connect to API:QueryFamilyData, delete 'familyArr == null'
-            if ( familyArr == null || familyArr.length == 0) {
+            if ( familyArr == null || familyArr.content.length == 0) {
                 $("#viewFamilyNone").show();
             } else {
                 $("#viewFamilyList").show();
             }
+            $(".family-list-title").show();         
+            $(".family-add-title").hide();
             $(".family-cancle-btn").hide();
-            $(".family-edit-btn").show();  
+            $(".family-edit-btn").show(); 
+            $(".family-delete").hide();
+            $(".family-edit").show();
             $(".family-add-img").show();
         }
 
         //“編輯”和“新增”的跳轉
         function changeViewToDetail() {
             $("#viewFamilyData .insuranceMenu").hide();
-             //After connect to API:QueryFamilyData, delete 'familyArr == null'
-            if ( familyArr == null || familyArr.length == 0) {
+            //After connect to API:QueryFamilyData, delete 'familyArr == null'
+            if ( familyArr == null || familyArr.content.length == 0) {
                 $("#viewFamilyNone").hide();
             } else {
                 $("#viewFamilyList").hide();
@@ -196,6 +242,11 @@ $("#viewFamilyData").pagecontainer({
             $(".family-add-title").show();
             $(".family-save-btn").show();
             $("#viewFamilyEdit").show();
+            if (addFamilyOrNot == true) {
+                $(".family-insur-apply-div").hide();
+            } else {
+                $(".family-insur-apply-div").show();
+            }
         }
 
         //檢查輸入眷屬資料是否有誤
@@ -203,7 +254,6 @@ $("#viewFamilyData").pagecontainer({
             var relationshipVal = $.trim($("#familyRelationship").val());
             var typeVal = $.trim($("#idType").val());
             var idVal = $.trim($("#familyID").val());
-            var firstID = "ABCDEFGHJKLMNPQRSTUVXYWZIO"  
 
             if (typeVal == "身分證") {
                 if (idVal.length != 10) {
@@ -213,7 +263,7 @@ $("#viewFamilyData").pagecontainer({
                     $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');                  
                     popupMsgInit('.familyAddCheckMsg');
                     return false;
-                } else if(idVal.search(/^[A-Z](1|2)\d{8}$/i) == -1){
+                } else if (idVal.search(/^[A-Z](1|2)\d{8}$/i) == -1){
                     $(".familyAddCheckMsg .lengthErr").removeClass('addInlineBlock');  
                     $(".familyAddCheckMsg .formatErr").addClass('addInlineBlock');  
                     $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
@@ -223,7 +273,58 @@ $("#viewFamilyData").pagecontainer({
                 } else {
                     return true;
                 }
+            } else if (typeVal == "居留證") {
+                 if (idVal.length != 10) {
+                    $(".familyAddCheckMsg .lengthErr").addClass('addInlineBlock');  
+                    $(".familyAddCheckMsg .formatErr").removeClass('addInlineBlock');   
+                    $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
+                    $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');                  
+                    popupMsgInit('.familyAddCheckMsg');
+                    return false;
+                } else if (idVal.search(/^[A-Z]{1}[A-D]{1}\d{8}$/i) == -1) {
+                    $(".familyAddCheckMsg .lengthErr").removeClass('addInlineBlock');  
+                    $(".familyAddCheckMsg .formatErr").addClass('addInlineBlock');  
+                    $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
+                    $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');  
+                    popupMsgInit('.familyAddCheckMsg');
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
             }
+        }
+
+        //檢查眷屬資料的身分證和配偶是否有重複
+        function checkDuplicateInfo() {
+            familyArr = JSON.parse(localStorage.getItem('familySettingData')); 
+            var idVal = $.trim($("#familyID").val());
+            var relationshipVal = $.trim($("#familyRelationship").val());
+            if (familyArr != null) {
+                for (var i=0; i<familyArr.content.length; i++ ) {
+                    if ( familyArr.content[i]["family_id"] != familyNo && familyArr.content[i]["idno"] == idVal) {
+                        $(".familyAddCheckMsg .lengthErr").removeClass('addInlineBlock');  
+                        $(".familyAddCheckMsg .formatErr").removeClass('addInlineBlock');   
+                        $(".familyAddCheckMsg .idDulErr").addClass('addInlineBlock');   
+                        $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');                  
+                        popupMsgInit('.familyAddCheckMsg');
+                        return false;
+                    } else if ( familyArr.content[i]["family_id"] != familyNo && relationshipVal == "配偶" && familyArr.content[i]["relation"] == "配偶" ) {
+                        $(".familyAddCheckMsg .lengthErr").removeClass('addInlineBlock');  
+                        $(".familyAddCheckMsg .formatErr").removeClass('addInlineBlock');   
+                        $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
+                        $(".familyAddCheckMsg .oneSpouseErr").addClass('addInlineBlock');                  
+                        popupMsgInit('.familyAddCheckMsg');
+                        return false;
+                    } 
+                }
+                return true;
+
+            } else {
+                return true;
+            }
+
         }
 
         //根據key value排序
@@ -233,6 +334,15 @@ $("#viewFamilyData").pagecontainer({
                 var y = b[sortKey];
                 return ((x < y) ? -1 : ((x > y) ? 1 : 0));
             });
+        }
+
+        //After connect to API, Delete the localStorage 
+        function addTempDataIntoObject() {
+            obj.name = $('#familyInsurName').val();
+            obj.relation = $("#familyRelationship").val();
+            obj.idtype = $('#idType').val();
+            obj.idno = $('#familyID').val();
+            obj.birthday = $('#familyBirth').val();
         }
 
         /********************************** page event *************************************/
@@ -245,9 +355,7 @@ $("#viewFamilyData").pagecontainer({
         });
 
         $("#viewFamilyData").on("pageshow", function (event, ui) {
-            //loadingMask("hide");  
-            $(".family-cancle-btn").hide();
-            $(".family-edit-btn").show();         
+      
         });
         
         /******************************** datetimepicker ***********************************/
@@ -281,8 +389,8 @@ $("#viewFamilyData").pagecontainer({
         //確定刪除
         $("#confirmDeleteFamilyBtn").on("click", function () {
             loadingMask("show");
-            //API: ModifyFamilyData
-            ActivitiesFamilyDeleteQuery();
+            //API: ModifyFamilyData (入參)
+            insuranceFamilyDeleteQuery();
         });
 
         //確定取消新增，跳轉
@@ -297,9 +405,9 @@ $("#viewFamilyData").pagecontainer({
 
         //添加眷屬，跳轉到編輯頁
         $(".family-add-img").on("click", function () {
-            clearFormByFamily();
-            changeViewToDetail();
             addFamilyOrNot = true;
+            clearFormByFamily();
+            changeViewToDetail();            
             checkFormByFamily();
             $("#familyInsurName").removeAttr("readonly");
             $("#familyInsurName").css("background", "#f9f9f9");
@@ -308,21 +416,31 @@ $("#viewFamilyData").pagecontainer({
         //修改眷屬，跳轉到編輯頁
         $("#familyList").on("click", ".family-edit", function () {
             //1.傳值
-            var self = $(this).attr("data-id");
+            var self = $(this).parent().siblings().attr("data-id");
             familyNo = self;
-            for (var i in familyArr) {
-                if (self == familyArr[i]["FamilyNo"]) {
-                    $("#familyInsurName").val(familyArr[i]["FamilyName"]);
-                    $("#familyRelationship").val(familyArr[i]["RelationshipDesc"]);
-                    $("#familyID").val(familyArr[i]["FamilyID"]);
-                    $("#familyBirth").val(familyArr[i]["FamilyBirthday"]);
-                    familyID = familyArr[i]["FamilyID"];
-                    familyBirth = familyArr[i]["FamilyBirthday"];
-                    relationshipNo = familyArr[i]["FamilyRelationship"];
-                    typeNo = familyArr[i][""];
+
+            //for (var i in familyArr) {
+            for (var i=0; i<familyArr.content.length; i++ ) {
+                //replace familyArr.content[i] to familyArr[i]
+                if (self == familyArr.content[i]["family_id"]) {
+                    $("#familyInsurName").val(familyArr.content[i]["name"]);
+                    $("#familyRelationship").val(familyArr.content[i]["relation"]);
+                    $('#idType').val(familyArr.content[i]["idtype"]);
+                    $("#familyID").val(familyArr.content[i]["idno"]);
+                    $("#familyBirth").val(familyArr.content[i]["birthday"]);
+                    familyID = familyArr.content[i]["idno"];
+                    familyBirth = familyArr.content[i]["birthday"];
+                    relationshipNo = familyArr.content[i]["relation"];
+                    typeNo = familyArr.content[i]["idtype"];
 
                     $.each($("#relationship-popup-option-list li"), function (index, item) {
-                        if ($.trim($(item).text()) == familyArr[i]["RelationshipDesc"]) {
+                        if ($.trim($(item).text()) == familyArr.content[i]["relation"]) {
+                            $(item).trigger("click");
+                        }
+                    });
+
+                    $.each($("#idType-popup-option-list li"), function (index, item) {
+                        if ($.trim($(item).text()) == familyArr.content[i]["idtype"]) {
                             $(item).trigger("click");
                         }
                     });
@@ -332,57 +450,51 @@ $("#viewFamilyData").pagecontainer({
             }
 
             //2.跳轉
-            familyInsurName = $(this).children("div:first-child").children("span:first-child").text();
-            changeViewToDetail();
+            familyInsurName = $(this).parent().siblings().find('span:nth-child(1)').text();
             addFamilyOrNot = false;
-            $(".confirmCancelEditFamily .main-paragraph").text(familyName);
+            changeViewToDetail();          
+            $(".confirmCancelEditFamily .main-paragraph").text(familyInsurName);
             checkFormByFamily();
-            $("#familyInsurName").attr("readonly", "readonly");
-            $("#familyInsurName").css("background", "#cccccc");
         });
 
         //儲存按鈕
         $(".family-save-btn").on("click", function () {
-            if (checkFormByFamily() && checkTextFormat()) {
+            if (checkFormByFamily() && checkTextFormat() && checkDuplicateInfo()) {
                 loadingMask("show");
                 familyArr = JSON.parse(localStorage.getItem('familySettingData')); 
-                if (clickEditSettingID != '') {
-                    //Edit Status, Update Local Data
-                    familyArr.content = familyArr.content.filter(function(item) {
-                        return item.id != clickEditSettingID;
-                    });
-                }
-                var obj = new Object();
+                obj = new Object()
+                var jsonData = {};               
                 if ( familyArr == null || familyArr.content.length == 0) {
                     obj.family_id = 1 ;
-                } else if (clickEditSettingID != '') {
-                    obj.family_id = clickEditSettingID;
-
-                } else {
-                    sortDataByKey(familyArr.content, 'id', 'asc');
-                    obj.family_id = familyArr['content'][familyArr['content'].length-1].id + 1;
-                }
-                obj.name = $('#familyInsurName').val();
-                obj.relation = $("#familyRelationship").val();
-                obj.idtype = $('#idType').val();
-                obj.idno = $('#familyID').val();
-                obj.birthday = $('#familyBirth').val();
-
-                var jsonData = {};
-                if (familyArr == null) {
+                    addTempDataIntoObject();
                     jsonData = {
                         content: [obj]
                     };
+                    localStorage.setItem('familySettingData', JSON.stringify(jsonData));
+                } else if (familyNo != '') {
+                    for (var i=0; i<familyArr.content.length; i++ ) { 
+                        if ( familyArr.content[i]["family_id"] == familyNo ) {
+                            familyArr.content[i]["name"] = $('#familyInsurName').val();
+                            familyArr.content[i]["relation"] = $("#familyRelationship").val();
+                            familyArr.content[i]["idtype"] = $('#idType').val();
+                            familyArr.content[i]["idno"] = $('#familyID').val();
+                            familyArr.content[i]["birthday"] = $('#familyBirth').val();
+                        }
+                    }
+                    localStorage.setItem('familySettingData', JSON.stringify(familyArr));
                 } else {
+                    sortDataByKey(familyArr.content, 'family_id', 'asc');
+                    obj.family_id = familyArr['content'][familyArr['content'].length-1].family_id + 1;
+                    addTempDataIntoObject();
                     familyArr.content.push(obj);
                     jsonData = familyArr;
-                }
-
-                localStorage.setItem('familySettingData', JSON.stringify(jsonData));
-
+                    localStorage.setItem('familySettingData', JSON.stringify(jsonData));
+                }               
+                
+                //API: ModifyFamilyData (入參)
                 clearFormByFamily();
                 checkFormByFamily();
-                clickEditSettingID = '';
+                familyNo = '';
                 queryFamilyList(); 
             }
         });

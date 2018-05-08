@@ -111,10 +111,24 @@ a {
     width: 30.6vw !important;
 }
 
-#pageOne, #pageTwo, #pageThree{ margin-left: 0 !important; margin-right: 0 !important;}
+#insurTab > div > div.ui-radio label {
+    line-height: 1 !important;
+    border: 1px solid #2c89bc !important;
+    padding: 2.8vw 0 2.6vw;
+}
 
+#insurTab > div > div.ui-radio label.ui-btn-active {
+    background-color: #2c89bc !important;
+    color: white !important;
+}
 
-#pageOne div.ui-select {
+#insurTab.ui-radio-50w div.ui-radio {
+    width: 46vw !important;
+}
+
+#pageOne, #pageTwo, #pageThree, #pageInsurStatus-1, #pageInsurStatus-2 { margin-left: 0 !important; margin-right: 0 !important;}
+
+#pageOne div.ui-select, #pageInsurStatus-1 div.ui-select {
     width: 45vw !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -128,6 +142,7 @@ a {
 .ui-controlgroup-controls .ui-btn, label.ui-btn{ font-weight: normal;}
 
 #mainTab{ margin: 3.99vw 0 4.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
+#insurTab{ margin-top: 3.99vw; border-radius: 8px !important; -webkit-border-radius: 8px;}
 
 body {
   margin: 0;
@@ -327,6 +342,7 @@ pre {
 }
 
 #insurance-main .health-insurance-content{ background-color: #ffffff;}
+#insurance-main .health-insurance-list, #insurance-ownpaid .ownpaid-insurance-list{ background-color: #ffffff; color:#323232;}
 
 .insurance-main-title { color:#0F0F0F; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
 .labor-insurance-remark  { color:#666666; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
@@ -912,6 +928,8 @@ div.scrollmenu a {
     padding-top: 3.5vw;
 }
 
+.empty-list {padding: 3vw 6.71vw;}
+
 .family-edit {
     width: 6.2vw;
     height: 6.2vw;
@@ -925,6 +943,13 @@ div.scrollmenu a {
     margin-left: 14vw;
     margin-top: 1vw;
     display: none;
+}
+
+.family-next, .family-add {
+    width: 7.5vw;
+    height: 7.5vw;
+    margin-left: 14vw;
+    margin-top: 1vw;
 }
 
 .family-notice {
@@ -974,6 +999,19 @@ div.scrollmenu a {
     line-height: 10vw;
 }
 
+.family-insur-apply-div {
+    margin-top: 10vw;
+    color:#2e89bc;
+    display: flex;
+    margin-left: 25vw;
+}
+
+.addInsuranceImg { 
+    margin-right: 3.2vw; 
+    align-self:center; 
+    width: 13%;
+}
+
 .family-input {
     width: 56.391vw;
     height: 9.661vw;
@@ -1014,7 +1052,7 @@ div.scrollmenu a {
 }
 
 .activity-line {
-    width: 150vw;
+    width: 100vw;
     height: 1px;
     /*margin-left: 3.71vw;*/
     background-color: #d6d6d6;

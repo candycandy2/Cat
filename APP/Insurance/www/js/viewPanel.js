@@ -40,10 +40,10 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewMain");
     });
 
-    /*$("#mypanel #mypanelviewPersonalInsurance").on("click", function() {
+    $("#mypanel #mypanelviewPersonalInsurance").on("click", function() {
         editLeaveForm = false; 
         changePageByPanel("viewPersonalInsurance");
-    });*/
+    });
 
     $("#mypanel #mypanelviewFamilyData").on("click", function() {
         changePageByPanel("viewFamilyData");

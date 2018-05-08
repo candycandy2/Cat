@@ -7,7 +7,6 @@ var encryptConfig = {
     username: "currentUser",
     password: "currentUserPassword"
 };
-var x;
 
 $("#viewMain").pagecontainer({
     create: function(event, ui) {
@@ -37,6 +36,9 @@ $("#viewMain").pagecontainer({
             $('#pageOne').show();
             $('#pageTwo').hide();
             $('#pageThree').hide();
+            $("label[for=tab3]").removeClass('ui-btn-active');
+            $("label[for=tab2]").removeClass('ui-btn-active');
+            $("label[for=tab1]").addClass('ui-btn-active');
         });
 
         $("#viewMain").on("pageshow", function(event, ui) {
@@ -45,7 +47,6 @@ $("#viewMain").pagecontainer({
 
         /********************************** dom event *************************************/
         $('#mainTab').change(function() {
-            timeQueue = {};
             var tabValue = $("#mainTab :radio:checked").val();
             if (tabValue == 'tab1') {
                 $('#pageOne').show();
