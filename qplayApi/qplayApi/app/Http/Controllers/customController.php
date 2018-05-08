@@ -26,8 +26,7 @@ class customController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
             //$url = "http://www.qisda.com.tw/YellowPage/YellowpageForQplayAPI.asmx/QueryEmployeeData";
-          //  $url = CommonUtil::getApiCustomerUrl($action);
-            $url = "http://localhost/EnterpriseAPPPlatform/API/ENS/public/v101/ens/getAuthority";
+            $url = CommonUtil::getApiCustomerUrl($action);
             if(!is_null(\Request::getQueryString())){
                 $url = $url.'?'.\Request::getQueryString();
             }
@@ -42,7 +41,7 @@ class customController extends Controller
     }
 
     public function GetData($url, $tokenValid) {
-        
+
         $content = file_get_contents('php://input');
         $data["strXml"] = $content;
         $data = json_encode($data);
