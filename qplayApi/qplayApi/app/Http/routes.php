@@ -42,6 +42,8 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
     Route::post('/sendPushMessage', 'qplayController@sendPushMessage');
     Route::post('/addAppLog', 'appLogController@addAppLog');
     Route::any('/addDownloadHit', 'qplayController@addDownloadHit');
+    Route::get('/getVersionLog', 'appVersionController@getVersionLog');
+    Route::post('/addAppEvaluation', 'appEvaluationController@addAppEvaluation');
 });
 
 //Smart Factory

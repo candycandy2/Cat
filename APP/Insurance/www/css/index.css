@@ -342,7 +342,7 @@ pre {
 }
 
 #insurance-main .health-insurance-content{ background-color: #ffffff;}
-#insurance-main .health-insurance-list{ background-color: #ffffff; color:#323232;}
+#insurance-main .health-insurance-list, #insurance-ownpaid .ownpaid-insurance-list{ background-color: #ffffff; color:#323232;}
 
 .insurance-main-title { color:#0F0F0F; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
 .labor-insurance-remark  { color:#666666; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
@@ -859,7 +859,7 @@ div.scrollmenu a {
 #insranceInfo li div{ height: 9.367vw;}
 #insranceInfo li:nth-last-of-type(1){ border-bottom: none;}
 
-/********************************************** FamilyData *********************************************/
+/********************************************** FamilyData & PersonalInsurace *********************************************/
 #viewFamilyNone {
     width: 100vw;
     text-align: center;
@@ -918,7 +918,8 @@ div.scrollmenu a {
 }
 
 .family-list > div:nth-of-type(1) > div:nth-of-type(2),
-.family-list > div:nth-of-type(1) > div:nth-of-type(3) {
+.family-list > div:nth-of-type(1) > div:nth-of-type(3),
+.group-list > div:nth-of-type(2) {
     margin-top: 1.16vw;
 }
 
@@ -927,6 +928,8 @@ div.scrollmenu a {
     height: 10vw;
     padding-top: 3.5vw;
 }
+
+.empty-list, .group-list {padding: 3vw 6.71vw;}
 
 .family-edit {
     width: 6.2vw;

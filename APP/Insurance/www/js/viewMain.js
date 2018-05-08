@@ -47,7 +47,6 @@ $("#viewMain").pagecontainer({
 
         /********************************** dom event *************************************/
         $('#mainTab').change(function() {
-            timeQueue = {};
             var tabValue = $("#mainTab :radio:checked").val();
             if (tabValue == 'tab1') {
                 $('#pageOne').show();

@@ -1,10 +1,15 @@
-
 $("#viewMyFamilyDatum").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
         /********************************** function *************************************/
         var familyArr = [];
-        var familyNo = "", familyName = "", familyID = "", familyBirth = "", relationshipNo = "", genderNo = "";
-        var timeoutFamilyName = null, timeoutFamilyID = null;
+        var familyNo = "",
+            familyName = "",
+            familyID = "",
+            familyBirth = "",
+            relationshipNo = "",
+            genderNo = "";
+        var timeoutFamilyName = null,
+            timeoutFamilyID = null;
         var relationshipData = {
             id: "relationship-popup",
             option: [],
@@ -27,11 +32,13 @@ $("#viewMyFamilyDatum").pagecontainer({
                 class: "tpl-dropdown-list-icon-arrow"
             }
         };
+        var ActivitiesFamilyQueryItemKey;
 
         //眷屬資料
-        window.ActivitiesFamilyQuery = function () {
+        //review by alan
+        window.ActivitiesFamilyQuery = function() {
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 //console.log(data);
 
                 familyArr = [];
@@ -43,32 +50,33 @@ $("#viewMyFamilyDatum").pagecontainer({
                     var familyList = "";
                     for (var i in familyArr) {
                         if (familyArr[i]["IsActivities"] == "N") {
-                            familyList += '<div class="family-list"><div class="font-style10 font-color2 family-edit" data-id="'
-                                + familyArr[i]["FamilyNo"]
-                                + '"><div><span>'
-                                + familyArr[i]["FamilyName"]
-                                + '</span>/<span>'
-                                + familyArr[i]["RelationshipDesc"]
-                                + '</span></div><div>'
-                                + familyArr[i]["FamilyBirthday"]
-                                + '</div><div>'
-                                + familyArr[i]["FamilyID"]
-                                + '</div></div><div><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
+                            familyList += '<div class="family-list"><div class="font-style10 font-color2 family-edit" data-id="' +
+                                familyArr[i]["FamilyNo"] +
+                                '"><div><span>' +
+                                familyArr[i]["FamilyName"] +
+                                '</span>/<span>' +
+                                familyArr[i]["RelationshipDesc"] +
+                                '</span></div><div>' +
+                                familyArr[i]["FamilyBirthday"] +
+                                '</div><div>' +
+                                familyArr[i]["FamilyID"] +
+                                '</div></div><div><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
                         } else {
-                            familyList += '<div class="family-list"><div class="font-style10 font-color2 family-edit" data-id="'
-                                + familyArr[i]["FamilyNo"]
-                                + '"><div><span>'
-                                + familyArr[i]["FamilyName"]
-                                + '</span>/<span>'
-                                + familyArr[i]["RelationshipDesc"]
-                                + '</span></div><div>'
-                                + familyArr[i]["FamilyBirthday"]
-                                + '</div><div>'
-                                + familyArr[i]["FamilyID"]
-                                + '</div></div><div class="font-style10 font-color3"><span>'
+                            familyList += '<div class="family-list"><div class="font-style10 font-color2 family-edit" data-id="' +
+                                familyArr[i]["FamilyNo"] +
+                                '"><div><span>' +
+                                familyArr[i]["FamilyName"] +
+                                '</span>/<span>' +
+                                familyArr[i]["RelationshipDesc"] +
+                                '</span></div><div>' +
+                                familyArr[i]["FamilyBirthday"] +
+                                '</div><div>' +
+                                familyArr[i]["FamilyID"] +
+                                '</div></div><div class="font-style10 font-color3"><span>'
                                 //+ "活動尚未結束無法刪除"
-                                + langStr["str_037"]
-                                + '</span></div></div><div class="activity-line"></div>';
+                                +
+                                langStr["str_037"] +
+                                '</span></div></div><div class="activity-line"></div>';
                         }
                     }
 
@@ -84,21 +92,23 @@ $("#viewMyFamilyDatum").pagecontainer({
 
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
-                CustomAPI("POST", false, "Activities_Family", self.successCallback, self.failCallback, activitiesFamilyQueryData, "");
+            var __construct = function() {
+                ActivitiesFamilyQueryItemKey = CustomAPIEx("POST", false, "Activities_Family", self.successCallback, self.failCallback, activitiesFamilyQueryData, "");
             }();
 
         };
 
         //添加眷屬資料
-        window.ActivitiesFamilyAddQuery = function () {
+        window.ActivitiesFamilyAddQuery = function() {
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 //console.log(data);
 
                 if (data["ResultCode"] == "045903") {
+                    //remove old
+                    localStorage.removeItem(ActivitiesFamilyQueryItemKey);
                     ActivitiesFamilyQuery();
                     changeViewToList();
                 } else if (data["ResultCode"] == "045904") {
@@ -111,21 +121,23 @@ $("#viewMyFamilyDatum").pagecontainer({
 
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPI("POST", true, "Activities_Family_Add", self.successCallback, self.failCallback, activitiesFamilyAddQueryData, "");
             }();
 
         };
 
         //更新眷屬資料
-        window.ActivitiesFamilyUpdateQuery = function () {
+        window.ActivitiesFamilyUpdateQuery = function() {
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 //console.log(data);
 
                 if (data["ResultCode"] == "045905") {
+                    //remove old
+                    localStorage.removeItem(ActivitiesFamilyQueryItemKey);
                     ActivitiesFamilyQuery();
                     changeViewToList();
                 } else if (data["ResultCode"] == "045906") {
@@ -138,21 +150,23 @@ $("#viewMyFamilyDatum").pagecontainer({
 
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPI("POST", true, "Activities_Family_Update", self.successCallback, self.failCallback, activitiesFamilyUpdateQueryData, "");
             }();
 
         };
 
         //刪除眷屬資料
-        window.ActivitiesFamilyDeleteQuery = function () {
+        window.ActivitiesFamilyDeleteQuery = function() {
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 //console.log(data);
 
                 if (data["ResultCode"] == "045907") {
+                    //remove old
+                    localStorage.removeItem(ActivitiesFamilyQueryItemKey);
                     ActivitiesFamilyQuery();
                     changeViewToList();
                 } else if (data["ResultCode"] == "045908") {
@@ -165,9 +179,9 @@ $("#viewMyFamilyDatum").pagecontainer({
 
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPI("POST", true, "Activities_Family_Delete", self.successCallback, self.failCallback, activitiesFamilyDeleteQueryData, "");
             }();
 
@@ -250,13 +264,13 @@ $("#viewMyFamilyDatum").pagecontainer({
             relationshipNo = "";
             genderNo = "";
 
-            $.each($("#relationship-popup-option-list li"), function (index, item) {
+            $.each($("#relationship-popup-option-list li"), function(index, item) {
                 if ($(item).hasClass("tpl-dropdown-list-selected")) {
                     $(item).removeClass("tpl-dropdown-list-selected");
                 }
             });
 
-            $.each($("#gender-popup-option-list li"), function (index, item) {
+            $.each($("#gender-popup-option-list li"), function(index, item) {
                 if ($(item).hasClass("tpl-dropdown-list-selected")) {
                     $(item).removeClass("tpl-dropdown-list-selected");
                 }
@@ -293,28 +307,30 @@ $("#viewMyFamilyDatum").pagecontainer({
 
 
         /********************************** page event *************************************/
-        $("#viewMyFamilyDatum").on("pagebeforeshow", function (event, ui) {
+        $("#viewMyFamilyDatum").on("pagebeforeshow", function(event, ui) {
             if (viewFamilyInit) {
                 setDropdownlistByFamily();
                 viewFamilyInit = false;
             }
         });
 
-        $("#viewMyFamilyDatum").on("pageshow", function (event, ui) {
-
+        $("#viewMyFamilyDatum").on("pageshow", function(event, ui) {
+            // 2. get family list
+            activitiesFamilyQueryData = '<LayoutHeader><EmployeeNo>' + myEmpNo + '</EmployeeNo></LayoutHeader>';
+            ActivitiesFamilyQuery();
         });
 
-        
+
         /******************************** datetimepicker ***********************************/
         $('#familyBirth').datetimepicker({
             timepicker: false
         });
 
-        $("#familyBirth").on("click", function () {
+        $("#familyBirth").on("click", function() {
             $('#familyBirth').datetimepicker("show");
         });
 
-        $("#familyBirth").on("change", function () {
+        $("#familyBirth").on("change", function() {
             familyBirth = $(this).val().substring(0, 10);
             $(this).val(familyBirth);
             checkFormByFamily();
@@ -322,12 +338,12 @@ $("#viewMyFamilyDatum").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        $("#viewMyFamilyDatum").keypress(function (event) {
+        $("#viewMyFamilyDatum").keypress(function(event) {
 
         });
 
         //刪除眷屬資料彈窗popup
-        $("#familyList").on("click", ".family-delete", function () {
+        $("#familyList").on("click", ".family-delete", function() {
             familyNo = $(this).parent().prev().attr("data-id");
             familyName = $(this).parent().prev().children("div:first-child").children("span:first-child").text();
             $(".confirmDeleteFamily .main-paragraph").text(familyName);
@@ -335,20 +351,20 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         //確定刪除
-        $("#confirmDeleteFamilyBtn").on("click", function () {
+        $("#confirmDeleteFamilyBtn").on("click", function() {
             loadingMask("show");
-            activitiesFamilyDeleteQueryData = '<LayoutHeader><EmployeeNo>'
-                + myEmpNo
-                + '</EmployeeNo><FamilyNo>'
-                + familyNo
-                + '</FamilyNo></LayoutHeader>';
+            activitiesFamilyDeleteQueryData = '<LayoutHeader><EmployeeNo>' +
+                myEmpNo +
+                '</EmployeeNo><FamilyNo>' +
+                familyNo +
+                '</FamilyNo></LayoutHeader>';
 
             //console.log(activitiesFamilyDeleteQueryData);
             ActivitiesFamilyDeleteQuery();
         });
 
         //返回到眷屬列表，彈窗popup
-        $("#viewMyFamilyDatum .back-family").on("click", function () {
+        $("#viewMyFamilyDatum .back-family").on("click", function() {
             if (addFamilyOrNot) {
                 popupMsgInit('.confirmCancelAddFamily');
             } else {
@@ -357,17 +373,17 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         //確定取消新增，跳轉
-        $("#confirmCancelAddFamilyBtn").on("click", function () {
+        $("#confirmCancelAddFamilyBtn").on("click", function() {
             changeViewToList();
         });
 
         //確定取消編輯，跳轉
-        $("#confirmCancelEditFamilyBtn").on("click", function () {
+        $("#confirmCancelEditFamilyBtn").on("click", function() {
             changeViewToList();
         });
 
         //添加眷屬，跳轉到編輯頁
-        $(".family-add-img").on("click", function () {
+        $(".family-add-img").on("click", function() {
             clearFormByFamily();
             changeViewToDetail();
             addFamilyOrNot = true;
@@ -377,7 +393,7 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         //修改眷屬，跳轉到編輯頁
-        $("#familyList").on("click", ".family-edit", function () {
+        $("#familyList").on("click", ".family-edit", function() {
             //1.傳值
             var self = $(this).attr("data-id");
             familyNo = self;
@@ -393,13 +409,13 @@ $("#viewMyFamilyDatum").pagecontainer({
                     relationshipNo = familyArr[i]["FamilyRelationship"];
                     genderNo = familyArr[i]["FamilyGender"];
 
-                    $.each($("#relationship-popup-option-list li"), function (index, item) {
+                    $.each($("#relationship-popup-option-list li"), function(index, item) {
                         if ($.trim($(item).text()) == familyArr[i]["RelationshipDesc"]) {
                             $(item).trigger("click");
                         }
                     });
 
-                    $.each($("#gender-popup-option-list li"), function (index, item) {
+                    $.each($("#gender-popup-option-list li"), function(index, item) {
                         if ($.trim($(item).text()) == familyArr[i]["GenderDesc"]) {
                             $(item).trigger("click");
                         }
@@ -420,43 +436,43 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         //儲存按鈕
-        $(".family-save-btn").on("click", function () {
+        $(".family-save-btn").on("click", function() {
             if (checkFormByFamily()) {
                 loadingMask("show");
                 familyName = $.trim($("#familyName").val());
                 familyID = $.trim($("#familyID").val());
 
                 if (addFamilyOrNot) {
-                    activitiesFamilyAddQueryData = '<LayoutHeader><EmployeeNo>'
-                        + myEmpNo
-                        + '</EmployeeNo><FamilyID>'
-                        + familyID
-                        + '</FamilyID><FamilyName>'
-                        + familyName
-                        + '</FamilyName><FamilyGender>'
-                        + genderNo
-                        + '</FamilyGender><FamilyRelationship>'
-                        + relationshipNo
-                        + '</FamilyRelationship><FamilyBirthday>'
-                        + familyBirth
-                        + '</FamilyBirthday></LayoutHeader>';
+                    activitiesFamilyAddQueryData = '<LayoutHeader><EmployeeNo>' +
+                        myEmpNo +
+                        '</EmployeeNo><FamilyID>' +
+                        familyID +
+                        '</FamilyID><FamilyName>' +
+                        familyName +
+                        '</FamilyName><FamilyGender>' +
+                        genderNo +
+                        '</FamilyGender><FamilyRelationship>' +
+                        relationshipNo +
+                        '</FamilyRelationship><FamilyBirthday>' +
+                        familyBirth +
+                        '</FamilyBirthday></LayoutHeader>';
 
                     //console.log(activitiesFamilyAddQueryData);
                     ActivitiesFamilyAddQuery();
                 } else {
-                    activitiesFamilyUpdateQueryData = '<LayoutHeader><EmployeeNo>'
-                        + myEmpNo
-                        + '</EmployeeNo><FamilyNo>'
-                        + familyNo
-                        + '</FamilyNo><FamilyID>'
-                        + familyID
-                        + '</FamilyID><FamilyGender>'
-                        + genderNo
-                        + '</FamilyGender><FamilyRelationship>'
-                        + relationshipNo
-                        + '</FamilyRelationship><FamilyBirthday>'
-                        + familyBirth
-                        + '</FamilyBirthday></LayoutHeader>';
+                    activitiesFamilyUpdateQueryData = '<LayoutHeader><EmployeeNo>' +
+                        myEmpNo +
+                        '</EmployeeNo><FamilyNo>' +
+                        familyNo +
+                        '</FamilyNo><FamilyID>' +
+                        familyID +
+                        '</FamilyID><FamilyGender>' +
+                        genderNo +
+                        '</FamilyGender><FamilyRelationship>' +
+                        relationshipNo +
+                        '</FamilyRelationship><FamilyBirthday>' +
+                        familyBirth +
+                        '</FamilyBirthday></LayoutHeader>';
 
                     //console.log(activitiesFamilyUpdateQueryData);
                     ActivitiesFamilyUpdateQuery();
@@ -465,31 +481,31 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         //關係dropdownlist-popup
-        $("#familyRelationship").on("click", function () {
+        $("#familyRelationship").on("click", function() {
             $("#familyName").blur();
             $("#familyID").blur();
-            setTimeout(function () {
+            setTimeout(function() {
                 $("#relationship-popup").trigger("click");
             }, 200);
         });
 
         //性別dropdownlist-popup
-        $("#familyGender").on("click", function () {
+        $("#familyGender").on("click", function() {
             $("#familyName").blur();
             $("#familyID").blur();
-            setTimeout(function () {
+            setTimeout(function() {
                 $("#gender-popup").trigger("click");
             }, 200);
         });
 
         //點擊關係列表，觸發change事件
-        $("#viewMyFamilyDatum").on("click", "#relationship-popup-option ul li", function () {
+        $("#viewMyFamilyDatum").on("click", "#relationship-popup-option ul li", function() {
             var self = $(this).text();
             $("#familyRelationship").val($.trim(self));
             checkFormByFamily();
         });
 
-        $("#viewMyFamilyDatum").on("popupafterclose", "#relationship-popup-option", function () {
+        $("#viewMyFamilyDatum").on("popupafterclose", "#relationship-popup-option", function() {
             var self = $("#relationship-popup").val();
             if (self !== langStr["str_040"]) {
                 relationshipNo = self;
@@ -497,13 +513,13 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         //點擊性別列表，觸發change事件
-        $("#viewMyFamilyDatum").on("click", "#gender-popup-option ul li", function () {
+        $("#viewMyFamilyDatum").on("click", "#gender-popup-option ul li", function() {
             var self = $(this).text();
             $("#familyGender").val($.trim(self));
             checkFormByFamily();
         });
 
-        $("#viewMyFamilyDatum").on("popupafterclose", "#gender-popup-option", function () {
+        $("#viewMyFamilyDatum").on("popupafterclose", "#gender-popup-option", function() {
             var self = $("#gender-popup").val();
             if (self !== langStr["str_040"]) {
                 genderNo = self;
@@ -511,18 +527,18 @@ $("#viewMyFamilyDatum").pagecontainer({
         });
 
         //檢查表單（姓名和身份證）是否符合提交要求
-        $("#familyName").on("keyup", function (event) {
+        $("#familyName").on("keyup", function(event) {
             if (timeoutFamilyName != null) {
                 clearTimeout(timeoutFamilyName);
                 timeoutFamilyName = null;
             }
-            timeoutFamilyName = setTimeout(function () {
+            timeoutFamilyName = setTimeout(function() {
                 familyName = $.trim($("#familyName").val());
                 checkFormByFamily();
             }, 1000);
         });
 
-        $("#familyID").on("keyup", function (event) {
+        $("#familyID").on("keyup", function(event) {
             var pattern = /([^a-zA-Z0-9]*)[a-zA-Z0-9]*([^a-zA-Z0-9]*)/;
             var residue = event.currentTarget.value.match(pattern);
             if (residue[1] !== "" || residue[2] !== "") {

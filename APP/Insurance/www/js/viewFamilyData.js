@@ -218,6 +218,8 @@ $("#viewFamilyData").pagecontainer({
             } else {
                 $("#viewFamilyList").show();
             }
+            $(".family-list-title").show();         
+            $(".family-add-title").hide();
             $(".family-cancle-btn").hide();
             $(".family-edit-btn").show(); 
             $(".family-delete").hide();
@@ -349,11 +351,11 @@ $("#viewFamilyData").pagecontainer({
                 setDropdownlistByFamily();
                 viewFamilyInit = false;
             }
-            queryFamilyList();
         });
 
         $("#viewFamilyData").on("pageshow", function (event, ui) {
-      
+            loadingMask("show");
+            queryFamilyList();    
         });
         
         /******************************** datetimepicker ***********************************/
