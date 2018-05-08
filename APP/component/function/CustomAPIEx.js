@@ -48,6 +48,13 @@ function CustomAPIEx(requestType, asyncType, requestAction, successCallback, fai
     }
 
     if (localStorage.getItem(keyItem) === null) {
+    } else {
+        var storageData = JSON.parse(localStorage.getItem(keyItem));
+        if (checkDataExpired(storageData[0].time, expiredTimeSeconds, 'ss')) {
+            localStorage.removeItem(keyItem);
+        }
+    }
+    if (localStorage.getItem(keyItem) === null) {
 
         var signatureTime = getSignature("getTime");
         var signatureInBase64 = getSignature("getInBase64", signatureTime);
@@ -72,9 +79,6 @@ function CustomAPIEx(requestType, asyncType, requestAction, successCallback, fai
         });
     } else {
         var storageData = JSON.parse(localStorage.getItem(keyItem));
-        if (checkDataExpired(storageData[0].time, expiredTimeSeconds, 'ss')) {
-            localStorage.removeItem(keyItem);
-        }
         successCallback(storageData[0].result);
     }
 

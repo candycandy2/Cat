@@ -6,11 +6,20 @@ var myReserver_dirtyFlag = true;
 var PullToRefreshTab1_Reserve = null;
 var PullToRefreshTab2_MyReserve = null;
 
+var myMap = new Map();
+//myMap.set(0, 'zero');
+//myMap.set(1, 'one');
+//for (var [key, value] of myMap) {
+//  console.log(key + ' = ' + value);
+//}
+
 $("#viewReserve").pagecontainer({
     create: function(event, ui) {
 
         /********************************** function *************************************/
-        window.QueryReserveDetail = function() {
+        window.QueryReserveDetail = function(clearAllData) {
+
+            clearAllData = clearAllData || false;
 
             var self = this;
 
@@ -82,13 +91,22 @@ $("#viewReserve").pagecontainer({
                 }
                 $('#reserveBtn').removeClass('btn-enable');
                 $('#reserveBtn').addClass('btn-disable');
-                loadingMask("hide");
+                loadingMask("hide", 'QueryReserveDetail');
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function(data) {
+                loadingMask("hide", 'QueryReserveDetail1');
+            };
 
             var __construct = function() {
-                CustomAPI("POST", true, "QueryReserveDetail", self.successCallback, self.failCallback, QueryReserveDetailQuerydata, "");
+                if (clearAllData == true) {
+                    for (var [key, value] of myMap) {
+                        console.log(key + ' = ' + value);
+                        localStorage.removeItem(key);
+                    }
+                }
+                var key = CustomAPIEx("POST", true, "QueryReserveDetail", self.successCallback, self.failCallback, QueryReserveDetailQuerydata, "", 60, "high");
+                myMap.set(key, "");
             }();
         };
 
@@ -115,18 +133,20 @@ $("#viewReserve").pagecontainer({
                     msgContent = "已被預約";
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/warn_icon.png");
                 }
-                QueryReserveDetail();
+                QueryReserveDetail(true);
                 $('.reserveResultPopup').find('.header-text').html(headerContent);
                 $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
                 popupMsgInit('.reserveResultPopup');
                 tplJS.preventPageScroll();
                 $('#reserveBtn').removeClass('btn-enable');
                 $('#reserveBtn').addClass('btn-disable');
-                loadingMask("hide");
+                loadingMask("hide", 'ReserveRelieve');
                 timeQueue = {};
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function(data) {
+                loadingMask("hide", 'ReserveRelieve1');
+            };
 
             var __construct = function() {
                 CustomAPI("POST", true, "ReserveRelieve", self.successCallback, self.failCallback, ReserveRelieveQuerydata, "");
@@ -141,7 +161,7 @@ $("#viewReserve").pagecontainer({
                 $('.hasReservePopup').popup('close');
                 if (data['ResultCode'] === "023905") {
                     if ($('#pageOne').css('display') === 'block') {
-                        QueryReserveDetail();
+                        QueryReserveDetail(true);
                     } else {
                         $('.myReserveCancelResult').find('.main-paragraph').html("取消成功");
                         // myReserver_dirtyFlag = true;
@@ -233,7 +253,7 @@ $("#viewReserve").pagecontainer({
                 } else if (data["ResultCode"] === "023901") {
                     $('.queryMyReserveResult').find('.main-paragraph').html("沒有您的預約資料");
                     popupMsgInit('.queryMyReserveResult');
-                    tplJS.preventPageScroll();//
+                    tplJS.preventPageScroll(); //
                     destorypullrefresh(PullToRefreshTab1_Reserve);
                     destorypullrefresh(PullToRefreshTab2_MyReserve);
                 }
@@ -274,8 +294,7 @@ $("#viewReserve").pagecontainer({
             PullToRefreshTab1_Reserve = PullToRefresh.init({
                 mainElement: '#pageOne',
                 onRefresh: function() {
-                    time = new Date(Date.now());
-                    QueryReserveDetail();
+                    QueryReserveDetail(true);
                 }
             });
         });
@@ -303,8 +322,7 @@ $("#viewReserve").pagecontainer({
                 PullToRefreshTab1_Reserve = PullToRefresh.init({
                     mainElement: '#pageOne',
                     onRefresh: function() {
-                        time = new Date(Date.now());
-                        QueryReserveDetail();
+                        QueryReserveDetail(true);
                     }
                 });
             } else if (tabValue == 'tab2') {
@@ -317,8 +335,8 @@ $("#viewReserve").pagecontainer({
                     firstItemYear + firstItemMonth + firstItemDate +
                     "</NowDate></LayoutHeader>"
                 // if(myReserver_dirtyFlag === true)
+                loadingMask("show", 'tab2');
                 QueryMyReserve();
-                loadingMask("show");
                 /* global PullToRefresh */
                 destorypullrefresh(PullToRefreshTab1_Reserve);
                 destorypullrefresh(PullToRefreshTab2_MyReserve);
@@ -349,8 +367,8 @@ $("#viewReserve").pagecontainer({
                 "</Site><ReserveDate>" +
                 queryDate +
                 "</ReserveDate></LayoutHeader>";
+            loadingMask("show", 'clickDate'); //Must before API call
             QueryReserveDetail();
-            loadingMask("show");
         });
 
         $("#reserveSite").change(function() {
@@ -360,8 +378,8 @@ $("#viewReserve").pagecontainer({
                 "</Site><ReserveDate>" +
                 queryDate +
                 "</ReserveDate></LayoutHeader>";
+            loadingMask("show", 'changeSite'); //Must before API call
             QueryReserveDetail();
-            loadingMask("show");
         });
 
         // time pick
@@ -442,8 +460,8 @@ $("#viewReserve").pagecontainer({
                     "</ReserveUser><BTime>" +
                     queryTime +
                     "</BTime></LayoutHeader>";
+                loadingMask("show", 'clickReserve');
                 ReserveRelieve();
-                loadingMask("show");
             }
         });
 

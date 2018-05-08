@@ -6,8 +6,9 @@ use App\lib\CommonUtil;
 use App\lib\ResultCode;
 use App\lib\Verify;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use Log;
+use Exception;
 
 class customController extends Controller
 {
@@ -40,31 +41,39 @@ class customController extends Controller
     }
 
     public function GetData($url, $tokenValid) {
+
         $content = file_get_contents('php://input');
         $data["strXml"] = $content;
         $data = json_encode($data);
         $result = $this->post($url, $data);
 
-        libxml_use_internal_errors(true);
-        $xml = simplexml_load_string($result);
-        if($xml){
-            $json = json_decode($xml);
-        }else{
-            $json = json_decode($result);
+        try
+        {
+            libxml_use_internal_errors(true);
+            $xml = simplexml_load_string($result);
+            if($xml){
+                $json = json_decode($xml);
+            }else{
+                $json = json_decode($result);
+            }
+            if(isset($json->d)){
+                $json =  json_decode($json->d);    
+            }
+            $resultCode = $json->ResultCode;
+            $resultContent = "";
+            if(property_exists($json, 'Content')) {
+                $resultContent = $json->Content;
+            }
+            $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
+            return array("ResultCode"=>$resultCode,
+                "token_valid"=>$tokenValid,
+                "Message"=>$message,
+                "Content"=>$resultContent);
+
+        } catch (Exception $e){
+            Log::error('CustomApiException.'. PHP_EOL .'request:'.$data. PHP_EOL .'response:' .$result);
+            throw $e;
         }
-        if(isset($json->d)){
-            $json =  json_decode($json->d);    
-        }
-        $resultCode = $json->ResultCode;
-        $resultContent = "";
-        if(property_exists($json, 'Content')) {
-            $resultContent = $json->Content;
-        }
-        $message = CommonUtil::getMessageContentByCode($resultCode); //TODO
-        return array("ResultCode"=>$resultCode,
-            "token_valid"=>$tokenValid,
-            "Message"=>$message,
-            "Content"=>$resultContent);
     }
 
     public function do_post_request($url, $data, $optional_headers = null)
