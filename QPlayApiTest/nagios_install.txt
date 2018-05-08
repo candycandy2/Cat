@@ -1,0 +1,263 @@
+
+
+####### Nagios server (192.168.8.6)
+## Nagios 4.0.8
+## 安裝相依套件
+sudo yum install epel-release
+sudo yum install httpd php php-cli
+sudo yum install gd gd-devel gcc glibc glibc-common net-snmp wget
+sudo yum install nagios* nmap-ncat.x86_64		## On CentOS all installed nagios plugins live in /usr/lib64/nagios/plugins
+
+## 設定管理介面登入用的帳號密碼
+## 如果要改帳號 nagiosadmin，請修改 /etc/nagios/cgi.cfg
+## 設定nagiosadmin的密碼 0okm(IJN
+sudo htpasswd -c /etc/nagios/passwd nagiosadmin
+
+新增其它使用者
+sudo htpasswd /etc/nagios/passwd nagios_viewer
+
+## 定義 nrpe 命令
+## edit
+sudo vi /etc/nagios/objects/commands.cfg
+
+## 增列底下幾行
+define command{
+	command_name	check_nrpe
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -a $ARG2$
+	}
+
+## 重啟 Nagios server
+sudo systemctl restart nagios
+
+## Verifying Your Configuration 會指示設定檔錯誤所在
+nagios -v /etc/nagios/nagios.cfg
+
+
+## Client - 被監看的主機 (nrpe)
+## 安裝相依套件
+sudo yum install epel-release
+#sudo yum install httpd php php-cli
+sudo yum install gd gd-devel gcc glibc glibc-common net-snmp wget
+sudo yum install nrpe nagios-plugins-all nmap-ncat.x86_64
+sudo yum install nagios-plugins-nrpe
+
+
+## 設定 nrpe
+sudo vi /etc/nagios/nrpe.cfg
+
+## 允許 nrpe 來自
+allowed_hosts=127.0.0.1,192.168.8.6  ## Make sure to change allowed_hosts to your own values.
+## 允許server 帶參數的通訊
+dont_blame_nrpe=1
+## 編寫可通訊的命令，例:
+command[check_users]=/usr/lib64/nagios/plugins/check_users -w $ARG1$ -c $ARG2$
+command[check_load]=/usr/lib64/nagios/plugins/check_load -w $ARG1$ -c $ARG2$
+command[check_disk]=/usr/lib64/nagios/plugins/check_disk -w $ARG1$ -c $ARG2$ -p $ARG3$
+command[check_http]=/usr/lib64/nagios/plugins/check_http -H $ARG1$ -w $ARG2$ -c $ARG3$
+command[check_mysql_slavestatus]=/usr/lib64/nagios/plugins/check_mysql_slavestatus.sh -H localhost -P $ARG1$ -u $ARG2$ -p $ARG3$
+command[check_memcached]=/usr/lib64/nagios/plugins/check_memcached -H 127.0.0.1 -p $ARG1$
+
+## 重啟 Nagios client
+sudo systemctl restart nrpe
+
+## check nrpe 確認能否使用nrpe
+[colin@Nagios-server ~] sudo /usr/lib64/nagios/plugins/check_nrpe -H 127.0.0.1
+NRPE v3.1.1
+
+
+#### 官方提供的基本 檢驗項目 script
+https://www.monitoring-plugins.org/doc/man/index.html
+安裝後放置於 /usr/lib64/nagios/plugins
+
+
+#### 安裝其它非官方 plugin
+## https://exchange.nagios.org/
+
+
+#### install plugin - check mysql slave status
+## https://www.claudiokuenzler.com/nagios-plugins/check_mysql_slavestatus.php
+
+## script 放入 nagios
+sudo cp check_mysql_slavestatus.sh /usr/lib64/nagios/plugins/
+sudo chmod +x /usr/lib64/nagios/plugins/check_mysql_slavestatus.sh
+
+## create DB user on mysql
+GRANT REPLICATION CLIENT on *.* TO 'nagios'@'localhost' IDENTIFIED BY 'replication1234';
+
+## 本機測試 範例
+sudo /usr/lib64/nagios/plugins/check_mysql_slavestatus.sh -H localhost -P 3306 -u nagios -p replication1234
+
+## 遠端測試 範例 check mysql slave status - remote monitor
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.2.26 -c check_mysql_slavestatus -a 3306 nagios replication1234
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.8.5 -c check_mysql_slavestatus -a 3306 nagios replication1234
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.4.4 -c check_mysql_slavestatus -a 3306 nagios replication1234
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.4.5 -c check_mysql_slavestatus -a 3306 nagios replication1234
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.5.21 -c check_mysql_slavestatus -a 3306 nagios replication1234
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.5.22 -c check_mysql_slavestatus -a 3306 nagios replication1234
+
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.10.4 -c check_mysql_slavestatus -a 3306 nagios replication1234
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.10.5 -c check_mysql_slavestatus -a 3306 nagios replication1234
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.11.4 -c check_mysql_slavestatus -a 3306 nagios replication1234
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.11.5 -c check_mysql_slavestatus -a 3306 nagios replication1234
+
+#### install plugin - check memcached
+## https://exchange.nagios.org/directory/Addons/Active-Checks/check_memcached_wh/details
+
+## script 放入 nagios
+sudo cp check_memcached /usr/lib64/nagios/plugins/
+sudo chmod +x /usr/lib64/nagios/plugins/check_memcached
+
+
+## 本機測試 範例
+sudo /usr/lib64/nagios/plugins/check_memcached -H 127.0.0.1 -p 11208
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.10.4 -c check_memcached -a 11208
+
+## 遠端測試 範例(on HQ-A) check_memcached - remote monitor
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.8.5 -c check_memcached -a 11201
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.4.4 -c check_memcached -a 11201
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.4.5 -c check_memcached -a 11201
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.5.21 -c check_memcached -a 11201
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.5.22 -c check_memcached -a 11201
+## 遠端測試 範例(on BQE-S) check_memcached - remote monitor
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.10.4 -c check_memcached -a 11208
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.10.5 -c check_memcached -a 11208
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.11.4 -c check_memcached -a 11208
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.11.5 -c check_memcached -a 11208
+
+# check_rsync_server (不使用了)
+# script 放入 /usr/lib64/nagios/plugins/check_rsync_server.sh
+# sudo /usr/lib64/nagios/plugins/check_rsync_server.sh -H 192.168.8.5 -p 873 -m "pc_static,rsync_user,0okm(IJN"
+
+# check_rsync_execution
+# script 放入 /usr/lib64/nagios/plugins/check_rsync_execution.sh
+
+
+
+sudo chown root:root /usr/lib64/nagios/plugins/check_nrpe
+sudo chmod -R 755 /usr/lib64/nagios/plugins
+
+sudo visudo
+#Add the row below under "Defaults specification" to enable execution of sudo commands without a TTY:
+Defaults: nagios !requiretty
+Defaults: nrpe !requiretty
+# Allows running a script as root with any arguments
+nagios  ALL=(root)  NOPASSWD: /usr/lib64/nagios/plugins
+nrpe    ALL=(root)  NOPASSWD: /usr/lib64/nagios/plugins
+nrpe    ALL=(root)  NOPASSWD: /usr/lib64/nagios/plugins/eventhandlers/restart-mariadb
+
+sudo systemctl restart nrpe
+sudo touch /var/log/nagios/auto_restart.log
+sudo chown nagios:nagios /var/log/nagios/auto_restart.log
+sudo chmod 777 /var/log/nagios/auto_restart.log
+sudo chmod 775 -R /usr/lib64/nagios/plugins
+
+
+# rsync 自測範例
+sudo /usr/lib64/nagios/plugins/check_rsync_server.sh -S ap
+touch /var/log/rsync/ru.push.lock
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 127.0.0.1 -c check_rsync_execution -a ap
+
+# 本機測試 event handler
+sudo /usr/lib64/nagios/plugins/eventhandlers/restart-mariadb CRITICAL HARD 1
+# 看log : sudo cat /var/log/nagios/auto_restart.log
+
+# 遠端測試 event handler ( 從 HQ-A 讓 HQ-B restart mariadb )
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.8.5 -c terminal-restart-mariadb -a CRITICAL HARD 1
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.5.21 -c terminal-restart-mariadb -a CRITICAL HARD 1
+
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.11.4 -c terminal-restart-mariadb -a CRITICAL HARD 1
+
+# 仿遠端 restart mariadb (for debug)
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 127.0.0.1 -c terminal-restart-mariadb -a CRITICAL HARD 1
+
+## 其它常用指令
+## sudo chown -R root:root /etc/nagios			## easy to modify *.cfg
+## sudo chmod 664 /etc/nagios/*.cfg				## easy to modify *.cfg
+## sudo chmod 664 /etc/nagios/conf.d/*.cfg		## easy to modify *.cfg
+## sudo systemctl restart nagios
+## sudo systemctl restart nrpe
+
+sudo chown root:root /usr/lib64/nagios/plugins/check_nrpe
+sudo chmod -R 755 /usr/lib64/nagios/plugins
+sudo systemctl restart nagios
+sudo systemctl restart nrpe
+sudo netstat -apt | grep nrpe
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 127.0.0.1
+touch /var/log/rsync/eu.push.lock
+
+
+## windows 安裝 nsclient++，安裝 cygwin (模擬 Linux bash 讓 windows 可以執行 *.sh )
+#  設定檔
+C:\Program Files\NSClient++\nsclient.ini
+
+C:\Program Files\NSClient++\scripts\custom\ReconnectDisk.bat
+
+
+#  有些指令是nsclient++內建的 https://docs.nsclient.org/reference/windows/CheckDisk/#check_drivesize
+#  EX : check_drivesize
+
+# windows - check_mysql_slavestatus
+# script 放入 cygwin64 (for nsclient++)
+c:\cygwin64\home\colin.chen\check_mysql_slavestatus.sh
+
+## 在windows上，自測範例
+c:\cygwin64\bin\bash.exe "c:\cygwin64\home\colin.chen\check_mysql_slavestatus.sh" -H localhost -P 3306 -u nagios -p replication1234
+
+## 遠端測試 windows 範例 (check_nt)
+sudo /usr/lib64/nagios/plugins/check_nt -H 192.168.2.26 -p 12489 -v CLIENTVERSION
+sudo /usr/lib64/nagios/plugins/check_nt -H 192.168.7.25 -p 12489 -v CLIENTVERSION
+sudo /usr/lib64/nagios/plugins/check_nt -H 192.168.7.25 -p 12489 -v PROCSTATE -d SHOWALL -l httpd.exe
+
+## 遠端測試 windows 範例 (check_nrpe)
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.2.26 -c check_drivesize -a drive=z:
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.2.26 -c ReconnectDisk -a "UNKNOWN"
+
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.7.25 -c check_drivesize -a drive=x:
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.7.25 -c ReconnectDisk -a "UNKNOWN"
+
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.2.26 -c checkCPU
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.7.25 -c checkCPU
+
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.2.26 -c check_mysql_slavestatus
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 192.168.7.25 -c check_mysql_slavestatus
+
+sudo /usr/lib64/nagios/plugins/check_nrpe -H 127.0.0.1 -c checkAppVersion
+
+
+## pnp4nagios
+#修改 /etc/nagios/nagios.cfg
+process_performance_data=1
+# service performance data
+service_perfdata_file=/usr/local/pnp4nagios/var/service-perfdata
+service_perfdata_file_template=DATATYPE::SERVICEPERFDATA\tTIMET::$TIMET$\tHOSTNAME::$HOSTNAME$\tSERVICEDESC::$SERVICEDESC$\tSERVICEPERFDATA::$SERVICEPERFDATA$\tSERVICECHECKCOMMAND::$SERVICECHECKCOMMAND$\tHOSTSTATE::$HOSTSTATE$\tHOSTSTATETYPE::$HOSTSTATETYPE$\tSERVICESTATE::$SERVICESTATE$\tSERVICESTATETYPE::$SERVICESTATETYPE$
+service_perfdata_file_mode=a
+service_perfdata_file_processing_interval=15
+service_perfdata_file_processing_command=process-service-perfdata-file
+
+# host performance data
+host_perfdata_file=/var/log/nagios/host-perfdata
+host_perfdata_file_template=DATATYPE::HOSTPERFDATA\tTIMET::$TIMET$\tHOSTNAME::$HOSTNAME$\tHOSTPERFDATA::$HOSTPERFDATA$\tHOSTCHECKCOMMAND::$HOSTCHECKCOMMAND$\tHOSTSTATE::$HOSTSTATE$\tHOSTSTATETYPE::$HOSTSTATETYPE$
+host_perfdata_file_mode=a
+host_perfdata_file_processing_interval=15
+host_perfdata_file_processing_command=process-host-perfdata-file
+
+#修改 /etc/nagios/object/commands.cfg
+define command{
+	command_name	process-service-perfdata-file
+	command_line	/bin/mv /var/log/nagios/service-perfdata /var/spool/pnp4nagios/service-perfdata.$TIMET$
+	}
+
+define command{
+	command_name	process-host-perfdata-file
+	command_line	/bin/mv /var/log/nagios/host-perfdata /var/spool/pnp4nagios/host-perfdata.$TIMET$
+	}
+
+sudo systemctl restart nagios
+
+# 啟動 npcd
+sudo npcd -d -f /etc/pnp4nagios/npcd.cfg
+sudo chkconfig npcd on
+
+# 測試 pnp4nagios 設定狀態
+wget http://verify.pnp4nagios.org/verify_pnp_config
+sudo /home/benq/verify_pnp_config -m bulk+npcd -c /etc/nagios/nagios.cfg -p /etc/pnp4nagios/
