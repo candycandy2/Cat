@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
-use Illuminate\Contracts\Validation;
 use App\Services\AzureBlobService;
 use App\Services\ServerFileService;
 use File;

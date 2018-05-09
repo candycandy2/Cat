@@ -351,11 +351,11 @@ $("#viewFamilyData").pagecontainer({
                 setDropdownlistByFamily();
                 viewFamilyInit = false;
             }
-            queryFamilyList();
         });
 
         $("#viewFamilyData").on("pageshow", function (event, ui) {
-      
+            loadingMask("show");
+            queryFamilyList();    
         });
         
         /******************************** datetimepicker ***********************************/

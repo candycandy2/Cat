@@ -479,8 +479,8 @@ $("#viewBackLeaveQuery").pagecontainer({
         var timeoutSignToReason = null;
         //輸入撤回理由——textarea
         $("#signTowithdrawReason").on("keyup", function() {
-            
-            if(timeoutSignToReason != null) {
+
+            if (timeoutSignToReason != null) {
                 clearTimeout(timeoutSignToReason);
                 timeoutSignToReason = null;
             }
