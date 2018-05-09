@@ -1,4 +1,3 @@
-
 /*global variable, function*/
 //var lastPageID = "viewActivitiesSignup";
 var activitiesListQueryData, activitiesDetailQueryData, activitiesSignupQueryData,
@@ -13,16 +12,20 @@ var appKey = "appactivities";
 var appSecretKey = "b1580f5dcdef21cf35993f1310edf511";
 var htmlContent = "";
 var pageVisitedList = ["viewActivitiesList"];
-var addFamilyOrNot;    //眷屬資料是新增還是編輯
-var recordArr = [];    //活動記錄列表
-var selectFamilyLimit = 0;    //選擇眷屬的人數限制
-var familyIsSignup;    //眷屬是否報名
-var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
-var activityStatus = "", activityModel = "", activityID = "";
+var addFamilyOrNot; //眷屬資料是新增還是編輯
+var recordArr = []; //活動記錄列表
+var selectFamilyLimit = 0; //選擇眷屬的人數限制
+var familyIsSignup; //眷屬是否報名
+var viewListInit = true,
+    viewSignupInit = true,
+    viewFamilyInit = true;
+var activityStatus = "",
+    activityModel = "",
+    activityID = "";
 var overTime = "";
 var myEmpNo = "";
 
-window.initialSuccess = function () {
+window.initialSuccess = function() {
     myEmpNo = localStorage.getItem("emp_no");
 
     // 1. get activities list
@@ -74,7 +77,7 @@ function onBackKeyDown() {
                     pageVisitedList.pop();
                 }
             }
-            $.each($("#openList .activity-list"), function (index, item) {
+            $.each($("#openList .activity-list"), function(index, item) {
                 if ($(item).attr("data-id") == activityID) {
                     $(item).trigger("click");
                 }
@@ -121,7 +124,7 @@ function changePageByPanel(pageId, panel) {
 
 //根據不同活動類型，show不同頁面
 function showViewByModel(view, model) {
-    $.each($("#" + view + " .page-main > div"), function (index, item) {
+    $.each($("#" + view + " .page-main > div"), function(index, item) {
         if ($(item).attr("data-model") == model) {
             $(item).show();
         } else {
@@ -168,9 +171,9 @@ function setSelectCustomField(arr, i, page, id, container, count) {
     };
 
     //2.生成html
-    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-        + arr[i]["ColumnName"]
-        + '</label><div id="' + id + i + '" class="' + id + '"></div></div>';
+    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">' +
+        arr[i]["ColumnName"] +
+        '</label><div id="' + id + i + '" class="' + id + '"></div></div>';
 
     //3.append
     $("." + container).append(fieldContent);
@@ -190,7 +193,7 @@ function setSelectCustomField(arr, i, page, id, container, count) {
 
     //7.如果有值，選中默認值
     if (arr[i]["ColumnAnswer"] != "") {
-        $.each($("#column-popup-" + id + "-" + i + "-option-list li"), function (index, item) {
+        $.each($("#column-popup-" + id + "-" + i + "-option-list li"), function(index, item) {
             if (arr[i]["ColumnAnswer"] == $(item).text()) {
                 $(item).trigger("click");
             }
@@ -218,9 +221,9 @@ function setSelectCustomField2(index, arr, i, page, id, $container) {
     };
 
     //2.生成html
-    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-        + arr[i]["ColumnName"]
-        + '</label><div id="' + index + id + i + '" class="' + id + '"></div></div>';
+    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">' +
+        arr[i]["ColumnName"] +
+        '</label><div id="' + index + id + i + '" class="' + id + '"></div></div>';
 
     //3.append
     $container.append(fieldContent);
@@ -240,7 +243,7 @@ function setSelectCustomField2(index, arr, i, page, id, $container) {
 
     //7.如果有值，選中默認值
     if (arr[i]["ColumnAnswer"] != "") {
-        $.each($("#column-popup-" + index + "-" + id + "-" + i + "-option-list li"), function (index, item) {
+        $.each($("#column-popup-" + index + "-" + id + "-" + i + "-option-list li"), function(index, item) {
             if (arr[i]["ColumnAnswer"] == $(item).text()) {
                 $(item).trigger("click");
             }
@@ -250,11 +253,11 @@ function setSelectCustomField2(index, arr, i, page, id, $container) {
 
 //生成Text欄位
 function setTextCustomField(arr, i, id, container, count) {
-    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-        + arr[i]["ColumnName"]
-        + '</label><input id="' + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" data-role="none" class="' + id + '" value="'
-        + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
-        + '" oncut="return false;" onpaste="return false;" oncontextmenu="return false;"></div>';
+    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">' +
+        arr[i]["ColumnName"] +
+        '</label><input id="' + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" data-role="none" class="' + id + '" value="' +
+        (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"]) +
+        '" oncut="return false;" onpaste="return false;" oncontextmenu="return false;"></div>';
 
     $("." + container).append(fieldContent);
 
@@ -268,12 +271,12 @@ function setTextCustomField(arr, i, id, container, count) {
 
 //選擇眷屬的Text
 function setTextCustomField2(index, arr, i, id, $container, num) {
-    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-        + arr[i]["ColumnName"]
-        + '</label><input id="' + index + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" '
-        + 'data-no="' + num + '" data-role="none" class="' + id + '" value="'
-        + (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"])
-        + '" oncut="return false;" onpaste="return false;" oncontextmenu="return false;"></div>';
+    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">' +
+        arr[i]["ColumnName"] +
+        '</label><input id="' + index + id + i + '" type="text" maxlength="50" onkeyup="stripScript(this)" ' +
+        'data-no="' + num + '" data-role="none" class="' + id + '" value="' +
+        (arr[i]["ColumnAnswer"] == "" ? "" : arr[i]["ColumnAnswer"]) +
+        '" oncut="return false;" onpaste="return false;" oncontextmenu="return false;"></div>';
 
     $container.append(fieldContent);
 }
@@ -285,22 +288,22 @@ function setCheckboxCustomField(arr, i, id, container, count) {
     var mutipleContent = "";
 
     for (var j in mutipleArr) {
-        mutipleContent += '<div data-name="checkbox-' + id + '-' + j
-            + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
-            + mutipleArr[j]
-            + '</span></div>';
+        mutipleContent += '<div data-name="checkbox-' + id + '-' + j +
+            '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>' +
+            mutipleArr[j] +
+            '</span></div>';
     }
 
-    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-        + arr[i]["ColumnName"]
-        + '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + id + '-' + i + '">';
+    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">' +
+        arr[i]["ColumnName"] +
+        '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + id + '-' + i + '">';
 
     $("." + container).append(fieldContent + mutipleContent + "</div><div>");
 
     //選中默認值
     if (arr[i]["ColumnAnswer"] != "") {
         var valueArr = arr[i]["ColumnAnswer"].split(";");
-        $.each($(".checkbox-" + id + "-" + i + " span"), function (index, item) {
+        $.each($(".checkbox-" + id + "-" + i + " span"), function(index, item) {
             for (var j in valueArr) {
                 if ($(item).text() == valueArr[j]) {
                     $(item).prev().attr("src", "img/checkbox_s.png");
@@ -323,22 +326,22 @@ function setCheckboxCustomField2(index, arr, i, id, $container) {
     var mutipleContent = "";
 
     for (var j in mutipleArr) {
-        mutipleContent += '<div data-name="checkbox-' + index + '-' + id + '-' + j
-            + '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>'
-            + mutipleArr[j]
-            + '</span></div>';
+        mutipleContent += '<div data-name="checkbox-' + index + '-' + id + '-' + j +
+            '"><img src="img/checkbox_n.png" class="family-signup-checkbox"><span>' +
+            mutipleArr[j] +
+            '</span></div>';
     }
 
-    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">'
-        + arr[i]["ColumnName"]
-        + '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + index + '-' + id + '-' + i + '">';
+    var fieldContent = '<div class="custom-field"><label class="font-style11 font-color1">' +
+        arr[i]["ColumnName"] +
+        '</label><div class="custom-field-checkbox font-style3 font-color1 checkbox-' + index + '-' + id + '-' + i + '">';
 
     $container.append(fieldContent + mutipleContent + "</div><div>");
 
     //選中默認值
     if (arr[i]["ColumnAnswer"] != "") {
         var valueArr = arr[i]["ColumnAnswer"].split(";");
-        $.each($(".checkbox-" + index + "-" + id + "-" + i + " span"), function (index, item) {
+        $.each($(".checkbox-" + index + "-" + id + "-" + i + " span"), function(index, item) {
             for (var j in valueArr) {
                 if ($(item).text() == valueArr[j]) {
                     $(item).prev().attr("src", "img/checkbox_s.png");
@@ -382,7 +385,7 @@ function saveValueAndCheckForm(arr, name, value, bool, btn) {
 
 //呼叫API之前，再次更新Text欄位值
 function getTextValueBeforeCall(model, status, className, arr) {
-    $.each($("." + model + "-" + status + "-custom-field ." + className), function (index, item) {
+    $.each($("." + model + "-" + status + "-custom-field ." + className), function(index, item) {
         var columnName = $(item).prev().text();
         for (var i in arr) {
             if (columnName == arr[i]["ColumnName"]) {
@@ -395,7 +398,7 @@ function getTextValueBeforeCall(model, status, className, arr) {
 
 //按時段編號排序
 function sortByTimeID(prop1) {
-    return function (obj1, obj2) {
+    return function(obj1, obj2) {
         //time
         var val1 = obj1[prop1];
         var val2 = obj2[prop1];
@@ -418,7 +421,7 @@ function sortByTimeID(prop1) {
 
 //先按照關係排序，關係一樣再按照中文姓名排序
 function sortByRelationship(prop1, prop2) {
-    return function (obj1, obj2) {
+    return function(obj1, obj2) {
         //relationship
         var val1 = obj1[prop1];
         var val2 = obj2[prop1];
