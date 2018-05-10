@@ -1,15 +1,33 @@
-# isRegister
+NewQPlay API Readme.md
+=============================
 
-## 描述
+## Version 1.2.18 - Published 2018 Feb 23
+
+## Contents
+- [isRegister](#isregister)
+- [getAppList](#getapplist)
+- [addAppLog](#addapplog)
+- [getSecurityList](#getsecuritylist)
+
+----
+## isRegister
+
+### 描述
+```
 移動裝置提供uuid給server確認是否已經認證過, 原則上一個移動裝置只需認證一次。
+```
 
-## Method
+### Method
+```
 GET /v101/qplay/isRegister?lang=en-us
+```
 
-## Authentication
+### Authentication
+```
 required
+```
 
-## Header Parameters
+### Header Parameters
 欄位名稱 | 是否必填 | 描述
 ------------ | ------------- | -------------
 content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
@@ -19,13 +37,13 @@ signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
 
 此專案的AppSecretKey 為swexuc453refebraXecujeruBraqAc4e"
 
-## Parameters
+### Parameters
 
 參數名稱 | 是否必填 | 資料類型 | 描述
 ------------ | ------------- | ------------- | -------------
 uuid | Required | string | "設備的unique id <br>uuid: <br>android:設備上的ANDROID_ID <br>iOS:APNS所提供的DeviceTokenex: <br>apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br>android可能是9774d56d682e549c"
 
-## Response
+### Response
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
 ------------ | ------------- | ------------- | ------------- | -------------
 result_code | NA | 1 | String | 回應代碼
@@ -35,7 +53,7 @@ is_register | content | 0-1 | Boolean | "1:true, 已經註冊<br>0:false, 未註
 
 P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
-## Example
+### Example
 ```PHP
             $.ajax({
                 url: "v101/qplay/isRegister?lang=en-us&uuid=" + uuid,//Math.uuid(),
@@ -70,11 +88,15 @@ P.S如果result_code為1, 則會帶content, 反之, 不帶content
 ```
 
 ----
-# getAppList
+## getAppList
+```
 取得有權限的App清單及Detail資訊
+```
 
 ### 請求方法
+```
 GET /v101/qplay/getAppList?lang=en-us
+```
 
 ### header請求參數
 欄位名稱 | 是否必填 | 描述
@@ -130,13 +152,35 @@ sequence | pic_list | 0-1 | Integer | Picture的排序
 P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ### Example
+```JS
+            var __construct = function() {
 
+                var limitSeconds = 1 * 60 * 60 * 24;
+                var QueryAppListData = JSON.parse(window.localStorage.getItem('QueryAppListData'));
+                if (loginData["versionName"].indexOf("Staging") !== -1) {
+                    limitSeconds = 1;
+                } else if (loginData["versionName"].indexOf("Development") !== -1) {
+                    limitSeconds = 1;
+                }
+                if (QueryAppListData === null || checkDataExpired(QueryAppListData['lastUpdateTime'], limitSeconds, 'ss')) {
+                    QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
+                } else {
+                    var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
+                    FillAppList(responsecontent);
+                }
+
+            }();
+```
 ----
-# addAppLog
+## addAppLog
+```
 透過此接口, 讓APP可以將log送到後台, 供未來大數據分析
+```
 
 ### 請求方法
+```
 POST /v101/qplay/addAppLog?lang=en-us
+```
 
 ### header請求參數
 欄位名稱 | 是否必填 | 描述
@@ -183,14 +227,47 @@ content | NA | 0-1 | Container | 回應訊息內容Container
 P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ### Example
+```JS
+function getAddAppLog() {
 
+    var self = this;
+    var appLogData = JSON.parse(localStorage.getItem('appLogData'));
+    var queryData = JSON.stringify(appLogData);
+
+    this.successCallback = function(data) {
+
+        var resultcode = data['result_code'];
+        var logDataLength = appLogData.log_list.length;
+        if (resultcode == 1) {
+            for (var i = 0; i < logDataLength; i++) {
+                appLogData.log_list.shift();
+            }
+            localStorage.setItem('appLogData', JSON.stringify(appLogData));
+        }
+    }
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        loginData["versionName"] = AppVersion.version;
+        //if (loginData["versionName"].indexOf("Development") !== -1 || loginData["versionName"].indexOf("Staging") !== -1) {
+        QPlayAPIEx("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "", "low", 1000);
+        //}
+    }();
+
+}
+```
 ----
-# getSecurityList
-通常在login成功後, 再透過token來取, 除了白名單外(也就是允許存許的URL), 還會提供security level資訊 <br> Block List則不在這支API上取得, 如果是在黑名單內, 會直接由API server reject回應在錯誤碼上, 錯誤碼為999009:禁止存取API
-
+## getSecurityList
+```
+通常在login成功後, 再透過token來取, 除了白名單外(也就是允許存許的URL), 還會提供security level資訊
+Block List則不在這支API上取得, 如果是在黑名單內, 會直接由API server reject回應在錯誤碼上, 錯誤碼為999009:禁止存取API
+```
 
 ### 請求方法
+```
 GET /v101/qplay/getSecurityList?lang=en-us
+```
 
 ### header請求參數
 欄位名稱 | 是否必填 | 描述
@@ -220,4 +297,22 @@ allow_url | content | 0-N | String | 允許存取的url
 P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ### Example
+```JS
+function getSecurityList() {
 
+    var self = this;
+    var queryStr = "&app_key=" + appKey;
+
+    this.successCallback = function(data) {
+        doInitialSuccess = true;
+        checkTokenValid(data['result_code'], data['token_valid'], null, null);
+    };
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        QPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
+    }();
+
+}
+```
