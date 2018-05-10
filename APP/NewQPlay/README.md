@@ -13,13 +13,19 @@ NewQPlay API Readme.md
 ## isRegister
 
 ### 描述
+```
 移動裝置提供uuid給server確認是否已經認證過, 原則上一個移動裝置只需認證一次。
+```
 
 ### Method
+```
 GET /v101/qplay/isRegister?lang=en-us
+```
 
 ### Authentication
+```
 required
+```
 
 ### Header Parameters
 欄位名稱 | 是否必填 | 描述
@@ -83,10 +89,14 @@ P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ----
 ## getAppList
+```
 取得有權限的App清單及Detail資訊
+```
 
 ### 請求方法
+```
 GET /v101/qplay/getAppList?lang=en-us
+```
 
 ### header請求參數
 欄位名稱 | 是否必填 | 描述
@@ -163,10 +173,14 @@ P.S如果result_code為1, 則會帶content, 反之, 不帶content
 ```
 ----
 ## addAppLog
+```
 透過此接口, 讓APP可以將log送到後台, 供未來大數據分析
+```
 
 ### 請求方法
+```
 POST /v101/qplay/addAppLog?lang=en-us
+```
 
 ### header請求參數
 欄位名稱 | 是否必填 | 描述
@@ -245,11 +259,15 @@ function getAddAppLog() {
 ```
 ----
 ## getSecurityList
-通常在login成功後, 再透過token來取, 除了白名單外(也就是允許存許的URL), 還會提供security level資訊 <br> Block List則不在這支API上取得, 如果是在黑名單內, 會直接由API server reject回應在錯誤碼上, 錯誤碼為999009:禁止存取API
-
+```
+通常在login成功後, 再透過token來取, 除了白名單外(也就是允許存許的URL), 還會提供security level資訊
+Block List則不在這支API上取得, 如果是在黑名單內, 會直接由API server reject回應在錯誤碼上, 錯誤碼為999009:禁止存取API
+```
 
 ### 請求方法
+```
 GET /v101/qplay/getSecurityList?lang=en-us
+```
 
 ### header請求參數
 欄位名稱 | 是否必填 | 描述
