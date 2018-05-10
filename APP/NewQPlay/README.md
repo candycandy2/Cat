@@ -29,7 +29,7 @@ required
 
 ### Header Parameters
 欄位名稱 | 是否必填 | 描述
------------- | ------------- | -------------
+:------------ | :------------- | :-------------
 content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
 app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
 signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
@@ -40,12 +40,12 @@ signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
 ### Parameters
 
 參數名稱 | 是否必填 | 資料類型 | 描述
------------- | ------------- | ------------- | -------------
+:------------ | :------------- | :------------- | :-------------
 uuid | Required | string | "設備的unique id <br>uuid: <br>android:設備上的ANDROID_ID <br>iOS:APNS所提供的DeviceTokenex: <br>apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br>android可能是9774d56d682e549c"
 
 ### Response
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
------------- | ------------- | ------------- | ------------- | -------------
+:------------ | :------------- | :------------- | :------------- | :-------------
 result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
@@ -100,7 +100,7 @@ GET /v101/qplay/getAppList?lang=en-us
 
 ### header請求參數
 欄位名稱 | 是否必填 | 描述
------------- | ------------- | -------------
+:------------ | :------------- | :-------------
 content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
 app-key | 必填 | 專案名稱, 此專案名稱為 qplay
 signature-time |必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
@@ -109,12 +109,12 @@ token | 必填 |由server配發的token, 用來識別是否已經登入qplay <br
 
 ### 網址列請求參數
 參數名稱 | 是否必填 | 資料類型 | 描述
------------- | ------------- | ------------- | -------------
+:------------ | :------------- | :------------- | :-------------
 uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br>apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是 <br> 9774d56d682e549c
 
 ### 回應訊息
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
------------- | ------------- | ------------- | -------------| -------------
+:------------ | :------------- | :------------- | :-------------| :-------------
 result_code |NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 token_valid | NA | 0-1 | Integer | 本次使用的token的有效時間 <br> 格式為Unix時間搓記 <br> 2016年3月25日 下午 01:49:56 換算為1458884996
@@ -184,7 +184,7 @@ POST /v101/qplay/addAppLog?lang=en-us
 
 ### header請求參數
 欄位名稱 | 是否必填 | 描述
------------- | ------------- | -------------
+:------------ | :------------- | :-------------
 content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
 app-key | 必填 | 專案名稱
 signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
@@ -192,13 +192,13 @@ signature | 必填 | Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
 
 ### 網址列請求參數
 參數名稱 | 是否必填 | 資料類型 | 描述
------------- | ------------- | ------------- | -------------
+:------------ | :------------- | :------------- | :-------------
 lang | Required | string | 請填入 語系-國家 <br> ex: <br> en-us <br> zh-tw <br> zh-cn
 uuid | Optional | string |調用這支API的設備unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
 
 ### POST Body
 參數名稱 | 父節點 | 是否必填 | 資料類型 | 描述
------------- | ------------- | ------------- | ------------- | -------------
+:------------ | :------------- | :------------- | :------------- | :-------------
 login_id | NA | Required | string | 登入者的AD帳號
 package_name | NA | Required | string | 填入APP的app package name
 log_list | NA | Required | Container | 底下包一組以上的陣列
@@ -219,7 +219,7 @@ attribute5 | log_list | Optional | string | 其他訊息 <br> APP端自行定義
 
 ### 回應訊息
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
------------- | ------------- | ------------- | ------------- | -------------
+:------------ | :------------- | :------------- | :------------- | :-------------
 result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
@@ -271,7 +271,7 @@ GET /v101/qplay/getSecurityList?lang=en-us
 
 ### header請求參數
 欄位名稱 | 是否必填 | 描述
------------- | ------------- | -------------
+:------------ | :------------- | :-------------
 content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
 app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
 signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
@@ -280,13 +280,13 @@ token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <b
 
 ### 網址列請求參數
 參數名稱 | 是否必填 | 資料類型 | 描述
------------- | ------------- | ------------- | -------------
+:------------ | :------------- | :------------- | :-------------
 uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
 app_key |Required | string | 請填入app的app_key <br> ex:qplay, phonebook
 
 ### 回應訊息
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
------------- | ------------- | ------------- | ------------- | -------------
+:------------ | :------------- | :------------- | :------------- | :-------------
 result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 token_valid | NA | 0-1 | Integer | 本次使用的token的有效時間 <br> 格式為Unix時間搓記 <br> 2016年3月25日 下午 01:49:56 換算為1458884996
