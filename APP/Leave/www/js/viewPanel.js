@@ -75,9 +75,9 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewPersonalLeaveCalendar");
     });
 
-    $("#mypanel #mypanelviewAgentLeave").on("click", function() {
+    /*$("#mypanel #mypanelviewAgentLeave").on("click", function() {
         changePageByPanel("viewAgentLeave");
-    });
+    });*/
 
     $(".menu-btn .leaveMenu").on("click", function() {
         $("#mypanel").panel("open");
