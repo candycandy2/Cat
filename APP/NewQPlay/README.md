@@ -9,6 +9,8 @@ NewQPlay API Readme.md
 - [addAppLog](#addapplog)
 - [getSecurityList](#getsecuritylist)
 - [checkAppVersion](#checkappversion)
+- [sendPushToken](#sendpushtoken)
+
 
 ----
 ## isRegister
@@ -36,7 +38,7 @@ app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
 signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
 signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
 
-此專案的AppSecretKey 為swexuc453refebraXecujeruBraqAc4e"
+    此專案的AppSecretKey 為swexuc453refebraXecujeruBraqAc4e"
 
 ### Parameters
 
@@ -52,7 +54,7 @@ message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
 is_register | content | 0-1 | Boolean | "1:true, 已經註冊<br>0:false, 未註冊"
 
-P.S如果result_code為1, 則會帶content, 反之, 不帶content
+    P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ### Example
 ```PHP
@@ -150,7 +152,7 @@ pic_type | pic_list | 0-1 | String |縮圖類別 <br> B:Banner <br> S:screenshot
 pic_url | pic_list | 0-1 | String | Picture下載url
 sequence | pic_list | 0-1 | Integer | Picture的排序
 
-P.S如果result_code為1, 則會帶content, 反之, 不帶content
+    P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ### Example
 ```JS
@@ -225,7 +227,7 @@ result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
 
-P.S如果result_code為1, 則會帶content, 反之, 不帶content
+    P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ### Example
 ```JS
@@ -295,7 +297,7 @@ content | NA | 0-1 | Container | 回應訊息內容Container
 security_level | NA | 0-1 | Integer | 數字越少security越高 <br> 目前先定義三種 <br> 1:最高security, on_resume時必須重新輸入密碼 <br> 2:次級security, 關閉app重新開啟時才需要重新輸入密碼 <br> 3:一般security, 只要token沒有過期都不需要重新輸入密碼
 allow_url | content | 0-N | String | 允許存取的url
 
-P.S如果result_code為1, 則會帶content, 反之, 不帶content
+    P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ### Example
 ```JS
@@ -351,7 +353,7 @@ content | NA | 0-1 | Container | 回應訊息內容Container
 version_code | content | 0-1 | String | 新版本版號
 download_url | content | 0-1 | String | 直接提供iOS或是Android的下載路徑 <br>下載的路經需偵測詢問的路徑, 如果是qplay.benq.com/….. <br> 則回應的下載網址為https://qplay.benq.com/.... <br> 如果下的API路徑為10.82.121.4/… <br> 則回應的下載網址為https://10.82.121.4/....
 
-P.S如果result_code為1, 則會帶content, 反之, 不帶content
+    P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ### Example
 ```JS
@@ -374,4 +376,61 @@ function checkAppVersion() {
     }();
 }
 ```
+----
+## sendPushToken
+```
+採用Jpush極光推送機制
+所以手機需要向Jpush Server註冊後, 發送RegisterID給Qplay server
+```
 
+### 請求方法
+```
+GET /v101/qplay/sendPushToken?lang=en-us
+```
+### header請求參數
+```
+sendPushToken時, 需要將push-token欄位透過HTTP Header送出, 所以包含下面參數：
+```
+
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
+app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
+signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
+signature | 必填 | Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) ) <br> 此專案的AppSecretKey 為swexuc453refebraXecujeruBraqAc4e
+push-token | 必填 | 傳送向極光SERVER獲取的RegisterID
+
+### 網址列請求參數
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
+app_key | Required | string | 如果是qplay平台用的, 就傳qplay <br> 假設是e04也許就會傳phonebook這個值
+device_type | Required | string | iOS或是Android <br> 提供server辨識該向APNS或是GCM發送推播
+
+### 回應訊息
+節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :------------- | :-------------
+result_code | NA | 1 | String | 回應代碼
+message | NA | 1 | String | 回應訊息描述
+content | NA | 0-1 | Container | 回應訊息內容Container
+uuid | NA | 0-1 | String | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c <br> 成功的話, 會傳送此次交易的uuid供double check
+
+    P.S如果result_code為1, 則會帶content, 反之, 不帶content
+
+### Example
+```JS
+function sendPushToken() {
+    var self = this;
+    var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
+
+    this.successCallback = function() {};
+
+    this.failCallback = function() {};
+
+    var __construct = function() {
+        if (loginData.token !== null && loginData.token.length !== 0) {
+            QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
+        }
+    }();
+}
+```
