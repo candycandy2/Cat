@@ -8,6 +8,7 @@ NewQPlay API Readme.md
 - [getAppList](#getapplist)
 - [addAppLog](#addapplog)
 - [getSecurityList](#getsecuritylist)
+- [checkAppVersion](#checkappversion)
 
 ----
 ## isRegister
@@ -316,3 +317,61 @@ function getSecurityList() {
 
 }
 ```
+----
+## checkAppVersion
+```
+取得APP最新版號資訊, 並由Server主動確認是否需要更新
+```
+
+### 請求方法
+```
+GET /v101/qplay/checkAppVersion?lang=en-us&package_name=com.qplay.appqplay&device_type=android&version_code=1
+```
+### header請求參數
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
+app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
+signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
+signature | 必填 | Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) ) <br> 此專案的AppSecretKey 為swexuc453refebraXecujeruBraqAc4e
+
+### 網址列請求參數
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+package_name | Required | string | app的package name
+device_type | Required | string | ios <br> android <br> 其中一個
+vension_code | Required | string | 填入目前版號
+
+### 回應訊息
+節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :------------- | :-------------
+result_code | NA | 1 | String | 回應代碼 <br> resul_code=1, 表示需要更新 <br> result_code =000913, 表示不需要更新
+message | NA | 1 | String | 回應訊息描述
+content | NA | 0-1 | Container | 回應訊息內容Container
+version_code | content | 0-1 | String | 新版本版號
+download_url | content | 0-1 | String | 直接提供iOS或是Android的下載路徑 <br>下載的路經需偵測詢問的路徑, 如果是qplay.benq.com/….. <br> 則回應的下載網址為https://qplay.benq.com/.... <br> 如果下的API路徑為10.82.121.4/… <br> 則回應的下載網址為https://10.82.121.4/....
+
+P.S如果result_code為1, 則會帶content, 反之, 不帶content
+
+### Example
+```JS
+function checkAppVersion() {
+    var self = this;
+    var queryStr = "&package_name=com.qplay." + appKey + "&device_type=" + device.platform + "&version_code=" + loginData["versionCode"];
+
+    loadingMask("show");
+
+    this.successCallback = function(data) {
+    ...
+    ...
+    ...
+    }
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        QPlayAPIEx("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr, "high", 30000);
+    }();
+}
+```
+
