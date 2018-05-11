@@ -31,6 +31,11 @@ var panel = htmlContent +
     +
     '<span class="panel-text">' + langStr["str_006"] + '</span>' +
     '</div>' +
+    /*'<div class="panel-content" id="mypanelviewAgentLeave">'
+    //+       '<span class="panel-text">代理請假</span>'
+    +
+    '<span class="panel-text">代理請假</span>' +
+    '</div>' +*/
     '</div>' +
     '<div class="page-mask" style="display: none;"></div>';
 
@@ -69,6 +74,10 @@ $(document).one("pagebeforeshow", function() {
     $("#mypanel #mypanelviewPersonalLeaveCalendar").on("click", function() {
         changePageByPanel("viewPersonalLeaveCalendar");
     });
+
+    /*$("#mypanel #mypanelviewAgentLeave").on("click", function() {
+        changePageByPanel("viewAgentLeave");
+    });*/
 
     $(".menu-btn .leaveMenu").on("click", function() {
         $("#mypanel").panel("open");
