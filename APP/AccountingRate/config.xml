@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="390" id="com.qplay.appaccountingratetest" ios-CFBundleVersion="390" version="1.0.0.390[NewStaging]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="917" id="com.qplay.appaccountingratedev" ios-CFBundleVersion="917" version="1.0.0.917[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Corp.Rate</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -14,7 +14,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <allow-intent href="appqplaytest:*" />
+    <allow-intent href="appqplaydev:*" />
     <allow-intent href="*:*" />
     <platform name="android">
         <allow-intent href="market:*" />
@@ -51,13 +51,13 @@
     <plugin name="cordova-plugin-app-update" spec="../../plugins/cordova-plugin-app-update" />
     <plugin name="cordova-plugin-android-permissions" spec="../../plugins/cordova-plugin-android-permissions" />
     <plugin name="cordova-plugin-customurlscheme" spec="../../plugins/cordova-plugin-customurlscheme">
-        <variable name="URL_SCHEME" value="appaccountingratetest" />
+        <variable name="URL_SCHEME" value="appaccountingratedev" />
         <variable name="ANDROID_SCHEME" value=" " />
         <variable name="ANDROID_HOST" value=" " />
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
     <plugin name="cordova-plugin-qsecurity" spec="../../plugins/cordova-plugin-qsecurity">
-        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaytest&lt;/string&gt;&lt;string&gt;appaccountingratetest&lt;/string&gt;" />
+        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appaccountingratedev&lt;/string&gt;" />
     </plugin>
     <plugin name="cordova-plugin-whitelist" spec="../../plugins/cordova-plugin-whitelist" />
     <plugin name="cordova-plugin-proguard" spec="../../plugins/cordova-plugin-proguard" />
