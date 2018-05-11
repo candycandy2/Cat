@@ -40,7 +40,7 @@ var dayTable = {
 };
 
 window.initialSuccess = function() {  
-    originalEmpNo = localStorage["emp_no"];
+    //originalEmpNo = localStorage["emp_no"];
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
 
