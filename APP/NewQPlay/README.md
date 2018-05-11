@@ -10,6 +10,7 @@ NewQPlay API Readme.md
 - [getSecurityList](#getsecuritylist)
 - [checkAppVersion](#checkappversion)
 - [sendPushToken](#sendpushtoken)
+- [getMessageList](#getmessagelist)
 
 
 ----
@@ -387,6 +388,7 @@ function checkAppVersion() {
 ```
 GET /v101/qplay/sendPushToken?lang=en-us
 ```
+
 ### header請求參數
 ```
 sendPushToken時, 需要將push-token欄位透過HTTP Header送出, 所以包含下面參數：
@@ -433,4 +435,83 @@ function sendPushToken() {
         }
     }();
 }
+```
+
+----
+## getMessageList
+```
+取得Message清單, 將user未刪除過的訊息提供在Qplay app上
+```
+
+### 請求方法
+```
+GET /v101/qplay/getMessageList?lang=en-us
+```
+
+### header請求參數
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
+app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
+signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
+signature | 必填 | Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) ) <br> 此專案的AppSecretKey 為swexuc453refebraXecujeruBraqAc4e
+token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <br> token值需要使用sha256加密, 加密時需要添加salt值, salt值為request header內的Signature-Time參數 <br> $token = base64_encode (hash_hmac(‘sha256’, $Signature-Time, $token’, true));
+
+### 網址列請求參數
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
+date_from | Optional | Integer | 填入取得訊息的起始時間 <br> 不填則由SERVER直接抓取上次存取的時間搓, 抓差異化的訊息提供出去 <br> 有填date_from就一定要填上date_to
+date_to | Optional | Integer | 填入取得訊息的結束時間 <br> 不填則由SERVER直接抓”當前”的時間搓 <br> 有填date_to就一定要填date_from
+count_from | Optional | Integer | 如果有下date_time, date_to, 則這個欄位才有作用, 可以下載指定數量的訊息 <br> 沒有下參數, 則抓時間區間內所有資料
+count_to | Optional | Integer | 如果有下date_time, date_to, 則這個欄位才有作用, 可以下載指定數量的訊息 <br> 沒有下參數, 則抓時間區間內所有資料
+overwrite_timestamp | Optional | Integer | 如果有下date_time, date_to, 則這個欄位才有作用 <br> 如果是1, 則代表要更新獲取訊息的時間搓記 <br> 會更新qp_register裡面的last_message_time <br> 如果是0, 代表不更新不時間搓記 <br> 不會更新qp_register裡面的last_message_time <br> 如果不提供這個參數, 代表是0
+
+### 回應訊息
+節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :------------- | :-------------
+result_code | NA | 1 | String |回應代碼
+message | NA | 1 | String | 回應訊息描述
+token_valid | NA | 0-1 | Integer | 本次使用的token的有效時間 <br> 格式為Unix時間搓記 <br> 2016年3月25日 下午 01:49:56 換算為1458884996
+content | NA | 0-1 | Container | 回應訊息內容Container
+message_count | content | 0-1 | Integer | 此次查詢的訊息總數量
+message_list | content | 0-N | Container | 訊息列表container, 有多個訊息
+message_row_id | message_list | 0-1 | Integer | 訊息unique id
+message_send_row_id | message_list | 0-1 | Integer | 訊息send的unique id
+message_type | message_list | 0-1 | String | 訊息類別, 目前分類: <br> news <br> event
+message_title | message_list | 0-1 | String | 訊息標題
+message_txt | message_list | 0-1 | String | 訊息純文字格式
+message_html | message_list | 0-1 | String | 訊息html格式
+message_url | message_list | 0-1 | String | 訊息網址, 如果是空白, 表示該訊息沒有網址可以查看
+read | message_list | 0-1 | Boolean | 是否已經看過該訊息 <br> 只有event類別會有這個flag, news類別不會傳送此欄位
+message_source | message_list | 0-1 | String | 訊息是從哪個平台傳遞過來 <br> 目前平台未定義 <br> 現階段:qplay
+read_time | message_list | 0-1 | String | 查看訊息時間
+create_user | message_list | 0-1 | String | 訊息發布者 
+create_time | message_list | 0-1 | Integer | 訊息發布時間 <br> 直接抓qp_user_message或qp_role_message裡面的create_time
+source_user | content | 0-1 | String | 這筆推播是誰送出來
+
+    P.S如果result_code為1, 則會帶content, 反之, 不帶content
+
+### Example
+```JS
+        window.QueryMessageList = function(action) {
+            //review by alan
+            callGetMessageList = true;
+
+            action = action || null;
+
+            var self = this;
+            var queryStr = "";
+            var msgDateTo = getTimestamp();
+            ...
+            ...
+            ...
+            this.failCallback = function(data) {
+                callGetMessageList = false;
+            };
+
+            var __construct = function() {
+                QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
+            }();
+        }
 ```
