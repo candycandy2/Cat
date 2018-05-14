@@ -24,21 +24,26 @@ var dictDayOfWeek = {
     '6': '(六)',
     '0': '(日)'
 };
-var arrSite = ['2', '1', '43', '100'];
-var arrSiteCategory = ['1', '2', '8'];
+//fix by allen
+//var arrSite = ['2', '1', '43', '100'];
+var arrSite = [];
+//var arrSiteCategory = ['1', '2', '8'];
+var arrSiteCategory = [];
 var arrRole = ['1', '2', '4'];
-var dictSite = {
-    '1': 'QTY',
-    '2': 'BQT/QTT',
-    '43': '雙星',
-    '100': 'QTH'
-};
-var dictSiteCategory = {
-    '1': '2',
-    '2': '1',
-    '43': '2',
-    '100': '8'
-};
+// var dictSite = {
+//     '1': 'QTY',
+//     '2': 'BQT/QTT',
+//     '43': '雙星',
+//     '100': 'QTH'
+// };
+var dictSite = {};
+// var dictSiteCategory = {
+//     '1': '2',
+//     '2': '1',
+//     '43': '2',
+//     '100': '8'
+// };
+var dictSiteCategory = {};
 var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
 var dictRole = {
     'system': 'role1',
@@ -65,6 +70,7 @@ function getAPIListAllMeetingRoom() {
 
     this.successCallback = function(data) {
         if (data['ResultCode'] === "1") {
+            console.log(data);
 
             ConverToMeetingTree(data['Content']);
 
@@ -203,6 +209,38 @@ function getAPIListAllManager() {
     }();
 }
 
+//add by allen
+function getAPIListAllSite() {
+    var self = this;
+    var queryData = {};
+
+    this.successCallback = function(data) {
+        console.log(data);
+        var resultData = data['Content'];
+
+        var siteCategory = [];
+        for (var i in resultData) {
+            dictSite[resultData[i].SiteID] = resultData[i].SiteName;
+            dictSiteCategory[resultData[i].SiteID] = resultData[i].SiteTimeCategory;
+            arrSite.push(resultData[i].SiteID);
+            siteCategory.push(resultData[i].SiteTimeCategory);
+        }
+
+        //去重
+        for(var j in siteCategory) {
+            if(arrSiteCategory.indexOf(siteCategory[j]) == -1) {
+                arrSiteCategory.push(siteCategory[j]);
+            }
+        }
+    };
+
+    this.failCallback = function () {}
+
+    var __construct = function() {
+        CustomAPI("POST", false, "ListAllSite", self.successCallback, self.failCallback, queryData, "");
+    }();
+}
+
 function getAPIQueryMyReserveTime() {
     loadingMask('show');
     var self = this;
@@ -318,6 +356,7 @@ function getSiteData() {
     var firstNode = meetingRoomTreeData._root.children[0].data;
     $('#reserveSite-button').find('span').text(dictSite[firstNode]);
     $('#newSettingSite-button').find('span').text(dictSite[firstNode]);
+
 }
 
 function setDefaultSettingData() {
@@ -362,12 +401,15 @@ function ConverToMeetingTree(data) {
 
         for (var j in dfloorData) {
 
-            meetingRoomTreeData.add(dfloorData[j] + 'F', arrSite[key], meetingRoomTreeData.traverseDF);
+            //meetingRoomTreeData.add(dfloorData[j] + 'F', arrSite[key], meetingRoomTreeData.traverseDF);
+            //fix by allen
+            meetingRoomTreeData.add(dfloorData[j] + (arrSite[key] != '116' ? 'F' : ''), arrSite[key], meetingRoomTreeData.traverseDF);
             var roomData = grepData(floorData, 'MeetingRoomFloor', dfloorData[j])
             roomData.sort(cmpStringsWithNumbers);
 
             for (var k in roomData) {
-                meetingRoomTreeData.add(roomData[k], dfloorData[j] + 'F', meetingRoomTreeData.traverseDF);
+                //meetingRoomTreeData.add(roomData[k], dfloorData[j] + 'F', meetingRoomTreeData.traverseDF);
+                meetingRoomTreeData.add(roomData[k], dfloorData[j] + (arrSite[key] != '116' ? 'F' : ''), meetingRoomTreeData.traverseDF);
             }
         }
     }
