@@ -31,16 +31,16 @@ var panel = htmlContent +
     +
     '<span class="panel-text">' + langStr["str_006"] + '</span>' +
     '</div>' +
-    /*'<div class="panel-content" id="mypanelviewAgentLeave">'
+    '<div class="panel-content" id="mypanelviewAgentLeave">'
     //+       '<span class="panel-text">代理請假</span>'
     +
-    '<span class="panel-text">代理請假</span>' +
+    '<span class="panel-text">' + langStr["str_182"] + '</span>' +
     '</div>' +
     '<div class="panel-content" id="mypanelEndAgentLeave">'
     //+       '<span class="panel-text">結束代理</span>'
     +
-    '<span class="panel-text">結束代理</span>' +
-    '</div>' +*/
+    '<span class="panel-text">' + langStr["str_183"] + '</span>' +
+    '</div>' +
     '</div>' +
     '<div class="page-mask" style="display: none;"></div>';
 
@@ -80,7 +80,7 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewPersonalLeaveCalendar");
     });
 
-    /*$("#mypanel #mypanelviewAgentLeave").on("click", function() {
+    $("#mypanel #mypanelviewAgentLeave").on("click", function() {
         changePageByPanel("viewAgentLeave");
     });
 
@@ -117,7 +117,7 @@ $(document).one("pagebeforeshow", function() {
         loadingMask("show");
         // Show #mypanelviewAgentLeave 
         // Hide #mypanelEndAgentLeave
-    });*/
+    });
 
     $(".menu-btn .leaveMenu").on("click", function() {
         $("#mypanel").panel("open");
