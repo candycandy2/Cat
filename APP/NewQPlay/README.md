@@ -4,14 +4,25 @@ NewQPlay API Readme.md
 ## Version 1.2.18 - Published 2018 Feb 23
 
 ## Contents
-- [isRegister](#isregister)
-- [getAppList](#getapplist)
-- [addAppLog](#addapplog)
-- [getSecurityList](#getsecuritylist)
-- [checkAppVersion](#checkappversion)
-- [sendPushToken](#sendpushtoken)
-- [getMessageList](#getmessagelist)
-- [login](#login)
+- [API 分類](#API-分類)
+- [QPlay APP 啟動程序](#QPlay-APP-啟動程序)
+- 常用 API 說明
+    - [isRegister](#isregister)
+    - [getAppList](#getapplist)
+    - [addAppLog](#addapplog)
+    - [getSecurityList](#getsecuritylist)
+    - [checkAppVersion](#checkappversion)
+    - [sendPushToken](#sendpushtoken)
+    - [getMessageList](#getmessagelist)
+    - [login](#login)
+
+
+----
+## API 分類
+
+----
+## QPlay APP 啟動程序
+
 
 ----
 ## isRegister
