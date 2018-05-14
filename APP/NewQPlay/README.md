@@ -6,7 +6,7 @@ NewQPlay API Readme.md
 ## Contents
 - [API 分類](#API-分類)
 - [QPlay APP 啟動程序](#QPlay-APP-啟動程序)
-- 常用 API 說明
+- [常用 API 說明](#常用-API-說明)
     - [isRegister](#isregister)
     - [getAppList](#getapplist)
     - [addAppLog](#addapplog)
@@ -28,7 +28,12 @@ Register | Token | Security | APP/Function | Log | PUSH | Portal(HR)
 ----
 <h2 id="QPlay-APP-啟動程序">QPlay APP 啟動程序</h2>
 
+![startup1](https://user-images.githubusercontent.com/18409964/39984909-45ca8d78-578f-11e8-81c2-413ab8d99895.png)
+
+![startup2](https://user-images.githubusercontent.com/18409964/39984963-6eb36b2e-578f-11e8-9c3c-d32364df8810.png)
 ----
+<h2 id="常用-API-說明">常用 API 說明</h2>
+
 ## isRegister
 
 ### 描述
