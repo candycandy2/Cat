@@ -20,6 +20,11 @@ NewQPlay API Readme.md
 ----
 <h2 id="API-分類">API 分類</h2>
 
+Register | Token | Security | APP/Function | Log | PUSH | Portal(HR)
+:------------ | :------------- | :------------- | :------------- | :------------- | :------------- | :-------------
+1.register <br> 2.isRegister | 1.renewToken <br> 2.login <br> 3.logout | 1.getSecurityList | 1.getAppList <br> 2.checkAppVersion | 1.addAppLog <br> 2.addDownloadHit | 1.sendPushToken <br> 2.updateMessage <br> 3.getMessageList <br> 4.getMessageDetail | 1.PortalList <br> 2.PortalListDetail
+
+
 ----
 <h2 id="QPlay-APP-啟動程序">QPlay APP 啟動程序</h2>
 
