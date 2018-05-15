@@ -31,6 +31,16 @@ var panel = htmlContent +
     +
     '<span class="panel-text">' + langStr["str_006"] + '</span>' +
     '</div>' +
+    '<div class="panel-content" id="mypanelviewAgentLeave">'
+    //+       '<span class="panel-text">代理請假</span>'
+    +
+    '<span class="panel-text">' + langStr["str_182"] + '</span>' +
+    '</div>' +
+    '<div class="panel-content" id="mypanelEndAgentLeave">'
+    //+       '<span class="panel-text">結束代理</span>'
+    +
+    '<span class="panel-text">' + langStr["str_183"] + '</span>' +
+    '</div>' +
     '</div>' +
     '<div class="page-mask" style="display: none;"></div>';
 
@@ -68,6 +78,45 @@ $(document).one("pagebeforeshow", function() {
 
     $("#mypanel #mypanelviewPersonalLeaveCalendar").on("click", function() {
         changePageByPanel("viewPersonalLeaveCalendar");
+    });
+
+    $("#mypanel #mypanelviewAgentLeave").on("click", function() {
+        changePageByPanel("viewAgentLeave");
+    });
+
+    $("#mypanel #mypanelEndAgentLeave").on("click", function() {
+        myEmpNo = originalEmpNo;
+        localStorage.removeItem("leaveDefaultSetting");
+        if(localStorage.getItem("leaveDefaultSetting") == null) {
+            getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                       + myEmpNo
+                                       + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+        } 
+        GetDefaultSetting();
+        //选择日期为“请选择”
+        $("#startText").text(pleaseSelectStr);
+        $("#endText").text(pleaseSelectStr);
+
+        //data scroll menu
+        dateInit();
+        viewPersonalLeaveShow = false;
+        //changepage
+        changePageByPanel("viewPersonalLeave");
+        //agent
+        if(localStorage.getItem("agent") !== null) {
+            //viewPersonalLeave
+            $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+            tplJS.reSizeDropdownList("agent-popup", "typeB");
+            //viewLeaveSubmit
+            $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+            tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+        }else {
+            $("#agent").text(pleaseSelectStr);
+            $("#leaveAgent").text(pleaseSelectStr);                   
+        }
+        loadingMask("show");
+        // Show #mypanelviewAgentLeave 
+        // Hide #mypanelEndAgentLeave
     });
 
     $(".menu-btn .leaveMenu").on("click", function() {
