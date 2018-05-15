@@ -4,17 +4,37 @@ NewQPlay API Readme.md
 ## Version 1.2.18 - Published 2018 Feb 23
 
 ## Contents
-- [isRegister](#isregister)
-- [getAppList](#getapplist)
-- [addAppLog](#addapplog)
-- [getSecurityList](#getsecuritylist)
-- [checkAppVersion](#checkappversion)
-- [sendPushToken](#sendpushtoken)
-- [getMessageList](#getmessagelist)
-- [login](#login)
+- [API 分類](#API-分類)
+- [QPlay APP 啟動程序](#QPlay-APP-啟動程序)
+- [常用 API 說明](#常用-API-說明)
+    - [isRegister](#isregister)
+    - [getAppList](#getapplist)
+    - [addAppLog](#addapplog)
+    - [getSecurityList](#getsecuritylist)
+    - [checkAppVersion](#checkappversion)
+    - [sendPushToken](#sendpushtoken)
+    - [getMessageList](#getmessagelist)
+    - [login](#login)
+
 
 ----
-## isRegister
+<h2 id="API-分類">API 分類</h2>
+
+Register | Token | Security | APP/Function | Log | PUSH | Portal(HR)
+:------------ | :------------- | :------------- | :------------- | :------------- | :------------- | :-------------
+1.register <br> 2.isRegister | 1.renewToken <br> 2.login <br> 3.logout | 1.getSecurityList | 1.getAppList <br> 2.checkAppVersion | 1.addAppLog <br> 2.addDownloadHit | 1.sendPushToken <br> 2.updateMessage <br> 3.getMessageList <br> 4.getMessageDetail | 1.PortalList <br> 2.PortalListDetail
+
+
+----
+<h2 id="QPlay-APP-啟動程序">QPlay APP 啟動程序</h2>
+
+![startup1](https://user-images.githubusercontent.com/18409964/39984909-45ca8d78-578f-11e8-81c2-413ab8d99895.png)
+
+![startup2](https://user-images.githubusercontent.com/18409964/39984963-6eb36b2e-578f-11e8-9c3c-d32364df8810.png)
+----
+<h2 id="常用-API-說明">常用 API 說明</h2>
+
+## *isRegister*
 
 ### 描述
 ```
@@ -92,7 +112,7 @@ is_register | content | 0-1 | Boolean | "1:true, 已經註冊<br>0:false, 未註
 ```
 
 ----
-## getAppList
+## *getAppList*
 ```
 取得有權限的App清單及Detail資訊
 ```
@@ -176,7 +196,7 @@ sequence | pic_list | 0-1 | Integer | Picture的排序
             }();
 ```
 ----
-## addAppLog
+## *addAppLog*
 ```
 透過此接口, 讓APP可以將log送到後台, 供未來大數據分析
 ```
@@ -262,7 +282,7 @@ function getAddAppLog() {
 }
 ```
 ----
-## getSecurityList
+## *getSecurityList*
 ```
 通常在login成功後, 再透過token來取, 除了白名單外(也就是允許存許的URL), 還會提供security level資訊
 Block List則不在這支API上取得, 如果是在黑名單內, 會直接由API server reject回應在錯誤碼上, 錯誤碼為999009:禁止存取API
@@ -321,7 +341,7 @@ function getSecurityList() {
 }
 ```
 ----
-## checkAppVersion
+## *checkAppVersion*
 ```
 取得APP最新版號資訊, 並由Server主動確認是否需要更新
 ```
@@ -378,7 +398,7 @@ function checkAppVersion() {
 }
 ```
 ----
-## sendPushToken
+## *sendPushToken*
 ```
 採用Jpush極光推送機制
 所以手機需要向Jpush Server註冊後, 發送RegisterID給Qplay server
@@ -438,7 +458,7 @@ function sendPushToken() {
 ```
 
 ----
-## getMessageList
+## *getMessageList*
 ```
 取得Message清單, 將user未刪除過的訊息提供在Qplay app上
 ```
@@ -517,7 +537,7 @@ source_user | content | 0-1 | String | 這筆推播是誰送出來
 ```
 
 ----
-## login
+## *login*
 ```
 登入qplay, 取得token
 ```

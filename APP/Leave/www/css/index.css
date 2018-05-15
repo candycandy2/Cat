@@ -953,6 +953,13 @@ html body .ui-group-theme-a a:visited {
     margin-right: 1.5VW;
 }
 
+/**************************************** viewAgentLeave ********************************************/
+
+.agent-container {
+    width: 93.6vw;
+    margin-left: 3.71vw;
+    margin-top: 1.01vw;
+}
 
 /********************************************** mypanel *********************************************/
 
