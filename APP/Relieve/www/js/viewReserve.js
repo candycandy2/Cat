@@ -165,6 +165,7 @@ $("#viewReserve").pagecontainer({
                     } else {
                         $('.myReserveCancelResult').find('.main-paragraph').html("取消成功");
                         // myReserver_dirtyFlag = true;
+                        QueryReserveDetail(true);
                         QueryMyReserve();
                         popupMsgInit('.myReserveCancelResult');
                         tplJS.preventPageScroll();

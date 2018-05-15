@@ -1,11 +1,11 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData;
 var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData,
-queryEmployeeLeaveInfoQueryData;
+    queryEmployeeLeaveInfoQueryData;
 var queryDatumDatesQueryData, countLeaveHoursByEndQueryData, sendApplyLeaveQueryData;
 var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallLeaveApplyFormQueryData, deleteLeaveApplyFormQueryData,
-sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
+    sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
 var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recallLeaveCancelFormQueryData, deleteLeaveCancelFormQueryData,
-backLeaveFormLeaveDetailQueryData;
+    backLeaveFormLeaveDetailQueryData;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
@@ -23,20 +23,20 @@ var editLeaveForm = false;
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
 var currentYear = time.getFullYear();
-var currentMonth = ((time.getMonth() + 1) < 10) ? "0"+(time.getMonth() + 1) : (time.getMonth() + 1);
-var currentDate = (time.getDate() < 10) ? "0"+time.getDate() : time.getDate();
+var currentMonth = ((time.getMonth() + 1) < 10) ? "0" + (time.getMonth() + 1) : (time.getMonth() + 1);
+var currentDate = (time.getDate() < 10) ? "0" + time.getDate() : time.getDate();
 var currentDay = time.getDay();
 var prslvsCalendar = {};
 var holidayCalendar = {};
 var myCalendarData = {};
 var myHolidayData = [];
-var applyDay = currentYear+"/"+currentMonth+"/"+currentDate;
+var applyDay = currentYear + "/" + currentMonth + "/" + currentDate;
 var dayTable = {
-    "1" : "(一)",
-    "2" : "(二)",
-    "3" : "(三)",
-    "4" : "(四)",
-    "5" : "(五)"
+    "1": "(一)",
+    "2": "(二)",
+    "3": "(三)",
+    "4": "(四)",
+    "5": "(五)"
 };
 
 window.initialSuccess = function() {
@@ -44,17 +44,17 @@ window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
 
     //默认设置GetDefaultSetting
-    if(localStorage.getItem("leaveDefaultSetting") == null) {
-        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
-                                   + myEmpNo
-                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    if (localStorage.getItem("leaveDefaultSetting") == null) {
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
+            myEmpNo +
+            "</EmpNo><LastModified></LastModified></LayoutHeader>";
     } else {
         var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
-        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
-                                   + myEmpNo
-                                   + "</EmpNo><LastModified>"
-                                   + lastModified
-                                   + "</LastModified></LayoutHeader>";
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
+            myEmpNo +
+            "</EmpNo><LastModified>" +
+            lastModified +
+            "</LastModified></LayoutHeader>";
     }
     GetDefaultSetting();
     //选择日期为“请选择”
@@ -68,7 +68,7 @@ window.initialSuccess = function() {
     $.mobile.changePage("#viewPersonalLeave");
 
     //agent
-    if(localStorage.getItem("agent") !== null) {
+    if (localStorage.getItem("agent") !== null) {
         //viewPersonalLeave
         $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
         tplJS.reSizeDropdownList("agent-popup", "typeB");
@@ -96,21 +96,21 @@ window.initialSuccess = function() {
 //[Android]Handle the back button
 function onBackKeyDown() {
     //var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
-    var activePageID = visitedPageList[visitedPageList.length-1];
-    var prePageID = visitedPageList[visitedPageList.length-2];
+    var activePageID = visitedPageList[visitedPageList.length - 1];
+    var prePageID = visitedPageList[visitedPageList.length - 2];
 
-    if(checkPopupShown()) {
+    if (checkPopupShown()) {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
-    } else if($(".ui-page-active").jqmData("panel") === "open") {
+    } else if ($(".ui-page-active").jqmData("panel") === "open") {
         $("#mypanel").panel("close");
-    } else if ($("#leaveReason").is(":focus")){
+    } else if ($("#leaveReason").is(":focus")) {
         $("#leaveReason").blur();
-    } else if ($("#withdrawReason").is(":focus")){
+    } else if ($("#withdrawReason").is(":focus")) {
         $("#withdrawReason").blur();
-    } else if ($("#dispelReason").is(":focus")){
+    } else if ($("#dispelReason").is(":focus")) {
         $("#dispelReason").blur();
-    } else if ($("#signTowithdrawReason").is(":focus")){
+    } else if ($("#signTowithdrawReason").is(":focus")) {
         $("#signTowithdrawReason").blur();
     } else if ($("#backMain").css("display") == "inline") {
         $("#backMain").click();
@@ -124,7 +124,7 @@ function onBackKeyDown() {
         $("#backToList").click();
     } else if ($("#backToSign").css("display") == "inline") {
         $("#backToSign").click();
-    } else if(visitedPageList.length == 1) {
+    } else if (visitedPageList.length == 1) {
         navigator.app.exitApp();
     } else {
         visitedPageList.pop();
@@ -146,7 +146,7 @@ $(document).ready(function() {
 });
 
 function changePageByPanel(pageId) {
-    if($.mobile.activePage[0].id !== pageId) {
+    if ($.mobile.activePage[0].id !== pageId) {
         loadingMask("show");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#f6f6f6");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#0f0f0f");
@@ -155,7 +155,7 @@ function changePageByPanel(pageId) {
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("background", "#503f81");
         $("#mypanel" + " #mypanel" + $.mobile.activePage[0].id).css("color", "#fff");
         //切换菜单才添加，back返回时不添加
-        if(pageId !== visitedPageList[visitedPageList.length-1]) {
+        if (pageId !== visitedPageList[visitedPageList.length - 1]) {
             visitedPageList.push(pageId);
         }
     }
@@ -167,75 +167,75 @@ function dateInit() {
     var month = currentMonth;
     var date = currentDate;
     var day = currentDay;
-    for(var i=1; i<=14; i++) {
-        if(day > 0 && day < 6) {
+    for (var i = 1; i <= 14; i++) {
+        if (day > 0 && day < 6) {
             $("#leaveDate").append('<a href="#" class="ui-link">' + month + "/" + date + " " + dayTable[day] + '</a>');
             $("#leaveDate a:last-child").data("value", year + "/" + month + "/" + date);
 
             day++;
-            if(day == 6) {
+            if (day == 6) {
                 day = 1;
-                if((Number(date) + 3) <= lastDateOfMonth) {
-                    date = ((Number(date) + 3) < 10) ? "0"+(Number(date) + 3) : (Number(date) + 3);
-                }else if((Number(date) + 3) > lastDateOfMonth) {
+                if ((Number(date) + 3) <= lastDateOfMonth) {
+                    date = ((Number(date) + 3) < 10) ? "0" + (Number(date) + 3) : (Number(date) + 3);
+                } else if ((Number(date) + 3) > lastDateOfMonth) {
                     //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
-                    if((Number(month) + 1) < 10) {
+                    if ((Number(month) + 1) < 10) {
                         month = "0" + (Number(month) + 1);
-                    } else if((Number(month) + 1) < 12) {
+                    } else if ((Number(month) + 1) < 12) {
                         month = (Number(month) + 1) + "";
                     } else {
                         month = "01";
                         year = (Number(year) + 1) + "";
                     }
-                    date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);
+                    date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);
                 }
-            }else if((Number(date) + 1) <= lastDateOfMonth) {
-                date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);
-            }else if((Number(date) + 1) > lastDateOfMonth) {
+            } else if ((Number(date) + 1) <= lastDateOfMonth) {
+                date = ((Number(date) + 1) < 10) ? "0" + (Number(date) + 1) : (Number(date) + 1);
+            } else if ((Number(date) + 1) > lastDateOfMonth) {
                 //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
-                if((Number(month) + 1) < 10) {
+                if ((Number(month) + 1) < 10) {
                     month = "0" + (Number(month) + 1);
-                } else if((Number(month) + 1) < 12) {
+                } else if ((Number(month) + 1) < 12) {
                     month = (Number(month) + 1) + "";
                 } else {
                     month = "01";
                     year = (Number(year) + 1) + "";
                 }
-                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
+                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
             }
-        }else if(day == 6) {
+        } else if (day == 6) {
             day = 1;
             i = 0;
-            if((Number(date) + 2) <= lastDateOfMonth) {
-                date = ((Number(date) + 2) < 10) ? "0"+(Number(date) + 2) : (Number(date) + 2);
-            }else if((Number(date) + 2) > lastDateOfMonth) {
+            if ((Number(date) + 2) <= lastDateOfMonth) {
+                date = ((Number(date) + 2) < 10) ? "0" + (Number(date) + 2) : (Number(date) + 2);
+            } else if ((Number(date) + 2) > lastDateOfMonth) {
                 //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
-                if((Number(month) + 1) < 10) {
+                if ((Number(month) + 1) < 10) {
                     month = "0" + (Number(month) + 1);
-                } else if((Number(month) + 1) < 12) {
+                } else if ((Number(month) + 1) < 12) {
                     month = (Number(month) + 1) + "";
                 } else {
                     month = "01";
                     year = (Number(year) + 1) + "";
                 }
-                date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);
+                date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);
             }
-        }else if(day == 0) {
+        } else if (day == 0) {
             day = 1;
             i = 0;
-            if((Number(date) + 1) <= lastDateOfMonth) {
-                date = ((Number(date) + 1) < 10) ? "0"+(Number(date) + 1) : (Number(date) + 1);
-            }else if((Number(date) + 1) > lastDateOfMonth) {
+            if ((Number(date) + 1) <= lastDateOfMonth) {
+                date = ((Number(date) + 1) < 10) ? "0" + (Number(date) + 1) : (Number(date) + 1);
+            } else if ((Number(date) + 1) > lastDateOfMonth) {
                 //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
-                if((Number(month) + 1) < 10) {
+                if ((Number(month) + 1) < 10) {
                     month = "0" + (Number(month) + 1);
-                } else if((Number(month) + 1) < 12) {
+                } else if ((Number(month) + 1) < 12) {
                     month = (Number(month) + 1) + "";
                 } else {
                     month = "01";
                     year = (Number(year) + 1) + "";
                 }
-                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0"+(Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
+                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
             }
         }
     }
@@ -250,7 +250,7 @@ function dateFormat(dataStr) {
     var str = dataStr.split("-");
 
     var newArr = [];
-    for(var i in str) {
+    for (var i in str) {
         newArr.push(str[i]);
     }
     return newArr.join("/");
@@ -272,7 +272,7 @@ function leaveListToDetail(btn1, btn2, btn3, state) {
     $(".leave-query-main").hide();
     $("#backDetailList").show();
     $(".leave-query-detail-sign").show();
-    if(state == null) {
+    if (state == null) {
         $("#" + btn1).hide();
     } else {
         $("#" + btn1).show();
@@ -283,7 +283,7 @@ function leaveListToDetail(btn1, btn2, btn3, state) {
 
 //获取签核流程（请假单和销假单共用）
 function getSignFlow(arr, serial, empname, yn, date, remark) {
-    for(var i = 0; i < serial.length; i++) {
+    for (var i = 0; i < serial.length; i++) {
         var signObj = {};
         signObj["serial"] = $(serial[i]).html();
         signObj["empname"] = $(empname[i]).html();
@@ -293,26 +293,26 @@ function getSignFlow(arr, serial, empname, yn, date, remark) {
 
         //根据签核状态判断使用什么图标
         //状态为“Y”是approved(已签核)
-        if($(yn[i]).html() == "Y") {
+        if ($(yn[i]).html() == "Y") {
             signObj["icon"] = "success.png";
             signObj["statusName"] = signedStr;
 
-        //状态为"N"是rejected(已拒绝)
-        } else if($(yn[i]).html() == "N") {
+            //状态为"N"是rejected(已拒绝)
+        } else if ($(yn[i]).html() == "N") {
             signObj["icon"] = "reject.png";
             signObj["statusName"] = rejectedStr;
 
-        //状态为""且日期为""，则是(未签核)
-        } else if($(yn[i]).html() == "" && $(date[i]).html() == "") {
+            //状态为""且日期为""，则是(未签核)
+        } else if ($(yn[i]).html() == "" && $(date[i]).html() == "") {
             signObj["icon"] = "blank.png";
             signObj["statusName"] = notSignStr;
 
-        //状态为""但日期不为""，则是(已撤销)
-        } else if($(yn[i]).html() == "" && $(date[i]).html() !== "") {
+            //状态为""但日期不为""，则是(已撤销)
+        } else if ($(yn[i]).html() == "" && $(date[i]).html() !== "") {
             signObj["icon"] = "withdraw.png";
             signObj["statusName"] = withdrawedStr;
 
-        //其他任何狀態都不需要顯示，icon爲空，name爲空
+            //其他任何狀態都不需要顯示，icon爲空，name爲空
         } else {
             signObj["icon"] = "blank.png";
             signObj["statusName"] = "";
@@ -325,23 +325,23 @@ function getSignFlow(arr, serial, empname, yn, date, remark) {
 //签核流程动态添加（请假单和销假单共用）
 function setLeaveFlowToPopup(arr, dom) {
     var flow = "";
-    for(var i in arr) {
+    for (var i in arr) {
         flow += '<li class="sign-list">' +
-                    '<div class="sign-icon">' +
-                        '<img src="img/' + arr[i]["icon"] + '">' +
-                    '</div>' +
-                    '<div class="sign-name">' +
-                        '<div class="font-style3">' +
-                            '<span>' + arr[i]["empname"] + '</span>' +
-                        '</div>' +
-                        '<div class="font-style10">' +
-                            '<span>' + arr[i]["date"] + '</span>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="sign-state font-style3">' +
-                        '<span>' + arr[i]["statusName"] + '</span>' +
-                    '</div>' +
-                '</li>';
+            '<div class="sign-icon">' +
+            '<img src="img/' + arr[i]["icon"] + '">' +
+            '</div>' +
+            '<div class="sign-name">' +
+            '<div class="font-style3">' +
+            '<span>' + arr[i]["empname"] + '</span>' +
+            '</div>' +
+            '<div class="font-style10">' +
+            '<span>' + arr[i]["date"] + '</span>' +
+            '</div>' +
+            '</div>' +
+            '<div class="sign-state font-style3">' +
+            '<span>' + arr[i]["statusName"] + '</span>' +
+            '</div>' +
+            '</li>';
     }
 
     $(dom).empty().append(flow);
