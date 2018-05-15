@@ -119,7 +119,7 @@ function getLeaveByCategory() {
     $("#leaveGenre").empty();
     $("#leave-popup-option-popup").remove();
 
-    //类别分“所有类别”和所选类别
+    //类别分“所有类别”和所选３０类别
     if (selectCategory === allLeaveCategroyStr) {
         for (var i in allLeaveList) {
             var obj = {};
@@ -453,11 +453,18 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 if (data['ResultCode'] === "1") {
                     var agentList = "";
+                    var tab1Status = document.getElementById("tab-1").style.display;
+                    var tab2Status = document.getElementById("tab-2").style.display;
                     //如果未找到代理人，popup提示，找到代理人则生成list供用户选择
                     if (data['Content'][0] == undefined) {
                         //agentNotExist = true;
-                        $("#agent-popup-option").popup("close");
-                        popupMsgInit('.agentNotExist');
+                        if (tab2Status !== "none") {
+                            $("#agent-popup-option").popup("close");
+                            popupMsgInit('.agentNotExist');
+                        }else if (tab1Status !== "none") {
+                            $("#leave-agent-popup-option").popup("close");
+                            popupMsgInit('.agentDetailNotExist');
+                        }
                     } else {
                         var callbackData = data['Content'][0]["result"];
                         var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -476,11 +483,9 @@ $("#viewPersonalLeave").pagecontainer({
                                     '</li>';
                             }
                         }
-
+                        
                         if (agentList != "") {
                             //var visitedPage = visitedPageList[visitedPageList.length - 1];
-                            var tab1Status = document.getElementById("tab-1").style.display;
-                            var tab2Status = document.getElementById("tab-2").style.display;
                             if (tab2Status !== "none") {
                                 //viewPersonalLeave
                                 $("#agent-popup-option-list").empty().append(agentList);
@@ -496,14 +501,18 @@ $("#viewPersonalLeave").pagecontainer({
                                 $("#leave-agent-popup-option-list").show();
                                 $("#loaderQuery").hide();
                             }
-
                             if (callback === "CountLeaveHours") {
                                 //呼叫API
                                 CountLeaveHours();
                             }
                         } else {
-                            $("#agent-popup-option").popup("close");
-                            popupMsgInit('.agentNotExist');
+                            if (tab2Status !== "none") {
+                                $("#agent-popup-option").popup("close");
+                                popupMsgInit('.agentNotExist');
+                            }else if (tab1Status !== "none") {
+                                $("#leave-agent-popup-option").popup("close");
+                                popupMsgInit('.agentDetailNotExist');
+                            }
                         }
                     }
                 }
