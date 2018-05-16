@@ -12,6 +12,7 @@ use App\lib\FilePath;
 use App\lib\CommonUtil;
 use App\lib\Verify;
 use File;
+use Validator;
 
 class appVersionController extends Controller
 {   
@@ -150,6 +151,7 @@ class appVersionController extends Controller
         
         $Verify = new Verify();
         $verifyResult = $Verify->verify();
+         $input = Input::all();
         if($verifyResult["code"] != ResultCode::_1_reponseSuccessful)
         {
             $result = ['result_code'=>$verifyResult["code"],

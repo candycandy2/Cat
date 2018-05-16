@@ -70,7 +70,6 @@ function getAPIListAllMeetingRoom() {
 
     this.successCallback = function(data) {
         if (data['ResultCode'] === "1") {
-            console.log(data);
 
             ConverToMeetingTree(data['Content']);
 
@@ -215,7 +214,7 @@ function getAPIListAllSite() {
     var queryData = {};
 
     this.successCallback = function(data) {
-        console.log(data);
+
         var resultData = data['Content'];
 
         var siteCategory = [];
@@ -356,7 +355,6 @@ function getSiteData() {
     var firstNode = meetingRoomTreeData._root.children[0].data;
     $('#reserveSite-button').find('span').text(dictSite[firstNode]);
     $('#newSettingSite-button').find('span').text(dictSite[firstNode]);
-
 }
 
 function setDefaultSettingData() {
@@ -393,7 +391,7 @@ function ConverToMeetingTree(data) {
     for (var key in arrSite) {
 
         meetingRoomTreeData.add(arrSite[key], 'meetingRoom', meetingRoomTreeData.traverseDF);
-        var floorData = grepData(data, 'MeetingRoomSite', arrSite[key])
+        var floorData = grepData(data, 'MeetingRoomSite', arrSite[key]);
         var dfloorData = uniqueData(floorData, 'MeetingRoomFloor');
         dfloorData.sort(function compareNumber(a, b) {
             return a - b;

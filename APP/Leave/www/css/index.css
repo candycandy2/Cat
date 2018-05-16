@@ -358,13 +358,15 @@ html body .ui-group-theme-a a:visited {
 
 .leftDaysNotEnough>.ui-content,
 .applyLeaveFail>.ui-content,
-.agentNotExist>.ui-content {
+.agentNotExist>.ui-content,
+.agentDetailNotExist>.ui-content {
     padding: 0 !important;
 }
 
 .leftDaysNotEnough .ui-content>.header,
 .applyLeaveFail .ui-content>.header,
-.agentNotExist>.ui-content>.header {
+.agentNotExist>.ui-content>.header,
+.agentDetailNotExist>.ui-content>.header {
     margin-top: 10%;
 }
 
@@ -953,6 +955,13 @@ html body .ui-group-theme-a a:visited {
     margin-right: 1.5VW;
 }
 
+/**************************************** viewAgentLeave ********************************************/
+
+.agent-container {
+    width: 93.6vw;
+    margin-left: 3.71vw;
+    margin-top: 1.01vw;
+}
 
 /********************************************** mypanel *********************************************/
 
