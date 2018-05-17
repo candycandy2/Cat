@@ -604,7 +604,8 @@ html body .ui-group-theme-a a:visited {
 .basedayFirst>.ui-content,
 .startdayFirst>.ui-content,
 .confirmSend>.ui-content,
-.agentNotData>.ui-content {
+.agentNotData>.ui-content,
+.deptFirst>.ui-content {
     padding: 0 !important;
 }
 
@@ -618,7 +619,8 @@ html body .ui-group-theme-a a:visited {
 .categroyFirst>.ui-content>.header,
 .basedayFirst>.ui-content>.header,
 .startdayFirst>.ui-content>.header,
-.confirmSend>.ui-content>.header {
+.confirmSend>.ui-content>.header,
+.deptFirst>.ui-content>.header {
     margin-top: 12.5%;
 }
 
