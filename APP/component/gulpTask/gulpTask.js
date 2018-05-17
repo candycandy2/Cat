@@ -244,3 +244,17 @@ gulp.task('componentJS', ['libJS', 'appJS', 'String', 'Font', 'setPlugin'], func
     fs.unlink('./function.js', (err) => {
     });
 });
+
+gulp.task('minifyAllCSS', function() {
+  return gulp.src('www/css/*.css')
+   .pipe(minifyCSS({
+     keepBreaks: false,
+   }))
+   .pipe(gulp.dest('www/css/'));
+});
+
+gulp.task('uglifyAllJS', function() {
+  return gulp.src('www/js/*.js')
+   .pipe(uglify())
+   .pipe(gulp.dest('www/js/'));
+});
