@@ -472,7 +472,7 @@ $("#viewPersonalLeave").pagecontainer({
                         var nameArry = $("name", htmlDom);
                         var agentIDArry = $("Empno", htmlDom);
                         for (var i = 0; i < DepArry.length; i++) {
-                            if ($(agentIDArry[i]).html() !== localStorage["emp_no"]) {
+                            if ($(agentIDArry[i]).html() !== myEmpNo) {
                                 agentList += '<li class="tpl-option-msg-list" value="' + $(agentIDArry[i]).html() + '">' +
                                     '<div style="width: 25VW;"><span>' +
                                     $(DepArry[i]).html() +
@@ -603,12 +603,15 @@ $("#viewPersonalLeave").pagecontainer({
                         QueryEmployeeLeaveApplyForm();
                         changePageByPanel("viewLeaveQuery");
                         $(".toast-style").fadeIn(100).delay(2000).fadeOut(100);
-                        //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
-                        localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
-                        //如果快速请假送签成功，请假申请页面的代理人也要修改成当前成功的代理人
-                        var options = '<option hidden>' + JSON.parse(localStorage.getItem("agent"))[0] + '</option>';
-                        $("#leave-agent-popup").find("option").remove().end().append(options);
-                        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+                        //非代理狀態時的請假送簽，才會紀錄代理人
+                        if (myEmpNo === originalEmpNo) {
+                            //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
+                            localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
+                            //如果快速请假送签成功，请假申请页面的代理人也要修改成当前成功的代理人
+                            var options = '<option hidden>' + JSON.parse(localStorage.getItem("agent"))[0] + '</option>';
+                            $("#leave-agent-popup").find("option").remove().end().append(options);
+                            tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+                        }
                     } else {
                         var error = $("error", htmlDom);
                         var msgContent = $(error).html();
@@ -781,12 +784,15 @@ $("#viewPersonalLeave").pagecontainer({
                         $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyLeaveForm").trigger("click");
-                        //如果快速请假申请成功，代理人信息存到local端，姓名在前，工号在后
-                        localStorage.setItem("agent", JSON.stringify([$("#leave-agent-popup option").text(), agentid]));
-                        //如果请假申请成功，快速请假也要带入当前代理人
-                        var options = '<option hidden>' + JSON.parse(localStorage.getItem("agent"))[0] + '</option>';
-                        $("#agent-popup").find("option").remove().end().append(options);
-                        tplJS.reSizeDropdownList("agent-popup", "typeB");
+                        //非代理狀態時的請假送簽，才會紀錄代理人
+                        if (myEmpNo === originalEmpNo) {
+                            //如果快速请假申请成功，代理人信息存到local端，姓名在前，工号在后
+                            localStorage.setItem("agent", JSON.stringify([$("#leave-agent-popup option").text(), agentid]));
+                            //如果请假申请成功，快速请假也要带入当前代理人
+                            var options = '<option hidden>' + JSON.parse(localStorage.getItem("agent"))[0] + '</option>';
+                            $("#agent-popup").find("option").remove().end().append(options);
+                            tplJS.reSizeDropdownList("agent-popup", "typeB");
+                        }
                     } else {
                         loadingMask("hide");
                         var error = $("error", htmlDom);
@@ -950,19 +956,23 @@ $("#viewPersonalLeave").pagecontainer({
                     "</endtime><datumdate></datumdate></LayoutHeader>";
 
                 if (localStorage.getItem("agent") !== null) {
-                    queryEmployeeData = "<LayoutHeader><EmpNo>" +
-                        myEmpNo +
-                        "</EmpNo><qEmpno>" +
-                        JSON.parse(localStorage.getItem("agent"))[1] +
-                        "</qEmpno><qName>" +
-                        JSON.parse(localStorage.getItem("agent"))[0] +
-                        "</qName></LayoutHeader>";
-                    //呼叫API
-                    QueryEmployeeData("CountLeaveHours");
+                    //非代理狀態，才檢查紀錄的代理人是否存在
+                    if (myEmpNo === originalEmpNo) {
+                        queryEmployeeData = "<LayoutHeader><EmpNo>" +
+                            myEmpNo +
+                            "</EmpNo><qEmpno>" +
+                            JSON.parse(localStorage.getItem("agent"))[1] +
+                            "</qEmpno><qName>" +
+                            JSON.parse(localStorage.getItem("agent"))[0] +
+                            "</qName></LayoutHeader>";
+                        //呼叫API
+                        QueryEmployeeData("CountLeaveHours");
+                    } else {
+                        CountLeaveHours();
+                    }
                 } else {
                     //呼叫API
                     CountLeaveHours();
-
                 }
 
             }

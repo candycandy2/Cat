@@ -265,36 +265,16 @@ $("#viewAgentLeave").pagecontainer({
             if ($('#toBeAgent').hasClass('leavePreview-active-btn')) {
                 //myEmpNo = agent_ID;
                 myEmpNo = "1607126";
-                localStorage.removeItem("leaveDefaultSetting");
-                //默认设置GetDefaultSetting
-                if(localStorage.getItem("leaveDefaultSetting") == null) {
-                    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
-                                               + myEmpNo
-                                               + "</EmpNo><LastModified></LastModified></LayoutHeader>";
-                } 
-
-                GetDefaultSetting();
-                //选择日期为“请选择”
-                $("#startText").text(pleaseSelectStr);
-                $("#endText").text(pleaseSelectStr);
-
-                //data scroll menu
-                dateInit();        
-                viewPersonalLeaveShow = false;
-                //changepage
-                $.mobile.changePage("#viewPersonalLeave");
-                //agent
-                if(localStorage.getItem("agent") !== null) {
-                    //viewPersonalLeave
-                    $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
-                    tplJS.reSizeDropdownList("agent-popup", "typeB");
-                    //viewLeaveSubmit
-                    $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
-                    tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
-                }else {
-                    $("#agent").text(pleaseSelectStr);
-                    $("#leaveAgent").text(pleaseSelectStr);                   
-                }
+                restartAgentLeave();
+                //1.恢复“请选择”
+                var options = '<option hidden>' + pleaseSelectStr + '</option>';
+                $("#agent-popup").find("option").remove().end().append(options);
+                tplJS.reSizeDropdownList("agent-popup", "typeB");
+                $("#leave-agent-popup").find("option").remove().end().append(options);
+                tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+                //2.赋值
+                agentid = "";
+                agentName = "";
 
                 loadingMask("show");
                 // Hide #mypanelviewAgentLeave 

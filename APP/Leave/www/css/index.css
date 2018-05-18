@@ -975,6 +975,15 @@ html body .ui-group-theme-a a:visited {
     margin-top: 1.01vw;
 }
 
+#emptyAgentForm {
+    margin-top: 4vw;
+}
+
+.beingAgent {
+    padding: 4.3VW 0VW 3.71VW 6.71VW;
+    border-bottom-color: #d6d6d6;
+}
+
 /********************************************** mypanel *********************************************/
 
 #mypanel .panel-content {
