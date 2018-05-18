@@ -1,0 +1,19 @@
+測試環境:
+http://ipsnb.benq.corp.com/Portal_Test/PortalForQPlayAPI.asmx
+
+測試資料庫:
+Server Name: 24ehr.qgroup.corp.com
+DataBase Name:Portal
+Account/Password:QPlay/QPlay
+
+
+正式環境
+http://ip-web01.qgroup.corp.com/Portal/PortalForQPlayAPI.asmx
+
+測試資料庫:
+Server Name: QTY-SQLC01-3.BenQ.corp.com\SQLI03
+DataBase Name:MyQisda
+Account/Password: MyQisda/chris2016]
+
+聯絡HR窗口: Chris Liu#3661
+
