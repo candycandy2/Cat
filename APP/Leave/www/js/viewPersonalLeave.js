@@ -784,6 +784,7 @@ $("#viewPersonalLeave").pagecontainer({
                         $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyLeaveForm").trigger("click");
+                        //非代理狀態時的請假送簽，才會紀錄代理人
                         if (myEmpNo === originalEmpNo) {
                             //如果快速请假申请成功，代理人信息存到local端，姓名在前，工号在后
                             localStorage.setItem("agent", JSON.stringify([$("#leave-agent-popup option").text(), agentid]));
