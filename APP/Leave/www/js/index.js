@@ -399,11 +399,10 @@ function restartAgentLeave () {
     //data scroll menu
     dateInit();        
     viewPersonalLeaveShow = false;
-    //changepage
-    $.mobile.changePage("#viewPersonalLeave");
 }
 
-$("#overAgentLeave").on("click", function() { 
+$(document).on("click", ".agentEnd span", function(e) {
+    loadingMask("show");
     myEmpNo = originalEmpNo;
     restartAgentLeave();
     //agent
@@ -418,7 +417,38 @@ $("#overAgentLeave").on("click", function() {
         $("#agent").text(pleaseSelectStr);
         $("#leaveAgent").text(pleaseSelectStr);                   
     }
-    loadingMask("show");
+    //隱藏代理OOO
+    $(".agentName > span:nth-of-type(2)").text("");
+    $(".beingAgent").empty().hide();
+    $(".page-main").css("padding-top", "3.99vw");
     // Show #mypanelviewAgentLeave 
     // Hide #mypanelEndAgentLeave
+    //changepage (Become a function & move API fun to index.js)
+    $("#tab-1").hide();
+    $("#tab-2").show();
+    $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
+    $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
+    if (!viewPersonalLeaveShow) {
+        //个人剩余假别资讯
+        queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+        QueryEmployeeLeaveInfo();
+
+        //请假单查询——获取假单列表
+        queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+        QueryEmployeeLeaveApplyForm();
+
+        //销假单查询——获取销假单列表
+        queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+        QueryEmployeeLeaveCancelForm();
+
+        viewPersonalLeaveShow = true;
+    }
+    //如果是从“假单详情（已撤回）”编辑功能跳转过来的，且该代理人不在职，popup提示重新选择代理人
+    if (editLeaveForm && employeeName == "") {
+        popupMsgInit('.agentNotData');
+    }
+    $('#applyDay').text(applyDay);
+    $('#previewApplyDay').text(applyDay);
+
+    loadingMask("hide");
 });
