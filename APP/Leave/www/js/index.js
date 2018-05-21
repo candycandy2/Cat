@@ -381,3 +381,44 @@ function resizePopup(popupID) {
     var top = (viewHeight - popupHeight) / 2;
     popup.parent().css("top", top + "px");
 }
+
+function restartAgentLeave () {
+    localStorage.removeItem("leaveDefaultSetting");
+    //默认设置GetDefaultSetting
+    if(localStorage.getItem("leaveDefaultSetting") == null) {
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    } 
+
+    GetDefaultSetting();
+    //选择日期为“请选择”
+    $("#startText").text(pleaseSelectStr);
+    $("#endText").text(pleaseSelectStr);
+
+    //data scroll menu
+    dateInit();        
+    viewPersonalLeaveShow = false;
+    //changepage
+    $.mobile.changePage("#viewPersonalLeave");
+}
+
+$("#overAgentLeave").on("click", function() { 
+    myEmpNo = originalEmpNo;
+    restartAgentLeave();
+    //agent
+    if(localStorage.getItem("agent") !== null) {
+        //viewPersonalLeave
+        $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("agent-popup", "typeB");
+        //viewLeaveSubmit
+        $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+    }else {
+        $("#agent").text(pleaseSelectStr);
+        $("#leaveAgent").text(pleaseSelectStr);                   
+    }
+    loadingMask("show");
+    // Show #mypanelviewAgentLeave 
+    // Hide #mypanelEndAgentLeave
+});

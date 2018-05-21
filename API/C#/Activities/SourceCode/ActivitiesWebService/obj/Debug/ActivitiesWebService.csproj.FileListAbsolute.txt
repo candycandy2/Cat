@@ -1,0 +1,6 @@
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Activities_New\ActivitiesWebService\bin\ActivitiesWebService.dll.config
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Activities_New\ActivitiesWebService\bin\ActivitiesWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Activities_New\ActivitiesWebService\bin\ActivitiesWebService.pdb
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Activities_New\ActivitiesWebService\obj\Debug\ActivitiesWebService.csprojResolveAssemblyReference.cache
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Activities_New\ActivitiesWebService\obj\Debug\ActivitiesWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Activities_New\ActivitiesWebService\obj\Debug\ActivitiesWebService.pdb
