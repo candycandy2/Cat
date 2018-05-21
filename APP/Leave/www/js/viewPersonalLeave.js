@@ -817,6 +817,7 @@ $("#viewPersonalLeave").pagecontainer({
         $("#viewPersonalLeave").one("pagebeforeshow", function(event, ui) {
             $("#tab-1").hide();
             $("#tab-2").show();
+            $(".beingAgent").hide();
             if (lastPageID === "viewPersonalLeave") {
                 //viewPersonalLeave
                 tplJS.DropdownList("viewPersonalLeave", "agent", "prepend", "typeB", agentData);
