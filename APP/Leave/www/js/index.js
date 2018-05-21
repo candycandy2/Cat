@@ -347,3 +347,78 @@ function setLeaveFlowToPopup(arr, dom) {
 
     $(dom).empty().append(flow);
 }
+
+function resizePopup(popupID) {
+    var popup = $("#" + popupID);
+    var popupHeight = popup.height();
+    var popupHeaderHeight = $("#" + popupID + " .header").height();
+    var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
+
+    //ui-content paddint-top/padding-bottom:3.07vw
+    // var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 3.07 * 2 / 100, 10);
+
+    //Ul margin-top:2.17vw
+    // var ulMarginTop = parseInt(document.documentElement.clientWidth * 2.17 / 100, 10);
+    // var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
+    var popupMainHeight = "200";
+    popup.find("div[data-role='main'] .main").height(popupMainHeight);
+
+    $('#' + popupID + '-screen.in').animate({
+        'overflow-y': 'hidden',
+        'touch-action': 'none',
+        'height': $(window).height()
+    }, 0, function() {
+        var top = $('#' + popupID + '-screen.in').offset().top;
+        if (top < 0) {
+            $('.ui-popup-screen.in').css({
+                'top': Math.abs(top) + "px"
+            });
+        }
+    });
+
+    var viewHeight = $(window).height();
+    var popupHeight = popup.outerHeight();
+    var top = (viewHeight - popupHeight) / 2;
+    popup.parent().css("top", top + "px");
+}
+
+function restartAgentLeave () {
+    localStorage.removeItem("leaveDefaultSetting");
+    //默认设置GetDefaultSetting
+    if(localStorage.getItem("leaveDefaultSetting") == null) {
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    } 
+
+    GetDefaultSetting();
+    //选择日期为“请选择”
+    $("#startText").text(pleaseSelectStr);
+    $("#endText").text(pleaseSelectStr);
+
+    //data scroll menu
+    dateInit();        
+    viewPersonalLeaveShow = false;
+    //changepage
+    $.mobile.changePage("#viewPersonalLeave");
+}
+
+$("#overAgentLeave").on("click", function() { 
+    myEmpNo = originalEmpNo;
+    restartAgentLeave();
+    //agent
+    if(localStorage.getItem("agent") !== null) {
+        //viewPersonalLeave
+        $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("agent-popup", "typeB");
+        //viewLeaveSubmit
+        $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+    }else {
+        $("#agent").text(pleaseSelectStr);
+        $("#leaveAgent").text(pleaseSelectStr);                   
+    }
+    loadingMask("show");
+    // Show #mypanelviewAgentLeave 
+    // Hide #mypanelEndAgentLeave
+});

@@ -1,0 +1,12 @@
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_News\PortalWebService\bin\PortalWebService.dll.config
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_News\PortalWebService\bin\PortalWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_News\PortalWebService\bin\PortalWebService.pdb
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_News\PortalWebService\obj\Debug\PortalWebService.csprojResolveAssemblyReference.cache
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_News\PortalWebService\obj\Debug\PortalWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_News\PortalWebService\obj\Debug\PortalWebService.pdb
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\bin\PortalWebService.dll.config
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\bin\PortalWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\bin\PortalWebService.pdb
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\obj\Debug\PortalWebService.csprojResolveAssemblyReference.cache
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\obj\Debug\PortalWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\obj\Debug\PortalWebService.pdb

@@ -582,10 +582,10 @@ $('#viewReserve').pagecontainer({
         }
 
         function checkLocalDataExpired() {
+            //add by allen
+            var doAPIListAllSite = new getAPIListAllSite();
             var meetingRoomLocalData = JSON.parse(localStorage.getItem('meetingRoomLocalData'));
             if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
-                //add by allen
-                var doAPIListAllSite = new getAPIListAllSite();
                 var doAPIListAllMeetingRoom = new getAPIListAllMeetingRoom();
                 var doAPIListAllTime = new getAPIListAllTime();
             } else {

@@ -119,7 +119,7 @@ function getLeaveByCategory() {
     $("#leaveGenre").empty();
     $("#leave-popup-option-popup").remove();
 
-    //类别分“所有类别”和所选类别
+    //类别分“所有类别”和所选３０类别
     if (selectCategory === allLeaveCategroyStr) {
         for (var i in allLeaveList) {
             var obj = {};
@@ -453,11 +453,18 @@ $("#viewPersonalLeave").pagecontainer({
             this.successCallback = function(data) {
                 if (data['ResultCode'] === "1") {
                     var agentList = "";
+                    var tab1Status = document.getElementById("tab-1").style.display;
+                    var tab2Status = document.getElementById("tab-2").style.display;
                     //如果未找到代理人，popup提示，找到代理人则生成list供用户选择
                     if (data['Content'][0] == undefined) {
                         //agentNotExist = true;
-                        $("#agent-popup-option").popup("close");
-                        popupMsgInit('.agentNotExist');
+                        if (tab2Status !== "none") {
+                            $("#agent-popup-option").popup("close");
+                            popupMsgInit('.agentNotExist');
+                        }else if (tab1Status !== "none") {
+                            $("#leave-agent-popup-option").popup("close");
+                            popupMsgInit('.agentDetailNotExist');
+                        }
                     } else {
                         var callbackData = data['Content'][0]["result"];
                         var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
@@ -465,7 +472,7 @@ $("#viewPersonalLeave").pagecontainer({
                         var nameArry = $("name", htmlDom);
                         var agentIDArry = $("Empno", htmlDom);
                         for (var i = 0; i < DepArry.length; i++) {
-                            if ($(agentIDArry[i]).html() !== localStorage["emp_no"]) {
+                            if ($(agentIDArry[i]).html() !== myEmpNo) {
                                 agentList += '<li class="tpl-option-msg-list" value="' + $(agentIDArry[i]).html() + '">' +
                                     '<div style="width: 25VW;"><span>' +
                                     $(DepArry[i]).html() +
@@ -476,11 +483,9 @@ $("#viewPersonalLeave").pagecontainer({
                                     '</li>';
                             }
                         }
-
+                        
                         if (agentList != "") {
                             //var visitedPage = visitedPageList[visitedPageList.length - 1];
-                            var tab1Status = document.getElementById("tab-1").style.display;
-                            var tab2Status = document.getElementById("tab-2").style.display;
                             if (tab2Status !== "none") {
                                 //viewPersonalLeave
                                 $("#agent-popup-option-list").empty().append(agentList);
@@ -496,14 +501,18 @@ $("#viewPersonalLeave").pagecontainer({
                                 $("#leave-agent-popup-option-list").show();
                                 $("#loaderQuery").hide();
                             }
-
                             if (callback === "CountLeaveHours") {
                                 //呼叫API
                                 CountLeaveHours();
                             }
                         } else {
-                            $("#agent-popup-option").popup("close");
-                            popupMsgInit('.agentNotExist');
+                            if (tab2Status !== "none") {
+                                $("#agent-popup-option").popup("close");
+                                popupMsgInit('.agentNotExist');
+                            }else if (tab1Status !== "none") {
+                                $("#leave-agent-popup-option").popup("close");
+                                popupMsgInit('.agentDetailNotExist');
+                            }
                         }
                     }
                 }
@@ -594,12 +603,15 @@ $("#viewPersonalLeave").pagecontainer({
                         QueryEmployeeLeaveApplyForm();
                         changePageByPanel("viewLeaveQuery");
                         $(".toast-style").fadeIn(100).delay(2000).fadeOut(100);
-                        //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
-                        localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
-                        //如果快速请假送签成功，请假申请页面的代理人也要修改成当前成功的代理人
-                        var options = '<option hidden>' + JSON.parse(localStorage.getItem("agent"))[0] + '</option>';
-                        $("#leave-agent-popup").find("option").remove().end().append(options);
-                        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+                        //非代理狀態時的請假送簽，才會紀錄代理人
+                        if (myEmpNo === originalEmpNo) {
+                            //如果快读请假申请成功，代理人信息存到local端，姓名在前，工号在后
+                            localStorage.setItem("agent", JSON.stringify([$("#agent-popup option").text(), agentid]));
+                            //如果快速请假送签成功，请假申请页面的代理人也要修改成当前成功的代理人
+                            var options = '<option hidden>' + JSON.parse(localStorage.getItem("agent"))[0] + '</option>';
+                            $("#leave-agent-popup").find("option").remove().end().append(options);
+                            tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+                        }
                     } else {
                         var error = $("error", htmlDom);
                         var msgContent = $(error).html();
@@ -772,12 +784,15 @@ $("#viewPersonalLeave").pagecontainer({
                         $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyLeaveForm").trigger("click");
-                        //如果快速请假申请成功，代理人信息存到local端，姓名在前，工号在后
-                        localStorage.setItem("agent", JSON.stringify([$("#leave-agent-popup option").text(), agentid]));
-                        //如果请假申请成功，快速请假也要带入当前代理人
-                        var options = '<option hidden>' + JSON.parse(localStorage.getItem("agent"))[0] + '</option>';
-                        $("#agent-popup").find("option").remove().end().append(options);
-                        tplJS.reSizeDropdownList("agent-popup", "typeB");
+                        //非代理狀態時的請假送簽，才會紀錄代理人
+                        if (myEmpNo === originalEmpNo) {
+                            //如果快速请假申请成功，代理人信息存到local端，姓名在前，工号在后
+                            localStorage.setItem("agent", JSON.stringify([$("#leave-agent-popup option").text(), agentid]));
+                            //如果请假申请成功，快速请假也要带入当前代理人
+                            var options = '<option hidden>' + JSON.parse(localStorage.getItem("agent"))[0] + '</option>';
+                            $("#agent-popup").find("option").remove().end().append(options);
+                            tplJS.reSizeDropdownList("agent-popup", "typeB");
+                        }
                     } else {
                         loadingMask("hide");
                         var error = $("error", htmlDom);
@@ -941,19 +956,23 @@ $("#viewPersonalLeave").pagecontainer({
                     "</endtime><datumdate></datumdate></LayoutHeader>";
 
                 if (localStorage.getItem("agent") !== null) {
-                    queryEmployeeData = "<LayoutHeader><EmpNo>" +
-                        myEmpNo +
-                        "</EmpNo><qEmpno>" +
-                        JSON.parse(localStorage.getItem("agent"))[1] +
-                        "</qEmpno><qName>" +
-                        JSON.parse(localStorage.getItem("agent"))[0] +
-                        "</qName></LayoutHeader>";
-                    //呼叫API
-                    QueryEmployeeData("CountLeaveHours");
+                    //非代理狀態，才檢查紀錄的代理人是否存在
+                    if (myEmpNo === originalEmpNo) {
+                        queryEmployeeData = "<LayoutHeader><EmpNo>" +
+                            myEmpNo +
+                            "</EmpNo><qEmpno>" +
+                            JSON.parse(localStorage.getItem("agent"))[1] +
+                            "</qEmpno><qName>" +
+                            JSON.parse(localStorage.getItem("agent"))[0] +
+                            "</qName></LayoutHeader>";
+                        //呼叫API
+                        QueryEmployeeData("CountLeaveHours");
+                    } else {
+                        CountLeaveHours();
+                    }
                 } else {
                     //呼叫API
                     CountLeaveHours();
-
                 }
 
             }
@@ -1045,40 +1064,6 @@ $("#viewPersonalLeave").pagecontainer({
         function splitTime(time) {
             var regExp = /^(.*?)-(.*?)$/;
             return time.match(regExp);
-        }
-
-        function resizePopup(popupID) {
-            var popup = $("#" + popupID);
-            var popupHeight = popup.height();
-            var popupHeaderHeight = $("#" + popupID + " .header").height();
-            var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
-
-            //ui-content paddint-top/padding-bottom:3.07vw
-            // var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 3.07 * 2 / 100, 10);
-
-            //Ul margin-top:2.17vw
-            // var ulMarginTop = parseInt(document.documentElement.clientWidth * 2.17 / 100, 10);
-            // var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
-            var popupMainHeight = "200";
-            popup.find("div[data-role='main'] .main").height(popupMainHeight);
-
-            $('#' + popupID + '-screen.in').animate({
-                'overflow-y': 'hidden',
-                'touch-action': 'none',
-                'height': $(window).height()
-            }, 0, function() {
-                var top = $('#' + popupID + '-screen.in').offset().top;
-                if (top < 0) {
-                    $('.ui-popup-screen.in').css({
-                        'top': Math.abs(top) + "px"
-                    });
-                }
-            });
-
-            var viewHeight = $(window).height();
-            var popupHeight = popup.outerHeight();
-            var top = (viewHeight - popupHeight) / 2;
-            popup.parent().css("top", top + "px");
         }
 
         $(document).on("change", "input[name=radio-choice-h-2]", function() {

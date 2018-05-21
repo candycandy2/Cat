@@ -1,0 +1,12 @@
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Relieve_New_2017\RelieveWebService\bin\MassageWebService.dll.config
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Relieve_New_2017\RelieveWebService\bin\MassageWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Relieve_New_2017\RelieveWebService\bin\MassageWebService.pdb
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Relieve_New_2017\RelieveWebService\obj\Debug\MassageWebService.csprojResolveAssemblyReference.cache
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Relieve_New_2017\RelieveWebService\obj\Debug\MassageWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Relieve_New_2017\RelieveWebService\obj\Debug\MassageWebService.pdb
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Massage_New\MassageWebService\bin\MassageWebService.dll.config
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Massage_New\MassageWebService\bin\MassageWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Massage_New\MassageWebService\bin\MassageWebService.pdb
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Massage_New\MassageWebService\obj\Debug\MassageWebService.dll
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Massage_New\MassageWebService\obj\Debug\MassageWebService.pdb
+C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Massage_New\MassageWebService\obj\Debug\MassageWebService.csprojResolveAssemblyReference.cache
