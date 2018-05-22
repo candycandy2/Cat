@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\lib\CommonUtil;
 use App\lib\ResultCode;
-use App\Entity\Picture;
+use App\Entity\Portrait;
 use App\Services\AzureBlobService;
 use App\Services\ServerFileService;
 use File;
 
-class PictureController extends Controller
+class PortraitController extends Controller
 {
     protected $azureBlobService;
     protected $serverFileService;
@@ -34,13 +34,18 @@ class PictureController extends Controller
      * 透過此API可以上傳圖片到QStorage的專案資料夾中
      * @return json
      */
-    public function uploadPicture(Request $request)
+    public function uploadPortrait(Request $request)
     {
         $contentType = $request->header('Content-Type');
         $appKey = $request->header('app-key');
 
         $uuid =  $request->uuid;
         $lang = $request->lang;
+        
+        if (CommonUtil::getContextAppKey()!=$appKey) {
+            return array("code"=>ResultCode::_999010_appKeyIncorrect,
+                "message"=>trans('result_code.'.ResultCode::_999010_appKeyIncorrect));
+        }
 
         if (explode(';', $contentType)[0] != "multipart/form-data") {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
@@ -67,18 +72,24 @@ class PictureController extends Controller
                                       'Message'=>trans('result_code.'.$validator->errors()->first())], 200);
         }
 
+        if (CommonUtil::getContextAppKey()!=$appKey) {
+            return array("code"=>ResultCode::_999010_appKeyIncorrect,
+                "message"=>trans('result_code.'.ResultCode::_999010_appKeyIncorrect));
+        }
+
         $file = $request->file('files');
         $result = [];
-        $resourceId = $request->header('resource-id');
-
-        //1.upload file size to server
-        $picture = new Picture($appKey, $resourceId, $file);
-        $tempFile = $picture->saveOnServer($file);
+        $empNo = $request->header('account');
+    
+        //1.upload file to server
+        $portrait = new Portrait($appKey, $empNo, $file);
+        $tempFile = $portrait->saveOnServer($file);
         try {
             //2.upload file to blob
-            $result = $picture->uploadToBlob($tempFile);
+            $result = $portrait->uploadToBlob($tempFile);
+            
             //3.delete server file
-            $picture->deleteServerFile($picture->destinationPath);
+            $portrait->deleteServerFile($portrait->destinationPath);
         } catch (Exceptions $e) {
             $picture->deleteServerFile($picture->destinationPath);
             throw $e;
@@ -89,37 +100,23 @@ class PictureController extends Controller
     }
 
     /**
-     * 透過此API可以刪除一張圖片相關聯的所有物件,包含原圖及縮圖
+     * 透過此API可以刪除大頭照
      * @param  Request $request
      * @return json
      */
-    public function deleteFile(Request $request)
+    public function deletePortrait(Request $request)
     {
-        $contentType = $request->header('Content-Type');
+        $empNo = $request->header('account');
         $appKey = $request->header('app-key');
-        if (!$request->isJson()) {
-            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
-                "message"=> "Content-Type錯誤");
-        }
-        $validator = \Validator::make(
-            $request->all(),
-            [
-        'fileUrls'=>'required'
-        ],
-        [
-            'required' => ResultCode::_999001_requestParameterLostOrIncorrect
-        ]
-        );
         
-        if ($validator->fails()) {
-            return response()->json(['ResultCode'=>$validator->errors()->first(),
-                                      'Message'=>trans('result_code.'.$validator->errors()->first())], 200);
+        if (CommonUtil::getContextAppKey()!=$appKey) {
+            return array("code"=>ResultCode::_999010_appKeyIncorrect,
+                "message"=>trans('result_code.'.ResultCode::_999010_appKeyIncorrect));
         }
-
-        $fileUrls = $request->get("fileUrls");
-        $pictrue = new Picture($appKey);
-        $pictrue->deleteBlob($fileUrls);
         
+        $portrait = new Portrait($appKey, $empNo);
+        $portrait->deleteBlob();
+           
         return response()->json(['ResultCode'=>ResultCode::_1_reponseSuccessful,
             'Message'=>"",
             'Content'=>""]);

@@ -1,7 +1,8 @@
 
+
 # QStorage API
 ## QStorage Restful API
-### Authentication
+### Common Authentication
 ##### Resuest Header
 ```
 Content-Type:multipart/form-data
@@ -58,7 +59,7 @@ Use form post to upload file,please keep the content-type **multipart/from-data*
   }
 }
 ```
-##### Response Data
+##### Error Code
 | Result Code | Descriptopn |
 |--|--|
 |1 | Success. Return uploaded picture information in 'Content', while upload success, you have 30minutes to use url with sas_token as url parameter to view the file. if time's up,please call **picture/sastoken/container/read** API to extend the permission time |
@@ -107,7 +108,7 @@ account:1607279
     "Content": ""
 }
 ```
-##### Response Data
+##### Error Code
 | Result Code | Descriptopn |
 |--|--|
 |1 | Success. Return sas token in 'Content'
@@ -118,7 +119,7 @@ account:1607279
 997999|Unknown Error
 
 ### Access Security API
- **3. Get  SaS Token  With Permission**
+ **1. Get  SaS Token  With Permission**
 ##### Request
 ```
 GET /sastoken/{resource}
@@ -143,6 +144,7 @@ target:appqforumdev-picture-13-76f99fb4f1a24d29
 blob-name:5aa7810f13643/5aa7810f13643_1024.jpg
 ``` 
 - target : Which container(blob) sas token you want to get.
+- blob-name : The blob name of file.
 ##### Response Body
 ```json
 {
@@ -153,7 +155,7 @@ blob-name:5aa7810f13643/5aa7810f13643_1024.jpg
     "sas_token":"sv=2016-05-31&sr=c&st=2018-03-13T07:30:00Z&se=2018-03-15T08:00:00Z&sp=r&sig=NohzmEtj4UTk6iCs8juJo0w%2FrZ4izxj8bVq2Fqg5Ub4%3D"
 }
 ```
-##### Response Data
+##### Error Code
 | Result Code | Descriptopn |
 |--|--|
 |1 | Success. Return sas token in 'Content'
@@ -162,3 +164,73 @@ blob-name:5aa7810f13643/5aa7810f13643_1024.jpg
 997904|Account Not Exist
 999006|Input format is invalid
 997999|Unknown Error
+
+### Portrait API
+**1. Upload Portrait**
+##### Request
+```
+POST portrait
+```
+##### Url Parameter
+```
+?lang=en-us&uuid=1517bfd3f7a87ab988
+``` 
+##### Resuest Header
+```
+account:0617279
+``` 
+- account: User Employee No. 
+##### Response Body
+```json
+{
+    "ResultCode": "1",
+    "Message": "",
+    "Content": {
+        "type": "image/png",
+        "original_width": 110,
+        "original_height": 120,
+        "original_size": 3340,
+        "original_url": "https://bqgroupstoragedev.blob.core.windows.net/appqplaydev-portrait/1607279/1607279_full.png",
+        "target": "appqplaydev-portrait",
+        "thumbnail_1024_width": 110,
+        "thumbnail_1024_height": 120,
+        "thumbnail_1024_url": "https://bqgroupstoragedev.blob.core.windows.net/appqplaydev-portrait/1607279/1607279_1024.png"
+    }
+}
+```
+##### Error Code
+| Result Code | Descriptopn |
+|--|--|
+|1 | Success. Return uploaded picture information in 'Content', while upload success, you can read this portrait in time via use return url，it will been compress to different ratios and convert to .png file|
+997901|The length of field is too long
+997902|Mandatory Field Lost
+997903|Field Format Error
+997904|Account Not Exist
+999005|Content type parameter invalid
+999006|Input format is invalid
+997905|Upload data type is not allow
+997908|File size exceeds the allowable limit
+997999|Unknown Error
+
+**2. Delete Portrait**
+##### Request
+```
+DELETE portrait
+```
+##### Url Parameter
+```
+?lang=en-us&uuid=1517bfd3f7a87ab988
+``` 
+##### Resuest Header
+```
+account:0617279
+``` 
+- account: User Employee No. 
+##### Response Body
+```json
+{
+    "ResultCode": "1",
+    "Message": "",
+    "Content": ""
+}
+```
