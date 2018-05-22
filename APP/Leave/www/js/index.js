@@ -347,3 +347,108 @@ function setLeaveFlowToPopup(arr, dom) {
 
     $(dom).empty().append(flow);
 }
+
+function resizePopup(popupID) {
+    var popup = $("#" + popupID);
+    var popupHeight = popup.height();
+    var popupHeaderHeight = $("#" + popupID + " .header").height();
+    var popupFooterHeight = popup.find("div[data-role='main'] .footer").height();
+
+    //ui-content paddint-top/padding-bottom:3.07vw
+    // var uiContentPaddingHeight = parseInt(document.documentElement.clientWidth * 3.07 * 2 / 100, 10);
+
+    //Ul margin-top:2.17vw
+    // var ulMarginTop = parseInt(document.documentElement.clientWidth * 2.17 / 100, 10);
+    // var popupMainHeight = parseInt(popupHeight - popupHeaderHeight - popupFooterHeight - uiContentPaddingHeight - ulMarginTop, 10);
+    var popupMainHeight = "200";
+    popup.find("div[data-role='main'] .main").height(popupMainHeight);
+
+    $('#' + popupID + '-screen.in').animate({
+        'overflow-y': 'hidden',
+        'touch-action': 'none',
+        'height': $(window).height()
+    }, 0, function() {
+        var top = $('#' + popupID + '-screen.in').offset().top;
+        if (top < 0) {
+            $('.ui-popup-screen.in').css({
+                'top': Math.abs(top) + "px"
+            });
+        }
+    });
+
+    var viewHeight = $(window).height();
+    var popupHeight = popup.outerHeight();
+    var top = (viewHeight - popupHeight) / 2;
+    popup.parent().css("top", top + "px");
+}
+
+function restartAgentLeave () {
+    localStorage.removeItem("leaveDefaultSetting");
+    //默认设置GetDefaultSetting
+    if(localStorage.getItem("leaveDefaultSetting") == null) {
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    } 
+
+    GetDefaultSetting();
+    //选择日期为“请选择”
+    $("#startText").text(pleaseSelectStr);
+    $("#endText").text(pleaseSelectStr);
+
+    //data scroll menu
+    dateInit();        
+    viewPersonalLeaveShow = false;
+}
+
+$(document).on("click", ".agentEnd span", function(e) {
+    loadingMask("show");
+    myEmpNo = originalEmpNo;
+    restartAgentLeave();
+    //agent
+    if(localStorage.getItem("agent") !== null) {
+        //viewPersonalLeave
+        $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("agent-popup", "typeB");
+        //viewLeaveSubmit
+        $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+    }else {
+        $("#agent").text(pleaseSelectStr);
+        $("#leaveAgent").text(pleaseSelectStr);                   
+    }
+    //隱藏代理OOO
+    $(".agentName > span:nth-of-type(2)").text("");
+    $(".beingAgent").empty().hide();
+    $(".page-main").css("padding-top", "3.99vw");
+    // Show #mypanelviewAgentLeave 
+    // Hide #mypanelEndAgentLeave
+    //changepage (Become a function & move API fun to index.js)
+    $("#tab-1").hide();
+    $("#tab-2").show();
+    $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
+    $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
+    if (!viewPersonalLeaveShow) {
+        //个人剩余假别资讯
+        queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+        QueryEmployeeLeaveInfo();
+
+        //请假单查询——获取假单列表
+        queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+        QueryEmployeeLeaveApplyForm();
+
+        //销假单查询——获取销假单列表
+        queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+        QueryEmployeeLeaveCancelForm();
+
+        viewPersonalLeaveShow = true;
+    }
+    //如果是从“假单详情（已撤回）”编辑功能跳转过来的，且该代理人不在职，popup提示重新选择代理人
+    if (editLeaveForm && employeeName == "") {
+        popupMsgInit('.agentNotData');
+    }
+    $('#applyDay').text(applyDay);
+    $('#previewApplyDay').text(applyDay);
+
+    loadingMask("hide");
+});

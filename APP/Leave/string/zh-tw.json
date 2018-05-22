@@ -1449,7 +1449,7 @@
   },
   {
     "term": "str_183",
-    "definition": "結束代理",
+    "definition": "結束",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1466,6 +1466,30 @@
   {
     "term": "str_185",
     "definition": "部門別",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_186",
+    "definition": "請先選擇部門別",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_187",
+    "definition": "代理",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_188",
+    "definition": "結束",
     "context": "",
     "term_plural": "",
     "reference": "",
