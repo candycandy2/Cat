@@ -72,7 +72,8 @@ thumbnail_1024_width | Content | 0-1 | Integer | Width, pixels
 thumbnail_1024_height | Content | 0-1 | Integer | Height, pixels
 thumbnail_1024_url | Content | 0-1 | String | URL
 
-##### Error Code
+### Error Code
+
 | Result Code | Descriptopn |
 |--|--|
 |1 | Success. Return uploaded picture information in 'Content', while upload success, you can read this portrait in time via use return url，it will been compress to different ratios and convert to .png file|
@@ -137,7 +138,7 @@ result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
 
-#### Error Code
+### Error Code
 同上
 
 ### Example
@@ -148,6 +149,81 @@ Response sample
     "ResultCode": "1",
     "Message": "",
     "Content": ""
+}
+```
+<h2 id="sastoken">sastoken</h2>
+
+### 描述
+```
+Get SAS token for Azure Perminssion
+```
+
+### Method
+```
+GET /sastoken/{resource}
+```
+
+### Authentication
+```
+required
+```
+
+### Header Parameters
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+target | 必填 | Path, ex:appqforumdev-picture-13-76f99fb4f1a24d29
+blob-name | 必填 | Filename, 5aa7810f13643/5aa7810f13643_1024.jpg
+
+### Parameters
+
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
+uuid | Required | string | Mobile uuid that has been registered.
+start | Not Required | string | Signed start date. allow ISO date String ex:2018-03-16T03:30:00Z
+expiry | Not Required | string | Signed expiry date. allow ISO date string ex:2018-03-17T12:30:00Z
+sp | Not Required | string | Signed permission .allow r,w
+
+### Response
+節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :------------- | :-------------
+result_code | NA | 1 | String | 回應代碼
+message | NA | 1 | String | 回應訊息描述
+content | NA | 0-1 | Container | 回應訊息內容Container
+target | content | 0-1 | String | Path
+sas_token | content | 0-1 | Integer | Token
+
+##### Error Code
+| Result Code | Descriptopn |
+|--|--|
+|1 | Success. Return sas token in 'Content'
+997902|Mandatory Field Lost
+997903|Field Format Error
+997904|Account Not Exist
+999006|Input format is invalid
+997999|Unknown Error
+
+### Example
+
+Request sample
+```
+?lang=en-us&uuid=1517bfd3f7a87ab988&start=2018-03-13T07:30:00Z&expiry=2018-03-15T08:00:00Z&sp=r
+``` 
+
+Javascript
+```js
+var dt = new Date(new Date());
+var srart = dt.toISOString().replace(/\\.\[0-9\]*/,'');
+```
+
+Response sample
+```json
+{
+  "ResultCode": "1",
+  "Message": "",
+  "Content": {
+    "target":"appqforumdev-picture-13-76f99fb4f1a24d29",
+    "sas_token":"sv=2016-05-31&sr=c&st=2018-03-13T07:30:00Z&se=2018-03-15T08:00:00Z&sp=r&sig=NohzmEtj4UTk6iCs8juJo0w%2FrZ4izxj8bVq2Fqg5Ub4%3D"
 }
 ```
 
