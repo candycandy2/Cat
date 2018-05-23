@@ -56,6 +56,12 @@ account | 必填 | 工號, ex:1607279
 lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
 uuid | Required | string | Mobile uuid that has been registered.
 
+### Request Body
+
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+files | Required | string | {"fileUrls":[<br>"https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-5dd5d090b10ddabf/5ab493cb1263b/5ab493cb1263b_1024.jpg",<br>"https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa7810f13643/5aa7810f13643_1024.jpg"<br>]}
+
 ### Response
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :------------- | :-------------
@@ -262,7 +268,10 @@ lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、
 uuid | Required | string | Mobile uuid that has been registered.
 
 ### Request Body
-files
+
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+files | Required | string | {"fileUrls":[<br>"https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-5dd5d090b10ddabf/5ab493cb1263b/5ab493cb1263b_1024.jpg",<br>"https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa7810f13643/5aa7810f13643_1024.jpg"<br>]}
 
 ### Response
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
@@ -372,15 +381,6 @@ content | NA | 0-1 | Container | 回應訊息內容Container
 997999|Unknown Error
 
 ### Example
-
-Request sample
-```json
-{"fileUrls":[
-  "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-5dd5d090b10ddabf/5ab493cb1263b/5ab493cb1263b_1024.jpg",
-  "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa7810f13643/5aa7810f13643_1024.jpg",
-  "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa784c79b1e0/5aa784c79b1e0_1024.jpg"
-]} 
-``` 
 
 Response Body
 ```json
