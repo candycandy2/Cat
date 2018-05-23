@@ -1,46 +1,100 @@
 
+QStorage API Readme.md
+=============================
 
-# QStorage API
-## QStorage Restful API
-### Common Authentication
-##### Resuest Header
+## Version x.x.x - Published 2018 May 23
+
+## Contents
+- [常用 API 說明](#常用-API-說明)
+    - [UploadPicture](#UploadPicture)
+    - [DeletePicture](#DeletePicture)
+    - [sastoken](#sastoken)
+    - [portrait](#getsecuritylist)
+    - [portrait](#checkappversion)
+
+
+----
+<h2 id="API-分類">API 分類</h2>
+
+Picture | Token | portrait
+:------------ | :------------- | :-------------
+1.UploadPicture <br> 2.DeletePicture | 1.sastoken  |  1.POST portrait <br> 2.DELTET portrait
+
+----
+<h2 id="常用-API-說明">常用 API 說明</h2>
+
+## *UploadPicture*
+
+### 描述
 ```
-Content-Type:multipart/form-data
-app-key:appqforumdev
-signature-Time:1520329467
-signature:kTC59b6mTvgiaabWpZ5Jvi9Xqj/XmqGrWACw4VGOxI=
-account:1607279
+上傳圖片。
 ```
 
- - app-key : This is key is registered by qplay.  
- - signature-time  : Unix timestamp that signatuer has been greated. allow 15 minute. 
- - signature  : base64(sha256(timestamp, secretKey)), secretKey is the prokect  secret that apply from qplay.
- - account : User's employee No.
-
-### Picture API
-
- **1. UploadPicture**
-##### Resuest
+### Method
 ```
 POST /picture/upload 
 ```
-##### Url Parameter
+
+### Authentication
 ```
-?lang=en-us&uuid=1517bfd3f7a87ab988
-``` 
-- lang :  Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
-- uuid:  Mobile uuid that has been registered.
-##### Resuest Header
+required
 ```
-resource-id:1/bb2cbbc0eb8411e7b4f300016cd4175c
-``` 
- - resource-id : This id must discuss with qstorage PM, that will determine where the file located.
-##### Request Params
+
+### Header Parameters
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為multipart/form-data
+app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
+signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
+signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
+account | 必填 | 工號, ex:1607279
+
+### Parameters
+
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
+uuid | Required | string | Mobile uuid that has been registered.
+resource-id | Required | string | This id must discuss with qstorage PM, that will determine where the file located.
+
+### Response
+節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :------------- | :-------------
+result_code | NA | 1 | String | 回應代碼
+message | NA | 1 | String | 回應訊息描述
+content | NA | 0-1 | Container | 回應訊息內容Container
+type | content | 0-1 | String | mimetype, ex: image/jpeg
+original_width | content | 0-1 | Integer | Width, pixels
+original_height | content | 0-1 | Integer | Height, pixels
+original_size | content | 0-1 | Integer | SIZE, bits
+original_url | content | 0-1 | String | URL
+target | content | 0-1 | String | ex: "appqforumdev-picture-13-76f99fb4f1a24d29"
+sas_token | content | 0-1 | String | token, ex:"sv=2016-05-31&sr=c&st=2018-03-13T07:30:00Z&se=2018-03-15T08:00:00Z&sp=r&sig=NohzmEtj4UTk6iCs8juJo0w%2FrZ4izxj8bVq2Fqg5Ub4%3D"
+thumbnail_1024_width | content | 0-1 | Integer | Width, pixels
+thumbnail_1024_height | content | 0-1 | Integer | Height, pixels
+thumbnail_1024_url | content | 0-1 | String | URL
+
+##### Error Code
+| Result Code | Descriptopn |
+|--|--|
+|1 | Success. Return uploaded picture information in 'Content', while upload success, you have 30minutes to use url with sas_token as url parameter to view the file. if time's up,please call **picture/sastoken/container/read** API to extend the permission time |
+997901|The length of field is too long
+997902|Mandatory Field Lost
+997903|Field Format Error
+997904|Account Not Exist
+999005|Content type parameter invalid
+999006|Input format is invalid
+997905|Upload data type is not allow
+997908|File size exceeds the allowable limit
+997999|Unknown Error
+
+### Example
 Use form post to upload file,please keep the content-type **multipart/from-data**,this is a example use curl
 ```
  curl -F 'files=@D:temp\img\testimage.jpeg'
 ```
-##### Response Body
+
+Response sample
 ```json
 {
   "ResultCode": "1",
@@ -59,19 +113,7 @@ Use form post to upload file,please keep the content-type **multipart/from-data*
   }
 }
 ```
-##### Error Code
-| Result Code | Descriptopn |
-|--|--|
-|1 | Success. Return uploaded picture information in 'Content', while upload success, you have 30minutes to use url with sas_token as url parameter to view the file. if time's up,please call **picture/sastoken/container/read** API to extend the permission time |
-997901|The length of field is too long
-997902|Mandatory Field Lost
-997903|Field Format Error
-997904|Account Not Exist
-999005|Content type parameter invalid
-999006|Input format is invalid
-997905|Upload data type is not allow
-997908|File size exceeds the allowable limit
-997999|Unknown Error
+
 
 **2.Delete picture by url**
 ##### Request
