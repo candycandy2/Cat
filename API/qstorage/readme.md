@@ -193,7 +193,7 @@ content | NA | 0-1 | Container | 回應訊息內容Container
 target | content | 0-1 | String | Path
 sas_token | content | 0-1 | Integer | Token
 
-##### Error Code
+### Error Code
 | Result Code | Descriptopn |
 |--|--|
 |1 | Success. Return sas token in 'Content'
@@ -318,27 +318,59 @@ Response sample
 }
 ```
 
+<h2 id="DeletePicture">Delete Picture</h2>
 
-**2.Delete picture by url**
-##### Request
+### 描述
+```
+刪除上傳圖片。
+```
+
+### Method
 ```
 GET /picture/delete
 ```
-##### Url Parameter
+
+### Authentication
 ```
-?lang=en-us&uuid=1517bfd3f7a87ab988
-``` 
-- lang  :  Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
-- uuid :  Mobile uuid that has been registered
-##### Request Header
-``` 
-Content-Type:application/json
-app-key:appqforumdev
-Signature-Time:1522045522
-Signature:UjU4St75nHvDC2mmWR7ZjBhV4Yd6d/zSDr/B2opjR5E=
-account:1607279
-``` 
-##### Request Body
+required
+```
+
+### Header Parameters
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為multipart/form-data
+app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
+signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
+signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
+account | 必填 | 工號, ex:1607279
+
+### Parameters
+
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
+uuid | Required | string | Mobile uuid that has been registered.
+
+### Response
+節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :------------- | :-------------
+result_code | NA | 1 | String | 回應代碼
+message | NA | 1 | String | 回應訊息描述
+content | NA | 0-1 | Container | 回應訊息內容Container
+
+##### Error Code
+| Result Code | Descriptopn |
+|--|--|
+|1 | Success. Return sas token in 'Content'
+997902|Mandatory Field Lost
+997903|Field Format Error
+997904|Account Not Exist
+999006|Input format is invalid
+997999|Unknown Error
+
+### Example
+
+Request sample
 ```json
 {"fileUrls":[
   "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-5dd5d090b10ddabf/5ab493cb1263b/5ab493cb1263b_1024.jpg",
@@ -346,7 +378,8 @@ account:1607279
   "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa784c79b1e0/5aa784c79b1e0_1024.jpg"
 ]} 
 ``` 
-##### Response Body
+
+Response Body
 ```json
 {
     "ResultCode": "1",
@@ -354,59 +387,4 @@ account:1607279
     "Content": ""
 }
 ```
-##### Error Code
-| Result Code | Descriptopn |
-|--|--|
-|1 | Success. Return sas token in 'Content'
-997902|Mandatory Field Lost
-997903|Field Format Error
-997904|Account Not Exist
-999006|Input format is invalid
-997999|Unknown Error
 
-### Access Security API
- **1. Get  SaS Token  With Permission**
-##### Request
-```
-GET /sastoken/{resource}
-```
-- resource : Which Resource type  that you want to get , allow 'container'、'blob' 
-##### Url Parameter
-```
-?lang=en-us&uuid=1517bfd3f7a87ab988&start=2018-03-13T07:30:00Z&expiry=2018-03-15T08:00:00Z&sp=r
-``` 
-- lang  :  Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
-- uuid :  Mobile uuid that has been registered
-- start :  Signed start date. allow ISO date String ex:2018-03-16T03:30:00Z
-- expiry : Signed expiry date. allow ISO date string ex:2018-03-17T12:30:00Z
-- sp :  Signed permission .allow r,w
-```js
-var dt = new Date(new Date());
-var srart = dt.toISOString().replace(/\\.\[0-9\]*/,'');
-```
-##### Resuest Header
-```
-target:appqforumdev-picture-13-76f99fb4f1a24d29
-blob-name:5aa7810f13643/5aa7810f13643_1024.jpg
-``` 
-- target : Which container(blob) sas token you want to get.
-- blob-name : The blob name of file.
-##### Response Body
-```json
-{
-  "ResultCode": "1",
-  "Message": "",
-  "Content": {
-    "target":"appqforumdev-picture-13-76f99fb4f1a24d29",
-    "sas_token":"sv=2016-05-31&sr=c&st=2018-03-13T07:30:00Z&se=2018-03-15T08:00:00Z&sp=r&sig=NohzmEtj4UTk6iCs8juJo0w%2FrZ4izxj8bVq2Fqg5Ub4%3D"
-}
-```
-##### Error Code
-| Result Code | Descriptopn |
-|--|--|
-|1 | Success. Return sas token in 'Content'
-997902|Mandatory Field Lost
-997903|Field Format Error
-997904|Account Not Exist
-999006|Input format is invalid
-997999|Unknown Error
