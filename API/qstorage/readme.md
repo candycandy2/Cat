@@ -182,7 +182,7 @@ app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
 signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
 signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
 account | 必填 | 工號, ex:1607279
-target | 必填 | string | 欲取得的目標名稱，如果url的resource是container,請填入container名稱<br>ex: appqforumdev-picture-13-76f99fb4f1a24d29<br>如果resource是blob，請填入blob名稱<br>ex: appqforumdev-picture-13-76f99fb4f1a24d29/5aa8d448cc978/5aa8d448cc978_full.jpg
+target | 必填 | 欲取得的目標名稱，如果url的resource是container,請填入container名稱<br>ex: appqforumdev-picture-13-76f99fb4f1a24d29<br>如果resource是blob，請填入blob名稱<br>ex: appqforumdev-picture-13-76f99fb4f1a24d29/5aa8d448cc978/5aa8d448cc978_full.jpg
 
 ### URL Parameters
 
