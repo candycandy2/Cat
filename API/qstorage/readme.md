@@ -125,20 +125,10 @@ required
 ```
 
 ### Header Parameters
-欄位名稱 | 是否必填 | 描述
-:------------ | :------------- | :-------------
-content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為multipart/form-data
-app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
-signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
-signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
-account | 必填 | 工號, ex:1607279
+同上
 
 ### Parameters
-
-參數名稱 | 是否必填 | 資料類型 | 描述
-:------------ | :------------- | :------------- | :-------------
-lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
-uuid | Required | string | Mobile uuid that has been registered.
+同上
 
 ### Response
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
@@ -147,19 +137,8 @@ result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
 
-##### Error Code
-| Result Code | Descriptopn |
-|--|--|
-|1 | Success. Return uploaded picture information in 'Content', while upload success, you have 30minutes to use url with sas_token as url parameter to view the file. if time's up,please call **picture/sastoken/container/read** API to extend the permission time |
-997901|The length of field is too long
-997902|Mandatory Field Lost
-997903|Field Format Error
-997904|Account Not Exist
-999005|Content type parameter invalid
-999006|Input format is invalid
-997905|Upload data type is not allow
-997908|File size exceeds the allowable limit
-997999|Unknown Error
+#### Error Code
+同上
 
 ### Example
 
@@ -355,73 +334,3 @@ blob-name:5aa7810f13643/5aa7810f13643_1024.jpg
 997904|Account Not Exist
 999006|Input format is invalid
 997999|Unknown Error
-
-### Portrait API
-**1. Upload Portrait**
-##### Request
-```
-POST portrait
-```
-##### Url Parameter
-```
-?lang=en-us&uuid=1517bfd3f7a87ab988
-``` 
-##### Resuest Header
-```
-account:0617279
-``` 
-- account: User Employee No. 
-##### Response Body
-```json
-{
-    "ResultCode": "1",
-    "Message": "",
-    "Content": {
-        "type": "image/png",
-        "original_width": 110,
-        "original_height": 120,
-        "original_size": 3340,
-        "original_url": "https://bqgroupstoragedev.blob.core.windows.net/appqplaydev-portrait/1607279/1607279_full.png",
-        "target": "appqplaydev-portrait",
-        "thumbnail_1024_width": 110,
-        "thumbnail_1024_height": 120,
-        "thumbnail_1024_url": "https://bqgroupstoragedev.blob.core.windows.net/appqplaydev-portrait/1607279/1607279_1024.png"
-    }
-}
-```
-##### Error Code
-| Result Code | Descriptopn |
-|--|--|
-|1 | Success. Return uploaded picture information in 'Content', while upload success, you can read this portrait in time via use return url，it will been compress to different ratios and convert to .png file|
-997901|The length of field is too long
-997902|Mandatory Field Lost
-997903|Field Format Error
-997904|Account Not Exist
-999005|Content type parameter invalid
-999006|Input format is invalid
-997905|Upload data type is not allow
-997908|File size exceeds the allowable limit
-997999|Unknown Error
-
-**2. Delete Portrait**
-##### Request
-```
-DELETE portrait
-```
-##### Url Parameter
-```
-?lang=en-us&uuid=1517bfd3f7a87ab988
-``` 
-##### Resuest Header
-```
-account:0617279
-``` 
-- account: User Employee No. 
-##### Response Body
-```json
-{
-    "ResultCode": "1",
-    "Message": "",
-    "Content": ""
-}
-```
