@@ -23,7 +23,7 @@ Picture | Token | portrait
 ----
 <h2 id="常用-API-說明">常用 API 說明</h2>
 
-## *UploadPicture*
+<h2 id="UploadPicture">UploadPicture</h2>
 
 ### 描述
 ```
