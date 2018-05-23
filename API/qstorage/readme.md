@@ -173,6 +173,10 @@ GET /sastoken/{resource}
 ```
 required
 ```
+### Path Parameters
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+resource | 必填 | 欲取得的資源類型 ex : container 或 blob
 
 ### Header Parameters
 欄位名稱 | 是否必填 | 描述
