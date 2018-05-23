@@ -107,16 +107,16 @@ Response sample
 }
 ```
 
-<h2 id="UploadPicture">UploadPicture</h2>
+<h2 id="Deleteportrait">Delete portrait</h2>
 
 ### 描述
 ```
-上傳圖片。
+刪除大頭圖片。
 ```
 
 ### Method
 ```
-POST /picture/upload 
+DELETE portrait
 ```
 
 ### Authentication
@@ -139,7 +139,6 @@ account | 必填 | 工號, ex:1607279
 :------------ | :------------- | :------------- | :-------------
 lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
 uuid | Required | string | Mobile uuid that has been registered.
-resource-id | Not Required | string | This id must discuss with qstorage PM, that will determine where the file located.
 
 ### Response
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
@@ -147,16 +146,6 @@ resource-id | Not Required | string | This id must discuss with qstorage PM, tha
 result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
-type | content | 0-1 | String | mimetype, ex: image/jpeg
-original_width | content | 0-1 | Integer | Width, pixels
-original_height | content | 0-1 | Integer | Height, pixels
-original_size | content | 0-1 | Integer | SIZE, bits
-original_url | content | 0-1 | String | URL
-target | content | 0-1 | String | ex: "appqforumdev-picture-13-76f99fb4f1a24d29"
-sas_token | content | 0-1 | String | token, ex:"sv=2016-05-31&sr=c&st=2018-03-13T07:30:00Z&se=2018-03-15T08:00:00Z&sp=r&sig=NohzmEtj4UTk6iCs8juJo0w%2FrZ4izxj8bVq2Fqg5Ub4%3D"
-thumbnail_1024_width | content | 0-1 | Integer | Width, pixels
-thumbnail_1024_height | content | 0-1 | Integer | Height, pixels
-thumbnail_1024_url | content | 0-1 | String | URL
 
 ##### Error Code
 | Result Code | Descriptopn |
@@ -173,28 +162,13 @@ thumbnail_1024_url | content | 0-1 | String | URL
 997999|Unknown Error
 
 ### Example
-Use form post to upload file,please keep the content-type **multipart/from-data**,this is a example use curl
-```
- curl -F 'files=@D:temp\img\testimage.jpeg'
-```
 
 Response sample
 ```json
 {
-  "ResultCode": "1",
-  "Message": "",
-  "Content": {
-    "type": "image/jpeg",
-    "original_width": 110,
-    "original_height": 120,
-    "original_size": 3340,
-    "original_url": "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa8d448cc978/5aa8d448cc978_full.jpg",
-    "target":"appqforumdev-picture-13-76f99fb4f1a24d29",
-    "sas_token": "sv=2016-05-31&sr=c&st=2018-03-14T07:50:33Z&se=2018-03-14T08:20:33Z&sp=r&sig=jadOwP38qf5cEB4G8n2mX7Y9uONoOi53ByDieOTTOEo%3D",
-    "thumbnail_1024_width": 110,
-    "thumbnail_1024_height": 120,
-    "thumbnail_1024_url": "https://bqgroupstoragedev.blob.core.windows.net/appqforumdev-picture-13-76f99fb4f1a24d29/5aa8d448cc978/5aa8d448cc978_1024.jpg"
-  }
+    "ResultCode": "1",
+    "Message": "",
+    "Content": ""
 }
 ```
 
