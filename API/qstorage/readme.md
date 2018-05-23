@@ -49,7 +49,7 @@ signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 
 signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
 account | 必填 | 工號, ex:1607279
 
-### Parameters
+### URL Parameters
 
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
@@ -66,11 +66,11 @@ type | Content | 0-1 | String | mimetype, ex: image/jpeg
 original_width | Content | 0-1 | Integer | Width, pixels
 original_height | Content | 0-1 | Integer | Height, pixels
 original_size | Content | 0-1 | Integer | SIZE, bits
-original_url | Content | 0-1 | String | URL
+original_url | Content | 0-1 | String | URL 永久有效, 可以用工號組合PATH
 target | Content | 0-1 | String | server folder path, ex: "appqplaydev-portrait"
 thumbnail_1024_width | Content | 0-1 | Integer | Width, pixels
 thumbnail_1024_height | Content | 0-1 | Integer | Height, pixels
-thumbnail_1024_url | Content | 0-1 | String | URL
+thumbnail_1024_url | Content | 0-1 | String | URL 永久有效, 可以用工號組合PATH
 
 ### Error Code
 
@@ -128,7 +128,7 @@ required
 ### Header Parameters
 同上
 
-### Parameters
+### URL Parameters
 同上
 
 ### Response
@@ -174,7 +174,7 @@ required
 target | 必填 | Path, ex:appqforumdev-picture-13-76f99fb4f1a24d29
 blob-name | 必填 | Filename, 5aa7810f13643/5aa7810f13643_1024.jpg
 
-### Parameters
+### URL Parameters
 
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
@@ -252,14 +252,17 @@ app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
 signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
 signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
 account | 必填 | 工號, ex:1607279
+resource-id | 非必填 | string | This id must discuss with qstorage PM, that will determine where the file located.
 
-### Parameters
+### URL Parameters
 
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
 lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
 uuid | Required | string | Mobile uuid that has been registered.
-resource-id | Not Required | string | This id must discuss with qstorage PM, that will determine where the file located.
+
+### Request Body
+files
 
 ### Response
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
@@ -278,7 +281,7 @@ thumbnail_1024_width | content | 0-1 | Integer | Width, pixels
 thumbnail_1024_height | content | 0-1 | Integer | Height, pixels
 thumbnail_1024_url | content | 0-1 | String | URL
 
-##### Error Code
+### Error Code
 | Result Code | Descriptopn |
 |--|--|
 |1 | Success. Return uploaded picture information in 'Content', while upload success, you have 30minutes to use url with sas_token as url parameter to view the file. if time's up,please call **picture/sastoken/container/read** API to extend the permission time |
@@ -344,7 +347,7 @@ signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 
 signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
 account | 必填 | 工號, ex:1607279
 
-### Parameters
+### URL Parameters
 
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
@@ -358,7 +361,7 @@ result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
 
-##### Error Code
+### Error Code
 | Result Code | Descriptopn |
 |--|--|
 |1 | Success. Return sas token in 'Content'
