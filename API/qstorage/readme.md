@@ -55,7 +55,7 @@ account | 必填 | 工號, ex:1607279
 :------------ | :------------- | :------------- | :-------------
 lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、'zh-cn'
 uuid | Required | string | Mobile uuid that has been registered.
-resource-id | Required | string | This id must discuss with qstorage PM, that will determine where the file located.
+resource-id | Not Required | string | This id must discuss with qstorage PM, that will determine where the file located.
 
 ### Response
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
