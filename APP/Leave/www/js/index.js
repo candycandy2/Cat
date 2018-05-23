@@ -38,16 +38,33 @@ var dayTable = {
     "4": "(四)",
     "5": "(五)"
 };
-var quickLeaveList = [];
-var allLeaveList = [];
+
+function restartAgentLeave() {
+    localStorage.removeItem("leaveDefaultSetting");
+    //默认设置GetDefaultSetting
+    if(localStorage.getItem("leaveDefaultSetting") == null) {
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    } 
+
+    GetDefaultSetting();
+    //选择日期为“请选择”
+    $("#startText").text(pleaseSelectStr);
+    $("#endText").text(pleaseSelectStr);
+
+    //data scroll menu
+    dateInit();        
+    viewPersonalLeaveShow = false;
+}
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
 
-    //默认设置GetDefaultSetting
-    if (localStorage.getItem("leaveDefaultSetting") == null) {
+    //默认设置GetDefaultSetting (GetUserAuthority回傳data['ResultCode'] === "1" 不執行else)
+    /*if (localStorage.getItem("leaveDefaultSetting") == null) {
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
             myEmpNo +
             "</EmpNo><LastModified></LastModified></LayoutHeader>";
@@ -62,11 +79,10 @@ window.initialSuccess = function() {
     GetDefaultSetting();
     //选择日期为“请选择”
     $("#startText").text(pleaseSelectStr);
-    $("#endText").text(pleaseSelectStr);
-
+    $("#endText").text(pleaseSelectStr); */
     //data scroll menu
-    dateInit();
-
+    //dateInit(); 
+    restartAgentLeave();
     //changepage
     $.mobile.changePage("#viewPersonalLeave");
 
@@ -97,7 +113,7 @@ window.initialSuccess = function() {
 }
 
  //快速请假页面——获取部分假别
-function getQuickLeaveList() {
+/*function getQuickLeaveList() {
     //初始化
     leaveTypeData["option"] = [];
     $("#leaveType-popup").remove();
@@ -258,7 +274,7 @@ window.GetDefaultSetting = function() {
         CustomAPIEx("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
     }();
 
-};
+};*/
 
 //[Android]Handle the back button
 function onBackKeyDown() {
@@ -548,25 +564,6 @@ function resizePopup(popupID) {
     popup.parent().css("top", top + "px");
 }
 
-function restartAgentLeave() {
-    localStorage.removeItem("leaveDefaultSetting");
-    //默认设置GetDefaultSetting
-    if(localStorage.getItem("leaveDefaultSetting") == null) {
-        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
-                                   + myEmpNo
-                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
-    } 
-
-    GetDefaultSetting();
-    //选择日期为“请选择”
-    $("#startText").text(pleaseSelectStr);
-    $("#endText").text(pleaseSelectStr);
-
-    //data scroll menu
-    dateInit();        
-    viewPersonalLeaveShow = false;
-}
-
 function startMainPage() {
     $("#tab-1").hide();
     $("#tab-2").show();
@@ -619,8 +616,8 @@ $(document).on("click", ".agentEnd span", function(e) {
     $(".agentName > span:nth-of-type(2)").text("");
     $(".beingAgent").empty().hide();
     $(".page-main").css("padding-top", "3.99vw");
-    // Show #mypanelviewAgentLeave 
-    // Hide #mypanelEndAgentLeave
+    //API: GetUserAuthority 判斷有無代理權限
+    $("#mypanelviewAgentLeave").show();
     //changepage 
     startMainPage();
 });              
