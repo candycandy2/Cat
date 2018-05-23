@@ -6,8 +6,8 @@ var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 var timoutQueryEmployeeData = null;
 var calendarData = false;
-var quickLeaveList = [];
-var allLeaveList = [];
+//var  quickLeaveList= [];
+//var allLeaveList = [];
 var allLeaveCategroyStr = langStr["str_122"]; //所有類別
 
 var leaveTypeData = {
@@ -168,7 +168,7 @@ $("#viewPersonalLeave").pagecontainer({
 
         /********************************** function *************************************/
         //快速请假页面——获取部分假别
-        function getQuickLeaveList() {
+        /*function getQuickLeaveList() {
             //初始化
             leaveTypeData["option"] = [];
             $("#leaveType-popup").remove();
@@ -224,7 +224,7 @@ $("#viewPersonalLeave").pagecontainer({
                     return false;
                 }
             });
-        }
+        } */
 
         //快速请假页——选择假别查看剩余天数
         function checkLeftDaysByQuickLeave(leftdays) {
@@ -310,7 +310,7 @@ $("#viewPersonalLeave").pagecontainer({
         }
 
         //获取默认设置，包括所有假别、注意事项等
-        window.GetDefaultSetting = function() {
+    /*    window.GetDefaultSetting = function() {
 
             this.successCallback = function(data) {
                 console.log(data);
@@ -412,7 +412,7 @@ $("#viewPersonalLeave").pagecontainer({
                 CustomAPIEx("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
             }();
 
-        };
+        };  */
 
         //根据leaveid查询假别剩余时数
         window.QueryLeftDaysData = function() {
@@ -868,33 +868,7 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $("#viewPersonalLeave").on("pageshow", function(event, ui) {
-            $("#tab-1").hide();
-            $("#tab-2").show();
-            $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
-            $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-            if (!viewPersonalLeaveShow) {
-                //个人剩余假别资讯
-                queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-                QueryEmployeeLeaveInfo();
-
-                //请假单查询——获取假单列表
-                queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-                QueryEmployeeLeaveApplyForm();
-
-                //销假单查询——获取销假单列表
-                queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-                QueryEmployeeLeaveCancelForm();
-
-                viewPersonalLeaveShow = true;
-            }
-            //如果是从“假单详情（已撤回）”编辑功能跳转过来的，且该代理人不在职，popup提示重新选择代理人
-            if (editLeaveForm && employeeName == "") {
-                popupMsgInit('.agentNotData');
-            }
-            $('#applyDay').text(applyDay);
-            $('#previewApplyDay').text(applyDay);
-
-            loadingMask("hide");
+            startMainPage();
         });
 
         /********************************** dom event *************************************/
