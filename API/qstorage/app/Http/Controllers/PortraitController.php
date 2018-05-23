@@ -49,22 +49,20 @@ class PortraitController extends Controller
 
         if (explode(';', $contentType)[0] != "multipart/form-data") {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
-                "message"=> "Content-Type錯誤");
+                "message"=>trans('result_code.'.ResultCode::_999006_contentTypeParameterInvalid));
         }
         
-        $validator = \Validator::make(
-        
-            $request->all(),
+        $validator = \Validator::make($request->all(),
         
             [
-        'files'=>'required|image|max:10240'
-        ],
-        [
-            'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
-            'image' => ResultCode::_997907_UploadDataTypeIsNotAllow,
-            'max' => ResultCode::_997908_FileSizeExceedsTheAllowableLimit
-        ]
-        
+            'files'=>'required|image|max:10240'
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'image' => ResultCode::_997907_UploadDataTypeIsNotAllow,
+                'max' => ResultCode::_997908_FileSizeExceedsTheAllowableLimit
+            ]
+            
         );
 
         if ($validator->fails()) {

@@ -44,22 +44,20 @@ class PictureController extends Controller
 
         if (explode(';', $contentType)[0] != "multipart/form-data") {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
-                "message"=> "Content-Type錯誤");
+                "message"=>trans('result_code.'.ResultCode::_999006_contentTypeParameterInvalid));
         }
-        
-        $validator = \Validator::make(
-        
-            $request->all(),
+
+        $validator = \Validator::make($request->all(),
         
             [
-        'files'=>'required|image|max:10240'
-        ],
-        [
-            'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
-            'image' => ResultCode::_997907_UploadDataTypeIsNotAllow,
-            'max' => ResultCode::_997908_FileSizeExceedsTheAllowableLimit
-        ]
-        
+            'files'=>'required|image|max:10240'
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'image' => ResultCode::_997907_UploadDataTypeIsNotAllow,
+                'max' => ResultCode::_997908_FileSizeExceedsTheAllowableLimit
+            ]
+            
         );
 
         if ($validator->fails()) {
@@ -70,7 +68,10 @@ class PictureController extends Controller
         $file = $request->file('files');
         $result = [];
         $resourceId = $request->header('resource-id');
-
+        if(is_null($resourceId) || $resourceId == ""){
+              return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
+                "message"=>trans('result_code.'.ResultCode::_999001_requestParameterLostOrIncorrect));
+        }
         //1.upload file size to server
         $picture = new Picture($appKey, $resourceId, $file);
         $tempFile = $picture->saveOnServer($file);
@@ -97,18 +98,19 @@ class PictureController extends Controller
     {
         $contentType = $request->header('Content-Type');
         $appKey = $request->header('app-key');
+        
         if (!$request->isJson()) {
             return array("code"=>ResultCode::_999006_contentTypeParameterInvalid,
-                "message"=> "Content-Type錯誤");
+                "message"=>trans('result_code.'.ResultCode::_999006_contentTypeParameterInvalid));
         }
-        $validator = \Validator::make(
-            $request->all(),
+
+        $validator = \Validator::make($request->all(),
             [
-        'fileUrls'=>'required'
-        ],
-        [
-            'required' => ResultCode::_999001_requestParameterLostOrIncorrect
-        ]
+            'fileUrls'=>'required'
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
         );
         
         if ($validator->fails()) {
