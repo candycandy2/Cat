@@ -283,12 +283,12 @@ type | content | 0-1 | String | mimetype, ex: image/jpeg
 original_width | content | 0-1 | Integer | Width, pixels
 original_height | content | 0-1 | Integer | Height, pixels
 original_size | content | 0-1 | Integer | SIZE, bits
-original_url | content | 0-1 | String | URL
+original_url | content | 0-1 | String | URL 30分鐘內有效, 另要搭配sas_token, ex: original_url + ? + sas_token
 target | content | 0-1 | String | ex: "appqforumdev-picture-13-76f99fb4f1a24d29"
 sas_token | content | 0-1 | String | token, ex:"sv=2016-05-31&sr=c&st=2018-03-13T07:30:00Z&se=2018-03-15T08:00:00Z&sp=r&sig=NohzmEtj4UTk6iCs8juJo0w%2FrZ4izxj8bVq2Fqg5Ub4%3D"
 thumbnail_1024_width | content | 0-1 | Integer | Width, pixels
 thumbnail_1024_height | content | 0-1 | Integer | Height, pixels
-thumbnail_1024_url | content | 0-1 | String | URL
+thumbnail_1024_url | content | 0-1 | String | URL 30分鐘內有效, 另要搭配sas_token, ex: thumbnail_1024_url + ? + sas_token
 
 ### Error Code
 | Result Code | Descriptopn |
