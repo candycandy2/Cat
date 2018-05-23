@@ -984,6 +984,7 @@ html body .ui-group-theme-a a:visited {
     /*border-bottom-color: #d6d6d6;*/
     margin-bottom: 3.99vw;
     background-color: #d6d6d6;
+    /*transition: 1000ms ease;*/
 }
 
 .agentName {

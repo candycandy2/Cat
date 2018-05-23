@@ -290,6 +290,21 @@ $("#viewAgentLeave").pagecontainer({
                 $(".beingAgent").append(agentHTML).show();
                 $(".page-main").css("padding-top", "0");
                 $(".agentName > span:nth-of-type(2)").text(agent_Name);
+                //changing bar color
+                var light = ['1', '0.5'];
+                var currentIndex = 0;
+                setInterval(function () {
+                   $(".beingAgent").css({
+                        //backgroundColor: colors[currentIndex]
+                        "background-color":"rgba(220, 220, 220, " + light[currentIndex]+ ")",
+                        //"opacity": light[currentIndex]
+                   });
+                   if (!light[currentIndex]) {
+                       currentIndex = 0;
+                   } else {
+                       currentIndex++;
+                   }
+                }, 4000);
                 //changepage
                 $.mobile.changePage("#viewPersonalLeave");
                 // Hide #mypanelviewAgentLeave 
