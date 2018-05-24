@@ -67,6 +67,14 @@ domain | content | 0-1 | String | 員工所屬domain <br> ex:Qgroup, BenQ
 site_code | content | 0-1 | String | 員工所屬地區 <br> ex:QTY,QTT,QCS
 checksum | content | 0-1 | String | 將密碼欄位用md5加密後當作checksum
 
+### Error Code
+| Result Code | Descriptopn |
+|--|--|
+|1 | Success. 
+997903|Field Format Error
+997904|Account Not Exist
+999006|Input format is invalid
+997999|Unknown Error
 
 ### Example
 ```
