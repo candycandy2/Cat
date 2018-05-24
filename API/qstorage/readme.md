@@ -173,12 +173,20 @@ GET /sastoken/{resource}
 ```
 required
 ```
+### Path Parameters
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+resource | 必填 | 欲取得的資源類型 ex : container 或 blob
 
 ### Header Parameters
 欄位名稱 | 是否必填 | 描述
 :------------ | :------------- | :-------------
-target | 必填 | Path, ex:appqforumdev-picture-13-76f99fb4f1a24d29
-blob-name | 必填 | Filename, 5aa7810f13643/5aa7810f13643_1024.jpg
+content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為multipart/form-data
+app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
+signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
+signature | 必填 | "Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) )
+account | 必填 | 工號, ex:1607279
+target | 必填 | 欲取得的目標名稱，如果url的resource是container,請填入container名稱<br>ex: appqforumdev-picture-13-76f99fb4f1a24d29<br>如果resource是blob，請填入blob名稱<br>ex: appqforumdev-picture-13-76f99fb4f1a24d29/5aa8d448cc978/5aa8d448cc978_full.jpg
 
 ### URL Parameters
 
@@ -196,8 +204,8 @@ sp | Not Required | string | Signed permission .allow r,w
 result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
-target | content | 0-1 | String | Path
-sas_token | content | 0-1 | Integer | Token
+target | content | 0-1 | String | 取得的contaier或blob名稱<br>ex: appqforumdev-picture-13-76f99fb4f1a24d29
+sas_token | content | 0-1 | String | 取得的sas token <br>Ex:sv=2016-05-31&sr=c&st=2018-03-13T07:30:00Z&se=2018-0315T08:00:00Z&sp=r&sig=NohzmEtj4UTk6iCs8juJo0w%2FrZ4izxj8bVq2Fqg5Ub4%3D
 
 ### Error Code
 | Result Code | Descriptopn |
