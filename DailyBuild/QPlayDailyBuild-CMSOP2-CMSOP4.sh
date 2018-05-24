@@ -15,7 +15,7 @@ gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="66491f8c-0e78-4b99-ad36-7450acc3272e" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="993357dd-df9d-4b3c-9096-493335d313d2" --packageType="enterprise"
 
 pwd
 cd ../QPlayDailyBuild-CMSOP2-CMSOP4/APP/CMSOP4

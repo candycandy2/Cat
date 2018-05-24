@@ -1,68 +1,51 @@
 $("#viewMain3").pagecontainer({
     create: function (event, ui) {
-        var widgetList = [
-            { 'id': 1, 'name': 'Weather', 'enabled': true },
-            { 'id': 2, 'name': 'Calendar', 'enabled': true },
-            { 'id': 3, 'name': 'APPList', 'enabled': true }
-        ];
 
-        /********************************** page event *************************************/
-        $("#viewMain3").one("pagebeforeshow", function (event, ui) {
-            // var script = document.createElement("script");
-            // script.type = "text/javascript";
-            // script.src = "plugin/applist/js/applist.js";
-            // document.head.appendChild(script);
-
-            // var link = document.createElement("link");
-            // link.rel = "stylesheet";
-            // link.type = "text/css";
-            // link.href = "plugin/applist/css/applist.css";
-            // document.head.appendChild(link);
-
-            // if (localStorage.getItem("widgetList") == null) {
-            //     var widgetObj = {
-            //         data: widgetArray,
-            //         time: widgetUpdate
-            //     }
-            //     localStorage.setItem("widgetList", JSON.stringify(widgetObj));
-            // } else {
-            //     var time = JSON.parse(localStorage.getItem("widgetList")).time;
-            //     if(time != widgetUpdate) {
-            //         var widgetObj = {
-            //             data: widgetArray,
-            //             time: widgetUpdate
-            //         }
-            //         localStorage.setItem("widgetList", JSON.stringify(widgetObj));
-            //     }
-            // }
-            // widgetList =  JSON.parse(localStorage.getItem("widgetList")).data;
-
-            for (var i in widgetList) {
-                if (widgetList[i].enabled == true) {
-                    //1. widget
-                    var widgetName = widgetList[i].name + "Widget";
-
-                    //2. html
-                    var content = '<div id="' + widgetName + '"></div>';
-                    $('#viewMain3 .page-main').append(content);
-
-                    //3. parameter
-                    var parmData = {
-                        container: widgetName,
-                        appKey: appKey,
-                        token: loginData.token,
-                        pushToken: loginData.pushToken,
-                        serverURL: serverURL,
-                        appApiPath: appApiPath,
-                        browserLanguage: browserLanguage,
-                        uuid: loginData.uuid
-                    };
-
-                    //4. new Object
-                    eval('var obj = new ' + widgetName + '(' + JSON.stringify(parmData) + ');obj.show();');
-                }
+        var loadAndRunScript = function (index, enabled) {
+            //1. 条件判断
+            if (index >= widgetList.length) {
+                return;
+            } else if (!enabled) {
+                loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
             }
 
+            //2. widget
+            var widgetItem = widgetList[index].name + "Widget";
+
+            //3. container
+            var contentItem = $('<div></div>');
+            contentItem.prop('class', widgetItem);
+            contentItem.appendTo('#widgetList');
+            var blankItem = $('<div class="widget-blank"></div>');
+            blankItem.appendTo('#widgetList');
+
+            //4. localStorage
+            sessionStorage.setItem('viewClass', widgetItem);
+
+            //5. load css
+            var cssItem = $('<link>');
+            cssItem.prop('rel', 'stylesheet');
+            cssItem.prop('type', 'text/css');
+            cssItem.prop('href', 'http://qplaydev.benq.com/widgetDemo/' + widgetList[index].name + '/' + widgetList[index].name + '.css');
+            cssItem.appendTo('head');
+
+            //6. load js
+            $.getScript("http://qplaydev.benq.com/widgetDemo/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
+                .done(function (script, textStatus) {
+                    loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
+                })
+                .fail(function (jqxhr, settings, exception) {
+                    console.log("Triggered ajaxError handler.");
+                });
+        };
+
+
+        /********************************** page event ***********************************/
+        $("#viewMain3").on("pagebeforeshow", function (event, ui) {
+            if (viewAppListInitail) {
+                loadAndRunScript(0, widgetList[0].enabled);
+                viewAppListInitail = false;
+            }
         });
 
         $("#viewMain3").scroll(function () {
@@ -79,7 +62,9 @@ $("#viewMain3").pagecontainer({
 
 
         /********************************** dom event *************************************/
-
+        $('#widgetList').on('click', '.applist-main-add', function () {
+            $.mobile.changePage('#viewAppList');
+        });
 
     }
 });
