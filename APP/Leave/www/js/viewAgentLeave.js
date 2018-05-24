@@ -263,9 +263,27 @@ $("#viewAgentLeave").pagecontainer({
 
         $("#toBeAgent").on("click", function() {
             if ($('#toBeAgent').hasClass('leavePreview-active-btn')) {
+                loadingMask("show");
                 //myEmpNo = agent_ID;
                 myEmpNo = "1607126";
-                restartAgentLeave();
+                
+                localStorage.removeItem("leaveDefaultSetting");
+                //默认设置GetDefaultSetting
+                if(localStorage.getItem("leaveDefaultSetting") == null) {
+                    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                               + myEmpNo
+                                               + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+                } 
+
+                GetDefaultSetting();
+                //选择日期为“请选择”
+                $("#startText").text(pleaseSelectStr);
+                $("#endText").text(pleaseSelectStr);
+
+                //data scroll menu
+                dateInit();        
+                viewPersonalLeaveShow = false;
+
                 //1.恢复“请选择”
                 var options = '<option hidden>' + pleaseSelectStr + '</option>';
                 $("#agent-popup").find("option").remove().end().append(options);
@@ -275,10 +293,38 @@ $("#viewAgentLeave").pagecontainer({
                 //2.赋值
                 agentid = "";
                 agentName = "";
-
-                loadingMask("show");
-                // Hide #mypanelviewAgentLeave 
-                // Show #mypanelEndAgentLeave
+                //3.上方出現代理OOO
+                var angetStr = langStr["str_187"]; //"代理";
+                var endStr = langStr["str_188"]; //"結束";
+                var agentHTML = '<div class="agentLeave">' +
+                    '<div class="agentName font-style5">' +
+                        '<span>'+ angetStr +'</span>' +
+                        '<span></span>' +
+                    '</div>' +
+                    '<div class="agentEnd font-style5">' +
+                        '<span>'+ endStr +'</span>' +
+                    '</div></div>';
+                $(".beingAgent").append(agentHTML).show();
+                $(".page-main").css("padding-top", "0");
+                $(".agentName > span:nth-of-type(2)").text(agent_Name);
+                //changing bar color
+                var light = ['1', '0.5'];
+                var currentIndex = 0;
+                setInterval(function () {
+                    $(".beingAgent").css({
+                         //backgroundColor: colors[currentIndex]
+                         "background-color":"rgba(220, 220, 220, " + light[currentIndex]+ ")",
+                         //"opacity": light[currentIndex]
+                    });
+                    if (!light[currentIndex]) {
+                        currentIndex = 0;
+                    } else {
+                        currentIndex++;
+                    }
+                }, 1000);
+                $("#mypanelviewAgentLeave").hide();
+                //changepage
+                $.mobile.changePage("#viewPersonalLeave");
             }
         });
 

@@ -980,8 +980,23 @@ html body .ui-group-theme-a a:visited {
 }
 
 .beingAgent {
-    padding: 4.3VW 0VW 3.71VW 6.71VW;
-    border-bottom-color: #d6d6d6;
+    padding: 4.3VW 0VW 3.71VW 0VW;
+    /*border-bottom-color: #d6d6d6;*/
+    margin-bottom: 3.99vw;
+    background-color: #d6d6d6;
+    /*transition: 1000ms ease;*/
+}
+
+.agentName {
+    text-align: center;
+    border-style: none;
+}
+
+.agentEnd {
+    color: #2d89bc;
+    margin-right: 3.71vw;
+    margin-top: -5vw;
+    text-align: right;   
 }
 
 /********************************************** mypanel *********************************************/

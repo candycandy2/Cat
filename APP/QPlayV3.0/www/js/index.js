@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -25,8 +25,10 @@ var callGetMessageList = false;
 var messagePageShow = false;
 var delMsgActive = false;
 
-window.initialSuccess = function(data) {
+//viewAppList
+var viewAppListInitail = true, appCount = 0, alreadyDownload = [], notDownload = [];
 
+window.initialSuccess = function(data) {
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -237,7 +239,7 @@ function checkAPPInstalled(callback, page) {
 
         if (testAPPInstalledCount === 3) {
             stopTestAPPInstalled();
-            location.reload();
+            //location.reload();
         }
     }, 1000);
 
@@ -246,6 +248,33 @@ function checkAPPInstalled(callback, page) {
             clearInterval(window.testAPPInstalled);
         }
     };
+}
+
+function checkInstalled(callback, key) {
+
+    //var thisAppKey = checkAPPKey;
+    callback = callback || null;
+
+    var scheme;
+
+    if (device.platform === 'iOS') {
+        scheme = key + '://';
+    } else if (device.platform === 'Android') {
+        scheme = 'com.qplay.' + key;
+    }
+
+    var testInstalled = function() {
+        appAvailability.check(
+            scheme, //URI Scheme or Package Name
+            function() { //Success callback
+                callback(true);
+                //console.log(i);
+            },
+            function() { //Error callback
+                callback(false);
+            }
+        );
+    }();
 }
 
 //un-register [User with Mobile Device UUID]
@@ -275,38 +304,25 @@ $(document).on("click", ".event-type", function() {
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
-
     if (activePageID === "viewMain2-1") {
-
         if (checkPopupShown()) {
             $('#' + popupID).popup('close');
         } else {
             navigator.app.exitApp();
         }
-
     } else if (activePageID === "viewMain2-1" || activePageID === "viewAppDetail2-2") {
-
         $.mobile.changePage('#viewMain2-1');
-
     } else if (activePageID === "viewNewsEvents2-3") {
-
         if (delMsgActive) {
             editModeChange();
         } else {
             $.mobile.changePage('#viewMain2-1');
         }
-
     } else if (activePageID === "viewWebNews2-3-1") {
-
         goBack("goList");
-
     } else if (activePageID === "viewNotSignedIn") {
-
         navigator.app.exitApp();
-
     } else {
-
         navigator.app.exitApp();
-
     }
 }

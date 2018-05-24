@@ -1,12 +1,13 @@
 <?php
 /**
- * 
+ *
  * User: Cleo.W.Chan
  * Date: 16-12-16
  * Time: 下午1:25
  */
 
 namespace App\lib;
+
 use Illuminate\Support\Facades\Input;
 use App\Model\QP_User as QP_User;
 use App\Model\QP_Project as QP_Project;
@@ -37,18 +38,18 @@ class Verify
         $headerAccount = $request->header('account');
         $uuid = $request->uuid;
         $lang = $request->lang;
-         //verify parameter count
-        if($headerContentType == null || $headerAppKey == null
-            || $headerSignature == null || $headerSignatureTime == null || $headerAccount == null || 
+        //verify parameter count
+        if ($headerContentType == null || $headerAppKey == null
+            || $headerSignature == null || $headerSignatureTime == null || $headerAccount == null ||
             $uuid == null || $lang ==null||
              trim($headerContentType) == "" || trim($headerAppKey) == "" ||
              trim($headerSignature) == "" || trim($headerSignatureTime) == "" || trim($headerAccount) == "" ||
-             trim($uuid) == "" || trim($lang) =="" ) {
+             trim($uuid) == "" || trim($lang) =="") {
             return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect,
                 "message"=> trans('result_code.'.ResultCode::_999001_requestParameterLostOrIncorrect));
         }
 
-        if(!self::chkAppKeyExist($headerAppKey)) {
+        if (!self::chkAppKeyExist($headerAppKey)) {
             return array("code"=>ResultCode::_999010_appKeyIncorrect,
                 "message"=>trans('result_code.'.ResultCode::_999010_appKeyIncorrect));
         }
@@ -59,17 +60,17 @@ class Verify
                 "message"=>trans('result_code.'.ResultCode::_999008_signatureIsInvalid));
         }
 
-        if($sigResult == 2) {
+        if ($sigResult == 2) {
             return array("code"=>ResultCode::_999011_signatureOvertime,
                 "message"=>trans('result_code.'.ResultCode::_999011_signatureOvertime));
         }
 
-        if(!self::checkUserStatusByEmpNo($headerAccount)) {
+        if (!self::checkUserStatusByEmpNo($headerAccount)) {
             return array("code"=>ResultCode::_997904_AccountNotExist,
                 "message"=>trans('result_code.'.ResultCode::_997904_AccountNotExist));
         }
 
-       if(!self::chkUuidExist($uuid)) {
+        if (!self::chkUuidExist($uuid)) {
             return array("code"=>ResultCode::_997910_uuidNotExist,
                 "message"=>trans('result_code.'.ResultCode::_997910_uuidNotExist));
         }
@@ -83,7 +84,7 @@ class Verify
     {
         $projectList = QP_Project::where('app_key', "=", $appKey)
             -> select('row_id')->get();
-        if(count($projectList) > 0 ) {
+        if (count($projectList) > 0) {
             return true;
         } else {
             return false;
@@ -96,14 +97,14 @@ class Verify
      * @return boolean       true:該用戶存在|false:用戶不存在
      */
     public static function checkUserStatusByEmpNo($account)
-    {   
+    {
         $result = true;
         $userList = QP_User::where("emp_no", $account)
             -> where('status', '<>', 'N')
             -> where('resign', '<>', 'Y')
-            -> select('row_id', 'status', 'resign','emp_no')->get();
+            -> select('row_id', 'status', 'resign', 'emp_no')->get();
 
-        if(count($userList) < 1) {
+        if (count($userList) < 1) {
             $result = false; //用户不存在
         }
         return $result;
@@ -115,11 +116,11 @@ class Verify
         $nowTime = time();
         $serverSignature = self::getSignature($appKey, $signatureTime);
 
-        if(strcmp($serverSignature, $signature) != 0) {
+        if (strcmp($serverSignature, $signature) != 0) {
             return 1; //不匹配
         }
 
-        if(abs($nowTime - $signatureTime) > 900) {
+        if (abs($nowTime - $signatureTime) > 900) {
             return 2; //超时
         }
 
@@ -134,22 +135,28 @@ class Verify
         return $ServerSignature;
     }
 
-    public static function getSecretKeyByAppKey($appKey) {
+    public static function getSecretKeyByAppKey($appKey)
+    {
         $projectList = QP_Project::where('qp_project.app_key', '=', $appKey)
             -> select('qp_project.row_id', 'qp_project.secret_key')->get();
-        if(count($projectList) > 0) {
+        if (count($projectList) > 0) {
             return $projectList[0]->secret_key;
         }
 
         return null;
     }
 
+    /**
+     * 檢查uuid是否存在
+     * @param  string $uuid uuid
+     * @return boolean
+     */
     public static function chkUuidExist($uuid)
     {
         $registerInfoList = QP_Register::where('uuid', "=", $uuid)
             -> where('status', '=', 'A')
             -> select('row_id')->get();
-        if(count($registerInfoList) > 0 ) {
+        if (count($registerInfoList) > 0) {
             return true;
         } else {
             return false;

@@ -835,23 +835,138 @@ input[type=radio]:checked + label {
     padding: 0;
 }
 
-/*************************** plugin ********************************/
-#WeatherWidget {
+/*************************** widget ********************************/
+.widget-blank {
     width: 90vw;
-    height: 25vw;
-    background: lightgreen;
+    height: 2vw;
+    /*background: lightgrey;*/
 }
 
-#CalendarWidget {
+/******* carousel ******/
+.carouselWidget {
     width: 90vw;
     height: 50vw;
-    background: pink;
+    background: #FFFFFF;
 }
 
-#APPListWidget {
+/******* weather ******/
+.weatherWidget {
     width: 90vw;
-    height: 120vw;
-    overflow-y: auto;
-    background: paleturquoise;
+    height: 30vw;
+    background: #FFFFFF;
 }
 
+.widget-weather > div {
+    float: left;
+}
+
+.widget-weather::after {
+    clear: both;
+}
+
+.weather-temp {
+    width: 32.5vw;
+    height: 100%;
+}
+
+.weather-loca {
+    width: 57.5vw;
+    height: 100%;
+}
+
+.weather-temp > div:nth-of-type(1) {
+    height: 66%;
+    text-indent: 5vw;
+    line-height: 2;
+    font-size: 10vw;
+}
+
+.weather-temp > div:nth-of-type(2) {
+    height: 33%;
+    font-size: 5vw;
+    text-align: center;
+}
+
+.weather-loca > div {
+    height: 30%;
+    line-height: 3;
+}
+
+/******* reserve ******/
+.reserveWidget {
+    width: 90vw;
+    height: 60vw;
+    background: #FFFFFF;
+}
+
+.personal-info {
+    width: 100%;
+    height: 40%;
+}
+
+.personal-info > div {
+    float: left;
+}
+
+.personal-info::after {
+    clear: both;
+}
+
+.personal-info > div:nth-of-type(1) {
+    width: 30%;
+    height: 100%;
+}
+
+.personal-info > div:nth-of-type(2) {
+    width: 70%;
+    height: 100%;
+}
+
+.personal-info > div:nth-of-type(2) > div {
+    height: 40%;
+    line-height: 2;
+}
+
+.personal-info img {
+    width: 95%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.personal-res {
+    width: 100%;
+    height: 60%;
+}
+
+.personal-res ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.personal-res ul li {
+    height: 10vw;
+    line-height: 10vw;
+    text-indent: 3vw;
+}
+
+/****** applist ******/
+.applistWidget {
+    width: 90vw;
+    height: 30vw;
+    background: #FFFFFF;
+}
+
+
+/*************************** applist ********************************/
+#viewAppList .ui-content {
+    padding: 0 3.71vw;
+}
+
+.download-title {
+    padding: 6.422vw 0 2.5vw 0;
+}
+
+.applist-bottom-line {
+    border-bottom: 1px solid lightgray;
+}

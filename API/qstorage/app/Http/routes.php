@@ -11,14 +11,19 @@
 |
 */
 
-Route::group(['prefix' => 'v101/picture','middleware' => ['api','locale','verify.basic','log.api']], function () {
-    Route::POST('/upload','PictureController@uploadPicture');
+Route::group(['middleware' => ['api','locale','verify.basic','log.api']], function () {
+    Route::group(['prefix' => 'v101/picture'], function () {
+       Route::POST('/upload','PictureController@uploadPicture');
+    });
+    Route::group(['prefix' => 'v101/sastoken'], function () {
+       Route::GET('/{resource}','AccessController@getSASToken');
+    });
+    Route::group([], function () {
+        Route::POST('v101/portrait','PortraitController@uploadPortrait');
+        Route::DELETE('v101/portrait','PortraitController@deletePortrait');
+    });
 });
 
-Route::group(['prefix' => 'v101/sastoken','middleware' => ['api','locale','verify.basic','log.api']], function () {
-    Route::GET('/{resource}','AccessController@getSASToken');
-});
-
-Route::group(['prefix' => 'v101/picture','middleware' => ['api','log.api']], function () {
-    Route::POST('/delete','PictureController@deleteFile');
+Route::group(['middleware' => ['api','log.api']], function () {
+    Route::POST('v101/picture/delete','PictureController@deleteFile');
  });
