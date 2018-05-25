@@ -19,6 +19,7 @@ var withdrawedStr; //"已撤回";
 var rejectedStr; //"已拒絕";
 var notSignStr; //"未簽核";
 var editLeaveForm = false;
+var viewPersonalLeaveShow = false;
 
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
@@ -39,24 +40,6 @@ var dayTable = {
     "5": "(五)"
 };
 
-function restartAgentLeave() {
-    localStorage.removeItem("leaveDefaultSetting");
-    //默认设置GetDefaultSetting
-    if(localStorage.getItem("leaveDefaultSetting") == null) {
-        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
-                                   + myEmpNo
-                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
-    } 
-
-    GetDefaultSetting();
-    //选择日期为“请选择”
-    $("#startText").text(pleaseSelectStr);
-    $("#endText").text(pleaseSelectStr);
-
-    //data scroll menu
-    dateInit();        
-    viewPersonalLeaveShow = false;
-}
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
@@ -110,6 +93,26 @@ window.initialSuccess = function() {
     notSignStr = langStr["str_134"]; //"未簽核";
 
     loadingMask("show");
+}
+
+function restartAgentLeave() {
+    localStorage.removeItem("leaveDefaultSetting");
+   //alert("1.initialSuccess Func:"+localStorage.getItem("leaveDefaultSetting"));
+    //默认设置GetDefaultSetting
+    if(localStorage.getItem("leaveDefaultSetting") == null) {
+        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                   + myEmpNo
+                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    } 
+
+    GetDefaultSetting();
+    //选择日期为“请选择”
+    $("#startText").text(pleaseSelectStr);
+    $("#endText").text(pleaseSelectStr);
+
+    //data scroll menu
+    dateInit();        
+    viewPersonalLeaveShow = false;
 }
 
 //[Android]Handle the back button

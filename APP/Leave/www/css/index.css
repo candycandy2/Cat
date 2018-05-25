@@ -1015,11 +1015,11 @@ html body .ui-group-theme-a a:visited {
     border-bottom-width: 0.1VH;
 }
 
-#mypanel #mypanelviewHolidayCalendar {
+/*#mypanel #mypanelviewHolidayCalendar {
     border-bottom: solid;
     border-bottom-color: #666;
     border-bottom-width: 0.1VH;
-}
+}*/
 
 #mypanel div.panel-content:hover {
     background-color: #503f81;

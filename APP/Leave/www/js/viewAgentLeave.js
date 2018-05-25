@@ -33,7 +33,7 @@ var allDeptList = [{site:"BQY", dept:"BI10"},
                    {site:"QTY", dept:"AI30"},
                    {site:"QTY", dept:"AI40"}];
 
-var fakeCallBackData = "<Record><Department>BI30</Department><Empno>0409132</Empno><name>Ken.Chao</name><Department>BI30</Department><Empno>1007123</Empno><name>Eee.Tsai</name><Department>BI30</Department><Empno>0112123</Empno><name>Mulin.Chuang</name></Record>";
+var fakeCallBackData = "<Record><Department>BI30</Department><Empno>0409132</Empno><name>Ken.Chao</name><Department>BI30</Department><Empno>1607279</Empno><name>Eee.Tsai</name><Department>BI30</Department><Empno>1607126</Empno><name>Mulin.Chuang</name></Record>";
 
 //檢查是否符合預覽送簽標準
 function checkAgentBeforeSend() {
@@ -264,8 +264,8 @@ $("#viewAgentLeave").pagecontainer({
         $("#toBeAgent").on("click", function() {
             if ($('#toBeAgent').hasClass('leavePreview-active-btn')) {
                 loadingMask("show");
-                //myEmpNo = agent_ID;
-                myEmpNo = "1607126";
+                myEmpNo = agent_ID;
+                //myEmpNo = "1607126";
                 
                 localStorage.removeItem("leaveDefaultSetting");
                 //默认设置GetDefaultSetting
@@ -322,8 +322,9 @@ $("#viewAgentLeave").pagecontainer({
                         currentIndex++;
                     }
                 }, 1000);
+                $("#mypanelviewAgentLeave").removeAttr("style");
                 $("#mypanelviewAgentLeave").hide();
-                //changepage
+                //changepage                
                 $.mobile.changePage("#viewPersonalLeave");
             }
         });

@@ -42,9 +42,9 @@ $("#viewMain3").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
-            if (viewAppListInitail) {
+            if (viewMainInitial) {
                 loadAndRunScript(0, widgetList[0].enabled);
-                viewAppListInitail = false;
+                viewMainInitial = false;
             }
         });
 
