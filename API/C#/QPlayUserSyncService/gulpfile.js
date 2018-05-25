@@ -4,7 +4,7 @@ var requireDir = require('require-dir');
 
 var gulpTask = requireDir('../../../../APP/component/gulpTask/');
 
-var infoContent-JPushLogger =
+var infoContent_JPushLogger =
           'using System.Reflection;\n' +
           'using System.Runtime.CompilerServices;\n' +
 				  'using System.Runtime.InteropServices;\n' +
@@ -21,7 +21,7 @@ var infoContent-JPushLogger =
 				  '[assembly: AssemblyVersion("' + process.env.vname + '")]\n' +
 				  '[assembly: AssemblyFileVersion("' + process.env.vname + '")]';
 
-var infoContent-JPushProxy =
+var infoContent_JPushProxy =
           'using System.Reflection;\n' +
           'using System.Runtime.CompilerServices;\n' +
 				  'using System.Runtime.InteropServices;\n' +
@@ -38,7 +38,7 @@ var infoContent-JPushProxy =
 				  '[assembly: AssemblyVersion("' + process.env.vname + '")]\n' +
 				  '[assembly: AssemblyFileVersion("' + process.env.vname + '")]';
 
-var infoContent-QPlayUserSyncService =
+var infoContent_QPlayUserSyncService =
           'using System.Reflection;\n' +
           'using System.Runtime.CompilerServices;\n' +
 				  'using System.Runtime.InteropServices;\n' +
@@ -55,7 +55,7 @@ var infoContent-QPlayUserSyncService =
 				  '[assembly: AssemblyVersion("' + process.env.vname + '")]\n' +
 				  '[assembly: AssemblyFileVersion("' + process.env.vname + '")]';
 
-var infoContent-RegisterQPlay2QMessage =
+var infoContent_RegisterQPlay2QMessage =
           'using System.Reflection;\n' +
           'using System.Runtime.CompilerServices;\n' +
 				  'using System.Runtime.InteropServices;\n' +
@@ -72,7 +72,7 @@ var infoContent-RegisterQPlay2QMessage =
 				  '[assembly: AssemblyVersion("' + process.env.vname + '")]\n' +
 				  '[assembly: AssemblyFileVersion("' + process.env.vname + '")]';
 
-var infoContent-SyncFromFlower =
+var infoContent_SyncFromFlower =
           'using System.Reflection;\n' +
           'using System.Runtime.CompilerServices;\n' +
 				  'using System.Runtime.InteropServices;\n' +
@@ -92,21 +92,21 @@ var infoContent-SyncFromFlower =
 
 //ex: gulp config --vname 1.0.0.1
 gulp.task('config-JPushLogger', function(){
-	fs.writeFile('JPushLogger/Properties/AssemblyInfo.cs', infoContent-JPushLogger);
+	fs.writeFile('JPushLogger/Properties/AssemblyInfo.cs', infoContent_JPushLogger);
 });
 
 gulp.task('config-JPushProxy', function(){
-	fs.writeFile('JPushProxy/Properties/AssemblyInfo.cs', infoContent-JPushProxy);
+	fs.writeFile('JPushProxy/Properties/AssemblyInfo.cs', infoContent_JPushProxy);
 });
 
 gulp.task('config-QPlayUserSyncService', function(){
-	fs.writeFile('QPlayUserSyncService/Properties/AssemblyInfo.cs', infoContent-QPlayUserSyncService);
+	fs.writeFile('QPlayUserSyncService/Properties/AssemblyInfo.cs', infoContent_QPlayUserSyncService);
 });
 
 gulp.task('config-RegisterQPlay2QMessage', function(){
-	fs.writeFile('RegisterQPlay2QMessage/Properties/AssemblyInfo.cs', infoContent-RegisterQPlay2QMessage);
+	fs.writeFile('RegisterQPlay2QMessage/Properties/AssemblyInfo.cs', infoContent_RegisterQPlay2QMessage);
 });
 
 gulp.task('config-SyncFromFlower', function(){
-	fs.writeFile('SyncFromFlower/Properties/AssemblyInfo.cs', infoContent-SyncFromFlower);
+	fs.writeFile('SyncFromFlower/Properties/AssemblyInfo.cs', infoContent_SyncFromFlower);
 });
