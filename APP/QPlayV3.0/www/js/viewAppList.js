@@ -2,6 +2,7 @@ $("#viewAppList").pagecontainer({
     create: function (event, ui) {
         var downloadedIndexArr = [], alreadyDownloadList = [], notDownloadList = [];
 
+        //CallAPI get applist
         function GetAppList() {
             var self = this;
 
@@ -20,7 +21,6 @@ $("#viewAppList").pagecontainer({
                     window.localStorage.setItem('QueryAppListData', JSON.stringify(jsonData));
 
                     var responsecontent = data['content'];
-                    //FillAppList(responsecontent);
                     appGroup(responsecontent);
                 }
 
@@ -43,13 +43,13 @@ $("#viewAppList").pagecontainer({
                     QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
                 } else {
                     var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
-                    //FillAppList(responsecontent);
                     appGroup(responsecontent);
                 }
 
             }();
         }
 
+        //applist group by downloaded status
         function appGroup(responsecontent) {
             downloadedIndexArr = [], alreadyDownloadList = [], notDownloadList = [];
             applist = responsecontent.app_list;
@@ -64,6 +64,7 @@ $("#viewAppList").pagecontainer({
             }
         }
 
+        //create content by group
         function createContent(arr, status) {
             var content = "";
             for (var i = 0; i < arr.length; i++) {
@@ -72,6 +73,7 @@ $("#viewAppList").pagecontainer({
                 var defaultAPPName = null;
                 var appSummary = null;
                 var defaultSummary = null;
+
                 for (var j = 0; j < appmultilang.length; j++) {
                     if (arr[i].app_code == appmultilang[j].project_code) {
                         //match browser language
@@ -104,9 +106,7 @@ $("#viewAppList").pagecontainer({
                     packagename +
                     '</div><div class="font-style14">' +
                     appSummary +
-                    '</div></div></div><div data-code="' +
-                    appcode +
-                    '"><img src="img/' +
+                    '</div></div></div><div><img src="img/' +
                     (status == true ? 'favorite_blank.png' : 'download_icon.png') +
                     '" class="' +
                     (status == true ? 'favorite-btn' : 'download-btn') +
@@ -117,7 +117,10 @@ $("#viewAppList").pagecontainer({
             return content;
         }
 
+        //check app download status callback
         window.allAppCallback = function (downloaded, index) {
+
+            //如果已下载，保存applist的index
             if (downloaded) {
                 downloadedIndexArr.push(index);
             }
@@ -125,6 +128,7 @@ $("#viewAppList").pagecontainer({
             //当所有APP都check完毕
             if (index == applist.length - 1) {
 
+                //如果有已下载app就分组
                 if (downloadedIndexArr.length != 0) {
                     for (var i = 0; i < applist.length;) {
                         for (var j = 0; j < downloadedIndexArr.length; j++) {
@@ -166,7 +170,7 @@ $("#viewAppList").pagecontainer({
         *status:add or remove
         */
         function setFavoriteList(code, name, status) {
-            if (status == true) {
+            if (status) {
                 for (var i in applist) {
                     if (code == applist[i].app_code) {
                         var appobj = {};
@@ -195,11 +199,11 @@ $("#viewAppList").pagecontainer({
             }
         }
 
-        //动态生成downloadlist后，改变最爱APP的icon
+        //change favorite icon after create content
         function changeFavoriteIcon() {
             $.each($('.favorite-btn'), function (index, item) {
                 for (var i in favoriteList) {
-                    if (favoriteList[i].app_code == $(item).parent().attr('data-code')) {
+                    if (favoriteList[i].app_code == $(item).parent().prev().attr('data-code')) {
                         $(item).attr('data-src', 'favorite_full');
                         $(item).attr('src', 'img/favorite_full.png');
                     }
@@ -207,6 +211,7 @@ $("#viewAppList").pagecontainer({
             });
         }
 
+        //get app index in applist
         function getIndexByCode(code) {
             for (var i in applist) {
                 if (code == applist[i].app_code) {
@@ -236,11 +241,11 @@ $("#viewAppList").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        //添加或移除最爱APP
+        //add or remove favorite app
         $('#viewAppList').on('click', '.favorite-btn', function () {
             var self = this;
             var src = $(self).attr('data-src');
-            var appcode = $(self).parent().attr('data-code');
+            var appcode = $(self).parent().prev().attr('data-code');
             var appname = $(self).parent().prev().children().find('.font-style10').text();
             //console.log(appname);
 
@@ -269,13 +274,76 @@ $("#viewAppList").pagecontainer({
 
         });
 
-        //跳转到APP说明页
+        //change page by app index
         $('#viewAppList').on('click', '.download-link', function () {
             var self = this;
             var appcode = $(self).attr('data-code');
             selectAppIndex = getIndexByCode(appcode);
             $.mobile.changePage('#viewAppDetail2-2');
         });
+
+        //download app
+        $('#viewAppList').on('click', '.download-btn', function () {
+            var self = this;
+            var appcode = $(self).parent().prev().attr('data-code');
+            selectAppIndex = getIndexByCode(appcode);
+
+            //copy from appdetail
+            if (device.platform === "iOS") {
+
+                if (selectAppIndex != null) {
+                    addDownloadHit(applist[selectAppIndex].package_name);
+                    window.open(applist[selectAppIndex].url, '_system'); //download app
+                }
+            } else { //android
+
+                var pathArray = applist[selectAppIndex].url.split('/');
+                var protocol = pathArray[0];
+                if (protocol == "market:") {
+                    addDownloadHit(applist[selectAppIndex].package_name);
+                    window.open(applist[selectAppIndex].url, '_system'); //open url
+                    //cordova.InAppBrowser.open(applist[selectAppIndex].url, '_system', 'location=yes');
+
+                } else {
+
+                    var permissions = cordova.plugins.permissions;
+                    permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function (status) {
+                        if (status.hasPermission) {
+                            addDownloadHit(applist[selectAppIndex].package_name);
+                            var updateUrl = applist[selectAppIndex].url;
+                            window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                            function onFail() { }
+
+                            function onSuccess() { }
+                        } else {
+                            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+                            function error() {
+                                console.warn('WRITE_EXTERNAL_STORAGE permission is not turned on');
+                            }
+
+                            function success(status) {
+                                if (status.hasPermission) {
+
+                                    addDownloadHit(applist[selectAppIndex].package_name);
+                                    var updateUrl = applist[selectAppIndex].url;
+                                    window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                                    function onFail() { }
+
+                                    function onSuccess() { }
+                                }
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
+
+
 
     }
 });

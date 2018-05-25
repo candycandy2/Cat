@@ -6,29 +6,29 @@ $("#viewAppDetail2-2").pagecontainer({
         var pageHeight = null;
 
         /********************************** function *************************************/
+        // remove to index.js
+        // function addDownloadHit(appname) {
+        //     var self = this;
 
-        function addDownloadHit(appname) {
-            var self = this;
+        //     this.successCallback = function (data) {
+        //         var resultcode = data['result_code'];
 
-            this.successCallback = function (data) {
-                var resultcode = data['result_code'];
+        //         if (resultcode == 1) { } else { }
+        //     };
 
-                if (resultcode == 1) { } else { }
-            };
+        //     this.failCallback = function (data) {
+        //         var resultcode = data['result_code'];
 
-            this.failCallback = function (data) {
-                var resultcode = data['result_code'];
+        //         if (resultcode == 1) { } else { }
+        //     };
 
-                if (resultcode == 1) { } else { }
-            };
+        //     var __construct = function () {
+        //         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
+        //         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
 
-            var __construct = function () {
-                var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
-                QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
+        //     }();
 
-            }();
-
-        }
+        // }
 
         function displayAppDetailStep1() {
 
@@ -92,7 +92,7 @@ $("#viewAppDetail2-2").pagecontainer({
 
             var platform = device.platform.toLowerCase();
             var content = "";
-            var bigContent = "";
+            var fullContent = "";
             var piclist = appmultilang[languageIndex].pic_list;
             var indexNow = 0;
 
@@ -101,12 +101,12 @@ $("#viewAppDetail2-2").pagecontainer({
             for (var listIndex = 0; listIndex < piclist.length; listIndex++) {
                 if (piclist[listIndex].pic_type === platform + "_screenshot") {
                     content += "<div class='detail-img-style' data-index=" + listIndex + "><img src=" + piclist[listIndex].pic_url + " width='100%' height='100%'></div>";
-                    bigContent += "<div class='detail-img-style-big'><img src=" + piclist[listIndex].pic_url + " width='100%' height='100%'></div>";
+                    fullContent += "<div class='detail-img-style-full-screen'><img src=" + piclist[listIndex].pic_url + " width='100%' height='100%'></div>";
                 }
             }
 
             $('#appDetailPicListContent').append(content);
-            $("#appDetailPicListContentBig").append(bigContent);
+            $("#appDetailPicListFullScreen").html('').append(fullContent);
 
             //Auto resize appDetailPicList
             if (device.platform === "iOS") {
@@ -119,13 +119,13 @@ $("#viewAppDetail2-2").pagecontainer({
             //Auto resize appDetailPicListContent
             var pageWidth = $("#viewAppDetail2-2").width();
             var tempIMG = $(".detail-img-style")[0];
-            var tempIMG2 = $(".detail-img-style-big")[0];
+            var tempIMGFull = $(".detail-img-style-full-screen")[0];
             var imgWidth = tempIMG.clientWidth;
-            var imgWidth2 = $(tempIMG2).width();
+            var imgWidthFull = $(tempIMGFull).width();
             var picListContentWidth = (imgWidth + 2 + pageWidth * 0.037) * piclist.length;
-            var picListContentWidth2 = (imgWidth2 + 2 + pageWidth * 0.037) * piclist.length;
+            var picListContentWidthFull = (imgWidthFull + 2 + pageWidth * 0.037) * piclist.length;
             $("#appDetailPicListContent").css("width", picListContentWidth + "px");
-            $("#appDetailPicListContentBig").css("width", picListContentWidth2 + "px");
+            $("#appDetailPicListFullScreen").css("width", picListContentWidthFull + "px");
 
             //detail-description, the text content can't over 3 lines,
             //if text content is too long, show/hide open button
