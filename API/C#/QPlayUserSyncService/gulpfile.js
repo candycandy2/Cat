@@ -2,7 +2,7 @@ var fs = require('fs');
 var gulp = require('gulp');
 var requireDir = require('require-dir');
 
-var gulpTask = requireDir('../../../../APP/component/gulpTask/');
+var gulpTask = requireDir('../../../APP/component/gulpTask/');
 
 var infoContent_JPushLogger =
           'using System.Reflection;\n' +
@@ -91,22 +91,22 @@ var infoContent_SyncFromFlower =
 
 
 //ex: gulp config --vname 1.0.0.1
-gulp.task('config-JPushLogger', function(){
+gulp.task('config_JPushLogger', function(){
 	fs.writeFile('JPushLogger/Properties/AssemblyInfo.cs', infoContent_JPushLogger);
 });
 
-gulp.task('config-JPushProxy', function(){
+gulp.task('config_JPushProxy', function(){
 	fs.writeFile('JPushProxy/Properties/AssemblyInfo.cs', infoContent_JPushProxy);
 });
 
-gulp.task('config-QPlayUserSyncService', function(){
+gulp.task('config_QPlayUserSyncService', function(){
 	fs.writeFile('QPlayUserSyncService/Properties/AssemblyInfo.cs', infoContent_QPlayUserSyncService);
 });
 
-gulp.task('config-RegisterQPlay2QMessage', function(){
+gulp.task('config_RegisterQPlay2QMessage', function(){
 	fs.writeFile('RegisterQPlay2QMessage/Properties/AssemblyInfo.cs', infoContent_RegisterQPlay2QMessage);
 });
 
-gulp.task('config-SyncFromFlower', function(){
+gulp.task('config_SyncFromFlower', function(){
 	fs.writeFile('SyncFromFlower/Properties/AssemblyInfo.cs', infoContent_SyncFromFlower);
 });
