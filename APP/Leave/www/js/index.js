@@ -19,6 +19,7 @@ var withdrawedStr; //"已撤回";
 var rejectedStr; //"已拒絕";
 var notSignStr; //"未簽核";
 var editLeaveForm = false;
+var viewPersonalLeaveShow = false;
 
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
@@ -96,7 +97,7 @@ window.initialSuccess = function() {
 
 function restartAgentLeave() {
     localStorage.removeItem("leaveDefaultSetting");
-    alert("1.initialSuccess Func:"+localStorage.getItem("leaveDefaultSetting"));
+   //alert("1.initialSuccess Func:"+localStorage.getItem("leaveDefaultSetting"));
     //默认设置GetDefaultSetting
     if(localStorage.getItem("leaveDefaultSetting") == null) {
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"

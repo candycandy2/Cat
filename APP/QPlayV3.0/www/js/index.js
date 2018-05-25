@@ -25,10 +25,13 @@ var callGetMessageList = false;
 var messagePageShow = false;
 var delMsgActive = false;
 
-//viewAppList
-var viewAppListInitail = true, appCount = 0, alreadyDownload = [], notDownload = [];
+//viewMain
+var viewMainInitial = true;
 
-window.initialSuccess = function(data) {
+//viewAppList
+var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
+
+window.initialSuccess = function (data) {
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -85,11 +88,11 @@ function sendPushToken() {
     var self = this;
     var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
 
-    this.successCallback = function() {};
+    this.successCallback = function () { };
 
-    this.failCallback = function() {};
+    this.failCallback = function () { };
 
-    var __construct = function() {
+    var __construct = function () {
         if (loginData.token !== null && loginData.token.length !== 0) {
             QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
         }
@@ -100,7 +103,7 @@ function sendPushToken() {
 function reNewToken() {
     var self = this;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         var resultcode = data['result_code'];
         var newToken = data['content'].token;
         var newTokenValid = data['token_valid'];
@@ -121,9 +124,9 @@ function reNewToken() {
         //}
     };
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         QPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
     }();
 }
@@ -199,10 +202,10 @@ function checkAPPInstalled(callback, page) {
 
     window.testAPPInstalledCount = 0;
 
-    window.testAPPInstalled = setInterval(function() {
+    window.testAPPInstalled = setInterval(function () {
         appAvailability.check(
             scheme, //URI Scheme or Package Name
-            function() { //Success callback
+            function () { //Success callback
 
                 if (page === "appDetail") {
                     var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
@@ -222,7 +225,7 @@ function checkAPPInstalled(callback, page) {
                 checkAPPKeyInstalled = true;
                 stopTestAPPInstalled();
             },
-            function() { //Error callback
+            function () { //Error callback
 
                 if (page === "appDetail") {
                     callback(false);
@@ -243,14 +246,14 @@ function checkAPPInstalled(callback, page) {
         }
     }, 1000);
 
-    window.stopTestAPPInstalled = function() {
+    window.stopTestAPPInstalled = function () {
         if (window.testAPPInstalled != null) {
             clearInterval(window.testAPPInstalled);
         }
     };
 }
 
-function checkInstalled(callback, key) {
+function checkAllAppInstalled(callback, key, index) {
 
     //var thisAppKey = checkAPPKey;
     callback = callback || null;
@@ -263,18 +266,18 @@ function checkInstalled(callback, key) {
         scheme = 'com.qplay.' + key;
     }
 
-    var testInstalled = function() {
+    var testInstalled = function (i) {
         appAvailability.check(
             scheme, //URI Scheme or Package Name
-            function() { //Success callback
-                callback(true);
+            function () { //Success callback
+                callback(true, i);
                 //console.log(i);
             },
-            function() { //Error callback
-                callback(false);
+            function () { //Error callback
+                callback(false, i);
             }
         );
-    }();
+    }(index);
 }
 
 //un-register [User with Mobile Device UUID]
@@ -283,20 +286,20 @@ function unregister() {
     var self = this;
     var queryStr = "&target_uuid=" + loginData.uuid;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         console.log(data);
     };
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         QPlayAPI("POST", "unregister", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
 
 
 //Change event type
-$(document).on("click", ".event-type", function() {
+$(document).on("click", ".event-type", function () {
     $("#eventTypeSelect").panel("open");
 });
 

@@ -1,7 +1,6 @@
 var leaveid = "", leaveType = "", agentid = "";
 var beginDate = "", endDate = "", beginTime = "", endTime = "";
 var viewPersonalLeaveBeforeshow = false;
-var viewPersonalLeaveShow = false;
 var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 var timoutQueryEmployeeData = null;
@@ -320,7 +319,7 @@ $("#viewPersonalLeave").pagecontainer({
                     //4.如果呼叫成功，必返回LastModified
                     var lastModifiedData = data['Content'][0]["LastModified"];
                     var defaultSetting = localStorage.getItem("leaveDefaultSetting");
-                    alert("2.GetDefaultSetting API defaultSetting:" + defaultSetting);
+                    //alert("2.GetDefaultSetting API defaultSetting:" + defaultSetting);
                     //如果local为null，或者获取的修改时间大于本地local时间，则需要重新获取数据
                     if (defaultSetting == null || lastModifiedData > JSON.parse(defaultSetting)["LastModified"]) {
                         //1.快速请假页面——部分假别
@@ -350,8 +349,6 @@ $("#viewPersonalLeave").pagecontainer({
                         var unitArr = $("unit", allLeaveDom);
                         var basedateArr = $("basedate", allLeaveDom);
                         var attachArr = $("attach", allLeaveDom);
-                        //alert(leaveidArr);
-                        //alert(nameArr);
 
                         allLeaveList = [];
                         for (var i = 0; i < leaveidArr.length; i++) {
@@ -875,7 +872,7 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-2").show();
             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-            alert("3.viewPersonalLeave Pageshow:"+viewPersonalLeaveShow);
+            //alert("3.viewPersonalLeave Pageshow:"+viewPersonalLeaveShow);
             if (!viewPersonalLeaveShow) {
                 //个人剩余假别资讯
                 queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
@@ -1726,7 +1723,12 @@ $("#viewPersonalLeave").pagecontainer({
                 '</attachment><formid>' +
                 ((editLeaveForm == false) ? '' : leaveDetailObj['formid']) +
                 '</formid></LayoutHeader>';
-
+            //filler: 本人或是秘書申請
+            /*if (myEmpNo === originalEmpNo) {
+                sendApplyLeaveQueryData += '<filler>'+ myEmpNo +'</filler></LayoutHeader>';
+            } else {
+                sendApplyLeaveQueryData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
+            }*/
             //console.log(sendApplyLeaveQueryData);
             //呼叫API
             SendApplyLeaveData();
