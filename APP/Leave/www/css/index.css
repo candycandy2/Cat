@@ -945,8 +945,6 @@ html body .ui-group-theme-a a:visited {
     display: none;
 }
 
-
-
 /**************************************** viewHolidayCalendar ***************************************/
 
 #viewHolidayCalendar .infoList ul>li {
@@ -997,6 +995,47 @@ html body .ui-group-theme-a a:visited {
     margin-right: 3.71vw;
     margin-top: -5vw;
     text-align: right;   
+}
+
+/**************************************** viewClockin ********************************************/
+
+#workDate, .apply-work-type, .apply-reason {
+    color: #0f0f0f;
+}
+
+.apply-work-name {
+    height: 23.14vw;
+    color: #0f0f0f;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+#workDate>div:nth-of-type(2),
+#clockinDate>div:nth-of-type(2),
+#clockinTime>div:nth-of-type(2) {
+    margin-top: 1.16vw;
+}
+
+.apply-work-type>div:nth-of-type(2),
+.apply-reason>div:nth-of-type(2) {
+    margin-top: 1.16vw;
+}
+
+.apply-work-name>div:nth-of-type(2) {
+    margin-top: 2.14vw;
+}
+
+.apply-work-type, #clockinTime {
+    height: 12.81vw;
+}
+
+#clockinDate {
+    height: 14vw;
+    color: #0f0f0f;
+}
+
+#clockinTime {
+    color: #0f0f0f;
+    border-bottom: 1px solid #d6d6d6;
 }
 
 /********************************************** mypanel *********************************************/

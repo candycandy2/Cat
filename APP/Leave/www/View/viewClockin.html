@@ -28,14 +28,14 @@
                 </div>
                 <div id="selectWorkday" class="font-style3">
                     <!-- 選擇日期 -->
-                    <span id="chooseBaseday"></span>
+                    <span id="chooseWorkday"></span>
                     <img src="img/dropdown.png" class="apply-select-img">
                 </div>
             </div>
             <!-- empty div -->
             <div class="apply-empty-div1"></div>
-            <!-- work type -->
-            <div class="apply-work-type">
+            <!-- work name -->
+            <div class="apply-work-name">
                 <div class="font-style11">
                     <!-- 班別名稱 -->
                     <span class="langStr" data-id="str_191"></span>
@@ -46,7 +46,8 @@
             </div>
             <!-- empty div -->
             <div class="apply-empty-div1"></div>
-            <div class="apply-categroy">
+            <!-- work type -->
+            <div class="apply-work-type">
                 <div class="font-style11">
                     <!-- 刷卡類型 -->
                     <span class="langStr" data-id="str_192"></span>
@@ -54,78 +55,45 @@
                 <!-- 類型 dropdownlist -->
                 <div data-role="none" id="workType" class="font-style3"></div>
             </div>
-
-            <div class="apply-categroy">
-                <div class="font-style11">
-                    <!-- 申請假別 -->
-                    <span class="langStr" data-id="str_082"></span>
-                </div>
-                <!-- 假别 dropdownlist -->
-                <div data-role="none" id="leaveGenre" class="font-style3"></div>
-            </div>
-            <!-- introduce -->
-            <div id="leaveIntroduce" class="font-style12"></div>
             <!-- empty div -->
             <div class="apply-empty-div1"></div>
-            <div class="apply-agent">
+            <!-- clockin date -->
+            <div id="clockinDate">
                 <div class="font-style11">
-                    <!-- 職務代理人 -->
-                    <span class="langStr" data-id="str_083"></span>
+                    <!-- 刷卡日期 -->
+                    <span class="langStr" data-id="str_193"></span>
                 </div>
-                <!-- 代理人 dropdownlist -->
-                <div data-role="none" id="leaveAgent" class="font-style3">
-                    <span></span>
-                </div>
-            </div>
-            <!-- empty div -->
-            <div class="apply-empty-div1"></div>
-            <!-- basedate -->
-            <div id="baseDate">
-                <div class="font-style11">
-                    <!-- 基準日 -->
-                    <span class="langStr" data-id="str_012"></span>
-                </div>
-                <div id="selectBaseday" class="font-style3">
+                <div id="selectClockinday" class="font-style3">
                     <!-- 選擇日期 -->
-                    <span id="chooseBaseday"></span>
+                    <span id="chooseClockinday"></span>
                     <img src="img/dropdown.png" class="apply-select-img">
                 </div>
-                <div class="font-style12 color-gray">
-                    <!-- *如果沒有列出您需要的基準日，請確認該請假單是否[生效] -->
-                    <span class="langStr" data-id="str_095"></span>
+            </div>
+            <!-- clockin time -->
+            <div id="clockinTime">
+                <div class="font-style11">
+                    <!-- 刷卡時間 -->
+                    <span class="langStr" data-id="str_194"></span>
+                </div>
+                <div id="selectClockintime" class="font-style3">
+                    <!-- 選擇日期 -->
+                    <span id="chooseClockintime"></span>
+                    <img src="img/dropdown.png" class="apply-select-img">
                 </div>
             </div>
             <!-- empty div -->
-            <div class="apply-empty-div1" id="divEmpty"></div>
-            <!-- apply date -->
-            <div class="apply-leave-date">
+            <div class="apply-empty-div1"></div>
+            <!-- reason -->
+            <div class="apply-reason">
                 <div class="font-style11">
-                    <!-- 請假日期與時間 -->
-                    <span class="langStr" data-id="str_084"></span>
+                    <!-- 刷卡類型 -->
+                    <span class="langStr" data-id="str_195"></span>
                 </div>
-                <div class="font-style11">
-                    <div>
-                        <!-- 開始時間 -->
-                        <span class="langStr" data-id="str_085"></span>
-                    </div>
-                    <div>
-                        <!-- 結束時間 -->
-                        <span class="langStr" data-id="str_086"></span>
-                    </div>
-                </div>
-                <div class="font-style3">
-                    <div id="btnStartday">
-                        <!-- 請選擇 -->
-                        <span id="startText"></span>
-                        <img src="img/dropdown.png" class="apply-select-img">
-                    </div>
-                    <div id="btnEndday">
-                        <!-- 請選擇 -->
-                        <span id="endText"></span>
-                        <img src="img/dropdown.png" class="apply-select-img">
-                    </div>
-                </div>
+                <!-- 類型 dropdownlist -->
+                <div data-role="none" id="clockinReason" class="font-style3"></div>
             </div>
+
+
             <!-- date component -->
             <div class="date-component">
                 <input type="datetime-local" data-role="none" name="startDate" id="startDate" class="date-time-component" />
@@ -133,52 +101,15 @@
                 <input type="date" data-role="none" name="oldBaseday" id="oldBaseday" class="date-time-component" />
                 <input type="date" data-role="none" name="newBaseday" id="newBaseday" class="date-time-component" />
                 <input data-role="none" id="newWorkDate" readonly="readonly" class="date-time-component">
+                <input data-role="none" id="newClockinDate" readonly="readonly" class="date-time-component">
+                <input data-role="none" id="newClockinTime" readonly="readonly" class="date-time-component">
                 <input data-role="none" id="newBaseDate" readonly="readonly" class="date-time-component">
                 <input data-role="none" id="oldBaseDate" readonly="readonly" class="date-time-component">
                 <input data-role="none" id="starDateTime" readonly="readonly" class="date-time-component">
                 <input data-role="none" id="endDateTime" readonly="readonly" class="date-time-component">
             </div>
-            <div class="apply-leave-count">
-                <div class="font-style11">
-                    <!-- 請假數 -->
-                    <span class="langStr" data-id="str_087"></span>
-                </div>
-                <div class="font-style3">
-                    <span id="leaveDays">0</span>&nbsp;
-                    <!-- 天 -->
-                    <span class="langStr" data-id="str_071"></span>&nbsp;
-                    <span id="leaveHours">0</span>&nbsp;
-                    <!-- 小時 -->
-                    <span class="langStr" data-id="str_088"></span>
-                </div>
-            </div>
-            <!-- empty div -->
-            <div class="apply-empty-div1"></div>
-            <!-- attachment -->
-            <div id="uploadAttachment">
-                <div class="font-style11">
-                    <!-- 附件 -->
-                    <span class="langStr" data-id="str_076"></span>
-                </div>
-                <fieldset data-role="controlgroup" id="attachmentTime">
-                    <input type="radio" name="radio-choice-attachment-3" id="attachment-tab-2" value="attachment-tab-2" checked>
-                    <label for="attachment-tab-2" class="leaveUploadAttach-radio-label">
-                        <!--後補-->
-                        <span class="langStr" data-id="str_110"></span>
-                    </label>
 
-                </fieldset>
-            </div>
-            <!-- apply reason -->
-            <div class="apply-leave-reason">
-                <div class="font-style11">
-                    <!-- 請假理由 -->
-                    <span class="langStr" data-id="str_089"></span>
-                </div>
-                <div>
-                    <textarea data-role="none" id="leaveReason" class="reason-textarea"></textarea>
-                </div>
-            </div>
+
             <!-- empty div -->
             <div class="apply-empty-div2"></div>
             <!-- preview btn -->
