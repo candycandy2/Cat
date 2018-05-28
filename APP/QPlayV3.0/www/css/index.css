@@ -406,11 +406,12 @@ input[type=radio]:checked + label {
 }
 
 #appDetailPicList {
-    margin-top: 2.2vh;
+    padding: 2.2vh;
     width: 99%;
     height: 52vh;
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
+    background: #edecec;
 }
 
 .detail-img-style {
@@ -420,7 +421,7 @@ input[type=radio]:checked + label {
     margin-right: 3.7vw;
 }
 
-.detail-img-style-big {
+.detail-img-style-full-screen {
     float: left;
     width: 80vw;
     height: 80vh;

@@ -13,6 +13,7 @@ pwd
 # ------ build QPlay ------
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
+opencc -c t2s.json -i string/zh-tw.json -o string/zh-cn.json
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="7f509ed0-6380-4839-bf49-5d51e9c27841" --packageType="enterprise"
@@ -23,6 +24,7 @@ pwd
 # ------ build RRS ------
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
+opencc -c t2s.json -i string/zh-tw.json -o string/zh-cn.json
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="b013682f-a5fd-4dc8-adaa-217c1afac997" --packageType="enterprise"
@@ -33,6 +35,7 @@ pwd
 # ------ build YellowPage ------
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
+opencc -c t2s.json -i string/zh-tw.json -o string/zh-cn.json
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="e85bfaa2-1ed5-4bc1-9f5f-f56363795ad4" --packageType="enterprise"

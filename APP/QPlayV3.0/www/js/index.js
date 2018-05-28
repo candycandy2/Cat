@@ -242,7 +242,7 @@ function checkAPPInstalled(callback, page) {
 
         if (testAPPInstalledCount === 3) {
             stopTestAPPInstalled();
-            //location.reload();
+            location.reload();
         }
     }, 1000);
 
@@ -297,6 +297,29 @@ function unregister() {
     }();
 }
 
+
+function addDownloadHit(appname) {
+    var self = this;
+
+    this.successCallback = function (data) {
+        var resultcode = data['result_code'];
+
+        if (resultcode == 1) { } else { }
+    };
+
+    this.failCallback = function (data) {
+        var resultcode = data['result_code'];
+
+        if (resultcode == 1) { } else { }
+    };
+
+    var __construct = function () {
+        var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
+        QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
+
+    }();
+
+}
 
 //Change event type
 $(document).on("click", ".event-type", function () {

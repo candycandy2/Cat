@@ -13,6 +13,7 @@ pwd
 # ------ build Activities ------
 gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
+opencc -c t2s.json -i string/zh-tw.json -o string/zh-cn.json
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
 cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="f8cfd2f0-2aff-4f6e-8429-dda7301f7692" --packageType="enterprise"
