@@ -27,7 +27,7 @@ var reasonTypeData = {
 };
 
 //檢查是否符合預覽送簽標準
-function checkLeaveBeforePreview() {
+function checkClockinBeforePreview() {
     //必須符合3個條件：1.請假理由不能爲空 2.開始時間和结束时间 3.需要基准日的是否已选择 4.代理人必须选择
     if (workName !== "" &&
         $("#work-type-popup option").text() !== pleaseSelectStr &&
@@ -104,12 +104,12 @@ $("#viewClockin").pagecontainer({
 
         //选择后检查是否符合预览要求
         $(document).on("popupafterclose", "#work-type-popup-option", function() {
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         });
 
          //选择后检查是否符合预览要求
         $(document).on("popupafterclose", "#reason-type-popup-option", function() {
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         });
 
         $('#newWorkDate').datetimepicker({
@@ -138,7 +138,7 @@ $("#viewClockin").pagecontainer({
             } else {
                 $("#chooseWorkday").text(workingday);
             }
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         });
 
         $('#newClockinDate').datetimepicker({
@@ -161,7 +161,7 @@ $("#viewClockin").pagecontainer({
             } else {
                 $("#chooseClockinday").text(clockinday);
             }
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         });
 
         $('#newClockinTime').datetimepicker({
@@ -182,13 +182,13 @@ $("#viewClockin").pagecontainer({
             } else {
                 $("#chooseClockintime").text(clockinday);
             }
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         });
 
         function GetWorkName() {
             workName = $.trim($("#workName").val());
             //檢查是否可以預覽送簽
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         }
 
         var timeoutGetWorkName = null;
