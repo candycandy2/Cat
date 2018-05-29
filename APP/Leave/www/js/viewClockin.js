@@ -27,26 +27,17 @@ var reasonTypeData = {
 };
 
 //檢查是否符合預覽送簽標準
-function checkLeaveBeforePreview() {
+function checkClockinBeforePreview() {
     //必須符合3個條件：1.請假理由不能爲空 2.開始時間和结束时间 3.需要基准日的是否已选择 4.代理人必须选择
-    if (leaveReason !== "" &&
-        $("#leave-agent-popup option").text() !== pleaseSelectStr &&
-        $('#startText').text() !== pleaseSelectStr &&
-        $('#endText').text() !== pleaseSelectStr &&
-        $("#leave-popup option").text() !== pleaseSelectStr) {
-        //判斷基準日是否選擇
-        if (needBaseday == true) {
-            if ($("#chooseBaseday").text() == selectBasedayStr) {
-                $('#previewBtn').removeClass('leavePreview-active-btn');
-            } else {
-                $('#previewBtn').addClass('leavePreview-active-btn');
-            }
-        } else {
-            $('#previewBtn').addClass('leavePreview-active-btn');
-        }
-
+    if (workName !== "" &&
+        $("#work-type-popup option").text() !== pleaseSelectStr &&
+        $('#chooseWorkday').text() !== pleaseSelectStr &&
+        $('#chooseClockinday').text() !== pleaseSelectStr &&
+        $('#chooseClockintime').text() !== pleaseSelectStr &&
+        $("#reason-type-popup option").text() !== pleaseSelectStr) {
+            $('#previewClockinBtn').addClass('leavePreview-active-btn');
     } else {
-        $('#previewBtn').removeClass('leavePreview-active-btn');
+        $('#previewClockinBtn').removeClass('leavePreview-active-btn');
     }
 }
 
@@ -111,6 +102,16 @@ $("#viewClockin").pagecontainer({
 
         });
 
+        //选择后检查是否符合预览要求
+        $(document).on("popupafterclose", "#work-type-popup-option", function() {
+            checkClockinBeforePreview();
+        });
+
+         //选择后检查是否符合预览要求
+        $(document).on("popupafterclose", "#reason-type-popup-option", function() {
+            checkClockinBeforePreview();
+        });
+
         $('#newWorkDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
@@ -121,6 +122,12 @@ $("#viewClockin").pagecontainer({
         $("#selectWorkday").on("click", function() {
             //datetime-local
             $('#newWorkDate').datetimepicker('show');
+            var currentStep = $('.xdsoft_datetimepicker').filter(function(item){
+                var workingDatepickerStyle = $(".xdsoft_datetimepicker")[item].style;
+                if (workingDatepickerStyle.display === 'block') {
+                    $(this).addClass('datepicker-position');
+                }
+            });
         });
 
         //新出勤日選擇——datetime change
@@ -131,7 +138,7 @@ $("#viewClockin").pagecontainer({
             } else {
                 $("#chooseWorkday").text(workingday);
             }
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         });
 
         $('#newClockinDate').datetimepicker({
@@ -140,13 +147,13 @@ $("#viewClockin").pagecontainer({
             yearEnd: '2018'
         });
 
-        //選擇出勤日期
+        //選擇刷卡日期
         $("#selectClockinday").on("click", function() {
             //datetime-local
             $('#newClockinDate').datetimepicker('show');
         });
 
-        //新出勤日選擇——datetime change
+        //新刷卡日選擇——datetime change
         $("#newClockinDate").on("change", function() {
             clockinday = ($(this).val()).substring(0, 10);
             if (clockinday === "") {
@@ -154,34 +161,34 @@ $("#viewClockin").pagecontainer({
             } else {
                 $("#chooseClockinday").text(clockinday);
             }
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         });
 
         $('#newClockinTime').datetimepicker({
             datepicker: false
         });
 
-         //選擇出勤日期
+         //選擇刷卡時間
         $("#selectClockintime").on("click", function() {
             //datetime-local
             $('#newClockinTime').datetimepicker('show');
         });
 
-        //新出勤日選擇——datetime change
+        //新刷卡時間選擇——datetime change
         $("#newClockinTime").on("change", function() {
-            clockinday = ($(this).val()).substring(0, 10);
+            clockinday = ($(this).val()).substring(11, 16);
             if (clockinday === "") {
                 $("#chooseClockintime").text(pleaseSelectStr);
             } else {
                 $("#chooseClockintime").text(clockinday);
             }
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         });
 
         function GetWorkName() {
             workName = $.trim($("#workName").val());
             //檢查是否可以預覽送簽
-            checkLeaveBeforePreview();
+            checkClockinBeforePreview();
         }
 
         var timeoutGetWorkName = null;
@@ -199,9 +206,9 @@ $("#viewClockin").pagecontainer({
 
 
         //預覽送簽按鈕
-        $("#previewBtn").on("click", function() {
+        $("#previewClockinBtn").on("click", function() {
             GetReason(); //手寫或語音輸入
-            if ($('#previewBtn').hasClass('leavePreview-active-btn')) {
+            if ($('#previewClockinBtn').hasClass('leavePreview-active-btn')) {
                 //傳值到預覽頁面
                 $("#applyCategroy").text(leaveCategory);
                 $("#applyLeave").text(leaveType);
