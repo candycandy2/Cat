@@ -313,7 +313,7 @@ $("#viewAgentLeave").pagecontainer({
                 setInterval(function () {
                     $(".beingAgent").css({
                          //backgroundColor: colors[currentIndex]
-                         "background-color":"rgba(201, 201, 201, " + light[currentIndex]+ ")",
+                         "background-color":"rgba(201, 201, 201, " + light[currentIndex] + ")",
                          //"opacity": light[currentIndex]
                     });
                     if (!light[currentIndex]) {
@@ -321,7 +321,7 @@ $("#viewAgentLeave").pagecontainer({
                     } else {
                         currentIndex++;
                     }
-                }, 300);
+                }, 200);
                 $("#mypanelviewAgentLeave").removeAttr("style");
                 $("#mypanelviewAgentLeave").hide();
                 //changepage                
