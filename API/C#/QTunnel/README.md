@@ -62,9 +62,9 @@ result_code | NA | 1 | String | 回應代碼
 message | NA | 1 | String | 回應訊息描述
 content | NA | 0-1 | Container | 回應訊息內容Container
 loginid | content | 0-1 | String | 員工AD帳號 <br> ex:steven.yan
-emp_no | content | 0-1 | String | 員工工號
+emp_no | content | 0-1 | String | 員工工號 <br> 無此訊息請填null
+site_code | content | 0-1 | String | 員工所屬地區 <br> ex:QTY,QTT,QCS <br> 無此訊息請填null
 domain | content | 0-1 | String | 員工所屬domain <br> ex:Qgroup, BenQ
-site_code | content | 0-1 | String | 員工所屬地區 <br> ex:QTY,QTT,QCS
 checksum | content | 0-1 | String | 將密碼欄位用md5加密後當作checksum
 
 ### Error Code
