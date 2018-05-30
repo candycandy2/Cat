@@ -3,7 +3,7 @@
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
             <img src="img/menu.png" class="leaveMenu">
-            <img src="img/nav_back.png" id="backMain">
+            <img src="img/nav_back.png" id="backClockin">
         </a>
         <div class="header-style">
             <div class="ui-title">
@@ -84,29 +84,19 @@
             <!-- reason -->
             <div class="apply-reason">
                 <div class="font-style11">
-                    <!-- 刷卡類型 -->
+                    <!-- 未刷卡原因 -->
                     <span class="langStr" data-id="str_195"></span>
                 </div>
                 <!-- 類型 dropdownlist -->
                 <div data-role="none" id="clockinReason" class="font-style3"></div>
             </div>
 
-
             <!-- date component -->
             <div class="date-component">
-                <input type="datetime-local" data-role="none" name="startDate" id="startDate" class="date-time-component" />
-                <input type="datetime-local" data-role="none" name="endDate" id="endDate" class="date-time-component" />
-                <input type="date" data-role="none" name="oldBaseday" id="oldBaseday" class="date-time-component" />
-                <input type="date" data-role="none" name="newBaseday" id="newBaseday" class="date-time-component" />
                 <input data-role="none" id="newWorkDate" readonly="readonly" class="date-time-component">
                 <input data-role="none" id="newClockinDate" readonly="readonly" class="date-time-component">
                 <input data-role="none" id="newClockinTime" readonly="readonly" class="date-time-component">
-                <input data-role="none" id="newBaseDate" readonly="readonly" class="date-time-component">
-                <input data-role="none" id="oldBaseDate" readonly="readonly" class="date-time-component">
-                <input data-role="none" id="starDateTime" readonly="readonly" class="date-time-component">
-                <input data-role="none" id="endDateTime" readonly="readonly" class="date-time-component">
             </div>
-
 
             <!-- empty div -->
             <div class="apply-empty-div2"></div>
@@ -118,7 +108,7 @@
                 </div>
             </div>
             <div class="apply-preview-remove">
-                <div id="emptyLeaveForm">
+                <div id="emptyClockinForm">
                     <img src="img/btn_cancel.png">&nbsp;
                     <!-- 清除 -->
                     <span class="langStr" data-id="str_129"></span>
@@ -131,80 +121,73 @@
             <div class="preview-apply-date font-style12">
                 <!-- 申請日期： -->
                 <span class="langStr" data-id="str_080"></span>
-                <span id="previewApplyDay"></span>
+                <span id="previewWorkDay"></span>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 申請類別 -->
-                    <span class="langStr" data-id="str_081"></span>
+                    <!-- 出勤日期 -->
+                    <span class="langStr" data-id="str_190"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="applyCategroy"></span>
+                    <span id="previewWorkday"></span>
                 </div>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 申請假別 -->
-                    <span class="langStr" data-id="str_082"></span>
+                    <!-- 班別名稱 -->
+                    <span class="langStr" data-id="str_191"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="applyLeave"></span>
+                    <span id="previewWorkName"></span>
                 </div>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 職務代理人 -->
-                    <span class="langStr" data-id="str_083"></span>
+                    <!-- 刷卡類型 -->
+                    <span class="langStr" data-id="str_192"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="applyAgent"></span>
+                    <span id="previewWorkType"></span>
                 </div>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 請假日期與時間 -->
-                    <span class="langStr" data-id="str_084"></span>
+                    <!-- 刷卡日期 -->
+                    <span class="langStr" data-id="str_193"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="applyStartday"></span>
-                    <span> - </span>
-                    <span id="applyEndday"></span>
+                    <span id="previewClockinDay"></span>
                 </div>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 請假數 -->
-                    <span class="langStr" data-id="str_087"></span>
-                </div>
-                <div class="font-style3">
-                    <span id="previewLeaveDays">0</span>
-                    <!-- 天 -->
-                    <span class="langStr" data-id="str_071"></span>
-                    <span id="previewLeaveHours">0</span>
-                    <!-- 小時 -->
-                    <span class="langStr" data-id="str_088"></span>
-                </div>
-            </div>
-            <div class="preview-apply-categroy">
-                <div></div>
-                <div class="font-style11">
-                    <!-- 請假理由 -->
-                    <span class="langStr" data-id="str_089"></span>
+                    <!-- 刷卡時間 -->
+                    <span class="langStr" data-id="str_194"></span>
                 </div>
                 <div class="font-style3 overflow-hidden">
-                    <span id="applyReason"></span>
+                    <span id="previewClockinTime"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 未刷卡原因 -->
+                    <span class="langStr" data-id="str_195"></span>
+                </div>
+                <div class="font-style3 overflow-hidden">
+                    <span id="previewReason"></span>
                 </div>
             </div>
             <!-- empty div -->
             <div class="apply-empty-div2"></div>
             <!-- apply btn -->
             <div class="apply-submit-btn">
-                <div id="applyBtn">
+                <div id="confirmBtn">
                     <!-- 確認送簽 -->
                     <span class="langStr" data-id="str_180"></span>
                 </div>
@@ -245,7 +228,7 @@
     </div>
 
     <!-- error msg 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup leftDaysByLeave" for="leftDaysByLeave" id="leftDaysByLeave">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup errMsgByClockin" for="errMsgByClockin" id="errMsgByClockin">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main" style="margin-left:5.36vw;margin-right:5.36vw;">
@@ -397,7 +380,7 @@
     </div>
 
     <!-- confirm send -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmSend" for="confirmSend" id="confirmSend">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmClockin" for="confirmClockin" id="confirmClockin">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -419,7 +402,7 @@
                         <!--取消-->
                         <span class="langStr" data-id="com_023"></span>
                     </div>
-                    <div class="btn-cancel" id="confirmSendLeave">
+                    <div class="btn-cancel" id="confirmSendClockin">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
                     </div>
