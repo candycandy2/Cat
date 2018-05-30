@@ -1,7 +1,7 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData, originalEmpNo;
 var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData,
     queryEmployeeLeaveInfoQueryData;
-var queryDatumDatesQueryData, countLeaveHoursByEndQueryData, sendApplyLeaveQueryData;
+var queryDatumDatesQueryData, countLeaveHoursByEndQueryData, sendApplyLeaveQueryData, modifyAttendanceFormData;
 var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallLeaveApplyFormQueryData, deleteLeaveApplyFormQueryData,
     sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
 var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recallLeaveCancelFormQueryData, deleteLeaveCancelFormQueryData,

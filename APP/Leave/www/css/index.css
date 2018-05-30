@@ -605,7 +605,9 @@ html body .ui-group-theme-a a:visited {
 .startdayFirst>.ui-content,
 .confirmSend>.ui-content,
 .agentNotData>.ui-content,
-.deptFirst>.ui-content {
+.deptFirst>.ui-content,
+.confirmClockin>.ui-content,
+.errMsgByClockin>.ui-content {
     padding: 0 !important;
 }
 
@@ -620,7 +622,9 @@ html body .ui-group-theme-a a:visited {
 .basedayFirst>.ui-content>.header,
 .startdayFirst>.ui-content>.header,
 .confirmSend>.ui-content>.header,
-.deptFirst>.ui-content>.header {
+.deptFirst>.ui-content>.header,
+.confirmClockin>.ui-content>.header,
+.errMsgByClockin>.ui-content>.header {
     margin-top: 12.5%;
 }
 
@@ -1040,6 +1044,11 @@ html body .ui-group-theme-a a:visited {
 
 .datepicker-position {
     margin: -45% 0 0 -35% !important;
+}
+
+#backClockin {
+    width: 4.934VW;
+    display: none;
 }
 
 /********************************************** mypanel *********************************************/
