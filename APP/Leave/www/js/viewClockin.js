@@ -316,10 +316,13 @@ $("#viewClockin").pagecontainer({
                 clockintime +
                 '</checktime><reason>' +
                 clockinReasonType +
-                '</reason><formid></formid><filler>' +
-                countApplyDays +
-                '</filler>/LayoutHeader>';
-
+                '</reason><formid></formid>';
+            //filler: 本人或是秘書申請
+            if (myEmpNo === originalEmpNo) {
+                modifyAttendanceFormData += '<filler>'+ myEmpNo +'</filler></LayoutHeader>';
+            } else {
+                modifyAttendanceFormData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
+            }
             //呼叫API
             //SendModifyAttendanceFormData();
         });
