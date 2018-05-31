@@ -605,7 +605,9 @@ html body .ui-group-theme-a a:visited {
 .startdayFirst>.ui-content,
 .confirmSend>.ui-content,
 .agentNotData>.ui-content,
-.deptFirst>.ui-content {
+.deptFirst>.ui-content,
+.confirmClockin>.ui-content,
+.errMsgByClockin>.ui-content {
     padding: 0 !important;
 }
 
@@ -620,7 +622,9 @@ html body .ui-group-theme-a a:visited {
 .basedayFirst>.ui-content>.header,
 .startdayFirst>.ui-content>.header,
 .confirmSend>.ui-content>.header,
-.deptFirst>.ui-content>.header {
+.deptFirst>.ui-content>.header,
+.confirmClockin>.ui-content>.header,
+.errMsgByClockin>.ui-content>.header {
     margin-top: 12.5%;
 }
 
@@ -945,8 +949,6 @@ html body .ui-group-theme-a a:visited {
     display: none;
 }
 
-
-
 /**************************************** viewHolidayCalendar ***************************************/
 
 #viewHolidayCalendar .infoList ul>li {
@@ -997,6 +999,56 @@ html body .ui-group-theme-a a:visited {
     margin-right: 3.71vw;
     margin-top: -5vw;
     text-align: right;   
+}
+
+/**************************************** viewClockin ********************************************/
+
+#workDate, .apply-reason {
+    color: #0f0f0f;
+}
+
+.apply-work-name {
+    height: 23.14vw;
+    color: #0f0f0f;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+#workDate>div:nth-of-type(2),
+#clockinDate>div:nth-of-type(2),
+#clockinTime>div:nth-of-type(2) {
+    margin-top: 1.16vw;
+}
+
+.apply-work-type>div:nth-of-type(2),
+.apply-reason>div:nth-of-type(2) {
+    margin-top: -1.16vw;
+}
+
+.apply-work-name>div:nth-of-type(2) {
+    margin-top: 2.14vw;
+}
+
+#clockinTime {
+    height: 12.81vw;
+}
+
+#clockinDate, .apply-work-type {
+    height: 14vw;
+    color: #0f0f0f;
+}
+
+#clockinTime {
+    color: #0f0f0f;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.datepicker-position {
+    margin: -45% 0 0 -35% !important;
+}
+
+#backClockin {
+    width: 4.934VW;
+    display: none;
 }
 
 /********************************************** mypanel *********************************************/

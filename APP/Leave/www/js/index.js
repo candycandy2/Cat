@@ -1,7 +1,7 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData, originalEmpNo;
 var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData,
     queryEmployeeLeaveInfoQueryData;
-var queryDatumDatesQueryData, countLeaveHoursByEndQueryData, sendApplyLeaveQueryData;
+var queryDatumDatesQueryData, countLeaveHoursByEndQueryData, sendApplyLeaveQueryData, modifyAttendanceFormData;
 var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallLeaveApplyFormQueryData, deleteLeaveApplyFormQueryData,
     sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
 var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recallLeaveCancelFormQueryData, deleteLeaveCancelFormQueryData,
@@ -10,7 +10,7 @@ var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave"];
+var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var htmlContent = "";
