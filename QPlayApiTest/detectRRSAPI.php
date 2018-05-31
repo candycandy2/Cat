@@ -24,7 +24,7 @@ if ($channel == 'production') {
 if($response['status']==STATE_OK){
   $Token = $response['login_token'];
 } else {
-  echo $response['message'] .", login => process time:". $response['process_time'] ."s | time=".$response['process_time']."s \n";
+  echo $channel. " login => ". $response['message'] .", process time:". $response['process_time'] ."s | time=".$response['process_time']."s \n";
   exit($response['status']);
 }
 
@@ -43,5 +43,5 @@ if ($channel == 'production') {
 }
 
 //print_r($response);
-echo $response['message'] .", ListAllMeetingRoom => process time:". $response['process_time'] ."s | time=".$response['process_time']."s \n";
+echo $channel. " ListAllMeetingRoom => ". $response['message'] .", process time:". $response['process_time'] ."s | time=".$response['process_time']."s \n";
 exit($response['status']);

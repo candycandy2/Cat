@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -25,8 +25,13 @@ var callGetMessageList = false;
 var messagePageShow = false;
 var delMsgActive = false;
 
-window.initialSuccess = function(data) {
+//viewMain
+var viewMainInitial = true;
 
+//viewAppList
+var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
+
+window.initialSuccess = function (data) {
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -83,11 +88,11 @@ function sendPushToken() {
     var self = this;
     var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
 
-    this.successCallback = function() {};
+    this.successCallback = function () { };
 
-    this.failCallback = function() {};
+    this.failCallback = function () { };
 
-    var __construct = function() {
+    var __construct = function () {
         if (loginData.token !== null && loginData.token.length !== 0) {
             QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
         }
@@ -98,7 +103,7 @@ function sendPushToken() {
 function reNewToken() {
     var self = this;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         var resultcode = data['result_code'];
         var newToken = data['content'].token;
         var newTokenValid = data['token_valid'];
@@ -119,9 +124,9 @@ function reNewToken() {
         //}
     };
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         QPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
     }();
 }
@@ -197,10 +202,10 @@ function checkAPPInstalled(callback, page) {
 
     window.testAPPInstalledCount = 0;
 
-    window.testAPPInstalled = setInterval(function() {
+    window.testAPPInstalled = setInterval(function () {
         appAvailability.check(
             scheme, //URI Scheme or Package Name
-            function() { //Success callback
+            function () { //Success callback
 
                 if (page === "appDetail") {
                     var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
@@ -220,7 +225,7 @@ function checkAPPInstalled(callback, page) {
                 checkAPPKeyInstalled = true;
                 stopTestAPPInstalled();
             },
-            function() { //Error callback
+            function () { //Error callback
 
                 if (page === "appDetail") {
                     callback(false);
@@ -241,11 +246,38 @@ function checkAPPInstalled(callback, page) {
         }
     }, 1000);
 
-    window.stopTestAPPInstalled = function() {
+    window.stopTestAPPInstalled = function () {
         if (window.testAPPInstalled != null) {
             clearInterval(window.testAPPInstalled);
         }
     };
+}
+
+function checkAllAppInstalled(callback, key, index) {
+
+    //var thisAppKey = checkAPPKey;
+    callback = callback || null;
+
+    var scheme;
+
+    if (device.platform === 'iOS') {
+        scheme = key + '://';
+    } else if (device.platform === 'Android') {
+        scheme = 'com.qplay.' + key;
+    }
+
+    var testInstalled = function (i) {
+        appAvailability.check(
+            scheme, //URI Scheme or Package Name
+            function () { //Success callback
+                callback(true, i);
+                //console.log(i);
+            },
+            function () { //Error callback
+                callback(false, i);
+            }
+        );
+    }(index);
 }
 
 //un-register [User with Mobile Device UUID]
@@ -254,20 +286,43 @@ function unregister() {
     var self = this;
     var queryStr = "&target_uuid=" + loginData.uuid;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         console.log(data);
     };
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         QPlayAPI("POST", "unregister", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
 
 
+function addDownloadHit(appname) {
+    var self = this;
+
+    this.successCallback = function (data) {
+        var resultcode = data['result_code'];
+
+        if (resultcode == 1) { } else { }
+    };
+
+    this.failCallback = function (data) {
+        var resultcode = data['result_code'];
+
+        if (resultcode == 1) { } else { }
+    };
+
+    var __construct = function () {
+        var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
+        QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
+
+    }();
+
+}
+
 //Change event type
-$(document).on("click", ".event-type", function() {
+$(document).on("click", ".event-type", function () {
     $("#eventTypeSelect").panel("open");
 });
 
@@ -275,38 +330,25 @@ $(document).on("click", ".event-type", function() {
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
-
     if (activePageID === "viewMain2-1") {
-
         if (checkPopupShown()) {
             $('#' + popupID).popup('close');
         } else {
             navigator.app.exitApp();
         }
-
     } else if (activePageID === "viewMain2-1" || activePageID === "viewAppDetail2-2") {
-
         $.mobile.changePage('#viewMain2-1');
-
     } else if (activePageID === "viewNewsEvents2-3") {
-
         if (delMsgActive) {
             editModeChange();
         } else {
             $.mobile.changePage('#viewMain2-1');
         }
-
     } else if (activePageID === "viewWebNews2-3-1") {
-
         goBack("goList");
-
     } else if (activePageID === "viewNotSignedIn") {
-
         navigator.app.exitApp();
-
     } else {
-
         navigator.app.exitApp();
-
     }
 }
