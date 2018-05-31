@@ -146,6 +146,11 @@ $("#viewClockin").pagecontainer({
          //选择后检查是否符合预览要求
         $(document).on("popupafterclose", "#reason-type-popup-option", function() {
             clockinReasonType = $("#reason-type-popup option").text();
+            if (clockinReasonType === "其他") {
+                $('.other-reason-tex').show();
+            } else {
+                $('.other-reason-tex').hide();
+            }
             checkClockinBeforePreview();
         });
 
