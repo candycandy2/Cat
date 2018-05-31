@@ -308,12 +308,12 @@ $("#viewAgentLeave").pagecontainer({
                 $(".page-main").css("padding-top", "0");
                 $(".agentName > span:nth-of-type(2)").text(agent_Name);
                 //changing bar color
-                var light = ['1', '0.5'];
+                var light = ['1', '0.9', '0.8', '0.7', '0.6', '0.5', '0.6', '0.7', '0.8', '0.9'];
                 var currentIndex = 0;
                 setInterval(function () {
                     $(".beingAgent").css({
                          //backgroundColor: colors[currentIndex]
-                         "background-color":"rgba(220, 220, 220, " + light[currentIndex]+ ")",
+                         "background-color":"rgba(201, 201, 201, " + light[currentIndex] + ")",
                          //"opacity": light[currentIndex]
                     });
                     if (!light[currentIndex]) {
@@ -321,7 +321,7 @@ $("#viewAgentLeave").pagecontainer({
                     } else {
                         currentIndex++;
                     }
-                }, 1000);
+                }, 200);
                 $("#mypanelviewAgentLeave").removeAttr("style");
                 $("#mypanelviewAgentLeave").hide();
                 //changepage                
