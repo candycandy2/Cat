@@ -42,9 +42,7 @@ GET /login?lang=en-us
 欄位名稱 | 是否必填 | 描述
 :------------ | :------------- | :-------------
 content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
-app-key | 必填 | 專案名稱, 此專案名稱為 appqplay
 signature-time | 必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼<br>ex: 2016/5/31 14:49:24 換算為 unix time 為 1464677364 如何在不同编程语言中获取现在的 Unix 时间戳(Unix timestamp)可參考以下程式碼 (#注1)
-signature | 必填 | Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) ) <br> 此專案的AppSecretKey 為swexuc453refebraXecujeruBraqAc4e
 domain | 必填 | AD domain
 loginid | 必填 | AD login id
 password | 必填 | AD login password
@@ -65,7 +63,6 @@ loginid | content | 0-1 | String | 員工AD帳號 <br> ex:steven.yan
 emp_no | content | 0-1 | String | 員工工號 <br> 無此訊息請填null
 site_code | content | 0-1 | String | 員工所屬地區 <br> ex:QTY,QTT,QCS <br> 無此訊息請填null
 domain | content | 0-1 | String | 員工所屬domain <br> ex:Qgroup, BenQ
-checksum | content | 0-1 | String | 將密碼欄位用md5加密後當作checksum
 
 ### Error Code
 | Result Code | Descriptopn |
