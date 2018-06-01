@@ -56,9 +56,9 @@ lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、
 ### 回應訊息
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :------------- | :-------------
-result_code | NA | 1 | String | 回應代碼
-message | NA | 1 | String | 回應訊息描述
-content | NA | 0-1 | Container | 回應訊息內容Container
+ResultCode | NA | 1 | String | 回應代碼
+Message | NA | 1 | String | 回應訊息描述
+Content | NA | 0-1 | Container | 回應訊息內容Container
 loginid | content | 0-1 | String | 員工AD帳號 <br> ex:steven.yan
 emp_no | content | 0-1 | String | 員工工號 <br> 無此訊息請填null
 site_code | content | 0-1 | String | 員工所屬地區 <br> ex:QTY,QTT,QCS <br> 無此訊息請填null
@@ -74,8 +74,30 @@ domain | content | 0-1 | String | 員工所屬domain <br> ex:Qgroup, BenQ
 997999|Unknown Error
 
 ### Example
-```
+``` c#
+public bool ValidateUidPwdAndGetUserTypeGlobal(string TPXId, string password)
+        {
 
+            string strADPath = "LDAP://a.b.c/dc=a,dc=b,dc=c";
+            try
+            {
+                DirectoryEntry objDirEntry = new DirectoryEntry(strADPath, TPXId, password);
+                
+                DirectorySearcher search = new DirectorySearcher(objDirEntry);
+                search.Filter = "(samaccountname=" + TPXId + ")";
+                SearchResult result = search.FindOne();
+                if (null == result)
+                {
+                    return false;
+                }
+                else
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 ```
 <h4 id="注1">注1</h4>
 
