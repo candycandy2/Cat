@@ -1055,6 +1055,10 @@ html body .ui-group-theme-a a:visited {
     display: none;
 }
 
+#otherReasonArea {
+    display: none;
+}
+
 /********************************************** mypanel *********************************************/
 
 #mypanel .panel-content {
