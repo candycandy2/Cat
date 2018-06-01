@@ -74,8 +74,30 @@ domain | content | 0-1 | String | 員工所屬domain <br> ex:Qgroup, BenQ
 997999|Unknown Error
 
 ### Example
-```
+``` c#
+public bool ValidateUidPwdAndGetUserTypeGlobal(string TPXId, string password)
+        {
 
+            string strADPath = "LDAP://a.b.c/dc=a,dc=b,dc=c";
+            try
+            {
+                DirectoryEntry objDirEntry = new DirectoryEntry(strADPath, TPXId, password);
+                
+                DirectorySearcher search = new DirectorySearcher(objDirEntry);
+                search.Filter = "(samaccountname=" + TPXId + ")";
+                SearchResult result = search.FindOne();
+                if (null == result)
+                {
+                    return false;
+                }
+                else
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 ```
 <h4 id="注1">注1</h4>
 
