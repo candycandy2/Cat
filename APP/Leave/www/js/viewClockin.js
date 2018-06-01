@@ -226,11 +226,12 @@ $("#viewClockin").pagecontainer({
         $('#newClockinTime').datetimepicker({
             datepicker: false
         });
-
+        //$('.timepicker').wickedpicker({now: '8:16', twentyFour: false, title:'My Timepicker', showSeconds: true});
          //選擇刷卡時間
         $("#selectClockintime").on("click", function() {
             //datetime-local
             $('#newClockinTime').datetimepicker('show');
+            //$("#newClockinTime").click();
         });
 
         //新刷卡時間選擇——datetime change
@@ -319,8 +320,12 @@ $("#viewClockin").pagecontainer({
                 $("#previewClockinDay").text(clockinday);               
                 $("#previewClockinTime").text(clockintime); 
                 $("#previewReason").text(clockinReasonType); 
-                $("#previewOtherReason").text(otherReason);
-
+                if (clockinReasonType === "其他") {
+                    $('#otherReasonArea').show();
+                    $("#previewOtherReason").text(otherReason);
+                } else {
+                    $('#otherReasonArea').hide();
+                }
                 $('.apply-container').hide();
                 $('#viewClockin .leaveMenu').hide();
                 $('.apply-preview').show();

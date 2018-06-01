@@ -93,12 +93,13 @@
                     <textarea data-role="none" id="otherReason" class="reason-textarea"></textarea>
                 </div>
             </div>
-
+            <!-- <input type="text" id="timepicker" name="timepicker" class="timepicker">-->
             <!-- date component -->
             <div class="date-component">
                 <input data-role="none" id="newWorkDate" readonly="readonly" class="date-time-component">
                 <input data-role="none" id="newClockinDate" readonly="readonly" class="date-time-component">
                 <input data-role="none" id="newClockinTime" readonly="readonly" class="date-time-component">
+                <!--<input type="text" name="timepicker" class="timepicker" id="newClockinTime">-->
             </div>
 
             <!-- empty div -->
@@ -159,23 +160,24 @@
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 刷卡日期 -->
-                    <span class="langStr" data-id="str_193"></span>
+                    <!-- 刷卡日期與時間 -->
+                    <span class="langStr" data-id="str_197"></span>
                 </div>
                 <div class="font-style3">
                     <span id="previewClockinDay"></span>
+                    <span id="previewClockinTime"></span>
                 </div>
             </div>
-            <div class="preview-apply-categroy">
+            <!--<div class="preview-apply-categroy">
                 <div></div>
-                <div class="font-style11">
+                <div class="font-style11"> -->
                     <!-- 刷卡時間 -->
-                    <span class="langStr" data-id="str_194"></span>
+                    <!--<span class="langStr" data-id="str_194"></span>
                 </div>
                 <div class="font-style3 overflow-hidden">
                     <span id="previewClockinTime"></span>
                 </div>
-            </div>
+            </div>-->
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
@@ -186,7 +188,7 @@
                     <span id="previewReason"></span>
                 </div>
             </div>
-            <div class="preview-apply-categroy">
+            <div id="otherReasonArea" class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
                     <!-- 其他原因 -->
@@ -207,37 +209,6 @@
             </div>
         </div>
         
-    </div>
-
-    <!-- 假別天數不夠 2行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup leaveNotEnough" for="leaveNotEnough" id="leaveNotEnough">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon'>
-                        <img src="img/urgent.png">
-                    </span>
-                    <span class="header-text">
-                        <!-- 假別天數不夠 -->
-                        <span class="langStr" data-id="str_115"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="main">
-                <p class="main-paragraph font-style3">
-                    <!-- 請選擇其他假別 -->
-                    <span class="langStr" data-id="str_126"></span>
-                </p>
-            </div>
-            <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- error msg 1行 -->
@@ -265,138 +236,10 @@
         </div>
     </div>
 
-    <!-- 結束時間要大於迄止時間 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup dateTimeError" for="dateTimeError" id="dateTimeError">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon'>
-                        <img src="img/urgent.png">
-                    </span>
-                    <span class="header-text">
-                        <!--請假迄止時間應大於請假開始時間-->
-                        <span class="langStr" data-id="str_116"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="main">
-                <p class="main-paragraph font-style3"></p>
-            </div>
-            <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 請先選擇類別與假別 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup categroyFirst" for="categroyFirst" id="categroyFirst">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon'>
-                        <img src="img/urgent.png">
-                    </span>
-                    <span class="header-text">
-                        <!-- 請先選擇類別與假別 -->
-                        <span class="langStr" data-id="str_139"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="main">
-                <p class="main-paragraph font-style3"></p>
-            </div>
-            <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 請先選擇基準日 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup basedayFirst" for="basedayFirst" id="basedayFirst">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon'>
-                        <img src="img/urgent.png">
-                    </span>
-                    <span class="header-text">
-                        <!-- 請先選擇基準日 -->
-                        <span class="langStr" data-id="str_140"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="main">
-                <p class="main-paragraph font-style3"></p>
-            </div>
-            <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 請先選擇開始時間 1行 -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup startdayFirst" for="startdayFirst" id="startdayFirst">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon'>
-                        <img src="img/urgent.png">
-                    </span>
-                    <span class="header-text">
-                        <!-- 請先選擇開始時間 -->
-                        <span class="langStr" data-id="str_171"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="main">
-                <p class="main-paragraph font-style3"></p>
-            </div>
-            <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- baseday list -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup basedayList" for="basedayList" id="basedayList">
-        <div data-role="main" class="ui-content">
-            <div class="header typeB">
-                <div class="close">
-                    <img src="img/component/close_new.png" width="100%" height="100%" id="closeBasedayList">
-                </div>
-                <div class="title"></div>
-            </div>
-            <div class="old-baseday-list">
-
-            </div>
-        </div>
-    </div>
-
     <!-- confirm send -->
     <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmClockin" for="confirmClockin" id="confirmClockin">
         <div data-role="main" class="ui-content">
             <div class="header">
-                <div class="font-style3 header-title-main">
                     <span class='header-icon hidden'>
                         <img src="img/urgent.png">
                     </span>
@@ -416,37 +259,6 @@
                         <span class="langStr" data-id="com_023"></span>
                     </div>
                     <div class="btn-cancel" id="confirmSendClockin">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--代理人不存在-->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup agentNotData" for="agentNotData">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon'>
-                        <img src="img/urgent.png">
-                    </span>
-                    <span class="header-text">
-                        <!--代理人不存在-->
-                        <span class="langStr" data-id="str_111"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="main">
-                <p class="main-paragraph font-style3">
-                    <!--請選擇其他代理人-->
-                    <span class="langStr" data-id="str_112"></span>
-                </p>
-            </div>
-            <div class="footer">
-                <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
                     </div>
