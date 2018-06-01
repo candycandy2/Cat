@@ -1,0 +1,7 @@
+language: php
+notifications:
+    email:
+        recipients:
+            - samuel.hsieh@qisda.com
+        on_success: always
+        on_failure: always
