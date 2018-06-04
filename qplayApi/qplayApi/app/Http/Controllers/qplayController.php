@@ -6,6 +6,7 @@ use App\lib\CommonUtil;
 use App\lib\FilePath;
 use App\lib\PushUtil;
 use App\Services\AppPushService;
+use App\Services\CompanyService;
 use Illuminate\Support\Facades\Input;
 use Mockery\CountValidator\Exception;
 use Request;
@@ -13,7 +14,6 @@ use App\Http\Requests;
 use App\lib\ResultCode;
 use App\lib\Verify;
 use DB;
-
 
 class qplayController extends Controller
 {   
@@ -254,7 +254,7 @@ class qplayController extends Controller
         }
     }
 
-    public function register()
+    public function register(CompanyService $companyService)
     {
         $Verify = new Verify();
         $verifyResult = $Verify->verify();
@@ -303,22 +303,33 @@ class qplayController extends Controller
 
                 //Check user password with LDAP
                 //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
-		$LDAP_SERVER_IP = "LDAP://10.82.12.61";
-                $userId = $domain . "\\" . $loginid;
-                $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-                $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
-                if(!$bind)
-                {
-                    $message = CommonUtil::getMessageContentByCode(ResultCode::_000902_passwordError);
-                    $finalUrl = urlencode($redirect_uri.'?result_code='
-                        .ResultCode::_000902_passwordError
-                        .'&message='
-                        .$message);
-                    $result = ['result_code'=>ResultCode::_000902_passwordError,
-                        'message'=>$message,
-                        'content'=>array("redirect_uri"=>$finalUrl)];
-                    $result = response()->json($result);
-                    return $result;
+		        //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
+                $companyData = $companyService->getEnableCompanyList("user_domain", $domain);
+                foreach ($companyData as $company) {
+                    $loginType = $company->login_type;
+                    $serverIP = $company->server_ip;
+                    $serverPort = $company->server_port;
+                }
+
+                if ($loginType == "LDAP") {
+                    $LDAP_SERVER_IP = "LDAP://" . $serverIP;
+                    $userId = $domain . "\\" . $loginid;
+                    $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+                    $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
+
+                    if(!$bind)
+                    {
+                        $message = CommonUtil::getMessageContentByCode(ResultCode::_000902_passwordError);
+                        $finalUrl = urlencode($redirect_uri.'?result_code='
+                            .ResultCode::_000902_passwordError
+                            .'&message='
+                            .$message);
+                        $result = ['result_code'=>ResultCode::_000902_passwordError,
+                            'message'=>$message,
+                            'content'=>array("redirect_uri"=>$finalUrl)];
+                        $result = response()->json($result);
+                        return $result;
+                    }
                 }
 
                 //Check uuid exist
@@ -617,7 +628,7 @@ class qplayController extends Controller
         }
     }
 
-    public function login()
+    public function login(CompanyService $companyService)
     {
         $Verify = new Verify();
         $verifyResult = $Verify->verify();
@@ -695,21 +706,32 @@ class qplayController extends Controller
 
                 //Check user password with LDAP
                 //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
-		$LDAP_SERVER_IP = "LDAP://10.82.12.61";
-                $userId = $domain . "\\" . $loginid;
-                $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-               $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
-                if(!$bind)
-                {
-                    $message = CommonUtil::getMessageContentByCode(ResultCode::_000902_passwordError);
-                    $finalUrl = urlencode($redirect_uri.'?result_code='
-                        .ResultCode::_000902_passwordError
-                        .'&message='
-                        .$message);
-                    $result = ['result_code'=>ResultCode::_000902_passwordError,
-                        'message'=>$message,
-                        'content'=>array("redirect_uri"=>$finalUrl)];
-                    return response()->json($result);
+		        //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
+                $companyData = $companyService->getEnableCompanyList("user_domain", $domain);
+                foreach ($companyData as $company) {
+                    $loginType = $company->login_type;
+                    $serverIP = $company->server_ip;
+                    $serverPort = $company->server_port;
+                }
+
+                if ($loginType == "LDAP") {
+                    $LDAP_SERVER_IP = "LDAP://" . $serverIP;
+                    $userId = $domain . "\\" . $loginid;
+                    $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+                    $bind = @ldap_bind($ldapConnect, $userId, $password); //TODO true;
+
+                    if(!$bind)
+                    {
+                        $message = CommonUtil::getMessageContentByCode(ResultCode::_000902_passwordError);
+                        $finalUrl = urlencode($redirect_uri.'?result_code='
+                            .ResultCode::_000902_passwordError
+                            .'&message='
+                            .$message);
+                        $result = ['result_code'=>ResultCode::_000902_passwordError,
+                            'message'=>$message,
+                            'content'=>array("redirect_uri"=>$finalUrl)];
+                        return response()->json($result);
+                    }
                 }
 
                 //Check uuid exist
@@ -2856,5 +2878,14 @@ SQL;
         'content'=>array('uuid'=>$uuid,'login_id'=>$login_id)
         ];
         return response()->json($result);   
+    }
+
+    /**
+     * Render Login View
+     * @return View with all Enable Company data
+     */
+    public function loginView(CompanyService $companyService)
+    {
+        return view('login')->with('data', $companyService->getEnableCompanyList());
     }
 }

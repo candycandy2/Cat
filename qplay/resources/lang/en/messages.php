@@ -59,6 +59,9 @@ return [
     'TITLE_ENS_MAINTAIN' => 'ENS Maintain',
     'TITLE_BASIC_INFO_MAINTAIN' => 'Basic Member Information Maintain',
     'TITLE_REGISTER_MAINTAIN_TOOL' => 'Register Maintain Tool',
+    'TITLE_COMPANY_MAINTAIN' => 'Company Maintain',
+    'ENABLE' => 'Enable',
+    'DISABLE' => 'Disable',
 
     //validate
     'VALIDATE_ACCEPT' => 'accept only',
@@ -407,5 +410,16 @@ return [
 
     'DESIGNATED'=>'Designated',
     'MESSAGE_SCHEDULE_PUSH'=>'Schedule',
-    'MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE'=>'Reserve push time must be some time in the future!'
+    'MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE'=>'Reserve push time must be some time in the future!',
+
+    //Company Maintain
+    'COMPANY_NEW_DATA' => 'Create Company',
+    'COMPANY_EDIT_DATA' => 'Edit Company',
+    'COMPANY_LOGIN_TYPE' => 'Login Type',
+    'COMPANY_DOMAIN' => 'Company Domain',
+    'COMPANY_IP' => 'Server IP',
+    'COMPANY_PORT' => 'Server Port',
+    'COMPANY_ERR_DATA_HAS_EXIST' => 'Company data has exist.',
+    'COMPANY_ERR_CREATE_COMPANY_FAILED' => 'Create Company Failed.',
+    'COMPANY_ERR_UPDATE_COMPANY_FAILED' => 'Update Company Failed.'
 ];

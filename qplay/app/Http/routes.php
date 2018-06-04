@@ -110,9 +110,9 @@ Route::any('ENSMaintain/getBasicInfo', ['middleware' => 'auth','uses'=>'ENSMaint
 Route::any('ENSMaintain/getUserGroupInfo', ['middleware' => 'auth','uses'=>'ENSMaintain\BasicInfoController@getUserGroupInfo']);
 Route::any('ENSMaintain/uploadBasicInfo', ['middleware' => 'auth','uses'=>'ENSMaintain\BasicInfoController@uploadBasicInfo']);
 
-Route::any('auth/login', function() {
-    return view("auth/login");
-});
+//Login Page
+Route::any('auth/login', 'AuthController@loginView');
+
 Route::any('404', function() {
     return view("404");
 });
@@ -210,6 +210,12 @@ Route::any('report', ['middleware' => 'auth', function() {
 Route::any('basicInfo', ['middleware' => 'auth', function() {
     return view("ens_maintain/basic_info");
 }]);
+
+//companyMaintain
+Route::any('companyMaintain', ['middleware' => 'auth','uses'=>'CompanyController@companyList']);
+Route::any('companyMaintain/getCompanyList', ['middleware' => 'auth','uses'=>'CompanyController@getCompanyList']);
+Route::any('companyMaintain/newCompany', ['middleware' => 'auth','uses'=>'CompanyController@newCompany']);
+Route::any('companyMaintain/updateCompany', ['middleware' => 'auth','uses'=>'CompanyController@updateCompany']);
 
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){
   Session::set('lang', $lang);
