@@ -4,12 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+    <style>
+        .form-test > div {
+            width: 200px;
+            height: 60px;
+        }
+        #prompt {
+            color: red;
+        }
+    </style>
 
     <title>Login</title>
 </head>
 
 <body>
-    <div>
+    <div class="form-test">
         <div>
             <label>用户：</label>
             <input type="text" id="ntName">
@@ -19,7 +28,8 @@
             <input type="password" id="ntPwd">
         </div>
         <div>
-            <button id="subForm">submit</button>
+            <button id="subForm">submit</button>&nbsp;&nbsp;
+            <span id="prompt"></span>
         </div>
     </div>
 
@@ -42,7 +52,7 @@
                 cache: false,
                 timeout: 30000,
                 success: function (data) {
-                    console.log(data);
+                    $("#prompt").text(data.d);
                 },
                 error: function (msg) {
                     console.log(msg);
