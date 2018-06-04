@@ -1,4 +1,7 @@
+before_script: cd API/qstorage
+
 language: php
+
 notifications:
     email:
         recipients:
