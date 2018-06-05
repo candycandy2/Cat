@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
     <style>
-        .form-test > div {
+        .form-test>div {
             width: 200px;
             height: 60px;
         }
+
         #prompt {
             color: red;
         }
@@ -19,6 +20,10 @@
 
 <body>
     <div class="form-test">
+        <div>
+            <label>域名：</label>
+            <input type="text" id="ntDomain">
+        </div>
         <div>
             <label>用户：</label>
             <input type="text" id="ntName">
@@ -35,6 +40,7 @@
 
     <script type="text/javascript">
         $("#subForm").on("click", function () {
+            var ntDomain = $("#ntDomain").val();
             var ntName = $("#ntName").val();
             var ntPwd = $("#ntPwd").val();
 
@@ -43,8 +49,9 @@
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8',
                     'Signature-Time': Math.round(new Date().getTime() / 1000),
-                    'Loginid': ntName,
-                    'Pwd': ntPwd
+                    'loginid': ntName,
+                    'password': ntPwd,
+                    'domain': ntDomain
                 },
                 url: 'http://10.85.129.62:8001/QTunnel/QTunnel.asmx/Login',
                 dataType: "json",
@@ -52,7 +59,8 @@
                 cache: false,
                 timeout: 30000,
                 success: function (data) {
-                    $("#prompt").text(data.d);
+                    //console.log(data);
+                    $("#prompt").text(JSON.parse(data.d).Message);
                 },
                 error: function (msg) {
                     console.log(msg);
