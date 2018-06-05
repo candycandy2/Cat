@@ -167,8 +167,9 @@
                                 <td>
                                     <select class="login_control" name="ddlCompany" id="ddlCompany" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext" style="border-color: #1f1f1f; padding: .4em">
                                         <option value="" selected></option>
-                                        <option value="BENQ">BenQ</option>
-                                        <option value="QGROUP">Qisda</option>
+                                        @foreach($data as $company)
+                                            <option value="{{$company->user_domain}}">{{$company->name}}</option>
+                                        @endforeach
                                     </select>
                                 </td>
                             </tr>
