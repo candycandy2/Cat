@@ -68,10 +68,10 @@ domain | content | 0-1 | String | 員工所屬domain <br> ex:Qgroup, BenQ
 | Result Code | Descriptopn |
 |--|--|
 |1 | Success. 
+997902|Password Incorrect
 997903|Field Format Error
-997904|Account Not Exist
-999006|Input format is invalid
-997999|Unknown Error
+997904|Account Incorrect
+997905|Account Has Been Disabled
 
 ### Example
 ``` c#
