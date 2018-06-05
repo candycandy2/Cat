@@ -740,7 +740,13 @@ $("#viewLeaveQuery").pagecontainer({
                 leaveDetailObj["formid"] +
                 '</applyformid><reason>' +
                 dispelReason +
-                '</reason></LayoutHeader>';
+                '</reason>';
+            //filler: 本人或是秘書申請
+            if (myEmpNo === originalEmpNo) {
+                sendLeaveCancelFormDataQueryData += '<filler>'+ myEmpNo +'</filler></LayoutHeader>';
+            } else {
+                sendLeaveCancelFormDataQueryData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
+            }
             //API
             SendLeaveCancelFormData();
 

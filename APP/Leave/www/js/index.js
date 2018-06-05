@@ -45,7 +45,11 @@ window.initialSuccess = function() {
     originalEmpNo = localStorage["emp_no"];
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
-
+    getUserAuthorityData = '<LayoutHeader><EmpNo>' +
+            myEmpNo +
+            '</EmpNo></LayoutHeader>';
+    //呼叫API
+    GetUserAuthority();
     //默认设置GetDefaultSetting (GetUserAuthority回傳data['ResultCode'] === "1" 不執行else)
     /*if (localStorage.getItem("leaveDefaultSetting") == null) {
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
@@ -65,6 +69,7 @@ window.initialSuccess = function() {
     $("#endText").text(pleaseSelectStr); */
     //data scroll menu
     //dateInit(); 
+
     restartAgentLeave();
     //changepage
     $.mobile.changePage("#viewPersonalLeave");
@@ -95,6 +100,31 @@ window.initialSuccess = function() {
 
     loadingMask("show");
 }
+
+//選擇結束時間計算請假數
+window.GetUserAuthority = function() {
+
+    this.successCallback = function(data) {
+        //console.log(data);
+        if (data['ResultCode'] === "1") {
+            var callbackData = data['Content']["AuthorizedSite"];
+            var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+            if (callbackData.length == 0) {
+                $("#mypanelviewAgentLeave").hide();
+            } else {
+                 $("#mypanelviewAgentLeave").show();
+            }
+
+            loadingMask("hide");
+        }
+    };
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        CustomAPI("POST", true, "GetUserAuthority", self.successCallback, self.failCallback, getUserAuthorityData, "");
+    }();
+};
 
 function restartAgentLeave() {
     localStorage.removeItem("leaveDefaultSetting");
