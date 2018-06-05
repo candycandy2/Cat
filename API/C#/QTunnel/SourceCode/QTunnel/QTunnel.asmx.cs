@@ -48,7 +48,7 @@ namespace QTunnel
                     //throw new Exception("Username and/or Password incorrect");
                     strJson = new JObject(
                                   new JProperty("ResultCode", "997904"),
-                                  new JProperty("Message", "Account Not Exist"),
+                                  new JProperty("Message", "Account Incorrect"),
                                   new JProperty("Content", "")
                               ).ToString();
 
@@ -57,7 +57,7 @@ namespace QTunnel
                 {
                     //throw new Exception("The windows account has been disabled!");
                     strJson = new JObject(
-                                  new JProperty("ResultCode", "997904"),
+                                  new JProperty("ResultCode", "997905"),
                                   new JProperty("Message", "Account Has Been Disabled"),
                                   new JProperty("Content", "")
                               ).ToString();
@@ -99,8 +99,8 @@ namespace QTunnel
                     {
                         //throw new Exception("Username and/or Password incorrect");
                         strJson = new JObject(
-                                      new JProperty("ResultCode", "997904"),
-                                      new JProperty("Message", "Password incorrect"),
+                                      new JProperty("ResultCode", "997902"),
+                                      new JProperty("Message", "Password Incorrect"),
                                       new JProperty("Content", "")
                                   ).ToString();
 
@@ -109,7 +109,7 @@ namespace QTunnel
                     {
                         //throw new Exception("The windows account has been disabled!");
                         strJson = new JObject(
-                                      new JProperty("ResultCode", "997904"),
+                                      new JProperty("ResultCode", "997905"),
                                       new JProperty("Message", "Account Has Been Disabled"),
                                       new JProperty("Content", "")
                                   ).ToString();
@@ -126,8 +126,8 @@ namespace QTunnel
                 catch (Exception ex)
                 {
                     strJson = new JObject(
-                                  new JProperty("ResultCode", "997904"),
-                                  new JProperty("Message", "Password incorrect"),
+                                  new JProperty("ResultCode", "997902"),
+                                  new JProperty("Message", "Password Incorrect"),
                                   new JProperty("Content", "")
                               ).ToString();
 
@@ -137,7 +137,7 @@ namespace QTunnel
             {
                 strJson = new JObject(
                               new JProperty("ResultCode", "997904"),
-                              new JProperty("Message", "Account Not Exist"),
+                              new JProperty("Message", "Account Incorrect"),
                               new JProperty("Content", "")
                           ).ToString();
             }
