@@ -59,6 +59,9 @@ return [
     'TITLE_ENS_MAINTAIN' => '事件通報系統服務',
     'TITLE_BASIC_INFO_MAINTAIN' => '成員資訊維護',
     'TITLE_REGISTER_MAINTAIN_TOOL' => '註冊管理工具',
+    'TITLE_COMPANY_MAINTAIN' => '公司管理',
+    'ENABLE' => '啟用',
+    'DISABLE' => '停用',
 
     //validate
     'VALIDATE_ACCEPT' => '僅接受',
@@ -407,5 +410,16 @@ return [
 
     'DESIGNATED'=>'指定人員',
     'MESSAGE_SCHEDULE_PUSH'=>'定時推送',
-    'MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE'=>'預定推播時間必須是未來的某個時間!'
+    'MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE'=>'預定推播時間必須是未來的某個時間!',
+
+    //Company Maintain
+    'COMPANY_NEW_DATA' => '新增公司',
+    'COMPANY_EDIT_DATA' => '編輯公司',
+    'COMPANY_LOGIN_TYPE' => '登入型態',
+    'COMPANY_DOMAIN' => '公司 Domain',
+    'COMPANY_IP' => 'Server IP',
+    'COMPANY_PORT' => 'Server Port',
+    'COMPANY_ERR_DATA_HAS_EXIST' => '公司資料已經存在',
+    'COMPANY_ERR_CREATE_COMPANY_FAILED' => '新增公司失敗!',
+    'COMPANY_ERR_UPDATE_COMPANY_FAILED' => '更新公司失敗!'
 ];

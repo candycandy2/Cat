@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use Illuminate\Support\Facades\Input;
+use App\Services\CompanyService;
 
 class AuthController extends Controller
 {   
@@ -19,7 +20,7 @@ class AuthController extends Controller
     /**
      * 登入流程
      */
-    public function authenticate(Request $request)
+    public function authenticate(Request $request, CompanyService $companyService)
     {
         $input = Input::get();
         $validator = \Validator::make($request->all(), [
@@ -38,6 +39,7 @@ class AuthController extends Controller
         $domain = $input["domain"];
         $lang = $input["lang"];
         $remember = false;
+
         if (array_key_exists("remember", $input)) {
             $remember = $input["remember"];
         }
@@ -52,18 +54,32 @@ class AuthController extends Controller
 
         //Check user password with LDAP
         //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
-        $LDAP_SERVER_IP = "LDAP://10.82.12.61";
-        $userId = $domain . "\\" . $loginid;
-        $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-        $bind = @ldap_bind($ldapConnect, $userId, $password);
-        if (!$bind)
-        {
-            $data['errormsg'] = trans('messages.MSG_LOGIN_ERROR');;
-            return \Redirect::to('auth/login')->with($data);
+        //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
+        $companyData = $companyService->getEnableCompanyList("user_domain", $domain);
+        foreach ($companyData as $company) {
+            $loginType = $company->login_type;
+            $serverIP = $company->server_ip;
+            $serverPort = $company->server_port;
+        }
+
+        if ($loginType == "LDAP") {
+            $LDAP_SERVER_IP = "LDAP://" . $serverIP;
+            $userId = $domain . "\\" . $loginid;
+            $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+            $bind = @ldap_bind($ldapConnect, $userId, $password);
+            if (!$bind)
+            {
+                $data['errormsg'] = trans('messages.MSG_LOGIN_ERROR');;
+                return \Redirect::to('auth/login')->with($data);
+            }
         }
 
         if (Auth::attempt(['login_id' => $loginid, 'status' => 'Y', 'resign' => 'N', 'password' => $password, 'user_domain'=>$domain], $remember)) {
             \Session::set('lang', $lang);
+            \Session::set('login_id', $loginid);
+            \Session::set('domain', $domain);
+            \Session::set('remember', $remember);
+
             // 认证通过...
             return redirect()->to($this->getRdirectUrl());
         } else {
@@ -192,4 +208,14 @@ class AuthController extends Controller
         $ServerSignature = hash('md5',hash_hmac('sha256', $loginid, $signatureTime,true));
         return $ServerSignature;
     }
+
+    /**
+     * Render Login View
+     * @return View with all Enable Company data
+     */
+    public function loginView(CompanyService $companyService)
+    {
+        return view('auth/login')->with('data', $companyService->getEnableCompanyList());
+    }
+
 }

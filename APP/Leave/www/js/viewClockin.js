@@ -223,20 +223,20 @@ $("#viewClockin").pagecontainer({
             checkClockinBeforePreview();
         });
 
-        $('#newClockinTime').datetimepicker({
+        /*$('#newClockinTime').datetimepicker({
             datepicker: false
-        });
-        //$('.timepicker').wickedpicker({now: '8:16', twentyFour: false, title:'My Timepicker', showSeconds: true});
+        });*/
+
          //選擇刷卡時間
         $("#selectClockintime").on("click", function() {
             //datetime-local
-            $('#newClockinTime').datetimepicker('show');
+            //$('#newClockinTime').datetimepicker('show');
             //$("#newClockinTime").click();
+            $("#timepicker").siblings().trigger('click');
         });
 
-        //新刷卡時間選擇——datetime change
-        $("#newClockinTime").on("change", function() {
-            clockintime = ($(this).val()).substring(11, 16);
+        $("#timepicker").on("change", function() {
+            clockintime = recordTime;
             if (clockintime === "") {
                 $("#chooseClockintime").text(pleaseSelectStr);
             } else {
@@ -244,6 +244,16 @@ $("#viewClockin").pagecontainer({
             }
             checkClockinBeforePreview();
         });
+
+        /*$("#newClockinTime").on("change", function() {
+            clockintime = ($(this).val()).substring(11, 16);
+            if (clockintime === "") {
+                $("#chooseClockintime").text(pleaseSelectStr);
+            } else {
+                $("#chooseClockintime").text(clockintime);
+            }
+            checkClockinBeforePreview();
+        });*/
 
         function GetWorkName() {
             workName = $.trim($("#workName").val());

@@ -51,9 +51,7 @@ Route::any('/v101/qplay/isLogin', 'qplayController@isLogin');
 Route::any('/v101/qplay/logoutSmartFactory', 'qplayController@logoutSmartFactory');
 
 //Login Page
-Route::any('/qplayauth_register', function() {
-    return view("login");
-});
+Route::any('/qplayauth_register', 'qplayController@loginView');
 
 //Custom
 Route::any('/{api_version}/custom/{app_key}/{function}', ['middleware' => 'log.custom.api',
