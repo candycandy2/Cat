@@ -513,7 +513,6 @@ $("#viewBackLeaveQuery").pagecontainer({
                 '</formno><reason>' +
                 signToWithdrawReason +
                 '</reason></LayoutHeader>';
-
             //呼叫API
             RecallLeaveCancelForm();
 

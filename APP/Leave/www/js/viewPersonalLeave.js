@@ -331,9 +331,11 @@ $("#viewPersonalLeave").pagecontainer({
                         quickLeaveList = [];
                         for (var i = 0; i < leaveTypeArry.length; i++) {
                             var obj = {};
-                            obj["name"] = $(leaveTypeArry[i]).html();
-                            obj["leaveid"] = $(leaveIDArry[i]).html();
-                            quickLeaveList.push(obj);
+                            if ($(leaveTypeArry[i]).html().length !== 0) {
+                                obj["name"] = $(leaveTypeArry[i]).html();
+                                obj["leaveid"] = $(leaveIDArry[i]).html();
+                                quickLeaveList.push(obj);
+                            }
                         }
 
                         //获取快速请假，部分假别
@@ -432,7 +434,7 @@ $("#viewPersonalLeave").pagecontainer({
                     if (tab2Status !== "none") {
                         //after custom API
                         checkLeftDaysByQuickLeave(quickLeaveLeft);
-                    } else if (tab1Status == !"none") {
+                    } else if (tab1Status !== "none") {
                         //after custom API
                         checkLeftDaysNoBasedate(quickLeaveLeft);
                     }
@@ -563,8 +565,13 @@ $("#viewPersonalLeave").pagecontainer({
                             "</reason><isattached>" +
                             "</isattached><attachment>" +
                             "</attachment><formid>" +
-                            "</formid></LayoutHeader>";
-
+                            "</formid>";
+                        //filler: 本人或是秘書申請
+                        if (myEmpNo === originalEmpNo) {
+                            sendLeaveApplicationData += '<filler>'+ myEmpNo +'</filler></LayoutHeader>';
+                        } else {
+                            sendLeaveApplicationData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
+                        }
                         //console.log(sendLeaveApplicationData);
                         //呼叫API
                         SendLeaveApplicationData();
@@ -961,7 +968,7 @@ $("#viewPersonalLeave").pagecontainer({
                     if (myEmpNo === originalEmpNo) {
                         queryEmployeeData = "<LayoutHeader><EmpNo>" +
                             myEmpNo +
-                            "</EmpNo><qEmpno>" +
+                            "</EmpNo><qSite></qSite><qDeptCode></qDeptCode><qEmpno>" +
                             JSON.parse(localStorage.getItem("agent"))[1] +
                             "</qEmpno><qName>" +
                             JSON.parse(localStorage.getItem("agent"))[0] +
@@ -995,7 +1002,7 @@ $("#viewPersonalLeave").pagecontainer({
             }
             queryEmployeeData = "<LayoutHeader><EmpNo>" +
                 myEmpNo +
-                "</EmpNo><qEmpno>" +
+                "</EmpNo><qSite></qSite><qDeptCode></qDeptCode><qEmpno>" +
                 searchEmpNo +
                 "</qEmpno><qName>" +
                 searchName +
@@ -1192,7 +1199,7 @@ $("#viewPersonalLeave").pagecontainer({
             }
             queryEmployeeData = "<LayoutHeader><EmpNo>" +
                 myEmpNo +
-                "</EmpNo><qEmpno>" +
+                "</EmpNo><qSite></qSite><qDeptCode></qDeptCode><qEmpno>" +
                 searchEmpNo +
                 "</qEmpno><qName>" +
                 searchName +
@@ -1722,13 +1729,13 @@ $("#viewPersonalLeave").pagecontainer({
                 '</isattached><attachment>' +
                 '</attachment><formid>' +
                 ((editLeaveForm == false) ? '' : leaveDetailObj['formid']) +
-                '</formid></LayoutHeader>';
+                '</formid>';
             //filler: 本人或是秘書申請
-            /*if (myEmpNo === originalEmpNo) {
+            if (myEmpNo === originalEmpNo) {
                 sendApplyLeaveQueryData += '<filler>'+ myEmpNo +'</filler></LayoutHeader>';
             } else {
                 sendApplyLeaveQueryData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
-            }*/
+            }
             //console.log(sendApplyLeaveQueryData);
             //呼叫API
             SendApplyLeaveData();
