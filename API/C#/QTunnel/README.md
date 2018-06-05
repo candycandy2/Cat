@@ -59,10 +59,6 @@ lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、
 ResultCode | NA | 1 | String | 回應代碼
 Message | NA | 1 | String | 回應訊息描述
 Content | NA | 0-1 | Container | 回應訊息內容Container
-loginid | content | 0-1 | String | 員工AD帳號 <br> ex:steven.yan
-emp_no | content | 0-1 | String | 員工工號 <br> 無此訊息請填null
-site_code | content | 0-1 | String | 員工所屬地區 <br> ex:QTY,QTT,QCS <br> 無此訊息請填null
-domain | content | 0-1 | String | 員工所屬domain <br> ex:Qgroup, BenQ
 
 ### Error Code
 | Result Code | Descriptopn |
