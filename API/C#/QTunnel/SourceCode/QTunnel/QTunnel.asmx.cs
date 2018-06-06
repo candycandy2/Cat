@@ -29,83 +29,36 @@ namespace QTunnel
             string loginId = HttpContext.Current.Request.Headers["loginid"];
             string pwd = HttpContext.Current.Request.Headers["password"];
             string domain = HttpContext.Current.Request.Headers["domain"];
+            long signatureTime = long.Parse(HttpContext.Current.Request.Headers["Signature-Time"]);
             string strJson = "";
 
-            try 
+            long epoch = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            long value = epoch - signatureTime;
+            if (value < 15 * 60)
             {
-                DirectoryEntry rootDSE = new DirectoryEntry("LDAP://rootDSE");
-                string rootADPath = Convert.ToString(rootDSE.Properties["rootDomainNamingContext"].Value);
-                string ldapPath = "LDAP://DC=" + domain + "," + rootADPath;
-                string filter = "SAMAccountName=" + loginId;
-                string[] props = new string[] { "userAccountControl" };
-                DirectoryEntry de = new DirectoryEntry(ldapPath);
-                Object obj = de.NativeObject;
-                DirectorySearcher deSearch = new DirectorySearcher(de, filter, props, SearchScope.Subtree);
-                deSearch.SearchScope = SearchScope.Subtree;
-                SearchResult res = deSearch.FindOne();
-                if (res == null)
-                {
-                    //throw new Exception("Username and/or Password incorrect");
-                    strJson = new JObject(
-                                  new JProperty("ResultCode", "997904"),
-                                  new JProperty("Message", "Account Incorrect"),
-                                  new JProperty("Content", "")
-                              ).ToString();
-
-                }
-                if (Convert.ToBoolean(Convert.ToInt32(res.Properties["userAccountControl"][0]) & 0x0002))
-                {
-                    //throw new Exception("The windows account has been disabled!");
-                    strJson = new JObject(
-                                  new JProperty("ResultCode", "997905"),
-                                  new JProperty("Message", "Account Has Been Disabled"),
-                                  new JProperty("Content", "")
-                              ).ToString();
-
-                }
-                //return true;
-
                 try
                 {
-                    ldapPath = "";
-                    if (!domain.EndsWith(".com", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        ldapPath = rootADPath;
-                    }
-                    string[] dcList = domain.Split('.');
-                    for (int i = dcList.Length - 1; i >= 0; i--)
-                    {
-                        if (domain.EndsWith(".com", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            ldapPath = string.Format("DC={0},{1}", dcList[i], ldapPath);
-                        }
-                        else if (rootADPath.IndexOf("DC=" + dcList[i], 0, StringComparison.InvariantCultureIgnoreCase) < 0)
-                        {
-                            ldapPath = string.Format("DC={0},{1}", dcList[i], ldapPath);
-                        }
-                    }
-                    //ldapPath = "LDAP://" + ldapPath;
-                    ldapPath = serverPath + ldapPath;
-                    if (ldapPath.EndsWith(","))
-                    {
-                        ldapPath = ldapPath.Remove(ldapPath.Length - 1, 1);
-                    }
-                    DirectoryEntry dse = new DirectoryEntry(ldapPath, domain + "\\" + loginId, pwd);
-                    Object objs = dse.NativeObject;
-                    DirectorySearcher dseSearch = new DirectorySearcher(dse, filter, props, SearchScope.Subtree);
-                    dseSearch.SearchScope = SearchScope.Subtree;
-                    SearchResult result = dseSearch.FindOne();
-                    if (result == null)
+                    DirectoryEntry rootDSE = new DirectoryEntry("LDAP://rootDSE");
+                    string rootADPath = Convert.ToString(rootDSE.Properties["rootDomainNamingContext"].Value);
+                    string ldapPath = "LDAP://DC=" + domain + "," + rootADPath;
+                    string filter = "SAMAccountName=" + loginId;
+                    string[] props = new string[] { "userAccountControl" };
+                    DirectoryEntry de = new DirectoryEntry(ldapPath);
+                    Object obj = de.NativeObject;
+                    DirectorySearcher deSearch = new DirectorySearcher(de, filter, props, SearchScope.Subtree);
+                    deSearch.SearchScope = SearchScope.Subtree;
+                    SearchResult res = deSearch.FindOne();
+                    if (res == null)
                     {
                         //throw new Exception("Username and/or Password incorrect");
                         strJson = new JObject(
-                                      new JProperty("ResultCode", "997902"),
-                                      new JProperty("Message", "Password Incorrect"),
+                                      new JProperty("ResultCode", "997904"),
+                                      new JProperty("Message", "Account Incorrect"),
                                       new JProperty("Content", "")
                                   ).ToString();
 
                     }
-                    if (Convert.ToBoolean(Convert.ToInt32(result.Properties["userAccountControl"][0]) & 0x0002))
+                    if (Convert.ToBoolean(Convert.ToInt32(res.Properties["userAccountControl"][0]) & 0x0002))
                     {
                         //throw new Exception("The windows account has been disabled!");
                         strJson = new JObject(
@@ -115,29 +68,90 @@ namespace QTunnel
                                   ).ToString();
 
                     }
+                    //return true;
 
-                    strJson = new JObject(
-                                  new JProperty("ResultCode", "1"),
-                                  new JProperty("Message", "Success"),
-                                  new JProperty("Content", "")
-                              ).ToString();
+                    try
+                    {
+                        ldapPath = "";
+                        if (!domain.EndsWith(".com", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            ldapPath = rootADPath;
+                        }
+                        string[] dcList = domain.Split('.');
+                        for (int i = dcList.Length - 1; i >= 0; i--)
+                        {
+                            if (domain.EndsWith(".com", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                ldapPath = string.Format("DC={0},{1}", dcList[i], ldapPath);
+                            }
+                            else if (rootADPath.IndexOf("DC=" + dcList[i], 0, StringComparison.InvariantCultureIgnoreCase) < 0)
+                            {
+                                ldapPath = string.Format("DC={0},{1}", dcList[i], ldapPath);
+                            }
+                        }
+                        //ldapPath = "LDAP://" + ldapPath;
+                        ldapPath = serverPath + ldapPath;
+                        if (ldapPath.EndsWith(","))
+                        {
+                            ldapPath = ldapPath.Remove(ldapPath.Length - 1, 1);
+                        }
+                        DirectoryEntry dse = new DirectoryEntry(ldapPath, domain + "\\" + loginId, pwd);
+                        Object objs = dse.NativeObject;
+                        DirectorySearcher dseSearch = new DirectorySearcher(dse, filter, props, SearchScope.Subtree);
+                        dseSearch.SearchScope = SearchScope.Subtree;
+                        SearchResult result = dseSearch.FindOne();
+                        if (result == null)
+                        {
+                            //throw new Exception("Username and/or Password incorrect");
+                            strJson = new JObject(
+                                          new JProperty("ResultCode", "997902"),
+                                          new JProperty("Message", "Password Incorrect"),
+                                          new JProperty("Content", "")
+                                      ).ToString();
 
+                        }
+                        if (Convert.ToBoolean(Convert.ToInt32(result.Properties["userAccountControl"][0]) & 0x0002))
+                        {
+                            //throw new Exception("The windows account has been disabled!");
+                            strJson = new JObject(
+                                          new JProperty("ResultCode", "997905"),
+                                          new JProperty("Message", "Account Has Been Disabled"),
+                                          new JProperty("Content", "")
+                                      ).ToString();
+
+                        }
+
+                        strJson = new JObject(
+                                      new JProperty("ResultCode", "1"),
+                                      new JProperty("Message", "Success"),
+                                      new JProperty("Content", "")
+                                  ).ToString();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        strJson = new JObject(
+                                      new JProperty("ResultCode", "997902"),
+                                      new JProperty("Message", "Password Incorrect"),
+                                      new JProperty("Content", "")
+                                  ).ToString();
+
+                    }
                 }
                 catch (Exception ex)
                 {
                     strJson = new JObject(
-                                  new JProperty("ResultCode", "997902"),
-                                  new JProperty("Message", "Password Incorrect"),
+                                  new JProperty("ResultCode", "997904"),
+                                  new JProperty("Message", "Account Incorrect"),
                                   new JProperty("Content", "")
                               ).ToString();
-
                 }
+
             }
-            catch (Exception ex)
-            {
+            else {
                 strJson = new JObject(
-                              new JProperty("ResultCode", "997904"),
-                              new JProperty("Message", "Account Incorrect"),
+                              new JProperty("ResultCode", "997906"),
+                              new JProperty("Message", "Request Timeout"),
                               new JProperty("Content", "")
                           ).ToString();
             }

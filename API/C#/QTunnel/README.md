@@ -13,7 +13,7 @@ QTunnel API Readme.md
 
 Login | 
 :------------ | 
-1.login <br> 2.logout | 
+1.login <br> 2.getExternalUser | 
 
 
 ![screen shot 2018-05-24 at 6 05 59 pm](https://user-images.githubusercontent.com/1924451/40479083-549bd988-5f7d-11e8-923a-9fd3367d11a1.png)
@@ -59,45 +59,51 @@ lang | Required | string | Switch response language , allow 'en-us'、'zh-tw'、
 ResultCode | NA | 1 | String | 回應代碼
 Message | NA | 1 | String | 回應訊息描述
 Content | NA | 0-1 | Container | 回應訊息內容Container
-loginid | content | 0-1 | String | 員工AD帳號 <br> ex:steven.yan
-emp_no | content | 0-1 | String | 員工工號 <br> 無此訊息請填null
-site_code | content | 0-1 | String | 員工所屬地區 <br> ex:QTY,QTT,QCS <br> 無此訊息請填null
-domain | content | 0-1 | String | 員工所屬domain <br> ex:Qgroup, BenQ
 
 ### Error Code
 | Result Code | Descriptopn |
 |--|--|
 |1 | Success. 
+997902|Password Incorrect
 997903|Field Format Error
-997904|Account Not Exist
-999006|Input format is invalid
-997999|Unknown Error
+997904|Account Incorrect
+997905|Account Has Been Disabled
+997906|Request Timeout
 
 ### Example
-``` c#
-public bool ValidateUidPwdAndGetUserTypeGlobal(string TPXId, string password)
-        {
+``` Javascript
+    <script type="text/javascript">
+        $("#subForm").on("click", function () {
+            $("#prompt").text('');
+            var ntDomain = $("#ntDomain").val();
+            var ntName = $("#ntName").val();
+            var ntPwd = $("#ntPwd").val();
 
-            string strADPath = "LDAP://a.b.c/dc=a,dc=b,dc=c";
-            try
-            {
-                DirectoryEntry objDirEntry = new DirectoryEntry(strADPath, TPXId, password);
-                
-                DirectorySearcher search = new DirectorySearcher(objDirEntry);
-                search.Filter = "(samaccountname=" + TPXId + ")";
-                SearchResult result = search.FindOne();
-                if (null == result)
-                {
-                    return false;
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Signature-Time': Math.round(new Date().getTime() / 1000),
+                    'loginid': ntName,
+                    'password': ntPwd,
+                    'domain': ntDomain
+                },
+                url: 'https://aptest2016.benq.com/QTunnel/QTunnel.asmx/Login',
+                dataType: "json",
+                async: true,
+                cache: false,
+                timeout: 30000,
+                success: function (data) {
+                    //console.log(data);
+                    $("#prompt").text(JSON.parse(data.d).Message);
+                },
+                error: function (msg) {
+                    console.log(msg);
                 }
-                else
-                    return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
+            });
+        });
+
+    </script>
 ```
 <h4 id="注1">注1</h4>
 
