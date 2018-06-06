@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -317,6 +317,25 @@ function addDownloadHit(appname) {
         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
 
+    }();
+
+}
+
+function getVersionRecord() {
+    var self = this;
+
+    this.successCallback = function (data) {
+        var resultcode = data['result_code'];
+
+        if (resultcode == "1") {
+            
+        }
+    };
+
+    this.failCallback = function (data) { };
+
+    var __construct = function () {
+        QPlayAPI("POST", "", self.successCallback, self.failCallback, null, null);
     }();
 
 }
