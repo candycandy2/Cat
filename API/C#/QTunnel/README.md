@@ -13,7 +13,7 @@ QTunnel API Readme.md
 
 Login | 
 :------------ | 
-1.login <br> 2.logout | 
+1.login <br> 2.getExternalUser | 
 
 
 ![screen shot 2018-05-24 at 6 05 59 pm](https://user-images.githubusercontent.com/1924451/40479083-549bd988-5f7d-11e8-923a-9fd3367d11a1.png)
@@ -68,32 +68,42 @@ Content | NA | 0-1 | Container | 回應訊息內容Container
 997903|Field Format Error
 997904|Account Incorrect
 997905|Account Has Been Disabled
+997906|Request Timeout
 
 ### Example
-``` c#
-public bool ValidateUidPwdAndGetUserTypeGlobal(string TPXId, string password)
-        {
+``` Javascript
+    <script type="text/javascript">
+        $("#subForm").on("click", function () {
+            $("#prompt").text('');
+            var ntDomain = $("#ntDomain").val();
+            var ntName = $("#ntName").val();
+            var ntPwd = $("#ntPwd").val();
 
-            string strADPath = "LDAP://a.b.c/dc=a,dc=b,dc=c";
-            try
-            {
-                DirectoryEntry objDirEntry = new DirectoryEntry(strADPath, TPXId, password);
-                
-                DirectorySearcher search = new DirectorySearcher(objDirEntry);
-                search.Filter = "(samaccountname=" + TPXId + ")";
-                SearchResult result = search.FindOne();
-                if (null == result)
-                {
-                    return false;
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Signature-Time': Math.round(new Date().getTime() / 1000),
+                    'loginid': ntName,
+                    'password': ntPwd,
+                    'domain': ntDomain
+                },
+                url: 'https://aptest2016.benq.com/QTunnel/QTunnel.asmx/Login',
+                dataType: "json",
+                async: true,
+                cache: false,
+                timeout: 30000,
+                success: function (data) {
+                    //console.log(data);
+                    $("#prompt").text(JSON.parse(data.d).Message);
+                },
+                error: function (msg) {
+                    console.log(msg);
                 }
-                else
-                    return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
+            });
+        });
+
+    </script>
 ```
 <h4 id="注1">注1</h4>
 
