@@ -68,6 +68,7 @@ Content | NA | 0-1 | Container | 回應訊息內容Container
 997903|Field Format Error
 997904|Account Incorrect
 997905|Account Has Been Disabled
+997906|Request Timeout
 
 ### Example
 ``` c#
