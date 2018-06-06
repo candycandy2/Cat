@@ -56,7 +56,7 @@ class CompanyRepository
     {
         return  $this->company
             -> select('row_id', 'user_domain', 'name', 'login_type', 'server_ip', 'server_port', 'status')
-            -> where($column, '=', $rowID)
+            -> where($column, '=', $value)
             -> get();
     }
 
