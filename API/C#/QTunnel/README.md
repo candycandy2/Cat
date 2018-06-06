@@ -13,7 +13,7 @@ QTunnel API Readme.md
 
 Login | 
 :------------ | 
-1.login <br> 2.logout | 
+1.login <br> 2.getExternalUser | 
 
 
 ![screen shot 2018-05-24 at 6 05 59 pm](https://user-images.githubusercontent.com/1924451/40479083-549bd988-5f7d-11e8-923a-9fd3367d11a1.png)
