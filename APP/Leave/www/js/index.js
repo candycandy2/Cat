@@ -1,6 +1,6 @@
 var myEmpNo, leaveID, QTYholidayData, BQCholidayData, QCSholidayData, originalEmpNo;
 var queryCalendarData, getDefaultSettingQueryData, queryLeftDaysData, queryEmployeeData, countLeaveHoursQueryData, sendLeaveApplicationData,
-    queryEmployeeLeaveInfoQueryData;
+    queryEmployeeLeaveInfoQueryData, getDeptData, deptAgentData;
 var queryDatumDatesQueryData, countLeaveHoursByEndQueryData, sendApplyLeaveQueryData, modifyAttendanceFormData;
 var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallLeaveApplyFormQueryData, deleteLeaveApplyFormQueryData,
     sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
@@ -40,16 +40,17 @@ var dayTable = {
     "5": "(五)"
 };
 
-
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
+
     getUserAuthorityData = '<LayoutHeader><EmpNo>' +
             myEmpNo +
             '</EmpNo></LayoutHeader>';
     //呼叫API
     GetUserAuthority();
+
     //默认设置GetDefaultSetting (GetUserAuthority回傳data['ResultCode'] === "1" 不執行else)
     /*if (localStorage.getItem("leaveDefaultSetting") == null) {
         getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
@@ -70,7 +71,7 @@ window.initialSuccess = function() {
     //data scroll menu
     //dateInit(); 
 
-    restartAgentLeave();
+    //restartAgentLeave();
     //changepage
     $.mobile.changePage("#viewPersonalLeave");
 
@@ -101,20 +102,36 @@ window.initialSuccess = function() {
     loadingMask("show");
 }
 
-//選擇結束時間計算請假數
 window.GetUserAuthority = function() {
 
     this.successCallback = function(data) {
         //console.log(data);
         if (data['ResultCode'] === "1") {
             var callbackData = data['Content']["AuthorizedSite"];
-            var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
             if (callbackData.length == 0) {
                 $("#mypanelviewAgentLeave").hide();
+                if (localStorage.getItem("leaveDefaultSetting") == null) {
+                    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
+                        myEmpNo +
+                        "</EmpNo><LastModified></LastModified></LayoutHeader>";
+                } else {
+                    var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
+                    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
+                        myEmpNo +
+                        "</EmpNo><LastModified>" +
+                        lastModified +
+                        "</LastModified></LayoutHeader>";
+                }
+                GetDefaultSetting();
+                //选择日期为“请选择”
+                $("#startText").text(pleaseSelectStr);
+                $("#endText").text(pleaseSelectStr); 
+                //data scroll menu
+                dateInit(); 
             } else {
-                 $("#mypanelviewAgentLeave").show();
+                $("#mypanelviewAgentLeave").show();
+                restartAgentLeave();
             }
-
             loadingMask("hide");
         }
     };
@@ -130,11 +147,9 @@ function restartAgentLeave() {
     localStorage.removeItem("leaveDefaultSetting");
    //alert("1.initialSuccess Func:"+localStorage.getItem("leaveDefaultSetting"));
     //默认设置GetDefaultSetting
-    if(localStorage.getItem("leaveDefaultSetting") == null) {
-        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
-                                   + myEmpNo
-                                   + "</EmpNo><LastModified></LastModified></LayoutHeader>";
-    } 
+    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                               + myEmpNo
+                               + "</EmpNo><LastModified></LastModified></LayoutHeader>";
 
     GetDefaultSetting();
     //选择日期为“请选择”
