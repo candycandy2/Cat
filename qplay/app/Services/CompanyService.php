@@ -45,9 +45,9 @@ class CompanyService
     * Get one Company data
     * @return one Company data
     */
-    public function getCompanyData($column, $domain)
+    public function getCompanyData($column, $value)
     {
-        return $this->CompanyRepository->getCompanyData($column, $domain);
+        return $this->CompanyRepository->getCompanyData($column, $value);
     }
 
     /**
