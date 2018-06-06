@@ -24,16 +24,16 @@ var deptAgentData = {
     }
 };
 
-var allDeptList = [{site:"BQY", dept:"BI10"},
+/*var allDeptList = [{site:"BQY", dept:"BI10"},
                    {site:"BQY", dept:"BI20"},
                    {site:"BQY", dept:"BI30"},
                    {site:"BQY", dept:"BI40"},
                    {site:"QTY", dept:"AI10"},
                    {site:"QTY", dept:"AI20"},
                    {site:"QTY", dept:"AI30"},
-                   {site:"QTY", dept:"AI40"}];
+                   {site:"QTY", dept:"AI40"}]; */
 
-var fakeCallBackData = "<Record><Department>BI30</Department><Empno>0409132</Empno><name>Ken.Chao</name><Department>BI30</Department><Empno>1607279</Empno><name>Eee.Tsai</name><Department>BI30</Department><Empno>1607126</Empno><name>Mulin.Chuang</name></Record>";
+//var fakeCallBackData = "<Record><Department>BI30</Department><Empno>0409132</Empno><name>Ken.Chao</name><Department>BI30</Department><Empno>1607279</Empno><name>Eee.Tsai</name><Department>BI30</Department><Empno>1607126</Empno><name>Mulin.Chuang</name></Record>";
 
 //檢查是否符合預覽送簽標準
 function checkAgentBeforeSend() {
@@ -52,124 +52,111 @@ $("#viewAgentLeave").pagecontainer({
         /********************************** function *************************************/
         //GetDefaultSetting
         //API: GetUserAuthority 獲取可代理的Site+Dept
-        /* window.GetUserAuthority = function() {
+        window.GetAgentDeptAuthority = function() {
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
+                if (data['ResultCode'] === "1") {
+                    var callbackData = data['Content']["AuthorizedSite"];
+                    //初始化
+                    var agentDeptLeave = [];
+                    deptData["option"] = [];
+                    //$("#agentDept").empty();
+                    //$("#dept-popup-option-popup").empty();
 
-                //如果ResultCode=1且Content>0，说明数据有更新，重新获取数据并存到local
-                if (data['ResultCode'] === "1") {    
-                    var allLeaveData = data['Content'][0]["Leavelist"];       
-                    var allLeaveDom = new DOMParser().parseFromString(allLeaveData, "text/html");
-                    var leaveidArr = $("leaveid", allLeaveDom);
-                    allLeaveList = [];
-                    for (var i = 0; i < leaveidArr.length; i++) {
-                        var leaveObject = {};
-                        leaveObject["leaveid"] = $(leaveidArr[i]).html();
-                        leaveObject["category"] = $(categoryArr[i]).html();
-                        leaveObject["name"] = $(nameArr[i]).html();
-                        leaveObject["desc"] = $(descArr[i]).html();
-                        leaveObject["basedate"] = $(basedateArr[i]).html();
-                        leaveObject["attach"] = $(attachArr[i]).html();
-  
-                        allLeaveList.push(leaveObject);
+                    for (var i = 0; i < callbackData.length; i++) {                                                                  
+                        var siteList = callbackData[i].Site;
+                        var deptList = callbackData[i].Department;
+                        for (var j in deptList) {
+                            //agentDeptLeave.push(deptList[j]); 
+                            var deptObject = {};  
+                            deptObject["site"] = siteList;
+                            deptObject["dept"] = deptList[j];
+                            agentDeptLeave.push(deptObject);
+                        }                       
                     }
-                    //获取请假申请，所有类别
-                    getAllDeptList();                
+                    //循环所有类别到popup
+                    for (var i in agentDeptLeave) {
+                        deptData["option"][i] = {};
+                        deptData["option"][i]["site"] = agentDeptLeave[i].site;
+                        deptData["option"][i]["value"] = agentDeptLeave[i].dept;
+                        deptData["option"][i]["text"] = agentDeptLeave[i].dept;
+                    }
+                    //生成所有类别dropdownlist
+                    tplJS.DropdownList("viewAgentLeave", "agentDept", "prepend", "typeB", deptData);
+
+                    loadingMask("hide");
                 }
             };
 
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPIEx("POST", true, "GetUserAuthority", self.successCallback, self.failCallback, getUserAuthorityQueryData, "");
+                CustomAPI("POST", true, "GetUserAuthority", self.successCallback, self.failCallback, getAgentDeptData, "");
             }();
+        };
 
-        }; */
-        //API: QueryEmployeeData
-        /*window.QueryEmployeeData = function(callback) {
+        //根據部門獲取代理人
+        window.QueryAgentEmployeeData = function(callback) {
             callback = callback || null;
 
             this.successCallback = function(data) {
-                if (data['Content'][0] == undefined){
-                    //agentNotExist
-                } else {
-                    getAgentByDept();
+                if (data['ResultCode'] === "1") {
+                    var agentList = "";
+                    if (data['Content'][0] == undefined) {
+                        $("#dept-agent-popup-option").popup("close");
+                        popupMsgInit('.agentDeptNotExist');
+                    } else {
+                        var callbackData = data['Content'][0]["result"];
+                        var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                        var DepArry = $("Department", htmlDom);
+                        var nameArry = $("name", htmlDom);
+                        var agentIDArry = $("Empno", htmlDom);
+                        for (var i = 0; i < DepArry.length; i++) {
+                            if ($(agentIDArry[i]).html() !== localStorage["emp_no"]) {
+                                agentList += '<li class="tpl-option-msg-list" value="' + $(agentIDArry[i]).html() + '">' +
+                                    '<div style="width: 25VW;"><span>' +
+                                    $(DepArry[i]).html() +
+                                    '</span></div>' +
+                                    '<div><span>' +
+                                    $(nameArry[i]).html() +
+                                    '</span></div>' +
+                                    '</li>';
+                            }
+                        }
+                        if (agentList != "") {
+                            $("#dept-agent-popup-option-list").empty().append(agentList);
+                            resizePopup("dept-agent-popup-option");
+
+                            $("#dept-agent-popup-option-list").show();
+                            $("#loaderQueryAgent").hide();
+                        } else {
+                            $("#dept-agent-popup-option").popup("close");
+                            popupMsgInit('.agentDeptNotExist');
+                        }
+                        tplJS.DropdownList("viewAgentLeave", "agentName", "prepend", "typeB", deptAgentData);
+                        $("#dept-agent-popup").css("font-family", "Heiti TC");
+                    }           
+
                 }
             };
 
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPI("POST", true, "QueryEmployeeData", self.successCallback, self.failCallback, queryDeptEmployeeData, "");
+                CustomAPI("POST", true, "QueryEmployeeData", self.successCallback, self.failCallback, queryAgentEmployeeData, "");
             }();
-        };*/
-
-        //取得所有可代理的部門和員工
-        function getAllDeptList() {
-            //初始化
-            var agentDeptLeave = [];
-            deptData["option"] = [];
-            $("#agentDept").empty();
-            $("#dept-popup-option-popup").remove();
-
-            //GetUserAuthority 時就要將Dept循環所有類別，並去重、去空並push into Array: allDeptList
-            for (var i in allDeptList) {   
-                //var splitDeptList = allDeptList[i]["dept"].split("/"); 
-                //for (var j in splitDeptList) {
-                    agentDeptLeave.push(allDeptList[i]["dept"]);  
-                //}              
-            }
-
-            //循环所有类别到popup
-            for (var i in agentDeptLeave) {
-                deptData["option"][i] = {};
-                deptData["option"][i]["value"] = agentDeptLeave[i];
-                deptData["option"][i]["text"] = agentDeptLeave[i];
-            }
-
-            //生成所有类别dropdownlist
-            tplJS.DropdownList("viewAgentLeave", "agentDept", "prepend", "typeB", deptData);
-        }
-
-        //根據部門獲取代理人(Move to API:QueryEmployeeData)
-        function getAgentByDept() {
-            $("#agentName").empty();
-            $("#dept-agent-popup-option-list").empty();
-            var agentList = "";
-            var htmlDom = new DOMParser().parseFromString(fakeCallBackData, "text/html");
-            var DepArry = $("Department", htmlDom);
-            var nameArry = $("name", htmlDom);
-            var agentIDArry = $("Empno", htmlDom);
-            for (var i = 0; i < DepArry.length; i++) {
-                if ($(agentIDArry[i]).html() !== localStorage["emp_no"]) {
-                    agentList += '<li class="tpl-option-msg-list" value="' + $(agentIDArry[i]).html() + '">' +
-                        '<div style="width: 25VW;"><span>' +
-                        $(DepArry[i]).html() +
-                        '</span></div>' +
-                        '<div><span>' +
-                        $(nameArry[i]).html() +
-                        '</span></div>' +
-                        '</li>';
-                }
-            }
-            if (agentList != "") {
-                $("#dept-agent-popup-option-list").empty().append(agentList);
-                resizePopup("dept-agent-popup-option");
-
-                $("#dept-agent-popup-option-list").show();
-                $("#loaderQueryAgent").hide();
-            } else {
-                $("#dept-agent-popup-option").popup("close");
-                popupMsgInit('.agentDeptNotExist');
-            }
-            tplJS.DropdownList("viewAgentLeave", "agentName", "prepend", "typeB", deptAgentData);
-            $("#dept-agent-popup").css("font-family", "Heiti TC");
-        }
+        };
 
         /********************************** page event *************************************/
         $("#viewAgentLeave").one("pagebeforeshow", function(event, ui) {
-            getAllDeptList();
+            $("#agentDept").empty();
+            $("#dept-popup-option-popup").empty();
+            getAgentDeptData = '<LayoutHeader><EmpNo>' +
+                    myEmpNo +
+                    '</EmpNo></LayoutHeader>';
+            //呼叫API
+            GetAgentDeptAuthority();
             tplJS.DropdownList("viewAgentLeave", "agentName", "prepend", "typeB", deptAgentData);
         });
 
@@ -182,19 +169,20 @@ $("#viewAgentLeave").pagecontainer({
         //選擇部門——select change
         $(document).on("change", "#dept-popup", function() {
             selectDept = $(this).val();
-            var chosenDeptList = allDeptList.find(function(item, index, array){
-              return item.dept === selectDept;  
+            var chosenDeptList = deptData["option"].find(function(item, index, array){
+              return item.text === selectDept;  
             });
             selectSite = chosenDeptList.site;
-            queryDeptEmployeeData = "<LayoutHeader><EmpNo>" +
+            $("#agentName").empty();
+            $("#dept-agent-popup-option-list").empty();
+            queryAgentEmployeeData = "<LayoutHeader><EmpNo>" +
                 myEmpNo +
                 "</EmpNo><qSite>" +
                 selectSite +
                 "</qSite><qDeptCode>" +
                 selectDept +
                 "</qDeptCode><qEmpno></qEmpno><qName></qName><</LayoutHeader>";
-            //QueryEmployeeData(); After connect to API:QueryEmployeeData, delete getAgentByDept()
-            getAgentByDept();        
+            QueryAgentEmployeeData();   
             checkAgentBeforeSend();
         });
 
@@ -228,7 +216,7 @@ $("#viewAgentLeave").pagecontainer({
             } else {
                 searchEmpNo = $("#searchDeptAgent").val();
             }
-            queryDeptEmployeeData = "<LayoutHeader><EmpNo>" +
+            queryAgentEmployeeData = "<LayoutHeader><EmpNo>" +
                 myEmpNo +
                 "</EmpNo><qSite>" +
                 selectSite +
@@ -239,7 +227,7 @@ $("#viewAgentLeave").pagecontainer({
                 "</qEmpno><qName>" +
                 searchName +
                 "</qName></LayoutHeader>";
-            //QueryEmployeeData();
+            QueryAgentEmployeeData();
         });
 
         //點擊代理人
@@ -253,7 +241,8 @@ $("#viewAgentLeave").pagecontainer({
         //清除代理請假選項
         $("#emptyAgentForm").on("click", function() {
             //清除部門別&代理人
-            getAllDeptList();
+            $("#agentDept").empty();
+            tplJS.DropdownList("viewAgentLeave", "agentDept", "prepend", "typeB", deptData);
             $("#agentName").empty();
             $("#dept-agent-popup-option-list").empty();
             tplJS.DropdownList("viewAgentLeave", "agentName", "prepend", "typeB", deptAgentData);
@@ -265,15 +254,13 @@ $("#viewAgentLeave").pagecontainer({
             if ($('#toBeAgent').hasClass('leavePreview-active-btn')) {
                 loadingMask("show");
                 myEmpNo = agent_ID;
-                //myEmpNo = "1607126";
                 
                 localStorage.removeItem("leaveDefaultSetting");
                 //默认设置GetDefaultSetting
-                if(localStorage.getItem("leaveDefaultSetting") == null) {
-                    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
-                                               + myEmpNo
-                                               + "</EmpNo><LastModified></LastModified></LayoutHeader>";
-                } 
+
+                getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
+                                           + myEmpNo
+                                           + "</EmpNo><LastModified></LastModified></LayoutHeader>";               
 
                 GetDefaultSetting();
                 //选择日期为“请选择”
