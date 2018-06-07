@@ -66,5 +66,9 @@ $("#viewMain3").pagecontainer({
             $.mobile.changePage('#viewAppList');
         });
 
+        $("#faqTest").on("click", function () {
+            $.mobile.changePage('#viewFAQ');
+        });
+
     }
 });

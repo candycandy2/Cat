@@ -61,9 +61,10 @@
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <select class="form-control" name="domain" id="domain">
-                    <option value="BenQ">BenQ</option>
-                    <option value="Qgroup">Qgroup</option>
+                <select class="form-control darren-test" name="domain" id="domain">
+                    @foreach($data as $company)
+                        <option value="{{$company->user_domain}}">{{$company->name}}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="form-group has-feedback">
@@ -136,6 +137,17 @@
                 error.appendTo(element.parent('div'));
           }
         });
+
+        //Remember Me
+        var remember = "{{ Session::get('remember') }}";
+
+        if (remember == "on") {
+            $("#remember").prop("checked", true);
+            $("#remember").parent().addClass("checked");
+            $("#loginid").val("{{ Session::get('login_id') }}");
+            $("#domain").val("{{ Session::get('domain') }}");
+            $("#lang").val("{{ Session::get('lang') }}");
+        }
     });
 </script>
 @include('layouts.message')

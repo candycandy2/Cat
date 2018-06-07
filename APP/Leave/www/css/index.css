@@ -1055,6 +1055,14 @@ html body .ui-group-theme-a a:visited {
     display: none;
 }
 
+#otherReasonArea {
+    display: none;
+}
+
+.date-component input[type="date"]>a {
+    height: 0;
+}
+
 /********************************************** mypanel *********************************************/
 
 #mypanel .panel-content {
