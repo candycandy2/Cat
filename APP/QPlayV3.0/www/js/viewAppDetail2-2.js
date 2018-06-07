@@ -326,7 +326,9 @@ $("#viewAppDetail2-2").pagecontainer({
 
         //版本记录
         $(".version").on("click", function () {
-            $.mobile.changePage("#viewVersionRecord");
+            var versionData = new getVersionRecord(checkAPPKey);
+            //var versionData = new getVersionRecord();
+            
         });
 
 
