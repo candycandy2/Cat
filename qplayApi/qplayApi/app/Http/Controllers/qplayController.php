@@ -304,12 +304,14 @@ class qplayController extends Controller
                 //Check user password with LDAP
                 //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
 		        //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
-                $companyData = $companyService->getEnableCompanyList("user_domain", $domain);
+                $companyData = $companyService->getCompanyData("user_domain", $domain);
                 foreach ($companyData as $company) {
                     $loginType = $company->login_type;
                     $serverIP = $company->server_ip;
                     $serverPort = $company->server_port;
                 }
+
+                $loginFail = false;
 
                 if ($loginType == "LDAP") {
                     $LDAP_SERVER_IP = "LDAP://" . $serverIP;
@@ -319,17 +321,46 @@ class qplayController extends Controller
 
                     if(!$bind)
                     {
-                        $message = CommonUtil::getMessageContentByCode(ResultCode::_000902_passwordError);
-                        $finalUrl = urlencode($redirect_uri.'?result_code='
-                            .ResultCode::_000902_passwordError
-                            .'&message='
-                            .$message);
-                        $result = ['result_code'=>ResultCode::_000902_passwordError,
-                            'message'=>$message,
-                            'content'=>array("redirect_uri"=>$finalUrl)];
-                        $result = response()->json($result);
-                        return $result;
+                        $loginFail = true;
                     }
+                } else if ($loginType == "API") {
+                    $header = [
+                        'Content-type: application/json; charset=utf-8',
+                        'Content-Length: 0',
+                        'Signature-Time: ' . time(),
+                        'loginid: ' . $loginid,
+                        'password: ' . $password,
+                        'domain: ' . $domain
+                    ];
+
+                    $resultCode = 0;
+                    $curlPATH = "http://" . $serverIP . "/QTunnel/QTunnel.asmx/Login";
+
+                    $resultJSON = json_decode($this->callAPI("POST", $curlPATH, $header, $serverPort), true);
+                    $result = json_decode($resultJSON["d"], true);
+
+                    foreach ($result as $parameter => $value) {
+                        if ($parameter == "ResultCode") {
+                            $resultCode = $value;
+                        }
+                    }
+
+                    if ($resultCode !== "1") {
+                        $loginFail = true;
+                    }
+                }
+
+                if ($loginFail) {
+                    $message = CommonUtil::getMessageContentByCode(ResultCode::_000902_passwordError);
+                    $finalUrl = urlencode($redirect_uri.'?result_code='
+                        .ResultCode::_000902_passwordError
+                        .'&message='
+                        .$message);
+                    $result = ['result_code'=>ResultCode::_000902_passwordError,
+                        'message'=>$message,
+                        'content'=>array("redirect_uri"=>$finalUrl)];
+                    $result = response()->json($result);
+                    return $result;
                 }
 
                 //Check uuid exist
@@ -707,12 +738,14 @@ class qplayController extends Controller
                 //Check user password with LDAP
                 //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
 		        //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
-                $companyData = $companyService->getEnableCompanyList("user_domain", $domain);
+                $companyData = $companyService->getCompanyData("user_domain", $domain);
                 foreach ($companyData as $company) {
                     $loginType = $company->login_type;
                     $serverIP = $company->server_ip;
                     $serverPort = $company->server_port;
                 }
+
+                $loginFail = false;
 
                 if ($loginType == "LDAP") {
                     $LDAP_SERVER_IP = "LDAP://" . $serverIP;
@@ -722,21 +755,49 @@ class qplayController extends Controller
 
                     if(!$bind)
                     {
-                        $message = CommonUtil::getMessageContentByCode(ResultCode::_000902_passwordError);
-                        $finalUrl = urlencode($redirect_uri.'?result_code='
-                            .ResultCode::_000902_passwordError
-                            .'&message='
-                            .$message);
-                        $result = ['result_code'=>ResultCode::_000902_passwordError,
-                            'message'=>$message,
-                            'content'=>array("redirect_uri"=>$finalUrl)];
-                        return response()->json($result);
+                        $loginFail = true;
                     }
+                } else if ($loginType == "API") {
+                    $header = [
+                        'Content-type: application/json; charset=utf-8',
+                        'Content-Length: 0',
+                        'Signature-Time: ' . time(),
+                        'loginid: ' . $loginid,
+                        'password: ' . $password,
+                        'domain: ' . $domain
+                    ];
+
+                    $resultCode = 0;
+                    $curlPATH = "http://" . $serverIP . "/QTunnel/QTunnel.asmx/Login";
+
+                    $resultJSON = json_decode($this->callAPI("POST", $curlPATH, $header, $serverPort), true);
+                    $result = json_decode($resultJSON["d"], true);
+
+                    foreach ($result as $parameter => $value) {
+                        if ($parameter == "ResultCode") {
+                            $resultCode = $value;
+                        }
+                    }
+
+                    if ($resultCode !== "1") {
+                        $loginFail = true;
+                    }
+                }
+
+                if ($loginFail) {
+                    $message = CommonUtil::getMessageContentByCode(ResultCode::_000902_passwordError);
+                    $finalUrl = urlencode($redirect_uri.'?result_code='
+                        .ResultCode::_000902_passwordError
+                        .'&message='
+                        .$message);
+                    $result = ['result_code'=>ResultCode::_000902_passwordError,
+                        'message'=>$message,
+                        'content'=>array("redirect_uri"=>$finalUrl)];
+                    return response()->json($result);
                 }
 
                 //Check uuid exist
                 //Check user
-
 
                 $token = uniqid();  //生成token
                 $nowTimestamp = time();
@@ -2887,5 +2948,57 @@ SQL;
     public function loginView(CompanyService $companyService)
     {
         return view('login')->with('data', $companyService->getEnableCompanyList());
+    }
+
+    /**
+     * CURL Call API
+     * @param  String      $method (POST|GET)
+     * @param  String      $url    API URL
+     * @param  Array|array $header request header
+     * @param  Integer     $port   request port
+     * @param  array       $data   parameter
+     * @return mixed               API result
+     */
+    private function callAPI($method, $url, Array $header = array(), $port = "", $data = false)
+    {
+        $curl = curl_init();
+
+        switch ($method) {
+            case "POST":
+                curl_setopt($curl, CURLOPT_POST, 1);
+
+                if ($data) {
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                } else {
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array()));
+                }
+                break;
+            case "PUT":
+                curl_setopt($curl, CURLOPT_PUT, 1);
+                break;
+            default:
+                if ($data)
+                    $url = sprintf("%s?%s", $url, http_build_query($data));
+        }
+
+        // Optional Authentication:
+        // Set header
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        //Set Port
+        if (strlen($port) > 0) {
+            curl_setopt($curl, CURLOPT_PORT, $port);
+        }
+
+        if (!$result = curl_exec($curl)) {
+            trigger_error(curl_error($curl));
+        }
+
+        curl_close($curl);
+
+        return $result;
     }
 }
