@@ -35,11 +35,13 @@ QTunnel/QTunnel.asmx
 QTunnel/Web.config
 QTunnel/bin/QTunnel.dll
 QTunnel/bin/Newtonsoft.Json.dll
-QTunnel/bin/QTunnel.dll.config
-QTunnel/bin/QTunnel.pdb
 QTunnel/test/login.html
 QTunnel/test/js/jquery-1.12.3.min.js
-2. 
+2. 設定QTunnel/Web.config
+<add key="serverPath" value="LDAP://10.82.12.61/" />
+3. 匯入qplay GPG public key
+gpg --import qlay_B40883DB_Secret.asc
+
 ```
 
 ----
