@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -341,7 +341,7 @@ function getVersionRecord(key) {
 
             for (var i in versionLogList) {
                 content += '<div class="version-record-list"><div class="font-style12">' +
-                versionLogList[i].version_name +
+                    versionLogList[i].version_name +
                     '</div><div class="font-style11">' +
                     new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
                     '</div><div class="font-style11">' +
@@ -367,6 +367,10 @@ Date.prototype.FormatReleaseDate = function () {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
 }
 
+function prevMonthLastDate(year, month, start, index) {
+    var totalDay = new Date(year, month - 1, 0);
+    return totalDay.getDate() - start + 1 + index;
+}
 
 //Change event type
 $(document).on("click", ".event-type", function () {

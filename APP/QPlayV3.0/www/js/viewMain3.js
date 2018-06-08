@@ -70,5 +70,9 @@ $("#viewMain3").pagecontainer({
             $.mobile.changePage('#viewFAQ');
         });
 
+        $("#calendarTest").on("click", function () {
+            $.mobile.changePage('#viewMyCalendar');
+        });
+
     }
 });
