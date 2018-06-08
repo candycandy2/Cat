@@ -1144,3 +1144,9 @@ input[type=radio]:checked + label {
     display: none;
     padding: 3.188vw 15vw 3.188vw 5.62vw;
 }
+
+
+/*************************** viewMyCalendar ********************************/
+#viewMyCalendar .ui-content {
+    padding: 0 !important;
+}
