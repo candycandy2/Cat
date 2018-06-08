@@ -39,6 +39,7 @@ var dayTable = {
     "4": "(四)",
     "5": "(五)"
 };
+var recordStartText = "";
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
