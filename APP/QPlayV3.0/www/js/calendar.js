@@ -99,7 +99,7 @@ function Calendar(options) {
             if (_infoData[_year][_month]["status"] == 1) {
                 showCalendarHolidayInfo(_year, _month);
             } else {
-                $(opts.showInfoListTo).hide();
+                //$(opts.showInfoListTo).hide();
             }
         }
         if ($calendarElement.data("showNextyear") == false && _month == 11) {
@@ -250,7 +250,7 @@ function Calendar(options) {
                         if (_infoData[_year][_month]["status"] == 1) {
                             showCalendarHolidayInfo(_year, _month);
                         } else {
-                            $(opts.showInfoListTo).hide();
+                            //$(opts.showInfoListTo).hide();
                         }
                     }
                     if ($calendarElement.data('changeDateEventListener') != undefined) {
@@ -294,7 +294,7 @@ function Calendar(options) {
                         if (_infoData[_year][_month]["status"] == 1) {
                             showCalendarHolidayInfo(_year, _month);
                         } else {
-                            $(opts.showInfoListTo).hide();
+                            //$(opts.showInfoListTo).hide();
                         }
                     }
                     if ($calendarElement.data('changeDateEventListener') != undefined) {
@@ -400,13 +400,13 @@ function Calendar(options) {
                     $dowElement.data('hasEvent', false);
 
                     if ($calendarElement.data('showToday') === true) {
-                        if (month === time.getMonth() && currDayOfMonth === time.getDate()) {
+                        if (year === time.getFullYear() && month === time.getMonth() && currDayOfMonth === time.getDate()) {
                             $dayElement.parent('#' + dateId).addClass("today");
                         }
                     }
                     if ($calendarElement.data('showWeekend') === true) {
                         if (dow == 0 || dow == 6) {
-                            $dowElement.addClass("weekend");
+                            //$dowElement.addClass("weekend");
                             $dowElement.children("div:first").addClass("weekend");
                         }
                     }
@@ -573,30 +573,39 @@ function Calendar(options) {
 
     /* ----- Helper functions ----- */
     function showCalendarHolidayInfo(year, month) {
-        var holidayList = "";
-        var dateArray = _infoData[year][month]["holiday"]["date"].split(",");
-        var strArray = _infoData[year][month]["holiday"]["str"];
-        $(opts.showInfoListTo).empty();
+        //var holidayList = "";
+        //var dateArray = _infoData[year][month]["holiday"]["date"].split(",");
+        var dateArray = _infoData[year][month]["holiday"];
+        //var strArray = _infoData[year][month]["holiday"]["str"];
+        //$(opts.showInfoListTo).empty();
         for (var i = 0; i < dateArray.length; i++) {
-            $("#" + _id + " #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
+            //$("#" + _id + " #" + dateArray[i].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
+            $("#" + _id + " #" + dateArray[i]["data"].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
+
+            if (dateArray[i]["str"] != "") {
+                var holidayName = $('<div class="holiday-str">' + dateArray[i]["str"] + '</div>');
+                $("#" + _id + " #" + dateArray[i]["data"].match(/^\s{0,}(\d*)/)[1]).parent().append(holidayName);
+            }
+            
         }
         showCalendarWorkdayInfo(year, month);
-        for (var i = 0; i < strArray.length; i++) {
-            holidayList += '<li>' +
-                '<span>' +
-                strArray[i] +
-                '</span>' +
-                '</li>';
-        }
-        $(opts.showInfoListTo).append($("<ul></ul>").append($(holidayList))).enhanceWithin();
-        $(opts.showInfoListTo).show();
+        // for (var i = 0; i < strArray.length; i++) {
+        //     holidayList += '<li>' +
+        //         '<span>' +
+        //         strArray[i] +
+        //         '</span>' +
+        //         '</li>';
+        // }
+        //$(opts.showInfoListTo).append($("<ul></ul>").append($(holidayList))).enhanceWithin();
+        //$(opts.showInfoListTo).show();
     }
 
     function showCalendarWorkdayInfo(year, month) {
         var dateArr = _infoData[year][month]["workday"]["date"].split(",");
         if (dateArr != "") {
             for (var i = 0; i < dateArr.length; i++) {
-                $("#" + _id + " #" + dateArr[i].match(/^\s{0,}(\d*)/)[1]).parent().removeClass("weekend");
+                $("#" + _id + " #" + dateArr[i].match(/^\s{0,}(\d*)/)[1]).removeClass("weekend");
+                //$("#" + _id + " #" + dateArr[i].match(/^\s{0,}(\d*)/)[1]).parent().removeClass("weekend");
             }
         }
     }
@@ -672,10 +681,6 @@ function Calendar(options) {
         return totalDay.getDate() - start + 1 + index;
     }
 
-    function nextMonthFirstDay(year, month, index) {
-        return totalDay.getDate() - start + 1 + index;
-    }
-
     this.refreshInfoList = function (data) {
         _infoData = data;
         drawTable($calendarElement, $tableObj, _year, _month);
@@ -683,7 +688,7 @@ function Calendar(options) {
             if (_infoData[_year][_month]["status"] == 1) {
                 showCalendarHolidayInfo(_year, _month);
             } else {
-                $(opts.showInfoListTo).hide();
+                //$(opts.showInfoListTo).hide();
             }
         }
     }
