@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -318,26 +318,58 @@ function addDownloadHit(appname) {
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
 
     }();
-
 }
 
-function getVersionRecord() {
+function getVersionRecord(key) {
+    key = key || null;
+
     var self = this;
 
-    this.successCallback = function (data) {
-        var resultcode = data['result_code'];
+    if (key == null) {
+        key = qplayAppKey;
+    }
 
-        if (resultcode == "1") {
-            
+    var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
+    //var queryStr = "&app_key=appqplaydev&device_type=android";
+
+    this.successCallback = function (data) {
+        console.log(data);
+
+        if (data['result_code'] == "1") {
+            var versionLogList = data['content'].version_list;
+            var content = '';
+
+            for (var i in versionLogList) {
+                content += '<div class="version-record-list"><div class="font-style12">' +
+                    versionLogList[i].version_name +
+                    '</div><div class="font-style11">' +
+                    new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
+                    '</div><div class="font-style11">' +
+                    versionLogList[i].version_log +
+                    '</div></div>';
+            }
+
+            $("#versionRecordList").html('').append(content);
+            $.mobile.changePage("#viewVersionRecord");
         }
     };
 
     this.failCallback = function (data) { };
 
     var __construct = function () {
-        QPlayAPI("POST", "", self.successCallback, self.failCallback, null, null);
-    }();
+        QPlayAPI("GET", "getVersionLog", self.successCallback, self.failCallback, null, queryStr);
 
+    }();
+}
+
+
+Date.prototype.FormatReleaseDate = function () {
+    return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
+}
+
+function prevMonthLastDate(year, month, start, index) {
+    var totalDay = new Date(year, month - 1, 0);
+    return totalDay.getDate() - start + 1 + index;
 }
 
 //Change event type
