@@ -31,6 +31,9 @@ var viewMainInitial = true;
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
 
+//viewMyCalendar
+var reserveCalendar;
+
 window.initialSuccess = function (data) {
     if (data !== undefined) {
 
@@ -81,6 +84,81 @@ window.initialSuccess = function (data) {
     appInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
+}
+
+$(document).ready(function () {
+    var siteCode = localStorage.getItem("site_code");
+
+    if (siteCode == "QCS" || siteCode == "BQC" || siteCode == "QTY") {
+        $.getJSON("string/" + siteCode + "-holiday.json", function (data) {
+            //holidayData = data;
+            initialCalendar(data);
+        });
+    } else {
+        initialCalendar(null);
+    }
+});
+
+function initialCalendar(holidayData) {
+    if (holidayData == null) {
+        reserveCalendar = new Calendar({
+            renderTo: "#viewMyCalendar #myCalendar",
+            id: "viewPersonalLeave-calendar",
+            language: "default",
+            show_days: true,
+            weekstartson: 0,
+            markToday: true,
+            markWeekend: true,
+            showNextyear: true,
+            ///infoData: holidayData,
+            showInfoListTo: "#viewMyCalendar .infoList",
+            // changeDateEventListener: function(year, month) {
+            //     queryCalendarData = "<LayoutHeader><Year>" +
+            //         year +
+            //         "</Year><Month>" +
+            //         month +
+            //         "</Month><EmpNo>" +
+            //         myEmpNo +
+            //         "</EmpNo></LayoutHeader>";
+            //     //throw new Error("call QueryCalendarData.");
+            //     //呼叫API
+            //     QueryCalendarData();
+            // },
+            nav_icon: {
+                prev: '<img src="img/prev.png" id="left-navigation" class="nav_icon">',
+                next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
+            }
+        });
+    } else {
+        reserveCalendar = new Calendar({
+            renderTo: "#viewMyCalendar #myCalendar",
+            id: "viewPersonalLeave-calendar",
+            language: "default",
+            show_days: true,
+            weekstartson: 0,
+            markToday: true,
+            markWeekend: true,
+            showNextyear: true,
+            infoData: holidayData,
+            showInfoListTo: "#viewMyCalendar .infoList",
+            // changeDateEventListener: function(year, month) {
+            //     queryCalendarData = "<LayoutHeader><Year>" +
+            //         year +
+            //         "</Year><Month>" +
+            //         month +
+            //         "</Month><EmpNo>" +
+            //         myEmpNo +
+            //         "</EmpNo></LayoutHeader>";
+            //     //throw new Error("call QueryCalendarData.");
+            //     //呼叫API
+            //     QueryCalendarData();
+            // },
+            nav_icon: {
+                prev: '<img src="img/prev.png" id="left-navigation" class="nav_icon">',
+                next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
+            }
+        });
+    }
 }
 
 //Plugin-QPush, Now only QPLay need to set push-toekn
@@ -365,11 +443,6 @@ function getVersionRecord(key) {
 
 Date.prototype.FormatReleaseDate = function () {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
-}
-
-function prevMonthLastDate(year, month, start, index) {
-    var totalDay = new Date(year, month - 1, 0);
-    return totalDay.getDate() - start + 1 + index;
 }
 
 //Change event type

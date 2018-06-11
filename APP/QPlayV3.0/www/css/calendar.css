@@ -5,6 +5,7 @@
 .QPlayCalendar .table th, .QPlayCalendar .table td {
     text-align: center;
     vertical-align: top;
+    width: 14.25vw;
 }
 
 .QPlayCalendar .table td > div:nth-of-type(1) {
@@ -92,6 +93,16 @@ table {
 .holiday {
     /* color: #f69e1e; */
     color: #f6c1af !important;
+}
+
+.holiday-str {
+    height: 3.85vw;
+    background: #e53934;
+    color: #fff !important;
+    font-size: 3.349vw !important;
+    /* font-weight: bold; */
+    font-family: "Arial", "微軟中黑體";
+    line-height: 3.85vw;
 }
 
 .today {
