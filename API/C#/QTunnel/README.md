@@ -30,6 +30,12 @@ QTunnel APIs, 在DMZ區提供介接的服務, 目前提供Login的介接
 2. IIS Server
 3. GPG  https://gnupg.org/download
 
+For windows
+下載網址 : https://www.gpg4win.org/
+1. 安裝gpg4win-3.1.1.exe
+2. 執行gpg --import qlay_B40883DB_Secret.asc
+3. 可以用gpg —list-keys確認
+
 安裝步驟
 1. 建立QTunnel IIS目錄,目標 https://[IP]/QTunnel/QTunnel.asmx/Login
 檔案結構如下
