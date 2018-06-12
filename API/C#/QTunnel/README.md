@@ -24,10 +24,12 @@ Login |
 ```
 QTunnel APIs, 在DMZ區提供介接的服務, 目前提供Login的介接
 相關防火牆, VPN, NAT設置, 必須提前完成
+
 所需環境
 1. Windos 2016 NT Server
 2. IIS Server
 3. GPG  https://gnupg.org/download
+
 安裝步驟
 1. 建立QTunnel IIS目錄,目標 https://[IP]/QTunnel/QTunnel.asmx/Login
 檔案結構如下
@@ -52,7 +54,7 @@ gpg --import qlay_B40883DB_Secret.asc
 
 ### 請求方法
 ```
-GET /login?lang=en-us
+GET /login
 ```
 
 ### header請求參數
