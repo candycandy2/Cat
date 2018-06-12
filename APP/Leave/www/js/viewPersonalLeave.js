@@ -1254,11 +1254,6 @@ $("#viewPersonalLeave").pagecontainer({
             if (basedayList) {
                 popupMsgInit('.basedayList');
             } else {
-                if ($("#chooseBaseday").text() == selectBasedayStr) {
-                    recordStartText = new Date(Date.now());
-                } else {
-                    recordStartText = new Date($("#chooseBaseday").text());
-                }                       
                 //datetime-local
                 $('#newBaseDate').datetimepicker('show');
             }
@@ -1299,11 +1294,6 @@ $("#viewPersonalLeave").pagecontainer({
             //如果點擊 “選擇其他基準日” ，則彈出datetime
             if (self === otherBasedayStr) {
                 baseday = "";
-                if ($("#chooseBaseday").text() == selectBasedayStr) {
-                    recordStartText = new Date(Date.now());
-                } else {
-                    recordStartText = new Date($("#chooseBaseday").text());
-                }     
                 $('#oldBaseDate').datetimepicker('show');
             } else {
                 baseday = self;
@@ -1358,21 +1348,12 @@ $("#viewPersonalLeave").pagecontainer({
                 if (needBaseday) {
                     //再判斷基準日是否已经选择
                     if ($("#chooseBaseday").text() !== selectBasedayStr) {
-                        if ($("#startText").text() == pleaseSelectStr) {
-                            recordStartText = new Date(Date.now());
-                        } else {
-                            recordStartText = new Date($("#startText").text());
-                        }                       
+                        //$("#startDate").trigger("focus");
                         $('#starDateTime').datetimepicker('show');
                     } else {
                         popupMsgInit('.basedayFirst');
                     }
-                } else {                   
-                    if ($("#startText").text() == pleaseSelectStr) {
-                        recordStartText = new Date(Date.now());
-                    } else {
-                        recordStartText = new Date($("#startText").text());
-                    }                       
+                } else {
                     $('#starDateTime').datetimepicker('show');
                 }
             }
@@ -1478,9 +1459,9 @@ $("#viewPersonalLeave").pagecontainer({
             if ($("#startText").text() == pleaseSelectStr) {
                 popupMsgInit('.startdayFirst');
             } else {
-                recordStartText = new Date($("#startText").text());
                 $('#endDateTime').datetimepicker('show');
             }
+
         });
 
         $("#endDateTime").on("blur", function() {

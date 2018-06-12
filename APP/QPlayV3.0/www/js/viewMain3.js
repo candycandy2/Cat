@@ -66,13 +66,5 @@ $("#viewMain3").pagecontainer({
             $.mobile.changePage('#viewAppList');
         });
 
-        $("#faqTest").on("click", function () {
-            $.mobile.changePage('#viewFAQ');
-        });
-
-        $("#calendarTest").on("click", function () {
-            $.mobile.changePage('#viewMyCalendar');
-        });
-
     }
 });
