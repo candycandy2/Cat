@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Contracts\Validation;
 use Mockery\CountValidator\Exception;
 use App\Services\AppVersionService;
-use App\Services\ProjectService;
 use App\lib\ResultCode;
 use App\lib\FilePath;
 use App\lib\CommonUtil;
@@ -20,11 +19,9 @@ class appVersionController extends Controller
 
     protected $appVersionService;
 
-    public function __construct(AppVersionService $appVersionService,
-                                ProjectService $projectService)
+    public function __construct(AppVersionService $appVersionService)
     {
         $this->appVersionService = $appVersionService;
-        $this->projectService = $projectService;
     }
     /**
      * 多筆刪除App相關檔案
@@ -163,7 +160,7 @@ class appVersionController extends Controller
             return response()->json($result);
         }
 
-        $validator = Validator::make(array_map('strtolower', $request->all()), [
+        $validator = Validator::make($request->all(), [
             'uuid'=>'required',
             'app_key' => 'required',
             'device_type' => 'required|in:ios,android',
@@ -176,6 +173,7 @@ class appVersionController extends Controller
              return response()->json(['result_code'=>$validator->errors()->first(),
                                       'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
         }
+    
         $uuid = $input['uuid'];
         $appKey = $input['app_key'];
         $deviceType = $input['device_type'];
@@ -193,15 +191,9 @@ class appVersionController extends Controller
             return response()->json($result);
         }
         
-        $appInfo = $this->projectService->getAppInfoByAppKey($appKey);
-       
-        if(is_null($appInfo)){
-             return $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
-                'content'=>array('version_list'=>[])
-            ];
-        }
-        $versionLogList =  $this->appVersionService->getVersionLog($appInfo->app_id, $deviceType);
+        $appInfo = CommonUtil::getAppHeaderInfo();
+        $versionLogList =  $this->appVersionService->getVersionLog($appInfo->row_id, $deviceType);
+
         $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                 'content'=>array('version_list'=>$versionLogList)

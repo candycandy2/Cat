@@ -43,6 +43,7 @@ QTunnel/test/js/jquery-1.12.3.min.js
 <add key="serverPath" value="LDAP://10.82.12.61/" />
 3. 匯入qplay GPG public key
 gpg --import qlay_B40883DB_Secret.asc
+
 ```
 
 ----
