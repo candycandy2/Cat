@@ -53,7 +53,7 @@ gpg --import qlay_B40883DB_Secret.asc
 
 ### 請求方法
 ```
-GET /login?lang=en-us
+GET /login
 ```
 
 ### header請求參數
