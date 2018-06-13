@@ -840,7 +840,7 @@ $("#viewPersonalLeave").pagecontainer({
                 if (localStorage.getItem("agent") !== null) {
                     queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>' +
                         myEmpNo +
-                        '</EmpNo><qEmpno>' +
+                        '</EmpNo><qSite></qSite><qDeptCode></qDeptCode><qEmpno>' +
                         JSON.parse(localStorage.getItem("agent"))[1] +
                         '</qEmpno><qName></qName></LayoutHeader>';
                     //根据id获取代理人信息

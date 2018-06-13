@@ -5,7 +5,13 @@
 .QPlayCalendar .table th, .QPlayCalendar .table td {
     text-align: center;
     vertical-align: top;
-    width: 14.25vw;
+    width: 14.25vw !important;
+    overflow: hidden;
+    padding: 0;
+}
+
+.QPlayCalendar .table td > div {
+    width: 100%;
 }
 
 .QPlayCalendar .table td > div:nth-of-type(1) {
@@ -23,7 +29,6 @@
 
 .QPlayCalendar .table tr.calendar-dow {
     height: 28VW;
-    /* height: 27VW; */
 }
 
 .QPlayCalendar .calendar-month-header {
@@ -53,17 +58,17 @@
     color: #263238;
 }
 
-table {
+.QPlayCalendar table {
     display: table;
     border-collapse: separate;
     border-spacing: 0px;
     /* border-style: solid;
     border-width: 0.1px;
-    border-color: #d6d6d6; */
-    width: 100VW;
-    /* width: 92.58VW;
+    border-color: #d6d6d6;
+    width: 92.58VW;
     margin: 0VW 3.71VW 0VW 3.71VW;
     padding: 0VW 3VW 0VW 3VW; */
+    width: 99.75vw;
 }
 
 .QPlayCalendar .table .calendar-dow-header th {
@@ -95,19 +100,28 @@ table {
     color: #f6c1af !important;
 }
 
-.holiday-str {
-    height: 3.85vw;
-    background: #e53934;
-    color: #fff !important;
-    font-size: 3.349vw !important;
-    /* font-weight: bold; */
-    font-family: "Arial", "微軟中黑體";
-    line-height: 3.85vw;
-}
-
 .today {
     background-color: #f4f5f5;
 }
+
+.holiday-str {
+    height: 3.85vw;
+    background: #e53934;
+    color: #fff;
+    /* font-size: 3.349vw !important; */
+    font-size: 3vw;
+    font-family: "Arial", "微軟中黑體";
+}
+
+.reserve-str {
+    height: 4.85vw;
+    /* background: #f4f5f5; */
+    color: #009688;
+    font-size: 3vw;
+    font-family: "Arial", "微軟中黑體";
+}
+
+
 
 .td-bottom-border {
     border-bottom-style: solid;

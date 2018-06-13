@@ -43,9 +43,13 @@ $("#viewMain3").pagecontainer({
         /********************************** page event ***********************************/
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
             if (viewMainInitial) {
+                //load js
                 loadAndRunScript(0, widgetList[0].enabled);
                 viewMainInitial = false;
             }
+
+            //reserve list
+            formatReserveList();
         });
 
         $("#viewMain3").scroll(function () {

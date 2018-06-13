@@ -88,7 +88,8 @@ window.GetUserAuthority = function() {
         //console.log(data);
         if (data['ResultCode'] === "1") {
             var callbackData = data['Content']["AuthorizedSite"];
-            if (callbackData.length == 0) {
+            //alert("1. callback length:"+ callbackData.length);
+            if (callbackData.length === 0 && myEmpNo === originalEmpNo) {
                 $("#mypanelviewAgentLeave").hide();
                 if (localStorage.getItem("leaveDefaultSetting") == null) {
                     getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
@@ -109,6 +110,9 @@ window.GetUserAuthority = function() {
                 //data scroll menu
                 dateInit(); 
                 viewPersonalLeaveShow = false;
+            } else if (callbackData.length === 0 && myEmpNo !== originalEmpNo) {
+                $("#mypanelviewAgentLeave").hide();
+                restartAgentLeave();
             } else {
                 $("#mypanelviewAgentLeave").show();
                 restartAgentLeave();
