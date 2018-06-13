@@ -23,7 +23,7 @@ class AppVersionRepository
      */
     public function getVersionLog($appId, $deviceType, $cnt){
         return $this->appVersion
-               ->select('version_code', 'version_name', 'version_log', 'version_log', 'ready_date as online_date')
+               ->select('version_code', 'version_name', 'version_log', 'ready_date as online_date')
                ->where('app_row_id', $appId)
                ->where('device_type', $deviceType)
                ->whereNotNull('ready_date')
