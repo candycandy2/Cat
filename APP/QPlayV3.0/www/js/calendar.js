@@ -15,7 +15,7 @@ if (typeof jQuery == 'undefined') {
  * @returns {*}
  */
 function Calendar(options) {
-    var $calendarElement, _id, _year, _month, _nextyear, _infoData;
+    var $calendarElement, _id, _year, _month, _nextyear, _infoData, _reserveData;
     var _showInfoList = false;
     var opts = $.extend({}, calendar_defaults(), options);
     var languageSettings = calendar_language(opts.language);
@@ -41,6 +41,8 @@ function Calendar(options) {
             throw new Error("You must assign the infoData for this calendar.");
         }
     }
+
+    _reserveData = opts.reserveData;
 
     $calendarElement.attr('id', _id);
     $calendarElement.addClass("QPlayCalendar");
@@ -101,6 +103,9 @@ function Calendar(options) {
             } else {
                 //$(opts.showInfoListTo).hide();
             }
+        }
+        if (_reserveData != null) {
+            showCalendarReserveInfo(_year, _month);
         }
         if ($calendarElement.data("showNextyear") == false && _month == 11) {
             $("#" + _id + " #right-navigation").css("opacity", "0");
@@ -253,6 +258,9 @@ function Calendar(options) {
                             //$(opts.showInfoListTo).hide();
                         }
                     }
+                    if (_reserveData != null) {
+                        showCalendarReserveInfo(_year, _month);
+                    }
                     if ($calendarElement.data('changeDateEventListener') != undefined) {
                         loadingMask("show");
                         changeDateEventListener(_year, _month + 1);
@@ -296,6 +304,9 @@ function Calendar(options) {
                         } else {
                             //$(opts.showInfoListTo).hide();
                         }
+                    }
+                    if (_reserveData != null) {
+                        showCalendarReserveInfo(_year, _month);
                     }
                     if ($calendarElement.data('changeDateEventListener') != undefined) {
                         loadingMask("show");
@@ -583,10 +594,11 @@ function Calendar(options) {
             $("#" + _id + " #" + dateArray[i]["data"].match(/^\s{0,}(\d*)/)[1]).addClass("holiday");
 
             if (dateArray[i]["str"] != "") {
-                var holidayName = $('<div class="holiday-str">' + dateArray[i]["str"] + '</div>');
-                $("#" + _id + " #" + dateArray[i]["data"].match(/^\s{0,}(\d*)/)[1]).parent().append(holidayName);
+                var $holidayName = $('<div>' + dateArray[i]["str"] + '</div>');
+                $holidayName.addClass("holiday-str");
+                $("#" + _id + " #" + dateArray[i]["data"].match(/^\s{0,}(\d*)/)[1]).parent().append($holidayName);
             }
-            
+
         }
         showCalendarWorkdayInfo(year, month);
         // for (var i = 0; i < strArray.length; i++) {
@@ -608,6 +620,30 @@ function Calendar(options) {
                 //$("#" + _id + " #" + dateArr[i].match(/^\s{0,}(\d*)/)[1]).parent().removeClass("weekend");
             }
         }
+    }
+
+    function showCalendarReserveInfo(year, month) {
+        $.each($("#" + _id + " td"), function (index, item) {
+            for (var i in _reserveData) {
+                if ($(item).attr("id") == i) {
+                    //获取子元素个数，并去除日期元素
+                    var childLength = $(item).children().length;
+                    var reserveLength = _reserveData[i].length;
+
+                    if (reserveLength + childLength > 5) {
+                        for (var j = 0; j < 5 - childLength; j++) {
+                            var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '<div>');
+                            $(item).append($reserveObj);
+                        }
+                    } else {
+                        for (var j = 0; j < _reserveData[i].length; j++) {
+                            var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '<div>');
+                            $(item).append($reserveObj);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     function dateAsString(year, month, day) {
@@ -738,6 +774,7 @@ function calendar_defaults() {
         action: false,
         action_nav: false,
         infoData: undefined,
+        reserveData: null,
         showInfoListTo: undefined,
         showNextyear: false
     };
