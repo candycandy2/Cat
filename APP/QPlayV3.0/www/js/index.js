@@ -575,7 +575,11 @@ function onBackKeyDown() {
             navigator.app.exitApp();
         }
     } else if (activePageID === "viewMain2-1" || activePageID === "viewAppDetail2-2") {
-        $.mobile.changePage('#viewMain2-1');
+        if($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
+            $.mobile.changePage('#viewMain2-1');
+        } else {
+            $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
+        } 
     } else if (activePageID === "viewNewsEvents2-3") {
         if (delMsgActive) {
             editModeChange();
