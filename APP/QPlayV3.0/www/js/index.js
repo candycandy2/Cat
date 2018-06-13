@@ -537,7 +537,7 @@ function getVersionRecord(key) {
                     '</div><div class="font-style11">' +
                     new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
                     '</div><div class="font-style11">' +
-                    versionLogList[i].version_log +
+                    versionLogList[i].version_log.replace(new RegExp('\\r?\n', 'g'), '<br />') +
                     '</div></div>';
             }
 
@@ -575,11 +575,11 @@ function onBackKeyDown() {
             navigator.app.exitApp();
         }
     } else if (activePageID === "viewMain2-1" || activePageID === "viewAppDetail2-2") {
-        if($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
+        if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
             $.mobile.changePage('#viewMain2-1');
         } else {
             $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
-        } 
+        }
     } else if (activePageID === "viewNewsEvents2-3") {
         if (delMsgActive) {
             editModeChange();
