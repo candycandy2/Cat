@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -30,6 +30,9 @@ var viewMainInitial = true;
 
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
+
+//viewMyCalendar
+var reserveCalendar;
 
 window.initialSuccess = function (data) {
     if (data !== undefined) {
@@ -81,6 +84,81 @@ window.initialSuccess = function (data) {
     appInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
+}
+
+$(document).ready(function () {
+    var siteCode = localStorage.getItem("site_code");
+
+    if (siteCode == "QCS" || siteCode == "BQC" || siteCode == "QTY") {
+        $.getJSON("string/" + siteCode + "-holiday.json", function (data) {
+            //holidayData = data;
+            initialCalendar(data);
+        });
+    } else {
+        initialCalendar(null);
+    }
+});
+
+function initialCalendar(holidayData) {
+    if (holidayData == null) {
+        reserveCalendar = new Calendar({
+            renderTo: "#viewMyCalendar #myCalendar",
+            id: "viewPersonalLeave-calendar",
+            language: "default",
+            show_days: true,
+            weekstartson: 0,
+            markToday: true,
+            markWeekend: true,
+            showNextyear: true,
+            ///infoData: holidayData,
+            showInfoListTo: "#viewMyCalendar .infoList",
+            // changeDateEventListener: function(year, month) {
+            //     queryCalendarData = "<LayoutHeader><Year>" +
+            //         year +
+            //         "</Year><Month>" +
+            //         month +
+            //         "</Month><EmpNo>" +
+            //         myEmpNo +
+            //         "</EmpNo></LayoutHeader>";
+            //     //throw new Error("call QueryCalendarData.");
+            //     //呼叫API
+            //     QueryCalendarData();
+            // },
+            nav_icon: {
+                prev: '<img src="img/prev.png" id="left-navigation" class="nav_icon">',
+                next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
+            }
+        });
+    } else {
+        reserveCalendar = new Calendar({
+            renderTo: "#viewMyCalendar #myCalendar",
+            id: "viewPersonalLeave-calendar",
+            language: "default",
+            show_days: true,
+            weekstartson: 0,
+            markToday: true,
+            markWeekend: true,
+            showNextyear: true,
+            infoData: holidayData,
+            showInfoListTo: "#viewMyCalendar .infoList",
+            // changeDateEventListener: function(year, month) {
+            //     queryCalendarData = "<LayoutHeader><Year>" +
+            //         year +
+            //         "</Year><Month>" +
+            //         month +
+            //         "</Month><EmpNo>" +
+            //         myEmpNo +
+            //         "</EmpNo></LayoutHeader>";
+            //     //throw new Error("call QueryCalendarData.");
+            //     //呼叫API
+            //     QueryCalendarData();
+            // },
+            nav_icon: {
+                prev: '<img src="img/prev.png" id="left-navigation" class="nav_icon">',
+                next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
+            }
+        });
+    }
 }
 
 //Plugin-QPush, Now only QPLay need to set push-toekn
@@ -318,7 +396,53 @@ function addDownloadHit(appname) {
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
 
     }();
+}
 
+function getVersionRecord(key) {
+    key = key || null;
+
+    var self = this;
+
+    if (key == null) {
+        key = qplayAppKey;
+    }
+
+    var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
+    //var queryStr = "&app_key=appqplaydev&device_type=android";
+
+    this.successCallback = function (data) {
+        console.log(data);
+
+        if (data['result_code'] == "1") {
+            var versionLogList = data['content'].version_list;
+            var content = '';
+
+            for (var i in versionLogList) {
+                content += '<div class="version-record-list"><div class="font-style12">' +
+                    versionLogList[i].version_name +
+                    '</div><div class="font-style11">' +
+                    new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
+                    '</div><div class="font-style11">' +
+                    versionLogList[i].version_log +
+                    '</div></div>';
+            }
+
+            $("#versionRecordList").html('').append(content);
+            $.mobile.changePage("#viewVersionRecord");
+        }
+    };
+
+    this.failCallback = function (data) { };
+
+    var __construct = function () {
+        QPlayAPI("GET", "getVersionLog", self.successCallback, self.failCallback, null, queryStr);
+
+    }();
+}
+
+
+Date.prototype.FormatReleaseDate = function () {
+    return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
 }
 
 //Change event type
