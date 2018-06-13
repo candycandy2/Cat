@@ -135,7 +135,7 @@ $("#viewLeaveQuery").pagecontainer({
                     //根据代理人工号，查找代理人姓名
                     queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>' +
                         myEmpNo +
-                        '</EmpNo><qEmpno>' +
+                        '</EmpNo><qSite></qSite><qDeptCode></qDeptCode><qEmpno>' +
                         $(delegate).html() +
                         '</qEmpno><qName></qName></LayoutHeader>';
                     //根据id获取代理人姓名
