@@ -2,6 +2,7 @@ var calendarData = false;
 var selectDept = "";
 var selectSite = "";
 var agent_ID = "", agent_Name = "";
+var timoutQueryAgentData = null;
 var deptData = {
     id: "dept-popup",
     option: [],
@@ -104,7 +105,7 @@ $("#viewAgentLeave").pagecontainer({
                 if (data['ResultCode'] === "1") {
                     var agentList = "";
                     if (data['Content'][0] == undefined) {
-                        $("#dept-agent-popup-option").popup("close");
+                        $("#dept-agent-popup-option").popup("close");                       
                         popupMsgInit('.agentDeptNotExist');
                     } else {
                         var callbackData = data['Content'][0]["result"];
@@ -133,10 +134,8 @@ $("#viewAgentLeave").pagecontainer({
                         } else {
                             $("#dept-agent-popup-option").popup("close");
                             popupMsgInit('.agentDeptNotExist');
-                        }
-                        tplJS.DropdownList("viewAgentLeave", "agentName", "prepend", "typeB", deptAgentData);
-                        $("#dept-agent-popup").css("font-family", "Heiti TC");
-                    }           
+                        }                        
+                    } 
 
                 }
             };
@@ -175,14 +174,8 @@ $("#viewAgentLeave").pagecontainer({
             selectSite = chosenDeptList.site;
             $("#agentName").empty();
             $("#dept-agent-popup-option-list").empty();
-            queryAgentEmployeeData = "<LayoutHeader><EmpNo>" +
-                myEmpNo +
-                "</EmpNo><qSite>" +
-                selectSite +
-                "</qSite><qDeptCode>" +
-                selectDept +
-                "</qDeptCode><qEmpno></qEmpno><qName></qName><</LayoutHeader>";
-            QueryAgentEmployeeData();   
+            tplJS.DropdownList("viewAgentLeave", "agentName", "prepend", "typeB", deptAgentData);
+            $("#dept-popup").css("font-family", "Heiti TC");
             checkAgentBeforeSend();
         });
 
@@ -208,6 +201,11 @@ $("#viewAgentLeave").pagecontainer({
         });
 
         $(document).on("keyup", "#searchDeptAgent", function(e) {
+            if ($("#searchDeptAgent").val().length == 0) {
+                $("#loaderQueryAgent").hide();
+                $("#dept-agent-popup-option-list").hide();
+                return;
+            }
             var searchEmpNo = "";
             var searchName = "";
             var searchData = $("#searchDeptAgent").val().match(/^[A-Za-z\.]*/);
@@ -227,7 +225,20 @@ $("#viewAgentLeave").pagecontainer({
                 "</qEmpno><qName>" +
                 searchName +
                 "</qName></LayoutHeader>";
-            QueryAgentEmployeeData();
+            
+            if (timoutQueryAgentData != null) {
+                clearTimeout(timoutQueryAgentData);
+                timoutQueryAgentData = null;
+            }
+            timoutQueryAgentData = setTimeout(function() {
+                //呼叫API
+                QueryAgentEmployeeData();
+                $("#loaderQueryAgent").show();
+                $("#dept-agent-popup-option-list").hide();
+            }, 2000);
+            if (e.which == 13) {
+                $("#searchDeptAgent").blur();
+            }
         });
 
         //點擊代理人
@@ -253,24 +264,12 @@ $("#viewAgentLeave").pagecontainer({
         $("#toBeAgent").on("click", function() {
             if ($('#toBeAgent').hasClass('leavePreview-active-btn')) {
                 loadingMask("show");
-                myEmpNo = agent_ID;
-                
-                localStorage.removeItem("leaveDefaultSetting");
-                //默认设置GetDefaultSetting
-
-                getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
-                                           + myEmpNo
-                                           + "</EmpNo><LastModified></LastModified></LayoutHeader>";               
-
-                GetDefaultSetting();
-                //选择日期为“请选择”
-                $("#startText").text(pleaseSelectStr);
-                $("#endText").text(pleaseSelectStr);
-
-                //data scroll menu
-                dateInit();        
-                viewPersonalLeaveShow = false;
-
+                myEmpNo = agent_ID;               
+                getUserAuthorityData = '<LayoutHeader><EmpNo>' +
+                    myEmpNo +
+                    '</EmpNo></LayoutHeader>';
+                //呼叫API
+                GetUserAuthority();
                 //1.恢复“请选择”
                 var options = '<option hidden>' + pleaseSelectStr + '</option>';
                 $("#agent-popup").find("option").remove().end().append(options);
@@ -280,7 +279,7 @@ $("#viewAgentLeave").pagecontainer({
                 //2.赋值
                 agentid = "";
                 agentName = "";
-                //3.上方出現代理OOO
+                //3.上方出現代理Bar
                 var angetStr = langStr["str_187"]; //"代理";
                 var endStr = langStr["str_188"]; //"結束";
                 var agentHTML = '<div class="agentLeave">' +

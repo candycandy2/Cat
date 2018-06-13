@@ -10,7 +10,7 @@ var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin"];
+var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave"/*, "viewClockin"*/];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var htmlContent = "";
@@ -39,6 +39,7 @@ var dayTable = {
     "4": "(四)",
     "5": "(五)"
 };
+var recordStartText = "";
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
@@ -51,27 +52,6 @@ window.initialSuccess = function() {
     //呼叫API
     GetUserAuthority();
 
-    //默认设置GetDefaultSetting (GetUserAuthority回傳data['ResultCode'] === "1" 不執行else)
-    /*if (localStorage.getItem("leaveDefaultSetting") == null) {
-        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
-            myEmpNo +
-            "</EmpNo><LastModified></LastModified></LayoutHeader>";
-    } else {
-        var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
-        getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
-            myEmpNo +
-            "</EmpNo><LastModified>" +
-            lastModified +
-            "</LastModified></LayoutHeader>";
-    }
-    GetDefaultSetting();
-    //选择日期为“请选择”
-    $("#startText").text(pleaseSelectStr);
-    $("#endText").text(pleaseSelectStr); */
-    //data scroll menu
-    //dateInit(); 
-
-    //restartAgentLeave();
     //changepage
     $.mobile.changePage("#viewPersonalLeave");
 
@@ -108,7 +88,8 @@ window.GetUserAuthority = function() {
         //console.log(data);
         if (data['ResultCode'] === "1") {
             var callbackData = data['Content']["AuthorizedSite"];
-            if (callbackData.length == 0) {
+            //alert("1. callback length:"+ callbackData.length);
+            if (callbackData.length === 0 && myEmpNo === originalEmpNo) {
                 $("#mypanelviewAgentLeave").hide();
                 if (localStorage.getItem("leaveDefaultSetting") == null) {
                     getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
@@ -128,9 +109,14 @@ window.GetUserAuthority = function() {
                 $("#endText").text(pleaseSelectStr); 
                 //data scroll menu
                 dateInit(); 
+                viewPersonalLeaveShow = false;
+            } else if (callbackData.length === 0 && myEmpNo !== originalEmpNo) {
+                $("#mypanelviewAgentLeave").hide();
+                restartAgentLeave();
             } else {
                 $("#mypanelviewAgentLeave").show();
                 restartAgentLeave();
+                startMainPage();
             }
             loadingMask("hide");
         }
@@ -481,7 +467,11 @@ function startMainPage() {
 $(document).on("click", ".agentEnd span", function(e) {
     loadingMask("show");
     myEmpNo = originalEmpNo;
-    restartAgentLeave();
+    getUserAuthorityData = '<LayoutHeader><EmpNo>' +
+        myEmpNo +
+        '</EmpNo></LayoutHeader>';
+    //呼叫API
+    GetUserAuthority();
     //agent
     if(localStorage.getItem("agent") !== null) {
         //viewPersonalLeave
@@ -497,12 +487,8 @@ $(document).on("click", ".agentEnd span", function(e) {
         $("#leave-agent-popup").find("option").remove().end().append(options);
         tplJS.reSizeDropdownList("leave-agent-popup", "typeB");                 
     }
-    //隱藏代理OOO
+    //隱藏代理Bar
     $(".agentName > span:nth-of-type(2)").text("");
     $(".beingAgent").empty().hide();
     $(".page-main").css("padding-top", "3.99vw");
-    //API: GetUserAuthority 判斷有無代理權限
-    $("#mypanelviewAgentLeave").show();
-    //changepage 
-    startMainPage();
 });              

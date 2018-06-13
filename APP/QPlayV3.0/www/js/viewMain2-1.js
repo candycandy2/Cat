@@ -272,6 +272,7 @@ $("#viewMain2-1").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
+            //formatReserveList();
             var eventLogoutConfirmPopupData = {
                 id: "logoutConfirm",
                 content: $("template#tplContactUserPopup").html()
@@ -326,7 +327,8 @@ $("#viewMain2-1").pagecontainer({
             });
 
             $(document).on("click", "#eventTypeSelect #qplay3", function() {
-                $.mobile.changePage('#viewMain3');
+                //$.mobile.changePage('#viewMain3');
+                $.mobile.changePage('#viewFAQ');
             });
 
             $(document).on("click", "#eventTypeSelect .option", function() {

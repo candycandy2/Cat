@@ -304,6 +304,7 @@ $("#viewAppDetail2-2").pagecontainer({
             var currentIndex = $(this).attr("data-index");
 
             $(".ui-btn-word").show();
+            $("#viewAppDetail2-2 .q-btn-header").hide();
             $("#viewAppDetail2-2 .fix").fadeIn(500);
 
             //偏移时先归零，回到初始位置
@@ -321,12 +322,15 @@ $("#viewAppDetail2-2").pagecontainer({
         //取消放大
         $(".ui-btn-word").on("click", function () {
             $(".ui-btn-word").hide();
+            $("#viewAppDetail2-2 .q-btn-header").show();
             $("#viewAppDetail2-2 .fix").fadeOut(500);
         });
 
         //版本记录
         $(".version").on("click", function () {
-            $.mobile.changePage("#viewVersionRecord");
+            var versionData = new getVersionRecord(checkAPPKey);
+            //var versionData = new getVersionRecord();
+            
         });
 
 

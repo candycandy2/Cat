@@ -1090,8 +1090,20 @@ input[type=radio]:checked + label {
 }
 
 .version-record-list {
-    padding: 3vw 5vw;
+    padding: 4.03vw 3.71vw;
     border-bottom: 1px solid #d6d6d6;
+}
+
+.version-record-list > div:nth-of-type(1),
+.version-record-list > div:nth-of-type(3) {
+    color: #263238;
+    text-indent: 2.77vw;
+}
+
+.version-record-list > div:nth-of-type(2) {
+    color: #8FA4AC;
+    padding: 1.86vw 0 3.59vw;
+    text-indent: 2.77vw;
 }
 
 
@@ -1118,9 +1130,9 @@ input[type=radio]:checked + label {
 
 .question-content > div:nth-of-type(2) {
     float: right;
-    width: 5vw;
-    height: 5vw;
-    margin-top: 3vw;
+    width: 4vw;
+    height: 4vw;
+    margin-top: 3.5vw;
 }
 
 .question-content > div:nth-of-type(2) img {
@@ -1131,4 +1143,10 @@ input[type=radio]:checked + label {
 .answer-content {
     display: none;
     padding: 3.188vw 15vw 3.188vw 5.62vw;
+}
+
+
+/*************************** viewMyCalendar ********************************/
+#viewMyCalendar .ui-content {
+    padding: 0 !important;
 }

@@ -43,9 +43,13 @@ $("#viewMain3").pagecontainer({
         /********************************** page event ***********************************/
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
             if (viewMainInitial) {
+                //load js
                 loadAndRunScript(0, widgetList[0].enabled);
                 viewMainInitial = false;
             }
+
+            //reserve list
+            formatReserveList();
         });
 
         $("#viewMain3").scroll(function () {
@@ -68,6 +72,10 @@ $("#viewMain3").pagecontainer({
 
         $("#faqTest").on("click", function () {
             $.mobile.changePage('#viewFAQ');
+        });
+
+        $("#calendarTest").on("click", function () {
+            $.mobile.changePage('#viewMyCalendar');
         });
 
     }
