@@ -272,6 +272,7 @@ $("#viewMain2-1").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
+            //formatReserveList();
             var eventLogoutConfirmPopupData = {
                 id: "logoutConfirm",
                 content: $("template#tplContactUserPopup").html()
