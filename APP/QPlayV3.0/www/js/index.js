@@ -537,7 +537,7 @@ function getVersionRecord(key) {
                     '</div><div class="font-style11">' +
                     new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
                     '</div><div class="font-style11">' +
-                    versionLogList[i].version_log.replace(new RegExp('\\r?\n', 'g'), '<br />') +
+                    versionLogList[i].version_log.replace(new RegExp('\r?\n', 'g'), '<br />') +
                     '</div></div>';
             }
 
