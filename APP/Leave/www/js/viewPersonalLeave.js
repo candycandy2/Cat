@@ -319,7 +319,7 @@ $("#viewPersonalLeave").pagecontainer({
                     //4.如果呼叫成功，必返回LastModified
                     var lastModifiedData = data['Content'][0]["LastModified"];
                     var defaultSetting = localStorage.getItem("leaveDefaultSetting");
-                    alert("3.GetDefaultSetting API defaultSetting:" + defaultSetting);
+                    //console.log("3.GetDefaultSetting API defaultSetting:" + defaultSetting);
                     //如果local为null，或者获取的修改时间大于本地local时间，则需要重新获取数据
                     if (defaultSetting == null || lastModifiedData > JSON.parse(defaultSetting)["LastModified"]) {
                         //1.快速请假页面——部分假别
@@ -370,7 +370,7 @@ $("#viewPersonalLeave").pagecontainer({
                             //alert(leaveObject["name"]);
                             allLeaveList.push(leaveObject);
                         }
-                        alert(allLeaveList);
+                        //console.log(allLeaveList);
                         //获取请假申请，所有类别
                         getAllCategroyList();
 
@@ -879,7 +879,6 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-2").show();
             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-            //alert("3.viewPersonalLeave Pageshow:"+viewPersonalLeaveShow);
             if (!viewPersonalLeaveShow) {
                 //个人剩余假别资讯
                 queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";

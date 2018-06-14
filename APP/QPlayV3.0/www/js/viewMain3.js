@@ -45,11 +45,12 @@ $("#viewMain3").pagecontainer({
             if (viewMainInitial) {
                 //load js
                 loadAndRunScript(0, widgetList[0].enabled);
+
+                //reserve list
+                formatReserveList();
+
                 viewMainInitial = false;
             }
-
-            //reserve list
-            formatReserveList();
         });
 
         $("#viewMain3").scroll(function () {

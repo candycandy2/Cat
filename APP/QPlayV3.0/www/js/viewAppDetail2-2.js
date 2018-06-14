@@ -109,12 +109,12 @@ $("#viewAppDetail2-2").pagecontainer({
             $("#appDetailPicListFullScreen").html('').append(fullContent);
 
             //Auto resize appDetailPicList
-            if (device.platform === "iOS") {
-                var tempHeight = $("#appDetailPicList").height();
-                $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
-                var tempChildHeight = $("#appDetailPicListContent").height();
-                $("#appDetailPicListContent").css("height", parseInt(tempChildHeight + iOSFixedTopPX(), 10) + "px");
-            }
+            // if (device.platform === "iOS") {
+            //     var tempHeight = $("#appDetailPicList").height();
+            //     $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
+            //     var tempChildHeight = $("#appDetailPicListContent").height();
+            //     $("#appDetailPicListContent").css("height", parseInt(tempChildHeight + iOSFixedTopPX(), 10) + "px");
+            // }
 
             //Auto resize appDetailPicListContent
             var pageWidth = $("#viewAppDetail2-2").width();
@@ -315,7 +315,7 @@ $("#viewAppDetail2-2").pagecontainer({
                     offsetArr.push(x);
                 }
             }
-            $("#appDetailPicListFullScreen").parent().scrollLeft(offsetArr[currentIndex]);
+            $("#appDetailPicListFullScreen").parent().scrollLeft(offsetArr[currentIndex] - 20);
 
         });
 
@@ -330,7 +330,7 @@ $("#viewAppDetail2-2").pagecontainer({
         $(".version").on("click", function () {
             var versionData = new getVersionRecord(checkAPPKey);
             //var versionData = new getVersionRecord();
-            
+
         });
 
 
