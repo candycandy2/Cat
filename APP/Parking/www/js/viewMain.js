@@ -178,8 +178,12 @@ $("#viewMain").pagecontainer({
             for (var i = 0, item; item = data[i]; i++) {
                 var newReserve = new reserveObj(spaceId, date);
                 newReserve.addDetail('traceID', item.ReserveTraceID);
+                if(item.EMail == null)
+                    item.EMail = "empty@empty";
                 newReserve.addDetail('eName', item.EMail.substring(0, item.EMail.indexOf('@')));
                 newReserve.addDetail('bTime', item.BTime);
+                if(item.Ext_No == null)
+                    item.Ext_No = "empty-empty";
                 newReserve.addDetail('ext', item.Ext_No.replace('-', ''));
                 newReserve.addDetail('email', item.EMail);
                 newReserve.addDetail('pdName', item.PDetailName);
