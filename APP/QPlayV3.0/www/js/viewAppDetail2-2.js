@@ -315,7 +315,7 @@ $("#viewAppDetail2-2").pagecontainer({
                     offsetArr.push(x);
                 }
             }
-            $("#appDetailPicListFullScreen").parent().scrollLeft(offsetArr[currentIndex]);
+            $("#appDetailPicListFullScreen").parent().scrollLeft(offsetArr[currentIndex] - 20);
 
         });
 
@@ -330,7 +330,7 @@ $("#viewAppDetail2-2").pagecontainer({
         $(".version").on("click", function () {
             var versionData = new getVersionRecord(checkAPPKey);
             //var versionData = new getVersionRecord();
-            
+
         });
 
 
