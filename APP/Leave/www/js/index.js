@@ -40,6 +40,7 @@ var dayTable = {
     "5": "(五)"
 };
 var recordStartText = "";
+var clickEndAgent = false;
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
@@ -88,7 +89,7 @@ window.GetUserAuthority = function() {
         //console.log(data);
         if (data['ResultCode'] === "1") {
             var callbackData = data['Content']["AuthorizedSite"];
-            //alert("1. callback length:"+ callbackData.length);
+            //console.log("1. callback length:"+ callbackData.length);
             if (callbackData.length === 0 && myEmpNo === originalEmpNo) {
                 $("#mypanelviewAgentLeave").hide();
                 if (localStorage.getItem("leaveDefaultSetting") == null) {
@@ -116,7 +117,10 @@ window.GetUserAuthority = function() {
             } else {
                 $("#mypanelviewAgentLeave").show();
                 restartAgentLeave();
-                startMainPage();
+                if (clickEndAgent) {
+                    startMainPage();
+                    clickEndAgent = false;
+                }
             }
             loadingMask("hide");
         }
@@ -131,7 +135,7 @@ window.GetUserAuthority = function() {
 
 function restartAgentLeave() {
     localStorage.removeItem("leaveDefaultSetting");
-   //alert("1.initialSuccess Func:"+localStorage.getItem("leaveDefaultSetting"));
+    //console.log("2.initialSuccess Func:"+localStorage.getItem("leaveDefaultSetting"));
     //默认设置GetDefaultSetting
     getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
                                + myEmpNo
@@ -467,6 +471,7 @@ function startMainPage() {
 $(document).on("click", ".agentEnd span", function(e) {
     loadingMask("show");
     myEmpNo = originalEmpNo;
+    clickEndAgent = true;
     getUserAuthorityData = '<LayoutHeader><EmpNo>' +
         myEmpNo +
         '</EmpNo></LayoutHeader>';

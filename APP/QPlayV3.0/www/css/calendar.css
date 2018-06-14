@@ -23,6 +23,7 @@
 .QPlayCalendar tr.calendar-month-header th {
     background-color: #fafafa;
 }
+
 .QPlayCalendar .table tr.calendar-dow-header {
     height: 4.45VW;
 }
@@ -120,8 +121,6 @@
     font-size: 3vw;
     font-family: "Arial", "微軟中黑體";
 }
-
-
 
 .td-bottom-border {
     border-bottom-style: solid;
