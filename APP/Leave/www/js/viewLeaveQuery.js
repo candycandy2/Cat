@@ -36,8 +36,7 @@ $("#viewLeaveQuery").pagecontainer({
             this.successCallback = function(data) {
                 //console.log(data);
                 if (data['ResultCode'] === "1") {
-                    //alert("4.QueryEmployeeLeaveApplyForm API Result Code:"+data['ResultCode']);
-
+                    //console.log("4.QueryEmployeeLeaveApplyForm API Result Code: "+data['ResultCode']);
                     var callbackData = data['Content'][0]["applyformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var formidArr = $("formid", htmlDom);
@@ -92,7 +91,7 @@ $("#viewLeaveQuery").pagecontainer({
                             if (leaveObject["leaveid"] == allLeaveList[j]["leaveid"]) {
                                 leaveObject["name"] = allLeaveList[j]["name"];
                                 leaveObject["category"] = allLeaveList[j]["category"];
-                                //alert("5."+leaveObject["name"]);
+                                //console.log("5."+leaveObject["name"]);                               
                                 break;
                             } else {
                                 leaveObject["name"] = "";
