@@ -141,7 +141,7 @@ function restartAgentLeave() {
                                + myEmpNo
                                + "</EmpNo><LastModified></LastModified></LayoutHeader>";
 
-    GetDefaultSetting();
+    GetDefaultSetting("restartDefault");
     //选择日期为“请选择”
     $("#startText").text(pleaseSelectStr);
     $("#endText").text(pleaseSelectStr);
@@ -440,6 +440,29 @@ function resizePopup(popupID) {
 }
 
 function startMainPage() {
+    //agent
+    if(localStorage.getItem("agent") !== null) {
+        //viewPersonalLeave
+        $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("agent-popup", "typeB");
+        //viewLeaveSubmit
+        $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
+        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
+        agentid = JSON.parse(localStorage.getItem("agent"))[1];
+        agentName = JSON.parse(localStorage.getItem("agent"))[0];
+    }else {
+        var options = '<option hidden>' + pleaseSelectStr + '</option>';
+        $("#agent-popup").find("option").remove().end().append(options);
+        tplJS.reSizeDropdownList("agent-popup", "typeB");
+        $("#leave-agent-popup").find("option").remove().end().append(options);
+        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");    
+        agentid = "";
+        agentName = "";             
+    }
+    leaveid = "";
+    beginTime = "08:00";
+    endTime = "17:00";
+
     $("#tab-1").hide();
     $("#tab-2").show();
     $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
@@ -477,21 +500,7 @@ $(document).on("click", ".agentEnd span", function(e) {
         '</EmpNo></LayoutHeader>';
     //呼叫API
     GetUserAuthority();
-    //agent
-    if(localStorage.getItem("agent") !== null) {
-        //viewPersonalLeave
-        $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
-        tplJS.reSizeDropdownList("agent-popup", "typeB");
-        //viewLeaveSubmit
-        $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
-        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
-    }else {
-        var options = '<option hidden>' + pleaseSelectStr + '</option>';
-        $("#agent-popup").find("option").remove().end().append(options);
-        tplJS.reSizeDropdownList("agent-popup", "typeB");
-        $("#leave-agent-popup").find("option").remove().end().append(options);
-        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");                 
-    }
+
     //隱藏代理Bar
     $(".agentName > span:nth-of-type(2)").text("");
     $(".beingAgent").empty().hide();
