@@ -632,12 +632,12 @@ function Calendar(options) {
 
                     if (reserveLength + childLength > 5) {
                         for (var j = 0; j < 5 - childLength; j++) {
-                            var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '<div>');
+                            var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '</div>');
                             $(item).append($reserveObj);
                         }
                     } else {
                         for (var j = 0; j < _reserveData[i].length; j++) {
-                            var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '<div>');
+                            var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '</div>');
                             $(item).append($reserveObj);
                         }
                     }

@@ -308,14 +308,14 @@ $("#viewAppDetail2-2").pagecontainer({
             $("#viewAppDetail2-2 .fix").fadeIn(500);
 
             //偏移时先归零，回到初始位置
-            $("#appDetailPicListFullScreen").parent().scrollLeft(0)
+            $("#appDetailPicListFullScreen").parent().scrollLeft(0);
             if (offsetArr.length == 0) {
                 for (var i = 0; i < imgItemLength; i++) {
                     var x = $(".detail-img-style-full-screen[data-index=" + i + "]").offset().left;
                     offsetArr.push(x);
                 }
             }
-            $("#appDetailPicListFullScreen").parent().scrollLeft(offsetArr[currentIndex] - 20);
+            $("#appDetailPicListFullScreen").parent().scrollLeft(offsetArr[currentIndex] - scrollLeftOffset(3.71));
 
         });
 
