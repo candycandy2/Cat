@@ -109,7 +109,6 @@ function getMyReserve(key, secret) {
             var resultArr = data['Content'];
 
             if (key == "apprrs") {
-                //rrsReserveList = data['Content'];
                 for (var i in resultArr) {
                     resultArr[i].type = key;
                     resultArr[i].item = "預約" + resultArr[i].MeetingRoomName;
@@ -118,7 +117,6 @@ function getMyReserve(key, secret) {
                 }
 
             } else if (key == "appmassage") {
-                //massageReserveList = data['Content'];
                 for (var i in resultArr) {
                     resultArr[i].type = key;
                     resultArr[i].item = "按摩預約";
@@ -129,7 +127,6 @@ function getMyReserve(key, secret) {
                 }
 
             } else if (key == "apprelieve") {
-                //relieveReserveList = data['Content'];
                 for (var i in resultArr) {
                     resultArr[i].type = key;
                     resultArr[i].item = "物理治療";
@@ -140,7 +137,6 @@ function getMyReserve(key, secret) {
                 }
 
             } else if (key == "appparking") {
-                //parkingReserveList = data['Content'];
                 for (var i in resultArr) {
                     resultArr[i].type = key;
                     resultArr[i].item = "車位預約";
@@ -227,6 +223,7 @@ function getSignatureByKey(action, signatureTime, secret) {
     }
 }
 
+
 function formatReserveList() {
     //1. 先按照日期合併同一天預約
     var tempArr = [];
@@ -249,6 +246,7 @@ function formatReserveList() {
     reserveList = tempArr;
 }
 
+//先按照开始时间排序，如果开始时间一致再用结束时间排序
 function sortByBeginTime(prop1, prop2) {
     return function (obj1, obj2) {
         var val1 = obj1[prop1];
@@ -271,9 +269,7 @@ function sortByBeginTime(prop1, prop2) {
     }
 }
 
-function formatReserveDate(str) {
-    return str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2);
-}
+
 
 //Plugin-QPush, Now only QPLay need to set push-toekn
 function sendPushToken() {
@@ -512,6 +508,7 @@ function addDownloadHit(appname) {
     }();
 }
 
+//获取版本记录
 function getVersionRecord(key) {
     key = key || null;
 
@@ -554,9 +551,22 @@ function getVersionRecord(key) {
     }();
 }
 
+function formatReserveDate(str) {
+    return str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2);
+}
 
 Date.prototype.FormatReleaseDate = function () {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
+}
+
+//获取移动偏移量
+//margin表示单边距，所以需要*2，
+//screenwidth / ? = 100vw / (margin*2)
+//返回px
+function scrollLeftOffset(margin) {
+    margin = Number(margin);
+    var screenWidth = window.screen.width;
+    return screenWidth * margin * 2 / 100;
 }
 
 //Change event type
