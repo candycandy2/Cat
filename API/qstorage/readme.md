@@ -431,7 +431,8 @@ Response Body
     N/A
 
 #### 4. 檔案覆蓋
-    a. 共更新 23 個檔案，新增 Jenkins 專案 DeployBackEnd-Staging-QStorage 處理檔案更新
+    a. 共更新 21 個檔案，新增 Jenkins 專案 DeployBackEnd-Staging-QStorage 處理檔案更新
+    
 ```qstorage
 
 API/qstorage/app/Entity/AbstractFile.php
@@ -461,13 +462,17 @@ API/qstorage/tests/PictureControllerUnitTest.php
 
 API/qstorage/app/Http/routes.php
 
-```qstorage
+```
+
+    b. 共更新 1 個檔案，新增 Jenkins 專案 DeployBackEnd-Staging-QStorage 處理檔案更新
+
 
 ```QForum
 
 API/QForum/app/Http/Controllers/JobController.php
 
 ```QForum
+
 
 #### 5. 更新後尚須確認事項
     a. QStorage 需要把staging、production的圖片上傳至Azuere，並更新qp_attach表的file_url
