@@ -1,0 +1,13 @@
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\QPlay.Job.SyncGaiaUser.exe.config
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\QPlay.Job.SyncGaiaUser.exe
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\QPlay.Job.SyncGaiaUser.pdb
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\ITS.Common.Excel.dll
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\ITS.Data.dll
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\log4net.dll
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\obj\Debug\QPlay.Job.SyncGaiaUser.exe
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\obj\Debug\QPlay.Job.SyncGaiaUser.pdb
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\NPOI.dll
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\NPOI.OOXML.dll
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\NPOI.OpenXml4Net.dll
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\NPOI.OpenXmlFormats.dll
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\ICSharpCode.SharpZipLib.dll

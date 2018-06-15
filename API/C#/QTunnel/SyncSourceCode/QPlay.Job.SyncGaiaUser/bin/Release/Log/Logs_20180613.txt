@@ -1,0 +1,62 @@
+2018-06-13 16:50:51,360 [10] INFO  Logger - Begin Connect Gaia DB
+2018-06-13 16:50:51,738 [10] INFO  Logger - End Connect Gaia DB
+2018-06-13 16:50:51,816 [10] INFO  Logger - Begin Select Gaia Qp_User_Flower
+2018-06-13 16:50:51,972 [10] INFO  ITS.Data.DbSession - Text:	--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower	
+
+SQL:--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower
+
+2018-06-13 16:50:52,618 [10] INFO  Logger - End Select Gaia Qp_User_Flower
+2018-06-13 17:07:04,650 [9] INFO  Logger - Begin Connect Gaia DB
+2018-06-13 17:07:04,739 [9] INFO  Logger - End Connect Gaia DB
+2018-06-13 17:07:04,753 [9] INFO  Logger - Begin Select Gaia Qp_User_Flower
+2018-06-13 17:07:04,862 [9] INFO  ITS.Data.DbSession - Text:	--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower	
+
+SQL:--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower
+
+2018-06-13 17:07:04,919 [9] INFO  Logger - End Select Gaia Qp_User_Flower
+2018-06-13 17:07:09,403 [9] INFO  Logger - ExcelFile:produce excel succeeded
+2018-06-13 17:07:09,404 [9] INFO  Logger - Begin Exists Gaia GPGFile
+2018-06-13 17:07:09,404 [9] INFO  Logger - End Exists Gaia GPGFile
+2018-06-13 17:07:10,054 [9] INFO  Logger - GPG:encryption succeeded
+2018-06-13 17:17:04,465 [10] INFO  Logger - Begin Connect Gaia DB
+2018-06-13 17:17:04,558 [10] INFO  Logger - End Connect Gaia DB
+2018-06-13 17:17:04,580 [10] INFO  Logger - Begin Select Gaia Qp_User_Flower
+2018-06-13 17:17:04,738 [10] INFO  ITS.Data.DbSession - Text:	--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower	
+
+SQL:--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower
+
+2018-06-13 17:17:04,771 [10] INFO  Logger - End Select Gaia Qp_User_Flower
+2018-06-13 17:17:09,557 [10] INFO  Logger - ExcelFile:produce excel succeeded
+2018-06-13 17:17:09,558 [10] INFO  Logger - Begin Exists Gaia GPGFile
+2018-06-13 17:17:09,558 [10] INFO  Logger - End Exists Gaia GPGFile
+2018-06-13 17:17:10,232 [10] INFO  Logger - GPG:encryption succeeded
+2018-06-13 17:52:39,482 [9] INFO  Logger - Begin Connect Gaia DB
+2018-06-13 17:52:39,560 [9] INFO  Logger - End Connect Gaia DB
+2018-06-13 17:52:39,560 [9] INFO  Logger - Begin Select  Qp_User_Flower
+2018-06-13 17:52:39,670 [9] INFO  ITS.Data.DbSession - Text:	--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower	
+
+SQL:--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower
+
+2018-06-13 17:52:39,779 [9] INFO  Logger - End Select  Qp_User_Flower
+2018-06-13 17:53:16,173 [9] INFO  Logger - Begin Connect Gaia DB
+2018-06-13 17:53:16,251 [9] INFO  Logger - End Connect Gaia DB
+2018-06-13 17:53:16,251 [9] INFO  Logger - Begin Select  Qp_User_Flower
+2018-06-13 17:53:16,360 [9] INFO  ITS.Data.DbSession - Text:	--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower	
+
+SQL:--QPlay.Job.SyncGaiaUser.vshost.QPlay.Job.SyncGaiaUser.Program.GenerateExcelFile()
+SELECT * FROM Qp_User_Flower
+
+2018-06-13 17:53:16,376 [9] INFO  Logger - End Select  Qp_User_Flower
+2018-06-13 17:53:20,700 [9] INFO  Logger - ExcelFile:Generate excel succeeded
+2018-06-13 17:53:20,700 [9] INFO  Logger - Begin Exists Gaia GPGFile
+2018-06-13 17:53:20,700 [9] INFO  Logger - End Exists Gaia GPGFile
+2018-06-13 17:53:21,467 [9] INFO  Logger - GPG:encryption succeeded
