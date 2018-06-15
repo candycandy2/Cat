@@ -17,7 +17,7 @@ gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env test
 gulp jenkinsdefault --env test
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="a2dd89a3-82a2-4b92-b4f9-4bc931470f80" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="abaec3e6-8e6d-41f9-badc-a81f67647b3f" --packageType="enterprise"
 
 pwd
 cd ../QPlayProduct-QisdaEIS-Parking/APP/Parking

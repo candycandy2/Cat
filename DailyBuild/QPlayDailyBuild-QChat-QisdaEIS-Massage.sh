@@ -25,7 +25,7 @@ gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="db758d9b-a0a0-4db5-9102-edfd9999fa31" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="6d3b0696-ed02-455b-a912-0704ecd4a05c" --packageType="enterprise"
 
 pwd
 cd ../QPlayDailyBuild-QChat-QisdaEIS-Massage/APP/Massage
@@ -35,7 +35,7 @@ gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="515e7317-5d3b-476c-8475-a8af67ee294c" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="d565faba-c678-4125-b440-dc6f57bcc021" --packageType="enterprise"
 
 
 # ------ make directory for apk and ipa ------
