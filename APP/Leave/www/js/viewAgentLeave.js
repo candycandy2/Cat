@@ -279,6 +279,9 @@ $("#viewAgentLeave").pagecontainer({
                 //2.赋值
                 agentid = "";
                 agentName = "";
+                leaveid = "";
+                beginTime = "08:00";
+                endTime = "17:00";
                 //3.上方出現代理Bar
                 var angetStr = langStr["str_187"]; //"代理";
                 var endStr = langStr["str_188"]; //"結束";

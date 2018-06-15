@@ -309,8 +309,8 @@ $("#viewPersonalLeave").pagecontainer({
         }
 
         //获取默认设置，包括所有假别、注意事项等
-        window.GetDefaultSetting = function() {
-
+        window.GetDefaultSetting = function(callback) {
+            callback = callback || null;
             this.successCallback = function(data) {
                 console.log(data);
 
@@ -411,7 +411,11 @@ $("#viewPersonalLeave").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPIEx("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
+                if (callback === "restartDefault") {
+                    CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
+                } else {
+                    CustomAPIEx("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
+                }                
             }();
 
         };  
