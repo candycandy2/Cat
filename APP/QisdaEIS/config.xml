@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="475" id="com.qplay.appqisdaeisdev" ios-CFBundleVersion="475" version="1.0.0.475[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="32" id="com.qplay.appqisdaeistest" ios-CFBundleVersion="32" version="1.0.0.32[NewStaging]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QisdaEIS</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -14,7 +14,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <allow-intent href="appqplaydev:*" />
+    <allow-intent href="appqplaytest:*" />
     <allow-intent href="*:*" />
     <platform name="android">
         <allow-intent href="market:*" />
@@ -51,13 +51,13 @@
     <plugin name="cordova-plugin-app-update" spec="../../plugins/cordova-plugin-app-update" />
     <plugin name="cordova-plugin-android-permissions" spec="../../plugins/cordova-plugin-android-permissions" />
     <plugin name="cordova-plugin-customurlscheme" spec="../../plugins/cordova-plugin-customurlscheme">
-        <variable name="URL_SCHEME" value="appqisdaeisdev" />
+        <variable name="URL_SCHEME" value="appqisdaeistest" />
         <variable name="ANDROID_SCHEME" value=" " />
         <variable name="ANDROID_HOST" value=" " />
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
     <plugin name="cordova-plugin-qsecurity" spec="../../plugins/cordova-plugin-qsecurity">
-        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaydev&lt;/string&gt;&lt;string&gt;appqisdaeisdev&lt;/string&gt;" />
+        <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaytest&lt;/string&gt;&lt;string&gt;appqisdaeistest&lt;/string&gt;" />
     </plugin>
     <plugin name="cordova-plugin-whitelist" spec="../../plugins/cordova-plugin-whitelist" />
     <plugin name="cordova-plugin-screen-orientation" spec="../../plugins/cordova-plugin-screen-orientation" />
