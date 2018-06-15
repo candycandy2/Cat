@@ -1,0 +1,6 @@
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\QPlay.Job.SyncGaiaUser.exe
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\QPlay.Job.SyncGaiaUser.pdb
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\obj\x86\Debug\QPlay.Job.SyncGaiaUser.exe
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\obj\x86\Debug\QPlay.Job.SyncGaiaUser.pdb
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\QPlay.Job.SyncGaiaUser.exe.config
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\obj\x86\Debug\QPlay.Job.SyncGaiaUser.csprojResolveAssemblyReference.cache
