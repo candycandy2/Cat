@@ -471,7 +471,7 @@ API/qstorage/app/Http/routes.php
 
 API/QForum/app/Http/Controllers/JobController.php
 
-```QForum
+```
 
 
 #### 5. 更新後尚須確認事項
