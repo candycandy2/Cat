@@ -432,43 +432,42 @@ Response Body
 
 #### 4. 檔案覆蓋
     a. 共更新 23 個檔案，新增 Jenkins 專案 DeployBackEnd-Staging-QStorage 處理檔案更新
-```json
-Added: API/qstorage/app/Entity/AbstractFile.php
-Added: API/qstorage/app/Entity/ImageFile.php
-Added: API/qstorage/app/Entity/Picture.php
-Added: API/qstorage/app/Entity/Portrait.php
+```qstorage
 
-lib
-Modified: API/qstorage/app/lib/CommonUtil.php
-Modified: API/qstorage/app/lib/Verify.php
-Modified: API/qstorage/app/lib/ResultCode.php
+API/qstorage/app/Entity/AbstractFile.php
+API/qstorage/app/Entity/ImageFile.php
+API/qstorage/app/Entity/Picture.php
+API/qstorage/app/Entity/Portrait.php
 
-Services
-Added: API/qstorage/app/Services/AzureBlobService.php
-Added: API/qstorage/app/Services/ServerFileService.php
-Modified: API/qstorage/app/Services/AzureBlobService.php
+API/qstorage/app/lib/CommonUtil.php
+API/qstorage/app/lib/Verify.php
+API/qstorage/app/lib/ResultCode.php
 
-Controllers
-Added: API/qstorage/app/Http/Controllers/AccessController.php
-Added: API/qstorage/app/Http/Controllers/PortraitController.php
-Modified: API/qstorage/app/Http/Controllers/PictureController.php
-Modified: API/QForum/app/Http/Controllers/JobController.php
+API/qstorage/app/Services/AzureBlobService.php
+API/qstorage/app/Services/ServerFileService.php
+API/qstorage/app/Services/AzureBlobService.php
 
-Routes
-Modified: API/qstorage/app/Http/routes.php
+API/qstorage/app/Http/Controllers/AccessController.php
+API/qstorage/app/Http/Controllers/PortraitController.php
+API/qstorage/app/Http/Controllers/PictureController.php
 
-Tests
-Added: API/qstorage/tests/PortraitControllerUnitTest.php
-Added: API/qstorage/tests/stubs/test.jpg
-Added: API/qstorage/tests/AccessControllerUnitTest.php
-Added: API/qstorage/tests/AzureBlobServiceUnitTest.php
-Added: API/qstorage/tests/PictureControllerUnitTest.php
-Modified: API/qstorage/tests/AzureBlobServiceUnitTest.php
-Modified: API/qstorage/tests/PictureControllerUnitTest.php
+API/qstorage/tests/PortraitControllerUnitTest.php
+API/qstorage/tests/stubs/test.jpg
+API/qstorage/tests/AccessControllerUnitTest.php
+API/qstorage/tests/AzureBlobServiceUnitTest.php
+API/qstorage/tests/PictureControllerUnitTest.php
+API/qstorage/tests/AzureBlobServiceUnitTest.php
+API/qstorage/tests/PictureControllerUnitTest.php
 
-Doc
-Modified: API/qstorage/readme.md
-```json
+API/qstorage/app/Http/routes.php
+
+```qstorage
+
+```QForum
+
+API/QForum/app/Http/Controllers/JobController.php
+
+```QForum
 
 #### 5. 更新後尚須確認事項
     a. QStorage 需要把staging、production的圖片上傳至Azuere，並更新qp_attach表的file_url
