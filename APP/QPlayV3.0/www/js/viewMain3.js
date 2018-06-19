@@ -79,5 +79,9 @@ $("#viewMain3").pagecontainer({
             $.mobile.changePage('#viewMyCalendar');
         });
 
+        $("#newsTest").on("click", function () {
+            $.mobile.changePage('#viewMessageList');
+        });
+
     }
 });
