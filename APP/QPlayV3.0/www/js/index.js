@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar", "viewMessageList"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -91,7 +91,7 @@ window.initialSuccess = function (data) {
     //For test
     //var unregisterTest = new unregister();
 
-    //get all reserve
+    //get all reserve add by allen
     for (var i in reserveAppList) {
         getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
     }
