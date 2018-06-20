@@ -29,6 +29,7 @@ QTunnel APIs, 在DMZ區提供介接的服務, 目前提供Login的介接
 1. Windos 2016 NT Server
 2. IIS Server
 3. GPG  https://gnupg.org/download
+4. Server要安装.Net Framwork 4.0以上
 
 For windows
 下載網址 : https://www.gpg4win.org/
@@ -49,6 +50,12 @@ QTunnel/test/js/jquery-1.12.3.min.js
 <add key="serverPath" value="LDAP://10.82.12.61/" />
 3. 匯入qplay GPG public key
 gpg --import qlay_B40883DB_Secret.asc
+4. 複製SRC/SyncToFile/Job file/到可執行目錄
+5. QPlay.Job.SyncGaiaUser.exe.config文件中需要自行修改DB的connectionString和FilePath设定。
+6. connectionString是经过加密的，请配合附档提供的加密以及解密工具来使用。
+7. 建立排程, 每日早上五點執行一次
+測試方式是會產生
+http://[ip]/QTunnel/Sync/[YYYYMMDD].xls.gpg
 
 ```
 
