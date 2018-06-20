@@ -56,7 +56,7 @@ gpg --import qlay_B40883DB_Secret.asc
 7. 建立排程, 每日早上五點執行一次
 測試方式是會產生
 http://[ip]/QTunnel/Sync/[YYYYMMDD].xls.gpg
-
+8. IIS文件类型的问题，已经在IIS设定新增MIME types :.gpg
 ```
 
 ----
