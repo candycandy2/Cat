@@ -404,6 +404,14 @@ $("#viewPersonalLeave").pagecontainer({
                         $("#infoContent-3").empty().append(noticeData);
                     }
 
+                    var activePage = visitedPageList[visitedPageList.length - 1];
+                    defaultSettingDone = true;
+                    if (activePage !== "viewPersonalLeave" || reload ) {
+                        $.mobile.changePage("#viewPersonalLeave");
+                        reload = false;
+                    } else {
+                        startMainPage();
+                    }
                 }
 
             };
@@ -448,7 +456,11 @@ $("#viewPersonalLeave").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPIEx("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
+                if (changeIdentity === true) {
+                    CustomAPI("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
+                } else {
+                    CustomAPIEx("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
+                }               
             }();
         };
 
@@ -867,9 +879,28 @@ $("#viewPersonalLeave").pagecontainer({
                     } else {
                         agentid = JSON.parse(localStorage.getItem("agent"))[1];
                         agentName = JSON.parse(localStorage.getItem("agent"))[0];
+                        //viewPersonalLeave
+                        $("#agent-popup option").text(agentName);
+                        tplJS.reSizeDropdownList("agent-popup", "typeB");
+                        //viewLeaveSubmit
+                        $("#leave-agent-popup option").text(agentName);
+                        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
                     }
 
                 }
+                //datetime-local max value (hard code)
+                $("#startDate").attr("max", "2018-12-31T23:59");
+                $("#endDate").attr("max", "2018-12-31T23:59");
+                $("#leaveReason").attr("placeholder", langStr["str_090"]);
+                $("#withdrawReason").attr("placeholder", langStr["str_090"]);
+                $("#dispelReason").attr("placeholder", langStr["str_090"]);
+                $("#signTowithdrawReason").attr("placeholder", langStr["str_090"]);
+                $("#otherReason").attr("placeholder", langStr["str_090"]);
+
+                signedStr = langStr["str_133"]; //"已簽核";
+                withdrawedStr = langStr["str_136"]; //"已撤回";
+                rejectedStr = langStr["str_135"]; //"已拒絕";
+                notSignStr = langStr["str_134"]; //"未簽核";
 
                 leaveid = "";
                 beginTime = "08:00";
@@ -883,7 +914,7 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-2").show();
             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-            if (!viewPersonalLeaveShow) {
+            if (!viewPersonalLeaveShow && defaultSettingDone) {
                 //个人剩余假别资讯
                 queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
                 QueryEmployeeLeaveInfo();
@@ -897,6 +928,7 @@ $("#viewPersonalLeave").pagecontainer({
                 QueryEmployeeLeaveCancelForm();
 
                 viewPersonalLeaveShow = true;
+                defaultSettingDone = false;
             }
             //如果是从“假单详情（已撤回）”编辑功能跳转过来的，且该代理人不在职，popup提示重新选择代理人
             if (editLeaveForm && employeeName == "") {
@@ -1044,7 +1076,6 @@ $("#viewPersonalLeave").pagecontainer({
                             "</leaveid></LayoutHeader>";
                         //呼叫API
                         QueryLeftDaysData();
-
                     }
                 }
             }

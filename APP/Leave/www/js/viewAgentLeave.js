@@ -313,8 +313,6 @@ $("#viewAgentLeave").pagecontainer({
                 }, 200);
                 $("#mypanelviewAgentLeave").removeAttr("style");
                 $("#mypanelviewAgentLeave").hide();
-                //changepage                
-                $.mobile.changePage("#viewPersonalLeave");
             }
         });
 
