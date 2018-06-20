@@ -40,45 +40,21 @@ var dayTable = {
     "5": "(五)"
 };
 var recordStartText = "";
-var clickEndAgent = false;
+var defaultSettingDone = false;
+var changeIdentity = false;
+var reload = false;
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
+    reload = true;
 
     getUserAuthorityData = '<LayoutHeader><EmpNo>' +
             myEmpNo +
             '</EmpNo></LayoutHeader>';
     //呼叫API
     GetUserAuthority();
-
-    //changepage
-    $.mobile.changePage("#viewPersonalLeave");
-
-    //agent
-    if (localStorage.getItem("agent") !== null) {
-        //viewPersonalLeave
-        $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
-        tplJS.reSizeDropdownList("agent-popup", "typeB");
-        //viewLeaveSubmit
-        $("#leave-agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
-        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
-    }
-
-    //datetime-local max value (hard code)
-    $("#startDate").attr("max", "2018-12-31T23:59");
-    $("#endDate").attr("max", "2018-12-31T23:59");
-    $("#leaveReason").attr("placeholder", langStr["str_090"]);
-    $("#withdrawReason").attr("placeholder", langStr["str_090"]);
-    $("#dispelReason").attr("placeholder", langStr["str_090"]);
-    $("#signTowithdrawReason").attr("placeholder", langStr["str_090"]);
-    $("#otherReason").attr("placeholder", langStr["str_090"]);
-
-    signedStr = langStr["str_133"]; //"已簽核";
-    withdrawedStr = langStr["str_136"]; //"已撤回";
-    rejectedStr = langStr["str_135"]; //"已拒絕";
-    notSignStr = langStr["str_134"]; //"未簽核";
 
     loadingMask("show");
 }
@@ -89,6 +65,7 @@ window.GetUserAuthority = function() {
         //console.log(data);
         if (data['ResultCode'] === "1") {
             var callbackData = data['Content']["AuthorizedSite"];
+            viewPersonalLeaveShow = false;
             //console.log("1. callback length:"+ callbackData.length);
             if (callbackData.length === 0 && myEmpNo === originalEmpNo) {
                 $("#mypanelviewAgentLeave").hide();
@@ -110,17 +87,16 @@ window.GetUserAuthority = function() {
                 $("#endText").text(pleaseSelectStr); 
                 //data scroll menu
                 dateInit(); 
-                viewPersonalLeaveShow = false;
             } else if (callbackData.length === 0 && myEmpNo !== originalEmpNo) {
                 $("#mypanelviewAgentLeave").hide();
                 restartAgentLeave();
+                //切換身份時 QueryLeftDays API 需重新執行
+                changeIdentity = true; 
             } else {
                 $("#mypanelviewAgentLeave").show();
                 restartAgentLeave();
-                if (clickEndAgent) {
-                    startMainPage();
-                    clickEndAgent = false;
-                }
+                //切換身份時 QueryLeftDays API 需重新執行
+                changeIdentity = true; 
             }
             loadingMask("hide");
         }
@@ -148,7 +124,6 @@ function restartAgentLeave() {
 
     //data scroll menu
     dateInit();        
-    viewPersonalLeaveShow = false;
 }
 
 //[Android]Handle the back button
@@ -467,7 +442,7 @@ function startMainPage() {
     $("#tab-2").show();
     $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
     $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
-    if (!viewPersonalLeaveShow) {
+    if (!viewPersonalLeaveShow  && defaultSettingDone) {
         //个人剩余假别资讯
         queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
         QueryEmployeeLeaveInfo();
@@ -481,6 +456,7 @@ function startMainPage() {
         QueryEmployeeLeaveCancelForm();
 
         viewPersonalLeaveShow = true;
+        defaultSettingDone = false;
     }
     //如果是从“假单详情（已撤回）”编辑功能跳转过来的，且该代理人不在职，popup提示重新选择代理人
     if (editLeaveForm && employeeName == "") {
@@ -494,7 +470,7 @@ function startMainPage() {
 $(document).on("click", ".agentEnd span", function(e) {
     loadingMask("show");
     myEmpNo = originalEmpNo;
-    clickEndAgent = true;
+    //clickEndAgent = true;
     getUserAuthorityData = '<LayoutHeader><EmpNo>' +
         myEmpNo +
         '</EmpNo></LayoutHeader>';
