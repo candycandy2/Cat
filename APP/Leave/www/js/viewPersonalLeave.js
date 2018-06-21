@@ -403,15 +403,19 @@ $("#viewPersonalLeave").pagecontainer({
                         var noticeData = leaveDefault["Noticelist"];
                         $("#infoContent-3").empty().append(noticeData);
                     }
-
-                    var activePage = visitedPageList[visitedPageList.length - 1];
                     defaultSettingDone = true;
+
+                    var activePage = $.mobile.activePage[0].id;                
                     if (activePage !== "viewPersonalLeave" || reload ) {
-                        $.mobile.changePage("#viewPersonalLeave");
+                        $("#mypanel"+activePage).removeAttr("style");
+                        $("#mypanel #mypanelviewPersonalLeave").css("background", "#503f81");
+                        $("#mypanel #mypanelviewPersonalLeave").css("color", "#fff");
+                        $.mobile.changePage("#viewPersonalLeave");                      
                         reload = false;
                     } else {
                         startMainPage();
                     }
+
                 }
 
             };
