@@ -57,16 +57,14 @@ ViewName => Database table or view name
 ClientSettingsProvider.ServiceUri => Database URI
 
   <appSettings>
-    	<add key="FilePath" value="E:\QTuunel\Sync" />
-	    <add key="ViewName" value="Qp_User_Flower"/>  
-    	<add key="ClientSettingsProvider.ServiceUri" value="" />
+        <add key="FilePath" value="E:\QTuunel\Sync" />
+        <add key="ViewName" value="Qp_User_Flower"/>  
+        <add key="ClientSettingsProvider.ServiceUri" value="" />
   </appSettings>
   
-6. [Option]加密步骤：
-
+6. [Option]加密步骤：(不加密也可以使用, 資安考量, 建議加密, 目前走.Net標準程序, 加解密都由.Net處理)
 6.1.打开cmd命令进到aspnet_regiis.exe目录下: cd C:\Windows\Microsoft.NET\Framework\v4.0.30319 
 6.2.命令窗口执行：C:\Windows\Microsoft.NET\Framework\v4.0.30319>aspnet_regiis.exe -pef "connectionStrings" "E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser"
-
 说明.-pef 和-pdf  参数是对指定的物理目录里的Web.config文件的connectionStrings节点进行加密和解密，需要事先将QPlay.Job.SyncGaiaUser.exe.config文件改名为Web.config，
 加密后的文件名再改回QPlay.Job.SyncGaiaUser.exe.config。
 7. 建立排程, 每日早上五點執行一次
