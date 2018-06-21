@@ -54,9 +54,8 @@ window.initialSuccess = function() {
             myEmpNo +
             '</EmpNo></LayoutHeader>';
     //呼叫API
-    GetUserAuthority();
-
-    loadingMask("show");
+    GetUserAuthority(); 
+    loadingMask("show");   
 }
 
 window.GetUserAuthority = function() {
@@ -98,7 +97,7 @@ window.GetUserAuthority = function() {
                 //切換身份時 QueryLeftDays API 需重新執行
                 changeIdentity = true; 
             }
-            loadingMask("hide");
+            //loadingMask("hide");
         }
     };
 
@@ -469,6 +468,14 @@ function startMainPage() {
 
 $(document).on("click", ".agentEnd span", function(e) {
     loadingMask("show");
+    var currentPage = visitedPageList[visitedPageList.length - 1];
+    var detailPageStatus = $(".leave-query-detail-sign").css('display');
+    if (currentPage === "viewLeaveQuery" && detailPageStatus === "block") {
+        $("#backDetailList").hide();
+        $(".leave-query-detail-sign").hide();
+        $("#viewLeaveQuery .leaveMenu").show();
+        $(".leave-query-main").show();
+    }
     myEmpNo = originalEmpNo;
     //clickEndAgent = true;
     getUserAuthorityData = '<LayoutHeader><EmpNo>' +
