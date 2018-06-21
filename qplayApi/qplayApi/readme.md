@@ -1,27 +1,65 @@
-# Laravel PHP Framework
+qplayApi Readme.md
+=============================
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+## Version x.x.x - Published 2018 June 21
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Contents
+- [Deploy SOP](#DeployProcedure)
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+<h2 id="DeployProcedure">Deploy SOP</h2>
 
-## Official Documentation
+### 1. 檔案覆蓋
+    新增 Jenkins 專案 DeployBackEnd-Staging-QPlay3API 處理檔案更新
+    
+    git checkout 2af0dae05483d2451eb08608feb217511af869fe .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/qplayController.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/Controllers/qplayController.php
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+    git checkout f332dff26ba1537382c679967ba1859ebbb3e3a3 .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/qplayController.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/Controllers/qplayController.php
 
-## Contributing
+    git checkout 0844825b7715b192c702d035f43a213ba41ba37b .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/appVersionController.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/Controllers/appVersionController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/routes.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/routes.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Model/QP_App_Version.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Model/QP_App_Version.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Repositories/AppVersionRepository.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Repositories/AppVersionRepository.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Services/AppVersionService.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Services/AppVersionService.php
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+    git checkout 16cabc37184d77ed5f15847a331350d1ff9886f4 .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/appEvaluationController.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/Controllers/appEvaluationController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/appVersionController.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/Controllers/appVersionController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/routes.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/routes.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Model/QP_App_Evaluation.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Model/QP_App_Evaluation.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Model/QP_App_Head.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Model/QP_App_Head.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Model/QP_Project.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Model/QP_Project.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Repositories/AppEvaluationRepository.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Repositories/AppEvaluationRepository.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Repositories/AppVersionRepository.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Repositories/AppVersionRepository.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Repositories/ProjectRepository.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Repositories/ProjectRepository.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Services/AppEvaluationService.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Services/AppEvaluationService.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Services/AppVersionService.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Services/AppVersionService.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Services/ProjectService.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Services/ProjectService.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/lib/ResultCode.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/lib/ResultCode.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/lib/Verify.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/lib/Verify.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/database/migrations/2018_05_04_074730_create_update_evaluation_calculate_avg_score_trigger.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/database/migrations/2018_05_04_074730_create_update_evaluation_calculate_avg_score_trigger.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/database/migrations/2018_05_04_110245_create_insert_evaluation_calculate_avg_score_trigger.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/database/migrations/2018_05_04_110245_create_insert_evaluation_calculate_avg_score_trigger.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/database/migrations/2018_05_04_113438_create_delete_evaluation_calculate_avg_score_trigger.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/database/migrations/2018_05_04_113438_create_delete_evaluation_calculate_avg_score_trigger.php
 
-## Security Vulnerabilities
+    git checkout 1e74fe08fa2116f101feb46c74a8a3aa26c654aa .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/customController.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/Controllers/customController.php
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+    git checkout fe0206f9541b925720aac6578db4b2ada0d69422 .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/customController.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/Controllers/customController.php
 
-## License
+    git checkout 9adfed3f631d2cb1b75f9d64a7a62a299b843af3 .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/appVersionController.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/Controllers/appVersionController.php
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+    git checkout 90bed231f1fce50ec6d858295c821950ead93c6d .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/appVersionController.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Http/Controllers/appVersionController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Repositories/AppVersionRepository.php rsyncuser@13.75.117.225:/var/www/html/qplayApi/app/Repositories/AppVersionRepository.php
