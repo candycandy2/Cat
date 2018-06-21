@@ -29,7 +29,7 @@ QTunnel APIs, 在DMZ區提供介接的服務, 目前提供Login的介接
 1. Windos 2016 NT Server
 2. IIS Server
 3. GPG  https://gnupg.org/download
-4. Server要安装.Net Framwork 4.0以上
+4. .Net Framwork 4.0 and later
 
 For windows
 下載網址 : https://www.gpg4win.org/
@@ -51,12 +51,28 @@ QTunnel/test/js/jquery-1.12.3.min.js
 3. 匯入qplay GPG public key
 gpg --import qlay_B40883DB_Secret.asc
 4. 複製SRC/SyncToFile/Job file/到可執行目錄
-5. QPlay.Job.SyncGaiaUser.exe.config文件中需要自行修改DB的connectionString和FilePath设定。
-6. connectionString是经过加密的，请配合附档提供的加密以及解密工具来使用。
+5. QPlay.Job.SyncGaiaUser.exe.config文件中需要自行修改DB的connectionString和FilePath和ViewName设定。
+FilePath      => Output folder
+ViewName => Database table or view name
+ClientSettingsProvider.ServiceUri => Database URI
+
+  <appSettings>
+    	<add key="FilePath" value="E:\QTuunel\Sync" />
+	    <add key="ViewName" value="Qp_User_Flower"/>  
+    	<add key="ClientSettingsProvider.ServiceUri" value="" />
+  </appSettings>
+  
+6. [Option]加密步骤：
+
+6.1.打开cmd命令进到aspnet_regiis.exe目录下: cd C:\Windows\Microsoft.NET\Framework\v4.0.30319 
+6.2.命令窗口执行：C:\Windows\Microsoft.NET\Framework\v4.0.30319>aspnet_regiis.exe -pef "connectionStrings" "E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser"
+
+说明.-pef 和-pdf  参数是对指定的物理目录里的Web.config文件的connectionStrings节点进行加密和解密，需要事先将QPlay.Job.SyncGaiaUser.exe.config文件改名为Web.config，
+加密后的文件名再改回QPlay.Job.SyncGaiaUser.exe.config。
 7. 建立排程, 每日早上五點執行一次
 測試方式是會產生
 http://[ip]/QTunnel/Sync/[YYYYMMDD].xls.gpg
-8. IIS文件类型的问题，已经在IIS设定新增MIME types :.gpg
+8. IIS文件类型的问题，在IIS设定新增MIME types :.gpg
 ```
 
 ----
