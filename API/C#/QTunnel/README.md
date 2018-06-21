@@ -36,6 +36,8 @@ For windows
 1. 安裝gpg4win-3.1.1.exe
 2. 執行gpg --import qlay_B40883DB_Secret.asc
 3. 可以用gpg —list-keys確認
+4. 第一次安裝, 請完成認證程序, 原理是要先有一個該機器的憑證,拿這個憑證去認證其他憑證, 譬如qplay
+這動作有UI可以完成程序(點選兩下qlay_B40883DB_Secret, 選擇cert按鈕)
 
 安裝步驟
 1. 建立QTunnel IIS目錄,目標 https://[IP]/QTunnel/QTunnel.asmx/Login
