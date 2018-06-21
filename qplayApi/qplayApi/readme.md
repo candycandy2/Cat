@@ -10,7 +10,21 @@ qplayApi Readme.md
 
 <h2 id="DeployProcedure">Deploy SOP</h2>
 
-### 1. 檔案覆蓋
+### 1. 基礎建設
+
+
+### 2. 環境設定
+
+
+### 3. 資料設定
+    getVersionLog Api 相關 Table
+	    qp_app_version
+	    qp_error_code
+    addAppEvaluation Api 相關 Table 
+	    qp_app_head
+	    qp_app_evaluation
+
+### 4. 檔案覆蓋
     新增 Jenkins 專案 DeployBackEnd-Staging-QPlay3API 處理檔案更新
     
     git checkout 2af0dae05483d2451eb08608feb217511af869fe .
