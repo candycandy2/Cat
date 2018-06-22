@@ -11,3 +11,4 @@ E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\NPOI.OOXML.dll
 E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\NPOI.OpenXml4Net.dll
 E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\NPOI.OpenXmlFormats.dll
 E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser\obj\Debug\QPlay.Job.SyncGaiaUser.csprojResolveAssemblyReference.cache
