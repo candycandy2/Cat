@@ -52,7 +52,7 @@ QTunnel/test/js/jquery-1.12.3.min.js
 <add key="serverPath" value="LDAP://10.82.12.61/" />
 3. 匯入qplay GPG public key
 gpg --import qlay_B40883DB_Secret.asc
-4. 複製SRC/SyncToFile/Job file/到可執行目錄
+4. 複製SRC/SyncToFile/Job file/到可執行目錄(目前只能存取SQLServer)
 5. QPlay.Job.SyncGaiaUser.exe.config文件中需要自行修改DB的connectionString和FilePath和ViewName设定。
 FilePath      => Output folder
 ViewName => Database table or view name
