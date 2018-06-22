@@ -331,10 +331,6 @@ $("#viewMain2-1").pagecontainer({
                 //$.mobile.changePage('#viewFAQ');
             });
 
-            $(document).on("click", "#eventTypeSelect #faq", function() {
-                $.mobile.changePage('#viewFAQ');
-            });
-
             $(document).on("click", "#eventTypeSelect .option", function() {
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
                 var activePageID = activePage[0].id;
