@@ -423,11 +423,7 @@ $("#viewPersonalLeave").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                if (callback === "restartDefault") {
-                    CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
-                } else {
-                    CustomAPIEx("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
-                }                
+                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");            
             }();
 
         };  
@@ -460,11 +456,7 @@ $("#viewPersonalLeave").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                if (changeIdentity === true) {
-                    CustomAPI("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
-                } else {
-                    CustomAPIEx("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
-                }               
+                CustomAPIEx("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");               
             }();
         };
 
@@ -918,6 +910,12 @@ $("#viewPersonalLeave").pagecontainer({
             $("#tab-2").show();
             $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
             $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
+            //代理請假Panel
+            if (hasAgentPanel) {
+                $("#mypanelviewAgentLeave").show();
+            } else {
+                $("#mypanelviewAgentLeave").hide();
+            }
             if (!viewPersonalLeaveShow && defaultSettingDone) {
                 //个人剩余假别资讯
                 queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
