@@ -150,7 +150,11 @@ $("#viewMyCalendar").pagecontainer({
                         initialCalendar(data);
                     });
                 } else {
-                    initialCalendar(null);
+                    //review by alan
+                    //initialCalendar(null); => it cause error on calendar.js
+                    $.getJSON("string/" + "QTY" + "-holiday.json", function (data) {
+                        initialCalendar(data);
+                    });
                 }
 
                 //预约
