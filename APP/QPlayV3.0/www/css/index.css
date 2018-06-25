@@ -1213,6 +1213,11 @@ input[type=radio]:checked + label {
     font-size: 4.18vw !important;
 }
 
+.reserve-content {
+    height: 78vw;
+    overflow-y: scroll;
+}
+
 .reserve-null {
     width: 100%;
     height: 87vw;

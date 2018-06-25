@@ -344,7 +344,7 @@ $("#viewMain2-1").pagecontainer({
                         var messageList = new QueryMessageList();
                     }
                 } else {
-                    if (activePageID === "viewMain2-1") {
+                    if (activePageID === "viewMain2-1" || activePageID === "viewMain3") {
                         $.mobile.changePage('#viewNewsEvents2-3');
                     } else {
                         QueryPortalList(eventType);
