@@ -17,6 +17,22 @@
     font-size: 2.9vh;
 }
 
+.ui-input-search {
+    margin: 0;
+}
+
+.opacity {
+    opacity: 0;
+}
+
+.enabled-font {
+    color: #263238 !important;
+}
+
+.read-font-normal {
+    font-weight: normal !important;
+}
+
 #viewNewsEvents2-3 .ui-listview>.ui-li-static {
     padding: 0;
 }
@@ -1254,6 +1270,13 @@ input[type=radio]:checked + label {
     padding: 0 !important;
 }
 
+.input-search {
+    width: 73vw !important;
+    height: 7vw;
+    padding: 0;
+    font-size: 3vw;
+}
+
 .dropdown-news {
     width: 3vw;
     vertical-align: top;
@@ -1287,6 +1310,41 @@ input[type=radio]:checked + label {
     background: #503e7f !important;
 }
 
+.msg-tool {
+    width: 92.58vw;
+    height: 11.27vw;
+    line-height: 11.27VW;
+    padding: 0 3.71vw;
+    background-color: #ECEEF0;
+    display: none;
+}
+
+.news-select-btn,
+.event-select-btn {
+    float: left;
+    width: 30vw;
+    color: #263238;
+    font-size: 4.18vw;
+}
+
+.news-readed-btn,
+.event-readed-btn {
+    float: right;
+    width: 30vw;
+    color: #8fa4ac;
+    font-size: 4.18vw;
+    text-align: right;
+}
+
+.news-delete-btn,
+.event-delete-btn {
+    float: right;
+    width: 12vw;
+    color: #8fa4ac;
+    font-size: 4.18vw;
+    text-align: right;
+}
+
 .news-content ul.ui-listview,
 .event-content ul.ui-listview {
     list-style-type: none;
@@ -1307,7 +1365,7 @@ input[type=radio]:checked + label {
 
 .msg-check-btn {
     width: 6vw;
-    margin-top: 5vw;
+    margin-top: 5.5vw;
 }
 
 .msg-next-icon {
@@ -1337,7 +1395,7 @@ input[type=radio]:checked + label {
     margin-top: 2.49vw;
     color: #263238;
     font-size: 3.768vw !important;
-    font-weight: normal !important;
+    /* font-weight: normal !important; */
     overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
@@ -1397,3 +1455,4 @@ input[type=radio]:checked + label {
 	background-color: orange;
 	text-shadow: none;
 }
+/*** swipe ***/

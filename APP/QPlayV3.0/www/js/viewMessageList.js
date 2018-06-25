@@ -1,7 +1,7 @@
 $("#viewMessageList").pagecontainer({
     create: function (event, ui) {
 
-        var messageType = "news";
+        var messageType = "News", newsCheckedCount = 0, eventCheckedCount = 0, newsAllChecked = false, eventAllChecked = false, newsLength = 0, eventLength = 0;
 
         function getNewsList() {
 
@@ -37,15 +37,21 @@ $("#viewMessageList").pagecontainer({
                 var newsContent = '';
                 var eventContent = '';
                 for (var i in resultArr) {
-                    if (resultArr[i]['message_type'] == 'event') {
-                        eventContent += '<li data-icon="false"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a>' +
-                            '</div><a href="#" class="ui-div ui-btn"><div class="msg-check-icon"><img src="img/checkbox.png" class="msg-check-btn"></div><div class="msg-content-title"><div>' +
+                    if (resultArr[i]['message_type'] == 'event' && resultArr[i].read != 'D') {
+                        eventLength++;
+                        eventContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
+                            '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
+                            '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
+                            (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
                             resultArr[i].create_time.split(' ')[0] + '</div><div>' +
                             resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
 
-                    } else if (resultArr[i]['message_type'] == 'news') {
-                        newsContent += '<li data-icon="false"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a>' +
-                            '</div><a href="#" class="ui-div ui-btn"><div class="msg-check-icon"><img src="img/checkbox.png" class="msg-check-btn"></div><div class="msg-content-title"><div>' +
+                    } else if (resultArr[i]['message_type'] == 'news' && resultArr[i].read != 'D') {
+                        newsLength++;
+                        newsContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
+                            '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
+                            '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
+                            (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
                             resultArr[i].create_time.split(' ')[0] + '</div><div>' +
                             resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
                     }
@@ -70,7 +76,7 @@ $("#viewMessageList").pagecontainer({
                     //(-100~0),右滑为0,左滑为距离
                     change = Math.min(Math.max(-100, change), 0) // restrict to -100px left, 0px right
                     event.currentTarget.style.left = change + 'px'
-                    if (change < -10) disable_scroll() // disable scroll once we hit 10px horizontal slide
+                    if (change < -20) disable_scroll() // disable scroll once we hit 10px horizontal slide
                 })
                 .on('touchend', function (event) {
                     var left = parseInt(event.currentTarget.style.left)
@@ -95,6 +101,20 @@ $("#viewMessageList").pagecontainer({
                     $(event.currentTarget).animate({ left: new_left }, 200)
                     enable_scroll()
                 });
+
+
+        }
+
+        function viewMessageInitila() {
+            $('.dropdown-title').removeClass('opacity');
+            $('.dropdown-news').show();
+            $('.q-btn-header').show();
+            $('.header-search').hide();
+            $('#cancelEdit').hide();
+            $('#cancelSearch').hide();
+            $('#editListview').show();
+            $('#searchListview').show();
+            $('.msg-tool').hide();
         }
 
         //swipe to delete function
@@ -112,7 +132,10 @@ $("#viewMessageList").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMessageList").on("pagebeforeshow", function (event, ui) {
-            createMessageByType();
+            if (viewMessageInitial) {
+                createMessageByType();
+                viewMessageInitial = false;
+            }
         });
 
         $("#viewMessageList").on("pageshow", function (event, ui) {
@@ -125,30 +148,210 @@ $("#viewMessageList").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //返回homepage
+        $('.q-btn-header').on('click', function () {
+            $.mobile.changePage('#viewMain3');
+        });
+
+        //弹出message下拉菜单
         $("#viewMessageList .ui-title").on("click", function () {
             $(".select-news").slideToggle(200);
         });
 
+        //选择message类型
         $("#viewMessageList div[data-name=msgType]").on("click", function () {
             var self = this;
-            var currentType = $(self).attr("data-value");
+            var currentType = $(self).text();
 
             if (currentType != messageType) {
 
-                if (currentType == 'news') {
+                if (currentType == 'News') {
                     $(".news-content").show();
                     $(".event-content").hide();
-                } else {
+                } else if (currentType == 'Event') {
                     $(".event-content").show();
                     $(".news-content").hide();
                 }
 
                 messageType = currentType;
-                $(".dropdown-title").text($(self).text());
+                $(".dropdown-title").text(currentType);
             }
 
             $(".select-news").slideUp(200);
+        });
 
+        //编辑listview
+        $('#editListview').on('click', function () {
+            if ($('.select-news').css('display') == 'block') {
+                $(".select-news").slideUp();
+            }
+
+            //header
+            $('.dropdown-title').addClass('opacity');
+            $('.dropdown-news').hide();
+            $('.q-btn-header').hide();
+            $('#editListview').hide();
+            $('#searchListview').hide();
+            $('#cancelEdit').show();
+
+            //listview
+            $('.msg-next-icon').hide();
+            $('.msg-check-icon').show();
+            $('.msg-tool').slideDown(300);
+            $('#viewMessageList .ui-title').off('click');
+        });
+
+        //取消编辑listview
+        $('#cancelEdit').on('click', function () {
+            //header
+            $('.dropdown-title').removeClass('opacity');
+            $('.dropdown-news').show();
+            $('.q-btn-header').show();
+            $('#cancelEdit').hide();
+            $('#editListview').show();
+            $('#searchListview').show();
+
+            //listview
+            $('.msg-check-icon').hide();
+            $('.msg-next-icon').show();
+            $('.msg-tool').slideUp(300);
+            $('#viewMessageList .ui-title').on('click', function () {
+                $(".select-news").slideToggle(200);
+            });
+        });
+
+        //搜索listview
+        $('#searchListview').on('click', function () {
+            if ($('.select-news').css('display') == 'block') {
+                $(".select-news").slideUp();
+            }
+
+            $('.q-btn-header').hide();
+            $('.header-search').show();
+            $('#editListview').hide();
+            $('#searchListview').hide();
+            $('#cancelSearch').show();
+        });
+
+        //取消搜索listview
+        $('#cancelSearch').on('click', function () {
+            $('#myFilter').val('');
+            $('#myFilter').blur();
+
+            $('.header-search').hide();
+            $('.q-btn-header').show();
+            $('#cancelSearch').hide();
+            $('#editListview').show();
+            $('#searchListview').show();
+
+            $(".swipe-delete").listview('refresh');
+        });
+
+        //news编辑
+        $('.news-content').on('click', '.msg-check-btn', function () {
+            var $self = $(this);
+
+            if ($self.attr('data-src') == 'checkbox') {
+                $self.attr('data-src', 'checkbox_green');
+                $self.attr('src', 'img/checkbox_green.png');
+                newsCheckedCount++;
+            } else {
+                $self.attr('data-src', 'checkbox');
+                $self.attr('src', 'img/checkbox.png');
+                newsCheckedCount--;
+            }
+
+            if (newsCheckedCount > 0 && !$('.news-delete-btn').hasClass('enabled-font')) {
+                $('.news-delete-btn').addClass('enabled-font');
+                $('.news-readed-btn').addClass('enabled-font');
+            } else if (newsCheckedCount == 0 && $('.news-delete-btn').hasClass('enabled-font')) {
+                $('.news-delete-btn').removeClass('enabled-font');
+                $('.news-readed-btn').removeClass('enabled-font');
+            }
+        });
+
+        //event编辑
+        $('.event-content').on('click', '.msg-check-btn', function () {
+            var $self = $(this);
+
+            if ($self.attr('data-src') == 'checkbox') {
+                $self.attr('data-src', 'checkbox_green');
+                $self.attr('src', 'img/checkbox_green.png');
+                eventCheckedCount++;
+            } else {
+                $self.attr('data-src', 'checkbox');
+                $self.attr('src', 'img/checkbox.png');
+                eventCheckedCount--;
+            }
+
+            if (eventCheckedCount > 0 && !$('.event-delete-btn').hasClass('enabled-font')) {
+                $('.event-delete-btn').addClass('enabled-font');
+                $('.event-readed-btn').addClass('enabled-font');
+            } else if (eventCheckedCount == 0 && $('.event-delete-btn').hasClass('enabled-font')) {
+                $('.event-delete-btn').removeClass('enabled-font');
+                $('.event-readed-btn').removeClass('enabled-font');
+            }
+        });
+
+        //news全选
+        $('.news-select-btn').on('click', function () {
+            if (!newsAllChecked) {
+                $('.news-content .msg-check-btn').attr('src', 'img/checkbox_green.png');
+                $('.news-content .msg-check-btn').attr('data-src', 'checkbox_green');
+                newsAllChecked = true;
+                $('.news-delete-btn').addClass('enabled-font');
+                $('.news-readed-btn').addClass('enabled-font');
+                newsCheckedCount = newsLength;
+            } else {
+                $('.news-content .msg-check-btn').attr('src', 'img/checkbox.png');
+                $('.news-content .msg-check-btn').attr('data-src', 'checkbox');
+                newsAllChecked = false;
+                $('.news-delete-btn').removeClass('enabled-font');
+                $('.news-readed-btn').removeClass('enabled-font');
+                newsCheckedCount = 0;
+            }
+        });
+
+
+        //event全选
+        $('.event-select-btn').on('click', function () {
+            if (!eventAllChecked) {
+                $('.event-content .msg-check-btn').attr('src', 'img/checkbox_green.png');
+                $('.event-content .msg-check-btn').attr('data-src', 'checkbox_green');
+                eventAllChecked = true;
+                $('.event-delete-btn').addClass('enabled-font');
+                $('.event-readed-btn').addClass('enabled-font');
+                eventCheckedCount = eventLength;
+            } else {
+                $('.event-content .msg-check-btn').attr('src', 'img/checkbox.png');
+                $('.event-content .msg-check-btn').attr('data-src', 'checkbox');
+                eventAllChecked = false;
+                $('.event-delete-btn').removeClass('enabled-font');
+                $('.event-readed-btn').removeClass('enabled-font');
+                eventCheckedCount = 0;
+            }
+        });
+
+        //news标记已读
+        $('.news-readed-btn').on('click', function () {
+            $.each($('.news-content .msg-check-btn'), function (index, item) {
+                if($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
+                    messageRowId = $(item).parents('li').attr('data-rowid');
+                    //console.log(messageRowId);
+                    updateReadDelete('news', 'read');
+                }
+            })
+        });
+
+        //event标记已读
+        $('.event-readed-btn').on('click', function () {
+            $.each($('.event-content .msg-check-btn'), function (index, item) {
+                if($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
+                    messageRowId = $(item).parents('li').attr('data-rowid');
+                    //console.log(messageRowId);
+                    updateReadDelete('event', 'read');
+                }
+            })
         });
 
         // $('li .delete-btn').on('touchend', function (event) {

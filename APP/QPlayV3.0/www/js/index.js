@@ -40,6 +40,9 @@ var reserveAppList = [
     { app: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
 ];
 
+//viewMessageList
+var viewMessageInitial = true;
+
 window.initialSuccess = function (data) {
     if (data !== undefined) {
 
