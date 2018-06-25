@@ -41,8 +41,8 @@ var dayTable = {
 };
 var recordStartText = "";
 var defaultSettingDone = false;
-var changeIdentity = false;
 var reload = false;
+var hasAgentPanel = false;
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
@@ -66,36 +66,12 @@ window.GetUserAuthority = function() {
             var callbackData = data['Content']["AuthorizedSite"];
             viewPersonalLeaveShow = false;
             //console.log("1. callback length:"+ callbackData.length);
-            if (callbackData.length === 0 && myEmpNo === originalEmpNo) {
-                $("#mypanelviewAgentLeave").hide();
-                if (localStorage.getItem("leaveDefaultSetting") == null) {
-                    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
-                        myEmpNo +
-                        "</EmpNo><LastModified></LastModified></LayoutHeader>";
-                } else {
-                    var lastModified = JSON.parse(localStorage.getItem("leaveDefaultSetting"))["LastModified"];
-                    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
-                        myEmpNo +
-                        "</EmpNo><LastModified>" +
-                        lastModified +
-                        "</LastModified></LayoutHeader>";
-                }
-                GetDefaultSetting();
-                //选择日期为“请选择”
-                $("#startText").text(pleaseSelectStr);
-                $("#endText").text(pleaseSelectStr); 
-                //data scroll menu
-                dateInit(); 
-            } else if (callbackData.length === 0 && myEmpNo !== originalEmpNo) {
-                $("#mypanelviewAgentLeave").hide();
+            if (callbackData.length === 0) {               
+                hasAgentPanel = false
                 restartAgentLeave();
-                //切換身份時 QueryLeftDays API 需重新執行
-                changeIdentity = true; 
-            } else {
-                $("#mypanelviewAgentLeave").show();
+            } else {                
+                hasAgentPanel = true;
                 restartAgentLeave();
-                //切換身份時 QueryLeftDays API 需重新執行
-                changeIdentity = true; 
             }
             //loadingMask("hide");
         }
@@ -116,7 +92,7 @@ function restartAgentLeave() {
                                + myEmpNo
                                + "</EmpNo><LastModified></LastModified></LayoutHeader>";
 
-    GetDefaultSetting("restartDefault");
+    GetDefaultSetting();
     //选择日期为“请选择”
     $("#startText").text(pleaseSelectStr);
     $("#endText").text(pleaseSelectStr);
@@ -441,6 +417,12 @@ function startMainPage() {
     $("#tab-2").show();
     $("label[for=viewPersonalLeave-tab-1]").removeClass('ui-btn-active');
     $("label[for=viewPersonalLeave-tab-2]").addClass('ui-btn-active');
+    //代理請假Panel
+    if (hasAgentPanel) {
+        $("#mypanelviewAgentLeave").show();
+    } else {
+        $("#mypanelviewAgentLeave").hide();
+    }
     if (!viewPersonalLeaveShow  && defaultSettingDone) {
         //个人剩余假别资讯
         queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";

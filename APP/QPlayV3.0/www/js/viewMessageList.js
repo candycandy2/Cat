@@ -149,7 +149,7 @@ $("#viewMessageList").pagecontainer({
 
         /********************************** dom event *************************************/
         //返回homepage
-        $('.q-btn-header').on('click', function () {
+        $('#viewMessageList .q-btn-header').on('click', function () {
             $.mobile.changePage('#viewMain3');
         });
 
