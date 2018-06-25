@@ -4,6 +4,7 @@ var selectBasedayStr = langStr["str_127"]; //選擇時間
 var workingday, clockinday, clockintime = "";
 var workName, otherReason = "";
 var clockinWorkType, clockinReasonType = "";
+var doneDateTime = {};
 
 var workTypeData = {
     id: "work-type-popup",
@@ -232,10 +233,12 @@ $("#viewClockin").pagecontainer({
             //datetime-local
             //$('#newClockinTime').datetimepicker('show');
             //$("#newClockinTime").click();
-            $("#timepicker").siblings().trigger('click');
+            //$("#timepicker").siblings().trigger('click');
+            $("#timepicker").trigger('datebox', { 'method': 'open' });
+            tplJS.preventPageScroll();
         });
 
-        $("#timepicker").on("change", function() {
+        /*$("#timepicker").on("change", function() {
             clockintime = recordTime;
             if (clockintime === "") {
                 $("#chooseClockintime").text(pleaseSelectStr);
@@ -243,7 +246,7 @@ $("#viewClockin").pagecontainer({
                 $("#chooseClockintime").text(clockintime);
             }
             checkClockinBeforePreview();
-        });
+        });*/
 
         /*$("#newClockinTime").on("change", function() {
             clockintime = ($(this).val()).substring(11, 16);
@@ -254,6 +257,63 @@ $("#viewClockin").pagecontainer({
             }
             checkClockinBeforePreview();
         });*/
+
+
+        window.setDoneTime = function(obj) {
+            if (!obj.cancelClose) {
+                var setTime = obj.date;
+                doneDateTime["hour"] = this.callFormat('%H', setTime);
+                doneDateTime["minute"] = this.callFormat('%M', setTime);
+
+                var textDateTime = doneDateTime["hour"] + ":" + doneDateTime["minute"];
+                $("#chooseClockintime").html(textDateTime);
+                //Create temporary data
+                tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
+            } else {              
+                /*if (doneDateTime["hour"] === undefined) {
+                    doneDateTime = {};
+                    $("#chooseClockintime").text(pleaseSelectStr);
+                } else {
+                    //Recover year/month/day
+                    doneDateTime["hour"] = tempDateTime["hour"];
+                    doneDateTime["minute"] = tempDateTime["minute"];
+                }*/
+            }
+            tplJS.recoveryPageScroll();
+
+            $(".ui-datebox-container").css("opacity", "0");
+            checkClockinBeforePreview();
+        };
+
+        window.resizeDatebox = function(obj) {
+            var widthPopup = $(".ui-datebox-container").parent("div.ui-popup-active").width();
+            var heightPopup = $(".ui-datebox-container").parent("div.ui-popup-active").height();
+            var clientWidth = document.documentElement.clientWidth;
+            var clientHeight = document.documentElement.clientHeight;
+            var pageScrollHeight = $(".ui-page.ui-page-active").scrollTop();
+
+            if (device.platform === "iOS") {
+                pageScrollHeight += 20;
+            }
+            var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight, 10);
+            //var left = parseInt((clientWidth - widthPopup), 10);
+
+            $(".ui-datebox-container").parent("div.ui-popup-active").css({
+                "top": top,
+                //"left": left
+            });
+
+            $(".ui-datebox-container").css("opacity", "1");
+
+            $('.ui-popup-screen.in').css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
+            });
+
+            /*if (doneDateTime["hour"] !== undefined) {
+                $("#doneTime").datebox('setTheDate', doneDateTime["hour"] + ":" + doneDateTime["minute"]);
+            } */
+        };
 
         function GetWorkName() {
             workName = $.trim($("#workName").val());

@@ -337,7 +337,6 @@ $("#viewMessageList").pagecontainer({
             $.each($('.news-content .msg-check-btn'), function (index, item) {
                 if($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
                     messageRowId = $(item).parents('li').attr('data-rowid');
-                    //console.log(messageRowId);
                     updateReadDelete('news', 'read');
                 }
             })
@@ -348,8 +347,27 @@ $("#viewMessageList").pagecontainer({
             $.each($('.event-content .msg-check-btn'), function (index, item) {
                 if($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
                     messageRowId = $(item).parents('li').attr('data-rowid');
-                    //console.log(messageRowId);
                     updateReadDelete('event', 'read');
+                }
+            })
+        });
+
+        //news标记删除
+        $('.news-delete-btn').on('click', function () {
+            $.each($('.news-content .msg-check-btn'), function (index, item) {
+                if($(item).attr('data-src') == 'checkbox_green') {
+                    messageRowId = $(item).parents('li').attr('data-rowid');
+                    updateReadDelete('news', 'delete');
+                }
+            })
+        });
+
+        //event标记删除
+        $('.event-delete-btn').on('click', function () {
+            $.each($('.event-content .msg-check-btn'), function (index, item) {
+                if($(item).attr('data-src') == 'checkbox_green') {
+                    messageRowId = $(item).parents('li').attr('data-rowid');
+                    updateReadDelete('event', 'delete');
                 }
             })
         });
