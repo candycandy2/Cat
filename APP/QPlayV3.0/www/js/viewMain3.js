@@ -23,10 +23,10 @@ $("#viewMain3").pagecontainer({
             sessionStorage.setItem('viewClass', widgetItem);
 
             //5. load css
-            var cssItem = $('<link>');
-            cssItem.prop('rel', 'stylesheet');
-            cssItem.prop('type', 'text/css');
-            cssItem.prop('href', 'http://qplaydev.benq.com/widgetDemo/' + widgetList[index].name + '/' + widgetList[index].name + '.css');
+            var cssItem = $('<link rel="stylesheet" type="text/css" href="http://qplaydev.benq.com/widgetDemo/'+ widgetList[index].name+'/'+widgetList[index].name+'.css">');
+            // cssItem.prop('rel', 'stylesheet');
+            // cssItem.prop('type', 'text/css');
+            // cssItem.prop('href', 'http://qplaydev.benq.com/widgetDemo/' + widgetList[index].name + '/' + widgetList[index].name + '.css');
             cssItem.appendTo('head');
 
             //6. load js
