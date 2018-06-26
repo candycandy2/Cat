@@ -1063,6 +1063,23 @@ html body .ui-group-theme-a a:visited {
     height: 0;
 }
 
+#confirmClockin {
+    min-height: 0vw;
+}
+
+#confirmClockin .footer{
+    color: #1678E5;
+    font-size: 5.02vw;
+    text-align: center;
+}
+
+.ui-body-b {
+    background-color: #33aaff;
+    border-color: #178fe5;
+    color: #fff;
+    text-shadow: none;
+}
+
 /********************************************** mypanel *********************************************/
 
 #mypanel .panel-content {
@@ -1116,3 +1133,4 @@ html body .ui-group-theme-a a:visited {
     margin: 0;
     padding: 0;
 }
+
