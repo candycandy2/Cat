@@ -180,6 +180,11 @@ $("#viewClockin").pagecontainer({
 
         //選擇出勤日期
         $("#selectWorkday").on("click", function() {
+            if ($("#chooseWorkday").text() == pleaseSelectStr) {
+                recordStartText = new Date(Date.now());
+            } else {
+                recordStartText = new Date($("#chooseWorkday").text());
+            }                    
             //datetime-local
             $('#newWorkDate').datetimepicker('show');
             var currentStep = $('.xdsoft_datetimepicker').filter(function(item){
@@ -209,6 +214,11 @@ $("#viewClockin").pagecontainer({
 
         //選擇刷卡日期
         $("#selectClockinday").on("click", function() {
+            if ($("#chooseClockinday").text() == pleaseSelectStr) {
+                recordStartText = new Date(Date.now());
+            } else {
+                recordStartText = new Date($("#chooseClockinday").text());
+            }                    
             //datetime-local
             $('#newClockinDate').datetimepicker('show');
         });
@@ -239,16 +249,6 @@ $("#viewClockin").pagecontainer({
         });
 
         /*$("#timepicker").on("change", function() {
-            clockintime = recordTime;
-            if (clockintime === "") {
-                $("#chooseClockintime").text(pleaseSelectStr);
-            } else {
-                $("#chooseClockintime").text(clockintime);
-            }
-            checkClockinBeforePreview();
-        });*/
-
-        /*$("#newClockinTime").on("change", function() {
             clockintime = ($(this).val()).substring(11, 16);
             if (clockintime === "") {
                 $("#chooseClockintime").text(pleaseSelectStr);
@@ -258,7 +258,6 @@ $("#viewClockin").pagecontainer({
             checkClockinBeforePreview();
         });*/
 
-
         window.setDoneTime = function(obj) {
             if (!obj.cancelClose) {
                 var setTime = obj.date;
@@ -267,18 +266,11 @@ $("#viewClockin").pagecontainer({
 
                 var textDateTime = doneDateTime["hour"] + ":" + doneDateTime["minute"];
                 $("#chooseClockintime").html(textDateTime);
+                clockintime = textDateTime;
                 //Create temporary data
                 tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
-            } else {              
-                /*if (doneDateTime["hour"] === undefined) {
-                    doneDateTime = {};
-                    $("#chooseClockintime").text(pleaseSelectStr);
-                } else {
-                    //Recover year/month/day
-                    doneDateTime["hour"] = tempDateTime["hour"];
-                    doneDateTime["minute"] = tempDateTime["minute"];
-                }*/
-            }
+
+            } 
             tplJS.recoveryPageScroll();
 
             $(".ui-datebox-container").css("opacity", "0");
@@ -310,9 +302,7 @@ $("#viewClockin").pagecontainer({
                 'touch-action': 'none'
             });
 
-            /*if (doneDateTime["hour"] !== undefined) {
-                $("#doneTime").datebox('setTheDate', doneDateTime["hour"] + ":" + doneDateTime["minute"]);
-            } */
+            $(".ui-datebox-container").removeClass('ui-overlay-shadow');
         };
 
         function GetWorkName() {
