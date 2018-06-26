@@ -33,6 +33,16 @@
     font-weight: normal !important;
 }
 
+.ui-popup-screen {
+    position: fixed !important;
+    bottom: 0 !important;
+}
+
+.ui-popup-container {
+    position: fixed !important;
+    top: 225px !important;
+}
+
 #viewNewsEvents2-3 .ui-listview>.ui-li-static {
     padding: 0;
 }
@@ -1291,7 +1301,7 @@ input[type=radio]:checked + label {
 
 .select-news {
     position: fixed;
-    top: 48px;
+    top: 0;
     left: 0;
     width: 100vw;
     height: 22.54vw;
@@ -1321,6 +1331,14 @@ input[type=radio]:checked + label {
     line-height: 11.27VW;
     padding: 0 3.71vw;
     background-color: #ECEEF0;
+    display: none;
+    position: fixed;
+    z-index: 1;
+}
+
+.msg-tool-blank {
+    width: 100vw;
+    height: 11.27vw;
     display: none;
 }
 
@@ -1461,3 +1479,32 @@ input[type=radio]:checked + label {
 	text-shadow: none;
 }
 /*** swipe ***/
+
+.confirmDeleteMsg .ui-content>.header {
+    padding: 0 5.36vw;
+    margin-top: 10vw;
+}
+
+.confirmDeleteMsg .ui-content>.footer {
+    margin-top: 10%;
+}
+
+
+/***************************** viewMessageDetail ********************************/
+#viewMessageDetail .ui-content {
+    padding: 0 !important;
+}
+
+.msg-detail-title {
+    padding: 6.4vw 3.71vw 0 6.58vw;
+    font-weight: bold;
+    font-size: 4.18vw !important;
+    color: #263238;
+}
+
+.msg-detail-content {
+    padding: 7.34vw 3.71vw 0 6.58vw;
+    font-weight: normal;
+    font-size: 3.768vw !important;
+    color: #263238;
+}
