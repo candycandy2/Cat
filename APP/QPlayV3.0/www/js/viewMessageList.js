@@ -1,7 +1,8 @@
 $("#viewMessageList").pagecontainer({
     create: function (event, ui) {
 
-        var messageType = "News", newsCheckedCount = 0, eventCheckedCount = 0, newsAllChecked = false, eventAllChecked = false, newsLength = 0, eventLength = 0;
+        var messageType = "News", newsAllChecked = false, eventAllChecked = false, deleteType, msgType;
+        var messageExist = true;
 
         function getNewsList() {
 
@@ -24,8 +25,8 @@ $("#viewMessageList").pagecontainer({
         }
 
         function createMessageByType() {
+            //1. html
             var msgContent = loginData["messagecontent"];
-
             if (msgContent == null || msgContent == "") {
                 var messageList = new QueryMessageList();
                 createMessageByType();
@@ -38,7 +39,6 @@ $("#viewMessageList").pagecontainer({
                 var eventContent = '';
                 for (var i in resultArr) {
                     if (resultArr[i]['message_type'] == 'event' && resultArr[i].read != 'D') {
-                        eventLength++;
                         eventContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
                             '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
                             '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
@@ -47,7 +47,6 @@ $("#viewMessageList").pagecontainer({
                             resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
 
                     } else if (resultArr[i]['message_type'] == 'news' && resultArr[i].read != 'D') {
-                        newsLength++;
                         newsContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
                             '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
                             '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
@@ -61,6 +60,7 @@ $("#viewMessageList").pagecontainer({
                 $(".event-content ul").html('').append(eventContent);
             }
 
+            //2. swipe
             var x;
             $('.swipe-delete li > a')
                 .on('touchstart', function (event) {
@@ -102,7 +102,368 @@ $("#viewMessageList").pagecontainer({
                     enable_scroll()
                 });
 
+            //3. fixed top
+            var msgHeaderTop = parseInt(document.documentElement.clientWidth * 13 / 100, 10);
+            if (device.platform == 'iOS') {
+                msgHeaderTop += iOSFixedTopPX();
+            }
+            $('.select-news').css('top', msgHeaderTop + 'px');
+            $('.msg-tool').css('top', msgHeaderTop + 'px');
+            
+            //4. to detail
+            $('.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon').on('click', function () {
+                messageRowId = $(this).parents('li').attr('data-rowid');
+                var msg = new getMessageDetail();
+            });
+        }
 
+        function getMessageDetail() {
+            var self = this;
+
+            var queryStr = "&message_send_row_id=" + messageRowId;
+
+            this.successCallback = function (data) {
+                console.log(data);
+                var resultcode = data.result_code;
+                var content = data.content;
+
+                if (resultcode === 1) {
+
+                    messageExist = true;
+                    //变为已读
+                    updateReadDelete(content.message_type, "read");
+
+                    $('.msg-detail-title').text(content.message_title);
+
+                    //If template_id == 999, it's Portal Event,
+                    //need to be render become canvas
+                    if (content.template_id === 999) {
+                        portalURL = content.message_text;
+                        createMsgHtml(portalURL);
+
+                        $(".PortalContent").show();
+                        $(".textContent").hide();
+
+                    } else {
+
+                        $(".textContent").html(cleanHTML(content.message_text));
+                        $(".PortalContent").hide();
+                        $(".textContent").show();
+                    }
+
+                    $.mobile.changePage('#viewMessageDetail');
+
+                } else if (resultcode === "000910") {
+                    //Message was be deleted in server
+                    messageExist = false;
+                    updateReadDelete("all", "delete");
+                }
+
+                if (window.localStorage.getItem("openMessage") === "true") {
+                    loginData.openMessage = false;
+                    window.localStorage.setItem("openMessage", "false");
+                }
+            };
+
+            this.failCallback = function (data) { };
+
+            var __construct = function () {
+                QPlayAPI("POST", "getMessageDetail", self.successCallback, self.failCallback, null, queryStr);
+            }();
+        }
+
+        function createMsgHtml(varURL) {
+            (function () {
+                $(".htmlContent").html("");
+                $(".htmlContent").load(varURL, function () {
+                    $(".htmlContent").find("meta").remove();
+                    $(".htmlContent").find("title").remove();
+                    $(".htmlContent").find("base").remove();
+
+                    drawCanvas($(".htmlContent").html());
+
+                    //Had used the URL
+                    portalURL = "";
+                    //Had openMessage
+                    if (window.localStorage.getItem('openMessage') === "true") {
+                        loginData.openMessage = false;
+                        window.localStorage.setItem('openMessage', "false");
+                    }
+                });
+            }());
+        }
+
+        function drawCanvas(content) {
+
+            //$("#viewWebNews2-3-1 .portal-header").hide();
+
+            $(".htmlContent").css({
+                top: 0,
+                left: 0
+            });
+
+            $(".htmlContent").html(content).promise().done(function () {
+
+                var screenWidth = document.documentElement.clientWidth;
+                var $images = $('.htmlContent img');
+                var loaded_images_count = 0;
+                var loaded_finish = false;
+
+                if ($images.length > 0) {
+                    $images.load(function () {
+
+                        loaded_images_count++;
+
+                        if (loaded_images_count == $images.length) {
+                            if ($(".htmlContent")[0].scrollWidth < screenWidth) {
+                                $(".htmlContent").css("width", (screenWidth) + "px");
+                            }
+
+                            loaded_finish = true;
+                            //$("#messageLoadErrorPopup").popup("close");
+                            $("#viewMessageDetail").css("min-height", document.documentElement.clientHeight + "px");
+
+                            setTimeout(function () {
+                                doPanZoom();
+                            }, 500);
+                        }
+
+                    });
+
+                    setTimeout(function () {
+                        if (!loaded_finish) {
+                            //$("#messageLoadErrorPopup").popup("open");
+                            $("#viewMessageDetail").css("min-height", document.documentElement.clientHeight + "px");
+                        }
+                    }, 3000);
+                } else {
+                    if ($(".htmlContent")[0].scrollWidth < screenWidth) {
+                        $(".htmlContent").css("width", (screenWidth) + "px");
+                    }
+
+                    // setTimeout(function() {
+                    //     doPanZoom();
+                    // }, 500);
+                }
+
+                //隐藏页面中的header和footer
+                // $('.htmlContent center > table > tbody > tr:eq(0)').hide();
+                // $('.htmlContent center > table > tbody > tr:eq(1)').hide();
+                // $('.htmlContent center > table > tbody > tr:eq(2)').hide();
+                // $('.htmlContent center > table > tbody > tr:eq(4)').hide();
+                // $('.htmlContent center > table > tbody > tr:eq(5)').hide();
+                // $('.htmlContent center > table > tbody > tr:eq(6)').hide();
+
+                function doPanZoom() {
+
+                    window.minScale = parseInt(document.documentElement.clientWidth * 100 / $(".htmlContent")[0].scrollWidth * 0.9, 10) / 100;
+                    var marginLeft = parseInt(document.documentElement.clientWidth * 10 / 100, 10);
+
+                    //Resize HtmlContent
+                    $(".htmlContent").css("width", $(".htmlContent")[0].scrollWidth + "px");
+                    $(".htmlContent").css("height", $(".htmlContent")[0].scrollHeight + "px");
+
+                    //Remove Listener Event
+                    $(".PortalContent").off("scroll");
+                    $(".htmlContent").off("panzoomstart");
+                    $(".htmlContent").off("panzoomzoom");
+                    $(".htmlContent").off("panzoomend");
+
+                    //Panzoom Initial
+                    $(".htmlContent").panzoom();
+                    $(".htmlContent").panzoom("option", {
+                        minScale: minScale
+                    });
+
+                    $(".htmlContent").panzoom("zoom", minScale, { silent: true });
+
+                    //Resize PortalContent
+                    var screenHeight = document.documentElement.clientHeight;
+                    var screenWidth = document.documentElement.clientWidth;
+                    $(".PortalContent").css("overflow-y", "auto");
+                    $(".PortalContent").css("overflow-x", "hidden");
+                    $(".viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
+                    $(".PortalContent").css("top", "0px");
+                    //var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height() + 5;
+                    var portalHeaderHeight = 0;
+
+                    if (device.platform === "iOS") {
+                        portalHeaderHeight += iOSFixedTopPX();
+                    }
+
+                    $(".PortalContent").css("padding-top", "0px");
+                    var matrixNewTopY = parseInt(portalHeaderHeight, 10);
+
+                    $(".PortalContent").css("height", screenHeight + "px");
+                    $(".PortalContent").css("width", screenWidth + "px");
+
+                    //Reset matrix of canvas
+                    var canvasHeight = $(".htmlContent").height();
+                    var canvasWidth = $(".htmlContent").width();
+                    var matrix = $(".htmlContent").panzoom("getMatrix");
+                    var matrixLeftX = document.documentElement.clientWidth - $(".htmlContent").width();
+                    var matrixNewLeftX = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
+
+                    $(".htmlContent").css({
+                        transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + "," + matrixNewLeftX + "," + matrixNewTopY + ")"
+                    });
+
+                    $(".htmlContent").offset({
+                        left: matrixNewLeftX,
+                        top: matrixNewTopY
+                    });
+
+                    loadingMask("hide");
+
+                    //panzoom start event
+                    $(".htmlContent").on("panzoomstart", function (e, panzoom, matrix, changed) {
+                        var canvasWidth = $(".htmlContent").width() * matrix[0];
+                        var screenWidth = document.documentElement.clientWidth;
+
+                        $("#viewMessageDetail .page-main").css("overflow-x", "auto");
+                        $(".PortalContent").css({
+                            "overflow-y": "auto",
+                            "overflow-x": "auto",
+                            "top": "0px",
+                            "height": screenHeight + "px",
+                            "width": canvasWidth + "px"
+                        });
+
+                        if (device.platform === "iOS") {
+                            $(".PortalContent").css("width", screenWidth + "px");
+                        }
+                    });
+
+                    //panzoom start zoom
+                    $(".htmlContent").on("panzoomzoom", function (e, panzoom, scale, opts) {
+                        $(".htmlContent").panzoom("option", {
+                            disablePan: true
+                        });
+
+                        var matrix = $(".htmlContent").panzoom("getMatrix");
+                        var canvasWidth = $(".htmlContent").width() * matrix[0];
+
+                        $("#viewMessageDetail .page-main").css("overflow-x", "auto");
+                        $(".PortalContent").css({
+                            "overflow-y": "auto",
+                            "overflow-x": "auto",
+                            "top": "0px",
+                            "height": screenHeight + "px",
+                            "width": canvasWidth + "px"
+                        });
+
+                        $(".htmlContent").css({
+                            transform: " matrix(" + scale + "," + matrix[1] + "," + matrix[2] + "," + scale + ", 0, " + matrix[5] + ")"
+                        });
+                    });
+
+                    //panzoom end event
+                    $(".htmlContent").on("panzoomend", function (e, panzoom, matrix, changed) {
+
+                        var canvasWidth;
+                        var screenWidth;
+                        var canvasOffsetTop;
+
+                        matrix = $(".htmlContent").panzoom("getMatrix");
+
+                        if (matrix[0] == minScale) {
+
+                            screenWidth = document.documentElement.clientWidth;
+                            $(".PortalContent").css({
+                                "width": screenWidth + "px",
+                                "overflow-x": "hidden"
+                            });
+
+                            canvasWidth = $(".htmlContent").width();
+                            canvasOffset = $(".htmlContent").offset();
+                            canvasOffsetTop = canvasOffset.top;
+                            var left = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
+
+                            $(".htmlContent").css({
+                                top: matrixNewTopY,
+                                transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + ", 0, 0)"
+                            });
+
+                            $(".htmlContent").offset({
+                                top: matrixNewTopY,
+                                left: left
+                            });
+
+                        } else if (matrix[0] > minScale) {
+
+                            canvasWidth = $(".htmlContent").width() * matrix[0];
+                            screenWidth = document.documentElement.clientWidth;
+
+                            $("#viewMessageDetail .page-main").css("overflow-x", "auto");
+                            $(".PortalContent").css({
+                                "overflow-y": "auto",
+                                "overflow-x": "auto",
+                                "top": "0px",
+                                "height": screenHeight + "px",
+                                "width": canvasWidth + "px"
+                            });
+
+                            if (device.platform === "iOS") {
+                                $(".PortalContent").css("width", screenWidth + "px");
+                            }
+
+                            $(".htmlContent").css({
+                                top: 0,
+                                transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + ", 0, 0)"
+                            });
+
+                            canvasOffset = $(".htmlContent").offset();
+                            canvasOffsetTop = canvasOffset.top;
+
+                            $(".htmlContent").offset({
+                                top: canvasOffsetTop,
+                                left: 0
+                            });
+
+                        }
+
+                    });
+
+                    //Set Scroll Event
+                    $(".PortalContent").on("scroll", function () {
+
+                        var matrix = $(".htmlContent").panzoom("getMatrix");
+                        var canvasHeight = $(".htmlContent").height();
+                        var headerHeight = $("#viewMessageDetail .page-header").height();
+                        //var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height();
+                        var portalHeaderHeight = 0;
+                        var scrollTop = $(".PortalContent").scrollTop();
+                        var limitPercent = matrix[0];
+
+                        if (device.platform === "iOS") {
+                            headerHeight += iOSFixedTopPX();
+                        }
+
+                        if ((canvasHeight * matrix[0] - scrollTop) < (screenHeight * limitPercent - headerHeight - portalHeaderHeight)) {
+                            $(".PortalContent").animate({
+                                scrollTop: ((canvasHeight * matrix[0]) - (screenHeight * limitPercent - headerHeight - portalHeaderHeight))
+                            }, 0);
+                        }
+
+                    });
+
+                    //Prevent Link Action
+                    $(".htmlContent a").on("click", function (event) {
+                        event.preventDefault();
+                    });
+                }
+
+            });
+        }
+
+        function checkIconCount(type) {
+            var count = 0;
+            $.each($('.' + type + '-content li'), function (index, item) {
+                if ($(item).find('.msg-check-btn').attr('data-src') == 'checkbox_green') {
+                    count++;
+                }
+            })
+            return count;
         }
 
         function viewMessageInitila() {
@@ -117,6 +478,7 @@ $("#viewMessageList").pagecontainer({
             $('.msg-tool').hide();
         }
 
+
         //swipe to delete function
         function prevent_default(event) {
             event.preventDefault();
@@ -127,7 +489,7 @@ $("#viewMessageList").pagecontainer({
         }
 
         function enable_scroll() {
-            $(document).unbind('touchmove', prevent_default)
+            $(document).unbind('touchmove', prevent_default);
         }
 
         /********************************** page event ***********************************/
@@ -189,7 +551,7 @@ $("#viewMessageList").pagecontainer({
             //header
             $('.dropdown-title').addClass('opacity');
             $('.dropdown-news').hide();
-            $('.q-btn-header').hide();
+            $('#viewMessageList .q-btn-header').hide();
             $('#editListview').hide();
             $('#searchListview').hide();
             $('#cancelEdit').show();
@@ -198,6 +560,7 @@ $("#viewMessageList").pagecontainer({
             $('.msg-next-icon').hide();
             $('.msg-check-icon').show();
             $('.msg-tool').slideDown(300);
+            $('.msg-tool-blank').show(300);
             $('#viewMessageList .ui-title').off('click');
         });
 
@@ -206,7 +569,7 @@ $("#viewMessageList").pagecontainer({
             //header
             $('.dropdown-title').removeClass('opacity');
             $('.dropdown-news').show();
-            $('.q-btn-header').show();
+            $('#viewMessageList .q-btn-header').show();
             $('#cancelEdit').hide();
             $('#editListview').show();
             $('#searchListview').show();
@@ -215,6 +578,7 @@ $("#viewMessageList").pagecontainer({
             $('.msg-check-icon').hide();
             $('.msg-next-icon').show();
             $('.msg-tool').slideUp(300);
+            $('.msg-tool-blank').hide(300);
             $('#viewMessageList .ui-title').on('click', function () {
                 $(".select-news").slideToggle(200);
             });
@@ -254,17 +618,17 @@ $("#viewMessageList").pagecontainer({
             if ($self.attr('data-src') == 'checkbox') {
                 $self.attr('data-src', 'checkbox_green');
                 $self.attr('src', 'img/checkbox_green.png');
-                newsCheckedCount++;
+
             } else {
                 $self.attr('data-src', 'checkbox');
                 $self.attr('src', 'img/checkbox.png');
-                newsCheckedCount--;
+
             }
 
-            if (newsCheckedCount > 0 && !$('.news-delete-btn').hasClass('enabled-font')) {
+            if (checkIconCount('news') > 0 && !$('.news-delete-btn').hasClass('enabled-font')) {
                 $('.news-delete-btn').addClass('enabled-font');
                 $('.news-readed-btn').addClass('enabled-font');
-            } else if (newsCheckedCount == 0 && $('.news-delete-btn').hasClass('enabled-font')) {
+            } else if (checkIconCount('news') == 0 && $('.news-delete-btn').hasClass('enabled-font')) {
                 $('.news-delete-btn').removeClass('enabled-font');
                 $('.news-readed-btn').removeClass('enabled-font');
             }
@@ -277,17 +641,17 @@ $("#viewMessageList").pagecontainer({
             if ($self.attr('data-src') == 'checkbox') {
                 $self.attr('data-src', 'checkbox_green');
                 $self.attr('src', 'img/checkbox_green.png');
-                eventCheckedCount++;
+
             } else {
                 $self.attr('data-src', 'checkbox');
                 $self.attr('src', 'img/checkbox.png');
-                eventCheckedCount--;
+
             }
 
-            if (eventCheckedCount > 0 && !$('.event-delete-btn').hasClass('enabled-font')) {
+            if (checkIconCount('event') > 0 && !$('.event-delete-btn').hasClass('enabled-font')) {
                 $('.event-delete-btn').addClass('enabled-font');
                 $('.event-readed-btn').addClass('enabled-font');
-            } else if (eventCheckedCount == 0 && $('.event-delete-btn').hasClass('enabled-font')) {
+            } else if (checkIconCount('event') == 0 && $('.event-delete-btn').hasClass('enabled-font')) {
                 $('.event-delete-btn').removeClass('enabled-font');
                 $('.event-readed-btn').removeClass('enabled-font');
             }
@@ -301,14 +665,14 @@ $("#viewMessageList").pagecontainer({
                 newsAllChecked = true;
                 $('.news-delete-btn').addClass('enabled-font');
                 $('.news-readed-btn').addClass('enabled-font');
-                newsCheckedCount = newsLength;
+
             } else {
                 $('.news-content .msg-check-btn').attr('src', 'img/checkbox.png');
                 $('.news-content .msg-check-btn').attr('data-src', 'checkbox');
                 newsAllChecked = false;
                 $('.news-delete-btn').removeClass('enabled-font');
                 $('.news-readed-btn').removeClass('enabled-font');
-                newsCheckedCount = 0;
+
             }
         });
 
@@ -321,55 +685,104 @@ $("#viewMessageList").pagecontainer({
                 eventAllChecked = true;
                 $('.event-delete-btn').addClass('enabled-font');
                 $('.event-readed-btn').addClass('enabled-font');
-                eventCheckedCount = eventLength;
+
             } else {
                 $('.event-content .msg-check-btn').attr('src', 'img/checkbox.png');
                 $('.event-content .msg-check-btn').attr('data-src', 'checkbox');
                 eventAllChecked = false;
                 $('.event-delete-btn').removeClass('enabled-font');
                 $('.event-readed-btn').removeClass('enabled-font');
-                eventCheckedCount = 0;
+
             }
         });
 
         //news标记已读
         $('.news-readed-btn').on('click', function () {
-            $.each($('.news-content .msg-check-btn'), function (index, item) {
-                if($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
-                    messageRowId = $(item).parents('li').attr('data-rowid');
-                    updateReadDelete('news', 'read');
-                }
-            })
+            if ($(this).hasClass('enabled-font')) {
+                $.each($('.news-content .msg-check-btn'), function (index, item) {
+                    if ($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
+                        messageRowId = $(item).parents('li').attr('data-rowid');
+                        updateReadDelete('news', 'read');
+                    }
+                })
+            }
         });
 
         //event标记已读
         $('.event-readed-btn').on('click', function () {
-            $.each($('.event-content .msg-check-btn'), function (index, item) {
-                if($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
-                    messageRowId = $(item).parents('li').attr('data-rowid');
-                    updateReadDelete('event', 'read');
-                }
-            })
+            if ($(this).hasClass('enabled-font')) {
+                $.each($('.event-content .msg-check-btn'), function (index, item) {
+                    if ($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
+                        messageRowId = $(item).parents('li').attr('data-rowid');
+                        updateReadDelete('event', 'read');
+                    }
+                })
+            }
         });
 
         //news标记删除
         $('.news-delete-btn').on('click', function () {
-            $.each($('.news-content .msg-check-btn'), function (index, item) {
-                if($(item).attr('data-src') == 'checkbox_green') {
-                    messageRowId = $(item).parents('li').attr('data-rowid');
-                    updateReadDelete('news', 'delete');
-                }
-            })
+            if ($(this).hasClass('enabled-font')) {
+                $('#confirmDeleteMsg').popup('open');
+                $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_039"]);
+                msgType = 'news';
+                deleteType = 'checkbox';
+            }
         });
 
         //event标记删除
         $('.event-delete-btn').on('click', function () {
-            $.each($('.event-content .msg-check-btn'), function (index, item) {
-                if($(item).attr('data-src') == 'checkbox_green') {
-                    messageRowId = $(item).parents('li').attr('data-rowid');
-                    updateReadDelete('event', 'delete');
-                }
-            })
+            if ($(this).hasClass('enabled-font')) {
+                $('#confirmDeleteMsg').popup('open');
+                $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_042"]);
+                msgType = 'event';
+                deleteType = 'checkbox';
+            }
+        });
+
+        //news swipe删除
+        $('.news-content').on('click', 'a.delete-btn', function () {
+            messageRowId = $(this).parents('li').attr('data-rowid');
+            $('#confirmDeleteMsg').popup('open');
+            $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_039"]);
+            msgType = 'news';
+            deleteType = 'swipe';
+        });
+
+        //event swipe删除
+        $('.event-content').on('click', 'a.delete-btn', function () {
+            messageRowId = $(this).parents('li').attr('data-rowid');
+            $('#confirmDeleteMsg').popup('open');
+            $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_042"]);
+            msgType = 'event';
+            deleteType = 'swipe';
+        });
+
+        //取消删除
+        $('#viewMessageList .btn-cancel').on('click', function () {
+            $('#confirmDeleteMsg').popup('close');
+            if ($(this).attr('id') != 'confirmDeleteBtn') {
+                $('.news-content .swipe-delete li[data-rowid="' + messageRowId + '"] > a').animate({ left: '0px' }, 200);
+            }
+        });
+
+        //确定删除：分为swipe（单个）删除和checkbox（群体）删除
+        $('#confirmDeleteBtn').on('click', function () {
+
+            if (deleteType == 'swipe') {
+
+                updateReadDelete(msgType, 'delete');
+
+            } else if (deleteType == 'checkbox') {
+
+                $.each($('.' + msgType + '-content .msg-check-btn'), function (index, item) {
+                    if ($(item).attr('data-src') == 'checkbox_green') {
+                        messageRowId = $(item).parents('li').attr('data-rowid');
+                        updateReadDelete(msgType, 'delete');
+                    }
+                })
+            }
+
         });
 
         // $('li .delete-btn').on('touchend', function (event) {
