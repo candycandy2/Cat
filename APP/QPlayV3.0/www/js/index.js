@@ -32,13 +32,17 @@ var viewMainInitial = true;
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
 
 //viewMyCalendar
-var viewCalendarInitial = true, reserveCalendar = null, reserveList = [];
+var viewCalendarInitial = true, reserveCalendar = null, reserveList = [], reserveDirty = false, myCalendarData = {}, myHolidayData = [];;
 var reserveAppList = [
     { app: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
     { app: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
     { app: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
     { app: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
 ];
+var leaveAppData = {
+    key: 'appleave',
+    secretKey: '86883911af025422b626131ff932a4b5'
+}
 
 //viewMessageList
 var viewMessageInitial = true;
@@ -119,15 +123,7 @@ function getMyReserve(key, secret) {
                     reserveList.push(resultArr[i]);
                 }
 
-            } else if (key == "appmassage") {
-                for (var i in resultArr) {
-                    resultArr[i].type = key;
-                    resultArr[i].item = "按摩預約";
-                    resultArr[i].ReserveBeginTime = new Date(resultArr[i].ReserveBeginTime).hhmm();
-                    resultArr[i].ReserveEndTime = new Date(resultArr[i].ReserveEndTime).hhmm();
-                    resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
-                    reserveList.push(resultArr[i]);
-                }
+                reserveDirty = true;
 
             } else if (key == "apprelieve") {
                 for (var i in resultArr) {
@@ -139,6 +135,8 @@ function getMyReserve(key, secret) {
                     reserveList.push(resultArr[i]);
                 }
 
+                reserveDirty = true;
+
             } else if (key == "appparking") {
                 for (var i in resultArr) {
                     resultArr[i].type = key;
@@ -147,6 +145,27 @@ function getMyReserve(key, secret) {
                     reserveList.push(resultArr[i]);
                 }
 
+                reserveDirty = true;
+
+            } else if (key == "appmassage") {
+                for (var i in resultArr) {
+                    resultArr[i].type = key;
+                    resultArr[i].item = "按摩預約";
+                    resultArr[i].ReserveBeginTime = new Date(resultArr[i].ReserveBeginTime).hhmm();
+                    resultArr[i].ReserveEndTime = new Date(resultArr[i].ReserveEndTime).hhmm();
+                    resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
+                    reserveList.push(resultArr[i]);
+                }
+
+                reserveDirty = true;
+
+                formatReserveList();
+            }
+
+            if(reserveDirty && reserveCalendar != null) {
+                reserveCalendar.reserveData = reserveList;
+                reserveCalendar.refreshReserve(reserveList);
+                reserveDirty = false;
             }
 
 
@@ -226,7 +245,7 @@ function getSignatureByKey(action, signatureTime, secret) {
     }
 }
 
-
+//数组合并并排序
 function formatReserveList() {
     //1. 先按照日期合併同一天預約
     var tempArr = [];
