@@ -142,6 +142,9 @@ $("#viewClockin").pagecontainer({
             $("#chooseWorkday").text(pleaseSelectStr);
             $("#chooseClockinday").text(pleaseSelectStr);
             $("#chooseClockintime").text(pleaseSelectStr);
+            $('.ui-input-text').css({
+                'display': 'none'
+            });
         });
 
         $("#viewClockin").on("pageshow", function(event, ui) {
@@ -297,12 +300,27 @@ $("#viewClockin").pagecontainer({
 
             $(".ui-datebox-container").css("opacity", "1");
 
-            $('.ui-popup-screen.in').css({
+            $(".ui-popup-screen.in").css({
                 'overflow': 'hidden',
                 'touch-action': 'none'
             });
 
+            /*$(".ui-popup>span").css({
+                'margin': '.5em 0em'
+            });*/
+
             $(".ui-datebox-container").removeClass('ui-overlay-shadow');
+            //$(".ui-controlgroup-controls > a:nth-of-type(1)").removeClass('ui-btn-icon-left'); -->找CSS內容
+            /*$(".ui-controlgroup-controls .ui-btn.ui-btn-a").css({
+                'border-style': 'none',
+                'background-color': '#ffffff',
+                'color':'#2A8ABD',
+                'font-family': 'Heiti TC'
+            });*/
+            //$(".ui-datebox-controls .ui-controlgroup-controls").addClass('btnArea');
+            /*$(".ui-datebox-controls .ui-controlgroup-controls").css({
+                'border-radius': '0'
+            });*/
         };
 
         function GetWorkName() {

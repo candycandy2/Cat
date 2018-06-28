@@ -1,7 +1,7 @@
 $("#viewMyCalendar").pagecontainer({
     create: function (event, ui) {
 
-        var reserveDateList = [], reservePositionList = [];
+        var reserveDateList = [], reservePositionList = [], calendarData = false;;
 
         /********************************** function ***********************************/
         function initialCalendar(holidayData) {
@@ -17,9 +17,9 @@ $("#viewMyCalendar").pagecontainer({
                 reserveData: reserveList,
                 infoData: holidayData,
                 showInfoListTo: "#viewMyCalendar .infoList",
-                // changeDateEventListener: function (year, month) {
-                //     addReserveToCalendar(year, month);
-                // },
+                changeDateEventListener: function (year, month) {
+                    QueryCalendarData(year, month);
+                },
                 nav_icon: {
                     prev: '<img src="img/prev.png" id="left-navigation" class="nav_icon">',
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
@@ -104,6 +104,78 @@ $("#viewMyCalendar").pagecontainer({
             } else {
                 return str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2);
             }
+        }
+
+        function QueryCalendarData(year, month) {
+            var self = this;
+            var queryData = '<LayoutHeader><Year>' +
+                year +
+                '</Year><Month>' +
+                month +
+                '</Month><EmpNo>' +
+                loginData['emp_no'] +
+                '</EmpNo></LayoutHeader>';
+            var key = leaveAppData.key;
+            var secret = leaveAppData.secretKey;
+
+            this.successCallback = function (data) {
+
+                console.log(data);
+                myCalendarData = {};
+                myHolidayData = [];
+                var leaveFlag = "3";
+                var holidayFlag = "2";
+                if (data['ResultCode'] === "1") {
+                    //length大于0说明有数据，length等于0说明年份不对没有数据
+                    if (data['Content'].length > 0) {
+                        var callbackData = data['Content'][0]["Result"];
+                        var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                        var colorTagArry = $("color", htmlDom);
+                        var informationTagArry = $("information", htmlDom);
+
+                        for (var day = 1; day <= colorTagArry.length; day++) {
+                            if (myCalendarData[$(colorTagArry[day - 1]).html()] === undefined) {
+                                myCalendarData[$(colorTagArry[day - 1]).html()] = [];
+                            }
+                            myCalendarData[$(colorTagArry[day - 1]).html()].push(day);
+                            myHolidayData[day] = parseCDATA($(informationTagArry[day - 1]).html());
+                        }
+                        if (leaveFlag in myCalendarData) {
+                            for (var day in myCalendarData[leaveFlag]) {
+                                $("#reserveCalendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
+                            }
+                        }
+
+                        //遍歷假日列表，統一爲藍色
+                        for (var i in myCalendarData[holidayFlag]) {
+                            $("#reserveCalendar #" + myCalendarData[holidayFlag][i]).addClass("weekend");
+                        }
+
+                        calendarData = true;
+                    } else {
+                        calendarData = false;
+                    }
+
+
+                }
+                loadingMask("hide");
+            };
+
+            this.failCallback = function (data) { };
+
+            var __construct = function () {
+                CustomAPIByKey("POST", true, key, secret, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "");
+                //CustomAPIEx("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "");
+            }();
+        };
+
+        function parseCDATA(data) {
+            data = data.toString();
+            var dataTempA = data.split("CDATA");
+            var dataTempB = dataTempA[1].split("[");
+            var dataTempC = dataTempB[1].split("]]");
+
+            return dataTempC[0];
         }
 
         //记录每个预约的位置，只有在pageshow时才能调用

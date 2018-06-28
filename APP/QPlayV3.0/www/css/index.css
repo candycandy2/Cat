@@ -909,24 +909,34 @@ input[type=radio]:checked + label {
 }
 
 /*************************** widget ********************************/
-.widget-blank {
-    width: 90vw;
-    height: 2vw;
-    /*background: lightgrey;*/
+#viewMain3 .ui-content {
+    padding: 0 !important;
 }
 
 /******* carousel ******/
 .carouselWidget {
-    width: 90vw;
-    height: 50vw;
+    width: 100vw;
+    height: 45vw;
     background: #FFFFFF;
+    margin-bottom: 2vw;
+}
+
+.carousel-widget {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-widget img {
+    width: 100%;
+    height: 100%;
 }
 
 /******* weather ******/
 .weatherWidget {
-    width: 90vw;
+    width: 100vw;
     height: 30vw;
     background: #FFFFFF;
+    margin-top: 2vw;
 }
 
 .widget-weather > div {
@@ -938,12 +948,12 @@ input[type=radio]:checked + label {
 }
 
 .weather-temp {
-    width: 32.5vw;
+    width: 30vw;
     height: 100%;
 }
 
 .weather-loca {
-    width: 57.5vw;
+    width: 45vw;
     height: 100%;
 }
 
@@ -965,11 +975,21 @@ input[type=radio]:checked + label {
     line-height: 3;
 }
 
+.weather-img {
+    width: 20vw;
+    height: 100%;
+}
+
+.weather-img img {
+    margin-top: 7vw;
+}
+
 /******* reserve ******/
 .reserveWidget {
-    width: 90vw;
+    width: 100vw;
     height: 60vw;
     background: #FFFFFF;
+    margin-top: 2vw;
 }
 
 .personal-info {
@@ -1001,7 +1021,7 @@ input[type=radio]:checked + label {
 }
 
 .personal-info img {
-    width: 95%;
+    width: 85%;
     height: 100%;
     border-radius: 50%;
 }
@@ -1025,9 +1045,10 @@ input[type=radio]:checked + label {
 
 /****** applist ******/
 .applistWidget {
-    width: 90vw;
+    width: 100vw;
     height: 30vw;
     background: #FFFFFF;
+    margin-top: 2vw;
 }
 
 

@@ -81,7 +81,7 @@ $("#viewAgentLeave").pagecontainer({
                         deptData["option"][i] = {};
                         deptData["option"][i]["site"] = agentDeptLeave[i].site;
                         deptData["option"][i]["value"] = agentDeptLeave[i].dept;
-                        deptData["option"][i]["text"] = agentDeptLeave[i].dept;
+                        deptData["option"][i]["text"] = agentDeptLeave[i].site+ '/'+ agentDeptLeave[i].dept;
                     }
                     //生成所有类别dropdownlist
                     tplJS.DropdownList("viewAgentLeave", "agentDept", "prepend", "typeB", deptData);
@@ -168,8 +168,9 @@ $("#viewAgentLeave").pagecontainer({
         //選擇部門——select change
         $(document).on("change", "#dept-popup", function() {
             selectDept = $(this).val();
+            var selectSiteDept = $.trim($(this).text());;          
             var chosenDeptList = deptData["option"].find(function(item, index, array){
-              return item.text === selectDept;  
+              return item.text === selectSiteDept;  
             });
             selectSite = chosenDeptList.site;
             $("#agentName").empty();

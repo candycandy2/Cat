@@ -12,7 +12,7 @@ if (typeof jQuery == 'undefined') {
  * Create calendar
  *
  * @param options
- * @returns {*}
+ * @returns {}
  */
 function Calendar(options) {
     var $calendarElement, _id, _year, _month, _nextyear, _infoData, _reserveData;
@@ -727,6 +727,12 @@ function Calendar(options) {
                 //$(opts.showInfoListTo).hide();
             }
         }
+    }
+
+    this.refreshReserve = function (data) {
+        _reserveData = data;
+        drawTable($calendarElement, $tableObj, _year, _month);
+        showCalendarReserveInfo(_year, _month);
     }
 };
 

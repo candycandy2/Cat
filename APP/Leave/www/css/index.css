@@ -500,7 +500,8 @@ html body .ui-group-theme-a a:visited {
 }
 
 .date-component input[type="datetime-local"],
-.date-component input[type="date"] {
+.date-component input[type="date"],
+.date-component input[type="text"] {
     opacity: 0 !important;
 }
 
@@ -1059,7 +1060,8 @@ html body .ui-group-theme-a a:visited {
     display: none;
 }
 
-.date-component input[type="date"]>a {
+.date-component input[type="date"]>a,
+.date-component input[type="text"]>a {
     height: 0;
 }
 
@@ -1078,6 +1080,27 @@ html body .ui-group-theme-a a:visited {
     border-color: #178fe5;
     color: #fff;
     text-shadow: none;
+}
+
+.ui-popup>span {
+    margin: .5em 0em;
+}
+
+.ui-controlgroup-controls .ui-btn.ui-btn-a {
+    border-style: none;
+    background-color: #ffffff;
+    color: #2A8ABD;
+    font-family: Heiti TC;
+    padding-left: 7%;
+}
+
+.ui-datebox-controls .ui-controlgroup-controls {
+     border-radius: 0;
+}
+
+.ui-datebox-controls > div {
+    border-top: solid #d6d6d6 1px;
+    text-align: center !important;
 }
 
 /********************************************** mypanel *********************************************/
