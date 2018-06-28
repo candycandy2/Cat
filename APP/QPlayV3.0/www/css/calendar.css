@@ -123,6 +123,10 @@
     font-family: "Arial", "微軟中黑體";
 }
 
+.hidden-str {
+    display: none;
+}
+
 .td-bottom-border {
     border-bottom-style: solid;
     /* border-color: #989898; */

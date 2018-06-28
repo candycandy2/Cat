@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar", "viewMessageList", "viewMessageDetail"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar", "viewMessageList", "viewMessageDetail", "viewScrollTest"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -32,7 +32,7 @@ var viewMainInitial = true;
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
 
 //viewMyCalendar
-var viewCalendarInitial = true, reserveCalendar = null, reserveList = [], reserveDirty = false, myCalendarData = {}, myHolidayData = [];;
+var viewCalendarInitial = true, reserveCalendar = null, reserveList = [], reserveDirty = false;
 var reserveAppList = [
     { app: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
     { app: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
@@ -99,9 +99,9 @@ window.initialSuccess = function (data) {
     //var unregisterTest = new unregister();
 
     //get all reserve add by allen
-    for (var i in reserveAppList) {
-        getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
-    }
+    // for (var i in reserveAppList) {
+    //     getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
+    // }
 }
 
 function getMyReserve(key, secret) {
@@ -163,6 +163,7 @@ function getMyReserve(key, secret) {
             }
 
             if(reserveDirty && reserveCalendar != null) {
+                formatReserveList();
                 reserveCalendar.reserveData = reserveList;
                 reserveCalendar.refreshReserve(reserveList);
                 reserveDirty = false;
