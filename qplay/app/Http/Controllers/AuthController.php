@@ -22,6 +22,7 @@ class AuthController extends Controller
      */
     public function authenticate(Request $request, CompanyService $companyService)
     {
+
         $input = Input::get();
         $validator = \Validator::make($request->all(), [
             'loginid'   => 'required',
@@ -65,7 +66,7 @@ class AuthController extends Controller
         $loginFail = false;
 
         if ($loginType == "LDAP") {
-            $LDAP_SERVER_IP = "LDAP://" . $serverIP;
+            $LDAP_SERVER_IP = $serverIP;
             $userId = $domain . "\\" . $loginid;
             $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
             $bind = @ldap_bind($ldapConnect, $userId, $password);
@@ -74,6 +75,7 @@ class AuthController extends Controller
                 $loginFail = true;
             }
         } else if ($loginType == "API") {
+
             $header = [
                 'Content-type: application/json; charset=utf-8',
                 'Content-Length: 0',
@@ -84,7 +86,7 @@ class AuthController extends Controller
             ];
 
             $resultCode = 0;
-            $curlPATH = "http://" . $serverIP . "/QTunnel/QTunnel.asmx/Login";
+            $curlPATH = $serverIP . "/QTunnel/QTunnel.asmx/Login";
 
             $resultJSON = json_decode($this->callAPI("POST", $curlPATH, $header, $serverPort), true);
             $result = json_decode($resultJSON["d"], true);
@@ -286,6 +288,10 @@ class AuthController extends Controller
         curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        //Set SSL
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 
         //Set Port
         if (strlen($port) > 0) {

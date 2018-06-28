@@ -11,6 +11,7 @@ QStorage API Readme.md
     - [sastoken](#sastoken)
     - [UploadPicture](#UploadPicture)
     - [DeletePicture](#DeletePicture)
+- [手動 Deploy](#DeployProcedure)
 
 
 ----
@@ -398,4 +399,83 @@ Response Body
     "Content": ""
 }
 ```
+
+<h2 id="DeployProcedure">手動 Deploy</h2>
+
+### 1. 基礎建設    
+    a. install microsoftAzureStorage
+	    覆蓋 API\qstorage\composer
+        覆蓋 API\qstorage\composer.json
+        移除 API\qstorage\composer.lock
+        執行 composer update
+
+### 2. 環境設定
+    a. 修改 .env
+        /*
+        |--------------------------------------------------------------------------
+        | Azure Blob Parameters
+        |--------------------------------------------------------------------------
+        |azure_storage : Blob 服務的連接字串   
+        */ 
+        AZURE_STORAGE=DefaultEndpointsProtocol=https;AccountName=bqgroupstoragetest;AccountKey=pjyJja+uY+7bpk0mrCzQzVswYpURA3IoB5eP3zN5BeUZdMGzNKnEwYwOZP3BxeK8lM9xqnBBa1McI8eaUbI5Vw==
+    b. 修改 config\app.php
+        /*    
+        |--------------------------------------------------------------------------    
+        | Azure Blob Parameters    
+        |--------------------------------------------------------------------------    
+        |azure_storage : Blob 服務的連接字串    
+        */   
+        'azure_storage' => env('AZURE_STORAGE'),
+
+### 3. 資料設定
+    N/A
+
+### 4. 檔案覆蓋
+    a. 共更新 21 個檔案，新增 Jenkins 專案 DeployBackEnd-Staging-QStorage 處理檔案更新
+    
+```qstorage
+
+API/qstorage/app/Entity/AbstractFile.php
+API/qstorage/app/Entity/ImageFile.php
+API/qstorage/app/Entity/Picture.php
+API/qstorage/app/Entity/Portrait.php
+
+API/qstorage/app/lib/CommonUtil.php
+API/qstorage/app/lib/Verify.php
+API/qstorage/app/lib/ResultCode.php
+
+API/qstorage/app/Services/AzureBlobService.php
+API/qstorage/app/Services/ServerFileService.php
+API/qstorage/app/Services/AzureBlobService.php
+
+API/qstorage/app/Http/Controllers/AccessController.php
+API/qstorage/app/Http/Controllers/PortraitController.php
+API/qstorage/app/Http/Controllers/PictureController.php
+
+API/qstorage/tests/PortraitControllerUnitTest.php
+API/qstorage/tests/stubs/test.jpg
+API/qstorage/tests/AccessControllerUnitTest.php
+API/qstorage/tests/AzureBlobServiceUnitTest.php
+API/qstorage/tests/PictureControllerUnitTest.php
+API/qstorage/tests/AzureBlobServiceUnitTest.php
+API/qstorage/tests/PictureControllerUnitTest.php
+
+API/qstorage/app/Http/routes.php
+
+```
+
+    b. 共更新 1 個檔案，新增 Jenkins 專案 DeployBackEnd-Staging-QStorage 處理檔案更新
+
+
+```QForum
+
+API/QForum/app/Http/Controllers/JobController.php
+
+```
+
+
+### 5. 更新後尚須確認事項
+    a. QStorage 需要把staging、production的圖片上傳至Azuere，並更新qp_attach表的file_url
+    b. 請測試 ENS圖片上傳功能、QForum deleteAttachJob API，詳細的測項請參考PIS、PES
+    c. mongoDB qstorage.qs_api_log有寫入正確資料
 

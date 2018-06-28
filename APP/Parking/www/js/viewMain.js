@@ -1,4 +1,3 @@
-
 var defaultSiteClick = '';
 var clickSiteId = '';
 var siteCategoryID = '';
@@ -37,7 +36,7 @@ $("#viewMain").pagecontainer({
             }();
 
         };
-        
+
         function getSpaceData(siteIndex) {
             htmlContent = '';
             siteIndex = siteIndex == '' ? '0' : siteIndex;
@@ -46,8 +45,8 @@ $("#viewMain").pagecontainer({
             for (var i = 0, item; item = JSON.parse(localStorage.getItem('parkingSpaceLocalData'))['content'][i]; i++) {
                 if (item.ParkingSpaceSite == siteIndex) {
                     if (item.ParkingSpaceSite == 92) {
-                        var strParkingSpaceName = item.ParkingSpaceName.substr(2,3);
-                    } else if (item.ParkingSpaceSite == 111){
+                        var strParkingSpaceName = item.ParkingSpaceName.substr(2, 3);
+                    } else if (item.ParkingSpaceSite == 111) {
                         var strParkingSpaceName = item.ParkingSpaceName;
                     }
                     htmlContent += '<a id=' + item.ParkingSpaceID + ' value=' + item.ParkingSpaceID + ' href="#" class="ui-link" IsReserveMulti=' + item.IsReserveMulti + '>' + strParkingSpaceName + '</a>';
@@ -65,7 +64,7 @@ $("#viewMain").pagecontainer({
         }
 
         function setDateList() {
-            
+
             $('#scrollDate a[id^=one]').remove();
 
             var addOneDate = new Date();
@@ -103,14 +102,14 @@ $("#viewMain").pagecontainer({
                         += replaceStr($('#reserveDefault').get(0).outerHTML, originItemForPageOne, replaceItemForPageOne);
                 }
             }
-    
+
             $('#reserveDefault').before(htmlContentPageOne);
             clickDateId = $('#scrollDate a:first-child').attr('id').replaceAll('one', '');
             $('#scrollDate a:first-child').addClass('hover');
             $('#scrollDate a:first-child').parent().data("lastClicked", $('#scrollDate a:first-child').attr('id'));
-            
+
         }
-       
+
         function getParkingStatus() {
             htmlContent = '';
             $('#defaultTimeSelectId').nextAll().remove();
@@ -129,10 +128,10 @@ $("#viewMain").pagecontainer({
                     ext = '',
                     email = '',
                     traceID = '';
-                    pdName = '';
-                    pdCategory = '';
-                    pdRemark = '';
-                    pdCar = '';
+                pdName = '';
+                pdCategory = '';
+                pdRemark = '';
+                pdCar = '';
                 var bTime = filterTimeBlock[item].time;
                 var timeID = filterTimeBlock[item].timeID;
                 var category = filterTimeBlock[item].category;
@@ -156,7 +155,7 @@ $("#viewMain").pagecontainer({
                         pdCar = arr.detailInfo['pdCar'];
                         if (category === 10) {
                             msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(arr.detailInfo['bTime']) + ',' + eName
-                        }else if (category === 28) {
+                        } else if (category === 28) {
                             msg = arr.date + ',' + roomName + ',' + arr.detailInfo['bTime'] + '-' + addThirtyMins(addThirtyMins(arr.detailInfo['bTime'])) + ',' + eName
                         }
                     }
@@ -168,7 +167,7 @@ $("#viewMain").pagecontainer({
 
                 msg = '';
                 j++;
-            } 
+            }
 
             $('#reserveDateSelect > div').append(htmlContent);
         }
@@ -179,8 +178,12 @@ $("#viewMain").pagecontainer({
             for (var i = 0, item; item = data[i]; i++) {
                 var newReserve = new reserveObj(spaceId, date);
                 newReserve.addDetail('traceID', item.ReserveTraceID);
+                if(item.EMail == null)
+                    item.EMail = "empty@empty";
                 newReserve.addDetail('eName', item.EMail.substring(0, item.EMail.indexOf('@')));
                 newReserve.addDetail('bTime', item.BTime);
+                if(item.Ext_No == null)
+                    item.Ext_No = "empty-empty";
                 newReserve.addDetail('ext', item.Ext_No.replace('-', ''));
                 newReserve.addDetail('email', item.EMail);
                 newReserve.addDetail('pdName', item.PDetailName);
@@ -270,7 +273,7 @@ $("#viewMain").pagecontainer({
                             var sTime = $('div[id=' + timeClick[item] + '] > div > div:first').text();
                             if (siteId === '92') {
                                 var eTime = addThirtyMins(sTime);
-                            }else if (siteId === '111'){
+                            } else if (siteId === '111') {
                                 var eTime = addThirtyMins(addThirtyMins(sTime));
                             }
                             arrTempTime.push(sTime);
@@ -286,14 +289,14 @@ $("#viewMain").pagecontainer({
                                 arrUniqueTime.splice(index, 1);
                             }
                         }
-                        
+
                         arrUniqueTime.sort();
 
                         for (var i = 0; i < arrUniqueTime.length; i = i + 2) {
                             timeName += arrUniqueTime[i] + '-' + arrUniqueTime[i + 1] + '<br />';
                         }
 
-                    } 
+                    }
 
                     var msgContent = '<div>' + strDate + '&nbsp;&nbsp;' + timeName + '</div>';
                     popupMsg('reserveSuccessMsg', spaceName + ' 預約成功', msgContent, '', false, '確定', '056_icon_booked_success.png');
@@ -307,7 +310,7 @@ $("#viewMain").pagecontainer({
                         selectedSite = $('#reserveSite').find(":selected").val();
                         arrTemp = timeNameClick;
                         reserveBtnDefaultStatus();
-                    } 
+                    }
 
                     var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(spaceId, date, false);
 
@@ -327,7 +330,7 @@ $("#viewMain").pagecontainer({
                 } else if (data['ResultCode'] === "042903") {
                     //Reservation Failed, Repeated a Reservation   
                     var headerContent = "預約失敗";
-                        msgContent = "已被預約";
+                    msgContent = "已被預約";
                     $('.reserveResultPopup').find('.header-icon img').attr("src", "img/068_icon_warm.png");
                     $('.reserveResultPopup').find('.header-text').html(headerContent);
                     $('.reserveResultPopup').find('.main-paragraph').html(msgContent);
@@ -351,43 +354,43 @@ $("#viewMain").pagecontainer({
             this.successCallback = function(data) {
                 $('div[id^=def-]').remove();
 
-                if (data['ResultCode'] === "1") {  
+                if (data['ResultCode'] === "1") {
                     //Successful
                     var htmlContent_today = '';
                     var htmlContent_other = '';
                     var originItem = ['default', '[begin]', '[end]', '[value]', '[space]', '[date]', '[dateformate]', '[site]', '[PDetailName]', '[mrName]', '[mrCategory]', '[mrRemark]', '[mrCar]', 'disable'];
 
-                        //for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++) {
-                        for (var i = 0, item; item = data['Content'][i]; i++) {
-                            // convert yyyymmdd(string) to yyyy/mm/dd
-                            var arrCutString = cutStringToArray(item.ReserveDate, ['4', '2', '2']);
-                            var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
+                    //for (var i = 0, timeIDItem; timeIDItem =timeID.split(',')[i]; i++) {
+                    for (var i = 0, item; item = data['Content'][i]; i++) {
+                        // convert yyyymmdd(string) to yyyy/mm/dd
+                        var arrCutString = cutStringToArray(item.ReserveDate, ['4', '2', '2']);
+                        var strDate = arrCutString[1] + '/' + arrCutString[2] + '/' + arrCutString[3];
 
-                            // convert date format to mm/dd(day of week)
-                            var d = new Date(strDate);
-                            var dateFormat = d.mmdd('/');
-                            //var sTime = $('div[id=time' + timeIDItem + '] > div > div:first').text();
-                            if (item.ParkingSpaceSite === 92) {
-                                var siteName = 'QTT';
-                                var strParkingSpaceName = item.ParkingSpaceName.substr(2,3);
-                                var strReserveName = item.ReserveName;
-                            }else if (item.ParkingSpaceSite === 111){
-                                var siteName = 'QTY';
-                                var strParkingSpaceName = item.ParkingSpaceName;
-                                var strReserveName = item.PDetailName;
-                            }
-
-                            var replaceItem = ['def-' + item.ReserveTraceAggID, item.ReserveBeginTime, item.ReserveEndTime, item.ReserveTraceAggID, strParkingSpaceName, item.ReserveDate, dateFormat, siteName, strReserveName, item.PDetailName, item.PDetailCategory, item.PDetailRemark, item.PDetailCar, ''];
-
-                            if (item.ReserveDate == new Date().yyyymmdd('')) {
-                                $('#pageThree :first-child h2').removeClass('disable');
-                                htmlContent_today
-                                    += replaceStr($('#defaultToday').get(0).outerHTML, originItem, replaceItem);
-                            } else {
-                                htmlContent_other
-                                    += replaceStr($('#defaultOtherDay').get(0).outerHTML, originItem, replaceItem);
-                            }
+                        // convert date format to mm/dd(day of week)
+                        var d = new Date(strDate);
+                        var dateFormat = d.mmdd('/');
+                        //var sTime = $('div[id=time' + timeIDItem + '] > div > div:first').text();
+                        if (item.ParkingSpaceSite === 92) {
+                            var siteName = 'QTT';
+                            var strParkingSpaceName = item.ParkingSpaceName.substr(2, 3);
+                            var strReserveName = item.ReserveName;
+                        } else if (item.ParkingSpaceSite === 111) {
+                            var siteName = 'QTY';
+                            var strParkingSpaceName = item.ParkingSpaceName;
+                            var strReserveName = item.PDetailName;
                         }
+
+                        var replaceItem = ['def-' + item.ReserveTraceAggID, item.ReserveBeginTime, item.ReserveEndTime, item.ReserveTraceAggID, strParkingSpaceName, item.ReserveDate, dateFormat, siteName, strReserveName, item.PDetailName, item.PDetailCategory, item.PDetailRemark, item.PDetailCar, ''];
+
+                        if (item.ReserveDate == new Date().yyyymmdd('')) {
+                            $('#pageThree :first-child h2').removeClass('disable');
+                            htmlContent_today
+                                += replaceStr($('#defaultToday').get(0).outerHTML, originItem, replaceItem);
+                        } else {
+                            htmlContent_other
+                                += replaceStr($('#defaultOtherDay').get(0).outerHTML, originItem, replaceItem);
+                        }
+                    }
 
                     if (htmlContent_today == '') {
                         $('#todayLine').addClass('disable');
@@ -395,10 +398,9 @@ $("#viewMain").pagecontainer({
                         $('#todayLine').removeClass('disable');
                         $('#todayLine').after(htmlContent_today);
                     }
-                    if(htmlContent_other == ''){
+                    if (htmlContent_other == '') {
                         $('#otherDayLine').addClass('disable');
-                    }
-                    else{
+                    } else {
                         $('#otherDayLine').removeClass('disable');
                         $('#otherDayLine').after(htmlContent_other);
                     }
@@ -413,7 +415,7 @@ $("#viewMain").pagecontainer({
 
             var __construct = function() {
                 CustomAPI("POST", true, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "");
-            }(); 
+            }();
         }
 
         function getAPIReserveCancel(date, traceID) {
@@ -466,7 +468,7 @@ $("#viewMain").pagecontainer({
                     reserveDetailLocalData = reserveDetailLocalData.filter(function(item) {
                         return item.date != date;
                     });
-                    localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData)); 
+                    localStorage.setItem('reserveDetailLocalData', JSON.stringify(reserveDetailLocalData));
 
                     popupMsg('successMsg', '', '取消預約成功', '', false, '確定', '');
 
@@ -479,19 +481,19 @@ $("#viewMain").pagecontainer({
 
             var __construct = function() {
                 CustomAPI("POST", true, "ReserveCancel", self.successCallback, self.failCallback, queryData, "");
-            }(); 
+            }();
         }
 
         function checkLocalDataExpired() {
-            parkingSpaceLocalData = JSON.parse(localStorage.getItem('parkingSpaceLocalData'));       
+            parkingSpaceLocalData = JSON.parse(localStorage.getItem('parkingSpaceLocalData'));
             var doAPIListAllParkingSpace = new getAPIListAllParkingSpace();
             var doAPIListAllTime = new getAPIListAllTime();
             var doAPIListAllManager = new getAPIListAllManager();
 
-            if(localStorage.getItem("defaultSiteClick") !== null) {
+            if (localStorage.getItem("defaultSiteClick") !== null) {
                 $("#reserveSite").val(localStorage.getItem("defaultSiteClick"));
                 defaultSiteClick = localStorage.getItem("defaultSiteClick");
-            }else if (localStorage.getItem("defaultSiteClick") === null) {
+            } else if (localStorage.getItem("defaultSiteClick") === null) {
                 defaultSiteClick = '92';
             }
 
@@ -505,7 +507,7 @@ $("#viewMain").pagecontainer({
                 $("#alertLimitSiteMsg").html('*僅開放關係企業同仁停車');
                 $("#reserveDateSelect").find('.QTY').addClass('disable');
                 $("#reserveDateSelect").find('.BQT').removeClass('disable');
-            }else if (site == '111') {
+            } else if (site == '111') {
                 $("#reserveDateSelect").find('.BQT').addClass('disable');
                 $("#reserveDateSelect").find('.QTY').removeClass('disable');
             }
@@ -515,7 +517,7 @@ $("#viewMain").pagecontainer({
             $("#reserveSite option[value=" + defaultSiteClick + "]").attr("selected", "selected");
             selectedSite = $('#reserveSite').find(":selected").val();
             siteCategoryID = dictSiteCategory[defaultSiteClick];
-            getSpaceData(selectedSite);  
+            getSpaceData(selectedSite);
         }
 
         function setInitialData() {
@@ -529,13 +531,13 @@ $("#viewMain").pagecontainer({
             parkingSettingData = JSON.parse(localStorage.getItem('parkingSettingData'));
             var originItem = ['commonCarList', '[index]', '[title]', '[type]', '[car]'];
             htmlContent = '';
-            
+
             if (parkingSettingData != null) {
                 $('#tplCarListNoData').addClass('disable');
                 sortDataByKey(parkingSettingData.content, 'id', 'asc');
                 for (var i = 0, item; item = parkingSettingData['content'][i]; i++) {
                     var strTitle = item.title;
-                    var strType= (item.type == 'setGuest') ? '貴賓' : '關係企業';
+                    var strType = (item.type == 'setGuest') ? '貴賓' : '關係企業';
                     var strCar = item.car;
                     var replaceItem = ['commonCarList-' + item.id, item.id, strTitle, strType, strCar];
                     htmlContent += replaceStr($('#commonCarList').get(0).outerHTML, originItem, replaceItem);
@@ -565,7 +567,7 @@ $("#viewMain").pagecontainer({
                     var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
                 }
             });
-            
+
         });
 
         $('#viewMain').on('pagebeforeshow', function(event, ui) {
@@ -587,8 +589,8 @@ $("#viewMain").pagecontainer({
                 $('#pageTwo').hide();
                 $('#pageThree').hide();
                 reserveBtnDefaultStatus();
-                var doAPIListAllParkingSpace = new getAPIListAllParkingSpace(); 
-                getSpaceData(selectedSite);              
+                var doAPIListAllParkingSpace = new getAPIListAllParkingSpace();
+                getSpaceData(selectedSite);
                 var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
                 PullToRefresh.init({
                     mainElement: '#pageOne',
@@ -599,7 +601,7 @@ $("#viewMain").pagecontainer({
                         var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
                     }
                 });
-            } else if ($("#reserveTab :radio:checked").val() == 'tab2'){
+            } else if ($("#reserveTab :radio:checked").val() == 'tab2') {
                 $('#pageOne').hide();
                 $('#pageTwo').show();
                 $('#pageThree').hide();
@@ -609,7 +611,7 @@ $("#viewMain").pagecontainer({
                         querySettingCarList();
                     }
                 });
-            }else {
+            } else {
                 $('#pageOne').hide();
                 $('#pageTwo').hide();
                 $('#pageThree').show();
@@ -627,12 +629,12 @@ $("#viewMain").pagecontainer({
             localStorage.setItem('defaultSiteClick', $(this).val());
             siteCategoryID = dictSiteCategory[$(this).val()];
             selectedSite = $('#reserveSite').find(":selected").val();
-            setAlertLimitSite(selectedSite);  
-            getSpaceData(selectedSite); 
+            setAlertLimitSite(selectedSite);
+            getSpaceData(selectedSite);
             var doAPIListAllParkingSpace = new getAPIListAllParkingSpace();
             getSpaceData(selectedSite);
             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickSpaceId, clickDateId, true);
-            reserveBtnDefaultStatus();      
+            reserveBtnDefaultStatus();
         });
 
         $('body').on('click', '#scrollDate .ui-link', function() {
@@ -683,12 +685,12 @@ $("#viewMain").pagecontainer({
                 if (bMyReserve) {
                     traceID = $(this).attr('traceID');
                     selectMyReserveTime = $(this).find('div > div:nth-child(1)').text();
-                    if (siteCategoryID === "10"){
-                        popupMsg('myReserveMsg', tempEname + '已預約 ', arrMsgValue[1]+ '&nbsp;&nbsp;' + msgContent, '關閉', true, '取消預約', '056_icon_booked_success.png');
-                    }else if (siteCategoryID === "28"){
+                    if (siteCategoryID === "10") {
+                        popupMsg('myReserveMsg', tempEname + '已預約 ', arrMsgValue[1] + '&nbsp;&nbsp;' + msgContent, '關閉', true, '取消預約', '056_icon_booked_success.png');
+                    } else if (siteCategoryID === "28") {
                         var headerContent = tempEname + ' 已預約',
-                            mainContent = arrMsgValue[1]+ '&nbsp;&nbsp;' + msgContent,
-                            carListContent = '申請人:' + tempPDName + '<br>' + '申請者類別:' + tempPDCategory + '<br>' +'車型/車牌:' + tempPDCar + '<br>' + '注意事項:' + tempPDRemark;
+                            mainContent = arrMsgValue[1] + '&nbsp;&nbsp;' + msgContent,
+                            carListContent = '申請人:' + tempPDName + '<br>' + '申請者類別:' + tempPDCategory + '<br>' + '車型/車牌:' + tempPDCar + '<br>' + '注意事項:' + tempPDRemark;
                         popupMsgInit('.hasReservePopup');
                         tplJS.preventPageScroll();
                         $('.hasReservePopup').find('.header-text').html(headerContent);
@@ -698,20 +700,20 @@ $("#viewMain").pagecontainer({
                         $('.hasReservePopup').find('.btn-cancel').html('關閉');
                         $('.hasReservePopup').find('.btn-confirm').html('取消預約');
                     }
-                    
+
                 } else {
                     var headerContent = tempEname + "已預約",
-                        mainContent = arrMsgValue[1]+ '&nbsp;&nbsp;' + msgContent,
+                        mainContent = arrMsgValue[1] + '&nbsp;&nbsp;' + msgContent,
                         tempMailContent = $(this).attr('email') + '?subject=停車位協調_' + new Date(strDate).mmdd('/') + ' ' + arrMsgValue[1] + ' ' + arrMsgValue[2];
-                    if (siteCategoryID === "10"){
+                    if (siteCategoryID === "10") {
                         popupMsgInit('.otherReservePopupQTT');
                         tplJS.preventPageScroll();
                         $('.otherReservePopupQTT').find('.header-text').html(headerContent);
                         $('.otherReservePopupQTT').find('.main-paragraph').html(mainContent);
                         $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
                         $('.btn-tel').attr('href', 'tel:' + $(this).attr('ext'));
-                    }else if (siteCategoryID === "28"){
-                        var carListContent = '申請人:' + tempPDName + '<br>' + '申請者類別:' + tempPDCategory + '<br>' +'車型/車牌:' + tempPDCar + '<br>' + '注意事項:' + tempPDRemark;
+                    } else if (siteCategoryID === "28") {
+                        var carListContent = '申請人:' + tempPDName + '<br>' + '申請者類別:' + tempPDCategory + '<br>' + '車型/車牌:' + tempPDCar + '<br>' + '注意事項:' + tempPDRemark;
                         popupMsgInit('.otherReservePopup');
                         tplJS.preventPageScroll();
                         $('.otherReservePopup').find('.header-text').html(headerContent);
@@ -719,7 +721,7 @@ $("#viewMain").pagecontainer({
                         $('.otherReservePopup').find('.content-paragraph').html(carListContent);
                         $('.btn-mail').attr('href', 'mailto:' + tempMailContent);
                         $('.btn-tel').attr('href', 'tel:' + $(this).attr('ext'));
-                    }    
+                    }
                 }
 
             } else if (bNoReserve && !bReserveSelect) {
@@ -732,10 +734,10 @@ $("#viewMain").pagecontainer({
                 $(this).find('div:nth-child(2)').removeClass('iconSelect');
                 $(this).find('div:nth-child(2)').addClass('iconSelected');
                 $(this).find('.timeRemind').addClass('timeShow');
-                if (siteCategoryID === "10"){
+                if (siteCategoryID === "10") {
                     $(this).find('.timeRemind').html('~' + addThirtyMins($(this).find('div > div:nth-child(1)').text()));
-                }else if (siteCategoryID === "28"){
-                    $(this).find('.timeRemind').html('~' + addThirtyMins(addThirtyMins($(this).find('div > div:nth-child(1)').text())) );
+                } else if (siteCategoryID === "28") {
+                    $(this).find('.timeRemind').html('~' + addThirtyMins(addThirtyMins($(this).find('div > div:nth-child(1)').text())));
                 }
 
 
@@ -770,20 +772,20 @@ $("#viewMain").pagecontainer({
             if ($(this).hasClass('btn-disable')) {
                 popupMsg('noSelectTimeMsg', '', '您尚未選擇時間', '', false, '確定', '');
             } else {
-                if (selectedSite === "92"){
+                if (selectedSite === "92") {
                     var timeID = '';
                     for (var item in timeClick) {
                         timeID += timeClick[item] + ',';
-                    }                
+                    }
                     var doAPIReserveParkingSpace = new getAPIReserveParkingSpace('pageOne', selectedSite, clickSpaceId, pdName, pdCategory, pdRemark, pdCar, clickDateId, timeID.replaceAll('time-', '').replace(/,\s*$/, ""));
-                }else if (selectedSite === "111"){
+                } else if (selectedSite === "111") {
                     var objReserve = new Object();
                     var timeName = '';
-                    parkingQTYData = JSON.parse(localStorage.getItem('parkingQTYData'));                   
+                    parkingQTYData = JSON.parse(localStorage.getItem('parkingQTYData'));
                     if (parkingQTYData != null) {
-                        parkingQTYData = null ;
+                        parkingQTYData = null;
                     }
-                    
+
                     objReserve.spaceName = $('a[id=' + clickSpaceId + ']').text();
                     objReserve.reserveDate = $('a[id=one' + clickDateId + ']').text();
 
@@ -793,7 +795,7 @@ $("#viewMain").pagecontainer({
                         var eTime = addThirtyMins(addThirtyMins(sTime));
                         arrTempTime.push(sTime);
                         arrTempTime.push(eTime);
-                    }   
+                    }
                     var arrUniqueTime = [];
                     for (var item in arrTempTime) {
                         var index = arrUniqueTime.indexOf(arrTempTime[item]);
@@ -814,9 +816,9 @@ $("#viewMain").pagecontainer({
                     jsonData = {
                         content: [objReserve]
                     };
-                    
+
                     localStorage.setItem('parkingQTYData', JSON.stringify(jsonData));
-           
+
                     $.mobile.changePage('#viewQTYParkingDetail');
                 }
             }
@@ -850,7 +852,7 @@ $("#viewMain").pagecontainer({
                 bReserveCancelConfirm = true;
             }
         });
-        
+
         $('body').on('click', 'div[for=myReserveMsg] #cancel', function() {
             bReserveCancelConfirm = false;
         });
@@ -897,7 +899,7 @@ $("#viewMain").pagecontainer({
             $('#pageTwo').addClass('min-height-100');
             clickDeleteID = $(this).attr('value');
             var strTitle = $(this).attr('title');
-            popupMsg('deleteMsg', '確定刪除車籍資料?', strTitle, '取消', true, '確定','');
+            popupMsg('deleteMsg', '確定刪除車籍資料?', strTitle, '取消', true, '確定', '');
         });
 
         $('body').on('click', 'div[for=deleteMsg] #confirm', function() {
@@ -915,14 +917,14 @@ $("#viewMain").pagecontainer({
         });
 
         $('body').on('click', 'div[id^=commonCarList-]', function(e) {
-            if ((e.target.id != "settingDelete") && (e.target.className != "delete-myreserve")){
+            if ((e.target.id != "settingDelete") && (e.target.className != "delete-myreserve")) {
                 clickEditSettingID = $(this).attr('value');
                 $.mobile.changePage('#viewParkingDetailAdd');
             }
         });
 
         // ----------------------------pageThree function-------------------------------------- 
-       $('body').on('click', 'div[id^=def-] a', function() {
+        $('body').on('click', 'div[id^=def-] a', function() {
             //$('#viewMyReserve').addClass('min-height-100');
             clickAggTarceID = $(this).attr('value');
             clickReserveDate = $(this).attr('date');
@@ -948,24 +950,24 @@ $("#viewMain").pagecontainer({
                 } while (strTime != eTime);
             }
 
-            var msgContent = '<div>' + clickReserveSpace +'&nbsp;&nbsp;' + strDate + '&nbsp;&nbsp;' + clickReserveTime + '</div>';
+            var msgContent = '<div>' + clickReserveSpace + '&nbsp;&nbsp;' + strDate + '&nbsp;&nbsp;' + clickReserveTime + '</div>';
             //popupMsg('cancelMsg', '確定取消預約 ' + clickReserveSpace + '?', msgContent, '取消', true, '確定', '068_icon_warm.png');
-            if (clickSiteName === "QTT"){
+            if (clickSiteName === "QTT") {
                 popupMsg('cancelMsg', '確定取消預約?', msgContent, '取消', true, '確定', '068_icon_warm.png');
-            }else if (clickSiteName === "QTY"){
+            } else if (clickSiteName === "QTY") {
                 var headerContent = '確定取消預約?',
                     mainContent = msgContent,
-                    carListContent = '申請人:' + clickPDName + '<br>' + '申請者類別:' + clickPDCategory + '<br>' +'車型/車牌:' + clickPDCar + '<br>' + '注意事項:' + clickPDRemark;
-    
-                    popupMsgInit('.myReservePopup');
-                    tplJS.preventPageScroll();
-                    $('.myReservePopup').find('.header-icon img').attr('src', 'img/068_icon_warm.png');
-                    $('.myReservePopup').find('.header-text').html(headerContent);  
-                    $('.myReservePopup').find('.main-paragraph').html(mainContent);
-                    $('.myReservePopup').find('.content-paragraph').html(carListContent);              
-                    $('.myReservePopup').find('.btn-confirm').html('確定');
-                    $('.myReservePopup').find('.btn-cancel').html('取消');                
-         
+                    carListContent = '申請人:' + clickPDName + '<br>' + '申請者類別:' + clickPDCategory + '<br>' + '車型/車牌:' + clickPDCar + '<br>' + '注意事項:' + clickPDRemark;
+
+                popupMsgInit('.myReservePopup');
+                tplJS.preventPageScroll();
+                $('.myReservePopup').find('.header-icon img').attr('src', 'img/068_icon_warm.png');
+                $('.myReservePopup').find('.header-text').html(headerContent);
+                $('.myReservePopup').find('.main-paragraph').html(mainContent);
+                $('.myReservePopup').find('.content-paragraph').html(carListContent);
+                $('.myReservePopup').find('.btn-confirm').html('確定');
+                $('.myReservePopup').find('.btn-cancel').html('取消');
+
             }
         });
 

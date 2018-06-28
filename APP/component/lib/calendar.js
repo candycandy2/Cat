@@ -372,7 +372,7 @@ function Calendar(options) {
                     $dowElement.data('hasEvent', false);
 
                     if ($calendarElement.data('showToday') === true) {
-                        if (month === time.getMonth() && currDayOfMonth === time.getDate()) {
+                        if (year === time.getFullYear() && month === time.getMonth() && currDayOfMonth === time.getDate()) {
                             $dayElement.parent('#' + dateId).addClass("today");
                         }
                     }

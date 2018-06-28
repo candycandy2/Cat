@@ -4,6 +4,7 @@ var selectBasedayStr = langStr["str_127"]; //選擇時間
 var workingday, clockinday, clockintime = "";
 var workName, otherReason = "";
 var clockinWorkType, clockinReasonType = "";
+var doneDateTime = {};
 
 var workTypeData = {
     id: "work-type-popup",
@@ -141,6 +142,9 @@ $("#viewClockin").pagecontainer({
             $("#chooseWorkday").text(pleaseSelectStr);
             $("#chooseClockinday").text(pleaseSelectStr);
             $("#chooseClockintime").text(pleaseSelectStr);
+            $('.ui-input-text').css({
+                'display': 'none'
+            });
         });
 
         $("#viewClockin").on("pageshow", function(event, ui) {
@@ -179,6 +183,11 @@ $("#viewClockin").pagecontainer({
 
         //選擇出勤日期
         $("#selectWorkday").on("click", function() {
+            if ($("#chooseWorkday").text() == pleaseSelectStr) {
+                recordStartText = new Date(Date.now());
+            } else {
+                recordStartText = new Date($("#chooseWorkday").text());
+            }                    
             //datetime-local
             $('#newWorkDate').datetimepicker('show');
             var currentStep = $('.xdsoft_datetimepicker').filter(function(item){
@@ -208,6 +217,11 @@ $("#viewClockin").pagecontainer({
 
         //選擇刷卡日期
         $("#selectClockinday").on("click", function() {
+            if ($("#chooseClockinday").text() == pleaseSelectStr) {
+                recordStartText = new Date(Date.now());
+            } else {
+                recordStartText = new Date($("#chooseClockinday").text());
+            }                    
             //datetime-local
             $('#newClockinDate').datetimepicker('show');
         });
@@ -232,20 +246,12 @@ $("#viewClockin").pagecontainer({
             //datetime-local
             //$('#newClockinTime').datetimepicker('show');
             //$("#newClockinTime").click();
-            $("#timepicker").siblings().trigger('click');
+            //$("#timepicker").siblings().trigger('click');
+            $("#timepicker").trigger('datebox', { 'method': 'open' });
+            tplJS.preventPageScroll();
         });
 
-        $("#timepicker").on("change", function() {
-            clockintime = recordTime;
-            if (clockintime === "") {
-                $("#chooseClockintime").text(pleaseSelectStr);
-            } else {
-                $("#chooseClockintime").text(clockintime);
-            }
-            checkClockinBeforePreview();
-        });
-
-        /*$("#newClockinTime").on("change", function() {
+        /*$("#timepicker").on("change", function() {
             clockintime = ($(this).val()).substring(11, 16);
             if (clockintime === "") {
                 $("#chooseClockintime").text(pleaseSelectStr);
@@ -254,6 +260,68 @@ $("#viewClockin").pagecontainer({
             }
             checkClockinBeforePreview();
         });*/
+
+        window.setDoneTime = function(obj) {
+            if (!obj.cancelClose) {
+                var setTime = obj.date;
+                doneDateTime["hour"] = this.callFormat('%H', setTime);
+                doneDateTime["minute"] = this.callFormat('%M', setTime);
+
+                var textDateTime = doneDateTime["hour"] + ":" + doneDateTime["minute"];
+                $("#chooseClockintime").html(textDateTime);
+                clockintime = textDateTime;
+                //Create temporary data
+                tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
+
+            } 
+            tplJS.recoveryPageScroll();
+
+            $(".ui-datebox-container").css("opacity", "0");
+            checkClockinBeforePreview();
+        };
+
+        window.resizeDatebox = function(obj) {
+            var widthPopup = $(".ui-datebox-container").parent("div.ui-popup-active").width();
+            var heightPopup = $(".ui-datebox-container").parent("div.ui-popup-active").height();
+            var clientWidth = document.documentElement.clientWidth;
+            var clientHeight = document.documentElement.clientHeight;
+            var pageScrollHeight = $(".ui-page.ui-page-active").scrollTop();
+
+            if (device.platform === "iOS") {
+                pageScrollHeight += 20;
+            }
+            var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight, 10);
+            //var left = parseInt((clientWidth - widthPopup), 10);
+
+            $(".ui-datebox-container").parent("div.ui-popup-active").css({
+                "top": top,
+                //"left": left
+            });
+
+            $(".ui-datebox-container").css("opacity", "1");
+
+            $(".ui-popup-screen.in").css({
+                'overflow': 'hidden',
+                'touch-action': 'none'
+            });
+
+            /*$(".ui-popup>span").css({
+                'margin': '.5em 0em'
+            });*/
+
+            $(".ui-datebox-container").removeClass('ui-overlay-shadow');
+            //$(".ui-controlgroup-controls > a:nth-of-type(1)").removeClass('ui-btn-icon-left'); -->找CSS內容
+            /*$(".ui-controlgroup-controls .ui-btn.ui-btn-a").css({
+                'border-style': 'none',
+                'background-color': '#ffffff',
+                'color':'#2A8ABD',
+                'font-family': 'Heiti TC'
+            });*/
+            //$(".ui-datebox-controls .ui-controlgroup-controls").addClass('btnArea');
+            /*$(".ui-datebox-controls .ui-controlgroup-controls").css({
+                'border-radius': '0'
+            });*/
+        };
 
         function GetWorkName() {
             workName = $.trim($("#workName").val());
