@@ -305,11 +305,13 @@ $("#viewClockin").pagecontainer({
                 'touch-action': 'none'
             });
 
-            /*$(".ui-popup>span").css({
-                'margin': '.5em 0em'
-            });*/
-
             $(".ui-datebox-container").removeClass('ui-overlay-shadow');
+            $(".ui-datebox-container>div").remove();
+            $(".ui-datebox-container > a:nth-of-type(1)").css({
+                'background-color': 'transparent',
+                'border-style': 'none',
+                'text-shadow':'none'
+            });
             //$(".ui-controlgroup-controls > a:nth-of-type(1)").removeClass('ui-btn-icon-left'); -->找CSS內容
             /*$(".ui-controlgroup-controls .ui-btn.ui-btn-a").css({
                 'border-style': 'none',
