@@ -305,51 +305,55 @@ $("#viewBackLeaveQuery").pagecontainer({
         //動態生成HTML
         function setBackLeaveList() {
             var backLeaveHtml = "";
-            for (var i in backLeaveListArr) {
-                backLeaveHtml += '<div class="backLeave-query-list">' +
-                    '<div>' +
-                    '<div class="backLeave-query-state font-style3" form-id="' + backLeaveListArr[i]["formid"] + '">' +
-                    '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
-                    '<img src="img/more.png">' +
-                    '</div>' +
-                    '<div class="backLeave-query-base font-style11">' +
-                    '<div class="backLeave-query-basedata">' +
-                    '<div>' +
-                    //'<span>銷假單號：</span>' +
-                    '<span>' + langStr["str_166"] + ' </span>' +
-                    '<span class="leave-id">' + backLeaveListArr[i]["formno"] + '</span>' +
-                    '</div>' +
-                    '<div>' +
-                    //'<span>假別：</span>' +
-                    '<span>' + langStr["str_152"] + ' </span>' +
-                    '<span>' + backLeaveListArr[i]["name"] + '</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div>' +
-                    //'<span>請假區間：</span>' +
-                    '<span>' + langStr["str_138"] + ' </span>' +
-                    '<span>' + backLeaveListArr[i]["begindate"] + ' ' + backLeaveListArr[i]["begintime"] + '</span>' +
-                    '<span> - </span>' +
-                    '<span>' + backLeaveListArr[i]["enddate"] + ' ' + backLeaveListArr[i]["endtime"] + '</span>' +
-                    '</div>' +
-                    '<div>' +
-                    //'<span>請假數：</span>' +
-                    '<span>' + langStr["str_153"] + ' </span>' +
-                    '<span>' + backLeaveListArr[i]["days"] + '</span>' +
-                    //'<span> 天 </span>' +
-                    '<span> ' + langStr["str_071"] + ' </span>' +
-                    '<span>' + backLeaveListArr[i]["hours"] + '</span>' +
-                    //'<span> 小時</span>' +
-                    '<span> ' + langStr["str_088"] + '</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div></div>' +
-                    '</div>';
+            if (backLeaveListArr.length === 0) {
+                backLeaveHtml = "";
+            } else {
+                for (var i in backLeaveListArr) {
+                    backLeaveHtml += '<div class="backLeave-query-list">' +
+                        '<div>' +
+                        '<div class="backLeave-query-state font-style3" form-id="' + backLeaveListArr[i]["formid"] + '">' +
+                        '<span>' + backLeaveListArr[i]["statusName"] + '</span>' +
+                        '<img src="img/more.png">' +
+                        '</div>' +
+                        '<div class="backLeave-query-base font-style11">' +
+                        '<div class="backLeave-query-basedata">' +
+                        '<div>' +
+                        //'<span>銷假單號：</span>' +
+                        '<span>' + langStr["str_166"] + ' </span>' +
+                        '<span class="leave-id">' + backLeaveListArr[i]["formno"] + '</span>' +
+                        '</div>' +
+                        '<div>' +
+                        //'<span>假別：</span>' +
+                        '<span>' + langStr["str_152"] + ' </span>' +
+                        '<span>' + backLeaveListArr[i]["name"] + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div>' +
+                        //'<span>請假區間：</span>' +
+                        '<span>' + langStr["str_138"] + ' </span>' +
+                        '<span>' + backLeaveListArr[i]["begindate"] + ' ' + backLeaveListArr[i]["begintime"] + '</span>' +
+                        '<span> - </span>' +
+                        '<span>' + backLeaveListArr[i]["enddate"] + ' ' + backLeaveListArr[i]["endtime"] + '</span>' +
+                        '</div>' +
+                        '<div>' +
+                        //'<span>請假數：</span>' +
+                        '<span>' + langStr["str_153"] + ' </span>' +
+                        '<span>' + backLeaveListArr[i]["days"] + '</span>' +
+                        //'<span> 天 </span>' +
+                        '<span> ' + langStr["str_071"] + ' </span>' +
+                        '<span>' + backLeaveListArr[i]["hours"] + '</span>' +
+                        //'<span> 小時</span>' +
+                        '<span> ' + langStr["str_088"] + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div></div>' +
+                        '</div>';
+                }
             }
-
             if (backLeaveListArr.length == 0) {
                 $("#maxBackLeaveMsg").text(langStr["str_179"]);
+                $(".backLeave-query-main-list").empty().append(backLeaveHtml);
             } else {
                 $("#maxBackLeaveMsg").text(langStr["str_178"]);
                 $(".backLeave-query-main-list").empty().append(backLeaveHtml);
