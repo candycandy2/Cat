@@ -312,53 +312,57 @@ $("#viewLeaveQuery").pagecontainer({
         //添加所有請假到列表
         function setAllLeaveList() {
             var leaveListHtml = "";
-            for (var i in leaveListArr) {
-                leaveListHtml += '<div class="leave-query-list">' +
-                    '<div>' +
-                    '<div class="leave-query-state font-style3" form-id="' + leaveListArr[i]["formid"] + '">' +
-                    '<span>' + leaveListArr[i]["statusName"] + '</span>' +
-                    '<span>' + leaveListArr[i]["cancelname"] + '</span>' +
-                    '<img src="img/more.png">' +
-                    '</div>' +
-                    '<div class="leave-query-base font-style11">' +
-                    '<div class="leave-query-basedata">' +
-                    '<div>' +
-                    //'<span>請假單號：</span>' +
-                    '<span>' + langStr["str_131"] + ' </span>' +
-                    '<span class="leave-id">' + leaveListArr[i]["formno"] + '</span>' +
-                    '</div>' +
-                    '<div>' +
-                    //'<span>假別：</span>' +
-                    '<span>' + langStr["str_152"] + ' </span>' +
-                    '<span>' + leaveListArr[i]["name"] + '</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div>' +
-                    //'<span>請假區間：</span>' +
-                    '<span>' + langStr["str_138"] + ' </span>' +
-                    '<span>' + leaveListArr[i]["begindate"] + ' ' + leaveListArr[i]["begintime"] + '</span>' +
-                    '<span> - </span>' +
-                    '<span>' + leaveListArr[i]["enddate"] + ' ' + leaveListArr[i]["endtime"] + '</span>' +
-                    '</div>' +
-                    '<div>' +
-                    //'<span>請假數：</span>' +
-                    '<span>' + langStr["str_153"] + ' </span>' +
-                    '<span>' + leaveListArr[i]["days"] + ' </span>' +
-                    //'<span> 天 </span>' +
-                    '<span> ' + langStr["str_071"] + ' </span>' +
-                    '<span>' + leaveListArr[i]["hours"] + '</span>' +
-                    //'<span> 小時</span>' +
-                    '<span> ' + langStr["str_088"] + '</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div></div>' +
-                    '</div>';
+            if (leaveListArr.length === 0) {
+                leaveListHtml = "";
+            } else {
+                for (var i in leaveListArr) {
+                    leaveListHtml += '<div class="leave-query-list">' +
+                        '<div>' +
+                        '<div class="leave-query-state font-style3" form-id="' + leaveListArr[i]["formid"] + '">' +
+                        '<span>' + leaveListArr[i]["statusName"] + '</span>' +
+                        '<span>' + leaveListArr[i]["cancelname"] + '</span>' +
+                        '<img src="img/more.png">' +
+                        '</div>' +
+                        '<div class="leave-query-base font-style11">' +
+                        '<div class="leave-query-basedata">' +
+                        '<div>' +
+                        //'<span>請假單號：</span>' +
+                        '<span>' + langStr["str_131"] + ' </span>' +
+                        '<span class="leave-id">' + leaveListArr[i]["formno"] + '</span>' +
+                        '</div>' +
+                        '<div>' +
+                        //'<span>假別：</span>' +
+                        '<span>' + langStr["str_152"] + ' </span>' +
+                        '<span>' + leaveListArr[i]["name"] + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div>' +
+                        //'<span>請假區間：</span>' +
+                        '<span>' + langStr["str_138"] + ' </span>' +
+                        '<span>' + leaveListArr[i]["begindate"] + ' ' + leaveListArr[i]["begintime"] + '</span>' +
+                        '<span> - </span>' +
+                        '<span>' + leaveListArr[i]["enddate"] + ' ' + leaveListArr[i]["endtime"] + '</span>' +
+                        '</div>' +
+                        '<div>' +
+                        //'<span>請假數：</span>' +
+                        '<span>' + langStr["str_153"] + ' </span>' +
+                        '<span>' + leaveListArr[i]["days"] + ' </span>' +
+                        //'<span> 天 </span>' +
+                        '<span> ' + langStr["str_071"] + ' </span>' +
+                        '<span>' + leaveListArr[i]["hours"] + '</span>' +
+                        //'<span> 小時</span>' +
+                        '<span> ' + langStr["str_088"] + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div></div>' +
+                        '</div>';
+                }
             }
-
             //判断请假单列表是否有数据
             if (leaveListArr.length == 0) {
                 $("#maxLeaveMsg").text(langStr["str_177"]);
+                $(".leave-query-main-list").empty().append(leaveListHtml);
             } else {
                 $("#maxLeaveMsg").text(langStr["str_145"]);
                 $(".leave-query-main-list").empty().append(leaveListHtml);
