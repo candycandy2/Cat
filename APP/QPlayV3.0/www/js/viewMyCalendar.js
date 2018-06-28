@@ -1,7 +1,7 @@
 $("#viewMyCalendar").pagecontainer({
     create: function (event, ui) {
 
-        var reserveDateList = [], reservePositionList = [], calendarData = false;;
+        var reserveDateList = [], reservePositionList = [];
 
         /********************************** function ***********************************/
         function initialCalendar(holidayData) {
@@ -114,15 +114,17 @@ $("#viewMyCalendar").pagecontainer({
                 month +
                 '</Month><EmpNo>' +
                 loginData['emp_no'] +
+                //'1204125' +
                 '</EmpNo></LayoutHeader>';
             var key = leaveAppData.key;
             var secret = leaveAppData.secretKey;
 
             this.successCallback = function (data) {
 
-                console.log(data);
-                myCalendarData = {};
-                myHolidayData = [];
+                //console.log(data);
+
+                var myCalendarData = {};
+                var myHolidayData = [];
                 var leaveFlag = "3";
                 var holidayFlag = "2";
                 if (data['ResultCode'] === "1") {
@@ -142,18 +144,27 @@ $("#viewMyCalendar").pagecontainer({
                         }
                         if (leaveFlag in myCalendarData) {
                             for (var day in myCalendarData[leaveFlag]) {
-                                $("#reserveCalendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
+                                //$("#reserveCalendar #" + myCalendarData[leaveFlag][day]).parent().addClass("leave");
+                                //获取table并append到页面
+                                var leaveTable = '<table' + myHolidayData[myCalendarData[leaveFlag][day]].split('<table')[1];
+                                $('#leaveTable').html('').append(leaveTable);
+                                var leaveMsg = $('#leaveTable tr:eq(0) > td:eq(1)').text();
+                                $("#reserveCalendar #" + myCalendarData[leaveFlag][day]).after('<div class="reserve-str">' + leaveMsg + '</div>');
+                                //判断子元素个数，大于5的隐藏，既第6个隐藏
+                                if ($("#reserveCalendar #" + myCalendarData[leaveFlag][day]).parent().children().length > 5) {
+                                    $("#reserveCalendar #" + myCalendarData[leaveFlag][day]).parent().children('div:eq(5)').addClass('hidden-str');
+                                }
                             }
                         }
 
                         //遍歷假日列表，統一爲藍色
-                        for (var i in myCalendarData[holidayFlag]) {
-                            $("#reserveCalendar #" + myCalendarData[holidayFlag][i]).addClass("weekend");
-                        }
+                        // for (var i in myCalendarData[holidayFlag]) {
+                        //     $("#reserveCalendar #" + myCalendarData[holidayFlag][i]).addClass("weekend");
+                        // }
 
-                        calendarData = true;
+                        //calendarData = true;
                     } else {
-                        calendarData = false;
+                        //calendarData = false;
                     }
 
 
@@ -191,8 +202,8 @@ $("#viewMyCalendar").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
-            //calendar只需第一次加载
             if (viewCalendarInitial) {
+                //1. calendar
                 var siteCode = localStorage.getItem("site_code");
                 if (siteCode == "QCS" || siteCode == "BQC") {
                     $.getJSON("string/" + siteCode + "-holiday.json", function (data) {
@@ -204,8 +215,14 @@ $("#viewMyCalendar").pagecontainer({
                     });
                 }
 
-                //预约carousel
+                //2. reserve carousel
                 createReserveDetail();
+
+                //3. leave app
+                var currentDate = new Date();
+                var currentYear = currentDate.getFullYear().toString();
+                var currentMonth = (currentDate.getMonth() + 1).toString();
+                QueryCalendarData(currentYear, currentMonth);
 
                 viewCalendarInitial = false;
             }
@@ -213,6 +230,7 @@ $("#viewMyCalendar").pagecontainer({
 
         $("#viewMyCalendar").on("pageshow", function (event, ui) {
             setReservePosition();
+
         });
 
         $("#viewMyCalendar").on("pagehide", function (event, ui) {
