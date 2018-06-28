@@ -89,7 +89,7 @@ var app = {
             window.MobileAccessibility.usePreferredTextZoom(false);
         }
 
-        //cordova.plugins.backgroundMode.setEnabled(true);
+        cordova.plugins.backgroundMode.setEnabled(true);
 
         //Add Event to Check Network Status
         window.addEventListener("offline", function(e) {
@@ -585,7 +585,7 @@ function getAddAppLog() {
     var __construct = function() {
         loginData["versionName"] = AppVersion.version;
         //if (loginData["versionName"].indexOf("Development") !== -1 || loginData["versionName"].indexOf("Staging") !== -1) {
-        //QPlayAPIEx("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "", "low", 1000);
+        QPlayAPIEx("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "", "low", 1000);
         //}
     }();
 

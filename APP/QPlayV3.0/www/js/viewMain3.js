@@ -13,13 +13,23 @@ $("#viewMain3").pagecontainer({
             var widgetItem = widgetList[index].name + "Widget";
 
             //3. container
-            var contentItem = $('<div class="' + widgetItem + '"></div>');
-            $('#widgetList').append(contentItem);
+            var contentItem = $('<div></div>');
+            contentItem.prop('class', widgetItem);
+            contentItem.appendTo('#widgetList');
+            var blankItem = $('<div class="widget-blank"></div>');
+            blankItem.appendTo('#widgetList');
 
             //4. localStorage
-            sessionStorage.setItem('widgetItem', widgetItem);
+            sessionStorage.setItem('viewClass', widgetItem);
 
-            //5. load js
+            //5. load css
+            var cssItem = $('<link>');
+            cssItem.prop('rel', 'stylesheet');
+            cssItem.prop('type', 'text/css');
+            cssItem.prop('href', 'http://qplaydev.benq.com/widgetDemo/' + widgetList[index].name + '/' + widgetList[index].name + '.css');
+            cssItem.appendTo('head');
+
+            //6. load js
             $.getScript("http://qplaydev.benq.com/widgetDemo/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
                 .done(function (script, textStatus) {
                     loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
@@ -33,17 +43,7 @@ $("#viewMain3").pagecontainer({
         /********************************** page event ***********************************/
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
             if (viewMainInitial) {
-                //1. load widget
                 loadAndRunScript(0, widgetList[0].enabled);
-
-                //2. get message
-                if(!callGetMessageList && loginData["msgDateFrom"] === null) {
-                    msgDateFromType = 'month';
-                    var clientTimestamp = getTimestamp();
-                    loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
-                    var messageList = new QueryMessageList();
-                }
-
                 viewMainInitial = false;
             }
         });
@@ -53,9 +53,7 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-            for (var i in reserveAppList) {
-                getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
-            }
+
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
@@ -66,22 +64,6 @@ $("#viewMain3").pagecontainer({
         /********************************** dom event *************************************/
         $('#widgetList').on('click', '.applist-main-add', function () {
             $.mobile.changePage('#viewAppList');
-        });
-
-        $("#faqTest").on("click", function () {
-            $.mobile.changePage('#viewFAQ');
-        });
-
-        $("#calendarTest").on("click", function () {
-            $.mobile.changePage('#viewMyCalendar');
-        });
-
-        $("#newsTest").on("click", function () {
-            $.mobile.changePage('#viewMessageList');
-        });
-
-        $('#scrollTest').on('click', function () {
-            $.mobile.changePage('#viewScrollTest');
         });
 
     }

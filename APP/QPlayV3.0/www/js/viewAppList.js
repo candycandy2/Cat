@@ -104,7 +104,7 @@ $("#viewAppList").pagecontainer({
                     appurlicon +
                     '"></div><div class="download-name"><div class="font-style10">' +
                     packagename +
-                    '</div><div class="font-style7">' +
+                    '</div><div class="font-style14">' +
                     appSummary +
                     '</div></div></div><div><img src="img/' +
                     (status == true ? 'favorite_blank.png' : 'download_icon.png') +

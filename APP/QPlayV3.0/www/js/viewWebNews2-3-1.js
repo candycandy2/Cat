@@ -25,21 +25,19 @@ function cleanHTML(input) {
 }
 
 $("#viewWebNews2-3-1").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
         var messageExist = true;
         window.portalURL = "";
         window.canvasChangeTop = false;
 
         /********************************** function *************************************/
-        window.goBack = function (action) {
-            // if (action === "goList") {
-            //     $.mobile.changePage('#viewNewsEvents2-3');
-            // } else if (action === "goHome") {
-            //     $.mobile.changePage('#viewMain2-1');
-            // }
-            //fix by allen
-            $.mobile.changePage('#viewMain2-1');
+        window.goBack = function(action) {
+            if (action === "goList") {
+                $.mobile.changePage('#viewNewsEvents2-3');
+            } else if (action === "goHome") {
+                $.mobile.changePage('#viewMain2-1');
+            }
         };
 
         function renderCanvas(content) {
@@ -51,7 +49,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 left: 0
             });
 
-            $("#htmlContent").html(content).promise().done(function () {
+            $("#htmlContent").html(content).promise().done(function() {
 
                 var screenWidth = document.documentElement.clientWidth;
                 var $images = $('#htmlContent img');
@@ -59,7 +57,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 var loaded_finish = false;
 
                 if ($images.length > 0) {
-                    $images.load(function () {
+                    $images.load(function() {
 
                         loaded_images_count++;
 
@@ -72,14 +70,14 @@ $("#viewWebNews2-3-1").pagecontainer({
                             $("#messageLoadErrorPopup").popup("close");
                             $("#viewWebNews2-3-1").css("min-height", document.documentElement.clientHeight + "px");
 
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 doPanZoom();
                             }, 500);
                         }
 
                     });
 
-                    setTimeout(function () {
+                    setTimeout(function() {
                         if (!loaded_finish) {
                             $("#messageLoadErrorPopup").popup("open");
                             $("#viewWebNews2-3-1").css("min-height", document.documentElement.clientHeight + "px");
@@ -156,7 +154,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                     loadingMask("hide");
 
                     //panzoom start event
-                    $("#htmlContent").on("panzoomstart", function (e, panzoom, matrix, changed) {
+                    $("#htmlContent").on("panzoomstart", function(e, panzoom, matrix, changed) {
                         var canvasWidth = $("#htmlContent").width() * matrix[0];
                         var screenWidth = document.documentElement.clientWidth;
 
@@ -175,7 +173,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                     });
 
                     //panzoom start zoom
-                    $("#htmlContent").on("panzoomzoom", function (e, panzoom, scale, opts) {
+                    $("#htmlContent").on("panzoomzoom", function(e, panzoom, scale, opts) {
                         $("#htmlContent").panzoom("option", {
                             disablePan: true
                         });
@@ -198,7 +196,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                     });
 
                     //panzoom end event
-                    $("#htmlContent").on("panzoomend", function (e, panzoom, matrix, changed) {
+                    $("#htmlContent").on("panzoomend", function(e, panzoom, matrix, changed) {
 
                         var canvasWidth;
                         var screenWidth;
@@ -265,7 +263,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                     });
 
                     //Set Scroll Event
-                    $("#PortalContent").on("scroll", function () {
+                    $("#PortalContent").on("scroll", function() {
 
                         var matrix = $("#htmlContent").panzoom("getMatrix");
                         var canvasHeight = $("#htmlContent").height();
@@ -287,7 +285,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                     });
 
                     //Prevent Link Action
-                    $("#htmlContent a").on("click", function (event) {
+                    $("#htmlContent a").on("click", function(event) {
                         event.preventDefault();
                     });
                 }
@@ -296,9 +294,9 @@ $("#viewWebNews2-3-1").pagecontainer({
         }
 
         function QueryPortalListDetail(varURL) {
-            (function () {
+            (function() {
 
-                $("#htmlContent").load(varURL, function () {
+                $("#htmlContent").load(varURL, function() {
                     $("#htmlContent").find("meta").remove();
                     $("#htmlContent").find("title").remove();
                     $("#htmlContent").find("base").remove();
@@ -322,8 +320,7 @@ $("#viewWebNews2-3-1").pagecontainer({
 
             var queryStr = "&message_send_row_id=" + messageRowId;
 
-            this.successCallback = function (data) {
-                console.log(data);
+            this.successCallback = function(data) {
                 var resultcode = data.result_code;
                 var content = data.content;
 
@@ -428,20 +425,19 @@ $("#viewWebNews2-3-1").pagecontainer({
                 }
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 QPlayAPI("POST", "getMessageDetail", self.successCallback, self.failCallback, null, queryStr);
             }();
         }
 
-        window.updateReadDelete = function (type, status) {
+        window.updateReadDelete = function(type, status) {
             var self = this;
 
             var queryStr = "&message_send_row_id=" + messageRowId + "&message_type=" + type + "&status=" + status;
 
-            this.successCallback = function (data) {
-                console.log(data);
+            this.successCallback = function(data) {
                 var doUpdateLocalStorage = false;
 
                 if (type === "event") {
@@ -514,19 +510,12 @@ $("#viewWebNews2-3-1").pagecontainer({
                     messageArrIndex = null;
 
                     updateMessageList("closePopup");
-                    //如果是read，只需添加普通字体的样式；如果是delete，需要删除对应元素
-                    if (status == 'read') {
-                        updateNewMessageList(type);
-                    } else if (status == 'delete') {
-                        updateNewMessageList(type, status);
-                    }
-
                 }
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
 
                 //[event] need to update [read / delete] status both in Server / Local Storage
                 //[news] just update [read / delete] in Local Storage
@@ -539,19 +528,8 @@ $("#viewWebNews2-3-1").pagecontainer({
                 }
             }();
         };
-
-        function updateNewMessageList(type, status) {
-            status = status || null;
-            if (status != null) {
-                $('.' + type + '-content li[data-rowid=' + messageRowId + ']').remove();
-            } else {
-                $('.' + type + '-content li[data-rowid=' + messageRowId + ']').find('.msg-content-title').addClass('read-font-normal');
-            }
-        }
-
-
         /********************************** page event *************************************/
-        $("#viewWebNews2-3-1").one("pagebeforeshow", function (event, ui) {
+        $("#viewWebNews2-3-1").one("pagebeforeshow", function(event, ui) {
             //Message Load Error Popup
             var messageLoadErrorPopupData = {
                 id: "messageLoadErrorPopup",
@@ -561,7 +539,7 @@ $("#viewWebNews2-3-1").pagecontainer({
             tplJS.Popup("viewWebNews2-3-1", "viewWebNews2-3-1Content", "append", messageLoadErrorPopupData);
         });
 
-        $("#viewWebNews2-3-1").on("pagebeforeshow", function (event, ui) {
+        $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
             if (eventType === "Event" || eventType === "News" || portalURL == "") {
                 $("#ITSEventNewContent").show();
                 $("#PortalContent").hide();
@@ -595,7 +573,7 @@ $("#viewWebNews2-3-1").pagecontainer({
             }
         });
 
-        $("#viewWebNews2-3-1").on("pageshow", function (event, ui) {
+        $("#viewWebNews2-3-1").on("pageshow", function(event, ui) {
 
             //RWD header & footer
             var header = {
@@ -666,29 +644,29 @@ $("#viewWebNews2-3-1").pagecontainer({
             }
         });
 
-        $("#viewWebNews2-3-1").on("pageshow", function (event, ui) {
+        $("#viewWebNews2-3-1").on("pageshow", function(event, ui) {
             if (!messageExist) {
                 $('#messageNotExist').popup('open');
             }
         });
 
         /********************************** dom event *************************************/
-        $("#confirmMessageNotExist").on("click", function () {
+        $("#confirmMessageNotExist").on("click", function() {
             messageExist = true;
             $('#messageNotExist').popup('close');
             $.mobile.changePage("#viewNewsEvents2-3");
         });
 
-        $(".nav-button").on("click", function () {
+        $(".nav-button").on("click", function() {
             var action = $(this).prop("id");
             goBack(action);
         });
 
-        $(document).on("click", "#messageLoadErrorPopup #retry", function () {
+        $(document).on("click", "#messageLoadErrorPopup #retry", function() {
             $("#messageLoadErrorPopup").popup("close");
         });
 
-        $(document).on("click", "#messageLoadErrorPopup #back", function () {
+        $(document).on("click", "#messageLoadErrorPopup #back", function() {
             goBack("goList");
         });
     }

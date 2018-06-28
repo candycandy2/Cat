@@ -36,11 +36,11 @@ var panel = htmlContent +
     +
     '<span class="panel-text">' + langStr["str_182"] + '</span>' +
     '</div>' +
-    /*'<div class="panel-content" id="mypanelviewClockin">'
+    '<div class="panel-content" id="mypanelviewClockin">'
     //+       '<span class="panel-text">補刷卡申請</span>'
-    + 
+    +
     '<span class="panel-text">' + langStr["str_189"] + '</span>' +
-    '</div>' + */
+    '</div>' +
     '</div>' +
     '<div class="page-mask" style="display: none;"></div>';
 
@@ -84,9 +84,9 @@ $(document).one("pagebeforeshow", function() {
         changePageByPanel("viewAgentLeave");
     });
 
-    /*$("#mypanel #mypanelviewClockin").on("click", function() {
+    $("#mypanel #mypanelviewClockin").on("click", function() {
         changePageByPanel("viewClockin");
-    });*/
+    });
 
     $(".menu-btn .leaveMenu").on("click", function() {
         $("#mypanel").panel("open");
