@@ -53,9 +53,10 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-            for (var i in reserveAppList) {
-                getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
-            }
+            //3. get reserve
+            // for (var i in reserveAppList) {
+            //     getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
+            // }
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
