@@ -12,7 +12,7 @@ if (typeof jQuery == 'undefined') {
  * Create calendar
  *
  * @param options
- * @returns {*}
+ * @returns {}
  */
 function Calendar(options) {
     var $calendarElement, _id, _year, _month, _nextyear, _infoData, _reserveData;
@@ -626,20 +626,12 @@ function Calendar(options) {
         $.each($("#" + _id + " td"), function (index, item) {
             for (var i in _reserveData) {
                 if ($(item).attr("id") == i) {
-                    //获取子元素个数，并去除日期元素
-                    var childLength = $(item).children().length;
-                    var reserveLength = _reserveData[i].length;
-
-                    if (reserveLength + childLength > 5) {
-                        for (var j = 0; j < 5 - childLength; j++) {
-                            var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '<div>');
-                            $(item).append($reserveObj);
+                    for(var j = 0; j < _reserveData[i].length; j++) {
+                        var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '</div>');;
+                        if(j > 3) {
+                            $reserveObj.addClass('hidden-str');
                         }
-                    } else {
-                        for (var j = 0; j < _reserveData[i].length; j++) {
-                            var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '<div>');
-                            $(item).append($reserveObj);
-                        }
+                        $(item).append($reserveObj);
                     }
                 }
             }
@@ -727,6 +719,12 @@ function Calendar(options) {
                 //$(opts.showInfoListTo).hide();
             }
         }
+    }
+
+    this.refreshReserve = function (data) {
+        _reserveData = data;
+        drawTable($calendarElement, $tableObj, _year, _month);
+        showCalendarReserveInfo(_year, _month);
     }
 };
 

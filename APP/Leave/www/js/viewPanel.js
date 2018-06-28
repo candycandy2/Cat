@@ -38,7 +38,7 @@ var panel = htmlContent +
     '</div>' +
     /*'<div class="panel-content" id="mypanelviewClockin">'
     //+       '<span class="panel-text">補刷卡申請</span>'
-    +
+    + 
     '<span class="panel-text">' + langStr["str_189"] + '</span>' +
     '</div>' + */
     '</div>' +

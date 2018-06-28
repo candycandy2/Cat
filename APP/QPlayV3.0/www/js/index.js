@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar", "viewMessageList", "viewMessageDetail", "viewScrollTest"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -32,13 +32,20 @@ var viewMainInitial = true;
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
 
 //viewMyCalendar
-var viewCalendarInitial = true, reserveCalendar = null, reserveList = [];
+var viewCalendarInitial = true, reserveCalendar = null, reserveList = [], reserveDirty = false;
 var reserveAppList = [
     { app: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
     { app: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
     { app: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
     { app: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
 ];
+var leaveAppData = {
+    key: 'appleave',
+    secretKey: '86883911af025422b626131ff932a4b5'
+}
+
+//viewMessageList
+var viewMessageInitial = true;
 
 window.initialSuccess = function (data) {
     if (data !== undefined) {
@@ -91,10 +98,10 @@ window.initialSuccess = function (data) {
     //For test
     //var unregisterTest = new unregister();
 
-    //get all reserve
-    for (var i in reserveAppList) {
-        getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
-    }
+    //get all reserve add by allen
+    // for (var i in reserveAppList) {
+    //     getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
+    // }
 }
 
 function getMyReserve(key, secret) {
@@ -109,7 +116,6 @@ function getMyReserve(key, secret) {
             var resultArr = data['Content'];
 
             if (key == "apprrs") {
-                //rrsReserveList = data['Content'];
                 for (var i in resultArr) {
                     resultArr[i].type = key;
                     resultArr[i].item = "預約" + resultArr[i].MeetingRoomName;
@@ -117,19 +123,9 @@ function getMyReserve(key, secret) {
                     reserveList.push(resultArr[i]);
                 }
 
-            } else if (key == "appmassage") {
-                //massageReserveList = data['Content'];
-                for (var i in resultArr) {
-                    resultArr[i].type = key;
-                    resultArr[i].item = "按摩預約";
-                    resultArr[i].ReserveBeginTime = new Date(resultArr[i].ReserveBeginTime).hhmm();
-                    resultArr[i].ReserveEndTime = new Date(resultArr[i].ReserveEndTime).hhmm();
-                    resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
-                    reserveList.push(resultArr[i]);
-                }
+                reserveDirty = true;
 
             } else if (key == "apprelieve") {
-                //relieveReserveList = data['Content'];
                 for (var i in resultArr) {
                     resultArr[i].type = key;
                     resultArr[i].item = "物理治療";
@@ -139,8 +135,9 @@ function getMyReserve(key, secret) {
                     reserveList.push(resultArr[i]);
                 }
 
+                reserveDirty = true;
+
             } else if (key == "appparking") {
-                //parkingReserveList = data['Content'];
                 for (var i in resultArr) {
                     resultArr[i].type = key;
                     resultArr[i].item = "車位預約";
@@ -148,6 +145,28 @@ function getMyReserve(key, secret) {
                     reserveList.push(resultArr[i]);
                 }
 
+                reserveDirty = true;
+
+            } else if (key == "appmassage") {
+                for (var i in resultArr) {
+                    resultArr[i].type = key;
+                    resultArr[i].item = "按摩預約";
+                    resultArr[i].ReserveBeginTime = new Date(resultArr[i].ReserveBeginTime).hhmm();
+                    resultArr[i].ReserveEndTime = new Date(resultArr[i].ReserveEndTime).hhmm();
+                    resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
+                    reserveList.push(resultArr[i]);
+                }
+
+                reserveDirty = true;
+
+                formatReserveList();
+            }
+
+            if(reserveDirty && reserveCalendar != null) {
+                formatReserveList();
+                reserveCalendar.reserveData = reserveList;
+                reserveCalendar.refreshReserve(reserveList);
+                reserveDirty = false;
             }
 
 
@@ -227,6 +246,7 @@ function getSignatureByKey(action, signatureTime, secret) {
     }
 }
 
+//数组合并并排序
 function formatReserveList() {
     //1. 先按照日期合併同一天預約
     var tempArr = [];
@@ -249,6 +269,7 @@ function formatReserveList() {
     reserveList = tempArr;
 }
 
+//先按照开始时间排序，如果开始时间一致再用结束时间排序
 function sortByBeginTime(prop1, prop2) {
     return function (obj1, obj2) {
         var val1 = obj1[prop1];
@@ -271,9 +292,7 @@ function sortByBeginTime(prop1, prop2) {
     }
 }
 
-function formatReserveDate(str) {
-    return str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2);
-}
+
 
 //Plugin-QPush, Now only QPLay need to set push-toekn
 function sendPushToken() {
@@ -512,6 +531,7 @@ function addDownloadHit(appname) {
     }();
 }
 
+//获取版本记录
 function getVersionRecord(key) {
     key = key || null;
 
@@ -554,9 +574,22 @@ function getVersionRecord(key) {
     }();
 }
 
+function formatReserveDate(str) {
+    return str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2);
+}
 
 Date.prototype.FormatReleaseDate = function () {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
+}
+
+//获取移动偏移量
+//margin表示单边距，所以需要*2，
+//screenwidth / ? = 100vw / (margin*2)
+//返回px
+function scrollLeftOffset(margin) {
+    margin = Number(margin);
+    var screenWidth = window.screen.width;
+    return screenWidth * margin * 2 / 100;
 }
 
 //Change event type

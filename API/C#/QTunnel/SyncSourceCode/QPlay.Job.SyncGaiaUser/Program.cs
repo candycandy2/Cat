@@ -11,8 +11,7 @@ using System.Web.Services;
 using System.IO;
 using System.Diagnostics;
 using log4net;
-using WSC;
-using WSC.Common;
+ 
 namespace QPlay.Job.SyncGaiaUser
 {
     public class Program
@@ -24,7 +23,6 @@ namespace QPlay.Job.SyncGaiaUser
            Init();
            string fileName =  GenerateExcelFile();
            GenerateGPGFile(fileName);
-            
         }
         /// <summary>
         /// 初始化
@@ -33,9 +31,7 @@ namespace QPlay.Job.SyncGaiaUser
         {
             //对数据库连接字符串解密
             log.Info("Begin Connect Gaia DB");
-            string enString = ConfigurationManager.ConnectionStrings["dbGaia"].ToString();
-            string WSCDBconniction = Security.DecryptInner(enString);
-            dbGaia = new DbSession(ITS.Data.Common.ProviderType.SqlServer, WSCDBconniction);     
+            dbGaia = new DbSession("dbGaia");
             log.Info("End Connect Gaia DB");
 
              
@@ -48,11 +44,13 @@ namespace QPlay.Job.SyncGaiaUser
         {
             try
             {
-                log.Info("Begin Select  Qp_User_Flower");
+                log.Info("Begin Select data");
+                
                 //查询数据
-                string sql = "SELECT * FROM Qp_User_Flower";
+                string view = System.Configuration.ConfigurationManager.AppSettings["ViewName"];
+                string sql = "SELECT * FROM " + view;
                 DataTable dt = dbGaia.FromSql(sql).ToDataTable();
-                log.Info("End Select  Qp_User_Flower");
+                log.Info("End Select  data");
 
                 //将查询出来的数据导出到Excel
                 QWorkbook workbook = new QWorkbook(QXlFileFormat.xls);//创建工作簿，默认是xlsx

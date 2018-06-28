@@ -17,6 +17,32 @@
     font-size: 2.9vh;
 }
 
+.ui-input-search {
+    margin: 0;
+}
+
+.opacity {
+    opacity: 0;
+}
+
+.enabled-font {
+    color: #263238 !important;
+}
+
+.read-font-normal {
+    font-weight: normal !important;
+}
+
+.ui-popup-screen {
+    position: fixed !important;
+    bottom: 0 !important;
+}
+
+.ui-popup-container {
+    position: fixed !important;
+    top: 225px !important;
+}
+
 #viewNewsEvents2-3 .ui-listview>.ui-li-static {
     padding: 0;
 }
@@ -416,7 +442,7 @@ input[type=radio]:checked + label {
     float: left;
     width: 80vw;
     height: 80vh;
-    margin-right: 3.7vw;
+    margin-left: 3.7vw;
 }
 
 #viewAppDetail2-2 .page-main {
@@ -497,8 +523,8 @@ input[type=radio]:checked + label {
 }
 
 #viewAppDetail2-2 .fix > div:nth-of-type(1) {
-    margin: 20vw 5vw;
-    width: 90%;
+    margin: 20vw 0 0;
+    width: 100%;
     height: 80vh;
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
@@ -883,125 +909,36 @@ input[type=radio]:checked + label {
 }
 
 /*************************** widget ********************************/
-.widget-blank {
-    width: 90vw;
-    height: 2vw;
-    /*background: lightgrey;*/
+#viewMain3 .ui-content {
+    padding: 0 !important;
 }
 
-/******* carousel ******/
 .carouselWidget {
-    width: 90vw;
-    height: 50vw;
+    width: 100vw;
+    height: 45vw;
     background: #FFFFFF;
+    margin-bottom: 2vw;
 }
 
-/******* weather ******/
 .weatherWidget {
-    width: 90vw;
+    width: 100vw;
     height: 30vw;
     background: #FFFFFF;
+    margin-bottom: 2vw;
 }
 
-.widget-weather > div {
-    float: left;
-}
-
-.widget-weather::after {
-    clear: both;
-}
-
-.weather-temp {
-    width: 32.5vw;
-    height: 100%;
-}
-
-.weather-loca {
-    width: 57.5vw;
-    height: 100%;
-}
-
-.weather-temp > div:nth-of-type(1) {
-    height: 66%;
-    text-indent: 5vw;
-    line-height: 2;
-    font-size: 10vw;
-}
-
-.weather-temp > div:nth-of-type(2) {
-    height: 33%;
-    font-size: 5vw;
-    text-align: center;
-}
-
-.weather-loca > div {
-    height: 30%;
-    line-height: 3;
-}
-
-/******* reserve ******/
 .reserveWidget {
-    width: 90vw;
+    width: 100vw;
     height: 60vw;
     background: #FFFFFF;
+    margin-bottom: 2vw;
 }
 
-.personal-info {
-    width: 100%;
-    height: 40%;
-}
-
-.personal-info > div {
-    float: left;
-}
-
-.personal-info::after {
-    clear: both;
-}
-
-.personal-info > div:nth-of-type(1) {
-    width: 30%;
-    height: 100%;
-}
-
-.personal-info > div:nth-of-type(2) {
-    width: 70%;
-    height: 100%;
-}
-
-.personal-info > div:nth-of-type(2) > div {
-    height: 40%;
-    line-height: 2;
-}
-
-.personal-info img {
-    width: 95%;
-    height: 100%;
-    border-radius: 50%;
-}
-
-.personal-res {
-    width: 100%;
-    height: 60%;
-}
-
-.personal-res ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-.personal-res ul li {
-    height: 10vw;
-    line-height: 10vw;
-    text-indent: 3vw;
-}
-
-/****** applist ******/
 .applistWidget {
-    width: 90vw;
+    width: 100vw;
     height: 30vw;
     background: #FFFFFF;
+    margin-bottom: 2vw;
 }
 
 
@@ -1111,7 +1048,7 @@ input[type=radio]:checked + label {
 }
 
 
-/*************************** viewFAQ ********************************/
+/********************************* viewFAQ **************************************/
 #viewFAQ .ui-content {
     padding: 0 !important;
 }
@@ -1150,7 +1087,345 @@ input[type=radio]:checked + label {
 }
 
 
-/*************************** viewMyCalendar ********************************/
+/***************************** viewMyCalendar ********************************/
 #viewMyCalendar .ui-content {
     padding: 0 !important;
+}
+
+#myReserve {
+    /* display: none; */
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    /* opacity: 0.5;
+    background: #757575; */
+    background: rgba(0,0,0,0.5);
+}
+
+#myReserveList {
+    width: 100vw;
+    height: 100vw;
+    margin-top: 40vw;
+    overflow-x: scroll;
+}
+
+#reserveContent {
+    /*（3.71+85.16）*30+3.71=2669.81 */
+    width: 2670vw;
+    height: 100%;
+}
+
+#reserveContent > div {
+    float: left;
+    width: 85.16vw;
+    height: 100%;
+    margin-left: 3.71vw;
+    background: #fff;
+}
+
+.reserve-title {
+    width: 100%;
+    text-align: center;
+    padding: 4.56vw 0 3.28vw;
+    color: #263238;
+    font-weight: normal;
+    font-size: 4.18vw !important;
+}
+
+.reserve-content {
+    height: 78vw;
+    overflow-y: scroll;
+}
+
+.reserve-null {
+    width: 100%;
+    height: 87vw;
+    text-align: center;
+    line-height: 70vw;
+    color: #8fa4ac;
+    font-weight: normal;
+    font-size: 4.18vw !important;
+}
+
+.reserve-li {
+    width: 100%;
+    height: 11.27vw;
+    margin-bottom: 2vw;
+}
+
+.reserve-li > div {
+    float: left;
+}
+
+.reserve-li-time {
+    width: 17.58vw;
+    height: 8.5vw;
+    padding: 1.28vw 2.12vw 1.28vw 0;
+    text-align: right;
+    border-right: 1px solid #4cb5ab;
+}
+
+.reserve-start {
+    color: #231f20;
+    font-weight: normal;
+    font-size: 3.768vw !important;
+}
+
+.reserve-end {
+    color: #8fa4ac;
+    font-weight: normal;
+    font-size: 3.55vw !important;
+}
+
+.reserve-li-item {
+    width: 50vw;
+    height: 100%;
+    line-height: 11.27vw;
+    padding-left: 2.12vw;
+    color: #263238;
+    font-weight: normal;
+    font-size: 3.768vw !important;
+    overflow: hidden;
+}
+
+#leaveTable {
+    display: none;
+}
+
+/***************************** viewNewsList ********************************/
+#viewMessageList .ui-content {
+    padding: 0 !important;
+}
+
+.input-search {
+    width: 73vw !important;
+    height: 7vw;
+    padding: 0;
+    font-size: 3vw;
+}
+
+.dropdown-news {
+    width: 3vw;
+    vertical-align: top;
+    margin-top: 2.5vw;
+    margin-left: 2vw;
+}
+
+.select-news {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 22.54vw;
+    display: none;
+    z-index: 1;
+}
+
+.select-news > div {
+    width: 100%;
+    height: 11.47vw;
+    color: #263238;
+    font-size: 3.768vw !important;
+    text-align: center;
+    line-height: 11.47vw;
+    border-bottom: 1px solid #666;
+    background: #f9f9f9;
+}
+
+.select-news > div:hover {
+    color: #f9f9f9 !important;
+    background: #503e7f !important;
+}
+
+.msg-tool {
+    width: 92.58vw;
+    height: 11.27vw;
+    line-height: 11.27VW;
+    padding: 0 3.71vw;
+    background-color: #ECEEF0;
+    display: none;
+    position: fixed;
+    z-index: 1;
+}
+
+.msg-tool-blank {
+    width: 100vw;
+    height: 11.27vw;
+    display: none;
+}
+
+.news-select-btn,
+.event-select-btn {
+    float: left;
+    width: 30vw;
+    color: #263238;
+    font-size: 4.18vw;
+}
+
+.news-readed-btn,
+.event-readed-btn {
+    float: right;
+    width: 30vw;
+    color: #8fa4ac;
+    font-size: 4.18vw;
+    text-align: right;
+}
+
+.news-delete-btn,
+.event-delete-btn {
+    float: right;
+    width: 12vw;
+    color: #8fa4ac;
+    font-size: 4.18vw;
+    text-align: right;
+}
+
+.news-content ul.ui-listview,
+.event-content ul.ui-listview {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.msg-delete-btn {
+    width: 6vw;
+    margin-top: 8vw;
+}
+
+.msg-check-icon {
+    display: none;
+    float: left;
+    width: 9vw;
+}
+
+.msg-check-btn {
+    width: 6vw;
+    margin-top: 5.5vw;
+}
+
+.msg-next-icon {
+    float: left;
+    width: 10vw;
+}
+
+.msg-next-btn {
+    width: 6.5vw;
+    margin-top: 5vw;
+    margin-left: 3.5vw;
+}
+
+.msg-content-title {
+    float: left;
+    width: 82vw;
+}
+
+.msg-content-title > div:nth-of-type(1) {
+    color: #8fa4ac;
+    font-size: 3.14vw !important;
+    padding-left: 2.81vw;
+}
+
+.msg-content-title > div:nth-of-type(2) {
+    height: 9vw;
+    margin-top: 2.49vw;
+    color: #263238;
+    font-size: 3.768vw !important;
+    /* font-weight: normal !important; */
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    display: -webkit-box; 
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; 
+    padding-left: 2.81vw;
+}
+
+.ui-div {
+    border: none !important;
+    padding: 3.36vw 3.71vw 3.27vw !important;
+    background-color: #FFFFFF !important;
+    border-bottom: 1px solid #d6d6d6 !important;
+}
+
+/*** swipe ***/
+.behind {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.behind a.ui-btn {
+    width: 16vw;
+    margin: 0px;
+    padding: 0px;
+	float: right;
+    border: none;
+    height: 22vw;
+    vertical-align: middle;
+}
+
+.behind a.delete-btn,
+.behind a.delete-btn:active,
+.behind a.delete-btn:visited,
+.behind a.delete-btn:focus,
+.behind a.delete-btn:hover {
+	color: white;
+    /* background-color: red; */
+    background-color: #009588;
+	text-shadow: none;
+}
+
+.behind a.ui-btn.pull-left {
+	float: left;
+}
+
+.behind a.edit-btn,
+.behind a.edit-btn:active,
+.behind a.edit-btn:visited,
+.behind a.edit-btn:focus,
+.behind a.edit-btn:hover {
+	color: white;
+	background-color: orange;
+	text-shadow: none;
+}
+/*** swipe ***/
+
+.confirmDeleteMsg .ui-content>.header {
+    padding: 0 5.36vw;
+    margin-top: 10vw;
+}
+
+.confirmDeleteMsg .ui-content>.footer {
+    margin-top: 10%;
+}
+
+
+/***************************** viewMessageDetail ********************************/
+#viewMessageDetail .ui-content {
+    padding: 0 !important;
+}
+
+.msg-detail-title {
+    padding: 6.4vw 3.71vw 0 6.58vw;
+    font-weight: bold;
+    font-size: 4.18vw !important;
+    color: #263238;
+}
+
+.msg-detail-content {
+    padding: 7.34vw 3.71vw 0 6.58vw;
+    font-weight: normal;
+    font-size: 3.768vw !important;
+    color: #263238;
+}
+
+
+/***************************** test ********************************/
+.scrollList li {
+    width: 92.58vw;
+    height: 20vw;
 }
