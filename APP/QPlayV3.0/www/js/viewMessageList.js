@@ -24,41 +24,36 @@ $("#viewMessageList").pagecontainer({
             }();
         }
 
+        //根据message数据，动态生成html
         function createMessageByType() {
             //1. html
-            var msgContent = loginData["messagecontent"];
-            if (msgContent == null || msgContent == "") {
-                var messageList = new QueryMessageList();
-                createMessageByType();
+            var resultArr = loginData['messagecontent']['message_list'];
+            console.log(resultArr);
 
-            } else {
-                var resultArr = msgContent['message_list'];
-                console.log(resultArr);
+            var newsContent = '';
+            var eventContent = '';
+            for (var i in resultArr) {
+                if (resultArr[i]['message_type'] == 'event' && resultArr[i].read != 'D') {
+                    eventContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
+                        '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
+                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
+                        (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
+                        resultArr[i].create_time.split(' ')[0] + '</div><div>' +
+                        resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
 
-                var newsContent = '';
-                var eventContent = '';
-                for (var i in resultArr) {
-                    if (resultArr[i]['message_type'] == 'event' && resultArr[i].read != 'D') {
-                        eventContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
-                            '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
-                            '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
-                            (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
-                            resultArr[i].create_time.split(' ')[0] + '</div><div>' +
-                            resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
-
-                    } else if (resultArr[i]['message_type'] == 'news' && resultArr[i].read != 'D') {
-                        newsContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
-                            '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
-                            '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
-                            (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
-                            resultArr[i].create_time.split(' ')[0] + '</div><div>' +
-                            resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
-                    }
+                } else if (resultArr[i]['message_type'] == 'news' && resultArr[i].read != 'D') {
+                    newsContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
+                        '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
+                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
+                        (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
+                        resultArr[i].create_time.split(' ')[0] + '</div><div>' +
+                        resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
                 }
-
-                $(".news-content ul").html('').append(newsContent);
-                $(".event-content ul").html('').append(eventContent);
             }
+
+            $(".news-content ul").html('').append(newsContent);
+            $(".event-content ul").html('').append(eventContent);
+            
 
             //2. swipe
             var x;
@@ -151,7 +146,8 @@ $("#viewMessageList").pagecontainer({
                         $(".textContent").show();
                     }
 
-                    $.mobile.changePage('#viewMessageDetail');
+                    //$.mobile.changePage('#viewMessageDetail');
+                    $.mobile.changePage("#viewWebNews2-3-1");
 
                 } else if (resultcode === "000910") {
                     //Message was be deleted in server
@@ -495,7 +491,9 @@ $("#viewMessageList").pagecontainer({
         /********************************** page event ***********************************/
         $("#viewMessageList").on("pagebeforeshow", function (event, ui) {
             if (viewMessageInitial) {
+                //create html
                 createMessageByType();
+
                 viewMessageInitial = false;
             }
         });
@@ -785,11 +783,6 @@ $("#viewMessageList").pagecontainer({
 
         });
 
-        // $('li .delete-btn').on('touchend', function (event) {
-        //     event.preventDefault()
-        //     $(this).parents('li').slideUp('fast', function () {
-        //         $(this).remove()
-        //     })
-        // })
+
     }
 });

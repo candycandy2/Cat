@@ -36,7 +36,8 @@ $("#viewLeaveQuery").pagecontainer({
             this.successCallback = function(data) {
                 //console.log(data);
                 if (data['ResultCode'] === "1") {
-                    //console.log("4.QueryEmployeeLeaveApplyForm API Result Code: "+data['ResultCode']);
+                    //alert("4.QueryEmployeeLeaveApplyForm API Result Code:"+data['ResultCode']);
+
                     var callbackData = data['Content'][0]["applyformlist"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var formidArr = $("formid", htmlDom);
@@ -91,7 +92,7 @@ $("#viewLeaveQuery").pagecontainer({
                             if (leaveObject["leaveid"] == allLeaveList[j]["leaveid"]) {
                                 leaveObject["name"] = allLeaveList[j]["name"];
                                 leaveObject["category"] = allLeaveList[j]["category"];
-                                //console.log("5."+leaveObject["name"]);                               
+                                //alert("5."+leaveObject["name"]);
                                 break;
                             } else {
                                 leaveObject["name"] = "";
@@ -134,7 +135,7 @@ $("#viewLeaveQuery").pagecontainer({
                     //根据代理人工号，查找代理人姓名
                     queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>' +
                         myEmpNo +
-                        '</EmpNo><qSite></qSite><qDeptCode></qDeptCode><qEmpno>' +
+                        '</EmpNo><qEmpno>' +
                         $(delegate).html() +
                         '</qEmpno><qName></qName></LayoutHeader>';
                     //根据id获取代理人姓名
