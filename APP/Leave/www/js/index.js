@@ -67,12 +67,13 @@ window.GetUserAuthority = function() {
             viewPersonalLeaveShow = false;
             //console.log("1. callback length:"+ callbackData.length);
             if (callbackData.length === 0) {               
-                hasAgentPanel = false
-                restartAgentLeave();
-            } else {                
+                hasAgentPanel = false               
+            } else if (myEmpNo !== originalEmpNo && callbackData.length !== 0){                
+                hasAgentPanel = false;
+            } else {
                 hasAgentPanel = true;
-                restartAgentLeave();
             }
+            restartAgentLeave();
             //loadingMask("hide");
         }
     };
