@@ -934,11 +934,67 @@ input[type=radio]:checked + label {
     margin-bottom: 2vw;
 }
 
+.messageWidget {
+    width: 100vw;
+    min-height: 25vw;
+    background: #FFFFFF;
+    margin-bottom: 2vw;
+}
+
 .applistWidget {
     width: 100vw;
     height: 30vw;
     background: #FFFFFF;
     margin-bottom: 2vw;
+}
+
+.other-link {
+    width: 100vw;
+    height: 85vw;
+    background: #FFFFFF;
+}
+
+.other-link > div {
+    width: 90vw;
+    height: 15vw;
+    padding: 3vw 5vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.other-link > div:last-of-type {
+    border: none;
+}
+
+.other-link > div > div {
+    float: left;
+}
+
+.other-link > div > div:nth-of-type(1) {
+    width: 20vw;
+    height: 15vw;
+}
+
+.other-link > div > div:nth-of-type(2) {
+    width: 65vw;
+    height: 15vw;
+}
+
+.other-link > div > div:nth-of-type(2) > div {
+    height: 7vw;
+}
+
+.other-link > div > div:nth-of-type(2) > div:nth-of-type(1) {
+    line-height: 8vw;
+    color: #263238;
+}
+
+.other-link > div > div:nth-of-type(2) > div:nth-of-type(2) {
+    color: #323232;
+}
+
+.other-link > div > div:nth-of-type(3) {
+    width: 5vw;
+    height: 15vw;
 }
 
 
