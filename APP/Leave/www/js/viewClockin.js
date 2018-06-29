@@ -291,11 +291,11 @@ $("#viewClockin").pagecontainer({
                 pageScrollHeight += 20;
             }
             var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight, 10);
-            //var left = parseInt((clientWidth - widthPopup), 10);
+            var left = parseInt((clientWidth - widthPopup - 7), 10);
 
             $(".ui-datebox-container").parent("div.ui-popup-active").css({
                 "top": top,
-                //"left": left
+                "left": left
             });
 
             $(".ui-datebox-container").css("opacity", "1");
@@ -308,21 +308,19 @@ $("#viewClockin").pagecontainer({
             $(".ui-datebox-container").removeClass('ui-overlay-shadow');
             $(".ui-datebox-container>div").remove();
             $(".ui-datebox-container > a:nth-of-type(1)").css({
-                'background-color': 'transparent',
+                'display': 'none'
+                /*'background-color': 'transparent',
                 'border-style': 'none',
-                'text-shadow':'none'
+                'text-shadow':'none'*/
             });
-            //$(".ui-controlgroup-controls > a:nth-of-type(1)").removeClass('ui-btn-icon-left'); -->找CSS內容
-            /*$(".ui-controlgroup-controls .ui-btn.ui-btn-a").css({
-                'border-style': 'none',
-                'background-color': '#ffffff',
-                'color':'#2A8ABD',
-                'font-family': 'Heiti TC'
-            });*/
-            //$(".ui-datebox-controls .ui-controlgroup-controls").addClass('btnArea');
-            /*$(".ui-datebox-controls .ui-controlgroup-controls").css({
-                'border-radius': '0'
-            });*/
+
+            $(".ui-datebox-flipcenter").css({
+                'width': '240px'
+            });
+
+            $(".ui-datebox-container").css({
+                'width': '270px'
+            });
         };
 
         function GetWorkName() {
