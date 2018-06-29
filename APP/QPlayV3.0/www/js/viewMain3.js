@@ -48,10 +48,6 @@ $("#viewMain3").pagecontainer({
             }
         });
 
-        $("#viewMain3").scroll(function () {
-
-        });
-
         $("#viewMain3").on("pageshow", function (event, ui) {
             //3. get reserve
             // for (var i in reserveAppList) {
@@ -65,23 +61,31 @@ $("#viewMain3").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        $('#widgetList').on('click', '.personal-res', function () {
+            $.mobile.changePage('#viewMyCalendar');
+        });
+
         $('#widgetList').on('click', '.applist-main-add', function () {
             $.mobile.changePage('#viewAppList');
         });
 
-        $("#faqTest").on("click", function () {
-            $.mobile.changePage('#viewFAQ');
+        $('.applist-link').on('click', function () {
+            $.mobile.changePage('#viewAppList');
         });
 
-        $("#calendarTest").on("click", function () {
-            $.mobile.changePage('#viewMyCalendar');
-        });
-
-        $("#newsTest").on("click", function () {
+        $('#widgetList').on('click', '.messageWidget', function () {
             $.mobile.changePage('#viewMessageList');
         });
 
-        $('#scrollTest').on('click', function () {
+        $('.message-link').on('click', function () {
+            $.mobile.changePage('#viewMessageList');
+        });
+
+        $('.faq-link').on('click', function () {
+            $.mobile.changePage('#viewFAQ');
+        });
+
+        $('.scroll-test-link').on('click', function () {
             $.mobile.changePage('#viewScrollTest');
         });
 
