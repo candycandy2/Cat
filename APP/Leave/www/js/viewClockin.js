@@ -314,10 +314,6 @@ $("#viewClockin").pagecontainer({
                 'text-shadow':'none'*/
             });
 
-            $(".ui-datebox-flipcenter").css({
-                'width': '240px'
-            });
-
             $(".ui-datebox-container").css({
                 'width': '270px'
             });
