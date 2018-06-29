@@ -1075,6 +1075,8 @@ html body .ui-group-theme-a a:visited {
     text-align: center;
 }
 
+/* override the css of jtsage-datebox */
+
 .ui-body-b {
     background-color: #33aaff;
     border-color: #178fe5;
@@ -1086,7 +1088,12 @@ html body .ui-group-theme-a a:visited {
     margin: .5em 0em;
 }
 
-.ui-controlgroup-controls .ui-btn.ui-btn-a {
+.ui-datebox-container {
+    padding-top: 20px;
+}
+
+.ui-controlgroup-controls .ui-btn.ui-btn-a,
+.ui-controlgroup-controls .ui-btn.ui-btn-a:hover {
     border-style: none;
     background-color: #ffffff;
     color: #2A8ABD;
@@ -1094,13 +1101,42 @@ html body .ui-group-theme-a a:visited {
     padding-left: 7%;
 }
 
-.ui-datebox-controls .ui-controlgroup-controls {
+/*.ui-datebox-controls .ui-controlgroup-controls {
      border-radius: 0;
-}
+}*/
 
 .ui-datebox-controls > div {
     border-top: solid #d6d6d6 1px;
     text-align: center !important;
+}
+
+.ui-btn-icon-left:after {
+    display: none;
+}
+
+.ui-btn-icon-notext:after {
+    background-color: transparent;
+}
+
+.ui-icon-delete:after {
+    background-image: url('../img/component/close_btn.png');
+}
+
+.ui-popup>.ui-btn-left {
+    left: 260px;
+    top: 4px;
+}
+
+.ui-btn-icon-notext:after {
+    margin-left: -9px;
+    margin-top: -9px;
+    width: 18px;
+    height: 18px;
+}
+
+.ui-btn-icon-notext {
+    width: 1.5em;
+    height: 1.5em;
 }
 
 /********************************************** mypanel *********************************************/
