@@ -12,4 +12,35 @@ class QP_User extends Model implements  Authenticatable
 {
     protected $table = 'qp_user';
     protected $primaryKey = 'row_id';
+
+     public function getAuthIdentifierName()
+    {
+
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->row_id;
+    }
+
+    public function getAuthPassword()
+    {
+
+    }
+
+    public function getRememberToken()
+    {
+
+    }
+
+    public function setRememberToken($value)
+    {
+
+    }
+
+    public function getRememberTokenName()
+    {
+
+    }
+
 }
