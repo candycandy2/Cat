@@ -176,16 +176,18 @@ function getMyReserve(key, secret) {
     };
 
     var __construct = function () {
-        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "");
+        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "",3600,"low");
     }();
 }
 
-function CustomAPIByKey(requestType, asyncType, key, secret, requestAction, successCallback, failCallback, queryData, queryStr) {
+function CustomAPIByKey(requestType, asyncType, key, secret, requestAction, successCallback, failCallback, queryData, queryStr, expiredTimeSeconds, priority) {
     //queryStr: start with [&], ex: &account=test&pwd=123
 
     failCallback = failCallback || null;
     queryData = queryData || null;
     queryStr = queryStr || "";
+    expiredTimeSeconds = expiredTimeSeconds || 60 * 60;
+    priority = priority || "high";
 
     if (loginData["versionName"].indexOf("Staging") !== -1) {
         key += "test";
@@ -195,8 +197,11 @@ function CustomAPIByKey(requestType, asyncType, key, secret, requestAction, succ
         key += "";
     }
 
+    var urlStr = serverURL + "/" + appApiPath + "/public/v101/custom/" + key + "/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr;
+    var keyItem = urlStr + queryData;
+
     function requestSuccess(data) {
-        checkTokenValid(data['ResultCode'], data['token_valid'], successCallback, data);
+        var checkTokenValidResult = checkTokenValid(data['ResultCode'], data['token_valid'], successCallback, data);
 
         var dataArr = [
             "Call API",
@@ -204,37 +209,65 @@ function CustomAPIByKey(requestType, asyncType, key, secret, requestAction, succ
             data['ResultCode']
         ];
         LogFile.createAndWriteFile(dataArr);
+
+        //Cache
+        if (checkTokenValidResult === true) {
+            // save data into localstorage
+            var contentInfo = [];
+            var nowTime = new Date();
+            contentInfo.push({ 'result': data, 'time': nowTime });
+            localStorage.setItem(keyItem, JSON.stringify(contentInfo));
+        }
+        //Cache...
     }
 
-    // review
+    // review by alan
     function requestError(data) {
-        errorHandler(data, requestAction);
-        if (failCallback) {
-            failCallback();
+        if (priority != "low") {
+            errorHandler(data, requestAction);
+            if (failCallback != null) {
+                failCallback();
+            }
         }
     }
 
-    var signatureTime = getSignatureByKey("getTime");
-    var signatureInBase64 = getSignatureByKey("getInBase64", signatureTime, secret);
+    if (localStorage.getItem(keyItem) === null) {
+    } else {
+        var storageData = JSON.parse(localStorage.getItem(keyItem));
+        if (checkDataExpired(storageData[0].time, expiredTimeSeconds, 'ss')) {
+            localStorage.removeItem(keyItem);
+        }
+    }
 
-    $.ajax({
-        type: requestType,
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'App-Key': key,
-            'Signature-Time': signatureTime,
-            'Signature': signatureInBase64,
-            'token': loginData.token
-        },
-        url: serverURL + "/" + appApiPath + "/public/v101/custom/" + key + "/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
-        dataType: "json",
-        data: queryData,
-        async: asyncType,
-        cache: false,
-        timeout: 30000,
-        success: requestSuccess,
-        error: requestError
-    });
+    if (localStorage.getItem(keyItem) === null) {
+
+        var signatureTime = getSignature("getTime");
+        var signatureInBase64 = getSignature("getInBase64", signatureTime);
+
+        $.ajax({
+            type: requestType,
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'App-Key': key,
+                'Signature-Time': signatureTime,
+                'Signature': signatureInBase64,
+                'token': loginData.token
+            },
+            url: urlStr,
+            dataType: "json",
+            data: queryData,
+            async: asyncType,
+            cache: false,
+            timeout: 30000,
+            success: requestSuccess,
+            error: requestError
+        });
+    } else {
+        var storageData = JSON.parse(localStorage.getItem(keyItem));
+        successCallback(storageData[0].result);
+    }
+
+    return keyItem;
 }
 
 function getSignatureByKey(action, signatureTime, secret) {
