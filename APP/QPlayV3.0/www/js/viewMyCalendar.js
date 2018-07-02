@@ -175,7 +175,7 @@ $("#viewMyCalendar").pagecontainer({
             this.failCallback = function (data) { };
 
             var __construct = function () {
-                CustomAPIByKey("POST", true, key, secret, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "");
+                CustomAPIByKey("POST", true, key, secret, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "",3600,"low");
                 //CustomAPIEx("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "");
             }();
         };
