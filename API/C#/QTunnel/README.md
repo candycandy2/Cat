@@ -29,12 +29,15 @@ QTunnel APIs, 在DMZ區提供介接的服務, 目前提供Login的介接
 1. Windos 2016 NT Server
 2. IIS Server
 3. GPG  https://gnupg.org/download
+4. .Net Framwork 4.0 and later
 
 For windows
 下載網址 : https://www.gpg4win.org/
 1. 安裝gpg4win-3.1.1.exe
 2. 執行gpg --import qlay_B40883DB_Secret.asc
 3. 可以用gpg —list-keys確認
+4. 第一次安裝, 請完成認證程序, 原理是要先有一個該機器的憑證,拿這個憑證去認證其他憑證, 譬如qplay
+這動作有UI可以完成程序(點選兩下qlay_B40883DB_Secret, 選擇cert按鈕)
 
 安裝步驟
 1. 建立QTunnel IIS目錄,目標 https://[IP]/QTunnel/QTunnel.asmx/Login
@@ -49,7 +52,27 @@ QTunnel/test/js/jquery-1.12.3.min.js
 <add key="serverPath" value="LDAP://10.82.12.61/" />
 3. 匯入qplay GPG public key
 gpg --import qlay_B40883DB_Secret.asc
+4. 複製SRC/SyncToFile/Job file/到可執行目錄(目前只能存取SQLServer)
+5. QPlay.Job.SyncGaiaUser.exe.config文件中需要自行修改DB的connectionString和FilePath和ViewName设定。
+FilePath      => Output folder
+ViewName => Database table or view name
+ClientSettingsProvider.ServiceUri => Database URI
 
+  <appSettings>
+        <add key="FilePath" value="E:\QTuunel\Sync" />
+        <add key="ViewName" value="Qp_User_Flower"/>  
+        <add key="ClientSettingsProvider.ServiceUri" value="" />
+  </appSettings>
+  
+6. [Option]加密步骤：(不加密也可以使用, 資安考量, 建議加密, 目前走.Net標準程序, 加解密都由.Net處理)
+6.1.打开cmd命令进到aspnet_regiis.exe目录下: cd C:\Windows\Microsoft.NET\Framework\v4.0.30319 
+6.2.命令窗口执行：C:\Windows\Microsoft.NET\Framework\v4.0.30319>aspnet_regiis.exe -pef "connectionStrings" "E:\Job3\QPlay.Job.SyncGaiaUser\QPlay.Job.SyncGaiaUser"
+说明.-pef 和-pdf  参数是对指定的物理目录里的Web.config文件的connectionStrings节点进行加密和解密，需要事先将QPlay.Job.SyncGaiaUser.exe.config文件改名为Web.config，
+加密后的文件名再改回QPlay.Job.SyncGaiaUser.exe.config。
+7. 建立排程, 每日早上五點執行一次
+測試方式是會產生
+http://[ip]/QTunnel/Sync/[YYYYMMDD].xls.gpg
+8. IIS文件类型的问题，在IIS设定新增MIME types :.gpg
 ```
 
 ----

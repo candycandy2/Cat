@@ -112,6 +112,7 @@
     /* font-size: 3.349vw !important; */
     font-size: 3vw;
     font-family: "Arial", "微軟中黑體";
+    margin-bottom: 2vw;
 }
 
 .reserve-str {
@@ -120,6 +121,10 @@
     color: #009688;
     font-size: 3vw;
     font-family: "Arial", "微軟中黑體";
+}
+
+.hidden-str {
+    display: none;
 }
 
 .td-bottom-border {

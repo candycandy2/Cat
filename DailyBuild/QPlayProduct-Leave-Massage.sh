@@ -26,7 +26,7 @@ gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env test
 gulp jenkinsdefault --env test
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="9ce8a6ef-6886-4b98-b231-dbe8bdaed850" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="72df078b-2aee-4fa5-b845-95ddeca044c2" --packageType="enterprise"
 
 pwd
 cd ../QPlayProduct-Leave-Massage/Production/Leave
@@ -46,7 +46,7 @@ gulp config --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall
 gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="7c735ea8-86d9-4285-a8e8-08c520a3433c" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="62509b12-5538-4b46-89e6-392da17f90fe" --packageType="enterprise"
 
 
 dailyver=$(($BUILD_NUMBER+0))
