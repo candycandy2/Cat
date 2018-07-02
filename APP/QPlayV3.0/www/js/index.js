@@ -33,12 +33,12 @@ var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
 
 //viewMyCalendar
 var viewCalendarInitial = true, reserveCalendar = null, reserveList = [], reserveDirty = false;
-var reserveAppList = [
-    { app: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
-    { app: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
-    { app: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
-    { app: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
-];
+// var reserveAppList = [
+//     { app: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
+//     { app: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
+//     { app: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
+//     { app: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
+// ];
 var leaveAppData = {
     key: 'appleave',
     secretKey: '86883911af025422b626131ff932a4b5'

@@ -1101,10 +1101,6 @@ html body .ui-group-theme-a a:visited {
     padding-left: 7%;
 }
 
-/*.ui-datebox-controls .ui-controlgroup-controls {
-     border-radius: 0;
-}*/
-
 .ui-datebox-controls > div {
     border-top: solid #d6d6d6 1px;
     text-align: center !important;
@@ -1118,26 +1114,40 @@ html body .ui-group-theme-a a:visited {
     background-color: transparent;
 }
 
-.ui-icon-delete:after {
-    background-image: url('../img/component/close_btn.png');
-}
-
 .ui-popup>.ui-btn-left {
     left: 260px;
     top: 4px;
-}
-
-.ui-btn-icon-notext:after {
-    margin-left: -9px;
-    margin-top: -9px;
-    width: 18px;
-    height: 18px;
 }
 
 .ui-btn-icon-notext {
     width: 1.5em;
     height: 1.5em;
 }
+
+li.ui-body-a {
+    background-color: #f5f5f5 !important;
+    /*border: 1px solid #ddd;*/
+}
+
+.ui-datebox-flipcenter {
+    width: 240px !important;
+}
+
+/*.ui-datebox-controls .ui-controlgroup-controls {
+     border-radius: 0;
+}*/
+
+/*
+.ui-icon-delete:after {
+    background-image: url('../img/component/close_btn.png');
+}*/
+
+/*.ui-btn-icon-notext:after {
+    margin-left: -9px;
+    margin-top: -9px;
+    width: 18px;
+    height: 18px;
+}*/
 
 /********************************************** mypanel *********************************************/
 
