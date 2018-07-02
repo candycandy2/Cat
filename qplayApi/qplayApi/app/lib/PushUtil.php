@@ -302,4 +302,84 @@ class PushUtil
         }
         return $result;
     }
+
+    /**
+     * get device tags and alias from jpush api
+     * @param  string $registrationId device uuid
+     * @param  string $appKey         app key
+     * @return json
+     */
+    public static function getDeviceInfoWithJPushWebAPI($registrationId, $appKey=null) {
+        $result = array();
+        $result["result"] = true;
+        $response = null;
+        if(is_null($appKey)){
+            $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        }else{
+            $appName = CommonUtil::getProjectName($appKey);
+            $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
+            $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
+            $client = new JPush($appId, $masterSecret);
+        }
+        try {
+            $device = $client->device();
+            $result["info"] = $device->getDevices($registrationId);
+        } catch (APIConnectionException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result"] = false;
+            $result["info"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result"] = false;
+            $result["info"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result"] = false;
+            $result["info"] = "Exception occurred";
+        }
+        return $result;
+    }
+
+    /**
+     * remove tags from jpush api
+     * @param string        $tag            tag name ,accept string and array
+     * @param string       $registrationId device uuid
+     * @param string       $appKey         app key
+     */
+    public static function RemoveTagsWithJPushWebAPI($tag, $registrationId, $appKey=null) {
+        $result = array();
+        $result["result"] = true;
+        $response = null;
+        if(is_null($appKey)){
+            $client = new JPush(Config::get('app.App_id'), Config::get('app.Secret_key'));
+        }else{
+            $appName = CommonUtil::getProjectName($appKey);
+            $appId =  Config::get('jpushkey.auth.'.$appName.'.app_id');
+            $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
+            $client = new JPush($appId, $masterSecret);
+        }
+        try {
+            $device = $client->device();
+            $device->removeDevicesFromTag( $tag, $registrationId);
+        } catch (APIConnectionException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIConnection Exception occurred";
+        }catch (APIRequestException $e) {
+            $result["result"] = false;
+            $result["info"] = "APIRequest Exception occurred";
+        }catch (JPushException $e) {
+            $result["result"] = false;
+            $result["info"] = "JPush Exception occurred";
+        }catch (\ErrorException $e) {
+            $result["result"] = false;
+            $result["info"] = "Error Exception occurred";
+        }catch (\Exception $e){
+            $result["result"] = false;
+            $result["info"] = "Exception occurred";
+        }
+        return $result;
+    }
 }
