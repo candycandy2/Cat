@@ -44,7 +44,14 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
     Route::any('/addDownloadHit', 'qplayController@addDownloadHit');
     Route::get('/getVersionLog', 'appVersionController@getVersionLog');
     Route::post('/addAppEvaluation', 'appEvaluationController@addAppEvaluation');
+    
 });
+
+//syncUser
+Route::get('/v101/qplay/syncUserJob', 'syncUserController@syncUserJob');
+
+//sendMail
+Route::any('/v101/qplay/sendMail', 'mailController@sendMail');
 
 //Smart Factory
 Route::any('/v101/qplay/isLogin', 'qplayController@isLogin');
