@@ -35,7 +35,7 @@ gulp config --env dev --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env dev
 gulp jenkinsdefault --env dev
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="4489068a-0bae-4593-b999-f340c2659339" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="1151f7dd-a1e2-4db4-acd5-ba130c86d9c6" --packageType="enterprise"
 
 
 # ------ make directory for apk and ipa ------
