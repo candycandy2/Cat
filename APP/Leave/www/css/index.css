@@ -239,7 +239,8 @@ html body .ui-group-theme-a a:visited {
 }
 
 #searchBar,
-#searchAgent {
+#searchAgent,
+#searchDeptAgent {
     width: 75VW;
     border-width: 1px;
     border-style: solid;
@@ -260,17 +261,20 @@ html body .ui-group-theme-a a:visited {
 }
 
 #agent-popup-option-popup .header.typeB,
-#leave-agent-popup-option-popup .header.typeB {
+#leave-agent-popup-option-popup .header.typeB,
+#dept-agent-popup-option-popup .header.typeB {
     height: 18.8VW;
 }
 
 #agent-popup-option-popup .header .title,
-#leave-agent-popup-option-popup .header .title {
+#leave-agent-popup-option-popup .header .title,
+#dept-agent-popup-option-popup .header .title {
     width: 75VW;
 }
 
 #agent-popup-option-popup ul,
-#leave-agent-popup-option-popup ul {
+#leave-agent-popup-option-popup ul,
+#dept-agent-popup-option-popup ul {
     margin-top: 0VW;
     /* width: 308px;
 	height: 200px;
@@ -280,13 +284,15 @@ html body .ui-group-theme-a a:visited {
 #agent-popup-option-popup ul::-webkit-scrollbar,
 #leave-agent-popup-option-popup ul::-webkit-scrollbar,
 #categroy-popup-option-popup ul::-webkit-scrollbar,
-#leave-popup-option-popup ul::-webkit-scrollbar {
+#leave-popup-option-popup ul::-webkit-scrollbar,
+#dept-agent-popup-option-popup ul::-webkit-scrollbar {
     width: 3px;
     margin: 0px;
 }
 
 #agent-popup-option-popup ul::-webkit-scrollbar-track,
-#leave-agent-popup-option-popup ul::-webkit-scrollbar-track {
+#leave-agent-popup-option-popup ul::-webkit-scrollbar-track,
+#dept-agent-popup-option-popup ul::-webkit-scrollbar-track {
     /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
     -webkit-border-radius: 10px;
     border-radius: 10px;
@@ -296,7 +302,8 @@ html body .ui-group-theme-a a:visited {
 #agent-popup-option-popup ul::-webkit-scrollbar-thumb,
 #leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb,
 #categroy-popup-option-popup ul::-webkit-scrollbar-thumb,
-#leave-popup-option-popup ul::-webkit-scrollbar-thumb {
+#leave-popup-option-popup ul::-webkit-scrollbar-thumb,
+#dept-agent-popup-option-popup ul::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 15px;
     background: rgba(0, 0, 0, 0.8);
@@ -306,7 +313,8 @@ html body .ui-group-theme-a a:visited {
 #agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
 #leave-agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
 #categroy-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
-#leave-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
+#leave-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive,
+#dept-agent-popup-option-popup ul::-webkit-scrollbar-thumb:window-inactive {
     background: rgba(0, 0, 0, 0.4);
 }
 
@@ -358,13 +366,17 @@ html body .ui-group-theme-a a:visited {
 
 .leftDaysNotEnough>.ui-content,
 .applyLeaveFail>.ui-content,
-.agentNotExist>.ui-content {
+.agentNotExist>.ui-content,
+.agentDetailNotExist>.ui-content,
+.agentDeptNotExist>.ui-content {
     padding: 0 !important;
 }
 
 .leftDaysNotEnough .ui-content>.header,
 .applyLeaveFail .ui-content>.header,
-.agentNotExist>.ui-content>.header {
+.agentNotExist>.ui-content>.header,
+.agentDetailNotExist>.ui-content>.header,
+.agentDeptNotExist>.ui-content>.header {
     margin-top: 10%;
 }
 
@@ -488,7 +500,8 @@ html body .ui-group-theme-a a:visited {
 }
 
 .date-component input[type="datetime-local"],
-.date-component input[type="date"] {
+.date-component input[type="date"],
+.date-component input[type="text"] {
     opacity: 0 !important;
 }
 
@@ -592,7 +605,10 @@ html body .ui-group-theme-a a:visited {
 .basedayFirst>.ui-content,
 .startdayFirst>.ui-content,
 .confirmSend>.ui-content,
-.agentNotData>.ui-content {
+.agentNotData>.ui-content,
+.deptFirst>.ui-content,
+.confirmClockin>.ui-content,
+.errMsgByClockin>.ui-content {
     padding: 0 !important;
 }
 
@@ -606,7 +622,10 @@ html body .ui-group-theme-a a:visited {
 .categroyFirst>.ui-content>.header,
 .basedayFirst>.ui-content>.header,
 .startdayFirst>.ui-content>.header,
-.confirmSend>.ui-content>.header {
+.confirmSend>.ui-content>.header,
+.deptFirst>.ui-content>.header,
+.confirmClockin>.ui-content>.header,
+.errMsgByClockin>.ui-content>.header {
     margin-top: 12.5%;
 }
 
@@ -931,8 +950,6 @@ html body .ui-group-theme-a a:visited {
     display: none;
 }
 
-
-
 /**************************************** viewHolidayCalendar ***************************************/
 
 #viewHolidayCalendar .infoList ul>li {
@@ -953,6 +970,184 @@ html body .ui-group-theme-a a:visited {
     margin-right: 1.5VW;
 }
 
+/**************************************** viewAgentLeave ********************************************/
+
+.agent-container {
+    width: 93.6vw;
+    margin-left: 3.71vw;
+    margin-top: 1.01vw;
+}
+
+#emptyAgentForm {
+    margin-top: 4vw;
+}
+
+.beingAgent {
+    padding: 4.3VW 0VW 3.71VW 0VW;
+    /*border-bottom-color: #d6d6d6;*/
+    margin-bottom: 3.99vw;
+    background-color: #d6d6d6;
+    /*transition: 1000ms ease;*/
+}
+
+.agentName {
+    text-align: center;
+    border-style: none;
+}
+
+.agentEnd {
+    color: #2d89bc;
+    margin-right: 3.71vw;
+    margin-top: -5vw;
+    text-align: right;   
+}
+
+/**************************************** viewClockin ********************************************/
+
+#workDate, .apply-reason {
+    color: #0f0f0f;
+}
+
+.apply-work-name {
+    height: 23.14vw;
+    color: #0f0f0f;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+#workDate>div:nth-of-type(2),
+#clockinDate>div:nth-of-type(2),
+#clockinTime>div:nth-of-type(2) {
+    margin-top: 1.16vw;
+}
+
+.apply-work-type>div:nth-of-type(2),
+.apply-reason>div:nth-of-type(2) {
+    margin-top: -1.16vw;
+}
+
+.apply-work-name>div:nth-of-type(2) {
+    margin-top: 2.14vw;
+}
+
+#clockinTime {
+    height: 12.81vw;
+}
+
+#clockinDate, .apply-work-type {
+    height: 14vw;
+    color: #0f0f0f;
+}
+
+#clockinTime {
+    color: #0f0f0f;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.datepicker-position {
+    margin: -45% 0 0 -35% !important;
+}
+
+#backClockin {
+    width: 4.934VW;
+    display: none;
+}
+
+#otherReason {
+    display: none;
+}
+
+#otherReasonArea {
+    display: none;
+}
+
+.date-component input[type="date"]>a,
+.date-component input[type="text"]>a {
+    height: 0;
+}
+
+#confirmClockin {
+    min-height: 0vw;
+}
+
+#confirmClockin .footer{
+    color: #1678E5;
+    font-size: 5.02vw;
+    text-align: center;
+}
+
+/* override the css of jtsage-datebox */
+
+.ui-body-b {
+    background-color: #33aaff;
+    border-color: #178fe5;
+    color: #fff;
+    text-shadow: none;
+}
+
+.ui-popup>span {
+    margin: .5em 0em;
+}
+
+.ui-datebox-container {
+    padding-top: 20px;
+}
+
+.ui-controlgroup-controls .ui-btn.ui-btn-a,
+.ui-controlgroup-controls .ui-btn.ui-btn-a:hover {
+    border-style: none;
+    background-color: #ffffff;
+    color: #2A8ABD;
+    font-family: Heiti TC;
+    padding-left: 7%;
+}
+
+.ui-datebox-controls > div {
+    border-top: solid #d6d6d6 1px;
+    text-align: center !important;
+}
+
+.ui-btn-icon-left:after {
+    display: none;
+}
+
+.ui-btn-icon-notext:after {
+    background-color: transparent;
+}
+
+.ui-popup>.ui-btn-left {
+    left: 260px;
+    top: 4px;
+}
+
+.ui-btn-icon-notext {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+li.ui-body-a {
+    background-color: #f5f5f5 !important;
+    /*border: 1px solid #ddd;*/
+}
+
+.ui-datebox-flipcenter {
+    width: 240px !important;
+}
+
+/*.ui-datebox-controls .ui-controlgroup-controls {
+     border-radius: 0;
+}*/
+
+/*
+.ui-icon-delete:after {
+    background-image: url('../img/component/close_btn.png');
+}*/
+
+/*.ui-btn-icon-notext:after {
+    margin-left: -9px;
+    margin-top: -9px;
+    width: 18px;
+    height: 18px;
+}*/
 
 /********************************************** mypanel *********************************************/
 
@@ -970,11 +1165,11 @@ html body .ui-group-theme-a a:visited {
     border-bottom-width: 0.1VH;
 }
 
-#mypanel #mypanelviewHolidayCalendar {
+/*#mypanel #mypanelviewHolidayCalendar {
     border-bottom: solid;
     border-bottom-color: #666;
     border-bottom-width: 0.1VH;
-}
+}*/
 
 #mypanel div.panel-content:hover {
     background-color: #503f81;
@@ -1007,3 +1202,4 @@ html body .ui-group-theme-a a:visited {
     margin: 0;
     padding: 0;
 }
+

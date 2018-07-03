@@ -1,0 +1,16 @@
+2018-06-19 09:33:04,728 [1] INFO  Logger - Begin Connect Gaia DB
+2018-06-19 09:33:04,902 [1] INFO  Logger - End Connect Gaia DB
+2018-06-19 09:33:04,902 [1] INFO  Logger - Begin Select  Qp_User_Flower
+2018-06-19 09:33:20,592 [1] INFO  Logger - ExcelFile:Generate excel failed
+2018-06-19 09:33:20,592 [1] ERROR Logger - 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的错误。未找到或无法访问服务器。请验证实例名称是否正确并且 SQL Server 已配置为允许远程连接。 (provider: Named Pipes Provider, error: 40 - 无法打开到 SQL Server 的连接)
+2018-06-19 09:33:20,607 [1] INFO  Logger - Begin Exists Gaia GPGFile
+2018-06-19 09:33:20,607 [1] INFO  Logger - End Exists Gaia GPGFile
+2018-06-19 09:33:21,967 [1] INFO  Logger - GPG:encryption succeeded
+2018-06-19 15:15:53,671 [1] INFO  Logger - Begin Connect Gaia DB
+2018-06-19 15:15:54,963 [1] INFO  Logger - End Connect Gaia DB
+2018-06-19 15:15:55,117 [1] INFO  Logger - Begin Select  Qp_User_Flower
+2018-06-19 15:16:11,312 [1] INFO  Logger - ExcelFile:Generate excel failed
+2018-06-19 15:16:11,312 [1] ERROR Logger - 在与 SQL Server 建立连接时出现与网络相关的或特定于实例的错误。未找到或无法访问服务器。请验证实例名称是否正确并且 SQL Server 已配置为允许远程连接。 (provider: Named Pipes Provider, error: 40 - 无法打开到 SQL Server 的连接)
+2018-06-19 15:16:11,327 [1] INFO  Logger - Begin Exists Gaia GPGFile
+2018-06-19 15:16:11,327 [1] INFO  Logger - End Exists Gaia GPGFile
+2018-06-19 15:16:13,065 [1] INFO  Logger - GPG:encryption succeeded

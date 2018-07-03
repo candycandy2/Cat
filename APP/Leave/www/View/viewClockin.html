@@ -1,0 +1,275 @@
+<div data-role="page" id="viewClockin">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
+            <img src="img/menu.png" class="leaveMenu">
+            <img src="img/nav_back.png" id="backClockin">
+        </a>
+        <div class="header-style">
+            <div class="ui-title">
+                <!-- 補刷卡申請 -->
+                <span class="langStr" data-id="str_189"></span>
+            </div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main">
+        <div class="apply-container">
+            <!-- applyDate -->
+            <div class="apply-date font-style12">
+                <!--申請日期：-->
+                <span class="langStr" data-id="str_080"></span>
+                <span id="applyClockinDay"></span>
+            </div>
+            <!-- work date -->
+            <div id="workDate">
+                <div class="font-style11">
+                    <!-- 出勤日期 -->
+                    <span class="langStr" data-id="str_190"></span>
+                </div>
+                <div id="selectWorkday" class="font-style3">
+                    <!-- 選擇日期 -->
+                    <span id="chooseWorkday"></span>
+                    <img src="img/dropdown.png" class="apply-select-img">
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div1"></div>
+            <!-- work name -->
+            <div class="apply-work-name">
+                <div class="font-style11">
+                    <!-- 班別名稱 -->
+                    <span class="langStr" data-id="str_191"></span>
+                </div>
+                <div>
+                    <textarea data-role="none" id="workName" class="reason-textarea"></textarea>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div1"></div>
+            <!-- work type -->
+            <div class="apply-work-type">
+                <div class="font-style11">
+                    <!-- 刷卡類型 -->
+                    <span class="langStr" data-id="str_192"></span>
+                </div>
+                <!-- 類型 dropdownlist -->
+                <div data-role="none" id="workType" class="font-style3"></div>
+            </div>
+            <!-- clockin date -->
+            <div id="clockinDate">
+                <div class="font-style11">
+                    <!-- 刷卡日期 -->
+                    <span class="langStr" data-id="str_193"></span>
+                </div>
+                <div id="selectClockinday" class="font-style3">
+                    <!-- 選擇日期 -->
+                    <span id="chooseClockinday"></span>
+                    <img src="img/dropdown.png" class="apply-select-img">
+                </div>
+            </div>
+            <!-- clockin time -->
+            <div id="clockinTime">
+                <div class="font-style11">
+                    <!-- 刷卡時間 -->
+                    <span class="langStr" data-id="str_194"></span>
+                </div>
+                <div id="selectClockintime" class="font-style3">
+                    <!-- 選擇時間 -->
+                    <span id="chooseClockintime"></span>
+                    <img src="img/dropdown.png" class="apply-select-img">
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div1"></div>
+            <!-- reason -->
+            <div class="apply-reason">
+                <div class="font-style11">
+                    <!-- 未刷卡原因 -->
+                    <span class="langStr" data-id="str_195"></span>
+                </div>
+                <!-- dropdownlist -->
+                <div data-role="none" id="clockinReason" class="font-style3"></div>
+                <div>
+                    <textarea data-role="none" id="otherReason" class="reason-textarea"></textarea>
+                </div>
+            </div>
+            <!-- <input type="text" id="timepicker" name="timepicker" class="timepicker">-->
+
+            <!-- date component -->
+            <div class="date-component">
+                <input data-role="none" id="newWorkDate" readonly="readonly" class="date-time-component">
+                <input data-role="none" id="newClockinDate" readonly="readonly" class="date-time-component">
+                <input data-role="none" id="newClockinTime" readonly="readonly" class="date-time-component">
+                <!--<input type="text" name="timepicker" class="timepicker" id="newClockinTime">-->
+                <input data-role='datebox' id="timepicker" readonly="readonly" type="text" data-options='{"mode": "timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox", "closeCallback": "setDoneTime"}' name="timepicker" class="date-time-component">
+            </div>
+            <!--<div style="display: none;">
+                <input class="form-control" id="doneTime" type="text" data-role="datebox"
+                data-options='{"mode":"timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox",
+                "closeCallback": "setDoneDateTime"}' readonly="readonly">
+            </div>-->
+            <div class="apply-empty-div2"></div>
+            <!-- preview btn -->
+            <div class="apply-preview-btn">
+                <div id="previewClockinBtn">
+                    <!-- 預覽送簽 -->
+                    <span class="langStr" data-id="str_091"></span>
+                </div>
+            </div>
+            <div class="apply-preview-remove">
+                <div id="emptyClockinForm">
+                    <img src="img/btn_cancel.png">&nbsp;
+                    <!-- 清除 -->
+                    <span class="langStr" data-id="str_129"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- preview -->
+        <div class="apply-preview">
+            <div class="preview-apply-date font-style12">
+                <!-- 申請日期： -->
+                <span class="langStr" data-id="str_080"></span>
+                <span id="previewWorkDay"></span>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 出勤日期 -->
+                    <span class="langStr" data-id="str_190"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="previewWorkday"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 班別名稱 -->
+                    <span class="langStr" data-id="str_191"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="previewWorkName"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 刷卡類型 -->
+                    <span class="langStr" data-id="str_192"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="previewWorkType"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 刷卡日期與時間 -->
+                    <span class="langStr" data-id="str_197"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="previewClockinDay"></span>
+                    <span id="previewClockinTime"></span>
+                </div>
+            </div>
+            <!--<div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11"> -->
+                    <!-- 刷卡時間 -->
+                    <!--<span class="langStr" data-id="str_194"></span>
+                </div>
+                <div class="font-style3 overflow-hidden">
+                    <span id="previewClockinTime"></span>
+                </div>
+            </div>-->
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 未刷卡原因 -->
+                    <span class="langStr" data-id="str_195"></span>
+                </div>
+                <div class="font-style3 overflow-hidden">
+                    <span id="previewReason"></span>
+                </div>
+            </div>
+            <div id="otherReasonArea" class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 其他原因 -->
+                    <span class="langStr" data-id="str_196"></span>
+                </div>
+                <div class="font-style3 overflow-hidden">
+                    <span id="previewOtherReason"></span>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div2"></div>
+            <!-- apply btn -->
+            <div class="apply-submit-btn">
+                <div id="confirmBtn">
+                    <!-- 確認送簽 -->
+                    <span class="langStr" data-id="str_180"></span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- error msg 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup errMsgByClockin" for="errMsgByClockin" id="errMsgByClockin">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main" style="margin-left:5.36vw;margin-right:5.36vw;">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm send -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmClockin" for="confirmClockin" id="confirmClockin">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text font-style3">
+                        <!-- 確定送簽？ -->
+                        <span class="langStr" data-id="str_174"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmSendClockin">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

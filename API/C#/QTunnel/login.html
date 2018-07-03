@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+    <style>
+        .form-test > div {
+            width: 300px;
+            height: 60px;
+        }
+
+        #prompt {
+            color: red;
+        }
+    </style>
+
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="form-test">
+        <div>
+            <label>域名：</label>
+            <input type="text" id="ntDomain">
+        </div>
+        <div>
+            <label>用户：</label>
+            <input type="text" id="ntName">
+        </div>
+        <div>
+            <label>密码：</label>
+            <input type="password" id="ntPwd">
+        </div>
+        <div>
+            <button id="subForm">submit</button>&nbsp;&nbsp;
+            <span id="prompt"></span>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $("#subForm").on("click", function () {
+            $("#prompt").text('');
+            var ntDomain = $("#ntDomain").val();
+            var ntName = $("#ntName").val();
+            var ntPwd = $("#ntPwd").val();
+
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Signature-Time': Math.round(new Date().getTime() / 1000),
+                    'loginid': ntName,
+                    'password': ntPwd,
+                    'domain': ntDomain
+                },
+                url: 'http://10.85.129.62:8001/QTunnel/QTunnel.asmx/Login',
+                dataType: "json",
+                async: true,
+                cache: false,
+                timeout: 30000,
+                success: function (data) {
+                    //console.log(data);
+                    $("#prompt").text(JSON.parse(data.d).Message);
+                },
+                error: function (msg) {
+                    console.log(msg);
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>

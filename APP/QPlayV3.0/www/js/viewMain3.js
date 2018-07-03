@@ -1,76 +1,58 @@
 $("#viewMain3").pagecontainer({
     create: function (event, ui) {
-        var widgetList = [
-            { 'id': 1, 'name': 'Weather', 'enabled': true },
-            { 'id': 2, 'name': 'Calendar', 'enabled': true },
-            { 'id': 3, 'name': 'APPList', 'enabled': true }
-        ];
 
-        /********************************** page event *************************************/
-        $("#viewMain3").one("pagebeforeshow", function (event, ui) {
-            // var script = document.createElement("script");
-            // script.type = "text/javascript";
-            // script.src = "plugin/applist/js/applist.js";
-            // document.head.appendChild(script);
-
-            // var link = document.createElement("link");
-            // link.rel = "stylesheet";
-            // link.type = "text/css";
-            // link.href = "plugin/applist/css/applist.css";
-            // document.head.appendChild(link);
-
-            // if (localStorage.getItem("widgetList") == null) {
-            //     var widgetObj = {
-            //         data: widgetArray,
-            //         time: widgetUpdate
-            //     }
-            //     localStorage.setItem("widgetList", JSON.stringify(widgetObj));
-            // } else {
-            //     var time = JSON.parse(localStorage.getItem("widgetList")).time;
-            //     if(time != widgetUpdate) {
-            //         var widgetObj = {
-            //             data: widgetArray,
-            //             time: widgetUpdate
-            //         }
-            //         localStorage.setItem("widgetList", JSON.stringify(widgetObj));
-            //     }
-            // }
-            // widgetList =  JSON.parse(localStorage.getItem("widgetList")).data;
-
-            for (var i in widgetList) {
-                if (widgetList[i].enabled == true) {
-                    //1. widget
-                    var widgetName = widgetList[i].name + "Widget";
-
-                    //2. html
-                    var content = '<div id="' + widgetName + '"></div>';
-                    $('#viewMain3 .page-main').append(content);
-
-                    //3. parameter
-                    var parmData = {
-                        container: widgetName,
-                        appKey: appKey,
-                        token: loginData.token,
-                        pushToken: loginData.pushToken,
-                        serverURL: serverURL,
-                        appApiPath: appApiPath,
-                        browserLanguage: browserLanguage,
-                        uuid: loginData.uuid
-                    };
-
-                    //4. new Object
-                    eval('var obj = new ' + widgetName + '(' + JSON.stringify(parmData) + ');obj.show();');
-                }
+        var loadAndRunScript = function (index, enabled) {
+            //1. 条件判断
+            if (index >= widgetList.length) {
+                return;
+            } else if (!enabled) {
+                loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
             }
 
-        });
+            //2. widget
+            var widgetItem = widgetList[index].name + "Widget";
 
-        $("#viewMain3").scroll(function () {
+            //3. container
+            var contentItem = $('<div class="' + widgetItem + '"></div>');
+            $('#widgetList').append(contentItem);
 
+            //4. localStorage
+            sessionStorage.setItem('widgetItem', widgetItem);
+
+            //5. load js
+            $.getScript("http://qplaydev.benq.com/widgetDemo/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
+                .done(function (script, textStatus) {
+                    loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
+                })
+                .fail(function (jqxhr, settings, exception) {
+                    console.log("Triggered ajaxError handler.");
+                });
+        };
+
+
+        /********************************** page event ***********************************/
+        $("#viewMain3").on("pagebeforeshow", function (event, ui) {
+            if (viewMainInitial) {
+                //1. load widget
+                loadAndRunScript(0, widgetList[0].enabled);
+
+                //2. get message
+                if(!callGetMessageList && loginData["msgDateFrom"] === null) {
+                    msgDateFromType = 'month';
+                    var clientTimestamp = getTimestamp();
+                    loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
+                    var messageList = new QueryMessageList();
+                }
+
+                viewMainInitial = false;
+            }
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-
+            //3. get reserve
+            // for (var i in reserveAppList) {
+            //     getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
+            // }
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
@@ -79,7 +61,33 @@ $("#viewMain3").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        $('#widgetList').on('click', '.personal-res', function () {
+            $.mobile.changePage('#viewMyCalendar');
+        });
 
+        $('#widgetList').on('click', '.applist-main-add', function () {
+            $.mobile.changePage('#viewAppList');
+        });
+
+        $('.applist-link').on('click', function () {
+            $.mobile.changePage('#viewAppList');
+        });
+
+        $('#widgetList').on('click', '.messageWidget', function () {
+            $.mobile.changePage('#viewMessageList');
+        });
+
+        $('.message-link').on('click', function () {
+            $.mobile.changePage('#viewMessageList');
+        });
+
+        $('.faq-link').on('click', function () {
+            $.mobile.changePage('#viewFAQ');
+        });
+
+        $('.scroll-test-link').on('click', function () {
+            $.mobile.changePage('#viewScrollTest');
+        });
 
     }
 });

@@ -7,10 +7,12 @@ use MicrosoftAzure\Storage\Common\Internal\StorageServiceSettings;
 use MicrosoftAzure\Storage\Common\Internal\Resources;
 use MicrosoftAzure\Storage\Blob\BlobSharedAccessSignatureHelper;
 use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
+use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
+use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
 use Config;
 
 class AzureBlobService
-{  
+{
     const RESOURCE_TYPE_CONTAINER = 'container';
     const RESOURCE_TYPE_BLOB = 'blob';
     /** @var string */
@@ -26,24 +28,26 @@ class AzureBlobService
     public function __construct()
     {
         $this->storageConnectionString = \Config('app.azure_storage');
-        $settings = StorageServiceSettings::createFromConnectionString($this->storageConnectionString );
+        $settings = StorageServiceSettings::createFromConnectionString($this->storageConnectionString);
         $this->blobClient = BlobRestProxy::createBlobService($this->storageConnectionString);
         $this->accountName = $settings->getName();
         $this->accountKey = $settings->getKey();
     }
 
-    public function getAccountName(){
+    public function getAccountName()
+    {
         return $this->accountName;
     }
 
     /**
      * 建立 Container
-     * @param string $containerName
+     * @param string                               $containerName
+     * @param Models\CreateContainerOptions        $options
      * @return bool
      */
-    public function createContainer(string $containerName)
+    public function createContainer(string $containerName, $options = null)
     {
-        $this->blobClient->createContainer($containerName);
+        $this->blobClient->createContainer($containerName, $options);
     }
 
     /**
@@ -51,11 +55,11 @@ class AzureBlobService
      * @param string $containerName 容器名稱
      * @param string $blobName blob名稱
      * @param string $cotent 檔案內容
-     * @return bool
+     * @return Models\PutBlobResult
      */
     public function createBlockBlob(string $containerName, $blobName, $content)
     {
-        $this->blobClient->createBlockBlob($containerName, $blobName, $content);
+        return $this->blobClient->createBlockBlob($containerName, $blobName, $content);
     }
 
     /**
@@ -67,16 +71,16 @@ class AzureBlobService
      * @param  string $signedStart       tokern開始時間
      * @return string
      */
-    public function generateBlobServiceSharedAccessSignatureToken($type, $resourceName, $signedPermissions, $signedExpiry, $signedStart){
-        
+    public function generateBlobServiceSharedAccessSignatureToken($type, $resourceName, $signedPermissions, $signedExpiry, $signedStart)
+    {
         $helper = new BlobSharedAccessSignatureHelper(
             $this->accountName,
             $this->accountKey
         );
 
         $resourceType =  Resources::RESOURCE_TYPE_CONTAINER;
-        if($type == 'blob'){
-             $resourceType =  Resources::RESOURCE_TYPE_BLOB;
+        if ($type == 'blob') {
+            $resourceType =  Resources::RESOURCE_TYPE_BLOB;
         }
         
         $sastoken = $helper->generateBlobServiceSharedAccessSignatureToken(
@@ -96,25 +100,24 @@ class AzureBlobService
      * @param  syring $prefix        檔名前墜，作為資料夾
      * @return mixed                 conatiner不存在，回應null
      */
-    public function getFullBlobUrl($containerName, $prefix=null){
+    public function getFullBlobUrl($containerName, $prefix=null)
+    {
         $return = [];
         try {
-            
             $listBlobsOptions = new ListBlobsOptions();
-            if(!is_null($prefix)){
+            if (!is_null($prefix)) {
                 $listBlobsOptions->setPrefix($prefix);
             }
             $blob_list = $this->blobClient->listBlobs($containerName, $listBlobsOptions);
             $blobs = $blob_list->getBlobs();
-            foreach($blobs as $blob)
-            {
-              $return[$blob->getName()]=$blob->getUrl();
+            foreach ($blobs as $blob) {
+                $return[$blob->getName()]=$blob->getUrl();
             }
             return $return;
-        }catch(ServiceException $e){
+        } catch (ServiceException $e) {
             // Code ContainerNotFound (404) means the container does not exist.
             return null;
-        }catch(Exceptions $e){
+        } catch (Exceptions $e) {
             throw $e;
         }
     }
@@ -126,7 +129,8 @@ class AzureBlobService
      * @param  string $sas           sastoken
      * @return string
      */
-    public function getFullBlobUrlWithSAS($containerName, $blobName, $sas){
+    public function getFullBlobUrlWithSAS($containerName, $blobName, $sas)
+    {
         $connectionStringWithSAS = Resources::BLOB_ENDPOINT_NAME .'='.'https://' .
             $this->accountName .'.' .Resources::BLOB_BASE_DNS_NAME .';' .
             Resources::SAS_TOKEN_NAME .'=' .$sas;
@@ -147,14 +151,15 @@ class AzureBlobService
      * @param  string $containerName 容器名稱
      * @return bool
      */
-    public function checkContainerExist($containerName){
+    public function checkContainerExist($containerName)
+    {
         try {
             $blobClientWithSAS =  $this->blobClient->getContainerProperties($containerName);
             return true;
-        }catch(ServiceException $e){
+        } catch (ServiceException $e) {
             // Code ContainerNotFound (404) means the container does not exist.
-           return false;
-        }catch(Exceptions $e){
+            return false;
+        } catch (Exceptions $e) {
             throw $e;
         }
     }
@@ -167,28 +172,32 @@ class AzureBlobService
      * @param  string $sourceBlob           來源blob
      * @param  BlobModels\CopyBlobOptions $options   CopyBlobOptions
      */
-    public function softDeleteFile($destinationContainer,
+    public function softDeleteFile(
+        $destinationContainer,
         $destinationBlob,
         $sourceContainer,
         $sourceBlob,
-        $options = null){
-        $filename = explode('/' ,$sourceBlob);
+        $options = null
+    ) {
+        $filename = explode('/', $sourceBlob);
         $prefix = $filename[0];
         $fileUrls = $this->getFullBlobUrl($sourceContainer, $prefix);
-        if(!is_null($fileUrls)){
+        if (!is_null($fileUrls)) {
             foreach ($fileUrls as $blobName => $fileUrl) {
-                $this->blobClient->copyBlob($destinationContainer,
+                $this->blobClient->copyBlob(
+                    $destinationContainer,
                                 $blobName,
                                 $sourceContainer,
-                                $blobName);
+                                $blobName
+                );
                 $this->blobClient->deleteBlob($sourceContainer, $blobName);
             }
         }
 
         $containerFile = $this->getFullBlobUrl($sourceContainer);
-        if(!is_null($containerFile)){
-            if(count($containerFile) == 0){
-                  $this->blobClient->deleteContainer($sourceContainer);
+        if (!is_null($containerFile)) {
+            if (count($containerFile) == 0) {
+                $this->blobClient->deleteContainer($sourceContainer);
             }
         }
     }
@@ -201,17 +210,20 @@ class AzureBlobService
      * @param  string $sourceBlob           來源blob
      * @param  BlobModels\CopyBlobOptions $options   CopyBlobOptions
      */
-    public function copyBlob($destinationContainer,
+    public function copyBlob(
+        $destinationContainer,
         $destinationBlob,
         $sourceContainer,
         $sourceBlob,
-        $options = null){
-
-        $this->blobClient->copyBlob($destinationContainer,
+        $options = null
+    ) {
+        $this->blobClient->copyBlob(
+            $destinationContainer,
                                     $destinationBlob,
                                     $sourceContainer,
                                     $sourceBlob,
-                                    $options);
+                                    $options
+        );
     }
 
     /**
@@ -221,7 +233,26 @@ class AzureBlobService
      * @param  Models\DeleteBlobOptions   DeleteBlobOptions
 
      */
-    public function deleteBlob( $container, $blob, $options = null){
+    public function deleteBlob($container, $blob, $options = null)
+    {
         $this->blobClient->deleteBlob($container, $blob, $options);
+    }
+
+    /**
+     * 建立blog為公開存取的容器
+     * @param string                               $containerName
+     */
+    public function createContainerWithPublicContainer($containerName)
+    {
+        $createContainerOptions = new CreateContainerOptions();
+        $createContainerOptions->setPublicAccess(PublicAccessType::CONTAINER_AND_BLOBS);
+        $this->blobClient->createContainer($containerName, $createContainerOptions);
+    }
+
+    public function checkBlobExist($containerName, $blobName)
+    {
+        return $this->blobClient->GetContainerReference($containerName)
+                  ->GetBlockBlobReference($blobName)
+                  ->Exists();
     }
 }

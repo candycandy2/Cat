@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar", "viewMessageList", "viewMessageDetail", "viewScrollTest"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -25,8 +25,32 @@ var callGetMessageList = false;
 var messagePageShow = false;
 var delMsgActive = false;
 
-window.initialSuccess = function(data) {
+//viewMain
+var viewMainInitial = true;
 
+//viewAppList
+var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
+
+//viewMyCalendar
+var viewCalendarInitial = true,
+    reserveCalendar = null,
+    reserveList = [],
+    reserveDirty = false;
+// var reserveAppList = [
+//     { app: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
+//     { app: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
+//     { app: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
+//     { app: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
+// ];
+var leaveAppData = {
+    key: 'appleave',
+    secretKey: '86883911af025422b626131ff932a4b5'
+}
+
+//viewMessageList
+var viewMessageInitial = true;
+
+window.initialSuccess = function(data) {
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -67,7 +91,7 @@ window.initialSuccess = function(data) {
             } else {
                 //If onOpenNotification, but not login.
                 //Atfer login, do onOpenNotification again.
-                openNewMessage();//refectory
+                openNewMessage(); //refectory
             }
 
         }
@@ -76,7 +100,234 @@ window.initialSuccess = function(data) {
     appInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
+
+    //get all reserve add by allen
+    // for (var i in reserveAppList) {
+    //     getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
+    // }
 }
+
+function getMyReserve(key, secret) {
+    var self = this;
+    var today = new Date();
+    var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
+
+    this.successCallback = function(data) {
+
+        if (data['ResultCode'] === "1") {
+            //console.log(data);
+            var resultArr = data['Content'];
+
+            if (key == "apprrs") {
+                for (var i in resultArr) {
+                    resultArr[i].type = key;
+                    resultArr[i].item = "預約" + resultArr[i].MeetingRoomName;
+                    resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
+                    reserveList.push(resultArr[i]);
+                }
+
+                reserveDirty = true;
+
+            } else if (key == "apprelieve") {
+                for (var i in resultArr) {
+                    resultArr[i].type = key;
+                    resultArr[i].item = "物理治療";
+                    resultArr[i].ReserveBeginTime = new Date(resultArr[i].ReserveBeginTime).hhmm();
+                    resultArr[i].ReserveEndTime = new Date(resultArr[i].ReserveEndTime).hhmm();
+                    resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
+                    reserveList.push(resultArr[i]);
+                }
+
+                reserveDirty = true;
+
+            } else if (key == "appparking") {
+                for (var i in resultArr) {
+                    resultArr[i].type = key;
+                    resultArr[i].item = "車位預約";
+                    resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
+                    reserveList.push(resultArr[i]);
+                }
+
+                reserveDirty = true;
+
+            } else if (key == "appmassage") {
+                for (var i in resultArr) {
+                    resultArr[i].type = key;
+                    resultArr[i].item = "按摩預約";
+                    resultArr[i].ReserveBeginTime = new Date(resultArr[i].ReserveBeginTime).hhmm();
+                    resultArr[i].ReserveEndTime = new Date(resultArr[i].ReserveEndTime).hhmm();
+                    resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
+                    reserveList.push(resultArr[i]);
+                }
+
+                reserveDirty = true;
+
+                formatReserveList();
+            }
+
+            if (reserveDirty && reserveCalendar != null) {
+                formatReserveList();
+                reserveCalendar.reserveData = reserveList;
+                reserveCalendar.refreshReserve(reserveList);
+                reserveDirty = false;
+            }
+
+
+        } else if (data['ResultCode'] === "002901") {
+
+        }
+    };
+
+    var __construct = function() {
+        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 3600, "low");
+    }();
+}
+
+function CustomAPIByKey(requestType, asyncType, key, secret, requestAction, successCallback, failCallback, queryData, queryStr, expiredTimeSeconds, priority) {
+    //queryStr: start with [&], ex: &account=test&pwd=123
+
+    failCallback = failCallback || null;
+    queryData = queryData || null;
+    queryStr = queryStr || "";
+    expiredTimeSeconds = expiredTimeSeconds || 60 * 60;
+    priority = priority || "high";
+
+    if (loginData["versionName"].indexOf("Staging") !== -1) {
+        key += "test";
+    } else if (loginData["versionName"].indexOf("Development") !== -1) {
+        key += "dev";
+    } else {
+        key += "";
+    }
+
+    var urlStr = serverURL + "/" + appApiPath + "/public/v101/custom/" + key + "/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr;
+    var keyItem = urlStr + queryData;
+
+    function requestSuccess(data) {
+        var checkTokenValidResult = checkTokenValid(data['ResultCode'], data['token_valid'], successCallback, data);
+
+        var dataArr = [
+            "Call API",
+            requestAction,
+            data['ResultCode']
+        ];
+        LogFile.createAndWriteFile(dataArr);
+
+        //Cache
+        if (checkTokenValidResult === true) {
+            // save data into localstorage
+            var contentInfo = [];
+            var nowTime = new Date();
+            contentInfo.push({ 'result': data, 'time': nowTime });
+            localStorage.setItem(keyItem, JSON.stringify(contentInfo));
+        }
+        //Cache...
+    }
+
+    // review by alan
+    function requestError(data) {
+        if (priority != "low") {
+            errorHandler(data, requestAction);
+            if (failCallback != null) {
+                failCallback();
+            }
+        }
+    }
+
+    if (localStorage.getItem(keyItem) === null) {} else {
+        var storageData = JSON.parse(localStorage.getItem(keyItem));
+        if (checkDataExpired(storageData[0].time, expiredTimeSeconds, 'ss')) {
+            localStorage.removeItem(keyItem);
+        }
+    }
+
+    if (localStorage.getItem(keyItem) === null) {
+
+        var signatureTime = getSignatureByKey("getTime");
+        var signatureInBase64 = getSignatureByKey("getInBase64", signatureTime, secret);
+
+        $.ajax({
+            type: requestType,
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'App-Key': key,
+                'Signature-Time': signatureTime,
+                'Signature': signatureInBase64,
+                'token': loginData.token
+            },
+            url: urlStr,
+            dataType: "json",
+            data: queryData,
+            async: asyncType,
+            cache: false,
+            timeout: 30000,
+            success: requestSuccess,
+            error: requestError
+        });
+    } else {
+        var storageData = JSON.parse(localStorage.getItem(keyItem));
+        successCallback(storageData[0].result);
+    }
+
+    return keyItem;
+}
+
+function getSignatureByKey(action, signatureTime, secret) {
+    if (action === "getTime") {
+        return Math.round(new Date().getTime() / 1000);
+    } else {
+        var hash = CryptoJS.HmacSHA256(signatureTime.toString(), secret);
+        return CryptoJS.enc.Base64.stringify(hash);
+    }
+}
+
+//数组合并并排序
+function formatReserveList() {
+    //1. 先按照日期合併同一天預約
+    var tempArr = [];
+    $.each(reserveList, function(index, item) {
+        var key = item.ReserveDate;
+        if (typeof tempArr[key] == "undefined") {
+            tempArr[key] = [];
+            tempArr[key].push(item);
+
+        } else {
+            tempArr[key].push(item);
+        }
+    });
+
+    //2. 再按照時間將同一天內的預約進行排序
+    for (var i in tempArr) {
+        tempArr[i].sort(sortByBeginTime("ReserveBeginTime", "ReserveEndTime"));
+    }
+
+    reserveList = tempArr;
+}
+
+//先按照开始时间排序，如果开始时间一致再用结束时间排序
+function sortByBeginTime(prop1, prop2) {
+    return function(obj1, obj2) {
+        var val1 = obj1[prop1];
+        var val2 = obj2[prop1];
+        var value1 = obj1[prop2];
+        var value2 = obj2[prop2];
+        if (val1 > val2) {
+            return 1;
+        } else if (val1 < val2) {
+            return -1;
+        } else {
+            if (value1 > value2) {
+                return 1;
+            } else if (value1 < value2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
+}
+
+
 
 //Plugin-QPush, Now only QPLay need to set push-toekn
 function sendPushToken() {
@@ -248,6 +499,33 @@ function checkAPPInstalled(callback, page) {
     };
 }
 
+function checkAllAppInstalled(callback, key, index) {
+
+    //var thisAppKey = checkAPPKey;
+    callback = callback || null;
+
+    var scheme;
+
+    if (device.platform === 'iOS') {
+        scheme = key + '://';
+    } else if (device.platform === 'Android') {
+        scheme = 'com.qplay.' + key;
+    }
+
+    var testInstalled = function(i) {
+        appAvailability.check(
+            scheme, //URI Scheme or Package Name
+            function() { //Success callback
+                callback(true, i);
+                //console.log(i);
+            },
+            function() { //Error callback
+                callback(false, i);
+            }
+        );
+    }(index);
+}
+
 //un-register [User with Mobile Device UUID]
 function unregister() {
 
@@ -266,6 +544,89 @@ function unregister() {
 }
 
 
+function addDownloadHit(appname) {
+    var self = this;
+
+    this.successCallback = function(data) {
+        var resultcode = data['result_code'];
+
+        if (resultcode == 1) {} else {}
+    };
+
+    this.failCallback = function(data) {
+        var resultcode = data['result_code'];
+
+        if (resultcode == 1) {} else {}
+    };
+
+    var __construct = function() {
+        var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
+        QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
+
+    }();
+}
+
+//获取版本记录
+function getVersionRecord(key) {
+    key = key || null;
+
+    var self = this;
+
+    if (key == null) {
+        key = qplayAppKey;
+    }
+
+    var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
+    //var queryStr = "&app_key=appqplaydev&device_type=android";
+
+    this.successCallback = function(data) {
+        console.log(data);
+
+        if (data['result_code'] == "1") {
+            var versionLogList = data['content'].version_list;
+            var content = '';
+
+            for (var i in versionLogList) {
+                content += '<div class="version-record-list"><div class="font-style12">' +
+                    versionLogList[i].version_name +
+                    '</div><div class="font-style11">' +
+                    new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
+                    '</div><div class="font-style11">' +
+                    versionLogList[i].version_log.replace(new RegExp('\r?\n', 'g'), '<br />') +
+                    '</div></div>';
+            }
+
+            $("#versionRecordList").html('').append(content);
+            $.mobile.changePage("#viewVersionRecord");
+        }
+    };
+
+    this.failCallback = function(data) {};
+
+    var __construct = function() {
+        QPlayAPI("GET", "getVersionLog", self.successCallback, self.failCallback, null, queryStr);
+
+    }();
+}
+
+function formatReserveDate(str) {
+    return str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2);
+}
+
+Date.prototype.FormatReleaseDate = function() {
+    return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
+}
+
+//获取移动偏移量
+//margin表示单边距，所以需要*2，
+//screenwidth / ? = 100vw / (margin*2)
+//返回px
+function scrollLeftOffset(margin) {
+    margin = Number(margin);
+    var screenWidth = window.screen.width;
+    return screenWidth * margin * 2 / 100;
+}
+
 //Change event type
 $(document).on("click", ".event-type", function() {
     $("#eventTypeSelect").panel("open");
@@ -275,38 +636,29 @@ $(document).on("click", ".event-type", function() {
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
-
     if (activePageID === "viewMain2-1") {
-
         if (checkPopupShown()) {
             $('#' + popupID).popup('close');
         } else {
             navigator.app.exitApp();
         }
-
     } else if (activePageID === "viewMain2-1" || activePageID === "viewAppDetail2-2") {
-
-        $.mobile.changePage('#viewMain2-1');
-
+        if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
+            $.mobile.changePage('#viewMain2-1');
+        } else {
+            $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
+        }
     } else if (activePageID === "viewNewsEvents2-3") {
-
         if (delMsgActive) {
             editModeChange();
         } else {
             $.mobile.changePage('#viewMain2-1');
         }
-
     } else if (activePageID === "viewWebNews2-3-1") {
-
         goBack("goList");
-
     } else if (activePageID === "viewNotSignedIn") {
-
         navigator.app.exitApp();
-
     } else {
-
         navigator.app.exitApp();
-
     }
 }

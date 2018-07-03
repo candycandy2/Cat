@@ -1,0 +1,154 @@
+.QPlayCalendar {
+    margin-top: 5VW;
+}
+
+.QPlayCalendar .table th, .QPlayCalendar .table td {
+    text-align: center;
+    vertical-align: top;
+    width: 14.25vw !important;
+    overflow: hidden;
+    padding: 0;
+}
+
+.QPlayCalendar .table td > div {
+    width: 100%;
+}
+
+.QPlayCalendar .table td > div:nth-of-type(1) {
+    height: 6vw;
+    line-height: 6vw;
+    font-size: 3.14vw !important;
+}
+
+.QPlayCalendar tr.calendar-month-header th {
+    background-color: #fafafa;
+}
+
+.QPlayCalendar .table tr.calendar-dow-header {
+    height: 4.45VW;
+}
+
+.QPlayCalendar .table tr.calendar-dow {
+    height: 28VW;
+}
+
+.QPlayCalendar .calendar-month-header {
+    flex-flow: row wrap;
+    display: -webkit-flex;
+    margin-bottom: 5VW;
+}
+
+.QPlayCalendar div.calendar-month-navigation {
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+}
+
+.nav_icon {
+    width: 4.934VW;
+}
+
+.QPlayCalendar-navPrev{
+    margin-left: 3.71VW;
+}
+
+.QPlayCalendar #dateTitle {
+    font-size: 4.18VW !important;
+    width: 82.712VW;
+    text-align: center;
+    color: #263238;
+}
+
+.QPlayCalendar table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 0px;
+    /* border-style: solid;
+    border-width: 0.1px;
+    border-color: #d6d6d6;
+    width: 92.58VW;
+    margin: 0VW 3.71VW 0VW 3.71VW;
+    padding: 0VW 3VW 0VW 3VW; */
+    width: 99.75vw;
+}
+
+.QPlayCalendar .table .calendar-dow-header th {
+    /* margin: 0;
+    padding-top: 7px;
+    padding-bottom: 7px; */
+    font-family: Arial;
+    font-weight: 600;
+    /* font-size: 4VW; */
+    font-size: 3.14vw !important;
+    color: #313131;
+}
+
+.day {
+    color: #313131;
+}
+
+.otherDay {
+    color: #aaa6a6 !important;
+}
+
+.weekend {
+    /* color: #2e89bc; */
+    color: #1a87c8 !important;
+}
+
+.holiday {
+    /* color: #f69e1e; */
+    color: #f6c1af !important;
+}
+
+.today {
+    background-color: #f4f5f5;
+}
+
+.holiday-str {
+    height: 3.85vw;
+    background: #e53934;
+    color: #fff;
+    /* font-size: 3.349vw !important; */
+    font-size: 3vw;
+    font-family: "Arial", "微軟中黑體";
+    margin-bottom: 2vw;
+}
+
+.reserve-str {
+    height: 4.85vw;
+    /* background: #f4f5f5; */
+    color: #009688;
+    font-size: 3vw;
+    font-family: "Arial", "微軟中黑體";
+}
+
+.hidden-str {
+    display: none;
+}
+
+.td-bottom-border {
+    border-bottom-style: solid;
+    /* border-color: #989898; */
+    border-color: #d6d6d6;
+    border-width: 0.5px;
+}
+
+th {
+    border-bottom-style: solid;
+    /* border-color: #0f0f0f; */
+    border-color: #d6d6d6;
+    border-width: 0.5px;
+}
+
+/* legend */
+.QPlayCalendar div.legend {
+    /* margin-right: 3.71Vw;
+    margin-bottom: 2.14VW; */
+    text-align: right;
+}
+
+.QPlayCalendar div.legend .legend-img-text {
+    font-size: small;
+    margin-left: 3.71Vw;
+}

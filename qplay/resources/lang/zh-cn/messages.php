@@ -59,6 +59,10 @@ return [
     'TITLE_ENS_MAINTAIN' => '事件通报系统服务',
     'TITLE_BASIC_INFO_MAINTAIN' => '成员资讯维护',
     'TITLE_REGISTER_MAINTAIN_TOOL' => '注册管理工具',
+    'TITLE_COMPANY_MAINTAIN' => '公司管理',
+    'ENABLE' => '启用',
+    'DISABLE' => '停用',
+
     //validate
     'VALIDATE_ACCEPT' => '仅接受',
     'VALIDATE_ACCEPT_NUMERIC' => '仅接受数字',
@@ -404,5 +408,16 @@ return [
 
 	'DESIGNATED'=>'指定人员',
 	'MESSAGE_SCHEDULE_PUSH'=>'定时推送',
-	'MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE'=>'预定推播时间必须是未来的某个时间!'
+	'MSG_RESERVE_PUSH_TIME_MUST_BE_SOMETIME_IN_THE_FUTURE'=>'预定推播时间必须是未来的某个时间!',
+
+    //Company Maintain
+    'COMPANY_NEW_DATA' => '新增公司',
+    'COMPANY_EDIT_DATA' => '编辑公司',
+    'COMPANY_LOGIN_TYPE' => '登入型态',
+    'COMPANY_DOMAIN' => '公司 Domain',
+    'COMPANY_IP' => 'Server IP',
+    'COMPANY_PORT' => 'Server Port',
+    'COMPANY_ERR_DATA_HAS_EXIST' => '公司资料已经存在',
+    'COMPANY_ERR_CREATE_COMPANY_FAILED' => '新增公司失败!',
+    'COMPANY_ERR_UPDATE_COMPANY_FAILED' => '更新公司失败!'
 ];

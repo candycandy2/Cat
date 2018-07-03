@@ -17,7 +17,7 @@ gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env test
 gulp jenkinsdefault --env test
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="a2dd89a3-82a2-4b92-b4f9-4bc931470f80" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="abaec3e6-8e6d-41f9-badc-a81f67647b3f" --packageType="enterprise"
 
 pwd
 cd ../QPlayProduct-QisdaEIS-Parking/APP/Parking
@@ -27,7 +27,7 @@ gulp config --env test --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall --env test
 gulp jenkinsdefault --env test
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="1c0ad2b9-3bdd-4267-8e4f-d6cef079756f" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="7ad91614-5648-4d70-b99c-3231ed686ddb" --packageType="enterprise"
 
 pwd
 cd ../QPlayProduct-QisdaEIS-Parking/Production/QisdaEIS
@@ -37,7 +37,7 @@ gulp config --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall
 gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="4d10caa8-3dda-4ccf-a342-808df0fc56c4" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="a7b5b34b-3ef1-44b8-9331-befa07d20494" --packageType="enterprise"
 
 pwd
 cd ../QPlayProduct-QisdaEIS-Parking/Production/Parking
@@ -47,7 +47,7 @@ gulp config --vname 1.0.0.$dailyver --vcode $dailyver
 gulp jenkinsinstall
 gulp jenkinsdefault
 cordova build android --release -- --keystore=~/keystores/android.jks --storePassword=BenQ1234 --alias=QPlayAndroidKey --password=BenQ1234
-cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="03587ccc-3b77-4fc9-9d1d-1471ff00a5fd" --packageType="enterprise"
+cordova build ios --device --codeSignIdentity="iPhone Distribution" --provisioningProfile="0983cdc1-9704-4319-ba01-fbbfe26b6323" --packageType="enterprise"
 
 
 dailyver=$(($BUILD_NUMBER+0))

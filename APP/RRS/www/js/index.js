@@ -24,21 +24,26 @@ var dictDayOfWeek = {
     '6': '(六)',
     '0': '(日)'
 };
-var arrSite = ['2', '1', '43', '100'];
-var arrSiteCategory = ['1', '2', '8'];
+//fix by allen
+//var arrSite = ['2', '1', '43', '100'];
+var arrSite = [];
+//var arrSiteCategory = ['1', '2', '8'];
+var arrSiteCategory = [];
 var arrRole = ['1', '2', '4'];
-var dictSite = {
-    '1': 'QTY',
-    '2': 'BQT/QTT',
-    '43': '雙星',
-    '100': 'QTH'
-};
-var dictSiteCategory = {
-    '1': '2',
-    '2': '1',
-    '43': '2',
-    '100': '8'
-};
+// var dictSite = {
+//     '1': 'QTY',
+//     '2': 'BQT/QTT',
+//     '43': '雙星',
+//     '100': 'QTH'
+// };
+var dictSite = {};
+// var dictSiteCategory = {
+//     '1': '2',
+//     '2': '1',
+//     '43': '2',
+//     '100': '8'
+// };
+var dictSiteCategory = {};
 var arrLimitRoom = ['T00', 'T13', 'A30', 'A70', 'B71', 'E31'];
 var dictRole = {
     'system': 'role1',
@@ -203,6 +208,38 @@ function getAPIListAllManager() {
     }();
 }
 
+//add by allen
+function getAPIListAllSite() {
+    var self = this;
+    var queryData = {};
+
+    this.successCallback = function(data) {
+
+        var resultData = data['Content'];
+
+        var siteCategory = [];
+        for (var i in resultData) {
+            dictSite[resultData[i].SiteID] = resultData[i].SiteName;
+            dictSiteCategory[resultData[i].SiteID] = resultData[i].SiteTimeCategory;
+            arrSite.push(resultData[i].SiteID);
+            siteCategory.push(resultData[i].SiteTimeCategory);
+        }
+
+        //去重
+        for(var j in siteCategory) {
+            if(arrSiteCategory.indexOf(siteCategory[j]) == -1) {
+                arrSiteCategory.push(siteCategory[j]);
+            }
+        }
+    };
+
+    this.failCallback = function () {}
+
+    var __construct = function() {
+        CustomAPI("POST", false, "ListAllSite", self.successCallback, self.failCallback, queryData, "");
+    }();
+}
+
 function getAPIQueryMyReserveTime() {
     loadingMask('show');
     var self = this;
@@ -354,7 +391,7 @@ function ConverToMeetingTree(data) {
     for (var key in arrSite) {
 
         meetingRoomTreeData.add(arrSite[key], 'meetingRoom', meetingRoomTreeData.traverseDF);
-        var floorData = grepData(data, 'MeetingRoomSite', arrSite[key])
+        var floorData = grepData(data, 'MeetingRoomSite', arrSite[key]);
         var dfloorData = uniqueData(floorData, 'MeetingRoomFloor');
         dfloorData.sort(function compareNumber(a, b) {
             return a - b;
@@ -362,12 +399,15 @@ function ConverToMeetingTree(data) {
 
         for (var j in dfloorData) {
 
-            meetingRoomTreeData.add(dfloorData[j] + 'F', arrSite[key], meetingRoomTreeData.traverseDF);
+            //meetingRoomTreeData.add(dfloorData[j] + 'F', arrSite[key], meetingRoomTreeData.traverseDF);
+            //fix by allen
+            meetingRoomTreeData.add(dfloorData[j] + (arrSite[key] != '116' ? 'F' : ''), arrSite[key], meetingRoomTreeData.traverseDF);
             var roomData = grepData(floorData, 'MeetingRoomFloor', dfloorData[j])
             roomData.sort(cmpStringsWithNumbers);
 
             for (var k in roomData) {
-                meetingRoomTreeData.add(roomData[k], dfloorData[j] + 'F', meetingRoomTreeData.traverseDF);
+                //meetingRoomTreeData.add(roomData[k], dfloorData[j] + 'F', meetingRoomTreeData.traverseDF);
+                meetingRoomTreeData.add(roomData[k], dfloorData[j] + (arrSite[key] != '116' ? 'F' : ''), meetingRoomTreeData.traverseDF);
             }
         }
     }

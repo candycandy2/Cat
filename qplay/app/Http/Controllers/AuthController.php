@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use Illuminate\Support\Facades\Input;
+use App\Services\CompanyService;
 
 class AuthController extends Controller
 {   
@@ -19,8 +20,9 @@ class AuthController extends Controller
     /**
      * 登入流程
      */
-    public function authenticate(Request $request)
+    public function authenticate(Request $request, CompanyService $companyService)
     {
+
         $input = Input::get();
         $validator = \Validator::make($request->all(), [
             'loginid'   => 'required',
@@ -38,6 +40,7 @@ class AuthController extends Controller
         $domain = $input["domain"];
         $lang = $input["lang"];
         $remember = false;
+
         if (array_key_exists("remember", $input)) {
             $remember = $input["remember"];
         }
@@ -52,18 +55,64 @@ class AuthController extends Controller
 
         //Check user password with LDAP
         //$LDAP_SERVER_IP = "LDAP://BQYDC01.benq.corp.com";
-        $LDAP_SERVER_IP = "LDAP://10.82.12.61";
-        $userId = $domain . "\\" . $loginid;
-        $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
-        $bind = @ldap_bind($ldapConnect, $userId, $password);
-        if (!$bind)
-        {
-            $data['errormsg'] = trans('messages.MSG_LOGIN_ERROR');;
+        //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
+        $companyData = $companyService->getCompanyData("user_domain", $domain);
+        foreach ($companyData as $company) {
+            $loginType = $company->login_type;
+            $serverIP = $company->server_ip;
+            $serverPort = $company->server_port;
+        }
+
+        $loginFail = false;
+
+        if ($loginType == "LDAP") {
+            $LDAP_SERVER_IP = $serverIP;
+            $userId = $domain . "\\" . $loginid;
+            $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
+            $bind = @ldap_bind($ldapConnect, $userId, $password);
+            if (!$bind)
+            {
+                $loginFail = true;
+            }
+        } else if ($loginType == "API") {
+
+            $header = [
+                'Content-type: application/json; charset=utf-8',
+                'Content-Length: 0',
+                'Signature-Time: ' . time(),
+                'loginid: ' . $loginid,
+                'password: ' . $password,
+                'domain: ' . $domain
+            ];
+
+            $resultCode = 0;
+            $curlPATH = $serverIP . "/QTunnel/QTunnel.asmx/Login";
+
+            $resultJSON = json_decode($this->callAPI("POST", $curlPATH, $header, $serverPort), true);
+            $result = json_decode($resultJSON["d"], true);
+
+            foreach ($result as $parameter => $value) {
+                if ($parameter == "ResultCode") {
+                    $resultCode = $value;
+                }
+            }
+
+            if ($resultCode !== "1") {
+                $loginFail = true;
+            }
+        }
+
+        if ($loginFail) {
+            $data['errormsg'] = trans('messages.MSG_LOGIN_ERROR');
             return \Redirect::to('auth/login')->with($data);
         }
 
         if (Auth::attempt(['login_id' => $loginid, 'status' => 'Y', 'resign' => 'N', 'password' => $password, 'user_domain'=>$domain], $remember)) {
             \Session::set('lang', $lang);
+            \Session::set('login_id', $loginid);
+            \Session::set('domain', $domain);
+            \Session::set('remember', $remember);
+
             // 认证通过...
             return redirect()->to($this->getRdirectUrl());
         } else {
@@ -192,4 +241,70 @@ class AuthController extends Controller
         $ServerSignature = hash('md5',hash_hmac('sha256', $loginid, $signatureTime,true));
         return $ServerSignature;
     }
+
+    /**
+     * Render Login View
+     * @return View with all Enable Company data
+     */
+    public function loginView(CompanyService $companyService)
+    {
+        return view('auth/login')->with('data', $companyService->getEnableCompanyList());
+    }
+
+    /**
+     * CURL Call API
+     * @param  String      $method (POST|GET)
+     * @param  String      $url    API URL
+     * @param  Array|array $header request header
+     * @param  Integer     $port   request port
+     * @param  array       $data   parameter
+     * @return mixed               API result
+     */
+    private function callAPI($method, $url, Array $header = array(), $port = "", $data = false)
+    {
+        $curl = curl_init();
+
+        switch ($method) {
+            case "POST":
+                curl_setopt($curl, CURLOPT_POST, 1);
+
+                if ($data) {
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                } else {
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array()));
+                }
+                break;
+            case "PUT":
+                curl_setopt($curl, CURLOPT_PUT, 1);
+                break;
+            default:
+                if ($data)
+                    $url = sprintf("%s?%s", $url, http_build_query($data));
+        }
+
+        // Optional Authentication:
+        // Set header
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        //Set SSL
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+        //Set Port
+        if (strlen($port) > 0) {
+            curl_setopt($curl, CURLOPT_PORT, $port);
+        }
+
+        if (!$result = curl_exec($curl)) {
+            trigger_error(curl_error($curl));
+        }
+
+        curl_close($curl);
+
+        return $result;
+    }
+
 }

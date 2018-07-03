@@ -582,6 +582,8 @@ $('#viewReserve').pagecontainer({
         }
 
         function checkLocalDataExpired() {
+            //add by allen
+            var doAPIListAllSite = new getAPIListAllSite();
             var meetingRoomLocalData = JSON.parse(localStorage.getItem('meetingRoomLocalData'));
             if (meetingRoomLocalData === null || checkDataExpired(meetingRoomLocalData['lastUpdateTime'], 7, 'dd')) {
                 var doAPIListAllMeetingRoom = new getAPIListAllMeetingRoom();
@@ -698,6 +700,9 @@ $('#viewReserve').pagecontainer({
             setDateList('reserve');
             var doAPIQueryReserveDetail = new getAPIQueryReserveDetail(clickRomeId, clickDateId, true);
             reserveBtnDefaultStatus();
+
+            //add by allen
+            calSelectWidth($('#reserveFloor'));
         });
 
         $('#reserveFloor').change(function() {

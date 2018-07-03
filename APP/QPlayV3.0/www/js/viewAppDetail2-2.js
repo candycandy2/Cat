@@ -3,32 +3,32 @@
 $("#viewAppDetail2-2").pagecontainer({
     create: function (event, ui) {
 
-        var pageHeight = null;
+        var pageHeight = null, offsetArr = [], imgItemLength;
 
         /********************************** function *************************************/
+        // remove to index.js
+        // function addDownloadHit(appname) {
+        //     var self = this;
 
-        function addDownloadHit(appname) {
-            var self = this;
+        //     this.successCallback = function (data) {
+        //         var resultcode = data['result_code'];
 
-            this.successCallback = function (data) {
-                var resultcode = data['result_code'];
+        //         if (resultcode == 1) { } else { }
+        //     };
 
-                if (resultcode == 1) { } else { }
-            };
+        //     this.failCallback = function (data) {
+        //         var resultcode = data['result_code'];
 
-            this.failCallback = function (data) {
-                var resultcode = data['result_code'];
+        //         if (resultcode == 1) { } else { }
+        //     };
 
-                if (resultcode == 1) { } else { }
-            };
+        //     var __construct = function () {
+        //         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
+        //         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
 
-            var __construct = function () {
-                var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
-                QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
+        //     }();
 
-            }();
-
-        }
+        // }
 
         function displayAppDetailStep1() {
 
@@ -92,7 +92,7 @@ $("#viewAppDetail2-2").pagecontainer({
 
             var platform = device.platform.toLowerCase();
             var content = "";
-            var bigContent = "";
+            var fullContent = "";
             var piclist = appmultilang[languageIndex].pic_list;
             var indexNow = 0;
 
@@ -101,31 +101,31 @@ $("#viewAppDetail2-2").pagecontainer({
             for (var listIndex = 0; listIndex < piclist.length; listIndex++) {
                 if (piclist[listIndex].pic_type === platform + "_screenshot") {
                     content += "<div class='detail-img-style' data-index=" + listIndex + "><img src=" + piclist[listIndex].pic_url + " width='100%' height='100%'></div>";
-                    bigContent += "<div class='detail-img-style-big'><img src=" + piclist[listIndex].pic_url + " width='100%' height='100%'></div>";
+                    fullContent += "<div class='detail-img-style-full-screen' data-index=" + listIndex + "><img src=" + piclist[listIndex].pic_url + " width='100%' height='100%'></div>";
                 }
             }
 
             $('#appDetailPicListContent').append(content);
-            $("#appDetailPicListContentBig").append(bigContent);
+            $("#appDetailPicListFullScreen").html('').append(fullContent);
 
             //Auto resize appDetailPicList
-            if (device.platform === "iOS") {
-                var tempHeight = $("#appDetailPicList").height();
-                $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
-                tempHeight = $("#appDetailPicListContent").height();
-                $("#appDetailPicListContent").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
-            }
+            // if (device.platform === "iOS") {
+            //     var tempHeight = $("#appDetailPicList").height();
+            //     $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
+            //     var tempChildHeight = $("#appDetailPicListContent").height();
+            //     $("#appDetailPicListContent").css("height", parseInt(tempChildHeight + iOSFixedTopPX(), 10) + "px");
+            // }
 
             //Auto resize appDetailPicListContent
             var pageWidth = $("#viewAppDetail2-2").width();
             var tempIMG = $(".detail-img-style")[0];
-            var tempIMG2 = $(".detail-img-style-big")[0];
+            var tempIMGFull = $(".detail-img-style-full-screen")[0];
             var imgWidth = tempIMG.clientWidth;
-            var imgWidth2 = $(tempIMG2).width();
+            var imgWidthFull = $(tempIMGFull).width();
             var picListContentWidth = (imgWidth + 2 + pageWidth * 0.037) * piclist.length;
-            var picListContentWidth2 = (imgWidth2 + 2 + pageWidth * 0.037) * piclist.length;
+            var picListContentWidthFull = (imgWidthFull + 2 + pageWidth * 0.037) * piclist.length;
             $("#appDetailPicListContent").css("width", picListContentWidth + "px");
-            $("#appDetailPicListContentBig").css("width", picListContentWidth2 + "px");
+            $("#appDetailPicListFullScreen").css("width", picListContentWidthFull + "px");
 
             //detail-description, the text content can't over 3 lines,
             //if text content is too long, show/hide open button
@@ -154,6 +154,10 @@ $("#viewAppDetail2-2").pagecontainer({
 
                 $("#appDetailAppDescription").css("height", parseInt(descriptionHeight + adjustHeight, 10) + "px");
             }
+
+            //add by allen -- initial data
+            offsetArr = [];
+            imgItemLength = piclist.length;
 
         }
 
@@ -297,16 +301,36 @@ $("#viewAppDetail2-2").pagecontainer({
 
         //放大图片
         $("#appDetailPicListContent").on("click", ".detail-img-style", function () {
-            var index = $(this).attr("data-index");
+            var currentIndex = $(this).attr("data-index");
+
             $(".ui-btn-word").show();
-            $("#viewAppDetail2-2 .fix").fadeIn(1000);
-            
+            $("#viewAppDetail2-2 .q-btn-header").hide();
+            $("#viewAppDetail2-2 .fix").fadeIn(500);
+
+            //偏移时先归零，回到初始位置
+            $("#appDetailPicListFullScreen").parent().scrollLeft(0);
+            if (offsetArr.length == 0) {
+                for (var i = 0; i < imgItemLength; i++) {
+                    var x = $(".detail-img-style-full-screen[data-index=" + i + "]").offset().left;
+                    offsetArr.push(x);
+                }
+            }
+            $("#appDetailPicListFullScreen").parent().scrollLeft(offsetArr[currentIndex] - scrollLeftOffset(3.71));
+
         });
 
         //取消放大
         $(".ui-btn-word").on("click", function () {
             $(".ui-btn-word").hide();
-            $("#viewAppDetail2-2 .fix").fadeOut(1000);
+            $("#viewAppDetail2-2 .q-btn-header").show();
+            $("#viewAppDetail2-2 .fix").fadeOut(500);
+        });
+
+        //版本记录
+        $(".version").on("click", function () {
+            var versionData = new getVersionRecord(checkAPPKey);
+            //var versionData = new getVersionRecord();
+
         });
 
 
