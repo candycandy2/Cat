@@ -32,7 +32,10 @@ var viewMainInitial = true;
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
 
 //viewMyCalendar
-var viewCalendarInitial = true, reserveCalendar = null, reserveList = [], reserveDirty = false;
+var viewCalendarInitial = true,
+    reserveCalendar = null,
+    reserveList = [],
+    reserveDirty = false;
 // var reserveAppList = [
 //     { app: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
 //     { app: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
@@ -47,7 +50,7 @@ var leaveAppData = {
 //viewMessageList
 var viewMessageInitial = true;
 
-window.initialSuccess = function (data) {
+window.initialSuccess = function(data) {
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -88,7 +91,7 @@ window.initialSuccess = function (data) {
             } else {
                 //If onOpenNotification, but not login.
                 //Atfer login, do onOpenNotification again.
-                openNewMessage();//refectory
+                openNewMessage(); //refectory
             }
 
         }
@@ -109,7 +112,7 @@ function getMyReserve(key, secret) {
     var today = new Date();
     var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
 
         if (data['ResultCode'] === "1") {
             //console.log(data);
@@ -162,7 +165,7 @@ function getMyReserve(key, secret) {
                 formatReserveList();
             }
 
-            if(reserveDirty && reserveCalendar != null) {
+            if (reserveDirty && reserveCalendar != null) {
                 formatReserveList();
                 reserveCalendar.reserveData = reserveList;
                 reserveCalendar.refreshReserve(reserveList);
@@ -175,8 +178,8 @@ function getMyReserve(key, secret) {
         }
     };
 
-    var __construct = function () {
-        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "",3600,"low");
+    var __construct = function() {
+        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 3600, "low");
     }();
 }
 
@@ -231,8 +234,7 @@ function CustomAPIByKey(requestType, asyncType, key, secret, requestAction, succ
         }
     }
 
-    if (localStorage.getItem(keyItem) === null) {
-    } else {
+    if (localStorage.getItem(keyItem) === null) {} else {
         var storageData = JSON.parse(localStorage.getItem(keyItem));
         if (checkDataExpired(storageData[0].time, expiredTimeSeconds, 'ss')) {
             localStorage.removeItem(keyItem);
@@ -241,8 +243,8 @@ function CustomAPIByKey(requestType, asyncType, key, secret, requestAction, succ
 
     if (localStorage.getItem(keyItem) === null) {
 
-        var signatureTime = getSignature("getTime");
-        var signatureInBase64 = getSignature("getInBase64", signatureTime);
+        var signatureTime = getSignatureByKey("getTime");
+        var signatureInBase64 = getSignatureByKey("getInBase64", signatureTime, secret);
 
         $.ajax({
             type: requestType,
@@ -283,7 +285,7 @@ function getSignatureByKey(action, signatureTime, secret) {
 function formatReserveList() {
     //1. 先按照日期合併同一天預約
     var tempArr = [];
-    $.each(reserveList, function (index, item) {
+    $.each(reserveList, function(index, item) {
         var key = item.ReserveDate;
         if (typeof tempArr[key] == "undefined") {
             tempArr[key] = [];
@@ -304,7 +306,7 @@ function formatReserveList() {
 
 //先按照开始时间排序，如果开始时间一致再用结束时间排序
 function sortByBeginTime(prop1, prop2) {
-    return function (obj1, obj2) {
+    return function(obj1, obj2) {
         var val1 = obj1[prop1];
         var val2 = obj2[prop1];
         var value1 = obj1[prop2];
@@ -312,12 +314,12 @@ function sortByBeginTime(prop1, prop2) {
         if (val1 > val2) {
             return 1;
         } else if (val1 < val2) {
-            return - 1;
+            return -1;
         } else {
             if (value1 > value2) {
                 return 1;
             } else if (value1 < value2) {
-                return - 1;
+                return -1;
             } else {
                 return 0;
             }
@@ -332,11 +334,11 @@ function sendPushToken() {
     var self = this;
     var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
 
-    this.successCallback = function () { };
+    this.successCallback = function() {};
 
-    this.failCallback = function () { };
+    this.failCallback = function() {};
 
-    var __construct = function () {
+    var __construct = function() {
         if (loginData.token !== null && loginData.token.length !== 0) {
             QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
         }
@@ -347,7 +349,7 @@ function sendPushToken() {
 function reNewToken() {
     var self = this;
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
         var resultcode = data['result_code'];
         var newToken = data['content'].token;
         var newTokenValid = data['token_valid'];
@@ -368,9 +370,9 @@ function reNewToken() {
         //}
     };
 
-    this.failCallback = function (data) { };
+    this.failCallback = function(data) {};
 
-    var __construct = function () {
+    var __construct = function() {
         QPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
     }();
 }
@@ -446,10 +448,10 @@ function checkAPPInstalled(callback, page) {
 
     window.testAPPInstalledCount = 0;
 
-    window.testAPPInstalled = setInterval(function () {
+    window.testAPPInstalled = setInterval(function() {
         appAvailability.check(
             scheme, //URI Scheme or Package Name
-            function () { //Success callback
+            function() { //Success callback
 
                 if (page === "appDetail") {
                     var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
@@ -469,7 +471,7 @@ function checkAPPInstalled(callback, page) {
                 checkAPPKeyInstalled = true;
                 stopTestAPPInstalled();
             },
-            function () { //Error callback
+            function() { //Error callback
 
                 if (page === "appDetail") {
                     callback(false);
@@ -490,7 +492,7 @@ function checkAPPInstalled(callback, page) {
         }
     }, 1000);
 
-    window.stopTestAPPInstalled = function () {
+    window.stopTestAPPInstalled = function() {
         if (window.testAPPInstalled != null) {
             clearInterval(window.testAPPInstalled);
         }
@@ -510,14 +512,14 @@ function checkAllAppInstalled(callback, key, index) {
         scheme = 'com.qplay.' + key;
     }
 
-    var testInstalled = function (i) {
+    var testInstalled = function(i) {
         appAvailability.check(
             scheme, //URI Scheme or Package Name
-            function () { //Success callback
+            function() { //Success callback
                 callback(true, i);
                 //console.log(i);
             },
-            function () { //Error callback
+            function() { //Error callback
                 callback(false, i);
             }
         );
@@ -530,13 +532,13 @@ function unregister() {
     var self = this;
     var queryStr = "&target_uuid=" + loginData.uuid;
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
         console.log(data);
     };
 
-    this.failCallback = function (data) { };
+    this.failCallback = function(data) {};
 
-    var __construct = function () {
+    var __construct = function() {
         QPlayAPI("POST", "unregister", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
@@ -545,19 +547,19 @@ function unregister() {
 function addDownloadHit(appname) {
     var self = this;
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
         var resultcode = data['result_code'];
 
-        if (resultcode == 1) { } else { }
+        if (resultcode == 1) {} else {}
     };
 
-    this.failCallback = function (data) {
+    this.failCallback = function(data) {
         var resultcode = data['result_code'];
 
-        if (resultcode == 1) { } else { }
+        if (resultcode == 1) {} else {}
     };
 
-    var __construct = function () {
+    var __construct = function() {
         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
 
@@ -577,7 +579,7 @@ function getVersionRecord(key) {
     var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
     //var queryStr = "&app_key=appqplaydev&device_type=android";
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
         console.log(data);
 
         if (data['result_code'] == "1") {
@@ -599,9 +601,9 @@ function getVersionRecord(key) {
         }
     };
 
-    this.failCallback = function (data) { };
+    this.failCallback = function(data) {};
 
-    var __construct = function () {
+    var __construct = function() {
         QPlayAPI("GET", "getVersionLog", self.successCallback, self.failCallback, null, queryStr);
 
     }();
@@ -611,7 +613,7 @@ function formatReserveDate(str) {
     return str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2);
 }
 
-Date.prototype.FormatReleaseDate = function () {
+Date.prototype.FormatReleaseDate = function() {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
 }
 
@@ -626,7 +628,7 @@ function scrollLeftOffset(margin) {
 }
 
 //Change event type
-$(document).on("click", ".event-type", function () {
+$(document).on("click", ".event-type", function() {
     $("#eventTypeSelect").panel("open");
 });
 
