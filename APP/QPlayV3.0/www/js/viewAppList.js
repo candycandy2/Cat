@@ -197,6 +197,10 @@ $("#viewAppList").pagecontainer({
                 localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
 
             }
+
+            //destroy
+            $('.applistWidget').applist('destroy');
+            $('.applistWidget').applist();
         }
 
         //change favorite icon after create content

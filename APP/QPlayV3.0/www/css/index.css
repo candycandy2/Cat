@@ -943,7 +943,7 @@ input[type=radio]:checked + label {
 
 .applistWidget {
     width: 100vw;
-    height: 30vw;
+    height: 33vw;
     background: #FFFFFF;
     margin-bottom: 2vw;
 }

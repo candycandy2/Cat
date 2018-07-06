@@ -1,7 +1,12 @@
 $("#viewMyCalendar").pagecontainer({
     create: function (event, ui) {
 
-        var reserveDateList = [], reservePositionList = [];
+        var reserveDateList = [],
+            reservePositionList = [],
+            leaveAppData = {
+                key: 'appleave',
+                secretKey: '86883911af025422b626131ff932a4b5'
+            }
 
         /********************************** function ***********************************/
         function initialCalendar(holidayData) {
@@ -175,7 +180,7 @@ $("#viewMyCalendar").pagecontainer({
             this.failCallback = function (data) { };
 
             var __construct = function () {
-                CustomAPIByKey("POST", true, key, secret, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "",3600,"low");
+                CustomAPIByKey("POST", true, key, secret, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "", 3600, "low");
                 //CustomAPIEx("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "");
             }();
         };
