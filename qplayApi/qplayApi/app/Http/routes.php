@@ -51,7 +51,7 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
 Route::get('/v101/qplay/syncUserJob', 'syncUserController@syncUserJob');
 
 //sendMail
-Route::any('/v101/qplay/sendMail', 'mailController@sendMail');
+Route::post('/v101/qplay/sendMail', 'mailController@sendMail');
 
 //Smart Factory
 Route::any('/v101/qplay/isLogin', 'qplayController@isLogin');
