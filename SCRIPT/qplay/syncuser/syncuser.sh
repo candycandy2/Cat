@@ -14,21 +14,29 @@
 case $1 in
     "staging")
         ServerADD=sa.benq.com
+        if [ "$2" == "first" ]
+            then curlGetAddress="http://qplaytest.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
+        else
+            curlGetAddress="http://qplaytest.benq.com/qplayApi/public/v101/qplay/syncUserJob"
+        fi
         ;;
     "production")
         ServerADD=sa.benq.com
+        if [ "$2" == "first" ]
+            then curlGetAddress="http://qplay.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
+        else
+            curlGetAddress="http://qplay.benq.com/qplayApi/public/v101/qplay/syncUserJob"
+        fi
         ;;
     *) # dev or typo
         ServerADD=10.82.239.140
+        if [ "$2" == "first" ]
+            then curlGetAddress="http://qplaydev.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
+        else
+            curlGetAddress="http://qplaydev.benq.com/qplayApi/public/v101/qplay/syncUserJob"
+        fi
         ;;
 esac
-
-# first execution need append command
-if [ "$2" == "first" ];
-    then CommandAppend="?first=Y"
-else
-    CommandAppend=""
-fi
 
 #execute date
 DATE=`date +%Y%m%d`
@@ -39,8 +47,8 @@ mkdir -p log
 # this array defined the which url need to sync, you can append as [$source_from]='$url'
 declare -A arr
 arr+=(
-["flower"]='http://$1/QTunnel/Sync/'
-["qcsflower"]='http://$1/QTunnel/SyncQCS/'
+["flower"]='http://'$ServerADD'/QTunnel/Sync/'
+["qcsflower"]='http://'$ServerADD'/QTunnel/SyncQCS/'
 )
 
 for key in ${!arr[@]}; do
@@ -72,5 +80,5 @@ for key in ${!arr[@]}; do
 done
     echo 'call syncUserJob ... '
     #if fist time sync,please set first=Y to set source_from to user who are already in qp_user
-    curl -X GET 'http://qplaydev.benq.com/qplayApi/public/v101/qplay/syncUserJob${CommandAppend}'
+    curl -X GET $curlGetAddress
 exit 0
