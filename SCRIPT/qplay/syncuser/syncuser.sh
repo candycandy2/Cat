@@ -24,7 +24,7 @@ case $1 in
 esac
 
 # first execution need append command
-if [ $2 == "first" ];
+if [ "$2" == "first" ];
     then CommandAppend="?first=Y"
 else
     CommandAppend=""
