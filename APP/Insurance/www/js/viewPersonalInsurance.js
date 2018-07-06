@@ -1,13 +1,13 @@
-/*var healthInsurArr = [{emplid:"1607001", INS_ID:"", APP_ID:"", family_id:"1", name:"王小明", relation:"父母", birthday:"1980/01/01", idno:"A123456789", group:"眷屬健保在保", insuredday:"2017-01-01", reason:"", subsidy:"1", certificate:"N", healthcard:"N", applyday:"2017-01-01", dealwith:"已加保", dealwithday:"2017-01-01", remark:"", can_apply:"停保+退保"},
+var healthInsurArr = [{emplid:"1607001", INS_ID:"", APP_ID:"", family_id:"1", name:"王小明", relation:"父母", birthday:"1980/01/01", idno:"A123456789", group:"眷屬健保在保", insuredday:"2017-01-01", reason:"", subsidy:"1", certificate:"N", healthcard:"N", applyday:"2017-01-01", dealwith:"已加保", dealwithday:"2017-01-01", remark:"", can_apply:"停保+退保"},
                       {emplid:"1607001", INS_ID:"", APP_ID:"", family_id:"2", name:"王小美", relation:"父母", birthday:"1980/01/02", idno:"A223456788", group:"眷屬健保在保", insuredday:"2017-01-01", reason:"", subsidy:"1", certificate:"Y", healthcard:"Y", applyday:"2017-01-01", dealwith:"已加保", dealwithday:"2017-01-01", remark:"", can_apply:"停保+退保"},
-                      {emplid:"1607001", INS_ID:"", APP_ID:"", family_id:"3", name:"王晶晶", relation:"祖父母", birthday:"1950/01/02", idno:"A223456888", group:"眷屬健保不在保", insuredday:"", reason:"", subsidy:"5", certificate:"N", healthcard:"Y", applyday:"2017-01-01", dealwith:"", dealwithday:"", remark:"", can_apply:"加保"},
-                      {emplid:"1607001", INS_ID:"", APP_ID:"", family_id:"4", name:"王囧囧", relation:"祖父母", birthday:"1950/01/01", idno:"A123456889", group:"眷屬健保不在保", insuredday:"", reason:"", subsidy:"5", certificate:"N", healthcard:"Y", applyday:"2017-01-01", dealwith:"", dealwithday:"", remark:"", can_apply:"加保"}];*/
+                      {emplid:"1607001", INS_ID:"", APP_ID:"", family_id:"3", name:"王晶晶", relation:"祖父母", birthday:"1950/01/02", idno:"A223456888", group:"眷屬健保不在保", insuredday:"", reason:"", subsidy:"5", certificate:"N", healthcard:"Y", applyday:"2017-01-01", dealwith:"未申請", dealwithday:"", remark:"", can_apply:"加保"},
+                      {emplid:"1607001", INS_ID:"", APP_ID:"", family_id:"4", name:"王囧囧", relation:"祖父母", birthday:"1950/01/01", idno:"A123456889", group:"眷屬健保不在保", insuredday:"", reason:"", subsidy:"5", certificate:"N", healthcard:"Y", applyday:"2017-01-01", dealwith:"已停保", dealwithday:"", remark:"", can_apply:"加保"}];
 /*var groupInsurArr = [{emplid:"1607001", name:"林偉人", goupinsurancetype:"自費一般險(南山)", groupinsurancefun:"本人自費一般險A方案", insuredday:"2017-10-01", status:"生效"},
                      {emplid:"1607001", name:"林小明", goupinsurancetype:"自費一般險(南山)", groupinsurancefun:"祖父母自費一般險A方案", insuredday:"2017-10-01", status:"生效"},
                      {emplid:"1607001", name:"林偉人", goupinsurancetype:"自費意外險(南山)", groupinsurancefun:"本人自費一般險B方案", insuredday:"2017-10-01", status:"生效"},
                      {emplid:"1607001", name:"林小明", goupinsurancetype:"自費意外險(南山)", groupinsurancefun:"祖父母自費一般險B方案", insuredday:"2017-10-01", status:"生效"}];*/
-/*var groupInsurArr = [{emplid:"1607001", name:"林偉人", goupinsurancetype:"自費意外險(南山)", groupinsurancefun:"本人自費一般險B方案", insuredday:"2017-10-01", status:"生效"},
-                     {emplid:"1607001", name:"林小明", goupinsurancetype:"自費意外險(南山)", groupinsurancefun:"祖父母自費一般險B方案", insuredday:"2017-10-01", status:"生效"}];*/
+var groupInsurArr = [{emplid:"1607001", name:"林偉人", goupinsurancetype:"自費意外險(南山)", groupinsurancefun:"本人自費一般險B方案", insuredday:"2017-10-01", status:"生效"},
+                     {emplid:"1607001", name:"林小明", goupinsurancetype:"自費意外險(南山)", groupinsurancefun:"祖父母自費一般險B方案", insuredday:"2017-10-01", status:"生效"}];
 
 $("#viewPersonalInsurance").pagecontainer({
     create: function(event, ui) {
@@ -37,9 +37,9 @@ $("#viewPersonalInsurance").pagecontainer({
             loadingMask("show");
             var self = this;
             var queryData = '<empid>'+ myEmpNo +'</empid>';
-            this.successCallback = function(data) {
-                if (data['ResultCode'] === "1") { 
-                    var groupInsurArr = data['Content'];
+            //this.successCallback = function(data) {
+                //if (data['ResultCode'] === "1") { 
+                    //var groupInsurArr = data['Content'];
                     if (groupInsurArr.length === 0){
                         var normalInsurList = '<div class="empty-list"><div>無</div></div>';               
                         $("#normalInsur").empty().append(normalInsurList);
@@ -91,11 +91,11 @@ $("#viewPersonalInsurance").pagecontainer({
                         }
                     }
                     loadingMask("hide");
-                }
-            };
-            var __construct = function() {
+                //}
+            //};
+            /*var __construct = function() {
                 CustomAPI("POST", true, "QueryGroupInsuranceData", self.successCallback, self.failCallback, queryData, "");
-            }();
+            }();*/
         }
 
         //API:QueryHealthInsuranceFamily  
@@ -103,9 +103,9 @@ $("#viewPersonalInsurance").pagecontainer({
             loadingMask("show");
             var self = this;
             var queryData = '<empid>'+ myEmpNo +'</empid>';
-            this.successCallback = function(data) { 
-                if (data['ResultCode'] === "1") {
-                    var healthInsurArr = data['Content'];
+            //this.successCallback = function(data) { 
+                //if (data['ResultCode'] === "1") {
+                    //var healthInsurArr = data['Content'];
                     if (healthInsurArr.length === 0){
                         var healthInsurList = '<div class="empty-list"><div>無</div></div>';                
                         $("#inHealthInsur").empty().append(healthInsurList);
@@ -160,12 +160,12 @@ $("#viewPersonalInsurance").pagecontainer({
                         
                     }
                     loadingMask("hide");
-                }
-            };
+                //}
+            //};
 
-            var __construct = function() {
+            /*var __construct = function() {
                 CustomAPI("POST", true, "QueryHealthInsuranceFamily", self.successCallback, self.failCallback, queryData, "");
-            }();
+            }();*/
         }
 
         /********************************** page event *************************************/
