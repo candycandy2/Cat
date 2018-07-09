@@ -49,10 +49,7 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-            //3. get reserve
-            // for (var i in reserveAppList) {
-            //     getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
-            // }
+            
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
@@ -88,6 +85,12 @@ $("#viewMain3").pagecontainer({
         $('.scroll-test-link').on('click', function () {
             $.mobile.changePage('#viewScrollTest');
         });
+
+        $('#widgetList').on('click', '.applist-item', function () {
+            var schemeURL = $(this).attr('data-name') + createAPPSchemeURL();
+            openAPP(schemeURL);
+        });
+
 
     }
 });

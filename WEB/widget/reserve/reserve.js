@@ -6,7 +6,6 @@
         { key: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
         { key: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
     ];
-    console.log(widgetItem);
 
     loadWidgetCSS();
 
@@ -59,7 +58,10 @@
         var day = now.getDate() < 10 ? '0' + now.getDate().toString() : now.getDate().toString();
         var today = year + '-' + month + '-' + day;
 
-        if (reserveList[today] != undefined) {
+        if (typeof reserveList[today] == 'undefined') {
+            $('.widget-reserve-null').show();
+
+        } else {
             var content = '';
             for (var i in reserveList[today]) {
                 if (i < 3) {
@@ -74,8 +76,6 @@
             }
             $('.widget-reserve-list').html('').append(content);
             $('.widget-reserve-null').hide();
-        } else {
-            $('.widget-reserve-null').show();
         }
     }
 
@@ -93,7 +93,7 @@
             }
 
             appendWidgetHTML(this);
-            
+
         });
     }
 

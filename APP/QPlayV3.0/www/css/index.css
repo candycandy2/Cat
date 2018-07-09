@@ -1420,7 +1420,7 @@ input[type=radio]:checked + label {
     padding: 0px;
 	float: right;
     border: none;
-    height: 22vw;
+    height: 100%;
     vertical-align: middle;
 }
 
