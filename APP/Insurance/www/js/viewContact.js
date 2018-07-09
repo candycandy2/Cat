@@ -1,7 +1,10 @@
-var HR = [{eName:"Anna.W.Wu", site:"Qisda", ext:"8800-1234", time:"Monday to Friday", room:"2F HR Office", email:"Anna.W.Wu@Qisda.com"}, 
-          {eName:"Andrey Kirsh-Tumanov", site:"BenQ", ext:"8800-1234", time:"Monday to Friday", room:"2F HR Office", email:"Andrey Kirsh-Tumanov@BenQ.com"}];
-var insurStaff = [{cName:"李愛濱", site:"台北", ext:"8800-1234", time:"every Tuesday and Thursday at 12:30-13:30", room:"2F物理治療室", email:"MLove@nanashan.com"},
-                  {cName:"李淑卿", site:"桃園", ext:"8800-1234", time:"every Tuesday and Thursday at 12:30-13:30", room:"2F物理治療室", email:"MLove@nanashan.com"}];
+var HR = [{eName:"Anna.W.Wu", site:"Qisda", ext:"8800-2351", time:"星期一至星期五", room:"HR Office", email:"Anna.W.Wu@Qisda.com"}, 
+          {eName:"Jill.Lee", site:"BenQ", ext:"8800-7718", time:"星期一至星期五", room:"HR Office", email:"Jill.Lee@BenQ.com"}];
+var insurStaff = [{cName:"陳毓慈", site:"台北", ext:"0918-930118", time:"星期二、星期四 12:30~13:30", room:"2F 物理治療室", email:"0094106725@agt.taiwanlife.com"},
+                  {cName:"王婷中", site:"台北", ext:"0939-683521", time:"星期二、星期四 12:30~13:30", room:"2F 物理治療室", email:""},
+                  {cName:"吳宗穎", site:"台北", ext:"0918-880037", time:"星期二、星期四 12:30~13:30", room:"2F 物理治療室", email:"0094201669@agt.taiwanlife.com"},
+                  {cName:"鄭鈞陽", site:"桃園", ext:"0927-261507", time:"星期一、星期四 12:00~13:20", room:"2F OK旁走廊", email:"nickyvi0203@gmail.com"},
+                  {cName:"黃千芩", site:"桃園", ext:"0958-946371", time:"星期一、星期四 12:00~13:20", room:"2F OK旁走廊", email:"vivi732329@gmail.com"}];
 
 $("#viewContact").pagecontainer({
     create: function(event, ui) {
