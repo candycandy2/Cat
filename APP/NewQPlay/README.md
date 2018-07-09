@@ -744,7 +744,7 @@ app_version | content | 1 | String | APP 版號
 app_version_name | content | 1 | String | APP 版本名稱
 app_version_log | content | 1 | String | APP 更版說明
 ur | content | 1 | String | Android/iOS 版本下載URL
-size | content  1 | Integer | 檔案大小，單位 Bytes
+size | content | 1 | Integer | 檔案大小，單位 Bytes
 pic_list | content | 1 | Container | Container
 pic_url | pic_list | 0-1 | String | Picture 下載 URL
 
