@@ -198,7 +198,23 @@ $("#viewPersonalInsurance").pagecontainer({
             $("label[for=fam-insur-tab-2]").addClass('ui-btn-active'); 
             $('#pageInsurStatus-2').show();
             $('#pageInsurStatus-1').hide();             
-        });           
+        });  
+
+        /*$(".family-add").on("click", function() {
+            $.mobile.changePage("#viewApplyInsurance"); 
+        }); */
+
+        $(document).on("click", ".family-add", function() {           
+            var clickFamilyID = $(this).parents('.family-list').children("div").attr("data-id");
+            var clickFamilyData = healthInsurArr.filter(function(item, index, array){
+                if (item.family_id === clickFamilyID){
+                    return item.name;
+                }
+            });
+            clickFamilyName = clickFamilyData[0].name;
+            $.mobile.changePage("#viewApplyInsurance"); 
+
+        });        
 
     }
 });
