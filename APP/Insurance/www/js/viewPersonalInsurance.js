@@ -200,10 +200,6 @@ $("#viewPersonalInsurance").pagecontainer({
             $('#pageInsurStatus-1').hide();             
         });  
 
-        /*$(".family-add").on("click", function() {
-            $.mobile.changePage("#viewApplyInsurance"); 
-        }); */
-
         $(document).on("click", ".family-add", function() {           
             var clickFamilyID = $(this).parents('.family-list').children("div").attr("data-id");
             var clickFamilyData = healthInsurArr.filter(function(item, index, array){
