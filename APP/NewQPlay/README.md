@@ -14,8 +14,8 @@ NewQPlay API Readme.md
     - [checkAppVersion](#checkappversion)
     - [sendPushToken](#sendpushtoken)
     - [getMessageList](#getmessagelist)
-    - [getFunctionList](#getFunctionList)
-    - [getFunctionDetail](#getFunctionDetail)
+    - [getFunctionList](#getfunctionlist)
+    - [getFunctionDetail](#getfunctiondetail)
     - [login](#login)
 
 
