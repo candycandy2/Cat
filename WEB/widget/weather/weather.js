@@ -1,6 +1,5 @@
 (function ($) {
     var widgetItem = sessionStorage.getItem('widgetItem');
-    console.log(widgetItem);
 
     loadWidgetCSS();
 
