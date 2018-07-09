@@ -82,6 +82,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             'Apache Cordova Team' +
                         '</author>' +
                         '<content src="index.html" />' +
+                        '<preference name="DisallowOverscroll" value="true" />' +
                         '<preference name="orientation" value="portrait" />' +
                         '<access origin="*" />' +
                         '<allow-navigation href="*" />' +
