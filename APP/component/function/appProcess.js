@@ -293,6 +293,15 @@ function getSignature(action, signatureTime) {
     }
 }
 
+function getSignatureByKey(action, signatureTime, secret) {
+    if (action === "getTime") {
+        return Math.round(new Date().getTime() / 1000);
+    } else {
+        var hash = CryptoJS.HmacSHA256(signatureTime.toString(), secret);
+        return CryptoJS.enc.Base64.stringify(hash);
+    }
+}
+
 var g_loadingMask_finish = true;
 var g_loadingMask_Interval = null;
 
