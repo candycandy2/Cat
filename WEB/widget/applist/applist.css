@@ -12,9 +12,10 @@
 .applist-widget > .applist-main {
     height: 23vw;
     padding-left: 5vw;
+    overflow: scroll;
 }
 
-.applist-widget > .applist-main > div {
+/* .applist-widget > .applist-main > div {
     float: left;
 }
 
@@ -26,6 +27,10 @@
 .applist-widget .applist-main-add img {
     width: 100%;
     height: 100%;
+} */
+
+.applist-main-icon {
+    width: 150vw;
 }
 
 .applist-item {

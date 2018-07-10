@@ -8,7 +8,7 @@
             .attr({
                 rel: "stylesheet",
                 type: "text/css",
-                href: "http://qplaydev.benq.com/widgetDemo/message/message.css"
+                href: serverURL + "/widget/message/message.css"
             })
             .appendTo("head");
     }
@@ -16,23 +16,25 @@
     function createMessage() {
         var msgArr = loginData['messagecontent']['message_list'];
         var content = '';
-        if(msgArr.length > 0) {
-            for (var i in msgArr) {
-                if (i < 3) {
-                    content += '<div class="widget-msg-list"><div class="widget-msg-time">' +
-                        msgArr[i].create_time.split(' ')[0] +
-                        '</div><div class="widget-msg-title">' +
-                        msgArr[i].message_title +
-                        '</div></div>';
-                }
+        var count = 0;
+
+        for (var i in msgArr) {
+            if (msgArr[i].read != 'D' && count < 3) {
+                content += '<div class="widget-msg-list"><div class="widget-msg-time">' +
+                    msgArr[i].create_time.split(' ')[0] +
+                    '</div><div class="widget-msg-title">' +
+                    msgArr[i].message_title +
+                    '</div></div>';
+                count++;
             }
-            
-        } else {
+        }
+
+        if (content == '') {
             content = '<div class="widget-none-msg">暂无消息<div>';
         }
 
         $('.' + widgetItem).append(content);
-        
+
     }
 
     $.fn.message = function (options) {

@@ -91,23 +91,6 @@ window.initialSuccess = function (data) {
     appInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
-
-    //get all reserve add by allen
-    // for (var i in reserveAppList) {
-    //     getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
-    // }
-
-    //动态载入widget.js
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    if (loginData["versionName"].indexOf("Staging") !== -1) {
-        script.src = "http://qplaytest.benq.com/widget/widget.js";
-    } else if (loginData["versionName"].indexOf("Development") !== -1) {
-        script.src = "http://qplaydev.benq.com/widgetDemo/widget.js";
-    } else {
-        script.src = "http://qplay.benq.com/widget/widget.js";
-    }
-    document.head.appendChild(script);
 }
 
 function getMyReserve(key, secret) {
