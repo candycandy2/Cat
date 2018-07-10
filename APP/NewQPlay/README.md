@@ -14,6 +14,8 @@ NewQPlay API Readme.md
     - [checkAppVersion](#checkappversion)
     - [sendPushToken](#sendpushtoken)
     - [getMessageList](#getmessagelist)
+    - [getFunctionList](#getfunctionlist)
+    - [getFunctionDetail](#getfunctiondetail)
     - [login](#login)
 
 
@@ -22,7 +24,7 @@ NewQPlay API Readme.md
 
 Register | Token | Security | APP/Function | Log | PUSH | Portal(HR)
 :------------ | :------------- | :------------- | :------------- | :------------- | :------------- | :-------------
-1.register <br> 2.isRegister | 1.renewToken <br> 2.login <br> 3.logout | 1.getSecurityList | 1.getAppList <br> 2.checkAppVersion | 1.addAppLog <br> 2.addDownloadHit | 1.sendPushToken <br> 2.updateMessage <br> 3.getMessageList <br> 4.getMessageDetail | 1.PortalList <br> 2.PortalListDetail
+1.register <br> 2.isRegister | 1.renewToken <br> 2.login <br> 3.logout | 1.getSecurityList | 1.getAppList <br> 2.checkAppVersion <br> 3.getFunctionList <br> 4.getFunctionDetail | 1.addAppLog <br> 2.addDownloadHit | 1.sendPushToken <br> 2.updateMessage <br> 3.getMessageList <br> 4.getMessageDetail | 1.PortalList <br> 2.PortalListDetail
 
 
 ----
@@ -643,3 +645,112 @@ security_updated_at | security_update_list | 0-N | Integer | 這個欄位表示s
             });
 
 ```
+
+----
+## *getFunctionList*
+```
+取得此 APP 底下的所有 Function，並且回傳各個 Function 的使用權限，如果是 Function Type = APP，另外告知 APP 的 packageName 和 Icon URL。
+```
+
+### 請求方法
+```
+GET /v101/qplay/getFunctionList?lang=en-us
+```
+
+### header請求參數
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
+app-key | 必填 | 專案名稱, 此專案名稱為 qplay
+signature-time |必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
+signature | 必填 | Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) ) <br> 此專案的AppSecretKey 為 swexuc453refebraXecujeruBraqAc4e
+token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <br> token值需要使用sha256加密, 加密時需要添加salt值, salt值為request header內的Signature-Time參數 <br> $token = base64_encode (hash_hmac(‘sha256’, $Signature-Time, $token’, true));
+loginid | 必填 | AD login id
+ad_flag | 否 | 是否屬於 QAccount User <br> (之後 API Login 回傳的資料會包含 ad_flag，到時候在傳入此資料)
+
+### 回應訊息
+節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :------------- | :-------------
+result_code | NA | 1 | String | 回應代碼
+message | NA | 1 | String | 回應訊息描述
+token_valid | NA | 0-1 | Integer | 本次使用的token的有效時間 <br> 格式為Unix時間搓記 <br> 2016年3月25日 下午 01:49:56 換算為1458884996
+content | NA | 0-1 | Container | 回應訊息內容Container
+function_list | content | 0-1 | Container | Function列表container, 有多個 Function
+function_variable | function_list | 0-1 | String | Function Variable
+function_content | function_list | 0-1 | Container | 單一個 Function 的資料內容 Container
+right | function_content | 0-1 | String | Function的使用權限 : <br> Y : 有權限 <br> N : 沒有權限
+type | function_content | 0-1 | String | Function 類別 : <br> FUN : Function <br> APP : Application
+package_name | function_content | 0-1 | String | APP 的 package name。<br>當 type = APP，才會有此資料。
+icon | function_content | 0-1 | String | APP 的Icon URL。<br>當 type = APP，才會有此資料。
+
+```
+Check Poit:
+1.	Header 預設的資料 ad_flag，初期不用帶入，每次使用 loginid 至 `qp_user` 取得。
+2.	承上， 之後 API Login 會修改回傳的資料內容，會包含 ad_flag，在由 APP 端帶入 ad_flag，不需要再透過 `qp_user` 取得。
+3.	初期，如果不需要回傳 APP List Data，可以不需要使用 `qp_app_head`。
+```
+
+### Example
+?????? <br>
+?????? <br>
+??????
+
+----
+
+## *getFunctionDetail*
+
+```
+取得此 Function的詳細資料，只有當 Function Type = APP 的時候，需要使用此 API。
+```
+
+### 請求方法
+```
+GET /v101/qplay/getFunctionDetail?lang=en-us&package_name=com.qplay.appqplay&device_type=android
+```
+
+### header請求參數
+
+欄位名稱 | 是否必填 | 描述
+:------------ | :------------- | :-------------
+content-type | 必填 | 訊息體類型，ex.使用POST方法傳輸, 類型需為application/json
+app-key | 必填 | 專案名稱, 此專案名稱為 qplay
+signature-time |必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
+signature | 必填 | Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) ) <br> 此專案的AppSecretKey 為 swexuc453refebraXecujeruBraqAc4e
+token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <br> token值需要使用sha256加密, 加密時需要添加salt值, salt值為request header內的Signature-Time參數 <br> $token = base64_encode (hash_hmac(‘sha256’, $Signature-Time, $token’, true));    
+    
+### 網址列請求參數： 
+
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+package_name | Required | string | app的package name
+device_type | Required | string | ios <br> android <br> 其中一個
+
+### 回應訊息
+節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :------------- | :-------------
+result_code | NA | 1 | String | 回應代碼
+message | NA | 1 | String | 回應訊息描述
+token_valid | NA | 0-1 | Integer | 本次使用的token的有效時間 <br> 格式為Unix時間搓記 <br> 2016年3月25日 下午 01:49:56 換算為1458884996
+content | NA | 0-1 | Container | 回應訊息內容Container
+app_id | content | 1 | String | APP Unique ID
+app_name | content | 1 | String | APP 名稱
+app_summary | content | 1 | String | APP 短摘要
+app_description | content | 1 | String | APP 長描述
+default_lang | content | 1 | String | APP 的預設語系
+security_level | content | 1 | String | APP 的安全等級
+sequence | content | 1 | Integer | APP 排序
+icon_url | content | 1 | String | Icon 圖標下載 URL
+app_version | content | 1 | String | APP 版號
+app_version_name | content | 1 | String | APP 版本名稱
+app_version_log | content | 1 | String | APP 更版說明
+ur | content | 1 | String | Android/iOS 版本下載URL
+size | content | 1 | Integer | 檔案大小，單位 Bytes
+pic_list | content | 1 | Container | Container
+pic_url | pic_list | 0-1 | String | Picture 下載 URL
+
+### Example
+?????? <br>
+?????? <br>
+??????
+
+----
