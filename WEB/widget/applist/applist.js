@@ -1,6 +1,5 @@
 (function ($) {
     var widgetItem = sessionStorage.getItem('widgetItem');
-    console.log(widgetItem);
     var favoriteApp = null;
 
     loadWidgetCSS();
@@ -31,7 +30,9 @@
         var content = '';
         if (favoriteApp != null && favoriteApp.length > 0) {
             for (var i in favoriteApp) {
-                content += '<div class="applist-item"><a value="" id="" href="#"><img src="' +
+                content += '<div class="applist-item" data-name="' +
+                    favoriteApp[i].package_name +
+                    '"><a value="" id="" href="#"><img src="' +
                     favoriteApp[i].icon_url +
                     '" style="width:15vw;"></a><p class="app-list-name">' +
                     favoriteApp[i].app_name +

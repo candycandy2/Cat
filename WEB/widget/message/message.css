@@ -19,3 +19,10 @@
     overflow: hidden;
     word-wrap: break-word;
 }
+
+.widget-none-msg {
+    height: 20vw;
+    line-height: 20vw;
+    /* text-align: center; */
+    padding-left: 5vw;
+}

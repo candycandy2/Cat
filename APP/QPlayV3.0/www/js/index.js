@@ -96,6 +96,18 @@ window.initialSuccess = function (data) {
     // for (var i in reserveAppList) {
     //     getMyReserve(reserveAppList[i].app, reserveAppList[i].secretKey);
     // }
+
+    //动态载入widget.js
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    if (loginData["versionName"].indexOf("Staging") !== -1) {
+        script.src = "http://qplaytest.benq.com/widget/widget.js";
+    } else if (loginData["versionName"].indexOf("Development") !== -1) {
+        script.src = "http://qplaydev.benq.com/widgetDemo/widget.js";
+    } else {
+        script.src = "http://qplay.benq.com/widget/widget.js";
+    }
+    document.head.appendChild(script);
 }
 
 function getMyReserve(key, secret) {
@@ -117,7 +129,7 @@ function getMyReserve(key, secret) {
     }
 
     this.successCallback = function (data) {
-        console.log(data);
+        //console.log(data);
 
         if (data['ResultCode'] === "1") {
             var resultArr = data['Content'];
@@ -186,19 +198,19 @@ function getMyReserve(key, secret) {
 
                 reserveDirty = true;
 
-                formatReserveList();
             }
 
-            if (reserveDirty && reserveCalendar != null) {
-                formatReserveList();
-                reserveCalendar.reserveData = reserveList;
-                reserveCalendar.refreshReserve(reserveList);
-                reserveDirty = false;
-            }
+        } else if (data['ResultCode'] === "002901") { }
 
+        if (key == "appmassage") {
+            formatReserveList();
+        }
 
-        } else if (data['ResultCode'] === "002901") {
-
+        if (reserveDirty && reserveCalendar != null) {
+            formatReserveList();
+            reserveCalendar.reserveData = reserveList;
+            reserveCalendar.refreshReserve(reserveList);
+            reserveDirty = false;
         }
     };
 

@@ -328,7 +328,6 @@ $("#viewMain2-1").pagecontainer({
 
             $(document).on("click", "#eventTypeSelect #qplay3", function() {
                 $.mobile.changePage('#viewMain3');
-                //$.mobile.changePage('#viewFAQ');
             });
 
             $(document).on("click", "#eventTypeSelect #faq", function() {
