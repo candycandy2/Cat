@@ -4,7 +4,7 @@
     loadWidgetCSS();
 
     function appendWidgetHTML(target) {
-        $.get("http://qplaydev.benq.com/widgetDemo/carousel/carousel.html", function (data) {
+        $.get(serverURL + "/widget/carousel/carousel.html", function (data) {
             $('.' + widgetItem).append(data);
 
         }, "html");
@@ -15,7 +15,7 @@
             .attr({
                 rel: "stylesheet",
                 type: "text/css",
-                href: "http://qplaydev.benq.com/widgetDemo/carousel/carousel.css"
+                href: serverURL + "/widget/carousel/carousel.css"
             })
             .appendTo("head");
     }

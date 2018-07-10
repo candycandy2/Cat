@@ -20,19 +20,8 @@ $("#viewMain3").pagecontainer({
             sessionStorage.setItem('widgetItem', widgetItem);
 
             //5. load js
-            var strUrl = "";
-            if (loginData["versionName"].indexOf("Staging") !== -1) {
-                //script.src = "http://qplaytest.benq.com/widget/widget.js";
-                strUrl = "http://qplaytest.benq.com/widget/";
-            } else if (loginData["versionName"].indexOf("Development") !== -1) {
-                //script.src = "http://qplaydev.benq.com/widgetDemo/widget.js";
-                strUrl = "http://qplaydev.benq.com/widgetDemo/";
-            } else {
-                //script.src = "http://qplay.benq.com/widget/widget.js";
-                strUrl = "http://qplay.benq.com/widget/";
-            }
             //$.getScript("http://qplaydev.benq.com/widgetDemo/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
-            $.getScript(strUrl + widgetList[index].name + "/" + widgetList[index].name + ".js")
+            $.getScript(serverURL + "/widget/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
                 .done(function (script, textStatus) {
                     loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
                 })
@@ -74,7 +63,7 @@ $("#viewMain3").pagecontainer({
             $.mobile.changePage('#viewMyCalendar');
         });
 
-        $('#widgetList').on('click', '.applist-main-add', function () {
+        $('#widgetList').on('click', '.add-favorite-list', function () {
             $.mobile.changePage('#viewAppList');
         });
 
