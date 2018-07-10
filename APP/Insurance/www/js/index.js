@@ -10,6 +10,7 @@ var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
 var clickEditSettingID = '';
 var clickFamilyName;
+var viewPersonalInsuranceShow = false;
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
