@@ -1133,23 +1133,9 @@ div.scrollmenu a {
     margin-top: 1.16vw;
     margin-bottom: 2.14vw;
 }
-.apply-reason {
-    height: 12.81vw;
-    color: #0f0f0f;
-    border-bottom: 1px solid #d6d6d6;
-}
 
-.apply-reason>div:nth-of-type(1) {
-    height: 3.349vw;
-}
-
-.apply-reason>div:nth-of-type(2) {
-    height: 4.18vw;
-    margin-top: 1.16vw;
-}
-
-.apply-reason>div:nth-of-type(2)>span {
-    display: inline-block;
+#applyReason>select {
+    padding-left: 0;
 }
 
 .family-add-title, 
@@ -1164,6 +1150,5 @@ div.scrollmenu a {
 }
 
 #viewInsurApplication {
-    margin-top: 5vw;
-    margin-left: 3.71vw;
+    margin: 5vw 3.71vw 0vw;
 }

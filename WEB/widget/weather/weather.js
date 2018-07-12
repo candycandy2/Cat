@@ -5,7 +5,7 @@
 
     function appendWidgetHTML(target) {
         $.ajaxSettings.async = false;
-        $.get("http://qplaydev.benq.com/widgetDemo/weather/weather.html", function (data) {
+        $.get(serverURL + "/widget/weather/weather.html", function (data) {
             $('.' + widgetItem).append(data);
 
         }, "html");
@@ -18,7 +18,7 @@
             .attr({
                 rel: "stylesheet",
                 type: "text/css",
-                href: "http://qplaydev.benq.com/widgetDemo/weather/weather.css"
+                href: serverURL + "/widget/weather/weather.css"
             })
             .appendTo("head");
     }
