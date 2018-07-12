@@ -14,14 +14,14 @@
             .attr({
                 rel: "stylesheet",
                 type: "text/css",
-                href: "http://qplaydev.benq.com/widgetDemo/reserve/reserve.css"
+                href: serverURL + "/widget/reserve/reserve.css"
             })
             .appendTo("head");
     }
 
     function appendWidgetHTML(target) {
         $.ajaxSettings.async = false;
-        $.get("http://qplaydev.benq.com/widgetDemo/reserve/reserve.html", function (data) {
+        $.get(serverURL + "/widget/reserve/reserve.html", function (data) {
             $('.' + widgetItem).append(data);
 
         }, "html");

@@ -138,6 +138,14 @@ var app = {
         setTimeout(function() {
             readConfig();
             addPlugin();
+
+            if (appKey === qplayAppKey) {
+                //动态载入widget.js
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.src = serverURL + "/widget/widget.js";
+                document.head.appendChild(script);
+            }
         }, 0);
 
         //for touch overflow content Enabled
@@ -1140,10 +1148,10 @@ function getLoginDataCallBack() {
 
     loginData['doLoginDataCallBack'] = false;
 
-    $.mobile.changePage('#viewMain2-1', {
+    $.mobile.changePage('#viewMain3', {
         reloadPage: true
     });
-    $.mobile.changePage('#viewMain2-1');
+    $.mobile.changePage('#viewMain3');
 }
 
 //For Scheme, in iOS/Android, when open APP by Scheme, this function will be called
@@ -1216,7 +1224,7 @@ function handleOpenURL(url) {
         //[APP is in action or background] need to following step.
         if (loginData['doLoginDataCallBack'] === true) {
             $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
-            $("#viewMain2-1").removeClass("ui-page ui-page-theme-a ui-page-active");
+            $("#viewMain3").removeClass("ui-page ui-page-theme-a ui-page-active");
 
             if (appInitialFinish === true) {
                 var checkAppVer = new checkAppVersion();

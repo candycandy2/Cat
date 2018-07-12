@@ -20,7 +20,8 @@ $("#viewMain3").pagecontainer({
             sessionStorage.setItem('widgetItem', widgetItem);
 
             //5. load js
-            $.getScript("http://qplaydev.benq.com/widgetDemo/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
+            //$.getScript("http://qplaydev.benq.com/widgetDemo/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
+            $.getScript(serverURL + "/widget/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
                 .done(function (script, textStatus) {
                     loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
                 })
@@ -37,7 +38,7 @@ $("#viewMain3").pagecontainer({
                 loadAndRunScript(0, widgetList[0].enabled);
 
                 //2. get message
-                if(!callGetMessageList && loginData["msgDateFrom"] === null) {
+                if (!callGetMessageList && loginData["msgDateFrom"] === null) {
                     msgDateFromType = 'month';
                     var clientTimestamp = getTimestamp();
                     loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
@@ -49,7 +50,7 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-            
+
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
@@ -62,7 +63,7 @@ $("#viewMain3").pagecontainer({
             $.mobile.changePage('#viewMyCalendar');
         });
 
-        $('#widgetList').on('click', '.applist-main-add', function () {
+        $('#widgetList').on('click', '.add-favorite-list', function () {
             $.mobile.changePage('#viewAppList');
         });
 
