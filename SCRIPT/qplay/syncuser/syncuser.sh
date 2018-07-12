@@ -14,6 +14,7 @@
 case $1 in
     "staging")
         ServerADD=sa.benq.com
+        Protocol='https'
         if [ "$2" == "first" ]
             then curlGetAddress="http://qplaytest.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
         else
@@ -22,6 +23,7 @@ case $1 in
         ;;
     "production")
         ServerADD=sa.benq.com
+        Protocol='https'
         if [ "$2" == "first" ]
             then curlGetAddress="http://qplay.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
         else
@@ -30,6 +32,7 @@ case $1 in
         ;;
     *) # dev or typo
         ServerADD=10.82.239.140
+        Protocol='http'
         if [ "$2" == "first" ]
             then curlGetAddress="http://qplaydev.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
         else
@@ -47,8 +50,8 @@ mkdir -p log
 # this array defined the which url need to sync, you can append as [$source_from]='$url'
 declare -A arr
 arr+=(
-["flower"]='http://'$ServerADD'/QTunnel/Sync/'
-["qcsflower"]='http://'$ServerADD'/QTunnel/SyncQCS/'
+["flower"]=$Protocol'://'$ServerADD'/QTunnel/Sync/'
+["qcsflower"]=$Protocol'://'$ServerADD'/QTunnel/SyncQCS/'
 )
 
 for key in ${!arr[@]}; do
