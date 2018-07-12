@@ -41,6 +41,7 @@ $("#viewApplyInsurance").pagecontainer({
         /********************************** page event *************************************/
         $("#viewApplyInsurance").one("pagebeforeshow", function (event, ui) {
             getApplyReasonList();
+            $("#applyReason").attr("placeholder", langStr["str_130"]);
         });
 
         $("#viewApplyInsurance").on("pageshow", function (event, ui) {
