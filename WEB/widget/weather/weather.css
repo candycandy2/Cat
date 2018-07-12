@@ -1,0 +1,49 @@
+.weather-widget {
+    width: 100%;
+    height: 100%;
+}
+
+.weather-widget > div {
+    float: left;
+}
+
+.weather-widget::after {
+    clear: both;
+}
+
+.weather-temp {
+    width: 32.5vw;
+    height: 100%;
+}
+
+.weather-loca {
+    width: 45vw;
+    height: 100%;
+}
+
+.weather-temp > div:nth-of-type(1) {
+    height: 66%;
+    text-indent: 5vw;
+    line-height: 2;
+    font-size: 10vw;
+}
+
+.weather-temp > div:nth-of-type(2) {
+    height: 33%;
+    font-size: 5vw;
+    text-align: center;
+}
+
+.weather-loca > div {
+    height: 30%;
+    line-height: 3;
+}
+
+.weather-img {
+    width: 17.5vw;
+    height: 100%;
+}
+
+.weather-img img {
+    margin-top: 7vw;
+}

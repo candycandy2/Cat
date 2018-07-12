@@ -177,7 +177,8 @@ $("#viewAppList").pagecontainer({
                         appobj = {
                             app_code: applist[i].app_code,
                             icon_url: applist[i].icon_url,
-                            app_name: name
+                            app_name: name,
+                            package_name: applist[i].package_name.split('.')[2],
                         }
                         favoriteList.push(appobj);
                         break;

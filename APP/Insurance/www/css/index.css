@@ -1089,7 +1089,8 @@ div.scrollmenu a {
 .signupTimeOverMsg >.ui-content,
 .manageTimeOverMsg >.ui-content,
 .selectTimeOverMsg >.ui-content,
-.recordTimeOverMsg >.ui-content {
+.recordTimeOverMsg >.ui-content,
+.confirmCancelApply >.ui-content {
     padding: 0 !important;
 }
 
@@ -1101,7 +1102,8 @@ div.scrollmenu a {
 .signupTimeOverMsg .ui-content>.header,
 .manageTimeOverMsg .ui-content>.header,
 .selectTimeOverMsg .ui-content>.header,
-.recordTimeOverMsg .ui-content>.header {
+.recordTimeOverMsg .ui-content>.header,
+.confirmCancelApply .ui-content>.header {
     margin-top: 14%;
 }
 
@@ -1113,6 +1115,40 @@ div.scrollmenu a {
 .signupTimeOverMsg .ui-content>.main,
 .manageTimeOverMsg .ui-content>.main,
 .selectTimeOverMsg .ui-content>.main,
-.recordTimeOverMsg .ui-content>.main {
+.recordTimeOverMsg .ui-content>.main,
+.confirmCancelApply .ui-content>.main {
     margin-top: 12%;
+}
+
+/********************************************** viewApplyInsurance *********************************************/
+
+.apply-insurance-form {
+    color: #0f0f0f;
+    border-bottom: 1px solid #d6d6d6;
+    margin-bottom: 4.3vw;
+}
+
+.apply-insurance-form>div:nth-of-type(2),
+.apply-insurance-form>input {
+    margin-top: 1.16vw;
+    margin-bottom: 2.14vw;
+}
+
+#applyReason>select {
+    padding-left: 0;
+}
+
+.family-add-title, 
+.withdraw-insur-title, 
+.stop-insur-title,
+.recover-insur-title { 
+    display:none;
+}
+
+#backPersonalInsurance {
+    width: 4.934VW;
+}
+
+#viewInsurApplication {
+    margin: 5vw 3.71vw 0vw;
 }
