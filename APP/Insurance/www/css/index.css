@@ -1129,7 +1129,9 @@ div.scrollmenu a {
 }
 
 .apply-insurance-form>div:nth-of-type(2),
-.apply-insurance-form>input {
+.apply-insurance-form>input,
+.apply-insurance-form .overlap-label-icon,
+.apply-insurance-form .overlap-label-text {
     margin-top: 1.16vw;
     margin-bottom: 2.14vw;
 }
@@ -1151,4 +1153,73 @@ div.scrollmenu a {
 
 #viewInsurApplication {
     margin: 5vw 3.71vw 0vw;
+}
+
+.overlap-label-icon {
+    clear: both;
+    float: left;
+}
+
+.overlap-label-text {
+    line-height: 1;
+    padding-left: 8.6vw;
+    padding-top: 0.9vw;
+    width: 85%;
+    color: #0F0F0F;
+    font-weight: normal;
+    font-size: 4.18vw !important;
+}
+
+input[type=radio] {
+    display:none;
+}
+
+input[type=radio] + label {
+    background: url('../img/radio_blue.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=radio]:checked + label {
+    background: url('../img/radio_select_blue.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+.apply-insurance-form>div:nth-of-type(2) {
+    display: inline-block;
+}
+
+.apply-insurance-form>div:nth-of-type(3) {
+    display: inline-block;
+    margin-left: 8.196vw;
+}
+
+.reason-textarea {
+    resize: none;
+    width: 86vw;
+    height: 9.17vw;
+    border: 0;
+    overflow-y: auto;
+    -webkit-appearance: none;
+}
+
+.insur-button-style {
+    overflow: hidden;
+    background-color: #2d89bc;
+    color: #ffffff;
+    border-style: none;
+    text-align: center;
+    line-height: 3.5;
+    margin-top: 10vw; /*Need to adjust*/
+}
+
+.apply-form-bottom>div:nth-of-type(2) {
+    margin-top: 1.16vw;
 }
