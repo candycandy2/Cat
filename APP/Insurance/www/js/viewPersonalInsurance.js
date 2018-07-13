@@ -207,7 +207,10 @@ $("#viewPersonalInsurance").pagecontainer({
                 var doQueryHealthInsuranceList = new queryHealthInsuranceList(myEmpNo);
                 var doQueryGroupInsuranceList = new queryGroupInsuranceList(myEmpNo);   
                 viewPersonalInsuranceShow = true; 
-            }              
+            } else {
+                loadingMask("hide");  
+            }  
+                     
         });
 
         /********************************** dom event *************************************/
@@ -232,7 +235,20 @@ $("#viewPersonalInsurance").pagecontainer({
                     return item.name;
                 }
             });
-            clickFamilyName =  $.trim(clickFamilyData[0].name);
+            //將QueryHealthInsuranceFamily回傳的值傳遞至viewApplyInsurance
+            clickFamilyName = $.trim(clickFamilyData[0].name);
+            clickRelation = $.trim(clickFamilyData[0].relation);
+            clickBirth = $.trim(clickFamilyData[0].birthday);
+            //計算眷屬年齡age
+            var today = new Date();
+            var birthDate = new Date(clickBirth);
+            var age = today.getFullYear() - birthDate.getFullYear(); 
+            var birthMonth = today.getMonth() - birthDate.getMonth();
+            if (birthMonth < 0 || (birthMonth === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            clickAge = age;
+            clickID = $.trim(clickFamilyData[0].idno);
             $.mobile.changePage("#viewApplyInsurance"); 
         });        
 
