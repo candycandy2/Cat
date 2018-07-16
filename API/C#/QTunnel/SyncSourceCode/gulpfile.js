@@ -32,7 +32,7 @@ var infoContent = 'using System.Reflection;\n' +
 				    		  '//      Revision\n' +
 				    		  '//\n' +
 				    		  '// You can specify all the values or you can default the Build and Revision Numbers\n' +
-				    		  '// by using the '*' as shown below:\n' +
+				    		  '// by using the \'*\' as shown below:\n' +
                   '// [assembly: AssemblyVersion("1.0.*")]\n' +
 				    		  '[assembly: AssemblyVersion("' + process.env.vname + '")]\n' +
 				    		  '[assembly: AssemblyFileVersion("' + process.env.vname + '")]\n' +
