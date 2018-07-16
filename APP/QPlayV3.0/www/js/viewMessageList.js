@@ -28,7 +28,7 @@ $("#viewMessageList").pagecontainer({
         function createMessageByType() {
             //1. html
             var resultArr = loginData['messagecontent']['message_list'];
-            console.log(resultArr);
+            //console.log(resultArr);
 
             var newsContent = '';
             var eventContent = '';
