@@ -8,13 +8,14 @@
 #              staging/production normal execute command: syncuser.sh staging/production
 #              dev first execute command: syncuser.sh dev first
 #              dev narmal execute command: syncuser.sh dev
-#
-
+#   2018/07/13 Cleo.W.Chan Fix Bug
+#			   according to command parameter,pass env patameter to error_handle
 # assign dev/staging/production server address
 case $1 in
-    "staging")
+	"staging")
         ServerADD=sa.benq.com
         Protocol='https'
+        env='test'
         if [ "$2" == "first" ]
             then curlGetAddress="http://qplaytest.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
         else
@@ -24,6 +25,7 @@ case $1 in
     "production")
         ServerADD=sa.benq.com
         Protocol='https'
+        env=''
         if [ "$2" == "first" ]
             then curlGetAddress="http://qplay.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
         else
@@ -33,6 +35,7 @@ case $1 in
     *) # dev or typo
         ServerADD=10.82.239.140
         Protocol='http'
+        env='dev'
         if [ "$2" == "first" ]
             then curlGetAddress="http://qplaydev.benq.com/qplayApi/public/v101/qplay/syncUserJob?first=Y"
         else
@@ -44,7 +47,6 @@ esac
 #execute date
 DATE=`date +%Y%m%d`
 echo 'start sync QPlay user : '$DATE
-
 #new log folder
 mkdir -p log
 # this array defined the which url need to sync, you can append as [$source_from]='$url'
@@ -54,30 +56,30 @@ arr+=(
 ["qcsflower"]=$Protocol'://'$ServerADD'/QTunnel/SyncQCS/'
 )
 
-for key in ${!arr[@]}; do
-    URL="${arr[${key}]}$DATE.xls.gpg"
+for sourceFrom in ${!arr[@]}; do
+    URL="${arr[${sourceFrom}]}$DATE.xls.gpg"
     TIMES=0
     RETRY=3 #set the tretry times
     while [ $TIMES -lt $RETRY ]
     do
-        echo 'download file: '$key
+        echo 'download file: '$sourceFrom
         mkdir -p -m700 /var/www/html/qplayApi/storage/app/syncuser
-        wget --no-check-certificate --tries=3 --waitretry=1  --append-output=log/syncuser-`date +%Y-%-m-%d`.txt -N -P /var/www/html/qplayApi/storage/app/syncuser/${key}/original ${URL}
+        wget --no-check-certificate --tries=3 --waitretry=1  --append-output=log/syncuser-`date +%Y-%-m-%d`.txt -N -P /var/www/html/qplayApi/storage/app/syncuser/${sourceFrom}/original ${URL}
         if [[ "$?" != 0 ]]; then
             #Download fail, retry
             TIMES=$(($TIMES+1))
         else
             #Success
-            echo 'decrypt file: '$key
-            mkdir -p /var/www/html/qplayApi/storage/app/syncuser/${key}/undo/
-            gpg --batch --yes --output /var/www/html/qplayApi/storage/app/syncuser/${key}/undo/${DATE}.xls --decrypt /var/www/html/qplayApi/storage/app/syncuser/${key}/original/${DATE}.xls.gpg
+            echo 'decrypt file: '$sourceFrom
+            mkdir -p /var/www/html/qplayApi/storage/app/syncuser/${sourceFrom}/undo/
+            gpg --batch --yes --output /var/www/html/qplayApi/storage/app/syncuser/${sourceFrom}/undo/${DATE}.xls --decrypt /var/www/html/qplayApi/storage/app/syncuser/${sourceFrom}/original/${DATE}.xls.gpg
             sudo chown -R apache:apache /var/www/html/qplayApi/storage/app/syncuser
             sudo chmod 700 -R /var/www/html/qplayApi/storage/app/syncuser
             break
         fi
     done
     if [ "${TIMES}" == "${RETRY}" ]; then
-        php ./lib/error_handle.php ${key} $DATE log/syncuser-`date +%Y-%-m-%d`.txt
+        php ./lib/error_handle.php ${sourceFrom} $DATE log/syncuser-`date +%Y-%-m-%d`.txt ${env}
     fi
     sleep 3
 done

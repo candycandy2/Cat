@@ -1,7 +1,18 @@
 #!/usr/local/php7/bin/php -q
 <?php
-
-$env='dev';
+if(!isset($argv[1])){
+	echo 'Error missing argument 2, please set sourceFrom'. PHP_EOL;
+	return;
+}else if(!isset($argv[2])){
+	echo 'Error missing argument 3, please set execute date'. PHP_EOL;
+	return;
+}else if(!isset($argv[3])){
+	echo 'Error missing argument 4, please set error content file path'. PHP_EOL;
+	return;
+}else if(!isset($argv[4])){
+	$argv[4] = '';
+}
+$env=$argv[4];
 $secretKey='swexuc453refebraXecujeruBraqAc4e';
 $appKey = 'appqplay'.$env;
 
@@ -10,19 +21,17 @@ $from = 'BenQ\\Alan.Tu';
 $title = '[CRITICAL PROBLEM] '.$env.'-QPlay-API-SyncUserJob downLoad file error';
 $text =  $env.'-QPlay-API-SyncUserJob DownLoad File Error<br>SourceFrom : '.$argv[1].'<br>Date : '.$argv[2]; 
 $to =array('BenQ\\Cleo.W.Chan');
-$pushUrl = 'https://qplay'.$env.'.benq.com/qplayApi/public/v101/qplay/sendPushMessage?lang=zh-tw&need_push=Y&app_key='.$appKey;
+$pushUrl = 'https://qplay'.trim($env).'.benq.com/qplayApi/public/v101/qplay/sendPushMessage?lang=zh-tw&need_push=Y&app_key='.$appKey;
 sendPushMessage($pushUrl, $appKey, $secretKey, $title, $text, $from, $to);
-
 
 //send Mail
 $mailfrom = 'no-reply@benq.com';
 $mailfromName = 'QPlay';
 $mailto = 'cleo.w.chan@benq.com';
-$mailUrl = 'https://qplay'.$env.'.benq.com/qplayApi/public/v101/qplay/sendMail?lang=zh-tw&app_key='.$appKey;
+$mailUrl = 'https://qplay'.trim($env).'.benq.com/qplayApi/public/v101/qplay/sendMail?lang=zh-tw&app_key='.$appKey;
 $content = file_get_contents($argv[3]);
 sendMail($mailUrl, $appKey, $secretKey, $mailfrom, $mailfromName, $mailto, $title, $content);
 
-//echo $result;
 
 /**
  * 呼叫API
