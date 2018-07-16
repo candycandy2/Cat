@@ -141,9 +141,9 @@ $("#viewApplyInsurance").pagecontainer({
                 var preNameAge = clickFamilyName + '/' + clickRelation + '/' + clickAge;
                 var preDate = langStr["str_116"] + ': ' + applyDateVal;
                 var preReason = langStr["str_117"] + ': ' + reasonVal;
-                var preSubsidy = langStr["str_133"] + ': ' + ((subsidyVal == 'subsidyYes') ? '是' : '否'); 
-                var preCertificate = langStr["str_134"] + ': ' + ((certiVal == 'certiYes') ? '是' : '否');
-                var preHealthcard = langStr["str_120"] + ': ' + ((cardVal == 'cardYes') ? '是' : '否');
+                var preSubsidy = langStr["str_133"] + ': ' + ((subsidyVal == 'subsidyYes') ? langStr["str_128"] : langStr["str_129"]); 
+                var preCertificate = langStr["str_134"] + ': ' + ((certiVal == 'certiYes') ? langStr["str_128"] : langStr["str_129"]);
+                var preHealthcard = langStr["str_120"] + ': ' + ((cardVal == 'cardYes') ? langStr["str_128"] : langStr["str_129"]);
                 $("#previewNameAge").text(preNameAge);
                 $("#previewBirthday").text(clickBirth);
                 $("#previewID").text(clickID);
