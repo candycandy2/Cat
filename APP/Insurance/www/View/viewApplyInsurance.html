@@ -36,7 +36,7 @@
                 </div>
                 <input name="applyDate" id="applyDate" data-role="none" class="family-input-calendar" style="margin-left: 0vw;" readonly>
             </div>
-            <div class="apply-insurance-form">
+            <div class="apply-insurance-ddl">
                 <div class="font-style11">
                     <!-- 加保原因 -->
                     <span class="langStr" data-id="str_117"></span>
@@ -44,45 +44,67 @@
                 <!-- 原因 dropdownlist -->
                 <div data-role="none" id="applyReason" class="font-style3"></div>
             </div>
-            <div class="apply-insurance-form">
+            <div id="newSubsidy">
+                <div class="font-style11">
+                    <!-- 是否有殘等或補助 -->
+                    <span class="langStr" data-id="str_118"></span>
+                </div>
+                <div>
+                    <input type="radio" data-role="none" name="setSubsidy" id="subsidyYes" value='subsidyYes'>
+                    <label data-role="none" class="overlap-label-icon" for="subsidyYes"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 是 -->
+                        <span class="langStr" data-id="str_128" class="font-style3"></span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" data-role="none" name="setSubsidy" id="subsidyNo" value='subsidyNo'>
+                    <label data-role="none" class="overlap-label-icon" for="subsidyNo"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 否 -->
+                        <span class="langStr" data-id="str_129" class="font-style3"></span>
+                    </label>
+                </div>
+            </div>   
+            <div id="newCertificate">
                 <div class="font-style11">
                     <!-- 是否需要開立證明 -->
                     <span class="langStr" data-id="str_119"></span>
                 </div>
                 <div>
                     <input type="radio" data-role="none" name="setCertificate" id="certiYes" value='certiYes'>
-                    <label data-role="none" class="overlap-label-icon"></label>
-                    <label data-role="none" class="overlap-label-text" for="certiYes">
+                    <label data-role="none" class="overlap-label-icon" for="certiYes"></label>
+                    <label data-role="none" class="overlap-label-text">
                         <!-- 是 -->
                         <span class="langStr" data-id="str_128" class="font-style3"></span>
                     </label>
                 </div>
                 <div>
-                    <input type="radio" data-role="none" name="setCertificate" id="certiＮo" value='certiNo'>
-                    <label data-role="none" class="overlap-label-icon"></label>
-                    <label data-role="none" class="overlap-label-text" for="certiNo">
+                    <input type="radio" data-role="none" name="setCertificate" id="certiNo" value='certiNo'>
+                    <label data-role="none" class="overlap-label-icon" for="certiNo"></label>
+                    <label data-role="none" class="overlap-label-text">
                         <!-- 否 -->
                         <span class="langStr" data-id="str_129" class="font-style3"></span>
                     </label>
                 </div>
             </div>  
-            <div class="apply-insurance-form">
+            <div id="newHealthcard">
                 <div class="font-style11">
                     <!-- 健保卡製作 -->
                     <span class="langStr" data-id="str_120"></span>
-                </div>
+                </div>   
                 <div>
                     <input type="radio" data-role="none" name="setHealthcard" id="cardYes" value='cardYes'>
-                    <label data-role="none" class="overlap-label-icon"></label>
-                    <label data-role="none" class="overlap-label-text" for="cardYes">
+                    <label data-role="none" class="overlap-label-icon" for="cardYes"></label>
+                    <label data-role="none" class="overlap-label-text">
                         <!-- 是 -->
                         <span class="langStr" data-id="str_128" class="font-style3"></span>
                     </label>
                 </div>
                 <div>
-                    <input type="radio" data-role="none" name="setHealthcard" id="cardＮo" value='cardNo'>
-                    <label data-role="none" class="overlap-label-icon"></label>
-                    <label data-role="none" class="overlap-label-text" for="cardNo">
+                    <input type="radio" data-role="none" name="setHealthcard" id="cardNo" value='cardNo'>
+                    <label data-role="none" class="overlap-label-icon" for="cardNo"></label>
+                    <label data-role="none" class="overlap-label-text">
                         <!-- 否 -->
                         <span class="langStr" data-id="str_129" class="font-style3"></span>
                     </label>
@@ -94,12 +116,12 @@
                     <span class="langStr" data-id="str_121"></span>
                 </div>
                 <div>
-                    <textarea data-role="none" id="applyReason" class="reason-textarea"></textarea>
+                    <textarea data-role="none" id="applyRemark" class="reason-textarea"></textarea>
                 </div>
             </div> 
         </div>
         <div class="insur-button-style">
-            <div class="font-style3">
+            <div id="previewBtn" class="font-style3">
                 <!-- 預覽申請 -->
                 <span class="langStr" data-id="str_131"></span>
             </div>
