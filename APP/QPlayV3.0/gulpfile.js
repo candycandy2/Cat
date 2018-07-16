@@ -217,7 +217,8 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-splashscreen --nofetch',
     'cordova plugin add ../../plugins/cordova-plugin-statusbar --nofetch',
     //'cordova plugin add ../../plugins/cordova-plugin-background-mode --nofetch',
-    'cordova plugin add ../../plugins/cordova-plugin-appavailability --nofetch'
+    'cordova plugin add ../../plugins/cordova-plugin-appavailability --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-badge --nofetch'
     //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
