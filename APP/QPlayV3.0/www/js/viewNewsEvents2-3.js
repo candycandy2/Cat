@@ -1,7 +1,7 @@
 //$(document).one("pagecreate", "#viewNewsEvents2-3", function(){
 
 $("#viewNewsEvents2-3").pagecontainer({
-    create: function(event, ui) {
+    create: function (event, ui) {
 
         window.eventType = "";
 
@@ -43,7 +43,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                 $("#" + type + "Listview").html(listviewContent);
                 $("#" + type + "Listview").listview('refresh');
 
-                $('a.message-index').on("click", function(e) {
+                $('a.message-index').on("click", function (e) {
                     e.stopImmediatePropagation();
                     e.preventDefault();
 
@@ -70,13 +70,13 @@ $("#viewNewsEvents2-3").pagecontainer({
             loadingMask("hide");
         };
 
-        window.QueryPortalList = function(type) {
-            (function(type) {
+        window.QueryPortalList = function (type) {
+            (function (type) {
 
                 //type: Announcement, Communication, CIP, CSD, ITS
                 var queryData = "<LayoutHeader><PortalCategory>" + type + "</PortalCategory></LayoutHeader>";
 
-                var successCallback = function(data) {
+                var successCallback = function (data) {
 
                     $("#eventListContent .list-content").hide();
                     $("#" + type + "Content").show();
@@ -108,7 +108,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                     loadingMask("hide");
                 };
 
-                var failCallback = function(data) {
+                var failCallback = function (data) {
                     loadingMask("hide");
                 };
 
@@ -130,7 +130,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             }(type));
         };
 
-        window.QueryMessageList = function(action) {
+        window.QueryMessageList = function (action) {
 
             //review by alan
             callGetMessageList = true;
@@ -147,7 +147,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                 window.localStorage.setItem("msgDateFrom", loginData["msgDateFrom"]);
             }
 
-            this.successCallback = function(data) {
+            this.successCallback = function (data) {
                 callGetMessageList = false;
                 var resultcode = data['result_code'];
 
@@ -273,16 +273,16 @@ $("#viewNewsEvents2-3").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {
+            this.failCallback = function (data) {
                 callGetMessageList = false;
             };
 
-            var __construct = function() {
+            var __construct = function () {
                 QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
             }();
         }
 
-        window.updateMessageList = function(action) {
+        window.updateMessageList = function (action) {
             action = action || null;
 
             if (messagecontent === null) {
@@ -293,6 +293,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             var eventListItems = "";
             var countNews = 0;
             var countEvents = 0;
+            var badgeCount = 0;
 
             for (var messageindex = 0; messageindex < messagecontent.message_count; messageindex++) {
 
@@ -312,6 +313,10 @@ $("#viewNewsEvents2-3").pagecontainer({
 
                 if (message.read === "Y") {
                     readStatus = "hide";
+                }
+
+                if (message.read === "N") {
+                    badgeCount++;
                 }
 
                 var content = "<li value=" + messageindex.toString() + " class='msg-index'>" +
@@ -357,6 +362,10 @@ $("#viewNewsEvents2-3").pagecontainer({
                 addZero(datetime.getHours()) + ":" + addZero(datetime.getMinutes());
             $(".update-time .update-time-str").html(datetimeStr);
 
+            //review by allen
+            //cordova plugin badge: set badge
+            cordova.plugins.notification.badge.set(badgeCount);
+
             //If News or Events has no message, show [No News] [No Events]
             if (countNews === 0) {
                 $("#noNews").show();
@@ -401,7 +410,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                 editModeChange();
             }
 
-            $('a.message-index').on("click", function(e) {
+            $('a.message-index').on("click", function (e) {
                 e.stopImmediatePropagation();
                 e.preventDefault();
 
@@ -413,7 +422,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                 }
             });
 
-            $("input.msgDelCheckbox").on("change", function() {
+            $("input.msgDelCheckbox").on("change", function () {
                 checkboxChange($(this));
             });
 
@@ -480,7 +489,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             $('#' + messageList + ' :checkbox').prop('checked', checked);
         }
 
-        window.editModeChange = function() {
+        window.editModeChange = function () {
             var dispaly = "none";
             var btnStr = "Delete";
             var btnBackDisplay = "block";
@@ -516,7 +525,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             checkboxChange();
         };
         /********************************** page event *************************************/
-        $("#viewNewsEvents2-3").one("pagebeforeshow", function(event, ui) {
+        $("#viewNewsEvents2-3").one("pagebeforeshow", function (event, ui) {
             var eventPopupselectMsg = {
                 id: "selectMsgDateFrom",
                 content: $("template#tplEventListNoDataPopup30").html()
@@ -530,7 +539,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             tplJS.Popup("viewNewsEvents2-3", "eventListContent", "append", eventListDataPopupHistorydelete);
         });
 
-        $("#viewNewsEvents2-3").on("pageshow", function(event, ui) {
+        $("#viewNewsEvents2-3").on("pageshow", function (event, ui) {
             if (!callGetMessageList) {
                 if (loginData["msgDateFrom"] === null) {
                     loadingMask("hide");
@@ -539,7 +548,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             }
         });
 
-        $("#viewNewsEvents2-3").on("pagebeforeshow", function(event, ui) {
+        $("#viewNewsEvents2-3").on("pagebeforeshow", function (event, ui) {
             messagePageShow = true;
             loadingMask("show");
             $("#eventListContent .list-content").hide();
@@ -565,7 +574,7 @@ $("#viewNewsEvents2-3").pagecontainer({
         });
 
         /********************************** dom event *************************************/
-        $(document).on("click", "#selectMsgDateFromOK", function() {
+        $(document).on("click", "#selectMsgDateFromOK", function () {
             msgDateFromType = $('input[name=selectDateFrom]:checked').val();
 
             var clientTimestamp = getTimestamp();
@@ -582,32 +591,32 @@ $("#viewNewsEvents2-3").pagecontainer({
             $('#selectMsgDateFrom').popup('close');
         });
 
-        $(document).on("click", "#deleteMessage", function() {
+        $(document).on("click", "#deleteMessage", function () {
             editModeChange();
         });
 
-        $("#selectMsgAll").on("click", function() {
+        $("#selectMsgAll").on("click", function () {
             messageSelectCancelAll("select");
             checkboxChange();
         });
 
-        $("#cancelMsgAll").on("click", function() {
+        $("#cancelMsgAll").on("click", function () {
             messageSelectCancelAll("cancel");
             checkboxChange();
         });
 
-        $(document).on("click", "#delMsgBtn", function() {
+        $(document).on("click", "#delMsgBtn", function () {
             if (!$("#delMsgBtn a").is(".btn-disabled")) {
                 tplJS.preventPageScroll();
                 $('#deleteConfirm').popup('open');
             }
         });
 
-        $(document).on("click", "#deleteConfirm #cancel", function() {
+        $(document).on("click", "#deleteConfirm #cancel", function () {
             $('#deleteConfirm').popup('close');
         });
 
-        $(document).on("click", "#deleteConfirm #yes", function() {
+        $(document).on("click", "#deleteConfirm #yes", function () {
             var messageList;
             var msgIndex;
             var msgIndexList;
@@ -619,7 +628,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                 messageList = "newslistview";
             }
 
-            $('#' + messageList + ' :checkbox:checked').each(function(index, element) {
+            $('#' + messageList + ' :checkbox:checked').each(function (index, element) {
                 msgIndex = $(element).val();
 
                 if (index === 0) {
