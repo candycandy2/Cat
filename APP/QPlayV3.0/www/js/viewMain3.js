@@ -30,7 +30,6 @@ $("#viewMain3").pagecontainer({
                 });
         };
 
-
         /********************************** page event ***********************************/
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
             if (viewMainInitial) {
