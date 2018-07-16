@@ -48,10 +48,10 @@ window.initialSuccess = function (data) {
         processStorageData("setLocalStorage", data);
 
         if (loginData['doLoginDataCallBack'] === false) {
-            $.mobile.changePage('#viewMain2-1', {
+            $.mobile.changePage('#viewMain3', {
                 reloadPage: true
             });
-            $.mobile.changePage('#viewMain2-1');
+            $.mobile.changePage('#viewMain3');
         }
     } else {
 
@@ -72,13 +72,13 @@ window.initialSuccess = function (data) {
 
             //review by alan
             if (window.localStorage.getItem("openMessage") !== "true") {
-                $.mobile.changePage('#viewMain2-1', {
+                $.mobile.changePage('#viewMain3', {
                     allowSamePageTransition: true,
                     transition: 'none',
                     showLoadMsg: false,
                     reloadPage: true
                 });
-                $.mobile.changePage('#viewMain2-1');
+                $.mobile.changePage('#viewMain3');
             } else {
                 //If onOpenNotification, but not login.
                 //Atfer login, do onOpenNotification again.
@@ -558,15 +558,15 @@ $(document).on("click", ".event-type", function () {
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
-    if (activePageID === "viewMain2-1") {
+    if (activePageID === "viewMain3") {
         if (checkPopupShown()) {
             $('#' + popupID).popup('close');
         } else {
             navigator.app.exitApp();
         }
-    } else if (activePageID === "viewMain2-1" || activePageID === "viewAppDetail2-2") {
+    } else if (activePageID === "viewMain3" || activePageID === "viewAppDetail2-2") {
         if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
-            $.mobile.changePage('#viewMain2-1');
+            $.mobile.changePage('#viewMain3');
         } else {
             $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
         }
@@ -574,7 +574,7 @@ function onBackKeyDown() {
         if (delMsgActive) {
             editModeChange();
         } else {
-            $.mobile.changePage('#viewMain2-1');
+            $.mobile.changePage('#viewMain3');
         }
     } else if (activePageID === "viewWebNews2-3-1") {
         goBack("goList");
