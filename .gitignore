@@ -106,3 +106,5 @@ package-lock.json
 API/C#/QTunnel/SyncSourceCode/QPlay.Job.SyncGaiaUser/bin/*
 API/C#/QTunnel/SyncSourceCode/.vs/*
 API/C#/QTunnel/SyncSourceCode/QPlay.Job.SyncGaiaUser/obj/*
+
+WEB/*/sftp-config.json

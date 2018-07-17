@@ -1,4 +1,4 @@
-(function ($) {
+(function($) {
     var widgetItem = sessionStorage.getItem('widgetItem');
     window.reserveAppList = [
         { key: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
@@ -21,7 +21,7 @@
 
     function appendWidgetHTML(target) {
         $.ajaxSettings.async = false;
-        $.get(serverURL + "/widget/reserve/reserve.html", function (data) {
+        $.get(serverURL + "/widget/reserve/reserve.html", function(data) {
             $('.' + widgetItem).append(data);
 
         }, "html");
@@ -31,12 +31,8 @@
     }
 
     function getCurrentDate() {
-        var now = new Date();
-        // var month = cur.getMonth() + 1;
-        // var date = cur.getDate();
-        // var day = cur.getDay();
-        // var str = month.toString() + "月" + date.toString() + "日 星期" + day.toString();
-        var str = now.toLocaleDateString(browserLanguage, { weekday: 'long', month: 'long', day: 'numeric' });
+        var cur = new Date();
+        var str = cur.toLocaleDateString("zh-TW", { weekday: 'long', month: 'long', day: 'numeric' });
         $('.current-date').text(str);
         var name = window.localStorage.getItem('loginid');
         $('#widgetList .emp-name').text(name);
@@ -79,10 +75,10 @@
         }
     }
 
-    $.fn.reserve = function (options) {
+    $.fn.reserve = function(options) {
         options = options || {};
 
-        return this.each(function () {
+        return this.each(function() {
             var state = $.data(this, 'reserve');
             if (state) {
                 $.extend(state.options, options);
