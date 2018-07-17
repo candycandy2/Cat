@@ -32,11 +32,7 @@
 
     function getCurrentDate() {
         var cur = new Date();
-        var month = cur.getMonth() + 1;
-        var date = cur.getDate();
-        var day = cur.getDay();
-
-        var str = month.toString() + "月" + date.toString() + "日 星期" + day.toString();
+        var str = cur.toLocaleDateString("zh-TW", {weekday: 'long', month: 'long', day: 'numeric'});
         $('.current-date').text(str);
         var name = window.localStorage.getItem('loginid');
         $('#widgetList .emp-name').text(name);
