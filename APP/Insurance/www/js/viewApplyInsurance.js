@@ -3,7 +3,40 @@ $("#viewApplyInsurance").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         var applyDate, applyDateVal, reasonVal, subsidyVal, certiVal, cardVal, remarkVal = "";
- 
+
+        //API:ModifyHealthInsurance
+        function queryModifyHealthInsurance() {
+            loadingMask("show");
+            var self = this;
+            var strSubsidy = ((subsidyVal == 'subsidyYes') ? 'Y' : 'N'); 
+            var strCerti = ((certiVal == 'certiYes') ? 'Y' : 'N');
+            var strHealthcard = ((cardVal == 'cardYes') ? 'Y' : 'N');
+            var strApplyType = '健保加保';
+            var queryData = '<INS_ID></INS_ID>' + '<APP_ID>'+
+                clickAppID +'</APP_ID><empid>'+ 
+                myEmpNo +'</empid><family_id>'+ 
+                clickFamilyID +'</family_id><insuredday>'+
+                applyDateVal +'</insuredday><reason>'+
+                reasonVal +'</reason><subsidy>'+
+                strSubsidy +'</subsidy><certificate>'+
+                strCerti +'</certificate><healthcard>'+
+                strHealthcard +'</healthcard><remark>'+
+                remarkVal +'</remark><applytype>'+
+                strApplyType +'</applytype>';
+
+            this.successCallback = function(data) {
+                if (data['ResultCode'] === "1") {
+                    var successArr = data['Content'];
+                }
+            };
+
+            this.failCallback = function(data) {};
+            
+            var __construct = function() {
+                CustomAPI("POST", true, "ModifyHealthInsurance", self.successCallback, self.failCallback, queryData, "");
+            }();
+        }
+
         //加保原因DDL生成
         function getApplyReasonList() {
             //初始化           
@@ -160,5 +193,10 @@ $("#viewApplyInsurance").pagecontainer({
                 $("#viewPreviewApplication").show();
             }
         });
+
+        //確定送出按鈕
+        $("#applyBtn").on("click", function() {
+            var doModifyHealthInsurance = new queryModifyHealthInsurance();
+        });   
     }
 });
