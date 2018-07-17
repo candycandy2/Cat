@@ -26,6 +26,7 @@
     }
 
     function getFavoriteApp() {
+        $('.applist-title').text(langStr['str_068']);
         favoriteApp = JSON.parse(window.localStorage.getItem('favoriteList'));
         var content = '';
         if (favoriteApp != null && favoriteApp.length > 0) {
