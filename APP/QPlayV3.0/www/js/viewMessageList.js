@@ -53,7 +53,6 @@ $("#viewMessageList").pagecontainer({
 
             $(".news-content ul").html('').append(newsContent);
             $(".event-content ul").html('').append(eventContent);
-            
 
             //2. swipe
             var x;
@@ -104,14 +103,16 @@ $("#viewMessageList").pagecontainer({
             }
             $('.select-news').css('top', msgHeaderTop + 'px');
             $('.msg-tool').css('top', msgHeaderTop + 'px');
-            
+
             //4. to detail
             $('.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon').on('click', function () {
+                massageFrom = 'viewMessageList';
                 messageRowId = $(this).parents('li').attr('data-rowid');
-                var msg = new getMessageDetail();
+                $.mobile.changePage('#viewWebNews2-3-1');
             });
         }
 
+        //don't use
         function getMessageDetail() {
             var self = this;
 
@@ -492,14 +493,16 @@ $("#viewMessageList").pagecontainer({
         $("#viewMessageList").on("pagebeforeshow", function (event, ui) {
             if (viewMessageInitial) {
                 //create html
-                createMessageByType();
+                //createMessageByType();
+
+                $('#msgFilter').attr('placeholder', langStr['str_080']);
 
                 viewMessageInitial = false;
             }
         });
 
         $("#viewMessageList").on("pageshow", function (event, ui) {
-
+            createMessageByType();
         });
 
         $("#viewMessageList").on("pagehide", function (event, ui) {
@@ -597,8 +600,8 @@ $("#viewMessageList").pagecontainer({
 
         //取消搜索listview
         $('#cancelSearch').on('click', function () {
-            $('#myFilter').val('');
-            $('#myFilter').blur();
+            $('#msgFilter').val('');
+            $('#msgFilter').blur();
 
             $('.header-search').hide();
             $('.q-btn-header').show();
@@ -780,7 +783,6 @@ $("#viewMessageList").pagecontainer({
                     }
                 })
             }
-
         });
 
 

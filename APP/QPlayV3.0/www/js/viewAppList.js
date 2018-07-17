@@ -60,7 +60,7 @@ $("#viewAppList").pagecontainer({
                 var appName = applist[i].package_name;
                 var appNameArr = appName.split(".");
                 var checkKey = appNameArr[2];
-                checkAllAppInstalled(allAppCallback, checkKey, i);
+                checkAllAppInstalled(checkAppCallback, checkKey, i);
             }
         }
 
@@ -118,7 +118,7 @@ $("#viewAppList").pagecontainer({
         }
 
         //check app download status callback
-        window.allAppCallback = function (downloaded, index) {
+        window.checkAppCallback = function (downloaded, index) {
 
             //如果已下载，保存applist的index
             if (downloaded) {

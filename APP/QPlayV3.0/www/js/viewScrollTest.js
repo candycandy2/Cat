@@ -1,12 +1,12 @@
 $("#viewScrollTest").pagecontainer({
     create: function (event, ui) {
 
-        
+
 
 
         /********************************** page event ***********************************/
         $("#viewScrollTest").on("pagebeforeshow", function (event, ui) {
-            
+
         });
 
         $("#viewScrollTest").scroll(function () {
@@ -23,7 +23,9 @@ $("#viewScrollTest").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        
+        $('#viewScrollTest li').on('click', function () {
+
+        });
 
     }
 });

@@ -59,31 +59,40 @@ $("#viewMain3").pagecontainer({
 
         /********************************** dom event *************************************/
         $('#widgetList').on('click', '.personal-res', function () {
-            $.mobile.changePage('#viewMyCalendar');
+            //$.mobile.changePage('#viewMyCalendar');
+            checkAppPage('viewMyCalendar');
         });
 
         $('#widgetList').on('click', '.add-favorite-list', function () {
             $.mobile.changePage('#viewAppList');
+            //checkAppPage('viewAppList');
         });
 
         $('.applist-link').on('click', function () {
             $.mobile.changePage('#viewAppList');
+            //checkAppPage('viewAppList');
         });
 
-        $('#widgetList').on('click', '.messageWidget', function () {
-            $.mobile.changePage('#viewMessageList');
+        //点击widget内message，跳转到message详情页
+        $('#widgetList').on('click', '.widget-msg-list', function () {
+            massageFrom = 'viewMain3';
+            messageRowId = $(this).attr('data-rowid');
+            $.mobile.changePage('#viewWebNews2-3-1');
         });
 
         $('.message-link').on('click', function () {
-            $.mobile.changePage('#viewMessageList');
+            //$.mobile.changePage('#viewMessageList');
+            checkAppPage('viewMessageList');
         });
 
         $('.faq-link').on('click', function () {
-            $.mobile.changePage('#viewFAQ');
+            //$.mobile.changePage('#viewFAQ');
+            checkAppPage('viewFAQ');
         });
 
         $('.scroll-test-link').on('click', function () {
-            $.mobile.changePage('#viewScrollTest');
+            //$.mobile.changePage('#viewScrollTest');
+            checkAppPage('viewScrollTest');
         });
 
         $('#widgetList').on('click', '.applist-item', function () {

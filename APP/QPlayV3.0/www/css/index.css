@@ -950,7 +950,7 @@ input[type=radio]:checked + label {
 
 .other-link {
     width: 100vw;
-    height: 85vw;
+    height: 62.5vw;
     background: #FFFFFF;
 }
 
@@ -959,6 +959,7 @@ input[type=radio]:checked + label {
     height: 15vw;
     padding: 3vw 5vw;
     border-bottom: 1px solid #d6d6d6;
+    /* border-bottom: 1px solid #bdbcbc; */
 }
 
 .other-link > div:last-of-type {
@@ -985,11 +986,15 @@ input[type=radio]:checked + label {
 
 .other-link > div > div:nth-of-type(2) > div:nth-of-type(1) {
     line-height: 8vw;
-    color: #263238;
+    color: #233138;
+    font-weight: bold;
+    font-size: 3.55vw !important;
 }
 
 .other-link > div > div:nth-of-type(2) > div:nth-of-type(2) {
-    color: #323232;
+    color: #233138;
+    font-weight: normal;
+    font-size: 3.55vw !important;
 }
 
 .other-link > div > div:nth-of-type(3) {
