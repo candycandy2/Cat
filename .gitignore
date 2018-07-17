@@ -102,3 +102,7 @@ storage
 package-lock.json
 /qplay/.env
 /API/QChat/public/upload
+
+API/C#/QTunnel/SyncSourceCode/QPlay.Job.SyncGaiaUser/bin/*
+API/C#/QTunnel/SyncSourceCode/.vs/*
+API/C#/QTunnel/SyncSourceCode/QPlay.Job.SyncGaiaUser/obj/*
