@@ -35,7 +35,7 @@ $("#viewFamilyData").pagecontainer({
         //API:QueryFamilyData
         function queryFamilyList() {
             //replace familyArr's content to data["Content"]
-            familyArr = JSON.parse(localStorage.getItem('familySettingData'));  
+            /*familyArr = JSON.parse(localStorage.getItem('familySettingData'));  
 
             if (familyArr == null || familyArr.content.length == 0) { 
                 $("#viewFamilyList").hide();
@@ -62,38 +62,49 @@ $("#viewFamilyData").pagecontainer({
                         + '</div></div><div><img src="img/info.png" class="family-edit"><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
                 }
                 $("#familyList").empty().append(familyList).children("div:last-child").remove();
-            }
-            
-            /* //replace (familyArr != null) to (data["ResultCode"] == "1")      
-            if (familyArr != null && familyArr.content != "") {
-                //familyArr = data["Content"].sort(sortByRelationship("relation", "name"));
-                var familyList = "";
-                //for (var i in familyArr) {
-                for (var i=0; i<familyArr.content.length; i++ ) {
-                    //replace familyArr.content[i] to familyArr[i]
-                    var ageDate = new Date(Date.now() - new Date(familyArr.content[i]["birthday"]).getTime()); 
-                    var familyAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-                    familyList += '<div class="family-list"><div class="font-style10 font-color2" data-id="'
-                        + familyArr.content[i]["family_id"]
-                        + '"><div><span>'
-                        + familyArr.content[i]["name"]
-                        + '</span>/<span>'
-                        + familyArr.content[i]["relation"]
-                        + '</span>/<span>'
-                        + familyAge
-                        + '</span></div><div>'
-                        + familyArr.content[i]["birthday"]
-                        + '</div><div>'
-                        + familyArr.content[i]["idno"]
-                        + '</div></div><div><img src="img/info.png" class="family-edit"><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
-                }
-                $("#familyList").empty().append(familyList).children("div:last-child").remove();
-            } else {
-                $("#viewFamilyList").hide();
-                $("#viewFamilyNone").show(); 
             }*/
-            changeViewToList();
-            loadingMask("hide");
+            loadingMask("show");
+            var self = this;
+            var queryData = '<empid>'+ myEmpNo +'</empid>';
+            this.successCallback = function(data) { 
+                //replace (familyArr != null) to (data["ResultCode"] == "1")      
+                if (data["ResultCode"] == "1") {
+                    familyArr = data["Content"].sort(sortByRelationship("relation", "name"));
+                    var familyList = "";
+                    
+                    //for (var i=0; i<familyArr.content.length; i++ ) {
+                    for (var i in familyArr) {
+                        //replace familyArr.content[i] to familyArr[i]
+                        var ageDate = new Date(Date.now() - new Date(familyArr.content[i]["birthday"]).getTime()); 
+                        var familyAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+                        familyList += '<div class="family-list"><div class="font-style10 font-color2" data-id="'
+                            + familyArr[i]["family_id"]
+                            + '"><div><span>'
+                            + familyArr[i]["name"]
+                            + '</span>/<span>'
+                            + familyArr[i]["relation"]
+                            + '</span>/<span>'
+                            + familyAge
+                            + '</span></div><div>'
+                            + familyArr[i]["birthday"]
+                            + '</div><div>'
+                            + familyArr[i]["idno"]
+                            + '</div></div><div><img src="img/info.png" class="family-edit"><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
+                    }
+                    $("#familyList").empty().append(familyList).children("div:last-child").remove();
+                } else {
+                    $("#viewFamilyList").hide();
+                    $("#viewFamilyNone").show(); 
+                }
+                changeViewToList();
+                loadingMask("hide");
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryFamilyData", self.successCallback, self.failCallback, queryData, "");
+            }();
         }
 
         //刪除眷屬資料 API: ModifyFamilyData 
@@ -105,7 +116,7 @@ $("#viewFamilyData").pagecontainer({
                 }
             }
             localStorage.setItem('familySettingData', JSON.stringify(familyArr));
-            queryFamilyList();
+            var doQueryFamilyList = new queryFamilyList();
             $('.family-edit-btn').trigger('click');
         }
 
@@ -213,7 +224,7 @@ $("#viewFamilyData").pagecontainer({
             $("#viewFamilyEdit").hide();
             $('#viewFamilyData .insuranceMenu').show();
             //After connect to API:QueryFamilyData, delete 'familyArr == null'
-            if ( familyArr == null || familyArr.content.length == 0) {
+            if ( familyArr.length == 0) {
                 $("#viewFamilyNone").show();
             } else {
                 $("#viewFamilyList").show();
@@ -355,7 +366,7 @@ $("#viewFamilyData").pagecontainer({
 
         $("#viewFamilyData").on("pageshow", function (event, ui) {
             loadingMask("show");
-            queryFamilyList();    
+            var doQueryFamilyList = new queryFamilyList();    
         });
         
         /******************************** datetimepicker ***********************************/
@@ -495,7 +506,7 @@ $("#viewFamilyData").pagecontainer({
                 clearFormByFamily();
                 checkFormByFamily();
                 familyNo = '';
-                queryFamilyList(); 
+                var doQueryFamilyList = new queryFamilyList(); 
             }
         });
 
