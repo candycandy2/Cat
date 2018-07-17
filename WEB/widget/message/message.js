@@ -32,7 +32,7 @@
         }
 
         if (content == '') {
-            content = '<div class="widget-none-msg">暂无消息<div>';
+            content = '<div class="widget-none-msg">' + langStr['str_069'] + '<div>';
         }
 
         $('.' + widgetItem).append(content);
