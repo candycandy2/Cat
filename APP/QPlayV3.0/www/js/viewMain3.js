@@ -59,8 +59,8 @@ $("#viewMain3").pagecontainer({
 
         /********************************** dom event *************************************/
         $('#widgetList').on('click', '.personal-res', function () {
-            //$.mobile.changePage('#viewMyCalendar');
-            checkAppPage('viewMyCalendar');
+            $.mobile.changePage('#viewMyCalendar');
+            //checkAppPage('viewMyCalendar');
         });
 
         $('#widgetList').on('click', '.add-favorite-list', function () {
