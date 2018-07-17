@@ -3,6 +3,7 @@
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
             <img src="img/002_nav_back_white.png" id="backPersonalInsurance">
+            <img src="img/002_nav_back_white.png" id="backApplyInsurance">
         </a>
         <div class="header-style">
             <div class="ui-title">
@@ -125,7 +126,55 @@
                 <!-- 預覽申請 -->
                 <span class="langStr" data-id="str_131"></span>
             </div>
-        </div>   
+        </div> 
+        <!--2.預覽加保/退保/停保/復保申請-->
+        <div id="viewPreviewApplication" class="hide">
+            <div class="insurance-main">
+                <div class="font-style11 insurance-main-title">
+                    <!-- 眷屬 -->
+                    <span class="langStr" data-id="str_115"></span>
+                </div> 
+                <div class="health-insurance-content font-style7">
+                    <div style="margin-bottom:1.16vw;">
+                        <span id="previewNameAge"></span>
+                    </div>
+                    <div style="margin-bottom:1.16vw;">
+                        <span id="previewBirthday"></span>
+                    </div>
+                    <div>
+                        <span id="previewID"></span>
+                    </div>
+                </div>    
+                <div class="font-style11 insurance-main-title" >
+                    <!-- 加保資訊 -->
+                    <span class="langStr" data-id="str_132"></span>
+                </div> 
+                <div class="health-insurance-content font-style7">
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="previewDate"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="previewReason"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="previewSubsidy"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="previewCertificate"></span>
+                    </div>
+                    <div>
+                        <span id="previewHealthcard"></span>
+                    </div>
+                </div>              
+            </div>
+            <div class="apply-button-style">
+                <div id="applyBtn" class="font-style3">
+                    <!-- 確定送出 -->
+                    <span class="langStr" data-id="str_135"></span>
+                </div>
+            </div> 
+        </div>
+
     </div>
 
     <!--確定刪除眷屬資料-->
