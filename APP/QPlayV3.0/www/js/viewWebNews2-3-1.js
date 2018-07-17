@@ -33,13 +33,11 @@ $("#viewWebNews2-3-1").pagecontainer({
 
         /********************************** function *************************************/
         window.goBack = function (action) {
-            // if (action === "goList") {
-            //     $.mobile.changePage('#viewNewsEvents2-3');
-            // } else if (action === "goHome") {
-            //     $.mobile.changePage('#viewMain2-1');
-            // }
-            //fix by allen
-            $.mobile.changePage('#viewMain2-1');
+            if (action === "goList") {
+                $.mobile.changePage('#viewNewsEvents2-3');
+            } else if (action === "goHome") {
+                $.mobile.changePage('#viewMain3');
+            }
         };
 
         function renderCanvas(content) {

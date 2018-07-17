@@ -355,11 +355,11 @@ $("#viewMain2-1").pagecontainer({
                 }
             });
 
-            $(document).ready(function() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
-                }
-            });
+            // $(document).ready(function() {
+            //     if (navigator.geolocation) {
+            //         navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
+            //     }
+            // });
         });
 
         $("#viewMain2-1").scroll(function() {

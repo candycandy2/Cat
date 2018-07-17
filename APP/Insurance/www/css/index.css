@@ -341,11 +341,11 @@ pre {
     color:#323232;
 }
 
-#insurance-main .health-insurance-content{ background-color: #ffffff;}
-#insurance-main .health-insurance-list, #insurance-ownpaid .ownpaid-insurance-list{ background-color: #ffffff; color:#323232;}
+.insurance-main >.health-insurance-content{ background-color: #ffffff;}
+.insurance-main >.health-insurance-list, .insurance-ownpaid >.ownpaid-insurance-list{ background-color: #ffffff; color:#323232;}
 
-.insurance-main-title { color:#0F0F0F; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
-.labor-insurance-remark  { color:#666666; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
+.insurance-main-title { color:#0F0F0F; margin: 5vw 0 2.14vw 3.71vw;}
+.labor-insurance-remark  { color:#666666; margin: 5vw 0 2.14vw 3.71vw;}
 
 
 .title-icon {
@@ -1164,6 +1164,11 @@ div.scrollmenu a {
     width: 4.934VW;
 }
 
+#backApplyInsurance {
+    width: 4.934VW;
+    display: none;
+}
+
 #viewInsurApplication {
     margin: 5vw 3.71vw 0vw;
 }
@@ -1251,5 +1256,16 @@ input[type=radio]:checked + label {
     color: #ffffff !important;
 }
 
-   /* background-color: #2d89bc;
-    color: #ffffff;*/
+.apply-button-style {
+    overflow: hidden;
+    background-color: #2A8ABD;
+    color: #ffffff;
+    border-style: none;
+    border-color: #d6d6d6;
+    text-align: center;
+    line-height: 3.5;
+    z-index: 990;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
