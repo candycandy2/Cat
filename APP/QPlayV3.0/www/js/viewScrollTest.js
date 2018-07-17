@@ -23,9 +23,7 @@ $("#viewScrollTest").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        $('#viewScrollTest li').on('click', function () {
 
-        });
 
     }
 });
