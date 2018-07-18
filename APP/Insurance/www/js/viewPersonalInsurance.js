@@ -207,7 +207,10 @@ $("#viewPersonalInsurance").pagecontainer({
                 var doQueryHealthInsuranceList = new queryHealthInsuranceList(myEmpNo);
                 var doQueryGroupInsuranceList = new queryGroupInsuranceList(myEmpNo);   
                 viewPersonalInsuranceShow = true; 
-            }              
+            } else {
+                loadingMask("hide");  
+            }  
+                     
         });
 
         /********************************** dom event *************************************/
@@ -226,13 +229,28 @@ $("#viewPersonalInsurance").pagecontainer({
         });  
 
         $(document).on("click", ".family-add", function() {           
-            var clickFamilyID = $(this).parents('.family-list').children("div").attr("data-id");
+            clickFamilyID = $(this).parents('.family-list').children("div").attr("data-id");
             var clickFamilyData = healthInsurArr.filter(function(item, index, array){
                 if (item.family_id === clickFamilyID){
                     return item.name;
                 }
             });
-            clickFamilyName =  $.trim(clickFamilyData[0].name);
+            //將QueryHealthInsuranceFamily回傳的值傳遞至viewApplyInsurance
+            clickInsID = $.trim(clickFamilyData[0].ins_id);
+            clickAppID = $.trim(clickFamilyData[0].app_id);
+            clickFamilyName = $.trim(clickFamilyData[0].name);
+            clickRelation = $.trim(clickFamilyData[0].relation);
+            clickBirth = $.trim(clickFamilyData[0].birthday);
+            //計算眷屬年齡age
+            var today = new Date();
+            var birthDate = new Date(clickBirth);
+            var age = today.getFullYear() - birthDate.getFullYear(); 
+            var birthMonth = today.getMonth() - birthDate.getMonth();
+            if (birthMonth < 0 || (birthMonth === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            clickAge = age;
+            clickID = $.trim(clickFamilyData[0].idno);
             $.mobile.changePage("#viewApplyInsurance"); 
         });        
 

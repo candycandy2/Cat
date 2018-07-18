@@ -20,26 +20,25 @@
     }
 
     function appendWidgetHTML(target) {
-        $.ajaxSettings.async = false;
+        //$.ajaxSettings.async = false;
         $.get(serverURL + "/widget/reserve/reserve.html", function (data) {
             $('.' + widgetItem).append(data);
+
+            getCurrentDate();
 
         }, "html");
 
         getCurrentDate();
-        $.ajaxSettings.async = true;
+        //$.ajaxSettings.async = true;
     }
 
     function getCurrentDate() {
-        var cur = new Date();
-        var month = cur.getMonth() + 1;
-        var date = cur.getDate();
-        var day = cur.getDay();
-
-        var str = month.toString() + "月" + date.toString() + "日 星期" + day.toString();
+        var now = new Date();
+        var str = now.toLocaleDateString(browserLanguage, { weekday: 'long', month: 'long', day: 'numeric' });
         $('.current-date').text(str);
         var name = window.localStorage.getItem('loginid');
         $('#widgetList .emp-name').text(name);
+        $('.widget-reserve-null').text(langStr['str_067']);
 
         getReserve();
     }

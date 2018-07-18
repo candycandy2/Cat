@@ -66,7 +66,8 @@ $("#viewMain").pagecontainer({
         });
 
         $("#groupIndurancePDF").on('click', function() {
-            window.open(encodeURI("http://qplaydev.benq.com/qplay/public/file/GroupInsurance.pdf"), '_system');          
+            var insurPDFUrl = serverURL + "/Insurance/GroupInsurance.pdf";
+            window.open(encodeURI(insurPDFUrl), '_system');          
         });       
 
     }

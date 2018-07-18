@@ -341,11 +341,11 @@ pre {
     color:#323232;
 }
 
-#insurance-main .health-insurance-content{ background-color: #ffffff;}
-#insurance-main .health-insurance-list, #insurance-ownpaid .ownpaid-insurance-list{ background-color: #ffffff; color:#323232;}
+.insurance-main >.health-insurance-content{ background-color: #ffffff;}
+.insurance-main >.health-insurance-list, .insurance-ownpaid >.ownpaid-insurance-list{ background-color: #ffffff; color:#323232;}
 
-.insurance-main-title { color:#0F0F0F; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
-.labor-insurance-remark  { color:#666666; margin: 0 0 2.14vw 3.71vw; margin-top:5vw;}
+.insurance-main-title { color:#0F0F0F; margin: 5vw 0 2.14vw 3.71vw;}
+.labor-insurance-remark  { color:#666666; margin: 5vw 0 2.14vw 3.71vw;}
 
 
 .title-icon {
@@ -1122,7 +1122,11 @@ div.scrollmenu a {
 
 /********************************************** viewApplyInsurance *********************************************/
 
-.apply-insurance-form {
+.apply-insurance-form, 
+.apply-insurance-ddl,
+#newSubsidy,
+#newHealthcard,
+#newCertificate {
     color: #0f0f0f;
     border-bottom: 1px solid #d6d6d6;
     margin-bottom: 4.3vw;
@@ -1130,10 +1134,19 @@ div.scrollmenu a {
 
 .apply-insurance-form>div:nth-of-type(2),
 .apply-insurance-form>input,
-.apply-insurance-form .overlap-label-icon,
-.apply-insurance-form .overlap-label-text {
+#newSubsidy .overlap-label-icon,
+#newSubsidy .overlap-label-text,
+#newHealthcard .overlap-label-icon, 
+#newHealthcard .overlap-label-text,
+#newCertificate .overlap-label-icon, 
+#newCertificate .overlap-label-text {
     margin-top: 1.16vw;
     margin-bottom: 2.14vw;
+}
+
+.apply-insurance-ddl>div:nth-of-type(2) {
+    margin-top: 0.2vw;
+    margin-bottom: 1vw;
 }
 
 #applyReason>select {
@@ -1149,6 +1162,11 @@ div.scrollmenu a {
 
 #backPersonalInsurance {
     width: 4.934VW;
+}
+
+#backApplyInsurance {
+    width: 4.934VW;
+    display: none;
 }
 
 #viewInsurApplication {
@@ -1192,11 +1210,15 @@ input[type=radio]:checked + label {
     padding: 0 0 0 0;
 }
 
-.apply-insurance-form>div:nth-of-type(2) {
+#newSubsidy>div:nth-of-type(2),
+#newCertificate>div:nth-of-type(2),
+#newHealthcard>div:nth-of-type(2) {
     display: inline-block;
 }
 
-.apply-insurance-form>div:nth-of-type(3) {
+#newSubsidy>div:nth-of-type(3),
+#newCertificate>div:nth-of-type(3),
+#newHealthcard>div:nth-of-type(3) {
     display: inline-block;
     margin-left: 8.196vw;
 }
@@ -1212,14 +1234,38 @@ input[type=radio]:checked + label {
 
 .insur-button-style {
     overflow: hidden;
-    background-color: #2d89bc;
-    color: #ffffff;
+    background-color: #D6D6D7;
+    color: #999999;
     border-style: none;
     text-align: center;
     line-height: 3.5;
-    margin-top: 10vw; /*Need to adjust*/
+    z-index: 990;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
 }
 
 .apply-form-bottom>div:nth-of-type(2) {
     margin-top: 1.16vw;
+}
+
+
+.insurPreview-active-btn {
+    background-color: #2A8ABD !important;
+    border-color: #d6d6d6 !important;
+    color: #ffffff !important;
+}
+
+.apply-button-style {
+    overflow: hidden;
+    background-color: #2A8ABD;
+    color: #ffffff;
+    border-style: none;
+    border-color: #d6d6d6;
+    text-align: center;
+    line-height: 3.5;
+    z-index: 990;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
 }
