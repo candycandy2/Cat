@@ -196,13 +196,13 @@ $("#viewMain3").pagecontainer({
             $('#logoutConfirm').popup('open');
         });
 
-        $('#widgetListContent').on("click", "#logoutConfirm #confirm", function () {
+        $(document).on("click", "#logoutConfirm #confirm", function () {
             $('#logoutConfirm').popup('close');
             loadingMask("show");
             var logout = new doLogOut();
         });
 
-        $('#widgetListContent').on("click", "#logoutConfirm #cancel", function () {
+        $(document).on("click", "#logoutConfirm #cancel", function () {
             $('#logoutConfirm').popup('close');
         });
 
