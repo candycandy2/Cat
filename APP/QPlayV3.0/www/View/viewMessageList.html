@@ -16,7 +16,7 @@
             </div>
             <div class="header-search" style="display:none;">
                 <form class="ui-filterable">
-                    <input id="myFilter" data-type="search" placeholder="搜寻主旨" class="input-search">
+                    <input id="msgFilter" data-type="search" class="input-search">
                 </form>
             </div>
         </a>
@@ -33,13 +33,22 @@
         </div>
         <div class="news-content">
             <div class="msg-tool">
-                <div class="news-select-btn">全选</div>
-                <div class="news-delete-btn">删除</div>
-                <div class="news-readed-btn">标示已读</div>
+                <div class="news-select-btn">
+                    <!--全选-->
+                    <span class="langStr" data-id="str_076"></span>
+                </div>
+                <div class="news-delete-btn">
+                    <!--删除-->
+                    <span class="langStr" data-id="str_037"></span>
+                </div>
+                <div class="news-readed-btn">
+                    <!--标示已读-->
+                    <span class="langStr" data-id="str_078"></span>
+                </div>
             </div>
             <div class="msg-tool-blank"></div>
-            <ul data-role="listview" data-filter="true" data-input="#myFilter" class="swipe-delete">
-                <li data-icon="false">
+            <ul data-role="listview" data-filter="true" data-input="#msgFilter" class="swipe-delete">
+                <!-- <li data-icon="false">
                     <div class="behind">
                         <a href="#" class="ui-btn delete-btn">
                             <img src="img/delete.png" class="msg-delete-btn">
@@ -57,25 +66,31 @@
                             <img src="img/nextpage.png" class="msg-next-btn">
                         </div>
                     </a>
-                </li>
+                </li> -->
 
             </ul>
         </div>
         <div class="event-content" style="display:none;">
             <div class="msg-tool">
-                <div class="event-select-btn">全选</div>
-                <div class="event-delete-btn">删除</div>
-                <div class="event-readed-btn">标示已读</div>
+                <div class="event-select-btn">
+                    <!--全选-->
+                    <span class="langStr" data-id="str_076"></span>
+                </div>
+                <div class="event-delete-btn">
+                    <!--删除-->
+                    <span class="langStr" data-id="str_037"></span>
+                </div>
+                <div class="event-readed-btn">
+                    <!--标示已读-->
+                    <span class="langStr" data-id="str_078"></span>
+                </div>
             </div>
             <div class="msg-tool-blank"></div>
-            <ul data-role="listview" data-filter="true" data-input="#myFilter" class="swipe-delete">
+            <ul data-role="listview" data-filter="true" data-input="#msgFilter" class="swipe-delete">
 
             </ul>
         </div>
-        <!--<div class="update-time">
-
-        </div> -->
-        <div id="htmlTest"></div>
+        <!--<div class="update-time"></div> -->
     </div>
 
     <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeleteMsg" for="confirmDeleteMsg" id="confirmDeleteMsg">
