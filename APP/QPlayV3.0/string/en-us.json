@@ -529,7 +529,7 @@
   },
   {
     "term": "str_067",
-    "definition": "今日暫無預約e",
+    "definition": "No appointment record today",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -553,7 +553,7 @@
   },
   {
     "term": "str_070",
-    "definition": "公告消息e",
+    "definition": "Announcement",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -561,7 +561,7 @@
   },
   {
     "term": "str_071",
-    "definition": "公司公告，近期活動，個人消息e",
+    "definition": "Announcement, Communication, Events",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -569,7 +569,7 @@
   },
   {
     "term": "str_072",
-    "definition": "完整QPlay App都在這裏e",
+    "definition": "Download all of apps",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -577,7 +577,7 @@
   },
   {
     "term": "str_073",
-    "definition": "常見問題集e",
+    "definition": "FAQ",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -585,7 +585,7 @@
   },
   {
     "term": "str_074",
-    "definition": "已下载:e",
+    "definition": "Downloaded:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -593,7 +593,7 @@
   },
   {
     "term": "str_075",
-    "definition": "未下载:e",
+    "definition": "More Apps:",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -617,7 +617,7 @@
   },
   {
     "term": "str_078",
-    "definition": "标示已读e",
+    "definition": "Mark Read",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -625,7 +625,7 @@
   },
   {
     "term": "str_079",
-    "definition": "更新日期e",
+    "definition": "Update time",
     "context": "",
     "term_plural": "",
     "reference": "",
