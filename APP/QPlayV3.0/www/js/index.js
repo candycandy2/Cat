@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewVersionRecord", "viewFAQ", "viewMyCalendar", "viewMessageList", "viewMessageDetail", "viewScrollTest"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewMyCalendar"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -38,7 +38,8 @@ var viewCalendarInitial = true,
     reserveDirty = false;
 
 //viewMessageList
-var viewMessageInitial = true;
+var viewMessageInitial = true,
+    massageFrom;
 
 
 window.initialSuccess = function (data) {
@@ -202,7 +203,6 @@ function getMyReserve(key, secret) {
     }();
 }
 
-
 //数组合并并排序
 function formatReserveList() {
     //1. 先按照日期合併同一天預約
@@ -248,8 +248,6 @@ function sortByBeginTime(prop1, prop2) {
         }
     }
 }
-
-
 
 //Plugin-QPush, Now only QPLay need to set push-toekn
 function sendPushToken() {
@@ -465,7 +463,6 @@ function unregister() {
     }();
 }
 
-
 function addDownloadHit(appname) {
     var self = this;
 
@@ -577,10 +574,56 @@ function onBackKeyDown() {
             $.mobile.changePage('#viewMain3');
         }
     } else if (activePageID === "viewWebNews2-3-1") {
-        goBack("goList");
+        //goBack("goList");
+        if (massageFrom == 'viewMain3') {
+            $.mobile.changePage('#viewMain3');
+        } else if (massageFrom == 'viewMessageList') {
+            $.mobile.changePage('#viewMessageList');
+        }
     } else if (activePageID === "viewNotSignedIn") {
         navigator.app.exitApp();
     } else {
         navigator.app.exitApp();
+    }
+}
+
+//检查APP-page
+function checkAppPage(pageID) {
+    var appStatus = false;
+
+    for (var i in pageList) {
+        if (pageID == pageList[i]) {
+            appStatus = true;
+            break;
+        }
+    }
+    console.log(pageID + (appStatus == true ? ' has' : ' has not') + ' been in the app');
+
+    if (appStatus) {
+        $.mobile.changePage('#' + pageID);
+    } else {
+        $.get('View/' + pageID + '.html', function (data) {
+            $.mobile.pageContainer.append(data);
+            $('#' + pageID).page().enhanceWithin();
+
+            //Show Water Mark
+            //According to the data [waterMarkPageList] which set in index.js
+            if (!(typeof waterMarkPageList === 'undefined')) {
+                if (waterMarkPageList.indexOf(pageID) !== -1) {
+                    $('#' + pageID).css('background-color', 'transparent');
+                }
+            }
+
+            setTimeout(function () {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'js/' + pageID + '.js';
+                document.head.appendChild(script);
+
+                $.mobile.changePage('#' + pageID);
+                pageList.push(pageID);
+            }, 100);
+
+        }, 'html');
     }
 }

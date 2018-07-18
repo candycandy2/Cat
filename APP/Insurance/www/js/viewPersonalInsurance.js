@@ -229,13 +229,15 @@ $("#viewPersonalInsurance").pagecontainer({
         });  
 
         $(document).on("click", ".family-add", function() {           
-            var clickFamilyID = $(this).parents('.family-list').children("div").attr("data-id");
+            clickFamilyID = $(this).parents('.family-list').children("div").attr("data-id");
             var clickFamilyData = healthInsurArr.filter(function(item, index, array){
                 if (item.family_id === clickFamilyID){
                     return item.name;
                 }
             });
             //將QueryHealthInsuranceFamily回傳的值傳遞至viewApplyInsurance
+            clickInsID = $.trim(clickFamilyData[0].ins_id);
+            clickAppID = $.trim(clickFamilyData[0].app_id);
             clickFamilyName = $.trim(clickFamilyData[0].name);
             clickRelation = $.trim(clickFamilyData[0].relation);
             clickBirth = $.trim(clickFamilyData[0].birthday);

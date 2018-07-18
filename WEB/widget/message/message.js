@@ -20,7 +20,9 @@
 
         for (var i in msgArr) {
             if (msgArr[i].read != 'D' && count < 3) {
-                content += '<div class="widget-msg-list"><div class="widget-msg-time">' +
+                content += '<div class="widget-msg-list" data-rowid="' +
+                    msgArr[i].message_send_row_id +
+                    '"><div class="widget-msg-time">' +
                     msgArr[i].create_time.split(' ')[0] +
                     '</div><div class="widget-msg-title">' +
                     msgArr[i].message_title +
@@ -30,7 +32,7 @@
         }
 
         if (content == '') {
-            content = '<div class="widget-none-msg">暂无消息<div>';
+            content = '<div class="widget-none-msg">' + langStr['str_069'] + '<div>';
         }
 
         $('.' + widgetItem).append(content);
