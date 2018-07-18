@@ -33,8 +33,8 @@ $("#viewPersonalInsurance").pagecontainer({
 
         }; 
 
-        //API:QueryGroupInsuranceData
-        function queryGroupInsuranceList(myEmpNo) {
+        //API:QueryGroupInsuranceData      
+        window.QueryGroupInsuranceList = function() {
             loadingMask("show");
             var self = this;
             var queryData = '<empid>'+ myEmpNo +'</empid>';
@@ -108,10 +108,10 @@ $("#viewPersonalInsurance").pagecontainer({
             var __construct = function() {
                 CustomAPI("POST", true, "QueryGroupInsuranceData", self.successCallback, self.failCallback, queryData, "");
             }();
-        }
+        };
 
         //API:QueryHealthInsuranceFamily  
-        function queryHealthInsuranceList(myEmpNo) {
+        window.QueryHealthInsuranceList = function() {
             loadingMask("show");
             var self = this;
             var queryData = '<empid>'+ myEmpNo +'</empid>';
@@ -188,7 +188,7 @@ $("#viewPersonalInsurance").pagecontainer({
             var __construct = function() {
                 CustomAPI("POST", true, "QueryHealthInsuranceFamily", self.successCallback, self.failCallback, queryData, "");
             }();
-        }
+        };
 
         /********************************** page event *************************************/
         $("#viewPersonalInsurance").one("pagebeforeshow", function(event, ui) {
@@ -204,8 +204,8 @@ $("#viewPersonalInsurance").pagecontainer({
             $("label[for=fam-insur-tab-2]").removeClass('ui-btn-active');
             $("label[for=fam-insur-tab-1]").addClass('ui-btn-active');
             if (!viewPersonalInsuranceShow) {
-                var doQueryHealthInsuranceList = new queryHealthInsuranceList(myEmpNo);
-                var doQueryGroupInsuranceList = new queryGroupInsuranceList(myEmpNo);   
+                QueryHealthInsuranceList();
+                QueryGroupInsuranceList();              
                 viewPersonalInsuranceShow = true; 
             } else {
                 loadingMask("hide");  
