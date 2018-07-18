@@ -39,11 +39,13 @@
                     favoriteApp[i].app_name +
                     '</p></div>';
             }
-
-            content += '<div class="applist-item add-favorite-list"><a value="" id="" href="#"><img src="http://qplaydev.benq.com/widget/applist/add.png" style="width:15vw;"></a><p class="app-list-name" style="opacity: 0;">Add</p></div>';
-
-            $('.applist-main-icon').html('').append(content);
         }
+
+        content += '<div class="applist-item add-favorite-list">' +
+            '<a href="#"><img src="http://qplaydev.benq.com/widget/applist/add.png" style="width:15vw;">' +
+            '</a><p class="app-list-name" style="opacity:0;">Add</p></div>';
+            
+        $('.applist-main-icon').html('').append(content);
     }
 
     function destroyApplist(target) {
