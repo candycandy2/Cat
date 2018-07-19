@@ -12,21 +12,23 @@ $("#viewApplyInsurance").pagecontainer({
             var strCerti = ((certiVal == 'certiYes') ? 'Y' : 'N');
             var strHealthcard = ((cardVal == 'cardYes') ? 'Y' : 'N');
             var strApplyType = '健保加保';
-            var queryData = '<INS_ID></INS_ID>' + '<APP_ID>'+
-                clickAppID +'</APP_ID><empid>'+ 
-                myEmpNo +'</empid><family_id>'+ 
-                clickFamilyID +'</family_id><insuredday>'+
-                applyDateVal +'</insuredday><reason>'+
-                reasonVal +'</reason><subsidy>'+
-                strSubsidy +'</subsidy><certificate>'+
-                strCerti +'</certificate><healthcard>'+
-                strHealthcard +'</healthcard><remark>'+
-                remarkVal +'</remark><applytype>'+
-                strApplyType +'</applytype>';
+            var queryData = '<LayoutHeader><ins_id></ins_id>' + '<app_id>' +
+                clickAppID +'</app_id><empid>' + 
+                myEmpNo +'</empid><family_id>' + 
+                clickFamilyID +'</family_id><insuredday>' +
+                applyDateVal +'</insuredday><reason>' +
+                reasonVal +'</reason><subsidy>' +
+                strSubsidy +'</subsidy><certificate>' +
+                strCerti +'</certificate><healthcard>' +
+                strHealthcard +'</healthcard><remark>' +
+                remarkVal +'</remark><applytype>' +
+                strApplyType +'</applytype></LayoutHeader>';
 
             this.successCallback = function(data) {
                 if (data['ResultCode'] === "1") {
-                    var successArr = data['Content'];
+                    QueryHealthInsuranceList();
+                    changePageByPanel("viewPersonalInsurance");
+                    $("#applyInsurDoneMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                 }
             };
 
