@@ -1126,5 +1126,21 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "str_142",
+    "definition": "若此人有加保紀錄，修改眷屬資料",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_143",
+    "definition": "可能影響資料正確性",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]

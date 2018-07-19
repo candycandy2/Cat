@@ -1011,6 +1011,11 @@ div.scrollmenu a {
     margin-right: 3.2vw; 
     align-self:center; 
     width: 13%;
+    display: none;
+}
+
+.addInsuranceStr {
+    display: none;
 }
 
 .family-input {
@@ -1090,7 +1095,8 @@ div.scrollmenu a {
 .manageTimeOverMsg >.ui-content,
 .selectTimeOverMsg >.ui-content,
 .recordTimeOverMsg >.ui-content,
-.confirmCancelApply >.ui-content {
+.confirmCancelApply >.ui-content,
+.beforeEditMsg >.ui-content {
     padding: 0 !important;
 }
 
@@ -1103,7 +1109,8 @@ div.scrollmenu a {
 .manageTimeOverMsg .ui-content>.header,
 .selectTimeOverMsg .ui-content>.header,
 .recordTimeOverMsg .ui-content>.header,
-.confirmCancelApply .ui-content>.header {
+.confirmCancelApply .ui-content>.header,
+.beforeEditMsg .ui-content>.header {
     margin-top: 14%;
 }
 
@@ -1116,7 +1123,8 @@ div.scrollmenu a {
 .manageTimeOverMsg .ui-content>.main,
 .selectTimeOverMsg .ui-content>.main,
 .recordTimeOverMsg .ui-content>.main,
-.confirmCancelApply .ui-content>.main {
+.confirmCancelApply .ui-content>.main 
+.beforeEditMsg .ui-content>.main {
     margin-top: 12%;
 }
 
