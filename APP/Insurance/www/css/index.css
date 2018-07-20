@@ -907,8 +907,19 @@ div.scrollmenu a {
     clear: both;
 }
 
-.family-list > div:nth-of-type(1) {
-    width: 65vw;
+/*div:nth-of-type(1)*/
+.family-list > .content-list-only-img {
+    width: 65vw; 
+    height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.family-list > .content-list-text-img {
+    width: 60vw; 
     height:14.5vw;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -923,10 +934,22 @@ div.scrollmenu a {
     margin-top: 1.16vw;
 }
 
-.family-list > div:nth-of-type(2) {
+/*div:nth-of-type(2)*/
+.family-list > .list-only-img {
     width: 21.5vw;
     height: 10vw;
     padding-top: 3.5vw;
+}
+
+.family-list > .list-text-img {
+    width: 26.5vw; 
+    height: 10vw;
+    padding-top: 3.5vw;
+}
+
+.family-list > div:nth-of-type(2) > label {
+    display: inline-block;
+    color: #e92729;
 }
 
 .empty-list, .group-list {padding: 3vw 6.71vw;}
@@ -950,7 +973,15 @@ div.scrollmenu a {
     width: 7.5vw;
     height: 7.5vw;
     margin-left: 14vw;
-    margin-top: 1vw;
+    margin-top: -1vw;
+}
+
+.family-text-img {
+    vertical-align: middle;
+    width: 7.5vw;
+    height: 7.5vw;
+    margin-left: 3vw;
+    margin-top: -1vw;
 }
 
 .family-notice {
@@ -1294,4 +1325,11 @@ input[type=radio]:checked + label {
     text-align: center;
     z-index: 2;
     display: none;
+}
+
+.app-popup .main-cancel {
+    text-align: center;
+    color: #0f0f0f;
+    padding: 0 5.36vw;
+    margin: 0 0 8.5vw;
 }
