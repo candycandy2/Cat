@@ -5,7 +5,7 @@
 $("#viewFamilyData").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
-        var familyName, familyID , familyBirth, relationshipNo, typeNo, addFamilyStatus = "";
+        var familyName, familyID , familyBirth, familyRelation, typeNo, addFamilyStatus = "";
         var familyNo = 'NULL';
         var timeoutFamilyName = null, timeoutFamilyID = null;
         var familyArr = {};
@@ -268,7 +268,7 @@ $("#viewFamilyData").pagecontainer({
             familyID = "";
             familyName = "";
             familyBirth = "";
-            relationshipNo = "";
+            familyRelation = "";
             typeNo = "";
 
             $.each($("#relationship-popup-option-list li"), function (index, item) {
@@ -414,13 +414,13 @@ $("#viewFamilyData").pagecontainer({
         }
 
         //After connect to API, Delete the localStorage 
-        function addTempDataIntoObject() {
+        /*function addTempDataIntoObject() {
             obj.name = $('#familyInsurName').val();
             obj.relation = $("#familyRelationship").val();
             obj.idtype = $('#idType').val();
             obj.idno = $('#familyID').val();
             obj.birthday = $('#familyBirth').val();
-        }
+        }*/
 
         function formatDate(date) { 
             var d = new Date(date),
@@ -508,16 +508,28 @@ $("#viewFamilyData").pagecontainer({
             $("#familyInsurName").css("background", "#f9f9f9");
         });
 
+
+
+        function applyInsurFromFamilyData() {
+            clickFamilyName = $.trim(familyName);
+            clickRelation =  $.trim(familyRelation);
+            clickAge = transferBirthToAge(familyBirth);
+            clickBirth = $.trim(familyBirth);
+            clickID = $.trim(familyID)
+            $("#mypanelviewFamilyData").removeAttr("style");
+            $("#mypanel #mypanelviewPersonalInsurance").css("background", "#503f81");
+            $("#mypanel #mypanelviewPersonalInsurance").css("color", "#fff");   
+            $.mobile.changePage("#viewApplyInsurance");     
+        }
+
         //健保加保申請，跳轉
         $(".addInsuranceImg").on("click", function () {
-            clickFamilyName = familyName;
-            $.mobile.changePage("#viewApplyInsurance"); 
+            applyInsurFromFamilyData();
         });
 
         //健保加保申請，跳轉
         $(".addInsuranceStr").on("click", function () {
-            clickFamilyName = familyName;
-            $.mobile.changePage("#viewApplyInsurance"); 
+            applyInsurFromFamilyData();
         });
 
         //確定編輯眷屬，跳轉
@@ -530,10 +542,10 @@ $("#viewFamilyData").pagecontainer({
                     familyName = familyArr[i]["name"];
                     familyID = familyArr[i]["idno"];
                     familyBirth = familyArr[i]["birthday"];
-                    relationshipNo = familyArr[i]["relation"];
+                    familyRelation = familyArr[i]["relation"];
                     typeNo = familyArr[i]["idtype"];
                     $("#familyInsurName").val(familyName);
-                    $("#familyRelationship").val(relationshipNo);
+                    $("#familyRelationship").val(familyRelation);
                     $('#idType').val(typeNo);
                     $("#familyID").val(familyID);
                     $("#familyBirth").val(familyBirth);
@@ -665,7 +677,7 @@ $("#viewFamilyData").pagecontainer({
         $("#viewFamilyData").on("popupafterclose", "#relationship-popup-option", function () {
             var self = $("#relationship-popup").val();
             if (self !== langStr["str_095"]) {
-                relationshipNo = self;
+                familyRelation = self;
             }
         });
 
