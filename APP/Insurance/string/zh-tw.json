@@ -729,7 +729,7 @@
   },
   {
     "term": "str_092",
-    "definition": "身分證",
+    "definition": "身份證",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1122,6 +1122,30 @@
   {
     "term": "str_141",
     "definition": "新增眷屬資料失敗",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_142",
+    "definition": "若此人有加保紀錄，修改眷屬資料",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_143",
+    "definition": "可能影響資料正確性",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_144",
+    "definition": "不取消",
     "context": "",
     "term_plural": "",
     "reference": "",

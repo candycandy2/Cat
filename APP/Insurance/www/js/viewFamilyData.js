@@ -5,7 +5,7 @@
 $("#viewFamilyData").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
-        var familyInsurName, familyID , familyBirth, relationshipNo, typeNo, addFamilyStatus = "";
+        var familyName, familyID , familyBirth, familyRelation, typeNo, addFamilyStatus = "";
         var familyNo = 'NULL';
         var timeoutFamilyName = null, timeoutFamilyID = null;
         var familyArr = {};
@@ -104,6 +104,43 @@ $("#viewFamilyData").pagecontainer({
 
             var __construct = function() {
                 CustomAPI("POST", true, "QueryFamilyData", self.successCallback, self.failCallback, queryData, "");
+            }();
+        };
+
+
+        //新增&編輯眷屬資料 API: ModifyFamilyData 
+        window.QueryInsuranceFamilyAdd = function() {
+            loadingMask("show");
+            var self = this;
+            var addName = $.trim($('#familyInsurName').val());
+            var addRelation = $.trim($("#familyRelationship").val());
+            var addIDType = $.trim($('#idType').val());
+            var addIDNo = $.trim($('#familyID').val());
+            var addBirthday = formatDate($.trim($('#familyBirth').val()));
+            var queryData = '<LayoutHeader><type>' +
+                addFamilyStatus + '</type><empid>' +
+                myEmpNo + '</empid><family_id>' +
+                familyNo + '</family_id><name>' + 
+                addName + '</name><relation>' +
+                addRelation + '</relation><birthday>' +
+                addBirthday + '</birthday><idtype>' +
+                addIDType + '</idtype><idno>' + 
+                addIDNo +'</idno></LayoutHeader>';
+            this.successCallback = function(data) { 
+                if (data['ResultCode'] === "1") {
+                    //重新顯示眷屬列表
+                    QueryFamilyList();
+                    viewPersonalInsuranceShow = false;
+                }else if (data['ResultCode'] === "046907") {
+                    popupMsgInit('.familyErrorMsg');
+                }
+                loadingMask("hide");
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "ModifyFamilyData", self.successCallback, self.failCallback, queryData, "");
             }();
         };
 
@@ -227,10 +264,11 @@ $("#viewFamilyData").pagecontainer({
             $("#familyID").val("");
             $("#familyBirth").val("");
             familyNo = "NULL";
-            familyInsurName = "";
+            //familyInsurName = "";
             familyID = "";
+            familyName = "";
             familyBirth = "";
-            relationshipNo = "";
+            familyRelation = "";
             typeNo = "";
 
             $.each($("#relationship-popup-option-list li"), function (index, item) {
@@ -338,19 +376,19 @@ $("#viewFamilyData").pagecontainer({
 
         //檢查眷屬資料的身分證和配偶是否有重複
         function checkDuplicateInfo() {
-            familyArr = JSON.parse(localStorage.getItem('familySettingData')); 
             var idVal = $.trim($("#familyID").val());
             var relationshipVal = $.trim($("#familyRelationship").val());
-            if (familyArr != null) {
-                for (var i=0; i<familyArr.content.length; i++ ) {
-                    if ( familyArr.content[i]["family_id"] != familyNo && familyArr.content[i]["idno"] == idVal) {
+            if (familyArr != null) {               
+                //for (var i=0; i<familyArr.content.length; i++ ) {
+                for (var i in familyArr) {
+                    if ( familyArr[i]["family_id"] != familyNo && familyArr[i]["idno"] == idVal) {
                         $(".familyAddCheckMsg .lengthErr").removeClass('addInlineBlock');  
                         $(".familyAddCheckMsg .formatErr").removeClass('addInlineBlock');   
                         $(".familyAddCheckMsg .idDulErr").addClass('addInlineBlock');   
                         $(".familyAddCheckMsg .oneSpouseErr").removeClass('addInlineBlock');                  
                         popupMsgInit('.familyAddCheckMsg');
                         return false;
-                    } else if ( familyArr.content[i]["family_id"] != familyNo && relationshipVal == "配偶" && familyArr.content[i]["relation"] == "配偶" ) {
+                    } else if ( familyArr[i]["family_id"] != familyNo && relationshipVal == "配偶" && familyArr[i]["relation"] == "配偶" ) {
                         $(".familyAddCheckMsg .lengthErr").removeClass('addInlineBlock');  
                         $(".familyAddCheckMsg .formatErr").removeClass('addInlineBlock');   
                         $(".familyAddCheckMsg .idDulErr").removeClass('addInlineBlock');   
@@ -376,13 +414,13 @@ $("#viewFamilyData").pagecontainer({
         }
 
         //After connect to API, Delete the localStorage 
-        function addTempDataIntoObject() {
+        /*function addTempDataIntoObject() {
             obj.name = $('#familyInsurName').val();
             obj.relation = $("#familyRelationship").val();
             obj.idtype = $('#idType').val();
             obj.idno = $('#familyID').val();
             obj.birthday = $('#familyBirth').val();
-        }
+        }*/
 
         function formatDate(date) { 
             var d = new Date(date),
@@ -431,8 +469,8 @@ $("#viewFamilyData").pagecontainer({
         //刪除眷屬資料彈窗popup
         $("#familyList").on("click", ".family-delete", function () {
             familyNo = $(this).parent().prev().attr("data-id");
-            familyInsurName = $.trim($(this).parent().prev().children("div:first-child").children("span:first-child").text());
-            $(".confirmDeleteFamily .main-paragraph").text(familyInsurName);
+            familyName = $.trim($(this).parent().prev().children("div:first-child").children("span:first-child").text());
+            $(".confirmDeleteFamily .main-paragraph").text(familyName);
             popupMsgInit('.confirmDeleteFamily');
         });
 
@@ -462,6 +500,7 @@ $("#viewFamilyData").pagecontainer({
         //添加眷屬，跳轉到編輯頁
         $(".family-add-img").on("click", function () {
             addFamilyOrNot = true;
+            addFamilyStatus = "Add"; 
             clearFormByFamily();
             changeViewToDetail();            
             checkFormByFamily();
@@ -469,25 +508,55 @@ $("#viewFamilyData").pagecontainer({
             $("#familyInsurName").css("background", "#f9f9f9");
         });
 
-        //修改眷屬，跳轉到編輯頁
-        $("#familyList").on("click", ".family-edit", function () {
-            //1.傳值
-            var self = $(this).parent().siblings().attr("data-id");
-            familyNo = self;
-           
+
+
+        function applyInsurFromFamilyData() {
+            clickFamilyName = $.trim(familyName);
+            clickRelation =  $.trim(familyRelation);
+            clickAge = transferBirthToAge(familyBirth);
+            clickBirth = $.trim(familyBirth);
+            clickID = $.trim(familyID)
+            $("#mypanelviewFamilyData").removeAttr("style");
+            $("#mypanel #mypanelviewPersonalInsurance").css("background", "#503f81");
+            $("#mypanel #mypanelviewPersonalInsurance").css("color", "#fff");   
+            $.mobile.changePage("#viewApplyInsurance");     
+        }
+
+        //健保加保申請，跳轉
+        $(".addInsuranceImg").on("click", function () {
+            applyInsurFromFamilyData();
+        });
+
+        //健保加保申請，跳轉
+        $(".addInsuranceStr").on("click", function () {
+            applyInsurFromFamilyData();
+        });
+
+        //確定編輯眷屬，跳轉
+        $("#confirmEditBtn").on("click", function () {
+            addFamilyStatus = "Modify";        
             //for (var i=0; i<familyArr.content.length; i++ ) {
             for (var i in familyArr) {
                 //replace familyArr.content[i] to familyArr[i]
-                if (self == familyArr[i]["family_id"]) {
-                    $("#familyInsurName").val(familyArr[i]["name"]);
-                    $("#familyRelationship").val(familyArr[i]["relation"]);
-                    $('#idType').val(familyArr[i]["idtype"]);
-                    $("#familyID").val(familyArr[i]["idno"]);
-                    $("#familyBirth").val(familyArr[i]["birthday"]);
+                if (familyNo == familyArr[i]["family_id"]) {
+                    familyName = familyArr[i]["name"];
                     familyID = familyArr[i]["idno"];
                     familyBirth = familyArr[i]["birthday"];
-                    relationshipNo = familyArr[i]["relation"];
+                    familyRelation = familyArr[i]["relation"];
                     typeNo = familyArr[i]["idtype"];
+                    $("#familyInsurName").val(familyName);
+                    $("#familyRelationship").val(familyRelation);
+                    $('#idType').val(typeNo);
+                    $("#familyID").val(familyID);
+                    $("#familyBirth").val(familyBirth);
+                  
+                    if (familyArr[i]["can_apply"] == '加保') {
+                        $(".addInsuranceImg").show();
+                        $(".addInsuranceStr").show();
+                    } else {
+                        $(".addInsuranceImg").hide();
+                        $(".addInsuranceStr").hide();
+                    }
 
                     $.each($("#relationship-popup-option-list li"), function (index, item) {
                         if ($.trim($(item).text()) == familyArr[i]["relation"]) {
@@ -506,57 +575,25 @@ $("#viewFamilyData").pagecontainer({
             }
 
             //2.跳轉
-            familyInsurName = $(this).parent().siblings().find('span:nth-child(1)').text();
+            //familyInsurName = $(this).parent().siblings().find('span:nth-child(1)').text();
             addFamilyOrNot = false;
             changeViewToDetail();          
-            $(".confirmCancelEditFamily .main-paragraph").text(familyInsurName);
+            $(".confirmCancelEditFamily .main-paragraph").text(familyName);
             checkFormByFamily();
         });
 
-        //新增眷屬資料 API: ModifyFamilyData 
-        window.QueryInsuranceFamilyAdd = function() {
-            loadingMask("show");
-            var self = this;
-            var addName = $.trim($('#familyInsurName').val());
-            var addRelation = $.trim($("#familyRelationship").val());
-            var addIDType = $.trim($('#idType').val());
-            var addIDNo = $.trim($('#familyID').val());
-            var addBirthday = formatDate($.trim($('#familyBirth').val()));
-            if (familyNo === 'NULL') {
-                var queryData = '<LayoutHeader><type>' +
-                    addFamilyStatus + '</type><empid>' +
-                    myEmpNo + '</empid><family_id>' +
-                    familyNo + '</family_id><name>' + 
-                    addName + '</name><relation>' +
-                    addRelation + '</relation><birthday>' +
-                    addBirthday + '</birthday><idtype>' +
-                    addIDType + '</idtype><idno>' + 
-                    addIDNo +'</idno></LayoutHeader>';
-            }
-            this.successCallback = function(data) { 
-                if (data['ResultCode'] === "1") {
-                    //重新顯示眷屬列表
-                    QueryFamilyList();
-                    viewPersonalInsuranceShow = false;
-                }else if (data['ResultCode'] === "046907") {
-                    popupMsgInit('.familyErrorMsg');
-                }
-                loadingMask("hide");
-            };
-
-            this.failCallback = function(data) {};
-
-            var __construct = function() {
-                CustomAPI("POST", true, "ModifyFamilyData", self.successCallback, self.failCallback, queryData, "");
-            }();
-        };
+        //修改眷屬，跳轉到編輯頁
+        $("#familyList").on("click", ".family-edit", function () {
+            //1.傳值
+            var self = $(this).parent().siblings().attr("data-id");
+            familyNo = self;  
+            popupMsgInit('.beforeEditMsg');          
+        });
 
         //儲存按鈕
         $(".family-save-btn").on("click", function () {
             if (checkFormByFamily() && checkTextFormat() && checkDuplicateInfo()) {
-                loadingMask("show");
-                addFamilyStatus = "Add";
-                
+                loadingMask("show");               
                 /*familyArr = JSON.parse(localStorage.getItem('familySettingData')); 
                 obj = new Object()
                 var jsonData = {};               
@@ -586,7 +623,7 @@ $("#viewFamilyData").pagecontainer({
                     jsonData = familyArr;
                     localStorage.setItem('familySettingData', JSON.stringify(jsonData));
                 }*/            
-                
+  
                 //API: ModifyFamilyData (入參)
                 QueryInsuranceFamilyAdd(); 
                 clearFormByFamily();
@@ -640,7 +677,7 @@ $("#viewFamilyData").pagecontainer({
         $("#viewFamilyData").on("popupafterclose", "#relationship-popup-option", function () {
             var self = $("#relationship-popup").val();
             if (self !== langStr["str_095"]) {
-                relationshipNo = self;
+                familyRelation = self;
             }
         });
 
@@ -674,7 +711,7 @@ $("#viewFamilyData").pagecontainer({
                 timeoutFamilyName = null;
             }
             timeoutFamilyName = setTimeout(function () {
-                familyInsurName = $.trim($("#familyInsurName").val());
+                familyName = $.trim($("#familyInsurName").val());
                 checkFormByFamily();
             }, 1000);
         });
