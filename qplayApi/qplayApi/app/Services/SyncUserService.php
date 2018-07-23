@@ -30,30 +30,32 @@ class SyncUserService
     }
 
     /**
-     * insert data into qp_user_sync
-     * @param  Array $userList   all user list from excel
-     */
-    public function insertDataIntoTemp($userList){
-        $this->userSyncRepository->insertUser($userList);
-    }
-
-    /**
      * merge qp_user and qp_user_sync
      * @param  boolean $first  is first time execute
-     * @param  string $sourceFrom source from, ex:flower|qcsflower|ehr|partner
+     * @param  string  $sourceFrom source from, ex:flower|qcsflower|ehr|partner
+     * @return array   merge result
      */
     public function mergeUser($sourceFrom, $first=false){
-
+        $result = [ 'updateInactive' => 0,
+                    'updateActive' => 0,
+                    'insertNew' => 0
+                  ];
         //1. update qp_user data by  where qp_user_sync.active = N 
-        $this->userRepository->syncInactiveUser($sourceFrom, $first);
+        $result['updateInactive'] = $this->userRepository->syncInactiveUser($sourceFrom, $first);
         
         //2.update qp_user data by  where qp_user_sync.active = Y
-        $this->userRepository->syncActiveUser($sourceFrom, $first);
+        $result['updateActive'] = $this->userRepository->syncActiveUser($sourceFrom, $first);
 
-        //3.insert new data from qp_user_sync to qp_user
+        //3.batch insert new data from qp_user_sync to qp_user
         $users = $this->userSyncRepository->getNewUser($sourceFrom, $first);
-        $this->userRepository->insertUser($users);
-        
+        $total = count($users);
+        $limit = 1000;
+        $page = ceil($total / $limit);
+        for ($i = 0; $i < $page; $i++) {
+           $this->userRepository->insertUser(array_slice($users, $i*$limit, $limit)); 
+        }
+        $result['insertNew'] = $total;
+        return $result;
     }
 
     /**
@@ -68,6 +70,7 @@ class SyncUserService
      * This function will send mail to admin,
      * if find out some one's emp_no is duplicated,
      * you can set up the reciver via .env Error Handler Parameters
+     * @return Array duplicate users info
      */
     public function handlDuplicatedUser(){
         $duplicateUsers = $this->userRepository->getDuplicatedUser()->toArray();
@@ -85,31 +88,45 @@ class SyncUserService
                         $message->to($to)->subject($subject);
                     }
                 });
-            }
+        }
+        return $duplicateUsers;
     }
 
 
     /**
-     * extract user data from excel, prepare to insert to qp_user
+     * extract user data from excel, and insert to qp_user
      * @param  string $fileName   source filename
      * @param  string $sourceFrom source
-     * @return array
+     * @return int                ready to sync count
      */
-    public function getUserDataFromExcel($fileName, $sourceFrom){
+    public function insertUserDataIntoTemp($fileName, $sourceFrom){
+        // truncat qp_user_sync
+        $this->userSyncRepository->truncatUser();
+
         $fileName = str_replace('/', DIRECTORY_SEPARATOR, $fileName);
-        $result = [];
         if(Storage::disk('local')->has($fileName)){
+            //read file and batch insert
             $path = storage_path(str_replace('/', DIRECTORY_SEPARATOR, 'app/'.$fileName));
-            Excel::load($path, function($reader) use(&$sourceFrom, &$result){
+            $readyToSync = 0;
+            Excel::load($path, function($reader) use(&$sourceFrom, &$readyToSync){
                 $result = $reader->toArray();
-                foreach ($result as $index => &$row) {
-                   $row = array_map('trim', $row);
-                   $row['source_from'] = $sourceFrom;
+                $total = count($result);
+                $limit = 1000;
+                $batch = [];
+                foreach ($result as $index => $row) {
+                    $row['source_from'] = $sourceFrom;
+                    $batch[] = array_map('trim', $row);
+                    $batchCount = count($batch);
+                    if( ($index + 1) == $total || $batchCount == $limit){
+                        $this->userSyncRepository->insertUser($batch);
+                        $readyToSync = $readyToSync + $batchCount;
+                        $batch = [];
+                    }
                 }
             });
         }
-        return $result;
-        
+
+        return $readyToSync;
     }
 
     /**
