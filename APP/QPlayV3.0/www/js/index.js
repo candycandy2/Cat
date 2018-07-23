@@ -32,8 +32,7 @@ var viewMainInitial = true;
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
 
 //viewMyCalendar
-var viewCalendarInitial = true,
-    reserveCalendar = null,
+var reserveCalendar = null,
     reserveList = [],
     reserveDirty = false;
 
