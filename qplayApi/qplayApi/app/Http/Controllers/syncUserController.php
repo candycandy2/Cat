@@ -11,7 +11,7 @@ use Storage;
 use DB;
 use Config;
 use Exception;
-
+use Log;
 
 class syncUserController extends Controller
 {   
@@ -35,62 +35,67 @@ class syncUserController extends Controller
      * @return json
      */
     public function syncUserJob(Request $request){
+        Log::info('==========Start SyncUserJob==========');
         set_time_limit(0);
         $timeStart = microtime(true); 
-        DB::beginTransaction();
-        try{
-            //1.arrange data by each source
-            $source = Config::get('syncuser.source');
-            foreach ($source as $sourceFrom) {
-                $undo = self::SYNC_FOLDER.DIRECTORY_SEPARATOR.
-                            $sourceFrom.DIRECTORY_SEPARATOR.
-                            self::UNDO_FOLDER.DIRECTORY_SEPARATOR;
+        //1.arrange data by each source
+        $source = Config::get('syncuser.source');
+        foreach ($source as $sourceFrom) {
+            $undo = self::SYNC_FOLDER.DIRECTORY_SEPARATOR.
+                        $sourceFrom.DIRECTORY_SEPARATOR.
+                        self::UNDO_FOLDER.DIRECTORY_SEPARATOR;
 
-                $files = Storage::allFiles($undo);
-                foreach ($files as $fileName) {
-                    //1.1 read file from server
-                    $userList = $this->syncUserService->getUserDataFromExcel($fileName, $sourceFrom);
-
-                    //1.2 insert into user_sync and user_resign as temp
-                    $this->syncUserService->clearSyncUserTable();
-                    $this->syncUserService->insertDataIntoTemp($userList);
-
-                    //1.3 merge qp_user_sync into qp_user
-                    $first = false;
-                    if((!is_null($request->input('first'))) && (strtolower($request->input('first')) == 'y')){
-                        $first = true;
-                    }
-                    //1.4 delete register information and Jpush Tag
-                    $delUsers =  $this->syncUserService->getResignUsers();
-                    if(count($delUsers) > 0){
-                            $this->registerService->unRegisterUserbyUserIds($delUsers);
-                    }
-                    $this->syncUserService->mergeUser($sourceFrom, $first);
-
-                    //1.5 delete file
-                    Storage::delete($fileName);
-               }
-            }
-            
-            //2. insert new company
-            $companyRole = $this->roleService->addNewCompany();
-            
-            //3. duplicate emp_no handle
-            $this->syncUserService->handlDuplicatedUser();
-
-            Storage::deleteDirectory(self::SYNC_FOLDER);
-            $timeEnd = microtime(true);
-            $executionTime = ($timeEnd - $timeStart)/60;
-
-            DB::commit();
-            $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
-                'content'=>'syncUserJob execution time : '.$executionTime
-            ];
-            return response()->json($result);
-        }catch(Exception $e){
-            DB::rollBack();
-            throw $e;
+            $files = Storage::allFiles($undo);
+            foreach ($files as $fileName) {
+                Log::info('[Sync '.$sourceFrom.']');
+                //1.1 read from excel and batch insert into user_sync and user_resign as temp
+                $readyToSync = $this->syncUserService->insertUserDataIntoTemp($fileName, $sourceFrom);
+                if( $readyToSync > 0){
+                    Log::info('Sync users from: '.$readyToSync);
+                }
+                //1.2 merge qp_user_sync into qp_user
+                $first = false;
+                if((!is_null($request->input('first'))) && (strtolower($request->input('first')) == 'y')){
+                    $first = true;
+                }
+                //1.3 delete register information and Jpush Tag
+                $delUsers =  $this->syncUserService->getResignUsers();
+                if(count($delUsers) > 0){
+                    $this->registerService->unRegisterUserbyUserIds($delUsers);
+                    Log::info('Unregister users from: '.count($delUsers));
+                }
+                //1.4 merge user
+                $mergeResult = $this->syncUserService->mergeUser($sourceFrom, $first);
+                Log::info('Update inactive users: '.$mergeResult['updateInactive']);
+                Log::info('Update active users: '.$mergeResult['updateActive']);
+                Log::info('Insert new users: '.$mergeResult['insertNew']);
+                $totalCount = $mergeResult['updateInactive'] + $mergeResult['updateActive'] + $mergeResult['insertNew'];
+                Log::info('Total: '.$totalCount);
+                
+                //1.5 delete merged file
+                Storage::delete($fileName);
+                Log::info('Delete: '.$fileName);
+           }
         }
+        Log::info('[Sync Data]');
+        //2. insert new company
+        $companyRole = $this->roleService->addNewCompany();
+        Log::info('Add company role:'.count($companyRole));
+        //3. duplicate emp_no handle
+        $duplicateUsers = $this->syncUserService->handlDuplicatedUser();
+        Log::info('Duplicate users :'.count($duplicateUsers));
+
+        Storage::deleteDirectory(self::SYNC_FOLDER);
+        Log::info('Delete folder: '.self::SYNC_FOLDER);
+
+        $timeEnd = microtime(true);
+        $executionTime = ($timeEnd - $timeStart);
+        Log::info('SyncUserJob execution time :'.$executionTime.' seconds');
+        $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
+            'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
+            'content'=>'syncUserJob execution time : '.$executionTime.' seconds'
+        ];
+        Log::info('==========End SyncUserJob==========');
+        return response()->json($result);
     }
 }
