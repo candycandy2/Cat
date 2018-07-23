@@ -2,7 +2,7 @@
 $("#viewApplyInsurance").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
-        var applyDate, applyDateVal, reasonVal, subsidyVal, certiVal, cardVal, remarkVal = "";
+        var applyDate, applyDateVal, reasonVal, subsidyVal, certiVal, cardVal, remarkVal, detailType = "";
 
         //API:ModifyHealthInsurance
         window.QueryModifyHealthInsurance = function() {
@@ -75,10 +75,58 @@ $("#viewApplyInsurance").pagecontainer({
 
         }
 
+        //退保原因DDL生成
+        function getWithdrawReasonList() {
+            //初始化           
+            $("#withdrawReason").html("");
+            $("#withdrawReason-popup").remove();
+            $(document).off("click", "#withdrawReason-popup-option");
+            $("#withdrawReason-popup-option").popup("destroy").remove();
+
+            var options = [{value: "10", text: "轉換投保單位" }, 
+                           {value: "11", text: "自行就業"},
+                           {value: "12", text: "離緍"},
+                           {value: "13", text: "年滿二十歲未具或喪失續保資格"},
+                           {value: "14", text: "改變依附對象"},
+                           {value: "15", text: "終止收養關係"},
+                           {value: "16", text: "死亡"},
+                           {value: "17", text: "監所受刑二個月以上"},
+                           {value: "18", text: "失蹤滿六個月"},
+                           {value: "19", text: "喪失第十條資格"}];
+
+            var defaultReason = "轉換投保單位";
+
+            var withdrawReasonData = {
+                id: "withdrawReason-popup",
+                option: options,
+                defaultText: defaultReason,
+                changeDefaultText: true,
+                attr: {
+                    class: "tpl-dropdown-list-icon-arrow"
+                }
+            };
+
+            //生成申請加保reason dropdownlist
+            tplJS.DropdownList("viewApplyInsurance", "withdrawReason", "prepend", "typeB", withdrawReasonData);
+
+        }
+
         function setDefaultStatus() {
             $("#familyName").text(clickFamilyName);
             $("#applyDate").val("");
+            //加保畫面
+            $(".apply-insurance-ddl").show();
+            $(".withdraw-insurance-ddl").hide();
             getApplyReasonList();
+            $("#newSubsidy").show();
+            $("#newHealthcard").show(); 
+            //退保畫面       
+            /*$(".withdraw-insurance-ddl").show();
+            $(".apply-insurance-ddl").hide();
+            getWithdrawReasonList();
+            $("#newSubsidy").hide();
+            $("#newHealthcard").hide(); */
+            
             $('#newSubsidy input[id^=subsidy]').removeAttr("checked");
             $('#newCertificate input[id^=certi]').removeAttr("checked");
             $('#newHealthcard input[id^=card]').removeAttr("checked");
@@ -89,28 +137,53 @@ $("#viewApplyInsurance").pagecontainer({
         function checkFormByApplyInsur() {
             nameVal = $.trim($("#familyName").text());
             applyDateVal = $.trim($("#applyDate").val());
-            reasonVal = $.trim($("#applyReason").text());
-            subsidyVal = $("#newSubsidy :radio:checked").val();
+            reasonVal = $.trim($("#applyReason").text());            
             certiVal = $("#newCertificate :radio:checked").val();
-            cardVal = $("#newHealthcard :radio:checked").val();
             remarkVal = $.trim($("#applyRemark").val());
-
+            
+            subsidyVal = $("#newSubsidy :radio:checked").val();
+            cardVal = $("#newHealthcard :radio:checked").val();
             if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && subsidyVal !== undefined && certiVal !== undefined && cardVal !== undefined && remarkVal !== "") {
                 $('#previewBtn').addClass('insurPreview-active-btn');
             } else {
                 $('#previewBtn').removeClass('insurPreview-active-btn');
             }
+            //退保需檢查的欄位
+            /*if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && certiVal !== undefined && remarkVal !== "") {
+                $('#previewBtn').addClass('insurPreview-active-btn');
+            } else {
+                $('#previewBtn').removeClass('insurPreview-active-btn');
+            }*/
+           
         }
 
         /********************************** page event *************************************/
         $("#viewApplyInsurance").one("pagebeforeshow", function (event, ui) {
-            getApplyReasonList();
             $("#applyRemark").attr("placeholder", langStr["str_130"]);
         });
 
-        $("#viewApplyInsurance").on("pageshow", function (event, ui) {            
-            setDefaultStatus();
-            checkFormByApplyInsur();
+        $("#viewApplyInsurance").on("pageshow", function (event, ui) {     
+            if (nextPage == "Add") {                     
+                $('#backPersonalInsurance').show();
+                $("#viewInsurApplication").show();
+                $("#previewBtn").show();
+                $('#backApplyInsurance').hide();
+                $("#viewPreviewApplication").hide();
+                setDefaultStatus();
+                checkFormByApplyInsur();
+            } else if (nextPage == "withdrawDetail") {
+                detailType = "withdraw";
+                changeToDetailPage(detailType);
+                $("#applyBtn").hide();
+                $("#cancelBtn").hide(); 
+                $("#insurBtn").show();
+                $('#backPersonalInsurance').show();
+                $("#viewPreviewApplication").show(); 
+                $("#viewInsurApplication").hide();
+                $("#previewBtn").hide(); 
+                $('#backApplyInsurance').hide();                              
+            }
+            loadingMask("hide");
         });
         
         /******************************** datetimepicker ***********************************/
@@ -169,25 +242,82 @@ $("#viewApplyInsurance").pagecontainer({
             checkFormByApplyInsur();
         });
 
-        //預覽送簽按鈕
-        $("#previewBtn").on("click", function() {
-            if ($('#previewBtn').hasClass('insurPreview-active-btn')) {
-                //傳值到預覽頁面
-                var preNameAge = clickFamilyName + '/' + clickRelation + '/' + clickAge;
+        function changeToDetailPage(detailType) {
+            var preNameAge = clickFamilyName + '/' + clickRelation + '/' + clickAge;
+            if (detailType == "withdraw"){
+                $("#perviewApplyDate").show();
+                $("#perviewStatus").show();
+                $("#perviewDealday").show();
+                var preDate = langStr["str_122"] + ': ' + clickApplyday;
+                var preReason = langStr["str_123"] + ': ' + clickReason;
+                var preSubsidy = langStr["str_133"] + ': ' + ((clickSubsidy == 'Y') ? langStr["str_128"] : langStr["str_129"]);
+                var preCertificate = langStr["str_134"] + ': ' + ((clickCerti == 'Y') ? langStr["str_128"] : langStr["str_129"]);
+                var preHealthcard = langStr["str_120"] + ': ' + ((clickHealthcard == 'Y') ? langStr["str_128"] : langStr["str_129"]);
+                var applyDateDetail = langStr["str_145"] + ': ' + clickApplyday;
+                var statusDetail = langStr["str_146"] + ': ' + clickDealwith;
+                var dealdayDetail = langStr["str_147"] + ': ' + clickDealday;
+                $("#perviewApplyDate").text(applyDateDetail);
+                $("#perviewStatus").text(statusDetail);
+                $("#perviewDealday").text(dealdayDetail);
+               
+            } else if (detailType == "newApply") {
+                $("#perviewApplyDate").hide();
+                $("#perviewStatus").hide();
+                $("#perviewDealday").hide();
                 var preDate = langStr["str_116"] + ': ' + applyDateVal;
                 var preReason = langStr["str_117"] + ': ' + reasonVal;
                 var preSubsidy = langStr["str_133"] + ': ' + ((subsidyVal == 'subsidyYes') ? langStr["str_128"] : langStr["str_129"]); 
                 var preCertificate = langStr["str_134"] + ': ' + ((certiVal == 'certiYes') ? langStr["str_128"] : langStr["str_129"]);
                 var preHealthcard = langStr["str_120"] + ': ' + ((cardVal == 'cardYes') ? langStr["str_128"] : langStr["str_129"]);
-                $("#previewNameAge").text(preNameAge);
+            }
+            
+            
+            //var preDate = langStr["str_122"] + ': ' + clickApplyday;
+            //var preReason = langStr["str_123"] + ': ' + clickReason;
+            /*var preSubsidy = langStr["str_133"] + ': ' + ((clickSubsidy == 'Y') ? langStr["str_128"] : langStr["str_129"]);
+            var preCertificate = langStr["str_134"] + ': ' + ((clickCerti == 'Y') ? langStr["str_128"] : langStr["str_129"]);
+            var preHealthcard = langStr["str_120"] + ': ' + ((clickHealthcard == 'Y') ? langStr["str_128"] : langStr["str_129"]);
+            var applyDateDetail = langStr["str_145"] + ': ' + clickApplyday;
+            var statusDetail = langStr["str_146"] + ': ' + clickDealwith;
+            var dealdayDetail = langStr["str_147"] + ': ' + clickDealday;*/
+            $("#previewNameAge").text(preNameAge);
+            $("#previewBirthday").text(clickBirth);
+            $("#previewID").text(clickID);
+            $("#previewDate").text(preDate);
+            $("#previewReason").text(preReason);
+            $("#previewSubsidy").text(preSubsidy); 
+            $("#previewCertificate").text(preCertificate);
+            $("#previewHealthcard").text(preHealthcard);
+                
+        }
+
+        //預覽送簽按鈕
+        $("#previewBtn").on("click", function() {
+            if ($('#previewBtn').hasClass('insurPreview-active-btn')) {
+                /*$("#perviewApplyDate").hide();
+                $("#perviewStatus").hide();
+                $("#perviewDealday").hide();*/
+
+                //傳值到預覽頁面
+                //var preNameAge = clickFamilyName + '/' + clickRelation + '/' + clickAge;
+                //var preDate = langStr["str_116"] + ': ' + applyDateVal;
+                //var preReason = langStr["str_117"] + ': ' + reasonVal;
+                /*var preSubsidy = langStr["str_133"] + ': ' + ((subsidyVal == 'subsidyYes') ? langStr["str_128"] : langStr["str_129"]); 
+                var preCertificate = langStr["str_134"] + ': ' + ((certiVal == 'certiYes') ? langStr["str_128"] : langStr["str_129"]);
+                var preHealthcard = langStr["str_120"] + ': ' + ((cardVal == 'cardYes') ? langStr["str_128"] : langStr["str_129"]);*/
+                /*$("#previewNameAge").text(preNameAge);
                 $("#previewBirthday").text(clickBirth);
                 $("#previewID").text(clickID);
                 $("#previewDate").text(preDate);
                 $("#previewReason").text(preReason);
                 $("#previewSubsidy").text(preSubsidy); 
                 $("#previewCertificate").text(preCertificate);
-                $("#previewHealthcard").text(preHealthcard);
-
+                $("#previewHealthcard").text(preHealthcard);*/
+                detailType = "newApply";
+                changeToDetailPage(detailType);
+                $("#applyBtn").show();
+                $("#cancelBtn").hide(); 
+                $("#insurBtn").hide();
                 $('#backPersonalInsurance').hide();
                 $("#viewInsurApplication").hide();
                 $("#previewBtn").hide();
