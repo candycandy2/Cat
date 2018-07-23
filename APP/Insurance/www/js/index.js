@@ -78,3 +78,14 @@ function stripScript(str) {
     }
     str.value = rs;
 }
+
+function transferBirthToAge(birthday){
+    var today = new Date();
+    var birthDate = new Date(birthday);
+    var age = today.getFullYear() - birthDate.getFullYear(); 
+    var birthMonth = today.getMonth() - birthDate.getMonth();
+    if (birthMonth < 0 || (birthMonth === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+}

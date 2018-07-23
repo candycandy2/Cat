@@ -5,7 +5,7 @@ $("#viewApplyInsurance").pagecontainer({
         var applyDate, applyDateVal, reasonVal, subsidyVal, certiVal, cardVal, remarkVal = "";
 
         //API:ModifyHealthInsurance
-        function queryModifyHealthInsurance() {
+        window.QueryModifyHealthInsurance = function() {
             loadingMask("show");
             var self = this;
             var strSubsidy = ((subsidyVal == 'subsidyYes') ? 'Y' : 'N'); 
@@ -37,7 +37,7 @@ $("#viewApplyInsurance").pagecontainer({
             var __construct = function() {
                 CustomAPI("POST", true, "ModifyHealthInsurance", self.successCallback, self.failCallback, queryData, "");
             }();
-        }
+        };
 
         //加保原因DDL生成
         function getApplyReasonList() {
@@ -198,7 +198,7 @@ $("#viewApplyInsurance").pagecontainer({
 
         //確定送出按鈕
         $("#applyBtn").on("click", function() {
-            var doModifyHealthInsurance = new queryModifyHealthInsurance();
+            QueryModifyHealthInsurance();
         });   
     }
 });
