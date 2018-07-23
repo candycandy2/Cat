@@ -157,6 +157,45 @@ $("#viewApplyInsurance").pagecontainer({
            
         }
 
+        function changeToDetailPage(detailType) {
+            var preNameAge = clickFamilyName + '/' + clickRelation + '/' + clickAge;
+            if (detailType == "withdraw"){
+                $("#perviewApplyDate").show();
+                $("#perviewStatus").show();
+                $("#perviewDealday").show();
+                var preDate = langStr["str_122"] + ': ' + clickApplyday;
+                var preReason = langStr["str_123"] + ': ' + clickReason;
+                var preSubsidy = langStr["str_133"] + ': ' + ((clickSubsidy == 'Y') ? langStr["str_128"] : langStr["str_129"]);
+                var preCertificate = langStr["str_134"] + ': ' + ((clickCerti == 'Y') ? langStr["str_128"] : langStr["str_129"]);
+                var preHealthcard = langStr["str_120"] + ': ' + ((clickHealthcard == 'Y') ? langStr["str_128"] : langStr["str_129"]);
+                var applyDateDetail = langStr["str_145"] + ': ' + clickApplyday;
+                var statusDetail = langStr["str_146"] + ': ' + clickDealwith;
+                var dealdayDetail = langStr["str_147"] + ': ' + clickDealday;
+                $("#perviewApplyDate").text(applyDateDetail);
+                $("#perviewStatus").text(statusDetail);
+                $("#perviewDealday").text(dealdayDetail);
+               
+            } else if (detailType == "newApply") {
+                $("#perviewApplyDate").hide();
+                $("#perviewStatus").hide();
+                $("#perviewDealday").hide();
+                var preDate = langStr["str_116"] + ': ' + applyDateVal;
+                var preReason = langStr["str_117"] + ': ' + reasonVal;
+                var preSubsidy = langStr["str_133"] + ': ' + ((subsidyVal == 'subsidyYes') ? langStr["str_128"] : langStr["str_129"]); 
+                var preCertificate = langStr["str_134"] + ': ' + ((certiVal == 'certiYes') ? langStr["str_128"] : langStr["str_129"]);
+                var preHealthcard = langStr["str_120"] + ': ' + ((cardVal == 'cardYes') ? langStr["str_128"] : langStr["str_129"]);
+            }
+            $("#previewNameAge").text(preNameAge);
+            $("#previewBirthday").text(clickBirth);
+            $("#previewID").text(clickID);
+            $("#previewDate").text(preDate);
+            $("#previewReason").text(preReason);
+            $("#previewSubsidy").text(preSubsidy); 
+            $("#previewCertificate").text(preCertificate);
+            $("#previewHealthcard").text(preHealthcard);
+                
+        }
+
         /********************************** page event *************************************/
         $("#viewApplyInsurance").one("pagebeforeshow", function (event, ui) {
             $("#applyRemark").attr("placeholder", langStr["str_130"]);
@@ -242,77 +281,9 @@ $("#viewApplyInsurance").pagecontainer({
             checkFormByApplyInsur();
         });
 
-        function changeToDetailPage(detailType) {
-            var preNameAge = clickFamilyName + '/' + clickRelation + '/' + clickAge;
-            if (detailType == "withdraw"){
-                $("#perviewApplyDate").show();
-                $("#perviewStatus").show();
-                $("#perviewDealday").show();
-                var preDate = langStr["str_122"] + ': ' + clickApplyday;
-                var preReason = langStr["str_123"] + ': ' + clickReason;
-                var preSubsidy = langStr["str_133"] + ': ' + ((clickSubsidy == 'Y') ? langStr["str_128"] : langStr["str_129"]);
-                var preCertificate = langStr["str_134"] + ': ' + ((clickCerti == 'Y') ? langStr["str_128"] : langStr["str_129"]);
-                var preHealthcard = langStr["str_120"] + ': ' + ((clickHealthcard == 'Y') ? langStr["str_128"] : langStr["str_129"]);
-                var applyDateDetail = langStr["str_145"] + ': ' + clickApplyday;
-                var statusDetail = langStr["str_146"] + ': ' + clickDealwith;
-                var dealdayDetail = langStr["str_147"] + ': ' + clickDealday;
-                $("#perviewApplyDate").text(applyDateDetail);
-                $("#perviewStatus").text(statusDetail);
-                $("#perviewDealday").text(dealdayDetail);
-               
-            } else if (detailType == "newApply") {
-                $("#perviewApplyDate").hide();
-                $("#perviewStatus").hide();
-                $("#perviewDealday").hide();
-                var preDate = langStr["str_116"] + ': ' + applyDateVal;
-                var preReason = langStr["str_117"] + ': ' + reasonVal;
-                var preSubsidy = langStr["str_133"] + ': ' + ((subsidyVal == 'subsidyYes') ? langStr["str_128"] : langStr["str_129"]); 
-                var preCertificate = langStr["str_134"] + ': ' + ((certiVal == 'certiYes') ? langStr["str_128"] : langStr["str_129"]);
-                var preHealthcard = langStr["str_120"] + ': ' + ((cardVal == 'cardYes') ? langStr["str_128"] : langStr["str_129"]);
-            }
-            
-            
-            //var preDate = langStr["str_122"] + ': ' + clickApplyday;
-            //var preReason = langStr["str_123"] + ': ' + clickReason;
-            /*var preSubsidy = langStr["str_133"] + ': ' + ((clickSubsidy == 'Y') ? langStr["str_128"] : langStr["str_129"]);
-            var preCertificate = langStr["str_134"] + ': ' + ((clickCerti == 'Y') ? langStr["str_128"] : langStr["str_129"]);
-            var preHealthcard = langStr["str_120"] + ': ' + ((clickHealthcard == 'Y') ? langStr["str_128"] : langStr["str_129"]);
-            var applyDateDetail = langStr["str_145"] + ': ' + clickApplyday;
-            var statusDetail = langStr["str_146"] + ': ' + clickDealwith;
-            var dealdayDetail = langStr["str_147"] + ': ' + clickDealday;*/
-            $("#previewNameAge").text(preNameAge);
-            $("#previewBirthday").text(clickBirth);
-            $("#previewID").text(clickID);
-            $("#previewDate").text(preDate);
-            $("#previewReason").text(preReason);
-            $("#previewSubsidy").text(preSubsidy); 
-            $("#previewCertificate").text(preCertificate);
-            $("#previewHealthcard").text(preHealthcard);
-                
-        }
-
         //預覽送簽按鈕
         $("#previewBtn").on("click", function() {
             if ($('#previewBtn').hasClass('insurPreview-active-btn')) {
-                /*$("#perviewApplyDate").hide();
-                $("#perviewStatus").hide();
-                $("#perviewDealday").hide();*/
-
-                //傳值到預覽頁面
-                //var preNameAge = clickFamilyName + '/' + clickRelation + '/' + clickAge;
-                //var preDate = langStr["str_116"] + ': ' + applyDateVal;
-                //var preReason = langStr["str_117"] + ': ' + reasonVal;
-                /*var preSubsidy = langStr["str_133"] + ': ' + ((subsidyVal == 'subsidyYes') ? langStr["str_128"] : langStr["str_129"]); 
-                var preCertificate = langStr["str_134"] + ': ' + ((certiVal == 'certiYes') ? langStr["str_128"] : langStr["str_129"]);
-                var preHealthcard = langStr["str_120"] + ': ' + ((cardVal == 'cardYes') ? langStr["str_128"] : langStr["str_129"]);*/
-                /*$("#previewNameAge").text(preNameAge);
-                $("#previewBirthday").text(clickBirth);
-                $("#previewID").text(clickID);
-                $("#previewDate").text(preDate);
-                $("#previewReason").text(preReason);
-                $("#previewSubsidy").text(preSubsidy); 
-                $("#previewCertificate").text(preCertificate);
-                $("#previewHealthcard").text(preHealthcard);*/
                 detailType = "newApply";
                 changeToDetailPage(detailType);
                 $("#applyBtn").show();
