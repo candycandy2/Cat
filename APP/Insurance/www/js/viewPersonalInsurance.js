@@ -301,6 +301,8 @@ $("#viewPersonalInsurance").pagecontainer({
                 if (clickDealwith === "已退保") {
                     nextPage = "withdrawDetail";
                 }
+            } else if (clickCanApply === "復保"){
+                
             }
             $.mobile.changePage("#viewApplyInsurance"); 
         });              
