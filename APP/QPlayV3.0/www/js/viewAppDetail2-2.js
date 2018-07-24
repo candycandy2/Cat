@@ -181,7 +181,7 @@ $("#viewAppDetail2-2").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewAppDetail2-2").on("pagebeforeshow", function (event, ui) {
-            loadingMask("show");
+            //loadingMask("show");
         });
 
         $("#viewAppDetail2-2").on("pageshow", function (event, ui) {
@@ -290,6 +290,7 @@ $("#viewAppDetail2-2").pagecontainer({
             }
         });
 
+        //展开更多
         $("#openDescription").on("click", function () {
             $("#appDetailAppDescription").removeClass("detail-description-ellipsis");
             $("#appDetailAppDescription").css({
@@ -328,8 +329,8 @@ $("#viewAppDetail2-2").pagecontainer({
 
         //版本记录
         $(".version").on("click", function () {
-            var versionData = new getVersionRecord(checkAPPKey);
-            //var versionData = new getVersionRecord();
+            checkAppPage('viewVersionRecord');
+            //var versionData = new getVersionRecord(checkAPPKey);
 
         });
 
