@@ -42,24 +42,29 @@ namespace QPlay.Job.SyncGaiaUser
 
                 //查询数据
                 string view = System.Configuration.ConfigurationManager.AppSettings["ViewName"];
-                string sql = "SELECT * FROM " + view;
+                string sql = "SELECT TOP 20000 * FROM " + view;
                 DataTable dt = dbGaia.FromSql(sql).ToDataTable();
                 log.Info("End Select  data");
 
                 //将查询出来的数据导出到Excel
-                QWorkbook workbook = new QWorkbook(QXlFileFormat.xls);//创建工作簿，默认是xlsx
+                QWorkbook workbook = new QWorkbook(QXlFileFormat.xls);//创建工作簿，默认是xls
+
+                log.Info("Start ReadDataTable");//slow when dt is bigger than 10000
                 workbook.ReadDataTable(dt);  // 读取DataTable的内容并写入excel所有的列
+                log.Info("End ReadDataTable");
 
                 string fileName = DateTime.Now.ToString("yyyyMMdd") + ".xls";
                 string path = System.Configuration.ConfigurationManager.AppSettings["FilePath"];
                 fileName = path + "\\" + fileName;
 
-
+                log.Info("check Directory: " + path);
                 if (!Directory.Exists(path))//如果不存在就创建file文件夹
                 {
+                    log.Info("CreateDirectory: " + path);
                     Directory.CreateDirectory(path);
                 }
 
+                log.Info("check file: " + fileName);
                 workbook.SaveAs(fileName);
                 log.Info("ExcelFile:Generate excel succeeded");
                 return fileName;
@@ -120,7 +125,13 @@ namespace QPlay.Job.SyncGaiaUser
                 p.WaitForExit();
                 p.Close();
 
-                log.Info("GPG:encryption succeeded");
+                if(File.Exists(fileName+".gpg"))
+                {
+                    log.Info("GPG:encryption succeeded:" + fileName + ".gpg");
+                }
+                else {
+                    log.Info("GPG:encryption fail");
+                }
 
             }
             catch (Exception ex)
