@@ -10,6 +10,8 @@
 #              dev narmal execute command: syncuser.sh dev
 #   2018/07/13 Cleo.W.Chan Fix Bug
 #			   according to command parameter,pass env patameter to error_handle
+#   2018/07/23 Cleo.W.Chan Fix Bug
+#              if download file all fail,delete storage/app/syncuser folder
 # assign dev/staging/production server address
 case $1 in
 	"staging")
@@ -80,6 +82,10 @@ for sourceFrom in ${!arr[@]}; do
     done
     if [ "${TIMES}" == "${RETRY}" ]; then
         php ./lib/error_handle.php ${sourceFrom} $DATE log/syncuser-`date +%Y-%-m-%d`.txt ${env}
+        if [ -z "$(ls -A /path/to/dir)" ]; then
+            #syncuser folder is empty, delete folder
+            rm -d /var/www/html/qplayApi/storage/app/syncuser
+        fi
     fi
     sleep 3
 done

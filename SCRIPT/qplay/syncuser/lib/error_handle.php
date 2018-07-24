@@ -9,17 +9,24 @@ if(!isset($argv[1])){
 }else if(!isset($argv[3])){
 	echo 'Error missing argument 4, please set error content file path'. PHP_EOL;
 	return;
+}else if (isset($argv[4])){
+    $envList = ['dev','test'];
+    if(!in_array(strtolower($argv[4]), $envList)){
+        echo 'Error argument 5, please check environment string'. PHP_EOL;
+        return;
+    }
 }else if(!isset($argv[4])){
 	$argv[4] = '';
 }
-$env=$argv[4];
+$env=strtolower($argv[4]);
 $secretKey='swexuc453refebraXecujeruBraqAc4e';
 $appKey = 'appqplay'.$env;
 
 //send Push Message
 $from = 'BenQ\\Alan.Tu';
-$title = '[CRITICAL PROBLEM] '.$env.'-QPlay-API-SyncUserJob downLoad file error';
-$text =  $env.'-QPlay-API-SyncUserJob DownLoad File Error<br>SourceFrom : '.$argv[1].'<br>Date : '.$argv[2]; 
+$strEnv = getEnvStr($env);
+$title = '[CRITICAL PROBLEM] '.$strEnv.'-QPlay-API-SyncUserJob downLoad file error';
+$text =  $strEnv.'-QPlay-API-SyncUserJob DownLoad File Error<br>SourceFrom : '.$argv[1].'<br>Date : '.$argv[2]; 
 $to =array('BenQ\\Cleo.W.Chan');
 $pushUrl = 'https://qplay'.trim($env).'.benq.com/qplayApi/public/v101/qplay/sendPushMessage?lang=zh-tw&need_push=Y&app_key='.$appKey;
 sendPushMessage($pushUrl, $appKey, $secretKey, $title, $text, $from, $to);
@@ -179,5 +186,23 @@ function utf8_str_to_unicode($utf8_str) {
 		return '%'.$conv[0];
 	},$conv); //emoji的unicode留下，其他改為%uXXXX
 	return  json_decode($conv);
+}
+
+/**
+ * return env to show
+ * @param  string $evn env
+ * @return string      env string to show on message title
+ */
+function getEnvStr($env){
+    $strEnv ="Production"; 
+    switch ($env) {
+        case "dev":
+            $strEnv = "Dev";
+            break;
+        case "test":
+            $strEnv = "Staging";
+            break;
+    }
+    return $strEnv;
 }
 ?>
