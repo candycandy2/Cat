@@ -7,7 +7,7 @@ var concat = require('gulp-concat');
 var less = require('gulp-less');
 var shell = require('gulp-shell');
 var env = require('gulp-env');
-//var minifyCSS = require('gulp-minify-css');
+var minifyCSS = require('gulp-minify-css');
 
 //Read parameter in command line
 function getArg(key) {
@@ -229,9 +229,9 @@ gulp.task('componentJS', ['libJS', 'appJS', 'String', 'Font', 'setPlugin'], func
 
 gulp.task('minifyAllCSS', function() {
   return gulp.src('www/css/*.css')
-   // .pipe(minifyCSS({
-   //   keepBreaks: false,
-   // }))
+   .pipe(minifyCSS({
+     keepBreaks: false,
+   }))
    .pipe(gulp.dest('www/css/'));
 });
 
