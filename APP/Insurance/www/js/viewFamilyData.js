@@ -91,9 +91,14 @@ $("#viewFamilyData").pagecontainer({
                             + familyArr[i]["idno"]
                             + '</div></div><div><img src="img/info.png" class="family-edit"><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
                     }
+                    $(".family-edit-btn").show();
+                    $(".family-cancle-btn").hide();
                     $("#familyList").empty().append(familyList).children("div:last-child").remove();
                 } else {
+                    familyArr = data["Content"];
                     $("#viewFamilyList").hide();
+                    $(".family-edit-btn").hide();
+                    $(".family-cancle-btn").hide();
                     $("#viewFamilyNone").show(); 
                 }
                 changeViewToList();
@@ -333,7 +338,7 @@ $("#viewFamilyData").pagecontainer({
             var typeVal = $.trim($("#idType").val());
             var idVal = $.trim($("#familyID").val());
 
-            if (typeVal == "身分證") {
+            if (typeVal == "身份證") {
                 if (idVal.length != 10) {
                     $(".familyAddCheckMsg .lengthErr").addClass('addInlineBlock');  
                     $(".familyAddCheckMsg .formatErr").removeClass('addInlineBlock');   
