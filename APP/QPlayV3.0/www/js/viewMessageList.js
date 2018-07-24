@@ -147,7 +147,6 @@ $("#viewMessageList").pagecontainer({
                         $(".textContent").show();
                     }
 
-                    //$.mobile.changePage('#viewMessageDetail');
                     $.mobile.changePage("#viewWebNews2-3-1");
 
                 } else if (resultcode === "000910") {
@@ -490,15 +489,20 @@ $("#viewMessageList").pagecontainer({
         }
 
         /********************************** page event ***********************************/
+        $("#viewMessageList").one("pagebeforeshow", function (event, ui) {
+            //filter placeholder多语言设置
+            $('#msgFilter').attr('placeholder', langStr['str_080']);
+        });
+
         $("#viewMessageList").on("pagebeforeshow", function (event, ui) {
-            if (viewMessageInitial) {
-                //create html
-                //createMessageByType();
+            // if (viewMessageInitial) {
+            //     //create html
+            //     //createMessageByType();
 
-                $('#msgFilter').attr('placeholder', langStr['str_080']);
+            //     $('#msgFilter').attr('placeholder', langStr['str_080']);
 
-                viewMessageInitial = false;
-            }
+            //     viewMessageInitial = false;
+            // }
         });
 
         $("#viewMessageList").on("pageshow", function (event, ui) {

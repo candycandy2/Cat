@@ -68,6 +68,14 @@ $("#viewMyCalendar").pagecontainer({
                 }
             });
 
+            //3.记录每日预约轮播的位置
+            if (reservePositionList.length == 0) {
+                for (var i in reserveDateList) {
+                    var x = $(".reserve-list[data-index=" + i + "]").offset().left;
+                    reservePositionList.push(x);
+                }
+            }
+
         }
 
         /**
@@ -172,8 +180,8 @@ $("#viewMyCalendar").pagecontainer({
                         //calendarData = false;
                     }
 
-
                 }
+
                 loadingMask("hide");
             };
 
@@ -194,19 +202,12 @@ $("#viewMyCalendar").pagecontainer({
             return dataTempC[0];
         }
 
-        //记录每个预约的位置，只有在pageshow时才能调用
-        //且只调用一次，记录每个预约的原始位置
-        function setReservePosition() {
-            if (reservePositionList.length == 0) {
-                for (var i in reserveDateList) {
-                    var x = $(".reserve-list[data-index=" + i + "]").offset().left;
-                    reservePositionList.push(x);
-                }
-            }
-        }
-
         /********************************** page event ***********************************/
-        $("#viewMyCalendar").one("pagebeforeshow", function (event, ui) {
+        $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
+
+        });
+
+        $("#viewMyCalendar").one("pageshow", function (event, ui) {
             //1. calendar
             var siteCode = localStorage.getItem("site_code");
             if (siteCode == "QCS" || siteCode == "BQC") {
@@ -230,12 +231,7 @@ $("#viewMyCalendar").pagecontainer({
 
         });
 
-        $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
-
-        });
-
         $("#viewMyCalendar").on("pageshow", function (event, ui) {
-            setReservePosition();
 
         });
 
