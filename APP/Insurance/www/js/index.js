@@ -9,7 +9,9 @@ var visitedPageList = ["viewMain"];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
 var clickEditSettingID = '';
-var clickFamilyID, clickInsID, clickAppID, clickFamilyName, clickRelation, clickAge, clickBirth, clickID;
+var clickFamilyID, clickInsID, clickAppID, clickFamilyName, clickRelation, clickAge, clickBirth, clickID; 
+var clickCanApply, clickDealwith, clickInsuredday, clickApplyday, clickDealday, clickReason, clickSubsidy, clickCerti, clickHealthcard;
+var applyType, nextPage;
 var viewPersonalInsuranceShow = false;
 
 window.initialSuccess = function() {

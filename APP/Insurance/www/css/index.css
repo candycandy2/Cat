@@ -893,22 +893,25 @@ div.scrollmenu a {
 
 #familyList {background: #ffffff;}
 
-.family-list {
+.family-list,
+.health-insur-list {
     width: 86.5vw;
     height: 14.5vw;
     padding: 3vw 6.71vw;
 }
 
-.family-list > div {
+.family-list > div,
+.health-insur-list > div {
     float: left;
 }
 
-.family-list ::after {
+.family-list ::after,
+.health-insur-list ::after {
     clear: both;
 }
 
 /*div:nth-of-type(1)*/
-.family-list > .content-list-only-img {
+.family-list > div:nth-of-type(1) {
     width: 65vw; 
     height:14.5vw;
     overflow: hidden;
@@ -918,8 +921,25 @@ div.scrollmenu a {
     -webkit-line-clamp: 2;
 }
 
-.family-list > .content-list-text-img {
-    width: 60vw; 
+/*div:nth-of-type(2)*/
+.family-list > div:nth-of-type(2) {
+    width: 21.5vw;
+    height: 10vw;
+    padding-top: 3.5vw;
+}
+
+.health-insur-list > .content-list-only-img {
+    width: 65vw; 
+    height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.health-insur-list > .content-list-text-img {
+    width: 66.5vw; 
     height:14.5vw;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -930,24 +950,25 @@ div.scrollmenu a {
 
 .family-list > div:nth-of-type(1) > div:nth-of-type(2),
 .family-list > div:nth-of-type(1) > div:nth-of-type(3),
-.group-list > div:nth-of-type(2) {
+.group-list > div:nth-of-type(2),
+.health-insur-list > div:nth-of-type(1) > div:nth-of-type(2),
+.health-insur-list > div:nth-of-type(1) > div:nth-of-type(3) {
     margin-top: 1.16vw;
 }
 
-/*div:nth-of-type(2)*/
-.family-list > .list-only-img {
+.health-insur-list > .list-only-img {
     width: 21.5vw;
     height: 10vw;
     padding-top: 3.5vw;
 }
 
-.family-list > .list-text-img {
-    width: 26.5vw; 
+.health-insur-list > .list-text-img {
+    width: 20vw; 
     height: 10vw;
     padding-top: 3.5vw;
 }
 
-.family-list > div:nth-of-type(2) > label {
+.health-insur-list > div:nth-of-type(2) > label {
     display: inline-block;
     color: #e92729;
 }
@@ -1163,6 +1184,7 @@ div.scrollmenu a {
 
 .apply-insurance-form, 
 .apply-insurance-ddl,
+.withdraw-insurance-ddl,
 #newSubsidy,
 #newHealthcard,
 #newCertificate {
@@ -1183,7 +1205,8 @@ div.scrollmenu a {
     margin-bottom: 2.14vw;
 }
 
-.apply-insurance-ddl>div:nth-of-type(2) {
+.apply-insurance-ddl>div:nth-of-type(2),
+.withdraw-insurance-ddl>div:nth-of-type(2) {
     margin-top: 0.2vw;
     margin-bottom: 1vw;
 }

@@ -206,31 +206,32 @@ $("#viewMyCalendar").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
-            if (viewCalendarInitial) {
-                //1. calendar
-                var siteCode = localStorage.getItem("site_code");
-                if (siteCode == "QCS" || siteCode == "BQC") {
-                    $.getJSON("string/" + siteCode + "-holiday.json", function (data) {
-                        initialCalendar(data);
-                    });
-                } else {
-                    $.getJSON("string/QTY-holiday.json", function (data) {
-                        initialCalendar(data);
-                    });
-                }
-
-                //2. reserve carousel
-                createReserveDetail();
-
-                //3. leave app
-                var currentDate = new Date();
-                var currentYear = currentDate.getFullYear().toString();
-                var currentMonth = (currentDate.getMonth() + 1).toString();
-                QueryCalendarData(currentYear, currentMonth);
-
-                viewCalendarInitial = false;
+        $("#viewMyCalendar").one("pagebeforeshow", function (event, ui) {
+            //1. calendar
+            var siteCode = localStorage.getItem("site_code");
+            if (siteCode == "QCS" || siteCode == "BQC") {
+                $.getJSON("string/" + siteCode + "-holiday.json", function (data) {
+                    initialCalendar(data);
+                });
+            } else {
+                $.getJSON("string/QTY-holiday.json", function (data) {
+                    initialCalendar(data);
+                });
             }
+
+            //2. reserve carousel
+            createReserveDetail();
+
+            //3. leave app
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear().toString();
+            var currentMonth = (currentDate.getMonth() + 1).toString();
+            QueryCalendarData(currentYear, currentMonth);
+
+        });
+
+        $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
+
         });
 
         $("#viewMyCalendar").on("pageshow", function (event, ui) {
