@@ -1,27 +1,89 @@
-# Laravel PHP Framework
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+qplay Readme.md
+=============================
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Version x.x.x - Published 2018 July 25
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+## Contents
+- [DeployBackEnd-Production-QAccountPhase1](#DeployBackEnd-Production-QAccountPhase1)
 
-## Official Documentation
+----
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+<h2 id="DeployBackEnd-Production-QAccountPhase1">DeployBackEnd-Production-QAccountPhase1</h2>
 
-## Contributing
+    # staging server
+    serverIP=23.99.120.80
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+    #if false; then
+    #fi
+    #git checkout master
 
-## Security Vulnerabilities
+    # ------ add release tag ------
+    git tag -a v1.4.1.$BUILD_NUMBER.Production.BackEnd.QAccountPhase1 -m "v1.4.1.$BUILD_NUMBER[Production] BackEnd.QAccountPhase1"
+    git push origin --tags
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+    chmod -R o=rx *
 
-## License
+    # ======== QAccountPhase1 Start ========
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+    # backup original
+    #sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP rm -rf /var/www/html/jenkinsbackup/qstorage
+    #sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP mkdir -p /var/www/html/jenkinsbackup/qstorage
+    #sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP cp -Rp /var/www/html/qstorage/. /var/www/html/jenkinsbackup/qstorage
+
+
+    # sync new files
+    git checkout be3698bb21d11e362c7e1d293014e5bcb55693fd .
+    chmod -R o=rx *
+
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Http/Controllers/AuthController.php rsyncuser@$serverIP:/var/www/html/qplay/app/Http/Controllers/AuthController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Http/Controllers/CompanyController.php rsyncuser@$serverIP:/var/www/html/qplay/app/Http/Controllers/CompanyController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Http/routes.php rsyncuser@$serverIP:/var/www/html/qplay/app/Http/routes.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Model/QP_Company.php rsyncuser@$serverIP:/var/www/html/qplay/app/Model/QP_Company.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Model/QP_Company_Log.php rsyncuser@$serverIP:/var/www/html/qplay/app/Model/QP_Company_Log.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Repositories/CompanyRepository.php rsyncuser@$serverIP:/var/www/html/qplay/app/Repositories/CompanyRepository.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Services/CompanyService.php rsyncuser@$serverIP:/var/www/html/qplay/app/Services/CompanyService.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/lib/ResultCode.php rsyncuser@$serverIP:/var/www/html/qplay/app/lib/ResultCode.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/resources/lang/en/messages.php rsyncuser@$serverIP:/var/www/html/qplay/resources/lang/en/messages.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/resources/lang/zh-cn/messages.php rsyncuser@$serverIP:/var/www/html/qplay/resources/lang/zh-cn/messages.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/resources/lang/zh-tw/messages.php rsyncuser@$serverIP:/var/www/html/qplay/resources/lang/zh-tw/messages.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/resources/views/auth/login.blade.php rsyncuser@$serverIP:/var/www/html/qplay/resources/views/auth/login.blade.php
+    sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP mkdir -p /var/www/html/qplay/resources/views/company_maintain
+    sshpass -p "kDsl24D1S" rsync -vh qplay/resources/views/company_maintain/company_list.blade.php rsyncuser@$serverIP:/var/www/html/qplay/resources/views/company_maintain/company_list.blade.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/resources/views/company_maintain/company_list.blade.php rsyncuser@$serverIP:/var/www/html/qplay/resources/views/company_maintain/company_list.blade.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/qplayController.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/Controllers/qplayController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/routes.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/routes.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Model/QP_Company.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Model/QP_Company.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Model/QP_User.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Model/QP_User.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Repositories/CompanyRepository.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Repositories/CompanyRepository.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Services/CompanyService.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Services/CompanyService.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/resources/views/login.blade.php rsyncuser@$serverIP:/var/www/html/qplayApi/resources/views/login.blade.php
+
+
+    git checkout 56023b35df983edd3271f00cb5fccd1e44bb184b .
+    chmod -R o=rx *
+
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Http/Controllers/AuthController.php rsyncuser@$serverIP:/var/www/html/qplay/app/Http/Controllers/AuthController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Repositories/CompanyRepository.php rsyncuser@$serverIP:/var/www/html/qplay/app/Repositories/CompanyRepository.php
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Services/CompanyService.php rsyncuser@$serverIP:/var/www/html/qplay/app/Services/CompanyService.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/qplayController.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/Controllers/qplayController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Repositories/CompanyRepository.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Repositories/CompanyRepository.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Services/CompanyService.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Services/CompanyService.php
+
+    git checkout 3a2e8178579f9623b59a4ca5e4302a8a27d189f2 .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplay/app/Http/Controllers/AuthController.php rsyncuser@$serverIP:/var/www/html/qplay/app/Http/Controllers/AuthController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/qplayController.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/Controllers/qplayController.php
+
+
+    # create deploy version file
+    echo "deploy_ver=$(($BUILD_NUMBER))_QAccountPhase1 deploy_time=$(date +"%b-%d-%y %H:%M:%S")" > deploy.jenkins
+    cp deploy.jenkins qplay/
+    sshpass -p "kDsl24D1S" rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
+
+    #git pull
+    #git add qplay/deploy.jenkins
+    #git commit -m "v1.4.1.$BUILD_NUMBER[Production] BackEnd  QAccountPhase1"
+    #git push
+
+    # ======== QAccountPhase1 End ========
