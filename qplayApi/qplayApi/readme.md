@@ -8,6 +8,7 @@ qplayApi Readme.md
 - [Deploy SOP](#DeployProcedure)
 - [DeployBackEnd-Production-SyncUser](#DeployBackEnd-Production-SyncUser)
 - [DeployBackEnd-Production-SyncUser-2](#DeployBackEnd-Production-SyncUser-2)
+- [DeployBackEnd-Production-SyncUser-3](#DeployBackEnd-Production-SyncUser-3)
 
 ----
 
@@ -241,3 +242,54 @@ qplayApi Readme.md
     sshpass -p "kDsl24D1S" rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
 
     # ======== SyncUser2 End ========
+
+<h2 id="DeployBackEnd-Production-SyncUser-3">DeployBackEnd-Production-SyncUser-3</h2>
+
+    # staging server
+    #serverIP=13.75.117.225
+
+    # production server
+    serverIP=23.99.120.80
+    password="kDsl24D1S"
+
+    #if false; then
+    #fi
+    git checkout master
+
+    # ------ add release tag ------
+    git tag -a v1.4.1.$BUILD_NUMBER.Production.BackEnd.SyncUser3 -m "v1.4.1.$BUILD_NUMBER[Production] BackEnd.SyncUser3"
+    git push origin --tags
+
+    chmod -R o=rx *
+
+    # ======== SyncUser3 Start ========
+    #1. 基礎建設(安裝需要的外部元件等)
+    #   N/A
+
+
+    #2. 環境設定(設定 .env config 等)
+    #   N/A
+
+
+    #3. 資料設定 (DB 修改)
+    #   N/A
+
+
+    #4. 檔案覆蓋
+    #a. 更新修改的檔案，共 2 個
+    git checkout 9db4ab55e603c13df748b270f83f32a18454b844 .
+    chmod -R o=rx *
+
+    sshpass -p $password rsync -vh SCRIPT/qplay/syncuser/lib/error_handle.php rsyncuser@$serverIP:/var/www/script/qplay/syncuser/lib/error_handle.php
+    sshpass -p $password rsync -vh SCRIPT/qplay/syncuser/syncuser.sh rsyncuser@$serverIP:/var/www/script/qplay/syncuser/syncuser.sh
+
+
+    #5. 功能設定
+    #   N/A
+
+
+    echo "deploy_ver=$(($BUILD_NUMBER))_SyncUser3 deploy_time=$(date +"%b-%d-%y %H:%M:%S")" > deploy.jenkins
+    cp deploy.jenkins qplay/
+    sshpass -p $password rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
+
+    # ======== SyncUser3 End ========
