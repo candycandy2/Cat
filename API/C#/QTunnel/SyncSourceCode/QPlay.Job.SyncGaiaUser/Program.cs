@@ -41,10 +41,12 @@ namespace QPlay.Job.SyncGaiaUser
                 log.Info("Begin Select data");
 
                 //查询数据
+                string maxRows = System.Configuration.ConfigurationManager.AppSettings["MaxRows"];
                 string view = System.Configuration.ConfigurationManager.AppSettings["ViewName"];
-                string sql = "SELECT TOP 20000 * FROM " + view;
+                string sql = "SELECT TOP " + maxRows + " * FROM " + view;
                 DataTable dt = dbGaia.FromSql(sql).ToDataTable();
                 log.Info("End Select  data");
+
 
                 //将查询出来的数据导出到Excel
                 QWorkbook workbook = new QWorkbook(QXlFileFormat.xls);//创建工作簿，默认是xls
@@ -125,11 +127,12 @@ namespace QPlay.Job.SyncGaiaUser
                 p.WaitForExit();
                 p.Close();
 
-                if(File.Exists(fileName+".gpg"))
+                if (File.Exists(fileName + ".gpg"))
                 {
                     log.Info("GPG:encryption succeeded:" + fileName + ".gpg");
                 }
-                else {
+                else
+                {
                     log.Info("GPG:encryption fail");
                 }
 
