@@ -12,7 +12,7 @@ QStorage API Readme.md
     - [UploadPicture](#UploadPicture)
     - [DeletePicture](#DeletePicture)
 - [手動 Deploy](#DeployProcedure)
-
+- [DeployBackEnd-Production-QStorage](#DeployBackEnd-Production-QStorage)
 
 ----
 <h2 id="API-分類">API 分類</h2>
@@ -479,3 +479,102 @@ API/QForum/app/Http/Controllers/JobController.php
     b. 請測試 ENS圖片上傳功能、QForum deleteAttachJob API，詳細的測項請參考PIS、PES
     c. mongoDB qstorage.qs_api_log有寫入正確資料
 
+<h2 id="DeployBackEnd-Production-QStorage">DeployBackEnd-Production-QStorage</h2>
+
+    # production server
+    serverIP=23.99.120.80
+
+    #if false; then
+    #fi
+    git checkout master
+
+    # ------ add release tag ------
+    git tag -a v1.4.1.$BUILD_NUMBER.Production.BackEnd.QStorage -m "v1.4.1.$BUILD_NUMBER[Production] BackEnd.QStorage"
+    git push origin --tags
+
+    chmod -R o=rx *
+
+    # ======== QStorage Start ========
+
+    # backup original
+    sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP rm -rf /var/www/html/jenkinsbackup/qstorage
+    sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP mkdir -p /var/www/html/jenkinsbackup/qstorage
+    sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP cp -Rp /var/www/html/qstorage/. /var/www/html/jenkinsbackup/qstorage
+
+    # 1. 基礎建設
+    #     a. install microsoftAzureStorage
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/composer rsyncuser@$serverIP:/var/www/html/qstorage/composer
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/composer.json rsyncuser@$serverIP:/var/www/html/qstorage/composer.json
+    sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP rm -rf /var/www/html/qstorage/composer.lock
+    # 會有 permission denied error, 使用手動
+    #sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP /var/www/html/qstorage/composer update
+
+    # 2. 環境設定
+    #    a. 修改 .env
+    #    /*
+    #    |--------------------------------------------------------------------------
+    #    | Azure Blob Parameters
+    #    |--------------------------------------------------------------------------
+    #    |azure_storage : Blob 服務的連接字串   
+    #    */ 
+    #        
+    # AZURE_STORAGE=DefaultEndpointsProtocol=https;AccountName=bqgroupstorage;AccountKey=LNvRqQAaUTgaU9ea0zMxdkev+i8hXOqoEW13RpHnvsU0TdqQsmvfXyLMY80Y0bF5Nj+h+s1DylF6s3OHCpedew==
+
+    #    b. 修改 config\app.php
+    #    /*    
+    #    |--------------------------------------------------------------------------    
+    #    | Azure Blob Parameters    
+    #    |--------------------------------------------------------------------------    
+    #    |azure_storage : Blob 服務的連接字串    
+    #    */   
+    #    'azure_storage' => env('AZURE_STORAGE'),
+
+    # 3. 資料設定
+    #    N/A
+
+    # 4. 檔案覆蓋
+
+    # sync new files
+    sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP mkdir -p /var/www/html/qstorage/app/Entity
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Entity/AbstractFile.php   rsyncuser@$serverIP:/var/www/html/qstorage/app/Entity/AbstractFile.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Entity/ImageFile.php   rsyncuser@$serverIP:/var/www/html/qstorage/app/Entity/ImageFile.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Entity/Picture.php   rsyncuser@$serverIP:/var/www/html/qstorage/app/Entity/Picture.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Entity/Portrait.php  rsyncuser@$serverIP:/var/www/html/qstorage/app/Entity/Portrait.php
+
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/lib/CommonUtil.php rsyncuser@$serverIP:/var/www/html/qstorage/app/lib/CommonUtil.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/lib/Verify.php rsyncuser@$serverIP:/var/www/html/qstorage/app/lib/Verify.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/lib/ResultCode.php rsyncuser@$serverIP:/var/www/html/qstorage/app/lib/ResultCode.php
+
+    sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP mkdir -p /var/www/html/qstorage/app/Services
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Services/AzureBlobService.php rsyncuser@$serverIP:/var/www/html/qstorage/app/Services/AzureBlobService.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Services/ServerFileService.php rsyncuser@$serverIP:/var/www/html/qstorage/app/Services/ServerFileService.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Services/AzureBlobService.php rsyncuser@$serverIP:/var/www/html/qstorage/app/Services/AzureBlobService.php
+
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Http/Controllers/AccessController.php rsyncuser@$serverIP:/var/www/html/qstorage/app/Http/Controllers/AccessController.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Http/Controllers/PortraitController.php rsyncuser@$serverIP:/var/www/html/qstorage/app/Http/Controllers/PortraitController.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Http/Controllers/PictureController.php rsyncuser@$serverIP:/var/www/html/qstorage/app/Http/Controllers/PictureController.php
+    # 跟 Cleo 確認過，先不用更新
+    #sshpass -p "kDsl24D1S" rsync -vh API/QForum/app/Http/Controllers/JobController.php rsyncuser@$serverIP:/var/www/html/
+
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/app/Http/routes.php rsyncuser@$serverIP:/var/www/html/qstorage/app/Http/routes.php
+
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/tests/PortraitControllerUnitTest.php rsyncuser@$serverIP:/var/www/html/qstorage/tests/PortraitControllerUnitTest.php
+    sshpass -p "kDsl24D1S" ssh rsyncuser@$serverIP mkdir -p /var/www/html/qstorage/tests/stubs
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/tests/stubs/test.jpg rsyncuser@$serverIP:/var/www/html/qstorage/tests/stubs/test.jpg
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/tests/AccessControllerUnitTest.php rsyncuser@$serverIP:/var/www/html/qstorage/tests/AccessControllerUnitTest.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/tests/AzureBlobServiceUnitTest.php rsyncuser@$serverIP:/var/www/html/qstorage/tests/AzureBlobServiceUnitTest.php
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/tests/PictureControllerUnitTest.php rsyncuser@$serverIP:/var/www/html/qstorage/tests/PictureControllerUnitTest.php
+
+    sshpass -p "kDsl24D1S" rsync -vh API/qstorage/readme.md rsyncuser@$serverIP:/var/www/html/qstorage/readme.md
+
+    # create deploy version file
+    echo "deploy_ver=$(($BUILD_NUMBER)) deploy_time=$(date +"%b-%d-%y %H:%M:%S")" > deploy.jenkins
+    cp deploy.jenkins API/qstorage/
+    sshpass -p "kDsl24D1S" rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qstorage
+
+    git pull
+    git add API/qstorage/deploy.jenkins
+    git commit -m "v1.4.1.$BUILD_NUMBER[Production] BackEnd.QStorage"
+    git push
+
+    # ======== QStorage End ========

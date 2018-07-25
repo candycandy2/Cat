@@ -109,7 +109,7 @@ $("#viewMain3").pagecontainer({
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
             var eventLogoutConfirmPopupData = {
-                id: "logoutConfirm",
+                id: "logoutPopup",
                 content: $("template#tplContactUserPopup").html()
             };
             tplJS.Popup("viewMain3", "widgetListContent", "append", eventLogoutConfirmPopupData);
@@ -144,16 +144,10 @@ $("#viewMain3").pagecontainer({
 
         });
 
-        var y;
-        $('#viewMain3').on('touchstart', function (event) {
-            y = event.originalEvent.targetTouches[0].pageY;
-            //console.log(y);
-        }).on('touchmove', function (event) {
-            var change = event.originalEvent.targetTouches[0].pageY - y;
-            //console.log(change);
-        }).on('touchend', function (event) {
+        $("#viewMain3").scroll(function (event) {
 
         });
+
 
         /********************************** dom event *************************************/
         //跳转到行事历
@@ -207,17 +201,17 @@ $("#viewMain3").pagecontainer({
 
         //注销
         $("#logout").on("click", function () {
-            $('#logoutConfirm').popup('open');
+            $('#logoutPopup').popup('open');
         });
 
-        $(document).on("click", "#logoutConfirm #confirm", function () {
-            $('#logoutConfirm').popup('close');
+        $(document).on("click", "#logoutPopup #logoutConfirm", function () {
+            $('#logoutPopup').popup('close');
             loadingMask("show");
             var logout = new doLogOut();
         });
 
-        $(document).on("click", "#logoutConfirm #cancel", function () {
-            $('#logoutConfirm').popup('close');
+        $(document).on("click", "#logoutPopup #logoutCancel", function () {
+            $('#logoutPopup').popup('close');
         });
 
 

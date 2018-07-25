@@ -915,10 +915,13 @@ input[type=radio]:checked + label {
     -webkit-overflow-scrolling: touch; */
 }
 
-/* #viewMain3 {
-    overflow-y: scroll !important;
+.main-scroll {
+    width: 100%;
+    height: 600px;
+    overflow-y: scroll;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-} */
+}
 
 .carouselWidget {
     width: 100vw;
@@ -1013,6 +1016,7 @@ input[type=radio]:checked + label {
 /*************************** viewAppList ********************************/
 #viewAppList .ui-content {
     padding: 0 !important;
+    -webkit-overflow-scrolling: touch;
 }
 
 .download-title {
