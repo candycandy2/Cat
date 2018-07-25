@@ -489,20 +489,13 @@ $("#viewMessageList").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewMessageList").one("pagebeforeshow", function (event, ui) {
-            //filter placeholder多语言设置
-            $('#msgFilter').attr('placeholder', langStr['str_080']);
+        $("#viewMessageList").on("pagebeforeshow", function (event, ui) {
+
         });
 
-        $("#viewMessageList").on("pagebeforeshow", function (event, ui) {
-            // if (viewMessageInitial) {
-            //     //create html
-            //     //createMessageByType();
-
-            //     $('#msgFilter').attr('placeholder', langStr['str_080']);
-
-            //     viewMessageInitial = false;
-            // }
+        $("#viewMessageList").one("pageshow", function (event, ui) {
+            //filter placeholder多语言设置
+            $('#msgFilter').attr('placeholder', langStr['str_080']);
         });
 
         $("#viewMessageList").on("pageshow", function (event, ui) {
