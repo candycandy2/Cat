@@ -7,6 +7,7 @@ qplayApi Readme.md
 
 - [Deploy SOP](#DeployProcedure)
 - [DeployBackEnd-Production-SyncUser](#DeployBackEnd-Production-SyncUser)
+- [DeployBackEnd-Production-SyncUser-2](#DeployBackEnd-Production-SyncUser-2)
 
 ----
 
@@ -190,3 +191,53 @@ qplayApi Readme.md
 
 
     # ======== SyncUser End ========
+
+<h2 id="DeployBackEnd-Production-SyncUser-2">DeployBackEnd-Production-SyncUser-2</h2>
+
+    # staging server
+    #serverIP=13.75.117.225
+
+    # production server
+    serverIP=23.99.120.80
+
+
+    #if false; then
+    #fi
+    git checkout master
+
+    # ------ add release tag ------
+    git tag -a v1.4.1.$BUILD_NUMBER.Production.BackEnd.SyncUser2 -m "v1.4.1.$BUILD_NUMBER[Production] BackEnd.SyncUser2"
+    git push origin --tags
+
+    chmod -R o=rx *
+
+    # ======== SyncUser2 Start ========
+    #1. 基礎建設(安裝需要的外部元件等)
+    #   N/A
+
+
+    #2. 環境設定(設定 .env config 等)
+    #   N/A
+
+
+    #3. 資料設定 (DB 修改)
+    #   N/A
+
+
+    #4. 檔案覆蓋
+    #a. 更新修改的檔案，共 2 個
+    git checkout 3b688df25ecaac441a366b157150dc9f7a49feb5 .
+    chmod -R o=rx *
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/Controllers/mailController.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/Controllers/mailController.php
+    sshpass -p "kDsl24D1S" rsync -vh qplayApi/qplayApi/app/Http/routes.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/routes.php
+
+
+    #5. 功能設定
+    #   N/A
+
+
+    echo "deploy_ver=$(($BUILD_NUMBER))_SyncUser2 deploy_time=$(date +"%b-%d-%y %H:%M:%S")" > deploy.jenkins
+    cp deploy.jenkins qplay/
+    sshpass -p "kDsl24D1S" rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
+
+    # ======== SyncUser2 End ========
