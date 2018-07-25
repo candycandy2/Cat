@@ -36,6 +36,7 @@ class syncUserController extends Controller
      */
     public function syncUserJob(Request $request){
         Log::info('==========Start SyncUserJob==========');
+        ini_set("memory_limit","2048M");
         set_time_limit(0);
         $timeStart = microtime(true); 
         //1.arrange data by each source
