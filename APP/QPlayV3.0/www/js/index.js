@@ -16,14 +16,15 @@ var checkAPPKey;
 var checkAPPKeyInstalled = false;
 
 //viewNewsEvents
-var messagecontent;
-var selectAppIndex = 0;
-var messageArrIndex = null;
-var messageRowId = null;
-var msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
-var callGetMessageList = false;
-var messagePageShow = false;
-var delMsgActive = false;
+var messagecontent,
+    selectAppIndex = 0,
+    messageArrIndex = null,
+    messageRowId = null,
+    callGetMessageList = false,
+    messagePageShow = false,
+    delMsgActive = false,
+    msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
+
 
 //viewMain
 var viewMainInitial = true;
@@ -31,7 +32,7 @@ var viewMainInitial = true;
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
 var downloadedIndexArr = [], alreadyDownloadList = [], notDownloadList = [];
-var tempVersionArrData, tempVersionData;
+var tempVersionArrData, tempVersionData, applistInitial = true;
 
 //viewMyCalendar
 var reserveCalendar = null,
@@ -490,6 +491,14 @@ function checkAppCallback(downloaded, index) {
         if (favoriteList != null) {
             changeFavoriteIcon();
         }
+
+        //set height
+        var downloadedHight = $('.already-download-list').parent().height();
+        var noDownloadHight = $('.not-download-list').parent().height();
+        var headerHeight = $('#viewAppList .page-header').height();
+        var totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
+        $('.app-scroll > div').css('height', totalHeight + 'px');
+
     }
 }
 
