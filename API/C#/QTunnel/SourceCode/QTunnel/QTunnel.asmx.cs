@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.DirectoryServices;
-using System.DirectoryServices.ActiveDirectory;
-using System.Linq;
 using System.Web;
 using System.Web.Services;
 
@@ -148,7 +144,8 @@ namespace QTunnel
                 }
 
             }
-            else {
+            else
+            {
                 strJson = new JObject(
                               new JProperty("ResultCode", "997906"),
                               new JProperty("Message", "Request Timeout"),

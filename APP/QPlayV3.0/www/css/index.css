@@ -3,9 +3,9 @@
     height: 100% !important;
 }
 
-#viewMain2-3  {
+/* #viewMain3  {
     height: 100% !important;
-}
+} */
 
 #viewMain2-1  {
     height: 100% !important;
@@ -911,7 +911,14 @@ input[type=radio]:checked + label {
 /*************************** widget ********************************/
 #viewMain3 .ui-content {
     padding: 0 !important;
+    /* overflow-y: scroll;
+    -webkit-overflow-scrolling: touch; */
 }
+
+/* #viewMain3 {
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch;
+} */
 
 .carouselWidget {
     width: 100vw;

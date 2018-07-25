@@ -108,3 +108,8 @@ API/C#/QTunnel/SyncSourceCode/.vs/*
 API/C#/QTunnel/SyncSourceCode/QPlay.Job.SyncGaiaUser/obj/*
 
 WEB/*/sftp-config.json
+
+API/C#/QTunnel/SourceCode/QTunnel/bin/*
+API/C#/QTunnel/SourceCode/QTunnel/.vs/*
+API/C#/QTunnel/SourceCode/QTunnel/obj/*
+API/C#/QTunnel/SourceCode/.vs/*

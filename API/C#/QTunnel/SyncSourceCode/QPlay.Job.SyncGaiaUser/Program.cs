@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Data;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using System.Configuration;
 using ITS.Data;
 using ITS.Common.Excel;
-using System.Web;
-using System.Web.Services;
 using System.IO;
 using System.Diagnostics;
 using log4net;
- 
+
 namespace QPlay.Job.SyncGaiaUser
 {
     public class Program
@@ -20,9 +14,9 @@ namespace QPlay.Job.SyncGaiaUser
         static ILog log = LogManager.GetLogger("Logger");
         static void Main(string[] args)
         {
-           Init();
-           string fileName =  GenerateExcelFile();
-           GenerateGPGFile(fileName);
+            Init();
+            string fileName = GenerateExcelFile();
+            GenerateGPGFile(fileName);
         }
         /// <summary>
         /// 初始化
@@ -34,38 +28,43 @@ namespace QPlay.Job.SyncGaiaUser
             dbGaia = new DbSession("dbGaia");
             log.Info("End Connect Gaia DB");
 
-             
+
         }
         /// <summary>
         /// 产生excel
         /// </summary>
         /// <returns></returns>
-        static string  GenerateExcelFile()
+        static string GenerateExcelFile()
         {
             try
             {
                 log.Info("Begin Select data");
-                
+
                 //查询数据
                 string view = System.Configuration.ConfigurationManager.AppSettings["ViewName"];
-                string sql = "SELECT * FROM " + view;
+                string sql = "SELECT TOP 20000 * FROM " + view;
                 DataTable dt = dbGaia.FromSql(sql).ToDataTable();
                 log.Info("End Select  data");
 
                 //将查询出来的数据导出到Excel
-                QWorkbook workbook = new QWorkbook(QXlFileFormat.xls);//创建工作簿，默认是xlsx
+                QWorkbook workbook = new QWorkbook(QXlFileFormat.xls);//创建工作簿，默认是xls
+
+                log.Info("Start ReadDataTable");//slow when dt is bigger than 10000
                 workbook.ReadDataTable(dt);  // 读取DataTable的内容并写入excel所有的列
+                log.Info("End ReadDataTable");
 
                 string fileName = DateTime.Now.ToString("yyyyMMdd") + ".xls";
                 string path = System.Configuration.ConfigurationManager.AppSettings["FilePath"];
                 fileName = path + "\\" + fileName;
 
-
+                log.Info("check Directory: " + path);
                 if (!Directory.Exists(path))//如果不存在就创建file文件夹
                 {
+                    log.Info("CreateDirectory: " + path);
                     Directory.CreateDirectory(path);
                 }
 
+                log.Info("check file: " + fileName);
                 workbook.SaveAs(fileName);
                 log.Info("ExcelFile:Generate excel succeeded");
                 return fileName;
@@ -73,10 +72,10 @@ namespace QPlay.Job.SyncGaiaUser
             catch (Exception ex)
             {
                 log.Info("ExcelFile:Generate excel failed");
-                 log.Error(ex.Message);
-                 return null;
-                
-            }            
+                log.Error(ex.Message);
+                return null;
+
+            }
         }
         /// <summary>
         /// 将产生的excel进行加密
@@ -125,8 +124,14 @@ namespace QPlay.Job.SyncGaiaUser
                 //等待程序执行完退出进程
                 p.WaitForExit();
                 p.Close();
-                
-                log.Info("GPG:encryption succeeded");
+
+                if(File.Exists(fileName+".gpg"))
+                {
+                    log.Info("GPG:encryption succeeded:" + fileName + ".gpg");
+                }
+                else {
+                    log.Info("GPG:encryption fail");
+                }
 
             }
             catch (Exception ex)
@@ -143,8 +148,8 @@ namespace QPlay.Job.SyncGaiaUser
 
                 }
             }
-           
+
         }
-        
+
     }
 }
