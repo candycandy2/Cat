@@ -9,6 +9,7 @@ qplayApi Readme.md
 - [DeployBackEnd-Production-SyncUser](#DeployBackEnd-Production-SyncUser)
 - [DeployBackEnd-Production-SyncUser-2](#DeployBackEnd-Production-SyncUser-2)
 - [DeployBackEnd-Production-SyncUser-3](#DeployBackEnd-Production-SyncUser-3)
+- [DeployBackEnd-Production-OTA](#DeployBackEnd-Production-OTA)
 
 ----
 
@@ -293,3 +294,64 @@ qplayApi Readme.md
     sshpass -p $password rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
 
     # ======== SyncUser3 End ========
+
+<h2 id="DeployBackEnd-Production-OTA">DeployBackEnd-Production-OTA</h2>
+
+    # staging server
+    #serverIP=13.75.117.225
+    #password="kDsl24D1S"
+
+    # production server
+    serverIP=23.99.120.80
+    password="kDsl24D1S"
+
+    #if false; then
+    #fi
+    git checkout master
+
+    # ------ add release tag ------
+    git tag -a v1.4.1.$BUILD_NUMBER.Production.BackEnd.OTA -m "v1.4.1.$BUILD_NUMBER[Production] BackEnd.OTA"
+    git push origin --tags
+
+    chmod -R o=rx *
+
+    # ======== OTA Start ========
+    #1. 基礎建設(安裝需要的外部元件等)
+    #   N/A
+
+
+    #2. 環境設定(設定 .env config 等)
+    #   N/A
+
+
+    #3. 資料設定 (DB 修改)
+    #   N/A
+
+
+    #4. 檔案覆蓋
+    #a. 更新修改的檔案，共 1 個
+    git checkout e159b06e85482775de86c42e930c4c66ca110706 .
+    chmod -R o=rx *
+
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Http/Controllers/appVersionController.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/Controllers/appVersionController.php
+
+    # dev server
+    serverIP=10.82.246.95
+    password="readrsync"
+
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Http/Controllers/appVersionController.php rsyncuser@$serverIP:/var/www/html/OTA/app/Http/Controllers/appVersionController.php
+
+
+    #5. 功能設定
+    #   N/A
+
+
+    # production server
+    serverIP=23.99.120.80
+    password="kDsl24D1S"
+
+    echo "deploy_ver=$(($BUILD_NUMBER))_OTA deploy_time=$(date +"%b-%d-%y %H:%M:%S")" > deploy.jenkins
+    cp deploy.jenkins qplay/
+    sshpass -p $password rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
+
+    # ======== OTA End ========
