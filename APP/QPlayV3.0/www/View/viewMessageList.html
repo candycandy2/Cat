@@ -22,78 +22,88 @@
         </a>
         <a href="#" data-role="none" class="ui-btn-right">
             <div>
-                <img src="img/search.png" id="searchListview" style="width: 6vw;"><img src="img/select.png" id="editListview" style="width: 6vw;margin-left: 3.3vw;"><img src="img/close.png" id="cancelEdit" style="width: 6vw;display:none;"><img src="img/close.png" id="cancelSearch" style="width: 6vw;display:none;">
+                <img src="img/search.png" id="searchListview" style="width:6vw;"><img src="img/select.png" id="editListview" style="width:6vw;margin-left:3.3vw;"><img src="img/close.png" id="cancelEdit" style="width:6vw;display:none;"><img src="img/close.png" id="cancelSearch" style="width:6vw;display:none;">
             </div>
         </a>
     </div>
     <div data-role="main" class="ui-content page-main">
-        <div class="select-news">
-            <div data-name="msgType">News</div>
-            <div data-name="msgType">Event</div>
-        </div>
-        <div class="news-content">
-            <div class="msg-tool">
-                <div class="news-select-btn">
-                    <!--全选-->
-                    <span class="langStr" data-id="str_076"></span>
+        <div class="message-scroll">
+            <div>
+                <!-- select -->
+                <div class="select-news">
+                    <div data-name="msgType">News</div>
+                    <div data-name="msgType">Event</div>
                 </div>
-                <div class="news-delete-btn">
-                    <!--删除-->
-                    <span class="langStr" data-id="str_037"></span>
-                </div>
-                <div class="news-readed-btn">
-                    <!--标示已读-->
-                    <span class="langStr" data-id="str_078"></span>
-                </div>
-            </div>
-            <div class="msg-tool-blank"></div>
-            <ul data-role="listview" data-filter="true" data-input="#msgFilter" class="swipe-delete">
-                <!-- <li data-icon="false">
-                    <div class="behind">
-                        <a href="#" class="ui-btn delete-btn">
-                            <img src="img/delete.png" class="msg-delete-btn">
-                        </a>
+                <!-- News -->
+                <div class="news-content">
+                    <div class="msg-tool">
+                        <div class="news-select-btn">
+                            <!--全选-->
+                            <span class="langStr" data-id="str_076"></span>
+                        </div>
+                        <div class="news-delete-btn">
+                            <!--删除-->
+                            <span class="langStr" data-id="str_037"></span>
+                        </div>
+                        <div class="news-readed-btn">
+                            <!--标示已读-->
+                            <span class="langStr" data-id="str_078"></span>
+                        </div>
                     </div>
-                    <a href="#" class="ui-div ui-btn">
-                        <div class="msg-check-icon">
-                            <img src="img/checkbox.png" class="msg-check-btn">
-                        </div>
-                        <div class="msg-content-title">
-                            <div>2018-06-21</div>
-                            <div>【ITS上線公告】Portal 新增公告推播通知並將公告整合至QPlay APP</div>
-                        </div>
-                        <div class="msg-next-icon">
-                            <img src="img/nextpage.png" class="msg-next-btn">
-                        </div>
-                    </a>
-                </li> -->
+                    <div class="msg-tool-blank"></div>
+                    <ul data-role="listview" data-filter="true" data-input="#msgFilter" class="swipe-delete">
+                        <!-- <li data-icon="false">
+                            <div class="behind">
+                                <a href="#" class="ui-btn delete-btn">
+                                    <img src="img/delete.png" class="msg-delete-btn">
+                                </a>
+                            </div>
+                            <a href="#" class="ui-div ui-btn">
+                                <div class="msg-check-icon">
+                                    <img src="img/checkbox.png" class="msg-check-btn">
+                                </div>
+                                <div class="msg-content-title">
+                                    <div>2018-06-21</div>
+                                    <div>【ITS上線公告】Portal 新增公告推播通知並將公告整合至QPlay APP</div>
+                                </div>
+                                <div class="msg-next-icon">
+                                    <img src="img/nextpage.png" class="msg-next-btn">
+                                </div>
+                            </a>
+                        </li> -->
 
-            </ul>
-        </div>
-        <div class="event-content" style="display:none;">
-            <div class="msg-tool">
-                <div class="event-select-btn">
-                    <!--全选-->
-                    <span class="langStr" data-id="str_076"></span>
+                    </ul>
                 </div>
-                <div class="event-delete-btn">
-                    <!--删除-->
-                    <span class="langStr" data-id="str_037"></span>
+                <!-- Event -->
+                <div class="event-content" style="display:none;">
+                    <div class="msg-tool">
+                        <div class="event-select-btn">
+                            <!--全选-->
+                            <span class="langStr" data-id="str_076"></span>
+                        </div>
+                        <div class="event-delete-btn">
+                            <!--删除-->
+                            <span class="langStr" data-id="str_037"></span>
+                        </div>
+                        <div class="event-readed-btn">
+                            <!--标示已读-->
+                            <span class="langStr" data-id="str_078"></span>
+                        </div>
+                    </div>
+                    <div class="msg-tool-blank"></div>
+                    <ul data-role="listview" data-filter="true" data-input="#msgFilter" class="swipe-delete">
+                    </ul>
                 </div>
-                <div class="event-readed-btn">
-                    <!--标示已读-->
-                    <span class="langStr" data-id="str_078"></span>
-                </div>
+                <!-- update -->
+                <div class="msg-update-date"></div>
             </div>
-            <div class="msg-tool-blank"></div>
-            <ul data-role="listview" data-filter="true" data-input="#msgFilter" class="swipe-delete">
-
-            </ul>
         </div>
-        <!--<div class="update-time"></div> -->
+
+
     </div>
 
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeleteMsg" for="confirmDeleteMsg" id="confirmDeleteMsg">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeleteMsg" for="confirmDeleteMsg"
+        id="confirmDeleteMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">

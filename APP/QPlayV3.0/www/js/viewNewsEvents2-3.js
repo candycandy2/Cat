@@ -148,6 +148,7 @@ $("#viewNewsEvents2-3").pagecontainer({
             }
 
             this.successCallback = function (data) {
+                //console.log(data);
                 callGetMessageList = false;
                 var resultcode = data['result_code'];
 
@@ -271,6 +272,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                     });
                     $.mobile.changePage("#viewWebNews2-3-1");
                 }
+
             };
 
             this.failCallback = function (data) {
