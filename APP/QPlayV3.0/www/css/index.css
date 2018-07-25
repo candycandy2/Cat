@@ -918,9 +918,15 @@ input[type=radio]:checked + label {
 .main-scroll {
     width: 100%;
     height: 600px;
+    position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+}
+
+/*hard code*/
+.main-scroll > div {
+    height: 1140px;
 }
 
 .carouselWidget {
@@ -1016,6 +1022,15 @@ input[type=radio]:checked + label {
 /*************************** viewAppList ********************************/
 #viewAppList .ui-content {
     padding: 0 !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+.app-scroll {
+    width: 100%;
+    height: 600px;
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -1271,6 +1286,15 @@ input[type=radio]:checked + label {
     padding: 0 !important;
 }
 
+.message-scroll {
+    width: 100%;
+    height: 600px;
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
 .input-search {
     width: 73vw !important;
     height: 7vw;
@@ -1359,6 +1383,11 @@ input[type=radio]:checked + label {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+.news-content ul.ui-listview > li:last-of-type > a,
+.event-content ul.ui-listview > li:last-of-type > a {
+    border: none !important;
 }
 
 .msg-delete-btn {
@@ -1465,6 +1494,17 @@ input[type=radio]:checked + label {
 	text-shadow: none;
 }
 /*** swipe ***/
+
+.msg-update-date {
+    width: 100%;
+    height: 6.87vw;
+    text-align: center;
+    color: #8fa4ac;
+    font-weight: normal;
+    font-size: 3.14vw !important;
+    line-height: 8vw;
+    /* background: #fff; */
+}
 
 .confirmDeleteMsg .ui-content>.header {
     padding: 0 5.36vw;

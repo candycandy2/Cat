@@ -225,10 +225,8 @@ $("#viewAppList").pagecontainer({
             }
         }
 
-        /********************************** page event ***********************************/   
+        /********************************** page event ***********************************/
         $("#viewAppList").on("pagebeforeshow", function (event, ui) {
-            //get applist
-            //var applist = new GetAppList();
 
         });
 
@@ -237,12 +235,15 @@ $("#viewAppList").pagecontainer({
         });
 
         $("#viewAppList").one("pageshow", function (event, ui) {
+            //language string
             $('.already-download').text(langStr['str_074']);
             $('.not-download').text(langStr['str_075']);
+
         });
 
         $("#viewAppList").on("pageshow", function (event, ui) {
             var applist = new GetAppList();
+
         });
 
         $("#viewAppList").on("pagehide", function (event, ui) {
