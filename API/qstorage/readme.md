@@ -518,7 +518,7 @@ API/QForum/app/Http/Controllers/JobController.php
     #    |azure_storage : Blob 服務的連接字串   
     #    */ 
     #        
-    AZURE_STORAGE=DefaultEndpointsProtocol=https;AccountName=bqgroupstorage;AccountKey=LNvRqQAaUTgaU9ea0zMxdkev+i8hXOqoEW13RpHnvsU0TdqQsmvfXyLMY80Y0bF5Nj+h+s1DylF6s3OHCpedew==
+    # AZURE_STORAGE=DefaultEndpointsProtocol=https;AccountName=bqgroupstorage;AccountKey=LNvRqQAaUTgaU9ea0zMxdkev+i8hXOqoEW13RpHnvsU0TdqQsmvfXyLMY80Y0bF5Nj+h+s1DylF6s3OHCpedew==
 
     #    b. 修改 config\app.php
     #    /*    
