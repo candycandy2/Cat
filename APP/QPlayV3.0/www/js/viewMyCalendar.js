@@ -68,6 +68,14 @@ $("#viewMyCalendar").pagecontainer({
                 }
             });
 
+            //3.记录每日预约轮播的位置
+            if (reservePositionList.length == 0) {
+                for (var i in reserveDateList) {
+                    var x = $(".reserve-list[data-index=" + i + "]").offset().left;
+                    reservePositionList.push(x);
+                }
+            }
+
         }
 
         /**
@@ -172,8 +180,8 @@ $("#viewMyCalendar").pagecontainer({
                         //calendarData = false;
                     }
 
-
                 }
+
                 loadingMask("hide");
             };
 
@@ -194,47 +202,36 @@ $("#viewMyCalendar").pagecontainer({
             return dataTempC[0];
         }
 
-        //记录每个预约的位置，只有在pageshow时才能调用
-        //且只调用一次，记录每个预约的原始位置
-        function setReservePosition() {
-            if (reservePositionList.length == 0) {
-                for (var i in reserveDateList) {
-                    var x = $(".reserve-list[data-index=" + i + "]").offset().left;
-                    reservePositionList.push(x);
-                }
-            }
-        }
-
         /********************************** page event ***********************************/
         $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
-            if (viewCalendarInitial) {
-                //1. calendar
-                var siteCode = localStorage.getItem("site_code");
-                if (siteCode == "QCS" || siteCode == "BQC") {
-                    $.getJSON("string/" + siteCode + "-holiday.json", function (data) {
-                        initialCalendar(data);
-                    });
-                } else {
-                    $.getJSON("string/QTY-holiday.json", function (data) {
-                        initialCalendar(data);
-                    });
-                }
 
-                //2. reserve carousel
-                createReserveDetail();
+        });
 
-                //3. leave app
-                var currentDate = new Date();
-                var currentYear = currentDate.getFullYear().toString();
-                var currentMonth = (currentDate.getMonth() + 1).toString();
-                QueryCalendarData(currentYear, currentMonth);
-
-                viewCalendarInitial = false;
+        $("#viewMyCalendar").one("pageshow", function (event, ui) {
+            //1. calendar
+            var siteCode = localStorage.getItem("site_code");
+            if (siteCode == "QCS" || siteCode == "BQC") {
+                $.getJSON("string/" + siteCode + "-holiday.json", function (data) {
+                    initialCalendar(data);
+                });
+            } else {
+                $.getJSON("string/QTY-holiday.json", function (data) {
+                    initialCalendar(data);
+                });
             }
+
+            //2. reserve carousel
+            createReserveDetail();
+
+            //3. leave app
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear().toString();
+            var currentMonth = (currentDate.getMonth() + 1).toString();
+            QueryCalendarData(currentYear, currentMonth);
+
         });
 
         $("#viewMyCalendar").on("pageshow", function (event, ui) {
-            setReservePosition();
 
         });
 

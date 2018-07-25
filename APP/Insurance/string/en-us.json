@@ -1145,7 +1145,39 @@
   },
   {
     "term": "str_144",
-    "definition": "不取消",
+    "definition": "取消申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_145",
+    "definition": "申請日期",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_146",
+    "definition": "處理狀態",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_147",
+    "definition": "處理日期",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_148",
+    "definition": "加保",
     "context": "",
     "term_plural": "",
     "reference": "",

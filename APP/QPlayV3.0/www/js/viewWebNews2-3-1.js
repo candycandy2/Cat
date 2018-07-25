@@ -674,7 +674,8 @@ $("#viewWebNews2-3-1").pagecontainer({
         $("#confirmMessageNotExist").on("click", function () {
             messageExist = true;
             $('#messageNotExist').popup('close');
-            $.mobile.changePage("#viewNewsEvents2-3");
+            //$.mobile.changePage("#viewNewsEvents2-3");
+            checkAppPage('viewMessageList');
         });
 
         $("#goList.nav-button").on("click", function () {
@@ -684,7 +685,8 @@ $("#viewWebNews2-3-1").pagecontainer({
             if (massageFrom == 'viewMain3') {
                 $.mobile.changePage('#viewMain3');
             } else if (massageFrom == 'viewMessageList') {
-                $.mobile.changePage('#viewMessageList');
+                //$.mobile.changePage('#viewMessageList');
+                checkAppPage('viewMessageList');
             }
 
         });
@@ -695,7 +697,8 @@ $("#viewWebNews2-3-1").pagecontainer({
 
         $(document).on("click", "#messageLoadErrorPopup #back", function () {
             //goBack("goList");
-            $.mobile.changePage('#viewMessageList');
+            //$.mobile.changePage('#viewMessageList');
+            checkAppPage('viewMessageList');
         });
     }
 });

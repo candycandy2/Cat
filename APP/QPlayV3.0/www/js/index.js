@@ -1,7 +1,7 @@
 /*global variable*/
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
-var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3", "viewAppList", "viewMyCalendar"];
+var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -30,16 +30,16 @@ var viewMainInitial = true;
 
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
+var downloadedIndexArr = [], alreadyDownloadList = [], notDownloadList = [];
+var tempVersionArrData, tempVersionData;
 
 //viewMyCalendar
-var viewCalendarInitial = true,
-    reserveCalendar = null,
+var reserveCalendar = null,
     reserveList = [],
     reserveDirty = false;
 
 //viewMessageList
-var viewMessageInitial = true,
-    massageFrom;
+var massageFrom;
 
 
 window.initialSuccess = function (data) {
@@ -315,7 +315,8 @@ function openNewMessage() {
 
     //Before open Message Detail Data, update Message List
     if (window.localStorage.getItem("msgDateFrom") === null) {
-        $.mobile.changePage('#viewNewsEvents2-3');
+        //$.mobile.changePage('#viewNewsEvents2-3');
+        checkAppPage('viewMessageList');
     } else {
         var messageList = new QueryMessageList();
     }
@@ -446,6 +447,200 @@ function checkAllAppInstalled(callback, key, index) {
     }(index);
 }
 
+function checkAppCallback(downloaded, index) {
+
+    //如果已下载，保存applist的index
+    if (downloaded) {
+        downloadedIndexArr.push(index);
+    }
+
+    //当所有APP都check完毕
+    if (index == applist.length - 1) {
+
+        //如果有已下载app就分组
+        if (downloadedIndexArr.length != 0) {
+            for (var i = 0; i < applist.length;) {
+                for (var j = 0; j < downloadedIndexArr.length; j++) {
+                    if (i == downloadedIndexArr[j]) {
+                        alreadyDownloadList.push(applist[i]);
+                        i++;
+                    } else if (j == downloadedIndexArr.length - 1) {
+                        notDownloadList.push(applist[i]);
+                        i++;
+                    }
+                }
+            }
+
+            var alreadydownloadContent = createContent(alreadyDownloadList, true);
+            $('.already-download-list').html('').append(alreadydownloadContent);
+            $('.already-download-list > div:last').css('border', '0');
+
+            var notdownloadContent = createContent(notDownloadList, false);
+            $('.not-download-list').html('').append(notdownloadContent);
+            $('.not-download-list > div:last').css('border', '0');
+
+        } else {
+            notDownloadList = applist;
+            var notdownloadContent = createContent(notDownloadList, false);
+            $('.not-download-list').html('').append(notdownloadContent);
+            $('.not-download-list > div:last').css('border', '0');
+        }
+
+        //change favorite icon
+        if (favoriteList != null) {
+            changeFavoriteIcon();
+        }
+    }
+}
+
+function checkAppVersionCallback(oldVersionExist) {
+    if (oldVersionExist) {
+        tempVersionArrData = "1";
+    } else {
+        tempVersionArrData = tempVersionData;
+    }
+
+    checkAPPVersionRecord("updateFromAPI");
+}
+
+function createContent(arr, status) {
+    var content = "";
+    for (var i = 0; i < arr.length; i++) {
+
+        var packagename = null;
+        var defaultAPPName = null;
+        var appSummary = null;
+        var defaultSummary = null;
+
+        for (var j = 0; j < appmultilang.length; j++) {
+            if (arr[i].app_code == appmultilang[j].project_code) {
+                //match browser language
+                if (appmultilang[j].lang == browserLanguage) {
+                    packagename = appmultilang[j].app_name;
+                    appSummary = appmultilang[j].app_summary;
+                }
+                //match default language: zh-tw
+                if (appmultilang[j].lang == arr[i].default_lang) {
+                    defaultAPPName = appmultilang[j].app_name;
+                    defaultSummary = appmultilang[j].app_summary;
+                }
+            }
+        }
+
+        if (packagename == null) {
+            packagename = defaultAPPName;
+            appSummary = defaultSummary;
+        }
+
+        var appurl = arr[i].url;
+        var appurlicon = arr[i].icon_url;
+        var appcode = arr[i].app_code;
+
+        content += '<div class="download-list"><div class="download-link" data-code="' +
+            appcode +
+            '"><div class="download-icon"><img src="' +
+            appurlicon +
+            '"></div><div class="download-name"><div class="font-style10">' +
+            packagename +
+            '</div><div class="font-style7">' +
+            appSummary +
+            '</div></div></div><div><img src="img/' +
+            (status == true ? 'favorite_blank.png' : 'download_icon.png') +
+            '" class="' +
+            (status == true ? 'favorite-btn' : 'download-btn') +
+            '" data-src="' +
+            (status == true ? 'favorite_blank' : 'download_icon') +
+            '"></div></div>';
+    }
+    return content;
+}
+
+function changeFavoriteIcon() {
+    $.each($('.favorite-btn'), function (index, item) {
+        for (var i in favoriteList) {
+            if (favoriteList[i].app_code == $(item).parent().prev().attr('data-code')) {
+                $(item).attr('data-src', 'favorite_full');
+                $(item).attr('src', 'img/favorite_full.png');
+            }
+        }
+    });
+}
+
+//CallAPI get applist
+function GetAppList() {
+    var self = this;
+
+    this.successCallback = function (data) {
+
+        //console.log(data);
+
+        if (data['result_code'] == '1') {
+
+            window.localStorage.removeItem('QueryAppListData');
+            var jsonData = {};
+            jsonData = {
+                lastUpdateTime: new Date(),
+                content: data['content']
+            };
+            window.localStorage.setItem('QueryAppListData', JSON.stringify(jsonData));
+
+            var responsecontent = data['content'];
+            appGroup(responsecontent);
+        }
+
+    };
+
+    this.failCallback = function (data) { };
+
+    var __construct = function () {
+
+        var limitSeconds = 1 * 60 * 60 * 24;
+        var QueryAppListData = JSON.parse(window.localStorage.getItem('QueryAppListData'));
+
+        if (loginData["versionName"].indexOf("Staging") !== -1) {
+            limitSeconds = 1;
+        } else if (loginData["versionName"].indexOf("Development") !== -1) {
+            limitSeconds = 1;
+        }
+
+        if (QueryAppListData === null || checkDataExpired(QueryAppListData['lastUpdateTime'], limitSeconds, 'ss')) {
+            QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
+        } else {
+            var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
+            appGroup(responsecontent);
+        }
+
+    }();
+}
+
+//applist group by downloaded status
+function appGroup(responsecontent) {
+    downloadedIndexArr = [], alreadyDownloadList = [], notDownloadList = [];
+    applist = responsecontent.app_list;
+    appmultilang = responsecontent.multi_lang;
+
+    for (var i = 0; i < applist.length; i++) {
+        //APP version record
+        if (typeof appVersionRecord[applist[i].package_name] === 'undefined') {
+            appVersionRecord[applist[i].package_name] = {};
+            var packageName = applist[i].package_name;
+            var packageNameArr = packageName.split(".");
+            checkAPPKey = packageNameArr[2];
+
+            checkAPPInstalled(checkAppVersionCallback, "appList");
+            tempVersionArrData = appVersionRecord[applist[i].package_name]["installed_version"];
+            tempVersionData = applist[i].app_version.toString();
+        }
+        appVersionRecord[applist[i].package_name]["latest_version"] = applist[i].app_version.toString();
+
+        //check app install，icon diff
+        var appName = applist[i].package_name;
+        var appNameArr = appName.split(".");
+        var checkKey = appNameArr[2];
+        checkAllAppInstalled(checkAppCallback, checkKey, i);
+    }
+}
+
 //un-register [User with Mobile Device UUID]
 function unregister() {
 
@@ -481,49 +676,6 @@ function addDownloadHit(appname) {
     var __construct = function () {
         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
-
-    }();
-}
-
-//获取版本记录
-function getVersionRecord(key) {
-    key = key || null;
-
-    var self = this;
-
-    if (key == null) {
-        key = qplayAppKey;
-    }
-
-    var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
-    //var queryStr = "&app_key=appqplaydev&device_type=android";
-
-    this.successCallback = function (data) {
-        console.log(data);
-
-        if (data['result_code'] == "1") {
-            var versionLogList = data['content'].version_list;
-            var content = '';
-
-            for (var i in versionLogList) {
-                content += '<div class="version-record-list"><div class="font-style12">' +
-                    versionLogList[i].version_name +
-                    '</div><div class="font-style11">' +
-                    new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
-                    '</div><div class="font-style11">' +
-                    versionLogList[i].version_log.replace(new RegExp('\r?\n', 'g'), '<br />') +
-                    '</div></div>';
-            }
-
-            $("#versionRecordList").html('').append(content);
-            $.mobile.changePage("#viewVersionRecord");
-        }
-    };
-
-    this.failCallback = function (data) { };
-
-    var __construct = function () {
-        QPlayAPI("GET", "getVersionLog", self.successCallback, self.failCallback, null, queryStr);
 
     }();
 }
@@ -578,7 +730,8 @@ function onBackKeyDown() {
         if (massageFrom == 'viewMain3') {
             $.mobile.changePage('#viewMain3');
         } else if (massageFrom == 'viewMessageList') {
-            $.mobile.changePage('#viewMessageList');
+            //$.mobile.changePage('#viewMessageList');
+            checkAppPage('viewMessageList');
         }
     } else if (activePageID === "viewNotSignedIn") {
         navigator.app.exitApp();

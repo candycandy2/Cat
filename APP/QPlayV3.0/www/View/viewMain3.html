@@ -19,85 +19,89 @@
         </a>
     </div>
     <div data-role="main" class="ui-content page-main" id="widgetListContent">
+        <div class="main-scroll">
+            <div>
+                <div id="widgetList"></div>
+                <div class="other-link">
+                    <div class="message-link">
+                        <div>
+                            <img src="img/icon_news.png" style="width: 15vw;">
+                        </div>
+                        <div>
+                            <div>
+                                <!--公告消息-->
+                                <span class="langStr" data-id="str_070"></span>
+                            </div>
+                            <div>
+                                <!--公司公告，近期活动，个人消息-->
+                                <span class="langStr" data-id="str_071"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="img/nextpage.png" width="100%" style="margin-top: 4.5vw;">
+                        </div>
+                    </div>
+                    <div class="applist-link">
+                        <div>
+                            <img src="img/icon_apps.png" style="width: 15vw;">
+                        </div>
+                        <div>
+                            <div>QPlay APP</div>
+                            <div>
+                                <!--完整QPlay App都在这里-->
+                                <span class="langStr" data-id="str_072"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="img/nextpage.png" width="100%" style="margin-top: 4.5vw;">
+                        </div>
+                    </div>
+                    <div class="faq-link">
+                        <div>
+                            <img src="img/icon_faq.png" style="width: 15vw;">
+                        </div>
+                        <div>
+                            <div>FAQ</div>
+                            <div>
+                                <!--常见问题集-->
+                                <span class="langStr" data-id="str_073"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="img/nextpage.png" width="100%" style="margin-top: 4.5vw;">
+                        </div>
+                    </div>
+                    <div class="scroll-test-link">
+                        <div>
+                            <img src="img/icon_history.png" style="width: 15vw;">
+                        </div>
+                        <div>
+                            <div>QPlay</div>
+                            <div>New QPlay</div>
+                        </div>
+                        <div>
+                            <img src="img/nextpage.png" width="100%" style="margin-top: 4.5vw;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <template id="tplContactUserPopup">
             <div class="header font-style3">
                 <span class="langStr" data-id="str_043"></span>
             </div>
             <div class="footer">
                 <div class="btn-two font-style0">
-                    <div id="cancel">
+                    <div id="logoutCancel">
                         <span class="langStr" data-id="str_023"></span>
                     </div>
-                    <div id="confirm">
+                    <div id="logoutConfirm">
                         <span class="langStr" data-id="str_016"></span>
                     </div>
                 </div>
             </div>
         </template>
-
-        <div id="widgetList"></div>
-        <div class="other-link">
-            <div class="message-link">
-                <div>
-                    <img src="img/icon_news.png" style="width: 15vw;">
-                </div>
-                <div>
-                    <div>
-                        <!--公告消息-->
-                        <span class="langStr" data-id="str_070"></span>
-                    </div>
-                    <div>
-                        <!--公司公告，近期活动，个人消息-->
-                        <span class="langStr" data-id="str_071"></span>
-                    </div>
-                </div>
-                <div>
-                    <img src="img/nextpage.png" width="100%" style="margin-top: 4.5vw;">
-                </div>
-            </div>
-            <div class="applist-link">
-                <div>
-                    <img src="img/icon_apps.png" style="width: 15vw;">
-                </div>
-                <div>
-                    <div>QPlay APP</div>
-                    <div>
-                        <!--完整QPlay App都在这里-->
-                        <span class="langStr" data-id="str_072"></span>
-                    </div>
-                </div>
-                <div>
-                    <img src="img/nextpage.png" width="100%" style="margin-top: 4.5vw;">
-                </div>
-            </div>
-            <div class="faq-link">
-                <div>
-                    <img src="img/icon_faq.png" style="width: 15vw;">
-                </div>
-                <div>
-                    <div>FAQ</div>
-                    <div>
-                        <!--常见问题集-->
-                        <span class="langStr" data-id="str_073"></span>
-                    </div>
-                </div>
-                <div>
-                    <img src="img/nextpage.png" width="100%" style="margin-top: 4.5vw;">
-                </div>
-            </div>
-            <div class="scroll-test-link" style="display:none;">
-                <div>
-                    <img src="img/icon_history.png" style="width: 15vw;">
-                </div>
-                <div>
-                    <div>Scroll</div>
-                    <div>滚屏测试</div>
-                </div>
-                <div>
-                    <img src="img/nextpage.png" width="100%" style="margin-top: 4.5vw;">
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>

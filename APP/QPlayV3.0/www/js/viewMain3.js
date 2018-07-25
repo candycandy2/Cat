@@ -37,7 +37,7 @@ $("#viewMain3").pagecontainer({
             //need User AD Account
             var queryStr = "&domain=" + loginData.domain + "&loginid=" + loginData.loginid;
 
-            this.successCallback = function(data) {
+            this.successCallback = function (data) {
                 var resultcode = data['result_code'];
 
                 if (resultcode == 1) {
@@ -99,9 +99,9 @@ $("#viewMain3").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function (data) { };
 
-            var __construct = function() {
+            var __construct = function () {
                 QPlayAPI("POST", "logout", self.successCallback, self.failCallback, null, queryStr);
             }();
         }
@@ -109,7 +109,7 @@ $("#viewMain3").pagecontainer({
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
             var eventLogoutConfirmPopupData = {
-                id: "logoutConfirm",
+                id: "logoutPopup",
                 content: $("template#tplContactUserPopup").html()
             };
             tplJS.Popup("viewMain3", "widgetListContent", "append", eventLogoutConfirmPopupData);
@@ -132,6 +132,10 @@ $("#viewMain3").pagecontainer({
             }
         });
 
+        $("#viewMain3").one("pageshow", function (event, ui) {
+            var applist = new GetAppList();
+        });
+
         $("#viewMain3").on("pageshow", function (event, ui) {
 
         });
@@ -140,12 +144,16 @@ $("#viewMain3").pagecontainer({
 
         });
 
+        $("#viewMain3").scroll(function (event) {
+
+        });
+
 
         /********************************** dom event *************************************/
         //跳转到行事历
         $('#widgetList').on('click', '.personal-res', function () {
-            $.mobile.changePage('#viewMyCalendar');
-            //checkAppPage('viewMyCalendar');
+            //$.mobile.changePage('#viewMyCalendar');
+            checkAppPage('viewMyCalendar');
         });
 
         //最爱列表打开APP
@@ -156,14 +164,14 @@ $("#viewMain3").pagecontainer({
 
         //点击添加按钮跳转到APPList
         $('#widgetList').on('click', '.add-favorite-list', function () {
-            $.mobile.changePage('#viewAppList');
-            //checkAppPage('viewAppList');
+            //$.mobile.changePage('#viewAppList');
+            checkAppPage('viewAppList');
         });
 
         //点击Link跳转到APPList
         $('.applist-link').on('click', function () {
-            $.mobile.changePage('#viewAppList');
-            //checkAppPage('viewAppList');
+            //$.mobile.changePage('#viewAppList');
+            checkAppPage('viewAppList');
         });
 
         //点击widget内message，跳转到message详情页
@@ -187,23 +195,23 @@ $("#viewMain3").pagecontainer({
 
         //Test
         $('.scroll-test-link').on('click', function () {
-            //$.mobile.changePage('#viewScrollTest');
-            checkAppPage('viewScrollTest');
+            $.mobile.changePage('#viewMain2-1');
+            //checkAppPage('viewScrollTest');
         });
 
         //注销
         $("#logout").on("click", function () {
-            $('#logoutConfirm').popup('open');
+            $('#logoutPopup').popup('open');
         });
 
-        $(document).on("click", "#logoutConfirm #confirm", function () {
-            $('#logoutConfirm').popup('close');
+        $(document).on("click", "#logoutPopup #logoutConfirm", function () {
+            $('#logoutPopup').popup('close');
             loadingMask("show");
             var logout = new doLogOut();
         });
 
-        $(document).on("click", "#logoutConfirm #cancel", function () {
-            $('#logoutConfirm').popup('close');
+        $(document).on("click", "#logoutPopup #logoutCancel", function () {
+            $('#logoutPopup').popup('close');
         });
 
 

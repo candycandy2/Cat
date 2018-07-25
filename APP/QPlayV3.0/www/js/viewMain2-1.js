@@ -1,8 +1,8 @@
 $("#viewMain2-1").pagecontainer({
     create: function(event, ui) {
 
-        var tempVersionArrData;
-        var tempVersionData;
+        // var tempVersionArrData;
+        // var tempVersionData;
 
         /********************************** function *************************************/
         //Event List No Data Popup  
@@ -328,10 +328,6 @@ $("#viewMain2-1").pagecontainer({
 
             $(document).on("click", "#eventTypeSelect #qplay3", function() {
                 $.mobile.changePage('#viewMain3');
-            });
-
-            $(document).on("click", "#eventTypeSelect #faq", function() {
-                $.mobile.changePage('#viewFAQ');
             });
 
             $(document).on("click", "#eventTypeSelect .option", function() {
