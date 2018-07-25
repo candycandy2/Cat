@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using ITS.Data;
-using ITS.Common.Excel;
 using System.IO;
 using System.Diagnostics;
 using log4net;
@@ -15,7 +14,7 @@ namespace QPlay.Job.SyncGaiaUser
         static void Main(string[] args)
         {
             Init();
-            string fileName = GenerateExcelFile();
+            string fileName = GenerateFile();
             GenerateGPGFile(fileName);
         }
         /// <summary>
@@ -34,7 +33,7 @@ namespace QPlay.Job.SyncGaiaUser
         /// 产生excel
         /// </summary>
         /// <returns></returns>
-        static string GenerateExcelFile()
+        static string GenerateFile()
         {
             try
             {
@@ -42,20 +41,14 @@ namespace QPlay.Job.SyncGaiaUser
 
                 //查询数据
                 string maxRows = System.Configuration.ConfigurationManager.AppSettings["MaxRows"];
+                //if (maxRows.Trim().Length > 0) maxRows = " TOP " + maxRows + " ";
                 string view = System.Configuration.ConfigurationManager.AppSettings["ViewName"];
-                string sql = "SELECT TOP " + maxRows + " * FROM " + view;
+                string sql = "SELECT " + maxRows + " * FROM " + view;
+                //string sql = "SELECT TOP " + maxRows + " emp_no,login_name,emp_name,ext_no,mail_account,domain,site_code,company,dept_code,active,dimission_date FROM " + view;
                 DataTable dt = dbGaia.FromSql(sql).ToDataTable();
                 log.Info("End Select  data");
 
-
-                //将查询出来的数据导出到Excel
-                QWorkbook workbook = new QWorkbook(QXlFileFormat.xls);//创建工作簿，默认是xls
-
-                log.Info("Start ReadDataTable");//slow when dt is bigger than 10000
-                workbook.ReadDataTable(dt);  // 读取DataTable的内容并写入excel所有的列
-                log.Info("End ReadDataTable");
-
-                string fileName = DateTime.Now.ToString("yyyyMMdd") + ".xls";
+                string fileName = DateTime.Now.ToString("yyyyMMdd") + ".csv";
                 string path = System.Configuration.ConfigurationManager.AppSettings["FilePath"];
                 fileName = path + "\\" + fileName;
 
@@ -67,8 +60,7 @@ namespace QPlay.Job.SyncGaiaUser
                 }
 
                 log.Info("check file: " + fileName);
-                workbook.SaveAs(fileName);
-                log.Info("ExcelFile:Generate excel succeeded");
+                DataTableToCSV(fileName, dt);
                 return fileName;
             }
             catch (Exception ex)
@@ -148,10 +140,56 @@ namespace QPlay.Job.SyncGaiaUser
                 if (File.Exists(fileName))
                 {
                     File.Delete(fileName);//如果存在则删除
-
                 }
             }
 
+        }
+
+        static void DataTableToCSV(string fileName, DataTable dt)
+        {
+            int CurrentCol = 0;//当前列
+            int RowCount = dt.Rows.Count + 1;//总行数
+            int ColCount = dt.Columns.Count;//总列数
+            StreamWriter sw = new StreamWriter(fileName, false);//文件如果存在，则自动覆盖
+            try
+            {
+                #region 表头信息
+                for (CurrentCol = 0; CurrentCol < ColCount; CurrentCol++)
+                {
+                    sw.Write(dt.Columns[CurrentCol].ColumnName.ToString().Trim());
+                    if ((CurrentCol + 1) < ColCount)
+                        sw.Write(",");
+                }
+                sw.WriteLine("");
+                #endregion
+
+                #region excel表格内容
+                foreach (DataRow row in dt.Rows)
+                {
+                    for (CurrentCol = 0; CurrentCol < ColCount; CurrentCol++)
+                    {
+                        if (row[CurrentCol] != null)
+                        {
+                            sw.Write(row[CurrentCol].ToString().Trim());
+                        }
+                        else
+                        {
+                            sw.Write("");
+                        }
+                        if ((CurrentCol + 1) < ColCount)
+                            sw.Write(",");
+                    }
+                    sw.WriteLine("");
+                }
+                #endregion
+            }
+            catch
+            { }
+            finally
+            {
+                sw.Close();
+                sw = null;
+            }
         }
 
     }
