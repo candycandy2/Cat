@@ -16,11 +16,10 @@ $("#viewMain3").pagecontainer({
             var contentItem = $('<div class="' + widgetItem + '"></div>');
             $('#widgetList').append(contentItem);
 
-            //4. localStorage
+            //4. sessionStorage
             sessionStorage.setItem('widgetItem', widgetItem);
 
             //5. load js
-            //$.getScript("http://qplaydev.benq.com/widgetDemo/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
             $.getScript(serverURL + "/widget/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
                 .done(function (script, textStatus) {
                     loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
@@ -144,10 +143,6 @@ $("#viewMain3").pagecontainer({
 
         });
 
-        $("#viewMain3").scroll(function (event) {
-
-        });
-
 
         /********************************** dom event *************************************/
         //跳转到行事历
@@ -191,12 +186,6 @@ $("#viewMain3").pagecontainer({
         $('.faq-link').on('click', function () {
             //$.mobile.changePage('#viewFAQ');
             checkAppPage('viewFAQ');
-        });
-
-        //Test
-        $('.scroll-test-link').on('click', function () {
-            $.mobile.changePage('#viewMain2-1');
-            //checkAppPage('viewScrollTest');
         });
 
         //注销
