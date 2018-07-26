@@ -153,9 +153,12 @@ namespace QPlay.Job.SyncGaiaUser
             StreamWriter sw = new StreamWriter(fileName, false);//文件如果存在，则自动覆盖
             try
             {
+                int DatetimefieldIndex = -1;
                 #region 表头信息
                 for (CurrentCol = 0; CurrentCol < ColCount; CurrentCol++)
                 {
+                    if (dt.Columns[CurrentCol].DataType == typeof(DateTime))
+                        DatetimefieldIndex = CurrentCol;
                     sw.Write(dt.Columns[CurrentCol].ColumnName.ToString().Trim());
                     if ((CurrentCol + 1) < ColCount)
                         sw.Write(",");
@@ -170,7 +173,10 @@ namespace QPlay.Job.SyncGaiaUser
                     {
                         if (row[CurrentCol] != null)
                         {
-                            sw.Write(row[CurrentCol].ToString().Trim());
+                            if (DatetimefieldIndex == CurrentCol)
+                                sw.Write(((DateTime)row[CurrentCol]).ToString("yyyy-MM-dd HH:mm:ss").Trim());
+                            else
+                                sw.Write(row[CurrentCol].ToString().Trim());
                         }
                         else
                         {
