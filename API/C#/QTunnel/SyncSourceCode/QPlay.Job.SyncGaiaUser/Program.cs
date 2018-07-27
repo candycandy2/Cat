@@ -150,6 +150,10 @@ namespace QPlay.Job.SyncGaiaUser
             int CurrentCol = 0;//当前列
             int RowCount = dt.Rows.Count + 1;//总行数
             int ColCount = dt.Columns.Count;//总列数
+
+            log.Info("RowCount:" + RowCount);
+            log.Info("ColCount:" + ColCount);
+
             StreamWriter sw = new StreamWriter(fileName, false);//文件如果存在，则自动覆盖
             try
             {
@@ -173,8 +177,12 @@ namespace QPlay.Job.SyncGaiaUser
                     {
                         if (row[CurrentCol] != null)
                         {
-                            if (DatetimefieldIndex == CurrentCol)
-                                sw.Write(((DateTime)row[CurrentCol]).ToString("yyyy-MM-dd HH:mm:ss").Trim());
+                            if (DatetimefieldIndex == CurrentCol){
+                                //2018-07-27 09:46:07,098 [1] INFO  Logger - Exception:Specified cast is not valid.
+                                //test on ITY-WEB1605
+                                //sw.Write(((DateTime)row[CurrentCol]).ToString("yyyy-MM-dd HH:mm:ss").Trim());
+                                sw.Write("");
+                            }
                             else
                                 sw.Write(row[CurrentCol].ToString().Trim());
                         }
@@ -189,8 +197,10 @@ namespace QPlay.Job.SyncGaiaUser
                 }
                 #endregion
             }
-            catch
-            { }
+            catch(Exception e)
+            {
+                log.Info("Exception:" + e.Message);
+            }
             finally
             {
                 sw.Close();
