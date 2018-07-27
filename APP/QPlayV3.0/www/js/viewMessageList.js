@@ -104,7 +104,17 @@ $("#viewMessageList").pagecontainer({
             $('.select-news').css('top', msgHeaderTop + 'px');
             $('.msg-tool').css('top', msgHeaderTop + 'px');
 
-            //4. to detail
+            //4. message update
+            var msgUpdateDate;
+            if (resultArr.length > 0) {
+                msgUpdateDate = resultArr[0].create_time.split(' ')[0].replaceAll('-', '/');
+            } else {
+                var msgDate = parseInt(localStorage.getItem('msgDateFrom')) * 1000;
+                msgUpdateDate = new Date(msgDate).toLocaleDateString('zh-cn');
+            }
+            $('.msg-update-date').text(langStr['str_079'] + msgUpdateDate);
+
+            //5. to detail
             $('.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon').on('click', function () {
                 massageFrom = 'viewMessageList';
                 messageRowId = $(this).parents('li').attr('data-rowid');

@@ -16,11 +16,10 @@ $("#viewMain3").pagecontainer({
             var contentItem = $('<div class="' + widgetItem + '"></div>');
             $('#widgetList').append(contentItem);
 
-            //4. localStorage
+            //4. sessionStorage
             sessionStorage.setItem('widgetItem', widgetItem);
 
             //5. load js
-            //$.getScript("http://qplaydev.benq.com/widgetDemo/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
             $.getScript(serverURL + "/widget/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
                 .done(function (script, textStatus) {
                     loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
@@ -31,88 +30,9 @@ $("#viewMain3").pagecontainer({
         };
 
 
-        function doLogOut() {
-            var self = this;
-
-            //need User AD Account
-            var queryStr = "&domain=" + loginData.domain + "&loginid=" + loginData.loginid;
-
-            this.successCallback = function (data) {
-                var resultcode = data['result_code'];
-
-                if (resultcode == 1) {
-
-                    //clear data
-                    appApiPath = "qplayApi";
-                    qplayAppKey = "appqplay";
-
-                    //logout can not clear messagecontent / pushToken / msgDateFrom / appVersionRecord
-                    var messagecontent = window.localStorage.getItem("messagecontent");
-                    var pushToken = window.localStorage.getItem("pushToken");
-                    var appVersionRecord = window.localStorage.getItem("appVersionRecord");
-                    var storeMsgDateFrom = false;
-
-                    if (window.localStorage.getItem("msgDateFrom") !== null) {
-                        var msgDateFrom = window.localStorage.getItem("msgDateFrom");
-                        storeMsgDateFrom = true;
-                    }
-
-                    loginData = {
-                        versionName: "",
-                        versionCode: "",
-                        deviceType: "",
-                        pushToken: "",
-                        token: "",
-                        token_valid: "",
-                        uuid: "",
-                        checksum: "",
-                        domain: "",
-                        emp_no: "",
-                        loginid: "",
-                        messagecontent: null,
-                        msgDateFrom: null,
-                        doLoginDataCallBack: false,
-                        openMessage: false
-                    };
-
-                    window.localStorage.clear();
-
-                    window.localStorage.setItem("messagecontent", messagecontent);
-                    window.localStorage.setItem("pushToken", pushToken);
-                    window.localStorage.setItem("appVersionRecord", appVersionRecord);
-
-                    if (storeMsgDateFrom) {
-                        window.localStorage.setItem("msgDateFrom", msgDateFrom);
-                    }
-
-                    $.mobile.changePage('#viewNotSignedIn');
-                    //$("#viewMain2-1").removeClass("ui-page-active");
-                    $("#viewMain3").removeClass("ui-page-active");
-                    $("#viewNotSignedIn").addClass("ui-page-active");
-
-                    // set need to login's layout when landscape
-                    if (window.orientation === 90 || window.orientation === -90)
-                        $('.main-updateAppVersion').css('top', (screen.height - $('.main-updateAppVersion').height()) / 4);
-
-                    loadingMask("hide");
-                    app.initialize();
-                }
-            };
-
-            this.failCallback = function (data) { };
-
-            var __construct = function () {
-                QPlayAPI("POST", "logout", self.successCallback, self.failCallback, null, queryStr);
-            }();
-        }
-
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
-            var eventLogoutConfirmPopupData = {
-                id: "logoutPopup",
-                content: $("template#tplContactUserPopup").html()
-            };
-            tplJS.Popup("viewMain3", "widgetListContent", "append", eventLogoutConfirmPopupData);
+            
         });
 
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
@@ -137,14 +57,10 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-
+            //getAppVersion('com.qplay.appyellowpagedev', '1026');
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
-
-        });
-
-        $("#viewMain3").scroll(function (event) {
 
         });
 
@@ -193,28 +109,11 @@ $("#viewMain3").pagecontainer({
             checkAppPage('viewFAQ');
         });
 
-        //Test
-        $('.scroll-test-link').on('click', function () {
-            $.mobile.changePage('#viewMain2-1');
-            //checkAppPage('viewScrollTest');
+        //跳转到设定
+        $('#setting').on('click', function () {
+            //$.mobile.changePage('#viewFAQ');
+            checkAppPage('viewAppSetting');
         });
-
-        //注销
-        $("#logout").on("click", function () {
-            $('#logoutPopup').popup('open');
-        });
-
-        $(document).on("click", "#logoutPopup #logoutConfirm", function () {
-            $('#logoutPopup').popup('close');
-            loadingMask("show");
-            var logout = new doLogOut();
-        });
-
-        $(document).on("click", "#logoutPopup #logoutCancel", function () {
-            $('#logoutPopup').popup('close');
-        });
-
-
 
 
 

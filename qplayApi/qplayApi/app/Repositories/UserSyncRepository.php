@@ -56,8 +56,7 @@ class UserSyncRepository
                                   'ad_flag as ad_flag',
                                   DB::raw('now() as created_at'),
                                   DB::raw('IF(qp_user_sync.active="N", "Y","N") as resign'),
-                                  DB::raw('-1 as created_user'),
-                                  DB::raw('-1 as updated_user')])->get()->toArray();
+                                  DB::raw('-1 as created_user')])->get()->toArray();
         return $select;
     }
 

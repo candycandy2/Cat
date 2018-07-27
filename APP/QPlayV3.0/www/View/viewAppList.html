@@ -3,7 +3,9 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
         <div class="header-style">
-            <h1 class="ui-title"><div>QPlay App</div></h1>
+            <h1 class="ui-title">
+                <div>QPlay App</div>
+            </h1>
         </div>
         <a href="#viewMain3" data-role="none">
             <div class="q-btn-header">
@@ -12,18 +14,21 @@
         </a>
     </div>
     <div data-role="main" class="ui-content page-main">
-        <div>
-            <div class="download-title already-download font-style11">
-                <!--已下载:-->
+        <div class="app-scroll">
+            <div>
+                <!-- 已下载 -->
+                <div>
+                    <div class="download-title already-download font-style11"></div>
+                    <div class="already-download-list"></div>
+                </div>
+                <!-- 未下载 -->
+                <div>
+                    <div class="download-title not-download font-style11"></div>
+                    <div class="not-download-list"></div>
+                </div>
             </div>
-            <div class="already-download-list"></div>
         </div>
-        <div>
-            <div class="download-title not-download font-style11">
-                <!--未下载:-->
-            </div>
-            <div class="not-download-list"></div>
-        </div>
+
 
         <!-- <div class="all-list">
             <div>全部：</div>

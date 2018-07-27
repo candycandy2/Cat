@@ -16,22 +16,23 @@ var checkAPPKey;
 var checkAPPKeyInstalled = false;
 
 //viewNewsEvents
-var messagecontent;
-var selectAppIndex = 0;
-var messageArrIndex = null;
-var messageRowId = null;
-var msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
-var callGetMessageList = false;
-var messagePageShow = false;
-var delMsgActive = false;
+var messagecontent,
+    selectAppIndex = 0,
+    messageArrIndex = null,
+    messageRowId = null,
+    callGetMessageList = false,
+    messagePageShow = false,
+    delMsgActive = false,
+    msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
+
 
 //viewMain
 var viewMainInitial = true;
 
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
-var downloadedIndexArr = [], alreadyDownloadList = [], notDownloadList = [];
-var tempVersionArrData, tempVersionData;
+var alreadyDownloadList = [], notDownloadList = [];
+var tempVersionArrData, tempVersionData, applistInitial = true;
 
 //viewMyCalendar
 var reserveCalendar = null,
@@ -41,6 +42,8 @@ var reserveCalendar = null,
 //viewMessageList
 var massageFrom;
 
+//viewVersionRecord
+var versionFrom = true;
 
 window.initialSuccess = function (data) {
     if (data !== undefined) {
@@ -322,6 +325,21 @@ function openNewMessage() {
     }
 }
 
+function getAppVersion(packageName, versionCode) {
+    var self = this;
+    var queryStr = "&package_name=" + packageName + "&device_type=" + loginData.deviceType + "&version_code=" + versionCode;
+
+    this.successCallback = function (data) {
+        console.log(data);
+    };
+
+    this.failCallback = function (data) { };
+
+    var __construct = function () {
+        QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
+    }();
+}
+
 //Check APP version record
 function checkAPPVersionRecord(action) {
     if (action === "initial") {
@@ -448,48 +466,11 @@ function checkAllAppInstalled(callback, key, index) {
 }
 
 function checkAppCallback(downloaded, index) {
-
-    //如果已下载，保存applist的index
-    if (downloaded) {
-        downloadedIndexArr.push(index);
-    }
-
-    //当所有APP都check完毕
-    if (index == applist.length - 1) {
-
-        //如果有已下载app就分组
-        if (downloadedIndexArr.length != 0) {
-            for (var i = 0; i < applist.length;) {
-                for (var j = 0; j < downloadedIndexArr.length; j++) {
-                    if (i == downloadedIndexArr[j]) {
-                        alreadyDownloadList.push(applist[i]);
-                        i++;
-                    } else if (j == downloadedIndexArr.length - 1) {
-                        notDownloadList.push(applist[i]);
-                        i++;
-                    }
-                }
-            }
-
-            var alreadydownloadContent = createContent(alreadyDownloadList, true);
-            $('.already-download-list').html('').append(alreadydownloadContent);
-            $('.already-download-list > div:last').css('border', '0');
-
-            var notdownloadContent = createContent(notDownloadList, false);
-            $('.not-download-list').html('').append(notdownloadContent);
-            $('.not-download-list > div:last').css('border', '0');
-
-        } else {
-            notDownloadList = applist;
-            var notdownloadContent = createContent(notDownloadList, false);
-            $('.not-download-list').html('').append(notdownloadContent);
-            $('.not-download-list > div:last').css('border', '0');
-        }
-
-        //change favorite icon
-        if (favoriteList != null) {
-            changeFavoriteIcon();
-        }
+    //根据是否下载分组
+    if(downloaded) {
+        alreadyDownloadList.push(index);
+    } else {
+        notDownloadList.push(index);
     }
 }
 
@@ -501,69 +482,6 @@ function checkAppVersionCallback(oldVersionExist) {
     }
 
     checkAPPVersionRecord("updateFromAPI");
-}
-
-function createContent(arr, status) {
-    var content = "";
-    for (var i = 0; i < arr.length; i++) {
-
-        var packagename = null;
-        var defaultAPPName = null;
-        var appSummary = null;
-        var defaultSummary = null;
-
-        for (var j = 0; j < appmultilang.length; j++) {
-            if (arr[i].app_code == appmultilang[j].project_code) {
-                //match browser language
-                if (appmultilang[j].lang == browserLanguage) {
-                    packagename = appmultilang[j].app_name;
-                    appSummary = appmultilang[j].app_summary;
-                }
-                //match default language: zh-tw
-                if (appmultilang[j].lang == arr[i].default_lang) {
-                    defaultAPPName = appmultilang[j].app_name;
-                    defaultSummary = appmultilang[j].app_summary;
-                }
-            }
-        }
-
-        if (packagename == null) {
-            packagename = defaultAPPName;
-            appSummary = defaultSummary;
-        }
-
-        var appurl = arr[i].url;
-        var appurlicon = arr[i].icon_url;
-        var appcode = arr[i].app_code;
-
-        content += '<div class="download-list"><div class="download-link" data-code="' +
-            appcode +
-            '"><div class="download-icon"><img src="' +
-            appurlicon +
-            '"></div><div class="download-name"><div class="font-style10">' +
-            packagename +
-            '</div><div class="font-style7">' +
-            appSummary +
-            '</div></div></div><div><img src="img/' +
-            (status == true ? 'favorite_blank.png' : 'download_icon.png') +
-            '" class="' +
-            (status == true ? 'favorite-btn' : 'download-btn') +
-            '" data-src="' +
-            (status == true ? 'favorite_blank' : 'download_icon') +
-            '"></div></div>';
-    }
-    return content;
-}
-
-function changeFavoriteIcon() {
-    $.each($('.favorite-btn'), function (index, item) {
-        for (var i in favoriteList) {
-            if (favoriteList[i].app_code == $(item).parent().prev().attr('data-code')) {
-                $(item).attr('data-src', 'favorite_full');
-                $(item).attr('src', 'img/favorite_full.png');
-            }
-        }
-    });
 }
 
 //CallAPI get applist
@@ -585,7 +503,7 @@ function GetAppList() {
             window.localStorage.setItem('QueryAppListData', JSON.stringify(jsonData));
 
             var responsecontent = data['content'];
-            appGroup(responsecontent);
+            appGroupByDownload(responsecontent);
         }
 
     };
@@ -607,15 +525,15 @@ function GetAppList() {
             QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
         } else {
             var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
-            appGroup(responsecontent);
+            appGroupByDownload(responsecontent);
         }
 
     }();
 }
 
 //applist group by downloaded status
-function appGroup(responsecontent) {
-    downloadedIndexArr = [], alreadyDownloadList = [], notDownloadList = [];
+function appGroupByDownload(responsecontent) {
+    alreadyDownloadList = [], notDownloadList = [];
     applist = responsecontent.app_list;
     appmultilang = responsecontent.multi_lang;
 
@@ -739,6 +657,50 @@ function onBackKeyDown() {
         navigator.app.exitApp();
     }
 }
+
+
+//获取版本记录
+function getVersionRecord(key) {
+    key = key || null;
+
+    var self = this;
+
+    if (key == null) {
+        key = qplayAppKey;
+    }
+
+    var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
+    //var queryStr = "&app_key=appqplaydev&device_type=android";
+
+    this.successCallback = function (data) {
+        console.log(data);
+
+        if (data['result_code'] == "1") {
+            var versionLogList = data['content'].version_list;
+            var content = '';
+
+            for (var i in versionLogList) {
+                content += '<div class="version-record-list"><div class="font-style12">' +
+                    versionLogList[i].version_name +
+                    '</div><div class="font-style11">' +
+                    new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
+                    '</div><div class="font-style11">' +
+                    versionLogList[i].version_log.replace(new RegExp('\r?\n', 'g'), '<br />') +
+                    '</div></div>';
+            }
+
+            $("#versionRecordList").html('').append(content);
+        }
+    };
+
+    this.failCallback = function (data) { };
+
+    var __construct = function () {
+        QPlayAPI("GET", "getVersionLog", self.successCallback, self.failCallback, null, queryStr);
+
+    }();
+}
+
 
 //检查APP-page
 function checkAppPage(pageID) {
