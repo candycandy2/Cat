@@ -49,5 +49,6 @@ class RegisterService
                 }
             }
        }
+       return count($delUuids);
     }
 }
