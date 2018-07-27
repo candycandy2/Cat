@@ -4,7 +4,7 @@ $("#viewAppList").pagecontainer({
     create: function (event, ui) {
 
         //已知app分组，生成html
-        function createContent() {
+        function createAppListContent() {
             //1. 已下载
             var alreadydownloadContent = '';
             for (var i = 0; i < alreadyDownloadList.length; i++) {
@@ -166,20 +166,17 @@ $("#viewAppList").pagecontainer({
 
         });
 
-        $("#viewAppList").scroll(function () {
-
-        });
-
         $("#viewAppList").one("pageshow", function (event, ui) {
             //language string
             $('.already-download').text(langStr['str_074']);
             $('.not-download').text(langStr['str_075']);
 
+            //create html
+            createAppListContent();
         });
 
         $("#viewAppList").on("pageshow", function (event, ui) {
-            //var applist = new GetAppList();
-            createContent();
+
         });
 
         $("#viewAppList").on("pagehide", function (event, ui) {
