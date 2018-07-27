@@ -916,6 +916,13 @@ $("#viewPersonalLeave").pagecontainer({
             } else {
                 $("#mypanelviewAgentLeave").hide();
             }
+            if (hasClockinOTPanel) {
+                $("#mypanelviewClockin").show();
+                $("#mypanelviewOvertimeSubmit").show();
+            } else {
+                $("#mypanelviewClockin").hide();
+                $("#mypanelviewOvertimeSubmit").hide();
+            }
             if (!viewPersonalLeaveShow && defaultSettingDone) {
                 //个人剩余假别资讯
                 queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
