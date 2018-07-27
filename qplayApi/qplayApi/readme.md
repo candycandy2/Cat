@@ -10,6 +10,7 @@ qplayApi Readme.md
 - [DeployBackEnd-Production-SyncUser-2](#DeployBackEnd-Production-SyncUser-2)
 - [DeployBackEnd-Production-SyncUser-3](#DeployBackEnd-Production-SyncUser-3)
 - [DeployBackEnd-Production-OTA](#DeployBackEnd-Production-OTA)
+- [DeployBackEnd-Production-SyncUser-4](#DeployBackEnd-Production-SyncUser-4)
 
 ----
 
@@ -355,3 +356,73 @@ qplayApi Readme.md
     sshpass -p $password rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
 
     # ======== OTA End ========
+
+<h2 id="DeployBackEnd-Production-SyncUser-4">DeployBackEnd-Production-SyncUser-4</h2>
+
+    # staging server
+    #serverIP=13.75.117.225
+    #password="kDsl24D1S"
+
+    # production server
+    serverIP=23.99.120.80
+    password="kDsl24D1S"
+
+    #if false; then
+    #fi
+    git checkout master
+
+    # ------ add release tag ------
+    git tag -a v1.4.1.$BUILD_NUMBER.Production.BackEnd.SyncUser4 -m "v1.4.1.$BUILD_NUMBER[Production] BackEnd.SyncUser4"
+    git push origin --tags
+
+    chmod -R o=rx *
+
+    # ======== SyncUser4 Start ========
+    #1. 基礎建設(安裝需要的外部元件等)
+    #   N/A
+
+
+    #2. 環境設定(設定 .env config 等)
+    #   N/A
+
+
+    #3. 資料設定 (DB 修改)
+    #   N/A
+
+
+    #4. 檔案覆蓋
+    #a. 更新修改的檔案，共 7 個, PR#3018
+    git checkout 49782c33a19a98e2895fe2ddad66144ecd87eadc .
+    chmod -R o=rx *
+    sshpass -p $password rsync -vh SCRIPT/qplay/syncuser/lib/error_handle.php rsyncuser@$serverIP:/var/www/script/qplay/syncuser/lib/error_handle.php
+    sshpass -p $password rsync -vh SCRIPT/qplay/syncuser/syncuser.sh rsyncuser@$serverIP:/var/www/script/qplay/syncuser/syncuser.sh
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Http/Controllers/syncUserController.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/Controllers/syncUserController.php
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Repositories/UserRepository.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Repositories/UserRepository.php
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Services/RoleService.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Services/RoleService.php
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Services/SyncUserService.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Services/SyncUserService.php
+    sshpass -p $password rsync -vh qplayApi/qplayApi/config/syncuser.php rsyncuser@$serverIP:/var/www/html/qplayApi/config/syncuser.php
+
+    #b. 更新修改的檔案，共 1 個, PR#3034
+    git checkout d9129aeff45b500e81386ad32a50e82a9200d234 .
+    chmod -R o=rx *
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Http/Controllers/syncUserController.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/Controllers/syncUserController.php
+
+    #c. 更新修改的檔案，共 5 個, PR#3042
+    git checkout 2b9efade76233f3753bafc4a8e9e8e666affe044 .
+    chmod -R o=rx *
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Http/Controllers/syncUserController.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Http/Controllers/syncUserController.php
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Repositories/UserRepository.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Repositories/UserRepository.php
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Repositories/UserSyncRepository.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Repositories/UserSyncRepository.php
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Services/RegisterService.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Services/RegisterService.php
+    sshpass -p $password rsync -vh qplayApi/qplayApi/app/Services/SyncUserService.php rsyncuser@$serverIP:/var/www/html/qplayApi/app/Services/SyncUserService.php
+
+
+    #5. 功能設定
+    #   N/A
+
+
+    echo "deploy_ver=$(($BUILD_NUMBER))_SyncUser4 deploy_time=$(date +"%b-%d-%y %H:%M:%S")" > deploy.jenkins
+    cp deploy.jenkins qplay/
+    sshpass -p $password rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
+
+    # ======== SyncUser4 End ========
