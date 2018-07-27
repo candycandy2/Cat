@@ -111,7 +111,7 @@ $("#viewClockin").pagecontainer({
                     if ($(success).html() != undefined) {
                         //如果送簽成功，跳轉到“補登申請”頁
                         $("#backClockin").click();
-                        $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        $("#sendClockinMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyClockinForm").trigger("click");
 
@@ -122,7 +122,7 @@ $("#viewClockin").pagecontainer({
                         $('.errMsgByClockin').find('.header-text').html(errorMsg);
                         popupMsgInit('.errMsgByClockin');
                     }
-
+                    loadingMask("hide");
                 }
             };
 
@@ -134,6 +134,16 @@ $("#viewClockin").pagecontainer({
                 CustomAPI("POST", true, "SendModifyAttendanceFormData", self.successCallback, self.failCallback, modifyAttendanceFormData, "");
             }();
         };
+
+        function formatDate(date) { 
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            return [year, month, day].join('/');
+        }
 
         /********************************** page event *************************************/
         $("#viewClockin").one("pagebeforeshow", function(event, ui) {
@@ -178,7 +188,8 @@ $("#viewClockin").pagecontainer({
         $('#newWorkDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            yearEnd: '2018'
+            yearEnd: '2018',
+            maxDate: formatDate(Date.now())
         });
 
         //選擇出勤日期
@@ -212,7 +223,8 @@ $("#viewClockin").pagecontainer({
         $('#newClockinDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            yearEnd: '2018'
+            yearEnd: '2018',
+            maxDate: formatDate(Date.now())
         });
 
         //選擇刷卡日期
@@ -380,7 +392,7 @@ $("#viewClockin").pagecontainer({
             clockinday = "";
             $("#chooseClockintime").text(pleaseSelectStr);
             clockintime = "";
-
+            checkClockinBeforePreview();
         });
 
         //預覽送簽按鈕
@@ -452,7 +464,7 @@ $("#viewClockin").pagecontainer({
                 modifyAttendanceFormData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
             }
             //呼叫API
-            //SendModifyAttendanceFormData();
+            SendModifyAttendanceFormData();
         });
 
 
