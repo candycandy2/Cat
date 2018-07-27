@@ -911,8 +911,6 @@ input[type=radio]:checked + label {
 /*************************** widget ********************************/
 #viewMain3 .ui-content {
     padding: 0 !important;
-    /* overflow-y: scroll;
-    -webkit-overflow-scrolling: touch; */
 }
 
 .main-scroll {
@@ -1042,6 +1040,11 @@ input[type=radio]:checked + label {
 
 .already-download-list, .not-download-list {
     padding: 0 3.71vw;
+}
+
+.already-download-list > div:last-of-type,
+.not-download-list > div:last-of-type {
+    border: none;
 }
 
 .download-list {
@@ -1536,8 +1539,84 @@ input[type=radio]:checked + label {
 }
 
 
-/***************************** test ********************************/
-.scrollList li {
-    width: 92.58vw;
-    height: 20vw;
+/***************************** viewAppSetting ********************************/
+#viewAppSetting .ui-content {
+    padding: 0 !important;
+}
+
+.setting-main {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: #E8EDF0;
+}
+
+.photo-setting {
+    width: 100vw;
+    height: 61vw;
+}
+
+.photo-default {
+    width: 26.5vw;
+    height: 29vw;
+    padding-top: 14vw;
+    padding-left: 37vw;
+}
+
+.name-user {
+    width: 100vw;
+    height: 8vw;
+    text-align: center;
+    color: #263238;
+    font-weight: normal;
+    font-size: 4.18vw !important;
+}
+
+.link-setting > div {
+    width: 90vw;
+    height: 13vw;
+    padding: 4vw 3.71vw 4vw 6vw;
+    background: #fff;
+    border-bottom: 1px solid #bdbcbc;
+}
+
+.link-setting > div:last-of-type {
+    border: none;
+}
+
+.link-setting > div > div {
+    float: left;
+}
+
+.link-setting > div > div:nth-of-type(1) {
+    width: 13vw;
+}
+
+.link-setting > div > div:nth-of-type(2) {
+    width: 67vw;
+    height: 13vw;
+    line-height: 13vw;
+    text-indent: 3vw;
+    color: #263238;
+    font-weight: normal;
+    font-size: 3.55vw !important;
+}
+
+.link-setting > div > div:nth-of-type(3) {
+    width: 6.44vw;
+    padding-top: 3vw;
+}
+
+.logout-fixed-btn {
+    width: 100vw;
+    height: 11.36vw;
+    line-height: 11.36vw;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: #009688;
+    color: #fff;
+    font-weight: normal;
+    font-size: 4.18vw !important;
 }
