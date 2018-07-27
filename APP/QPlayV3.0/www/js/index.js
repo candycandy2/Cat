@@ -503,7 +503,7 @@ function GetAppList() {
             window.localStorage.setItem('QueryAppListData', JSON.stringify(jsonData));
 
             var responsecontent = data['content'];
-            appGroup(responsecontent);
+            appGroupByDownload(responsecontent);
         }
 
     };
@@ -525,14 +525,14 @@ function GetAppList() {
             QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
         } else {
             var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
-            appGroup(responsecontent);
+            appGroupByDownload(responsecontent);
         }
 
     }();
 }
 
 //applist group by downloaded status
-function appGroup(responsecontent) {
+function appGroupByDownload(responsecontent) {
     alreadyDownloadList = [], notDownloadList = [];
     applist = responsecontent.app_list;
     appmultilang = responsecontent.multi_lang;
