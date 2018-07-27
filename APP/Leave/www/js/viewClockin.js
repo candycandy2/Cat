@@ -188,7 +188,6 @@ $("#viewClockin").pagecontainer({
         $('#newWorkDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            yearEnd: '2018',
             maxDate: formatDate(Date.now())
         });
 
@@ -223,7 +222,6 @@ $("#viewClockin").pagecontainer({
         $('#newClockinDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            yearEnd: '2018',
             maxDate: formatDate(Date.now())
         });
 
