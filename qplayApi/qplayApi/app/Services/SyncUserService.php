@@ -106,8 +106,8 @@ class SyncUserService
         $fileName = str_replace('/', DIRECTORY_SEPARATOR, $fileName);
         if(Storage::disk('local')->has($fileName)){
             //read file and batch insert
-            $path = storage_path(str_replace('/', DIRECTORY_SEPARATOR, 'app/'.$fileName));
             $readyToSync = 0;
+            $path = storage_path(str_replace('/', DIRECTORY_SEPARATOR, 'app/'.$fileName));
             Excel::load($path, function($reader) use(&$sourceFrom, &$readyToSync){
                 $result = $reader->toArray();
                 $total = count($result);
