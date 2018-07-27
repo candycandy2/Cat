@@ -120,6 +120,9 @@ $("#viewMessageList").pagecontainer({
                 messageRowId = $(this).parents('li').attr('data-rowid');
                 $.mobile.changePage('#viewWebNews2-3-1');
             });
+
+            //6. set height
+            setMsgHeightByType();
         }
 
         //don't use
@@ -472,6 +475,22 @@ $("#viewMessageList").pagecontainer({
             return count;
         }
 
+        function setMsgHeightByType() {
+            var updateHeight = $('.msg-update-date').height();
+            var headerHeight = $('#viewMessageList .page-header').height();
+
+            if (messageType == 'News') {
+                var contentHeight = $('.news-content').height();
+
+            } else {
+                var contentHeight = $('.event-content').height();
+                
+            }
+
+            var totalHeight = (contentHeight + updateHeight + headerHeight).toString();
+            $('.message-scroll > div').css('height', totalHeight + 'px');
+        }
+
         function viewMessageInitila() {
             $('.dropdown-title').removeClass('opacity');
             $('.dropdown-news').show();
@@ -483,7 +502,6 @@ $("#viewMessageList").pagecontainer({
             $('#searchListview').show();
             $('.msg-tool').hide();
         }
-
 
         //swipe to delete function
         function prevent_default(event) {
@@ -545,6 +563,8 @@ $("#viewMessageList").pagecontainer({
 
                 messageType = currentType;
                 $(".dropdown-title").text(currentType);
+
+                setMsgHeightByType();
             }
 
             $(".select-news").slideUp(200);

@@ -1,5 +1,3 @@
-
-
 $("#viewAppList").pagecontainer({
     create: function (event, ui) {
 
@@ -100,7 +98,12 @@ $("#viewAppList").pagecontainer({
             var downloadedHight = $('.already-download-list').parent().height();
             var noDownloadHight = $('.not-download-list').parent().height();
             var headerHeight = $('#viewAppList .page-header').height();
-            var totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
+            var totalHeight = 0;
+            if (device.platform === "iOS") {
+                totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
+            } else {
+                totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
+            }
             $('.app-scroll > div').css('height', totalHeight + 'px');
         }
 
