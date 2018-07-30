@@ -1,4 +1,4 @@
-var overtimeday = "", startottime = "";
+var overtimeday = "", startottime = "", endottime = "";
 
 //檢查是否符合預覽送簽標準
 function checkOvertimeBeforePreview() {
@@ -46,16 +46,17 @@ $("#viewOvertimeSubmit").pagecontainer({
         });
 
         $("#viewOvertimeSubmit").on("pageshow", function(event, ui) {
+            $('#applyOTDay').text(applyDay);
+            $('#previewOTDay').text(applyDay);
             loadingMask("hide");
         });
 
         /********************************** dom event *************************************/
 
-
         $('#newOTDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            maxDate: formatDateForNumber(Date.now())
+            minDate: formatDateForNumber(Date.now())
         });
 
         //選擇出勤日期
@@ -83,16 +84,33 @@ $("#viewOvertimeSubmit").pagecontainer({
             } else {
                 $("#chooseOTday").text(overtimeday);
             }
-            checkClockinBeforePreview();
+            checkOvertimeBeforePreview();
         });
 
-        //選擇加班時間
+        //選擇加班開始時間
         $("#btnStartTime").on("click", function() {
-            $("#otpicker").trigger('datebox', { 'method': 'open' });
-            tplJS.preventPageScroll();
+            //選擇加班開始時間之前判斷加班日期是否選擇
+            if (overtimeday === "") {
+                popupMsgInit('.overitmeDateFirst');
+            } else {
+                $("#startOTPicker").trigger('datebox', { 'method': 'open' });
+                tplJS.preventPageScroll();
+            }           
         });
 
-        window.setDoneTime = function(obj) {
+        //選擇加班結束時間
+        $("#btnEndTime").on("click", function() {
+            //選擇加班結束時間之前判斷加班開始時間是否選擇
+            if ($("#startTimeText").text() == pleaseSelectStr) {
+                popupMsgInit('.starttimeFirst');
+            } else {
+                $("#endOTPicker").trigger('datebox', { 'method': 'open' });
+                tplJS.preventPageScroll();
+            }
+
+        });
+
+        window.setStartTime = function(obj) {
             if (!obj.cancelClose) {
                 var setTime = obj.date;
                 doneDateTime["hour"] = this.callFormat('%H', setTime);
@@ -103,7 +121,50 @@ $("#viewOvertimeSubmit").pagecontainer({
                 startottime = textDateTime;
                 //Create temporary data
                 tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
+            } 
+            tplJS.recoveryPageScroll();
 
+            $(".ui-datebox-container").css("opacity", "0");
+            checkOvertimeBeforePreview();
+        };
+
+        window.setEndTime = function(obj) {
+            if (!obj.cancelClose) {
+                var setTime = obj.date;
+                doneDateTime["hour"] = this.callFormat('%H', setTime);
+                doneDateTime["minute"] = this.callFormat('%M', setTime);
+
+                var textDateTime = doneDateTime["hour"] + ":" + doneDateTime["minute"];
+                //結束時間必須大於開始時間
+                if (startottime >= textDateTime) {
+                    //提示錯誤信息
+                    popupMsgInit('.endTimeError');
+                    $('#endTimeText').text(pleaseSelectStr);
+                    //请假数恢复0，0
+                    $("#overtimeDays").text("0");
+                    $("#overtimeHours").text("0");
+                } else {
+                    $("#endTimeText").html(textDateTime);
+                    endottime = textDateTime;
+                    //Create temporary data
+                    tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
+                    /*countOvertimeHoursByEndQueryData = "<LayoutHeader><EmpNo>" +
+                        myEmpNo +
+                        "</EmpNo><leaveid>" +
+                        leaveid +
+                        "</leaveid><begindate>" +
+                        startLeaveDate.split(" ")[0] +
+                        "</begindate><begintime>" +
+                        startLeaveDate.split(" ")[1] +
+                        "</begintime><enddate>" +
+                        endLeaveDate.split(" ")[0] +
+                        "</enddate><endtime>" +
+                        endLeaveDate.split(" ")[1] +
+                        "</endtime><datumdate>" +
+                        ((needBaseday == true) ? baseday : '') +
+                        "</datumdate></LayoutHeader>"; */
+                    //CountOvertimeHoursByEnd(); 
+                }                             
             } 
             tplJS.recoveryPageScroll();
 
@@ -120,6 +181,7 @@ $("#viewOvertimeSubmit").pagecontainer({
             $("#startTimeText").text(pleaseSelectStr);
             $("#endTimeText").text(pleaseSelectStr);
             startottime = "";
+            endottime = "";
         });
 
 
