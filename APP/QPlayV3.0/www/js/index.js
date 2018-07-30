@@ -25,14 +25,14 @@ var messagecontent,
     delMsgActive = false,
     msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 
-
-//viewMain
-var viewMainInitial = true;
+//viewMain3
 
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
-var alreadyDownloadList = [], notDownloadList = [];
-var tempVersionArrData, tempVersionData, applistInitial = true;
+var alreadyDownloadList = [],
+    notDownloadList = [],
+    tempVersionArrData,
+    tempVersionData;
 
 //viewMyCalendar
 var reserveCalendar = null,
@@ -44,6 +44,9 @@ var massageFrom;
 
 //viewVersionRecord
 var versionFrom = true;
+
+//viewDefaultSetting
+
 
 window.initialSuccess = function (data) {
     if (data !== undefined) {
@@ -95,6 +98,53 @@ window.initialSuccess = function (data) {
     appInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
+
+    //default setting
+    getDefaultSetting();
+}
+
+function getDefaultSetting() {
+    //获取当前环境下的默认设置
+    var weatherStr = langStr['str_092'],
+        reserveStr = langStr['str_093'],
+        qplayStr = langStr['str_094'],
+        newsStr = langStr['str_095'],
+        currentLanguageSetting = [weatherStr, reserveStr, qplayStr, newsStr];
+
+    //获取本地配置
+    var settingArr = JSON.parse(window.localStorage.getItem('defaultSetting'));
+
+    if (settingArr == null) {
+        //1. 将null变为空数组[]
+        settingArr = [];
+
+        //2. 根据多语言save到local
+        var settingObj = {
+            language: browserLanguage,
+            settingList: currentLanguageSetting
+        }
+        settingArr.push(settingObj);
+        window.localStorage.setItem('defaultSetting', JSON.stringify(settingArr));
+
+    } else {
+        var haveLanguage = false;
+        for (var i in settingArr) {
+            if (settingArr[i].language == browserLanguage) {
+                haveLanguage = true;
+                break;
+            }
+        }
+
+        if (!haveLanguage) {
+            var settingObj = {
+                language: browserLanguage,
+                settingList: currentLanguageSetting
+            }
+            settingArr.push(settingObj);
+            window.localStorage.setItem('defaultSetting', JSON.stringify(settingArr));
+        }
+
+    }
 }
 
 function getMyReserve(key, secret) {
@@ -467,7 +517,7 @@ function checkAllAppInstalled(callback, key, index) {
 
 function checkAppCallback(downloaded, index) {
     //根据是否下载分组
-    if(downloaded) {
+    if (downloaded) {
         alreadyDownloadList.push(index);
     } else {
         notDownloadList.push(index);
@@ -621,43 +671,6 @@ $(document).on("click", ".event-type", function () {
     $("#eventTypeSelect").panel("open");
 });
 
-//[Android]Handle the back button
-function onBackKeyDown() {
-    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-    var activePageID = activePage[0].id;
-    if (activePageID === "viewMain3") {
-        if (checkPopupShown()) {
-            $('#' + popupID).popup('close');
-        } else {
-            navigator.app.exitApp();
-        }
-    } else if (activePageID === "viewMain3" || activePageID === "viewAppDetail2-2") {
-        if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
-            $.mobile.changePage('#viewMain3');
-        } else {
-            $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
-        }
-    } else if (activePageID === "viewNewsEvents2-3") {
-        if (delMsgActive) {
-            editModeChange();
-        } else {
-            $.mobile.changePage('#viewMain3');
-        }
-    } else if (activePageID === "viewWebNews2-3-1") {
-        //goBack("goList");
-        if (massageFrom == 'viewMain3') {
-            $.mobile.changePage('#viewMain3');
-        } else if (massageFrom == 'viewMessageList') {
-            //$.mobile.changePage('#viewMessageList');
-            checkAppPage('viewMessageList');
-        }
-    } else if (activePageID === "viewNotSignedIn") {
-        navigator.app.exitApp();
-    } else {
-        navigator.app.exitApp();
-    }
-}
-
 
 //获取版本记录
 function getVersionRecord(key) {
@@ -689,7 +702,17 @@ function getVersionRecord(key) {
                     '</div></div>';
             }
 
-            $("#versionRecordList").html('').append(content);
+            $(".version-scroll > div").html('').append(content);
+
+            //set language
+            $('#viewVersionRecord .ui-title div').text(langStr['str_081']);
+
+            //set height
+            var contentHeight = $('.version-scroll > div').height();
+            var headerHeight = $('#viewVersionRecord .page-header').height();
+            var totalHeight = (contentHeight + headerHeight).toString();
+            $(".version-scroll > div").css('height', totalHeight + 'px');
+
         }
     };
 
@@ -736,9 +759,53 @@ function checkAppPage(pageID) {
                 document.head.appendChild(script);
 
                 $.mobile.changePage('#' + pageID);
+                $('#' + pageID).on('pagebeforeshow', pageBeforeShow(pageID));
                 pageList.push(pageID);
-            }, 100);
+            }, 200);
 
         }, 'html');
+    }
+}
+
+function pageBeforeShow(pageID) {
+    if (pageID == 'viewAppSetting') {
+
+    }
+}
+
+//[Android]Handle the back button
+function onBackKeyDown() {
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+    if (activePageID === "viewMain3") {
+        if (checkPopupShown()) {
+            $('#' + popupID).popup('close');
+        } else {
+            navigator.app.exitApp();
+        }
+    } else if (activePageID === "viewMain3" || activePageID === "viewAppDetail2-2") {
+        if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
+            $.mobile.changePage('#viewMain3');
+        } else {
+            $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
+        }
+    } else if (activePageID === "viewNewsEvents2-3") {
+        if (delMsgActive) {
+            editModeChange();
+        } else {
+            $.mobile.changePage('#viewMain3');
+        }
+    } else if (activePageID === "viewWebNews2-3-1") {
+        //goBack("goList");
+        if (massageFrom == 'viewMain3') {
+            $.mobile.changePage('#viewMain3');
+        } else if (massageFrom == 'viewMessageList') {
+            //$.mobile.changePage('#viewMessageList');
+            checkAppPage('viewMessageList');
+        }
+    } else if (activePageID === "viewNotSignedIn") {
+        navigator.app.exitApp();
+    } else {
+        navigator.app.exitApp();
     }
 }

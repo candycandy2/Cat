@@ -109,6 +109,11 @@ $("#viewAppSetting").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //一般设定
+        $('.normal-setting').on('click', function () {
+            checkAppPage('viewDefaultSetting');
+        });
+
         //QPlay版本记录
         $('.qplay-version').on('click', function () {
             versionFrom = true;
