@@ -41,6 +41,11 @@ var panel = htmlContent +
     + 
     '<span class="panel-text">' + langStr["str_189"] + '</span>' +
     '</div>' + 
+    '<div class="panel-content" id="mypanelviewOvertimeSubmit">'
+    //+       '<span class="panel-text">加班申請</span>'
+    + 
+    '<span class="panel-text">' + langStr["str_199"] + '</span>' +
+    '</div>' +
     '</div>' +
     '<div class="page-mask" style="display: none;"></div>';
 
@@ -86,6 +91,10 @@ $(document).one("pagebeforeshow", function() {
 
     $("#mypanel #mypanelviewClockin").on("click", function() {
         changePageByPanel("viewClockin");
+    });
+
+    $("#mypanel #mypanelviewOvertimeSubmit").on("click", function() {
+        changePageByPanel("viewOvertimeSubmit");
     });
 
     $(".menu-btn .leaveMenu").on("click", function() {
