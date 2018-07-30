@@ -10,7 +10,7 @@ var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin"];
+var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin", "viewOvertimeSubmit"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var htmlContent = "";
@@ -42,7 +42,7 @@ var dayTable = {
 var recordStartText = "";
 var defaultSettingDone = false;
 var reload = false;
-var hasAgentPanel = false;
+var hasAgentPanel, hasClockinOTPanel = false;
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
@@ -63,15 +63,22 @@ window.GetUserAuthority = function() {
     this.successCallback = function(data) {
         //console.log(data);
         if (data['ResultCode'] === "1") {
-            var callbackData = data['Content']["AuthorizedSite"];
+            var callbackData = data['Content'];
+            var authSite = callbackData["AuthorizedSite"];
+            var defaultSite = callbackData["DefaultSite"];
             viewPersonalLeaveShow = false;
             //console.log("1. callback length:"+ callbackData.length);
-            if (callbackData.length === 0) {               
+            if (authSite.length === 0) {               
                 hasAgentPanel = false               
             } else if (myEmpNo !== originalEmpNo && callbackData.length !== 0){                
                 hasAgentPanel = false;
             } else {
                 hasAgentPanel = true;
+            }
+            if (defaultSite == "BMT") {
+                hasClockinOTPanel = true;
+            } else {
+                hasClockinOTPanel = false;
             }
             restartAgentLeave();
             //loadingMask("hide");
@@ -83,6 +90,42 @@ window.GetUserAuthority = function() {
     var __construct = function() {
         CustomAPI("POST", true, "GetUserAuthority", self.successCallback, self.failCallback, getUserAuthorityData, "");
     }();
+};
+
+window.resizeDatebox = function(obj) {
+    var widthPopup = $(".ui-datebox-container").parent("div.ui-popup-active").width();
+    var heightPopup = $(".ui-datebox-container").parent("div.ui-popup-active").height();
+    var clientWidth = document.documentElement.clientWidth;
+    var clientHeight = document.documentElement.clientHeight;
+    var pageScrollHeight = $(".ui-page.ui-page-active").scrollTop();
+
+    if (device.platform === "iOS") {
+        pageScrollHeight += 20;
+    }
+    var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight, 10);
+    var left = parseInt((clientWidth - widthPopup - 7), 10);
+
+    $(".ui-datebox-container").parent("div.ui-popup-active").css({
+        "top": top,
+        "left": left
+    });
+
+    $(".ui-datebox-container").css("opacity", "1");
+
+    $(".ui-popup-screen.in").css({
+        'overflow': 'hidden',
+        'touch-action': 'none'
+    });
+
+    $(".ui-datebox-container").removeClass('ui-overlay-shadow');
+    $(".ui-datebox-container>div").remove();
+    $(".ui-datebox-container > a:nth-of-type(1)").css({
+        'display': 'none'
+    });
+
+    $(".ui-datebox-container").css({
+        'width': '270px'
+    });
 };
 
 function restartAgentLeave() {
@@ -275,6 +318,16 @@ function formatDate(str) {
     return newArr.join("/");
 }
 
+function formatDateForNumber(date) { 
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('/');
+}
+
 //请假單列表到詳情（请假单和销假单共用）
 function leaveListToDetail(btn1, btn2, btn3, state) {
     $("#viewLeaveQuery .leaveMenu").hide();
@@ -423,6 +476,13 @@ function startMainPage() {
         $("#mypanelviewAgentLeave").show();
     } else {
         $("#mypanelviewAgentLeave").hide();
+    }
+    if (hasClockinOTPanel) {
+        $("#mypanelviewClockin").show();
+        $("#mypanelviewOvertimeSubmit").show();
+    } else {
+        $("#mypanelviewClockin").hide();
+        $("#mypanelviewOvertimeSubmit").hide();
     }
     if (!viewPersonalLeaveShow  && defaultSettingDone) {
         //个人剩余假别资讯

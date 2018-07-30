@@ -32,32 +32,36 @@ $("#viewMain3").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
-            
+            //1. load widget
+            loadAndRunScript(0, widgetList[0].enabled);
+
+            //2. get message
+            if (!callGetMessageList && loginData["msgDateFrom"] === null) {
+                msgDateFromType = 'month';
+                var clientTimestamp = getTimestamp();
+                loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
+                var messageList = new QueryMessageList();
+            }
         });
 
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
-            if (viewMainInitial) {
-                //1. load widget
-                loadAndRunScript(0, widgetList[0].enabled);
 
-                //2. get message
-                if (!callGetMessageList && loginData["msgDateFrom"] === null) {
-                    msgDateFromType = 'month';
-                    var clientTimestamp = getTimestamp();
-                    loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
-                    var messageList = new QueryMessageList();
-                }
-
-                viewMainInitial = false;
-            }
         });
 
         $("#viewMain3").one("pageshow", function (event, ui) {
             var applist = new GetAppList();
+
+            //set height
+            if (device.platform === "iOS") {
+                $('.main-scroll > div').css('height', '1100px');
+            } else {
+                $('.main-scroll > div').css('height', '1155px');
+            }
+
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-            //getAppVersion('com.qplay.appyellowpagedev', '1026');
+
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {

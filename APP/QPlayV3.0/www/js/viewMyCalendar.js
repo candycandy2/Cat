@@ -202,6 +202,7 @@ $("#viewMyCalendar").pagecontainer({
             return dataTempC[0];
         }
 
+
         /********************************** page event ***********************************/
         $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
 
