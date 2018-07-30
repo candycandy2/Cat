@@ -89,6 +89,7 @@ $("#viewAppSetting").pagecontainer({
             $('#viewAppSetting .ui-title div').text(langStr['str_082']);
             $('.normal-setting-name').text(langStr['str_083']);
             $('.qplay-version-name').text(langStr['str_081']);
+            $('.want-comment-name').text(langStr['str_088']);
             $('.logout-fixed-btn').text(langStr['str_084']);
 
             //logout popup
@@ -118,6 +119,11 @@ $("#viewAppSetting").pagecontainer({
         $('.qplay-version').on('click', function () {
             versionFrom = true;
             checkAppPage('viewVersionRecord');
+        });
+
+        //我要评论
+        $('.want-comment').on('click', function () {
+            checkAppPage('viewMyEvaluation');
         });
 
         //注销

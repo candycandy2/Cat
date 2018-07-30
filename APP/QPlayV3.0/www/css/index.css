@@ -1634,6 +1634,23 @@ input[type=radio]:checked + label {
     font-size: 4.18vw !important;
 }
 
+.popup-msg-style {
+    width: 28VW;
+    height: 4VW;
+    margin: auto;
+    opacity: 0.9;
+    padding: 6.2VW 1VW 6.2VW 1VW;
+    position: fixed;
+    top: 70vw;
+    left: 36vw;
+    background-color: #666;
+    border-radius: 1.5px;
+    color: #F0F0F0;
+    font-size: 3.6VW;
+    text-align: center;
+    z-index: 2;
+    display: none;
+}
 
 /***************************** viewDefaultSetting ********************************/
 #viewDefaultSetting .ui-content {
@@ -1675,4 +1692,62 @@ input[type=radio]:checked + label {
 .default-setting > div > div:nth-of-type(2) {
     width: 6.44vw;
     padding-top: 4vw; 
+}
+
+/***************************** viewMyComment ********************************/
+#viewMyEvaluation .ui-content {
+    padding: 0 !important;
+}
+
+.comment-main {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: #EEF2F5;
+}
+
+.comment-title {
+    width: 100%;
+    height: 12vw;
+    padding-left: 3.71vw;
+    line-height: 15vw;
+}
+
+.comment-text {
+    width: 100%;
+    height: 75vh;
+}
+
+.comment-text textarea {
+    resize: none;
+    width: 92.58vw;
+    height: 73vh !important;
+    margin-left: 3.71vw;
+    border: 0;
+    border-radius: 3px;
+    outline: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.send-comment {
+    width: 100vw;
+    height: 11.36vw;
+    line-height: 11.36vw;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    /* background: #009688;
+    color: #fff; */
+    font-weight: normal;
+    font-size: 4.18vw !important;
+    color: #989898;
+    background: #d6d6d6;
+}
+
+.enabled-btn {
+    background: #009688 !important;
+    color: #fff !important;
 }
