@@ -21,58 +21,91 @@ class UserRepository
      * Join update qp_user from qp_user sync 
      * @param   string $sourceFrom 
      * @param   string $first  is first time execute
-     * @return  mixed
+     * @return  int    sync count
      */
     public function syncActiveUser($sourceFrom, $first = false){
-        $query = QP_User::where('qp_user_sync.active','Y')
-                ->join('qp_user_sync','qp_user.emp_no', "=", 'qp_user_sync.emp_no');
-        if(!$first){
-            $query = $query-> where('qp_user.source_from',$sourceFrom);
-        }  
-        return $query->update([
-                'qp_user.login_id' => DB::raw('qp_user_sync.login_name'),
-                'qp_user.emp_name' => DB::raw('qp_user_sync.emp_name'),
-                'qp_user.email' => DB::raw('qp_user_sync.mail_account'),
-                'qp_user.ext_no' => DB::raw('qp_user_sync.ext_no'),
-                'qp_user.user_domain' => DB::raw('qp_user_sync.domain'),
-                'qp_user.company' => DB::raw('qp_user_sync.company'),
-                'qp_user.department' => DB::raw('qp_user_sync.dept_code'),
-                'qp_user.site_code' => DB::raw('qp_user_sync.site_code'),
-                'qp_user.deleted_at' => DB::raw('qp_user_sync.dimission_date'),
-                'qp_user.status' => DB::raw('qp_user_sync.active'),
-                'qp_user.resign' => DB::raw('IF(qp_user_sync.active="N", "Y","N")'),
-                'qp_user.source_from' => DB::raw('qp_user_sync.source_from')
+        $total =  QP_User_Sync::count();
+        $limit =  1000;
+        $page = ceil($total / $limit);
+        $lastUserId = 0;
+        $syncCnt = 0;
+        for ($i = 1; $i <= $page; $i++) {
+            $query = QP_User::where('tmpUsers.active','Y')
+                ->join(
+                    DB::raw('(SELECT * FROM `qp_user_sync` where row_id > '.$lastUserId.' order by row_id limit '.$limit.') tmpUsers'),
+                    function($join)
+                    {
+                       $join->on('qp_user.emp_no', '=', 'tmpUsers.emp_no');
+                    });
+            
+            if(!$first){
+                $query = $query-> where('qp_user.source_from',$sourceFrom);
+            }
+            $updatedCnt = $query->update([
+                'qp_user.login_id' => DB::raw('tmpUsers.login_name'),
+                'qp_user.emp_name' => DB::raw('tmpUsers.emp_name'),
+                'qp_user.email' => DB::raw('tmpUsers.mail_account'),
+                'qp_user.ext_no' => DB::raw('tmpUsers.ext_no'),
+                'qp_user.user_domain' => DB::raw('tmpUsers.domain'),
+                'qp_user.company' => DB::raw('tmpUsers.company'),
+                'qp_user.department' => DB::raw('tmpUsers.dept_code'),
+                'qp_user.site_code' => DB::raw('tmpUsers.site_code'),
+                'qp_user.deleted_at' => DB::raw('tmpUsers.dimission_date'),
+                'qp_user.status' => DB::raw('tmpUsers.active'),
+                'qp_user.resign' => DB::raw('IF(tmpUsers.active="N", "Y","N")'),
+                'qp_user.source_from' => DB::raw('tmpUsers.source_from'),
+                'qp_user.updated_at' => '-1'
               ]);
-        
+            $lastUserId = $i * $limit;
+            $syncCnt = $syncCnt + $updatedCnt;
+        }
+        return $syncCnt;
     }
 
     /**
      * Join update qp_user from qp_user sync 
      * @param   string $sourceFrom 
      * @param   string $first  is first time execute
-     * @return  mixed
+     * @return  int    sync count
      */
     public function syncInactiveUser($sourceFrom, $first = false){
-        $query = QP_User::where('qp_user_sync.active','N')
-                ->join('qp_user_sync','qp_user.emp_no', "=", 'qp_user_sync.emp_no');
-        if(!$first){
-            $query = $query-> where('qp_user.source_from',$sourceFrom);
-        }  
-        return $query->update([
-                'qp_user.login_id' => DB::raw('qp_user_sync.login_name'),
-                'qp_user.emp_name' => DB::raw('qp_user_sync.emp_name'),
-                'qp_user.email' => DB::raw('qp_user_sync.mail_account'),
-                'qp_user.ext_no' => DB::raw('qp_user_sync.ext_no'),
-                'qp_user.user_domain' => DB::raw('qp_user_sync.domain'),
-                'qp_user.company' => DB::raw('qp_user_sync.company'),
-                'qp_user.department' => DB::raw('qp_user_sync.dept_code'),
-                'qp_user.site_code' => DB::raw('qp_user_sync.site_code'),
-                'qp_user.deleted_at' => DB::raw('qp_user_sync.dimission_date'),
-                'qp_user.status' => DB::raw('qp_user_sync.active'),
-                'qp_user.resign' => DB::raw('IF(qp_user_sync.active="N", "Y","N")'),
-                'qp_user.source_from' => DB::raw('qp_user_sync.source_from')
-              ]);
         
+        $total =  QP_User_Sync::count();
+        $limit =  1000;
+        $page = ceil($total / $limit);
+        $lastUserId = 0;
+        $syncCnt = 0;
+        for ($i = 1; $i <= $page; $i++) {
+            $query = QP_User::where('tmpUsers.active','N')
+                ->join(
+                    DB::raw('(SELECT * FROM `qp_user_sync` where row_id > '.$lastUserId.' order by row_id limit '.$limit.') tmpUsers'),
+                    function($join)
+                    {
+                       $join->on('qp_user.emp_no', '=', 'tmpUsers.emp_no');
+                    });
+            
+            if(!$first){
+                $query = $query-> where('qp_user.source_from',$sourceFrom);
+            }
+            $updatedCnt = $query->update([
+                    'qp_user.login_id' => DB::raw('tmpUsers.login_name'),
+                    'qp_user.emp_name' => DB::raw('tmpUsers.emp_name'),
+                    'qp_user.email' => DB::raw('tmpUsers.mail_account'),
+                    'qp_user.ext_no' => DB::raw('tmpUsers.ext_no'),
+                    'qp_user.user_domain' => DB::raw('tmpUsers.domain'),
+                    'qp_user.company' => DB::raw('tmpUsers.company'),
+                    'qp_user.department' => DB::raw('tmpUsers.dept_code'),
+                    'qp_user.site_code' => DB::raw('tmpUsers.site_code'),
+                    'qp_user.deleted_at' => DB::raw('tmpUsers.dimission_date'),
+                    'qp_user.status' => DB::raw('tmpUsers.active'),
+                    'qp_user.resign' => DB::raw('IF(tmpUsers.active="N", "Y","N")'),
+                    'qp_user.source_from' => DB::raw('tmpUsers.source_from'),
+                    'qp_user.updated_at' => '-1'
+                  ]);
+            $lastUserId = $i * $limit;
+            $syncCnt = $syncCnt + $updatedCnt;
+        }
+        return $syncCnt;       
     }
 
     /**

@@ -20,7 +20,7 @@
     </div>
     <div data-role="main" class="page-main">
         <!--1.加保/退保/停保/復保申請-->
-        <div id="viewInsurApplication">
+        <div id="viewInsurApplication" class="hide">
             <div class="apply-insurance-form">
                 <div class="font-style11">
                     <!-- 眷屬 -->
@@ -44,6 +44,14 @@
                 </div>
                 <!-- 原因 dropdownlist -->
                 <div data-role="none" id="applyReason" class="font-style3"></div>
+            </div>
+            <div class="withdraw-insurance-ddl">
+                <div class="font-style11">
+                    <!-- 退保原因 -->
+                    <span class="langStr" data-id="str_123"></span>
+                </div>
+                <!-- 原因 dropdownlist -->
+                <div data-role="none" id="withdrawReason" class="font-style3"></div>
             </div>
             <div id="newSubsidy">
                 <div class="font-style11">
@@ -162,8 +170,17 @@
                     <div style="margin-bottom:2.14vw;">
                         <span id="previewCertificate"></span>
                     </div>
-                    <div>
+                    <div style="margin-bottom:2.14vw;">
                         <span id="previewHealthcard"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="perviewApplyDate"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="perviewStatus"></span>
+                    </div>
+                    <div style="margin-bottom:2.14vw;">
+                        <span id="perviewDealday"></span>
                     </div>
                 </div>              
             </div>
@@ -172,9 +189,16 @@
                     <!-- 確定送出 -->
                     <span class="langStr" data-id="str_135"></span>
                 </div>
+                <div id="cancelBtn" class="font-style3">
+                    <!-- 取消申請 -->
+                    <span class="langStr" data-id="str_144"></span>
+                </div>
+                <div id="insurBtn" class="font-style3">
+                    <!-- 加保 -->
+                    <span class="langStr" data-id="str_148"></span>
+                </div>
             </div> 
         </div>
-
     </div>
 
     <!--確定刪除眷屬資料-->
@@ -226,7 +250,7 @@
                 </div>
             </div>
             <div class="main">
-                <p class="main-paragraph font-style3"> </p>
+                <p class="main-cancel font-style3"> </p>
             </div>
             <div class="footer">
                 <div class="btn-two font-style1 btnArea">

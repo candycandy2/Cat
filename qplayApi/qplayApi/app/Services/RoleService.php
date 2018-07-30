@@ -15,10 +15,12 @@ class RoleService
     
     /**
      * Add default role if find new company in qp_user
-     * @param Array $data company role data
+     * @param  Array $data company role data
+     * @return Array new company role
      */
     public function addNewCompany(){
         $companyRole =  $this->roleRepository->getNewCompany()->toArray();
         $this->roleRepository->addRole($companyRole);
+        return $companyRole;
     }
 }

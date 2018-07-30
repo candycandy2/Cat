@@ -1,34 +1,9 @@
-//$(document).one("pagecreate", "#viewAppDetail2-2", function(){
-
 $("#viewAppDetail2-2").pagecontainer({
     create: function (event, ui) {
 
         var pageHeight = null, offsetArr = [], imgItemLength;
 
         /********************************** function *************************************/
-        // remove to index.js
-        // function addDownloadHit(appname) {
-        //     var self = this;
-
-        //     this.successCallback = function (data) {
-        //         var resultcode = data['result_code'];
-
-        //         if (resultcode == 1) { } else { }
-        //     };
-
-        //     this.failCallback = function (data) {
-        //         var resultcode = data['result_code'];
-
-        //         if (resultcode == 1) { } else { }
-        //     };
-
-        //     var __construct = function () {
-        //         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
-        //         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
-
-        //     }();
-
-        // }
 
         function displayAppDetailStep1() {
 
@@ -181,7 +156,7 @@ $("#viewAppDetail2-2").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewAppDetail2-2").on("pagebeforeshow", function (event, ui) {
-            loadingMask("show");
+            //loadingMask("show");
         });
 
         $("#viewAppDetail2-2").on("pageshow", function (event, ui) {
@@ -290,6 +265,7 @@ $("#viewAppDetail2-2").pagecontainer({
             }
         });
 
+        //展开更多
         $("#openDescription").on("click", function () {
             $("#appDetailAppDescription").removeClass("detail-description-ellipsis");
             $("#appDetailAppDescription").css({
@@ -328,13 +304,10 @@ $("#viewAppDetail2-2").pagecontainer({
 
         //版本记录
         $(".version").on("click", function () {
-            var versionData = new getVersionRecord(checkAPPKey);
-            //var versionData = new getVersionRecord();
-
+            versionFrom = false;
+            checkAppPage('viewVersionRecord');
         });
 
 
     }
 });
-
-//});

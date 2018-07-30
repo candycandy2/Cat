@@ -1,8 +1,8 @@
 <?php
 return [
     'source' => [
+            'partner',
             'qcsflower',
             'flower',
-            'partner',
     ],
 ];

@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Data;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using System.Configuration;
 using ITS.Data;
-using ITS.Common.Excel;
-using System.Web;
-using System.Web.Services;
 using System.IO;
 using System.Diagnostics;
 using log4net;
- 
+using ITS.Common.Excel;
+
 namespace QPlay.Job.SyncGaiaUser
 {
     public class Program
@@ -20,9 +14,9 @@ namespace QPlay.Job.SyncGaiaUser
         static ILog log = LogManager.GetLogger("Logger");
         static void Main(string[] args)
         {
-           Init();
-           string fileName =  GenerateExcelFile();
-           GenerateGPGFile(fileName);
+            Init();
+            string fileName = GenerateFile();
+            GenerateGPGFile(fileName);
         }
         /// <summary>
         /// 初始化
@@ -34,71 +28,73 @@ namespace QPlay.Job.SyncGaiaUser
             dbGaia = new DbSession("dbGaia");
             log.Info("End Connect Gaia DB");
 
-             
+
         }
         /// <summary>
         /// 产生excel
         /// </summary>
         /// <returns></returns>
-        static string  GenerateExcelFile()
+        static string GenerateFile()
         {
             try
             {
                 log.Info("Begin Select data");
-                
+
                 //查询数据
+                string maxRows = System.Configuration.ConfigurationManager.AppSettings["MaxRows"];
+                //if (maxRows.Trim().Length > 0) maxRows = " TOP " + maxRows + " ";
                 string view = System.Configuration.ConfigurationManager.AppSettings["ViewName"];
-                string sql = "SELECT * FROM " + view;
+                string sql = "SELECT " + maxRows + " * FROM " + view;
+                //string sql = "SELECT TOP " + maxRows + " emp_no,login_name,emp_name,ext_no,mail_account,domain,site_code,company,dept_code,active,dimission_date FROM " + view;
                 DataTable dt = dbGaia.FromSql(sql).ToDataTable();
                 log.Info("End Select  data");
 
-                //将查询出来的数据导出到Excel
-                QWorkbook workbook = new QWorkbook(QXlFileFormat.xls);//创建工作簿，默认是xlsx
-                workbook.ReadDataTable(dt);  // 读取DataTable的内容并写入excel所有的列
-
-                string fileName = DateTime.Now.ToString("yyyyMMdd") + ".xls";
+                string fileName = DateTime.Now.ToString("yyyyMMdd") + ".csv";
                 string path = System.Configuration.ConfigurationManager.AppSettings["FilePath"];
                 fileName = path + "\\" + fileName;
 
-
+                log.Info("check Directory: " + path);
                 if (!Directory.Exists(path))//如果不存在就创建file文件夹
                 {
+                    log.Info("CreateDirectory: " + path);
                     Directory.CreateDirectory(path);
                 }
 
-                workbook.SaveAs(fileName);
-                log.Info("ExcelFile:Generate excel succeeded");
+                log.Info("check file: " + fileName);
+                DataTableToCSV(fileName, dt);
+                DataTableToXls(dt);
                 return fileName;
             }
             catch (Exception ex)
             {
                 log.Info("ExcelFile:Generate excel failed");
-                 log.Error(ex.Message);
-                 return null;
-                
-            }            
+                log.Error(ex.Message);
+                return null;
+
+            }
         }
         /// <summary>
         /// 将产生的excel进行加密
         /// </summary>
         /// <param name="fileName"></param>
-        static void GenerateGPGFile(string fileName)
+        static void GenerateGPGFile(string orgfileName)
         {
             try
             {
                 log.Info("Begin Exists Gaia GPGFile");
 
-                string filename = fileName + ".gpg";
+                string gpgfileName = orgfileName + ".gpg";
                 //判断是否存在加密文件
-                if (File.Exists(filename))
+                if (File.Exists(gpgfileName))
                 {
-                    File.Delete(filename);//如果存在则删除
+                    File.Delete(gpgfileName);//如果存在则删除
+                    log.Info("delete Exists Gaia GPGFile:" + gpgfileName);
 
                 }
                 log.Info("End Exists Gaia GPGFile");
 
                 string cmdname = "gpg --recipient qlay --encrypt";
-                string strInput = cmdname + " \"" + fileName + "\"";
+                string strInput = cmdname + " \"" + orgfileName + "\"";
                 Process p = new Process();
                 //设置要启动的应用程序
                 p.StartInfo.FileName = "cmd.exe";
@@ -125,8 +121,15 @@ namespace QPlay.Job.SyncGaiaUser
                 //等待程序执行完退出进程
                 p.WaitForExit();
                 p.Close();
-                
-                log.Info("GPG:encryption succeeded");
+
+                if (File.Exists(orgfileName + ".gpg"))
+                {
+                    log.Info("GPG:encryption succeeded:" + orgfileName + ".gpg");
+                }
+                else
+                {
+                    log.Info("GPG:encryption fail");
+                }
 
             }
             catch (Exception ex)
@@ -137,14 +140,99 @@ namespace QPlay.Job.SyncGaiaUser
             finally
             {
                 //删除存在的excel
-                if (File.Exists(fileName))
+                if (File.Exists(orgfileName))
                 {
-                    File.Delete(fileName);//如果存在则删除
-
+                    File.Delete(orgfileName);//如果存在则删除
                 }
             }
-           
+
         }
-        
+
+        static void DataTableToXls(DataTable dt)
+        {
+            //将查询出来的数据导出到Excel  
+            QWorkbook workbook = new QWorkbook(QXlFileFormat.xls);//创建工作簿，默认是xls   
+
+            log.Info("Start ReadDataTable");//slow when dt is bigger than 10000    
+            workbook.ReadDataTable(dt);  // 读取DataTable的内容并写入excel所有的列 
+            log.Info("End ReadDataTable");
+
+            string xlsfileName = DateTime.Now.ToString("yyyyMMdd") + ".xls";
+            string path = System.Configuration.ConfigurationManager.AppSettings["FilePath"];
+            xlsfileName = path + "\\" + xlsfileName;
+
+
+            log.Info("check xls file: " + xlsfileName);
+            workbook.SaveAs(xlsfileName);
+            workbook = null;
+            log.Info("ExcelFile:Generate excel succeeded");
+
+            GenerateGPGFile(xlsfileName);
+        }
+
+        static void DataTableToCSV(string fileName, DataTable dt)
+        {
+            int CurrentCol = 0;//当前列
+            int RowCount = dt.Rows.Count + 1;//总行数
+            int ColCount = dt.Columns.Count;//总列数
+
+            log.Info("RowCount:" + RowCount);
+            log.Info("ColCount:" + ColCount);
+
+            StreamWriter sw = new StreamWriter(fileName, false);//文件如果存在，则自动覆盖
+            try
+            {
+                int DatetimefieldIndex = -1;
+                #region 表头信息
+                for (CurrentCol = 0; CurrentCol < ColCount; CurrentCol++)
+                {
+                    if (dt.Columns[CurrentCol].DataType == typeof(DateTime))
+                        DatetimefieldIndex = CurrentCol;
+                    sw.Write(dt.Columns[CurrentCol].ColumnName.ToString().Trim());
+                    if ((CurrentCol + 1) < ColCount)
+                        sw.Write(",");
+                }
+                sw.WriteLine("");
+                #endregion
+
+                #region excel表格内容
+                foreach (DataRow row in dt.Rows)
+                {
+                    for (CurrentCol = 0; CurrentCol < ColCount; CurrentCol++)
+                    {
+                        if (row[CurrentCol] != null)
+                        {
+                            if (DatetimefieldIndex == CurrentCol)
+                            {
+                                //2018-07-27 09:46:07,098 [1] INFO  Logger - Exception:Specified cast is not valid.
+                                //test on ITY-WEB1605
+                                //sw.Write(((DateTime)row[CurrentCol]).ToString("yyyy-MM-dd HH:mm:ss").Trim());
+                                sw.Write("");
+                            }
+                            else
+                                sw.Write(row[CurrentCol].ToString().Trim());
+                        }
+                        else
+                        {
+                            sw.Write("");
+                        }
+                        if ((CurrentCol + 1) < ColCount)
+                            sw.Write(",");
+                    }
+                    sw.WriteLine("");
+                }
+                #endregion
+            }
+            catch (Exception e)
+            {
+                log.Info("Exception:" + e.Message);
+            }
+            finally
+            {
+                sw.Close();
+                sw = null;
+            }
+        }
+
     }
 }

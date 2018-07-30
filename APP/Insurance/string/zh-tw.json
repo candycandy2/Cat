@@ -729,7 +729,7 @@
   },
   {
     "term": "str_092",
-    "definition": "身分證",
+    "definition": "身份證",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -1074,6 +1074,110 @@
   {
     "term": "str_135",
     "definition": "確定送出",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_136",
+    "definition": "刪除成功",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_137",
+    "definition": "該員有生效保單，無法刪除",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_138",
+    "definition": "刪除失敗",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_139",
+    "definition": "該員有保單待處理，請先取消申請才可刪除眷屬資料",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_140",
+    "definition": "申請已送出",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_141",
+    "definition": "新增眷屬資料失敗",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_142",
+    "definition": "若此人有加保紀錄，修改眷屬資料",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_143",
+    "definition": "可能影響資料正確性",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_144",
+    "definition": "取消申請",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_145",
+    "definition": "申請日期",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_146",
+    "definition": "處理狀態",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_147",
+    "definition": "處理日期",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_148",
+    "definition": "加保",
     "context": "",
     "term_plural": "",
     "reference": "",

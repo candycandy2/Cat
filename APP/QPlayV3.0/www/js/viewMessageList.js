@@ -53,7 +53,6 @@ $("#viewMessageList").pagecontainer({
 
             $(".news-content ul").html('').append(newsContent);
             $(".event-content ul").html('').append(eventContent);
-            
 
             //2. swipe
             var x;
@@ -104,14 +103,29 @@ $("#viewMessageList").pagecontainer({
             }
             $('.select-news').css('top', msgHeaderTop + 'px');
             $('.msg-tool').css('top', msgHeaderTop + 'px');
-            
-            //4. to detail
+
+            //4. message update
+            var msgUpdateDate;
+            if (resultArr.length > 0) {
+                msgUpdateDate = resultArr[0].create_time.split(' ')[0].replaceAll('-', '/');
+            } else {
+                var msgDate = parseInt(localStorage.getItem('msgDateFrom')) * 1000;
+                msgUpdateDate = new Date(msgDate).toLocaleDateString('zh-cn');
+            }
+            $('.msg-update-date').text(langStr['str_079'] + msgUpdateDate);
+
+            //5. to detail
             $('.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon').on('click', function () {
+                massageFrom = 'viewMessageList';
                 messageRowId = $(this).parents('li').attr('data-rowid');
-                var msg = new getMessageDetail();
+                $.mobile.changePage('#viewWebNews2-3-1');
             });
+
+            //6. set height
+            setMsgHeightByType();
         }
 
+        //don't use
         function getMessageDetail() {
             var self = this;
 
@@ -146,7 +160,6 @@ $("#viewMessageList").pagecontainer({
                         $(".textContent").show();
                     }
 
-                    //$.mobile.changePage('#viewMessageDetail');
                     $.mobile.changePage("#viewWebNews2-3-1");
 
                 } else if (resultcode === "000910") {
@@ -462,6 +475,22 @@ $("#viewMessageList").pagecontainer({
             return count;
         }
 
+        function setMsgHeightByType() {
+            var updateHeight = $('.msg-update-date').height();
+            var headerHeight = $('#viewMessageList .page-header').height();
+
+            if (messageType == 'News') {
+                var contentHeight = $('.news-content').height();
+
+            } else {
+                var contentHeight = $('.event-content').height();
+                
+            }
+
+            var totalHeight = (contentHeight + updateHeight + headerHeight).toString();
+            $('.message-scroll > div').css('height', totalHeight + 'px');
+        }
+
         function viewMessageInitila() {
             $('.dropdown-title').removeClass('opacity');
             $('.dropdown-news').show();
@@ -473,7 +502,6 @@ $("#viewMessageList").pagecontainer({
             $('#searchListview').show();
             $('.msg-tool').hide();
         }
-
 
         //swipe to delete function
         function prevent_default(event) {
@@ -490,16 +518,16 @@ $("#viewMessageList").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMessageList").on("pagebeforeshow", function (event, ui) {
-            if (viewMessageInitial) {
-                //create html
-                createMessageByType();
 
-                viewMessageInitial = false;
-            }
+        });
+
+        $("#viewMessageList").one("pageshow", function (event, ui) {
+            //filter placeholder多语言设置
+            $('#msgFilter').attr('placeholder', langStr['str_080']);
         });
 
         $("#viewMessageList").on("pageshow", function (event, ui) {
-
+            createMessageByType();
         });
 
         $("#viewMessageList").on("pagehide", function (event, ui) {
@@ -535,6 +563,8 @@ $("#viewMessageList").pagecontainer({
 
                 messageType = currentType;
                 $(".dropdown-title").text(currentType);
+
+                setMsgHeightByType();
             }
 
             $(".select-news").slideUp(200);
@@ -597,8 +627,8 @@ $("#viewMessageList").pagecontainer({
 
         //取消搜索listview
         $('#cancelSearch').on('click', function () {
-            $('#myFilter').val('');
-            $('#myFilter').blur();
+            $('#msgFilter').val('');
+            $('#msgFilter').blur();
 
             $('.header-search').hide();
             $('.q-btn-header').show();
@@ -780,7 +810,6 @@ $("#viewMessageList").pagecontainer({
                     }
                 })
             }
-
         });
 
 

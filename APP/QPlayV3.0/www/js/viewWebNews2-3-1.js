@@ -32,13 +32,13 @@ $("#viewWebNews2-3-1").pagecontainer({
         window.canvasChangeTop = false;
 
         /********************************** function *************************************/
-        window.goBack = function (action) {
-            if (action === "goList") {
-                $.mobile.changePage('#viewNewsEvents2-3');
-            } else if (action === "goHome") {
-                $.mobile.changePage('#viewMain3');
-            }
-        };
+        // window.goBack = function (action) {
+        //     if (action === "goList") {
+        //         $.mobile.changePage('#viewNewsEvents2-3');
+        //     } else if (action === "goHome") {
+        //         $.mobile.changePage('#viewMain2-1');
+        //     }
+        // };
 
         function renderCanvas(content) {
 
@@ -674,12 +674,21 @@ $("#viewWebNews2-3-1").pagecontainer({
         $("#confirmMessageNotExist").on("click", function () {
             messageExist = true;
             $('#messageNotExist').popup('close');
-            $.mobile.changePage("#viewNewsEvents2-3");
+            //$.mobile.changePage("#viewNewsEvents2-3");
+            checkAppPage('viewMessageList');
         });
 
-        $(".nav-button").on("click", function () {
-            var action = $(this).prop("id");
-            goBack(action);
+        $("#goList.nav-button").on("click", function () {
+            //var action = $(this).prop("id");
+            //goBack(action);
+
+            if (massageFrom == 'viewMain3') {
+                $.mobile.changePage('#viewMain3');
+            } else if (massageFrom == 'viewMessageList') {
+                //$.mobile.changePage('#viewMessageList');
+                checkAppPage('viewMessageList');
+            }
+
         });
 
         $(document).on("click", "#messageLoadErrorPopup #retry", function () {
@@ -687,7 +696,9 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $(document).on("click", "#messageLoadErrorPopup #back", function () {
-            goBack("goList");
+            //goBack("goList");
+            //$.mobile.changePage('#viewMessageList');
+            checkAppPage('viewMessageList');
         });
     }
 });

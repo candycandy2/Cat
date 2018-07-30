@@ -13,6 +13,7 @@
     height: 23vw;
     padding-left: 5vw;
     overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* .applist-widget > .applist-main > div {

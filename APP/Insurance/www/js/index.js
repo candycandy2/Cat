@@ -9,7 +9,9 @@ var visitedPageList = ["viewMain"];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
 var clickEditSettingID = '';
-var clickFamilyName, clickRelation, clickAge, clickBirth, clickID;
+var clickFamilyID, clickInsID, clickAppID, clickFamilyName, clickRelation, clickAge, clickBirth, clickID; 
+var clickCanApply, clickDealwith, clickInsuredday, clickApplyday, clickDealday, clickReason, clickSubsidy, clickCerti, clickHealthcard;
+var applyType, nextPage;
 var viewPersonalInsuranceShow = false;
 
 window.initialSuccess = function() {
@@ -77,4 +79,15 @@ function stripScript(str) {
         rs = rs + s.substr(i, 1).replace(pattern, '');
     }
     str.value = rs;
+}
+
+function transferBirthToAge(birthday){
+    var today = new Date();
+    var birthDate = new Date(birthday);
+    var age = today.getFullYear() - birthDate.getFullYear(); 
+    var birthMonth = today.getMonth() - birthDate.getMonth();
+    if (birthMonth < 0 || (birthMonth === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
 }

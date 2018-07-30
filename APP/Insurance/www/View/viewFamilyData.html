@@ -47,6 +47,12 @@
             </div>
         </div>
 
+        <!-- toast display:none -->
+        <div class="popup-msg-style" id="deleteFamilyListMsg">
+            <!-- 眷屬列表刪除成功 -->
+            <span class="langStr" data-id="str_136"></span>
+        </div>
+
         <!--3.新增和編輯頁面-->
         <div id="viewFamilyEdit">
             <div class="family-input-div">
@@ -92,7 +98,7 @@
             </div>
             <div class="family-insur-apply-div font-style3">
                 <img src="img/024_btn_addfriend.png" alt="" class="addInsuranceImg">
-                <span class="langStr" data-id="str_103" style="align-self:center;"></span>
+                <span class="langStr addInsuranceStr" data-id="str_103" style="align-self:center;"></span>
             </div>
             <!--dropdownlist: hidden-->
             <div id="relationshipDropdownlist" class="view-hide"></div>
@@ -206,18 +212,50 @@
         </div>
     </div>
 
+    <!--無法刪除眷屬資料-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup deleteErrorMsg" for="deleteErrorMsg"
+        id="deleteErrorMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--該員有生效保單，無法刪除-->
+                        <span class="langStr hasInsurErr view-hide" data-id="str_137"></span>
+                        <!--刪除失敗-->
+                        <span class="langStr pendingInsurErr view-hide" data-id="str_138"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmErrorDeleteBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--新增眷屬資料失敗/更新眷屬資料失敗/刪除眷屬資料失敗-->
     <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup familyErrorMsg" for="familyErrorMsg"
         id="familyErrorMsg">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
-                    <span class='header-icon'>
-                        <img src="img/urgent.png">
-                    </span>
                     <span class="header-text">
                         <!--新增眷屬資料失敗-->
-                        <span class="langStr" data-id="str_041"></span>
+                        <span class="langStr" data-id="str_141"></span>
                     </span>
                 </div>
             </div>
@@ -226,9 +264,9 @@
             </div>
             <div class="footer">
                 <div class="btn-one font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--關閉-->
-                        <span class="langStr" data-id="str_044"></span>
+                    <div class="btn-cancel" id="confirmErrAddBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
                     </div>
                 </div>
             </div>
@@ -269,4 +307,30 @@
         </div>
     </div>
 
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup beforeEditMsg" for="beforeEditMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class="header-text">
+                        <!--若此人有加保紀錄，修改眷屬資料-->
+                        <span class="langStr" data-id="str_142"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3">
+                    <!--可能影響資料正確性-->
+                    <span class="langStr" data-id="str_143"></span>
+                </p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel" id="confirmEditBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

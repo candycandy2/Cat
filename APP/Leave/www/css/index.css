@@ -464,6 +464,10 @@ html body .ui-group-theme-a a:visited {
     height: 10vw;
 }
 
+.apply-empty-div3 {
+    height: 5vw;
+}
+
 .apply-leave-date {
     height: 19vw;
     color: #0f0f0f;
@@ -1133,22 +1137,6 @@ li.ui-body-a {
     width: 240px !important;
 }
 
-/*.ui-datebox-controls .ui-controlgroup-controls {
-     border-radius: 0;
-}*/
-
-/*
-.ui-icon-delete:after {
-    background-image: url('../img/component/close_btn.png');
-}*/
-
-/*.ui-btn-icon-notext:after {
-    margin-left: -9px;
-    margin-top: -9px;
-    width: 18px;
-    height: 18px;
-}*/
-
 /********************************************** mypanel *********************************************/
 
 #mypanel .panel-content {
@@ -1203,3 +1191,9 @@ li.ui-body-a {
     padding: 0;
 }
 
+/********************************************** viewOvertimeSubmit *********************************************/
+
+#backOvertime {
+    width: 4.934VW;
+    display: none;
+}

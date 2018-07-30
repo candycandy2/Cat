@@ -893,22 +893,53 @@ div.scrollmenu a {
 
 #familyList {background: #ffffff;}
 
-.family-list {
+.family-list,
+.health-insur-list {
     width: 86.5vw;
     height: 14.5vw;
     padding: 3vw 6.71vw;
 }
 
-.family-list > div {
+.family-list > div,
+.health-insur-list > div {
     float: left;
 }
 
-.family-list ::after {
+.family-list ::after,
+.health-insur-list ::after {
     clear: both;
 }
 
+/*div:nth-of-type(1)*/
 .family-list > div:nth-of-type(1) {
-    width: 65vw;
+    width: 65vw; 
+    height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+/*div:nth-of-type(2)*/
+.family-list > div:nth-of-type(2) {
+    width: 21.5vw;
+    height: 10vw;
+    padding-top: 3.5vw;
+}
+
+.health-insur-list > .content-list-only-img {
+    width: 65vw; 
+    height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.health-insur-list > .content-list-text-img {
+    width: 66.5vw; 
     height:14.5vw;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -919,14 +950,27 @@ div.scrollmenu a {
 
 .family-list > div:nth-of-type(1) > div:nth-of-type(2),
 .family-list > div:nth-of-type(1) > div:nth-of-type(3),
-.group-list > div:nth-of-type(2) {
+.group-list > div:nth-of-type(2),
+.health-insur-list > div:nth-of-type(1) > div:nth-of-type(2),
+.health-insur-list > div:nth-of-type(1) > div:nth-of-type(3) {
     margin-top: 1.16vw;
 }
 
-.family-list > div:nth-of-type(2) {
+.health-insur-list > .list-only-img {
     width: 21.5vw;
     height: 10vw;
     padding-top: 3.5vw;
+}
+
+.health-insur-list > .list-text-img {
+    width: 20vw; 
+    height: 10vw;
+    padding-top: 3.5vw;
+}
+
+.health-insur-list > div:nth-of-type(2) > label {
+    display: inline-block;
+    color: #e92729;
 }
 
 .empty-list, .group-list {padding: 3vw 6.71vw;}
@@ -950,7 +994,15 @@ div.scrollmenu a {
     width: 7.5vw;
     height: 7.5vw;
     margin-left: 14vw;
-    margin-top: 1vw;
+    margin-top: -1vw;
+}
+
+.family-text-img {
+    vertical-align: middle;
+    width: 7.5vw;
+    height: 7.5vw;
+    margin-left: 3vw;
+    margin-top: -1vw;
 }
 
 .family-notice {
@@ -1011,6 +1063,11 @@ div.scrollmenu a {
     margin-right: 3.2vw; 
     align-self:center; 
     width: 13%;
+    display: none;
+}
+
+.addInsuranceStr {
+    display: none;
 }
 
 .family-input {
@@ -1090,7 +1147,8 @@ div.scrollmenu a {
 .manageTimeOverMsg >.ui-content,
 .selectTimeOverMsg >.ui-content,
 .recordTimeOverMsg >.ui-content,
-.confirmCancelApply >.ui-content {
+.confirmCancelApply >.ui-content,
+.beforeEditMsg >.ui-content {
     padding: 0 !important;
 }
 
@@ -1103,7 +1161,8 @@ div.scrollmenu a {
 .manageTimeOverMsg .ui-content>.header,
 .selectTimeOverMsg .ui-content>.header,
 .recordTimeOverMsg .ui-content>.header,
-.confirmCancelApply .ui-content>.header {
+.confirmCancelApply .ui-content>.header,
+.beforeEditMsg .ui-content>.header {
     margin-top: 14%;
 }
 
@@ -1116,7 +1175,8 @@ div.scrollmenu a {
 .manageTimeOverMsg .ui-content>.main,
 .selectTimeOverMsg .ui-content>.main,
 .recordTimeOverMsg .ui-content>.main,
-.confirmCancelApply .ui-content>.main {
+.confirmCancelApply .ui-content>.main 
+.beforeEditMsg .ui-content>.main {
     margin-top: 12%;
 }
 
@@ -1124,6 +1184,7 @@ div.scrollmenu a {
 
 .apply-insurance-form, 
 .apply-insurance-ddl,
+.withdraw-insurance-ddl,
 #newSubsidy,
 #newHealthcard,
 #newCertificate {
@@ -1144,7 +1205,8 @@ div.scrollmenu a {
     margin-bottom: 2.14vw;
 }
 
-.apply-insurance-ddl>div:nth-of-type(2) {
+.apply-insurance-ddl>div:nth-of-type(2),
+.withdraw-insurance-ddl>div:nth-of-type(2) {
     margin-top: 0.2vw;
     margin-bottom: 1vw;
 }
@@ -1268,4 +1330,29 @@ input[type=radio]:checked + label {
     position: fixed;
     bottom: 0px;
     width: 100%;
+}
+
+.popup-msg-style {
+    width: 28VW;
+    height: 4VW;
+    margin: auto;
+    opacity: 0.9;
+    padding: 6.2VW 1VW 6.2VW 1VW;
+    position: fixed;
+    top: 70vw;
+    left: 36vw;
+    background-color: #666;
+    border-radius: 1.5px;
+    color: #F0F0F0;
+    font-size: 3.6VW;
+    text-align: center;
+    z-index: 2;
+    display: none;
+}
+
+.app-popup .main-cancel {
+    text-align: center;
+    color: #0f0f0f;
+    padding: 0 5.36vw;
+    margin: 0 0 8.5vw;
 }

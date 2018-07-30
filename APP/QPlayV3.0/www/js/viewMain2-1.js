@@ -1,8 +1,8 @@
 $("#viewMain2-1").pagecontainer({
     create: function(event, ui) {
 
-        var tempVersionArrData;
-        var tempVersionData;
+        // var tempVersionArrData;
+        // var tempVersionData;
 
         /********************************** function *************************************/
         //Event List No Data Popup  
@@ -256,29 +256,9 @@ $("#viewMain2-1").pagecontainer({
             }
         }
 
-        function locationSuccess(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-            var searchtext = "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='(" + lat + "," + lon + ")') and u='c'"
-            $.getJSON("https://query.yahooapis.com/v1/public/yql?q=" + searchtext + "&format=json").success(function(data) {
-                weatherResults = data.query.results.channel;
-                $('#weather').html(weatherResults.location.city + ", " + weatherResults.item.condition.text + ", " + weatherResults.item.condition.temp + "°C");
-            });
-        }
-
-        function locationError(error) {
-            console.warn('ERROR(' + error.code + '): ' + error.message);
-        }
 
         /********************************** page event *************************************/
         $("#viewMain2-1").one("pagebeforeshow", function(event, ui) {
-            //formatReserveList();
-            var eventLogoutConfirmPopupData = {
-                id: "logoutConfirm",
-                content: $("template#tplContactUserPopup").html()
-            };
-            tplJS.Popup("viewMain2-1", "appcontent", "append", eventLogoutConfirmPopupData);
-
             //Append Event Type Panel
             var eventTypePanelHTML = $("template#tplEventTypePanel").html();
             var eventTypePanel = $(eventTypePanelHTML);
@@ -330,10 +310,6 @@ $("#viewMain2-1").pagecontainer({
                 $.mobile.changePage('#viewMain3');
             });
 
-            $(document).on("click", "#eventTypeSelect #faq", function() {
-                $.mobile.changePage('#viewFAQ');
-            });
-
             $(document).on("click", "#eventTypeSelect .option", function() {
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
                 var activePageID = activePage[0].id;
@@ -355,11 +331,6 @@ $("#viewMain2-1").pagecontainer({
                 }
             });
 
-            // $(document).ready(function() {
-            //     if (navigator.geolocation) {
-            //         navigator.geolocation.getCurrentPosition(locationSuccess, locationError, { enableHighAccuracy: true });
-            //     }
-            // });
         });
 
         $("#viewMain2-1").scroll(function() {
@@ -403,19 +374,7 @@ $("#viewMain2-1").pagecontainer({
                 pullControl = null;
             }
         });
-        /********************************** dom event *************************************/
-        $("#logout").on("click", function() {
-            $('#logoutConfirm').popup('open');
-        });
 
-        $(document).on("click", "#logoutConfirm #confirm", function() {
-            $('#logoutConfirm').popup('close');
-            loadingMask("show");
-            var logout = new doLogOut();
-        });
 
-        $(document).on("click", "#logoutConfirm #cancel", function() {
-            $('#logoutConfirm').popup('close');
-        });
     }
 });

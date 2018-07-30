@@ -1,9 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="295" id="com.qplay.appinsurancedev" ios-CFBundleVersion="295" version="1.0.0.295[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="309" id="com.qplay.appinsurancedev" ios-CFBundleVersion="309" version="1.0.0.309[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Insurance</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
     <content src="index.html" />
+    <preference name="DisallowOverscroll" value="true" />
     <preference name="orientation" value="portrait" />
     <access origin="*" />
     <access launch-external="yes" origin="tel:*" />
@@ -67,6 +68,6 @@
     <plugin name="cordova-plugin-statusbar" spec="../../plugins/cordova-plugin-statusbar" />
     <plugin name="cordova-plugin-background-mode" spec="../../plugins/cordova-plugin-background-mode" />
     <plugin name="cordova-plugin-inappbrowser" spec="../../plugins/cordova-plugin-inappbrowser" />
-    <engine name="ios" spec="~4.5.4" />
+    <engine name="ios" spec="~4.5.5" />
     <engine name="android" spec="~6.3.0" />
 </widget>

@@ -93,7 +93,7 @@ class appVersionController extends Controller
     public function uploadAppFile(){
         
         $input = Input::all();
-        $appId = trim($input['app_ida']);
+        $appId = trim($input['app_id']);
         $deviceType = trim($input['device_type']);
         $versionCode = trim($input['version_code']);
         $appKey = trim($input['app_key']);

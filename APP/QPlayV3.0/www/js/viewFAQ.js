@@ -1,9 +1,6 @@
 $("#viewFAQ").pagecontainer({
     create: function(event, ui) {
 
-
-
-
         /********************************** page event ***********************************/
         $("#viewFAQ").on("pagebeforeshow", function(event, ui) {
 

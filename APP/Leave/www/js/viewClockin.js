@@ -1,9 +1,6 @@
-var pleaseSelectStr = langStr["str_069"]; //請選擇
-var selectBasedayStr = langStr["str_127"]; //選擇時間
-
-var workingday, clockinday, clockintime = "";
-var workName, otherReason = "";
-var clockinWorkType, clockinReasonType = "";
+var workingday = "", clockinday = "", clockintime = "";
+var workNameVal = "", otherReason = "";
+var clockinWorkType= "", clockinReasonType = "";
 var doneDateTime = {};
 
 var workTypeData = {
@@ -33,7 +30,7 @@ function checkClockinBeforePreview() {
     var  otherReasonStatus= $("#otherReason").css('display');
     //必須符合3個條件：1.請假理由不能爲空 2.開始時間和结束时间 3.需要基准日的是否已选择 4.代理人必须选择
     if (otherReasonStatus === "none") {
-        if (workName !== "" &&
+        if (workNameVal !== "" &&
             $("#work-type-popup option").text() !== pleaseSelectStr &&
             $('#chooseWorkday').text() !== pleaseSelectStr &&
             $('#chooseClockinday').text() !== pleaseSelectStr &&
@@ -45,7 +42,7 @@ function checkClockinBeforePreview() {
             $('#previewClockinBtn').removeClass('leavePreview-active-btn');
         }
     }else {
-        if (workName !== "" &&
+        if (workNameVal !== "" &&
             otherReason !== "" &&
             $("#work-type-popup option").text() !== pleaseSelectStr &&
             $('#chooseWorkday').text() !== pleaseSelectStr &&
@@ -111,10 +108,9 @@ $("#viewClockin").pagecontainer({
                     if ($(success).html() != undefined) {
                         //如果送簽成功，跳轉到“補登申請”頁
                         $("#backClockin").click();
-                        $("#sendLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        $("#sendClockinMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyClockinForm").trigger("click");
-
                     } else {
                         loadingMask("hide");
                         var error = $("error", htmlDom);
@@ -122,7 +118,7 @@ $("#viewClockin").pagecontainer({
                         $('.errMsgByClockin').find('.header-text').html(errorMsg);
                         popupMsgInit('.errMsgByClockin');
                     }
-
+                    loadingMask("hide");
                 }
             };
 
@@ -178,7 +174,7 @@ $("#viewClockin").pagecontainer({
         $('#newWorkDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            yearEnd: '2018'
+            maxDate: formatDateForNumber(Date.now())
         });
 
         //選擇出勤日期
@@ -212,7 +208,7 @@ $("#viewClockin").pagecontainer({
         $('#newClockinDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            yearEnd: '2018'
+            maxDate: formatDateForNumber(Date.now())
         });
 
         //選擇刷卡日期
@@ -280,47 +276,8 @@ $("#viewClockin").pagecontainer({
             checkClockinBeforePreview();
         };
 
-        window.resizeDatebox = function(obj) {
-            var widthPopup = $(".ui-datebox-container").parent("div.ui-popup-active").width();
-            var heightPopup = $(".ui-datebox-container").parent("div.ui-popup-active").height();
-            var clientWidth = document.documentElement.clientWidth;
-            var clientHeight = document.documentElement.clientHeight;
-            var pageScrollHeight = $(".ui-page.ui-page-active").scrollTop();
-
-            if (device.platform === "iOS") {
-                pageScrollHeight += 20;
-            }
-            var top = parseInt(((clientHeight - heightPopup) / 2) - pageScrollHeight, 10);
-            var left = parseInt((clientWidth - widthPopup - 7), 10);
-
-            $(".ui-datebox-container").parent("div.ui-popup-active").css({
-                "top": top,
-                "left": left
-            });
-
-            $(".ui-datebox-container").css("opacity", "1");
-
-            $(".ui-popup-screen.in").css({
-                'overflow': 'hidden',
-                'touch-action': 'none'
-            });
-
-            $(".ui-datebox-container").removeClass('ui-overlay-shadow');
-            $(".ui-datebox-container>div").remove();
-            $(".ui-datebox-container > a:nth-of-type(1)").css({
-                'display': 'none'
-                /*'background-color': 'transparent',
-                'border-style': 'none',
-                'text-shadow':'none'*/
-            });
-
-            $(".ui-datebox-container").css({
-                'width': '270px'
-            });
-        };
-
         function GetWorkName() {
-            workName = $.trim($("#workName").val());
+            workNameVal = $.trim($("#workName").val());
             //檢查是否可以預覽送簽
             checkClockinBeforePreview();
         }
@@ -363,7 +320,7 @@ $("#viewClockin").pagecontainer({
             $('#applyClockinDay').text(applyDay);           
             //班別名稱
             $("#workName").val("");
-            workName = "";
+            workNameVal = "";
             //刷卡類型
             getWorkingType();
             clockinWorkType = "";
@@ -380,7 +337,7 @@ $("#viewClockin").pagecontainer({
             clockinday = "";
             $("#chooseClockintime").text(pleaseSelectStr);
             clockintime = "";
-
+            checkClockinBeforePreview();
         });
 
         //預覽送簽按鈕
@@ -389,7 +346,7 @@ $("#viewClockin").pagecontainer({
             if ($('#previewClockinBtn').hasClass('leavePreview-active-btn')) {
                 //傳值到預覽頁面
                 $("#previewWorkday").text(workingday);
-                $("#previewWorkName").text(workName);
+                $("#previewWorkName").text(workNameVal);
                 $("#previewWorkType").text(clockinWorkType);
                 $("#previewClockinDay").text(clockinday);               
                 $("#previewClockinTime").text(clockintime); 
@@ -431,7 +388,7 @@ $("#viewClockin").pagecontainer({
                 '</empno><targetdate>' +
                 workingday +
                 '</targetdate><class>' +
-                workName +
+                workNameVal +
                 '</class><type>' +
                 clockinWorkType +
                 '</type><checkdate>' +
@@ -452,7 +409,7 @@ $("#viewClockin").pagecontainer({
                 modifyAttendanceFormData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
             }
             //呼叫API
-            //SendModifyAttendanceFormData();
+            SendModifyAttendanceFormData();
         });
 
 
