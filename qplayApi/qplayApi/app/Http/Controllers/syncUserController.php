@@ -48,11 +48,12 @@ class syncUserController extends Controller
 
             $files = Storage::allFiles($undo);
             foreach ($files as $fileName) {
-                Log::info('[Sync '.$sourceFrom.']');
+                Log::info('[Sync '.$sourceFrom.'-'.$fileName.']');
                 //1.1 read from excel and batch insert into user_sync and user_resign as temp
                 $readyToSync = $this->syncUserService->insertUserDataIntoTemp($fileName, $sourceFrom);
+
                 if( $readyToSync > 0){
-                    Log::info('Sync users from: '.$readyToSync);
+                    Log::info('Ready To Sync: '.$readyToSync);
                 }
                 //1.2 merge qp_user_sync into qp_user
                 $first = false;
@@ -63,22 +64,21 @@ class syncUserController extends Controller
                 $delUsers =  $this->syncUserService->getResignUsers();
                 if(count($delUsers) > 0){
                     $this->registerService->unRegisterUserbyUserIds($delUsers);
-                    Log::info('Unregister users from: '.count($delUsers));
                 }
                 //1.4 merge user
                 $mergeResult = $this->syncUserService->mergeUser($sourceFrom, $first);
-                Log::info('Update inactive users: '.$mergeResult['updateInactive']);
-                Log::info('Update active users: '.$mergeResult['updateActive']);
-                Log::info('Insert new users: '.$mergeResult['insertNew']);
+                Log::info('Update Inactive User Count: '.$mergeResult['updateInactive']);
+                Log::info('Update Active User Count: '.$mergeResult['updateActive']);
+                Log::info('New User Count: '.$mergeResult['insertNew']);
                 $totalCount = $mergeResult['updateInactive'] + $mergeResult['updateActive'] + $mergeResult['insertNew'];
                 Log::info('Total: '.$totalCount);
                 
                 //1.5 delete merged file
                 Storage::delete($fileName);
-                Log::info('Delete: '.$fileName);
+                Log::info('Delete File: '.$fileName);
            }
         }
-        Log::info('[Sync Data]');
+        Log::info('[Data Information]');
         //2. insert new company
         $companyRole = $this->roleService->addNewCompany();
         Log::info('Add company role:'.count($companyRole));
@@ -87,7 +87,7 @@ class syncUserController extends Controller
         Log::info('Duplicate users :'.count($duplicateUsers));
 
         Storage::deleteDirectory(self::SYNC_FOLDER);
-        Log::info('Delete folder: '.self::SYNC_FOLDER);
+        Log::info('Delete Folder: '.self::SYNC_FOLDER);
 
         $timeEnd = microtime(true);
         $executionTime = ($timeEnd - $timeStart);

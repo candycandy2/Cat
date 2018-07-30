@@ -24,7 +24,7 @@ class UserRepository
      * @return  int    sync count
      */
     public function syncActiveUser($sourceFrom, $first = false){
-        $total =  QP_User_Sync::where('active','Y')->count();
+        $total =  QP_User_Sync::count();
         $limit =  1000;
         $page = ceil($total / $limit);
         $lastUserId = 0;
@@ -53,7 +53,8 @@ class UserRepository
                 'qp_user.deleted_at' => DB::raw('tmpUsers.dimission_date'),
                 'qp_user.status' => DB::raw('tmpUsers.active'),
                 'qp_user.resign' => DB::raw('IF(tmpUsers.active="N", "Y","N")'),
-                'qp_user.source_from' => DB::raw('tmpUsers.source_from')
+                'qp_user.source_from' => DB::raw('tmpUsers.source_from'),
+                'qp_user.updated_at' => '-1'
               ]);
             $lastUserId = $i * $limit;
             $syncCnt = $syncCnt + $updatedCnt;
@@ -69,7 +70,7 @@ class UserRepository
      */
     public function syncInactiveUser($sourceFrom, $first = false){
         
-        $total =  QP_User_Sync::where('active','N')->count();
+        $total =  QP_User_Sync::count();
         $limit =  1000;
         $page = ceil($total / $limit);
         $lastUserId = 0;
@@ -98,7 +99,8 @@ class UserRepository
                     'qp_user.deleted_at' => DB::raw('tmpUsers.dimission_date'),
                     'qp_user.status' => DB::raw('tmpUsers.active'),
                     'qp_user.resign' => DB::raw('IF(tmpUsers.active="N", "Y","N")'),
-                    'qp_user.source_from' => DB::raw('tmpUsers.source_from')
+                    'qp_user.source_from' => DB::raw('tmpUsers.source_from'),
+                    'qp_user.updated_at' => '-1'
                   ]);
             $lastUserId = $i * $limit;
             $syncCnt = $syncCnt + $updatedCnt;

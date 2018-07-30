@@ -1,10 +1,8 @@
-
-
 $("#viewAppList").pagecontainer({
     create: function (event, ui) {
 
         //已知app分组，生成html
-        function createContent() {
+        function createAppListContent() {
             //1. 已下载
             var alreadydownloadContent = '';
             for (var i = 0; i < alreadyDownloadList.length; i++) {
@@ -100,7 +98,12 @@ $("#viewAppList").pagecontainer({
             var downloadedHight = $('.already-download-list').parent().height();
             var noDownloadHight = $('.not-download-list').parent().height();
             var headerHeight = $('#viewAppList .page-header').height();
-            var totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
+            var totalHeight = 0;
+            if (device.platform === "iOS") {
+                totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
+            } else {
+                totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
+            }
             $('.app-scroll > div').css('height', totalHeight + 'px');
         }
 
@@ -166,20 +169,17 @@ $("#viewAppList").pagecontainer({
 
         });
 
-        $("#viewAppList").scroll(function () {
-
-        });
-
         $("#viewAppList").one("pageshow", function (event, ui) {
             //language string
             $('.already-download').text(langStr['str_074']);
             $('.not-download').text(langStr['str_075']);
 
+            //create html
+            createAppListContent();
         });
 
         $("#viewAppList").on("pageshow", function (event, ui) {
-            //var applist = new GetAppList();
-            createContent();
+
         });
 
         $("#viewAppList").on("pagehide", function (event, ui) {

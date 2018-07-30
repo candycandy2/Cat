@@ -1,6 +1,7 @@
 $("#viewVersionRecord").pagecontainer({
     create: function (event, ui) {
 
+        
 
         /********************************** page event ***********************************/
         $("#viewVersionRecord").on("pagebeforeshow", function (event, ui) {
