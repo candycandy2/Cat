@@ -80,7 +80,7 @@ $("#viewAppSetting").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewAppSetting").on("pagebeforeshow", function(event, ui) {
-            console.log("pagebeforeshow");
+
         });
 
         $("#viewAppSetting").one("pageshow", function(event, ui) {
@@ -110,6 +110,11 @@ $("#viewAppSetting").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //头像选择
+        $('.photo-default').on('click', function () {
+            $('.setting-mask').show();
+        });
+
         //一般设定
         $('.normal-setting').on('click', function () {
             checkAppPage('viewDefaultSetting');
@@ -141,7 +146,10 @@ $("#viewAppSetting").pagecontainer({
             $('#logoutPopup').popup('close');
         });
 
-
+        //取消头像
+        $('.cancel-choose').on('click', function () {
+            $('.setting-mask').hide();
+        });
 
     }
 });
