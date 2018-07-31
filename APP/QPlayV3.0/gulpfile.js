@@ -82,6 +82,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             'Apache Cordova Team' +
                         '</author>' +
                         '<content src="index.html" />' +
+                        '<preference name="DisallowOverscroll" value="true" />' +
                         '<preference name="orientation" value="portrait" />' +
                         '<access origin="*" />' +
                         '<allow-navigation href="*" />' +
@@ -221,8 +222,9 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-geolocation --nofetch',
     'cordova plugin add ../../plugins/cordova-plugin-splashscreen --nofetch',
     'cordova plugin add ../../plugins/cordova-plugin-statusbar --nofetch',
-    'cordova plugin add ../../plugins/cordova-plugin-background-mode --nofetch',
-    'cordova plugin add ../../plugins/cordova-plugin-appavailability --nofetch'
+    //'cordova plugin add ../../plugins/cordova-plugin-background-mode --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-appavailability --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-badge --nofetch'
     //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
