@@ -80,7 +80,7 @@
             <!-- empty div -->
             <div class="apply-empty-div1"></div>
             <!-- reason -->
-            <div class="apply-reason">
+            <div class="overtime-reason">
                 <div class="font-style11">
                     <!-- 加班原因 -->
                     <span class="langStr" data-id="str_204"></span>
@@ -93,7 +93,8 @@
             <!-- date component -->
             <div class="date-component">
                 <input data-role="none" id="newOTDate" readonly="readonly" class="date-time-component">
-                <input data-role='datebox' id="otpicker" readonly="readonly" type="text" data-options='{"mode": "timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox", "closeCallback": "setDoneTime"}' name="timepicker" class="date-time-component">
+                <input data-role='datebox' id="startOTPicker" readonly="readonly" type="text" data-options='{"mode": "timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox", "closeCallback": "setStartTime", "minuteStep": "30"}' name="startOTPicker" class="date-time-component">
+                <input data-role='datebox' id="endOTPicker" readonly="readonly" type="text" data-options='{"mode": "timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox", "closeCallback": "setEndTime", "minuteStep": "30"}' name="endOTPicker" class="date-time-component">
             </div>
             <div class="apply-empty-div2"></div>
             <!-- preview btn -->
@@ -117,7 +118,7 @@
             <div class="preview-apply-date font-style12">
                 <!-- 申請日期： -->
                 <span class="langStr" data-id="str_080"></span>
-                <span id="previewWorkDay"></span>
+                <span id="previewOTDay"></span>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
@@ -203,6 +204,90 @@
         <div class="popup-msg-style" id="sendClockinMsg">
             <!-- 表單已送簽 -->
             <span class="langStr" data-id="str_198"></span>
+        </div>
+    </div>
+
+    <!-- 請先選擇加班日期 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup overitmeDateFirst" for="overitmeDateFirst" id="overitmeDateFirst">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!-- 請先選擇加班日期 -->
+                        <span class="langStr" data-id="str_205"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 請先選擇開始時間 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup starttimeFirst" for="starttimeFirst" id="starttimeFirst">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!-- 請先選擇開始時間 -->
+                        <span class="langStr" data-id="str_171"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加班結束時間應大於開始時間 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup endTimeError" for="endTimeError" id="endTimeError">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--加班結束時間應大於開始時間-->
+                        <span class="langStr" data-id="str_206"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

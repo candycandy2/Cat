@@ -39,31 +39,31 @@ namespace QTunnel
                     string ldapPath = "LDAP://DC=" + domain + "," + rootADPath;
                     string filter = "SAMAccountName=" + loginId;
                     string[] props = new string[] { "userAccountControl" };
-                    DirectoryEntry de = new DirectoryEntry(ldapPath);
-                    Object obj = de.NativeObject;
-                    DirectorySearcher deSearch = new DirectorySearcher(de, filter, props, SearchScope.Subtree);
-                    deSearch.SearchScope = SearchScope.Subtree;
-                    SearchResult res = deSearch.FindOne();
-                    if (res == null)
-                    {
-                        //throw new Exception("Username and/or Password incorrect");
-                        strJson = new JObject(
-                                      new JProperty("ResultCode", "997904"),
-                                      new JProperty("Message", "Account Incorrect"),
-                                      new JProperty("Content", "")
-                                  ).ToString();
+                    //DirectoryEntry de = new DirectoryEntry(ldapPath);
+                    ////Object obj = de.NativeObject;
+                    //DirectorySearcher deSearch = new DirectorySearcher(de, filter, props, SearchScope.Subtree);
+                    //deSearch.SearchScope = SearchScope.Subtree;
+                    //SearchResult res = deSearch.FindOne();
+                    //if (res == null)
+                    //{
+                    //    //throw new Exception("Username and/or Password incorrect");
+                    //    strJson = new JObject(
+                    //                  new JProperty("ResultCode", "997904"),
+                    //                  new JProperty("Message", "Account Incorrect"),
+                    //                  new JProperty("Content", "")
+                    //              ).ToString();
 
-                    }
-                    if (Convert.ToBoolean(Convert.ToInt32(res.Properties["userAccountControl"][0]) & 0x0002))
-                    {
-                        //throw new Exception("The windows account has been disabled!");
-                        strJson = new JObject(
-                                      new JProperty("ResultCode", "997905"),
-                                      new JProperty("Message", "Account Has Been Disabled"),
-                                      new JProperty("Content", "")
-                                  ).ToString();
+                    //}
+                    //if (Convert.ToBoolean(Convert.ToInt32(res.Properties["userAccountControl"][0]) & 0x0002))
+                    //{
+                    //    //throw new Exception("The windows account has been disabled!");
+                    //    strJson = new JObject(
+                    //                  new JProperty("ResultCode", "997905"),
+                    //                  new JProperty("Message", "Account Has Been Disabled"),
+                    //                  new JProperty("Content", "")
+                    //              ).ToString();
 
-                    }
+                    //}
                     //return true;
 
                     try
@@ -119,7 +119,7 @@ namespace QTunnel
 
                         strJson = new JObject(
                                       new JProperty("ResultCode", "1"),
-                                      new JProperty("Message", "Success"),
+                                      new JProperty("Message", "Success@" + ldapPath + "@" + domain + "\\" + loginId),
                                       new JProperty("Content", "")
                                   ).ToString();
 
@@ -127,9 +127,9 @@ namespace QTunnel
                     catch (Exception ex)
                     {
                         strJson = new JObject(
-                                      new JProperty("ResultCode", "997902"),
+                                      new JProperty("ResultCode", "997902Ex"),
                                       new JProperty("Message", "Password Incorrect"),
-                                      new JProperty("Content", "")
+                                      new JProperty("Content", ex.Message)
                                   ).ToString();
 
                     }
@@ -137,9 +137,9 @@ namespace QTunnel
                 catch (Exception ex)
                 {
                     strJson = new JObject(
-                                  new JProperty("ResultCode", "997904"),
+                                  new JProperty("ResultCode", "997904Ex"),
                                   new JProperty("Message", "Account Incorrect"),
-                                  new JProperty("Content", "")
+                                  new JProperty("Content", ex.Message)
                               ).ToString();
                 }
 
