@@ -31,8 +31,7 @@ $("#viewDefaultSetting").pagecontainer({
         });
 
         $("#viewDefaultSetting").one("pageshow", function (event, ui) {
-            $('#viewDefaultSetting .ui-title div').text(langStr['str_083']);
-            $('#viewDefaultSetting .ui-title div').removeClass('opacity');
+            $('#viewDefaultSetting .ui-title div').text(langStr['str_083']).removeClass('opacity');
 
             setDefaultSetting();
 
