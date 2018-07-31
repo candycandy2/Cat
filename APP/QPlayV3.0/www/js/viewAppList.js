@@ -98,7 +98,7 @@ $("#viewAppList").pagecontainer({
             var downloadedHight = $('.already-download-list').parent().height();
             var noDownloadHight = $('.not-download-list').parent().height();
             var headerHeight = $('#viewAppList .page-header').height();
-            var totalHeight = 0;
+            var totalHeight;
             if (device.platform === "iOS") {
                 totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
             } else {
