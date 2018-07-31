@@ -922,11 +922,6 @@ input[type=radio]:checked + label {
     -webkit-overflow-scrolling: touch;
 }
 
-/* hard code */
-/* .main-scroll > div {
-    height: 1140px;
-} */
-
 .carouselWidget {
     width: 100vw;
     height: 45vw;
@@ -1020,15 +1015,14 @@ input[type=radio]:checked + label {
 /*************************** viewAppList ********************************/
 #viewAppList .ui-content {
     padding: 0 !important;
-    -webkit-overflow-scrolling: touch;
 }
 
 .app-scroll {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     position: fixed;
     overflow-y: scroll;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     -webkit-overflow-scrolling: touch;
 }
 
@@ -1196,14 +1190,11 @@ input[type=radio]:checked + label {
 }
 
 #myReserve {
-    /* display: none; */
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    /* opacity: 0.5;
-    background: #757575; */
     background: rgba(0,0,0,0.5);
 }
 
@@ -1466,7 +1457,7 @@ input[type=radio]:checked + label {
     border-bottom: 1px solid #d6d6d6 !important;
 }
 
-/*** swipe ***/
+/*** swipe start ***/
 .behind {
 	width: 100%;
 	height: 100%;
@@ -1491,7 +1482,6 @@ input[type=radio]:checked + label {
 .behind a.delete-btn:focus,
 .behind a.delete-btn:hover {
 	color: white;
-    /* background-color: red; */
     background-color: #009588;
 	text-shadow: none;
 }
@@ -1500,16 +1490,7 @@ input[type=radio]:checked + label {
 	float: left;
 }
 
-.behind a.edit-btn,
-.behind a.edit-btn:active,
-.behind a.edit-btn:visited,
-.behind a.edit-btn:focus,
-.behind a.edit-btn:hover {
-	color: white;
-	background-color: orange;
-	text-shadow: none;
-}
-/*** swipe ***/
+/*** swipe end ***/
 
 .msg-update-date {
     width: 100%;
@@ -1590,7 +1571,7 @@ input[type=radio]:checked + label {
     height: 13vw;
     padding: 4vw 3.71vw 4vw 6vw;
     background: #fff;
-    border-bottom: 1px solid #d6d6d6;
+    /* border-bottom: 1px solid #d6d6d6; */
 }
 
 .link-setting > div:last-of-type {
@@ -1652,6 +1633,48 @@ input[type=radio]:checked + label {
     display: none;
 }
 
+.setting-mask {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+.photo-choose {
+    width: 92.58vw;
+    height: 30vw;
+    margin-top: 120vw;
+    margin-left: 3.71vw;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.photo-choose > div {
+    height: 15vw;
+    line-height: 15vw;
+    text-align: center;
+    color: #4274BA;
+}
+
+.photo-choose > div:first-of-type {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.cancel-choose {
+    width: 92.58vw;
+    height: 15vw;
+    margin-top: 2.5vw;
+    margin-left: 3.71vw;
+    border-radius: 10px;
+    background: #fff;
+    line-height: 15vw;
+    text-align: center;
+    color: #4274BA;
+}
+
 /***************************** viewDefaultSetting ********************************/
 #viewDefaultSetting .ui-content {
     padding: 0 !important;
@@ -1672,10 +1695,6 @@ input[type=radio]:checked + label {
     border-bottom: 1px solid #d6d6d6;
 }
 
-/* .default-setting > div:last-of-type {
-    border: none;
-} */
-
 .default-setting > div > div {
     float: left;
 }
@@ -1694,7 +1713,7 @@ input[type=radio]:checked + label {
     padding-top: 4vw; 
 }
 
-/***************************** viewMyComment ********************************/
+/***************************** viewMyEvaluation ********************************/
 #viewMyEvaluation .ui-content {
     padding: 0 !important;
 }
@@ -1739,8 +1758,6 @@ input[type=radio]:checked + label {
     position: fixed;
     left: 0;
     bottom: 0;
-    /* background: #009688;
-    color: #fff; */
     font-weight: normal;
     font-size: 4.18vw !important;
     color: #989898;
