@@ -1557,6 +1557,13 @@ input[type=radio]:checked + label {
     padding-left: 37vw;
 }
 
+.photo-default img {
+    border-radius: 50%;
+    width: 100%;
+    /* 26.5/29=91.38% */
+    height: 91.38%;
+}
+
 .name-user {
     width: 100vw;
     height: 8vw;
@@ -1571,12 +1578,12 @@ input[type=radio]:checked + label {
     height: 13vw;
     padding: 4vw 3.71vw 4vw 6vw;
     background: #fff;
-    /* border-bottom: 1px solid #d6d6d6; */
+    border-bottom: 1px solid #d6d6d6;
 }
 
-.link-setting > div:last-of-type {
+/* .link-setting > div:last-of-type {
     border: none;
-}
+} */
 
 .link-setting > div > div {
     float: left;
