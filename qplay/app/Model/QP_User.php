@@ -48,7 +48,7 @@ class QP_User extends Model implements  Authenticatable
             -> where('menu_name','=','SYS_PROJECT_MAINTAIN')
             -> select('row_id')
             -> first();
-        if(count($mainTainMenuId) == 0){
+        if(is_null($mainTainMenuId)){
             return false;
         }
         $groupId  = $this->getMenuGroupId();

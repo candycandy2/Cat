@@ -114,7 +114,7 @@ $messageType = $sendInfo->message_info->message_type;
             <br/><br/>
             @foreach($allCompanyRoleList as $companyRoles)
             <!--{{$tempFlag++}}-->
-                @if(count($companyRoles->roles > 0))
+                @if(count($companyRoles->roles) > 0)
                     <table class="table table-bordered RoleTable" id="RoleTable_{{$companyRoles->company}}" style="border:1px solid #d6caca;width:60%;">
                         <tr>
                             <td rowspan="{{count($companyRoles->roles)}}" class="bg-gray-light col-lg-4 col-xs-4" style="text-align: center;border:1px solid #d6caca;vertical-align: middle;background-color:@if($tempFlag % 2 == 0) #d9edf7; @else #f9edf7; @endif">

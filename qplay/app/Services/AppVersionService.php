@@ -417,7 +417,7 @@ class AppVersionService
     
       foreach ( $appStatus as $deviceType => $value) {
         $deviceStatus = $this->appVersionRepository->getPublishedApp($appId, $deviceType);
-        if(count($deviceStatus) > 0){
+        if(!is_null($deviceStatus)){
             $appStatus[$deviceType]['str'] = $deviceStatus->version_name;
             $appStatus[$deviceType]['versionCode'] = $deviceStatus->version_code;
             $appStatus[$deviceType]['url'] = $deviceStatus->url;
