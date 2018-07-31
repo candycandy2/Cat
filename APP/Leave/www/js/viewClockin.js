@@ -332,10 +332,13 @@ $("#viewClockin").pagecontainer({
             otherReason = "";
             //日期恢復請選擇
             $("#chooseWorkday").text(pleaseSelectStr);
+            $("#newWorkDate").val("");
             workingday = "";
             $("#chooseClockinday").text(pleaseSelectStr);
+            $("#newClockinDate").val("");
             clockinday = "";
             $("#chooseClockintime").text(pleaseSelectStr);
+            $("#timepicker").val("");
             clockintime = "";
             checkClockinBeforePreview();
         });
