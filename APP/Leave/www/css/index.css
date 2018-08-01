@@ -615,7 +615,8 @@ html body .ui-group-theme-a a:visited {
 .errMsgByClockin>.ui-content,
 .overitmeDateFirst>.ui-content,
 .starttimeFirst>.ui-content,
-.endTimeError>.ui-content {
+.endTimeError>.ui-content,
+.leftDaysByOT>.ui-content {
     padding: 0 !important;
 }
 
@@ -635,7 +636,8 @@ html body .ui-group-theme-a a:visited {
 .errMsgByClockin>.ui-content>.header,
 .overitmeDateFirst>.ui-content>.header,
 .starttimeFirst>.ui-content>.header,
-.endTimeError>.ui-content>.header {
+.endTimeError>.ui-content>.header,
+.leftDaysByOT>.ui-content>.header {
     margin-top: 12.5%;
 }
 

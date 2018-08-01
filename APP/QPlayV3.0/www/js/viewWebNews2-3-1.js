@@ -682,9 +682,9 @@ $("#viewWebNews2-3-1").pagecontainer({
             //var action = $(this).prop("id");
             //goBack(action);
 
-            if (massageFrom == 'viewMain3') {
+            if (messageFrom == 'viewMain3') {
                 $.mobile.changePage('#viewMain3');
-            } else if (massageFrom == 'viewMessageList') {
+            } else if (messageFrom == 'viewMessageList') {
                 //$.mobile.changePage('#viewMessageList');
                 checkAppPage('viewMessageList');
             }
