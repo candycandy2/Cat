@@ -45,5 +45,6 @@ abstract class ResultCode
     const _000918_AppCategoryNameExist = "000918"; //分類名稱重複
     const _000919_validateError = "000919"; //格式驗證錯誤
     const _000920_companyExist = "000920"; //公司名稱重複
+    const _000921_functionVariableExist = "000921"; //功能變數名稱重複
     //TODO 以下为各系统扩展
 }
