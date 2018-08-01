@@ -1,5 +1,5 @@
 $("#viewAppSetting").pagecontainer({
-    create: function(event, ui) {
+    create: function (event, ui) {
 
 
         function doLogOut() {
@@ -78,12 +78,26 @@ $("#viewAppSetting").pagecontainer({
         }
 
 
+        function uploadFile(queryData) {
+            var self = this;
+
+            this.successCallback = function (data) {
+                console.log(data);
+            };
+
+            this.failCallback = function (data) { };
+
+            var __construct = function () {
+                QStorageAPI("POST", "portrait", self.successCallback, self.failCallback, queryData, null);
+            }();
+        }
+
         /********************************** page event ***********************************/
-        $("#viewAppSetting").on("pagebeforeshow", function(event, ui) {
+        $("#viewAppSetting").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewAppSetting").one("pageshow", function(event, ui) {
+        $("#viewAppSetting").one("pageshow", function (event, ui) {
             //language string
             $('.name-user').text(loginData['loginid']);
             $('#viewAppSetting .ui-title div').text(langStr['str_082']);
@@ -100,11 +114,11 @@ $("#viewAppSetting").pagecontainer({
             tplJS.Popup("viewAppSetting", "settingContent", "append", eventLogoutConfirmPopupData);
         });
 
-        $("#viewAppSetting").on("pageshow", function(event, ui) {
+        $("#viewAppSetting").on("pageshow", function (event, ui) {
 
         });
 
-        $("#viewAppSetting").on("pagehide", function(event, ui) {
+        $("#viewAppSetting").on("pagehide", function (event, ui) {
 
         });
 
@@ -149,6 +163,62 @@ $("#viewAppSetting").pagecontainer({
         //取消头像
         $('.cancel-choose').on('click', function () {
             $('.setting-mask').hide();
+        });
+
+        //相机
+        $('.choose-camera').on('click', function () {
+            navigator.camera.getPicture(onSuccess, onFail, {
+                quality: 50,
+                sourceType: Camera.PictureSourceType.Camera,
+                destinationType: Camera.DestinationType.FILE_URI
+            });
+
+            function onSuccess(imageURI) {
+                console.log(imageURI);
+                var myPhoto = document.getElementById('myPhoto');
+                myPhoto.src = imageURI;
+                $('.setting-mask').hide();
+
+                //input file
+                //$('#photoFile').val(imageURI);
+                //var formData = new FormData(myPhoto);
+                //console.log(formData);
+
+                //FormData
+                var formData = new FormData();
+                formData.append('files', imageURI);
+                //console.log(formData);
+
+                //Call API
+                //uploadFile(formData);
+            }
+
+            function onFail(message) {
+                console.log('Failed because: ' + message);
+            }
+        });
+
+        //图库
+        $('.choose-picture').on('click', function () {
+            navigator.camera.getPicture(onSuccess, onFail, {
+                quality: 50,
+                sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+                destinationType: Camera.DestinationType.DATA_URL
+            });
+
+            function onSuccess(imageData) {
+                console.log(imageData);
+                var myPhoto = document.getElementById('myPhoto');
+                myPhoto.src = "data:image/jpeg;base64," + imageData;
+                $('.setting-mask').hide();
+
+                //Base64
+
+            }
+
+            function onFail(message) {
+                console.log('Failed because: ' + message);
+            }
         });
 
     }
