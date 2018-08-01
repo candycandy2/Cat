@@ -17,7 +17,7 @@
         <div class="setting-main">
             <div class="photo-setting">
                 <div class="photo-default">
-                    <img src="img/photo.jpg" width="100%" style="border-radius:50%">
+                    <img src="img/photo.jpg" id="myPhoto">
                 </div>
                 <div class="name-user"></div>
             </div>
@@ -51,13 +51,14 @@
                 </div>
             </div>
             <div class="logout-fixed-btn" id="logout"></div>
+            <div style="display:none;"><input type="file" id="photoFile"></div>
         </div>
 
         <!--遮罩(头像)-->
         <div class="setting-mask">
             <div class="photo-choose">
-                <div>相机</div>
-                <div>图库</div>
+                <div class="choose-camera">相机</div>
+                <div class="choose-picture">图库</div>
             </div>
             <div class="cancel-choose">取消</div>
         </div>

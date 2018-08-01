@@ -1,34 +1,15 @@
-var overtimeday = "", startottime = "", endottime = "";
+var overtimeday = "", startottime = "", endottime = "", otreason = "";
+var timeoutGetOTReason = null;
 
 //檢查是否符合預覽送簽標準
 function checkOvertimeBeforePreview() {
-    var  otherReasonStatus= $("#otherReason").css('display');
-    //必須符合3個條件：1.請假理由不能爲空 2.開始時間和结束时间 3.需要基准日的是否已选择 4.代理人必须选择
-    if (otherReasonStatus === "none") {
-        if (workName !== "" &&
-            $("#work-type-popup option").text() !== pleaseSelectStr &&
-            $('#chooseOTday').text() !== pleaseSelectStr &&
-            $('#chooseClockinday').text() !== pleaseSelectStr &&
-            $('#chooseClockintime').text() !== pleaseSelectStr &&
-            $("#reason-type-popup option").text() !== pleaseSelectStr ) {
-                $('#previewClockinBtn').addClass('leavePreview-active-btn');
-
-        } else {
-            $('#previewClockinBtn').removeClass('leavePreview-active-btn');
-        }
-    }else {
-        if (workName !== "" &&
-            otherReason !== "" &&
-            $("#work-type-popup option").text() !== pleaseSelectStr &&
-            $('#chooseOTday').text() !== pleaseSelectStr &&
-            $('#chooseClockinday').text() !== pleaseSelectStr &&
-            $('#chooseClockintime').text() !== pleaseSelectStr &&
-            $("#reason-type-popup option").text() !== pleaseSelectStr ) {
-                $('#previewClockinBtn').addClass('leavePreview-active-btn');
-
-        } else {
-            $('#previewClockinBtn').removeClass('leavePreview-active-btn');
-        }
+    if (otreason !== "" &&
+        $('#chooseOTday').text() !== pleaseSelectStr &&
+        $('#startTimeText').text() !== pleaseSelectStr &&
+        $('#endTimeText').text() !== pleaseSelectStr) {
+            $('#previewOTBtn').addClass('leavePreview-active-btn');
+    } else {
+        $('#previewOTBtn').removeClass('leavePreview-active-btn');
     }
 }
 
@@ -36,7 +17,48 @@ $("#viewOvertimeSubmit").pagecontainer({
     create: function(event, ui) {
 
         /********************************** function *************************************/
-        
+        //選擇結束時間計算請假數
+        window.CountOvertimeHoursByEnd = function() {
+
+            this.successCallback = function(data) {
+                //console.log(data);
+                if (data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var overtimeSuccess = $("success", htmlDom);
+                    var overtimeError = $("error", htmlDom);
+                    var applyDays = $("ApplyDays", htmlDom);
+                    var applyHours = $("ApplyHours", htmlDom);
+                    countApplyDays = $(applyDays).html();
+                    countApplyHours = $(applyHours).html();
+
+                    if ($(overtimeSuccess).html() != undefined) {
+                        //success无提示，改变请假数即可
+                        $("#overtimeDays").text(countApplyDays);
+                        $("#overtimeHours").text(countApplyHours);
+                    } else {
+                        //error提示
+                        var errorMsg = $(overtimeError).html();
+                        $('.leftDaysByOT').find('.header-text').html(errorMsg);
+                        popupMsgInit('.leftDaysByOT');
+                        //enddate
+                        $("#endTimeText").text(pleaseSelectStr);
+                        $("#overtimeDays").text("0");
+                        $("#overtimeHours").text("0");
+                    }
+
+                    //檢查是否可以預覽送簽
+                    checkOvertimeBeforePreview();
+                    loadingMask("hide");
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "CountOvertimeHours", self.successCallback, self.failCallback, countOvertimeHoursByEndQueryData, "");
+            }();
+        };
 
         /********************************** page event *************************************/
         $("#viewOvertimeSubmit").one("pagebeforeshow", function(event, ui) {
@@ -83,6 +105,13 @@ $("#viewOvertimeSubmit").pagecontainer({
                 $("#chooseOTday").text(pleaseSelectStr);
             } else {
                 $("#chooseOTday").text(overtimeday);
+                //如果出勤日改變，開始和结束時間要清空
+                $("#startTimeText").text(pleaseSelectStr);
+                $("#startOTPicker").val("");
+                startottime = "";
+                $("#endTimeText").text(pleaseSelectStr);  
+                $("#endOTPicker").val("");         
+                endottime = "";
             }
             checkOvertimeBeforePreview();
         });
@@ -121,6 +150,10 @@ $("#viewOvertimeSubmit").pagecontainer({
                 startottime = textDateTime;
                 //Create temporary data
                 tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
+                //如果開始時間改變，结束時間要清空
+                $("#endTimeText").text(pleaseSelectStr);  
+                $("#endOTPicker").val("");         
+                endottime = "";
             } 
             tplJS.recoveryPageScroll();
 
@@ -148,22 +181,16 @@ $("#viewOvertimeSubmit").pagecontainer({
                     endottime = textDateTime;
                     //Create temporary data
                     tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
-                    /*countOvertimeHoursByEndQueryData = "<LayoutHeader><EmpNo>" +
+                    countOvertimeHoursByEndQueryData = "<LayoutHeader><EmpNo>" +
                         myEmpNo +
-                        "</EmpNo><leaveid>" +
-                        leaveid +
-                        "</leaveid><begindate>" +
-                        startLeaveDate.split(" ")[0] +
-                        "</begindate><begintime>" +
-                        startLeaveDate.split(" ")[1] +
-                        "</begintime><enddate>" +
-                        endLeaveDate.split(" ")[0] +
-                        "</enddate><endtime>" +
-                        endLeaveDate.split(" ")[1] +
-                        "</endtime><datumdate>" +
-                        ((needBaseday == true) ? baseday : '') +
-                        "</datumdate></LayoutHeader>"; */
-                    //CountOvertimeHoursByEnd(); 
+                        "</EmpNo><targetdate>" +
+                        overtimeday +
+                        "</targetdate><begintime>" +
+                        startottime +
+                        "</begintime><endtime>" +
+                        endottime +
+                        "</endtime></LayoutHeader>"; 
+                    CountOvertimeHoursByEnd(); 
                 }                             
             } 
             tplJS.recoveryPageScroll();
@@ -171,6 +198,23 @@ $("#viewOvertimeSubmit").pagecontainer({
             $(".ui-datebox-container").css("opacity", "0");
             checkOvertimeBeforePreview();
         };
+
+        function GetOTReason() {
+            otreason = $.trim($("#overtimeReason").val()); 
+            //檢查是否可以預覽送簽
+            checkOvertimeBeforePreview();
+        }
+
+        //實時獲取多行文本值
+        $("#overtimeReason").on("keyup", function() {
+            if (timeoutGetOTReason != null) {
+                clearTimeout(timeoutGetOTReason);
+                timeoutGetOTReason = null;
+            }
+            timeoutGetOTReason = setTimeout(function() {
+                GetOTReason();
+            }, 2000);
+        });
       
          //清除加班申請
         $("#emptyOvertimeForm").on("click", function() {
@@ -178,10 +222,21 @@ $("#viewOvertimeSubmit").pagecontainer({
             $('#applyOTDay').text(applyDay);
             //日期恢復請選擇
             $("#chooseOTday").text(pleaseSelectStr);
+            $("#newOTDate").val("");
+            overtimeday = "";
             $("#startTimeText").text(pleaseSelectStr);
-            $("#endTimeText").text(pleaseSelectStr);
+            $("#startOTPicker").val("");
             startottime = "";
+            $("#endTimeText").text(pleaseSelectStr);  
+            $("#endOTPicker").val("");         
             endottime = "";
+            //清除加班理由
+            $("#overtimeReason").val("");
+            otreason = "";
+            //请假数恢复0，0
+            $("#overtimeDays").text("0");
+            $("#overtimeHours").text("0");
+            checkOvertimeBeforePreview();
         });
 
 
