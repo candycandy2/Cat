@@ -119,7 +119,7 @@ $("#viewMessageList").pagecontainer({
 
             //5. to detail
             $('.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon').on('click', function() {
-                massageFrom = 'viewMessageList';
+                messageFrom = 'viewMessageList';
                 messageRowId = $(this).parents('li').attr('data-rowid');
                 $.mobile.changePage('#viewWebNews2-3-1');
             });
