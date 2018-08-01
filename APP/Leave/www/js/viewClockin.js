@@ -108,7 +108,7 @@ $("#viewClockin").pagecontainer({
                     if ($(success).html() != undefined) {
                         //如果送簽成功，跳轉到“補登申請”頁
                         $("#backClockin").click();
-                        $("#sendClockinMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        $(".popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyClockinForm").trigger("click");
                     } else {
@@ -145,7 +145,7 @@ $("#viewClockin").pagecontainer({
 
         $("#viewClockin").on("pageshow", function(event, ui) {
             $('#applyClockinDay').text(applyDay);
-            $('#previewWorkDay').text(applyDay);
+            $('#previewApplyDay').text(applyDay);
             loadingMask("hide");
         });
 
