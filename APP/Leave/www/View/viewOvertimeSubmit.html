@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div data-role="main" class="page-main">
+    <div data-role="main" class="page-main" style="padding-top: 5vw;">
         <div class="apply-container">
             <!-- applyDate -->
             <div class="apply-date font-style12">
@@ -21,7 +21,7 @@
                 <span id="applyOTDay"></span>
             </div>
             <!-- overtime date -->
-            <div id="overtimeDate">
+            <div class="apply-overtime-date">
                 <div class="font-style11">
                     <!-- 加班日期 -->
                     <span class="langStr" data-id="str_201"></span>
@@ -35,7 +35,7 @@
             <!-- empty div -->
             <div class="apply-empty-div3"></div>
             <!-- apply date -->
-            <div class="apply-leave-date">
+            <div class="apply-overtime-time">
                 <div class="font-style11">
                     <!-- 加班時間 -->
                     <span class="langStr" data-id="str_202"></span>
@@ -69,9 +69,6 @@
                     <span class="langStr" data-id="str_203"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="overtimeDays">0</span>&nbsp;
-                    <!-- 天 -->
-                    <span class="langStr" data-id="str_071"></span>&nbsp;
                     <span id="overtimeHours">0</span>&nbsp;
                     <!-- 小時 -->
                     <span class="langStr" data-id="str_088"></span>
@@ -118,90 +115,59 @@
             <div class="preview-apply-date font-style12">
                 <!-- 申請日期： -->
                 <span class="langStr" data-id="str_080"></span>
-                <span id="previewOTDay"></span>
+                <span id="previewApplyDate"></span>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 出勤日期 -->
-                    <span class="langStr" data-id="str_190"></span>
+                    <!-- 加班日期 -->
+                    <span class="langStr" data-id="str_201"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="previewWorkday"></span>
-                </div>
-            </div>
-            <div class="preview-apply-categroy">
-                <div></div>
-                <div class="font-style11">
-                    <!-- 班別名稱 -->
-                    <span class="langStr" data-id="str_191"></span>
-                </div>
-                <div class="font-style3">
-                    <span id="previewWorkName"></span>
+                    <span id="previewOTDay"></span>
                 </div>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 刷卡類型 -->
-                    <span class="langStr" data-id="str_192"></span>
+                    <!-- 加班時間 -->
+                    <span class="langStr" data-id="str_202"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="previewWorkType"></span>
+                    <span id="previewOTTime"></span>
                 </div>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 刷卡日期與時間 -->
-                    <span class="langStr" data-id="str_197"></span>
+                    <!-- 加班時數 -->
+                    <span class="langStr" data-id="str_203"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="previewClockinDay"></span>
-                    <span id="previewClockinTime"></span>
+                    <span id="previewOTHours"></span>
                 </div>
-            </div>
-            <!--<div class="preview-apply-categroy">
+            </div>         
+            <div class="preview-apply-categroy">
                 <div></div>
-                <div class="font-style11"> -->
-                    <!-- 刷卡時間 -->
-                    <!--<span class="langStr" data-id="str_194"></span>
+                <div class="font-style11">
+                    <!-- 加班理由 -->
+                    <span class="langStr" data-id="str_204"></span>
                 </div>
                 <div class="font-style3 overflow-hidden">
-                    <span id="previewClockinTime"></span>
-                </div>
-            </div>-->
-            <div class="preview-apply-categroy">
-                <div></div>
-                <div class="font-style11">
-                    <!-- 未刷卡原因 -->
-                    <span class="langStr" data-id="str_195"></span>
-                </div>
-                <div class="font-style3 overflow-hidden">
-                    <span id="previewReason"></span>
-                </div>
-            </div>
-            <div id="otherReasonArea" class="preview-apply-categroy">
-                <div></div>
-                <div class="font-style11">
-                    <!-- 其他原因 -->
-                    <span class="langStr" data-id="str_196"></span>
-                </div>
-                <div class="font-style3 overflow-hidden">
-                    <span id="previewOtherReason"></span>
+                    <span id="previewOTReason"></span>
                 </div>
             </div>
             <!-- empty div -->
             <div class="apply-empty-div2"></div>
             <!-- apply btn -->
             <div class="apply-submit-btn">
-                <div id="confirmBtn">
+                <div id="confirmOTBtn">
                     <!-- 確認送簽 -->
                     <span class="langStr" data-id="str_180"></span>
                 </div>
             </div>
         </div>
-        <div class="popup-msg-style" id="sendClockinMsg">
+        <div class="popup-msg-style">
             <!-- 表單已送簽 -->
             <span class="langStr" data-id="str_198"></span>
         </div>
@@ -317,7 +283,7 @@
     </div>
 
     <!-- confirm send -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmClockin" for="confirmClockin" id="confirmClockin">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmOvertime" for="confirmOvertime" id="confirmOvertime">
         <div data-role="main" class="ui-content">
             <div class="header">
                     <span class='header-icon hidden'>
@@ -338,7 +304,7 @@
                         <!--取消-->
                         <span class="langStr" data-id="com_023"></span>
                     </div>
-                    <div class="btn-cancel" id="confirmSendClockin">
+                    <div class="btn-cancel" id="confirmSendOT">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
                     </div>
