@@ -49,7 +49,8 @@ QTunnel/bin/Newtonsoft.Json.dll
 QTunnel/test/login.html
 QTunnel/test/js/jquery-1.12.3.min.js
 2. 設定QTunnel/Web.config
-<add key="serverPath" value="LDAP://10.82.12.61/" />
+<add key="serverPath" value="LDAP://10.82.12.61/DC=benq,DC=corp,DC=com" />
+可以使用QTunnel/LDAPTool/ldapAdmin.exe 測試, 並取得DC=benq,DC=corp,DC=com
 3. 匯入qplay GPG public key
 gpg --import qlay_B40883DB_Secret.asc
 4. 複製SRC/SyncToFile/Job file/到可執行目錄(目前只能存取SQLServer)
@@ -57,7 +58,9 @@ gpg --import qlay_B40883DB_Secret.asc
 FilePath      => Output folder
 ViewName => Database table or view name
 ClientSettingsProvider.ServiceUri => Database URI
-
+  <connectionStrings>
+        <add name="dbGaia" connectionString="Database=qplay;Data Source=O-A05X;User Id=sa;Password=mn-123456;" providerName="System.Data.SqlClient" />
+  </connectionStrings>
   <appSettings>
         <add key="FilePath" value="E:\QTuunel\Sync" />
         <add key="ViewName" value="Qp_User_Flower"/>  
@@ -72,6 +75,7 @@ ClientSettingsProvider.ServiceUri => Database URI
 7. 建立排程, 每日早上五點執行一次
 測試方式是會產生
 http://[ip]/QTunnel/Sync/[YYYYMMDD].xls.gpg
+http://[ip]/QTunnel/Sync/[YYYYMMDD].csv.gpg
 8. IIS文件类型的问题，在IIS设定新增MIME types :.gpg
 ```
 
