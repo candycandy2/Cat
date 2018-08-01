@@ -40,10 +40,10 @@ class FunctionService
              $data['fun_variable'] = $function->variable_name;
              $ownerAppData = $this->appRepository->getAppBasicIfnoByAppId($function->owner_app_row_id);
              $data['owner_app_name'] = $ownerAppData->app_name;
-             $data['fun_app_name'] = null;
+             $data['fun_app'] = null;
              if(!is_null($function->app_row_id)){
                 $funAppData = $this->appRepository->getAppBasicIfnoByAppId($function->app_row_id);
-                $data['fun_app_name'] = $funAppData->app_name;
+                $data['fun_app'] = $funAppData->app_name;
              }
              $dataList[] = $data;
         }

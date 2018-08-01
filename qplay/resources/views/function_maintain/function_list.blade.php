@@ -28,7 +28,7 @@
             <th data-field="fun_variable" data-sortable="true">{{trans("messages.FUNCTION_VARIABLE_NAME")}}</th>
             <th data-field="owner_app_name" data-sortable="true">{{trans("messages.OWNER_APP")}}</th>
             <th data-field="fun_type" data-sortable="true">{{trans("messages.FUNCTION_TYPE")}}</th>
-            <th data-field="fun_app_name" data-sortable="true">{{trans("messages.APP_NAME")}}</th>
+            <th data-field="fun_app" data-sortable="true">{{trans("messages.APP_NAME")}}</th>
             <th data-field="fun_status" data-sortable="true" data-formatter="functionStatusFormatter" >{{trans("messages.STATUS")}}</th>
            
         </tr>
@@ -113,7 +113,7 @@
                 if (fun.row_id == functionID) {
                     
                     $("#tbxFunctionName").val(fun.fun_name);
-                    $("#ddlApp").val(fun.fun_app_name);
+                    $("#ddlApp").val(fun.fun_app);
                     $("#tbxFunctionVariable").val(fun.login_type);
                     $("#tbxFunctionDescription").val(fun.server_ip);
                     $("#tbxOwnerApp").val(fun.server_port);
@@ -148,7 +148,7 @@
                 return false;
             }
             if(funType == 'APP'){
-                if(funType.length == 0){
+                if(app.length == 0){
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                     return false;
                 }

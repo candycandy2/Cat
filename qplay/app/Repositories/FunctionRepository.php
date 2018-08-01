@@ -62,13 +62,15 @@ class FunctionRepository
     public function createFunction($request,  $auth)
     {   
 
-        $this->function->name = $request->input('funName');
-        $this->function->variable_name = $request->input('funVariable');
-        $this->function->description = $request->input('funDescription');
-        $this->function->owner_app_row_id = $request->input('ownerApp');
-        $this->function->type = $request->input('funType');
-        $this->function->app_row_id = $request->input('app');
-        $this->function->status = $request->input('funStatus');
+        $this->function->name = $request['funName'];
+        $this->function->variable_name = $request['funVariable'];
+        $this->function->description = $request['funDescription'];
+        $this->function->owner_app_row_id = $request['ownerApp'];
+        $this->function->type = $request['funType'];
+        if(isset($request['app'])){
+            $this->function->app_row_id = $request['app'];
+        }
+        $this->function->status = $request['funStatus'];
         $this->function->created_user = $auth::user()->row_id;
         $this->function->created_at = date('Y-m-d H:i:s',time());
 

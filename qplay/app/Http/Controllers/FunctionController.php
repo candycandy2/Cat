@@ -74,8 +74,9 @@ class FunctionController extends Controller
                                      'message'=>trans("messages.ERR_FUNCTION_VARIABLE_EXIST")], 200);
         }
         
+
         //Create New Function
-        $this->functionService->createFunction($request, $auth);
+        $this->functionService->createFunction(array_filter($request->all()), $auth);
         return response()->json(['result_code' => ResultCode::_1_reponseSuccessful]);
     }
 
