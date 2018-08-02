@@ -10,7 +10,7 @@ var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin", "viewOvertimeSubmit"];
+var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin", "viewOvertimeSubmit", "viewOvertimeQuery"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var htmlContent = "";
@@ -480,9 +480,11 @@ function startMainPage() {
     if (hasClockinOTPanel) {
         $("#mypanelviewClockin").show();
         $("#mypanelviewOvertimeSubmit").show();
+        $("#mypanelviewOvertimeQuery").show();
     } else {
         $("#mypanelviewClockin").hide();
         $("#mypanelviewOvertimeSubmit").hide();
+        $("#mypanelviewOvertimeQuery").hide();
     }
     if (!viewPersonalLeaveShow  && defaultSettingDone) {
         //个人剩余假别资讯

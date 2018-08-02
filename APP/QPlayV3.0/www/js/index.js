@@ -739,7 +739,12 @@ function getVersionRecord(key) {
             //set height
             var contentHeight = $('.version-scroll > div').height();
             var headerHeight = $('#viewVersionRecord .page-header').height();
-            var totalHeight = (contentHeight + headerHeight).toString();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (contentHeight + headerHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (contentHeight + headerHeight).toString();
+            }
             $(".version-scroll > div").css('height', totalHeight + 'px');
 
         }
@@ -826,6 +831,7 @@ function QStorageAPI(requestType, requestAction, successCallback, failCallback, 
 
     // review
     function requestError(data) {
+        console.log(data);
         errorHandler(data, requestAction);
         if (failCallback) {
             failCallback();
@@ -834,6 +840,8 @@ function QStorageAPI(requestType, requestAction, successCallback, failCallback, 
 
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
+    console.log(serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr);
+    console.log(queryData.get('filename'));
 
     $.ajax({
         type: requestType,
@@ -846,7 +854,7 @@ function QStorageAPI(requestType, requestAction, successCallback, failCallback, 
         },
         url: serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
-        data: queryData,
+        data: JSON.stringify(queryData),
         cache: false,
         timeout: 30000,
         success: requestSuccess,

@@ -1,5 +1,5 @@
 $("#viewMessageList").pagecontainer({
-    create: function(event, ui) {
+    create: function (event, ui) {
 
         var messageType = "News",
             newsAllChecked = false,
@@ -15,14 +15,14 @@ $("#viewMessageList").pagecontainer({
 
             window.localStorage.setItem("msgDateFrom", loginData["msgDateFrom"]);
 
-            this.successCallback = function(data) {
+            this.successCallback = function (data) {
                 console.log(data);
 
             };
 
-            this.failCallback = function() {};
+            this.failCallback = function () { };
 
-            var __construct = function() {
+            var __construct = function () {
                 QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
             }();
         }
@@ -60,14 +60,14 @@ $("#viewMessageList").pagecontainer({
             //2. swipe
             var x;
             $('.swipe-delete li > a')
-                .on('touchstart', function(event) {
+                .on('touchstart', function (event) {
                     //console.log(event.originalEvent.pageX)
                     $('.swipe-delete li > a').css('left', '0px') // close em all
                     $(event.currentTarget).addClass('open')
                     //x为手指接触屏幕的点与屏幕左侧的边距，初始值（0~360）
                     x = event.originalEvent.targetTouches[0].pageX // anchor point
                 })
-                .on('touchmove', function(event) {
+                .on('touchmove', function (event) {
                     //结束位置 - 起始位置 = 滑动距离（-360~360），小于零表示左滑，反之右滑
                     var change = event.originalEvent.targetTouches[0].pageX - x
                     //(-100~0),右滑为0,左滑为距离
@@ -75,7 +75,7 @@ $("#viewMessageList").pagecontainer({
                     event.currentTarget.style.left = change + 'px'
                     if (change < -20) disable_scroll() // disable scroll once we hit 10px horizontal slide
                 })
-                .on('touchend', function(event) {
+                .on('touchend', function (event) {
                     var left = parseInt(event.currentTarget.style.left)
                     var itemWidth = $(this).prev().children("a").width()
                     var new_left;
@@ -118,9 +118,12 @@ $("#viewMessageList").pagecontainer({
             $('.msg-update-date').text(langStr['str_079'] + msgUpdateDate);
 
             //5. to detail
-            $('.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon').on('click', function() {
+            $('.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon').on('click', function () {
                 messageFrom = 'viewMessageList';
                 messageRowId = $(this).parents('li').attr('data-rowid');
+                if($('.header-search').css('display') == 'block') {
+                    $('#cancelSearch').trigger('click');
+                }
                 $.mobile.changePage('#viewWebNews2-3-1');
             });
 
@@ -134,7 +137,7 @@ $("#viewMessageList").pagecontainer({
 
             var queryStr = "&message_send_row_id=" + messageRowId;
 
-            this.successCallback = function(data) {
+            this.successCallback = function (data) {
                 console.log(data);
                 var resultcode = data.result_code;
                 var content = data.content;
@@ -177,17 +180,17 @@ $("#viewMessageList").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function (data) { };
 
-            var __construct = function() {
+            var __construct = function () {
                 QPlayAPI("POST", "getMessageDetail", self.successCallback, self.failCallback, null, queryStr);
             }();
         }
 
         function createMsgHtml(varURL) {
-            (function() {
+            (function () {
                 $(".htmlContent").html("");
-                $(".htmlContent").load(varURL, function() {
+                $(".htmlContent").load(varURL, function () {
                     $(".htmlContent").find("meta").remove();
                     $(".htmlContent").find("title").remove();
                     $(".htmlContent").find("base").remove();
@@ -214,7 +217,7 @@ $("#viewMessageList").pagecontainer({
                 left: 0
             });
 
-            $(".htmlContent").html(content).promise().done(function() {
+            $(".htmlContent").html(content).promise().done(function () {
 
                 var screenWidth = document.documentElement.clientWidth;
                 var $images = $('.htmlContent img');
@@ -222,7 +225,7 @@ $("#viewMessageList").pagecontainer({
                 var loaded_finish = false;
 
                 if ($images.length > 0) {
-                    $images.load(function() {
+                    $images.load(function () {
 
                         loaded_images_count++;
 
@@ -235,14 +238,14 @@ $("#viewMessageList").pagecontainer({
                             //$("#messageLoadErrorPopup").popup("close");
                             $("#viewMessageDetail").css("min-height", document.documentElement.clientHeight + "px");
 
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 doPanZoom();
                             }, 500);
                         }
 
                     });
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         if (!loaded_finish) {
                             //$("#messageLoadErrorPopup").popup("open");
                             $("#viewMessageDetail").css("min-height", document.documentElement.clientHeight + "px");
@@ -328,7 +331,7 @@ $("#viewMessageList").pagecontainer({
                     loadingMask("hide");
 
                     //panzoom start event
-                    $(".htmlContent").on("panzoomstart", function(e, panzoom, matrix, changed) {
+                    $(".htmlContent").on("panzoomstart", function (e, panzoom, matrix, changed) {
                         var canvasWidth = $(".htmlContent").width() * matrix[0];
                         var screenWidth = document.documentElement.clientWidth;
 
@@ -347,7 +350,7 @@ $("#viewMessageList").pagecontainer({
                     });
 
                     //panzoom start zoom
-                    $(".htmlContent").on("panzoomzoom", function(e, panzoom, scale, opts) {
+                    $(".htmlContent").on("panzoomzoom", function (e, panzoom, scale, opts) {
                         $(".htmlContent").panzoom("option", {
                             disablePan: true
                         });
@@ -370,7 +373,7 @@ $("#viewMessageList").pagecontainer({
                     });
 
                     //panzoom end event
-                    $(".htmlContent").on("panzoomend", function(e, panzoom, matrix, changed) {
+                    $(".htmlContent").on("panzoomend", function (e, panzoom, matrix, changed) {
 
                         var canvasWidth;
                         var screenWidth;
@@ -437,7 +440,7 @@ $("#viewMessageList").pagecontainer({
                     });
 
                     //Set Scroll Event
-                    $(".PortalContent").on("scroll", function() {
+                    $(".PortalContent").on("scroll", function () {
 
                         var matrix = $(".htmlContent").panzoom("getMatrix");
                         var canvasHeight = $(".htmlContent").height();
@@ -460,7 +463,7 @@ $("#viewMessageList").pagecontainer({
                     });
 
                     //Prevent Link Action
-                    $(".htmlContent a").on("click", function(event) {
+                    $(".htmlContent a").on("click", function (event) {
                         event.preventDefault();
                     });
                 }
@@ -470,7 +473,7 @@ $("#viewMessageList").pagecontainer({
 
         function checkIconCount(type) {
             var count = 0;
-            $.each($('.' + type + '-content li'), function(index, item) {
+            $.each($('.' + type + '-content li'), function (index, item) {
                 if ($(item).find('.msg-check-btn').attr('data-src') == 'checkbox_green') {
                     count++;
                 }
@@ -479,25 +482,33 @@ $("#viewMessageList").pagecontainer({
         }
 
         function setMsgHeightByType() {
-            var updateHeight = $('.msg-update-date').height();
-            var headerHeight = $('#viewMessageList .page-header').height();
+            var footHeight = $('.msg-update-date').height();
+            var headHeight = $('#viewMessageList .page-header').height();
+            var fixHeight = $('.msg-tool').height();
 
+            var contentHeight;
             if (messageType == 'News') {
-                var contentHeight = $('.news-content').height();
+                contentHeight = $('.news-content').height();
 
             } else {
-                var contentHeight = $('.event-content').height();
+                contentHeight = $('.event-content').height();
 
             }
 
-            var totalHeight = (contentHeight + updateHeight + headerHeight).toString();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (contentHeight + headHeight + footHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (contentHeight + headHeight + footHeight).toString();
+            }
+
             $('.message-scroll > div').css('height', totalHeight + 'px');
         }
 
         function viewMessageInitila() {
             $('.dropdown-title').removeClass('opacity');
             $('.dropdown-news').show();
-            $('.q-btn-header').show();
+            $('#viewMessageList .q-btn-header').show();
             $('.header-search').hide();
             $('#cancelEdit').hide();
             $('#cancelSearch').hide();
@@ -520,37 +531,37 @@ $("#viewMessageList").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewMessageList").on("pagebeforeshow", function(event, ui) {
+        $("#viewMessageList").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewMessageList").one("pageshow", function(event, ui) {
+        $("#viewMessageList").one("pageshow", function (event, ui) {
             //filter placeholder多语言设置
             $('#msgFilter').attr('placeholder', langStr['str_080']);
         });
 
-        $("#viewMessageList").on("pageshow", function(event, ui) {
+        $("#viewMessageList").on("pageshow", function (event, ui) {
             createMessageByType();
         });
 
-        $("#viewMessageList").on("pagehide", function(event, ui) {
+        $("#viewMessageList").on("pagehide", function (event, ui) {
 
         });
 
 
         /********************************** dom event *************************************/
         //返回homepage
-        $('#viewMessageList .q-btn-header').on('click', function() {
+        $('#viewMessageList .q-btn-header').on('click', function () {
             $.mobile.changePage('#viewMain3');
         });
 
         //弹出message下拉菜单
-        $("#viewMessageList .ui-title").on("click", function() {
+        $("#viewMessageList .ui-title").on("click", function () {
             $(".select-news").slideToggle(200);
         });
 
         //选择message类型
-        $("#viewMessageList div[data-name=msgType]").on("click", function() {
+        $("#viewMessageList div[data-name=msgType]").on("click", function () {
             var self = this;
             var currentType = $(self).text();
 
@@ -574,7 +585,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //编辑listview
-        $('#editListview').on('click', function() {
+        $('#editListview').on('click', function () {
             if ($('.select-news').css('display') == 'block') {
                 $(".select-news").slideUp();
             }
@@ -596,7 +607,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //取消编辑listview
-        $('#cancelEdit').on('click', function() {
+        $('#cancelEdit').on('click', function () {
             //header
             $('.dropdown-title').removeClass('opacity');
             $('.dropdown-news').show();
@@ -610,18 +621,18 @@ $("#viewMessageList").pagecontainer({
             $('.msg-next-icon').show();
             $('.msg-tool').slideUp(300);
             $('.msg-tool-blank').hide(300);
-            $('#viewMessageList .ui-title').on('click', function() {
+            $('#viewMessageList .ui-title').on('click', function () {
                 $(".select-news").slideToggle(200);
             });
         });
 
         //搜索listview
-        $('#searchListview').on('click', function() {
+        $('#searchListview').on('click', function () {
             if ($('.select-news').css('display') == 'block') {
                 $(".select-news").slideUp();
             }
 
-            $('.q-btn-header').hide();
+            $('#viewMessageList .q-btn-header').hide();
             $('.header-search').show();
             $('#editListview').hide();
             $('#searchListview').hide();
@@ -629,12 +640,12 @@ $("#viewMessageList").pagecontainer({
         });
 
         //取消搜索listview
-        $('#cancelSearch').on('click', function() {
+        $('#cancelSearch').on('click', function () {
             $('#msgFilter').val('');
             $('#msgFilter').blur();
 
             $('.header-search').hide();
-            $('.q-btn-header').show();
+            $('#viewMessageList .q-btn-header').show();
             $('#cancelSearch').hide();
             $('#editListview').show();
             $('#searchListview').show();
@@ -643,7 +654,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //news编辑
-        $('.news-content').on('click', '.msg-check-btn', function() {
+        $('.news-content').on('click', '.msg-check-btn', function () {
             var $self = $(this);
 
             if ($self.attr('data-src') == 'checkbox') {
@@ -666,7 +677,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //event编辑
-        $('.event-content').on('click', '.msg-check-btn', function() {
+        $('.event-content').on('click', '.msg-check-btn', function () {
             var $self = $(this);
 
             if ($self.attr('data-src') == 'checkbox') {
@@ -689,7 +700,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //news全选
-        $('.news-select-btn').on('click', function() {
+        $('.news-select-btn').on('click', function () {
             if (!newsAllChecked) {
                 $('.news-content .msg-check-btn').attr('src', 'img/checkbox_green.png');
                 $('.news-content .msg-check-btn').attr('data-src', 'checkbox_green');
@@ -709,7 +720,7 @@ $("#viewMessageList").pagecontainer({
 
 
         //event全选
-        $('.event-select-btn').on('click', function() {
+        $('.event-select-btn').on('click', function () {
             if (!eventAllChecked) {
                 $('.event-content .msg-check-btn').attr('src', 'img/checkbox_green.png');
                 $('.event-content .msg-check-btn').attr('data-src', 'checkbox_green');
@@ -728,9 +739,9 @@ $("#viewMessageList").pagecontainer({
         });
 
         //news标记已读
-        $('.news-readed-btn').on('click', function() {
+        $('.news-readed-btn').on('click', function () {
             if ($(this).hasClass('enabled-font')) {
-                $.each($('.news-content .msg-check-btn'), function(index, item) {
+                $.each($('.news-content .msg-check-btn'), function (index, item) {
                     if ($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
                         messageRowId = $(item).parents('li').attr('data-rowid');
                         updateReadDelete('news', 'read');
@@ -740,9 +751,9 @@ $("#viewMessageList").pagecontainer({
         });
 
         //event标记已读
-        $('.event-readed-btn').on('click', function() {
+        $('.event-readed-btn').on('click', function () {
             if ($(this).hasClass('enabled-font')) {
-                $.each($('.event-content .msg-check-btn'), function(index, item) {
+                $.each($('.event-content .msg-check-btn'), function (index, item) {
                     if ($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
                         messageRowId = $(item).parents('li').attr('data-rowid');
                         updateReadDelete('event', 'read');
@@ -752,7 +763,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //news标记删除
-        $('.news-delete-btn').on('click', function() {
+        $('.news-delete-btn').on('click', function () {
             if ($(this).hasClass('enabled-font')) {
                 $('#confirmDeleteMsg').popup('open');
                 $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_039"]);
@@ -762,7 +773,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //event标记删除
-        $('.event-delete-btn').on('click', function() {
+        $('.event-delete-btn').on('click', function () {
             if ($(this).hasClass('enabled-font')) {
                 $('#confirmDeleteMsg').popup('open');
                 $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_042"]);
@@ -772,7 +783,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //news swipe删除
-        $('.news-content').on('click', 'a.delete-btn', function() {
+        $('.news-content').on('click', 'a.delete-btn', function () {
             messageRowId = $(this).parents('li').attr('data-rowid');
             $('#confirmDeleteMsg').popup('open');
             $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_039"]);
@@ -781,7 +792,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //event swipe删除
-        $('.event-content').on('click', 'a.delete-btn', function() {
+        $('.event-content').on('click', 'a.delete-btn', function () {
             messageRowId = $(this).parents('li').attr('data-rowid');
             $('#confirmDeleteMsg').popup('open');
             $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_042"]);
@@ -790,7 +801,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //取消删除
-        $('#viewMessageList .btn-cancel').on('click', function() {
+        $('#viewMessageList .btn-cancel').on('click', function () {
             $('#confirmDeleteMsg').popup('close');
             if ($(this).attr('id') != 'confirmDeleteBtn') {
                 $('.news-content .swipe-delete li[data-rowid="' + messageRowId + '"] > a').animate({ left: '0px' }, 200);
@@ -798,7 +809,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //确定删除：分为swipe（单个）删除和checkbox（群体）删除
-        $('#confirmDeleteBtn').on('click', function() {
+        $('#confirmDeleteBtn').on('click', function () {
 
             if (deleteType == 'swipe') {
 
@@ -806,7 +817,7 @@ $("#viewMessageList").pagecontainer({
 
             } else if (deleteType == 'checkbox') {
 
-                $.each($('.' + msgType + '-content .msg-check-btn'), function(index, item) {
+                $.each($('.' + msgType + '-content .msg-check-btn'), function (index, item) {
                     if ($(item).attr('data-src') == 'checkbox_green') {
                         messageRowId = $(item).parents('li').attr('data-rowid');
                         updateReadDelete(msgType, 'delete');
