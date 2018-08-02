@@ -131,7 +131,7 @@ $("#viewAppSetting").pagecontainer({
 
         //一般设定
         $('.normal-setting').on('click', function () {
-            checkAppPage('viewDefaultSetting');
+            checkAppPage('viewGeneralSetting');
         });
 
         //QPlay版本记录

@@ -1,4 +1,4 @@
-$("#viewDefaultSetting").pagecontainer({
+$("#viewGeneralSetting").pagecontainer({
     create: function (event, ui) {
 
         var newSettingIndex = [], changeSetting = false;
@@ -16,12 +16,12 @@ $("#viewDefaultSetting").pagecontainer({
 
 
         /********************************** page event ***********************************/
-        $("#viewDefaultSetting").on("pagebeforeshow", function (event, ui) {
+        $("#viewGeneralSetting").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewDefaultSetting").one("pageshow", function (event, ui) {
-            $('#viewDefaultSetting .ui-title div').text(langStr['str_083']).removeClass('opacity');
+        $("#viewGeneralSetting").one("pageshow", function (event, ui) {
+            $('#viewGeneralSetting .ui-title div').text(langStr['str_083']).removeClass('opacity');
 
             setGeneralSetting();
 
@@ -35,11 +35,11 @@ $("#viewDefaultSetting").pagecontainer({
             });
         });
 
-        $("#viewDefaultSetting").on("pageshow", function (event, ui) {
+        $("#viewGeneralSetting").on("pageshow", function (event, ui) {
 
         });
 
-        $("#viewDefaultSetting").on("pagehide", function (event, ui) {
+        $("#viewGeneralSetting").on("pagehide", function (event, ui) {
             if (changeSetting) {
                 //1. 更新index
                 newSettingIndex = [];
