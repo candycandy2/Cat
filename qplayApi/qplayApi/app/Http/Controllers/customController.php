@@ -57,9 +57,19 @@ class customController extends Controller
                 $json = json_decode($result);
             }
             if(isset($json->d)){
-                $json =  json_decode($json->d);    
+                $json =  json_decode($json->d);
             }
-            $resultCode = $json->ResultCode;
+            if ($json !== null) {
+                $resultCode = $json->ResultCode;//review by alan
+            }
+            else {
+                //error handle
+                //Log($result)
+                $result = ['ResultCode'=>ResultCode::_999007_inputJsonFormatInvalid,
+                'message'=>CommonUtil::getMessageContentByCode(ResultCode::_999007_inputJsonFormatInvalid),
+                'content'=>''];
+                return response()->json($result);
+            }
             $resultContent = "";
             if(property_exists($json, 'Content')) {
                 $resultContent = $json->Content;
