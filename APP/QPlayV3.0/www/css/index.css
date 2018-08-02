@@ -1011,6 +1011,13 @@ input[type=radio]:checked + label {
     height: 15vw;
 }
 
+.icon-img {
+    width: 15vw;
+}
+
+.icon-next {
+    margin-top: 4.5vw;
+}
 
 /*************************** viewAppList ********************************/
 #viewAppList .ui-content {
@@ -1302,11 +1309,24 @@ input[type=radio]:checked + label {
     -webkit-overflow-scrolling: touch;
 }
 
+.header-search {
+    display: none;
+}
+
 .input-search {
     width: 73vw !important;
     height: 7vw;
     padding: 0;
     font-size: 3vw;
+}
+
+.icon-style {
+    width: 6vw;
+}
+
+.icon-margin {
+    width: 6vw;
+    margin-left: 3.3vw;
 }
 
 .dropdown-news {
@@ -1395,6 +1415,10 @@ input[type=radio]:checked + label {
 .news-content ul.ui-listview > li:last-of-type > a,
 .event-content ul.ui-listview > li:last-of-type > a {
     border: none !important;
+}
+
+.event-content {
+    display: none;
 }
 
 .msg-delete-btn {
@@ -1682,8 +1706,8 @@ input[type=radio]:checked + label {
     color: #4274BA;
 }
 
-/***************************** viewDefaultSetting ********************************/
-#viewDefaultSetting .ui-content {
+/***************************** viewGeneralSetting ********************************/
+#viewGeneralSetting .ui-content {
     padding: 0 !important;
 }
 

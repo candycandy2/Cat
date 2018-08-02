@@ -739,7 +739,12 @@ function getVersionRecord(key) {
             //set height
             var contentHeight = $('.version-scroll > div').height();
             var headerHeight = $('#viewVersionRecord .page-header').height();
-            var totalHeight = (contentHeight + headerHeight).toString();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (contentHeight + headerHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (contentHeight + headerHeight).toString();
+            }
             $(".version-scroll > div").css('height', totalHeight + 'px');
 
         }

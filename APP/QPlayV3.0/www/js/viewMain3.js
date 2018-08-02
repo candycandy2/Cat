@@ -57,7 +57,7 @@ $("#viewMain3").pagecontainer({
                 var totalHeight;
 
                 if (device.platform === "iOS") {
-                    totalHeight = (mainHeight + headHeight).toString();
+                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
                     $('.main-scroll > div').css('height', totalHeight + 'px');
                 } else {
                     totalHeight = (mainHeight + headHeight + 5).toString();
@@ -65,7 +65,6 @@ $("#viewMain3").pagecontainer({
                 }
 
             }, 5000);
-            //console.log($('.applistWidget').applist('options').finish);
 
         });
 
