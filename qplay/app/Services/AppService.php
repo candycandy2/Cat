@@ -80,17 +80,22 @@ class AppService
      * @return mixed
      */
     public function getAppList($whereCondi=[],$orderCondi=[], $auth=false){
-        
+        $returnList = [];
         $appsList = $this->appRepository->getAppList($whereCondi, $orderCondi)->toArray();
-
-        foreach ($appsList as $index => &$app) {
-                if($auth){
-                    if(!\Auth::user()->isAppAdmin()){
-                        if($app->p_created_user!=\Auth::user()->row_id && $app->pm!=\Auth::user()->login_id){
-                                unset($appsList[$index]);
-                        }
-                    }
+        
+        //init return list
+        if($auth && !\Auth::user()->isAppAdmin()){
+            foreach ($appsList as $index => $app) {
+                if($app['p_created_user'] == \Auth::user()->row_id || $app['pm'] ==\Auth::user()->login_id){
+                         $returnList[] = $app;
                 }
+            }
+        }else{
+            $returnList = $appsList;
+        }
+
+        //add keys
+        foreach ($returnList as $index => &$app) {
                 $selLine = ['app_row_id', 'app_name', 'updated_at'];
                 $selLineCondi =array(array(
                         'field'=>'lang_row_id',
@@ -124,7 +129,7 @@ class AppService
                     $app[$deviceTypeRelease] = $version['version_name'];
                 }
             }
-        return $appsList;
+        return $returnList;
     }
 
     /**

@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div data-role="main" class="page-main">
+    <div data-role="main" class="page-main" style="padding-top: 5vw;">
         <div class="apply-container">
             <!-- applyDate -->
             <div class="apply-date font-style12">
@@ -103,11 +103,6 @@
                 <!--<input type="text" name="timepicker" class="timepicker" id="newClockinTime">-->
                 <input data-role='datebox' id="timepicker" readonly="readonly" type="text" data-options='{"mode": "timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox", "closeCallback": "setDoneTime"}' name="timepicker" class="date-time-component">
             </div>
-            <!--<div style="display: none;">
-                <input class="form-control" id="doneTime" type="text" data-role="datebox"
-                data-options='{"mode":"timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox",
-                "closeCallback": "setDoneDateTime"}' readonly="readonly">
-            </div>-->
             <div class="apply-empty-div2"></div>
             <!-- preview btn -->
             <div class="apply-preview-btn">
@@ -130,7 +125,7 @@
             <div class="preview-apply-date font-style12">
                 <!-- 申請日期： -->
                 <span class="langStr" data-id="str_080"></span>
-                <span id="previewWorkDay"></span>
+                <span id="previewApplyDay"></span>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
@@ -213,7 +208,7 @@
                 </div>
             </div>
         </div>
-        <div class="popup-msg-style" id="sendClockinMsg">
+        <div class="popup-msg-style">
             <!-- 表單已送簽 -->
             <span class="langStr" data-id="str_198"></span>
         </div>

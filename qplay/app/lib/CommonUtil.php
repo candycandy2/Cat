@@ -633,7 +633,7 @@ SQL;
             -> where('device_type','=',$key)
             -> where('status','=','ready')
             ->first();
-        if(count($deviceStatus) > 0){
+        if(!is_null($deviceStatus)){
             $appStatus[$key]['str'] = $deviceStatus->version_name;
             $appStatus[$key]['versionCode'] = $deviceStatus->version_code;
             $appStatus[$key]['url'] = $deviceStatus->url;

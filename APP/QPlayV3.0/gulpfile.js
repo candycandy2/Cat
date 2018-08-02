@@ -171,6 +171,8 @@ gulp.task('install', ['copyRes'], shell.task([
     'cordova plugin remove cordova-plugin-android-permissions',
     'cordova plugin remove cordova-plugin-whitelist',
     'cordova plugin remove cordova-plugin-inappbrowser',
+	'cordova plugin remove cordova-plugin-camera',
+	'cordova plugin remove cordova-plugin-ios-camera-permissions',
     'cordova plugin remove cordova-plugin-appavailability',
     //'cordova plugin remove cordova-plugin-file',
     'cordova platform rm ios',
@@ -188,6 +190,8 @@ gulp.task('install', ['copyRes'], shell.task([
     'cordova plugin add cordova-plugin-android-permissions',
     'cordova plugin add cordova-plugin-whitelist',
     'cordova plugin add cordova-plugin-inappbrowser',
+	'cordova plugin add ../../plugins/cordova-plugin-camera',
+	'cordova plugin add cordova-plugin-ios-camera-permissions --save',
     'cordova plugin add phonegap-plugin-mobile-accessibility',
     'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
     'cordova plugin add ../../plugins/cordova-plugin-statusbar',
@@ -210,6 +214,8 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-android-permissions --nofetch',//
     'cordova plugin add ../../plugins/cordova-plugin-whitelist --nofetch',
     'cordova plugin add ../../plugins/cordova-plugin-inappbrowser --nofetch',
+	'cordova plugin add ../../plugins/cordova-plugin-camera --nofetch',
+	'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --nofetch --save',
     'cordova plugin add ../../plugins/cordova-plugin-proguard --nofetch',//
     'cordova plugin add ../../plugins/cordova-plugin-network-information --nofetch',
     'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility --nofetch',

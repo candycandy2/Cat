@@ -578,8 +578,9 @@ html body .ui-group-theme-a a:visited {
 }
 
 .apply-preview-remove {
+    margin-top: 4.3vw;
     height: 10vw;
-    line-height: 10vw;
+    /*line-height: 10vw;*/
     text-align: center;
     color: #2A8ABD;
 }
@@ -599,7 +600,6 @@ html body .ui-group-theme-a a:visited {
     vertical-align: middle;
 }
 
-
 /* popup */
 
 .leaveNotEnough>.ui-content,
@@ -612,7 +612,12 @@ html body .ui-group-theme-a a:visited {
 .agentNotData>.ui-content,
 .deptFirst>.ui-content,
 .confirmClockin>.ui-content,
-.errMsgByClockin>.ui-content {
+.errMsgByClockin>.ui-content,
+.overitmeDateFirst>.ui-content,
+.starttimeFirst>.ui-content,
+.endTimeError>.ui-content,
+.leftDaysByOT>.ui-content,
+.confirmOvertime>.ui-content {
     padding: 0 !important;
 }
 
@@ -629,7 +634,12 @@ html body .ui-group-theme-a a:visited {
 .confirmSend>.ui-content>.header,
 .deptFirst>.ui-content>.header,
 .confirmClockin>.ui-content>.header,
-.errMsgByClockin>.ui-content>.header {
+.errMsgByClockin>.ui-content>.header,
+.overitmeDateFirst>.ui-content>.header,
+.starttimeFirst>.ui-content>.header,
+.endTimeError>.ui-content>.header,
+.leftDaysByOT>.ui-content>.header,
+.confirmOvertime>.ui-content>.header {
     margin-top: 12.5%;
 }
 
@@ -1069,6 +1079,10 @@ html body .ui-group-theme-a a:visited {
     height: 0;
 }
 
+.date-component>.ui-input-text {
+    display: none;
+}
+
 #confirmClockin {
     min-height: 0vw;
 }
@@ -1196,4 +1210,51 @@ li.ui-body-a {
 #backOvertime {
     width: 4.934VW;
     display: none;
+}
+
+.overtime-reason>div:nth-of-type(2) {
+    margin-top: 2.14vw;
+}
+
+.apply-overtime-time {
+    height: 21.3vw;
+    color: #0f0f0f;
+}
+
+.apply-overtime-time>div:nth-of-type(1),
+.apply-overtime-time>div:nth-of-type(2) {
+    height: 5vw;
+}
+
+.apply-overtime-time>div:nth-of-type(2)>div {
+    display: inline-block;
+    width: 46vw;
+    height: 5vw;
+    line-height: 5vw;
+}
+
+.apply-overtime-time>div:nth-of-type(3) {
+    height: 7vw;
+}
+
+.apply-overtime-time>div:nth-of-type(3)>div {
+    display: inline-block;
+    width: 46vw;
+    height: 7vw;
+    line-height: 7vw;
+}
+
+.apply-overtime-date>div:nth-of-type(1),
+.apply-overtime-date>div:nth-of-type(2) {
+    height: 5vw;
+}
+
+#confirmOvertime {
+    min-height: 0vw;
+}
+
+#confirmOvertime .footer {
+    color: #1678E5;
+    font-size: 5.02vw;
+    text-align: center;
 }

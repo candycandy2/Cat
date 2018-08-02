@@ -217,6 +217,12 @@ Route::any('companyMaintain/getCompanyList', ['middleware' => 'auth','uses'=>'Co
 Route::any('companyMaintain/newCompany', ['middleware' => 'auth','uses'=>'CompanyController@newCompany']);
 Route::any('companyMaintain/updateCompany', ['middleware' => 'auth','uses'=>'CompanyController@updateCompany']);
 
+//Function Mantain
+Route::any('functionMaintain', ['middleware' => 'auth','uses'=>'FunctionController@functionList']);
+Route::any('functionMaintain/getFunctionList', ['middleware' => 'auth','uses'=>'FunctionController@getFunctionList']);
+Route::any('functionMaintain/newFunction', ['middleware' => 'auth','uses'=>'FunctionController@newFunction']);
+
+
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){
   Session::set('lang', $lang);
   return redirect()->to(urldecode($uri));

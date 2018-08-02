@@ -60,6 +60,7 @@ return [
     'TITLE_BASIC_INFO_MAINTAIN' => 'Basic Member Information Maintain',
     'TITLE_REGISTER_MAINTAIN_TOOL' => 'Register Maintain Tool',
     'TITLE_COMPANY_MAINTAIN' => 'Company Maintain',
+    'TITLE_FUNCTION_MAINTAIN' => 'Function Maintain',
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
 
@@ -421,5 +422,17 @@ return [
     'COMPANY_PORT' => 'Server Port',
     'COMPANY_ERR_DATA_HAS_EXIST' => 'Company data has exist.',
     'COMPANY_ERR_CREATE_COMPANY_FAILED' => 'Create Company Failed.',
-    'COMPANY_ERR_UPDATE_COMPANY_FAILED' => 'Update Company Failed.'
+    'COMPANY_ERR_UPDATE_COMPANY_FAILED' => 'Update Company Failed.',
+
+    //Function Maintain
+    'FUNCTION_NEW_DATA' => 'Create Function',
+    'FUNCTION_EDIT_DATA' => 'Edit Function',
+    'OWNER_APP' => 'Belong APP Name',
+    'FUNCTION_NAME' => 'Function Name',
+    'FUNCTION_TYPE' => 'Function Type',
+    'FUNCTION_VARIABLE_NAME' => 'Variable Name',
+    'FUNCTION_DESCRIPTION' => 'Description',
+    'ERR_FUNCTION_VARIABLE_EXIST' =>'function variable already exist!',
+    'ERR_CREATE_FUNCTION_FAILED' => 'Create Function Failed!',
+    'ERR_UPDATE_FUNCTION_FAILED' => 'Update Function Failed!'
 ];

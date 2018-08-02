@@ -9,7 +9,7 @@
   },
   {
     "term": "str_002",
-    "definition": "Please allow Qplay push notification for enjoying the full service",
+    "definition": "Please allow QPlay push notification for enjoying the full service",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -529,7 +529,7 @@
   },
   {
     "term": "str_067",
-    "definition": "No appointment record today",
+    "definition": "No appointment today",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -641,7 +641,7 @@
   },
   {
     "term": "str_081",
-    "definition": "Version Record",
+    "definition": "Version History",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -657,7 +657,7 @@
   },
   {
     "term": "str_083",
-    "definition": "一般設定e",
+    "definition": "General",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -665,7 +665,7 @@
   },
   {
     "term": "str_084",
-    "definition": "登出e",
+    "definition": "Logout",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -673,7 +673,7 @@
   },
   {
     "term": "str_085",
-    "definition": "送出e",
+    "definition": "Send",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -681,7 +681,7 @@
   },
   {
     "term": "str_086",
-    "definition": "使用者评论e",
+    "definition": "User Review",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -689,7 +689,7 @@
   },
   {
     "term": "str_087",
-    "definition": "撰写评论e",
+    "definition": "Write a Review",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -697,7 +697,7 @@
   },
   {
     "term": "str_088",
-    "definition": "我要评论e",
+    "definition": "Write a Review",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -705,7 +705,7 @@
   },
   {
     "term": "str_089",
-    "definition": "相机e",
+    "definition": "Camera",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -713,7 +713,7 @@
   },
   {
     "term": "str_090",
-    "definition": "图库e",
+    "definition": "Library",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -721,7 +721,7 @@
   },
   {
     "term": "str_091",
-    "definition": "感谢您的回馈e",
+    "definition": "Thank you",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -737,7 +737,7 @@
   },
   {
     "term": "str_093",
-    "definition": "我的预约e",
+    "definition": "My Reserver",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -753,7 +753,15 @@
   },
   {
     "term": "str_095",
-    "definition": "最新消息e",
+    "definition": "Latest News",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_096",
+    "definition": "Done",
     "context": "",
     "term_plural": "",
     "reference": "",
