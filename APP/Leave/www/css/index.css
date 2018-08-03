@@ -733,7 +733,8 @@ html body .ui-group-theme-a a:visited {
 }
 
 .leave-query-state,
-.backLeave-query-state {
+.backLeave-query-state,
+.overtime-query-state {
     width: 88vw;
     height: 10vw;
     line-height: 10vw;
@@ -743,12 +744,14 @@ html body .ui-group-theme-a a:visited {
 }
 
 .leave-query-state>span,
-.backLeave-query-state>span {
+.backLeave-query-state>span,
+.overtime-query-state>span {
     color: #2e89bc;
 }
 
 .leave-query-state>img,
-.backLeave-query-state>img {
+.backLeave-query-state>img,
+.overtime-query-state>img {
     width: 5vw;
     height: 3vw;
     margin-left: 1vw;
@@ -944,8 +947,6 @@ html body .ui-group-theme-a a:visited {
 #leaveDelete {
     display: none;
 }
-
-
 
 /**************************************** viewBackLeaveApply ***************************************/
 
@@ -1257,4 +1258,32 @@ li.ui-body-a {
     color: #1678E5;
     font-size: 5.02vw;
     text-align: center;
+}
+
+/********************************************** viewOvertimeQuery *********************************************/
+
+#backOTDetailList {
+    width: 4.934VW;
+    display: none;
+}
+
+#overtimeWithdraw,
+#overtimeRevoke,
+#overtimeDelete {
+    display: none;
+}
+
+.not-apply-submit-btn {
+    height: 10vw;
+}
+
+.not-apply-submit-btn>div {
+    width: 64vw;
+    height: 10vw;
+    margin-left: 14.8vw;
+    background-color: #d6d6d6;
+    color: #999999;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 10vw;
 }

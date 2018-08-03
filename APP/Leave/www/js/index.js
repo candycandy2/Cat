@@ -343,6 +343,22 @@ function leaveListToDetail(btn1, btn2, btn3, state) {
     $("#" + btn3).hide();
 }
 
+//加班單列表到詳情
+function overtimeListToDetail(btn1, btn2, btn3, btn4,state) {
+    $("#viewOvertimeQuery .leaveMenu").hide();
+    $(".leave-query-main").hide();
+    $("#backOTDetailList").show();
+    $(".leave-query-detail-sign").show();
+    if (state == null) {
+        $("#" + btn1).hide();
+    } else {
+        $("#" + btn1).show();
+    }
+    $("#" + btn2).hide();
+    $("#" + btn3).hide();
+    $("#" + btn4).hide();
+}
+
 //获取签核流程（请假单和销假单共用）
 function getSignFlow(arr, serial, empname, yn, date, remark) {
     for (var i = 0; i < serial.length; i++) {
