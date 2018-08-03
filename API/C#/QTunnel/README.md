@@ -13,7 +13,7 @@ QTunnel API Readme.md
 
 Login | 
 :------------ | 
-1.login <br> 2.getExternalUser | 
+1.login <br>  | 
 
 
 ![screen shot 2018-05-24 at 6 05 59 pm](https://user-images.githubusercontent.com/1924451/40479083-549bd988-5f7d-11e8-923a-9fd3367d11a1.png)
@@ -30,6 +30,8 @@ QTunnel APIs, 在DMZ區提供介接的服務, 目前提供Login的介接
 2. IIS Server
 3. GPG  https://gnupg.org/download
 4. .Net Framwork 4.0 and later
+5. "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe" QTunnel.sln /p:Configuration=Release /t:Clean,Build
+6. "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe" QPlay.Job.SyncGaiaUser.sln /p:Configuration=Release /p:Platform=x86 /t:Clean,Build
 
 For windows
 下載網址 : https://www.gpg4win.org/
@@ -49,7 +51,8 @@ QTunnel/bin/Newtonsoft.Json.dll
 QTunnel/test/login.html
 QTunnel/test/js/jquery-1.12.3.min.js
 2. 設定QTunnel/Web.config
-<add key="serverPath" value="LDAP://10.82.12.61/" />
+<add key="serverPath" value="LDAP://10.82.12.61/DC=benq,DC=corp,DC=com" />
+可以使用QTunnel/LDAPTool/ldapAdmin.exe 測試, 並取得DC=benq,DC=corp,DC=com
 3. 匯入qplay GPG public key
 gpg --import qlay_B40883DB_Secret.asc
 4. 複製SRC/SyncToFile/Job file/到可執行目錄(目前只能存取SQLServer)
@@ -57,7 +60,9 @@ gpg --import qlay_B40883DB_Secret.asc
 FilePath      => Output folder
 ViewName => Database table or view name
 ClientSettingsProvider.ServiceUri => Database URI
-
+  <connectionStrings>
+        <add name="dbGaia" connectionString="Database=qplay;Data Source=O-A05X;User Id=sa;Password=mn-123456;" providerName="System.Data.SqlClient" />
+  </connectionStrings>
   <appSettings>
         <add key="FilePath" value="E:\QTuunel\Sync" />
         <add key="ViewName" value="Qp_User_Flower"/>  
@@ -72,6 +77,7 @@ ClientSettingsProvider.ServiceUri => Database URI
 7. 建立排程, 每日早上五點執行一次
 測試方式是會產生
 http://[ip]/QTunnel/Sync/[YYYYMMDD].xls.gpg
+http://[ip]/QTunnel/Sync/[YYYYMMDD].csv.gpg
 8. IIS文件类型的问题，在IIS设定新增MIME types :.gpg
 ```
 

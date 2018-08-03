@@ -95,14 +95,13 @@ $("#viewAppList").pagecontainer({
             }
 
             //4. set height
-            var downloadedHight = $('.already-download-list').parent().height();
-            var noDownloadHight = $('.not-download-list').parent().height();
-            var headerHeight = $('#viewAppList .page-header').height();
+            var mainHeight = $('.app-scroll > div').height();
+            var headHeight = $('#viewAppList .page-header').height();
             var totalHeight;
             if (device.platform === "iOS") {
-                totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
+                totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
             } else {
-                totalHeight = (downloadedHight + noDownloadHight + headerHeight).toString();
+                totalHeight = (mainHeight + headHeight).toString();
             }
             $('.app-scroll > div').css('height', totalHeight + 'px');
         }

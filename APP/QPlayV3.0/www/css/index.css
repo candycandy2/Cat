@@ -1011,6 +1011,13 @@ input[type=radio]:checked + label {
     height: 15vw;
 }
 
+.icon-img {
+    width: 15vw;
+}
+
+.icon-next {
+    margin-top: 4.5vw;
+}
 
 /*************************** viewAppList ********************************/
 #viewAppList .ui-content {
@@ -1079,21 +1086,24 @@ input[type=radio]:checked + label {
     height: 100%;
 }
 
-.download-name > div {
-    width: 100%;
-    overflow: -webkit-paged-x;
-}
-
 .download-name > div:nth-of-type(1) {
-    height: 5.92vw;
-    /* color: #323232; */
-    display: table-cell;   
-    vertical-align: bottom;
+    width: 100%;
+    height: 7vw;
+    /* color: #323232;
+    display: table-cell;  
+    vertical-align: bottom; */
+    line-height: 7vw;
 }
 
 .download-name > div:nth-of-type(2) {
+    width: 95%;
     height: 5.92vw;
-    /* color: #0f0f0f; */
+    /* overflow: -webkit-paged-x;
+    word-break: break-all;
+    color: #0f0f0f; */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .download-list > div:nth-of-type(1) img {
@@ -1307,6 +1317,15 @@ input[type=radio]:checked + label {
     height: 7vw;
     padding: 0;
     font-size: 3vw;
+}
+
+.icon-style {
+    width: 6vw;
+}
+
+.icon-margin {
+    width: 6vw;
+    margin-left: 3.3vw;
 }
 
 .dropdown-news {
@@ -1682,8 +1701,8 @@ input[type=radio]:checked + label {
     color: #4274BA;
 }
 
-/***************************** viewDefaultSetting ********************************/
-#viewDefaultSetting .ui-content {
+/***************************** viewGeneralSetting ********************************/
+#viewGeneralSetting .ui-content {
     padding: 0 !important;
 }
 

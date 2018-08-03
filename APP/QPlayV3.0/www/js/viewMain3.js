@@ -51,12 +51,20 @@ $("#viewMain3").pagecontainer({
         $("#viewMain3").one("pageshow", function (event, ui) {
             var applist = new GetAppList();
 
-            //set height
-            if (device.platform === "iOS") {
-                $('.main-scroll > div').css('height', '1100px');
-            } else {
-                $('.main-scroll > div').css('height', '1155px');
-            }
+            setTimeout(function () {
+                var mainHeight = $('.main-scroll > div').height();
+                var headHeight = $('#viewMain3 .page-header').height();
+                var totalHeight;
+
+                if (device.platform === "iOS") {
+                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+                    $('.main-scroll > div').css('height', totalHeight + 'px');
+                } else {
+                    totalHeight = (mainHeight + headHeight + 5).toString();
+                    $('.main-scroll > div').css('height', totalHeight + 'px');
+                }
+
+            }, 5000);
 
         });
 
@@ -96,7 +104,7 @@ $("#viewMain3").pagecontainer({
 
         //点击widget内message，跳转到message详情页
         $('#widgetList').on('click', '.widget-msg-list', function () {
-            massageFrom = 'viewMain3';
+            messageFrom = 'viewMain3';
             messageRowId = $(this).attr('data-rowid');
             $.mobile.changePage('#viewWebNews2-3-1');
         });

@@ -131,7 +131,7 @@ $("#viewAppSetting").pagecontainer({
 
         //一般设定
         $('.normal-setting').on('click', function () {
-            checkAppPage('viewDefaultSetting');
+            checkAppPage('viewGeneralSetting');
         });
 
         //QPlay版本记录
@@ -179,18 +179,6 @@ $("#viewAppSetting").pagecontainer({
                 myPhoto.src = imageURI;
                 $('.setting-mask').hide();
 
-                //input file
-                //$('#photoFile').val(imageURI);
-                //var formData = new FormData(myPhoto);
-                //console.log(formData);
-
-                //FormData
-                var formData = new FormData();
-                formData.append('files', imageURI);
-                //console.log(formData);
-
-                //Call API
-                //uploadFile(formData);
             }
 
             function onFail(message) {
@@ -219,6 +207,21 @@ $("#viewAppSetting").pagecontainer({
             function onFail(message) {
                 console.log('Failed because: ' + message);
             }
+        });
+
+        //test
+        $('#uploadBtn').on('click', function () {
+            var file = $('#photoFile').get(0).files[0];
+            var formData = new FormData();
+            formData.append('files', file);
+            formData.append('name', 'files');
+            formData.append('filename', file.name);
+            
+            console.log(file);
+
+            //Call API
+            //uploadFile(formData);
+
         });
 
     }

@@ -40,13 +40,17 @@ var reserveCalendar = null,
     reserveDirty = false;
 
 //viewMessageList
-var massageFrom;
+var messageFrom;
 
 //viewVersionRecord
 var versionFrom = true;
 
-//viewDefaultSetting
-
+//viewGeneralSetting
+var generalSetting = {
+    'en-us': ['Weather', 'My Reserver', 'My QPlay', 'Latest News'],
+    'zh-cn': ['天气', '我的预约', '我的QPlay', '最新消息'],
+    'zh-tw': ['天氣', '我的預約', '我的QPlay', '最新消息']
+}
 
 window.initialSuccess = function (data) {
     if (data !== undefined) {
@@ -99,52 +103,77 @@ window.initialSuccess = function (data) {
     //For test
     //var unregisterTest = new unregister();
 
-    //default setting
-    getDefaultSetting();
+    //general setting
+    getGeneralSetting();
 }
 
-function getDefaultSetting() {
-    //获取当前环境下的默认设置
-    var weatherStr = langStr['str_092'],
-        reserveStr = langStr['str_093'],
-        qplayStr = langStr['str_094'],
-        newsStr = langStr['str_095'],
-        currentLanguageSetting = [weatherStr, reserveStr, qplayStr, newsStr];
 
-    //获取本地配置
-    var settingArr = JSON.parse(window.localStorage.getItem('defaultSetting'));
+//获取一般设定
+function getGeneralSetting() {
+    //hard code
+    window.localStorage.removeItem('defaultSetting');
+
+    var settingArr = JSON.parse(window.localStorage.getItem('generalSetting'));
+    var updateTime = window.localStorage.getItem('updateGeneral');
 
     if (settingArr == null) {
-        //1. 将null变为空数组[]
-        settingArr = [];
-
-        //2. 根据多语言save到local
-        var settingObj = {
-            language: browserLanguage,
-            settingList: currentLanguageSetting
-        }
-        settingArr.push(settingObj);
-        window.localStorage.setItem('defaultSetting', JSON.stringify(settingArr));
+        window.localStorage.setItem('generalSetting', JSON.stringify(generalSetting));
+        window.localStorage.setItem('updateGeneral', new Date().toISOString());
 
     } else {
-        var haveLanguage = false;
-        for (var i in settingArr) {
-            if (settingArr[i].language == browserLanguage) {
-                haveLanguage = true;
+        var limitSeconds = 7;   //7 day
+        if (checkDataExpired(updateTime, limitSeconds, 'dd')) {
+
+            //同步，且已generalSetting为主，local为辅
+            for (var i in generalSetting) {
+                var arr = compareArrayByFirst(generalSetting[i], settingArr[i]);
+                settingArr[i] = arr;
+            }
+
+            window.localStorage.setItem('generalSetting', JSON.stringify(settingArr));
+            window.localStorage.setItem('updateGeneral', new Date().toISOString());
+        }
+    }
+}
+
+
+//比较2个数组，以第一个数组为准
+function compareArrayByFirst(arr1, arr2) {
+    //add
+    for (var i = 0; i < arr1.length; i++) {
+        var current = arr1[i];
+        var status = false;
+        for (var j = 0; j < arr2.length; j++) {
+            var tag = arr2[j];
+            if (current == tag) {
+                status = true;
                 break;
             }
         }
-
-        if (!haveLanguage) {
-            var settingObj = {
-                language: browserLanguage,
-                settingList: currentLanguageSetting
-            }
-            settingArr.push(settingObj);
-            window.localStorage.setItem('defaultSetting', JSON.stringify(settingArr));
+        if (!status) {
+            arr2.push(current);
         }
-
     }
+
+    //remove
+    var arr = [];
+    for (var i = 0; i < arr2.length; i++) {
+        var current = arr2[i];
+        var status = false;
+        for (var j = 0; j < arr1.length; j++) {
+            var tag = arr1[j];
+            if (current == tag) {
+                status = true;
+                break;
+            }
+        }
+        if (!status) {
+            arr2.splice(i, 1);
+            i--;
+        }
+    }
+    
+    return arr2;
 }
 
 function getMyReserve(key, secret) {
@@ -710,7 +739,12 @@ function getVersionRecord(key) {
             //set height
             var contentHeight = $('.version-scroll > div').height();
             var headerHeight = $('#viewVersionRecord .page-header').height();
-            var totalHeight = (contentHeight + headerHeight).toString();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (contentHeight + headerHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (contentHeight + headerHeight).toString();
+            }
             $(".version-scroll > div").css('height', totalHeight + 'px');
 
         }
@@ -735,7 +769,6 @@ function checkAppPage(pageID) {
             break;
         }
     }
-    console.log(pageID + (appStatus == true ? ' has' : ' has not') + ' been in the app');
 
     if (appStatus) {
         $.mobile.changePage('#' + pageID);
@@ -798,6 +831,7 @@ function QStorageAPI(requestType, requestAction, successCallback, failCallback, 
 
     // review
     function requestError(data) {
+        console.log(data);
         errorHandler(data, requestAction);
         if (failCallback) {
             failCallback();
@@ -806,6 +840,8 @@ function QStorageAPI(requestType, requestAction, successCallback, failCallback, 
 
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
+    console.log(serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr);
+    console.log(queryData.get('filename'));
 
     $.ajax({
         type: requestType,
@@ -818,7 +854,7 @@ function QStorageAPI(requestType, requestAction, successCallback, failCallback, 
         },
         url: serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
-        data: queryData,
+        data: JSON.stringify(queryData),
         cache: false,
         timeout: 30000,
         success: requestSuccess,
@@ -850,9 +886,9 @@ function onBackKeyDown() {
         }
     } else if (activePageID === "viewWebNews2-3-1") {
         //goBack("goList");
-        if (massageFrom == 'viewMain3') {
+        if (messageFrom == 'viewMain3') {
             $.mobile.changePage('#viewMain3');
-        } else if (massageFrom == 'viewMessageList') {
+        } else if (messageFrom == 'viewMessageList') {
             //$.mobile.changePage('#viewMessageList');
             checkAppPage('viewMessageList');
         }
