@@ -4,8 +4,9 @@
 }
 
 .personal-info {
-    width: 100%;
-    height: 40%;
+    width: 91vw;
+    height: 17vw;
+    padding: 3.04vw 3.71vw 2.4vw 5.92vw;
 }
 
 .personal-info > div {
@@ -17,31 +18,36 @@
 }
 
 .personal-info > div:nth-of-type(1) {
-    width: 30%;
+    width: 17vw;
+    height: 17vw;
+}
+
+.personal-info > div:nth-of-type(1) img {
+    width: 100%;
     height: 100%;
+    border-radius: 50%;
 }
 
 .personal-info > div:nth-of-type(2) {
-    width: 70%;
-    height: 100%;
+    width: 65vw;
+    height: 17vw;
+    margin-left: 4.71vw;
 }
 
-.personal-info > div:nth-of-type(2) > div {
-    height: 40%;
-    line-height: 2;
+.personal-info > div:nth-of-type(2) > div:nth-of-type(1) {
+    padding: 2.5vw 0 2vw;
+    color: #253137;
+    font-size: 4.81vw !important;
 }
 
-.personal-info img {
-    width: 65%;
-    height: 80%;
-    border-radius: 50%;
-    margin-left: 3vw;
-    margin-top: 1vw;
+.personal-info > div:nth-of-type(2) > div:nth-of-type(2) {
+    color: #90a4ae;
+    font-size: 3.55vw !important;
 }
 
 .personal-res {
-    width: 100%;
-    height: 60%;
+    width: 92.58vw;
+    padding: 0 3.71vw;
 }
 
 .personal-res ul {
@@ -51,8 +57,13 @@
 }
 
 .personal-res ul li {
-    height: 10vw;
-    margin-bottom: 2vw;
+    height: 12vw;
+    padding: 2vw 2vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.personal-res ul li:last-of-type {
+    border: none;
 }
 
 .reserve-today > div {
@@ -60,35 +71,41 @@
 }
 
 .reserve-today > div:nth-of-type(1) {
-    width: 20vw;
-    height: 10vw;
-    text-align: right;
-    padding-right: 3vw;
-    border-right: 2px solid #4cb5ab;
+    width: 21vw;
+    height: 12vw;
+    text-indent: 2vw;
+    border-left: 1px solid #49aaa0;
 }
 
 .reserve-today > div:nth-of-type(1) > div {
-    height: 5vw;
+    height: 6vw;
+    line-height: 6vw;
 }
 
 .reserve-today > div:nth-of-type(1) > div:nth-child(1) {
-    color: #231f20;
+    color: #797979;
+    font-size: 3.768vw !important;
 }
 
 .reserve-today > div:nth-of-type(1) > div:nth-child(2) {
-    color: #8fa4ac;
+    color: #b3b3ae;
+    font-size: 3.55vw !important;
 }
 
 .reserve-today > div:nth-of-type(2) {
-    width: 70vw;
-    height: 10vw;
-    line-height: 10vw;
-    padding-left: 3vw;
+    width: 65vw;
+    height: 12vw;
+    line-height: 12vw;
+    overflow: hidden;
+    color: #253137;
+    font-size: 3.768vw !important;
 }
 
 .widget-reserve-null {
-    width: 100%;
-    height: 80%;
-    line-height: 5;
-    padding-left: 5vw;
+    width: 90vw;
+    height: 20vw;
+    line-height: 16vw;
+    padding-left: 3vw;
+    color: #253137;
+    font-size: 3.768vw !important;
 }

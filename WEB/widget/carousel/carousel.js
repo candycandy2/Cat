@@ -34,13 +34,8 @@
             }
 
             appendWidgetHTML(this);
-
-            // $("#carouselWidget").FtCarousel({
-            //     time: 3000
-            // });
         })
     };
-
 
     $.fn.carousel.defaults = {}
 
