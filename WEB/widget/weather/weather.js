@@ -7,7 +7,7 @@
         $.ajaxSettings.async = false;
         $.get(serverURL + "/widget/weather/weather.html", function (data) {
             $('.' + widgetItem).append(data);
-
+            weatherFinish = true;
         }, "html");
         setWeatherData();
         $.ajaxSettings.async = true;
