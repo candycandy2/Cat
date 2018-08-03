@@ -3,7 +3,7 @@
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
             <img src="img/menu.png" class="leaveMenu">
-            <img src="img/nav_back.png" id="backDetailList">
+            <img src="img/nav_back.png" id="backOTDetailList">
             <img src="img/nav_back.png" id="backSignPreview">
             <img src="img/nav_back.png" id="backEffectPreview">
         </a>
@@ -54,12 +54,12 @@
                 <div>
                     <!--申請日期-->
                     <span class="langStr" data-id="str_080"></span>
-                    <span id="leaveApplyDate">2017-02-08</span>
+                    <span id="overtimeApplyDate">2017-02-08</span>
                 </div>
                 <div>
-                    <!-- 請假單號 -->
-                    <span class="langStr" data-id="str_131"></span>
-                    <span id="leaveFormNo">572000</span>
+                    <!-- 加班單號 -->
+                    <span class="langStr" data-id="str_217"></span>
+                    <span id="overtimeFormNo">572000</span>
                 </div>
             </div>
             <div class="leave-detail-state">
@@ -67,11 +67,11 @@
                 <div>
                     <div>
                         <div class="font-style11">
-                            <!-- 假單狀況 -->
-                            <span class="langStr" data-id="str_144"></span>
+                            <!-- 表單狀況 -->
+                            <span class="langStr" data-id="str_218"></span>
                         </div>
                         <div class="font-style3">
-                            <span id="leaveStatus">
+                            <span id="overtimeStatus">
                                 <!-- 表單簽核中 -->
                                 <span class="langStr" data-id="str_147"></span>
                             </span>
@@ -85,66 +85,31 @@
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 申請類別 -->
-                    <span class="langStr" data-id="str_081"></span>
+                    <!-- 加班日期 -->
+                    <span class="langStr" data-id="str_201"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="leaveCategory">
-                        <!-- 病假 -->
-                        <span class="langStr" data-id="str_016"></span>
-                    </span>
+                    <span id="overtimeDate">2017-02-08</span>
                 </div>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 申請假別 -->
-                    <span class="langStr" data-id="str_082"></span>
+                    <!-- 加班時間 -->
+                    <span class="langStr" data-id="str_202"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="leaveName">
-                        <!-- 病假 -->
-                        <span class="langStr" data-id="str_016"></span>
-                    </span>
+                    <span id="overtimeInterval">08:00 - 17:00</span>
                 </div>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 職務代理人 -->
-                    <span class="langStr" data-id="str_083"></span>
+                    <!-- 加班時數 -->
+                    <span class="langStr" data-id="str_203"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="leaveAgentName">Jack</span>
-                </div>
-            </div>
-            <div class="preview-apply-categroy">
-                <div></div>
-                <div class="font-style11">
-                    <!-- 請假日期與時間 -->
-                    <span class="langStr" data-id="str_084"></span>
-                </div>
-                <div class="font-style3">
-                    <span id="leaveStartDate">2017-02-08</span>
-                    <span> </span>
-                    <span id="leaveStartTime">8:00</span>
-                    <span> - </span>
-                    <span id="leaveEndDate">2017-02-08</span>
-                    <span> </span>
-                    <span id="leaveEndTime">17:00</span>
-                </div>
-            </div>
-            <div class="preview-apply-categroy">
-                <div></div>
-                <div class="font-style11">
-                    <!-- 請假數 -->
-                    <span class="langStr" data-id="str_087"></span>
-                </div>
-                <div class="font-style3">
-                    <span id="leaveApplyDays">0</span>
-                    <!-- 天 -->
-                    <span class="langStr" data-id="str_071"></span>
-                    <span id="leaveApplyHours">0</span>
+                    <span id="overtimeApplyHours">0</span>
                     <!-- 小時 -->
                     <span class="langStr" data-id="str_088"></span>
                 </div>
@@ -152,42 +117,67 @@
             <div class="preview-apply-categroy">
                 <div></div>
                 <div class="font-style11">
-                    <!-- 請假理由 -->
-                    <span class="langStr" data-id="str_089"></span>
+                    <!-- 加班原因 -->
+                    <span class="langStr" data-id="str_204"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="leaveApplyReason">sick</span>
+                    <span id="overtimeApplyReason"></span>
                 </div>
             </div>
             <!-- empty div -->
             <div class="apply-empty-div2"></div>
             <!-- 撤回 -->
-            <div class="apply-submit-btn" id="leaveWithdraw">
-                <div id="withdrawLeaveBtn">
+            <div class="apply-submit-btn" id="overtimeWithdraw">
+                <div id="withdrawOTBtn">
                     <!-- 撤回 -->
                     <span class="langStr" data-id="str_143"></span>
                 </div>
             </div>
-            <!-- 銷假 -->
-            <div class="apply-submit-btn" id="leaveRevoke">
-                <div id="dispelLeave">
-                    <!-- 銷假 -->
-                    <span class="langStr" data-id="str_156"></span>
-                </div>
-            </div>
             <!-- 刪除 -->
-            <div id="leaveDelete">
+            <div id="overtimeDelete">
                 <div class="apply-submit-btn">
-                    <div id="deleteRefuseLeave">
-                        <!-- 刪除假單 -->
-                        <span class="langStr" data-id="str_151"></span>
+                    <div id="deleteRefuseOT">
+                        <!-- 刪除加班單 -->
+                        <span class="langStr" data-id="str_219"></span>
                     </div>
                 </div>
                 <div class="apply-preview-remove">
-                    <div id="editRefuseLeave">
+                    <div id="editRefuseOT">
                         <img src="img/edit.png">&nbsp;
                         <!-- 編輯 -->
                         <span class="langStr" data-id="str_154"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- 時數登入 -->
+            <div id="overtimeEnter">
+                <div class="apply-submit-btn">
+                    <div id="enterActualOT">
+                        <!-- 時數登入 -->
+                        <span class="langStr" data-id="str_221"></span>
+                    </div>
+                </div>
+                <div class="apply-preview-remove">
+                    <div class="editRefuseOT">
+                        <img src="img/withdraw.png">&nbsp;
+                        <!-- 撤回表單 -->
+                        <span class="langStr" data-id="str_222"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- 時數登入(已逾期) -->
+            <div id="overtimeNoEnter">
+                <div class="not-apply-submit-btn">
+                    <div id="canNotEnter">
+                        <!-- 已逾期，無法登入 -->
+                        <span class="langStr" data-id="str_220"></span>
+                    </div>
+                </div>
+                <div class="apply-preview-remove">
+                    <div class="editRefuseOT">
+                        <img src="img/withdraw.png">&nbsp;
+                        <!-- 撤回表單 -->
+                        <span class="langStr" data-id="str_222"></span>
                     </div>
                 </div>
             </div>

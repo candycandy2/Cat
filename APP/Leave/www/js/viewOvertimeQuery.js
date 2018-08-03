@@ -5,10 +5,9 @@ var formWithdrawed = langStr["str_148"]; //"表單已撤回";
 var formEffected = langStr["str_149"]; //"表單已生效";
 var formEnter = langStr["str_208"]; //"時數登入中";
 
-var leaveDetailFrom = true;
 var employeeName;
 var overtimeListArr = [];
-var leaveDetailObj = {};
+var overtimeDetailObj = {};
 var withdrawReason, dispelReason;
 
 //請假單頁初始化
@@ -80,8 +79,8 @@ $("#viewOvertimeQuery").pagecontainer({
             }();
         };
 
-        //獲取請假單詳情——<LayoutHeader><EmpNo>0003023</EmpNo><formid>123456</formid></LayoutHeader>
-        window.LeaveApplyFormDetail = function() {
+        //獲取加班單詳情——<LayoutHeader><EmpNo>0003023</EmpNo><formid>123456</formid></LayoutHeader>
+        window.OvertimeApplyFormDetail = function() {
 
             this.successCallback = function(data) {
                 //console.log(data);
@@ -90,27 +89,16 @@ $("#viewOvertimeQuery").pagecontainer({
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var applydate = $("applydate", htmlDom);
-                    var delegate = $("delegate", htmlDom);
                     var reasons = $("reason", htmlDom);
-                    var datumdate = $("datumdate", htmlDom);
-                    var filestatus = $("filestatus", htmlDom);
-
-                    //根据代理人工号，查找代理人姓名
-                    queryEmployeeDetailQueryData = '<LayoutHeader><EmpNo>' +
-                        myEmpNo +
-                        '</EmpNo><qSite></qSite><qDeptCode></qDeptCode><qEmpno>' +
-                        $(delegate).html() +
-                        '</qEmpno><qName></qName></LayoutHeader>';
-                    //根据id获取代理人姓名
-                    QueryEmployeeDetail();
-                    leaveDetailObj["agentname"] = employeeName;
+                    var targetdate = $("targetdate", htmlDom);
+                    var expectfrom = $("expectFrom", htmlDom);
+                    var expectto = $("expectTo", htmlDom);
 
                     //补全另一部分详情
-                    leaveDetailObj["applydate"] = $(applydate).html().split(" ")[0];
-                    leaveDetailObj["reason"] = $.trim($(reasons).html());
-                    leaveDetailObj["agentid"] = $(delegate).html();
-                    leaveDetailObj["datumdate"] = $(datumdate).html();
-                    leaveDetailObj["filestatus"] = $(filestatus).html();
+                    overtimeDetailObj["applydate"] = $(applydate).html().split(" ")[0];
+                    overtimeDetailObj["reason"] = $.trim($(reasons).html());
+                    overtimeDetailObj["targetdate"] = $(targetdate).html();
+                    overtimeDetailObj["expectInterval"] = $(expectfrom).html() + ' - ' + $(expectto).html();
 
                     //改变详情页内容
                     setLeaveDataToDetail();
@@ -124,10 +112,10 @@ $("#viewOvertimeQuery").pagecontainer({
                     var dateArr = $("app_date", approveDom);
                     var remarkArr = $("app_remark", approveDom);
 
-                    var leaveSignList = [];
+                    var overtimeSignList = [];
                     //首先遍历签核状态，再生成html元素
-                    getSignFlow(leaveSignList, serialArr, empnameArr, ynArr, dateArr, remarkArr);
-                    setLeaveFlowToPopup(leaveSignList, ".leave-flow-ul");
+                    getSignFlow(overtimeSignList, serialArr, empnameArr, ynArr, dateArr, remarkArr);
+                    setLeaveFlowToPopup(overtimeSignList, ".leave-flow-ul");
 
                     loadingMask("hide");
                 }
@@ -136,7 +124,7 @@ $("#viewOvertimeQuery").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPI("POST", false, "LeaveApplyFormDetail", self.successCallback, self.failCallback, leaveApplyFormDetailQueryData, "");
+                CustomAPI("POST", false, "OvertimeFormDetail", self.successCallback, self.failCallback, overtimeApplyFormDetailQueryData, "");
             }();
         };
 
@@ -253,7 +241,7 @@ $("#viewOvertimeQuery").pagecontainer({
                 for (var i in overtimeListArr) {
                     overtimeListHtml += '<div class="leave-query-list">' +
                         '<div>' +
-                        '<div class="leave-query-state font-style3" form-id="' + overtimeListArr[i]["formid"] + '">' +
+                        '<div class="overtime-query-state font-style3" form-id="' + overtimeListArr[i]["formid"] + '">' +
                         '<span>' + overtimeListArr[i]["statusName"] + '</span>' +
                         '<img src="img/more.png">' +
                         '</div>' +
@@ -295,7 +283,7 @@ $("#viewOvertimeQuery").pagecontainer({
         }
 
         //根据formid从假单列表当中获取该假单部分信息
-        function getLeaveDetailByID(id) {
+        function getOvertimeDetailByID(id) {
             for (var i in overtimeListArr) {
                 if (overtimeListArr[i]["formid"] == id) {
                     return overtimeListArr[i];
@@ -305,19 +293,14 @@ $("#viewOvertimeQuery").pagecontainer({
 
         //假單詳情傳值
         function setLeaveDataToDetail() {
-            $("#leaveApplyDate").text(leaveDetailObj["applydate"]);
-            $("#leaveFormNo").text(leaveDetailObj["formno"]);
-            $("#leaveStatus").text(leaveDetailObj["statusName"]);
-            $("#leaveCategory").text(leaveDetailObj["category"]);
-            $("#leaveName").text(leaveDetailObj["name"]);
-            $("#leaveAgentName").text(leaveDetailObj["agentname"]);
-            $("#leaveStartDate").text(leaveDetailObj["begindate"]);
-            $("#leaveStartTime").text(leaveDetailObj["begintime"]);
-            $("#leaveEndDate").text(leaveDetailObj["enddate"]);
-            $("#leaveEndTime").text(leaveDetailObj["endtime"]);
-            $("#leaveApplyDays").text(leaveDetailObj["days"]);
-            $("#leaveApplyHours").text(leaveDetailObj["hours"]);
-            $("#leaveApplyReason").text(leaveDetailObj["reason"]);
+            $("#overtimeApplyDate").text(overtimeDetailObj["applydate"]);
+            $("#overtimeFormNo").text(overtimeDetailObj["formno"]);
+            $("#overtimeStatus").text(overtimeDetailObj["statusName"]);
+            $("#overtimeDate").text(overtimeDetailObj["targetdate"]);
+            $("#overtimeInterval").text(overtimeDetailObj["expectInterval"]);
+            $("#overtimeApplyHours").text(overtimeDetailObj["hours"]);
+            $("#overtimeApplyReason").text(overtimeDetailObj["reason"]);
+
             //撤回頁面的“請假單號”
             $("#withdrawFormNo").text(leaveDetailObj["formno"]);
             //銷假頁面的“請假單號”
@@ -339,7 +322,43 @@ $("#viewOvertimeQuery").pagecontainer({
         /********************************** dom event *************************************/
         $("#viewOvertimeQuery").keypress(function(event) {});
 
-        //點擊詳細，根據不同表單狀態顯示不同頁面——click
+        /*function periodFromOvertimeDateToNow(overtimedate) {
+            var today = new Date();
+            var otDate = new Date(overtimedate);
+            var otperiod = today.getFullYear() - otDate.getFullYear(); 
+            var birthMonth = today.getMonth() - birthDate.getMonth();
+        }*/
 
+        //點擊詳細，根據不同表單狀態顯示不同頁面——click
+        $(document).on("click", ".overtime-query-state", function() {
+            loadingMask("show");
+
+            var self = $.trim($(this).text());
+            var formid = $(this).attr("form-id");
+
+            //先获取部分详情，另外部分详情在API中获取
+            leaveDetailObj = getOvertimeDetailByID(formid);
+
+            overtimeApplyFormDetailQueryData = '<LayoutHeader><EmpNo>' +
+                myEmpNo +
+                '</EmpNo><formid>' +
+                formid +
+                '</formid></LayoutHeader>';
+            //呼叫API
+            OvertimeApplyFormDetail();
+
+            if (self == formSigning) {
+                overtimeListToDetail("overtimeWithdraw", "overtimeDelete", "overtimeEnter", "overtimeNoEnter", "");
+            } else if (self == formWithdrawed) {
+                overtimeListToDetail("overtimeDelete", "overtimeWithdraw", "overtimeEnter", "overtimeNoEnter", "");
+            } else if (self == formEnter) {
+                //periodFromOvertimeDateToNow(overtimeDetailObj["targetdate"]);
+                overtimeListToDetail("overtimeEnter", "leaveWithdraw", "overtimeDelete", "overtimeNoEnter", "");
+                overtimeListToDetail("overtimeNoEnter", "leaveWithdraw", "overtimeDelete", "overtimeEnter", "");
+            } else {
+                overtimeListToDetail("overtimeWithdraw", "overtimeDelete", "overtimeEnter", "overtimeNoEnter", null);
+            }
+
+        });
     }
 });
