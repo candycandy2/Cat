@@ -46,7 +46,7 @@
         var contentWidth = ((favoriteApp.length + 1) * (iconWidget + iconMargin)).toString();
 
         content += '<div class="applist-item add-favorite-list">' +
-            '<a href="#"><img src="http://qplaydev.benq.com/widget/applist/addfavorite.png" style="width:17.5vw;">' +
+            '<a href="#"><img src="http://qplaydev.benq.com/widget/applist/addfavorite.png" style="width:18vw;">' +
             '</a><p class="app-list-name" style="opacity:0;">Add</p></div>';
 
         $('.applist-main-icon').css('width', contentWidth + 'vw').html('').append(content);
