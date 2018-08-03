@@ -548,7 +548,7 @@ source_user | content | 0-1 | String | 這筆推播是誰送出來
 
 ### 請求方法
 ```
-GET /v101/qplay/getMessageDetail?lang=en-us
+GET /v101/qplay/getMessageDetail?lang=en-us&uuid=18171adc0302e598d5f&message_send_row_id=121662
 ```
 
 ### header請求參數
@@ -564,7 +564,7 @@ token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <b
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
 uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
-message_send_row_id | Required | string | 訊息send的unique id
+message_send_row_id | Required | string | 訊息send的unique id <br> ex: 121662
 
 ### 回應訊息
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
