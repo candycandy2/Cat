@@ -6,7 +6,7 @@
     function appendWidgetHTML(target) {
         $.get(serverURL + "/widget/carousel/carousel.html", function (data) {
             $('.' + widgetItem).append(data);
-
+            carouselFinish = true;
         }, "html");
     }
 
