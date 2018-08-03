@@ -18,7 +18,7 @@
         $.ajaxSettings.async = false;
         $.get(serverURL + '/widget/applist/applist.html', function (data) {
             $('.' + widgetItem).append(data);
-
+            applistFinish = true;
         }, 'html');
         $.ajaxSettings.async = true;
 
@@ -44,7 +44,7 @@
         content += '<div class="applist-item add-favorite-list">' +
             '<a href="#"><img src="http://qplaydev.benq.com/widget/applist/add.png" style="width:15vw;">' +
             '</a><p class="app-list-name" style="opacity:0;">Add</p></div>';
-            
+
         $('.applist-main-icon').html('').append(content);
     }
 
@@ -52,9 +52,9 @@
         $(target).children('div.applist-widget').remove();
     }
 
-    $.fn.applist = function (options) {
+    $.fn.applist = function (options, param) {
         if (typeof options == 'string') {
-            return $.fn.applist.methods[options](this);
+            return $.fn.applist.methods[options](this, param);
         }
 
         options = options || {};
@@ -68,12 +68,15 @@
                 });
             }
 
-            appendWidgetHTML();
+            appendWidgetHTML(this);
 
         });
     }
 
     $.fn.applist.methods = {
+        options: function (jq) {
+            return $.data(jq[0], 'applist').options;
+        },
         destroy: function (jq) {
             return jq.each(function () {
                 destroyApplist(this);
@@ -81,7 +84,9 @@
         },
     }
 
-    $.fn.applist.defaults = {}
+    $.fn.applist.defaults = {
+        finish: true
+    }
 
     $('.' + widgetItem).applist();
 

@@ -23,7 +23,7 @@
         //$.ajaxSettings.async = false;
         $.get(serverURL + "/widget/reserve/reserve.html", function (data) {
             $('.' + widgetItem).append(data);
-
+            reserveFinish = true;
             getCurrentDate();
 
         }, "html");

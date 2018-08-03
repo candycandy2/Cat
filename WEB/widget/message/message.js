@@ -36,7 +36,7 @@
         }
 
         $('.' + widgetItem).append(content);
-
+        messageFinish = true;
     }
 
     $.fn.message = function (options) {
