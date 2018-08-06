@@ -30,7 +30,8 @@ var carouselFinish = false,
     weatherFinish = false,
     reserveFinish = false,
     messageFinish = false,
-    applistFinish = false;
+    applistFinish = false,
+    addAppToList = true;
 
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
@@ -177,7 +178,7 @@ function compareArrayByFirst(arr1, arr2) {
             i--;
         }
     }
-    
+
     return arr2;
 }
 
@@ -808,6 +809,20 @@ function checkAppPage(pageID) {
 function pageBeforeShow(pageID) {
     if (pageID == 'viewAppSetting') {
 
+    } if (pageID == 'viewAppList') {
+        appListPageBeforShow();
+    }
+}
+
+function appListPageBeforShow() {
+    if (addAppToList && alreadyDownloadList.length == 0) {
+        $('#viewAppList .q-btn-header img').attr('src', 'img/close.png');
+        $('.app-no-download').show();
+        $('.app-scroll').hide();
+    } else {
+        $('#viewAppList .q-btn-header img').attr('src', 'img/component/back_nav.png');
+        $('.app-scroll').show();
+        $('.app-no-download').hide();
     }
 }
 

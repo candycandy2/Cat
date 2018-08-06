@@ -910,7 +910,7 @@ input[type=radio]:checked + label {
 #widgetList > div {
     background: #FFFFFF;
     margin-bottom: 2.4vw;
-    border-bottom: 1px solid #d6d6d6; 
+    border-bottom: 1px solid #d6d6d6;
 }
 
 .carouselWidget {
@@ -1008,6 +1008,18 @@ input[type=radio]:checked + label {
     overflow-y: scroll;
     /* overflow-x: hidden; */
     -webkit-overflow-scrolling: touch;
+}
+
+.app-no-download {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;  
+    text-align: center;
+    padding-top: 35vh;
+    background: #EDECEC;
+    color: #8fa4ac;
+    font-size: 4.18vw;
+    display: none;
 }
 
 .download-title {
@@ -1630,7 +1642,7 @@ input[type=radio]:checked + label {
     left: 36vw;
     background-color: #666;
     border-radius: 1.5px;
-    color: #F0F0F0;
+    color: #F0F0F0 !important;
     font-size: 3.6VW;
     text-align: center;
     z-index: 2;
@@ -1677,6 +1689,15 @@ input[type=radio]:checked + label {
     line-height: 15vw;
     text-align: center;
     color: #4274BA;
+}
+
+.confirmLogout .ui-content>.header {
+    padding: 0 5.36vw;
+    margin-top: 10vw;
+}
+
+.confirmLogout .ui-content>.footer {
+    margin-top: 10%;
 }
 
 /***************************** viewGeneralSetting ********************************/
@@ -1734,6 +1755,8 @@ input[type=radio]:checked + label {
     height: 12vw;
     padding-left: 3.71vw;
     line-height: 15vw;
+    color: #0f0f0f;
+    font-size: 3.349vw;
 }
 
 .comment-text {
@@ -1746,6 +1769,8 @@ input[type=radio]:checked + label {
     width: 92.58vw;
     height: 73vh !important;
     margin-left: 3.71vw;
+    color: #263238 !important;
+    font-size: 4.18vw !important;
     border: 0;
     border-radius: 3px;
     outline: none;
