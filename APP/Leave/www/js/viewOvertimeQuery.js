@@ -321,7 +321,6 @@ $("#viewOvertimeQuery").pagecontainer({
 
         $("#viewOvertimeQuery").on("pageshow", function(event, ui) {
             $("#withdrawOTApplyDate").text(applyDay);
-            $("#revokeApplyDate").text(applyDay);
             loadingMask("hide");
         });
 
