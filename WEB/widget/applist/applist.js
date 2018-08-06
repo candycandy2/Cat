@@ -43,7 +43,7 @@
 
         var iconWidget = 18;  //unit:vw
         var iconMargin = 3.5;   //unit:vw
-        var contentWidth = ((favoriteApp.length + 1) * (iconWidget + iconMargin)).toString();
+        var contentWidth = (((favoriteApp == null ? 0 : favoriteApp.length) + 1) * (iconWidget + iconMargin)).toString();
 
         content += '<div class="applist-item add-favorite-list">' +
             '<a href="#"><img src="' + serverURL + '/widget/applist/addfavorite.png" style="width:18vw;">' +
