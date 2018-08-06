@@ -117,18 +117,18 @@ $("#viewMessageList").pagecontainer({
             }
             $('.msg-update-date').text(langStr['str_079'] + msgUpdateDate);
 
-            //5. to detail
-            $('.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon').on('click', function () {
-                messageFrom = 'viewMessageList';
-                messageRowId = $(this).parents('li').attr('data-rowid');
-                if($('.header-search').css('display') == 'block') {
-                    $('#cancelSearch').trigger('click');
-                }
-                $.mobile.changePage('#viewWebNews2-3-1');
-            });
-
-            //6. set height
+            //5. set height
             setMsgHeightByType();
+        }
+
+        //跳转详情事件
+        function changeToDetail($target) {
+            messageFrom = 'viewMessageList';
+            messageRowId = $target.parents('li').attr('data-rowid');
+            if ($('.header-search').css('display') == 'block') {
+                $('#cancelSearch').trigger('click');
+            }
+            $.mobile.changePage('#viewWebNews2-3-1');
         }
 
         //don't use
@@ -497,9 +497,9 @@ $("#viewMessageList").pagecontainer({
 
             var totalHeight;
             if (device.platform === "iOS") {
-                totalHeight = (contentHeight + headHeight + footHeight + iOSFixedTopPX()).toString();
+                totalHeight = (contentHeight + headHeight + footHeight + fixHeight + iOSFixedTopPX()).toString();
             } else {
-                totalHeight = (contentHeight + headHeight + footHeight).toString();
+                totalHeight = (contentHeight + headHeight + footHeight + fixHeight).toString();
             }
 
             $('.message-scroll > div').css('height', totalHeight + 'px');
@@ -604,6 +604,8 @@ $("#viewMessageList").pagecontainer({
             $('.msg-tool').slideDown(300);
             $('.msg-tool-blank').show(300);
             $('#viewMessageList .ui-title').off('click');
+            $(document).off('click', '.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon');
+
         });
 
         //取消编辑listview
@@ -623,6 +625,9 @@ $("#viewMessageList").pagecontainer({
             $('.msg-tool-blank').hide(300);
             $('#viewMessageList .ui-title').on('click', function () {
                 $(".select-news").slideToggle(200);
+            });
+            $(document).on('click', '.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon', function () {
+                changeToDetail($(this));
             });
         });
 
@@ -824,6 +829,11 @@ $("#viewMessageList").pagecontainer({
                     }
                 })
             }
+        });
+
+        //5. to detail
+        $(document).on('click', '.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon', function () {
+            changeToDetail($(this));
         });
 
 
