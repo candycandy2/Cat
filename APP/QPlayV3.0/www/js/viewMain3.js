@@ -61,7 +61,7 @@ $("#viewMain3").pagecontainer({
                         totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
                         $('.main-scroll > div').css('height', totalHeight + 'px');
                     } else {
-                        totalHeight = (mainHeight + headHeight + 3).toString();
+                        totalHeight = (mainHeight + headHeight + 2).toString();
                         $('.main-scroll > div').css('height', totalHeight + 'px');
                     }
 
