@@ -915,7 +915,7 @@ input[type=radio]:checked + label {
 
 .carouselWidget {
     width: 100vw;
-    height: 45vw;
+    height: 50vw;
 }
 
 .weatherWidget {
@@ -940,14 +940,14 @@ input[type=radio]:checked + label {
 
 .other-link {
     width: 100vw;
-    height: 62.5vw;
+    height: 78vw;
     background: #FFFFFF;
 }
 
 .other-link > div {
     width: 90vw;
-    height: 15vw;
-    padding: 3vw 5vw;
+    height: 13.04vw;
+    padding: 6.24vw 3.71vw 6.24vw 5.92vw;
     border-bottom: 1px solid #d6d6d6;
     /* border-bottom: 1px solid #bdbcbc; */
 }
@@ -961,21 +961,17 @@ input[type=radio]:checked + label {
 }
 
 .other-link > div > div:nth-of-type(1) {
-    width: 20vw;
-    height: 15vw;
+    width: 16vw;
+    height: 100%;
 }
 
 .other-link > div > div:nth-of-type(2) {
-    width: 65vw;
-    height: 15vw;
-}
-
-.other-link > div > div:nth-of-type(2) > div {
-    height: 7vw;
+    width: 69vw;
+    height: 100%;
 }
 
 .other-link > div > div:nth-of-type(2) > div:nth-of-type(1) {
-    line-height: 8vw;
+    padding: 1.78vw 0 0.78vw;
     color: #233138;
     font-weight: bold;
     font-size: 3.55vw !important;
@@ -989,11 +985,11 @@ input[type=radio]:checked + label {
 
 .other-link > div > div:nth-of-type(3) {
     width: 5vw;
-    height: 15vw;
+    height: 100%;
 }
 
 .icon-img {
-    width: 15vw;
+    width: 13.04vw;
 }
 
 .icon-next {
@@ -1194,6 +1190,7 @@ input[type=radio]:checked + label {
     height: 100vw;
     margin-top: 40vw;
     overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 #reserveContent {
