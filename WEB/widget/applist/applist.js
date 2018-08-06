@@ -35,17 +35,21 @@
                     favoriteApp[i].package_name +
                     '"><a value="" id="" href="#"><img src="' +
                     favoriteApp[i].icon_url +
-                    '" style="width:15vw;"></a><p class="app-list-name">' +
+                    '" width="100%"></a><p class="app-list-name">' +
                     favoriteApp[i].app_name +
                     '</p></div>';
             }
         }
 
+        var iconWidget = 18;  //unit:vw
+        var iconMargin = 3.5;   //unit:vw
+        var contentWidth = ((favoriteApp.length + 1) * (iconWidget + iconMargin)).toString();
+
         content += '<div class="applist-item add-favorite-list">' +
-            '<a href="#"><img src="http://qplaydev.benq.com/widget/applist/addfavorite.png" style="width:15vw;">' +
+            '<a href="#"><img src="http://qplaydev.benq.com/widget/applist/addfavorite.png" style="width:18vw;">' +
             '</a><p class="app-list-name" style="opacity:0;">Add</p></div>';
 
-        $('.applist-main-icon').html('').append(content);
+        $('.applist-main-icon').css('width', contentWidth + 'vw').html('').append(content);
     }
 
     function destroyApplist(target) {

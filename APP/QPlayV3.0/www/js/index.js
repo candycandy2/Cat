@@ -26,6 +26,11 @@ var messagecontent,
     msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 
 //viewMain3
+var carouselFinish = false,
+    weatherFinish = false,
+    reserveFinish = false,
+    messageFinish = false,
+    applistFinish = false;
 
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));

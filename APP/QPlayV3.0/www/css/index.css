@@ -250,22 +250,6 @@ input[type=radio]:checked + label {
     -webkit-overflow-scrolling: touch;
 }
 
-.app-list-item {
-    width: 25vw;
-    float: left;
-    margin-right: 3.7vw;
-}
-
-.app-list-name {
-    color: #0F0F0F;
-    font-size: 2.4vh;
-    margin: 0;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .appDetailIcon {
     width: 25vw;
     line-height: 1;
@@ -919,42 +903,39 @@ input[type=radio]:checked + label {
     position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
+    background: #edecec;
     -webkit-overflow-scrolling: touch;
+}
+
+#widgetList > div {
+    background: #FFFFFF;
+    margin-bottom: 2.4vw;
+    border-bottom: 1px solid #d6d6d6; 
 }
 
 .carouselWidget {
     width: 100vw;
     height: 45vw;
-    background: #FFFFFF;
-    margin-bottom: 2vw;
 }
 
 .weatherWidget {
     width: 100vw;
     height: 30vw;
-    background: #FFFFFF;
-    margin-bottom: 2vw;
 }
 
 .reserveWidget {
     width: 100vw;
-    height: 60vw;
-    background: #FFFFFF;
-    margin-bottom: 2vw;
+    min-height: 40vw;
 }
 
 .messageWidget {
     width: 100vw;
     min-height: 25vw;
-    background: #FFFFFF;
-    margin-bottom: 2vw;
 }
 
 .applistWidget {
     width: 100vw;
-    height: 33vw;
-    background: #FFFFFF;
-    margin-bottom: 2vw;
+    height: 38vw;
 }
 
 .other-link {

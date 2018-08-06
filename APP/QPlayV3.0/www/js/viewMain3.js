@@ -51,20 +51,24 @@ $("#viewMain3").pagecontainer({
         $("#viewMain3").one("pageshow", function (event, ui) {
             var applist = new GetAppList();
 
-            setTimeout(function () {
-                var mainHeight = $('.main-scroll > div').height();
-                var headHeight = $('#viewMain3 .page-header').height();
-                var totalHeight;
+            var checkHomepageHeight = setInterval(function () {
+                if (carouselFinish && weatherFinish && reserveFinish && messageFinish && applistFinish) {
+                    var mainHeight = $('.main-scroll > div').height();
+                    var headHeight = $('#viewMain3 .page-header').height();
+                    var totalHeight;
 
-                if (device.platform === "iOS") {
-                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
-                    $('.main-scroll > div').css('height', totalHeight + 'px');
-                } else {
-                    totalHeight = (mainHeight + headHeight + 5).toString();
-                    $('.main-scroll > div').css('height', totalHeight + 'px');
+                    if (device.platform === "iOS") {
+                        totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+                        $('.main-scroll > div').css('height', totalHeight + 'px');
+                    } else {
+                        totalHeight = (mainHeight + headHeight + 3).toString();
+                        $('.main-scroll > div').css('height', totalHeight + 'px');
+                    }
+
+                    //clear
+                    clearInterval(checkHomepageHeight);
                 }
-
-            }, 5000);
+            }, 1000);
 
         });
 
