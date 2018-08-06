@@ -917,7 +917,8 @@ html body .ui-group-theme-a a:visited {
 .confirmToWithdraw>.ui-content,
 .confirmToDelete>.ui-content,
 .leaveErrorMsg>.ui-content,
-.backLeaveErrorMsg>.ui-content {
+.backLeaveErrorMsg>.ui-content,
+.confirmWithdrawOT>.ui-content {
     padding: 0 !important;
 }
 
@@ -925,7 +926,8 @@ html body .ui-group-theme-a a:visited {
 .confirmDelete>.ui-content>.header,
 .confirmRevoke>.ui-content>.header,
 .confirmToWithdraw>.ui-content>.header,
-.confirmToDelete>.ui-content>.header {
+.confirmToDelete>.ui-content>.header,
+.confirmWithdrawOT>.ui-content>.header {
     margin-top: 13%;
 }
 
@@ -938,7 +940,8 @@ html body .ui-group-theme-a a:visited {
 /*sign flow popup footer*/
 
 .signStateFlow>.ui-content>.footer,
-.signIngFlow>.ui-content>.footer {
+.signIngFlow>.ui-content>.footer,
+.signOTStateFlow>.ui-content>.footer {
     margin-top: 5% !important;
 }
 
@@ -1208,7 +1211,8 @@ li.ui-body-a {
 
 /********************************************** viewOvertimeSubmit *********************************************/
 
-#backOvertime {
+#backOvertime,
+#backSignOTList {
     width: 4.934VW;
     display: none;
 }

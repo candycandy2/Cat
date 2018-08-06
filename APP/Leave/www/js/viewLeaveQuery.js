@@ -475,7 +475,6 @@ $("#viewLeaveQuery").pagecontainer({
                 $(".backLeave-query-detail-sign").show();
             }
             //return false;
-
         });
 
         //籤核中狀態——click——popup
