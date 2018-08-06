@@ -769,7 +769,7 @@
   },
   {
     "term": "str_097",
-    "definition": "您尚未下载任何QPlay APP.e",
+    "definition": "No any APP had been installed",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -777,7 +777,7 @@
   },
   {
     "term": "str_098",
-    "definition": "请先下载APP才可设定我的最爱APP喔:)e",
+    "definition": "Before add favorite, please install the APP first",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -785,7 +785,7 @@
   },
   {
     "term": "str_099",
-    "definition": "本日无预约e",
+    "definition": "No appointment today",
     "context": "",
     "term_plural": "",
     "reference": "",
