@@ -1,12 +1,10 @@
-<!-- Start of applist page -->
+<!-- viewAppSetting -->
 <div data-role="page" id="viewAppSetting">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
         <div class="header-style">
             <h1 class="ui-title">
-                <div>
-                    <span class="langStr" data-id="str_082"></span>
-                </div>
+                <div>Setting</div>
             </h1>
         </div>
         <a href="#viewMain3" data-role="none">
@@ -19,7 +17,7 @@
         <div class="setting-main">
             <div class="photo-setting">
                 <div class="photo-default">
-                    <img src="img/photo.jpg" width="100%" style="border-radius:50%">
+                    <img src="img/default_photo.png" id="myPhoto">
                 </div>
                 <div class="name-user"></div>
             </div>
@@ -42,10 +40,49 @@
                         <img src="img/nextpage.png" width="100%">
                     </div>
                 </div>
+                <div class="want-comment">
+                    <div>
+                        <img src="img/icon_history.png" width="100%">
+                    </div>
+                    <div class="want-comment-name"></div>
+                    <div>
+                        <img src="img/nextpage.png" width="100%">
+                    </div>
+                </div>
             </div>
             <div class="logout-fixed-btn" id="logout"></div>
+            <div style="display:none;">
+                <form id="myForm">
+                    <input type="file" id="photoFile">
+                    <button id="uploadBtn">upload</button>
+                </form>
+            </div>
         </div>
 
+        <!--遮罩(头像)-->
+        <div class="setting-mask">
+            <div class="photo-choose">
+                <div class="choose-camera">
+                    <!--相机-->
+                    <span class="langStr" data-id="str_089"></span>
+                </div>
+                <div class="choose-picture">
+                    <!--图库-->
+                    <span class="langStr" data-id="str_090"></span>
+                </div>
+            </div>
+            <div class="cancel-choose">
+                <!--取消-->
+                <span class="langStr" data-id="str_023"></span>
+            </div>
+        </div>
+
+        <!--msg感谢您的回馈-->
+        <div class="popup-msg-style" id="feedback">
+            <span class="langStr" data-id="str_091"></span>
+        </div>
+
+        <!--登出popup-->
         <template id="tplContactUserPopup">
             <div class="header font-style3">
                 <span class="langStr" data-id="str_043"></span>

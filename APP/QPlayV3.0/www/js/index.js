@@ -25,14 +25,19 @@ var messagecontent,
     delMsgActive = false,
     msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 
-
-//viewMain
-var viewMainInitial = true;
+//viewMain3
+var carouselFinish = false,
+    weatherFinish = false,
+    reserveFinish = false,
+    messageFinish = false,
+    applistFinish = false;
 
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
-var alreadyDownloadList = [], notDownloadList = [];
-var tempVersionArrData, tempVersionData, applistInitial = true;
+var alreadyDownloadList = [],
+    notDownloadList = [],
+    tempVersionArrData,
+    tempVersionData;
 
 //viewMyCalendar
 var reserveCalendar = null,
@@ -40,10 +45,17 @@ var reserveCalendar = null,
     reserveDirty = false;
 
 //viewMessageList
-var massageFrom;
+var messageFrom;
 
 //viewVersionRecord
 var versionFrom = true;
+
+//viewGeneralSetting
+var generalSetting = {
+    'en-us': ['Weather', 'My Reserver', 'My QPlay', 'Latest News'],
+    'zh-cn': ['天气', '我的预约', '我的QPlay', '最新消息'],
+    'zh-tw': ['天氣', '我的預約', '我的QPlay', '最新消息']
+}
 
 window.initialSuccess = function (data) {
     if (data !== undefined) {
@@ -95,6 +107,78 @@ window.initialSuccess = function (data) {
     appInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
+
+    //general setting
+    getGeneralSetting();
+}
+
+
+//获取一般设定
+function getGeneralSetting() {
+    //hard code
+    window.localStorage.removeItem('defaultSetting');
+
+    var settingArr = JSON.parse(window.localStorage.getItem('generalSetting'));
+    var updateTime = window.localStorage.getItem('updateGeneral');
+
+    if (settingArr == null) {
+        window.localStorage.setItem('generalSetting', JSON.stringify(generalSetting));
+        window.localStorage.setItem('updateGeneral', new Date().toISOString());
+
+    } else {
+        var limitSeconds = 7;   //7 day
+        if (checkDataExpired(updateTime, limitSeconds, 'dd')) {
+
+            //同步，且已generalSetting为主，local为辅
+            for (var i in generalSetting) {
+                var arr = compareArrayByFirst(generalSetting[i], settingArr[i]);
+                settingArr[i] = arr;
+            }
+
+            window.localStorage.setItem('generalSetting', JSON.stringify(settingArr));
+            window.localStorage.setItem('updateGeneral', new Date().toISOString());
+        }
+    }
+}
+
+
+//比较2个数组，以第一个数组为准
+function compareArrayByFirst(arr1, arr2) {
+    //add
+    for (var i = 0; i < arr1.length; i++) {
+        var current = arr1[i];
+        var status = false;
+        for (var j = 0; j < arr2.length; j++) {
+            var tag = arr2[j];
+            if (current == tag) {
+                status = true;
+                break;
+            }
+        }
+        if (!status) {
+            arr2.push(current);
+        }
+    }
+
+    //remove
+    var arr = [];
+    for (var i = 0; i < arr2.length; i++) {
+        var current = arr2[i];
+        var status = false;
+        for (var j = 0; j < arr1.length; j++) {
+            var tag = arr1[j];
+            if (current == tag) {
+                status = true;
+                break;
+            }
+        }
+        if (!status) {
+            arr2.splice(i, 1);
+            i--;
+        }
+    }
+    
+    return arr2;
 }
 
 function getMyReserve(key, secret) {
@@ -467,7 +551,7 @@ function checkAllAppInstalled(callback, key, index) {
 
 function checkAppCallback(downloaded, index) {
     //根据是否下载分组
-    if(downloaded) {
+    if (downloaded) {
         alreadyDownloadList.push(index);
     } else {
         notDownloadList.push(index);
@@ -621,43 +705,6 @@ $(document).on("click", ".event-type", function () {
     $("#eventTypeSelect").panel("open");
 });
 
-//[Android]Handle the back button
-function onBackKeyDown() {
-    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-    var activePageID = activePage[0].id;
-    if (activePageID === "viewMain3") {
-        if (checkPopupShown()) {
-            $('#' + popupID).popup('close');
-        } else {
-            navigator.app.exitApp();
-        }
-    } else if (activePageID === "viewMain3" || activePageID === "viewAppDetail2-2") {
-        if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
-            $.mobile.changePage('#viewMain3');
-        } else {
-            $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
-        }
-    } else if (activePageID === "viewNewsEvents2-3") {
-        if (delMsgActive) {
-            editModeChange();
-        } else {
-            $.mobile.changePage('#viewMain3');
-        }
-    } else if (activePageID === "viewWebNews2-3-1") {
-        //goBack("goList");
-        if (massageFrom == 'viewMain3') {
-            $.mobile.changePage('#viewMain3');
-        } else if (massageFrom == 'viewMessageList') {
-            //$.mobile.changePage('#viewMessageList');
-            checkAppPage('viewMessageList');
-        }
-    } else if (activePageID === "viewNotSignedIn") {
-        navigator.app.exitApp();
-    } else {
-        navigator.app.exitApp();
-    }
-}
-
 
 //获取版本记录
 function getVersionRecord(key) {
@@ -689,7 +736,22 @@ function getVersionRecord(key) {
                     '</div></div>';
             }
 
-            $("#versionRecordList").html('').append(content);
+            $(".version-scroll > div").html('').append(content);
+
+            //set language
+            $('#viewVersionRecord .ui-title div').text(langStr['str_081']);
+
+            //set height
+            var contentHeight = $('.version-scroll > div').height();
+            var headerHeight = $('#viewVersionRecord .page-header').height();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (contentHeight + headerHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (contentHeight + headerHeight).toString();
+            }
+            $(".version-scroll > div").css('height', totalHeight + 'px');
+
         }
     };
 
@@ -712,7 +774,6 @@ function checkAppPage(pageID) {
             break;
         }
     }
-    console.log(pageID + (appStatus == true ? ' has' : ' has not') + ' been in the app');
 
     if (appStatus) {
         $.mobile.changePage('#' + pageID);
@@ -736,9 +797,109 @@ function checkAppPage(pageID) {
                 document.head.appendChild(script);
 
                 $.mobile.changePage('#' + pageID);
+                $('#' + pageID).on('pagebeforeshow', pageBeforeShow(pageID));
                 pageList.push(pageID);
-            }, 100);
+            }, 200);
 
         }, 'html');
+    }
+}
+
+function pageBeforeShow(pageID) {
+    if (pageID == 'viewAppSetting') {
+
+    }
+}
+
+function QStorageAPI(requestType, requestAction, successCallback, failCallback, queryData, queryStr) {
+    //API [checkAppVersion] [getSecurityList]
+    //even though these 2 API were from QPlay, the API path is [/public/v101/qplay/],
+    //but, when other APP call these 2 API,
+    //need to set the specific [App-Key] and [appSecretKey] by the APP, not by QPlay.
+
+    //queryStr: start with [&], ex: &account=test&pwd=123
+
+    failCallback = failCallback || null;
+    queryData = queryData || null;
+    queryStr = queryStr || "";
+
+    function requestSuccess(data) {
+        checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
+
+        var dataArr = [
+            "Call API",
+            requestAction,
+            data['result_code']
+        ];
+        LogFile.createAndWriteFile(dataArr);
+    }
+
+    // review
+    function requestError(data) {
+        console.log(data);
+        errorHandler(data, requestAction);
+        if (failCallback) {
+            failCallback();
+        }
+    }
+
+    var signatureTime = getSignature("getTime");
+    var signatureInBase64 = getSignature("getInBase64", signatureTime);
+    console.log(serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr);
+    console.log(queryData.get('filename'));
+
+    $.ajax({
+        type: requestType,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'App-Key': appKey,
+            'Signature-Time': signatureTime,
+            'Signature': signatureInBase64,
+            'Account': loginData["emp_no"]
+        },
+        url: serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
+        dataType: "json",
+        data: JSON.stringify(queryData),
+        cache: false,
+        timeout: 30000,
+        success: requestSuccess,
+        error: requestError
+    });
+}
+
+//[Android]Handle the back button
+function onBackKeyDown() {
+    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
+    var activePageID = activePage[0].id;
+    if (activePageID === "viewMain3") {
+        if (checkPopupShown()) {
+            $('#' + popupID).popup('close');
+        } else {
+            navigator.app.exitApp();
+        }
+    } else if (activePageID === "viewMain3" || activePageID === "viewAppDetail2-2") {
+        if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
+            $.mobile.changePage('#viewMain3');
+        } else {
+            $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
+        }
+    } else if (activePageID === "viewNewsEvents2-3") {
+        if (delMsgActive) {
+            editModeChange();
+        } else {
+            $.mobile.changePage('#viewMain3');
+        }
+    } else if (activePageID === "viewWebNews2-3-1") {
+        //goBack("goList");
+        if (messageFrom == 'viewMain3') {
+            $.mobile.changePage('#viewMain3');
+        } else if (messageFrom == 'viewMessageList') {
+            //$.mobile.changePage('#viewMessageList');
+            checkAppPage('viewMessageList');
+        }
+    } else if (activePageID === "viewNotSignedIn") {
+        navigator.app.exitApp();
+    } else {
+        navigator.app.exitApp();
     }
 }

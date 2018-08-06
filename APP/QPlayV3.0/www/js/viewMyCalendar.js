@@ -202,6 +202,21 @@ $("#viewMyCalendar").pagecontainer({
             return dataTempC[0];
         }
 
+
+        function createCalendarPage(data) {
+            //1. calendar
+            initialCalendar(data);
+
+            //2. reserve carousel
+            createReserveDetail();
+
+            //3. leave app
+            var currentDate = new Date();
+            var currentYear = currentDate.getFullYear().toString();
+            var currentMonth = (currentDate.getMonth() + 1).toString();
+            QueryCalendarData(currentYear, currentMonth);
+        }
+
         /********************************** page event ***********************************/
         $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
 
@@ -212,22 +227,13 @@ $("#viewMyCalendar").pagecontainer({
             var siteCode = localStorage.getItem("site_code");
             if (siteCode == "QCS" || siteCode == "BQC") {
                 $.getJSON("string/" + siteCode + "-holiday.json", function (data) {
-                    initialCalendar(data);
+                    createCalendarPage(data);
                 });
             } else {
                 $.getJSON("string/QTY-holiday.json", function (data) {
-                    initialCalendar(data);
+                    createCalendarPage(data);
                 });
             }
-
-            //2. reserve carousel
-            createReserveDetail();
-
-            //3. leave app
-            var currentDate = new Date();
-            var currentYear = currentDate.getFullYear().toString();
-            var currentMonth = (currentDate.getMonth() + 1).toString();
-            QueryCalendarData(currentYear, currentMonth);
 
         });
 

@@ -32,32 +32,48 @@ $("#viewMain3").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
-            
+            //1. load widget
+            loadAndRunScript(0, widgetList[0].enabled);
+
+            //2. get message
+            if (!callGetMessageList && loginData["msgDateFrom"] === null) {
+                msgDateFromType = 'month';
+                var clientTimestamp = getTimestamp();
+                loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
+                var messageList = new QueryMessageList();
+            }
         });
 
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
-            if (viewMainInitial) {
-                //1. load widget
-                loadAndRunScript(0, widgetList[0].enabled);
 
-                //2. get message
-                if (!callGetMessageList && loginData["msgDateFrom"] === null) {
-                    msgDateFromType = 'month';
-                    var clientTimestamp = getTimestamp();
-                    loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
-                    var messageList = new QueryMessageList();
-                }
-
-                viewMainInitial = false;
-            }
         });
 
         $("#viewMain3").one("pageshow", function (event, ui) {
             var applist = new GetAppList();
+
+            var checkHomepageHeight = setInterval(function () {
+                if (carouselFinish && weatherFinish && reserveFinish && messageFinish && applistFinish) {
+                    var mainHeight = $('.main-scroll > div').height();
+                    var headHeight = $('#viewMain3 .page-header').height();
+                    var totalHeight;
+
+                    if (device.platform === "iOS") {
+                        totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+                        $('.main-scroll > div').css('height', totalHeight + 'px');
+                    } else {
+                        totalHeight = (mainHeight + headHeight + 2).toString();
+                        $('.main-scroll > div').css('height', totalHeight + 'px');
+                    }
+
+                    //clear
+                    clearInterval(checkHomepageHeight);
+                }
+            }, 1000);
+
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-            //getAppVersion('com.qplay.appyellowpagedev', '1026');
+
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
@@ -92,7 +108,7 @@ $("#viewMain3").pagecontainer({
 
         //点击widget内message，跳转到message详情页
         $('#widgetList').on('click', '.widget-msg-list', function () {
-            massageFrom = 'viewMain3';
+            messageFrom = 'viewMain3';
             messageRowId = $(this).attr('data-rowid');
             $.mobile.changePage('#viewWebNews2-3-1');
         });

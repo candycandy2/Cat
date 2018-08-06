@@ -892,6 +892,7 @@ $("#viewPersonalLeave").pagecontainer({
                 $("#dispelReason").attr("placeholder", langStr["str_090"]);
                 $("#signTowithdrawReason").attr("placeholder", langStr["str_090"]);
                 $("#otherReason").attr("placeholder", langStr["str_090"]);
+                $("#overtimeReason").attr("placeholder", langStr["str_090"]);
 
                 signedStr = langStr["str_133"]; //"已簽核";
                 withdrawedStr = langStr["str_136"]; //"已撤回";
@@ -916,6 +917,15 @@ $("#viewPersonalLeave").pagecontainer({
             } else {
                 $("#mypanelviewAgentLeave").hide();
             }
+            if (hasClockinOTPanel) {
+                $("#mypanelviewClockin").show();
+                $("#mypanelviewOvertimeSubmit").show();
+                $("#mypanelviewOvertimeQuery").show();
+            } else {
+                $("#mypanelviewClockin").hide();
+                $("#mypanelviewOvertimeSubmit").hide();
+                $("#mypanelviewOvertimeQuery").hide();
+            }
             if (!viewPersonalLeaveShow && defaultSettingDone) {
                 //个人剩余假别资讯
                 queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
@@ -928,6 +938,10 @@ $("#viewPersonalLeave").pagecontainer({
                 //销假单查询——获取销假单列表
                 queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
                 QueryEmployeeLeaveCancelForm();
+
+                //加班單查询——获取加班单列表
+                queryEmployeeOvertimeApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+                QueryEmployeeOvertimeApplyForm();
 
                 viewPersonalLeaveShow = true;
                 defaultSettingDone = false;

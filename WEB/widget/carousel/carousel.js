@@ -6,7 +6,7 @@
     function appendWidgetHTML(target) {
         $.get(serverURL + "/widget/carousel/carousel.html", function (data) {
             $('.' + widgetItem).append(data);
-
+            carouselFinish = true;
         }, "html");
     }
 
@@ -34,13 +34,8 @@
             }
 
             appendWidgetHTML(this);
-
-            // $("#carouselWidget").FtCarousel({
-            //     time: 3000
-            // });
         })
     };
-
 
     $.fn.carousel.defaults = {}
 

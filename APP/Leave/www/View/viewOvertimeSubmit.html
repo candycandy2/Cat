@@ -1,0 +1,316 @@
+<div data-role="page" id="viewOvertimeSubmit">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
+            <img src="img/menu.png" class="leaveMenu">
+            <img src="img/nav_back.png" id="backOvertime">
+        </a>
+        <div class="header-style">
+            <div class="ui-title">
+                <!-- 加班申請 -->
+                <span class="langStr" data-id="str_199"></span>
+            </div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main" style="padding-top: 5vw;">
+        <div class="apply-container">
+            <!-- applyDate -->
+            <div class="apply-date font-style12">
+                <!--申請日期：-->
+                <span class="langStr" data-id="str_080"></span>
+                <span id="applyOTDay"></span>
+            </div>
+            <!-- overtime date -->
+            <div class="apply-overtime-date">
+                <div class="font-style11">
+                    <!-- 加班日期 -->
+                    <span class="langStr" data-id="str_201"></span>
+                </div>
+                <div id="selectOTday" class="font-style3">
+                    <!-- 選擇日期 -->
+                    <span id="chooseOTday"></span>
+                    <img src="img/dropdown.png" class="apply-select-img">
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div3"></div>
+            <!-- apply date -->
+            <div class="apply-overtime-time">
+                <div class="font-style11">
+                    <!-- 加班時間 -->
+                    <span class="langStr" data-id="str_202"></span>
+                </div>
+                <div class="font-style11">
+                    <div>
+                        <!-- 開始時間 -->
+                        <span class="langStr" data-id="str_085"></span>
+                    </div>
+                    <div>
+                        <!-- 結束時間 -->
+                        <span class="langStr" data-id="str_086"></span>
+                    </div>
+                </div>
+                <div class="font-style3">
+                    <div id="btnStartTime">
+                        <!-- 請選擇 -->
+                        <span id="startTimeText"></span>
+                        <img src="img/dropdown.png" class="apply-select-img">
+                    </div>
+                    <div id="btnEndTime">
+                        <!-- 請選擇 -->
+                        <span id="endTimeText"></span>
+                        <img src="img/dropdown.png" class="apply-select-img">
+                    </div>
+                </div>
+            </div>
+            <div class="apply-leave-count">
+                <div class="font-style11">
+                    <!-- 加班時數 -->
+                    <span class="langStr" data-id="str_203"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="overtimeHours">0</span>&nbsp;
+                    <!-- 小時 -->
+                    <span class="langStr" data-id="str_088"></span>
+                </div>
+            </div>     
+            <!-- empty div -->
+            <div class="apply-empty-div1"></div>
+            <!-- reason -->
+            <div class="overtime-reason">
+                <div class="font-style11">
+                    <!-- 加班原因 -->
+                    <span class="langStr" data-id="str_204"></span>
+                </div>
+                <div>
+                    <textarea data-role="none" id="overtimeReason" class="reason-textarea"></textarea>
+                </div>
+            </div>
+
+            <!-- date component -->
+            <div class="date-component">
+                <input data-role="none" id="newOTDate" readonly="readonly" class="date-time-component">
+                <input data-role='datebox' id="startOTPicker" readonly="readonly" type="text" data-options='{"mode": "timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox", "closeCallback": "setStartTime", "minuteStep": "30"}' name="startOTPicker" class="date-time-component">
+                <input data-role='datebox' id="endOTPicker" readonly="readonly" type="text" data-options='{"mode": "timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox", "closeCallback": "setEndTime", "minuteStep": "30"}' name="endOTPicker" class="date-time-component">
+            </div>
+            <div class="apply-empty-div2"></div>
+            <!-- preview btn -->
+            <div class="apply-preview-btn">
+                <div id="previewOTBtn">
+                    <!-- 預覽送簽 -->
+                    <span class="langStr" data-id="str_091"></span>
+                </div>
+            </div>
+            <div class="apply-preview-remove">
+                <div id="emptyOvertimeForm">
+                    <img src="img/btn_cancel.png">&nbsp;
+                    <!-- 清除 -->
+                    <span class="langStr" data-id="str_129"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- preview -->
+        <div class="apply-preview">
+            <div class="preview-apply-date font-style12">
+                <!-- 申請日期： -->
+                <span class="langStr" data-id="str_080"></span>
+                <span id="previewApplyDate"></span>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班日期 -->
+                    <span class="langStr" data-id="str_201"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="previewOTDay"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班時間 -->
+                    <span class="langStr" data-id="str_202"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="previewOTTime"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班時數 -->
+                    <span class="langStr" data-id="str_203"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="previewOTHours"></span>
+                </div>
+            </div>         
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班理由 -->
+                    <span class="langStr" data-id="str_204"></span>
+                </div>
+                <div class="font-style3 overflow-hidden">
+                    <span id="previewOTReason"></span>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div2"></div>
+            <!-- apply btn -->
+            <div class="apply-submit-btn">
+                <div id="confirmOTBtn">
+                    <!-- 確認送簽 -->
+                    <span class="langStr" data-id="str_180"></span>
+                </div>
+            </div>
+        </div>
+        <div class="popup-msg-style">
+            <!-- 表單已送簽 -->
+            <span class="langStr" data-id="str_198"></span>
+        </div>
+    </div>
+
+    <!-- 請先選擇加班日期 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup overitmeDateFirst" for="overitmeDateFirst" id="overitmeDateFirst">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!-- 請先選擇加班日期 -->
+                        <span class="langStr" data-id="str_205"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 請先選擇開始時間 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup starttimeFirst" for="starttimeFirst" id="starttimeFirst">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!-- 請先選擇開始時間 -->
+                        <span class="langStr" data-id="str_171"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加班結束時間應大於開始時間 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup endTimeError" for="endTimeError" id="endTimeError">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--加班結束時間應大於開始時間-->
+                        <span class="langStr" data-id="str_206"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- error msg 1行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup leftDaysByOT" for="leftDaysByOT" id="leftDaysByOT">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main" style="margin-left:5.36vw;margin-right:5.36vw;">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm send -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmOvertime" for="confirmOvertime" id="confirmOvertime">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text font-style3">
+                        <!-- 確定送簽？ -->
+                        <span class="langStr" data-id="str_174"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmSendOT">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

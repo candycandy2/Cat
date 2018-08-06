@@ -464,6 +464,10 @@ html body .ui-group-theme-a a:visited {
     height: 10vw;
 }
 
+.apply-empty-div3 {
+    height: 5vw;
+}
+
 .apply-leave-date {
     height: 19vw;
     color: #0f0f0f;
@@ -574,8 +578,9 @@ html body .ui-group-theme-a a:visited {
 }
 
 .apply-preview-remove {
+    margin-top: 4.3vw;
     height: 10vw;
-    line-height: 10vw;
+    /*line-height: 10vw;*/
     text-align: center;
     color: #2A8ABD;
 }
@@ -595,7 +600,6 @@ html body .ui-group-theme-a a:visited {
     vertical-align: middle;
 }
 
-
 /* popup */
 
 .leaveNotEnough>.ui-content,
@@ -608,7 +612,12 @@ html body .ui-group-theme-a a:visited {
 .agentNotData>.ui-content,
 .deptFirst>.ui-content,
 .confirmClockin>.ui-content,
-.errMsgByClockin>.ui-content {
+.errMsgByClockin>.ui-content,
+.overitmeDateFirst>.ui-content,
+.starttimeFirst>.ui-content,
+.endTimeError>.ui-content,
+.leftDaysByOT>.ui-content,
+.confirmOvertime>.ui-content {
     padding: 0 !important;
 }
 
@@ -625,7 +634,12 @@ html body .ui-group-theme-a a:visited {
 .confirmSend>.ui-content>.header,
 .deptFirst>.ui-content>.header,
 .confirmClockin>.ui-content>.header,
-.errMsgByClockin>.ui-content>.header {
+.errMsgByClockin>.ui-content>.header,
+.overitmeDateFirst>.ui-content>.header,
+.starttimeFirst>.ui-content>.header,
+.endTimeError>.ui-content>.header,
+.leftDaysByOT>.ui-content>.header,
+.confirmOvertime>.ui-content>.header {
     margin-top: 12.5%;
 }
 
@@ -719,7 +733,8 @@ html body .ui-group-theme-a a:visited {
 }
 
 .leave-query-state,
-.backLeave-query-state {
+.backLeave-query-state,
+.overtime-query-state {
     width: 88vw;
     height: 10vw;
     line-height: 10vw;
@@ -729,12 +744,14 @@ html body .ui-group-theme-a a:visited {
 }
 
 .leave-query-state>span,
-.backLeave-query-state>span {
+.backLeave-query-state>span,
+.overtime-query-state>span {
     color: #2e89bc;
 }
 
 .leave-query-state>img,
-.backLeave-query-state>img {
+.backLeave-query-state>img,
+.overtime-query-state>img {
     width: 5vw;
     height: 3vw;
     margin-left: 1vw;
@@ -931,8 +948,6 @@ html body .ui-group-theme-a a:visited {
     display: none;
 }
 
-
-
 /**************************************** viewBackLeaveApply ***************************************/
 
 #backLeaveQueryDetail {
@@ -1065,6 +1080,10 @@ html body .ui-group-theme-a a:visited {
     height: 0;
 }
 
+.date-component>.ui-input-text {
+    display: none;
+}
+
 #confirmClockin {
     min-height: 0vw;
 }
@@ -1133,22 +1152,6 @@ li.ui-body-a {
     width: 240px !important;
 }
 
-/*.ui-datebox-controls .ui-controlgroup-controls {
-     border-radius: 0;
-}*/
-
-/*
-.ui-icon-delete:after {
-    background-image: url('../img/component/close_btn.png');
-}*/
-
-/*.ui-btn-icon-notext:after {
-    margin-left: -9px;
-    margin-top: -9px;
-    width: 18px;
-    height: 18px;
-}*/
-
 /********************************************** mypanel *********************************************/
 
 #mypanel .panel-content {
@@ -1203,3 +1206,84 @@ li.ui-body-a {
     padding: 0;
 }
 
+/********************************************** viewOvertimeSubmit *********************************************/
+
+#backOvertime {
+    width: 4.934VW;
+    display: none;
+}
+
+.overtime-reason>div:nth-of-type(2) {
+    margin-top: 2.14vw;
+}
+
+.apply-overtime-time {
+    height: 21.3vw;
+    color: #0f0f0f;
+}
+
+.apply-overtime-time>div:nth-of-type(1),
+.apply-overtime-time>div:nth-of-type(2) {
+    height: 5vw;
+}
+
+.apply-overtime-time>div:nth-of-type(2)>div {
+    display: inline-block;
+    width: 46vw;
+    height: 5vw;
+    line-height: 5vw;
+}
+
+.apply-overtime-time>div:nth-of-type(3) {
+    height: 7vw;
+}
+
+.apply-overtime-time>div:nth-of-type(3)>div {
+    display: inline-block;
+    width: 46vw;
+    height: 7vw;
+    line-height: 7vw;
+}
+
+.apply-overtime-date>div:nth-of-type(1),
+.apply-overtime-date>div:nth-of-type(2) {
+    height: 5vw;
+}
+
+#confirmOvertime {
+    min-height: 0vw;
+}
+
+#confirmOvertime .footer {
+    color: #1678E5;
+    font-size: 5.02vw;
+    text-align: center;
+}
+
+/********************************************** viewOvertimeQuery *********************************************/
+
+#backOTDetailList {
+    width: 4.934VW;
+    display: none;
+}
+
+#overtimeWithdraw,
+#overtimeRevoke,
+#overtimeDelete {
+    display: none;
+}
+
+.not-apply-submit-btn {
+    height: 10vw;
+}
+
+.not-apply-submit-btn>div {
+    width: 64vw;
+    height: 10vw;
+    margin-left: 14.8vw;
+    background-color: #d6d6d6;
+    color: #999999;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 10vw;
+}

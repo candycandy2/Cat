@@ -537,7 +537,7 @@
   },
   {
     "term": "str_068",
-    "definition": "我的APP",
+    "definition": "我的最愛",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -722,6 +722,46 @@
   {
     "term": "str_091",
     "definition": "感謝您的回饋",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_092",
+    "definition": "天氣",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_093",
+    "definition": "我的預約",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_094",
+    "definition": "我的QPlay",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_095",
+    "definition": "最新消息",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_096",
+    "definition": "完成",
     "context": "",
     "term_plural": "",
     "reference": "",

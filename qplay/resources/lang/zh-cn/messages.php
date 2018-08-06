@@ -60,6 +60,7 @@ return [
     'TITLE_BASIC_INFO_MAINTAIN' => '成员资讯维护',
     'TITLE_REGISTER_MAINTAIN_TOOL' => '注册管理工具',
     'TITLE_COMPANY_MAINTAIN' => '公司管理',
+    'TITLE_FUNCTION_MAINTAIN' => '功能管理',
     'ENABLE' => '启用',
     'DISABLE' => '停用',
 
@@ -419,5 +420,17 @@ return [
     'COMPANY_PORT' => 'Server Port',
     'COMPANY_ERR_DATA_HAS_EXIST' => '公司资料已经存在',
     'COMPANY_ERR_CREATE_COMPANY_FAILED' => '新增公司失败!',
-    'COMPANY_ERR_UPDATE_COMPANY_FAILED' => '更新公司失败!'
+    'COMPANY_ERR_UPDATE_COMPANY_FAILED' => '更新公司失败!',
+
+    //Function Maintain
+    'FUNCTION_NEW_DATA' => '新增功能',
+    'FUNCTION_EDIT_DATA' => '编辑功能',
+    'OWNER_APP' => '所属App',
+    'FUNCTION_NAME' => '功能名称',
+    'FUNCTION_TYPE' => '功能类型',
+    'FUNCTION_VARIABLE_NAME' => '功能变数名称',
+    'FUNCTION_DESCRIPTION' => '功能描述',
+    'ERR_FUNCTION_VARIABLE_EXIST' =>'功能变数名称已经存在!',
+    'ERR_CREATE_FUNCTION_FAILED' => '新增功能失败!',
+    'ERR_UPDATE_FUNCTION_FAILED' => '更新功能失败!'
 ];
