@@ -279,8 +279,8 @@ $("#viewOvertimeSubmit").pagecontainer({
                     if ($(success).html() != undefined) {
                         //如果送签成功，重新取得加班單列表，并跳转到“加班查詢/時數登入”页，并记录代理人到local端
                         $("#backOvertime").click();
-                        //API: QueryEmployeeOvertimeForm
-                        //changePageByPanel("viewOvertimeQuery");
+                        QueryEmployeeOvertimeApplyForm();
+                        changePageByPanel("viewOvertimeQuery");
                         $(".popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                         //送签成功，清空申请表单
                         $("#emptyOvertimeForm").trigger("click");
@@ -306,7 +306,7 @@ $("#viewOvertimeSubmit").pagecontainer({
 
         //送簽popup確定
         $("#confirmSendOT").on("click", function() {
-            $("#previewOTBtn").hide();
+            //$("#previewOTBtn").hide();
             loadingMask("show");
             sendApplyOvertimeQueryData = '<LayoutHeader><empno>' +
                 myEmpNo +
