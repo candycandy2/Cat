@@ -231,7 +231,9 @@ var app = {
                 //Before open Message Detail Data, update Message List
                 if (window.localStorage.getItem("msgDateFrom") === null) {
 
-                    $.mobile.changePage('#viewNewsEvents2-3');
+					//review by allen
+                    //$.mobile.changePage('#viewNewsEvents2-3');
+					$.mobile.changePage('#viewMessageList');
                 } else {
                     if (window.localStorage.getItem("uuid") !== null) {
                         loginData["uuid"] = window.localStorage.getItem("uuid");
