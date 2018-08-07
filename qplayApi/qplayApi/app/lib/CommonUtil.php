@@ -33,7 +33,8 @@ class CommonUtil
             }
            $userList = $query-> select('qp_user.row_id', 'qp_user.login_id', 'qp_user.emp_no',
                 'qp_user.emp_name', 'qp_user.email', 'qp_user.user_domain', 'qp_user.company',
-                'qp_user.department','qp_user.site_code','qp_user.status', 'qp_user.resign'  )->get();
+                'qp_user.department','qp_user.site_code','qp_user.status', 'qp_user.resign',
+                'qp_user.ad_flag')->get();
         if(count($userList) < 1) {
             return null;
         }
