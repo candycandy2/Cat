@@ -33,13 +33,10 @@ $("#viewAppList").pagecontainer({
                     appSummary = defaultSummary;
                 }
 
-                var appname = applist[alreadyDownloadList[i]].package_name.split('.')[2];
                 var appurlicon = applist[alreadyDownloadList[i]].icon_url;
                 var appcode = applist[alreadyDownloadList[i]].app_code;
 
-                alreadydownloadContent += '<div class="download-list"><div class="download-link" data-appname=' +
-                    appname +
-                    ' data-code="' +
+                alreadydownloadContent += '<div class="download-list"><div class="download-link" data-code="' +
                     appcode +
                     '"><div class="download-icon"><img src="' +
                     appurlicon +
@@ -79,13 +76,10 @@ $("#viewAppList").pagecontainer({
                     appSummary = defaultSummary;
                 }
 
-                var appname = applist[notDownloadList[i]].package_name.split('.')[2];
                 var appurlicon = applist[notDownloadList[i]].icon_url;
                 var appcode = applist[notDownloadList[i]].app_code;
 
-                notdownloadContent += '<div class="download-list"><div class="download-link" data-appname=' +
-                    appname +
-                    ' data-code="' +
+                notdownloadContent += '<div class="download-list"><div class="download-link" data-code="' +
                     appcode +
                     '"><div class="download-icon"><img src="' +
                     appurlicon +
@@ -157,9 +151,8 @@ $("#viewAppList").pagecontainer({
 
             }
 
-            //destroy
-            $('.applistWidget').applist('destroy');
-            $('.applistWidget').applist();
+            //refresh applist
+            $('.applistWidget').applist('refresh');
         }
 
         //get app index in applist
@@ -182,10 +175,10 @@ $("#viewAppList").pagecontainer({
                 //2. 获取分組，async
                 var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
                 appGroupByDownload(responsecontent);
-                
+
                 //3. 重新生成html
                 setTimeout(createAppListContent, 2000);
-                
+
             } else if (!install && intervalCount == 100) {
                 clearInterval(checkAppInstallInterval);
                 intervalCount = 0;
