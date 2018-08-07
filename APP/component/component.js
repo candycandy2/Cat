@@ -233,7 +233,6 @@ var app = {
 
 					//review by allen
                     //$.mobile.changePage('#viewNewsEvents2-3');
-					checkAppPage('viewMessageList');
                 } else {
                     if (window.localStorage.getItem("uuid") !== null) {
                         loginData["uuid"] = window.localStorage.getItem("uuid");
