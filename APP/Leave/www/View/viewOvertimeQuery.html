@@ -4,8 +4,7 @@
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
             <img src="img/menu.png" class="leaveMenu">
             <img src="img/nav_back.png" id="backOTDetailList">
-            <img src="img/nav_back.png" id="backSignPreview">
-            <img src="img/nav_back.png" id="backEffectPreview">
+            <img src="img/nav_back.png" id="backSignOTList">
         </a>
         <div class="header-style">
             <div class="ui-title">
@@ -78,7 +77,7 @@
                         </div>
                     </div>
                     <div>
-                        <img src="img/info.png" class="leave-detail-img" id="signLeaveDetail">
+                        <img src="img/info.png" class="leave-detail-img" id="signOvertimeDetail">
                     </div>
                 </div>
             </div>
@@ -189,11 +188,11 @@
                 <div>
                     <!--申請日期-->
                     <span class="langStr" data-id="str_080"></span>
-                    <span id="withdrawApplyDate">2017-02-08</span>
+                    <span id="withdrawOTApplyDate">2017-02-08</span>
                 </div>
                 <div>
-                    <!-- 請假單號 -->
-                    <span class="langStr" data-id="str_131"></span>
+                    <!-- 加班單號 -->
+                    <span class="langStr" data-id="str_209"></span>
                     <span id="withdrawFormNo">572000</span>
                 </div>
             </div>
@@ -206,66 +205,23 @@
                     <span class="langStr" data-id="str_132"></span>
                 </div>
                 <div>
-                    <textarea data-role="none" id="withdrawReason" class="reason-textarea"></textarea>
+                    <textarea data-role="none" id="withdrawOTReason" class="reason-textarea"></textarea>
                 </div>
             </div>
             <!-- empty div -->
             <div class="apply-empty-div2"></div>
             <!-- apply btn -->
             <div class="apply-preview-btn">
-                <div id="confirmWithdrawBtn">
+                <div id="confirmWithdrawOTBtn">
                     <!-- 確認撤回 -->
-                    <span class="langStr" data-id="str_142"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 销假申请（已生效） -->
-        <div class="leave-query-dispel">
-            <div class="leave-detail-date font-style12">
-                <div>
-                    <!--申請日期-->
-                    <span class="langStr" data-id="str_080"></span>
-                    <span id="revokeApplyDate">2017-10-06</span>
-                </div>
-                <div>
-                    <!-- 請假單號 -->
-                    <span class="langStr" data-id="str_131"></span>
-                    <span id="revokeFormNo">572003</span>
-                </div>
-            </div>
-            <!-- empty div -->
-            <div class="apply-empty-div1"></div>
-            <!-- withdraw-reason textarea -->
-            <div class="apply-leave-reason">
-                <div class="font-style11">
-                    <!-- 銷假理由 -->
-                    <span class="langStr" data-id="str_158"></span>
-                </div>
-                <div>
-                    <textarea data-role="none" id="dispelReason" class="reason-textarea"></textarea>
-                </div>
-            </div>
-            <!-- empty div -->
-            <div class="apply-empty-div2"></div>
-            <div class="apply-preview-btn" id="comfirmDispel">
-                <div id="confirmDispelBtn">
-                    <!-- 確定送簽 -->
-                    <span class="langStr" data-id="str_159"></span>
-                </div>
-            </div>
-            <div class="apply-preview-remove">
-                <div id="cancelApply">
-                    <img src="img/btn_cancel.png">&nbsp;
-                    <!-- 取消申請 -->
-                    <span class="langStr" data-id="str_160"></span>
+                    <span class="langStr" data-id="str_143"></span>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- sign popup -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signStateFlow" for="signStateFlow" id="signStateFlow">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signOTStateFlow" for="signOTStateFlow" id="signOTStateFlow">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -292,7 +248,7 @@
     </div>
 
     <!-- confirm withdraw -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmWithdraw" for="confirmWithdraw" id="confirmWithdraw">
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmWithdrawOT" for="confirmWithdrawOT" id="confirmWithdrawOT">
         <div data-role="main" class="ui-content">
             <div class="header">
                 <div class="font-style3 header-title-main">
@@ -347,38 +303,6 @@
                         <span class="langStr" data-id="com_023"></span>
                     </div>
                     <div class="btn-cancel" id="confirmDeleteLeave">
-                        <!--確定-->
-                        <span class="langStr" data-id="com_016"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- confirm back -->
-    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmRevoke" for="confirmRevoke" id="confirmRevoke">
-        <div data-role="main" class="ui-content">
-            <div class="header">
-                <div class="font-style3 header-title-main">
-                    <span class='header-icon hidden'>
-                        <img src="img/urgent.png">
-                    </span>
-                    <span class="header-text">
-                        <!-- 確定銷假？ -->
-                        <span class="langStr" data-id="str_173"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="main">
-                <p class="main-paragraph font-style3"> <br> </p>
-            </div>
-            <div class="footer">
-                <div class="btn-two font-style1 btnArea">
-                    <div class="btn-cancel">
-                        <!--取消-->
-                        <span class="langStr" data-id="com_023"></span>
-                    </div>
-                    <div class="btn-cancel" id="confirmRevokeLeave">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
                     </div>

@@ -344,7 +344,7 @@ function leaveListToDetail(btn1, btn2, btn3, state) {
 }
 
 //加班單列表到詳情
-function overtimeListToDetail(btn1, btn2, btn3, btn4,state) {
+function overtimeListToDetail(btn1, btn2, btn3, btn4, state) {
     $("#viewOvertimeQuery .leaveMenu").hide();
     $(".leave-query-main").hide();
     $("#backOTDetailList").show();

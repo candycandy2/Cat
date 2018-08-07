@@ -1,6 +1,8 @@
 $("#viewAppList").pagecontainer({
     create: function (event, ui) {
 
+        var checkAppInstallInterval = null, intervalCount = 0;
+
         //已知app分组，生成html
         function createAppListContent() {
             //1. 已下载
@@ -31,10 +33,13 @@ $("#viewAppList").pagecontainer({
                     appSummary = defaultSummary;
                 }
 
+                var appname = applist[alreadyDownloadList[i]].package_name.split('.')[2];
                 var appurlicon = applist[alreadyDownloadList[i]].icon_url;
                 var appcode = applist[alreadyDownloadList[i]].app_code;
 
-                alreadydownloadContent += '<div class="download-list"><div class="download-link" data-code="' +
+                alreadydownloadContent += '<div class="download-list"><div class="download-link" data-appname=' +
+                    appname +
+                    ' data-code="' +
                     appcode +
                     '"><div class="download-icon"><img src="' +
                     appurlicon +
@@ -74,10 +79,13 @@ $("#viewAppList").pagecontainer({
                     appSummary = defaultSummary;
                 }
 
+                var appname = applist[notDownloadList[i]].package_name.split('.')[2];
                 var appurlicon = applist[notDownloadList[i]].icon_url;
                 var appcode = applist[notDownloadList[i]].app_code;
 
-                notdownloadContent += '<div class="download-list"><div class="download-link" data-code="' +
+                notdownloadContent += '<div class="download-list"><div class="download-link" data-appname=' +
+                    appname +
+                    ' data-code="' +
                     appcode +
                     '"><div class="download-icon"><img src="' +
                     appurlicon +
@@ -163,22 +171,44 @@ $("#viewAppList").pagecontainer({
             }
         }
 
+        function checkAppInstallAfterDownload(install, index) {
+            //console.log(install + ',' + intervalCount);
+
+            if (install) {
+                //1. 清除定时器
+                clearInterval(checkAppInstallInterval);
+                intervalCount = 0;
+
+                //2. 获取分組，async
+                var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
+                appGroupByDownload(responsecontent);
+                
+                //3. 重新生成html
+                setTimeout(createAppListContent, 2000);
+                
+            } else if (!install && intervalCount == 100) {
+                clearInterval(checkAppInstallInterval);
+                intervalCount = 0;
+            } else {
+                intervalCount++;
+            }
+        }
+
         /********************************** page event ***********************************/
         $("#viewAppList").on("pagebeforeshow", function (event, ui) {
-
+            appListPageBeforShow();
         });
 
         $("#viewAppList").one("pageshow", function (event, ui) {
             //language string
             $('.already-download').text(langStr['str_074']);
             $('.not-download').text(langStr['str_075']);
+            $('.app-no-download p').append('<span>' + langStr['str_097'] + '</span><br><span>' + langStr['str_098'] + '</span>');
 
-            //create html
-            createAppListContent();
         });
 
         $("#viewAppList").on("pageshow", function (event, ui) {
-
+            createAppListContent();
         });
 
         $("#viewAppList").on("pagehide", function (event, ui) {
@@ -286,9 +316,18 @@ $("#viewAppList").pagecontainer({
                 }
 
             }
+
+            //check app install setInterval
+            var packageName = applist[selectAppIndex].package_name;
+            var packageNameArr = packageName.split(".");
+            checkAPPKey = packageNameArr[2];
+            intervalCount = 0;
+
+            checkAppInstallInterval = setInterval(function () {
+                checkAllAppInstalled(checkAppInstallAfterDownload, checkAPPKey, selectAppIndex);
+            }, 2000);
+
         });
-
-
 
 
     }

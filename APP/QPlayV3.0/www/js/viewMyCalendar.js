@@ -39,10 +39,12 @@ $("#viewMyCalendar").pagecontainer({
             reserveDateList = getAfterDate(new Date().yyyymmdd(""), reserveLength);
             var content = "";
             for (var i in reserveDateList) {
+                var reserveDate = formateReserveDate(reserveDateList[i], '-');
                 content += '<div class="reserve-list" data-index="' + i +
-                    '" data-id="' + formateReserveDate(reserveDateList[i], '-') +
-                    '"><div class="reserve-title">' + formateReserveDate(reserveDateList[i]) +
-                    '</div><div class="reserve-content" style="display:none;"></div><div class="reserve-null">本日无预约</div></div>';
+                    '" data-id="' + reserveDate +
+                    '"><div class="reserve-title">' + 
+                    new Date(reserveDate).toLocaleDateString(browserLanguage, { year: 'numeric', month: 'long', day: 'numeric' }) +
+                    '</div><div class="reserve-content" style="display:none;"></div><div class="reserve-null">' + langStr['str_099'] + '</div></div>';
             }
 
             $("#reserveContent").html('').append(content);
