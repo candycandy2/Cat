@@ -72,7 +72,7 @@
                 });
             }
 
-            appendWidgetHTML(this);
+            appendWidgetHTML();
 
         });
     }
@@ -86,11 +86,14 @@
                 destroyApplist(this);
             });
         },
+        refresh: function (jq) {
+            return jq.each(function () {
+                getFavoriteApp();
+            });
+        }
     }
 
-    $.fn.applist.defaults = {
-        finish: true
-    }
+    $.fn.applist.defaults = {}
 
     $('.' + widgetItem).applist();
 
