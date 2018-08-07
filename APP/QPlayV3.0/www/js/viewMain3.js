@@ -73,7 +73,7 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-
+            
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {

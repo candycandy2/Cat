@@ -88,7 +88,7 @@ $("#viewAppSetting").pagecontainer({
             this.failCallback = function (data) { };
 
             var __construct = function () {
-                QStorageAPI("POST", "portrait", self.successCallback, self.failCallback, queryData, null);
+                QStorageAPI("POST", true, "portrait", self.successCallback, self.failCallback, queryData, null);
             }();
         }
 
@@ -197,7 +197,9 @@ $("#viewAppSetting").pagecontainer({
                 $('.setting-mask').hide();
 
                 //Base64
-
+                var formData = new FormData();
+                formData.append('files', myPhoto.src);
+                //uploadFile(formData);
             }
 
             function onFail(message) {
@@ -209,9 +211,8 @@ $("#viewAppSetting").pagecontainer({
         $('#uploadBtn').on('click', function () {
             var file = $('#photoFile').get(0).files[0];
             var formData = new FormData();
-            formData.append('files', file);
-            formData.append('name', 'files');
-            formData.append('filename', file.name);
+            var img = 'file:///storage/emulated/0/Android/data/com.qplay.appqplaydev/cache/1533630978023.jpg'
+            formData.append('files', img);
             
             console.log(file);
 
