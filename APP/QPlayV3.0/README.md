@@ -993,7 +993,7 @@ app_summary | function_content | 0-1 | String | APP Summary <br> 當 type = APP�
 
 ```
 Check Poit:
-1.	需要透過 SQL 取得 status = ready 的 APP 其 package_name 和 icon_url : 
+1.  需要透過 SQL 取得 status = ready 的 APP 其 package_name 和 icon_url : 
     SELECT temp.*, H.package_name, H.icon_url, L.app_name, L.app_summary 
     FROM ( 
     SELECT F.*, V.status AS APP_Status FROM `qp_function` F 
