@@ -341,6 +341,9 @@
 
                     //set login_type in default
                     $("#ddlLoginType option[value='none']").attr("selected", true);
+                    setTimeout(function() {
+                        $("#ddlLoginType-button > span").text($("#ddlLoginType option:eq(0)").text());
+                    }, 500);
                 } else {
                     $("#loginTypeData").hide();
                 }
