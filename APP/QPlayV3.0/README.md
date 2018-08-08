@@ -949,7 +949,8 @@ Result Code | Description
 ----
 ## *getFunctionList*
 ```
-取得此 APP 底下的所有 Function，並且回傳各個 Function 的使用權限，如果是 Function Type = APP，另外告知 APP 的 packageName / Icon URL / name / summary。
+取得此 APP 底下的所有 Function，並且回傳各個 Function 的使用權限，
+如果是 Function Type = APP，另外告知 APP 的 packageName / Icon URL / name / summary。
 ```
 
 ### 請求方法
