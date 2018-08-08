@@ -499,9 +499,9 @@ $("#viewMessageList").pagecontainer({
 
             var totalHeight;
             if (device.platform === "iOS") {
-                totalHeight = (contentHeight + headHeight + footHeight + fixHeight + iOSFixedTopPX()).toString();
+                totalHeight = (contentHeight + headHeight + footHeight + footHeight + fixHeight + iOSFixedTopPX()).toString();
             } else {
-                totalHeight = (contentHeight + headHeight + footHeight).toString();
+                totalHeight = (contentHeight + headHeight + footHeight + footHeight).toString();
             }
 
             $('.message-scroll > div').css('height', totalHeight + 'px');
