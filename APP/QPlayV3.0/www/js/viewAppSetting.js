@@ -1,8 +1,6 @@
 $("#viewAppSetting").pagecontainer({
     create: function (event, ui) {
 
-        var photoURL = '';
-
         //注销
         function doLogOut() {
             var self = this;
@@ -88,8 +86,11 @@ $("#viewAppSetting").pagecontainer({
 
                 if (data['ResultCode'] == '1') {
                     loadingMask("hide");
+                    //更新当前头像
                     checkPhotoUpload($('#myPhoto'));
+                    //成功提示
                     $("#uploadSuccess").fadeIn(100).delay(2000).fadeOut(100);
+                    //更新首页头像
                     $('.reserveWidget').reserve('refresh');
 
                 } else {
@@ -230,13 +231,11 @@ $("#viewAppSetting").pagecontainer({
             });
 
             function onSuccess(imageURI) {
-                //console.log(imageURI);
-                //1. change photo
-                photoURL = 'data:image/jpeg;base64,' + imageURI;
+                //1. get base64
+                var url = 'data:image/jpeg;base64,' + imageURI;
 
                 //2. base64 to file
-                var file = dataURLtoFile('data:image/jpeg;base64,' + imageURI);
-                //console.log(file);
+                var file = dataURLtoFile(url);
 
                 //3. formData
                 var formData = new FormData();
@@ -265,13 +264,11 @@ $("#viewAppSetting").pagecontainer({
             });
 
             function onSuccess(imageURI) {
-                //console.log(imageURI);
-                //1. change photo
-                photoURL = 'data:image/jpeg;base64,' + imageURI;
+                //1. get base64
+                var url = 'data:image/jpeg;base64,' + imageURI;
 
                 //2. base64 to file
-                var file = dataURLtoFile('data:image/jpeg;base64,' + imageURI);
-                //console.log(file);
+                var file = dataURLtoFile(url);
 
                 //3. formData
                 var formData = new FormData();
