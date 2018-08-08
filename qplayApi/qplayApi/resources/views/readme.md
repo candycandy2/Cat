@@ -6,8 +6,30 @@ getServerData()
 args[1] = window.localStorage.getItem("pushToken"); //return by plugin QPush
 window.plugins.qlogin.openCertificationPage(null, null, args);
 
-### QLoginPlugin
+### QLogin Plugin(Nactive)
 openCertificationPage
+```
+- (void) openCertificationPage:(CDVInvokedUrlCommand *)command
+{
+    //解析XML，获得Url
+    NSString* path = @"config.xml";
+    path = [[NSBundle mainBundle] pathForResource:path ofType:nil];
+    NSURL* fileUrl = [NSURL fileURLWithPath:path];
+    QLoginXMLParser *qp = [[QLoginXMLParser alloc] init];
+    NSXMLParser* ps = [[NSXMLParser alloc] initWithContentsOfURL:fileUrl];
+    ps.delegate = qp;
+    [ps parse];
+    self.CertificationPageUrl = qp.ConfigedUrl;
+...
+    NSURL *url = [NSURL URLWithString:self.CertificationPageUrl];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+    [_wkView loadRequest:request];
+    [self.webView.superview addSubview:_wkView];
+    
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+```
 
 ### login.blade.php
 https://qplaydev.benq.com/qplayApi/public/qplayauth_register?uuid=1114a89792a637fcd0f&device_type=ios
