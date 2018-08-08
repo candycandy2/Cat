@@ -170,6 +170,25 @@
                                         @foreach($data as $company)
                                             <option value="{{$company->user_domain}}">{{$company->name}}</option>
                                         @endforeach
+                                        <option value="shop"><!--協力廠商--></option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr id="loginTypeData">
+                    <td class="control_icon_cell">
+                        <img src="{{asset('/css/images/login_type.png')}}" class="control_icon" />
+                    </td>
+                    <td class="control_cell">
+                        <table>
+                            <tr>
+                                <td>
+                                    <select class="login_control" name="ddlLoginType" id="ddlLoginType" data-mini="true" data-inline='false' data-icon="dropdown" data-iconpos="nocontext" style="border-color: #1f1f1f; padding: .4em">
+                                        <option value="none"><!--請選擇登入類型--></option>
+                                        <option value="AD"><!--使用桌機帳號--></option>
+                                        <option value="QAccount"><!--其他--></option>
                                     </select>
                                 </td>
                             </tr>
@@ -259,15 +278,40 @@
             function Init(){
                 InitUI();
                 $("#main_table div").removeClass("ui-shadow").removeClass("ui-shadow-inset");
-                $("#tbxName").parent().css("background-color","transparent");
-                $("#tbxPassword").parent().css("background-color","transparent");
-                $("#ddlCompany").parent().css("background-color","transparent");
+                $(".login_control").parent().css("background-color", "transparent");
+
                 $("#ddlCompany-button").css("padding-left","3vw");
                 var showOriLogin = getQueryString("show_origin_login");
                 if(showOriLogin && showOriLogin == "Y") {
                     $("#btnOriLogin").show();
                 }
             };
+
+            $("#ddlCompany").on("change", function() {
+                var selectedValue = $(this).val();
+
+                if (selectedValue.length == 0) {
+                    $("#loginTypeData").hide();
+                } else {
+                    $("#loginTypeData").show();
+
+                    if (selectedValue === "shop") {
+                        $("#ddlLoginType").attr("disabled", true);
+                        $("#ddlLoginType").parent().css("background-color", "#ededed");
+
+                        $("#ddlLoginType").val("QAccount");
+                        $("#ddlLoginType option:eq(2)").attr("selected", true);
+                        $("#ddlLoginType").parent().find("span[class='login_control']").html($("#ddlLoginType option:eq(2)").text());
+                    } else {
+                        $("#ddlLoginType").attr("disabled", false);
+                        $("#ddlLoginType").parent().css("background-color", "transparent");
+
+                        $("#ddlLoginType").val("none");
+                        $("#ddlLoginType option:eq(0)").attr("selected", true);
+                        $("#ddlLoginType").parent().find("span[class='login_control']").html($("#ddlLoginType option:eq(0)").text());
+                    }
+                }
+            });
         });
 
         function InitUI(){
@@ -294,8 +338,21 @@
                     var $selectCompany =  $("#ddlCompany option[value='" + window.localStorage.getItem("company") + "']");
                     $selectCompany.attr('selected', true);
                     $("#ddlCompany-button > span").text($selectCompany.text());
+
+                    //set login_type in default
+                    $("#ddlLoginType option[value='none']").attr("selected", true);
+                } else {
+                    $("#loginTypeData").hide();
                 }
+            } else {
+                $("#loginTypeData").hide();
             }
+
+            //set login_type option text
+            $("#ddlLoginType option:eq(0)").text(login_lang_list["LOGIN_TYPE_OPTION_0"]);
+            $("#ddlLoginType option:eq(1)").text(login_lang_list["LOGIN_TYPE_OPTION_1"]);
+            $("#ddlLoginType option:eq(2)").text(login_lang_list["LOGIN_TYPE_OPTION_2"]);
+            $("#ddlCompany option[value='shop']").text(login_lang_list["VENDOR"]);
         }
 
         var getLanguage = function(){
@@ -341,8 +398,9 @@
             var userName = $("#tbxName").val();
             var password = encodeURIComponent($("#tbxPassword").val());
             var company = $("#ddlCompany").val();
+            var loginType = $("#ddlLoginType").val();
 
-            if(!$.trim(userName) || !$.trim(password) || !$.trim(company)) {
+            if( !$.trim(userName) || !$.trim(password) || !$.trim(company) || (loginType === "none") ) {
 
                 showMessage("MSG_INFO_ERROR");
                 return;
@@ -389,9 +447,9 @@
                 success: function (d, status, xhr) {
                     if(d.result_code == 1) {
                         if(d.content.is_register == 1) {
-                            login(userName, password, company, uuid);
+                            login(userName, password, company, uuid, loginType);
                         } else {
-                            registerAndLogin(userName, password, company, uuid, device_type);
+                            registerAndLogin(userName, password, company, uuid, device_type, loginType);
                         }
                     } else {
                         HideLoading();
@@ -409,7 +467,7 @@
             });
         }
         
-        var login = function (loginId, password, domain, uuid) {
+        var login = function (loginId, password, domain, uuid, loginType) {
             
             if(!loginIdPattern.test(loginId))
 　　　　　　{
@@ -438,6 +496,7 @@
                     request.setRequestHeader("domain", domain);
                     request.setRequestHeader("loginid", loginId);
                     request.setRequestHeader("password", password);
+                    request.setRequestHeader("loginType", loginType);
                 },
                 success: function (d, status, xhr) {
                     HideLoading();
@@ -450,6 +509,8 @@
                                 + '"loginid" : "' + d.content.loginid + '", '
                                 + '"emp_no" : "' + d.content.emp_no + '",'
                                 + '"domain" : "' + d.content.domain + '",'
+                                + '"company" : "' + d.content.company + '",'
+                                + '"ad_flag" : "' + d.content.ad_flag + '",'
                                 + '"site_code" : "' + d.content.site_code + '",'
                                 + '"checksum" : "' + d.content.checksum + '",'
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
@@ -469,7 +530,7 @@
             });
         }
         
-        var registerAndLogin = function (loginId, password, domain, uuid, device_type) {
+        var registerAndLogin = function (loginId, password, domain, uuid, device_type, loginType) {
             
             if(!loginIdPattern.test(loginId))
 　　　　　　{
@@ -498,6 +559,7 @@
                     request.setRequestHeader("domain", domain);
                     request.setRequestHeader("loginid", loginId);
                     request.setRequestHeader("password", password);
+                    request.setRequestHeader("loginType", loginType);
                 },
                 success: function (d, status, xhr) {
                     HideLoading();
@@ -510,6 +572,8 @@
                                 + '"loginid" : "' + d.content.loginid + '", '
                                 + '"emp_no" : "' + d.content.emp_no + '",'
                                 + '"domain" : "' + d.content.domain + '",'
+                                + '"company" : "' + d.content.company + '",'
+                                + '"ad_flag" : "' + d.content.ad_flag + '",'
                                 + '"site_code" : "' + d.content.site_code + '",'
                                 + '"checksum" : "' + d.content.checksum + '",'
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';

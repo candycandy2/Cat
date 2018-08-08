@@ -35,13 +35,16 @@
             content = '<div class="widget-none-msg">' + langStr['str_069'] + '<div>';
         }
 
-        $('.' + widgetItem).append(content);
+        $('.' + widgetItem).html('').append(content);
         messageFinish = true;
     }
 
-    $.fn.message = function (options) {
-        options = options || {};
+    $.fn.message = function (options, param) {
+        if (typeof options == 'string') {
+            return $.fn.message.methods[options](this, param);
+        }
 
+        options = options || {};
         return this.each(function () {
             var state = $.data(this, 'message');
             if (state) {
@@ -52,9 +55,20 @@
                 });
             }
 
-            createMessage(this);
+            createMessage();
 
         });
+    }
+
+    $.fn.message.methods = {
+        options: function (jq) {
+            return $.data(jq[0], 'message').options;
+        },
+        refresh: function (jq) {
+            return jq.each(function () {
+                createMessage();
+            });
+        }
     }
 
     $.fn.message.defaults = {}

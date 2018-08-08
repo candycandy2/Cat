@@ -1401,6 +1401,11 @@ input[type=radio]:checked + label {
     padding: 0;
 }
 
+/* .news-content ul.ui-listview > li,
+.event-content ul.ui-listview > li {
+    border-bottom: 1px solid #d6d6d6 !important;
+} */
+
 .news-content ul.ui-listview > li:last-of-type > a,
 .event-content ul.ui-listview > li:last-of-type > a {
     border: none !important;
@@ -1460,7 +1465,7 @@ input[type=radio]:checked + label {
 }
 
 .ui-div {
-    border: none !important;
+    border-top: none !important;
     padding: 3.36vw 3.71vw 3.27vw !important;
     background-color: #FFFFFF !important;
     border-bottom: 1px solid #d6d6d6 !important;
@@ -1472,7 +1477,8 @@ input[type=radio]:checked + label {
 	height: 100%;
 	position: absolute;
 	top: 0;
-	right: 0;
+    right: 0;
+    /* border-bottom: 1px solid #d6d6d6; */
 }
 
 .behind a.ui-btn {

@@ -32,14 +32,6 @@ $("#viewWebNews2-3-1").pagecontainer({
         window.canvasChangeTop = false;
 
         /********************************** function *************************************/
-        // window.goBack = function (action) {
-        //     if (action === "goList") {
-        //         $.mobile.changePage('#viewNewsEvents2-3');
-        //     } else if (action === "goHome") {
-        //         $.mobile.changePage('#viewMain2-1');
-        //     }
-        // };
-
         function renderCanvas(content) {
 
             $("#viewWebNews2-3-1 .portal-header").hide();
@@ -674,19 +666,22 @@ $("#viewWebNews2-3-1").pagecontainer({
         $("#confirmMessageNotExist").on("click", function () {
             messageExist = true;
             $('#messageNotExist').popup('close');
-            //$.mobile.changePage("#viewNewsEvents2-3");
             checkAppPage('viewMessageList');
         });
 
         $("#goList.nav-button").on("click", function () {
-            //var action = $(this).prop("id");
-            //goBack(action);
-
-            if (messageFrom == 'viewMain3') {
+            if (messageFrom == 'viewMain3' || messageFrom == 'push') {
+                if(widgetUpdateMsg) {
+                    $('.messageWidget').message('refresh');
+                    widgetUpdateMsg = false;
+                }
                 $.mobile.changePage('#viewMain3');
+                
             } else if (messageFrom == 'viewMessageList') {
-                //$.mobile.changePage('#viewMessageList');
                 checkAppPage('viewMessageList');
+
+            } else {
+                $.mobile.changePage('#viewMain3');
             }
 
         });
@@ -696,8 +691,6 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $(document).on("click", "#messageLoadErrorPopup #back", function () {
-            //goBack("goList");
-            //$.mobile.changePage('#viewMessageList');
             checkAppPage('viewMessageList');
         });
     }
