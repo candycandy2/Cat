@@ -398,7 +398,7 @@ input[type=radio]:checked + label {
     position: relative;
     width: 10%;
     top: -2.6vh;
-    left: 88%;
+    left: 89%;
     background-color: #FFF;
     margin-bottom: -2.6vh;
 }

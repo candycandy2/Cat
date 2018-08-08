@@ -25,10 +25,9 @@
             $('.' + widgetItem).append(data);
             reserveFinish = true;
             getCurrentDate();
+            checkPhotoUpload($('img.reserve-photo'));
 
         }, "html");
-
-        getCurrentDate();
         //$.ajaxSettings.async = true;
     }
 
@@ -40,10 +39,10 @@
         $('#widgetList .emp-name').text(name);
         $('.widget-reserve-null').text(langStr['str_067']);
 
-        getReserve();
+        getAllReserve();
     }
 
-    function getReserve() {
+    function getAllReserve() {
         for (var i in reserveAppList) {
             getMyReserve(reserveAppList[i].key, reserveAppList[i].secretKey);
         }
@@ -78,9 +77,34 @@
         }
     }
 
-    $.fn.reserve = function (options) {
-        options = options || {};
+    //检查是否上传过头像
+    function checkPhotoUpload($target) {
+        //var url = 'https://bqgroupstoragedev.blob.core.windows.net/appqplaydev-portrait/1705055/1705055_1024.png';
 
+        var env = '';
+        if (loginData["versionName"].indexOf("Staging") !== -1) {
+            env = 'test';
+        } else if (loginData["versionName"].indexOf("Development") !== -1) {
+            env = 'dev';
+        }
+
+        var dateTime = Date.now();
+        var timeStamp = Math.floor(dateTime / 1000);
+
+        var url = 'https://bqgroupstorage' + env + '.blob.core.windows.net/appqplay' + env +
+            '-portrait/' + loginData.emp_no + '/' + loginData.emp_no + '_1024.png?v=' + timeStamp;
+
+        $.get(url).success(function () {
+            $target.attr('src', url);
+        });
+    }
+
+    $.fn.reserve = function (options, param) {
+        if (typeof options == 'string') {
+            return $.fn.reserve.methods[options](this, param);
+        }
+
+        options = options || {};
         return this.each(function () {
             var state = $.data(this, 'reserve');
             if (state) {
@@ -94,6 +118,17 @@
             appendWidgetHTML(this);
 
         });
+    }
+
+    $.fn.reserve.methods = {
+        options: function (jq) {
+            return $.data(jq[0], 'reserve').options;
+        },
+        refresh: function (jq) {
+            return jq.each(function () {
+                checkPhotoUpload($('img.reserve-photo'));
+            });
+        }
     }
 
     $.fn.reserve.defaults = {}
