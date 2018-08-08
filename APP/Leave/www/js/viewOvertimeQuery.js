@@ -110,7 +110,7 @@ $("#viewOvertimeQuery").pagecontainer({
                     overtimeDetailObj["actualTotalhours"] = ($(actualtotalhour).html().split(".")[1] == "0") ? $(actualtotalhour).html().split(".")[0] : $(actualtotalhour).html();
                     overtimeDetailObj["type"] = ($.trim($(type).html()) == "1") ? '補休' : '加班費';
                     //改变详情页内容
-                    if (overtimeDetailObj["actualTotalhours"] !== 0 && overtimeDetailObj["status"] === "WA") {
+                    if (overtimeDetailObj["actualTotalhours"] !== "0" && overtimeDetailObj["status"] === "WA") {
                         setActualOTDataToDetail();
                     } else {
                         setOvertimeDataToDetail();
@@ -315,6 +315,8 @@ $("#viewOvertimeQuery").pagecontainer({
             $("#overtimeApplyReason").text(overtimeDetailObj["reason"]);
             //撤回頁面的“請假單號”
             $("#withdrawOTFormNo").text(overtimeDetailObj["formno"]);
+            $(".actualot-query-detail-sign").hide();
+            $(".leave-query-detail-sign").show();            
         }
 
         //加班單(有實際區間)詳情傳值
@@ -332,13 +334,15 @@ $("#viewOvertimeQuery").pagecontainer({
             $("#overtimePaid").text(overtimeDetailObj["type"]);           
             //撤回頁面的“請假單號”
             $("#withdrawOTFormNo").text(overtimeDetailObj["formno"]);
+            $(".leave-query-detail-sign").hide();
+            $(".actualot-query-detail-sign").show();
         }
 
         function periodFromOvertimeDateToNow(overtimedate) {
             var today = new Date();
             var otDate = new Date(overtimedate);
             var otperiod = otDate.getTime() - today.getTime(); 
-            var periodday = parsenInt(otperiod/86400000) + 1;
+            var periodday = parseInt(otperiod/86400000) + 1;
             return periodday;
         }
 
@@ -362,8 +366,6 @@ $("#viewOvertimeQuery").pagecontainer({
 
             var self = $.trim($(this).text());
             var formid = $(this).attr("form-id")
-            var overtimedate = overtimeDetailObj["targetdate"];
-
             //先获取部分详情，另外部分详情在API中获取
             overtimeDetailObj = getOvertimeDetailByID(formid);
 
@@ -374,6 +376,7 @@ $("#viewOvertimeQuery").pagecontainer({
                 '</formid></LayoutHeader>';
             //呼叫API
             OvertimeApplyFormDetail();
+            var overtimedate = overtimeDetailObj["targetdate"];
 
             if (self == formSigning) {
                 overtimeListToDetail("overtimeWithdraw", "overtimeDelete", "overtimeEnter", "overtimeNoEnter", "");
@@ -482,7 +485,6 @@ $("#viewOvertimeQuery").pagecontainer({
                 setTimeout(function() {
                     popupMsgInit(".confirmWithdrawOT");
                 }, 100);
-
             }
         });
 
@@ -500,7 +502,12 @@ $("#viewOvertimeQuery").pagecontainer({
                 '</reason></LayoutHeader>';
             //API
             RecallOvertimeApplyForm();
-
         });
+
+        $("#enterActualOT").on("click", function() {
+            viewAcutalOTApplyShow = true;
+            
+            changePageByPanel("viewOvertimeSubmit");
+        });   
     }
 });
