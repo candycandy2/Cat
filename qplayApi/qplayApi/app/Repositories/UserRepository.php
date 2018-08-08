@@ -128,4 +128,19 @@ class UserRepository
     public function insertUser(Array $data){
         $this->user->insert($data);
     }
+
+    /**
+     * Login for QAccount
+     * @return mixed
+     */
+    public function QAccountLogin($account)
+    {
+        $result = DB::table("qp_user")
+                    -> where('login_id', "=", $account)
+                    -> where('ad_flag', "=", "N")
+                    -> select()
+                    -> get();
+
+        return $result;
+    }
 }

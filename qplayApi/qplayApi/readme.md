@@ -11,6 +11,8 @@ qplayApi Readme.md
 - [DeployBackEnd-Production-SyncUser-3](#DeployBackEnd-Production-SyncUser-3)
 - [DeployBackEnd-Production-OTA](#DeployBackEnd-Production-OTA)
 - [DeployBackEnd-Production-SyncUser-4](#DeployBackEnd-Production-SyncUser-4)
+- [DeployBackEnd-Production-fixBug17645](#DeployBackEnd-Production-fixBug17645)
+
 
 ----
 
@@ -426,3 +428,64 @@ qplayApi Readme.md
     sshpass -p $password rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
 
     # ======== SyncUser4 End ========
+
+<h2 id="DeployBackEnd-Production-fixBug17645">DeployBackEnd-Production-fixBug17645</h2>
+
+    # staging server
+    #serverIP=13.75.117.225
+    #password="kDsl24D1S"
+
+    # production server
+    serverIP=23.99.120.80
+    password="kDsl24D1S"
+
+    #if false; then
+    #fi
+    git checkout master
+
+    # ------ add release tag ------
+    git tag -a v1.4.1.$BUILD_NUMBER.Production.BackEnd.fixBug17645 -m "v1.4.1.$BUILD_NUMBER[Production] BackEnd.fixBug17645"
+    git push origin --tags
+
+    chmod -R o=rx *
+
+    # ========fixBug17645 Start ========
+    #1. 基礎建設(安裝需要的外部元件等)
+    #   N/A
+
+
+    #2. 環境設定(設定 .env config 等)
+    #   N/A
+
+
+    #3. 資料設定 (DB 修改)
+    #   N/A
+
+
+    #4. 檔案覆蓋
+
+    #a. 更新修改的檔案，共 9 個, PR#3058
+    git checkout 12b04b5bf5a020650907c79f9e338f2dee53f3f2 .
+    chmod -R o=rx *
+    sshpass -p $password rsync -vh qplay/app/Model/QP_User.php rsyncuser@$serverIP:/var/www/html/qplay/app/Model/QP_User.php
+    sshpass -p $password rsync -vh qplay/app/Services/AppService.php rsyncuser@$serverIP:/var/www/html/qplay/app/Services/AppService.php
+    sshpass -p $password rsync -vh qplay/app/Services/AppVersionService.php rsyncuser@$serverIP:/var/www/html/qplay/app/Services/AppVersionService.php
+    sshpass -p $password rsync -vh qplay/app/lib/CommonUtil.php rsyncuser@$serverIP:/var/www/html/qplay/app/lib/CommonUtil.php
+    sshpass -p $password rsync -vh qplay/resources/views/app_maintain/app_detail/info.blade.php rsyncuser@$serverIP:/var/www/html/qplay/resources/views/app_maintain/app_detail/info.blade.php
+    sshpass -p $password rsync -vh qplay/resources/views/push/push_new_message.blade.php rsyncuser@$serverIP:/var/www/html/qplay/resources/views/push/push_new_message.blade.php
+    sshpass -p $password rsync -vh qplay/resources/views/push/push_send_detail_message.blade.php rsyncuser@$serverIP:/var/www/html/qplay/resources/views/push/push_send_detail_message.blade.php
+    sshpass -p $password rsync -vh qplay/resources/views/push/push_update_message.blade.php rsyncuser@$serverIP:/var/www/html/qplay/resources/views/push/push_update_message.blade.php
+    sshpass -p $password rsync -vh qplay/resources/views/user_maintain/account_detail_maintain.blade.php rsyncuser@$serverIP:/var/www/html/qplay/resources/views/user_maintain/account_detail_maintain.blade.php
+
+
+    #5. 功能設定
+    #   N/A
+
+
+    echo "deploy_ver=$(($BUILD_NUMBER))_fixBug17645 deploy_time=$(date +"%b-%d-%y %H:%M:%S")" > deploy.jenkins
+    cp deploy.jenkins qplay/
+    sshpass -p $password rsync -vh deploy.jenkins rsyncuser@$serverIP:/var/www/html/qplay
+
+    # ======== fixBug17645 End ========
+    
+    

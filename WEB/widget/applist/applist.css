@@ -16,6 +16,10 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.applist-widget > .applist-main ::-webkit-scrollbar {
+    display: none;
+}
+
 .applist-main-icon {
     width: 200vw;
     height: 100%;

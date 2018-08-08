@@ -8,19 +8,18 @@ var formEnter = langStr["str_208"]; //"時數登入中";
 var employeeName;
 var overtimeListArr = [];
 var overtimeDetailObj = {};
-var withdrawReason, dispelReason;
+var withdrawOTReason;
 
-//請假單頁初始化
-function leaveQueryInit() {
-    $("#backDetailList").hide();
-    $("#backSignPreview").hide();
-    $("#backEffectPreview").hide();
+//加班單頁初始化
+function overtimeQueryInit() {
+    $("#backOTDetailList").hide();
+    $("#backSignOTList").hide();
     $(".leave-query-detail-sign").hide();
     $(".leave-query-withdraw").hide();
-    $(".leave-query-dispel").hide();
+    $(".actualot-query-detail-sign").hide();
     $("#viewOvertimeQuery .leaveMenu").show();
     $(".leave-query-main").show();
-    $("#viewOvertimeQuery .ui-title").find("span").text(leaveQueryStr);
+    //$("#viewOvertimeQuery .ui-title").find("span").text(leaveQueryStr);
 }
 
 $("#viewOvertimeQuery").pagecontainer({
@@ -56,9 +55,9 @@ $("#viewOvertimeQuery").pagecontainer({
                             overtimeObject["statusName"] = formWithdrawed;
                         } else if ($(statusArr[i]).html() == "RJ") {
                             overtimeObject["statusName"] = formRefused;
-                        } else if ($(statusArr[i]).html() == "wA") {
+                        } else if ($(statusArr[i]).html() == "WA") {
                             overtimeObject["statusName"] = formSigning;
-                        } else if ($(statusArr[i]).html() == "wP") {
+                        } else if ($(statusArr[i]).html() == "WP") {
                             overtimeObject["statusName"] = formEnter;
                         }
 
@@ -89,20 +88,34 @@ $("#viewOvertimeQuery").pagecontainer({
                     var callbackData = data['Content'][0]["result"];
                     var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
                     var applydate = $("applydate", htmlDom);
+                    var status = $("status", htmlDom);
                     var reasons = $("reason", htmlDom);
                     var targetdate = $("targetdate", htmlDom);
                     var expectfrom = $("expectFrom", htmlDom);
                     var expectto = $("expectTo", htmlDom);
+                    var actualfrom = $("actualFrom", htmlDom);
+                    var actualto = $("actualTo", htmlDom);
+                    var actualtotalhour = $("actualTotalhours", htmlDom);
+                    var type = $("type", htmlDom);
 
-                    //补全另一部分详情
                     overtimeDetailObj["applydate"] = $(applydate).html().split(" ")[0];
+                    overtimeDetailObj["status"] = $.trim($(status).html());
                     overtimeDetailObj["reason"] = $.trim($(reasons).html());
                     overtimeDetailObj["targetdate"] = $(targetdate).html();
+                    overtimeDetailObj["expectFrom"] = $(expectfrom).html();
+                    overtimeDetailObj["expectTo"] = $(expectto).html();
                     overtimeDetailObj["expectInterval"] = $(expectfrom).html() + ' - ' + $(expectto).html();
-
+                    overtimeDetailObj["actualFrom"] = $(actualfrom).html();
+                    overtimeDetailObj["actualTo"] = $(actualto).html();
+                    overtimeDetailObj["actualTotalhours"] = ($(actualtotalhour).html().split(".")[1] == "0") ? $(actualtotalhour).html().split(".")[0] : $(actualtotalhour).html();
+                    overtimeDetailObj["type"] = ($.trim($(type).html()) == "1") ? '補休' : '加班費';
                     //改变详情页内容
-                    setLeaveDataToDetail();
-
+                    if (overtimeDetailObj["actualTotalhours"] !== 0 && overtimeDetailObj["status"] === "WA") {
+                        setActualOTDataToDetail();
+                    } else {
+                        setOvertimeDataToDetail();
+                    }
+            
                     //2.回傳簽核流程
                     var approveData = data['Content'][0]["approverecord"];
                     var approveDom = new DOMParser().parseFromString(approveData, "text/html");
@@ -128,8 +141,8 @@ $("#viewOvertimeQuery").pagecontainer({
             }();
         };
 
-        //撤回請假單——<LayoutHeader><EmpNo>0003023</EmpNo><formid>123456</formid><formno>572000</formno><reason>測試</reason></LayoutHeader>
-        window.RecallLeaveApplyForm = function() {
+        //撤回加班單——<LayoutHeader><EmpNo>0003023</EmpNo><formid>123456</formid><formno>572000</formno><reason>測試</reason></LayoutHeader>
+        window.RecallOvertimeApplyForm = function() {
 
             this.successCallback = function(data) {
                 //console.log(data);
@@ -141,25 +154,25 @@ $("#viewOvertimeQuery").pagecontainer({
                     //如果成功则跳转，如果失败则提示错误信息
                     if ($(successMsg).html() != undefined) {
                         //成功后先返回假单列表，再重新呼叫API获取最新数据
-                        QueryEmployeeLeaveApplyForm();
-                        leaveQueryInit();
-                        $("#withdrawLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        QueryEmployeeOvertimeApplyForm();
+                        overtimeQueryInit();
+                        $("#withdrawOTMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                     } else {
                         loadingMask("hide");
                         var errorMsg = $("error", htmlDom);
-                        $('.leaveErrorMsg').find('.header-text').html($(errorMsg).html());
-                        popupMsgInit('.leaveErrorMsg');
+                        $('.overtimeErrorMsg').find('.header-text').html($(errorMsg).html());
+                        popupMsgInit('.overtimeErrorMsg');
                     }
 
-                    $("#withdrawReason").val("");
-                    $("#confirmWithdrawBtn").removeClass("leavePreview-active-btn");
+                    $("#withdrawOTReason").val("");
+                    $("#withdrawOTBtnWhenSigning").removeClass("leavePreview-active-btn");
                 }
             };
 
-            this.failCallback = function(data) {};
+            this.failCallback = function(data) {}; 
 
             var __construct = function() {
-                CustomAPI("POST", true, "RecallLeaveApplyForm", self.successCallback, self.failCallback, recallLeaveApplyFormQueryData, "");
+                CustomAPI("POST", true, "RecallOvertimeForm", self.successCallback, self.failCallback, recallOvertimeApplyFormQueryData, "");
             }();
         };
 
@@ -291,8 +304,8 @@ $("#viewOvertimeQuery").pagecontainer({
             }
         }
 
-        //假單詳情傳值
-        function setLeaveDataToDetail() {
+        //加班單詳情傳值
+        function setOvertimeDataToDetail() {
             $("#overtimeApplyDate").text(overtimeDetailObj["applydate"]);
             $("#overtimeFormNo").text(overtimeDetailObj["formno"]);
             $("#overtimeStatus").text(overtimeDetailObj["statusName"]);
@@ -300,13 +313,34 @@ $("#viewOvertimeQuery").pagecontainer({
             $("#overtimeInterval").text(overtimeDetailObj["expectInterval"]);
             $("#overtimeApplyHours").text(overtimeDetailObj["hours"]);
             $("#overtimeApplyReason").text(overtimeDetailObj["reason"]);
-
             //撤回頁面的“請假單號”
-            $("#withdrawFormNo").text(leaveDetailObj["formno"]);
-            //銷假頁面的“請假單號”
-            $("#revokeFormNo").text(leaveDetailObj["formno"]);
+            $("#withdrawOTFormNo").text(overtimeDetailObj["formno"]);
         }
 
+        //加班單(有實際區間)詳情傳值
+        function setActualOTDataToDetail() {
+            var originalOTInterval = overtimeDetailObj["targetdate"] + " " + overtimeDetailObj["expectFrom"] + " - " + overtimeDetailObj["targetdate"] +  " " + overtimeDetailObj["expectTo"];
+            var actualOTInterval = overtimeDetailObj["targetdate"] + " " + overtimeDetailObj["actualFrom"] + " - " + overtimeDetailObj["targetdate"] +  " " + overtimeDetailObj["actualTo"];
+            $("#otApplyDate").text(overtimeDetailObj["applydate"]);
+            $("#otFormNo").text(overtimeDetailObj["formno"]);
+            $("#otStatus").text(overtimeDetailObj["statusName"]);
+            $("#originalOTPeriod").text(originalOTInterval);
+            $("#originalTotalHours").text(overtimeDetailObj["hours"]);
+            $("#otApplyReason").text(overtimeDetailObj["reason"]);
+            $("#actualOTPeriod").text(actualOTInterval);
+            $("#actualTotalHours").text(overtimeDetailObj["actualTotalhours"]);
+            $("#overtimePaid").text(overtimeDetailObj["type"]);           
+            //撤回頁面的“請假單號”
+            $("#withdrawOTFormNo").text(overtimeDetailObj["formno"]);
+        }
+
+        function periodFromOvertimeDateToNow(overtimedate) {
+            var today = new Date();
+            var otDate = new Date(overtimedate);
+            var otperiod = otDate.getTime() - today.getTime(); 
+            var periodday = parsenInt(otperiod/86400000) + 1;
+            return periodday;
+        }
 
         /********************************** page event *************************************/
         $("#viewOvertimeQuery").on("pagebeforeshow", function(event, ui) {
@@ -314,30 +348,24 @@ $("#viewOvertimeQuery").pagecontainer({
         });
 
         $("#viewOvertimeQuery").on("pageshow", function(event, ui) {
-            $("#withdrawApplyDate").text(applyDay);
-            $("#revokeApplyDate").text(applyDay);
+            $("#withdrawOTApplyDate").text(applyDay);
             loadingMask("hide");
         });
 
         /********************************** dom event *************************************/
         $("#viewOvertimeQuery").keypress(function(event) {});
 
-        /*function periodFromOvertimeDateToNow(overtimedate) {
-            var today = new Date();
-            var otDate = new Date(overtimedate);
-            var otperiod = today.getFullYear() - otDate.getFullYear(); 
-            var birthMonth = today.getMonth() - birthDate.getMonth();
-        }*/
 
         //點擊詳細，根據不同表單狀態顯示不同頁面——click
         $(document).on("click", ".overtime-query-state", function() {
             loadingMask("show");
 
             var self = $.trim($(this).text());
-            var formid = $(this).attr("form-id");
+            var formid = $(this).attr("form-id")
+            var overtimedate = overtimeDetailObj["targetdate"];
 
             //先获取部分详情，另外部分详情在API中获取
-            leaveDetailObj = getOvertimeDetailByID(formid);
+            overtimeDetailObj = getOvertimeDetailByID(formid);
 
             overtimeApplyFormDetailQueryData = '<LayoutHeader><EmpNo>' +
                 myEmpNo +
@@ -352,12 +380,126 @@ $("#viewOvertimeQuery").pagecontainer({
             } else if (self == formWithdrawed) {
                 overtimeListToDetail("overtimeDelete", "overtimeWithdraw", "overtimeEnter", "overtimeNoEnter", "");
             } else if (self == formEnter) {
-                //periodFromOvertimeDateToNow(overtimeDetailObj["targetdate"]);
-                overtimeListToDetail("overtimeEnter", "leaveWithdraw", "overtimeDelete", "overtimeNoEnter", "");
-                overtimeListToDetail("overtimeNoEnter", "leaveWithdraw", "overtimeDelete", "overtimeEnter", "");
+                if (periodFromOvertimeDateToNow(overtimedate) <= 30) {
+                    overtimeListToDetail("overtimeEnter", "overtimeWithdraw", "overtimeDelete", "overtimeNoEnter", "");
+                } else {
+                    overtimeListToDetail("overtimeNoEnter", "overtimeWithdraw", "overtimeDelete", "overtimeEnter", "");
+                }               
             } else {
                 overtimeListToDetail("overtimeWithdraw", "overtimeDelete", "overtimeEnter", "overtimeNoEnter", null);
             }
+        });
+
+        //返回加班單列表——click
+        $("#backOTDetailList").on("click", function() {
+            //跳转前本页恢复初始状态
+            $("#backOTDetailList").hide();
+            $(".leave-query-detail-sign").hide();
+            $("#viewOvertimeQuery .leaveMenu").show();
+            $(".leave-query-main").show();
+        });
+
+        //返回加班單列表——click
+        $("#backActualOTDetailList").on("click", function() {
+            //跳转前本页恢复初始状态
+            $("#backActualOTDetailList").hide();
+            $(".actualot-query-detail-sign").hide();
+            $("#viewOvertimeQuery .leaveMenu").show();
+            $(".leave-query-main").show();
+        });
+
+        //籤核中狀態——click——popup
+        $("#signOvertimeDetail").on("click", function() {
+            popupMsgInit('.signOTStateFlow');
+        });
+
+        //籤核中狀態——click——popup
+        $("#signOTDetail").on("click", function() {
+            popupMsgInit('.signOTStateFlow');
+        });
+
+        //撤回按鈕——click
+        $("#withdrawOTBtn").on("click", function() {
+            $(".leave-query-detail-sign").hide();
+            $("#backOTDetailList").hide();
+            $(".leave-query-withdraw").show();
+            $("#backSignOTList").show();
+        });
+
+        //實際時數撤回按鈕——click
+        $("#withdrawActualOTBtn").on("click", function() {
+            $(".actualot-query-detail-sign").hide();
+            $("#backActualOTDetailList").hide();
+            $(".leave-query-withdraw").show();
+            $("#backActualSignOTList").show();
+        });
+
+        //從撤回返回詳情
+        $("#backSignOTList").on("click", function() {
+            $(".leave-query-withdraw").hide();
+            $("#backSignOTList").hide();
+            $(".leave-query-detail-sign").show();
+            $("#backOTDetailList").show();
+        });
+
+        //從實際時數撤回返回詳情
+        $("#backActualSignOTList").on("click", function() {
+            $(".leave-query-withdraw").hide();
+            $("#backActualSignOTList").hide();
+            $(".actualot-query-detail-sign").show();
+            $("#backActualOTDetailList").show();
+        });
+
+        function WithdrawOTReason() {
+            withdrawOTReason = $.trim($("#withdrawOTReason").val());
+
+            if (withdrawOTReason !== "") {
+                $("#withdrawOTBtnWhenSigning").addClass("leavePreview-active-btn");
+            } else {
+                $("#withdrawOTBtnWhenSigning").removeClass("leavePreview-active-btn");
+            }
+        }
+
+        var timeoutWithdrawOTReason = null;
+        //輸入撤回理由——textarea
+        $("#withdrawOTReason").on("keyup", function() {
+
+            if (timeoutWithdrawOTReason != null) {
+                clearTimeout(timeoutWithdrawOTReason);
+                timeoutWithdrawOTReason = null;
+            }
+            timeoutWithdrawOTReason = setTimeout(function() {
+                WithdrawOTReason();
+            }, 2000);
+
+        });
+
+        //撤回假單按鈕——popup
+        $("#withdrawOTBtnWhenSigning").on("click", function() {
+            if ($("#withdrawOTBtnWhenSigning").hasClass("leavePreview-active-btn")) {
+                //popup提示確定或取消
+                $("#withdrawOTReason").blur();
+                setTimeout(function() {
+                    popupMsgInit(".confirmWithdrawOT");
+                }, 100);
+
+            }
+        });
+
+        //確認撤回
+        $("#confirmWithdrawOTBtn").on("click", function() {
+            loadingMask("show");
+            recallOvertimeApplyFormQueryData = '<LayoutHeader><EmpNo>' +
+                myEmpNo +
+                '</EmpNo><formid>' +
+                overtimeDetailObj["formid"] +
+                '</formid><formno>' +
+                overtimeDetailObj["formno"] +
+                '</formno><reason>' +
+                withdrawOTReason +
+                '</reason></LayoutHeader>';
+            //API
+            RecallOvertimeApplyForm();
 
         });
     }

@@ -73,7 +73,7 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-
+            
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
@@ -96,13 +96,13 @@ $("#viewMain3").pagecontainer({
 
         //点击添加按钮跳转到APPList
         $('#widgetList').on('click', '.add-favorite-list', function () {
-            //$.mobile.changePage('#viewAppList');
+            addAppToList = true;
             checkAppPage('viewAppList');
         });
 
         //点击Link跳转到APPList
         $('.applist-link').on('click', function () {
-            //$.mobile.changePage('#viewAppList');
+            addAppToList = false;
             checkAppPage('viewAppList');
         });
 

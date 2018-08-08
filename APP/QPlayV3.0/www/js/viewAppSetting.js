@@ -88,7 +88,7 @@ $("#viewAppSetting").pagecontainer({
             this.failCallback = function (data) { };
 
             var __construct = function () {
-                QStorageAPI("POST", "portrait", self.successCallback, self.failCallback, queryData, null);
+                QStorageAPI("POST", true, "portrait", self.successCallback, self.failCallback, queryData, null);
             }();
         }
 
@@ -106,12 +106,6 @@ $("#viewAppSetting").pagecontainer({
             $('.want-comment-name').text(langStr['str_088']);
             $('.logout-fixed-btn').text(langStr['str_084']);
 
-            //logout popup
-            var eventLogoutConfirmPopupData = {
-                id: "logoutPopup",
-                content: $("template#tplContactUserPopup").html()
-            };
-            tplJS.Popup("viewAppSetting", "settingContent", "append", eventLogoutConfirmPopupData);
         });
 
         $("#viewAppSetting").on("pageshow", function (event, ui) {
@@ -147,17 +141,19 @@ $("#viewAppSetting").pagecontainer({
 
         //注销
         $("#logout").on("click", function () {
-            $('#logoutPopup').popup('open');
+            $('#confirmLogout').popup('open');
         });
 
-        $(document).on("click", "#logoutPopup #logoutConfirm", function () {
-            $('#logoutPopup').popup('close');
+        //确定注销
+        $("#logoutConfirm").on("click", function () {
+            $('#confirmLogout').popup('close');
             loadingMask("show");
             var logout = new doLogOut();
         });
 
-        $(document).on("click", "#logoutPopup #logoutCancel", function () {
-            $('#logoutPopup').popup('close');
+        //取消注销
+        $("#logoutCancel").on("click", function () {
+            $('#confirmLogout').popup('close');
         });
 
         //取消头像
@@ -201,7 +197,9 @@ $("#viewAppSetting").pagecontainer({
                 $('.setting-mask').hide();
 
                 //Base64
-
+                var formData = new FormData();
+                formData.append('files', myPhoto.src);
+                //uploadFile(formData);
             }
 
             function onFail(message) {
@@ -213,9 +211,8 @@ $("#viewAppSetting").pagecontainer({
         $('#uploadBtn').on('click', function () {
             var file = $('#photoFile').get(0).files[0];
             var formData = new FormData();
-            formData.append('files', file);
-            formData.append('name', 'files');
-            formData.append('filename', file.name);
+            var img = 'file:///storage/emulated/0/Android/data/com.qplay.appqplaydev/cache/1533630978023.jpg'
+            formData.append('files', img);
             
             console.log(file);
 

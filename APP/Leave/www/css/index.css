@@ -798,7 +798,8 @@ html body .ui-group-theme-a a:visited {
 .backLeave-query-detail-withdraw,
 .backLeave-query-detail-refuse,
 .backLeave-query-detail-effect,
-.backLeave-query-sign-withdraw {
+.backLeave-query-sign-withdraw,
+.actualot-query-detail-sign {
     display: none;
     width: 93.6vw;
     height: 154.5vw;
@@ -917,7 +918,9 @@ html body .ui-group-theme-a a:visited {
 .confirmToWithdraw>.ui-content,
 .confirmToDelete>.ui-content,
 .leaveErrorMsg>.ui-content,
-.backLeaveErrorMsg>.ui-content {
+.backLeaveErrorMsg>.ui-content,
+.confirmWithdrawOT>.ui-content,
+.overtimeErrorMsg>.ui-content {
     padding: 0 !important;
 }
 
@@ -925,12 +928,14 @@ html body .ui-group-theme-a a:visited {
 .confirmDelete>.ui-content>.header,
 .confirmRevoke>.ui-content>.header,
 .confirmToWithdraw>.ui-content>.header,
-.confirmToDelete>.ui-content>.header {
+.confirmToDelete>.ui-content>.header,
+.confirmWithdrawOT>.ui-content>.header {
     margin-top: 13%;
 }
 
 .leaveErrorMsg>.ui-content>.header,
-.backLeaveErrorMsg>.ui-content>.header {
+.backLeaveErrorMsg>.ui-content>.header,
+.overtimeErrorMsg>.ui-content>.header {
     margin-top: 12.5%;
 }
 
@@ -938,7 +943,8 @@ html body .ui-group-theme-a a:visited {
 /*sign flow popup footer*/
 
 .signStateFlow>.ui-content>.footer,
-.signIngFlow>.ui-content>.footer {
+.signIngFlow>.ui-content>.footer,
+.signOTStateFlow>.ui-content>.footer {
     margin-top: 5% !important;
 }
 
@@ -1262,7 +1268,10 @@ li.ui-body-a {
 
 /********************************************** viewOvertimeQuery *********************************************/
 
-#backOTDetailList {
+#backOTDetailList,
+#backSignOTList,
+#backActualOTDetailList,
+#backActualSignOTList {
     width: 4.934VW;
     display: none;
 }

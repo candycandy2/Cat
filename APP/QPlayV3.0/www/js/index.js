@@ -23,6 +23,8 @@ var messagecontent,
     callGetMessageList = false,
     messagePageShow = false,
     delMsgActive = false,
+    widgetUpdateMsg = false,
+    listUpdateMsg = false,
     msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 
 //viewMain3
@@ -30,7 +32,8 @@ var carouselFinish = false,
     weatherFinish = false,
     reserveFinish = false,
     messageFinish = false,
-    applistFinish = false;
+    applistFinish = false,
+    addAppToList = true;
 
 //viewAppList
 var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
@@ -45,7 +48,7 @@ var reserveCalendar = null,
     reserveDirty = false;
 
 //viewMessageList
-var messageFrom;
+var messageFrom = 'viewMain3';
 
 //viewVersionRecord
 var versionFrom = true;
@@ -177,7 +180,7 @@ function compareArrayByFirst(arr1, arr2) {
             i--;
         }
     }
-    
+
     return arr2;
 }
 
@@ -403,7 +406,7 @@ function openNewMessage() {
     //Before open Message Detail Data, update Message List
     if (window.localStorage.getItem("msgDateFrom") === null) {
         //$.mobile.changePage('#viewNewsEvents2-3');
-        checkAppPage('viewMessageList');
+        //checkAppPage('viewMessageList');
     } else {
         var messageList = new QueryMessageList();
     }
@@ -763,55 +766,27 @@ function getVersionRecord(key) {
     }();
 }
 
-
-//检查APP-page
-function checkAppPage(pageID) {
-    var appStatus = false;
-
-    for (var i in pageList) {
-        if (pageID == pageList[i]) {
-            appStatus = true;
-            break;
-        }
-    }
-
-    if (appStatus) {
-        $.mobile.changePage('#' + pageID);
-    } else {
-        $.get('View/' + pageID + '.html', function (data) {
-            $.mobile.pageContainer.append(data);
-            $('#' + pageID).page().enhanceWithin();
-
-            //Show Water Mark
-            //According to the data [waterMarkPageList] which set in index.js
-            if (!(typeof waterMarkPageList === 'undefined')) {
-                if (waterMarkPageList.indexOf(pageID) !== -1) {
-                    $('#' + pageID).css('background-color', 'transparent');
-                }
-            }
-
-            setTimeout(function () {
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.src = 'js/' + pageID + '.js';
-                document.head.appendChild(script);
-
-                $.mobile.changePage('#' + pageID);
-                $('#' + pageID).on('pagebeforeshow', pageBeforeShow(pageID));
-                pageList.push(pageID);
-            }, 200);
-
-        }, 'html');
-    }
-}
-
 function pageBeforeShow(pageID) {
     if (pageID == 'viewAppSetting') {
 
+    } if (pageID == 'viewAppList') {
+        appListPageBeforShow();
     }
 }
 
-function QStorageAPI(requestType, requestAction, successCallback, failCallback, queryData, queryStr) {
+function appListPageBeforShow() {
+    if (addAppToList && alreadyDownloadList.length == 0) {
+        $('#viewAppList .q-btn-header img').attr('src', 'img/close.png');
+        $('.app-no-download').show();
+        $('.app-scroll').hide();
+    } else {
+        $('#viewAppList .q-btn-header img').attr('src', 'img/component/back_nav.png');
+        $('.app-scroll').show();
+        $('.app-no-download').hide();
+    }
+}
+
+function QStorageAPI(requestType, asyncType, requestAction, successCallback, failCallback, queryData, queryStr) {
     //API [checkAppVersion] [getSecurityList]
     //even though these 2 API were from QPlay, the API path is [/public/v101/qplay/],
     //but, when other APP call these 2 API,
@@ -846,22 +821,23 @@ function QStorageAPI(requestType, requestAction, successCallback, failCallback, 
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
     console.log(serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr);
-    console.log(queryData.get('filename'));
 
     $.ajax({
         type: requestType,
+        crossDomain: true,
         headers: {
             'Content-Type': 'multipart/form-data',
             'App-Key': appKey,
             'Signature-Time': signatureTime,
             'Signature': signatureInBase64,
-            'Account': loginData["emp_no"]
+            'account': loginData.emp_no
         },
         url: serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
-        dataType: "json",
-        data: JSON.stringify(queryData),
-        cache: false,
-        timeout: 30000,
+        data: queryData,
+        async: asyncType,
+        processData: false,
+        contentType: false,
+        mimeType: "multipart/form-data",
         success: requestSuccess,
         error: requestError
     });
@@ -896,6 +872,8 @@ function onBackKeyDown() {
         } else if (messageFrom == 'viewMessageList') {
             //$.mobile.changePage('#viewMessageList');
             checkAppPage('viewMessageList');
+        } else {
+            $.mobile.changePage('#viewMain3');
         }
     } else if (activePageID === "viewNotSignedIn") {
         navigator.app.exitApp();
