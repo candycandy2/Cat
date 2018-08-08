@@ -565,7 +565,7 @@ token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <b
 ### 網址列請求參數
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
-    uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
+uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
 message_send_row_id | Required | Integer | message的唯一識別碼
 
 ### 回應訊息
