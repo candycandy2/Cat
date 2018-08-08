@@ -1,7 +1,7 @@
 NewQPlay API Readme.md
 =============================
 
-## Version 1.2.18 - Published 2018 Feb 23
+## Version 1.3.6 - Published 2018 Jul 26
 
 ## Contents
 - [API 分類](#API-分類)
@@ -159,8 +159,10 @@ app_category_id | app_list | 0-1 | String | app編號的流水號
 default_lang | app_list | 0-1 | String | app預設語系en-us
 app_version | app_list | 0-1 | String | APP版號
 app_version_name | app_list | 0-1 | String | APP版本名稱
+app_version_log | app_list | 0-1 | String | APP更版說明
 security_level | app_list | 0-1 | String | 數字越少security越高 <br> 目前先定義三種 <br> 1:最高security, on_resume時必須重新輸入密碼 <br>2:次級security, 關閉app重新開啟時才需要重新輸入密碼 <br> 3:一般security, 只要token沒有過期都不需要重新輸入密碼
-avg_score | app_list | 0-1 | String | APP評分
+avg_score_android | app_list | 0-1 | String | android評分
+avg_score_ios | app_list | 0-1 | String | ios評分
 user_score | app_list | 0-1 | String | 這個User的個人評分
 sequence | app_list | 0-1 | Integer | APP排序
 url | app_list | 0-1 | String | Android/iOS版本下載URL
@@ -430,7 +432,7 @@ push-token | 必填 | 傳送向極光SERVER獲取的RegisterID
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
 uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
-app_key | Required | string | 如果是qplay平台用的, 就傳qplay <br> 假設是e04也許就會傳phonebook這個值
+app_key | Required | string | 如果是qplay平台用的, 就傳qplay
 device_type | Required | string | iOS或是Android <br> 提供server辨識該向APNS或是GCM發送推播
 
 ### 回應訊息
@@ -543,12 +545,12 @@ source_user | content | 0-1 | String | 這筆推播是誰送出來
 ----
 ## *getMessageDetail*
 ```
-取得Message內容
+透過訊息id取得訊息詳細資料
 ```
 
 ### 請求方法
 ```
-GET /v101/qplay/getMessageDetail?lang=en-us&uuid=18171adc0302e598d5f&message_send_row_id=121662
+GET /v101/qplay/getMessageDetail?lang=en-us
 ```
 
 ### header請求參數
@@ -564,7 +566,7 @@ token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <b
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
 uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
-message_send_row_id | Required | string | 訊息send的unique id <br> ex: 121662
+message_send_row_id | Required | Integer | message的唯一識別碼
 
 ### 回應訊息
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
@@ -573,6 +575,19 @@ result_code | NA | 1 | String |回應代碼
 message | NA | 1 | String | 回應訊息描述
 token_valid | NA | 0-1 | Integer | 本次使用的token的有效時間 <br> 格式為Unix時間搓記 <br> 2016年3月25日 下午 01:49:56 換算為1458884996
 content | NA | 0-1 | Container | 回應訊息內容Container
+message_send_row_id | content | 0-1 | Integer | 訊息unique id
+message_type | content | 0-1 | String | 訊息類別, 目前分類: <br> news <br> event
+template_id | content | 0-1 | Integer | 樣板編號 <br> 目前合法範圍是1-16
+message_title | content | 0-1 | String | 訊息標題
+message_txt | content | 0-1 | String | 訊息純文字格式
+message_html | content | 0-1 | String | 訊息html格式
+message_url | content | 0-1 | String | 訊息網址, 如果是空白, 表示該訊息沒有網址可以查看
+read | content | 0-1 | Boolean | 是否已經看過該訊息 <br> 只有event類別會有這個flag, news類別不會傳送此欄位
+message_source | content | 0-1 | String | 訊息是從哪個平台傳遞過來 <br> 目前平台未定義
+read_time | content | 0-1 | String | 查看訊息時間
+create_user | content | 0-1 | String | 訊息發布者 
+create_time | content | 0-1 | Integer | 訊息發布時間 <br> 抓的是qp_message.create_time
+source_user | content | 0-1 | String | 這筆推播是誰送出來
 
     P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
@@ -724,7 +739,10 @@ https://qplay.benq.com/qplayApi/public/v101/qplay/getMessageDetail?lang=en-us&uu
 ----
 ## *updateMessage*
 ```
-更新Message已讀資訊
+更新message的狀態, 將狀態傳送到server
+目前只開放一種狀態更新, 只有event的已讀狀態的才會傳
+
+將來會逐步開放刪除或news類別更新
 ```
 
 ### 請求方法
@@ -745,11 +763,9 @@ token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <b
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
 uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
-date_from | Optional | Integer | 填入取得訊息的起始時間 <br> 不填則由SERVER直接抓取上次存取的時間搓, 抓差異化的訊息提供出去 <br> 有填date_from就一定要填上date_to
-date_to | Optional | Integer | 填入取得訊息的結束時間 <br> 不填則由SERVER直接抓”當前”的時間搓 <br> 有填date_to就一定要填date_from
-count_from | Optional | Integer | 如果有下date_time, date_to, 則這個欄位才有作用, 可以下載指定數量的訊息 <br> 沒有下參數, 則抓時間區間內所有資料
-count_to | Optional | Integer | 如果有下date_time, date_to, 則這個欄位才有作用, 可以下載指定數量的訊息 <br> 沒有下參數, 則抓時間區間內所有資料
-overwrite_timestamp | Optional | Integer | 如果有下date_time, date_to, 則這個欄位才有作用 <br> 如果是1, 則代表要更新獲取訊息的時間搓記 <br> 會更新qp_register裡面的last_message_time <br> 如果是0, 代表不更新不時間搓記 <br> 不會更新qp_register裡面的last_message_time <br> 如果不提供這個參數, 代表是0
+message_send_row_id | Required | integer | message row id
+message_type | Required | string | news <br> event
+status | Required | string | read <br> delete <br> 目前只開放read
 
 ### 回應訊息
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
@@ -758,56 +774,55 @@ result_code | NA | 1 | String |回應代碼
 message | NA | 1 | String | 回應訊息描述
 token_valid | NA | 0-1 | Integer | 本次使用的token的有效時間 <br> 格式為Unix時間搓記 <br> 2016年3月25日 下午 01:49:56 換算為1458884996
 content | NA | 0-1 | Container | 回應訊息內容Container
-message_count | content | 0-1 | Integer | 此次查詢的訊息總數量
-message_list | content | 0-N | Container | 訊息列表container, 有多個訊息
-message_row_id | message_list | 0-1 | Integer | 訊息unique id
-message_send_row_id | message_list | 0-1 | Integer | 訊息send的unique id
-message_type | message_list | 0-1 | String | 訊息類別, 目前分類: <br> news <br> event
-message_title | message_list | 0-1 | String | 訊息標題
-message_txt | message_list | 0-1 | String | 訊息純文字格式
-message_html | message_list | 0-1 | String | 訊息html格式
-message_url | message_list | 0-1 | String | 訊息網址, 如果是空白, 表示該訊息沒有網址可以查看
-read | message_list | 0-1 | Boolean | 是否已經看過該訊息 <br> 只有event類別會有這個flag, news類別不會傳送此欄位
-message_source | message_list | 0-1 | String | 訊息是從哪個平台傳遞過來 <br> 目前平台未定義 <br> 現階段:qplay
-read_time | message_list | 0-1 | String | 查看訊息時間
-create_user | message_list | 0-1 | String | 訊息發布者 
-create_time | message_list | 0-1 | Integer | 訊息發布時間 <br> 直接抓qp_user_message或qp_role_message裡面的create_time
-source_user | content | 0-1 | String | 這筆推播是誰送出來
+message_send_row_id | content | 0-1 | Integer | message row id
 
     P.S如果result_code為1, 則會帶content, 反之, 不帶content
 
 ### Example
 ```JS
-        window.QueryMessageList = function(action) {
-            //review by alan
-            callGetMessageList = true;
-
-            action = action || null;
-
+        window.updateReadDelete = function (type, status) {
             var self = this;
-            var queryStr = "";
-            var msgDateTo = getTimestamp();
+
+            var queryStr = "&message_send_row_id=" + messageRowId + "&message_type=" + type + "&status=" + status;
+
+            this.successCallback = function (data) {
+                console.log(data);
+                var doUpdateLocalStorage = false;
+
+                if (type === "event") {
+                    var resultcode = data.result_code;
+
+                    if (resultcode === 1) {
+                        doUpdateLocalStorage = true;
+                    } else if (resultcode === "000910") {
+                        //message not exist
+                        doUpdateLocalStorage = true;
+                    }
+                } else if (type === "news") {
+                    doUpdateLocalStorage = true;
+                } else if (type === "all") {
+                    doUpdateLocalStorage = true;
+                }
             ...
             ...
             ...
-            this.failCallback = function(data) {
-                callGetMessageList = false;
             };
 
-            var __construct = function() {
-                QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
-            }();
-        }
-https://qplay.benq.com/qplayApi/public/v101/qplay/updateMessage?lang=en-us&uuid=18171adc0302e598d5f&message_send_row_id=121662&message_type=event&status=read&_=1533275142537
+            this.failCallback = function (data) { };
 
-{
-    "result_code": 1,
-    "message": "Call Service Success",
-    "token_valid": 1533711019,
-    "content": {
-        "message_send_row_id": "121662"
-    }
-}
+            var __construct = function () {
+
+                //[event] need to update [read / delete] status both in Server / Local Storage
+                //[news] just update [read / delete] in Local Storage
+                if (type === "event") {
+                    QPlayAPI("GET", "updateMessage", self.successCallback, self.failCallback, null, queryStr);
+                } else if (type === "news") {
+                    this.successCallback();
+                } else if (type === "all") {
+                    this.successCallback();
+                }
+            }();
+        };
 ```
 
 ----
@@ -854,6 +869,8 @@ emp_no | content | 0-1 | String | 員工工號
 domain | content | 0-1 | String | 員工所屬domain <br> ex:Qgroup, BenQ
 site_code | content | 0-1 | String | 員工所屬地區 <br> ex:QTY,QTT,QCS
 checksum | content | 0-1 | String | 將密碼欄位用md5加密後當作checksum
+ad_flag | content | 0-1 | String | 是否擁有AD <br> Y : 是 <br> N: 否
+company | content | 0-1 | String | 所屬公司
 security_update_list | NA | 0-1 | Container | 回應訊息內容Container
 app_key | security_update_list | 0-N | String | 兩個月內有異動security_level的app
 security_updated_at | security_update_list | 0-N | Integer | 這個欄位表示security level的最後更新時間, 採用Unix時間搓記 <br> ex: 2016年3月25日 下午 01:49:56 換算為1458884996
@@ -869,6 +886,30 @@ security_updated_at | security_update_list | 0-N | Integer | 這個欄位表示s
 備註2:
 如果result_code為1, 則會帶content, 反之, 不帶content
 ```
+
+### 回應碼
+
+Result Code | Description
+:------------ | :-------------
+1 | 詳第3章節之通用回應代碼之定義
+999xxx | 詳第3章節之通用回應代碼之定義
+000901 | 帳號不存在
+000902 | 密碼錯誤
+000904 | 登入帳號與設備認證時的帳號不同
+000905 | 設備未認證
+000906 | token取得失敗
+000914 | 帳號已被停權
+
+### 錯誤碼處理
+
+錯誤碼 | 錯誤描述 | 處理
+:------------ | :------------- | :-------------
+000901 | 帳號不存在 | 提示錯誤, 點擊確認鍵後, 回到登入畫面並清空密碼欄位
+000902 | 密碼錯誤 | 提示錯誤, 點擊確認鍵後, 回到登入畫面並清空密碼欄位
+000904 | 登入帳號與設備認證時的帳號不同 | 停留在登入畫面並提示錯誤訊息, 除原錯誤訊息外, 請加上請聯絡系統管理員確認帳號問題
+000905 | 設備未認證 | 直接走register() API
+000906 | token取得失敗 | 正常情況下不會顯示00906這個訊息, 若出現, 請顯示錯誤訊息, 並加上請聯絡系統管理員確認Token問題
+000914 | 帳號已被停權 | 停留在原畫面並提示錯誤訊息, 除原錯誤訊息外, 請加上請聯絡系統管理員確認帳號停權問題, 點擊OK後關閉APP
 
 ### Example
 ```PHP
@@ -921,7 +962,8 @@ security_updated_at | security_update_list | 0-N | Integer | 這個欄位表示s
 ----
 ## *getFunctionList*
 ```
-取得此 APP 底下的所有 Function，並且回傳各個 Function 的使用權限，如果是 Function Type = APP，另外告知 APP 的 packageName 和 Icon URL。
+取得此 APP 底下的所有 Function，並且回傳各個 Function 的使用權限，
+如果是 Function Type = APP，另外告知 APP 的 packageName / Icon URL / name / summary。
 ```
 
 ### 請求方法
@@ -937,8 +979,12 @@ app-key | 必填 | 專案名稱, 此專案名稱為 qplay
 signature-time |必填 | 產生Signature當下的時間(unix timestamp型式), 共10碼
 signature | 必填 | Base64( HMAC-SHA256( SignatureTime , YourAppSecretKey ) ) <br> 此專案的AppSecretKey 為 swexuc453refebraXecujeruBraqAc4e
 token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <br> token值需要使用sha256加密, 加密時需要添加salt值, salt值為request header內的Signature-Time參數 <br> $token = base64_encode (hash_hmac(‘sha256’, $Signature-Time, $token’, true));
-loginid | 必填 | AD login id
-ad_flag | 否 | 是否屬於 QAccount User <br> (之後 API Login 回傳的資料會包含 ad_flag，到時候在傳入此資料)
+
+### 網址列請求參數
+參數名稱 | 是否必填 | 資料類型 | 描述
+:------------ | :------------- | :------------- | :-------------
+uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
+device_type | Required | string | ios <br> android <br> 其中一個
 
 ### 回應訊息
 節點標識 | 父節點標識 | 出現次數 | 資料類型 | 描述
@@ -952,14 +998,27 @@ function_variable | function_list | 0-1 | String | Function Variable
 function_content | function_list | 0-1 | Container | 單一個 Function 的資料內容 Container
 right | function_content | 0-1 | String | Function的使用權限 : <br> Y : 有權限 <br> N : 沒有權限
 type | function_content | 0-1 | String | Function 類別 : <br> FUN : Function <br> APP : Application
-package_name | function_content | 0-1 | String | APP 的 package name。<br>當 type = APP，才會有此資料。
-icon | function_content | 0-1 | String | APP 的Icon URL。<br>當 type = APP，才會有此資料。
+package_name | function_content | 0-1 | String | APP 的 package name。<br> 當 type = APP，才會有此資料。
+icon | function_content | 0-1 | String | APP 的Icon URL。<br> 當 type = APP，才會有此資料。
+app_name | function_content | 0-1 | String | APP Name <br> 當 type = APP，才會有此資料。
+app_summary | function_content | 0-1 | String | APP Summary <br> 當 type = APP，才會有此資料。
+
 
 ```
 Check Poit:
-1.	Header 預設的資料 ad_flag，初期不用帶入，每次使用 loginid 至 `qp_user` 取得。
-2.	承上， 之後 API Login 會修改回傳的資料內容，會包含 ad_flag，在由 APP 端帶入 ad_flag，不需要再透過 `qp_user` 取得。
-3.	初期，如果不需要回傳 APP List Data，可以不需要使用 `qp_app_head`。
+1.  需要透過 SQL 取得 status = ready 的 APP 其 package_name 和 icon_url : 
+    SELECT temp.*, H.package_name, H.icon_url, L.app_name, L.app_summary 
+    FROM ( 
+    SELECT F.*, V.status AS APP_Status FROM `qp_function` F 
+    LEFT JOIN `qp_app_version` V 
+    ON V.app_row_id = F.app_row_id
+    AND F.type = “APP”
+    AND V.status = “ready”
+    ) temp 
+    LEFT JOIN `qp_app_head` H ON H.id = temp.app_row_id
+    LEFT JOIN `qp_app_line` L ON L.app_row_id = temp.app_row_id AND L.lang_row_id = Lang.ID 
+    WHERE temp.type = “FUN” OR ( temp.type = “APP” AND temp.APP_Status = “ready” )。
+2.  APP 端會透過 URL 帶入 lang，使用此參數取得 Lang.ID。
 ```
 
 ### Example
@@ -994,6 +1053,7 @@ token | 必填 | 由server配發的token, 用來識別是否已經登入qplay <b
 
 參數名稱 | 是否必填 | 資料類型 | 描述
 :------------ | :------------- | :------------- | :-------------
+uuid | Required | string | 設備的unique id <br> uuid: <br> android:設備上的ANDROID_ID <br> iOS:APNS所提供的DeviceToken <br> ex: <br> apple可能是6974ac11 870e09fa 00e2238e 8cfafc7d 2052e342 182f5b57 fabca445 42b72e1b <br> android可能是9774d56d682e549c
 package_name | Required | string | app的package name
 device_type | Required | string | ios <br> android <br> 其中一個
 
