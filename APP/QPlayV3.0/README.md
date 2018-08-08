@@ -159,7 +159,7 @@ app_category_id | app_list | 0-1 | String | app編號的流水號
 default_lang | app_list | 0-1 | String | app預設語系en-us
 app_version | app_list | 0-1 | String | APP版號
 app_version_name | app_list | 0-1 | String | APP版本名稱
-app_version_log | app_list | 0-1 | String | PP更版說明
+app_version_log | app_list | 0-1 | String | APP更版說明
 security_level | app_list | 0-1 | String | 數字越少security越高 <br> 目前先定義三種 <br> 1:最高security, on_resume時必須重新輸入密碼 <br>2:次級security, 關閉app重新開啟時才需要重新輸入密碼 <br> 3:一般security, 只要token沒有過期都不需要重新輸入密碼
 avg_score_android | app_list | 0-1 | String | android評分
 avg_score_ios | app_list | 0-1 | String | ios評分
