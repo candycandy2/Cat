@@ -184,6 +184,7 @@ function compareArrayByFirst(arr1, arr2) {
     return arr2;
 }
 
+//获取所有预约
 function getMyReserve(key, secret) {
     var self = this;
     var today = new Date();
@@ -289,7 +290,7 @@ function getMyReserve(key, secret) {
     };
 
     var __construct = function () {
-        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 3600, "low");
+        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 60, "low");
     }();
 }
 
@@ -412,6 +413,7 @@ function openNewMessage() {
     }
 }
 
+//获取版本记录
 function getAppVersion(packageName, versionCode) {
     var self = this;
     var queryStr = "&package_name=" + packageName + "&device_type=" + loginData.deviceType + "&version_code=" + versionCode;
@@ -786,63 +788,6 @@ function appListPageBeforShow() {
     }
 }
 
-function QStorageAPI(requestType, asyncType, requestAction, successCallback, failCallback, queryData, queryStr) {
-    //API [checkAppVersion] [getSecurityList]
-    //even though these 2 API were from QPlay, the API path is [/public/v101/qplay/],
-    //but, when other APP call these 2 API,
-    //need to set the specific [App-Key] and [appSecretKey] by the APP, not by QPlay.
-
-    //queryStr: start with [&], ex: &account=test&pwd=123
-
-    failCallback = failCallback || null;
-    queryData = queryData || null;
-    queryStr = queryStr || "";
-
-    function requestSuccess(data) {
-        checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
-
-        var dataArr = [
-            "Call API",
-            requestAction,
-            data['result_code']
-        ];
-        LogFile.createAndWriteFile(dataArr);
-    }
-
-    // review
-    function requestError(data) {
-        console.log(data);
-        errorHandler(data, requestAction);
-        if (failCallback) {
-            failCallback();
-        }
-    }
-
-    var signatureTime = getSignature("getTime");
-    var signatureInBase64 = getSignature("getInBase64", signatureTime);
-    console.log(serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr);
-
-    $.ajax({
-        type: requestType,
-        crossDomain: true,
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'App-Key': appKey,
-            'Signature-Time': signatureTime,
-            'Signature': signatureInBase64,
-            'account': loginData.emp_no
-        },
-        url: serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
-        data: queryData,
-        async: asyncType,
-        processData: false,
-        contentType: false,
-        mimeType: "multipart/form-data",
-        success: requestSuccess,
-        error: requestError
-    });
-}
-
 //[Android]Handle the back button
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
@@ -853,9 +798,9 @@ function onBackKeyDown() {
         } else {
             navigator.app.exitApp();
         }
-    } else if (activePageID === "viewMain3" || activePageID === "viewAppDetail2-2") {
+    } else if (activePageID === "viewAppDetail2-2") {
         if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
-            $.mobile.changePage('#viewMain3');
+            checkAppPage('viewAppList');
         } else {
             $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
         }
@@ -866,7 +811,6 @@ function onBackKeyDown() {
             $.mobile.changePage('#viewMain3');
         }
     } else if (activePageID === "viewWebNews2-3-1") {
-        //goBack("goList");
         if (messageFrom == 'viewMain3') {
             $.mobile.changePage('#viewMain3');
         } else if (messageFrom == 'viewMessageList') {
@@ -874,6 +818,16 @@ function onBackKeyDown() {
             checkAppPage('viewMessageList');
         } else {
             $.mobile.changePage('#viewMain3');
+        }
+    } else if (activePageID === "viewAppList" || activePageID === "viewAppSetting" || activePageID === "viewFAQ" || activePageID === "viewMessageList" || activePageID === "viewMyCalendar") {
+        checkAppPage('viewMain3');
+    } else if (activePageID === "viewMyEvaluation" || activePageID === "viewGeneralSetting") {
+        checkAppPage('viewAppSetting');
+    } else if (activePageID === "viewVersionRecord") {
+        if (versionFrom) {
+            checkAppPage('viewAppSetting');
+        } else {
+            checkAppPage('viewAppDetail2-2');
         }
     } else if (activePageID === "viewNotSignedIn") {
         navigator.app.exitApp();

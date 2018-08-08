@@ -84,7 +84,6 @@ $("#viewMain3").pagecontainer({
         /********************************** dom event *************************************/
         //跳转到行事历
         $('#widgetList').on('click', '.personal-res', function () {
-            //$.mobile.changePage('#viewMyCalendar');
             checkAppPage('viewMyCalendar');
         });
 
@@ -115,19 +114,16 @@ $("#viewMain3").pagecontainer({
 
         //跳转到MessageList
         $('.message-link').on('click', function () {
-            //$.mobile.changePage('#viewMessageList');
             checkAppPage('viewMessageList');
         });
 
         //跳转到FAQ
         $('.faq-link').on('click', function () {
-            //$.mobile.changePage('#viewFAQ');
             checkAppPage('viewFAQ');
         });
 
         //跳转到设定
         $('#setting').on('click', function () {
-            //$.mobile.changePage('#viewFAQ');
             checkAppPage('viewAppSetting');
         });
 
