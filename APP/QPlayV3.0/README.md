@@ -1,7 +1,7 @@
 NewQPlay API Readme.md
 =============================
 
-## Version 1.2.18 - Published 2018 Feb 23
+## Version 1.3.6 - Published 2018 Jul 26
 
 ## Contents
 - [API 分類](#API-分類)
