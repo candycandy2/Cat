@@ -53,13 +53,6 @@ var messageFrom = 'viewMain3';
 //viewVersionRecord
 var versionFrom = true;
 
-//viewGeneralSetting
-var generalSetting = {
-    'en-us': ['Weather', 'My Reserver', 'My QPlay', 'Latest News'],
-    'zh-cn': ['天气', '我的预约', '我的QPlay', '最新消息'],
-    'zh-tw': ['天氣', '我的預約', '我的QPlay', '最新消息']
-}
-
 window.initialSuccess = function (data) {
     //1. widgetlist
     checkWidgetListOrder();
@@ -116,13 +109,13 @@ window.initialSuccess = function (data) {
     //For test
     //var unregisterTest = new unregister();
 
-    //general setting
-    getGeneralSetting();
 }
 
 //检查widgetlist顺序
 function checkWidgetListOrder() {
     window.localStorage.removeItem('generalSetting');
+    window.localStorage.removeItem('updateGeneral');
+
     var widgetArr = JSON.parse(localStorage.getItem('widgetList'));
 
     if (widgetArr == null) {
@@ -130,15 +123,6 @@ function checkWidgetListOrder() {
     }
 
     localStorage.setItem('widgetList', JSON.stringify(widgetArr));
-}
-
-//widgetlist升序
-function ascOrderByWidget(prop1) {
-    return function (obj1, obj2) {
-        var val1 = obj1[prop1];
-        var val2 = obj2[prop1];
-        return val1 - val2;
-    }
 }
 
 //检查最爱列表里的app是否安装
@@ -165,72 +149,6 @@ function favoriteCallback(download, appcode) {
             }
         }
     }
-}
-
-//获取一般设定
-function getGeneralSetting() {
-    //get local
-    var settingArr = JSON.parse(window.localStorage.getItem('generalSetting'));
-    var updateTime = window.localStorage.getItem('updateGeneral');
-
-    if (settingArr == null) {
-        window.localStorage.setItem('generalSetting', JSON.stringify(generalSetting));
-        window.localStorage.setItem('updateGeneral', new Date().toISOString());
-
-    } else {
-        var limitSeconds = 7;   //7 day
-        if (checkDataExpired(updateTime, limitSeconds, 'dd')) {
-
-            //同步，且已generalSetting为主，local为辅
-            for (var i in generalSetting) {
-                var arr = compareArrayByFirst(generalSetting[i], settingArr[i]);
-                settingArr[i] = arr;
-            }
-
-            window.localStorage.setItem('generalSetting', JSON.stringify(settingArr));
-            window.localStorage.setItem('updateGeneral', new Date().toISOString());
-        }
-    }
-}
-
-
-//比较2个数组，以第一个数组为准
-function compareArrayByFirst(arr1, arr2) {
-    //add
-    for (var i = 0; i < arr1.length; i++) {
-        var current = arr1[i];
-        var status = false;
-        for (var j = 0; j < arr2.length; j++) {
-            var tag = arr2[j];
-            if (current == tag) {
-                status = true;
-                break;
-            }
-        }
-        if (!status) {
-            arr2.push(current);
-        }
-    }
-
-    //remove
-    var arr = [];
-    for (var i = 0; i < arr2.length; i++) {
-        var current = arr2[i];
-        var status = false;
-        for (var j = 0; j < arr1.length; j++) {
-            var tag = arr1[j];
-            if (current == tag) {
-                status = true;
-                break;
-            }
-        }
-        if (!status) {
-            arr2.splice(i, 1);
-            i--;
-        }
-    }
-
-    return arr2;
 }
 
 //获取所有预约
