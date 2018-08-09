@@ -290,7 +290,7 @@ function getMyReserve(key, secret) {
     };
 
     var __construct = function () {
-        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 60, "low");
+        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 15, "low");
     }();
 }
 
