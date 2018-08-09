@@ -21,6 +21,7 @@ var notSignStr; //"未簽核";
 var editLeaveForm = false;
 var viewPersonalLeaveShow = false;
 var viewAcutalOTApplyShow = false;
+var changePageFromSubmitToDetail = false;
 
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
