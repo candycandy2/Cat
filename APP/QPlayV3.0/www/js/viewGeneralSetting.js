@@ -1,17 +1,28 @@
 $("#viewGeneralSetting").pagecontainer({
     create: function (event, ui) {
 
-        var newSettingIndex = [], changeSetting = false;
+        var changeSetting = false,
+            widgetStr = {
+                carousel: langStr['str_091'],
+                weather: langStr['str_092'],
+                reserve: langStr['str_093'],
+                applist: langStr['str_094'],
+                message: langStr['str_095']
+            };
 
         function setGeneralSetting() {
-            var settingArr = JSON.parse(window.localStorage.getItem('generalSetting'));
+            var widgetArr = JSON.parse(localStorage.getItem('widgetList'));
             var content = '';
-            for (var i in settingArr[browserLanguage]) {
-                content += '<div class="default-item" data-index="' + i + '"><div>' + settingArr[browserLanguage][i] +
+            for (var i in widgetArr) {
+                content += '<div class="default-item ' +
+                    (widgetArr[i].name == 'carousel' ? 'hide' : 'show') +
+                    '" data-item="' + widgetArr[i].name + '" data-index="' +
+                    i + '"><div>' + widgetStr[widgetArr[i].name] +
                     '</div><div><img src="img/move.png" width="90%"></div></div>';
             }
 
             $('#defaultList').html('').append(content);
+
         }
 
 
@@ -41,28 +52,30 @@ $("#viewGeneralSetting").pagecontainer({
 
         $("#viewGeneralSetting").on("pagehide", function (event, ui) {
             if (changeSetting) {
-                //1. 更新index
-                newSettingIndex = [];
+
+                //1. 记录新index
+                var newSettingIndex = [];
                 $.each($('.default-item'), function (index, item) {
                     newSettingIndex.push(parseInt($(item).attr('data-index')));
                 });
 
-                //2. 更新arr
-                var settingArr = JSON.parse(window.localStorage.getItem('generalSetting'));
-
-                for (var i in settingArr) {
-                    var arr = [];
-
-                    for (var j in newSettingIndex) {
-                        var item = settingArr[i][newSettingIndex[j]];
-                        arr.push(item);
-                    }
-
-                    settingArr[i] = arr;
+                //2. 记录新顺序
+                var widgetArr = JSON.parse(localStorage.getItem('widgetList'));
+                var arr = [];
+                for (var j in newSettingIndex) {
+                    var item = widgetArr[newSettingIndex[j]];
+                    arr.push(item);
                 }
 
                 //3. 更新local
-                window.localStorage.setItem('generalSetting', JSON.stringify(settingArr));
+                window.localStorage.setItem('widgetList', JSON.stringify(arr));
+
+                //4. 更新首页widget
+                for (var i = 0; i < arr.length; i++) {
+                    if (i < arr.length - 1) {
+                        $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
+                    }
+                }
 
                 changeSetting = false;
             }
