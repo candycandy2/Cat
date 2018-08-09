@@ -793,7 +793,7 @@
   },
   {
     "term": "str_100",
-    "definition": "请更换图片e",
+    "definition": "Please change picture",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -801,7 +801,7 @@
   },
   {
     "term": "str_101",
-    "definition": "头像上传成功e",
+    "definition": "Upload Success",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -809,7 +809,7 @@
   },
   {
     "term": "str_102",
-    "definition": "头像上传失败e",
+    "definition": "Upload Fail",
     "context": "",
     "term_plural": "",
     "reference": "",
