@@ -1,7 +1,7 @@
 $("#viewMyEvaluation").pagecontainer({
     create: function (event, ui) {
 
-        
+
         function addAppEvaluation() {
             var self = this;
             var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType.toLocaleLowerCase();
@@ -14,7 +14,7 @@ $("#viewMyEvaluation").pagecontainer({
             this.successCallback = function (data) {
                 console.log(data);
 
-                if(data['result_code'] == '1') {
+                if (data['result_code'] == '1') {
                     //changepage
                     $.mobile.changePage('#viewAppSetting');
                     $("#feedback").fadeIn(100).delay(2000).fadeOut(100);
@@ -59,9 +59,9 @@ $("#viewMyEvaluation").pagecontainer({
             var val = $.trim($(this).val());
             var has = $('.send-comment').hasClass('enabled-btn');
 
-            if(val != '' && !has) {
+            if (val != '' && !has) {
                 $('.send-comment').addClass('enabled-btn');
-            } else if(val == '' && has) {
+            } else if (val == '' && has) {
                 $('.send-comment').removeClass('enabled-btn');
             }
         });
@@ -70,14 +70,14 @@ $("#viewMyEvaluation").pagecontainer({
             var val = $.trim($(this).val());
             var has = $('.send-comment').hasClass('enabled-btn');
 
-            if(val != '' && !has) {
+            if (val != '' && !has) {
                 $('.send-comment').addClass('enabled-btn');
-            } else if(val == '' && has) {
+            } else if (val == '' && has) {
                 $('.send-comment').removeClass('enabled-btn');
             }
         });
 
-
+        //送出评论
         $('.send-comment').on('click', function () {
             var has = $(this).hasClass('enabled-btn');
             $('.comment-text textarea').blur();

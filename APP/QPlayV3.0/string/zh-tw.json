@@ -721,7 +721,7 @@
   },
   {
     "term": "str_091",
-    "definition": "感謝您的回饋",
+    "definition": "輪播",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -810,6 +810,14 @@
   {
     "term": "str_102",
     "definition": "頭像上傳失敗",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_103",
+    "definition": "感謝您的回饋",
     "context": "",
     "term_plural": "",
     "reference": "",

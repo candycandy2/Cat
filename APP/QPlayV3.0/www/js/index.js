@@ -36,8 +36,8 @@ var carouselFinish = false,
     addAppToList = true;
 
 //viewAppList
-var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
-var alreadyDownloadList = [],
+var favoriteList = null,
+    alreadyDownloadList = [],
     notDownloadList = [],
     tempVersionArrData,
     tempVersionData;
@@ -61,6 +61,11 @@ var generalSetting = {
 }
 
 window.initialSuccess = function (data) {
+    //1. widgetlist
+    checkWidgetListOrder();
+    //2. favorite app
+    checkFavoriteInstall();
+
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -115,12 +120,56 @@ window.initialSuccess = function (data) {
     getGeneralSetting();
 }
 
+//检查widgetlist顺序
+function checkWidgetListOrder() {
+    window.localStorage.removeItem('generalSetting');
+    var widgetArr = JSON.parse(localStorage.getItem('widgetList'));
+
+    if (widgetArr == null) {
+        widgetArr = widgetList;
+    }
+
+    localStorage.setItem('widgetList', JSON.stringify(widgetArr));
+}
+
+//widgetlist升序
+function ascOrderByWidget(prop1) {
+    return function (obj1, obj2) {
+        var val1 = obj1[prop1];
+        var val2 = obj2[prop1];
+        return val1 - val2;
+    }
+}
+
+//检查最爱列表里的app是否安装
+function checkFavoriteInstall() {
+    favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
+
+    if (favoriteList !== null) {
+        for (var i in favoriteList) {
+            var packageName = favoriteList[i].package_name;
+            var index = favoriteList[i].app_code;
+            checkAllAppInstalled(favoriteCallback, packageName, index);
+        }
+    }
+}
+
+//未安装表示卸载，不应出现在最爱列表当中
+function favoriteCallback(download, appcode) {
+    if (!download) {
+        for (var i in favoriteList) {
+            if (appcode == favoriteList[i].app_code) {
+                favoriteList.splice(i, 1);
+                localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
+                break;
+            }
+        }
+    }
+}
 
 //获取一般设定
 function getGeneralSetting() {
-    //hard code
-    window.localStorage.removeItem('defaultSetting');
-
+    //get local
     var settingArr = JSON.parse(window.localStorage.getItem('generalSetting'));
     var updateTime = window.localStorage.getItem('updateGeneral');
 

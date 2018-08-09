@@ -1,16 +1,20 @@
 $("#viewMain3").pagecontainer({
     create: function (event, ui) {
 
-        var loadAndRunScript = function (index, enabled) {
+        var widgetArr = JSON.parse(localStorage.getItem('widgetList'));
+
+        var loadAndRunScript = function (index) {
             //1. 条件判断
-            if (index >= widgetList.length) {
+            if (index == widgetArr.length) {
                 return;
-            } else if (!enabled) {
-                loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
+            } else {
+                if (!widgetArr[index].enabled) {
+                    loadAndRunScript(index + 1);
+                }
             }
 
             //2. widget
-            var widgetItem = widgetList[index].name + "Widget";
+            var widgetItem = widgetArr[index].name + "Widget";
 
             //3. container
             var contentItem = $('<div class="' + widgetItem + '"></div>');
@@ -20,20 +24,19 @@ $("#viewMain3").pagecontainer({
             sessionStorage.setItem('widgetItem', widgetItem);
 
             //5. load js
-            $.getScript(serverURL + "/widget/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
+            $.getScript(serverURL + "/widget/" + widgetArr[index].name + "/" + widgetArr[index].name + ".js")
                 .done(function (script, textStatus) {
-                    loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
+                    loadAndRunScript(index + 1);
                 })
                 .fail(function (jqxhr, settings, exception) {
                     console.log("Triggered ajaxError handler.");
                 });
         };
 
-
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
             //1. load widget
-            loadAndRunScript(0, widgetList[0].enabled);
+            loadAndRunScript(0);
 
             //2. get message
             if (!callGetMessageList && loginData["msgDateFrom"] === null) {
@@ -42,6 +45,7 @@ $("#viewMain3").pagecontainer({
                 loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
                 var messageList = new QueryMessageList();
             }
+            
         });
 
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
@@ -73,7 +77,7 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").on("pageshow", function (event, ui) {
-            
+
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
