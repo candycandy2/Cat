@@ -160,6 +160,13 @@ $("#viewAppSetting").pagecontainer({
             $('.qplay-version-name').text(langStr['str_081']);
             $('.want-comment-name').text(langStr['str_088']);
             $('.logout-fixed-btn').text(langStr['str_084']);
+            $('.choose-camera').text(langStr['str_089']);
+            $('.choose-picture').text(langStr['str_090']);
+            $('.cancel-choose').text(langStr['str_023']);
+            $('#feedback').text(langStr['str_091']);
+            $('#cameraFail').text(langStr['str_100']);
+            $('#uploadSuccess').text(langStr['str_101']);
+            $('#uploadFail').text(langStr['str_102']);
 
             //check photo
             checkPhotoUpload($('#myPhoto'));

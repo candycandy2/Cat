@@ -91,7 +91,7 @@ $("#viewMessageList").pagecontainer({
                     } else if (left > itemWidth / 3) {
                         new_left = itemWidth.toString() + 'px';
                     } else {
-                        new_left = '0px'
+                        new_left = '0px';
                     }
 
                     // event.currentTarget.style.left = new_left
@@ -499,7 +499,7 @@ $("#viewMessageList").pagecontainer({
 
             var totalHeight;
             if (device.platform === "iOS") {
-                totalHeight = (contentHeight + headHeight + footHeight + footHeight + fixHeight + iOSFixedTopPX()).toString();
+                totalHeight = (contentHeight + headHeight + footHeight + fixHeight + fixHeight + iOSFixedTopPX()).toString();
             } else {
                 totalHeight = (contentHeight + headHeight + footHeight + footHeight).toString();
             }
