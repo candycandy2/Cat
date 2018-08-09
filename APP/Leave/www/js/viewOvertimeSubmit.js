@@ -15,6 +15,17 @@ function checkOvertimeBeforePreview() {
     }
 }
 
+function checkAcutalOTBeforePreview() {
+    if ($('#chooseOTday').text() !== pleaseSelectStr &&
+        $('#startTimeText').text() !== pleaseSelectStr &&
+        $('#endTimeText').text() !== pleaseSelectStr &&
+        $('#paidType').text() !== pleaseSelectStr ) {
+            $('#previewActualOTBtn').addClass('leavePreview-active-btn');
+    } else {
+        $('#previewActualOTBtn').removeClass('leavePreview-active-btn');
+    }
+}
+
 $("#viewOvertimeSubmit").pagecontainer({
     create: function(event, ui) {
 
@@ -66,15 +77,53 @@ $("#viewOvertimeSubmit").pagecontainer({
         };
 
         /********************************** page event *************************************/
-        $("#viewOvertimeSubmit").one("pagebeforeshow", function(event, ui) {
-            $("#chooseOTday").text(pleaseSelectStr);
+        $("#viewOvertimeSubmit").one("pagebeforeshow", function(event, ui) {          
             $("#startTimeText").text(pleaseSelectStr);
-            $("#endTimeText").text(pleaseSelectStr);
+            $("#endTimeText").text(pleaseSelectStr);          
         });
 
         $("#viewOvertimeSubmit").on("pageshow", function(event, ui) {
             $('#applyOTDay').text(applyDay);
             $('#previewApplyDate').text(applyDay);
+            if (!viewAcutalOTApplyShow) {
+                $('#viewOvertimeSubmit .leaveMenu').show();
+                $("#backOvertime").hide();
+                $("#backOTQueryDetail").hide();
+                $("#backActualOTApply").hide();
+
+                $("#chooseOTday").text(pleaseSelectStr);
+                $("#applyTitle").show();
+                $("#expectOTInterval").show();
+                $("#expectOTHours").show();
+                $(".overtime-reason").show();
+                $(".apply-preview-btn").show();
+                $("#actualApplyTitle").hide();           
+                $("#actualOTInterval").hide();            
+                $("#actualOTHours").hide(); 
+                $(".overtime-paid").hide();
+                $(".actualot-apply-preview-btn").hide();
+            } else {  
+                $('#viewOvertimeSubmit .leaveMenu').hide();
+                $("#backOvertime").hide();
+                $("#backOTQueryDetail").show();
+                $("#backActualOTApply").hide();      
+
+                $("#applyTitle").hide();
+                $("#expectOTInterval").hide();
+                $("#expectOTHours").hide();
+                $(".overtime-reason").hide();
+                $(".apply-preview-btn").hide();
+                $("#actualApplyTitle").show();           
+                $("#actualOTInterval").show();            
+                $("#actualOTHours").show(); 
+                $(".overtime-paid").show();
+                $(".actualot-apply-preview-btn").show();
+                //清空時數登入
+                $("#emptyOvertimeForm").click();
+                //加班日期賦值
+                $("#chooseOTday").text(overtimeDetailObj["targetdate"]);
+                viewAcutalOTApplyShow = false;
+            }
             loadingMask("hide");
         });
 
@@ -213,7 +262,7 @@ $("#viewOvertimeSubmit").pagecontainer({
             }, 2000);
         });
       
-         //清除加班申請
+        //清除加班申請
         $("#emptyOvertimeForm").on("click", function() {
             //申請日期
             $('#applyOTDay').text(applyDay);
@@ -232,7 +281,14 @@ $("#viewOvertimeSubmit").pagecontainer({
             otreason = "";
             //请假数恢复0，0
             $("#overtimeHours").text("0");
-            checkOvertimeBeforePreview();
+            //加班選擇恢復請選擇
+            $("#paidType").text(pleaseSelectStr); 
+
+            if (!viewAcutalOTApplyShow) {
+                checkOvertimeBeforePreview();
+            } else {
+                checkAcutalOTBeforePreview();
+            }
         });
 
         //預覽送簽按鈕
@@ -261,6 +317,11 @@ $("#viewOvertimeSubmit").pagecontainer({
             $('.apply-container').show();
             $('#viewOvertimeSubmit .leaveMenu').show();
         });
+
+        $("#backOTQueryDetail").on("click", function() { 
+            $('#viewOvertimeQuery .leaveMenu').hide();
+            changePageByPanel("viewOvertimeQuery");
+        });       
 
         //確定送簽
         $("#confirmOTBtn").on("click", function() {
