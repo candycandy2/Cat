@@ -116,10 +116,8 @@
                     <!-- 預覽送簽 -->
                     <span class="langStr" data-id="str_091"></span>
                 </div>
-            </div>
-            <div class="actualot-apply-preview-btn">
                 <div id="previewActualOTBtn">
-                    <!-- 預覽送簽 -->
+                    <!-- 預覽送簽(時數登入) -->
                     <span class="langStr" data-id="str_091"></span>
                 </div>
             </div>
@@ -166,7 +164,9 @@
                     <span class="langStr" data-id="str_203"></span>
                 </div>
                 <div class="font-style3">
-                    <span id="previewOTHours"></span>
+                    <span id="previewOTHours"></span>&nbsp;
+                    <!-- 小時 -->
+                    <span class="langStr" data-id="str_088"></span>
                 </div>
             </div>         
             <div id="applyOTReason" class="preview-apply-categroy">
@@ -197,10 +197,8 @@
                     <!-- 確認送簽 -->
                     <span class="langStr" data-id="str_180"></span>
                 </div>
-            </div>
-            <div class="actualot-apply-submit-btn">
                 <div id="confirmActualOTBtn">
-                    <!-- 確認送簽 -->
+                    <!-- 確認送簽(時數登入) -->
                     <span class="langStr" data-id="str_180"></span>
                 </div>
             </div>
@@ -324,6 +322,7 @@
     <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmOvertime" for="confirmOvertime" id="confirmOvertime">
         <div data-role="main" class="ui-content">
             <div class="header">
+                <div class="font-style3 header-title-main" style="margin-left:5.36vw;margin-right:5.36vw;">
                     <span class='header-icon hidden'>
                         <img src="img/urgent.png">
                     </span>
@@ -343,6 +342,38 @@
                         <span class="langStr" data-id="com_023"></span>
                     </div>
                     <div class="btn-cancel" id="confirmSendOT">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm send -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmActualOvertime" for="confirmActualOvertime" id="confirmActualOvertime">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main" style="margin-left:5.36vw;margin-right:5.36vw;">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text font-style3">
+                        <!-- 確定送簽？ -->
+                        <span class="langStr" data-id="str_174"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmSendActualOT">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
                     </div>
