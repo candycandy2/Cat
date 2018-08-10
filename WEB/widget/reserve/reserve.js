@@ -7,28 +7,17 @@
         { key: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
     ];
 
-    loadWidgetCSS();
-
-    function loadWidgetCSS() {
-        $("<link>")
-            .attr({
-                rel: "stylesheet",
-                type: "text/css",
-                href: serverURL + "/widget/reserve/reserve.css"
-            })
-            .appendTo("head");
-    }
-
-    function appendWidgetHTML(target) {
-        //$.ajaxSettings.async = false;
+    function createContent() {
         $.get(serverURL + "/widget/reserve/reserve.html", function (data) {
             $('.' + widgetItem).append(data);
+            $img = $('<img>').attr('src', serverURL + '/widget/reserve/default_photo.png');
+            $('.reserve-default-photo').append($img);
             reserveFinish = true;
+
             getCurrentDate();
-            checkPhotoUpload($('img.reserve-photo'));
+            checkPhotoUpload($('.reserve-default-photo img'));
 
         }, "html");
-        //$.ajaxSettings.async = true;
     }
 
     function getCurrentDate() {
@@ -115,7 +104,7 @@
                 });
             }
 
-            appendWidgetHTML(this);
+            createContent();
 
         });
     }
@@ -126,7 +115,7 @@
         },
         refresh: function (jq) {
             return jq.each(function () {
-                checkPhotoUpload($('img.reserve-photo'));
+                checkPhotoUpload($('.reserve-default-photo img'));
             });
         }
     }

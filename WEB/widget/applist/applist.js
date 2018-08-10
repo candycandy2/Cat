@@ -2,27 +2,13 @@
     var widgetItem = sessionStorage.getItem('widgetItem');
     var favoriteApp = null;
 
-    loadWidgetCSS();
-
-    function loadWidgetCSS() {
-        $("<link>")
-            .attr({
-                rel: "stylesheet",
-                type: "text/css",
-                href: serverURL + "/widget/applist/applist.css"
-            })
-            .appendTo("head");
-    }
-
-    function appendWidgetHTML() {
-        $.ajaxSettings.async = false;
+    function createContent() {
         $.get(serverURL + '/widget/applist/applist.html', function (data) {
             $('.' + widgetItem).append(data);
             applistFinish = true;
-        }, 'html');
-        $.ajaxSettings.async = true;
+            getFavoriteApp();
 
-        getFavoriteApp();
+        }, 'html');     
     }
 
     function getFavoriteApp() {
@@ -72,7 +58,7 @@
                 });
             }
 
-            appendWidgetHTML();
+            createContent();
 
         });
     }

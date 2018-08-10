@@ -1,23 +1,13 @@
 (function ($) {
     var widgetItem = sessionStorage.getItem('widgetItem');
 
-    loadWidgetCSS();
+    function createContent() {
+        var $container = $('<div></div>').attr('class', 'carousel-widget');
+        var $img = $('<img>').attr('src', serverURL + '/widget/carousel/carousel.jpg');
+        $container.append($img);
 
-    function appendWidgetHTML(target) {
-        $.get(serverURL + "/widget/carousel/carousel.html", function (data) {
-            $('.' + widgetItem).append(data);
-            carouselFinish = true;
-        }, "html");
-    }
-
-    function loadWidgetCSS() {
-        $("<link>")
-            .attr({
-                rel: "stylesheet",
-                type: "text/css",
-                href: serverURL + "/widget/carousel/carousel.css"
-            })
-            .appendTo("head");
+        $('.' + widgetItem).append($container);
+        carouselFinish = true;
     }
 
     $.fn.carousel = function (options) {
@@ -33,15 +23,14 @@
                 });
             }
 
-            appendWidgetHTML(this);
+            createContent();
+
         })
     };
 
     $.fn.carousel.defaults = {}
 
-
     $('.' + widgetItem).carousel();
-
 
 })(jQuery);
 
