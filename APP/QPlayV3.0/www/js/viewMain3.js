@@ -46,12 +46,6 @@ $("#viewMain3").pagecontainer({
                 var messageList = new QueryMessageList();
             }
 
-            var link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.type = "text/css";
-            link.href = serverURL + "/widget/widget.css";
-            document.head.appendChild(link);
-
         });
 
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
