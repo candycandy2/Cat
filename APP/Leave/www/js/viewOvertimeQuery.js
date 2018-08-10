@@ -349,8 +349,9 @@ $("#viewOvertimeQuery").pagecontainer({
         /********************************** page event *************************************/
         $("#viewOvertimeQuery").on("pagebeforeshow", function(event, ui) {
             if (!changePageFromSubmitToDetail) {
-                $("#viewOvertimeQuery .leaveMenu").show();
+                $("#backOTDetailList").click();
             } else {
+                //從時數登入申請返回加班明細
                 $('#viewOvertimeQuery .leaveMenu').hide();
                 changePageFromSubmitToDetail = false;
             }

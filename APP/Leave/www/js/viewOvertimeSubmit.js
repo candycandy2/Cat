@@ -107,6 +107,80 @@ $("#viewOvertimeSubmit").pagecontainer({
             }();
         };
 
+        //加班申請送簽
+        window.SendApplyOvertimeData = function() {
+
+            this.successCallback = function(data) {
+                //console.log(data);
+                if (data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var success = $("success", htmlDom);
+                    if ($(success).html() != undefined) {
+                        //如果送签成功，重新取得加班單列表，并跳转到“加班查詢/時數登入”页
+                        $("#backOvertime").click();
+                        QueryEmployeeOvertimeApplyForm();
+                        changePageByPanel("viewOvertimeQuery");
+                        $(".popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        //送签成功，清空申请表单
+                        $("#emptyOvertimeForm").trigger("click");
+                    } else {
+                        loadingMask("hide");
+                        var error = $("error", htmlDom);
+                        var errorMsg = $(error).html();
+                        $('.leftDaysByOT').find('.header-text').html(errorMsg);
+                        popupMsgInit('.leftDaysByOT');
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {
+                loadingMask("hide");
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "SendOvertimeFormData", self.successCallback, self.failCallback, sendApplyOvertimeQueryData, "");
+            }();
+        };
+
+        //加班時數登入申請送簽
+        window.UpdateOvertimeData = function() {
+
+            this.successCallback = function(data) {
+                //console.log(data);
+                if (data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var success = $("success", htmlDom);
+                    if ($(success).html() != undefined) {
+                        //如果送签成功，重新取得加班單列表，并跳转到“加班查詢/時數登入”页
+                        //$("#backActualOTApply").click();
+                        //$("#backOTQueryDetail").click();
+                        QueryEmployeeOvertimeApplyForm();
+                        changePageByPanel("viewOvertimeQuery");
+                        $(".popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        //送签成功，清空申请表单
+                        $("#emptyOvertimeForm").trigger("click");
+                        viewAcutalOTApplyShow = false;
+                    } else {
+                        loadingMask("hide");
+                        var error = $("error", htmlDom);
+                        var errorMsg = $(error).html();
+                        $('.leftDaysByOT').find('.header-text').html(errorMsg);
+                        popupMsgInit('.leftDaysByOT');
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {
+                loadingMask("hide");
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "UpdateOvertimeForm", self.successCallback, self.failCallback, updateOvertimeQueryData, "");
+            }();
+        };
+
         /********************************** page event *************************************/
         $("#viewOvertimeSubmit").on("pagebeforeshow", function(event, ui) {          
             if (!viewAcutalOTApplyShow) {
@@ -432,43 +506,6 @@ $("#viewOvertimeSubmit").pagecontainer({
             popupMsgInit('.confirmActualOvertime');
         });
 
-        //加班申請送簽
-        window.SendApplyOvertimeData = function() {
-
-            this.successCallback = function(data) {
-                //console.log(data);
-                if (data['ResultCode'] === "1") {
-                    var callbackData = data['Content'][0]["result"];
-                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
-                    var success = $("success", htmlDom);
-                    if ($(success).html() != undefined) {
-                        //如果送签成功，重新取得加班單列表，并跳转到“加班查詢/時數登入”页，并记录代理人到local端
-                        $("#backOvertime").click();
-                        QueryEmployeeOvertimeApplyForm();
-                        changePageByPanel("viewOvertimeQuery");
-                        $(".popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
-                        //送签成功，清空申请表单
-                        $("#emptyOvertimeForm").trigger("click");
-                    } else {
-                        loadingMask("hide");
-                        var error = $("error", htmlDom);
-                        var errorMsg = $(error).html();
-                        $('.leftDaysByOT').find('.header-text').html(errorMsg);
-                        popupMsgInit('.leftDaysByOT');
-                    }
-
-                }
-            };
-
-            this.failCallback = function(data) {
-                loadingMask("hide");
-            };
-
-            var __construct = function() {
-                CustomAPI("POST", true, "SendOvertimeFormData", self.successCallback, self.failCallback, sendApplyOvertimeQueryData, "");
-            }();
-        };
-
         //送簽popup確定
         $("#confirmSendOT").on("click", function() {
             //$("#previewOTBtn").hide();
@@ -500,7 +537,21 @@ $("#viewOvertimeSubmit").pagecontainer({
 
         //送簽時數登入popup確定
         $("#confirmSendActualOT").on("click", function() {
-            viewAcutalOTApplyShow = false;
+            updateOvertimeQueryData = '<LayoutHeader><EmpNo>' +
+                myEmpNo +
+                '</EmpNo><formid>' +
+                overtimeDetailObj["formid"] +
+                '</formid><actualFrom>' +
+                startottime +
+                '</actualFrom><actualTo>' +
+                endottime +
+                '</actualTo><actualHours>' +
+                countOTHours +
+                '</actualHours><type>' +
+                $("#paid-type-popup option").val() +
+                '</type></LayoutHeader>';
+            //呼叫API
+            UpdateOvertimeData();
         });
     }
 });
