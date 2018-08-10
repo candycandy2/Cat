@@ -27,49 +27,37 @@
         </a>
     </div>
     <div data-role="main" class="ui-content page-main">
+        <!-- select -->
+        <div class="select-type">
+            <div data-item="news">News</div>
+            <div data-item="event">Event</div>
+        </div>
+        <!-- handle -->
+        <div class="handle-msg">
+            <div class="msg-select">
+                <!--全选-->
+                <span class="langStr" data-id="str_076"></span>
+            </div>
+            <div class="msg-delete">
+                <!--删除-->
+                <span class="langStr" data-id="str_037"></span>
+            </div>
+            <div class="msg-readed">
+                <!--标示已读-->
+                <span class="langStr" data-id="str_078"></span>
+            </div>
+        </div>
+        <!-- message -->
         <div class="message-scroll">
             <div>
-                <!-- select -->
-                <div class="select-news">
-                    <div data-name="msgType">News</div>
-                    <div data-name="msgType">Event</div>
-                </div>
+                <!-- blank -->
+                <div class="fill-handle-blank"></div>
                 <!-- News -->
                 <div class="news-content">
-                    <div class="msg-tool">
-                        <div class="news-select-btn">
-                            <!--全选-->
-                            <span class="langStr" data-id="str_076"></span>
-                        </div>
-                        <div class="news-delete-btn">
-                            <!--删除-->
-                            <span class="langStr" data-id="str_037"></span>
-                        </div>
-                        <div class="news-readed-btn">
-                            <!--标示已读-->
-                            <span class="langStr" data-id="str_078"></span>
-                        </div>
-                    </div>
-                    <div class="msg-tool-blank"></div>
                     <ul data-role="listview" data-filter="true" data-input="#msgFilter" class="swipe-delete"></ul>
                 </div>
                 <!-- Event -->
                 <div class="event-content hide">
-                    <div class="msg-tool">
-                        <div class="event-select-btn">
-                            <!--全选-->
-                            <span class="langStr" data-id="str_076"></span>
-                        </div>
-                        <div class="event-delete-btn">
-                            <!--删除-->
-                            <span class="langStr" data-id="str_037"></span>
-                        </div>
-                        <div class="event-readed-btn">
-                            <!--标示已读-->
-                            <span class="langStr" data-id="str_078"></span>
-                        </div>
-                    </div>
-                    <div class="msg-tool-blank"></div>
                     <ul data-role="listview" data-filter="true" data-input="#msgFilter" class="swipe-delete"></ul>
                 </div>
                 <!-- update -->

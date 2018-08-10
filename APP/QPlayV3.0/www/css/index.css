@@ -1288,7 +1288,7 @@ input[type=radio]:checked + label {
 
 .message-scroll {
     width: 100%;
-    height: 600px;
+    height: 100vh;
     position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -1318,7 +1318,7 @@ input[type=radio]:checked + label {
     margin-left: 2vw;
 }
 
-.select-news {
+.select-type {
     position: fixed;
     top: 0;
     left: 0;
@@ -1328,7 +1328,7 @@ input[type=radio]:checked + label {
     z-index: 1;
 }
 
-.select-news > div {
+.select-type > div {
     width: 100%;
     height: 11.47vw;
     color: #263238;
@@ -1339,12 +1339,12 @@ input[type=radio]:checked + label {
     background: #f9f9f9;
 }
 
-.select-news > div:hover {
+.select-type > div:hover {
     color: #f9f9f9 !important;
     background: #503e7f !important;
 }
 
-.msg-tool {
+.handle-msg {
     width: 92.58vw;
     height: 11.27vw;
     line-height: 11.27VW;
@@ -1355,22 +1355,20 @@ input[type=radio]:checked + label {
     z-index: 1;
 }
 
-.msg-tool-blank {
+.fill-handle-blank {
     width: 100vw;
     height: 11.27vw;
     display: none;
 }
 
-.news-select-btn,
-.event-select-btn {
+.msg-select {
     float: left;
     width: 30vw;
     color: #263238;
     font-size: 4.18vw;
 }
 
-.news-readed-btn,
-.event-readed-btn {
+.msg-readed {
     float: right;
     width: 30vw;
     color: #8fa4ac;
@@ -1378,8 +1376,7 @@ input[type=radio]:checked + label {
     text-align: right;
 }
 
-.news-delete-btn,
-.event-delete-btn {
+.msg-delete {
     float: right;
     width: 17.5vw;
     color: #8fa4ac;
