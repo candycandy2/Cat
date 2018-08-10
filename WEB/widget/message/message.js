@@ -1,18 +1,6 @@
 (function ($) {
     var widgetItem = sessionStorage.getItem('widgetItem');
 
-    loadWidgetCSS();
-
-    function loadWidgetCSS() {
-        $("<link>")
-            .attr({
-                rel: "stylesheet",
-                type: "text/css",
-                href: serverURL + "/widget/message/message.css"
-            })
-            .appendTo("head");
-    }
-
     function createMessage() {
         var msgArr = loginData['messagecontent']['message_list'];
         var content = '';
