@@ -147,6 +147,12 @@ var app = {
                 script.type = "text/javascript";
                 script.src = serverURL + "/widget/widget.js";
                 document.head.appendChild(script);
+
+                var link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.type = "text/css";
+                link.href = serverURL + "/widget/widget.css";
+                document.head.appendChild(link);
             }
         }, 0);
 
