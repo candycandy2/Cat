@@ -351,8 +351,6 @@ function leaveListToDetail(btn1, btn2, btn3, state) {
 function overtimeListToDetail(btn1, btn2, btn3, btn4, state) {
     $("#viewOvertimeQuery .leaveMenu").hide();
     $(".leave-query-main").hide();
-    $("#backOTDetailList").show();
-    $(".leave-query-detail-sign").show();
     if (state == null) {
         $("#" + btn1).hide();
     } else {
