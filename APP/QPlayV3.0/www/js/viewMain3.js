@@ -45,7 +45,7 @@ $("#viewMain3").pagecontainer({
                 loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
                 var messageList = new QueryMessageList();
             }
-            
+
         });
 
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
