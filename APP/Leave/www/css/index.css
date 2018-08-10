@@ -551,7 +551,8 @@ html body .ui-group-theme-a a:visited {
     height: 10vw;
 }
 
-.apply-preview-btn>div {
+.apply-preview-btn>div:nth-of-type(1),
+.apply-preview-btn>div:nth-of-type(2) {
     width: 64vw;
     height: 10vw;
     margin-left: 14.8vw;
@@ -566,7 +567,8 @@ html body .ui-group-theme-a a:visited {
     height: 10vw;
 }
 
-.apply-submit-btn>div {
+.apply-submit-btn>div:nth-of-type(1),
+.apply-submit-btn>div:nth-of-type(2) {
     width: 64vw;
     height: 10vw;
     margin-left: 14.8vw;
@@ -617,7 +619,8 @@ html body .ui-group-theme-a a:visited {
 .starttimeFirst>.ui-content,
 .endTimeError>.ui-content,
 .leftDaysByOT>.ui-content,
-.confirmOvertime>.ui-content {
+.confirmOvertime>.ui-content,
+.confirmActualOvertime>.ui-content {
     padding: 0 !important;
 }
 
@@ -639,7 +642,8 @@ html body .ui-group-theme-a a:visited {
 .starttimeFirst>.ui-content>.header,
 .endTimeError>.ui-content>.header,
 .leftDaysByOT>.ui-content>.header,
-.confirmOvertime>.ui-content>.header {
+.confirmOvertime>.ui-content>.header,
+.confirmActualOvertime>.ui-content>.header {
     margin-top: 12.5%;
 }
 
@@ -1214,13 +1218,34 @@ li.ui-body-a {
 
 /********************************************** viewOvertimeSubmit *********************************************/
 
-#backOvertime {
+#backOvertime,
+#backOTQueryDetail,
+#backActualOTApply {
     width: 4.934VW;
     display: none;
 }
 
+#actualApplyTitle,
+#actualOTInterval,
+#actualOTHours,
+#applyOTPaid,
+.overtime-paid,
+#previewActualOTBtn,
+#confirmActualOTBtn {
+    display: none;
+}
+
+.overtime-reason,
+.overtime-paid {
+    color: #0f0f0f;
+}
+
 .overtime-reason>div:nth-of-type(2) {
     margin-top: 2.14vw;
+}
+
+#paid-type-popup {
+    height: 8vw;
 }
 
 .apply-overtime-time {
@@ -1256,11 +1281,13 @@ li.ui-body-a {
     height: 5vw;
 }
 
-#confirmOvertime {
+#confirmOvertime,
+#confirmActualOvertime {
     min-height: 0vw;
 }
 
-#confirmOvertime .footer {
+#confirmOvertime .footer,
+#confirmActualOvertime .footer {
     color: #1678E5;
     font-size: 5.02vw;
     text-align: center;

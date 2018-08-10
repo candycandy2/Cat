@@ -91,7 +91,7 @@ $("#viewMessageList").pagecontainer({
                     } else if (left > itemWidth / 3) {
                         new_left = itemWidth.toString() + 'px';
                     } else {
-                        new_left = '0px'
+                        new_left = '0px';
                     }
 
                     // event.currentTarget.style.left = new_left
@@ -471,6 +471,7 @@ $("#viewMessageList").pagecontainer({
             });
         }
 
+        //记录已选消息数量
         function checkIconCount(type) {
             var count = 0;
             $.each($('.' + type + '-content li'), function (index, item) {
@@ -481,6 +482,7 @@ $("#viewMessageList").pagecontainer({
             return count;
         }
 
+        //设置messageList高度
         function setMsgHeightByType() {
             var footHeight = $('.msg-update-date').height();
             var headHeight = $('#viewMessageList .page-header').height();
@@ -497,9 +499,9 @@ $("#viewMessageList").pagecontainer({
 
             var totalHeight;
             if (device.platform === "iOS") {
-                totalHeight = (contentHeight + headHeight + footHeight + fixHeight + iOSFixedTopPX()).toString();
+                totalHeight = (contentHeight + headHeight + footHeight + fixHeight + fixHeight + iOSFixedTopPX()).toString();
             } else {
-                totalHeight = (contentHeight + headHeight + footHeight).toString();
+                totalHeight = (contentHeight + headHeight + footHeight + footHeight).toString();
             }
 
             $('.message-scroll > div').css('height', totalHeight + 'px');
@@ -543,7 +545,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         $("#viewMessageList").on("pageshow", function (event, ui) {
-            if(listUpdateMsg) {
+            if (listUpdateMsg) {
                 createMessageByType();
                 listUpdateMsg = false;
             }
@@ -637,7 +639,7 @@ $("#viewMessageList").pagecontainer({
 
             //已选全部变为未选
             $.each($('.msg-check-btn'), function (index, item) {
-                if($(item).attr('data-src') == 'checkbox_green') {
+                if ($(item).attr('data-src') == 'checkbox_green') {
                     $(item).attr('data-src', 'checkbox');
                     $(item).attr('src', 'img/checkbox.png');
                 }
@@ -847,13 +849,15 @@ $("#viewMessageList").pagecontainer({
                         updateReadDelete(msgType, 'delete');
                     }
                 })
+
             }
 
             //after delete, button disabled
-            $('.news-delete-btn').removeClass('enabled-font');
-            $('.news-readed-btn').removeClass('enabled-font');
-            $('.event-delete-btn').removeClass('enabled-font');
-            $('.event-readed-btn').removeClass('enabled-font');
+            var msgCount = checkIconCount(msgType);
+            if (msgCount == 0) {
+                $('.' + msgType + '-delete-btn').removeClass('enabled-font');
+                $('.' + msgType + '-readed-btn').removeClass('enabled-font');
+            }
 
             //after delete, set height
             setMsgHeightByType();

@@ -128,11 +128,13 @@
     margin: 0;
 }
 
-#weather {
-    font-size: 4vw;
-    padding: 1em; 
-    margin-top: 5vw; 
-    margin-bottom: -12vw;
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /*----------------------new class----------------------*/
@@ -397,8 +399,8 @@ input[type=radio]:checked + label {
 .detail-description-open {
     position: relative;
     width: 10%;
-    top: -2.6vh;
-    left: 88%;
+    top: -2.7vh;
+    left: 89%;
     background-color: #FFF;
     margin-bottom: -2.6vh;
 }
@@ -406,7 +408,7 @@ input[type=radio]:checked + label {
 .detail-description-open-btn {
     background: url(../img/more_btn.png) no-repeat;
     background-size: 10vw;
-    height: 3.5vh;
+    height: 3.6vh;
     width: 10vw;
     font-size: 2.3vh;
     color: #5C5C5C;
@@ -1742,6 +1744,10 @@ input[type=radio]:checked + label {
 .default-setting > div > div:nth-of-type(2) {
     width: 6.44vw;
     padding-top: 4vw; 
+}
+
+.show {
+    display: block;
 }
 
 /***************************** viewMyEvaluation ********************************/

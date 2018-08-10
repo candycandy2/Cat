@@ -1,7 +1,7 @@
 NewQPlay API Readme.md
 =============================
 
-## Version 1.2.18 - Published 2018 Feb 23
+## Version 1.3.6 - Published 2018 Jul 26
 
 ## Contents
 - [API 分類](#API-分類)
@@ -780,36 +780,49 @@ message_send_row_id | content | 0-1 | Integer | message row id
 
 ### Example
 ```JS
-        window.QueryMessageList = function(action) {
-            //review by alan
-            callGetMessageList = true;
-
-            action = action || null;
-
+        window.updateReadDelete = function (type, status) {
             var self = this;
-            var queryStr = "";
-            var msgDateTo = getTimestamp();
+
+            var queryStr = "&message_send_row_id=" + messageRowId + "&message_type=" + type + "&status=" + status;
+
+            this.successCallback = function (data) {
+                console.log(data);
+                var doUpdateLocalStorage = false;
+
+                if (type === "event") {
+                    var resultcode = data.result_code;
+
+                    if (resultcode === 1) {
+                        doUpdateLocalStorage = true;
+                    } else if (resultcode === "000910") {
+                        //message not exist
+                        doUpdateLocalStorage = true;
+                    }
+                } else if (type === "news") {
+                    doUpdateLocalStorage = true;
+                } else if (type === "all") {
+                    doUpdateLocalStorage = true;
+                }
             ...
             ...
             ...
-            this.failCallback = function(data) {
-                callGetMessageList = false;
             };
 
-            var __construct = function() {
-                QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
-            }();
-        }
-https://qplay.benq.com/qplayApi/public/v101/qplay/updateMessage?lang=en-us&uuid=18171adc0302e598d5f&message_send_row_id=121662&message_type=event&status=read&_=1533275142537
+            this.failCallback = function (data) { };
 
-{
-    "result_code": 1,
-    "message": "Call Service Success",
-    "token_valid": 1533711019,
-    "content": {
-        "message_send_row_id": "121662"
-    }
-}
+            var __construct = function () {
+
+                //[event] need to update [read / delete] status both in Server / Local Storage
+                //[news] just update [read / delete] in Local Storage
+                if (type === "event") {
+                    QPlayAPI("GET", "updateMessage", self.successCallback, self.failCallback, null, queryStr);
+                } else if (type === "news") {
+                    this.successCallback();
+                } else if (type === "all") {
+                    this.successCallback();
+                }
+            }();
+        };
 ```
 
 ----

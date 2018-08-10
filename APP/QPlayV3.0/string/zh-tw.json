@@ -721,7 +721,7 @@
   },
   {
     "term": "str_091",
-    "definition": "感謝您的回饋",
+    "definition": "輪播",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -786,6 +786,38 @@
   {
     "term": "str_099",
     "definition": "本日無預約",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_100",
+    "definition": "請更換圖片",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_101",
+    "definition": "頭像上傳成功",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_102",
+    "definition": "頭像上傳失敗",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_103",
+    "definition": "感謝您的回饋",
     "context": "",
     "term_plural": "",
     "reference": "",

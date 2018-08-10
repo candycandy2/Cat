@@ -25,9 +25,9 @@ $("#viewVersionRecord").pagecontainer({
         //返回上一页
         $('#viewVersionRecord .q-btn-header').on('click', function () {
             if (versionFrom) {
-                $.mobile.changePage('#viewAppSetting');
+                checkAppPage('viewAppSetting');
             } else {
-                $.mobile.changePage('#viewAppDetail2-2');
+                checkAppPage('viewAppDetail2-2');
             }
         });
 
