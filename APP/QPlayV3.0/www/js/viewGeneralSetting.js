@@ -1,7 +1,8 @@
 $("#viewGeneralSetting").pagecontainer({
     create: function (event, ui) {
 
-        var changeSetting = false,
+        var widgetArr = JSON.parse(localStorage.getItem('widgetList')),
+            changeSetting = false,
             widgetStr = {
                 carousel: langStr['str_091'],
                 weather: langStr['str_092'],
@@ -11,7 +12,6 @@ $("#viewGeneralSetting").pagecontainer({
             };
 
         function setGeneralSetting() {
-            var widgetArr = JSON.parse(localStorage.getItem('widgetList'));
             var content = '';
             for (var i in widgetArr) {
                 content += '<div class="default-item ' +
@@ -60,7 +60,6 @@ $("#viewGeneralSetting").pagecontainer({
                 });
 
                 //2. 记录新顺序
-                var widgetArr = JSON.parse(localStorage.getItem('widgetList'));
                 var arr = [];
                 for (var j in newSettingIndex) {
                     var item = widgetArr[newSettingIndex[j]];
@@ -79,7 +78,6 @@ $("#viewGeneralSetting").pagecontainer({
 
                 changeSetting = false;
             }
-
 
         });
 
