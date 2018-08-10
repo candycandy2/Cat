@@ -721,7 +721,7 @@
   },
   {
     "term": "str_091",
-    "definition": "Thank you",
+    "definition": "Carousel",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -810,6 +810,14 @@
   {
     "term": "str_102",
     "definition": "Upload Fail",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_103",
+    "definition": "Thank you",
     "context": "",
     "term_plural": "",
     "reference": "",

@@ -348,7 +348,12 @@ $("#viewOvertimeQuery").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewOvertimeQuery").on("pagebeforeshow", function(event, ui) {
-            $("#viewOvertimeQuery .leaveMenu").show();
+            if (!changePageFromSubmitToDetail) {
+                $("#viewOvertimeQuery .leaveMenu").show();
+            } else {
+                $('#viewOvertimeQuery .leaveMenu').hide();
+                changePageFromSubmitToDetail = false;
+            }
         });
 
         $("#viewOvertimeQuery").on("pageshow", function(event, ui) {
@@ -505,8 +510,7 @@ $("#viewOvertimeQuery").pagecontainer({
         });
 
         $("#enterActualOT").on("click", function() {
-            viewAcutalOTApplyShow = true;
-            
+            viewAcutalOTApplyShow = true;            
             changePageByPanel("viewOvertimeSubmit");
         });   
     }
