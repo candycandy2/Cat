@@ -1,15 +1,16 @@
 $("#viewMain3").pagecontainer({
     create: function (event, ui) {
 
-        var widgetArr = JSON.parse(localStorage.getItem('widgetList'));
+        var widgetArr = null;
 
         var loadAndRunScript = function (index) {
             //1. 条件判断
-            if (index == widgetArr.length) {
+            if (index >= widgetArr.length) {
                 return;
             } else {
                 if (!widgetArr[index].enabled) {
                     loadAndRunScript(index + 1);
+                    return;
                 }
             }
 
@@ -24,7 +25,9 @@ $("#viewMain3").pagecontainer({
             sessionStorage.setItem('widgetItem', widgetItem);
 
             //5. load js
-            $.getScript(serverURL + "/widget/" + widgetArr[index].name + "/" + widgetArr[index].name + ".js")
+            var dateTime = Date.now();
+            var timeStamp = Math.floor(dateTime / 1000);
+            $.getScript(serverURL + "/widget/" + widgetArr[index].name + "/" + widgetArr[index].name + ".js?v=" + timeStamp)
                 .done(function (script, textStatus) {
                     loadAndRunScript(index + 1);
                 })
@@ -35,10 +38,11 @@ $("#viewMain3").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
-            //1. load widget
+            //1. localstorage
+            widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+            //2. load widget
             loadAndRunScript(0);
-
-            //2. get message
+            //3. get message
             if (!callGetMessageList && loginData["msgDateFrom"] === null) {
                 msgDateFromType = 'month';
                 var clientTimestamp = getTimestamp();

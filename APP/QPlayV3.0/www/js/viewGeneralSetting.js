@@ -1,24 +1,19 @@
 $("#viewGeneralSetting").pagecontainer({
     create: function (event, ui) {
 
-        var widgetArr = JSON.parse(localStorage.getItem('widgetList')),
-            changeSetting = false,
-            widgetStr = {
-                carousel: langStr['str_091'],
-                weather: langStr['str_092'],
-                reserve: langStr['str_093'],
-                applist: langStr['str_094'],
-                message: langStr['str_095']
-            };
+        var widgetArr = null,
+            changeSetting = false;
 
         function setGeneralSetting() {
             var content = '';
             for (var i in widgetArr) {
-                content += '<div class="default-item ' +
-                    (widgetArr[i].name == 'carousel' ? 'hide' : 'show') +
-                    '" data-item="' + widgetArr[i].name + '" data-index="' +
-                    i + '"><div>' + widgetStr[widgetArr[i].name] +
-                    '</div><div><img src="img/move.png" width="90%"></div></div>';
+                if (widgetArr[i].enabled) {
+                    content += '<div class="default-item ' +
+                        (widgetArr[i].name == 'carousel' ? 'hide' : 'show') +
+                        '" data-item="' + widgetArr[i].name + '" data-index="' +
+                        i + '"><div>' + widgetArr[i].lang +
+                        '</div><div><img src="img/move.png" width="90%"></div></div>';
+                }
             }
 
             $('#defaultList').html('').append(content);
@@ -32,10 +27,13 @@ $("#viewGeneralSetting").pagecontainer({
         });
 
         $("#viewGeneralSetting").one("pageshow", function (event, ui) {
+            //1. title
             $('#viewGeneralSetting .ui-title div').text(langStr['str_083']).removeClass('opacity');
-
+            //2. localstorage
+            widgetArr = JSON.parse(localStorage.getItem('widgetList'));
+            //3. create content
             setGeneralSetting();
-
+            //4. sort listview
             var container = document.getElementById("defaultList");
             Sortable.create(container, {
                 handle: '.default-item',
