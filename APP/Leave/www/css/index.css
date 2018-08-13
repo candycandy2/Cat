@@ -924,7 +924,8 @@ html body .ui-group-theme-a a:visited {
 .leaveErrorMsg>.ui-content,
 .backLeaveErrorMsg>.ui-content,
 .confirmWithdrawOT>.ui-content,
-.overtimeErrorMsg>.ui-content {
+.overtimeErrorMsg>.ui-content,
+.confirmDeleteOT>.ui-content {
     padding: 0 !important;
 }
 
@@ -933,7 +934,8 @@ html body .ui-group-theme-a a:visited {
 .confirmRevoke>.ui-content>.header,
 .confirmToWithdraw>.ui-content>.header,
 .confirmToDelete>.ui-content>.header,
-.confirmWithdrawOT>.ui-content>.header {
+.confirmWithdrawOT>.ui-content>.header,
+.confirmDeleteOT>.ui-content>.header {
     margin-top: 13%;
 }
 

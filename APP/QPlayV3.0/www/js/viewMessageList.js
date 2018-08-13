@@ -1,11 +1,10 @@
 $("#viewMessageList").pagecontainer({
     create: function (event, ui) {
 
-        var messageType = "News",
-            newsAllChecked = false,
-            eventAllChecked = false,
-            deleteType, msgType;
-        var messageExist = true;
+        var messageType = "news",
+            allChecked = false,
+            deleteType,
+            messageExist = true;
 
         function getNewsList() {
 
@@ -104,8 +103,8 @@ $("#viewMessageList").pagecontainer({
             if (device.platform == 'iOS') {
                 msgHeaderTop += iOSFixedTopPX();
             }
-            $('.select-news').css('top', msgHeaderTop + 'px');
-            $('.msg-tool').css('top', msgHeaderTop + 'px');
+            $('.select-type').css('top', msgHeaderTop + 'px');
+            $('.handle-msg').css('top', msgHeaderTop + 'px');
 
             //4. message update
             var msgUpdateDate;
@@ -484,12 +483,12 @@ $("#viewMessageList").pagecontainer({
 
         //设置messageList高度
         function setMsgHeightByType() {
-            var footHeight = $('.msg-update-date').height();
             var headHeight = $('#viewMessageList .page-header').height();
-            var fixHeight = $('.msg-tool').height();
+            var footHeight = $('.msg-update-date').height();
+            var fixHeight = $('.fill-handle-blank').height();
 
             var contentHeight;
-            if (messageType == 'News') {
+            if (messageType == 'news') {
                 contentHeight = $('.news-content').height();
 
             } else {
@@ -499,24 +498,12 @@ $("#viewMessageList").pagecontainer({
 
             var totalHeight;
             if (device.platform === "iOS") {
-                totalHeight = (contentHeight + headHeight + footHeight + fixHeight + fixHeight + iOSFixedTopPX()).toString();
+                totalHeight = (contentHeight + headHeight + footHeight + fixHeight + iOSFixedTopPX()).toString();
             } else {
-                totalHeight = (contentHeight + headHeight + footHeight + footHeight).toString();
+                totalHeight = (contentHeight + headHeight + footHeight + fixHeight).toString();
             }
 
             $('.message-scroll > div').css('height', totalHeight + 'px');
-        }
-
-        function viewMessageInitila() {
-            $('.dropdown-title').removeClass('opacity');
-            $('.dropdown-news').show();
-            $('#viewMessageList .q-btn-header').show();
-            $('.header-search').hide();
-            $('#cancelEdit').hide();
-            $('#cancelSearch').hide();
-            $('#editListview').show();
-            $('#searchListview').show();
-            $('.msg-tool').hide();
         }
 
         //swipe to delete function
@@ -564,37 +551,38 @@ $("#viewMessageList").pagecontainer({
 
         //弹出message下拉菜单
         $("#viewMessageList .ui-title").on("click", function () {
-            $(".select-news").slideToggle(200);
+            $(".select-type").slideToggle(200);
         });
 
         //选择message类型
-        $("#viewMessageList div[data-name=msgType]").on("click", function () {
+        $(".select-type > div").on("click", function () {
             var self = this;
             var currentType = $(self).text();
+            var lowerCase = $(self).attr('data-item');
 
-            if (currentType != messageType) {
+            if (lowerCase != messageType) {
 
-                if (currentType == 'News') {
+                if (lowerCase == 'news') {
                     $(".news-content").show();
                     $(".event-content").hide();
-                } else if (currentType == 'Event') {
+                } else if (lowerCase == 'event') {
                     $(".event-content").show();
                     $(".news-content").hide();
                 }
 
-                messageType = currentType;
+                messageType = lowerCase;
                 $(".dropdown-title").text(currentType);
 
                 setMsgHeightByType();
             }
 
-            $(".select-news").slideUp(200);
+            $(".select-type").slideUp(200);
         });
 
         //编辑listview
         $('#editListview').on('click', function () {
-            if ($('.select-news').css('display') == 'block') {
-                $(".select-news").slideUp();
+            if ($('.select-type').css('display') == 'block') {
+                $('.select-type').slideUp();
             }
 
             //header
@@ -608,8 +596,8 @@ $("#viewMessageList").pagecontainer({
             //listview
             $('.msg-next-icon').hide();
             $('.msg-check-icon').show();
-            $('.msg-tool').slideDown(300);
-            $('.msg-tool-blank').show(300);
+            $('.handle-msg').slideDown(300);
+            $('.fill-handle-blank').show(300);
             $('#viewMessageList .ui-title').off('click');
             $(document).off('click', '.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon');
 
@@ -628,10 +616,10 @@ $("#viewMessageList").pagecontainer({
             //listview
             $('.msg-check-icon').hide();
             $('.msg-next-icon').show();
-            $('.msg-tool').slideUp(300);
-            $('.msg-tool-blank').hide(300);
+            $('.handle-msg').slideUp(300);
+            $('.fill-handle-blank').hide(300);
             $('#viewMessageList .ui-title').on('click', function () {
-                $(".select-news").slideToggle(200);
+                $(".select-type").slideToggle(200);
             });
             $(document).on('click', '.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon', function () {
                 changeToDetail($(this));
@@ -644,18 +632,17 @@ $("#viewMessageList").pagecontainer({
                     $(item).attr('src', 'img/checkbox.png');
                 }
             });
+            allChecked = false;
 
             //删除和已读不可用
-            $('.news-delete-btn').removeClass('enabled-font');
-            $('.news-readed-btn').removeClass('enabled-font');
-            $('.event-delete-btn').removeClass('enabled-font');
-            $('.event-readed-btn').removeClass('enabled-font');
+            $('.msg-delete').removeClass('enabled-font');
+            $('.msg-readed').removeClass('enabled-font');
         });
 
         //搜索listview
         $('#searchListview').on('click', function () {
-            if ($('.select-news').css('display') == 'block') {
-                $(".select-news").slideUp();
+            if ($('.select-type').css('display') == 'block') {
+                $('.select-type').slideUp();
             }
 
             $('#viewMessageList .q-btn-header').hide();
@@ -676,11 +663,12 @@ $("#viewMessageList").pagecontainer({
             $('#editListview').show();
             $('#searchListview').show();
 
-            $(".swipe-delete").listview('refresh');
+            $("." + messageType + "-content .swipe-delete").listview('refresh');
+            setMsgHeightByType();
         });
 
-        //news编辑
-        $('.news-content').on('click', '.msg-check-btn', function () {
+        //编辑
+        $('.message-scroll').on('click', '.msg-check-btn', function () {
             var $self = $(this);
 
             if ($self.attr('data-src') == 'checkbox') {
@@ -693,136 +681,62 @@ $("#viewMessageList").pagecontainer({
 
             }
 
-            if (checkIconCount('news') > 0 && !$('.news-delete-btn').hasClass('enabled-font')) {
-                $('.news-delete-btn').addClass('enabled-font');
-                $('.news-readed-btn').addClass('enabled-font');
-            } else if (checkIconCount('news') == 0 && $('.news-delete-btn').hasClass('enabled-font')) {
-                $('.news-delete-btn').removeClass('enabled-font');
-                $('.news-readed-btn').removeClass('enabled-font');
-            }
-        });
-
-        //event编辑
-        $('.event-content').on('click', '.msg-check-btn', function () {
-            var $self = $(this);
-
-            if ($self.attr('data-src') == 'checkbox') {
-                $self.attr('data-src', 'checkbox_green');
-                $self.attr('src', 'img/checkbox_green.png');
+            if (checkIconCount(messageType) > 0) {
+                $('.msg-delete').addClass('enabled-font');
+                $('.msg-readed').addClass('enabled-font');
 
             } else {
-                $self.attr('data-src', 'checkbox');
-                $self.attr('src', 'img/checkbox.png');
+                $('.msg-delete').removeClass('enabled-font');
+                $('.msg-readed').removeClass('enabled-font');
 
-            }
-
-            if (checkIconCount('event') > 0 && !$('.event-delete-btn').hasClass('enabled-font')) {
-                $('.event-delete-btn').addClass('enabled-font');
-                $('.event-readed-btn').addClass('enabled-font');
-            } else if (checkIconCount('event') == 0 && $('.event-delete-btn').hasClass('enabled-font')) {
-                $('.event-delete-btn').removeClass('enabled-font');
-                $('.event-readed-btn').removeClass('enabled-font');
             }
         });
 
-        //news全选
-        $('.news-select-btn span').on('click', function () {
-            if (!newsAllChecked) {
-                $('.news-content .msg-check-btn').attr('src', 'img/checkbox_green.png');
-                $('.news-content .msg-check-btn').attr('data-src', 'checkbox_green');
-                newsAllChecked = true;
-                $('.news-delete-btn').addClass('enabled-font');
-                $('.news-readed-btn').addClass('enabled-font');
+        //全选
+        $('.msg-select span').on('click', function () {
+            if (!allChecked) {
+                $('.' + messageType + '-content .msg-check-btn').attr('src', 'img/checkbox_green.png');
+                $('.' + messageType + '-content .msg-check-btn').attr('data-src', 'checkbox_green');
+                allChecked = true;
+                $('.msg-delete').addClass('enabled-font');
+                $('.msg-readed').addClass('enabled-font');
 
             } else {
-                $('.news-content .msg-check-btn').attr('src', 'img/checkbox.png');
-                $('.news-content .msg-check-btn').attr('data-src', 'checkbox');
-                newsAllChecked = false;
-                $('.news-delete-btn').removeClass('enabled-font');
-                $('.news-readed-btn').removeClass('enabled-font');
+                $('.' + messageType + '-content .msg-check-btn').attr('src', 'img/checkbox.png');
+                $('.' + messageType + '-content .msg-check-btn').attr('data-src', 'checkbox');
+                allChecked = false;
+                $('.msg-delete').removeClass('enabled-font');
+                $('.msg-readed').removeClass('enabled-font');
 
             }
         });
 
-
-        //event全选
-        $('.event-select-btn span').on('click', function () {
-            if (!eventAllChecked) {
-                $('.event-content .msg-check-btn').attr('src', 'img/checkbox_green.png');
-                $('.event-content .msg-check-btn').attr('data-src', 'checkbox_green');
-                eventAllChecked = true;
-                $('.event-delete-btn').addClass('enabled-font');
-                $('.event-readed-btn').addClass('enabled-font');
-
-            } else {
-                $('.event-content .msg-check-btn').attr('src', 'img/checkbox.png');
-                $('.event-content .msg-check-btn').attr('data-src', 'checkbox');
-                eventAllChecked = false;
-                $('.event-delete-btn').removeClass('enabled-font');
-                $('.event-readed-btn').removeClass('enabled-font');
-
-            }
-        });
-
-        //news标记已读
-        $('.news-readed-btn span').on('click', function () {
+        //标记已读
+        $('.msg-readed span').on('click', function () {
             if ($(this).parent().hasClass('enabled-font')) {
-                $.each($('.news-content .msg-check-btn'), function (index, item) {
+                $.each($('.' + messageType + '-content .msg-check-btn'), function (index, item) {
                     if ($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
                         messageRowId = $(item).parents('li').attr('data-rowid');
-                        updateReadDelete('news', 'read');
+                        updateReadDelete(messageType, 'read');
                     }
                 })
             }
         });
 
-        //event标记已读
-        $('.event-readed-btn span').on('click', function () {
-            if ($(this).parent().hasClass('enabled-font')) {
-                $.each($('.event-content .msg-check-btn'), function (index, item) {
-                    if ($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
-                        messageRowId = $(item).parents('li').attr('data-rowid');
-                        updateReadDelete('event', 'read');
-                    }
-                })
-            }
-        });
-
-        //news标记删除
-        $('.news-delete-btn span').on('click', function () {
+        //标记删除
+        $('.msg-delete span').on('click', function () {
             if ($(this).parent().hasClass('enabled-font')) {
                 $('#confirmDeleteMsg').popup('open');
-                $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_039"]);
-                msgType = 'news';
+                $('#confirmDeleteMsg .header-title-main .header-text').text(messageType == 'news' ? langStr["str_039"] : langStr["str_042"]);
                 deleteType = 'checkbox';
             }
         });
 
-        //event标记删除
-        $('.event-delete-btn span').on('click', function () {
-            if ($(this).parent().hasClass('enabled-font')) {
-                $('#confirmDeleteMsg').popup('open');
-                $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_042"]);
-                msgType = 'event';
-                deleteType = 'checkbox';
-            }
-        });
-
-        //news swipe删除
-        $('.news-content').on('click', 'a.delete-btn', function () {
+        //左滑删除
+        $('.swipe-delete').on('click', 'a.delete-btn', function () {
             messageRowId = $(this).parents('li').attr('data-rowid');
             $('#confirmDeleteMsg').popup('open');
-            $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_039"]);
-            msgType = 'news';
-            deleteType = 'swipe';
-        });
-
-        //event swipe删除
-        $('.event-content').on('click', 'a.delete-btn', function () {
-            messageRowId = $(this).parents('li').attr('data-rowid');
-            $('#confirmDeleteMsg').popup('open');
-            $('#confirmDeleteMsg .header-title-main .header-text').text(langStr["str_042"]);
-            msgType = 'event';
+            $('#confirmDeleteMsg .header-title-main .header-text').text(messageType == 'news' ? langStr["str_039"] : langStr["str_042"]);
             deleteType = 'swipe';
         });
 
@@ -830,7 +744,7 @@ $("#viewMessageList").pagecontainer({
         $('#viewMessageList .btn-cancel').on('click', function () {
             $('#confirmDeleteMsg').popup('close');
             if ($(this).attr('id') != 'confirmDeleteBtn') {
-                $('.news-content .swipe-delete li[data-rowid="' + messageRowId + '"] > a').animate({ left: '0px' }, 200);
+                $('.swipe-delete li[data-rowid="' + messageRowId + '"] > a').animate({ left: '0px' }, 200);
             }
         });
 
@@ -839,24 +753,24 @@ $("#viewMessageList").pagecontainer({
 
             if (deleteType == 'swipe') {
 
-                updateReadDelete(msgType, 'delete');
+                updateReadDelete(messageType, 'delete');
 
             } else if (deleteType == 'checkbox') {
 
-                $.each($('.' + msgType + '-content .msg-check-btn'), function (index, item) {
+                $.each($('.' + messageType + '-content .msg-check-btn'), function (index, item) {
                     if ($(item).attr('data-src') == 'checkbox_green') {
                         messageRowId = $(item).parents('li').attr('data-rowid');
-                        updateReadDelete(msgType, 'delete');
+                        updateReadDelete(messageType, 'delete');
                     }
                 })
 
             }
 
             //after delete, button disabled
-            var msgCount = checkIconCount(msgType);
+            var msgCount = checkIconCount(messageType);
             if (msgCount == 0) {
-                $('.' + msgType + '-delete-btn').removeClass('enabled-font');
-                $('.' + msgType + '-readed-btn').removeClass('enabled-font');
+                $('.' + messageType + '-delete-btn').removeClass('enabled-font');
+                $('.' + messageType + '-readed-btn').removeClass('enabled-font');
             }
 
             //after delete, set height
