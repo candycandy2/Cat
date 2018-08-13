@@ -4,11 +4,11 @@
 
     function createContent() {
         $.get(serverURL + '/widget/applist/applist.html', function (data) {
-            $('.' + widgetItem).append(data);
+            $('.' + widgetItem).html('').append(data);
             applistFinish = true;
             getFavoriteApp();
 
-        }, 'html');     
+        }, 'html');
     }
 
     function getFavoriteApp() {
