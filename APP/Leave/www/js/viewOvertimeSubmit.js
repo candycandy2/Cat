@@ -154,8 +154,6 @@ $("#viewOvertimeSubmit").pagecontainer({
                     var success = $("success", htmlDom);
                     if ($(success).html() != undefined) {
                         //如果送签成功，重新取得加班單列表，并跳转到“加班查詢/時數登入”页
-                        //$("#backActualOTApply").click();
-                        //$("#backOTQueryDetail").click();
                         QueryEmployeeOvertimeApplyForm();
                         changePageByPanel("viewOvertimeQuery");
                         $(".popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
@@ -225,13 +223,39 @@ $("#viewOvertimeSubmit").pagecontainer({
                 $("#chooseOTday").text(overtimeDetailObj["targetdate"]);
                 overtimeday = overtimeDetailObj["targetdate"];
                 getOTPaidType();
-                //viewAcutalOTApplyShow = false;
             }          
         });
 
         $("#viewOvertimeSubmit").on("pageshow", function(event, ui) {
             $('#applyOTDay').text(applyDay);
             $('#previewApplyDate').text(applyDay);
+            //從編輯加班單按鈕跳轉
+            if (viewEditOTApplyShow) {
+                var expOTHours = "0";
+                overtimeday = overtimeDetailObj["targetdate"];
+                $("#chooseOTday").text(overtimeday);
+                startottime = overtimeDetailObj["expectFrom"];
+                $("#startTimeText").html(startottime);
+                endottime = overtimeDetailObj["expectTo"];
+                $("#endTimeText").html(endottime);
+                countOvertimeHoursByEndQueryData = "<LayoutHeader><EmpNo>" +
+                    myEmpNo +
+                    "</EmpNo><targetdate>" +
+                    overtimeday +
+                    "</targetdate><begintime>" +
+                    startottime +
+                    "</begintime><endtime>" +
+                    endottime +
+                    "</endtime><expectTotalhours>" + 
+                    expOTHours +
+                    "</expectTotalhours></LayoutHeader>"; 
+                CountOvertimeHoursByEnd(); 
+                otreason = overtimeDetailObj["reason"]; 
+                $("#overtimeReason").val(otreason);
+                //檢查是否可以預覽送簽
+                checkOvertimeBeforePreview();
+                viewEditOTApplyShow = false;
+            }
             loadingMask("hide");
         });
 

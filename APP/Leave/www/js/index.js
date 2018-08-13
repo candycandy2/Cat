@@ -23,6 +23,7 @@ var notSignStr; //"未簽核";
 var editLeaveForm = false;
 var viewPersonalLeaveShow = false;
 var viewAcutalOTApplyShow = false;
+var viewEditOTApplyShow = false;
 var changePageFromSubmitToDetail = false;
 
 var time = new Date(Date.now());
@@ -180,6 +181,22 @@ function onBackKeyDown() {
         $("#backToList").click();
     } else if ($("#backToSign").css("display") == "inline") {
         $("#backToSign").click();
+    } else if ($("#backClockin").css("display") == "inline") {
+        $("#backClockin").click();
+    } else if ($("#backOvertime").css("display") == "inline") {
+        $("#backOvertime").click();
+    } else if ($("#backOTQueryDetail").css("display") == "inline") {
+        $("#backOTQueryDetail").click();
+    } else if ($("#backActualOTApply").css("display") == "inline") {
+        $("#backActualOTApply").click();
+    } else if ($("#backOTDetailList").css("display") == "inline") {
+        $("#backOTDetailList").click();
+    } else if ($("#backSignOTList").css("display") == "inline") {
+        $("#backSignOTList").click();
+    } else if ($("#backActualOTDetailList").css("display") == "inline") {
+        $("#backActualOTDetailList").click();
+    } else if ($("#backActualSignOTList").css("display") == "inline") {
+        $("#backActualSignOTList").click();
     } else if (visitedPageList.length == 1) {
         navigator.app.exitApp();
     } else {
