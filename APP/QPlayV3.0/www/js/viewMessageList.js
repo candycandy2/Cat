@@ -663,7 +663,8 @@ $("#viewMessageList").pagecontainer({
             $('#editListview').show();
             $('#searchListview').show();
 
-            $(".swipe-delete").listview('refresh');
+            $("." + messageType + "-content .swipe-delete").listview('refresh');
+            setMsgHeightByType();
         });
 
         //编辑
