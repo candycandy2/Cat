@@ -13,6 +13,15 @@ function getLanguageString() {
         }
     });
 
+    //review by allen
+    if(appKey === qplayAppKey) {
+        $.getJSON(serverURL + "/widget/string/" + browserLanguage + ".json", function (data) {
+            for (i = 0; i < data.length; i++) {
+                langStr[data[i].term] = data[i].definition.trim();
+            }
+        });
+    }
+
     $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
         $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
             for (i = 0; i < data.length; i++) {
