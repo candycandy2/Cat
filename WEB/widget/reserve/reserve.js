@@ -9,9 +9,9 @@
 
     function createContent() {
         $.get(serverURL + "/widget/reserve/reserve.html", function (data) {
-            $('.' + widgetItem).append(data);
+            $('.' + widgetItem).html('').append(data);
             $img = $('<img>').attr('src', serverURL + '/widget/reserve/default_photo.png');
-            $('.reserve-default-photo').append($img);
+            $('.reserve-default-photo').html('').append($img);
             reserveFinish = true;
 
             getCurrentDate();

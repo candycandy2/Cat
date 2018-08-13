@@ -25,7 +25,7 @@
   },
   {
     "term": "wgt_004",
-    "definition": "我的QPlay",
+    "definition": "最新消息",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,15 @@
   },
   {
     "term": "wgt_005",
-    "definition": "最新消息",
+    "definition": "我的QPlay",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_006",
+    "definition": "消费券",
     "context": "",
     "term_plural": "",
     "reference": "",
