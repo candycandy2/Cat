@@ -7,23 +7,25 @@ var closeDisconnectNetworkInit = false, // let closeDisconnectNetwork click even
 
 function getLanguageString() {
     var i;
-    $.getJSON("string/" + browserLanguage + ".json", function(data) {
+    $.getJSON("string/" + browserLanguage + ".json", function (data) {
         for (i = 0; i < data.length; i++) {
             langStr[data[i].term] = data[i].definition.trim();
         }
     });
 
     //review by allen
-    if(appKey === qplayAppKey) {
-        $.getJSON(serverURL + "/widget/string/" + browserLanguage + ".json", function (data) {
+    if (appKey === qplayAppKey) {
+        var dateTime = Date.now();
+        var timeStamp = Math.floor(dateTime / 1000);
+        $.getJSON(serverURL + "/widget/string/" + browserLanguage + ".json?v=" + timeStamp, function (data) {
             for (i = 0; i < data.length; i++) {
                 langStr[data[i].term] = data[i].definition.trim();
             }
         });
     }
 
-    $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
-        $.getJSON("string/common_" + browserLanguage + ".json", function(data) {
+    $.getJSON("string/common_" + browserLanguage + ".json", function (data) {
+        $.getJSON("string/common_" + browserLanguage + ".json", function (data) {
             for (i = 0; i < data.length; i++) {
                 langStr[data[i].term] = data[i].definition.trim();
             }
@@ -35,7 +37,7 @@ function getLanguageString() {
 
 function addComponentView() {
     //add component view template into index.html
-    $.get("View/APP.html", function(data) {
+    $.get("View/APP.html", function (data) {
         $.mobile.pageContainer.append(data);
 
         //Set viewInitial become the index page
@@ -45,7 +47,7 @@ function addComponentView() {
         //set initial page's layout when landscape
         $('#initialOther').css('top', (screen.height - $('#initialOther').height()) / 2);
 
-        $("#APPLoginLink").on("click", function() {
+        $("#APPLoginLink").on("click", function () {
             getServerData();
         });
         //If is other APP, set APP name in initial page
@@ -56,7 +58,7 @@ function addComponentView() {
             $("#initialOther").removeClass("hide");
             $("#initialQPlay").remove();
             //when initialOther Page stay over 10 secs, show QPlay Login Link
-            setTimeout(function() {
+            setTimeout(function () {
                 $("#initialAppLoginTimeout").removeClass("hide");
             }, 10000);
         } else {
@@ -66,7 +68,7 @@ function addComponentView() {
         }
 
         //viewNotSignedIn, Login Again
-        $("#LoginAgain").on("click", function() {
+        $("#LoginAgain").on("click", function () {
             //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
             var checkAppVer = new checkAppVersion();
         });
@@ -80,10 +82,10 @@ function addComponentView() {
         tplJS.Popup(null, null, "append", disconnectNetworkData);
 
         //After all template load finished, processing language string
-        $(".langStr").each(function(index, element) {
+        $(".langStr").each(function (index, element) {
             var id = $(element).data("id");
 
-            $(".langStr[data-id='" + id + "']").each(function(index, element) {
+            $(".langStr[data-id='" + id + "']").each(function (index, element) {
                 if (langStr[id] !== undefined) {
                     $(this).html(langStr[id]);
                 }
@@ -157,12 +159,12 @@ function checkNetwork(data) {
 function openNetworkDisconnectWindow(status) {
     // closeDisconnectNetwork click event should init only once
     if (!closeDisconnectNetworkInit) {
-        $(document).on('click', '#disconnectNetwork #closeInfoMsg', function() {
+        $(document).on('click', '#disconnectNetwork #closeInfoMsg', function () {
             $('#disconnectNetwork').popup('close');
 
             // network disconnect
             if (status === 'noNetwork') {
-                setTimeout(function() {
+                setTimeout(function () {
                     checkNetwork();
                 }, 500);
             }
@@ -240,7 +242,7 @@ function infoMessage() {
     $('#infoMsg').show();
     $('#infoMsg').popup('open');
 
-    setTimeout(function() {
+    setTimeout(function () {
         //Set for iOS, control text select
         document.documentElement.style.webkitTouchCallout = "default";
         document.documentElement.style.webkitUserSelect = "auto";
@@ -286,7 +288,7 @@ function openAPIError(type) {
     $('#APIError').show();
     $('#APIError').popup('open');
 
-    $("#closeAPIError").on("click", function() {
+    $("#closeAPIError").on("click", function () {
         $('#APIError').popup('close');
         $('#APIError').hide();
     });
@@ -320,7 +322,7 @@ function loadingMask(action, name) {
     name = name || "empty";
 
     if (g_loadingMask_Interval == null) {
-        g_loadingMask_Interval = setInterval(function() {
+        g_loadingMask_Interval = setInterval(function () {
             if (g_loadingMask_finish == true) {
                 $(".loader").hide();
             }
@@ -386,7 +388,7 @@ function popupMsg(attr, title, content, btn1, btnIsDisplay, btn2, titleImg) {
 }
 
 function popupCancelClose() {
-    $('body').on('click', '#viewPopupMsg #cancel', function() {
+    $('body').on('click', '#viewPopupMsg #cancel', function () {
         $('#viewPopupMsg').popup('close');
     });
 }
@@ -452,37 +454,37 @@ function addPlugin() {
     //window.pluginList set in plugin/config.js
     // 1.[ckeditor] need to add during "pageshow"
     // 2.other plugin add after Device Ready
-    $.map(window.pluginList, function(value, key) {
-        (function(pluginName, pluginIndex) {
+    $.map(window.pluginList, function (value, key) {
+        (function (pluginName, pluginIndex) {
 
             if (pluginName != "ckeditor") {
-                $.get("plugin/" + pluginName + "/" + pluginName + ".js").done(function() {
+                $.get("plugin/" + pluginName + "/" + pluginName + ".js").done(function () {
 
                     var script = document.createElement("script");
                     script.type = "text/javascript";
                     script.src = "plugin/" + pluginName + "/" + pluginName + ".js";
                     document.head.appendChild(script);
 
-                }).fail(function() {
+                }).fail(function () {
                     console.log("----------------plugin " + pluginName + ": file does not exist");
                 });
             }
 
             if ((pluginIndex + 1) == window.pluginList.length) {
 
-                $(document).one("pageshow", function() {
-                    $.map(window.pluginList, function(value, key) {
-                        (function(pluginName) {
+                $(document).one("pageshow", function () {
+                    $.map(window.pluginList, function (value, key) {
+                        (function (pluginName) {
 
                             if (pluginName == "ckeditor") {
-                                $.get("plugin/" + pluginName + "/" + pluginName + ".js").done(function() {
+                                $.get("plugin/" + pluginName + "/" + pluginName + ".js").done(function () {
 
                                     var script = document.createElement("script");
                                     script.type = "text/javascript";
                                     script.src = "plugin/" + pluginName + "/" + pluginName + ".js";
                                     document.head.appendChild(script);
 
-                                }).fail(function() {
+                                }).fail(function () {
                                     console.log("----------------plugin " + pluginName + ": file does not exist");
                                 });
                             }
