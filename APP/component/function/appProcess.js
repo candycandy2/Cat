@@ -74,12 +74,15 @@ function addComponentView() {
         });
 
         //UI Popup : Event Add Confirm
-        var disconnectNetworkData = {
-            id: "disconnectNetwork",
-            content: $("template#tplDisconnectNetwork").html()
-        };
-
-        tplJS.Popup(null, null, "append", disconnectNetworkData);
+        //review by allen
+        if($('#disconnectNetwork').length == 0) {
+            var disconnectNetworkData = {
+                id: "disconnectNetwork",
+                content: $("template#tplDisconnectNetwork").html()
+            };
+    
+            tplJS.Popup(null, null, "append", disconnectNetworkData);
+        }
 
         //After all template load finished, processing language string
         $(".langStr").each(function (index, element) {
