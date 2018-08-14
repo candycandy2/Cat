@@ -46,6 +46,7 @@ $("#viewAppList").pagecontainer({
                     appSummary +
                     '</div></div></div><div><img src="img/favorite_blank.png" class="favorite-btn" data-src="favorite_blank"></div></div>';
             }
+
             $('.already-download-list').html('').append(alreadydownloadContent);
 
             //2. 未下载
@@ -89,6 +90,7 @@ $("#viewAppList").pagecontainer({
                     appSummary +
                     '</div></div></div><div><img src="img/download_icon.png" class="download-btn" data-src="download_icon"></div></div>';
             }
+
             $('.not-download-list').html('').append(notdownloadContent);
 
             //3. change favorite icon
@@ -188,7 +190,7 @@ $("#viewAppList").pagecontainer({
             $('.not-download').text(langStr['str_075']);
             $('.app-no-download p').append('<span>' + langStr['str_097'] + '</span><br><span>' + langStr['str_098'] + '</span>');
 
-            //html
+            //create content
             createAppListContent();
 
             //setHeight

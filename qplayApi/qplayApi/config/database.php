@@ -66,6 +66,48 @@ return [
             'engine' => null,
         ],
 
+        'mysql_production' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_PRODUCTION'),
+            'port' => env('DB_PORT_PRODUCTION'),
+            'database' => env('DB_DATABASE_PRODUCTION'),
+            'username' => env('DB_USERNAME_PRODUCTION'),
+            'password' => env('DB_PASSWORD_PRODUCTION'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
+        'mysql_test' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_TEST'),
+            'port' => env('DB_PORT_TEST'),
+            'database' => env('DB_DATABASE_TEST'),
+            'username' => env('DB_USERNAME_TEST'),
+            'password' => env('DB_PASSWORD_TEST'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
+        'mysql_dev' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_DEV'),
+            'port' => env('DB_PORT_DEV'),
+            'database' => env('DB_DATABASE_DEV'),
+            'username' => env('DB_USERNAME_DEV'),
+            'password' => env('DB_PASSWORD_DEV'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_general_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'mongodb' => [
             'driver'   => 'mongodb',
             'host'     => env('MONGO_HOST'),
