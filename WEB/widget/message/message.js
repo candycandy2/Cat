@@ -26,7 +26,6 @@
         var $container = $('<div></div>').addClass('message-widget').append(content);
 
         $('.' + widgetItem).html('').append($container);
-        messageFinish = true;
     }
 
     $.fn.message = function (options, param) {

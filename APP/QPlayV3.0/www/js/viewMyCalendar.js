@@ -172,14 +172,6 @@ $("#viewMyCalendar").pagecontainer({
                             }
                         }
 
-                        //遍歷假日列表，統一爲藍色
-                        // for (var i in myCalendarData[holidayFlag]) {
-                        //     $("#reserveCalendar #" + myCalendarData[holidayFlag][i]).addClass("weekend");
-                        // }
-
-                        //calendarData = true;
-                    } else {
-                        //calendarData = false;
                     }
 
                 }
@@ -190,8 +182,7 @@ $("#viewMyCalendar").pagecontainer({
             this.failCallback = function (data) { };
 
             var __construct = function () {
-                CustomAPIByKey("POST", true, key, secret, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "", 3600, "low");
-                //CustomAPIEx("POST", true, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "");
+                CustomAPIByKey("POST", true, key, secret, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "", 15, "low");
             }();
         };
 
