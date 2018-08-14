@@ -108,14 +108,60 @@ window.initialSuccess = function (data) {
     appInitialFinish = true;
     //For test
     //var unregisterTest = new unregister();
-
 }
 
 //检查widgetlist顺序
 function checkWidgetListOrder() {
     window.localStorage.removeItem('generalSetting');
     window.localStorage.removeItem('updateGeneral');
+    window.localStorage.removeItem('widgetLastModified');
 
+    var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+
+    if (widgetArr == null) {
+        window.localStorage.setItem('widgetList', JSON.stringify(widgetList));
+
+    } else {
+        //1. check add
+        for (var i = 0; i < widgetList.length; i++) {
+            var found = false;
+            var obj = {};
+            for (var j = 0; j < widgetArr.length; j++) {
+                if (widgetList[i].id == widgetArr[j].id) {
+                    found = true;
+                    obj = $.extend({}, widgetArr[j], widgetList[i]);
+                    break;
+                }
+            }
+
+            if (found) {
+                widgetArr.splice(j, 1, obj);
+            } else {
+                widgetArr.push(widgetList[i]);
+            }
+        }
+
+        //2. check delete
+        for (var j = 0; j < widgetArr.length; j++) {
+            var found = false;
+            for (var i = 0; i < widgetList.length; i++) {
+                if (widgetArr[j].id == widgetList[i].id) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                widgetArr.splice(j, 1);
+                j--;
+            }
+        }
+
+        window.localStorage.setItem('widgetList', JSON.stringify(widgetArr));
+    }
+}
+
+function setWidgetListToLocal() {
     //1. time stamp
     var lastModified = window.localStorage.getItem('widgetLastModified');
     var timeStamp = new Date(widgetLastModified).getTime();     //Server widget.js
@@ -153,7 +199,6 @@ function checkWidgetListOrder() {
 
         }
     }
-
 }
 
 //检查最爱列表里的app是否安装
@@ -614,7 +659,6 @@ function GetAppList() {
             var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
             appGroupByDownload(responsecontent);
         }
-
     }();
 }
 
@@ -681,7 +725,6 @@ function addDownloadHit(appname) {
     var __construct = function () {
         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
-
     }();
 }
 
@@ -708,7 +751,6 @@ $(document).on("click", ".event-type", function () {
     $("#eventTypeSelect").panel("open");
 });
 
-
 //获取版本记录
 function getVersionRecord(key) {
     key = key || null;
@@ -720,7 +762,6 @@ function getVersionRecord(key) {
     }
 
     var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
-    //var queryStr = "&app_key=appqplaydev&device_type=android";
 
     this.successCallback = function (data) {
         console.log(data);
@@ -762,14 +803,11 @@ function getVersionRecord(key) {
 
     var __construct = function () {
         QPlayAPI("GET", "getVersionLog", self.successCallback, self.failCallback, null, queryStr);
-
     }();
 }
 
 function pageBeforeShow(pageID) {
-    if (pageID == 'viewAppSetting') {
-
-    } if (pageID == 'viewAppList') {
+    if (pageID == 'viewAppList') {
         appListPageBeforShow();
     }
 }
