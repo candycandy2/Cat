@@ -7,7 +7,6 @@
         $container.append($img);
 
         $('.' + widgetItem).html('').append($container);
-        carouselFinish = true;
     }
 
     $.fn.carousel = function (options) {

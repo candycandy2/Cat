@@ -12,7 +12,6 @@
             $('.' + widgetItem).html('').append(data);
             $img = $('<img>').attr('src', serverURL + '/widget/reserve/default_photo.png');
             $('.reserve-default-photo').html('').append($img);
-            reserveFinish = true;
 
             getCurrentDate();
             checkPhotoUpload($('.reserve-default-photo img'));
