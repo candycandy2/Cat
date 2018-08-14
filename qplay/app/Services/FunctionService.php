@@ -55,14 +55,20 @@ class FunctionService
 
              // get owner app name 
              $ownerAppData = $this->appRepository->getAppBasicIfnoByAppId($function->owner_app_row_id);
-             $data['owner_app_name'] = $ownerAppData->app_name;
-             $data['fun_app'] = null;
+             
+             $data['owner_app_name'] = null;
+             if(!is_null($ownerAppData)){
+                $data['owner_app_name'] = $ownerAppData->app_name;
+             }
 
+             $data['fun_app'] = null;
              if(!is_null($function->app_row_id)){
 
                 // get app name 
                 $funAppData = $this->appRepository->getAppBasicIfnoByAppId($function->app_row_id);
-                $data['fun_app'] = $funAppData->app_name;
+                if(!is_null($funAppData)){
+                    $data['fun_app'] = $funAppData->app_name;
+                }
 
              }
              $dataList[] = $data;
@@ -156,13 +162,24 @@ class FunctionService
         $data = $this->functionRepository->getFunctionDetail($functionId)->toArray();
 
         $ownerAppData = $this->appRepository->getAppBasicIfnoByAppId($data['owner_app_row_id']);
+        
+        $data['owner_app_name'] = null;
+        if(!is_null($ownerAppData)){
+            
+            $data['owner_app_name'] = $ownerAppData->app_name;
+        
+        }
 
-        $data['owner_app_name'] = $ownerAppData->app_name;
         $data['fun_app'] = null;
-
         if(!is_null($data['app_row_id'])){
+            
             $funAppData = $this->appRepository->getAppBasicIfnoByAppId($data['app_row_id']);
-            $data['fun_app'] = $funAppData->app_name;
+            
+            if(!is_null($funAppData)){
+                
+                $data['fun_app'] = $funAppData->app_name;
+            
+            }
         }
 
         $roles = $this->roleFunctionRepository->getRoleByFunctionId($functionId);
