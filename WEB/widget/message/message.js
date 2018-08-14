@@ -23,8 +23,9 @@
             content = '<div class="widget-none-msg">' + langStr['str_069'] + '<div>';
         }
 
-        $('.' + widgetItem).html('').append(content);
-        messageFinish = true;
+        var $container = $('<div></div>').addClass('message-widget').append(content);
+
+        $('.' + widgetItem).html('').append($container);
     }
 
     $.fn.message = function (options, param) {

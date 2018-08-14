@@ -5,7 +5,6 @@
     function createContent() {
         $.get(serverURL + '/widget/applist/applist.html', function (data) {
             $('.' + widgetItem).html('').append(data);
-            applistFinish = true;
             getFavoriteApp();
 
         }, 'html');

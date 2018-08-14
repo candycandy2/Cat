@@ -68,10 +68,8 @@ $("#viewGeneralSetting").pagecontainer({
                 window.localStorage.setItem('widgetList', JSON.stringify(arr));
 
                 //4. 更新首页widget
-                for (var i = 0; i < arr.length; i++) {
-                    if (i < arr.length - 1) {
-                        $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
-                    }
+                for (var i = 0; i < arr.length - 1; i++) {
+                    $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
                 }
 
                 changeSetting = false;

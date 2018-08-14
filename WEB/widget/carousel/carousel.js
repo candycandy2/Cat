@@ -2,12 +2,11 @@
     var widgetItem = sessionStorage.getItem('widgetItem');
 
     function createContent() {
-        var $container = $('<div></div>').attr('class', 'carousel-widget');
+        var $container = $('<div></div>').addClass('carousel-widget');
         var $img = $('<img>').attr('src', serverURL + '/widget/carousel/carousel.jpg');
         $container.append($img);
 
-        $('.' + widgetItem).append($container);
-        carouselFinish = true;
+        $('.' + widgetItem).html('').append($container);
     }
 
     $.fn.carousel = function (options) {

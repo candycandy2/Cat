@@ -432,6 +432,8 @@ return [
     'FUNCTION_TYPE' => '功能類型',
     'FUNCTION_VARIABLE_NAME' => '功能變數名稱',
     'FUNCTION_DESCRIPTION' => '功能描述',
+    'QACCOUNT_AVAILABLE' => 'QAccount使用權限',
+    'RIGHT_LEVEL' => '權限等級',
     'ERR_FUNCTION_VARIABLE_EXIST' =>'功能變數名稱已經存在!',
     'ERR_CREATE_FUNCTION_FAILED' => '新增功能失敗!',
     'ERR_UPDATE_FUNCTION_FAILED' => '更新功能失敗!',

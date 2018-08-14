@@ -57,10 +57,21 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").one("pageshow", function (event, ui) {
+            //1. app list
             var applist = new GetAppList();
 
-            var checkHomepageHeight = setInterval(function () {
-                if (carouselFinish && weatherFinish && reserveFinish && messageFinish && applistFinish) {
+            //2. widget enabled count
+            var enabledLength = 0;
+            for (var i in widgetArr) {
+                if (widgetArr[i].enabled) {
+                    enabledLength++;
+                }
+            }
+
+            //2. check element count
+            var checkWidgetFinish = setInterval(function () {
+                var childrenLength = $('#widgetList').children('div').length;
+                if (enabledLength == childrenLength) {
                     var mainHeight = $('.main-scroll > div').height();
                     var headHeight = $('#viewMain3 .page-header').height();
                     var totalHeight;
@@ -73,10 +84,9 @@ $("#viewMain3").pagecontainer({
                         $('.main-scroll > div').css('height', totalHeight + 'px');
                     }
 
-                    //clear
-                    clearInterval(checkHomepageHeight);
+                    clearInterval(checkWidgetFinish);
                 }
-            }, 1000);
+            }, 3000);
 
         });
 
