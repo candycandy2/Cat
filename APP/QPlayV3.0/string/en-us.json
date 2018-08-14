@@ -537,7 +537,7 @@
   },
   {
     "term": "str_068",
-    "definition": "My APP",
+    "definition": "My Favorite",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -721,7 +721,7 @@
   },
   {
     "term": "str_091",
-    "definition": "Thank you",
+    "definition": "Carousel",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -762,6 +762,62 @@
   {
     "term": "str_096",
     "definition": "Done",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_097",
+    "definition": "No any APP had been installed",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_098",
+    "definition": "Before add favorite, please install the APP first",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_099",
+    "definition": "No appointment today",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_100",
+    "definition": "Please change picture",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_101",
+    "definition": "Upload Success",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_102",
+    "definition": "Upload Fail",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_103",
+    "definition": "Thank you",
     "context": "",
     "term_plural": "",
     "reference": "",

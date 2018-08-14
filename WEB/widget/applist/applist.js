@@ -2,27 +2,13 @@
     var widgetItem = sessionStorage.getItem('widgetItem');
     var favoriteApp = null;
 
-    loadWidgetCSS();
-
-    function loadWidgetCSS() {
-        $("<link>")
-            .attr({
-                rel: "stylesheet",
-                type: "text/css",
-                href: serverURL + "/widget/applist/applist.css"
-            })
-            .appendTo("head");
-    }
-
-    function appendWidgetHTML() {
-        $.ajaxSettings.async = false;
+    function createContent() {
         $.get(serverURL + '/widget/applist/applist.html', function (data) {
-            $('.' + widgetItem).append(data);
+            $('.' + widgetItem).html('').append(data);
+            applistFinish = true;
+            getFavoriteApp();
 
         }, 'html');
-        $.ajaxSettings.async = true;
-
-        getFavoriteApp();
     }
 
     function getFavoriteApp() {
@@ -35,26 +21,30 @@
                     favoriteApp[i].package_name +
                     '"><a value="" id="" href="#"><img src="' +
                     favoriteApp[i].icon_url +
-                    '" style="width:15vw;"></a><p class="app-list-name">' +
+                    '" width="100%"></a><p class="app-list-name">' +
                     favoriteApp[i].app_name +
                     '</p></div>';
             }
         }
 
+        var iconWidget = 18;  //unit:vw
+        var iconMargin = 3.5;   //unit:vw
+        var contentWidth = (((favoriteApp == null ? 0 : favoriteApp.length) + 1) * (iconWidget + iconMargin)).toString();
+
         content += '<div class="applist-item add-favorite-list">' +
-            '<a href="#"><img src="http://qplaydev.benq.com/widget/applist/add.png" style="width:15vw;">' +
+            '<a href="#"><img src="' + serverURL + '/widget/applist/addfavorite.png" style="width:18vw;">' +
             '</a><p class="app-list-name" style="opacity:0;">Add</p></div>';
-            
-        $('.applist-main-icon').html('').append(content);
+
+        $('.applist-main-icon').css('width', contentWidth + 'vw').html('').append(content);
     }
 
     function destroyApplist(target) {
         $(target).children('div.applist-widget').remove();
     }
 
-    $.fn.applist = function (options) {
+    $.fn.applist = function (options, param) {
         if (typeof options == 'string') {
-            return $.fn.applist.methods[options](this);
+            return $.fn.applist.methods[options](this, param);
         }
 
         options = options || {};
@@ -68,17 +58,25 @@
                 });
             }
 
-            appendWidgetHTML();
+            createContent();
 
         });
     }
 
     $.fn.applist.methods = {
+        options: function (jq) {
+            return $.data(jq[0], 'applist').options;
+        },
         destroy: function (jq) {
             return jq.each(function () {
                 destroyApplist(this);
             });
         },
+        refresh: function (jq) {
+            return jq.each(function () {
+                getFavoriteApp();
+            });
+        }
     }
 
     $.fn.applist.defaults = {}

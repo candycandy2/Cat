@@ -13,7 +13,7 @@ QTunnel API Readme.md
 
 Login | 
 :------------ | 
-1.login <br> 2.getExternalUser | 
+1.login <br>  | 
 
 
 ![screen shot 2018-05-24 at 6 05 59 pm](https://user-images.githubusercontent.com/1924451/40479083-549bd988-5f7d-11e8-923a-9fd3367d11a1.png)
@@ -30,6 +30,8 @@ QTunnel APIs, 在DMZ區提供介接的服務, 目前提供Login的介接
 2. IIS Server
 3. GPG  https://gnupg.org/download
 4. .Net Framwork 4.0 and later
+5. "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe" QTunnel.sln /p:Configuration=Release /t:Clean,Build
+6. "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe" QPlay.Job.SyncGaiaUser.sln /p:Configuration=Release /p:Platform=x86 /t:Clean,Build
 
 For windows
 下載網址 : https://www.gpg4win.org/

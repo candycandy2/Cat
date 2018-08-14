@@ -264,6 +264,9 @@ $("#viewNewsEvents2-3").pagecontainer({
 
                 //review by alan
                 if (window.localStorage.getItem("openMessage") === "true") {
+                    widgetUpdateMsg = true;
+                    listUpdateMsg = true;
+                    messageFrom = 'push';
                     $.mobile.changePage('#viewWebNews2-3-1', {
                         allowSamePageTransition: true,
                         transition: 'none',

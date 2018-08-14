@@ -1,26 +1,13 @@
 (function ($) {
     var widgetItem = sessionStorage.getItem('widgetItem');
 
-    loadWidgetCSS();
-
-    function appendWidgetHTML(target) {
-        $.ajaxSettings.async = false;
+    function createContent() {
         $.get(serverURL + "/widget/weather/weather.html", function (data) {
-            $('.' + widgetItem).append(data);
+            $('.' + widgetItem).html('').append(data);
+            weatherFinish = true;
+            setWeatherData();
 
         }, "html");
-        setWeatherData();
-        $.ajaxSettings.async = true;
-    }
-
-    function loadWidgetCSS() {
-        $("<link>")
-            .attr({
-                rel: "stylesheet",
-                type: "text/css",
-                href: serverURL + "/widget/weather/weather.css"
-            })
-            .appendTo("head");
     }
 
     function setWeatherData() {
@@ -50,12 +37,11 @@
             $(".loca-city").text(city);
             $(".loca-region").text(region);
             $(".loca-text").text(wea);
-            $('.weather-img').append(img);
+            $('.weather-img').html('').append(img);
         });
     }
 
     function locationError(error) {
-        //console.log(error);
         console.warn('ERROR(' + error.code + '): ' + error.message);
     }
 
@@ -72,8 +58,8 @@
                 });
             }
 
-            appendWidgetHTML(this);
-            //setWeatherData();
+            createContent();
+
         });
     }
 

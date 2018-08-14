@@ -1,7 +1,7 @@
 $("#viewAppSetting").pagecontainer({
     create: function (event, ui) {
 
-
+        //注销
         function doLogOut() {
             var self = this;
 
@@ -29,6 +29,8 @@ $("#viewAppSetting").pagecontainer({
                     }
 
                     loginData = {
+                        ad_flag: "",
+                        company: "",
                         versionName: "",
                         versionCode: "",
                         deviceType: "",
@@ -77,20 +79,75 @@ $("#viewAppSetting").pagecontainer({
             }();
         }
 
-
+        //头像上传API
         function uploadFile(queryData) {
             var self = this;
 
             this.successCallback = function (data) {
                 console.log(data);
+
+                if (data['ResultCode'] == '1') {
+                    loadingMask("hide");
+                    //更新当前头像
+                    checkPhotoUpload($('#myPhoto'));
+                    //成功提示
+                    $("#uploadSuccess").fadeIn(100).delay(2000).fadeOut(100);
+                    //更新首页头像
+                    $('.reserveWidget').reserve('refresh');
+
+                } else {
+                    loadingMask("hide");
+                    $("#uploadFail").fadeIn(100).delay(2000).fadeOut(100);
+
+                }
+
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function (data) {
+                $("#uploadFail").fadeIn(100).delay(2000).fadeOut(100);
+            };
 
             var __construct = function () {
-                QStorageAPI("POST", "portrait", self.successCallback, self.failCallback, queryData, null);
+                QStorageAPI("POST", true, "portrait", self.successCallback, self.failCallback, queryData, null);
             }();
         }
+
+        //base64转file
+        function dataURLtoFile(dataurl, filename) {
+            filename = filename || 'photo.jpg';
+
+            var arr = dataurl.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]),
+                n = bstr.length, u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, { type: mime });
+        }
+
+        //检查是否上传过头像
+        function checkPhotoUpload($target) {
+            //var url = 'https://bqgroupstoragedev.blob.core.windows.net/appqplaydev-portrait/1705055/1705055_1024.png';
+            var env = '';
+
+            if (loginData["versionName"].indexOf("Staging") !== -1) {
+                env = 'test';
+            } else if (loginData["versionName"].indexOf("Development") !== -1) {
+                env = 'dev';
+            }
+
+            var dateTime = Date.now();
+            var timeStamp = Math.floor(dateTime / 1000);
+
+            var url = 'https://bqgroupstorage' + env + '.blob.core.windows.net/appqplay' + env +
+                '-portrait/' + loginData.emp_no + '/' + loginData.emp_no + '_1024.png?v=' + timeStamp;
+
+            $.get(url).success(function () {
+                $target.attr('src', url);
+            });
+        }
+
 
         /********************************** page event ***********************************/
         $("#viewAppSetting").on("pagebeforeshow", function (event, ui) {
@@ -105,13 +162,16 @@ $("#viewAppSetting").pagecontainer({
             $('.qplay-version-name').text(langStr['str_081']);
             $('.want-comment-name').text(langStr['str_088']);
             $('.logout-fixed-btn').text(langStr['str_084']);
+            $('.choose-camera').text(langStr['str_089']);
+            $('.choose-picture').text(langStr['str_090']);
+            $('.cancel-choose').text(langStr['str_023']);
+            $('#feedback').text(langStr['str_103']);
+            $('#cameraFail').text(langStr['str_100']);
+            $('#uploadSuccess').text(langStr['str_101']);
+            $('#uploadFail').text(langStr['str_102']);
 
-            //logout popup
-            var eventLogoutConfirmPopupData = {
-                id: "logoutPopup",
-                content: $("template#tplContactUserPopup").html()
-            };
-            tplJS.Popup("viewAppSetting", "settingContent", "append", eventLogoutConfirmPopupData);
+            //check photo
+            checkPhotoUpload($('#myPhoto'));
         });
 
         $("#viewAppSetting").on("pageshow", function (event, ui) {
@@ -131,7 +191,7 @@ $("#viewAppSetting").pagecontainer({
 
         //一般设定
         $('.normal-setting').on('click', function () {
-            checkAppPage('viewDefaultSetting');
+            checkAppPage('viewGeneralSetting');
         });
 
         //QPlay版本记录
@@ -147,17 +207,19 @@ $("#viewAppSetting").pagecontainer({
 
         //注销
         $("#logout").on("click", function () {
-            $('#logoutPopup').popup('open');
+            $('#confirmLogout').popup('open');
         });
 
-        $(document).on("click", "#logoutPopup #logoutConfirm", function () {
-            $('#logoutPopup').popup('close');
+        //确定注销
+        $("#logoutConfirm").on("click", function () {
+            $('#confirmLogout').popup('close');
             loadingMask("show");
             var logout = new doLogOut();
         });
 
-        $(document).on("click", "#logoutPopup #logoutCancel", function () {
-            $('#logoutPopup').popup('close');
+        //取消注销
+        $("#logoutCancel").on("click", function () {
+            $('#confirmLogout').popup('close');
         });
 
         //取消头像
@@ -167,59 +229,72 @@ $("#viewAppSetting").pagecontainer({
 
         //相机
         $('.choose-camera').on('click', function () {
+            $('.setting-mask').hide();
+
             navigator.camera.getPicture(onSuccess, onFail, {
                 quality: 50,
                 sourceType: Camera.PictureSourceType.Camera,
-                destinationType: Camera.DestinationType.FILE_URI
+                //destinationType: Camera.DestinationType.FILE_URI,
+                destinationType: Camera.DestinationType.DATA_URL,
+                saveToPhotoAlbum: true
             });
 
             function onSuccess(imageURI) {
-                console.log(imageURI);
-                var myPhoto = document.getElementById('myPhoto');
-                myPhoto.src = imageURI;
-                $('.setting-mask').hide();
+                //1. get base64
+                var url = 'data:image/jpeg;base64,' + imageURI;
 
-                //input file
-                //$('#photoFile').val(imageURI);
-                //var formData = new FormData(myPhoto);
-                //console.log(formData);
+                //2. base64 to file
+                var file = dataURLtoFile(url);
 
-                //FormData
+                //3. formData
                 var formData = new FormData();
-                formData.append('files', imageURI);
-                //console.log(formData);
+                formData.append('files', file);
 
-                //Call API
-                //uploadFile(formData);
+                //4. QStorage API
+                var upload = uploadFile(formData);
+
+                loadingMask("show");
             }
 
             function onFail(message) {
                 console.log('Failed because: ' + message);
+                //$("#cameraFail").fadeIn(100).delay(2000).fadeOut(100);
             }
         });
 
         //图库
         $('.choose-picture').on('click', function () {
+            $('.setting-mask').hide();
+
             navigator.camera.getPicture(onSuccess, onFail, {
                 quality: 50,
                 sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
                 destinationType: Camera.DestinationType.DATA_URL
             });
 
-            function onSuccess(imageData) {
-                console.log(imageData);
-                var myPhoto = document.getElementById('myPhoto');
-                myPhoto.src = "data:image/jpeg;base64," + imageData;
-                $('.setting-mask').hide();
+            function onSuccess(imageURI) {
+                //1. get base64
+                var url = 'data:image/jpeg;base64,' + imageURI;
 
-                //Base64
+                //2. base64 to file
+                var file = dataURLtoFile(url);
 
+                //3. formData
+                var formData = new FormData();
+                formData.append('files', file);
+
+                //4. QStorage API
+                var upload = uploadFile(formData);
+
+                loadingMask("show");
             }
 
             function onFail(message) {
                 console.log('Failed because: ' + message);
+                //$("#cameraFail").fadeIn(100).delay(2000).fadeOut(100);
             }
         });
+
 
     }
 });

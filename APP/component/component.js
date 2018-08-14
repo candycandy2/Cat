@@ -25,6 +25,8 @@ var langStr = {};
 var logFileName;
 
 var loginData = {
+    ad_flag: "",
+    company: "",
     versionName: "",
     versionCode: "",
     deviceType: "",
@@ -59,7 +61,7 @@ var isOfflineEventTimeout = null;
 /********************************** Corodva APP initial *************************************/
 var app = {
     // Application Constructor
-    initialize: function() {
+    initialize: function () {
 
         //For test, to clear localStorageData
         /*
@@ -77,11 +79,11 @@ var app = {
         this.bindEvents();
     },
     // Bind Event Listeners
-    bindEvents: function() {
+    bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
-    onDeviceReady: function() {
+    onDeviceReady: function () {
         app.receivedEvent('deviceready');
 
         //Ignore the font-size setting in Mobile Device
@@ -92,7 +94,7 @@ var app = {
         //cordova.plugins.backgroundMode.setEnabled(true);
 
         //Add Event to Check Network Status
-        window.addEventListener("offline", function(e) {
+        window.addEventListener("offline", function (e) {
             //review by alan
             //checkNetwork();
             //delay 10 seconds and then call checkNetwork()
@@ -100,7 +102,7 @@ var app = {
                 clearTimeout(isOfflineEventTimeout);
                 isOfflineEventTimeout = null;
             }
-            isOfflineEventTimeout = setTimeout(function() {
+            isOfflineEventTimeout = setTimeout(function () {
                 if (isOfflineEventTimeout != null) {
                     isOfflineEventTimeout = null;
                 }
@@ -108,7 +110,7 @@ var app = {
             }, 10000);
         });
 
-        window.addEventListener("online", function(e) {
+        window.addEventListener("online", function (e) {
             if (isOfflineEventTimeout != null) {
                 clearTimeout(isOfflineEventTimeout);
                 isOfflineEventTimeout = null;
@@ -135,16 +137,24 @@ var app = {
         document.addEventListener("resume", onResume, false);
 
         //[device] data ready to get on this step.
-        setTimeout(function() {
+        setTimeout(function () {
             readConfig();
             addPlugin();
 
             if (appKey === qplayAppKey) {
+                var dateTime = Date.now();
+                var timeStamp = Math.floor(dateTime / 1000);
                 //动态载入widget.js
                 var script = document.createElement("script");
                 script.type = "text/javascript";
-                script.src = serverURL + "/widget/widget.js";
+                script.src = serverURL + "/widget/widget.js?v=" + timeStamp;
                 document.head.appendChild(script);
+
+                var link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.type = "text/css";
+                link.href = serverURL + "/widget/widget.css?v=" + timeStamp;
+                document.head.appendChild(link);
             }
         }, 0);
 
@@ -162,7 +172,7 @@ var app = {
         //console.log(cordova.file);
         //LogFile.checkOldFile();
     },
-    onGetRegistradionID: function(data) {
+    onGetRegistradionID: function (data) {
         if (data.length !== 0) {
 
             loginData["deviceType"] = device.platform;
@@ -195,7 +205,7 @@ var app = {
             }
         }
     },
-    onOpenNotification: function(data) {
+    onOpenNotification: function (data) {
         //review by alan
         //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
         var doOpenMessage = false;
@@ -231,7 +241,8 @@ var app = {
                 //Before open Message Detail Data, update Message List
                 if (window.localStorage.getItem("msgDateFrom") === null) {
 
-                    $.mobile.changePage('#viewNewsEvents2-3');
+                    //review by allen
+                    //$.mobile.changePage('#viewNewsEvents2-3');
                 } else {
                     if (window.localStorage.getItem("uuid") !== null) {
                         loginData["uuid"] = window.localStorage.getItem("uuid");
@@ -244,7 +255,7 @@ var app = {
             }
         }
     },
-    onBackgoundNotification: function(data) {
+    onBackgoundNotification: function (data) {
         //Plugin-QPush > 添加後台收到通知后需要執行的內容
         if (window.localStorage.getItem("openMessage") === "false") {
             getMessageID(data);
@@ -257,7 +268,7 @@ var app = {
             }
         }
     },
-    onReceiveNotification: function(data) {
+    onReceiveNotification: function (data) {
         //Plugin-QPush > 添加前台收到通知后需要執行的內容
         if (window.localStorage.getItem("openMessage") === "false") {
             getMessageID(data);
@@ -282,14 +293,14 @@ var app = {
                 $('#iOSGetNewMessage').show();
                 $('#iOSGetNewMessage').popup('open');
 
-                $("#openNewMessage").one("click", function() {
+                $("#openNewMessage").one("click", function () {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
                     openNewMessage();
                 });
 
-                $("#cancelNewMessage").one("click", function() {
+                $("#cancelNewMessage").one("click", function () {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
@@ -300,7 +311,7 @@ var app = {
         }
     },
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
+    receivedEvent: function (id) {
 
     }
 };
@@ -320,11 +331,11 @@ function loadStringTable() {
         browserLanguage = "en-us";
     }
 
-    $.getJSON("string/" + browserLanguage + ".json", function(data) {
-            //language string exist
-            getLanguageString();
-        })
-        .fail(function() {
+    $.getJSON("string/" + browserLanguage + ".json", function (data) {
+        //language string exist
+        getLanguageString();
+    })
+        .fail(function () {
             //language string does not exist
             browserLanguage = "en-us";
             getLanguageString();
@@ -332,7 +343,7 @@ function loadStringTable() {
 };
 
 /********************************** jQuery Mobile Event *************************************/
-$(document).one("pagebeforecreate", function() {
+$(document).one("pagebeforecreate", function () {
 
     $(':mobile-pagecontainer').html("");
 
@@ -344,9 +355,9 @@ $(document).one("pagebeforecreate", function() {
 
     //According to the data [pageList] which set in index.js ,
     //add View template into index.html
-    $.map(pageList, function(value, key) {
-        (function(pageID) {
-            $.get("View/" + pageID + ".html", function(data) {
+    $.map(pageList, function (value, key) {
+        (function (pageID) {
+            $.get("View/" + pageID + ".html", function (data) {
                 $.mobile.pageContainer.append(data);
                 $("#" + pageID).page().enhanceWithin();
 
@@ -362,11 +373,11 @@ $(document).one("pagebeforecreate", function() {
     });
 
 
-    setTimeout(function() {
+    setTimeout(function () {
         //According to the data [pageList] which set in index.js ,
         //add Page JS into index.html
-        $.map(pageList, function(value, key) {
-            (function(pageID) {
+        $.map(pageList, function (value, key) {
+            (function (pageID) {
                 /*
                 var s = document.createElement("script");
                 s.type = "text/javascript";
@@ -388,7 +399,7 @@ $(document).one("pagebeforecreate", function() {
 
     //For APP scrolling in [Android ver:5], set CSS
     //For font-family, set diff in iOS/Android
-    $(document).on("pageshow", function() {
+    $(document).on("pageshow", function () {
         if (device.platform === "Android") {
             $(".ui-mobile .ui-page-active").css("overflow-x", "hidden");
             $(".ui-header-fixed").css("position", "fixed");
@@ -417,7 +428,7 @@ $(document).one("pagebeforecreate", function() {
         adjustPageMarginTop();
 
         // tab title, open version, uuid window
-        $(".ui-title").on("taphold", function() {
+        $(".ui-title").on("taphold", function () {
             //Set for iOS, control text select
             document.documentElement.style.webkitTouchCallout = "none";
             document.documentElement.style.webkitUserSelect = "none";
@@ -427,7 +438,7 @@ $(document).one("pagebeforecreate", function() {
 
         // close ifo msg init
         if (!closeInfoMsgInit) {
-            $(document).on('click', '#infoMsg #closeInfoMsg', function() {
+            $(document).on('click', '#infoMsg #closeInfoMsg', function () {
                 $('#infoMsg').popup('close');
                 $('#infoMsg').hide();
             });
@@ -436,7 +447,7 @@ $(document).one("pagebeforecreate", function() {
     });
 
     //For Message Content, click link to open APP by Scheme
-    $(document).on("click", "a", function(event) {
+    $(document).on("click", "a", function (event) {
         if ($(this).prop("href") != null) {
             var id = $(this).prop("id");
             var href = $(this).prop("href");
@@ -454,7 +465,7 @@ $(document).one("pagebeforecreate", function() {
         }
     });
 
-    window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+    window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function () {
         if (window.orientation === 180 || window.orientation === 0) {
             /*do somrthing when device is in portraint mode*/
             if (device.platform === "iOS") {
@@ -466,19 +477,19 @@ $(document).one("pagebeforecreate", function() {
     //Prevent JQM sometimes will auto add CSS-class [ui-fixed-hidden] in "ui-header" & "ui-footer",
     //bind event to remove this CSS-class, to ensure the position of "ui-header" & "ui-footer" were "fixed".
     $(document).on({
-        popupafterclose: function() {
+        popupafterclose: function () {
             footerFixed();
         },
-        click: function() {
+        click: function () {
             footerFixed();
         },
-        tabsactivate: function() {
+        tabsactivate: function () {
             footerFixed();
         },
-        touchmove: function() {
+        touchmove: function () {
             footerFixed();
         },
-        pagebeforeshow: function() {
+        pagebeforeshow: function () {
             if (loginData.uuid.length > 0 && loginData['loginid'].length > 0) {
                 var appLogData = JSON.parse(localStorage.getItem('appLogData'));
                 var firstPageLoad = JSON.parse(sessionStorage.getItem('firstPageLoad'));
@@ -490,20 +501,20 @@ $(document).one("pagebeforecreate", function() {
                 }
             }
         },
-        pageshow: function() {
+        pageshow: function () {
             getAppLogParam();
         }
     });
 
     //iOS - Prevent header/footer position error
     $(document).on({
-        touchstart: function(event) {
+        touchstart: function (event) {
             footerFixed();
         },
-        touchmove: function(event) {
+        touchmove: function (event) {
             footerFixed();
         },
-        touchend: function(event) {
+        touchend: function (event) {
             footerFixed();
         }
     }, "body");
@@ -576,7 +587,7 @@ function getAddAppLog() {
     var appLogData = JSON.parse(localStorage.getItem('appLogData'));
     var queryData = JSON.stringify(appLogData);
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
 
         var resultcode = data['result_code'];
         var logDataLength = appLogData.log_list.length;
@@ -588,9 +599,9 @@ function getAddAppLog() {
         }
     }
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         loginData["versionName"] = AppVersion.version;
         //if (loginData["versionName"].indexOf("Development") !== -1 || loginData["versionName"].indexOf("Staging") !== -1) {
         //QPlayAPIEx("POST", "addAppLog", self.successCallback, self.failCallback, queryData, "", "low", 1000);
@@ -744,11 +755,11 @@ function readConfig() {
             if (device.isVirtual) {
                 app.onGetRegistradionID(device.uuid);
             } else {
-                window.checkTimer = setInterval(function() {
+                window.checkTimer = setInterval(function () {
                     window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
                 }, 1000);
 
-                window.stopCheck = function() {
+                window.stopCheck = function () {
                     if (window.checkTimer != null) {
                         clearInterval(window.checkTimer);
                         window.checkTimer = null;
@@ -797,14 +808,14 @@ function updateAPP(updateUrl) {
         window.open(updateUrl, '_system');
     } else {
         var permissions = cordova.plugins.permissions;
-        permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
+        permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function (status) {
             if (status.hasPermission) {
 
                 window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                function onFail() {}
+                function onFail() { }
 
-                function onSuccess() {}
+                function onSuccess() { }
             } else {
                 permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
 
@@ -817,9 +828,9 @@ function updateAPP(updateUrl) {
 
                         window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                        function onFail() {}
+                        function onFail() { }
 
-                        function onSuccess() {}
+                        function onSuccess() { }
                     }
                 }
             }
@@ -837,7 +848,7 @@ function checkAppVersion() {
 
     loadingMask("show");
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
 
         var resultcode = data['result_code'];
 
@@ -845,7 +856,7 @@ function checkAppVersion() {
 
             download_url = data['content']['download_url'];
             // need to update app
-            window.checkVerTimer = setInterval(function() {
+            window.checkVerTimer = setInterval(function () {
                 $.mobile.changePage('#viewUpdateAppVersion');
 
                 if ($('#viewUpdateAppVersion').hasClass("ui-page-active")) {
@@ -860,13 +871,13 @@ function checkAppVersion() {
                 }
             }, 1000);
 
-            window.stopcheckVerTimer = function() {
+            window.stopcheckVerTimer = function () {
                 clearInterval(checkVerTimer);
 
                 loadingMask("hide");
             };
 
-            $("#UpdateAPP").on("click", function() {
+            $("#UpdateAPP").on("click", function () {
                 if (appKey === qplayAppKey) {
                     //qplay
                     if (device.platform === "iOS") {
@@ -905,9 +916,9 @@ function checkAppVersion() {
 
     }
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         QPlayAPIEx("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr, "high", 30000);
     }();
 }
@@ -918,7 +929,7 @@ function setWhiteList() {
     var self = this;
     loadingMask("hide");
 
-    this.successCallback = function() {
+    this.successCallback = function () {
         var doCheckStorageData = false;
 
         if (appKey !== qplayAppKey) {
@@ -953,9 +964,9 @@ function setWhiteList() {
         }
     };
 
-    this.failCallback = function() {};
+    this.failCallback = function () { };
 
-    var __construct = function() {
+    var __construct = function () {
         if (device.platform !== "iOS") {
             if (appKey === qplayAppKey) {
                 var securityList = {
@@ -1056,7 +1067,7 @@ function processStorageData(action, data) {
     if (action === "checkLocalStorage") {
         var checkLoginDataExist = true;
 
-        $.map(loginData, function(value, key) {
+        $.map(loginData, function (value, key) {
             if (key === "token" || key === "token_valid") {
                 if (window.localStorage.getItem(key) === null) {
                     checkLoginDataExist = false;
@@ -1067,7 +1078,7 @@ function processStorageData(action, data) {
         return checkLoginDataExist;
     } else if (action === "checkSecurityList") {
 
-        $.map(loginData, function(value, key) {
+        $.map(loginData, function (value, key) {
             if (window.localStorage.getItem(key) !== null) {
                 loginData[key] = window.localStorage.getItem(key);
             }
@@ -1075,11 +1086,11 @@ function processStorageData(action, data) {
 
         var securityList = new getSecurityList();
     } else if (action === "setLocalStorage") {
-        $.map(data, function(value, key) {
+        $.map(data, function (value, key) {
             window.localStorage.setItem(key, value);
         });
 
-        $.map(loginData, function(value, key) {
+        $.map(loginData, function (value, key) {
             if (window.localStorage.getItem(key) !== null) {
                 loginData[key] = window.localStorage.getItem(key);
             }
@@ -1120,14 +1131,14 @@ function getSecurityList() {
     var self = this;
     var queryStr = "&app_key=" + appKey;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         doInitialSuccess = true;
         checkTokenValid(data['result_code'], data['token_valid'], null, null);
     };
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         QPlayAPI("GET", "getSecurityList", self.successCallback, self.failCallback, null, queryStr);
     }();
 
@@ -1167,7 +1178,7 @@ function handleOpenURL(url) {
         var tempQueryData = queryString.split("&");
         queryData = {};
 
-        $.map(tempQueryData, function(value, key) {
+        $.map(tempQueryData, function (value, key) {
             var tempData = value.split("=");
             queryData[tempData[0]] = tempData[1];
         });
@@ -1197,7 +1208,7 @@ function handleOpenURL(url) {
 
         } else if (queryData["action"] === "retrunLoginData") {
 
-            $.map(queryData, function(value, key) {
+            $.map(queryData, function (value, key) {
                 if (key !== "callbackApp" && key !== "action") {
                     window.localStorage.setItem(key, value);
                     loginData[key] = value;

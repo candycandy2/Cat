@@ -1,16 +1,21 @@
 $("#viewMain3").pagecontainer({
     create: function (event, ui) {
 
-        var loadAndRunScript = function (index, enabled) {
+        var widgetArr = null;
+
+        var loadAndRunScript = function (index) {
             //1. 条件判断
-            if (index >= widgetList.length) {
+            if (index >= widgetArr.length) {
                 return;
-            } else if (!enabled) {
-                loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
+            } else {
+                if (!widgetArr[index].enabled) {
+                    loadAndRunScript(index + 1);
+                    return;
+                }
             }
 
             //2. widget
-            var widgetItem = widgetList[index].name + "Widget";
+            var widgetItem = widgetArr[index].name + "Widget";
 
             //3. container
             var contentItem = $('<div class="' + widgetItem + '"></div>');
@@ -20,28 +25,31 @@ $("#viewMain3").pagecontainer({
             sessionStorage.setItem('widgetItem', widgetItem);
 
             //5. load js
-            $.getScript(serverURL + "/widget/" + widgetList[index].name + "/" + widgetList[index].name + ".js")
+            var dateTime = Date.now();
+            var timeStamp = Math.floor(dateTime / 1000);
+            $.getScript(serverURL + "/widget/" + widgetArr[index].name + "/" + widgetArr[index].name + ".js?v=" + timeStamp)
                 .done(function (script, textStatus) {
-                    loadAndRunScript(index + 1, widgetList[index + 1] != undefined ? widgetList[index + 1].enabled : false);
+                    loadAndRunScript(index + 1);
                 })
                 .fail(function (jqxhr, settings, exception) {
                     console.log("Triggered ajaxError handler.");
                 });
         };
 
-
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
-            //1. load widget
-            loadAndRunScript(0, widgetList[0].enabled);
-
-            //2. get message
+            //1. localstorage
+            widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+            //2. load widget
+            loadAndRunScript(0);
+            //3. get message
             if (!callGetMessageList && loginData["msgDateFrom"] === null) {
                 msgDateFromType = 'month';
                 var clientTimestamp = getTimestamp();
                 loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
                 var messageList = new QueryMessageList();
             }
+
         });
 
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
@@ -51,21 +59,24 @@ $("#viewMain3").pagecontainer({
         $("#viewMain3").one("pageshow", function (event, ui) {
             var applist = new GetAppList();
 
-            setTimeout(function () {
-                var mainHeight = $('.main-scroll > div').height();
-                var headHeight = $('#viewMain3 .page-header').height();
-                var totalHeight;
+            var checkHomepageHeight = setInterval(function () {
+                if (carouselFinish && weatherFinish && reserveFinish && messageFinish && applistFinish) {
+                    var mainHeight = $('.main-scroll > div').height();
+                    var headHeight = $('#viewMain3 .page-header').height();
+                    var totalHeight;
 
-                if (device.platform === "iOS") {
-                    totalHeight = (mainHeight + headHeight).toString();
-                    $('.main-scroll > div').css('height', totalHeight + 'px');
-                } else {
-                    totalHeight = (mainHeight + headHeight + 5).toString();
-                    $('.main-scroll > div').css('height', totalHeight + 'px');
+                    if (device.platform === "iOS") {
+                        totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+                        $('.main-scroll > div').css('height', totalHeight + 'px');
+                    } else {
+                        totalHeight = (mainHeight + headHeight + 2).toString();
+                        $('.main-scroll > div').css('height', totalHeight + 'px');
+                    }
+
+                    //clear
+                    clearInterval(checkHomepageHeight);
                 }
-
-            }, 5000);
-            //console.log($('.applistWidget').applist('options').finish);
+            }, 1000);
 
         });
 
@@ -81,7 +92,6 @@ $("#viewMain3").pagecontainer({
         /********************************** dom event *************************************/
         //跳转到行事历
         $('#widgetList').on('click', '.personal-res', function () {
-            //$.mobile.changePage('#viewMyCalendar');
             checkAppPage('viewMyCalendar');
         });
 
@@ -93,13 +103,13 @@ $("#viewMain3").pagecontainer({
 
         //点击添加按钮跳转到APPList
         $('#widgetList').on('click', '.add-favorite-list', function () {
-            //$.mobile.changePage('#viewAppList');
+            addAppToList = true;
             checkAppPage('viewAppList');
         });
 
         //点击Link跳转到APPList
         $('.applist-link').on('click', function () {
-            //$.mobile.changePage('#viewAppList');
+            addAppToList = false;
             checkAppPage('viewAppList');
         });
 
@@ -112,19 +122,16 @@ $("#viewMain3").pagecontainer({
 
         //跳转到MessageList
         $('.message-link').on('click', function () {
-            //$.mobile.changePage('#viewMessageList');
             checkAppPage('viewMessageList');
         });
 
         //跳转到FAQ
         $('.faq-link').on('click', function () {
-            //$.mobile.changePage('#viewFAQ');
             checkAppPage('viewFAQ');
         });
 
         //跳转到设定
         $('#setting').on('click', function () {
-            //$.mobile.changePage('#viewFAQ');
             checkAppPage('viewAppSetting');
         });
 

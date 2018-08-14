@@ -236,8 +236,12 @@ class PushUtil
     }
 
     public static function GetTagByUserInfo($userInfo) {
-        $company = strtoupper($userInfo->company);
-        $firstLetter = substr($userInfo->login_id, 0, 1);
+        $userCompany = strtoupper($userInfo->company);
+
+        //check if [blank] appear in string, replace with [underscore]
+        $company = preg_replace("/\s+/", "_", $userCompany);
+
+        $firstLetter = strtoupper(substr($userInfo->login_id, 0, 1));
         switch ($firstLetter) {
             case 'A':
             case 'B':

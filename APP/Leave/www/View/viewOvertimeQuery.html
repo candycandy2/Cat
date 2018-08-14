@@ -1,0 +1,451 @@
+<div data-role="page" id="viewOvertimeQuery">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
+        <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
+            <img src="img/menu.png" class="leaveMenu">
+            <img src="img/nav_back.png" id="backOTDetailList">
+            <img src="img/nav_back.png" id="backSignOTList">
+            <img src="img/nav_back.png" id="backActualOTDetailList">
+            <img src="img/nav_back.png" id="backActualSignOTList">
+        </a>
+        <div class="header-style">
+            <div class="ui-title">
+                <!--加班查詢/時數登入-->
+                <span class="langStr" data-id="str_207"></span>
+            </div>
+        </div>
+    </div>
+    <div data-role="main" class="page-main">
+        <div class="beingAgent"></div> 
+        <!-- 加班單列表 -->
+        <div class="leave-query-main">
+            <!-- pull refresh -->
+            <div class="page-date"></div>
+
+            <!-- leave list -->
+            <div class="overtime-query-main-list">
+
+            </div>
+
+            <!-- max count msg -->
+            <div class="leave-query-max font-style12">
+                <!-- *僅顯示近10筆假單記錄 -->
+                <span id="maxOvertimeMsg"></span>
+            </div>
+
+        </div>
+
+        <!-- toast display:none -->
+        <div class="popup-msg-style" id="withdrawOTMsg">
+            <!-- 表單已撤回 -->
+            <span class="langStr" data-id="str_214"></span>
+        </div>
+        <div class="popup-msg-style" id="deleteOTMsg">
+            <!-- 表單已刪除 -->
+            <span class="langStr" data-id="str_215"></span>
+        </div>
+        <div class="popup-msg-style" id="sendLeaveMsg">
+            <!-- 表單已送簽 -->
+            <span class="langStr" data-id="str_216"></span>
+        </div>
+
+        <!-- 加班單詳情 -->
+        <div class="leave-query-detail-sign">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span id="overtimeApplyDate">2017-02-08</span>
+                </div>
+                <div>
+                    <!-- 加班單號 -->
+                    <span class="langStr" data-id="str_217"></span>
+                    <span id="overtimeFormNo">572000</span>
+                </div>
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 表單狀況 -->
+                            <span class="langStr" data-id="str_218"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span id="overtimeStatus">
+                                <!-- 表單簽核中 -->
+                                <span class="langStr" data-id="str_147"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/info.png" class="leave-detail-img" id="signOvertimeDetail">
+                    </div>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班日期 -->
+                    <span class="langStr" data-id="str_201"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="overtimeDate">2017-02-08</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班時間 -->
+                    <span class="langStr" data-id="str_202"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="overtimeInterval">08:00 - 17:00</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班時數 -->
+                    <span class="langStr" data-id="str_203"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="overtimeApplyHours">0</span>
+                    <!-- 小時 -->
+                    <span class="langStr" data-id="str_088"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班原因 -->
+                    <span class="langStr" data-id="str_204"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="overtimeApplyReason"></span>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div2"></div>
+            <!-- 撤回 -->
+            <div class="apply-submit-btn" id="overtimeWithdraw">
+                <div id="withdrawOTBtn">
+                    <!-- 撤回 -->
+                    <span class="langStr" data-id="str_143"></span>
+                </div>
+            </div>
+            <!-- 刪除 -->
+            <div id="overtimeDelete">
+                <div class="apply-submit-btn">
+                    <div id="deleteRefuseOT">
+                        <!-- 刪除加班單 -->
+                        <span class="langStr" data-id="str_219"></span>
+                    </div>
+                </div>
+                <div class="apply-preview-remove">
+                    <div id="editRefuseOT">
+                        <img src="img/edit.png">&nbsp;
+                        <!-- 編輯 -->
+                        <span class="langStr" data-id="str_154"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- 時數登入 -->
+            <div id="overtimeEnter">
+                <div class="apply-submit-btn">
+                    <div id="enterActualOT">
+                        <!-- 時數登入 -->
+                        <span class="langStr" data-id="str_221"></span>
+                    </div>
+                </div>
+                <div class="apply-preview-remove">
+                    <div class="withdrawRefuseOT">
+                        <img src="img/withdraw.png">&nbsp;
+                        <!-- 撤回表單 -->
+                        <span class="langStr" data-id="str_222"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- 時數登入(已逾期) -->
+            <div id="overtimeNoEnter">
+                <div class="not-apply-submit-btn">
+                    <div id="canNotEnter">
+                        <!-- 已逾期，無法登入 -->
+                        <span class="langStr" data-id="str_220"></span>
+                    </div>
+                </div>
+                <div class="apply-preview-remove">
+                    <div class="withdrawRefuseOT">
+                        <img src="img/withdraw.png">&nbsp;
+                        <!-- 撤回表單 -->
+                        <span class="langStr" data-id="str_222"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 加班單詳情(actualTotalhours > 0) -->
+        <div class="actualot-query-detail-sign">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span id="otApplyDate">2017-02-08</span>
+                </div>
+                <div>
+                    <!-- 加班單號 -->
+                    <span class="langStr" data-id="str_217"></span>
+                    <span id="otFormNo">572000</span>
+                </div>
+            </div>
+            <div class="leave-detail-state">
+                <div></div>
+                <div>
+                    <div>
+                        <div class="font-style11">
+                            <!-- 表單狀況 -->
+                            <span class="langStr" data-id="str_218"></span>
+                        </div>
+                        <div class="font-style3">
+                            <span id="otStatus">
+                                <!-- 表單簽核中 -->
+                                <span class="langStr" data-id="str_147"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="img/info.png" class="leave-detail-img" id="signOTDetail">
+                    </div>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 原訂區間 -->
+                    <span class="langStr" data-id="str_223"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="originalOTPeriod">2017-02-08</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 原訂時數 -->
+                    <span class="langStr" data-id="str_224"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="originalTotalHours">0</span>
+                    <!-- 小時 -->
+                    <span class="langStr" data-id="str_088"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班原因 -->
+                    <span class="langStr" data-id="str_204"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="otApplyReason"></span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 實際區間 -->
+                    <span class="langStr" data-id="str_225"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="actualOTPeriod">2017-02-08</span>
+                </div>
+            </div>
+            <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 實際時數 -->
+                    <span class="langStr" data-id="str_226"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="actualTotalHours">0</span>
+                    <!-- 小時 -->
+                    <span class="langStr" data-id="str_088"></span>
+                </div>
+            </div>
+             <div class="preview-apply-categroy">
+                <div></div>
+                <div class="font-style11">
+                    <!-- 加班選擇 -->
+                    <span class="langStr" data-id="str_227"></span>
+                </div>
+                <div class="font-style3">
+                    <span id="overtimePaid"></span>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div2"></div>
+            <!-- 撤回 -->
+            <div class="apply-submit-btn" id="overtimeWithdrawActualOT">
+                <div id="withdrawActualOTBtn">
+                    <!-- 撤回 -->
+                    <span class="langStr" data-id="str_143"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 撤回申请（签核中） -->
+        <div class="leave-query-withdraw">
+            <div class="leave-detail-date font-style12">
+                <div>
+                    <!--申請日期-->
+                    <span class="langStr" data-id="str_080"></span>
+                    <span id="withdrawOTApplyDate">2017-02-08</span>
+                </div>
+                <div>
+                    <!-- 加班單號 -->
+                    <span class="langStr" data-id="str_209"></span>
+                    <span id="withdrawOTFormNo">572000</span>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div1"></div>
+            <!-- withdraw-reason textarea -->
+            <div class="apply-leave-reason">
+                <div class="font-style11">
+                    <!-- 撤回理由 -->
+                    <span class="langStr" data-id="str_132"></span>
+                </div>
+                <div>
+                    <textarea data-role="none" id="withdrawOTReason" class="reason-textarea"></textarea>
+                </div>
+            </div>
+            <!-- empty div -->
+            <div class="apply-empty-div2"></div>
+            <!-- apply btn -->
+            <div class="apply-preview-btn">
+                <div id="withdrawOTBtnWhenSigning">
+                    <!-- 確認撤回 -->
+                    <span class="langStr" data-id="str_143"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- sign popup -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup signOTStateFlow" for="signOTStateFlow" id="signOTStateFlow">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <ul class="leave-flow-ul">
+
+                </ul>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm withdraw -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmWithdrawOT" for="confirmWithdrawOT" id="confirmWithdrawOT">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!-- 確定撤回？ -->
+                        <span class="langStr" data-id="str_146"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmWithdrawOTBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm delete -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmDeleteOT" for="confirmDeleteOT" id="confirmDeleteOT">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!-- 確定刪除？ -->
+                        <span class="langStr" data-id="str_155"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style3"> <br> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmDeleteOvertime">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- error msg N行 -->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup overtimeErrorMsg" for="overtimeErrorMsg" id="overtimeErrorMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main" style="margin-left:5.36vw;margin-right:5.36vw;">
+                    <span class='header-icon'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text"></span>
+                </div>
+            </div>
+            <div class="main">
+                <!-- <p class="main-paragraph font-style3"></p> -->
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

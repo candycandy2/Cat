@@ -6,11 +6,13 @@ var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallL
     sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
 var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recallLeaveCancelFormQueryData, deleteLeaveCancelFormQueryData,
     backLeaveFormLeaveDetailQueryData;
+var queryEmployeeOvertimeApplyFormQueryData, overtimeApplyFormDetailQueryData, recallOvertimeApplyFormQueryData;
+var sendApplyOvertimeQueryData, updateOvertimeQueryData, countOvertimeHoursByEndQueryData; 
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin", "viewOvertimeSubmit"];
+var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin", "viewOvertimeSubmit", "viewOvertimeQuery"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
 var htmlContent = "";
@@ -20,6 +22,9 @@ var rejectedStr; //"已拒絕";
 var notSignStr; //"未簽核";
 var editLeaveForm = false;
 var viewPersonalLeaveShow = false;
+var viewAcutalOTApplyShow = false;
+var viewEditOTApplyShow = false;
+var changePageFromSubmitToDetail = false;
 
 var time = new Date(Date.now());
 var lastDateOfMonth = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
@@ -176,6 +181,22 @@ function onBackKeyDown() {
         $("#backToList").click();
     } else if ($("#backToSign").css("display") == "inline") {
         $("#backToSign").click();
+    } else if ($("#backClockin").css("display") == "inline") {
+        $("#backClockin").click();
+    } else if ($("#backOvertime").css("display") == "inline") {
+        $("#backOvertime").click();
+    } else if ($("#backOTQueryDetail").css("display") == "inline") {
+        $("#backOTQueryDetail").click();
+    } else if ($("#backActualOTApply").css("display") == "inline") {
+        $("#backActualOTApply").click();
+    } else if ($("#backOTDetailList").css("display") == "inline") {
+        $("#backOTDetailList").click();
+    } else if ($("#backSignOTList").css("display") == "inline") {
+        $("#backSignOTList").click();
+    } else if ($("#backActualOTDetailList").css("display") == "inline") {
+        $("#backActualOTDetailList").click();
+    } else if ($("#backActualSignOTList").css("display") == "inline") {
+        $("#backActualSignOTList").click();
     } else if (visitedPageList.length == 1) {
         navigator.app.exitApp();
     } else {
@@ -343,6 +364,20 @@ function leaveListToDetail(btn1, btn2, btn3, state) {
     $("#" + btn3).hide();
 }
 
+//加班單列表到詳情
+function overtimeListToDetail(btn1, btn2, btn3, btn4, state) {
+    $("#viewOvertimeQuery .leaveMenu").hide();
+    $(".leave-query-main").hide();
+    if (state == null) {
+        $("#" + btn1).hide();
+    } else {
+        $("#" + btn1).show();
+    }
+    $("#" + btn2).hide();
+    $("#" + btn3).hide();
+    $("#" + btn4).hide();
+}
+
 //获取签核流程（请假单和销假单共用）
 function getSignFlow(arr, serial, empname, yn, date, remark) {
     for (var i = 0; i < serial.length; i++) {
@@ -480,9 +515,11 @@ function startMainPage() {
     if (hasClockinOTPanel) {
         $("#mypanelviewClockin").show();
         $("#mypanelviewOvertimeSubmit").show();
+        $("#mypanelviewOvertimeQuery").show();
     } else {
         $("#mypanelviewClockin").hide();
         $("#mypanelviewOvertimeSubmit").hide();
+        $("#mypanelviewOvertimeQuery").hide();
     }
     if (!viewPersonalLeaveShow  && defaultSettingDone) {
         //个人剩余假别资讯

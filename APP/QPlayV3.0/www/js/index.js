@@ -23,13 +23,21 @@ var messagecontent,
     callGetMessageList = false,
     messagePageShow = false,
     delMsgActive = false,
+    widgetUpdateMsg = false,
+    listUpdateMsg = false,
     msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 
 //viewMain3
+var carouselFinish = false,
+    weatherFinish = false,
+    reserveFinish = false,
+    messageFinish = false,
+    applistFinish = false,
+    addAppToList = true;
 
 //viewAppList
-var favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
-var alreadyDownloadList = [],
+var favoriteList = null,
+    alreadyDownloadList = [],
     notDownloadList = [],
     tempVersionArrData,
     tempVersionData;
@@ -40,19 +48,17 @@ var reserveCalendar = null,
     reserveDirty = false;
 
 //viewMessageList
-var messageFrom;
+var messageFrom = 'viewMain3';
 
 //viewVersionRecord
 var versionFrom = true;
 
-//viewGeneralSetting
-var generalSetting = {
-    'en-us': ['Weather', 'My Reserver', 'My QPlay', 'Latest News'],
-    'zh-cn': ['天气', '我的预约', '我的QPlay', '最新消息'],
-    'zh-tw': ['天氣', '我的預約', '我的QPlay', '最新消息']
-}
-
 window.initialSuccess = function (data) {
+    //1. widgetlist
+    checkWidgetListOrder();
+    //2. favorite app
+    checkFavoriteInstall();
+
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -103,79 +109,80 @@ window.initialSuccess = function (data) {
     //For test
     //var unregisterTest = new unregister();
 
-    //general setting
-    getGeneralSetting();
 }
 
+//检查widgetlist顺序
+function checkWidgetListOrder() {
+    window.localStorage.removeItem('generalSetting');
+    window.localStorage.removeItem('updateGeneral');
 
-//获取一般设定
-function getGeneralSetting() {
-    //hard code
-    window.localStorage.removeItem('defaultSetting');
+    //1. time stamp
+    var lastModified = window.localStorage.getItem('widgetLastModified');
+    var timeStamp = new Date(widgetLastModified).getTime();     //Server widget.js
+    var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
 
-    var settingArr = JSON.parse(window.localStorage.getItem('generalSetting'));
-    var updateTime = window.localStorage.getItem('updateGeneral');
-
-    if (settingArr == null) {
-        window.localStorage.setItem('generalSetting', JSON.stringify(generalSetting));
-        window.localStorage.setItem('updateGeneral', new Date().toISOString());
+    if (lastModified == null) {
+        window.localStorage.setItem('widgetLastModified', timeStamp);
+        window.localStorage.setItem('widgetList', JSON.stringify(widgetList));
 
     } else {
-        var limitSeconds = 7;   //7 day
-        if (checkDataExpired(updateTime, limitSeconds, 'dd')) {
+        //2. update
+        if (parseInt(lastModified) < timeStamp) {
+            //3. compare
+            for (var i = 0; i < widgetList.length; i++) {
+                var found = false;
+                var obj = {};
+                for (var j = 0; j < widgetArr.length; j++) {
+                    //4. merge or push
+                    if (widgetList[i].id == widgetArr[j].id) {
+                        found = true;
+                        obj = $.extend({}, widgetArr[j], widgetList[i]);
+                        break;
+                    }
+                }
 
-            //同步，且已generalSetting为主，local为辅
-            for (var i in generalSetting) {
-                var arr = compareArrayByFirst(generalSetting[i], settingArr[i]);
-                settingArr[i] = arr;
+                if (found) {
+                    widgetArr.splice(j, 1, obj);
+                } else {
+                    widgetArr.push(widgetList[i]);
+                }
             }
 
-            window.localStorage.setItem('generalSetting', JSON.stringify(settingArr));
-            window.localStorage.setItem('updateGeneral', new Date().toISOString());
+            window.localStorage.setItem('widgetLastModified', timeStamp);
+            window.localStorage.setItem('widgetList', JSON.stringify(widgetArr));
+
+        }
+    }
+
+}
+
+//检查最爱列表里的app是否安装
+function checkFavoriteInstall() {
+    favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
+
+    if (favoriteList !== null) {
+        for (var i in favoriteList) {
+            var packageName = favoriteList[i].package_name;
+            var index = favoriteList[i].app_code;
+            checkAllAppInstalled(favoriteCallback, packageName, index);
         }
     }
 }
 
-
-//比较2个数组，以第一个数组为准
-function compareArrayByFirst(arr1, arr2) {
-    //add
-    for (var i = 0; i < arr1.length; i++) {
-        var current = arr1[i];
-        var status = false;
-        for (var j = 0; j < arr2.length; j++) {
-            var tag = arr2[j];
-            if (current == tag) {
-                status = true;
+//未安装表示卸载，不应出现在最爱列表当中
+function favoriteCallback(download, appcode) {
+    if (!download) {
+        for (var i in favoriteList) {
+            if (appcode == favoriteList[i].app_code) {
+                favoriteList.splice(i, 1);
+                localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
                 break;
             }
         }
-        if (!status) {
-            arr2.push(current);
-        }
     }
-
-    //remove
-    var arr = [];
-    for (var i = 0; i < arr2.length; i++) {
-        var current = arr2[i];
-        var status = false;
-        for (var j = 0; j < arr1.length; j++) {
-            var tag = arr1[j];
-            if (current == tag) {
-                status = true;
-                break;
-            }
-        }
-        if (!status) {
-            arr2.splice(i, 1);
-            i--;
-        }
-    }
-    
-    return arr2;
 }
 
+//获取所有预约
 function getMyReserve(key, secret) {
     var self = this;
     var today = new Date();
@@ -281,7 +288,7 @@ function getMyReserve(key, secret) {
     };
 
     var __construct = function () {
-        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 3600, "low");
+        CustomAPIByKey("POST", false, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 15, "low");
     }();
 }
 
@@ -398,12 +405,13 @@ function openNewMessage() {
     //Before open Message Detail Data, update Message List
     if (window.localStorage.getItem("msgDateFrom") === null) {
         //$.mobile.changePage('#viewNewsEvents2-3');
-        checkAppPage('viewMessageList');
+        //checkAppPage('viewMessageList');
     } else {
         var messageList = new QueryMessageList();
     }
 }
 
+//获取版本记录
 function getAppVersion(packageName, versionCode) {
     var self = this;
     var queryStr = "&package_name=" + packageName + "&device_type=" + loginData.deviceType + "&version_code=" + versionCode;
@@ -739,7 +747,12 @@ function getVersionRecord(key) {
             //set height
             var contentHeight = $('.version-scroll > div').height();
             var headerHeight = $('#viewVersionRecord .page-header').height();
-            var totalHeight = (contentHeight + headerHeight).toString();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (contentHeight + headerHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (contentHeight + headerHeight).toString();
+            }
             $(".version-scroll > div").css('height', totalHeight + 'px');
 
         }
@@ -753,105 +766,24 @@ function getVersionRecord(key) {
     }();
 }
 
-
-//检查APP-page
-function checkAppPage(pageID) {
-    var appStatus = false;
-
-    for (var i in pageList) {
-        if (pageID == pageList[i]) {
-            appStatus = true;
-            break;
-        }
-    }
-
-    if (appStatus) {
-        $.mobile.changePage('#' + pageID);
-    } else {
-        $.get('View/' + pageID + '.html', function (data) {
-            $.mobile.pageContainer.append(data);
-            $('#' + pageID).page().enhanceWithin();
-
-            //Show Water Mark
-            //According to the data [waterMarkPageList] which set in index.js
-            if (!(typeof waterMarkPageList === 'undefined')) {
-                if (waterMarkPageList.indexOf(pageID) !== -1) {
-                    $('#' + pageID).css('background-color', 'transparent');
-                }
-            }
-
-            setTimeout(function () {
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.src = 'js/' + pageID + '.js';
-                document.head.appendChild(script);
-
-                $.mobile.changePage('#' + pageID);
-                $('#' + pageID).on('pagebeforeshow', pageBeforeShow(pageID));
-                pageList.push(pageID);
-            }, 200);
-
-        }, 'html');
-    }
-}
-
 function pageBeforeShow(pageID) {
     if (pageID == 'viewAppSetting') {
 
+    } if (pageID == 'viewAppList') {
+        appListPageBeforShow();
     }
 }
 
-function QStorageAPI(requestType, requestAction, successCallback, failCallback, queryData, queryStr) {
-    //API [checkAppVersion] [getSecurityList]
-    //even though these 2 API were from QPlay, the API path is [/public/v101/qplay/],
-    //but, when other APP call these 2 API,
-    //need to set the specific [App-Key] and [appSecretKey] by the APP, not by QPlay.
-
-    //queryStr: start with [&], ex: &account=test&pwd=123
-
-    failCallback = failCallback || null;
-    queryData = queryData || null;
-    queryStr = queryStr || "";
-
-    function requestSuccess(data) {
-        checkTokenValid(data['result_code'], data['token_valid'], successCallback, data);
-
-        var dataArr = [
-            "Call API",
-            requestAction,
-            data['result_code']
-        ];
-        LogFile.createAndWriteFile(dataArr);
+function appListPageBeforShow() {
+    if (addAppToList && alreadyDownloadList.length == 0) {
+        $('#viewAppList .q-btn-header img').attr('src', 'img/close.png');
+        $('.app-no-download').show();
+        $('.app-scroll').hide();
+    } else {
+        $('#viewAppList .q-btn-header img').attr('src', 'img/component/back_nav.png');
+        $('.app-scroll').show();
+        $('.app-no-download').hide();
     }
-
-    // review
-    function requestError(data) {
-        errorHandler(data, requestAction);
-        if (failCallback) {
-            failCallback();
-        }
-    }
-
-    var signatureTime = getSignature("getTime");
-    var signatureInBase64 = getSignature("getInBase64", signatureTime);
-
-    $.ajax({
-        type: requestType,
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'App-Key': appKey,
-            'Signature-Time': signatureTime,
-            'Signature': signatureInBase64,
-            'Account': loginData["emp_no"]
-        },
-        url: serverURL + "/qstorage/public/v101/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
-        dataType: "json",
-        data: queryData,
-        cache: false,
-        timeout: 30000,
-        success: requestSuccess,
-        error: requestError
-    });
 }
 
 //[Android]Handle the back button
@@ -864,9 +796,9 @@ function onBackKeyDown() {
         } else {
             navigator.app.exitApp();
         }
-    } else if (activePageID === "viewMain3" || activePageID === "viewAppDetail2-2") {
+    } else if (activePageID === "viewAppDetail2-2") {
         if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
-            $.mobile.changePage('#viewMain3');
+            checkAppPage('viewAppList');
         } else {
             $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
         }
@@ -877,12 +809,23 @@ function onBackKeyDown() {
             $.mobile.changePage('#viewMain3');
         }
     } else if (activePageID === "viewWebNews2-3-1") {
-        //goBack("goList");
         if (messageFrom == 'viewMain3') {
             $.mobile.changePage('#viewMain3');
         } else if (messageFrom == 'viewMessageList') {
             //$.mobile.changePage('#viewMessageList');
             checkAppPage('viewMessageList');
+        } else {
+            $.mobile.changePage('#viewMain3');
+        }
+    } else if (activePageID === "viewAppList" || activePageID === "viewAppSetting" || activePageID === "viewFAQ" || activePageID === "viewMessageList" || activePageID === "viewMyCalendar") {
+        checkAppPage('viewMain3');
+    } else if (activePageID === "viewMyEvaluation" || activePageID === "viewGeneralSetting") {
+        checkAppPage('viewAppSetting');
+    } else if (activePageID === "viewVersionRecord") {
+        if (versionFrom) {
+            checkAppPage('viewAppSetting');
+        } else {
+            checkAppPage('viewAppDetail2-2');
         }
     } else if (activePageID === "viewNotSignedIn") {
         navigator.app.exitApp();

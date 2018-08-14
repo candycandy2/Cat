@@ -128,13 +128,6 @@
     margin: 0;
 }
 
-#weather {
-    font-size: 4vw;
-    padding: 1em; 
-    margin-top: 5vw; 
-    margin-bottom: -12vw;
-}
-
 /*----------------------new class----------------------*/
 
 .initialMain {
@@ -248,22 +241,6 @@ input[type=radio]:checked + label {
     width: 100%;
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
-}
-
-.app-list-item {
-    width: 25vw;
-    float: left;
-    margin-right: 3.7vw;
-}
-
-.app-list-name {
-    color: #0F0F0F;
-    font-size: 2.4vh;
-    margin: 0;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .appDetailIcon {
@@ -413,8 +390,8 @@ input[type=radio]:checked + label {
 .detail-description-open {
     position: relative;
     width: 10%;
-    top: -2.6vh;
-    left: 88%;
+    top: -2.7vh;
+    left: 89%;
     background-color: #FFF;
     margin-bottom: -2.6vh;
 }
@@ -422,7 +399,7 @@ input[type=radio]:checked + label {
 .detail-description-open-btn {
     background: url(../img/more_btn.png) no-repeat;
     background-size: 10vw;
-    height: 3.5vh;
+    height: 3.6vh;
     width: 10vw;
     font-size: 2.3vh;
     color: #5C5C5C;
@@ -919,54 +896,51 @@ input[type=radio]:checked + label {
     position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
+    background: #edecec;
     -webkit-overflow-scrolling: touch;
 }
 
-.carouselWidget {
-    width: 100vw;
-    height: 45vw;
+#widgetList > div {
     background: #FFFFFF;
-    margin-bottom: 2vw;
+    margin-bottom: 2.4vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+/* .carouselWidget {
+    width: 100vw;
+    height: 50vw;
 }
 
 .weatherWidget {
     width: 100vw;
     height: 30vw;
-    background: #FFFFFF;
-    margin-bottom: 2vw;
 }
 
 .reserveWidget {
     width: 100vw;
-    height: 60vw;
-    background: #FFFFFF;
-    margin-bottom: 2vw;
+    min-height: 40vw;
 }
 
 .messageWidget {
     width: 100vw;
     min-height: 25vw;
-    background: #FFFFFF;
-    margin-bottom: 2vw;
 }
 
 .applistWidget {
     width: 100vw;
-    height: 33vw;
-    background: #FFFFFF;
-    margin-bottom: 2vw;
-}
+    height: 38vw;
+} */
 
 .other-link {
     width: 100vw;
-    height: 62.5vw;
+    height: 78vw;
     background: #FFFFFF;
 }
 
 .other-link > div {
     width: 90vw;
-    height: 15vw;
-    padding: 3vw 5vw;
+    height: 13.04vw;
+    padding: 6.24vw 3.71vw 6.24vw 5.92vw;
     border-bottom: 1px solid #d6d6d6;
     /* border-bottom: 1px solid #bdbcbc; */
 }
@@ -980,21 +954,17 @@ input[type=radio]:checked + label {
 }
 
 .other-link > div > div:nth-of-type(1) {
-    width: 20vw;
-    height: 15vw;
+    width: 16vw;
+    height: 100%;
 }
 
 .other-link > div > div:nth-of-type(2) {
-    width: 65vw;
-    height: 15vw;
-}
-
-.other-link > div > div:nth-of-type(2) > div {
-    height: 7vw;
+    width: 69vw;
+    height: 100%;
 }
 
 .other-link > div > div:nth-of-type(2) > div:nth-of-type(1) {
-    line-height: 8vw;
+    padding: 1.78vw 0 0.78vw;
     color: #233138;
     font-weight: bold;
     font-size: 3.55vw !important;
@@ -1008,9 +978,16 @@ input[type=radio]:checked + label {
 
 .other-link > div > div:nth-of-type(3) {
     width: 5vw;
-    height: 15vw;
+    height: 100%;
 }
 
+.icon-img {
+    width: 13.04vw;
+}
+
+.icon-next {
+    margin-top: 4.5vw;
+}
 
 /*************************** viewAppList ********************************/
 #viewAppList .ui-content {
@@ -1024,6 +1001,18 @@ input[type=radio]:checked + label {
     overflow-y: scroll;
     /* overflow-x: hidden; */
     -webkit-overflow-scrolling: touch;
+}
+
+.app-no-download {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;  
+    text-align: center;
+    padding-top: 35vh;
+    background: #EDECEC;
+    color: #8fa4ac;
+    font-size: 4.18vw;
+    display: none;
 }
 
 .download-title {
@@ -1079,21 +1068,24 @@ input[type=radio]:checked + label {
     height: 100%;
 }
 
-.download-name > div {
-    width: 100%;
-    overflow: -webkit-paged-x;
-}
-
 .download-name > div:nth-of-type(1) {
-    height: 5.92vw;
-    /* color: #323232; */
-    display: table-cell;   
-    vertical-align: bottom;
+    width: 100%;
+    height: 7vw;
+    /* color: #323232;
+    display: table-cell;  
+    vertical-align: bottom; */
+    line-height: 7vw;
 }
 
 .download-name > div:nth-of-type(2) {
+    width: 95%;
     height: 5.92vw;
-    /* color: #0f0f0f; */
+    /* overflow: -webkit-paged-x;
+    word-break: break-all;
+    color: #0f0f0f; */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .download-list > div:nth-of-type(1) img {
@@ -1203,6 +1195,7 @@ input[type=radio]:checked + label {
     height: 100vw;
     margin-top: 40vw;
     overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 #reserveContent {
@@ -1295,7 +1288,7 @@ input[type=radio]:checked + label {
 
 .message-scroll {
     width: 100%;
-    height: 600px;
+    height: 100vh;
     position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -1309,6 +1302,15 @@ input[type=radio]:checked + label {
     font-size: 3vw;
 }
 
+.icon-style {
+    width: 6vw;
+}
+
+.icon-margin {
+    width: 6vw;
+    margin-left: 3.3vw;
+}
+
 .dropdown-news {
     width: 3vw;
     vertical-align: top;
@@ -1316,7 +1318,7 @@ input[type=radio]:checked + label {
     margin-left: 2vw;
 }
 
-.select-news {
+.select-type {
     position: fixed;
     top: 0;
     left: 0;
@@ -1326,7 +1328,7 @@ input[type=radio]:checked + label {
     z-index: 1;
 }
 
-.select-news > div {
+.select-type > div {
     width: 100%;
     height: 11.47vw;
     color: #263238;
@@ -1337,12 +1339,12 @@ input[type=radio]:checked + label {
     background: #f9f9f9;
 }
 
-.select-news > div:hover {
+.select-type > div:hover {
     color: #f9f9f9 !important;
     background: #503e7f !important;
 }
 
-.msg-tool {
+.handle-msg {
     width: 92.58vw;
     height: 11.27vw;
     line-height: 11.27VW;
@@ -1353,22 +1355,20 @@ input[type=radio]:checked + label {
     z-index: 1;
 }
 
-.msg-tool-blank {
+.fill-handle-blank {
     width: 100vw;
     height: 11.27vw;
     display: none;
 }
 
-.news-select-btn,
-.event-select-btn {
+.msg-select {
     float: left;
     width: 30vw;
     color: #263238;
     font-size: 4.18vw;
 }
 
-.news-readed-btn,
-.event-readed-btn {
+.msg-readed {
     float: right;
     width: 30vw;
     color: #8fa4ac;
@@ -1376,8 +1376,7 @@ input[type=radio]:checked + label {
     text-align: right;
 }
 
-.news-delete-btn,
-.event-delete-btn {
+.msg-delete {
     float: right;
     width: 17.5vw;
     color: #8fa4ac;
@@ -1391,6 +1390,11 @@ input[type=radio]:checked + label {
     margin: 0;
     padding: 0;
 }
+
+/* .news-content ul.ui-listview > li,
+.event-content ul.ui-listview > li {
+    border-bottom: 1px solid #d6d6d6 !important;
+} */
 
 .news-content ul.ui-listview > li:last-of-type > a,
 .event-content ul.ui-listview > li:last-of-type > a {
@@ -1451,7 +1455,7 @@ input[type=radio]:checked + label {
 }
 
 .ui-div {
-    border: none !important;
+    border-top: none !important;
     padding: 3.36vw 3.71vw 3.27vw !important;
     background-color: #FFFFFF !important;
     border-bottom: 1px solid #d6d6d6 !important;
@@ -1463,7 +1467,8 @@ input[type=radio]:checked + label {
 	height: 100%;
 	position: absolute;
 	top: 0;
-	right: 0;
+    right: 0;
+    /* border-bottom: 1px solid #d6d6d6; */
 }
 
 .behind a.ui-btn {
@@ -1633,7 +1638,7 @@ input[type=radio]:checked + label {
     left: 36vw;
     background-color: #666;
     border-radius: 1.5px;
-    color: #F0F0F0;
+    color: #F0F0F0 !important;
     font-size: 3.6VW;
     text-align: center;
     z-index: 2;
@@ -1682,8 +1687,17 @@ input[type=radio]:checked + label {
     color: #4274BA;
 }
 
-/***************************** viewDefaultSetting ********************************/
-#viewDefaultSetting .ui-content {
+.confirmLogout .ui-content>.header {
+    padding: 0 5.36vw;
+    margin-top: 10vw;
+}
+
+.confirmLogout .ui-content>.footer {
+    margin-top: 10%;
+}
+
+/***************************** viewGeneralSetting ********************************/
+#viewGeneralSetting .ui-content {
     padding: 0 !important;
 }
 
@@ -1720,6 +1734,10 @@ input[type=radio]:checked + label {
     padding-top: 4vw; 
 }
 
+.show {
+    display: block;
+}
+
 /***************************** viewMyEvaluation ********************************/
 #viewMyEvaluation .ui-content {
     padding: 0 !important;
@@ -1737,6 +1755,8 @@ input[type=radio]:checked + label {
     height: 12vw;
     padding-left: 3.71vw;
     line-height: 15vw;
+    color: #0f0f0f;
+    font-size: 3.349vw;
 }
 
 .comment-text {
@@ -1749,6 +1769,8 @@ input[type=radio]:checked + label {
     width: 92.58vw;
     height: 73vh !important;
     margin-left: 3.71vw;
+    color: #263238 !important;
+    font-size: 4.18vw !important;
     border: 0;
     border-radius: 3px;
     outline: none;
