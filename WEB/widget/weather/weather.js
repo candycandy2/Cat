@@ -4,7 +4,6 @@
     function createContent() {
         $.get(serverURL + "/widget/weather/weather.html", function (data) {
             $('.' + widgetItem).html('').append(data);
-            weatherFinish = true;
             setWeatherData();
 
         }, "html");
