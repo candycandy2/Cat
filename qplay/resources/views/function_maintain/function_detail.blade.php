@@ -160,6 +160,7 @@ $menu_name = "FUNCTION_MAINTAIN";
         $('#ddlQAccountRightLevel option[value="' + qAccounRightLevel + '"]').attr("selected",true);
         $('#ddlUserSetting option[value="' + defSetting + '"]').attr("selected",true);
         $('#ddlFunctionStatus option[value="' + functionStatus + '"]').attr("selected",true);
+        $('#ddlOwnerApp option[value="' + ownerAppId + '"]').attr("selected",true);
         $("#ddlUserSetting").bind( "change",switchUserSetting);
         $("#ddlFunctionType").bind( "change", switchAppName);
         $("#ddlQAccountUse").bind( "change", switchQAccountRightLevel);
