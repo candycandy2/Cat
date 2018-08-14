@@ -432,6 +432,8 @@ return [
     'FUNCTION_TYPE' => 'Function Type',
     'FUNCTION_VARIABLE_NAME' => 'Variable Name',
     'FUNCTION_DESCRIPTION' => 'Description',
+    'QACCOUNT_AVAILABLE' => 'QAccount Available',
+    'RIGHT_LEVEL' => 'Right Level',
     'ERR_FUNCTION_VARIABLE_EXIST' =>'function variable already exist!',
     'ERR_CREATE_FUNCTION_FAILED' => 'Create Function Failed!',
     'ERR_UPDATE_FUNCTION_FAILED' => 'Update Function Failed!'

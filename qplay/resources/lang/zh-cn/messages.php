@@ -430,6 +430,8 @@ return [
     'FUNCTION_TYPE' => '功能类型',
     'FUNCTION_VARIABLE_NAME' => '功能变数名称',
     'FUNCTION_DESCRIPTION' => '功能描述',
+    'QACCOUNT_AVAILABLE' => 'QAccount使用权限',
+    'RIGHT_LEVEL' => '权限等级',
     'ERR_FUNCTION_VARIABLE_EXIST' =>'功能变数名称已经存在!',
     'ERR_CREATE_FUNCTION_FAILED' => '新增功能失败!',
     'ERR_UPDATE_FUNCTION_FAILED' => '更新功能失败!'

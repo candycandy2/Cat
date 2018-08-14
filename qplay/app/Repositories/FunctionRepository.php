@@ -31,16 +31,49 @@ class FunctionRepository
             -> get();
     }
 
-    public function getFunctionDatal(){
-        
+    /**
+     * Get Specific function detail
+     * @param  int $functionId qp_function.row_id
+     * @return mixed
+     */
+    public function getFunctionDetail($functionId){
+        return  $this->function
+            -> select()
+            -> where('row_id', $functionId)
+            -> first();
     }
 
-    public function newFunctionData(){
-        
-    }
+    /**
+     * Update Function
+     * @return save() result
+     */
+    public function updateFunction($request,  $auth){
 
-    public function editFunctionData(){
+        $function = $this->function->find($request['function_id']);
+        $function->variable_name = $request['tbxFunctionVariable'];
+        $function->description = $request['tbxFunctionDescription'];
+        $function->owner_app_row_id = $request['ddlOwnerApp'];
         
+        $function->qaccount_use = $request['ddlQAccountUse'];
+        if(isset($request['ddlQAccountRightLevel'])){
+            $function->qaccount_right_level = $request['ddlQAccountRightLevel'];
+        }
+        
+        $function->type = $request['ddlFunctionType'];
+        if(isset($request['ddlApp'])){
+            $function->app_row_id = $request['ddlApp'];
+        }
+
+        $companyLabel = null;
+        if(isset($request['companyList'])){
+            $companyLabel = implode(';', $request['companyList']);
+        }
+        $function->company_label = $companyLabel;
+        $function->status = $request['ddlFunctionStatus'];
+        $function->updated_user = $auth::user()->row_id;
+        $function->updated_at = date('Y-m-d H:i:s',time());
+
+        return $function->save();
     }
 
     /**
@@ -62,20 +95,28 @@ class FunctionRepository
     public function createFunction($request,  $auth)
     {   
 
-        $this->function->name = $request['funName'];
-        $this->function->variable_name = $request['funVariable'];
-        $this->function->description = $request['funDescription'];
-        $this->function->owner_app_row_id = $request['ownerApp'];
-        $this->function->type = $request['funType'];
-        if(isset($request['app'])){
-            $this->function->app_row_id = $request['app'];
+        $this->function->name = $request['tbxFunctionName'];
+        $this->function->variable_name = $request['tbxFunctionVariable'];
+        $this->function->description = $request['tbxFunctionDescription'];
+        $this->function->owner_app_row_id = $request['ddlOwnerApp'];
+        $this->function->type = $request['ddlFunctionType'];
+        if(isset($request['ddlApp'])){
+            $this->function->app_row_id = $request['ddlApp'];
         }
-        $this->function->status = $request['funStatus'];
+        $this->function->status = $request['ddlFunctionStatus'];
         $this->function->created_user = $auth::user()->row_id;
         $this->function->created_at = date('Y-m-d H:i:s',time());
 
         return $this->function->save();
     }
 
-
+    /**
+     * Cear Function Label
+     * @return save() result
+     */
+    public function clearCompanyLabel($functionId){
+        $function = $this->function->find($functionId);
+        $function->company_label = null;
+        return $function->save();
+    }
 }
