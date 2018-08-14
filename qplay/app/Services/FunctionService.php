@@ -1,7 +1,7 @@
 <?php
 /**
- * Company Maintain - Service
- * @author  Darren.K.Ti darren.k.ti@benq.com
+ * Function Maintain - Service
+ * @author  Cleo.W.Chan cleo.w.chan@benq.com
  */
 namespace App\Services;
 
@@ -46,19 +46,27 @@ class FunctionService
         $dataList = [];
         $functionList = $this->functionRepository->getFunctionList();
         foreach ($functionList as $function) {
-             $data['row_id'] = $function->row_id;
-             $data['fun_name'] = $function->name;
-             $data['fun_type'] = $function->type;
-             $data['fun_status'] = $function->status;
-             $data['fun_variable'] = $function->variable_name;
+
+             $data['row_id']    = $function->row_id;
+             $data['fun_name']  = $function->name;
+             $data['fun_type']  = $function->type;
+             $data['fun_status']    = $function->status;
+             $data['fun_variable']  = $function->variable_name;
+
+             // get owner app name 
              $ownerAppData = $this->appRepository->getAppBasicIfnoByAppId($function->owner_app_row_id);
              $data['owner_app_name'] = $ownerAppData->app_name;
              $data['fun_app'] = null;
+
              if(!is_null($function->app_row_id)){
+
+                // get app name 
                 $funAppData = $this->appRepository->getAppBasicIfnoByAppId($function->app_row_id);
                 $data['fun_app'] = $funAppData->app_name;
+
              }
              $dataList[] = $data;
+
         }
         return $dataList;
     }
@@ -68,6 +76,7 @@ class FunctionService
     * @return true / false
     */
     public function checkFunctionVariableExist($funVariable){
+
         $result = $this->functionRepository->getFunctionByVariable($funVariable);
         if(is_null($result)){
             return false;
@@ -98,21 +107,34 @@ class FunctionService
             $this->functionRepository->updateFunction($request,  $auth);
             
             if(!isset($request['companyList']) || count($request['companyList']) == 0){
-                //by User Role
+                
+                //set function auth by qp_role_function, qp_user_function
+                //set qp_function company_label null
+                
                 $this->functionRepository->clearCompanyLabel($functionId);
 
                 if(isset($request['roleList'])){
-                $this->roleFunctionRepository->deleteRoleFunctionById($functionId);
-                $this->roleFunctionRepository->saveRoleFunction($functionId, $request['roleList'],  $auth);
+                    //delete all auth, then insert new setting
+                    
+                    $this->roleFunctionRepository->deleteRoleFunctionById($functionId);
+                    $this->roleFunctionRepository->saveRoleFunction($functionId, $request['roleList'],  $auth);
                 }
+
                 if(isset($request['userList'])){
+                    //delete all auth, then insert new setting
+                    
                     $this->userFunctionRepository->deleteUserFunctionById($functionId);
                     $this->userFunctionRepository->saveUserFunction($functionId, $request['userList'],  $auth);   
+                
                 }
-            }else{
-                //by Company
+
+            }else{ 
+                //set function auth by qp_function company_label
+                //delete data from qp_role_function and qp_user_function
+                 
                 $this->roleFunctionRepository->deleteRoleFunctionById($functionId);
                 $this->userFunctionRepository->deleteUserFunctionById($functionId);
+            
             }
 
         \DB::commit();
@@ -125,15 +147,19 @@ class FunctionService
     }
 
     /**
-     * Get Function detail information
-     * @param  int $functionId [description]
+     * Select data from qp_user and arrange data to show 
+     * @param  int $functionId qp_function.row_id
      * @return array
      */
     public function getFunctionDetail($functionId){
+
         $data = $this->functionRepository->getFunctionDetail($functionId)->toArray();
+
         $ownerAppData = $this->appRepository->getAppBasicIfnoByAppId($data['owner_app_row_id']);
+
         $data['owner_app_name'] = $ownerAppData->app_name;
         $data['fun_app'] = null;
+
         if(!is_null($data['app_row_id'])){
             $funAppData = $this->appRepository->getAppBasicIfnoByAppId($data['app_row_id']);
             $data['fun_app'] = $funAppData->app_name;
@@ -160,6 +186,8 @@ class FunctionService
      * @return mixed
      */
     public function getUserFunctionList($functionId){
+
         return $this->userFunctionRepository->getUserByFunctionId($functionId);
+    
     }
 }

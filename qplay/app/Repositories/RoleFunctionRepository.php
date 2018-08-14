@@ -10,8 +10,9 @@ use DB;
 
 class RoleFunctionRepository
 {
-    /** @var User Inject QP_User model */
-    protected $function;
+    /** @var rolefunction Inject QP_Role_Function model */
+    protected $rolefunction;
+
     /**
      * UserRepository constructor.
      * @param QP_Role_Function $rolefunction
@@ -41,16 +42,19 @@ class RoleFunctionRepository
         $insertArray = array();
         $now = date('Y-m-d H:i:s',time());
         foreach ($roleList as $role) {
+
             $data = array(
-                    'function_row_id'=>$functionId,
-                    'role_row_id'=>$role,
-                    'created_user'=>$auth::user()->row_id,
-                    'updated_user'=>$auth::user()->row_id,
-                    'created_at'=>$now,
-                    'updated_at'=>$now
+                    'function_row_id'   => $functionId,
+                    'role_row_id'       => $role,
+                    'created_user'      => $auth::user()->row_id,
+                    'updated_user'      => $auth::user()->row_id,
+                    'created_at'        => $now,
+                    'updated_at'        => $now
                 );
             $insertArray[]=$data;
+
         }
+
         return $this->rolefunction->insert($insertArray);
     }
 
@@ -60,6 +64,9 @@ class RoleFunctionRepository
      * @return mixed
      */
     public function getRoleByFunctionId($functionId){
-        return $this->rolefunction->where('function_row_id', $functionId)->select('role_row_id')->get();
+        return $this->rolefunction
+                    -> where('function_row_id', $functionId)
+                    -> select('role_row_id')
+                    -> get();
     }
 }

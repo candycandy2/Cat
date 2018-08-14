@@ -44,26 +44,35 @@ class FunctionRepository
     }
 
     /**
-     * Update Function
+     * Update data to qp_function
      * @return save() result
      */
     public function updateFunction($request,  $auth){
 
+        //get the function by id,then set the value to update
         $function = $this->function->find($request['function_id']);
+
         $function->variable_name = $request['tbxFunctionVariable'];
         $function->description = $request['tbxFunctionDescription'];
         $function->owner_app_row_id = $request['ddlOwnerApp'];
         
+        //if request contains QAccount right level, then set the right level data
         $function->qaccount_use = $request['ddlQAccountUse'];
         if(isset($request['ddlQAccountRightLevel'])){
+            
             $function->qaccount_right_level = $request['ddlQAccountRightLevel'];
+        
         }
         
+        //if request contains app name, then set the app_row_id
         $function->type = $request['ddlFunctionType'];
         if(isset($request['ddlApp'])){
+            
             $function->app_row_id = $request['ddlApp'];
+        
         }
 
+        // if is set company label, update the value, else update to null
         $companyLabel = null;
         if(isset($request['companyList'])){
             $companyLabel = implode(';', $request['companyList']);
@@ -77,7 +86,7 @@ class FunctionRepository
     }
 
     /**
-    * Check if Function has exist
+    * Check if qp_function variable_name already exist
     * @param  $funVariable function variable name
     * @return mixed
     */
@@ -89,7 +98,7 @@ class FunctionRepository
     }
 
     /**
-    * Create Function
+    * Insert data to qp_function
     * @return save() result
     */
     public function createFunction($request,  $auth)
@@ -111,7 +120,7 @@ class FunctionRepository
     }
 
     /**
-     * Cear Function Label
+     * Remove company_label from qp_function
      * @return save() result
      */
     public function clearCompanyLabel($functionId){
