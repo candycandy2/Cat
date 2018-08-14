@@ -23,9 +23,8 @@
            data-click-to-select="false" data-single-select="false">
         <thead>
         <tr>
-            <th data-field="state" data-checkbox="true"></th>
             <th data-field="fun_name" data-sortable="true" data-formatter="functionNameFormatter">{{trans("messages.FUNCTION_NAME")}}</th>
-            <th data-field="fun_variable" data-sortable="true">{{trans("messages.FUNCTION_VARIABLE_NAME")}}</th>
+            <th data-field="fun_variable" data-sortable="true" data-formatter="functionVariableFormatter">{{trans("messages.FUNCTION_VARIABLE_NAME")}}</th>
             <th data-field="owner_app_name" data-sortable="true">{{trans("messages.OWNER_APP")}}</th>
             <th data-field="fun_type" data-sortable="true">{{trans("messages.FUNCTION_TYPE")}}</th>
             <th data-field="fun_app" data-sortable="true">{{trans("messages.APP_NAME")}}</th>
@@ -67,8 +66,12 @@
         });
 
         function functionNameFormatter(value, row) {
-            return '<a href="#" onclick="updateFunction(' + row.row_id + ')">' + htmlEscape(value) + '</a>';
+            return '<a href="#" onclick="editFunction(' + row.row_id + ')">' + htmlEscape(value) + '</a>';
         };
+
+        function functionVariableFormatter(value, row){
+            return htmlEscape(value);
+        }
 
         function functionStatusFormatter(value, row) {
             if (value == "Y") {
@@ -105,50 +108,24 @@
 
         };
 
-        var updateFunction = function(functionID) {
-
-            var allFunctionList = $gridList.bootstrapTable('getData');
-
-            $.each(allFunctionList, function(i, fun) {
-                if (fun.row_id == functionID) {
-                    
-                    $("#tbxFunctionName").val(fun.fun_name);
-                    $("#ddlApp").val(fun.fun_app);
-                    $("#tbxFunctionVariable").val(fun.login_type);
-                    $("#tbxFunctionDescription").val(fun.server_ip);
-                    $("#tbxOwnerApp").val(fun.server_port);
-                    $("#ddlFunctionStatus").val(fun.status);
-
-                    return false;
-                }
-            });
-
-            currentMaintainFunctionID = FunctionID;
-            isNewFunction = false;
-
-            $("#functionDetailMaintainDialogTitle").text("{{trans("messages.FUNCTION_EDIT_DATA")}}");
-            $("#functionDetailMaintainDialog").modal('show');
-
+        var editFunction = function(functionID) {
+            location.href = "{{asset('functionMaintain/editFunction')}}" + "?function_id=" + functionID;
         };
 
         var functionMaintain = function() {
-
-            var funName = $.trim($("#tbxFunctionName").val());
-            var funVariable = $.trim($("#tbxFunctionVariable").val());
-            var funDescription = $.trim($("#tbxFunctionDescription").val());
-            var ownerApp = $.trim($("#ddlOwnerApp").val());
-            var funType = $.trim($("#ddlFunctionType").val());
-            var app = $.trim($("#ddlApp").val());
-            var funStatus = $.trim($("#ddlFunctionStatus").val());
-            
+            var myData = getFormData($("form"));
             //Check Data Empty
-            if (funName.length == 0 || funVariable.length == 0 || funDescription.length == 0 
-                || ownerApp.length == 0  || funType.length == 0 || funStatus.length == 0 ) {
+            if (myData.tbxFunctionName.length == 0 
+                || myData.tbxFunctionVariable.length == 0 
+                || myData.tbxFunctionDescription.length == 0 
+                || myData.ddlOwnerApp.length == 0  
+                || myData.ddlFunctionType.length == 0 
+                || myData.ddlFunctionStatus.length == 0 ) {
                 showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                 return false;
             }
-            if(funType == 'APP'){
-                if(app.length == 0){
+            if(myData.ddlFunctionType == 'APP'){
+                if(myData.ddlApp.length == 0){
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                     return false;
                 }
@@ -157,130 +134,55 @@
             var currentData = $gridList.bootstrapTable('getData');
             var duplicate = false;
 
-            //Check Data has Exist
-            if (isNewFunction) {
-                $.each(currentData, function(i, fun) {
-                    if (funVariable == fun.fun_variable) {
-                        duplicate = true;
-                        return false;
-                    }
-                });
-            }
+            $.each(currentData, function(i, fun) {
+                if ( myData.tbxFunctionVariable == fun.fun_variable) {
+                    duplicate = true;
+                    return false;
+                }
+            });
             if (duplicate) {
                 showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.ERR_FUNCTION_VARIABLE_EXIST")}}");
                 return false;
             }
-            //Call API
-            if (isNewFunction) {
 
-                showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
-                    hideConfirmDialog();
-                    var mydata = {
-                        funName: funName,
-                        funVariable: funVariable,
-                        funDescription: funDescription,
-                        ownerApp: ownerApp,
-                        funType: funType,
-                        app: app,
-                        funStatus: funStatus
-                    };
+            showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
+                hideConfirmDialog();
+                $.ajax({
+                    url: "functionMaintain/newFunction",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: $.toJSON(myData),
+                    success: function (d, status, xhr) {
 
-                    $.ajax({
-                        url: "functionMaintain/newFunction",
-                        dataType: "json",
-                        type: "POST",
-                        contentType: "application/json",
-                        data: $.toJSON(mydata),
-                        success: function (d, status, xhr) {
+                        if (d.result_code != 1) {
+                            
+                            //Error
+                            showMessageDialog("{{trans("messages.ERROR")}}", d.message);
+                            return false; 
 
-                            if (d.result_code != 1) {
-                                
-                                //Error
-                                showMessageDialog("{{trans("messages.ERROR")}}", d.message);
-                                return false; 
+                        } else {
 
-                            } else {
+                            //Success
+                            $("#gridFunctionList").bootstrapTable('refresh');
+                            $("#functionDetailMaintainDialog").modal('hide');
 
-                                //Success
-                                $("#gridFunctionList").bootstrapTable('refresh');
-                                $("#functionDetailMaintainDialog").modal('hide');
-
-                                showMessageDialog("{{trans("messages.MESSAGE")}}", "{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                            }
-
-                        },
-                        error: function (e) {
-
-                            if (handleAJAXError(this,e)) {
-                                return false;
-                            }
-
-                            showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.ERR_CREATE_FUNCTION_FAILED")}}", 
-                                e.responseText);
-
+                            showMessageDialog("{{trans("messages.MESSAGE")}}", "{{trans("messages.MSG_OPERATION_SUCCESS")}}");
                         }
-                    });
-                });
 
-            } else if (!isNewFunction) {
+                    },
+                    error: function (e) {
 
-                showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
-
-                    hideConfirmDialog();
-
-                    var mydata = {
-                        funName: funName,
-                        funVariable: funVariable,
-                        funDescription: funDescription,
-                        ownerApp: ownerApp,
-                        funType: funType,
-                        app: app,
-                        funStatus: funStatus
-                    };
-
-                    $.ajax({
-                        url: "functionMaintain/updateFunction",
-                        dataType: "json",
-                        type: "POST",
-                        contentType: "application/json",
-                        data: $.toJSON(mydata),
-                        success: function (d, status, xhr) {
-
-                            if (d.result_code != 1) {
-
-                                //Error
-                                if (d.result_code == {{ResultCode::_000920_companyExist}}) {
-                                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.FUN_ERR_DATA_HAS_EXIST")}}");
-                                    return false;
-                                } else {
-                                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.ERR_UPDATE_FUNCTION_FAILED")}}");
-                                }
-
-                            } else {
-
-                                //Success
-                                $("#gridFunctionList").bootstrapTable('refresh');
-                                $("#functionDetailMaintainDialog").modal('hide');
-
-                                showMessageDialog("{{trans("messages.MESSAGE")}}", "{{trans("messages.MSG_OPERATION_SUCCESS")}}");
-                            }
-
-                        },
-                        error: function (e) {
-
-                            if (handleAJAXError(this,e)) {
-                                return false;
-                            }
-
-                            showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.FUN_ERR_CREATE_FUN_FAILED")}}", 
-                                e.responseText);
-
+                        if (handleAJAXError(this,e)) {
+                            return false;
                         }
-                    });
+
+                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.ERR_CREATE_FUNCTION_FAILED")}}", 
+                            e.responseText);
+
+                    }
                 });
-
-            }
-
+            });
         }
 
     </script>
@@ -296,74 +198,76 @@
                     <h1 class="modal-title" id="functionDetailMaintainDialogTitle"></h1>
                 </div>
                 <div class="modal-body">
-                    <table  width="100%">
-                        <tr>
-                            <td>{{trans("messages.FUNCTION_NAME")}}:</td>
-                            <td style="padding: 10px;">
-                                <input type="text" data-clear-btn="true" class="form-control" name="tbxFunctionName" id="tbxFunctionName">
-                            </td>
-                            <td><span style="color: red;">*</span></td>
-                        </tr>
-                        <tr>
-                            <td>{{trans("messages.FUNCTION_VARIABLE_NAME")}}:</td>
-                            <td style="padding: 10px;">
-                                 <input type="text" data-clear-btn="true" class="form-control" name="tbxFunctionVariable" id="tbxFunctionVariable">
-                            </td>
-                            <td><span style="color: red;">*</span></td>
-                        </tr>
-                        <tr>
-                            <td>{{trans("messages.FUNCTION_DESCRIPTION")}}:</td>
-                            <td style="padding: 10px;">
-                                  <textarea data-clear-btn="true" class="form-control" name="tbxFunctionDescription"
-                               id="tbxFunctionDescription" value="" style="height: 100px;"/></textarea>
-                            </td>
-                            <td><span style="color: red;">*</span></td>
-                        </tr>
-                        <tr>
-                            <td>{{trans("messages.OWNER_APP")}}:</td>
-                            <td style="padding: 10px;">
-                                 <select name="ddlOwnerApp" id="ddlOwnerApp" class="form-control" required="required">
-                                    <option value=""></option>
-                                    @foreach ($appList as $app)
-                                        <option value="{{ $app['row_id'] }}">{{ $app['app_name'] }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td><span style="color: red;">*</span></td>
-                        </tr>
-                        <tr>
-                            <td>{{trans("messages.FUNCTION_TYPE")}}:</td>
-                            <td style="padding: 10px;">
-                                <select name="ddlFunctionType" id="ddlFunctionType" class="form-control" required="required">
-                                    <option value="FUN">FUN</option>
-                                    <option value="APP">APP</option>
-                                </select>
-                            </td>
-                            <td><span style="color: red;">*</span></td>
-                        </tr>
-                        <tr class="toogle-app-type">
-                            <td>{{trans("messages.APP_NAME")}}:</td>
-                            <td style="padding: 10px;">
-                                <select name="ddlApp" id="ddlApp" class="form-control" required="required">
-                                    <option value=""></option>
-                                    @foreach ($appList as $app)
-                                        <option value="{{ $app['row_id'] }}">{{ $app['app_name'] }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td><span style="color: red;">*</span></td>
-                        </tr>
-                        <tr>
-                            <td>{{trans("messages.STATUS")}}:</td>
-                            <td style="padding: 10px;">
-                                <select name="ddlFunctionStatus" id="ddlFunctionStatus" class="form-control" required="required">
-                                    <option value="Y">{{trans("messages.ENABLE")}}</option>
-                                    <option value="N">{{trans("messages.DISABLE")}}</option>
-                                </select>
-                            </td>
-                            <td><span style="color: red;">*</span></td>
-                        </tr>
-                    </table>
+                    <form>
+                        <table  width="100%">
+                            <tr>
+                                <td>{{trans("messages.FUNCTION_NAME")}}:</td>
+                                <td style="padding: 10px;">
+                                    <input type="text" data-clear-btn="true" class="form-control" name="tbxFunctionName" id="tbxFunctionName">
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans("messages.FUNCTION_VARIABLE_NAME")}}:</td>
+                                <td style="padding: 10px;">
+                                     <input type="text" data-clear-btn="true" class="form-control" name="tbxFunctionVariable" id="tbxFunctionVariable">
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans("messages.FUNCTION_DESCRIPTION")}}:</td>
+                                <td style="padding: 10px;">
+                                      <textarea data-clear-btn="true" class="form-control" name="tbxFunctionDescription"
+                                   id="tbxFunctionDescription" value="" style="height: 100px;"/></textarea>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans("messages.OWNER_APP")}}:</td>
+                                <td style="padding: 10px;">
+                                     <select name="ddlOwnerApp" id="ddlOwnerApp" class="form-control" required="required">
+                                        <option value=""></option>
+                                        @foreach ($appList as $app)
+                                            <option value="{{ $app['row_id'] }}">{{ $app['app_name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans("messages.FUNCTION_TYPE")}}:</td>
+                                <td style="padding: 10px;">
+                                    <select name="ddlFunctionType" id="ddlFunctionType" class="form-control" required="required">
+                                        <option value="FUN">FUN</option>
+                                        <option value="APP">APP</option>
+                                    </select>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr class="toogle-app-type">
+                                <td>{{trans("messages.APP_NAME")}}:</td>
+                                <td style="padding: 10px;">
+                                    <select name="ddlApp" id="ddlApp" class="form-control" required="required">
+                                        <option value=""></option>
+                                        @foreach ($appList as $app)
+                                            <option value="{{ $app['row_id'] }}">{{ $app['app_name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans("messages.STATUS")}}:</td>
+                                <td style="padding: 10px;">
+                                    <select name="ddlFunctionStatus" id="ddlFunctionStatus" class="form-control" required="required">
+                                        <option value="Y">{{trans("messages.ENABLE")}}</option>
+                                        <option value="N">{{trans("messages.DISABLE")}}</option>
+                                    </select>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button"  class="btn btn-danger" onclick="functionMaintain()">{{trans("messages.SAVE")}}</button>
