@@ -156,46 +156,6 @@ function checkWidgetListOrder() {
     }
 }
 
-function setWidgetListToLocal() {
-    //1. time stamp
-    var lastModified = window.localStorage.getItem('widgetLastModified');
-    var timeStamp = new Date(widgetLastModified).getTime();     //Server widget.js
-    var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
-
-    if (lastModified == null) {
-        window.localStorage.setItem('widgetLastModified', timeStamp);
-        window.localStorage.setItem('widgetList', JSON.stringify(widgetList));
-
-    } else {
-        //2. update
-        if (parseInt(lastModified) < timeStamp) {
-            //3. compare
-            for (var i = 0; i < widgetList.length; i++) {
-                var found = false;
-                var obj = {};
-                for (var j = 0; j < widgetArr.length; j++) {
-                    //4. merge or push
-                    if (widgetList[i].id == widgetArr[j].id) {
-                        found = true;
-                        obj = $.extend({}, widgetArr[j], widgetList[i]);
-                        break;
-                    }
-                }
-
-                if (found) {
-                    widgetArr.splice(j, 1, obj);
-                } else {
-                    widgetArr.push(widgetList[i]);
-                }
-            }
-
-            window.localStorage.setItem('widgetLastModified', timeStamp);
-            window.localStorage.setItem('widgetList', JSON.stringify(widgetArr));
-
-        }
-    }
-}
-
 //检查最爱列表里的app是否安装
 function checkFavoriteInstall() {
     favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
