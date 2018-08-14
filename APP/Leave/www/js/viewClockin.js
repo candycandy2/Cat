@@ -145,7 +145,7 @@ $("#viewClockin").pagecontainer({
 
         $("#viewClockin").on("pageshow", function(event, ui) {
             $('#applyClockinDay').text(applyDay);
-            $('#previewApplyDay').text(applyDay);
+            $('#previewClockinApplyDay').text(applyDay);
             loadingMask("hide");
         });
 
@@ -233,29 +233,11 @@ $("#viewClockin").pagecontainer({
             checkClockinBeforePreview();
         });
 
-        /*$('#newClockinTime').datetimepicker({
-            datepicker: false
-        });*/
-
-         //選擇刷卡時間
-        $("#selectClockintime").on("click", function() {
-            //datetime-local
-            //$('#newClockinTime').datetimepicker('show');
-            //$("#newClockinTime").click();
-            //$("#timepicker").siblings().trigger('click');
-            $("#timepicker").trigger('datebox', { 'method': 'open' });
-            tplJS.preventPageScroll();
+        //選擇刷卡時間
+        $("#selectClockintime").on("click", function() {           
+            $("#timepicker").trigger('datebox', { 'method': 'open' });  
+            tplJS.preventPageScroll();        
         });
-
-        /*$("#timepicker").on("change", function() {
-            clockintime = ($(this).val()).substring(11, 16);
-            if (clockintime === "") {
-                $("#chooseClockintime").text(pleaseSelectStr);
-            } else {
-                $("#chooseClockintime").text(clockintime);
-            }
-            checkClockinBeforePreview();
-        });*/
 
         window.setDoneTime = function(obj) {
             if (!obj.cancelClose) {
