@@ -3,7 +3,7 @@
 
     function createContent() {
         $.get(serverURL + "/widget/weather/weather.html", function (data) {
-            $('.' + widgetItem).append(data);
+            $('.' + widgetItem).html('').append(data);
             weatherFinish = true;
             setWeatherData();
 
@@ -37,7 +37,7 @@
             $(".loca-city").text(city);
             $(".loca-region").text(region);
             $(".loca-text").text(wea);
-            $('.weather-img').append(img);
+            $('.weather-img').html('').append(img);
         });
     }
 

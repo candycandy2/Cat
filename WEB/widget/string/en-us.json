@@ -25,7 +25,7 @@
   },
   {
     "term": "wgt_004",
-    "definition": "My QPlay",
+    "definition": "Latest News",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -33,7 +33,15 @@
   },
   {
     "term": "wgt_005",
-    "definition": "Latest News",
+    "definition": "My QPlay",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_006",
+    "definition": "QPay",
     "context": "",
     "term_plural": "",
     "reference": "",

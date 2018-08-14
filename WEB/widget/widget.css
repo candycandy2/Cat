@@ -1,7 +1,7 @@
 /******************** carousel ********************/
 .carousel-widget {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 50vw;
 }
 
 .carousel-widget img {
@@ -11,8 +11,8 @@
 
 /******************** weather ********************/
 .weather-widget {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 30vw;
 }
 
 .weather-widget > div {
@@ -66,8 +66,8 @@
 
 /******************** reserve ********************/
 .reserve-widget {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    min-height: 40vw;
 }
 
 .personal-info {
@@ -177,10 +177,49 @@
     font-size: 3.768vw !important;
 }
 
+/******************** message ********************/
+.message-widget {
+    width: 100vw;
+    min-height: 25vw;
+}
+
+.widget-msg-list {
+    padding: 3.28vw 3.71vw 3.28vw 5.92vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.widget-msg-list:last-of-type {
+    border: none;
+}
+
+.widget-msg-time {
+    padding-bottom: 1vw;
+    color: #8fa4ad;
+    font-size: 3.14vw !important;
+}
+
+.widget-msg-title {
+    width: 100%;
+    height: 9vw;
+    color: #253137;
+    font-size: 3.768vw !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.widget-none-msg {
+    height: 20vw;
+    line-height: 20vw;
+    padding-left: 5vw;
+}
+
 /******************** applist ********************/
 .applist-widget {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 38vw;
 }
 
 .applist-widget > .applist-title {
@@ -221,36 +260,8 @@
     text-overflow: ellipsis;
 }
 
-/******************** message ********************/
-.widget-msg-list {
-    padding: 3.28vw 3.71vw 3.28vw 5.92vw;
-    border-bottom: 1px solid #d6d6d6;
-}
-
-.widget-msg-list:last-of-type {
-    border: none;
-}
-
-.widget-msg-time {
-    padding-bottom: 1vw;
-    color: #8fa4ad;
-    font-size: 3.14vw !important;
-}
-
-.widget-msg-title {
-    width: 100%;
-    height: 9vw;
-    color: #253137;
-    font-size: 3.768vw !important;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-}
-
-.widget-none-msg {
+/******************** qpay ********************/
+.qpay-widget {
+    width: 100vw;
     height: 20vw;
-    line-height: 20vw;
-    padding-left: 5vw;
 }

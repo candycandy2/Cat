@@ -439,7 +439,7 @@ $("#viewOvertimeQuery").pagecontainer({
         });
 
         //時數登入中的撤回表單按鈕——click
-        $(".editRefuseOT").on("click", function() {
+        $(".withdrawRefuseOT").on("click", function() {
             $(".leave-query-detail-sign").hide();
             $("#backOTDetailList").hide();
             $(".leave-query-withdraw").show();
@@ -452,6 +452,13 @@ $("#viewOvertimeQuery").pagecontainer({
             $("#backActualOTDetailList").hide();
             $(".leave-query-withdraw").show();
             $("#backActualSignOTList").show();
+        });
+
+        //編輯按鈕——click
+        $("#editRefuseOT").on("click", function() {
+            $("#backOTDetailList").click();
+            viewEditOTApplyShow = true;
+            changePageByPanel("viewOvertimeSubmit");
         });
 
         //從撤回返回詳情
@@ -522,7 +529,7 @@ $("#viewOvertimeQuery").pagecontainer({
         });
 
         $("#enterActualOT").on("click", function() {
-            viewAcutalOTApplyShow = true;            
+            viewAcutalOTApplyShow = true;   
             changePageByPanel("viewOvertimeSubmit");
         });   
 
