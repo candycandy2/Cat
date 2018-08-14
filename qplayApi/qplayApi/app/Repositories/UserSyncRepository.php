@@ -3,7 +3,9 @@
 namespace App\Repositories;
 
 use App\Model\QP_User_Sync;
+use App\Model\QP_EHR_User;
 use DB;
+use Config;
 
 class UserSyncRepository
 {
@@ -69,6 +71,95 @@ class UserSyncRepository
                     ->where('qp_user_sync.active','N')
                     ->join('qp_user', 'qp_user_sync.emp_no', '=', 'qp_user.emp_no')
                     ->select('qp_user.row_id as user_row_id')->get();
+    }
+
+    /**
+     * Get data from `qp_ehr_user` where active=Y
+     * @return array
+     */
+    public function getEHRActiveUser()
+    {
+        $result = DB::connection('mysql_dev')
+                    -> table('qp_ehr_user')
+                    -> where('active', '=', 'Y')
+                    -> get();
+        $result = array_map(function ($value) {
+            return (array) $value;
+        }, $result);
+
+        return $result;
+    }
+
+    /**
+     * Get all data from `qp_ehr_user`
+     * @return array
+     */
+    public function getEHRAllUser()
+    {
+        $result = DB::connection('mysql_dev')
+                    -> table('qp_ehr_user')
+                    -> get();
+        $result = array_map(function ($value) {
+            return (array) $value;
+        }, $result);
+
+        return $result;
+    }
+
+    /**
+     * Get all emp_no from `qp_user`
+     * @return array
+     */
+    public function getAllEmpNumber()
+    {
+        $result = DB::connection('mysql_'.Config::get('app.env'))
+                    -> table('qp_user')
+                    -> select('emp_no')
+                    -> get();
+        $result = array_map(function ($value) {
+            return (array) $value;
+        }, $result);
+
+        return $result;
+    }
+
+    /**
+     * Insert Data Into `qp_user` from `qp_ehr_user`
+     * @return Insert row_id
+     */
+    public function insertUserFromEHR($data)
+    {
+        return DB::connection('mysql_'.Config::get('app.env'))
+                 -> table("qp_user")
+                 -> insertGetId($data);
+    }
+
+    /**
+     * Update Data in `qp_user` from `qp_ehr_user`
+     */
+    public function updateUserFromEHR($empNO, $data)
+    {
+        DB::connection('mysql_'.Config::get('app.env'))
+          -> table("qp_user")
+          -> where("emp_no", "=", $empNO)
+          -> update($data);
+    }
+
+    /**
+     * Get data from `qp_user` by emp_no array
+     * @return array
+     */
+    public function getUserByEmpNO($empNOArray)
+    {
+        $result = DB::connection('mysql_'.Config::get('app.env'))
+                    -> table('qp_user')
+                    -> whereIn('emp_no', $empNOArray)
+                    -> get();
+        $result = array_map(function ($value) {
+            return (array) $value;
+        }, $result);
+
+        return $result;
     }
 
 }
