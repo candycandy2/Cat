@@ -68,7 +68,7 @@ $("#viewMain3").pagecontainer({
                 }
             }
 
-            //2. check element count
+            //3. check element count
             var checkWidgetFinish = setInterval(function () {
                 var childrenLength = $('#widgetList').children('div').length;
                 if (enabledLength == childrenLength) {
