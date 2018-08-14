@@ -78,6 +78,14 @@ class syncUserController extends Controller
                 Log::info('Delete File: '.$fileName);
            }
         }
+
+        //eHR Data Sync - 1. INSERT Data Into `qp_user` from `qp_ehr_user` which emp_no not exist in `qp_user`
+
+        $this->syncUserService->insertFromQPeHRUser();
+
+        //eHR Data Sync - 2. UPDATE Data in `qp_user` from `qp_ehr_user`, ignore the Data which was just INSERT.
+        $this->syncUserService->updateFromQPeHRUser();
+
         Log::info('[Data Information]');
         //2. insert new company
         $companyRole = $this->roleService->addNewCompany();
