@@ -42,6 +42,7 @@ $menu_name = "FUNCTION_MAINTAIN";
                         <td>{{trans("messages.OWNER_APP")}}:</td>
                         <td style="padding: 10px;">
                         <select name="ddlOwnerApp" id="ddlOwnerApp" class="form-control" required="required">
+                            <option value=""></option>
                             @foreach ($appList as $app)
                                 <option value="{{ $app['row_id'] }}">{{ $app['app_name'] }}</option>
                             @endforeach
@@ -63,6 +64,7 @@ $menu_name = "FUNCTION_MAINTAIN";
                         <td>{{trans("messages.APP_NAME")}}:</td>
                         <td style="padding: 10px;">
                         <select name="ddlApp" id="ddlApp" class="form-control" required="required">
+                            <option value=""></option>
                             @foreach ($appList as $app)
                                 <option value="{{ $app['row_id'] }}">{{ $app['app_name'] }}</option>
                             @endforeach
@@ -150,6 +152,7 @@ $menu_name = "FUNCTION_MAINTAIN";
         var functionType = '{{$functionData['type']}}';
         var functionStatus = '{{$functionData['status']}}';
         var roleList = '{{$functionData['roleList']}}';
+        var appId = '{{$functionData['app_row_id']}}';
 
         var defSetting = byCompany;//default is by role
         if(companyLabel == null || companyLabel ==""){
@@ -161,6 +164,8 @@ $menu_name = "FUNCTION_MAINTAIN";
         $('#ddlUserSetting option[value="' + defSetting + '"]').attr("selected",true);
         $('#ddlFunctionStatus option[value="' + functionStatus + '"]').attr("selected",true);
         $('#ddlOwnerApp option[value="' + ownerAppId + '"]').attr("selected",true);
+        $('#ddlApp option[value="' + appId + '"]').attr("selected",true);
+        
         $("#ddlUserSetting").bind( "change",switchUserSetting);
         $("#ddlFunctionType").bind( "change", switchAppName);
         $("#ddlQAccountUse").bind( "change", switchQAccountRightLevel);
