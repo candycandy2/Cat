@@ -108,7 +108,10 @@ class FunctionService
         
         \DB::beginTransaction();
         try {
-
+            // if function type = 'FUN', set app_row_id = null
+            if($request['ddlFunctionType'] == 'FUN'){
+                $request['ddlApp'] = null;
+            }
             $functionId = $request['function_id'];
             $this->functionRepository->updateFunction($request,  $auth);
             
@@ -128,7 +131,7 @@ class FunctionService
 
                 if(isset($request['userList'])){
                     //delete all auth, then insert new setting
-                    
+        
                     $this->userFunctionRepository->deleteUserFunctionById($functionId);
                     $this->userFunctionRepository->saveUserFunction($functionId, $request['userList'],  $auth);   
                 
