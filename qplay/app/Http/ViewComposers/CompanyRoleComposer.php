@@ -7,7 +7,7 @@ use App\lib\CommonUtil;
 class CompanyRoleComposer
 {
     /**
-     * 將資料綁定到視圖。
+     * bind data to view
      *
      * @param  View  $view
      * @return void
