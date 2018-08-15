@@ -2,7 +2,6 @@ var workingday = "", clockinday = "", clockintime = "";
 var workNameVal = "", otherReason = "";
 var clockinWorkType= "", clockinReasonType = "";
 var doneDateTime = {};
-var activePageListID;
 
 var workTypeData = {
     id: "work-type-popup",
