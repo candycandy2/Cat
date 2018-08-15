@@ -2,6 +2,7 @@ var workingday = "", clockinday = "", clockintime = "";
 var workNameVal = "", otherReason = "";
 var clockinWorkType= "", clockinReasonType = "";
 var doneDateTime = {};
+var activePageListID;
 
 var workTypeData = {
     id: "work-type-popup",
@@ -93,7 +94,7 @@ function getReasonType() {
 }
 
 $("#viewClockin").pagecontainer({
-    create: function(event, ui) {
+    create: function(event, ui) { 
 
         /********************************** function *************************************/
         //補登申请送签
@@ -144,6 +145,7 @@ $("#viewClockin").pagecontainer({
         });
 
         $("#viewClockin").on("pageshow", function(event, ui) {
+            activePageListID = visitedPageList[visitedPageList.length - 1];
             $('#applyClockinDay').text(applyDay);
             $('#previewClockinApplyDay').text(applyDay);
             loadingMask("hide");
@@ -234,9 +236,12 @@ $("#viewClockin").pagecontainer({
         });
 
         //選擇刷卡時間
-        $("#selectClockintime").on("click", function() {           
+        $("#selectClockintime").on("click", function() {          
             $("#timepicker").trigger('datebox', { 'method': 'open' });  
-            tplJS.preventPageScroll();        
+            tplJS.preventPageScroll(); 
+            $("#" + activePageListID + ".ui-page").css({
+                'position': 'fixed'
+            });       
         });
 
         window.setDoneTime = function(obj) {
@@ -253,6 +258,9 @@ $("#viewClockin").pagecontainer({
 
             } 
             tplJS.recoveryPageScroll();
+            $("#" + activePageListID + ".ui-page").css({
+                'position': ''
+            });     
 
             $(".ui-datebox-container").css("opacity", "0");
             checkClockinBeforePreview();
