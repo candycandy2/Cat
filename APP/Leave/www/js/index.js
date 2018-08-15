@@ -48,6 +48,7 @@ var recordStartText = "";
 var defaultSettingDone = false;
 var reload = false;
 var hasAgentPanel, hasClockinOTPanel = false;
+var activePageListID;
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];

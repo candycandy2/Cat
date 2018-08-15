@@ -227,6 +227,7 @@ $("#viewOvertimeSubmit").pagecontainer({
         });
 
         $("#viewOvertimeSubmit").on("pageshow", function(event, ui) {
+            activePageListID = visitedPageList[visitedPageList.length - 1];
             $('#applyOTDay').text(applyDay);
             $('#previewApplyDate').text(applyDay);
             //從編輯加班單按鈕跳轉
@@ -315,6 +316,9 @@ $("#viewOvertimeSubmit").pagecontainer({
             } else {
                 $("#startOTPicker").trigger('datebox', { 'method': 'open' });
                 tplJS.preventPageScroll();
+                $("#" + activePageListID + ".ui-page").css({
+                    'position': 'fixed'
+                });       
             }           
         });
 
@@ -326,6 +330,9 @@ $("#viewOvertimeSubmit").pagecontainer({
             } else {
                 $("#endOTPicker").trigger('datebox', { 'method': 'open' });
                 tplJS.preventPageScroll();
+                $("#" + activePageListID + ".ui-page").css({
+                    'position': 'fixed'
+                });       
             }
 
         });
@@ -347,6 +354,9 @@ $("#viewOvertimeSubmit").pagecontainer({
                 endottime = "";
             } 
             tplJS.recoveryPageScroll();
+            $("#" + activePageListID + ".ui-page").css({
+                'position': ''
+            });     
 
             $(".ui-datebox-container").css("opacity", "0");
             if (!viewAcutalOTApplyShow) {
@@ -401,6 +411,9 @@ $("#viewOvertimeSubmit").pagecontainer({
                 }                             
             } 
             tplJS.recoveryPageScroll();
+            $("#" + activePageListID + ".ui-page").css({
+                'position': ''
+            });  
             $(".ui-datebox-container").css("opacity", "0");
         };
 
