@@ -339,10 +339,23 @@
                     $selectCompany.attr('selected', true);
                     $("#ddlCompany-button > span").text($selectCompany.text());
 
-                    //set login_type in default
-                    $("#ddlLoginType option[value='none']").attr("selected", true);
+                    //set login_type by localStorage or by default
+                    if (window.localStorage.getItem("loginType") !== null){
+                        if (window.localStorage.getItem("loginType") === "AD") {
+                            $logintTypeVal = "AD";
+                            $loginTypeImdex = 1;
+                        } else {
+                            $logintTypeVal = "QAccount";
+                            $loginTypeImdex = 2;
+                        }
+                    } else {
+                        $logintTypeVal = "none";
+                        $loginTypeImdex = 0;
+                    }
+
+                    $("#ddlLoginType option[value='" + $logintTypeVal + "']").attr("selected", true);
                     setTimeout(function() {
-                        $("#ddlLoginType-button > span").text($("#ddlLoginType option:eq(0)").text());
+                        $("#ddlLoginType-button > span").text($("#ddlLoginType option:eq(" + $loginTypeImdex + ")").text());
                     }, 500);
                 } else {
                     $("#loginTypeData").hide();
@@ -504,7 +517,7 @@
                 success: function (d, status, xhr) {
                     HideLoading();
                     if(d.result_code && d.result_code == 1) {
-                        saveLoginInfo(loginId, domain);
+                        saveLoginInfo(loginId, domain, loginType);
                         LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
                                 + '"uuid" : "' + d.content.uuid + '", '
                                 + '"redirect-uri" : "' + d.content.redirect_uri + '", '
@@ -567,7 +580,7 @@
                 success: function (d, status, xhr) {
                     HideLoading();
                     if(d.result_code && d.result_code == 1) {
-                        saveLoginInfo(loginId, domain);
+                        saveLoginInfo(loginId, domain, loginType);
                         LoginMsg = '{"token_valid" : "' +  d.token_valid + '", '
                                 + '"uuid" : "' + d.content.uuid + '", '
                                 + '"redirect-uri" : "' + d.content.redirect_uri + '", '
@@ -629,13 +642,16 @@
             }(),
         }
 
-        var saveLoginInfo = function(userName, company){
+        var saveLoginInfo = function(userName, company, loginType){
             if(window.localStorage){
                 if(window.localStorage.getItem("userName") === null|| window.localStorage.getItem("userName") != userName){
                     window.localStorage.setItem("userName", userName);            
                 }
                 if(window.localStorage.getItem("company") === null || window.localStorage.getItem("company") != company){
                     window.localStorage.setItem("company", company);
+                }
+                if(window.localStorage.getItem("loginType") === null || window.localStorage.getItem("loginType") != loginType){
+                    window.localStorage.setItem("loginType", loginType);
                 }
             }
         }
