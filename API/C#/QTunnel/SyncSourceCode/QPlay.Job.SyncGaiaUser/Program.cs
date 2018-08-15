@@ -5,50 +5,79 @@ using System.IO;
 using System.Diagnostics;
 using log4net;
 using ITS.Common.Excel;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace QPlay.Job.SyncGaiaUser
 {
     public class Program
     {
-        static DbSession dbGaia;
         static ILog log = LogManager.GetLogger("Logger");
         static void Main(string[] args)
         {
-            Init();
-            string fileName = GenerateFile();
+            DataTable dt = Init();
+            string fileName = GenerateFile(dt);
             GenerateGPGFile(fileName);
         }
         /// <summary>
         /// 初始化
         /// </summary>
-        static void Init()
+        static DataTable Init()
         {
-            //对数据库连接字符串解密
-            log.Info("Begin Connect Gaia DB");
-            dbGaia = new DbSession("dbGaia");
-            log.Info("End Connect Gaia DB");
+            DataTable dt = new DataTable();
 
+            string maxRows = System.Configuration.ConfigurationManager.AppSettings["MaxRows"];
+            //if (maxRows.Trim().Length > 0) maxRows = " TOP " + maxRows + " ";
+            string view = System.Configuration.ConfigurationManager.AppSettings["ViewName"];
+            string sql = "SELECT " + maxRows + " * FROM " + view;
+            log.Info("sql = (" + sql + ")#");
 
+            //For mySQL
+            string mysqlstring = System.Configuration.ConfigurationManager.AppSettings["MySQL"];
+            log.Info("AppSettings[MySQL] = (" + mysqlstring + ")#");
+            if (mysqlstring.Length > 0)
+            {
+
+                MySqlConnection mysqlconnection;
+                //string connstring = string.Format("Server=10.82.246.95; database={0}; UID=eHRDB; password=kXGvVuVhV8HeDpDE", "qplay");
+                //log.Info("connstring = (" + connstring + ")#");
+                log.Info("0");
+                mysqlconnection = new MySqlConnection(mysqlstring);
+                log.Info("1");
+                mysqlconnection.Open();
+                log.Info("2");
+                var cmd = new MySqlCommand(sql, mysqlconnection);
+                log.Info("3");
+                var reader = cmd.ExecuteReader();
+                log.Info("4");
+                dt.BeginLoadData();
+                dt.Load(reader); // throws ConstraintException
+                dt.EndLoadData();
+                log.Info("5");
+            }
+            else
+            //For SQL Server
+            {
+                //对数据库连接字符串解密
+                log.Info("Begin Connect Gaia DB");
+                DbSession dbGaia = new DbSession("dbGaia");
+                log.Info("End Connect Gaia DB");
+                //查询数据
+                log.Info("Begin Select  data");
+                dt = dbGaia.FromSql(sql).ToDataTable();
+                log.Info("End Select  data");
+            }
+
+            return dt;
         }
         /// <summary>
         /// 产生excel
         /// </summary>
         /// <returns></returns>
-        static string GenerateFile()
+        static string GenerateFile(DataTable dt)
         {
             try
             {
-                log.Info("Begin Select data");
-
-                //查询数据
-                string maxRows = System.Configuration.ConfigurationManager.AppSettings["MaxRows"];
-                //if (maxRows.Trim().Length > 0) maxRows = " TOP " + maxRows + " ";
-                string view = System.Configuration.ConfigurationManager.AppSettings["ViewName"];
-                string sql = "SELECT " + maxRows + " * FROM " + view;
-                //string sql = "SELECT TOP " + maxRows + " emp_no,login_name,emp_name,ext_no,mail_account,domain,site_code,company,dept_code,active,dimission_date FROM " + view;
-                DataTable dt = dbGaia.FromSql(sql).ToDataTable();
-                log.Info("End Select  data");
-
                 string fileName = DateTime.Now.ToString("yyyyMMdd") + ".csv";
                 string path = System.Configuration.ConfigurationManager.AppSettings["FilePath"];
                 fileName = path + "\\" + fileName;
