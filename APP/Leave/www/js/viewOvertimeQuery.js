@@ -207,43 +207,6 @@ $("#viewOvertimeQuery").pagecontainer({
             }();
         };
 
-        //送出銷假單——<LayoutHeader><EmpNo>0003023</EmpNo><applyformid>512340</applyformid><reason>沒事</reason></LayoutHeader>
-        window.SendLeaveCancelFormData = function() {
-
-            this.successCallback = function(data) {
-                //console.log(data);
-                if (data['ResultCode'] === "1") {
-                    var callbackData = data['Content'][0]["result"];
-                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
-                    var successMsg = $("success", htmlDom);
-
-                    if ($(successMsg).html() != undefined) {
-                        //成功后先跳转到销假单列表，再重新呼叫API获取最新数据
-                        QueryEmployeeLeaveApplyForm();
-                        QueryEmployeeLeaveCancelForm();
-                        leaveQueryInit();
-                        changePageByPanel("viewBackLeaveQuery");
-                        $("#backLeaveMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
-                    } else {
-                        loadingMask("hide");
-                        var errorMsg = $("error", htmlDom);
-                        $('.leaveErrorMsg').find('.header-text').html($(errorMsg).html());
-                        popupMsgInit('.leaveErrorMsg');
-                    }
-
-                    $("#dispelReason").val("");
-                    $("#confirmDispelBtn").removeClass("leavePreview-active-btn");
-
-                }
-            };
-
-            this.failCallback = function(data) {};
-
-            var __construct = function() {
-                CustomAPI("POST", true, "SendLeaveCancelFormData", self.successCallback, self.failCallback, sendLeaveCancelFormDataQueryData, "");
-            }();
-        };
-
         //添加所有加班到列表
         function setAllOvertimeList() {
             var overtimeListHtml = "";

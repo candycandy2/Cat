@@ -401,6 +401,9 @@ $("#viewBackLeaveQuery").pagecontainer({
         $("#viewBackLeaveQuery").on("pagebeforeshow", function(event, ui) {});
 
         $("#viewBackLeaveQuery").on("pageshow", function(event, ui) {
+            //销假单查询——获取销假单列表
+            queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+            QueryEmployeeLeaveCancelForm();
             $("#withdrawBackLeaveApplyDate").text(applyDay);
             loadingMask("hide");
         });
