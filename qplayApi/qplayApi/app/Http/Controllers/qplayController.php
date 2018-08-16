@@ -298,10 +298,21 @@ class qplayController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            //check domain & login_type
+            if ($domain === "shop" || $loginType === "QAccount") {
+                $verifyResult = $Verify->verifyUserByUserEmpNo($loginid, $domain);
+            } else {
+                $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            }
+
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
-                $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+                //check domain & login_type
+                if ($domain === "shop" || $loginType === "QAccount") {
+                    $user = CommonUtil::getUserInfoJustByUserEmpNo($loginid, $domain);
+                } else {
+                    $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+                }
 
                 $loginQAccount = false;
                 $loginFail = false;
@@ -718,7 +729,14 @@ class qplayController extends Controller
         $uuid = $input["uuid"];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+
+            //check domain & login_type
+            if ($domain === "shop" || $loginType === "QAccount") {
+                $verifyResult = $Verify->verifyUserByUserEmpNo($loginid, $domain);
+            } else {
+                $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            }
+
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
                 $uuidList = \DB::table("qp_register")
@@ -741,7 +759,14 @@ class qplayController extends Controller
                 else
                 {
                     $uuidInDB = $uuidList[0];
-                    $tempUser = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+
+                    //check domain & login_type
+                    if ($domain === "shop" || $loginType === "QAccount") {
+                        $tempUser = CommonUtil::getUserInfoJustByUserEmpNo($loginid, $domain);
+                    } else {
+                        $tempUser = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+                    }
+
                     if($tempUser->row_id != $uuidInDB->user_row_id)
                     {
                         $message = CommonUtil::getMessageContentByCode(ResultCode::_000904_loginUserNotMathRegistered);
@@ -756,7 +781,12 @@ class qplayController extends Controller
                     }
                 }
 
-                $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
+                //check domain & login_type
+                if ($domain === "shop" || $loginType === "QAccount") {
+                    $user = CommonUtil::getUserInfoByUserEmpNo($loginid, $domain);
+                } else {
+                    $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
+                }
 
                 $loginQAccount = false;
                 $loginFail = false;
@@ -937,6 +967,7 @@ class qplayController extends Controller
             'message'=>$message,
             'content'=>array("redirect_uri"=>$finalUrl)];
         return response()->json($result);
+
     }
 
     public function logout()
@@ -965,9 +996,23 @@ class qplayController extends Controller
         $loginid = $input['loginid'];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $verifyResult = $Verify->verifyUserByUserID4Logout($loginid, $domain);
+
+            //check domain & login_type
+            if ($domain === "shop" || $loginType === "QAccount") {
+                $verifyResult = $Verify->verifyUserByUserEmpNo4Logout($loginid, $domain);
+            } else {
+                $verifyResult = $Verify->verifyUserByUserID4Logout($loginid, $domain);
+            }
+
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-                $user = CommonUtil::getUserInfoByUserID4Logout($loginid, $domain);
+
+                //check domain & login_type
+                if ($domain === "shop" || $loginType === "QAccount") {
+                    $user = CommonUtil::getUserInfoByUserEmpNo4Logout($loginid, $domain);
+                } else {
+                    $user = CommonUtil::getUserInfoByUserID4Logout($loginid, $domain);
+                }
+
                 //用户没找到则直接return
                 if (is_null($user)){
                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,

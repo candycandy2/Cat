@@ -271,9 +271,61 @@ class Verify
             "message"=>"");
     }
 
+    public static function verifyUserByUserEmpNo($empNo, $domain)
+    {
+        $userStatus = CommonUtil::getUserStatusByUserEmpNo($empNo, $domain);
+        if($userStatus == 0) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
+        }
+        if($userStatus == 1) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
+        }
+        if($userStatus == 2) {
+            return array("code"=>ResultCode::_000914_userWithoutRight,
+                //"message"=>"账号已被停权"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)
+            );
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
     public static function verifyUserByUserID4Logout($loginid, $domain)
     {
         $userStatus = CommonUtil::getUserStatusByUserID($loginid, $domain);
+        if($userStatus == 0) {
+            return array("code"=>ResultCode::_000901_userNotExistError,
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
+        }
+        //供logout使用，即使用户停权或离职，仍可以loginout
+        if($userStatus == 1) {
+            return array("code"=>ResultCode::_1_reponseSuccessful,
+                //"message"=>"員工資訊錯誤"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
+            );
+        }
+        if($userStatus == 2) {
+            return array("code"=>ResultCode::_1_reponseSuccessful,
+                //"message"=>"账号已被停权"
+                "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000914_userWithoutRight)
+            );
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful,
+            "message"=>"");
+    }
+
+    public static function verifyUserByUserEmpNo4Logout($empNo, $domain)
+    {
+        $userStatus = CommonUtil::getUserStatusByUserEmpNo($empNo, $domain);
         if($userStatus == 0) {
             return array("code"=>ResultCode::_000901_userNotExistError,
                 "message"=> CommonUtil::getMessageContentByCode(ResultCode::_000901_userNotExistError)
