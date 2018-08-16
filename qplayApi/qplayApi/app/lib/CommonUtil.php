@@ -94,20 +94,6 @@ class CommonUtil
         return $userList[0];
     }
 
-    public static function getUserInfoByUserEmpNo4Logout($empNo, $domain)
-    {
-        $userList = \DB::table('qp_user')
-            -> where('qp_user.emp_no', '=', $empNo)
-            -> where('qp_user.user_domain', '=', $domain)
-            -> select('qp_user.row_id')
-            -> get();
-        if(count($userList) < 1) {
-            return null;
-        }
-
-        return $userList[0];
-    }
-
     public static function getUserInfoJustByUserID($loginId, $domain=null)
     {
         $userList = \DB::table('qp_user')

@@ -997,21 +997,11 @@ class qplayController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
 
-            //check domain & login_type
-            if ($domain === "shop" || $loginType === "QAccount") {
-                $verifyResult = $Verify->verifyUserByUserEmpNo4Logout($loginid, $domain);
-            } else {
-                $verifyResult = $Verify->verifyUserByUserID4Logout($loginid, $domain);
-            }
+            $verifyResult = $Verify->verifyUserByUserID4Logout($loginid, $domain);
 
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
 
-                //check domain & login_type
-                if ($domain === "shop" || $loginType === "QAccount") {
-                    $user = CommonUtil::getUserInfoByUserEmpNo4Logout($loginid, $domain);
-                } else {
-                    $user = CommonUtil::getUserInfoByUserID4Logout($loginid, $domain);
-                }
+                $user = CommonUtil::getUserInfoByUserID4Logout($loginid, $domain);
 
                 //用户没找到则直接return
                 if (is_null($user)){
