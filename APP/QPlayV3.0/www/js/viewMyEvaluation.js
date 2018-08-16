@@ -87,5 +87,14 @@ $("#viewMyEvaluation").pagecontainer({
             }
         });
 
+        //ios input 页面滚动
+        $('.comment-text textarea').on('focus', function () {
+            //console.log('focus');
+        });
+
+        $('.comment-text textarea').on('blur', function () {
+            //console.log('blur');
+        });
+
     }
 });

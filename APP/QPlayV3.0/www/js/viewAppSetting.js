@@ -148,6 +148,13 @@ $("#viewAppSetting").pagecontainer({
             });
         }
 
+        var clearSuccess = function (status) {
+            console.log('Message: ' + status);
+        }
+
+        var clearError = function (status) {
+            console.log('Error: ' + status);
+        }
 
         /********************************** page event ***********************************/
         $("#viewAppSetting").on("pagebeforeshow", function (event, ui) {
@@ -161,6 +168,7 @@ $("#viewAppSetting").pagecontainer({
             $('.normal-setting-name').text(langStr['str_083']);
             $('.qplay-version-name').text(langStr['str_081']);
             $('.want-comment-name').text(langStr['str_088']);
+            $('.clear-cache-name').text(langStr['str_104']);
             $('.logout-fixed-btn').text(langStr['str_084']);
             $('.choose-camera').text(langStr['str_089']);
             $('.choose-picture').text(langStr['str_090']);
@@ -205,6 +213,12 @@ $("#viewAppSetting").pagecontainer({
             checkAppPage('viewMyEvaluation');
         });
 
+        //清理缓存
+        $('.clear-cache').on('click', function () {
+            window.CacheClear(clearSuccess, clearError);
+
+        });
+
         //注销
         $("#logout").on("click", function () {
             $('#confirmLogout').popup('open');
@@ -232,11 +246,14 @@ $("#viewAppSetting").pagecontainer({
             $('.setting-mask').hide();
 
             navigator.camera.getPicture(onSuccess, onFail, {
-                quality: 50,
+                quality: 100,
                 sourceType: Camera.PictureSourceType.Camera,
                 //destinationType: Camera.DestinationType.FILE_URI,
                 destinationType: Camera.DestinationType.DATA_URL,
-                saveToPhotoAlbum: true
+                saveToPhotoAlbum: true,
+                allowEdit: true,
+                targetWidth: 500,
+                targetHeight: 500
             });
 
             function onSuccess(imageURI) {
@@ -267,9 +284,12 @@ $("#viewAppSetting").pagecontainer({
             $('.setting-mask').hide();
 
             navigator.camera.getPicture(onSuccess, onFail, {
-                quality: 50,
+                quality: 100,
                 sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
-                destinationType: Camera.DestinationType.DATA_URL
+                destinationType: Camera.DestinationType.DATA_URL,
+                allowEdit: true,
+                targetWidth: 500,
+                targetHeight: 500
             });
 
             function onSuccess(imageURI) {

@@ -25,9 +25,7 @@ $("#viewMain3").pagecontainer({
             sessionStorage.setItem('widgetItem', widgetItem);
 
             //5. load js
-            var dateTime = Date.now();
-            var timeStamp = Math.floor(dateTime / 1000);
-            $.getScript(serverURL + "/widget/" + widgetArr[index].name + "/" + widgetArr[index].name + ".js?v=" + timeStamp)
+            $.getScript(serverURL + "/widget/" + widgetArr[index].name + "/" + widgetArr[index].name + ".js")
                 .done(function (script, textStatus) {
                     loadAndRunScript(index + 1);
                 })
@@ -86,7 +84,7 @@ $("#viewMain3").pagecontainer({
 
                     clearInterval(checkWidgetFinish);
                 }
-            }, 3000);
+            }, 2000);
 
         });
 
@@ -145,6 +143,10 @@ $("#viewMain3").pagecontainer({
             checkAppPage('viewAppSetting');
         });
 
+        //qpay test
+        // $('#widgetList').on('click','.weather-widget', function () {
+        //     checkAppPage('viewPay');
+        // });
 
 
     }
