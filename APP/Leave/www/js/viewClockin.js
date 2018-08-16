@@ -2,7 +2,6 @@ var workingday = "", clockinday = "", clockintime = "";
 var workNameVal = "", otherReason = "";
 var clockinWorkType= "", clockinReasonType = "";
 var doneDateTime = {};
-var activePageListID;
 
 var workTypeData = {
     id: "work-type-popup",
@@ -32,7 +31,8 @@ function checkClockinBeforePreview() {
     //必須符合3個條件：1.請假理由不能爲空 2.開始時間和结束时间 3.需要基准日的是否已选择 4.代理人必须选择
     if (otherReasonStatus === "none") {
         if (workNameVal !== "" &&
-            $("#work-type-popup option").text() !== pleaseSelectStr &&
+            clockinWorkType !== "" &&
+            //$("#work-type-popup option").text() !== pleaseSelectStr &&
             $('#chooseWorkday').text() !== pleaseSelectStr &&
             $('#chooseClockinday').text() !== pleaseSelectStr &&
             $('#chooseClockintime').text() !== pleaseSelectStr &&
@@ -45,7 +45,8 @@ function checkClockinBeforePreview() {
     }else {
         if (workNameVal !== "" &&
             otherReason !== "" &&
-            $("#work-type-popup option").text() !== pleaseSelectStr &&
+            clockinWorkType !== "" &&
+            //$("#work-type-popup option").text() !== pleaseSelectStr &&
             $('#chooseWorkday').text() !== pleaseSelectStr &&
             $('#chooseClockinday').text() !== pleaseSelectStr &&
             $('#chooseClockintime').text() !== pleaseSelectStr &&
@@ -59,7 +60,7 @@ function checkClockinBeforePreview() {
 }
 
 //生成刷卡類型
-function getWorkingType() {
+/*function getWorkingType() {
     var typeList = [{id:"01", name:"上班"},
                     {id:"02", name:"下班"}];
     workTypeData["option"] = [];
@@ -73,7 +74,7 @@ function getWorkingType() {
     }
 
     tplJS.DropdownList("viewClockin", "workType", "prepend", "typeB", workTypeData);
-}
+}*/
 
 //生成未刷卡理由
 function getReasonType() {
@@ -134,7 +135,7 @@ $("#viewClockin").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewClockin").one("pagebeforeshow", function(event, ui) {
-            getWorkingType();
+            //getWorkingType();
             getReasonType();
             $("#chooseWorkday").text(pleaseSelectStr);
             $("#chooseClockinday").text(pleaseSelectStr);
@@ -157,10 +158,10 @@ $("#viewClockin").pagecontainer({
         });
 
         //选择后检查是否符合预览要求
-        $(document).on("popupafterclose", "#work-type-popup-option", function() {
+        /*$(document).on("popupafterclose", "#work-type-popup-option", function() {
             clockinWorkType = $("#work-type-popup option").text();
             checkClockinBeforePreview();
-        });
+        });*/
 
          //选择后检查是否符合预览要求
         $(document).on("popupafterclose", "#reason-type-popup-option", function() {
@@ -170,6 +171,12 @@ $("#viewClockin").pagecontainer({
             } else {
                 $('#otherReason').hide();
             }
+            checkClockinBeforePreview();
+        });
+
+        $(document).on("change", "#newWorkType", function() {
+            var workTypeVal = $("#newWorkType :radio:checked").val();
+            clockinWorkType = ((workTypeVal == 'typeIn') ? langStr["str_228"] : langStr["str_229"]);
             checkClockinBeforePreview();
         });
 
@@ -312,12 +319,14 @@ $("#viewClockin").pagecontainer({
             $("#workName").val("");
             workNameVal = "";
             //刷卡類型
-            getWorkingType();
+            $('#newWorkType input[id^=type]').removeAttr("checked");
+            //getWorkingType();
             clockinWorkType = "";
             //未刷卡原因
             getReasonType();
             clockinReasonType = "";
             //隱藏其他原因框
+            $("#otherReason").val("");
             $('#otherReason').hide();
             otherReason = "";
             //日期恢復請選擇

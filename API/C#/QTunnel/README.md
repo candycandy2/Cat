@@ -67,6 +67,8 @@ ClientSettingsProvider.ServiceUri => Database URI
         <add key="FilePath" value="E:\QTuunel\Sync" />
         <add key="ViewName" value="Qp_User_Flower"/>  
         <add key="ClientSettingsProvider.ServiceUri" value="" />
+        <add key="MaxRows" value="" />
+        <add key="MySQL" value="Server=10.82.246.95; database=qplay; UID=eHRDB; password=XXX" />
   </appSettings>
   
 6. [Option]加密步骤：(不加密也可以使用, 資安考量, 建議加密, 目前走.Net標準程序, 加解密都由.Net處理)
@@ -78,6 +80,7 @@ ClientSettingsProvider.ServiceUri => Database URI
 測試方式是會產生
 http://[ip]/QTunnel/Sync/[YYYYMMDD].xls.gpg
 http://[ip]/QTunnel/Sync/[YYYYMMDD].csv.gpg
+https://sa.benq.com/SynceHR/20180815.xls.gpg
 8. IIS文件类型的问题，在IIS设定新增MIME types :.gpg
 ```
 

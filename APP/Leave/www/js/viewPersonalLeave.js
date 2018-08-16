@@ -935,10 +935,6 @@ $("#viewPersonalLeave").pagecontainer({
                 queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
                 QueryEmployeeLeaveApplyForm();
 
-                //销假单查询——获取销假单列表
-                queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-                QueryEmployeeLeaveCancelForm();
-
                 //加班單查询——获取加班单列表
                 queryEmployeeOvertimeApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
                 QueryEmployeeOvertimeApplyForm();

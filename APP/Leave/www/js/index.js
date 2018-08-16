@@ -48,6 +48,7 @@ var recordStartText = "";
 var defaultSettingDone = false;
 var reload = false;
 var hasAgentPanel, hasClockinOTPanel = false;
+var activePageListID;
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
@@ -530,9 +531,9 @@ function startMainPage() {
         queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
         QueryEmployeeLeaveApplyForm();
 
-        //销假单查询——获取销假单列表
-        queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-        QueryEmployeeLeaveCancelForm();
+        //加班單查询——获取加班单列表
+        queryEmployeeOvertimeApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+        QueryEmployeeOvertimeApplyForm();
 
         viewPersonalLeaveShow = true;
         defaultSettingDone = false;

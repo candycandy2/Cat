@@ -1031,6 +1031,58 @@ html body .ui-group-theme-a a:visited {
 
 /**************************************** viewClockin ********************************************/
 
+#newWorkType .overlap-label-icon, 
+#newWorkType .overlap-label-text {
+    margin-top: 1.16vw;
+    margin-bottom: 2.14vw;
+}
+
+#newWorkType>div:nth-of-type(2) {
+    display: inline-block;
+}
+
+#newWorkType>div:nth-of-type(3) {
+    display: inline-block;
+    margin-left: 6.196vw;
+}
+
+.overlap-label-icon {
+    clear: both;
+    float: left;
+}
+
+.overlap-label-text {
+    line-height: 1;
+    padding-left: 8.6vw;
+    padding-top: 0.9vw;
+    width: 85%;
+    color: #0F0F0F;
+    font-weight: normal;
+    font-size: 4.18vw !important;
+}
+
+input[type=radio] {
+    display:none;
+}
+
+input[type=radio] + label {
+    background: url('../img/radius_n.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
+input[type=radio]:checked + label {
+    background: url('../img/radius_s.png') no-repeat;
+    background-size: 5.47vw 5.47vw;
+    height: 5.47vw;
+    width: 5.47vw;
+    display: inline-block;
+    padding: 0 0 0 0;
+}
+
 #workDate, .apply-reason {
     color: #0f0f0f;
 }
