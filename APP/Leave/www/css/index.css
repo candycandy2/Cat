@@ -1031,6 +1031,10 @@ html body .ui-group-theme-a a:visited {
 
 /**************************************** viewClockin ********************************************/
 
+#newWorkType {
+    margin-bottom: 1vw;
+}
+
 #newWorkType .overlap-label-icon, 
 #newWorkType .overlap-label-text {
     margin-top: 1.16vw;
