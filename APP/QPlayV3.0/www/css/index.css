@@ -1557,21 +1557,26 @@ input[type=radio]:checked + label {
 
 .photo-default {
     width: 26.5vw;
-    height: 29vw;
+    height: 26.5vw;
     padding-top: 14vw;
     padding-left: 37vw;
 }
 
 .photo-default img {
     border-radius: 50%;
-    width: 100%;
-    /* 26.5/29=91.38% */
-    height: 91.38%;
+    /* width: 100%;
+    26.5/29=91.38%
+    height: 91.38%; */
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+    min-width: 100%;
 }
 
 .name-user {
     width: 100vw;
     height: 8vw;
+    margin-top: 3vw;
     text-align: center;
     color: #263238;
     font-weight: normal;
@@ -1796,4 +1801,61 @@ input[type=radio]:checked + label {
 .enabled-btn {
     background: #009688 !important;
     color: #fff !important;
+}
+
+/********************** test **********************/
+#viewPay .ui-content {
+    padding: 0 !important;
+}
+
+.container {
+    width: 100vw;
+    height: 80vw;
+    position: fixed;
+    bottom: 0;
+}
+
+.container > div {
+    width: 33vw;
+    height: 20vw;
+    display: inline-block;
+    text-align: center;
+    line-height: 20vw;
+    border: 1px solid #d6d6d6;
+    margin-bottom: -1px;
+    margin-right: -1px;
+    font-size: 8vw;
+    color: gray;
+}
+
+.password {
+    width: 100vw;
+    height: 20vw;
+    padding-top: 5vw;
+}
+
+.password > div {
+    width: 15vw;
+    height: 15vw;
+    display: inline-block;
+    margin-left: 7.5vw;
+    border: 1px solid #d6d6d6;
+}
+
+.circle {
+    width: 2.5vw;
+    height: 2.5vw;
+    border-radius: 50%;
+    margin-left: 6vw;
+    margin-top: 6vw;
+    background: black;
+    display: none;
+}
+
+.active {
+    border: 1px solid #13988A !important;
+}
+
+.key-down {
+    background: lightgray;
 }
