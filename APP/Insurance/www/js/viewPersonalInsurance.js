@@ -293,9 +293,7 @@ $("#viewPersonalInsurance").pagecontainer({
             loadingMask("show");        
             clickFamilyID = $(this).parents('.health-insur-list').children("div").attr("data-id");       
             passValueToApplyInsurance(clickFamilyID);           
-            if (clickCanApply === "停保+退保") {
-
-            } else if (clickCanApply === "取消申請") {               
+            if (clickCanApply === "取消申請") {               
                
             } else if (clickCanApply === "加保") {
                 if (clickDealwith === "已退保") {
@@ -305,7 +303,17 @@ $("#viewPersonalInsurance").pagecontainer({
                 
             }
             $.mobile.changePage("#viewApplyInsurance"); 
-        });              
+        }); 
+
+        $(document).on("click", ".family-next", function() {
+            loadingMask("show");        
+            clickFamilyID = $(this).parents('.health-insur-list').children("div").attr("data-id");       
+            passValueToApplyInsurance(clickFamilyID);           
+            if (clickCanApply === "停保+退保") {
+                nextPage = "appliedDetail";
+            } 
+            $.mobile.changePage("#viewApplyInsurance"); 
+        });             
 
     }
 });
