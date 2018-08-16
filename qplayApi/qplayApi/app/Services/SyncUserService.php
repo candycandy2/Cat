@@ -188,6 +188,12 @@ class SyncUserService
 
                 $now = date('Y-m-d H:i:s',time());
 
+                if (strtoupper(trim($EHRData["company"])) == "QISDA") {
+                    $domain = "Qgroup";
+                } else {
+                    $domain = strval(trim($EHRData["company"]));
+                }
+
                 $insertData = [
                     "login_id"          => $empNO,
                     "emp_no"            => $empNO,
@@ -196,13 +202,12 @@ class SyncUserService
                     "emp_id"            => $empID,
                     "email"             => strval(trim($EHRData["mail_account"])),
                     "ext_no"            => strval(trim($EHRData["ext_no"])),
-                    "user_domain"       => strval(trim($EHRData["company"])),
+                    "user_domain"       => $domain,
                     "company"           => strval(trim($EHRData["company"])),
                     "department"        => strval(trim($EHRData["dept_code"])),
                     "status"            => "Y",
                     "resign"            => $resign,
                     "register_message"  => "N",
-                    "ad_flag"           => "Y",
                     "reset_pwd"         => "N",
                     "source_from"       => "ehr",
                     "created_user"      => "-1",
@@ -273,22 +278,35 @@ class SyncUserService
 
                 $now = date('Y-m-d H:i:s',time());
 
-                $updateData = [
-                    "emp_name"      => strval(trim($EHRData["emp_name"])),
-                    "email"         => strval(trim($EHRData["mail_account"])),
-                    "ext_no"        => strval(trim($EHRData["ext_no"])),
-                    "company"       => strval(trim($EHRData["company"])),
-                    "user_domain"   => strval(trim($EHRData["company"])),
-                    "resign"        => $resign,
-                    "updated_at"    => $now
-                ];
+                //Check if source_form=ehr or other
+                if (is_null($userDataArray[$empNO]["source_form"] == "ehr")) {
+                    $updateData = [
+                        "emp_name"      => strval(trim($EHRData["emp_name"])),
+                        "email"         => strval(trim($EHRData["mail_account"])),
+                        "ext_no"        => strval(trim($EHRData["ext_no"])),
+                        "company"       => strval(trim($EHRData["company"])),
+                        "user_domain"   => strval(trim($EHRData["company"])),
+                        "department"    => strval(trim($EHRData["dept_code"])),
+                        "resign"        => $resign,
+                        "updated_at"    => $now
+                    ];
+                } else {
+                    $updateData = [
+                        "company"       => strval(trim($EHRData["company"])),
+                        "department"    => strval(trim($EHRData["dept_code"])),
+                        "resign"        => $resign,
+                        "updated_at"    => $now
+                    ];
+                }
 
                 //Check if login_id is not English/Number
+                /*
                 if (!preg_match('/^[a-zA-Z0-9@-_. ]+$/', $userDataArray[$empNO]["login_id"])) {
                     echo ">>".$userDataArray[$empNO]["login_id"]."<br>";
                     $login_id = $empNO;
                     $updateData["login_id"] = $login_id;
                 }
+                */
 
                 //Check if emp_id is null
                 if (is_null($userDataArray[$empNO]["emp_id"])) {
