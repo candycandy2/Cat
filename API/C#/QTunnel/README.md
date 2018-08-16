@@ -60,16 +60,18 @@ gpg --import qlay_B40883DB_Secret.asc
 FilePath      => Output folder
 ViewName => Database table or view name
 ClientSettingsProvider.ServiceUri => Database URI
-  <connectionStrings>
+    <connectionStrings>
         <add name="dbGaia" connectionString="Database=qplay;Data Source=O-A05X;User Id=sa;Password=mn-123456;" providerName="System.Data.SqlClient" />
-  </connectionStrings>
-  <appSettings>
+    </connectionStrings>
+    <appSettings>
         <add key="FilePath" value="E:\QTuunel\Sync" />
-        <add key="ViewName" value="Qp_User_Flower"/>  
+        <add key="ViewName" value="Qp_User_Flower" />
         <add key="ClientSettingsProvider.ServiceUri" value="" />
         <add key="MaxRows" value="" />
+        <!-- MaxRows 會填入 Select [MaxRows] * From [ViewName] , 務必確認語法正確, 符合MySQL 或 SQL Server規範-->
         <add key="MySQL" value="Server=10.82.246.95; database=qplay; UID=eHRDB; password=XXX" />
-  </appSettings>
+        <!-- connectionStrings 或 MySQL 擇一填寫, 以MySQL優先 -->
+    </appSettings>
   
 6. [Option]加密步骤：(不加密也可以使用, 資安考量, 建議加密, 目前走.Net標準程序, 加解密都由.Net處理)
 6.1.打开cmd命令进到aspnet_regiis.exe目录下: cd C:\Windows\Microsoft.NET\Framework\v4.0.30319 
