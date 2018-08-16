@@ -188,6 +188,12 @@ class SyncUserService
 
                 $now = date('Y-m-d H:i:s',time());
 
+                if (strtoupper(trim($EHRData["company"])) == "QISDA") {
+                    $domain = "Qgroup";
+                } else {
+                    $domain = strval(trim($EHRData["company"]));
+                }
+
                 $insertData = [
                     "login_id"          => $empNO,
                     "emp_no"            => $empNO,
@@ -196,7 +202,7 @@ class SyncUserService
                     "emp_id"            => $empID,
                     "email"             => strval(trim($EHRData["mail_account"])),
                     "ext_no"            => strval(trim($EHRData["ext_no"])),
-                    "user_domain"       => strval(trim($EHRData["company"])),
+                    "user_domain"       => $domain,
                     "company"           => strval(trim($EHRData["company"])),
                     "department"        => strval(trim($EHRData["dept_code"])),
                     "status"            => "Y",
