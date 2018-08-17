@@ -254,11 +254,6 @@ class SyncUserService
         }
 
         foreach ($eHRAllUser as $EHRData) {
-            //Ignore active=N data
-            if (trim($EHRData["active"]) === "N") {
-                continue;
-            }
-
             $empNO = strval(trim($EHRData["emp_no"]));
             $empID = strval(trim($EHRData["emp_id"]));
 

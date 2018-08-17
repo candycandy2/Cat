@@ -1226,7 +1226,8 @@ div.scrollmenu a {
     width: 4.934VW;
 }
 
-#backApplyInsurance {
+#backApplyInsurance,
+#backWithdrawDetail {
     width: 4.934VW;
     display: none;
 }
@@ -1330,6 +1331,36 @@ input[type=radio]:checked + label {
     position: fixed;
     bottom: 0px;
     width: 100%;
+}
+
+.right-apply-button-style {
+    overflow: hidden;
+    background-color: #2A8ABD;
+    color: #ffffff;
+    border-style: none;
+    border-color: #d6d6d6;
+    text-align: center;
+    line-height: 3.5;
+    z-index: 990;
+    position: fixed;
+    bottom: 0px;
+    width: 49.8%;
+    right: 0%;
+}
+
+.left-apply-button-style {
+    overflow: hidden;
+    background-color: #2A8ABD;
+    color: #ffffff;
+    border-style: none;
+    border-color: #d6d6d6;
+    text-align: center;
+    line-height: 3.5;
+    z-index: 990;
+    position: fixed;
+    bottom: 0px;
+    width: 49.8%;
+    float: left;
 }
 
 .popup-msg-style {
