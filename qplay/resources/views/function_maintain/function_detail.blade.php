@@ -12,7 +12,7 @@ $menu_name = "FUNCTION_MAINTAIN";
                         <td>{{trans("messages.FUNCTION_NAME")}}:</td>
                         <td style="padding: 10px;">
                             <input type="text" data-clear-btn="true" name="tbxFunctionName" class="form-control"
-                                   id="tbxFunctionName" value="{{$functionData['name']}}" disabled />
+                                   id="tbxFunctionName" value="{{$functionData['name']}}" />
                         </td>
                         <td><span style="color: red;">*</span></td>
                     </tr>
@@ -23,7 +23,7 @@ $menu_name = "FUNCTION_MAINTAIN";
                                 <tr>
                                     <td>
                                         <input type="text" data-clear-btn="true" name="tbxFunctionVariable" class="form-control"
-                                               id="tbxFunctionVariable" value="{{$functionData['variable_name']}}"/>
+                                               id="tbxFunctionVariable" value="{{$functionData['variable_name']}}" disabled/>
                                     </td>
                                 </tr>
                             </table>
@@ -54,7 +54,7 @@ $menu_name = "FUNCTION_MAINTAIN";
                         <td>{{trans("messages.FUNCTION_TYPE")}}:</td>
                         <td style="padding: 10px;">
                             <select name="ddlFunctionType" id="ddlFunctionType" class="form-control" required="required">
-                                <option value="FUN">FUN</option>
+                                <option value="FUN">Function</option>
                                 <option value="APP">APP</option>
                             </select>
                         </td>
@@ -245,7 +245,7 @@ $menu_name = "FUNCTION_MAINTAIN";
         $.map(myData, function(n, i){
             formData[n['name']] = n['value'];
         });
-
+        formData['tbxFunctionVariable'] = $("#tbxFunctionVariable").val();
         if($('#ddlUserSetting').val() == 1){
             formData['companyList'] = [];
             $('#CompanyTable').find("input.cbxCompany:checked").each(function(){
@@ -262,6 +262,23 @@ $menu_name = "FUNCTION_MAINTAIN";
                 formData['userList'].push(user.row_id);
             });
         }
+        //Check Data Empty
+        if (formData.tbxFunctionName.length == 0
+            || formData.bxFunctionVariable == 0
+            || formData.tbxFunctionDescription.length == 0 
+            || formData.ddlOwnerApp.length == 0  
+            || formData.ddlFunctionType.length == 0 
+            || formData.ddlFunctionStatus.length == 0 ) {
+            showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+            return false;
+        }
+        if(formData.ddlFunctionType == 'APP'){
+            if(formData.ddlApp.length == 0){
+                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
+                return false;
+            }
+        }
+
         $.ajax({
             url: "./updateFunction?function_id=" + getUrlVar('function_id'),
             dataType: "json",
