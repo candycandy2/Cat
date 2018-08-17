@@ -137,7 +137,7 @@ $("#viewPersonalInsurance").pagecontainer({
                                     var familyImgList = '<div class="list-only-img"><img src="img/100_btn_nextpage.png" class="family-next">';
                                 } else {
                                     var familyDetailList = '<div class="health-insur-list"><div class="content-list-text-img" data-id="';
-                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><sapn>' + dealwithStr +'</span></label><img src="img/100_btn_nextpage.png" class="family-text-img">';
+                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><sapn>' + dealwithStr +'</span></label><img src="img/100_btn_nextpage.png" id="insurTextNextBtn" class="family-text-img">';
                                 }                   
                                 healthInsurList += familyDetailList
                                 + healthInsurArr[i]["family_id"]
@@ -156,15 +156,15 @@ $("#viewPersonalInsurance").pagecontainer({
                                 familyDetailList, familyImgList = "";
                             }
                             if (healthInsurArr[i]["group"] == "眷屬健保不在保"){
-                                if (dealwithStr == "未申請" && canapplyStr == "加保"){
+                                if (dealwithStr == "未申請" && canapplyStr == "加保") {
                                     var familyDetailList = '<div class="health-insur-list"><div class="content-list-only-img" data-id="';
                                     var familyImgList = '<div class="list-only-img"><img src="img/024_btn_addfriend.png" class="family-add">';
-                                } else if (canapplyStr == "取消申請" || canapplyStr == "復保"){
+                                } else if (canapplyStr == "取消申請" || canapplyStr == "復保") {
                                     var familyDetailList = '<div class="health-insur-list"><div class="content-list-text-img" data-id="';
-                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><sapn>' + dealwithStr +'</span></label><img src="img/100_btn_nextpage.png" class="family-text-img">';
-                                } else if (canapplyStr == "加保"){
+                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><sapn>' + dealwithStr +'</span></label><img src="img/100_btn_nextpage.png" id="textNextBtn" class="family-text-img">';
+                                } else if (canapplyStr == "加保") {
                                     var familyDetailList = '<div class="health-insur-list"><div class="content-list-text-img" data-id="';
-                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><sapn>' + dealwithStr +'</span></label><img src="img/024_btn_addfriend.png" class="family-text-img">';
+                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><sapn>' + dealwithStr +'</span></label><img src="img/024_btn_addfriend.png" id="addNextBtn" class="family-text-img">';
                                 }
                                 nonHealthInsurList += familyDetailList
                                 + healthInsurArr[i]["family_id"]
@@ -281,7 +281,7 @@ $("#viewPersonalInsurance").pagecontainer({
 
         $(document).on("click", ".family-add", function() { 
             loadingMask("show");
-            nextPage = "Add";  
+            nextPage = "addDetail";  
             clickFamilyID = $(this).parents('.health-insur-list').children("div").attr("data-id");       
             passValueToApplyInsurance(clickFamilyID);
             $("#applyBtn").show();
@@ -289,21 +289,34 @@ $("#viewPersonalInsurance").pagecontainer({
             $.mobile.changePage("#viewApplyInsurance"); 
         });  
 
-        $(document).on("click", ".family-text-img", function() {
+        $(document).on("click", "#insurTextNextBtn", function() { 
             loadingMask("show");        
             clickFamilyID = $(this).parents('.health-insur-list').children("div").attr("data-id");       
-            passValueToApplyInsurance(clickFamilyID);           
-            if (clickCanApply === "取消申請") {               
-               
-            } else if (clickCanApply === "加保") {
-                if (clickDealwith === "已退保") {
-                    nextPage = "withdrawDetail";
-                }
-            } else if (clickCanApply === "復保"){
-                
-            }
+            passValueToApplyInsurance(clickFamilyID);
+            $.mobile.changePage("#viewApplyInsurance");        
+        });
+
+        $(document).on("click", "#textNextBtn", function() { 
+            loadingMask("show");        
+            clickFamilyID = $(this).parents('.health-insur-list').children("div").attr("data-id");       
+            passValueToApplyInsurance(clickFamilyID); 
+            if (clickCanApply === "取消申請") { 
+                nextPage = "pendingDetail";
+            } else if (clickCanApply === "復保") {
+
+            }                
+            $.mobile.changePage("#viewApplyInsurance");   
+        });
+
+        $(document).on("click", "#addNextBtn", function() { 
+            loadingMask("show");        
+            clickFamilyID = $(this).parents('.health-insur-list').children("div").attr("data-id");       
+            passValueToApplyInsurance(clickFamilyID); 
+            if (clickDealwith === "已退保") {
+                nextPage = "withdrawDetail";
+            }  
             $.mobile.changePage("#viewApplyInsurance"); 
-        }); 
+        });
 
         $(document).on("click", ".family-next", function() {
             loadingMask("show");        
