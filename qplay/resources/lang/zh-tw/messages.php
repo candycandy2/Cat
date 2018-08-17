@@ -67,6 +67,7 @@ return [
     //validate
     'VALIDATE_ACCEPT' => '僅接受',
     'VALIDATE_ACCEPT_NUMERIC' => '僅接受數字',
+    'VALIDATE_ACCEPT_WORD' => '僅接受英數字或底線',
 
     //About
     'SYS_VERSION' => '系統版本',
@@ -430,7 +431,7 @@ return [
     'OWNER_APP' => '所屬App',
     'FUNCTION_NAME' => '功能名稱',
     'FUNCTION_TYPE' => '功能類型',
-    'FUNCTION_VARIABLE_NAME' => '功能變數名稱',
+    'FUNCTION_VARIABLE_NAME' => '功能ID',
     'FUNCTION_DESCRIPTION' => '功能描述',
     'QACCOUNT_AVAILABLE' => 'QAccount使用權限',
     'RIGHT_LEVEL' => '權限等級',
