@@ -35,7 +35,7 @@ namespace QPlay.Job.SyncGaiaUser
             //For mySQL
             string mysqlstring = System.Configuration.ConfigurationManager.AppSettings["MySQL"];
             log.Info("AppSettings[MySQL] = (" + mysqlstring + ")#");
-            if (mysqlstring.Length > 0)
+            if (mysqlstring != null && mysqlstring.Length > 0)
             {
 
                 MySqlConnection mysqlconnection;
