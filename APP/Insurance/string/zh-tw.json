@@ -1206,5 +1206,37 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "str_152",
+    "definition": "停保資訊",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_153",
+    "definition": "復保資訊",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_154",
+    "definition": "眷屬健保",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "str_155",
+    "definition": "確定取消申請?",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]

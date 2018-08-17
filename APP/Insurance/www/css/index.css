@@ -1148,7 +1148,8 @@ div.scrollmenu a {
 .selectTimeOverMsg >.ui-content,
 .recordTimeOverMsg >.ui-content,
 .confirmCancelApply >.ui-content,
-.beforeEditMsg >.ui-content {
+.beforeEditMsg >.ui-content,
+.confirmCancelPendingApply >.ui-content {
     padding: 0 !important;
 }
 
@@ -1162,7 +1163,8 @@ div.scrollmenu a {
 .selectTimeOverMsg .ui-content>.header,
 .recordTimeOverMsg .ui-content>.header,
 .confirmCancelApply .ui-content>.header,
-.beforeEditMsg .ui-content>.header {
+.beforeEditMsg .ui-content>.header,
+.confirmCancelPendingApply .ui-content>.header {
     margin-top: 14%;
 }
 
@@ -1178,6 +1180,10 @@ div.scrollmenu a {
 .confirmCancelApply .ui-content>.main 
 .beforeEditMsg .ui-content>.main {
     margin-top: 12%;
+}
+
+.confirmCancelPendingApply .ui-content>.main {
+    margin-top: 6%;
 }
 
 /********************************************** viewApplyInsurance *********************************************/
@@ -1216,9 +1222,11 @@ div.scrollmenu a {
 }
 
 .family-add-title, 
+.apply-insur-title, 
 .withdraw-insur-title, 
 .stop-insur-title,
-.recover-insur-title { 
+.recover-insur-title,
+.family-insur-title { 
     display:none;
 }
 
