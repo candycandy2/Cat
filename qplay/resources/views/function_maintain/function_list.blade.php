@@ -16,7 +16,7 @@
         </button>
     </div>
     <table id="gridFunctionList" class="bootstrapTable" data-toggle="table" data-sort-name="row_id" data-toolbar="#toolbar"
-           data-url="functionMaintain/getFunctionList" data-height="398" data-pagination="true"
+           data-url="functionMaintain/getFunctionList" data-height="" data-pagination="true"
            data-show-refresh="true" data-row-style="rowStyle" data-search="true"
            data-show-toggle="false"  data-sortable="true"
            data-striped="true" data-page-size="10" data-page-list="[5,10,20]"
@@ -26,7 +26,7 @@
             <th data-field="fun_name" data-sortable="true" data-formatter="functionNameFormatter">{{trans("messages.FUNCTION_NAME")}}</th>
             <th data-field="fun_variable" data-sortable="true" data-formatter="functionVariableFormatter">{{trans("messages.FUNCTION_VARIABLE_NAME")}}</th>
             <th data-field="owner_app_name" data-sortable="true">{{trans("messages.OWNER_APP")}}</th>
-            <th data-field="fun_type" data-sortable="true">{{trans("messages.FUNCTION_TYPE")}}</th>
+            <th data-field="fun_type" data-sortable="true" data-formatter="functionTypeFormatter">{{trans("messages.FUNCTION_TYPE")}}</th>
             <th data-field="fun_app" data-sortable="true">{{trans("messages.APP_NAME")}}</th>
             <th data-field="fun_status" data-sortable="true" data-formatter="functionStatusFormatter" >{{trans("messages.STATUS")}}</th>
            
@@ -80,6 +80,15 @@
                 return "{{trans("messages.DISABLE")}}";
             }
         };
+
+        function functionTypeFormatter(value, row) {
+            if (value == "FUN") {
+                return "Function";
+            } else {
+                return value;
+            }
+        };
+
 
         var newFunction = function() {
             var $dialogObj = $("#functionDetailMaintainDialog");
@@ -143,6 +152,12 @@
             if (duplicate) {
                 showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.ERR_FUNCTION_VARIABLE_EXIST")}}");
                 return false;
+            }
+
+            var pattern = new RegExp('[^A-Za-z0-9_]');
+            if(myData.tbxFunctionVariable.match(pattern)){
+                 showMessageDialog("{{trans("messages.ERROR")}}",  "{{trans("messages.FUNCTION_VARIABLE_NAME")}}" + "{{trans("messages.VALIDATE_ACCEPT_WORD")}}");
+                 return false;
             }
 
             showConfirmDialog("{{trans("messages.CONFIRM")}}", "{{trans("messages.MSG_CONFIRM_SAVE")}}", "", function () {
@@ -238,7 +253,7 @@
                                 <td>{{trans("messages.FUNCTION_TYPE")}}:</td>
                                 <td style="padding: 10px;">
                                     <select name="ddlFunctionType" id="ddlFunctionType" class="form-control" required="required">
-                                        <option value="FUN">FUN</option>
+                                        <option value="FUN">Function</option>
                                         <option value="APP">APP</option>
                                     </select>
                                 </td>
