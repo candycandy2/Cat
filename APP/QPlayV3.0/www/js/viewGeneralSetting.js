@@ -28,21 +28,13 @@ $("#viewGeneralSetting").pagecontainer({
         });
 
         $("#viewGeneralSetting").one("pageshow", function (event, ui) {
-            //1. title
-            $('#viewGeneralSetting .ui-title div').text(langStr['str_083']).removeClass('opacity');
-            //2. localstorage
+            //1. localstorage
             widgetArr = JSON.parse(localStorage.getItem('widgetList'));
-            //3. create content
+
+            //2. create content
             setGeneralSetting();
-            //4. sort listview
-            // var container = document.getElementById("defaultList");
-            // Sortable.create(container, {
-            //     handle: '.default-item',
-            //     animation: 150,
-            //     onUpdate: function (event) {
-            //         changeSetting = true;
-            //     }
-            // });
+            
+            //3. sort listview
             $("#defaultList").sortable();
             $("#defaultList").disableSelection();
             $("#defaultList").on("sortstop", function(event, ui) {
