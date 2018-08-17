@@ -15,9 +15,7 @@ function getLanguageString() {
 
     //review by allen
     if (appKey === qplayAppKey) {
-        var dateTime = Date.now();
-        var timeStamp = Math.floor(dateTime / 1000);
-        $.getJSON(serverURL + "/widget/string/" + browserLanguage + ".json?v=" + timeStamp, function (data) {
+        $.getJSON(serverURL + "/widget/string/" + browserLanguage + ".json", function (data) {
             for (i = 0; i < data.length; i++) {
                 langStr[data[i].term] = data[i].definition.trim();
             }

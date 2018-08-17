@@ -142,18 +142,16 @@ var app = {
             addPlugin();
 
             if (appKey === qplayAppKey) {
-                var dateTime = Date.now();
-                var timeStamp = Math.floor(dateTime / 1000);
                 //动态载入widget.js
                 var script = document.createElement("script");
                 script.type = "text/javascript";
-                script.src = serverURL + "/widget/widget.js?v=" + timeStamp;
+                script.src = serverURL + "/widget/widget.js";
                 document.head.appendChild(script);
 
                 var link = document.createElement("link");
                 link.rel = "stylesheet";
                 link.type = "text/css";
-                link.href = serverURL + "/widget/widget.css?v=" + timeStamp;
+                link.href = serverURL + "/widget/widget.css";
                 document.head.appendChild(link);
             }
         }, 0);
