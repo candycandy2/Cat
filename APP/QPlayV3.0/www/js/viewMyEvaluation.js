@@ -39,10 +39,7 @@ $("#viewMyEvaluation").pagecontainer({
         });
 
         $("#viewMyEvaluation").one("pageshow", function (event, ui) {
-            //language
-            $('#viewMyEvaluation .ui-title div').text(langStr['str_086']).removeClass('opacity');
-            $('.comment-title').text(langStr['str_087']);
-            $('.send-comment').text(langStr['str_085']);
+
         });
 
         $("#viewMyEvaluation").on("pageshow", function (event, ui) {

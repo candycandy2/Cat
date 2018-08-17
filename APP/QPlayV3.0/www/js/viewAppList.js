@@ -97,7 +97,7 @@ $("#viewAppList").pagecontainer({
             if (favoriteList != null) {
                 changeFavoriteIcon();
             }
-            
+
         }
 
         //change favorite icon after create content
@@ -185,29 +185,23 @@ $("#viewAppList").pagecontainer({
         });
 
         $("#viewAppList").one("pageshow", function (event, ui) {
-            //language string
-            $('.already-download').text(langStr['str_074']);
-            $('.not-download').text(langStr['str_075']);
-            $('.app-no-download p').append('<span>' + langStr['str_097'] + '</span><br><span>' + langStr['str_098'] + '</span>');
-
             //create content
             createAppListContent();
-
-            //setHeight
-            var mainHeight = $('.app-scroll > div').height();
-            var headHeight = $('#viewAppList .page-header').height();
-            var totalHeight;
-            if (device.platform === "iOS") {
-                totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
-            } else {
-                totalHeight = (mainHeight + headHeight).toString();
-            }
-            $('.app-scroll > div').css('height', totalHeight + 'px');
-            
         });
 
         $("#viewAppList").on("pageshow", function (event, ui) {
-
+            //setHeight
+            if (!addAppToList || alreadyDownloadList.length > 0) { 
+                var mainHeight = $('.app-scroll > div').height();
+                var headHeight = $('#viewAppList .page-header').height();
+                var totalHeight;
+                if (device.platform === "iOS") {
+                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+                } else {
+                    totalHeight = (mainHeight + headHeight).toString();
+                }
+                $('.app-scroll > div').css('height', totalHeight + 'px');
+            }
         });
 
         $("#viewAppList").on("pagehide", function (event, ui) {

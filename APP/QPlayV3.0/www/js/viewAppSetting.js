@@ -150,6 +150,23 @@ $("#viewAppSetting").pagecontainer({
 
         var clearSuccess = function (status) {
             console.log('Message: ' + status);
+            
+            //1. 成功提示
+            $("#clearSuccess").fadeIn(100).delay(2000).fadeOut(100);
+
+            //2. clear localstorage
+            var env = '';
+            if (loginData["versionName"].indexOf("Staging") !== -1) {
+                env = 'test';
+            } else if (loginData["versionName"].indexOf("Development") !== -1) {
+                env = 'dev';
+            }
+
+            window.localStorage.removeItem('apprrs' + env);
+            window.localStorage.removeItem('appmassage' + env);
+            window.localStorage.removeItem('appparking' + env);
+            window.localStorage.removeItem('apprelieve' + env);
+
         }
 
         var clearError = function (status) {
@@ -162,21 +179,8 @@ $("#viewAppSetting").pagecontainer({
         });
 
         $("#viewAppSetting").one("pageshow", function (event, ui) {
-            //language string
+            //user name
             $('.name-user').text(loginData['loginid']);
-            $('#viewAppSetting .ui-title div').text(langStr['str_082']);
-            $('.normal-setting-name').text(langStr['str_083']);
-            $('.qplay-version-name').text(langStr['str_081']);
-            $('.want-comment-name').text(langStr['str_088']);
-            $('.clear-cache-name').text(langStr['str_104']);
-            $('.logout-fixed-btn').text(langStr['str_084']);
-            $('.choose-camera').text(langStr['str_089']);
-            $('.choose-picture').text(langStr['str_090']);
-            $('.cancel-choose').text(langStr['str_023']);
-            $('#feedback').text(langStr['str_103']);
-            $('#cameraFail').text(langStr['str_100']);
-            $('#uploadSuccess').text(langStr['str_101']);
-            $('#uploadFail').text(langStr['str_102']);
 
             //check photo
             checkPhotoUpload($('#myPhoto'));
