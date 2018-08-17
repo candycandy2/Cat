@@ -18,6 +18,9 @@ function checkAppPage(pageID) {
             $.mobile.pageContainer.append(data);
             $('#' + pageID).page().enhanceWithin();
 
+            //set current page language
+            setViewLanguage(pageID);
+
             //Show Water Mark
             //According to the data [waterMarkPageList] which set in index.js
             if (!(typeof waterMarkPageList === 'undefined')) {
@@ -39,6 +42,18 @@ function checkAppPage(pageID) {
 
         }, 'html');
     }
+}
+
+function setViewLanguage(view) {
+    $("#" + view + " .langStr").each(function (index, element) {
+        var id = $(element).data("id");
+
+        $(".langStr[data-id='" + id + "']").each(function (index, element) {
+            if (langStr[id] !== undefined) {
+                $(this).html(langStr[id]);
+            }
+        });
+    });
 }
 
 /*because pagebeforeshow event not work first time,
