@@ -2,8 +2,10 @@
 //获取所有预约
 function getMyReserve(key, secret) {
     var self = this;
-    var today = new Date();
-    var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + today.yyyymmdd('') + '</NowDate></LayoutHeader>';
+    var year = new Date().getFullYear().toString();
+    var month = new Date().getMonth() + 1 < 10 ? '0' + (new Date().getMonth() + 1).toString() : (new Date().getMonth() + 1).toString();
+    var firstDay = year + month + '01';     //每月第一天
+    var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + firstDay + '</NowDate></LayoutHeader>';
     var rrsStr = langStr["str_063"],    //预约
         relieveStr = langStr["str_064"],    //物理治疗
         parkingStr = langStr["str_065"],    //车位预约
@@ -105,6 +107,6 @@ function getMyReserve(key, secret) {
     };
 
     var __construct = function () {
-        CustomAPIByKey("POST", true, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 60*60, "low");
+        CustomAPIByKey("POST", true, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 60 * 60, "low");
     }();
 }

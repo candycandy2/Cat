@@ -1201,7 +1201,7 @@ input[type=radio]:checked + label {
 
 #reserveContent {
     /*（3.71+85.16）*30+3.71=2669.81 */
-    width: 2670vw;
+    /* width: 2670vw; */
     height: 100%;
 }
 

@@ -34,50 +34,94 @@ $("#viewMyCalendar").pagecontainer({
 
         //按照日期生成预约htnl
         function createReserveDetail() {
-            var reserveLength = 30;
-            //1. 按照日期生成reserve html
-            reserveDateList = getAfterDate(new Date().yyyymmdd(""), reserveLength);
-            var content = "";
-            for (var i in reserveDateList) {
-                var reserveDate = formateReserveDate(reserveDateList[i], '-');
-                content += '<div class="reserve-list" data-index="' + i +
-                    '" data-id="' + reserveDate +
-                    '"><div class="reserve-title">' + 
-                    new Date(reserveDate).toLocaleDateString(browserLanguage, { year: 'numeric', month: 'long', day: 'numeric' }) +
-                    '</div><div class="reserve-content" style="display:none;"></div><div class="reserve-null">' + langStr['str_099'] + '</div></div>';
+            //获取所有预约日期
+            var reserveArr = [];
+            for (var i in reserveList) {
+                reserveArr.push(i);
             }
+            reserveArr.sort();
 
-            $("#reserveContent").html('').append(content);
+            //判断是否有预约，有则正常显示，无则隐藏carousel
+            if (reserveArr.length > 0) {
+                //1. 获取预约的最后一天及时间戳
+                var lastDate = reserveArr[reserveArr.length - 1];
+                var lastStamp = new Date(lastDate.split('-').join('/')).getTime();
 
-            //2.遍历html和当天所有预约
-            $.each($(".reserve-list"), function (index, item) {
-                for (var i in reserveList) {
-                    if ($(item).attr("data-id") == i) {
-                        var content = '';
-                        for (var j = 0; j < reserveList[i].length; j++) {
-                            content += '<div class="reserve-li"><div class="reserve-li-time"><div class="reserve-start">' +
-                                reserveList[i][j].ReserveBeginTime +
-                                '</div><div class="reserve-end">' +
-                                reserveList[i][j].ReserveEndTime +
-                                '</div></div><div class="reserve-li-item">' +
-                                reserveList[i][j].item +
-                                '</div></div>';
+                //2. 计算当月第一天的时间戳
+                var year = new Date().getFullYear().toString();
+                var month = new Date().getMonth() + 1 < 10 ? '0' + (new Date().getMonth() + 1).toString() : (new Date().getMonth() + 1).toString();
+                var firstDate = year + '/' + month + '/01';
+                var firstStamp = new Date(firstDate).getTime();
+
+                //3. 获取当天的时间戳
+                var todayDate = new Date().yyyymmdd('/');
+                var todayStamp = new Date(todayDate).getTime();
+
+                //4. 判断最后一天时间戳和当天时间戳
+                var reserveLength = 0;
+                if (todayStamp < lastStamp) {
+                    reserveLength = (lastStamp - firstStamp) / 1000 / 60 / 60 / 24 + 1;
+                } else {
+                    reserveLength = (todayStamp - firstStamp) / 1000 / 60 / 60 / 24 + 1;
+                }
+
+                //5. 根据数量动态设置容器宽度
+                var marginWidth = 3.71;
+                var itemWidth = 85.16;
+                var containerWidth = (marginWidth + itemWidth) * reserveLength + marginWidth;
+                $('#reserveContent').css('width', containerWidth.toString() + 'vw');
+
+                //6. 按照日期生成reserve html
+                reserveDateList = getAfterDate(firstDate.split('/').join(''), reserveLength);
+                var content = "";
+                for (var i in reserveDateList) {
+                    var reserveDate = formateReserveDate(reserveDateList[i], '-');
+                    content += '<div class="reserve-list" data-index="' + i +
+                        '" data-id="' + reserveDate +
+                        '"><div class="reserve-title">' +
+                        new Date(reserveDate).toLocaleDateString(browserLanguage, { year: 'numeric', month: 'long', day: 'numeric' }) +
+                        '</div><div class="reserve-content" style="display:none;"></div><div class="reserve-null">' + langStr['str_099'] + '</div></div>';
+                }
+
+                $("#reserveContent").html('').append(content);
+
+                //7. 遍历html和当天所有预约
+                $.each($(".reserve-list"), function (index, item) {
+                    for (var i in reserveList) {
+                        if ($(item).attr("data-id") == i) {
+                            var content = '';
+                            for (var j = 0; j < reserveList[i].length; j++) {
+                                content += '<div class="reserve-li"><div class="reserve-li-time"><div class="reserve-start">' +
+                                    reserveList[i][j].ReserveBeginTime +
+                                    '</div><div class="reserve-end">' +
+                                    reserveList[i][j].ReserveEndTime +
+                                    '</div></div><div class="reserve-li-item">' +
+                                    reserveList[i][j].item +
+                                    '</div></div>';
+                            }
+                            $(item).children(".reserve-content").append(content);
+                            $(item).children(".reserve-null").hide();
+                            $(item).children(".reserve-content").show();
                         }
-                        $(item).children(".reserve-content").append(content);
-                        $(item).children(".reserve-null").hide();
-                        $(item).children(".reserve-content").show();
+                    }
+                });
+
+                //8. 记录每日预约轮播的位置
+                if (reservePositionList.length == 0) {
+                    for (var i in reserveDateList) {
+                        var x = $(".reserve-list[data-index=" + i + "]").offset().left;
+                        reservePositionList.push(x);
                     }
                 }
-            });
 
-            //3.记录每日预约轮播的位置
-            if (reservePositionList.length == 0) {
-                for (var i in reserveDateList) {
-                    var x = $(".reserve-list[data-index=" + i + "]").offset().left;
-                    reservePositionList.push(x);
-                }
+                //9. 跳转到当天carousel
+                var day = new Date().getDate();
+                $("#myReserveList").scrollLeft(0).scrollLeft(reservePositionList[day - 1] - scrollLeftOffset(3.71));
+
+            } else {
+                //如果没有任何预约,carousel隐藏
+                $('#myReserve').hide();
             }
-
         }
 
         /**
@@ -251,12 +295,34 @@ $("#viewMyCalendar").pagecontainer({
         //点击有预约的日期，显示预约详情
         $("#myCalendar").on("click", "td", function () {
             var dateId = $(this).attr("id");
+            //console.log($('.reserve-list[data-id="' + dateId + '"]').length);
 
-            for (var i in reserveDateList) {
-                if (dateId == formateReserveDate(reserveDateList[i], '-')) {
-                    $("#myReserve").show();
-                    $("#myReserveList").scrollLeft(0).scrollLeft(reservePositionList[i] - scrollLeftOffset(3.71));
+            if ($('.reserve-list[data-id="' + dateId + '"]').length > 0) {
+                for (var i in reserveDateList) {
+                    if (dateId == formateReserveDate(reserveDateList[i], '-')) {
+                        $("#myReserve").show();
+                        $("#myReserveList").scrollLeft(0).scrollLeft(reservePositionList[i] - scrollLeftOffset(3.71));
+                    }
                 }
+            } else {
+                $("#noReserve").fadeIn(100).delay(500).fadeOut(100);
+            }
+        });
+
+        //滑动切换月份
+        var x;
+        var change;
+        $('#myCalendar').on('touchstart', function (event) {
+            x = event.originalEvent.targetTouches[0].pageX;
+
+        }).on('touchmove', function (event) {
+            change = event.originalEvent.targetTouches[0].pageX - x;
+
+        }).on('touchend', function (event) {
+            if (change > 0 && Math.abs(change) > 150) {
+                $('.QPlayCalendar-navPrev').trigger('click');
+            } else if (change < 0 && Math.abs(change) > 150) {
+                $('.QPlayCalendar-navNext').trigger('click');
             }
         });
 
