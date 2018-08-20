@@ -1,5 +1,5 @@
 $("#viewAppSetting").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
         //注销
         function doLogOut() {
@@ -8,7 +8,7 @@ $("#viewAppSetting").pagecontainer({
             //need User AD Account
             var queryStr = "&domain=" + loginData.domain + "&loginid=" + loginData.loginid;
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 var resultcode = data['result_code'];
 
                 if (resultcode == 1) {
@@ -72,9 +72,9 @@ $("#viewAppSetting").pagecontainer({
                 }
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 QPlayAPI("POST", "logout", self.successCallback, self.failCallback, null, queryStr);
             }();
         }
@@ -83,7 +83,7 @@ $("#viewAppSetting").pagecontainer({
         function uploadFile(queryData) {
             var self = this;
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 console.log(data);
 
                 if (data['ResultCode'] == '1') {
@@ -103,11 +103,11 @@ $("#viewAppSetting").pagecontainer({
 
             };
 
-            this.failCallback = function (data) {
+            this.failCallback = function(data) {
                 $("#uploadFail").fadeIn(100).delay(2000).fadeOut(100);
             };
 
-            var __construct = function () {
+            var __construct = function() {
                 QStorageAPI("POST", true, "portrait", self.successCallback, self.failCallback, queryData, null);
             }();
         }
@@ -119,7 +119,8 @@ $("#viewAppSetting").pagecontainer({
             var arr = dataurl.split(','),
                 mime = arr[0].match(/:(.*?);/)[1],
                 bstr = atob(arr[1]),
-                n = bstr.length, u8arr = new Uint8Array(n);
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
             while (n--) {
                 u8arr[n] = bstr.charCodeAt(n);
             }
@@ -143,42 +144,32 @@ $("#viewAppSetting").pagecontainer({
             var url = 'https://bqgroupstorage' + env + '.blob.core.windows.net/appqplay' + env +
                 '-portrait/' + loginData.emp_no + '/' + loginData.emp_no + '_1024.png?v=' + timeStamp;
 
-            $.get(url).success(function () {
+            $.get(url).success(function() {
                 $target.attr('src', url);
             });
         }
 
-        var clearSuccess = function (status) {
+        var clearSuccess = function(status) {
             console.log('Message: ' + status);
-            
+
             //1. 成功提示
             $("#clearSuccess").fadeIn(100).delay(2000).fadeOut(100);
 
-            //2. clear localstorage
-            var env = '';
-            if (loginData["versionName"].indexOf("Staging") !== -1) {
-                env = 'test';
-            } else if (loginData["versionName"].indexOf("Development") !== -1) {
-                env = 'dev';
-            }
-
-            window.localStorage.removeItem('apprrs' + env);
-            window.localStorage.removeItem('appmassage' + env);
-            window.localStorage.removeItem('appparking' + env);
-            window.localStorage.removeItem('apprelieve' + env);
+            //2. clear widget
+            widget.clear();
 
         }
 
-        var clearError = function (status) {
+        var clearError = function(status) {
             console.log('Error: ' + status);
         }
 
         /********************************** page event ***********************************/
-        $("#viewAppSetting").on("pagebeforeshow", function (event, ui) {
+        $("#viewAppSetting").on("pagebeforeshow", function(event, ui) {
 
         });
 
-        $("#viewAppSetting").one("pageshow", function (event, ui) {
+        $("#viewAppSetting").one("pageshow", function(event, ui) {
             //user name
             $('.name-user').text(loginData['loginid']);
 
@@ -186,67 +177,67 @@ $("#viewAppSetting").pagecontainer({
             checkPhotoUpload($('#myPhoto'));
         });
 
-        $("#viewAppSetting").on("pageshow", function (event, ui) {
+        $("#viewAppSetting").on("pageshow", function(event, ui) {
 
         });
 
-        $("#viewAppSetting").on("pagehide", function (event, ui) {
+        $("#viewAppSetting").on("pagehide", function(event, ui) {
 
         });
 
 
         /********************************** dom event *************************************/
         //头像选择
-        $('.photo-default').on('click', function () {
+        $('.photo-default').on('click', function() {
             $('.setting-mask').show();
         });
 
         //一般设定
-        $('.normal-setting').on('click', function () {
+        $('.normal-setting').on('click', function() {
             checkAppPage('viewGeneralSetting');
         });
 
         //QPlay版本记录
-        $('.qplay-version').on('click', function () {
+        $('.qplay-version').on('click', function() {
             versionFrom = true;
             checkAppPage('viewVersionRecord');
         });
 
         //我要评论
-        $('.want-comment').on('click', function () {
+        $('.want-comment').on('click', function() {
             checkAppPage('viewMyEvaluation');
         });
 
         //清理缓存
-        $('.clear-cache').on('click', function () {
+        $('.clear-cache').on('click', function() {
             window.CacheClear(clearSuccess, clearError);
 
         });
 
         //注销
-        $("#logout").on("click", function () {
+        $("#logout").on("click", function() {
             $('#confirmLogout').popup('open');
         });
 
         //确定注销
-        $("#logoutConfirm").on("click", function () {
+        $("#logoutConfirm").on("click", function() {
             $('#confirmLogout').popup('close');
             loadingMask("show");
             var logout = new doLogOut();
         });
 
         //取消注销
-        $("#logoutCancel").on("click", function () {
+        $("#logoutCancel").on("click", function() {
             $('#confirmLogout').popup('close');
         });
 
         //取消头像
-        $('.cancel-choose').on('click', function () {
+        $('.cancel-choose').on('click', function() {
             $('.setting-mask').hide();
         });
 
         //相机
-        $('.choose-camera').on('click', function () {
+        $('.choose-camera').on('click', function() {
             $('.setting-mask').hide();
 
             navigator.camera.getPicture(onSuccess, onFail, {
@@ -284,7 +275,7 @@ $("#viewAppSetting").pagecontainer({
         });
 
         //图库
-        $('.choose-picture').on('click', function () {
+        $('.choose-picture').on('click', function() {
             $('.setting-mask').hide();
 
             navigator.camera.getPicture(onSuccess, onFail, {
