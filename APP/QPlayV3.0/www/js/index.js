@@ -114,17 +114,17 @@ function checkWidgetListOrder() {
     var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
 
     if (widgetArr == null) {
-        window.localStorage.setItem('widgetList', JSON.stringify(widgetList));
+        window.localStorage.setItem('widgetList', JSON.stringify(widget.list()));
 
     } else {
         //1. check add
-        for (var i = 0; i < widgetList.length; i++) {
+        for (var i = 0; i < widget.list().length; i++) {
             var found = false;
             var obj = {};
             for (var j = 0; j < widgetArr.length; j++) {
-                if (widgetList[i].id == widgetArr[j].id) {
+                if (widget.list()[i].id == widgetArr[j].id) {
                     found = true;
-                    obj = $.extend({}, widgetArr[j], widgetList[i]);
+                    obj = $.extend({}, widgetArr[j], widget.list()[i]);
                     break;
                 }
             }
@@ -132,15 +132,15 @@ function checkWidgetListOrder() {
             if (found) {
                 widgetArr.splice(j, 1, obj);
             } else {
-                widgetArr.push(widgetList[i]);
+                widgetArr.push(widget.list()[i]);
             }
         }
 
         //2. check delete
         for (var j = 0; j < widgetArr.length; j++) {
             var found = false;
-            for (var i = 0; i < widgetList.length; i++) {
-                if (widgetArr[j].id == widgetList[i].id) {
+            for (var i = 0; i < widget.list().length; i++) {
+                if (widgetArr[j].id == widget.list()[i].id) {
                     found = true;
                     break;
                 }
@@ -668,6 +668,8 @@ function appListPageBeforShow() {
         $('.app-no-download').hide();
     }
 }
+
+
 
 //[Android]Handle the back button
 function onBackKeyDown() {

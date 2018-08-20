@@ -1017,6 +1017,7 @@ input[type=radio]:checked + label {
 
 .download-title {
     padding: 6.422vw 3.71vw 2.5vw;
+    font-size: 3.349vw !important;
     color: #0f0f0f;
     background: #edecec;
 }
@@ -1200,7 +1201,7 @@ input[type=radio]:checked + label {
 
 #reserveContent {
     /*（3.71+85.16）*30+3.71=2669.81 */
-    width: 2670vw;
+    /* width: 2670vw; */
     height: 100%;
 }
 

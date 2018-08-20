@@ -525,7 +525,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         $("#viewMessageList").one("pageshow", function (event, ui) {
-            //filter placeholder多语言设置
+            //filter placeholder
             $('#msgFilter').attr('placeholder', langStr['str_080']);
 
             createMessageByType();

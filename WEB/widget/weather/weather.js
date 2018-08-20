@@ -34,7 +34,7 @@
             $(".high-temp").text(high);
             $(".low-temp").text(low);
             $(".loca-city").text(city);
-            $(".loca-region").text(region);
+            //$(".loca-region").text(region);
             $(".loca-text").text(wea);
             $('.weather-img').html('').append(img);
         });
