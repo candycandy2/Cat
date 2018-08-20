@@ -155,18 +155,8 @@ $("#viewAppSetting").pagecontainer({
             //1. 成功提示
             $("#clearSuccess").fadeIn(100).delay(2000).fadeOut(100);
 
-            //2. clear localstorage
-            var env = '';
-            if (loginData["versionName"].indexOf("Staging") !== -1) {
-                env = 'test';
-            } else if (loginData["versionName"].indexOf("Development") !== -1) {
-                env = 'dev';
-            }
-
-            window.localStorage.removeItem('apprrs' + env);
-            window.localStorage.removeItem('appmassage' + env);
-            window.localStorage.removeItem('appparking' + env);
-            window.localStorage.removeItem('apprelieve' + env);
+            //2. clear widget
+            widget.clear();
 
         }
 
