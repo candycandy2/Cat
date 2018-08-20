@@ -124,5 +124,18 @@ var reserveWidget = {
         $.fn.reserve.defaults = {}
 
         $('.reserveWidget').reserve();
+    },
+    clear: function() {
+        var env = '';
+        if (loginData["versionName"].indexOf("Staging") !== -1) {
+            env = 'test';
+        } else if (loginData["versionName"].indexOf("Development") !== -1) {
+            env = 'dev';
+        }
+
+        window.localStorage.removeItem('apprrs' + env);
+        window.localStorage.removeItem('appmassage' + env);
+        window.localStorage.removeItem('appparking' + env);
+        window.localStorage.removeItem('apprelieve' + env);
     }
 };
