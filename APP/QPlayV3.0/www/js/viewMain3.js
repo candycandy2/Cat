@@ -70,19 +70,22 @@ $("#viewMain3").pagecontainer({
             var checkWidgetFinish = setInterval(function () {
                 var childrenLength = $('#widgetList').children('div').length;
                 if (enabledLength == childrenLength) {
-                    var mainHeight = $('.main-scroll > div').height();
-                    var headHeight = $('#viewMain3 .page-header').height();
-                    var totalHeight;
-
-                    if (device.platform === "iOS") {
-                        totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
-                        $('.main-scroll > div').css('height', totalHeight + 'px');
-                    } else {
-                        totalHeight = (mainHeight + headHeight + 2).toString();
-                        $('.main-scroll > div').css('height', totalHeight + 'px');
-                    }
-
                     clearInterval(checkWidgetFinish);
+
+                    setTimeout(function () {
+                        var mainHeight = $('.main-scroll > div').height();
+                        var headHeight = $('#viewMain3 .page-header').height();
+                        var totalHeight;
+
+                        if (device.platform === "iOS") {
+                            totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+                            $('.main-scroll > div').css('height', totalHeight + 'px');
+                        } else {
+                            totalHeight = (mainHeight + headHeight + 2).toString();
+                            $('.main-scroll > div').css('height', totalHeight + 'px');
+                        }
+
+                    }, 2000);
                 }
             }, 2000);
 
