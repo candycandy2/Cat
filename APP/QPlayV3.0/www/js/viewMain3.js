@@ -3,43 +3,12 @@ $("#viewMain3").pagecontainer({
 
         var widgetArr = null;
 
-        var loadAndRunScript = function (index) {
-            //1. 条件判断
-            if (index >= widgetArr.length) {
-                return;
-            } else {
-                if (!widgetArr[index].enabled) {
-                    loadAndRunScript(index + 1);
-                    return;
-                }
-            }
-
-            //2. widget
-            var widgetItem = widgetArr[index].name + "Widget";
-
-            //3. container
-            var contentItem = $('<div class="' + widgetItem + '"></div>');
-            $('#widgetList').append(contentItem);
-
-            //4. sessionStorage
-            sessionStorage.setItem('widgetItem', widgetItem);
-
-            //5. load js
-            $.getScript(serverURL + "/widget/" + widgetArr[index].name + "/" + widgetArr[index].name + ".js")
-                .done(function (script, textStatus) {
-                    loadAndRunScript(index + 1);
-                })
-                .fail(function (jqxhr, settings, exception) {
-                    console.log("Triggered ajaxError handler.");
-                });
-        };
-
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
             //1. localstorage
             widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
             //2. load widget
-            loadAndRunScript(0);
+            widget.init($('#widgetList'));
             //3. get message
             if (!callGetMessageList && loginData["msgDateFrom"] === null) {
                 msgDateFromType = 'month';
