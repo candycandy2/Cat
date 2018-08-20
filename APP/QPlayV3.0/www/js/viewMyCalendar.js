@@ -15,7 +15,7 @@ $("#viewMyCalendar").pagecontainer({
             reserveCalendar = new Calendar({
                 renderTo: "#viewMyCalendar #myCalendar",
                 id: "reserveCalendar",
-                language: "default",
+                language: getCalendarLanguage(browserLanguage),
                 show_days: true,
                 weekstartson: 0,
                 markToday: true,
@@ -32,6 +32,14 @@ $("#viewMyCalendar").pagecontainer({
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
                 }
             });
+        }
+
+        function getCalendarLanguage(language) {
+            if(language == 'en-us') {
+                return 'en';
+            } else {
+                return 'default';
+            }
         }
 
         function createReserveCarousel() {
@@ -58,9 +66,9 @@ $("#viewMyCalendar").pagecontainer({
             $.each($(".reserve-list"), function (index, item) {
                 for (var i in reserveList) {
                     if ($(item).attr("data-id") == i) {
-                        var content = '';
+                        var detailContent = '';
                         for (var j = 0; j < reserveList[i].length; j++) {
-                            content += '<div class="reserve-li"><div class="reserve-li-time"><div class="reserve-start">' +
+                            detailContent += '<div class="reserve-li"><div class="reserve-li-time"><div class="reserve-start">' +
                                 reserveList[i][j].ReserveBeginTime +
                                 '</div><div class="reserve-end">' +
                                 reserveList[i][j].ReserveEndTime +
@@ -68,7 +76,7 @@ $("#viewMyCalendar").pagecontainer({
                                 reserveList[i][j].item +
                                 '</div></div>';
                         }
-                        $(item).children(".reserve-content").append(content);
+                        $(item).children(".reserve-content").append(detailContent);
                         $(item).children(".reserve-null").hide();
                         $(item).children(".reserve-content").show();
                     }
@@ -371,24 +379,16 @@ $("#viewMyCalendar").pagecontainer({
 
             //if ($('.reserve-list[data-id="' + dateId + '"]').length > 0) {
             if ($(this).hasClass('reserveDay')) {
-                // for (var i in reserveDateList) {
-                //     if (dateId == formateReserveDate(reserveDateList[i], '-')) {
-                //         $("#myReserve").show();
-                //         $("#myReserveList").scrollLeft(0).scrollLeft(reservePositionList[i] - scrollLeftOffset(3.71));
-                //     }
-                // }
                 $.each($(".reserve-list"), function (index, item) {
                     if(dateId == $(item).attr("data-id")) {
                         $("#myReserve").show();
                         $("#myReserveList").scrollLeft(0).scrollLeft(reservePositionList[index] - scrollLeftOffset(3.71));
+                        return false;
                     }
                 });
             } else {
                 $("#noReserve").fadeIn(100).delay(500).fadeOut(100);
             }
-
-            // var index = $('#reserveCalendar td').index();
-            // console.log(index);
         });
 
         //滑动切换月份

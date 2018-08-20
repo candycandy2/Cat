@@ -49,6 +49,7 @@ function Calendar(options) {
 
     $calendarElement.data('initYear', opts.year);
     $calendarElement.data('initMonth', opts.month);
+    $calendarElement.data('language', opts.language);
     $calendarElement.data('monthLabels', opts.month_labels);
     $calendarElement.data('weekStartsOn', opts.weekstartson);
     $calendarElement.data('navIcons', opts.nav_icon);
@@ -202,8 +203,10 @@ function Calendar(options) {
     function prependMonthHeader($calendarElement, $tableObj, year, month) {
         var navIcons = $calendarElement.data('navIcons');
         //var monthLabels = $calendarElement.data('monthLabels');
-        //var $currMonthLabel = $('<span>' + monthLabels[month] + ' ' + year + '</span>');
-        var $currMonthLabel = $('<span>' + year + '年' + parseInt(month + 1) + '月' + '</span>');
+        var language = $calendarElement.data('language');
+        var monthStr = year.toString() + '-' + (month + 1).toString();
+        var monthLabel = new Date(monthStr).toLocaleDateString(language, { year: 'numeric', month: 'long' });
+        var $currMonthLabel = $('<span>' + monthLabel + '</span>');
         $currMonthLabel.dblclick(function () {
             var dateInitObj = $calendarElement.data('initDate');
             drawTable($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
@@ -247,7 +250,9 @@ function Calendar(options) {
                     drawTable($calendarElement, $tableObj, _year, _month);
                     $("#" + _id + " #right-navigation").css("opacity", "100");
                     //$("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
-                    $("#" + _id + " #dateTitle span").html(_year + '年' + parseInt(_month + 1) + '月');
+                    var monthPrevStr = _year.toString() + '-' + (_month + 1).toString();
+                    var monthPrevLabel = new Date(monthPrevStr).toLocaleDateString(language, { year: 'numeric', month: 'long' });
+                    $("#" + _id + " #dateTitle span").text(monthPrevLabel);
                     if (_month == 0 && (_year + 1 == _nextyear || $calendarElement.data("showNextyear") == false)) {
                         $("#" + _id + " #left-navigation").css("opacity", "0");
                     }
@@ -294,7 +299,9 @@ function Calendar(options) {
                     drawTable($calendarElement, $tableObj, _year, _month);
                     $("#" + _id + " #left-navigation").css("opacity", "100");
                     //$("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
-                    $("#" + _id + " #dateTitle span").html(_year + '年' + parseInt(_month + 1) + '月');
+                    var monthNextStr = _year.toString() + '-' + (_month + 1).toString();
+                    var monthNextLabel = new Date(monthNextStr).toLocaleDateString(language, { year: 'numeric', month: 'long' });
+                    $("#" + _id + " #dateTitle span").text(monthNextLabel);
                     if (_month == 11 && (_year == _nextyear || $calendarElement.data("showNextyear") == false)) {
                         $("#" + _id + " #right-navigation").css("opacity", "0");
                     }
@@ -627,9 +634,9 @@ function Calendar(options) {
             for (var i in _reserveData) {
                 if ($(item).attr("id") == i) {
                     $(item).addClass("reserveDay");
-                    for(var j = 0; j < _reserveData[i].length; j++) {
+                    for (var j = 0; j < _reserveData[i].length; j++) {
                         var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '</div>');;
-                        if(j > 3) {
+                        if (j > 3) {
                             $reserveObj.addClass('hidden-str');
                         }
                         $(item).append($reserveObj);
