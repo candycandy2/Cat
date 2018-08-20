@@ -201,7 +201,7 @@ function Calendar(options) {
 
     function prependMonthHeader($calendarElement, $tableObj, year, month) {
         var navIcons = $calendarElement.data('navIcons');
-        var monthLabels = $calendarElement.data('monthLabels');
+        //var monthLabels = $calendarElement.data('monthLabels');
         //var $currMonthLabel = $('<span>' + monthLabels[month] + ' ' + year + '</span>');
         var $currMonthLabel = $('<span>' + year + '年' + parseInt(month + 1) + '月' + '</span>');
         $currMonthLabel.dblclick(function () {
@@ -383,7 +383,7 @@ function Calendar(options) {
                 if (dow < firstDow) {
                     var $dowElement = $("<td></td>");
                     var lastDay = prevMonthLastDay(year, month, firstDow, dow);
-                    var $dayElement = $('<div class="otherDay" >' + lastDay + '</div>');
+                    var $dayElement = $('<div class="otherMonth" >' + lastDay + '</div>');
                     var dateId = dateAsString(year, month - 1, lastDay);
                     $dowElement.attr("id", dateId);
                     $dowElement.append($dayElement);
@@ -392,7 +392,7 @@ function Calendar(options) {
                 } else if (currDayOfMonth > lastDayinMonth) {
                     var $dowElement = $("<td></td>");
                     var firstDay = currDayOfMonth - lastDayinMonth;
-                    var $dayElement = $('<div class="otherDay" >' + firstDay + '</div>');
+                    var $dayElement = $('<div class="otherMonth" >' + firstDay + '</div>');
                     var dateId = dateAsString(year, month + 1, firstDay);
                     $dowElement.attr("id", dateId);
                     $dowElement.append($dayElement);
@@ -626,6 +626,7 @@ function Calendar(options) {
         $.each($("#" + _id + " td"), function (index, item) {
             for (var i in _reserveData) {
                 if ($(item).attr("id") == i) {
+                    $(item).addClass("reserveDay");
                     for(var j = 0; j < _reserveData[i].length; j++) {
                         var $reserveObj = $('<div class="reserve-str">' + _reserveData[i][j]["item"] + '</div>');;
                         if(j > 3) {

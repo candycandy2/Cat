@@ -107,10 +107,6 @@ window.initialSuccess = function (data) {
 
 //检查widgetlist顺序
 function checkWidgetListOrder() {
-    window.localStorage.removeItem('generalSetting');
-    window.localStorage.removeItem('updateGeneral');
-    window.localStorage.removeItem('widgetLastModified');
-
     var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
 
     if (widgetArr == null) {

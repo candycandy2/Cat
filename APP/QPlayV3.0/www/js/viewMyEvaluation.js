@@ -93,5 +93,22 @@ $("#viewMyEvaluation").pagecontainer({
             //console.log('blur');
         });
 
+        $('.comment-text textarea').on('focusin', function () {
+            //console.log('focusin');
+            if(device.platform === "iOS") {
+                $('#viewMyEvaluation .page-header').css('position', 'relative');
+                $('#viewMyEvaluation').css('overflow', 'hidden');
+            }
+            
+        });
+
+        $('.comment-text textarea').on('focusout', function () {
+            //console.log('focusout');
+            if(device.platform === "iOS") {
+                $('#viewMyEvaluation .page-header').css('position', 'fixed');
+                $('#viewMyEvaluation').css('overflow', 'visible');
+            }
+        });
+
     }
 });
