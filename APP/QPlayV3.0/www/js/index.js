@@ -28,10 +28,10 @@ var messagecontent,
     msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 
 //viewMain3
-var addAppToList = true;
 
 //viewAppList
 var favoriteList = null,
+    appCheckFinish = false,
     alreadyDownloadList = [],
     notDownloadList = [],
     tempVersionArrData,
@@ -445,6 +445,10 @@ function checkAppCallback(downloaded, index) {
     } else {
         notDownloadList.push(index);
     }
+
+    if(index == applist.length - 1) {
+        appCheckFinish = true;
+    }
 }
 
 function checkAppVersionCallback(oldVersionExist) {
@@ -649,23 +653,9 @@ function getVersionRecord(key) {
 
 function pageBeforeShow(pageID) {
     if (pageID == 'viewAppList') {
-        appListPageBeforShow();
+        
     }
 }
-
-function appListPageBeforShow() {
-    if (addAppToList && alreadyDownloadList.length == 0) {
-        $('#viewAppList .q-btn-header img').attr('src', 'img/close.png');
-        $('.app-no-download').show();
-        $('.app-scroll').hide();
-    } else {
-        $('#viewAppList .q-btn-header img').attr('src', 'img/component/back_nav.png');
-        $('.app-scroll').show();
-        $('.app-no-download').hide();
-    }
-}
-
-
 
 //[Android]Handle the back button
 function onBackKeyDown() {

@@ -179,29 +179,42 @@ $("#viewAppList").pagecontainer({
             }
         }
 
+        function setAppListHeight() {
+            var mainHeight = $('.app-scroll > div').height();
+            var headHeight = $('#viewAppList .page-header').height();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (mainHeight + headHeight).toString();
+            }
+            $('.app-scroll > div').css('height', totalHeight + 'px');
+        }
+
         /********************************** page event ***********************************/
         $("#viewAppList").on("pagebeforeshow", function (event, ui) {
-            appListPageBeforShow();
+
         });
 
         $("#viewAppList").one("pageshow", function (event, ui) {
-            //create content
-            createAppListContent();
+            loadingMask("show");
+
+            var checkAppListData = setInterval(function () {
+                if (appCheckFinish) {
+                    loadingMask("hide");
+                    //clear interval
+                    clearInterval(checkAppListData);
+                    //create content
+                    createAppListContent();
+                    //set hieght
+                    setAppListHeight();
+                }
+            }, 1000);
+
         });
 
         $("#viewAppList").on("pageshow", function (event, ui) {
-            //setHeight
-            if (!addAppToList || alreadyDownloadList.length > 0) { 
-                var mainHeight = $('.app-scroll > div').height();
-                var headHeight = $('#viewAppList .page-header').height();
-                var totalHeight;
-                if (device.platform === "iOS") {
-                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
-                } else {
-                    totalHeight = (mainHeight + headHeight).toString();
-                }
-                $('.app-scroll > div').css('height', totalHeight + 'px');
-            }
+
         });
 
         $("#viewAppList").on("pagehide", function (event, ui) {
