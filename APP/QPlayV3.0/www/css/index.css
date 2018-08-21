@@ -989,6 +989,22 @@ input[type=radio]:checked + label {
     margin-top: 4.5vw;
 }
 
+/*************************** viewNoneInstall ********************************/
+#viewNoneInstall .ui-content {
+    padding: 0 !important;
+}
+
+.app-no-download {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;  
+    text-align: center;
+    padding-top: 35vh;
+    background: #EDECEC;
+    color: #8fa4ac;
+    font-size: 4.18vw;
+}
+
 /*************************** viewAppList ********************************/
 #viewAppList .ui-content {
     padding: 0 !important;
@@ -1001,18 +1017,6 @@ input[type=radio]:checked + label {
     overflow-y: scroll;
     /* overflow-x: hidden; */
     -webkit-overflow-scrolling: touch;
-}
-
-.app-no-download {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;  
-    text-align: center;
-    padding-top: 35vh;
-    background: #EDECEC;
-    color: #8fa4ac;
-    font-size: 4.18vw;
-    display: none;
 }
 
 .download-title {
@@ -1768,6 +1772,7 @@ input[type=radio]:checked + label {
 .comment-text {
     width: 100%;
     height: 75vh;
+    overflow: hidden;
 }
 
 .comment-text textarea {

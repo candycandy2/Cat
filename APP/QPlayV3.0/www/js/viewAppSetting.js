@@ -211,7 +211,6 @@ $("#viewAppSetting").pagecontainer({
         //清理缓存
         $('.clear-cache').on('click', function() {
             window.CacheClear(clearSuccess, clearError);
-
         });
 
         //注销
