@@ -794,8 +794,8 @@ function calendar_defaults() {
  * @returns {{month_labels: Array, dow_labels: Array}}
  */
 function calendar_language(lang) {
-    if (typeof (lang) == 'undefined' || lang === false) {
-        lang = 'default';
+    if (typeof (lang) == 'undefined' || lang === false || lang === 'default') {
+        lang = 'zh';
     }
 
     switch (lang.toLowerCase()) {
@@ -807,7 +807,7 @@ function calendar_language(lang) {
             };
             break;
 
-        case 'default':
+        case 'zh':
             return {
                 month_labels: ["Jan.", "Feb.", "Mar.", "Apr.", "May.", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."],
                 dow_labels: ["一", "二", "三", "四", "五", "六", "日"]

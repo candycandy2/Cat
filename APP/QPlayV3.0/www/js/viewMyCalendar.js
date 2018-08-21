@@ -38,7 +38,7 @@ $("#viewMyCalendar").pagecontainer({
             if(language == 'en-us') {
                 return 'en';
             } else {
-                return 'default';
+                return 'zh';
             }
         }
 

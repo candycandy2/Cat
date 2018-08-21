@@ -3,13 +3,25 @@ $("#viewMain3").pagecontainer({
 
         var widgetArr = null;
 
+        function orderWidget() {
+            var widgetListDirty = window.sessionStorage.getItem('widgetListDirty');
+
+            if (widgetListDirty == 'Y' || widgetListDirty == null) {
+
+                var arr = JSON.parse(window.localStorage.getItem('widgetList'));
+                for (var i = 0; i < arr.length - 1; i++) {
+                    $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
+                }
+                window.sessionStorage.setItem('widgetListDirty', 'N');
+            }
+        }
+
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function(event, ui) {
             //1. localstorage
             widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
             //2. load widget
             widget.init($('#widgetList'));
-            window.localStorage.setItem('widgetListDirty', true);
             //3. get message
             if (!callGetMessageList && loginData["msgDateFrom"] === null) {
                 msgDateFromType = 'month';
@@ -22,7 +34,6 @@ $("#viewMain3").pagecontainer({
 
         $("#viewMain3").on("pagebeforeshow", function(event, ui) {
 
-            refresh();
         });
 
         $("#viewMain3").one("pageshow", function(event, ui) {
@@ -64,8 +75,7 @@ $("#viewMain3").pagecontainer({
 
 
         $("#viewMain3").on("pageshow", function(event, ui) {
-
-            refresh();
+            orderWidget();
         });
 
         $("#viewMain3").on("pagehide", function(event, ui) {
@@ -125,19 +135,6 @@ $("#viewMain3").pagecontainer({
         // });
 
 
-    },
-    refresh: function() {
-
-        var widgetListDirty = window.localStorage.getItem('widgetListDirty');
-
-        if (widgetListDirty) {
-
-            var arr = window.localStorage.getItem('widgetList');
-            for (var i = 0; i < arr.length - 1; i++) {
-                $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
-            }
-            window.localStorage.setItem('widgetListDirty', false);
-        }
     }
 
 });
