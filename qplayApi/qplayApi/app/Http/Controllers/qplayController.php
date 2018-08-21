@@ -509,17 +509,18 @@ class qplayController extends Controller
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ];
-        	//register to QMessage
-        	$QMessage_register_url = \Config::get('app.QMessage_Register_URL');
-        	if(!empty($QMessage_register_url)){
-           	 $qmessage_result = self::Register2QMessage($userInfo->login_id, $QMessage_register_url);
-            	CommonUtil::logApi("", "Register2Qmessage",
-                	response()->json(apache_response_headers()), $qmessage_result);
-            	//更新标志位
-            	\DB::table("qp_user")
-                	->where('login_id', '=', $userInfo->login_id)
-                	->update(['register_message'=>'Y']);
-        	}
+                /*20180821 Darren - Ignore to do [register QMessage]
+                //register to QMessage
+                $QMessage_register_url = \Config::get('app.QMessage_Register_URL');
+                if(!empty($QMessage_register_url)){
+                    $qmessage_result = self::Register2QMessage($userInfo->login_id, $QMessage_register_url);
+                    CommonUtil::logApi("", "Register2Qmessage", response()->json(apache_response_headers()), $qmessage_result);
+                    //更新标志位
+                    \DB::table("qp_user")
+                        ->where('login_id', '=', $userInfo->login_id)
+                        ->update(['register_message'=>'Y']);
+                }
+                */
         	return response()->json($result);
             }
         }
