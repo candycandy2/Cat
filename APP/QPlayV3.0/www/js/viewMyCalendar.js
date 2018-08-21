@@ -3,17 +3,19 @@ $("#viewMyCalendar").pagecontainer({
 
         var reserveDateList = [],
             reservePositionList = [],
+            pageInitial = false,
             leaveAppData = {
                 key: 'appleave',
                 secretKey: '86883911af025422b626131ff932a4b5'
             }
+
 
         /********************************** function ***********************************/
         function initialCalendar(holidayData) {
             reserveCalendar = new Calendar({
                 renderTo: "#viewMyCalendar #myCalendar",
                 id: "reserveCalendar",
-                language: "default",
+                language: getCalendarLanguage(browserLanguage),
                 show_days: true,
                 weekstartson: 0,
                 markToday: true,
@@ -30,6 +32,83 @@ $("#viewMyCalendar").pagecontainer({
                     next: '<img src="img/next.png" id="right-navigation" class="nav_icon">'
                 }
             });
+        }
+
+        function getCalendarLanguage(language) {
+            if(language == 'en-us') {
+                return 'en';
+            } else {
+                return 'zh';
+            }
+        }
+
+        function createReserveCarousel() {
+            //1. content
+            var length = 0;
+            var content = '';
+            $.each($('#reserveCalendar td'), function (index, item) {
+                content += '<div class="reserve-list" data-index="' + index +
+                    '" data-id="' + $(item).attr('id') +
+                    '"><div class="reserve-title">' +
+                    new Date($(item).attr('id')).toLocaleDateString(browserLanguage, { year: 'numeric', month: 'long', day: 'numeric' }) +
+                    '</div><div class="reserve-content" style="display:none;"></div><div class="reserve-null">' + langStr['str_099'] + '</div></div>';
+                length++;
+            });
+
+            //2. width
+            var marginWidth = 3.71;
+            var itemWidth = 85.16;
+            var containerWidth = (marginWidth + itemWidth) * length + marginWidth;
+            $('#reserveContent').css('width', containerWidth.toString() + 'vw');
+            $("#reserveContent").html('').append(content);
+
+            //3. 遍历当天所有预约
+            $.each($(".reserve-list"), function (index, item) {
+                for (var i in reserveList) {
+                    if ($(item).attr("data-id") == i) {
+                        var detailContent = '';
+                        for (var j = 0; j < reserveList[i].length; j++) {
+                            detailContent += '<div class="reserve-li"><div class="reserve-li-time"><div class="reserve-start">' +
+                                reserveList[i][j].ReserveBeginTime +
+                                '</div><div class="reserve-end">' +
+                                reserveList[i][j].ReserveEndTime +
+                                '</div></div><div class="reserve-li-item">' +
+                                reserveList[i][j].item +
+                                '</div></div>';
+                        }
+                        $(item).children(".reserve-content").append(detailContent);
+                        $(item).children(".reserve-null").hide();
+                        $(item).children(".reserve-content").show();
+                    }
+                }
+            });
+
+            //4. position
+            $('#myReserve').addClass('opacity').show();
+            $("#myReserveList").scrollLeft(0);
+            reservePositionList = [];
+            var today = new Date().yyyymmdd("-");
+            var todayIndex = '';
+            $.each($(".reserve-list"), function (index, item) {
+                // save position
+                var x = $(item).offset().left;
+                reservePositionList.push(x);
+
+                // find today index
+                if(today == $(item).attr('data-id')) {
+                    todayIndex = index;
+                }
+            });
+
+            //9. scroll left
+            if(!pageInitial) {
+                $("#myReserveList").scrollLeft(reservePositionList[todayIndex] - scrollLeftOffset(marginWidth));
+                $('#myReserve').removeClass('opacity');
+                pageInitial = true;
+            } else {
+                $('#myReserve').hide().removeClass('opacity');
+            }
+
         }
 
         //按照日期生成预约htnl
@@ -57,7 +136,7 @@ $("#viewMyCalendar").pagecontainer({
                 var todayDate = new Date().yyyymmdd('/');
                 var todayStamp = new Date(todayDate).getTime();
 
-                //4. 判断最后一天时间戳和当天时间戳
+                //4. 判断最后一天时间戳和当天时间戳，以大的为结束日期
                 var reserveLength = 0;
                 if (todayStamp < lastStamp) {
                     reserveLength = (lastStamp - firstStamp) / 1000 / 60 / 60 / 24 + 1;
@@ -225,6 +304,8 @@ $("#viewMyCalendar").pagecontainer({
 
             this.failCallback = function (data) { };
 
+            createReserveCarousel();
+
             var __construct = function () {
                 CustomAPIByKey("POST", true, key, secret, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "", 15, "low");
             }();
@@ -245,7 +326,7 @@ $("#viewMyCalendar").pagecontainer({
             initialCalendar(data);
 
             //2. reserve carousel
-            createReserveDetail();
+            //createReserveDetail();
 
             //3. leave app
             var currentDate = new Date();
@@ -295,36 +376,37 @@ $("#viewMyCalendar").pagecontainer({
         //点击有预约的日期，显示预约详情
         $("#myCalendar").on("click", "td", function () {
             var dateId = $(this).attr("id");
-            //console.log($('.reserve-list[data-id="' + dateId + '"]').length);
 
-            if ($('.reserve-list[data-id="' + dateId + '"]').length > 0) {
-                for (var i in reserveDateList) {
-                    if (dateId == formateReserveDate(reserveDateList[i], '-')) {
+            //if ($('.reserve-list[data-id="' + dateId + '"]').length > 0) {
+            if ($(this).hasClass('reserveDay')) {
+                $.each($(".reserve-list"), function (index, item) {
+                    if(dateId == $(item).attr("data-id")) {
                         $("#myReserve").show();
-                        $("#myReserveList").scrollLeft(0).scrollLeft(reservePositionList[i] - scrollLeftOffset(3.71));
+                        $("#myReserveList").scrollLeft(0).scrollLeft(reservePositionList[index] - scrollLeftOffset(3.71));
+                        return false;
                     }
-                }
+                });
             } else {
                 $("#noReserve").fadeIn(100).delay(500).fadeOut(100);
             }
         });
 
         //滑动切换月份
-        var x;
-        var change;
-        $('#myCalendar').on('touchstart', function (event) {
-            x = event.originalEvent.targetTouches[0].pageX;
+        // var x;
+        // var change;
+        // $('#myCalendar').on('touchstart', function (event) {
+        //     x = event.originalEvent.targetTouches[0].pageX;
 
-        }).on('touchmove', function (event) {
-            change = event.originalEvent.targetTouches[0].pageX - x;
+        // }).on('touchmove', function (event) {
+        //     change = event.originalEvent.targetTouches[0].pageX - x;
 
-        }).on('touchend', function (event) {
-            if (change > 0 && Math.abs(change) > 150) {
-                $('.QPlayCalendar-navPrev').trigger('click');
-            } else if (change < 0 && Math.abs(change) > 150) {
-                $('.QPlayCalendar-navNext').trigger('click');
-            }
-        });
+        // }).on('touchend', function (event) {
+        //     if (change > 0 && Math.abs(change) > 150) {
+        //         $('.QPlayCalendar-navPrev').trigger('click');
+        //     } else if (change < 0 && Math.abs(change) > 150) {
+        //         $('.QPlayCalendar-navNext').trigger('click');
+        //     }
+        // });
 
     }
 });

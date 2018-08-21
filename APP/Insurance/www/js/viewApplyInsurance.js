@@ -268,7 +268,8 @@ $("#viewApplyInsurance").pagecontainer({
             if (nextPage == "addDetail") {  
                 $('.apply-insur-title').show();
                 $('.family-insur-title').hide();   
-                $('#backPersonalInsurance').show();
+                $('#backPersonalInsuranceFromApply').show();
+                $('#backPersonalInsuranceFromDetail').hide();
                 $('#viewInsurApplication').show();
                 $('#previewBtn').show();
                 $('#backWithdrawDetail').hide();
@@ -279,7 +280,8 @@ $("#viewApplyInsurance").pagecontainer({
             } else {                  
                 $('.family-insur-title').show();
                 $('.apply-insur-title').hide();
-                $('#backPersonalInsurance').show(); 
+                $('#backPersonalInsuranceFromDetail').show(); 
+                $('#backPersonalInsuranceFromApply').hide();
                 //加保/退保/停保/復保資訊 隱藏字串  
                 $('.new-insur-info').hide(); 
                 $('.withdraw-insur-info').hide(); 
@@ -341,14 +343,19 @@ $("#viewApplyInsurance").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        //返回到個人保險現況，彈窗popup
-        $("#backPersonalInsurance").on("click", function () {
+        //從保險申請頁面返回到個人保險現況，彈窗popup
+        $("#backPersonalInsuranceFromApply").on("click", function () {
             popupMsgInit('.confirmCancelApply');
+        });
+
+        //從保險明細返回到個人保險現況，
+        $("#backPersonalInsuranceFromDetail").on("click", function () {
+            $.mobile.changePage("#viewPersonalInsurance");
         });
 
         //返回到保險申請，彈窗popup
         $("#backApplyInsurance").on("click", function () {
-            $('#backPersonalInsurance').show();
+            $('#backPersonalInsuranceFromApply').show();
             $("#viewInsurApplication").show();
             $("#previewBtn").show();
             $('#backApplyInsurance').hide();
@@ -358,10 +365,9 @@ $("#viewApplyInsurance").pagecontainer({
         //返回到退保明細
         $('#backWithdrawDetail').on("click", function () {
             $('#backWithdrawDetail').hide();
-            $('#backApplyInsurance').hide();
             $("#viewInsurApplication").hide();
             $("#previewBtn").hide();
-            $('#backPersonalInsurance').show();      
+            $('#backPersonalInsuranceFromDetail').show();      
             $('.withdraw-insur-info').show();
             $('.new-insur-info').hide();     
             $("#viewPreviewApplication").show();
@@ -377,7 +383,7 @@ $("#viewApplyInsurance").pagecontainer({
                 $("#applyBtn").show();
                 $("#cancelBtn").hide(); 
                 $("#insurBtn").hide();
-                $('#backPersonalInsurance').hide();
+                $('#backPersonalInsuranceFromApply').hide();
                 $('#backWithdrawDetail').hide();
                 $("#viewInsurApplication").hide();
                 $("#previewBtn").hide();
@@ -399,7 +405,7 @@ $("#viewApplyInsurance").pagecontainer({
             $('.withdraw-insur-info').show();
             $("#viewInsurApplication").show();
             $("#previewBtn").show();
-            $('#backPersonalInsurance').hide();
+            $('#backPersonalInsuranceFromDetail').hide();
             $('#backApplyInsurance').hide();
             $("#viewPreviewApplication").hide();
             setDefaultStatus();

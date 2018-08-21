@@ -1,17 +1,11 @@
+
 var widget = {
-    clear: function() {
-
-        var env = '';
-        if (loginData["versionName"].indexOf("Staging") !== -1) {
-            env = 'test';
-        } else if (loginData["versionName"].indexOf("Development") !== -1) {
-            env = 'dev';
-        }
-
-        window.localStorage.removeItem('apprrs' + env);
-        window.localStorage.removeItem('appmassage' + env);
-        window.localStorage.removeItem('appparking' + env);
-        window.localStorage.removeItem('apprelieve' + env);
+    init: function(divItem) {
+        this.load(0, divItem)
+            .then(this.load(1, divItem))
+            .then(this.load(2, divItem))
+            .then(this.load(3, divItem))
+            .then(this.load(4, divItem));
     },
     list: function() {
         return [
@@ -21,5 +15,34 @@ var widget = {
             { id: 3, name: 'message', enabled: true, lang: langStr['wgt_004'] },
             { id: 4, name: 'applist', enabled: true, lang: langStr['wgt_005'] }
         ];
+    },
+    load: function(id, div) {
+
+        return new Promise((resolve, reject) => {
+
+            if (this.list()[id].enabled == true) {
+                //2. widget
+                var widgetItem = this.list()[id].name + "Widget";
+
+                //3. container
+                var contentItem = $('<div class="' + widgetItem + '"></div>');
+                div.append(contentItem);
+
+                $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
+                    .done(function(script, textStatus) {
+                        if (window[widgetItem] != null)
+                            window[widgetItem].init(contentItem);
+                    });
+            }
+        });
+    },
+    clear: function() {
+
+        $.each(this.list(), function(key, value) {
+            var widgetItem = value.name + "Widget";
+            if (window[widgetItem] != undefined && window[widgetItem].clear != undefined) {
+                window[widgetItem].clear();
+            }
+        });
     }
 };

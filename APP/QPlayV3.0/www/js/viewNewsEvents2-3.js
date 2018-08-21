@@ -230,36 +230,10 @@ $("#viewNewsEvents2-3").pagecontainer({
                     }
 
                     updateMessageList();
-                    /*
-                    //jQuery Mobile swipe setting
-                    $.event.special.swipe.scrollSupressionThreshold = (screen.availWidth) / 60;
-                    $.event.special.swipe.horizontalDistanceThreshold = (screen.availWidth) / 5;
-
-                    //Show Delete
-                    $('li.msg-index').on("swipeleft", function(){
-                        var i = this.getAttribute('value');
-                        $("#delIndex" + i).show();
-                    } );
-
-                    //Hide Delete
-                    $('li.msg-index').on("swipe", function(){
-                        var i = this.getAttribute('value');
-                        $("#delIndex" + i).hide();
-                    } );
-                    */
                 }
 
                 if (messagePageShow) {
                     loadingMask("hide");
-                }
-
-                //Call API Portal List
-                if (action === "auto") {
-                    //QueryPortalList("Announcement");
-                    //QueryPortalList("Communication");
-                    //QueryPortalList("CIP");
-                    //QueryPortalList("CSD");
-                    //QueryPortalList("ITS");
                 }
 
                 //review by alan
