@@ -223,7 +223,7 @@ class SyncUserService
                 ];
 
                 if ($resign === "Y") {
-                    $insertData["updated_at"] = $EHRData["dimission_date"];
+                    $insertData["deleted_at"] = $EHRData["dimission_date"];
                 }
 
                 $this->userSyncRepository->insertUserFromEHR($insertData);
