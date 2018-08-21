@@ -14,7 +14,6 @@ class SyncUserService
 {
     protected $userRepository;
     protected $userSyncRepository;
-    protected $newInsertData;
 
     public function __construct(UserRepository $userRepository,
                                 UserSyncRepository $userSyncRepository)
@@ -149,12 +148,18 @@ class SyncUserService
      */
     public function insertFromQPeHRUser()
     {
-        // Get all active ehr data
-        $eHRActiveUser = $this->userSyncRepository->getEHRActiveUser();
-        $eHREmpNoActiveArray = [];
+        // Get all ehr data
+        $this->eHRAllUser = $this->userSyncRepository->getEHRAllUser();
+        $eHREmpNoArray = [];
 
-        foreach ($eHRActiveUser as $data) {
-            $eHREmpNoActiveArray[] = strval(trim($data["emp_no"]));
+        foreach ($this->eHRAllUser as $data) {
+            //Check if string [emp_no] contain [*],
+            //it means this emp had internal transfer between two company before, ignore this data.
+            if (strpos($data["emp_no"], "*")) {
+                continue;
+            }
+
+            $eHREmpNoArray[] = strval(trim($data["emp_no"]));
         }
 
         // Get all emp_no from `qp_user`
@@ -167,9 +172,9 @@ class SyncUserService
 
         // Find `qp_ehr_user`.emp_no Not IN `qp_user`.emp_no,
         // then Only INSERT these data.
-        $this->newInsertData = array_diff($eHREmpNoActiveArray, $userEmpNoArray);
+        $this->newInsertData = array_diff($eHREmpNoArray, $userEmpNoArray);
 
-        foreach ($eHRActiveUser as $EHRData) {
+        foreach ($this->eHRAllUser as $EHRData) {
             if (in_array(strval(trim($EHRData["emp_no"])), $this->newInsertData)) {
 
                 $empID = strval(trim($EHRData["emp_id"]));
@@ -181,8 +186,10 @@ class SyncUserService
                 $pwd = password_hash($empID, PASSWORD_BCRYPT, $options);
 
                 if (trim($EHRData["active"]) === "Y") {
+                    $status = "Y";
                     $resign = "N";
                 } else {
+                    $status = "N";
                     $resign = "Y";
                 }
 
@@ -205,7 +212,7 @@ class SyncUserService
                     "user_domain"       => $domain,
                     "company"           => strval(trim($EHRData["company"])),
                     "department"        => strval(trim($EHRData["dept_code"])),
-                    "status"            => "Y",
+                    "status"            => $status,
                     "resign"            => $resign,
                     "register_message"  => "N",
                     "reset_pwd"         => "N",
@@ -214,6 +221,10 @@ class SyncUserService
                     "updated_user"      => "-1",
                     "created_at"        => $now
                 ];
+
+                if ($resign === "Y") {
+                    $insertData["updated_at"] = $EHRData["dimission_date"];
+                }
 
                 $this->userSyncRepository->insertUserFromEHR($insertData);
 
@@ -228,32 +239,31 @@ class SyncUserService
     public function updateFromQPeHRUser()
     {
         // Get all ehr data
-        $eHRAllUser = $this->userSyncRepository->getEHRAllUser();
-        $ehrEmpNoArray = [];
+        $eHREmpNoArray = [];
 
-        foreach ($eHRAllUser as $data) {
+        foreach ($this->eHRAllUser as $data) {
             //Check if string [emp_no] contain [*],
             //it means this emp had internal transfer between two company before, ignore this data.
             if (strpos($data["emp_no"], "*")) {
                 continue;
             }
 
-            $ehrEmpNoArray[] = strval(trim($data["emp_no"]));
+            $eHREmpNoArray[] = strval(trim($data["emp_no"]));
         }
 
         // Ignore the Data which was just INSERT
-        $oldExistData = array_diff($ehrEmpNoArray, $this->newInsertData);
+        $oldExistData = array_diff($eHREmpNoArray, $this->newInsertData);
 
         // Get data from `qp_user` which emp_no exist in `qp_ehr_user`
-        $allUser = $this->userSyncRepository->getUserByEmpNO($oldExistData);
+        $allUSer = $this->userSyncRepository->getUserByEmpNO($oldExistData);
 
         $userDataArray = [];
 
-        foreach ($allUser as $data) {
+        foreach ($allUSer as $data) {
             $userDataArray[strval(trim($data["emp_no"]))] = $data;
         }
 
-        foreach ($eHRAllUser as $EHRData) {
+        foreach ($this->eHRAllUser as $EHRData) {
             $empNO = strval(trim($EHRData["emp_no"]));
             $empID = strval(trim($EHRData["emp_id"]));
 
@@ -265,16 +275,10 @@ class SyncUserService
 
             if (in_array($empNO, $oldExistData)) {
 
-                if (trim($EHRData["active"]) === "Y") {
-                    $resign = "N";
-                } else {
-                    $resign = "Y";
-                }
-
                 $now = date('Y-m-d H:i:s',time());
 
                 //Check if source_form=ehr or other
-                if (is_null($userDataArray[$empNO]["source_form"] == "ehr")) {
+                if ($userDataArray[$empNO]["source_from"] == "ehr") {
                     $updateData = [
                         "emp_name"      => strval(trim($EHRData["emp_name"])),
                         "email"         => strval(trim($EHRData["mail_account"])),
@@ -282,16 +286,24 @@ class SyncUserService
                         "company"       => strval(trim($EHRData["company"])),
                         "user_domain"   => strval(trim($EHRData["company"])),
                         "department"    => strval(trim($EHRData["dept_code"])),
-                        "resign"        => $resign,
                         "updated_at"    => $now
                     ];
                 } else {
                     $updateData = [
                         "company"       => strval(trim($EHRData["company"])),
                         "department"    => strval(trim($EHRData["dept_code"])),
-                        "resign"        => $resign,
                         "updated_at"    => $now
                     ];
+                }
+
+                //Only process `qp_ehr_user`.active = N
+                if (trim($EHRData["active"]) === "N") {
+                    $updateData["resign"] = "Y";
+                    $updateData["status"] = "N";
+                    $updateData["deleted_at"] = $EHRData["dimission_date"];
+
+                    //Store all regisn user from eHR
+                    $this->resignUserFormEHR[] = $userDataArray[$empNO];
                 }
 
                 //Check if login_id is not English/Number
@@ -320,4 +332,18 @@ class SyncUserService
         }
     }
 
+    /**
+     * Get all user_row_id of resign user form eHR
+     * @return Array
+     */
+    public function getResignUsersFromQPeHRUser()
+    {
+        $resignUserRowIDArray = [];
+
+        foreach ($this->resignUserFormEHR as $data) {
+            $resignUserRowIDArray[] = $data["row_id"];
+        }
+
+        return $resignUserRowIDArray;
+    }
 }
