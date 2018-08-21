@@ -11,18 +11,20 @@ var widget = {
 
         return new Promise((resolve, reject) => {
 
-            //2. widget
-            var widgetItem = this.list()[id].name + "Widget";
+            if (this.list()[id].enabled == true) {
+                //2. widget
+                var widgetItem = this.list()[id].name + "Widget";
 
-            //3. container
-            var contentItem = $('<div class="' + widgetItem + '"></div>');
-            div.append(contentItem);
+                //3. container
+                var contentItem = $('<div class="' + widgetItem + '"></div>');
+                div.append(contentItem);
 
-            $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
-                .done(function(script, textStatus) {
-                    if (window[widgetItem] != null)
-                        window[widgetItem].init(contentItem);
-                });
+                $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
+                    .done(function(script, textStatus) {
+                        if (window[widgetItem] != null)
+                            window[widgetItem].init(contentItem);
+                    });
+            }
         });
     },
     clear: function() {
