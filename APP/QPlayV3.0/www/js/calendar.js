@@ -205,7 +205,7 @@ function Calendar(options) {
         //var monthLabels = $calendarElement.data('monthLabels');
         var language = $calendarElement.data('language');
         var monthStr = year.toString() + '/' + (month + 1).toString();
-        var monthLabel = new Date(monthStr).toLocaleDateString(language, { year: 'numeric', month: 'long' });
+        var monthLabel = new Date(monthStr).toLocaleDateString(language, { year: 'numeric', month: 'short' });
         var $currMonthLabel = $('<span>' + monthLabel + '</span>');
         $currMonthLabel.dblclick(function () {
             var dateInitObj = $calendarElement.data('initDate');
@@ -251,7 +251,7 @@ function Calendar(options) {
                     $("#" + _id + " #right-navigation").css("opacity", "100");
                     //$("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
                     var monthPrevStr = _year.toString() + '/' + (_month + 1).toString();
-                    var monthPrevLabel = new Date(monthPrevStr).toLocaleDateString(language, { year: 'numeric', month: 'long' });
+                    var monthPrevLabel = new Date(monthPrevStr).toLocaleDateString(language, { year: 'numeric', month: 'short' });
                     $("#" + _id + " #dateTitle span").text(monthPrevLabel);
                     if (_month == 0 && (_year + 1 == _nextyear || $calendarElement.data("showNextyear") == false)) {
                         $("#" + _id + " #left-navigation").css("opacity", "0");
@@ -300,7 +300,7 @@ function Calendar(options) {
                     $("#" + _id + " #left-navigation").css("opacity", "100");
                     //$("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
                     var monthNextStr = _year.toString() + '/' + (_month + 1).toString();
-                    var monthNextLabel = new Date(monthNextStr).toLocaleDateString(language, { year: 'numeric', month: 'long' });
+                    var monthNextLabel = new Date(monthNextStr).toLocaleDateString(language, { year: 'numeric', month: 'short' });
                     $("#" + _id + " #dateTitle span").text(monthNextLabel);
                     if (_month == 11 && (_year == _nextyear || $calendarElement.data("showNextyear") == false)) {
                         $("#" + _id + " #right-navigation").css("opacity", "0");
