@@ -204,7 +204,7 @@ function Calendar(options) {
         var navIcons = $calendarElement.data('navIcons');
         //var monthLabels = $calendarElement.data('monthLabels');
         var language = $calendarElement.data('language');
-        var monthStr = year.toString() + '/' + (month + 1).toString();
+        var monthStr = year.toString() + '/' + (month + 1).toString() + '/1';
         var monthLabel = new Date(monthStr).toLocaleDateString(language, { year: 'numeric', month: 'short' });
         var $currMonthLabel = $('<span>' + monthLabel + '</span>');
         $currMonthLabel.dblclick(function () {
