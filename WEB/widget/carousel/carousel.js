@@ -1,7 +1,7 @@
+//widget naming rule widget.js/list()[].name + "Widget"
 var carouselWidget = {
 
     init: function(contentItem) {
-        //var widgetItem = sessionStorage.getItem('widgetItem');
 
         function createContent() {
             var $container = $('<div></div>').addClass('carousel-widget');
@@ -32,7 +32,6 @@ var carouselWidget = {
         $.fn.carousel.defaults = {}
 
         $('.carouselWidget').carousel();
-        //$('.carouselWidget' + widgetItem).carousel();
     }
 
 };
