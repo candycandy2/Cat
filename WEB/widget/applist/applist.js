@@ -1,3 +1,4 @@
+//widget naming rule widget.js/list()[].name + "Widget"
 var applistWidget = {
 
     init: function(contentItem) {
@@ -81,7 +82,6 @@ var applistWidget = {
         }
 
         $.fn.applist.defaults = {}
-
 
         $('.reserveWidget').applist();
     }

@@ -1,3 +1,4 @@
+//widget naming rule widget.js/list()[].name + "Widget"
 var messageWidget = {
 
     init: function(contentItem) {

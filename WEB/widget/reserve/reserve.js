@@ -1,3 +1,4 @@
+//widget naming rule widget.js/list()[].name + "Widget"
 var reserveWidget = {
 
     init: function(contentItem) {
@@ -16,6 +17,7 @@ var reserveWidget = {
                 $('.reserve-default-photo').html('').append($img);
 
                 getCurrentDate();
+                getAllReserve();
                 checkPhotoUpload($('.reserve-default-photo img'));
 
             }, "html");
@@ -28,12 +30,11 @@ var reserveWidget = {
             var name = window.localStorage.getItem('loginid');
             $('#widgetList .emp-name').text(name);
             $('.widget-reserve-null').text(langStr['str_067']);
-
-            getAllReserve();
         }
 
         function getAllReserve() {
             for (var i in reserveAppList) {
+                //from component/function/
                 getMyReserve(reserveAppList[i].key, reserveAppList[i].secretKey);
             }
             createTodayReserve();
@@ -71,6 +72,7 @@ var reserveWidget = {
         function checkPhotoUpload($target) {
             //var url = 'https://bqgroupstoragedev.blob.core.windows.net/appqplaydev-portrait/1705055/1705055_1024.png';
 
+            //from component/
             var env = '';
             if (loginData["versionName"].indexOf("Staging") !== -1) {
                 env = 'test';
@@ -126,6 +128,7 @@ var reserveWidget = {
         $('.reserveWidget').reserve();
     },
     clear: function() {
+        //from component/
         var env = '';
         if (loginData["versionName"].indexOf("Staging") !== -1) {
             env = 'test';
