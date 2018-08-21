@@ -80,11 +80,16 @@ class syncUserController extends Controller
         }
 
         //eHR Data Sync - 1. INSERT Data Into `qp_user` from `qp_ehr_user` which emp_no not exist in `qp_user`
-
         $this->syncUserService->insertFromQPeHRUser();
 
         //eHR Data Sync - 2. UPDATE Data in `qp_user` from `qp_ehr_user`, ignore the Data which was just INSERT.
         $this->syncUserService->updateFromQPeHRUser();
+
+        //eHR Data Sync - 3. Delete register info and JPush Tag which the user in `qp_ehr_uaer` were resign.
+        $delUsers = $this->syncUserService->getResignUsersFromQPeHRUser();
+        if(count($delUsers) > 0){
+            $this->registerService->unRegisterUserbyUserIds($delUsers);
+        }
 
         Log::info('[Data Information]');
         //2. insert new company
