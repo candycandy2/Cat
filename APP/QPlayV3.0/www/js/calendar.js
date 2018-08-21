@@ -250,7 +250,7 @@ function Calendar(options) {
                     drawTable($calendarElement, $tableObj, _year, _month);
                     $("#" + _id + " #right-navigation").css("opacity", "100");
                     //$("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
-                    var monthPrevStr = year.toString() + '-' + ((month + 1) < 10 ? '0' + (month + 1).toString() : (month + 1).toString()) + '-01';
+                    var monthPrevStr = _year.toString() + '-' + ((_month + 1) < 10 ? '0' + (_month + 1).toString() : (_month + 1).toString()) + '-01';
                     var monthPrevLabel = new Date(monthPrevStr).toLocaleDateString(language, { year: 'numeric', month: 'short' });
                     $("#" + _id + " #dateTitle span").text(monthPrevLabel);
                     if (_month == 0 && (_year + 1 == _nextyear || $calendarElement.data("showNextyear") == false)) {
@@ -299,7 +299,7 @@ function Calendar(options) {
                     drawTable($calendarElement, $tableObj, _year, _month);
                     $("#" + _id + " #left-navigation").css("opacity", "100");
                     //$("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
-                    var monthNextStr = year.toString() + '-' + ((month + 1) < 10 ? '0' + (month + 1).toString() : (month + 1).toString()) + '-01';
+                    var monthNextStr = _year.toString() + '-' + ((_month + 1) < 10 ? '0' + (_month + 1).toString() : (_month + 1).toString()) + '-01';
                     var monthNextLabel = new Date(monthNextStr).toLocaleDateString(language, { year: 'numeric', month: 'short' });
                     $("#" + _id + " #dateTitle span").text(monthNextLabel);
                     if (_month == 11 && (_year == _nextyear || $calendarElement.data("showNextyear") == false)) {
