@@ -1,9 +1,10 @@
 (function(b){b.support.touch="ontouchend" in document;if(!b.support.touch){return;}var c=b.ui.mouse.prototype,e=c._mouseInit,a;function d(g,h){if(g.originalEvent.touches.length>1){return;}g.preventDefault();var i=g.originalEvent.changedTouches[0],f=document.createEvent("MouseEvents");f.initMouseEvent(h,true,true,window,1,i.screenX,i.screenY,i.clientX,i.clientY,false,false,false,false,0,null);g.target.dispatchEvent(f);}c._touchStart=function(g){var f=this;if(a||!f._mouseCapture(g.originalEvent.changedTouches[0])){return;}a=true;f._touchMoved=false;d(g,"mouseover");d(g,"mousemove");d(g,"mousedown");};c._touchMove=function(f){if(!a){return;}this._touchMoved=true;d(f,"mousemove");};c._touchEnd=function(f){if(!a){return;}d(f,"mouseup");d(f,"mouseout");if(!this._touchMoved){d(f,"click");}a=false;};c._mouseInit=function(){var f=this;f.element.bind("touchstart",b.proxy(f,"_touchStart")).bind("touchmove",b.proxy(f,"_touchMove")).bind("touchend",b.proxy(f,"_touchEnd"));e.call(f);};})(jQuery);
+
 $("#viewGeneralSetting").pagecontainer({
     create: function (event, ui) {
 
         var widgetArr = null,
-            changeSetting = false;
+            changeWidgetOrderDirty = false;
 
         function setGeneralSetting() {
             var content = '';
@@ -33,12 +34,12 @@ $("#viewGeneralSetting").pagecontainer({
 
             //2. create content
             setGeneralSetting();
-            
+
             //3. sort listview
             $("#defaultList").sortable();
             $("#defaultList").disableSelection();
             $("#defaultList").on("sortstop", function(event, ui) {
-                changeSetting = true;
+                changeWidgetOrderDirty = true;
             });
         });
 
@@ -47,7 +48,7 @@ $("#viewGeneralSetting").pagecontainer({
         });
 
         $("#viewGeneralSetting").on("pagehide", function (event, ui) {
-            if (changeSetting) {
+            if (changeWidgetOrderDirty) {
 
                 //1. 记录新index
                 var newSettingIndex = [];
@@ -64,22 +65,19 @@ $("#viewGeneralSetting").pagecontainer({
 
                 //3. 更新local
                 window.localStorage.setItem('widgetList', JSON.stringify(arr));
+                window.localStorage.setItem('widgetListDirty', true);
 
+                //review by alan
                 //4. 更新首页widget
-                for (var i = 0; i < arr.length - 1; i++) {
-                    $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
-                }
+                // for (var i = 0; i < arr.length - 1; i++) {
+                //     $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
+                // }
 
-                changeSetting = false;
+                changeWidgetOrderDirty = false;
             }
 
         });
 
-
         /********************************** dom event *************************************/
-
-
-
-
     }
 });
