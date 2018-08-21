@@ -118,7 +118,7 @@ $("#viewPersonalInsurance").pagecontainer({
             this.successCallback = function(data) { 
                 if (data['ResultCode'] === "1") {
                     healthInsurArr = data['Content'];
-                    if (healthInsurArr.length === 0){
+                    if (healthInsurArr.length === 0) {
                         var healthInsurList = '<div class="empty-list"><div>無</div></div>';                
                         $("#inHealthInsur").empty().append(healthInsurList);
                         $("#nonHealthInsur").empty().append(healthInsurList);
@@ -131,13 +131,13 @@ $("#viewPersonalInsurance").pagecontainer({
                         for (var i=0; i<healthInsurArr.length; i++ ) {
                             dealwithStr = $.trim(healthInsurArr[i]["dealwith"]);
                             canapplyStr = $.trim(healthInsurArr[i]["can_apply"]);
-                            if (healthInsurArr[i]["group"] == "眷屬健保在保"){   
+                            if (healthInsurArr[i]["group"] == "眷屬健保在保") {   
                                 if (dealwithStr == "已加保"){
                                     var familyDetailList = '<div class="health-insur-list"><div class="content-list-only-img" data-id="';
                                     var familyImgList = '<div class="list-only-img"><img src="img/100_btn_nextpage.png" class="family-next">';
                                 } else {
                                     var familyDetailList = '<div class="health-insur-list"><div class="content-list-text-img" data-id="';
-                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><sapn>' + dealwithStr +'</span></label><img src="img/100_btn_nextpage.png" id="insurTextNextBtn" class="family-text-img">';
+                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><span>' + dealwithStr +'</span></label><img src="img/100_btn_nextpage.png" id="insurTextNextBtn" class="family-text-img">';
                                 }                   
                                 healthInsurList += familyDetailList
                                 + healthInsurArr[i]["family_id"]
@@ -155,16 +155,16 @@ $("#viewPersonalInsurance").pagecontainer({
                                 inInsur = true;
                                 familyDetailList, familyImgList = "";
                             }
-                            if (healthInsurArr[i]["group"] == "眷屬健保不在保"){
+                            if (healthInsurArr[i]["group"] == "眷屬健保不在保") {
                                 if (dealwithStr == "未申請" && canapplyStr == "加保") {
                                     var familyDetailList = '<div class="health-insur-list"><div class="content-list-only-img" data-id="';
                                     var familyImgList = '<div class="list-only-img"><img src="img/024_btn_addfriend.png" class="family-add">';
                                 } else if (canapplyStr == "取消申請" || canapplyStr == "復保") {
                                     var familyDetailList = '<div class="health-insur-list"><div class="content-list-text-img" data-id="';
-                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><sapn>' + dealwithStr +'</span></label><img src="img/100_btn_nextpage.png" id="textNextBtn" class="family-text-img">';
+                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><span>' + dealwithStr +'</span></label><img src="img/100_btn_nextpage.png" id="textNextBtn" class="family-text-img">';
                                 } else if (canapplyStr == "加保") {
                                     var familyDetailList = '<div class="health-insur-list"><div class="content-list-text-img" data-id="';
-                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><sapn>' + dealwithStr +'</span></label><img src="img/024_btn_addfriend.png" id="addNextBtn" class="family-text-img">';
+                                    var familyImgList = '<div class="list-text-img"><label class="font-style12"><span>' + dealwithStr +'</span></label><img src="img/024_btn_addfriend.png" id="addNextBtn" class="family-text-img">';
                                 }
                                 nonHealthInsurList += familyDetailList
                                 + healthInsurArr[i]["family_id"]
@@ -179,6 +179,7 @@ $("#viewPersonalInsurance").pagecontainer({
                                 + '</div></div>'
                                 + familyImgList
                                 + '</div></div><div class="activity-line"></div>';
+                                
                                 notInsur = true;
                                 familyDetailList, familyImgList = "";
                             }
@@ -196,7 +197,21 @@ $("#viewPersonalInsurance").pagecontainer({
                             $("#nonHealthInsur").empty().append(nonHealthInsurList);
                         }                
                         
-                    }
+                    }  
+                    var inHealthChangeWidth = $('#inHealthInsur').children(1).find(".list-text-img > label > span").filter(function(item){
+                        var nonHealthStatusHTML = $('#inHealthInsur').children(1).find(".list-text-img > label > span")[item];
+                        if (nonHealthStatusHTML.textContent.length > 3) {
+                            $('#inHealthInsur').children(1).find(".content-list-text-img")[item].style.width = "60vw";
+                            $('#inHealthInsur').children(1).find(".list-text-img")[item].style.width = "26.5vw";
+                        }                 
+                    });              
+                    var nonHealthChangeWidth = $('#nonHealthInsur').children(1).find(".list-text-img > label > span").filter(function(item){
+                        var nonHealthStatusHTML = $('#nonHealthInsur').children(1).find(".list-text-img > label > span")[item];
+                        if (nonHealthStatusHTML.textContent.length > 3) {
+                            $('#nonHealthInsur').children(1).find(".content-list-text-img")[item].style.width = "60vw";
+                            $('#nonHealthInsur').children(1).find(".list-text-img")[item].style.width = "26.5vw";
+                        }                 
+                    });              
                     loadingMask("hide");
                 } else if (data['ResultCode'] === "046902") {
                     healthInsurArr = data['Content'];
@@ -231,7 +246,7 @@ $("#viewPersonalInsurance").pagecontainer({
             $("label[for=fam-insur-tab-1]").addClass('ui-btn-active');
             if (!viewPersonalInsuranceShow) {
                 QueryHealthInsuranceList();
-                QueryGroupInsuranceList();              
+                QueryGroupInsuranceList();
                 viewPersonalInsuranceShow = true; 
             } else {
                 loadingMask("hide");  
