@@ -189,22 +189,8 @@ $("#viewApplyInsurance").pagecontainer({
                 var applyDateDetail = langStr["str_145"] + ': ' + clickApplyday;
                 var statusDetail = langStr["str_146"] + ': ' + clickDealwith;               
                 $("#perviewApplyDate").text(applyDateDetail);
-                $("#perviewStatus").text(statusDetail);              
-                if (detailType == "withdraw") {
-                    var preDate = langStr["str_122"] + ': ' + clickApplyday;
-                    var preReason = langStr["str_123"] + ': ' + clickReason;
-                    //顯示處理狀態並傳值
-                    $("#perviewDealday").show();
-                    var dealdayDetail = langStr["str_147"] + ': ' + clickDealday;
-                    $("#perviewDealday").text(dealdayDetail);
-                } else if (detailType == "applied") {
-                    var preDate = langStr["str_116"] + ': ' + clickApplyday;
-                    var preReason = langStr["str_117"] + ': ' + clickReason;
-                    //顯示處理狀態並傳值
-                    $("#perviewDealday").show();
-                    var dealdayDetail = langStr["str_147"] + ': ' + clickDealday;
-                    $("#perviewDealday").text(dealdayDetail);
-                } else if (detailType == "pending") {
+                $("#perviewStatus").text(statusDetail);   
+                if (detailType == "pending") {
                     if (clickDealwith == "加保待處理") {
                         var preDate = langStr["str_116"] + ': ' + clickApplyday;
                         var preReason = langStr["str_117"] + ': ' + clickReason;
@@ -218,36 +204,28 @@ $("#viewApplyInsurance").pagecontainer({
                         var preDate = langStr["str_126"] + ': ' + clickApplyday;
                         var preReason = langStr["str_127"] + ': ' + clickReason;
                     }
-                    //待處理，不顯示處理狀態
+                    //待處理，不顯示處理日期
                     $("#perviewDealday").hide();
-                }
+                } else {
+                    if (detailType == "withdraw") {
+                        var preDate = langStr["str_122"] + ': ' + clickApplyday;
+                        var preReason = langStr["str_123"] + ': ' + clickReason;
+                    } else if (detailType == "applied" || detailType == "failapplied") {
+                        var preDate = langStr["str_116"] + ': ' + clickApplyday;
+                        var preReason = langStr["str_117"] + ': ' + clickReason;
+                    } else if (detailType == "stop") {
+                        var preDate = langStr["str_124"] + ': ' + clickApplyday;
+                        var preReason = langStr["str_125"] + ': ' + clickReason;
+                    } else if (detailType == "recover") {
+                        var preDate = langStr["str_126"] + ': ' + clickApplyday;
+                        var preReason = langStr["str_127"] + ': ' + clickReason;
+                    }
+                    //顯示處理狀態並傳值
+                    $("#perviewDealday").show();
+                    var dealdayDetail = langStr["str_147"] + ': ' + clickDealday;
+                    $("#perviewDealday").text(dealdayDetail);
+                }           
             }
-            /*if (detailType == "withdraw"){
-                $("#perviewApplyDate").show();
-                $("#perviewStatus").show();
-                $("#perviewDealday").show();
-                var preDate = langStr["str_122"] + ': ' + clickApplyday;
-                var preReason = langStr["str_123"] + ': ' + clickReason;
-                var preSubsidy = langStr["str_133"] + ': ' + ((clickSubsidy == 'Y') ? langStr["str_128"] : langStr["str_129"]);
-                var preCertificate = langStr["str_134"] + ': ' + ((clickCerti == 'Y') ? langStr["str_128"] : langStr["str_129"]);
-                var preHealthcard = langStr["str_120"] + ': ' + ((clickHealthcard == 'Y') ? langStr["str_128"] : langStr["str_129"]);
-                var applyDateDetail = langStr["str_145"] + ': ' + clickApplyday;
-                var statusDetail = langStr["str_146"] + ': ' + clickDealwith;
-                var dealdayDetail = langStr["str_147"] + ': ' + clickDealday;
-                $("#perviewApplyDate").text(applyDateDetail);
-                $("#perviewStatus").text(statusDetail);
-                $("#perviewDealday").text(dealdayDetail);
-               
-            } else if (detailType == "newApply") {
-                $("#perviewApplyDate").hide();
-                $("#perviewStatus").hide();
-                $("#perviewDealday").hide();
-                var preDate = langStr["str_116"] + ': ' + applyDateVal;
-                var preReason = langStr["str_117"] + ': ' + reasonVal;
-                var preSubsidy = langStr["str_133"] + ': ' + ((subsidyVal == 'subsidyYes') ? langStr["str_128"] : langStr["str_129"]); 
-                var preCertificate = langStr["str_134"] + ': ' + ((certiVal == 'certiYes') ? langStr["str_128"] : langStr["str_129"]);
-                var preHealthcard = langStr["str_120"] + ': ' + ((cardVal == 'cardYes') ? langStr["str_128"] : langStr["str_129"]);
-            }*/
             $("#previewNameAge").text(preNameAge);
             $("#previewBirthday").text(clickBirth);
             $("#previewID").text(clickID);
@@ -282,17 +260,15 @@ $("#viewApplyInsurance").pagecontainer({
                 $('.apply-insur-title').hide();
                 $('#backPersonalInsuranceFromDetail').show(); 
                 $('#backPersonalInsuranceFromApply').hide();
-                //加保/退保/停保/復保資訊 隱藏字串  
-                $('.new-insur-info').hide(); 
-                $('.withdraw-insur-info').hide(); 
-                $('.stop-insur-info').hide();     
-                $('.recover-insur-info').hide(); 
+                //加保/退保/停保/復保資訊 清空字串  
+                 $('.insur-info-title').text("");
                 //隱藏單顆&雙顆按鈕
                 $('.apply-button-style').hide();  
                 $('.two-button-style').hide(); 
                 $('#applyBtn').hide();
                 $('#cancelBtn').hide(); 
-                $('#insurBtn').hide();                            
+                $('#insurBtn').hide();
+                $('#recoverBtn').hide();                             
                 $('#viewPreviewApplication').show(); 
                 $('#viewInsurApplication').hide();                
                 $('#previewBtn').hide(); 
@@ -300,27 +276,54 @@ $("#viewApplyInsurance").pagecontainer({
                 $('#backApplyInsurance').hide();  
                 if (nextPage == "withdrawDetail") {
                     detailType = "withdraw"; 
-                    $('.withdraw-insur-info').show();
+                    $('.insur-info-title').text(langStr["str_149"]);
                     $('.apply-button-style').show();              
                     $('#insurBtn').show();                   
                 } else if (nextPage == "pendingDetail") {
                     detailType = "pending";                    
                     if (clickDealwith == "加保待處理") {
-                        $('.new-insur-info').show(); 
+                        $('.insur-info-title').text(langStr["str_132"]);
                     } else if (clickDealwith == "退保待處理") {
-                        $('.withdraw-insur-info').show();  
+                        $('.insur-info-title').text(langStr["str_149"]);
                     } else if (clickDealwith == "停保待處理") {
-                        $('.stop-insur-info').show(); 
+                        $('.insur-info-title').text(langStr["str_152"]);
                     } else if (clickDealwith == "復保待處理") {
-                        $('.recover-insur-info').show();
+                        $('.insur-info-title').text(langStr["str_153"]);
                     }
                     $('.apply-button-style').show();  
                     $('#cancelBtn').show();
                 } else if (nextPage == "appliedDetail") {
                     detailType = "applied";
-                    $('.new-insur-info').show();
+                    $('.insur-info-title').text(langStr["str_132"]);
                     $('.two-button-style').show();                   
-                }    
+                } else if (nextPage == "failedInsurDetail") {
+                    detailType = "failapplied";
+                    $('.insur-info-title').text(langStr["str_132"]);
+                    $('.apply-button-style').show();  
+                    $('#insurBtn').show();
+                } else if (nextPage == "cancelStopInsur") {
+                    if (clickDealwith == "取消退保") { 
+                        detailType = "withdraw";
+                        $('.insur-info-title').text(langStr["str_149"]);
+                    } else if (clickDealwith == "取消停保" || clickDealwith == "停保駁回") { 
+                        detailType = "stop";
+                        $('.insur-info-title').text(langStr["str_152"]);
+                    } else if (clickDealwith == "已復保") { 
+                        detailType = "recover";
+                        $('.insur-info-title').text(langStr["str_153"]);
+                    } 
+                    $('.two-button-style').show(); 
+                } else if (nextPage == "failedRecoverDetail") {
+                    if (clickDealwith == "已停保") { 
+                        detailType = "stop";
+                        $('.insur-info-title').text(langStr["str_152"]);
+                    } else if (clickDealwith == "取消復保" || clickDealwith == "復保駁回" || clickDealwith == "復保暫存") {
+                        detailType = "recover";
+                        $('.insur-info-title').text(langStr["str_153"]);
+                    }
+                    $('.apply-button-style').show();  
+                    $('#recoverBtn').show();
+                }
                 changeToDetailPage(detailType);                    
             }
             loadingMask("hide");
@@ -368,8 +371,6 @@ $("#viewApplyInsurance").pagecontainer({
             $("#viewInsurApplication").hide();
             $("#previewBtn").hide();
             $('#backPersonalInsuranceFromDetail').show();      
-            $('.withdraw-insur-info').show();
-            $('.new-insur-info').hide();     
             $("#viewPreviewApplication").show();
         });
 
@@ -383,13 +384,14 @@ $("#viewApplyInsurance").pagecontainer({
                 $("#applyBtn").show();
                 $("#cancelBtn").hide(); 
                 $("#insurBtn").hide();
+                $("#recoverBtn").hide();
                 $('#backPersonalInsuranceFromApply').hide();
                 $('#backWithdrawDetail').hide();
                 $("#viewInsurApplication").hide();
                 $("#previewBtn").hide();
-                $('.withdraw-insur-info').hide();
                 $('#backApplyInsurance').show();
-                $('.new-insur-info').show();
+                $('.insur-info-title').text("");
+                $('.insur-info-title').text(langStr["str_132"]);
                 $("#viewPreviewApplication").show();
             }
         });
@@ -402,7 +404,6 @@ $("#viewApplyInsurance").pagecontainer({
         //加保按鈕
         $("#insurBtn").on("click", function() {            
             $('#backWithdrawDetail').show();
-            $('.withdraw-insur-info').show();
             $("#viewInsurApplication").show();
             $("#previewBtn").show();
             $('#backPersonalInsuranceFromDetail').hide();
