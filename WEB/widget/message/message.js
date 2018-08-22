@@ -22,7 +22,7 @@ var messageWidget = {
             }
 
             if (content == '') {
-                content = '<div class="widget-none-msg">' + langStr['str_069'] + '<div>';
+                content = '<div class="widget-none-msg">' + langStr['wgt_008'] + '<div>';
             }
 
             var $container = $('<div></div>').addClass('message-widget').append(content);
