@@ -1,7 +1,8 @@
 $("#viewAppList").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
-        var checkAppInstallInterval = null, intervalCount = 0;
+        var checkAppInstallInterval = null,
+            intervalCount = 0;
 
         //已知app分组，生成html
         function createAppListContent() {
@@ -102,7 +103,7 @@ $("#viewAppList").pagecontainer({
 
         //change favorite icon after create content
         function changeFavoriteIcon() {
-            $.each($('.favorite-btn'), function (index, item) {
+            $.each($('.favorite-btn'), function(index, item) {
                 for (var i in favoriteList) {
                     if (favoriteList[i].app_code == $(item).parent().prev().attr('data-code')) {
                         $(item).attr('data-src', 'favorite_full');
@@ -156,6 +157,127 @@ $("#viewAppList").pagecontainer({
             }
         }
 
+        //Check if APP is installed
+        function checkAPPInstalled(callback, page) {
+
+            callback = callback || null;
+
+            var scheme;
+
+            if (device.platform === 'iOS') {
+                scheme = checkAPPKey + '://';
+            } else if (device.platform === 'Android') {
+                scheme = 'com.qplay.' + checkAPPKey;
+            }
+
+            window.testAPPInstalledCount = 0;
+
+            window.testAPPInstalled = setInterval(function() {
+                appAvailability.check(
+                    scheme, //URI Scheme or Package Name
+                    function() { //Success callback
+
+                        if (page === "appDetail") {
+                            var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
+                            var installed_version = appVersionRecord["com.qplay." + checkAPPKey]["installed_version"];
+
+                            if (latest_version === installed_version) {
+                                loginData['updateApp'] = false;
+                            } else {
+                                loginData['updateApp'] = true;
+                            }
+
+                            callback(true);
+                        } else if (page === "appList") {
+                            callback(true);
+                        }
+
+                        checkAPPKeyInstalled = true;
+                        stopTestAPPInstalled();
+                    },
+                    function() { //Error callback
+
+                        if (page === "appDetail") {
+                            callback(false);
+                        } else if (page === "appList") {
+                            callback(false);
+                        }
+
+                        checkAPPKeyInstalled = false;
+                        stopTestAPPInstalled();
+                    }
+                );
+
+                testAPPInstalledCount++;
+
+                if (testAPPInstalledCount === 3) {
+                    stopTestAPPInstalled();
+                    location.reload();
+                }
+            }, 1000);
+
+            window.stopTestAPPInstalled = function() {
+                if (window.testAPPInstalled != null) {
+                    clearInterval(window.testAPPInstalled);
+                }
+            };
+        }
+
+        //applist group by downloaded status
+        function appGroupByDownload(responsecontent) {
+            alreadyDownloadList = [], notDownloadList = [];
+            applist = responsecontent.app_list;
+            appmultilang = responsecontent.multi_lang;
+
+            for (var i = 0; i < applist.length; i++) {
+                //APP version record
+                if (typeof appVersionRecord[applist[i].package_name] === 'undefined') {
+                    appVersionRecord[applist[i].package_name] = {};
+                    var packageName = applist[i].package_name;
+                    var packageNameArr = packageName.split(".");
+                    checkAPPKey = packageNameArr[2];
+
+                    checkAPPInstalled(checkAppVersionCallback, "appList");
+                    tempVersionArrData = appVersionRecord[applist[i].package_name]["installed_version"];
+                    tempVersionData = applist[i].app_version.toString();
+                }
+                appVersionRecord[applist[i].package_name]["latest_version"] = applist[i].app_version.toString();
+
+                //check app install，icon diff
+                var appName = applist[i].package_name;
+                var appNameArr = appName.split(".");
+                var checkKey = appNameArr[2];
+                checkAllAppInstalled(checkAppCallback, checkKey, i);
+            }
+        }
+
+        function checkAllAppInstalled(callback, key, index) {
+
+            //var thisAppKey = checkAPPKey;
+            callback = callback || null;
+
+            var scheme;
+
+            if (device.platform === 'iOS') {
+                scheme = key + '://';
+            } else if (device.platform === 'Android') {
+                scheme = 'com.qplay.' + key;
+            }
+
+            var testInstalled = function(i) {
+                appAvailability.check(
+                    scheme, //URI Scheme or Package Name
+                    function() { //Success callback
+                        callback(true, i);
+                        //console.log(i);
+                    },
+                    function() { //Error callback
+                        callback(false, i);
+                    }
+                );
+            }(index);
+        }
+
         function checkAppInstallAfterDownload(install, index) {
             //console.log(install + ',' + intervalCount);
 
@@ -192,39 +314,51 @@ $("#viewAppList").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewAppList").on("pagebeforeshow", function (event, ui) {
-
+        $("#viewAppList").on("pagebeforeshow", function(event, ui) {
+            var applist = new getAppList();
         });
 
-        $("#viewAppList").one("pageshow", function (event, ui) {
+        $("#viewAppList").one("pageshow", function(event, ui) {
             loadingMask("show");
 
-            var checkAppListData = setInterval(function () {
-                if (appCheckFinish) {
-                    loadingMask("hide");
-                    //clear interval
-                    clearInterval(checkAppListData);
-                    //create content
-                    createAppListContent();
-                    //set hieght
-                    setAppListHeight();
+            window.appCheckTimer = setInterval(function() {
+                var appList = window.localStorage.getItem('QueryAppListData');
+                if (appList != null) {
+                    clearInterval(window.appCheckTimer);
+                    window.appCheckTimer = null;
+
+                    var responsecontent = JSON.parse(appList)['content'];
+                    appGroupByDownload(responsecontent);
+
+                    var checkAppListData = setInterval(function() {
+                        if (appCheckFinish) {
+                            //clear interval
+                            clearInterval(checkAppListData);
+                            //create content
+                            createAppListContent();
+                            //set hieght
+                            setAppListHeight();
+                            loadingMask("hide");
+                        }
+                    }, 1000);
                 }
-            }, 1000);
+                window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+            }, 500);
 
         });
 
-        $("#viewAppList").on("pageshow", function (event, ui) {
+        $("#viewAppList").on("pageshow", function(event, ui) {
 
         });
 
-        $("#viewAppList").on("pagehide", function (event, ui) {
+        $("#viewAppList").on("pagehide", function(event, ui) {
 
         });
 
 
         /********************************** dom event *************************************/
         //add or remove favorite app
-        $('#viewAppList').on('click', '.favorite-btn', function () {
+        $('#viewAppList').on('click', '.favorite-btn', function() {
             var self = this;
             var src = $(self).attr('data-src');
             var appcode = $(self).parent().prev().attr('data-code');
@@ -238,6 +372,7 @@ $("#viewAppList").pagecontainer({
 
                 //2. save local
                 if (favoriteList == null) {
+                    //review by alan
                     favoriteList = [];
                     setFavoriteList(appcode, appname, true);
 
@@ -257,7 +392,7 @@ $("#viewAppList").pagecontainer({
         });
 
         //change page by app index
-        $('#viewAppList').on('click', '.download-link', function () {
+        $('#viewAppList').on('click', '.download-link', function() {
             var self = this;
             var appcode = $(self).attr('data-code');
             selectAppIndex = getIndexByCode(appcode);
@@ -265,7 +400,7 @@ $("#viewAppList").pagecontainer({
         });
 
         //download app
-        $('#viewAppList').on('click', '.download-btn', function () {
+        $('#viewAppList').on('click', '.download-btn', function() {
             var self = this;
             var appcode = $(self).parent().prev().attr('data-code');
             selectAppIndex = getIndexByCode(appcode);
@@ -289,15 +424,15 @@ $("#viewAppList").pagecontainer({
                 } else {
 
                     var permissions = cordova.plugins.permissions;
-                    permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function (status) {
+                    permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
                         if (status.hasPermission) {
                             addDownloadHit(applist[selectAppIndex].package_name);
                             var updateUrl = applist[selectAppIndex].url;
                             window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                            function onFail() { }
+                            function onFail() {}
 
-                            function onSuccess() { }
+                            function onSuccess() {}
                         } else {
                             permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
 
@@ -312,9 +447,9 @@ $("#viewAppList").pagecontainer({
                                     var updateUrl = applist[selectAppIndex].url;
                                     window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                                    function onFail() { }
+                                    function onFail() {}
 
-                                    function onSuccess() { }
+                                    function onSuccess() {}
                                 }
                             }
                         }
@@ -329,7 +464,7 @@ $("#viewAppList").pagecontainer({
             checkAPPKey = packageNameArr[2];
             intervalCount = 0;
 
-            checkAppInstallInterval = setInterval(function () {
+            checkAppInstallInterval = setInterval(function() {
                 checkAllAppInstalled(checkAppInstallAfterDownload, checkAPPKey, selectAppIndex);
             }, 2000);
 
