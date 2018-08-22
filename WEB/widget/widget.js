@@ -1,6 +1,7 @@
-
 var widget = {
+
     init: function(divItem) {
+
         this.load(0, divItem)
             .then(this.load(1, divItem))
             .then(this.load(2, divItem))
@@ -8,6 +9,7 @@ var widget = {
             .then(this.load(4, divItem));
     },
     list: function() {
+
         return [
             { id: 0, name: 'carousel', enabled: true, lang: langStr['wgt_001'] },
             { id: 1, name: 'weather', enabled: true, lang: langStr['wgt_002'] },
@@ -21,10 +23,8 @@ var widget = {
         return new Promise((resolve, reject) => {
 
             if (this.list()[id].enabled == true) {
-                //2. widget
-                var widgetItem = this.list()[id].name + "Widget";
 
-                //3. container
+                var widgetItem = this.list()[id].name + "Widget";
                 var contentItem = $('<div class="' + widgetItem + '"></div>');
                 div.append(contentItem);
 
