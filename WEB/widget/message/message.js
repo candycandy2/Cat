@@ -4,7 +4,7 @@ var messageWidget = {
     init: function(contentItem) {
 
         function createMessage() {
-            var msgArr = loginData['messagecontent']['message_list'];
+            var msgArr = JSON.parse(window.localStorage.getItem('messagecontent')).message_list;
             var content = '';
             var count = 0;
 
