@@ -38,8 +38,7 @@ var favoriteList = null,
     tempVersionData;
 
 //viewMyCalendar
-var reserveCalendar = null,
-    reserveList = [];
+var reserveCalendar = null;
 
 //viewMessageList
 var messageFrom = 'viewMain3';
@@ -633,12 +632,9 @@ function pageBeforeShow(pageID) {
 function onBackKeyDown() {
     var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
     var activePageID = activePage[0].id;
-    if (activePageID === "viewMain3") {
-        if (checkPopupShown()) {
-            $('#' + popupID).popup('close');
-        } else {
-            navigator.app.exitApp();
-        }
+    if (checkPopupShown()) {
+        var popupID = $(".ui-popup-active")[0].children[0].id;
+        $('#' + popupID).popup("close");
     } else if (activePageID === "viewAppDetail2-2") {
         if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
             checkAppPage('viewAppList');
@@ -655,7 +651,6 @@ function onBackKeyDown() {
         if (messageFrom == 'viewMain3') {
             $.mobile.changePage('#viewMain3');
         } else if (messageFrom == 'viewMessageList') {
-            //$.mobile.changePage('#viewMessageList');
             checkAppPage('viewMessageList');
         } else {
             $.mobile.changePage('#viewMain3');
