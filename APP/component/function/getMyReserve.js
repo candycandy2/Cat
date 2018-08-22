@@ -1,9 +1,9 @@
 
 //数组合并并排序
-function formatReserveList() {
+function formatReserveList(__reserveList) {
     //1. 先按照日期合併同一天預約
     var tempArr = [];
-    $.each(reserveList, function (index, item) {
+    $.each(__reserveList, function (index, item) {
         var key = item.ReserveDate;
         if (typeof tempArr[key] == "undefined") {
             tempArr[key] = [];
@@ -19,7 +19,7 @@ function formatReserveList() {
         tempArr[i].sort(sortByBeginTime("ReserveBeginTime", "ReserveEndTime"));
     }
 
-    reserveList = tempArr;
+    __reserveList = tempArr;
 }
 
 function formatReserveDate(str) {
@@ -51,6 +51,7 @@ function getMyReserve(key, secret) {
         //console.log(data);
 
         var reserveDirty = false;
+        var _reserveList = [];
         if (data['ResultCode'] === "1") {
             var resultArr = data['Content'];
 
@@ -64,7 +65,7 @@ function getMyReserve(key, secret) {
                         resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
                     }
 
-                    reserveList.push(resultArr[i]);
+                    _reserveList.push(resultArr[i]);
                 }
 
                 reserveDirty = true;
@@ -81,7 +82,7 @@ function getMyReserve(key, secret) {
                         resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
                     }
 
-                    reserveList.push(resultArr[i]);
+                    _reserveList.push(resultArr[i]);
                 }
 
                 reserveDirty = true;
@@ -96,7 +97,7 @@ function getMyReserve(key, secret) {
                         resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
                     }
 
-                    reserveList.push(resultArr[i]);
+                    _reserveList.push(resultArr[i]);
                 }
 
                 reserveDirty = true;
@@ -113,7 +114,7 @@ function getMyReserve(key, secret) {
                         resultArr[i].ReserveDate = formatReserveDate(resultArr[i].ReserveDate);
                     }
 
-                    reserveList.push(resultArr[i]);
+                    _reserveList.push(resultArr[i]);
                 }
 
                 reserveDirty = true;
@@ -123,15 +124,17 @@ function getMyReserve(key, secret) {
         } else if (data['ResultCode'] === "002901") {}
 
         if (key == "appmassage") {
-            formatReserveList();
+            formatReserveList(_reserveList);
         }
 
         //review by alan
         if (reserveDirty) {
-            formatReserveList();
+            formatReserveList(_reserveList);
             //不符合OO精神
             //reserveCalendar.reserveData = reserveList;
             //reserveCalendar.refreshReserve(reserveList);
+            window.localStorage.setItem('reserveList', JSON.stringify(_reserveList));
+            window.sessionStorage.setItem('changeReserveListDirty', 'Y');
             reserveDirty = false;
         }
     };
