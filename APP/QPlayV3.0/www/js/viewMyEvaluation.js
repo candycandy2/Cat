@@ -3,6 +3,8 @@ $("#viewMyEvaluation").pagecontainer({
 
         var focusHeight,
             blurHeight,
+            mainHeight,
+            textareaHeight,
             dValue;
 
         function addAppEvaluation() {
@@ -43,6 +45,8 @@ $("#viewMyEvaluation").pagecontainer({
 
         $("#viewMyEvaluation").one("pageshow", function (event, ui) {
             blurHeight = document.body.clientHeight;
+            mainHeight = $('.comment-main').height();
+            textareaHeight = $('.comment-text').height();
         });
 
         $("#viewMyEvaluation").on("pageshow", function (event, ui) {
@@ -89,24 +93,11 @@ $("#viewMyEvaluation").pagecontainer({
 
         //ios input 页面滚动
         $('.comment-text textarea').on('focus', function () {
-            if (device.platform === "iOS") {
-                var mainHeight = $('.comment-main').height();
-                $('.comment-main').css('height', (mainHeight - dValue).toString() + 'px');
-
-                var textareaHeight = $('.comment-text').height();
-                $('.comment-text').css('height', (textareaHeight - dValue).toString() + 'px');
-            }
 
         });
 
         $('.comment-text textarea').on('blur', function () {
-            if (device.platform === "iOS") {
-                var mainHeight = $('.comment-main').height();
-                $('.comment-main').css('height', (mainHeight + dValue).toString() + 'px');
 
-                var textareaHeight = $('.comment-text').height();
-                $('.comment-text').css('height', (textareaHeight + dValue).toString() + 'px');
-            }
         });
 
         $(window).resize(function () {
@@ -115,9 +106,21 @@ $("#viewMyEvaluation").pagecontainer({
             if (current < blurHeight) {
                 focusHeight = current;
                 dValue = blurHeight - focusHeight;
+
+                if (device.platform === "iOS") {
+                    $('.comment-main').css('height', (mainHeight - dValue).toString() + 'px');
+                    $('.comment-text').css('height', (textareaHeight - dValue).toString() + 'px');
+                }
+            } else {
+                if (device.platform === "iOS") {
+                    $('.comment-main').css('height', (mainHeight + dValue).toString() + 'px');
+                    $('.comment-text').css('height', (textareaHeight + dValue).toString() + 'px');
+                }
             }
 
         });
+
+        
 
     }
 });
