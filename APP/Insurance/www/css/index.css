@@ -1217,18 +1217,19 @@ div.scrollmenu a {
     margin-bottom: 1vw;
 }
 
-#applyReason>select {
+#applyReason>select,
+#withdrawReason>select {
     padding-left: 0;
 }
 
-.family-add-title, 
+/*.family-add-title, 
 .apply-insur-title, 
 .withdraw-insur-title, 
 .stop-insur-title,
 .recover-insur-title,
 .family-insur-title { 
     display:none;
-}
+}*/
 
 #backPersonalInsurance {
     width: 4.934VW;
