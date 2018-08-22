@@ -39,8 +39,7 @@ var favoriteList = null,
 
 //viewMyCalendar
 var reserveCalendar = null,
-    reserveList = [],
-    reserveDirty = false;
+    reserveList = [];
 
 //viewMessageList
 var messageFrom = 'viewMain3';
@@ -176,29 +175,6 @@ function favoriteCallback(download, appcode) {
             }
         }
     }
-}
-
-//数组合并并排序
-function formatReserveList() {
-    //1. 先按照日期合併同一天預約
-    var tempArr = [];
-    $.each(reserveList, function (index, item) {
-        var key = item.ReserveDate;
-        if (typeof tempArr[key] == "undefined") {
-            tempArr[key] = [];
-            tempArr[key].push(item);
-
-        } else {
-            tempArr[key].push(item);
-        }
-    });
-
-    //2. 再按照時間將同一天內的預約進行排序
-    for (var i in tempArr) {
-        tempArr[i].sort(sortByBeginTime("ReserveBeginTime", "ReserveEndTime"));
-    }
-
-    reserveList = tempArr;
 }
 
 //先按照开始时间排序，如果开始时间一致再用结束时间排序
@@ -571,10 +547,6 @@ function addDownloadHit(appname) {
         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
     }();
-}
-
-function formatReserveDate(str) {
-    return str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2);
 }
 
 Date.prototype.FormatReleaseDate = function () {

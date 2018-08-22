@@ -1,15 +1,42 @@
 
+//数组合并并排序
+function formatReserveList() {
+    //1. 先按照日期合併同一天預約
+    var tempArr = [];
+    $.each(reserveList, function (index, item) {
+        var key = item.ReserveDate;
+        if (typeof tempArr[key] == "undefined") {
+            tempArr[key] = [];
+            tempArr[key].push(item);
+
+        } else {
+            tempArr[key].push(item);
+        }
+    });
+
+    //2. 再按照時間將同一天內的預約進行排序
+    for (var i in tempArr) {
+        tempArr[i].sort(sortByBeginTime("ReserveBeginTime", "ReserveEndTime"));
+    }
+
+    reserveList = tempArr;
+}
+
+function formatReserveDate(str) {
+    return str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2);
+}
+
 //获取所有预约
 function getMyReserve(key, secret) {
     var self = this;
     var year = new Date().getFullYear().toString();
     var month = new Date().getMonth() + 1 < 10 ? '0' + (new Date().getMonth() + 1).toString() : (new Date().getMonth() + 1).toString();
-    var firstDay = year + month + '01';     //每月第一天
+    var firstDay = year + month + '01'; //每月第一天
     var queryData = '<LayoutHeader><ReserveUser>' + loginData['emp_no'] + '</ReserveUser><NowDate>' + firstDay + '</NowDate></LayoutHeader>';
-    var rrsStr = langStr["str_063"],    //预约
-        relieveStr = langStr["str_064"],    //物理治疗
-        parkingStr = langStr["str_065"],    //车位预约
-        massageStr = langStr["str_066"];    //按摩预约
+    var rrsStr = langStr["str_063"], //预约
+        relieveStr = langStr["str_064"], //物理治疗
+        parkingStr = langStr["str_065"], //车位预约
+        massageStr = langStr["str_066"]; //按摩预约
 
     var versionKey = "";
     if (loginData["versionName"].indexOf("Staging") !== -1) {
@@ -20,9 +47,10 @@ function getMyReserve(key, secret) {
         versionKey = key + "";
     }
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
         //console.log(data);
 
+        var reserveDirty = false;
         if (data['ResultCode'] === "1") {
             var resultArr = data['Content'];
 
@@ -92,21 +120,23 @@ function getMyReserve(key, secret) {
 
             }
 
-        } else if (data['ResultCode'] === "002901") { }
+        } else if (data['ResultCode'] === "002901") {}
 
         if (key == "appmassage") {
             formatReserveList();
         }
 
-        if (reserveDirty && reserveCalendar != null) {
+        //review by alan
+        if (reserveDirty) {
             formatReserveList();
-            reserveCalendar.reserveData = reserveList;
-            reserveCalendar.refreshReserve(reserveList);
+            //不符合OO精神
+            //reserveCalendar.reserveData = reserveList;
+            //reserveCalendar.refreshReserve(reserveList);
             reserveDirty = false;
         }
     };
 
-    var __construct = function () {
+    var __construct = function() {
         CustomAPIByKey("POST", true, key, secret, "QueryMyReserve", self.successCallback, self.failCallback, queryData, "", 60 * 60, "low");
     }();
 }
