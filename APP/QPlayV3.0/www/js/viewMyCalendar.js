@@ -335,6 +335,18 @@ $("#viewMyCalendar").pagecontainer({
             QueryCalendarData(currentYear, currentMonth);
         }
 
+        function refresh() {
+            var changeReserveListDirty = window.sessionStorage.getItem('changeReserveListDirty');
+
+            if (changeReserveListDirty == 'Y' || widgetListDirty == null) {
+
+                reserveList = JSON.parse(window.localStorage.getItem('reserveList'));
+                reserveCalendar.reserveData = reserveList;
+                reserveCalendar.refreshReserve(reserveList);
+                window.sessionStorage.setItem('changeReserveListDirty', 'N');
+            }
+        }
+
         /********************************** page event ***********************************/
         $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
 
@@ -356,7 +368,7 @@ $("#viewMyCalendar").pagecontainer({
         });
 
         $("#viewMyCalendar").on("pageshow", function (event, ui) {
-
+            refresh();
         });
 
         $("#viewMyCalendar").on("pagehide", function (event, ui) {
