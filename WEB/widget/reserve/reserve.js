@@ -29,7 +29,7 @@ var reserveWidget = {
             $('.current-date').text(str);
             var name = window.localStorage.getItem('loginid');
             $('#widgetList .emp-name').text(name);
-            $('.widget-reserve-null').text(langStr['str_067']);
+            $('.widget-reserve-null').text(langStr['wgt_006']);
         }
 
         function getAllReserve() {
