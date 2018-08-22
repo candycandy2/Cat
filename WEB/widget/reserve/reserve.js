@@ -11,6 +11,7 @@ var reserveWidget = {
         ];
 
         function createContent() {
+
             $.get(serverURL + "/widget/reserve/reserve.html", function(data) {
                 contentItem.html('').append(data);
                 $img = $('<img>').attr('src', serverURL + '/widget/reserve/default_photo.png');
@@ -24,6 +25,7 @@ var reserveWidget = {
         }
 
         function getCurrentDate() {
+
             var now = new Date();
             var str = now.toLocaleDateString(browserLanguage, { weekday: 'long', month: 'long', day: 'numeric' });
             $('.current-date').text(str);
@@ -33,6 +35,7 @@ var reserveWidget = {
         }
 
         function getAllReserve() {
+
             for (var i in reserveAppList) {
                 //from component/function/
                 getMyReserve(reserveAppList[i].key, reserveAppList[i].secretKey);
@@ -41,6 +44,7 @@ var reserveWidget = {
         }
 
         function createTodayReserve() {
+
             var now = new Date();
             var year = now.getFullYear().toString();
             var month = now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1).toString() : (now.getMonth() + 1).toString();
@@ -71,7 +75,6 @@ var reserveWidget = {
         //检查是否上传过头像
         function checkPhotoUpload($target) {
             //var url = 'https://bqgroupstoragedev.blob.core.windows.net/appqplaydev-portrait/1705055/1705055_1024.png';
-
             //from component/
             var env = '';
             if (loginData["versionName"].indexOf("Staging") !== -1) {
@@ -122,9 +125,7 @@ var reserveWidget = {
                 });
             }
         }
-
         $.fn.reserve.defaults = {}
-
         $('.reserveWidget').reserve();
     },
     clear: function() {
