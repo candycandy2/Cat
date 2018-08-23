@@ -23,7 +23,7 @@
             width: 4.2vw;!important;
         }
         .ui-icon-dropdown {
-            background:url({{asset('/css/images/dropdown_n.png')}}) no-repeat 0 0;
+            background:url({{asset('/css/images/dropdown_n_2.png')}}) no-repeat 0 0;
             background-position: 98% 50%;
             background-size: 4vw 2.4vw ;
         }
@@ -157,9 +157,9 @@
                 <div id="env_info">● {{Config::get('app.env')}} ●</div>
             @endif
             <table id="main_table">
-                <tr>
+                <tr id="ddlCompanyData">
                     <td class="control_icon_cell">
-                        <img src="{{asset('/css/images/domain.png')}}" class="control_icon" />
+                        <img src="{{asset('/css/images/company.png')}}" class="control_icon" />
                     </td>
                     <td class="control_cell">
                         <table>
@@ -177,7 +177,7 @@
                         </table>
                     </td>
                 </tr>
-                <tr id="loginTypeData">
+                <tr id="ddlLoginTypeData">
                     <td class="control_icon_cell">
                         <img src="{{asset('/css/images/login_type.png')}}" class="control_icon" />
                     </td>
@@ -195,7 +195,7 @@
                         </table>
                     </td>
                 </tr>
-                <tr>
+                <tr id="tbxNameData">
                     <td class="control_icon_cell">
                         <img src="{{asset('/css/images/username.png')}}" class="control_icon" />
                     </td>
@@ -210,7 +210,7 @@
                         </table>
                     </td>
                 </tr>
-                <tr>
+                <tr id="tbxPasswordData">
                     <td class="control_icon_cell">
                         <img src="{{asset('/css/images/password.png')}}" class="control_icon" />
                     </td>
@@ -235,8 +235,9 @@
                 </div>
                 <div id="info_cell">
                     <span id="info_cell_forget" >忘記密碼請聯絡 </span>
-                    <a class="linkITS adaccount" href="mailto:QPlay@BenQ.com">ITS</a>
-                    <span class="linkITS qaccount"> #Cindy / #Jeffery </span>
+                    <!--<a class="linkITS adaccount" href="mailto:QPlay@BenQ.com">ITS</a>-->
+                    <span class="linkITS adaccount"> ITS </span>
+                    <span class="linkITS qaccount"> Cindy#3346/Jeffrey#7624 </span>
                 </div>
             </div>
         </div>
@@ -265,8 +266,9 @@
                 </div>
                 <div id="info_cell">
                     <span id="info_cell_logout" >若要註銷設備，請聯絡 </span>
-                    <a class="linkITS adaccount" href="mailto:QPlay@BenQ.com">ITS</a>
-                    <span class="linkITS qaccount"> #Cindy / #Jeffery </span>
+                    <!--<a class="linkITS adaccount" href="mailto:QPlay@BenQ.com">ITS</a>-->
+                    <span class="linkITS adaccount"> ITS </span>
+                    <span class="linkITS qaccount"> Cindy#3346/Jeffrey#7624 </span>
                 </div>
             </div>
         </div>
@@ -297,21 +299,25 @@
                 var selectedValue = $(this).val();
 
                 if (selectedValue.length == 0) {
-                    $("#loginTypeData").hide();
+                    $("#ddlLoginTypeData").hide();
                     setTextForLoginType("none");
                 } else {
-                    $("#loginTypeData").show();
+                    $("#ddlLoginTypeData").show();
 
                     if (selectedValue === "shop") {
                         $("#ddlLoginType").attr("disabled", true);
+                        $("#ddlLoginType").hide();
                         $("#ddlLoginType").parent().css("background-color", "#ededed");
+                        $("#ddlLoginType-button").css("background", "rgb(237,237,237)");
 
                         $("#ddlLoginType").val("QAccount");
                         $("#ddlLoginType option:eq(2)").attr("selected", true);
                         $("#ddlLoginType").parent().find("span[class='login_control']").html($("#ddlLoginType option:eq(2)").text());
                     } else {
                         $("#ddlLoginType").attr("disabled", false);
+                        $("#ddlLoginType").show();
                         $("#ddlLoginType").parent().css("background-color", "transparent");
+                        $("#ddlLoginType-button").css("background", $("#ddlCompany-button").css("background"));
 
                         $("#ddlLoginType").val("AD");
                         $("#ddlLoginType option:eq(1)").attr("selected", true);
@@ -325,6 +331,25 @@
             $("#ddlLoginType").on("change", function() {
                 var selectedValue = $(this).val();
                 setTextForLoginType(selectedValue);
+            });
+
+            //Handle bottom line
+            $(".login_control").on("blur", function() {
+                $("#main_table tr").css({
+                    "border-bottom": "1px solid #e6e6e6"
+                });
+            });
+
+            $(".login_control").on("focus", function() {
+                var ID = $(this).attr("id");
+
+                $("#main_table tr").css({
+                    "border-bottom": "1px solid #e6e6e6"
+                });
+
+                $("#" + ID + "Data").css({
+                    "border-bottom": "1px solid #666666"
+                });
             });
         });
 
@@ -376,14 +401,14 @@
                     //set placeholder of Name & Password according to login_type
                     setTextForLoginType(logintTypeVal);
                 } else {
-                    $("#loginTypeData").hide();
+                    $("#ddlLoginTypeData").hide();
                     setTextForLoginType("none");
                 }
                 if(window.localStorage.getItem("userName") !== null){
                     $("#tbxName").val(window.localStorage.getItem("userName"));
                 }
             } else {
-                $("#loginTypeData").hide();
+                $("#ddlLoginTypeData").hide();
             }
 
             //set login_type option text
