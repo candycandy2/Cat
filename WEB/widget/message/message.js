@@ -28,6 +28,13 @@ var messageWidget = {
             var $container = $('<div></div>').addClass('message-widget').append(content);
 
             contentItem.html('').append($container);
+
+            //点击widget内message，跳转到message详情页
+            contentItem.on('click', '.widget-msg-list', function() {
+                messageFrom = 'messageWidget';
+                messageRowId = $(this).attr('data-rowid');
+                checkAppPage('viewWebNews2-3-1');
+            });
         }
 
         $.fn.message = function(options, param) {

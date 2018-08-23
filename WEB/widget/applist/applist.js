@@ -12,10 +12,10 @@ var applistWidget = {
             }, 'html');
 
             //最爱列表打开APP
-            //contentItem.on('click', '.applist-item', function () {
-                //var schemeURL = $(this).attr('data-name') + createAPPSchemeURL();
-                //openAPP(schemeURL);
-            //});
+            contentItem.on('click', '.applist-item', function () {
+                var schemeURL = $(this).attr('data-name') + createAPPSchemeURL();
+                openAPP(schemeURL);
+            });
 
             //点击添加按钮跳转到APPList
             contentItem.on('click', '.add-favorite-list', function () {
