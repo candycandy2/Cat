@@ -92,23 +92,6 @@ $("#viewMain3").pagecontainer({
             checkAppPage('viewMyCalendar');
         });
 
-        //最爱列表打开APP
-        $('#widgetList').on('click', '.applist-item', function () {
-            var schemeURL = $(this).attr('data-name') + createAPPSchemeURL();
-            openAPP(schemeURL);
-        });
-
-        //点击添加按钮跳转到APPList，如果任何app都未下载，跳转到none页面
-        $('#widgetList').on('click', '.add-favorite-list', function () {
-            if (appCheckFinish) {
-                if (alreadyDownloadList.length == 0) {
-                    checkAppPage('viewNoneInstall');
-                } else {
-                    checkAppPage('viewAppList');
-                }
-            }
-        });
-
         //点击Link跳转到APPList
         $('.applist-link').on('click', function () {
             checkAppPage('viewAppList');
