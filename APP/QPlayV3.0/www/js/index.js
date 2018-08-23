@@ -41,7 +41,8 @@ var favoriteList = null,
 var reserveCalendar = null;
 
 //viewMessageList
-var messageFrom = 'viewMain3';
+var portalURL = "",
+    messageFrom = 'viewMain3';
 
 //viewVersionRecord
 var versionFrom = true;
@@ -331,7 +332,7 @@ function checkAppCallback(downloaded, index) {
         notDownloadList.push(index);
     }
 
-    if(index == applist.length - 1) {
+    if (index == applist.length - 1) {
         appCheckFinish = true;
     }
 }
@@ -460,7 +461,7 @@ function getVersionRecord(key) {
 
 function pageBeforeShow(pageID) {
     if (pageID == 'viewAppList') {
-        
+
     }
 }
 

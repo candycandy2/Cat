@@ -28,7 +28,6 @@ $("#viewWebNews2-3-1").pagecontainer({
     create: function(event, ui) {
 
         var messageExist = true;
-        window.portalURL = "";
         window.canvasChangeTop = false;
 
         /********************************** function *************************************/
