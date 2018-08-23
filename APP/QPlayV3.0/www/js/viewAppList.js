@@ -162,16 +162,16 @@ $("#viewAppList").pagecontainer({
         }
 
         //Check if APP is installed
-        function checkAPPInstalled(callback, page) {
+        function checkAPPInstalled(callback, page, APPKey) {
 
             callback = callback || null;
 
             var scheme;
 
             if (device.platform === 'iOS') {
-                scheme = checkAPPKey + '://';
+                scheme = APPKey + '://';
             } else if (device.platform === 'Android') {
-                scheme = 'com.qplay.' + checkAPPKey;
+                scheme = 'com.qplay.' + APPKey;
             }
 
             window.testAPPInstalledCount = 0;
@@ -182,8 +182,8 @@ $("#viewAppList").pagecontainer({
                     function() { //Success callback
 
                         if (page === "appDetail") {
-                            var latest_version = appVersionRecord["com.qplay." + checkAPPKey]["latest_version"];
-                            var installed_version = appVersionRecord["com.qplay." + checkAPPKey]["installed_version"];
+                            var latest_version = appVersionRecord["com.qplay." + APPKey]["latest_version"];
+                            var installed_version = appVersionRecord["com.qplay." + APPKey]["installed_version"];
 
                             if (latest_version === installed_version) {
                                 loginData['updateApp'] = false;
@@ -239,9 +239,8 @@ $("#viewAppList").pagecontainer({
                     appVersionRecord[applist[i].package_name] = {};
                     var packageName = applist[i].package_name;
                     var packageNameArr = packageName.split(".");
-                    checkAPPKey = packageNameArr[2];
 
-                    checkAPPInstalled(checkAppVersionCallback, "appList");
+                    checkAPPInstalled(checkAppVersionCallback, "appList", packageNameArr[2]);
                     tempVersionArrData = appVersionRecord[applist[i].package_name]["installed_version"];
                     tempVersionData = applist[i].app_version.toString();
                 }
@@ -463,11 +462,11 @@ $("#viewAppList").pagecontainer({
             //check app install setInterval
             var packageName = applist[selectAppIndex].package_name;
             var packageNameArr = packageName.split(".");
-            checkAPPKey = packageNameArr[2];
+            var APPKey = packageNameArr[2];
             intervalCount = 0;
 
             checkAppInstallInterval = setInterval(function() {
-                checkAllAppInstalled(checkAppInstallAfterDownload, checkAPPKey, selectAppIndex);
+                checkAllAppInstalled(checkAppInstallAfterDownload, APPKey, selectAppIndex);
             }, 2000);
 
         });

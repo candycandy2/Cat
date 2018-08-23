@@ -39,7 +39,7 @@ $("#viewMain2-1").pagecontainer({
                             //For old APP Version
                             var packageName = applist[appindex].package_name;
                             var packageNameArr = packageName.split(".");
-                            checkAPPKey = packageNameArr[2];
+                            window.sessionStorage.setItem('checkAPPKey', packageNameArr[2]);
 
                             checkAPPInstalled(checkAPPOldVersion, "appList");
                             tempVersionArrData = appVersionRecord[applist[appindex].package_name]["installed_version"];

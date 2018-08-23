@@ -12,7 +12,7 @@ $("#viewAppDetail2-2").pagecontainer({
             //Check if APP is installed
             var packageName = applist[selectAppIndex].package_name;
             var packageNameArr = packageName.split(".");
-            checkAPPKey = packageNameArr[2];
+            window.sessionStorage.setItem('checkAPPKey', packageNameArr[2]);
             //checkAPPInstalled(displayAppDetailStep2, "appDetail");
 
             //Find the specific language to display,
@@ -219,7 +219,8 @@ $("#viewAppDetail2-2").pagecontainer({
         });
 
         $("#InstallApp #InstallAppStr02").on("click", function () { //開啟
-            var schemeURL = checkAPPKey + createAPPSchemeURL();
+            var APPKey = window.sessionStorage.getItem('checkAPPKey');
+            var schemeURL = APPKey + createAPPSchemeURL();
             openAPP(schemeURL);
         });
 

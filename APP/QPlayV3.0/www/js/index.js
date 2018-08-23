@@ -12,7 +12,6 @@ var appVersionRecord = {};
 checkAPPVersionRecord("initial");
 
 //viewAppDetail2-2
-var checkAPPKey;
 var checkAPPKeyInstalled = false;
 
 //viewNewsEvents
@@ -46,7 +45,7 @@ var messageFrom = 'viewMain3';
 //viewVersionRecord
 var versionFrom = true;
 
-window.initialSuccess = function (data) {
+window.initialSuccess = function(data) {
     //1. widgetlist
     checkWidgetListOrder();
 
@@ -181,7 +180,7 @@ function favoriteCallback(download, appcode) {
 
 //先按照开始时间排序，如果开始时间一致再用结束时间排序
 function sortByBeginTime(prop1, prop2) {
-    return function (obj1, obj2) {
+    return function(obj1, obj2) {
         var val1 = obj1[prop1].replace(':', '');
         var val2 = obj2[prop1].replace(':', '');
         var value1 = obj1[prop2].replace(':', '');
@@ -207,11 +206,11 @@ function sendPushToken() {
     var self = this;
     var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
 
-    this.successCallback = function () { };
+    this.successCallback = function() {};
 
-    this.failCallback = function () { };
+    this.failCallback = function() {};
 
-    var __construct = function () {
+    var __construct = function() {
         if (loginData.token !== null && loginData.token.length !== 0) {
             QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
         }
@@ -222,7 +221,7 @@ function sendPushToken() {
 function reNewToken() {
     var self = this;
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
         var resultcode = data['result_code'];
         var newToken = data['content'].token;
         var newTokenValid = data['token_valid'];
@@ -243,9 +242,9 @@ function reNewToken() {
         //}
     };
 
-    this.failCallback = function (data) { };
+    this.failCallback = function(data) {};
 
-    var __construct = function () {
+    var __construct = function() {
         QPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
     }();
 }
@@ -276,20 +275,20 @@ function openNewMessage() {
 }
 
 //获取版本记录
-function getAppVersion(packageName, versionCode) {
-    var self = this;
-    var queryStr = "&package_name=" + packageName + "&device_type=" + loginData.deviceType + "&version_code=" + versionCode;
+// function getAppVersion(packageName, versionCode) {
+//     var self = this;
+//     var queryStr = "&package_name=" + packageName + "&device_type=" + loginData.deviceType + "&version_code=" + versionCode;
 
-    this.successCallback = function (data) {
-        console.log(data);
-    };
+//     this.successCallback = function(data) {
+//         console.log(data);
+//     };
 
-    this.failCallback = function (data) { };
+//     this.failCallback = function(data) {};
 
-    var __construct = function () {
-        QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
-    }();
-}
+//     var __construct = function() {
+//         QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
+//     }();
+// }
 
 //Check APP version record
 function checkAPPVersionRecord(action) {
@@ -331,7 +330,7 @@ function checkAppCallback(downloaded, index) {
         notDownloadList.push(index);
     }
 
-    if(index == applist.length - 1) {
+    if (index == applist.length - 1) {
         appCheckFinish = true;
     }
 }
@@ -352,13 +351,13 @@ function unregister() {
     var self = this;
     var queryStr = "&target_uuid=" + loginData.uuid;
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
         console.log(data);
     };
 
-    this.failCallback = function (data) { };
+    this.failCallback = function(data) {};
 
-    var __construct = function () {
+    var __construct = function() {
         QPlayAPI("POST", "unregister", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
@@ -366,25 +365,25 @@ function unregister() {
 function addDownloadHit(appname) {
     var self = this;
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
         var resultcode = data['result_code'];
 
-        if (resultcode == 1) { } else { }
+        if (resultcode == 1) {} else {}
     };
 
-    this.failCallback = function (data) {
+    this.failCallback = function(data) {
         var resultcode = data['result_code'];
 
-        if (resultcode == 1) { } else { }
+        if (resultcode == 1) {} else {}
     };
 
-    var __construct = function () {
+    var __construct = function() {
         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
 
-Date.prototype.FormatReleaseDate = function () {
+Date.prototype.FormatReleaseDate = function() {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
 }
 
@@ -399,68 +398,13 @@ function scrollLeftOffset(margin) {
 }
 
 //Change event type
-$(document).on("click", ".event-type", function () {
+$(document).on("click", ".event-type", function() {
     $("#eventTypeSelect").panel("open");
 });
 
-//获取版本记录
-function getVersionRecord(key) {
-    key = key || null;
-
-    var self = this;
-
-    if (key == null) {
-        key = qplayAppKey;
-    }
-
-    var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
-
-    this.successCallback = function (data) {
-        console.log(data);
-
-        if (data['result_code'] == "1") {
-            var versionLogList = data['content'].version_list;
-            var content = '';
-
-            for (var i in versionLogList) {
-                content += '<div class="version-record-list"><div class="font-style12">' +
-                    versionLogList[i].version_name +
-                    '</div><div class="font-style11">' +
-                    new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
-                    '</div><div class="font-style11">' +
-                    versionLogList[i].version_log.replace(new RegExp('\r?\n', 'g'), '<br />') +
-                    '</div></div>';
-            }
-
-            $(".version-scroll > div").html('').append(content);
-
-            //set language
-            $('#viewVersionRecord .ui-title div').text(langStr['str_081']);
-
-            //set height
-            var contentHeight = $('.version-scroll > div').height();
-            var headerHeight = $('#viewVersionRecord .page-header').height();
-            var totalHeight;
-            if (device.platform === "iOS") {
-                totalHeight = (contentHeight + headerHeight + iOSFixedTopPX()).toString();
-            } else {
-                totalHeight = (contentHeight + headerHeight).toString();
-            }
-            $(".version-scroll > div").css('height', totalHeight + 'px');
-
-        }
-    };
-
-    this.failCallback = function (data) { };
-
-    var __construct = function () {
-        QPlayAPI("GET", "getVersionLog", self.successCallback, self.failCallback, null, queryStr);
-    }();
-}
-
 function pageBeforeShow(pageID) {
     if (pageID == 'viewAppList') {
-        
+
     }
 }
 
