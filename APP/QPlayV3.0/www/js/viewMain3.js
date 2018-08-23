@@ -87,10 +87,6 @@ $("#viewMain3").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        //跳转到行事历
-        $('#widgetList').on('click', '.personal-res', function () {
-            checkAppPage('viewMyCalendar');
-        });
 
         //点击Link跳转到APPList
         $('.applist-link').on('click', function () {

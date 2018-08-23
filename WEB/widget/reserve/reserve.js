@@ -10,7 +10,7 @@ var reserveWidget = {
             { key: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
         ];
 
-        function createContent() {
+        function createContent(contentItem) {
 
             $.get(serverURL + "/widget/reserve/reserve.html", function(data) {
                 contentItem.html('').append(data);
@@ -21,17 +21,22 @@ var reserveWidget = {
                 //2.获取用户头像
                 checkPhotoUpload($('.reserve-default-photo img'));
                 //3.check data
-                var checkReserveData = setInterval(function () {
+                var checkReserveData = setInterval(function() {
                     var reserveLocal = JSON.parse(sessionStorage.getItem('reserveList'));
                     var changeReserveListDirty = sessionStorage.getItem('changeReserveListDirty');
-                    
-                    if(reserveLocal !== null && changeReserveListDirty == 'Y') {
+
+                    if (reserveLocal !== null && changeReserveListDirty == 'Y') {
                         clearInterval(checkReserveData);
-                        createTodayReserve(reserveLocal);      
+                        createTodayReserve(reserveLocal);
                     }
-                },1000);
+                }, 1000);
 
             }, "html");
+
+            //跳转到行事历
+            contentItem.on('click', '.personal-res', function() {
+                checkAppPage('viewMyCalendar');
+            });
         }
 
         function getCurrentDate() {
@@ -121,7 +126,7 @@ var reserveWidget = {
                 }
 
                 //1.创建DOM
-                createContent();
+                createContent(contentItem);
                 //2.Call API
                 getAllReserve();
 
