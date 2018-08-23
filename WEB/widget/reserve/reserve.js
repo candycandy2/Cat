@@ -16,10 +16,20 @@ var reserveWidget = {
                 contentItem.html('').append(data);
                 $img = $('<img>').attr('src', serverURL + '/widget/reserve/default_photo.png');
                 $('.reserve-default-photo').html('').append($img);
-
+                //1.获取当天日期和用户名
                 getCurrentDate();
-                getAllReserve();
+                //2.获取用户头像
                 checkPhotoUpload($('.reserve-default-photo img'));
+                //3.check data
+                var checkReserveData = setInterval(function () {
+                    var reserveLocal = JSON.parse(sessionStorage.getItem('reserveList'));
+                    var changeReserveListDirty = sessionStorage.getItem('changeReserveListDirty');
+                    
+                    if(reserveLocal !== null && changeReserveListDirty == 'Y') {
+                        clearInterval(checkReserveData);
+                        createTodayReserve(reserveLocal);      
+                    }
+                },1000);
 
             }, "html");
         }
@@ -40,10 +50,10 @@ var reserveWidget = {
                 //from component/function/
                 getMyReserve(reserveAppList[i].key, reserveAppList[i].secretKey);
             }
-            createTodayReserve();
+            //createTodayReserve();
         }
 
-        function createTodayReserve() {
+        function createTodayReserve(arr) {
 
             var now = new Date();
             var year = now.getFullYear().toString();
@@ -51,19 +61,19 @@ var reserveWidget = {
             var day = now.getDate() < 10 ? '0' + now.getDate().toString() : now.getDate().toString();
             var today = year + '-' + month + '-' + day;
 
-            if (typeof reserveList[today] == 'undefined') {
+            if (typeof arr[today] == 'undefined') {
                 $('.widget-reserve-null').show();
 
             } else {
                 var content = '';
-                for (var i in reserveList[today]) {
+                for (var i in arr[today]) {
                     if (i < 3) {
                         content += '<li class="reserve-today"><div><div>' +
-                            reserveList[today][i].ReserveBeginTime +
+                            arr[today][i].ReserveBeginTime +
                             '</div><div>' +
-                            reserveList[today][i].ReserveEndTime +
+                            arr[today][i].ReserveEndTime +
                             '</div></div><div>' +
-                            reserveList[today][i].item +
+                            arr[today][i].item +
                             '</div></li>';
                     }
                 }
@@ -110,7 +120,10 @@ var reserveWidget = {
                     });
                 }
 
+                //1.创建DOM
                 createContent();
+                //2.Call API
+                getAllReserve();
 
             });
         }
