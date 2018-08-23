@@ -6,25 +6,103 @@ $("#viewMessageList").pagecontainer({
             deleteType,
             messageExist = true;
 
-        function getNewsList() {
+        //获取portal
+        function QueryPortalList(type) {
+            (function (type) {
 
-            var self = this;
-            var msgDateTo = getTimestamp();
-            var queryStr = "&date_from=" + loginData["msgDateFrom"] + "&date_to=" + msgDateTo + "&overwrite_timestamp=1";
+                //type: Announcement, Communication, CIP, CSD, ITS
+                var queryData = "<LayoutHeader><PortalCategory>" + type + "</PortalCategory></LayoutHeader>";
 
-            window.localStorage.setItem("msgDateFrom", loginData["msgDateFrom"]);
+                var successCallback = function (data) {
 
-            this.successCallback = function (data) {
-                console.log(data);
+                    if (data["ResultCode"] === "1") {
+                        //save to local data
+                        window.localStorage.removeItem(queryData);
+                        var jsonData = {};
+                        jsonData = {
+                            lastUpdateTime: new Date(),
+                            content: data['Content']
+                        };
+                        window.localStorage.setItem(queryData, JSON.stringify(jsonData));
 
-            };
+                        //record APP all data
+                        var responsecontent = jsonData['content'];
+                        console.log(responsecontent);
+                        createPortalByType(responsecontent, type.toLowerCase());
 
-            this.failCallback = function () { };
+                    } else if (data["ResultCode"] === "044901") {
+                        // $("#no" + type).show();
+                        // $("#updateTime" + type).hide();
+                    }
 
-            var __construct = function () {
-                QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
-            }();
+                    loadingMask("hide");
+                };
+
+                var failCallback = function (data) {
+                    loadingMask("hide");
+                };
+
+                //review by alan
+                var localdata = window.localStorage.getItem(queryData);
+                var QueryData = null;
+                if (localdata == null) {
+                    QueryData = null;
+                } else {
+                    QueryData = JSON.parse(localdata);
+                }
+                if (QueryData === null || checkDataExpired(QueryData['lastUpdateTime'], 30, 'mm')) {
+                    CustomAPI("POST", true, "PortalList", successCallback, failCallback, queryData, "");
+                } else {
+                    var responsecontent = QueryData['content'];
+                    console.log(responsecontent);
+                    createPortalByType(responsecontent, type.toLowerCase());
+                }
+
+            }(type));
+        };
+
+        //创建portal list
+        function createPortalByType(arr, type) {
+            var content = '';
+            for (var i in arr) {
+                content += '<li data-icon="false" data-rowid="' + arr[i].PortalID +
+                    '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-portal ui-btn">' +
+                    '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title read-font-normal"><div>' +
+                    arr[i].PortalDate.replaceAll('/', '-') + '</div><div>' +
+                    arr[i].PortalSubject + '</div><div style="display:none"><input type="hidden" value="' +
+                    arr[i].PortalURL + '"></div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
+            }
+
+            $("." + type + "-content ul").html('').append(content);
+
+            $('a.ui-portal').on("click", function (e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+
+                if (messageType != "Event" && messageType != "News") {
+                    //console.log($(this).find("input").val());
+                    messageFrom = 'viewMessageList';
+                    portalURL = $(this).find("input").val();
+                    checkAppPage('viewWebNews2-3-1');
+                }
+            });
+
+            //set height
+            setMsgHeightByType(messageType);
+
         }
+
+        //根据不同类型显示不同消息
+        function showDiffMessageByType(type) {
+            $.each($('.message-type > div'), function (index, item) {
+                if ($(item).attr('class') == type + '-content') {
+                    $(item).show();
+                } else {
+                    $(item).hide();
+                }
+            });
+        }
+
 
         //根据message数据，动态生成html
         function createMessageByType() {
@@ -38,7 +116,7 @@ $("#viewMessageList").pagecontainer({
             for (var i in resultArr) {
                 if (resultArr[i]['message_type'] == 'event' && resultArr[i].read != 'D') {
                     eventContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
-                        '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
+                        '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-message ui-btn">' +
                         '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
                         (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
                         resultArr[i].create_time.split(' ')[0] + '</div><div>' +
@@ -46,7 +124,7 @@ $("#viewMessageList").pagecontainer({
 
                 } else if (resultArr[i]['message_type'] == 'news' && resultArr[i].read != 'D') {
                     newsContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
-                        '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-div ui-btn">' +
+                        '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-message ui-btn">' +
                         '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
                         (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
                         resultArr[i].create_time.split(' ')[0] + '</div><div>' +
@@ -118,7 +196,7 @@ $("#viewMessageList").pagecontainer({
             $('.msg-update-date').text(langStr['str_079'] + msgUpdateDate);
 
             //5. set height
-            setMsgHeightByType();
+            setMsgHeightByType(messageType);
         }
 
         //跳转详情事件
@@ -128,7 +206,7 @@ $("#viewMessageList").pagecontainer({
             if ($('.header-search').css('display') == 'block') {
                 $('#cancelSearch').trigger('click');
             }
-            $.mobile.changePage('#viewWebNews2-3-1');
+            checkAppPage('viewWebNews2-3-1');
         }
 
         //don't use
@@ -483,19 +561,11 @@ $("#viewMessageList").pagecontainer({
         }
 
         //设置messageList高度
-        function setMsgHeightByType() {
+        function setMsgHeightByType(type) {
             var headHeight = $('#viewMessageList .page-header').height();
             var footHeight = $('.msg-update-date').height();
             var fixHeight = $('.fill-handle-blank').height();
-
-            var contentHeight;
-            if (messageType == 'news') {
-                contentHeight = $('.news-content').height();
-
-            } else {
-                contentHeight = $('.event-content').height();
-
-            }
+            var contentHeight = $('.' + type + '-content').height();
 
             var totalHeight;
             if (device.platform === "iOS") {
@@ -537,6 +607,7 @@ $("#viewMessageList").pagecontainer({
                 createMessageByType();
                 listUpdateMsg = false;
             }
+
         });
 
         $("#viewMessageList").on("pagehide", function (event, ui) {
@@ -562,19 +633,25 @@ $("#viewMessageList").pagecontainer({
             var lowerCase = $(self).attr('data-item');
 
             if (lowerCase != messageType) {
-
-                if (lowerCase == 'news') {
-                    $(".news-content").show();
-                    $(".event-content").hide();
-                } else if (lowerCase == 'event') {
-                    $(".event-content").show();
-                    $(".news-content").hide();
-                }
-
+                //save type
                 messageType = lowerCase;
+                //change title
                 $(".dropdown-title").text(currentType);
 
-                setMsgHeightByType();
+                if (messageType == 'news' || messageType == 'event') {
+                    //news和event可以已读或删除
+                    $('#editListview').show();
+                    showDiffMessageByType(messageType);
+                    //news已经有数据了
+                    setMsgHeightByType(messageType);
+
+                } else {
+                    //portal不用编辑
+                    $('#editListview').hide();
+                    showDiffMessageByType(messageType);
+                    QueryPortalList(currentType);
+                }
+
             }
 
             $(".select-type").slideUp(200);
@@ -622,7 +699,7 @@ $("#viewMessageList").pagecontainer({
             $('#viewMessageList .ui-title').on('click', function () {
                 $(".select-type").slideToggle(200);
             });
-            $(document).on('click', '.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon', function () {
+            $(document).on('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon', function () {
                 changeToDetail($(this));
             });
 
@@ -665,7 +742,7 @@ $("#viewMessageList").pagecontainer({
             $('#searchListview').show();
 
             $("." + messageType + "-content .swipe-delete").listview('refresh');
-            setMsgHeightByType();
+            setMsgHeightByType(messageType);
         });
 
         //编辑
@@ -775,14 +852,14 @@ $("#viewMessageList").pagecontainer({
             }
 
             //after delete, set height
-            setMsgHeightByType();
+            setMsgHeightByType(messageType);
 
             //after delete，updatewidget
             $('.messageWidget').message('refresh');
         });
 
         //跳转详情
-        $(document).on('click', '.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon', function () {
+        $(document).on('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon', function () {
             changeToDetail($(this));
         });
 
