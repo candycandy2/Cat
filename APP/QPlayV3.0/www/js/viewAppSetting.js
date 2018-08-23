@@ -200,6 +200,7 @@ $("#viewAppSetting").pagecontainer({
         //QPlay版本记录
         $('.qplay-version').on('click', function() {
             versionFrom = true;
+            window.sessionStorage.setItem('checkAPPKey', qplayAppKey);
             checkAppPage('viewVersionRecord');
         });
 

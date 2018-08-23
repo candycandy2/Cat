@@ -275,20 +275,20 @@ function openNewMessage() {
 }
 
 //获取版本记录
-function getAppVersion(packageName, versionCode) {
-    var self = this;
-    var queryStr = "&package_name=" + packageName + "&device_type=" + loginData.deviceType + "&version_code=" + versionCode;
+// function getAppVersion(packageName, versionCode) {
+//     var self = this;
+//     var queryStr = "&package_name=" + packageName + "&device_type=" + loginData.deviceType + "&version_code=" + versionCode;
 
-    this.successCallback = function(data) {
-        console.log(data);
-    };
+//     this.successCallback = function(data) {
+//         console.log(data);
+//     };
 
-    this.failCallback = function(data) {};
+//     this.failCallback = function(data) {};
 
-    var __construct = function() {
-        QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
-    }();
-}
+//     var __construct = function() {
+//         QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
+//     }();
+// }
 
 //Check APP version record
 function checkAPPVersionRecord(action) {
@@ -401,61 +401,6 @@ function scrollLeftOffset(margin) {
 $(document).on("click", ".event-type", function() {
     $("#eventTypeSelect").panel("open");
 });
-
-//获取版本记录
-function getVersionRecord(key) {
-    key = key || null;
-
-    var self = this;
-
-    if (key == null) {
-        key = qplayAppKey;
-    }
-
-    var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
-
-    this.successCallback = function(data) {
-        console.log(data);
-
-        if (data['result_code'] == "1") {
-            var versionLogList = data['content'].version_list;
-            var content = '';
-
-            for (var i in versionLogList) {
-                content += '<div class="version-record-list"><div class="font-style12">' +
-                    versionLogList[i].version_name +
-                    '</div><div class="font-style11">' +
-                    new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
-                    '</div><div class="font-style11">' +
-                    versionLogList[i].version_log.replace(new RegExp('\r?\n', 'g'), '<br />') +
-                    '</div></div>';
-            }
-
-            $(".version-scroll > div").html('').append(content);
-
-            //set language
-            $('#viewVersionRecord .ui-title div').text(langStr['str_081']);
-
-            //set height
-            var contentHeight = $('.version-scroll > div').height();
-            var headerHeight = $('#viewVersionRecord .page-header').height();
-            var totalHeight;
-            if (device.platform === "iOS") {
-                totalHeight = (contentHeight + headerHeight + iOSFixedTopPX()).toString();
-            } else {
-                totalHeight = (contentHeight + headerHeight).toString();
-            }
-            $(".version-scroll > div").css('height', totalHeight + 'px');
-
-        }
-    };
-
-    this.failCallback = function(data) {};
-
-    var __construct = function() {
-        QPlayAPI("GET", "getVersionLog", self.successCallback, self.failCallback, null, queryStr);
-    }();
-}
 
 function pageBeforeShow(pageID) {
     if (pageID == 'viewAppList') {
