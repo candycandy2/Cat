@@ -9,8 +9,18 @@ var applistWidget = {
             $.get(serverURL + '/widget/applist/applist.html', function(data) {
                 contentItem.html('').append(data);
                 getFavoriteApp();
-
             }, 'html');
+
+            //最爱列表打开APP
+            //contentItem.on('click', '.applist-item', function () {
+                //var schemeURL = $(this).attr('data-name') + createAPPSchemeURL();
+                //openAPP(schemeURL);
+            //});
+
+            //点击添加按钮跳转到APPList
+            contentItem.on('click', '.add-favorite-list', function () {
+                checkAppPage('viewAppList');//from app/component/function/
+            });
         }
 
         function getFavoriteApp() {

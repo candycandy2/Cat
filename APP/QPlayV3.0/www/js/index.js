@@ -49,8 +49,11 @@ var versionFrom = true;
 window.initialSuccess = function (data) {
     //1. widgetlist
     checkWidgetListOrder();
+
+    //review by alan
+    //Not OO, it assume applist widget exist
     //2. favorite app
-    checkFavoriteInstall();
+    //checkFavoriteInstall();
 
     if (data !== undefined) {
 
@@ -150,18 +153,18 @@ function checkWidgetListOrder() {
     }
 }
 
-//检查最爱列表里的app是否安装
-function checkFavoriteInstall() {
-    favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
+// //检查最爱列表里的app是否安装
+// function checkFavoriteInstall() {
+//     favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
 
-    if (favoriteList !== null) {
-        for (var i in favoriteList) {
-            var packageName = favoriteList[i].package_name;
-            var index = favoriteList[i].app_code;
-            checkAllAppInstalled(favoriteCallback, packageName, index);
-        }
-    }
-}
+//     if (favoriteList !== null) {
+//         for (var i in favoriteList) {
+//             var packageName = favoriteList[i].package_name;
+//             var index = favoriteList[i].app_code;
+//             checkAllAppInstalled(favoriteCallback, packageName, index);
+//         }
+//     }
+// }
 
 //未安装表示卸载，不应出现在最爱列表当中
 function favoriteCallback(download, appcode) {
