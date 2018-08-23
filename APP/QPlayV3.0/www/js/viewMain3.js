@@ -1,7 +1,7 @@
 $("#viewMain3").pagecontainer({
     create: function (event, ui) {
 
-        var enabledLength = 0;
+        
 
         //widget排序
         function orderWidget() {
@@ -10,7 +10,6 @@ $("#viewMain3").pagecontainer({
             if (widgetListDirty == 'Y' || widgetListDirty == null) {
 
                 var arr = JSON.parse(window.localStorage.getItem('widgetList'));
-                enabledLength = arr.length;
                 for (var i = 0; i < arr.length - 1; i++) {
                     $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
                 }
@@ -41,21 +40,23 @@ $("#viewMain3").pagecontainer({
             //3. check element count
             var checkWidgetFinish = setInterval(function () {
                 var childrenLength = $('#widgetList').children('div').length;
+                var enabledLength = parseInt(window.sessionStorage.getItem('widgetLength'));
+
                 if (enabledLength == childrenLength) {
                     clearInterval(checkWidgetFinish);
 
                     setTimeout(function () {
                         var mainHeight = $('.main-scroll > div').height();
                         var headHeight = $('#viewMain3 .page-header').height();
-                        var totalHeight;
 
+                        var totalHeight;
                         if (device.platform === "iOS") {
                             totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
-                            $('.main-scroll > div').css('height', totalHeight + 'px');
                         } else {
-                            totalHeight = (mainHeight + headHeight + 2).toString();
-                            $('.main-scroll > div').css('height', totalHeight + 'px');
+                            totalHeight = (mainHeight + headHeight).toString();
                         }
+
+                        $('.main-scroll > div').css('height', totalHeight + 'px');
 
                     }, 500);
                 }
