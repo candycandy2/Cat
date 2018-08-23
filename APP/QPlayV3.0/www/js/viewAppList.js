@@ -95,17 +95,21 @@ $("#viewAppList").pagecontainer({
             $('.not-download-list').html('').append(notdownloadContent);
 
             //3. change favorite icon
-            if (favoriteList != null) {
-                changeFavoriteIcon();
+            if (window.localStorage.getItem('favoriteList') != null) {
+
+                favoriteList = JSON.parse(window.localStorage.getItem('favoriteList'));
+                if (favoriteList != null) {
+                    changeFavoriteIcon(favoriteList);
+                }
             }
 
         }
 
         //change favorite icon after create content
-        function changeFavoriteIcon() {
+        function changeFavoriteIcon(_favoriteList) {
             $.each($('.favorite-btn'), function(index, item) {
-                for (var i in favoriteList) {
-                    if (favoriteList[i].app_code == $(item).parent().prev().attr('data-code')) {
+                for (var i in _favoriteList) {
+                    if (_favoriteList[i].app_code == $(item).parent().prev().attr('data-code')) {
                         $(item).attr('data-src', 'favorite_full');
                         $(item).attr('src', 'img/favorite_full.png');
                     }
@@ -314,8 +318,7 @@ $("#viewAppList").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewAppList").on("pagebeforeshow", function(event, ui) {
-        });
+        $("#viewAppList").on("pagebeforeshow", function(event, ui) {});
 
         $("#viewAppList").one("pageshow", function(event, ui) {
             loadingMask("show");
@@ -341,7 +344,6 @@ $("#viewAppList").pagecontainer({
                             loadingMask("hide");
                         }
                     }, 1000);
-                    loadingMask("hide");
                 }
             }, 500);
 
