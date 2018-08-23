@@ -233,7 +233,11 @@
                     <button id="btnOriLogin" class="ui-btn ui-btn-corner-all login_button" style="display:none;color:white;background-color: #492e80;font:4vw 'Arial';text-transform: none;line-height: 1em;width: 64vw;text-shadow: none;"
                             onclick="oriLogin()">登入</button>
                 </div>
-                <div id="info_cell"><span id="info_cell_forget" >忘記密碼請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a></div>
+                <div id="info_cell">
+                    <span id="info_cell_forget" >忘記密碼請聯絡 </span>
+                    <a class="linkITS adaccount" href="mailto:QPlay@BenQ.com">ITS</a>
+                    <span class="linkITS qaccount"> #Cindy / #Jeffery </span>
+                </div>
             </div>
         </div>
 
@@ -260,7 +264,9 @@
                             onclick="start()">好，我知道了</button>
                 </div>
                 <div id="info_cell">
-                    <span id="info_cell_logout" >若要註銷設備，請聯絡 </span><a class="linkITS" href="mailto:QPlay@BenQ.com">ITS</a>
+                    <span id="info_cell_logout" >若要註銷設備，請聯絡 </span>
+                    <a class="linkITS adaccount" href="mailto:QPlay@BenQ.com">ITS</a>
+                    <span class="linkITS qaccount"> #Cindy / #Jeffery </span>
                 </div>
             </div>
         </div>
@@ -292,6 +298,7 @@
 
                 if (selectedValue.length == 0) {
                     $("#loginTypeData").hide();
+                    setTextForLoginType("none");
                 } else {
                     $("#loginTypeData").show();
 
@@ -306,11 +313,18 @@
                         $("#ddlLoginType").attr("disabled", false);
                         $("#ddlLoginType").parent().css("background-color", "transparent");
 
-                        $("#ddlLoginType").val("none");
-                        $("#ddlLoginType option:eq(0)").attr("selected", true);
-                        $("#ddlLoginType").parent().find("span[class='login_control']").html($("#ddlLoginType option:eq(0)").text());
+                        $("#ddlLoginType").val("AD");
+                        $("#ddlLoginType option:eq(1)").attr("selected", true);
+                        $("#ddlLoginType").parent().find("span[class='login_control']").html($("#ddlLoginType option:eq(1)").text());
                     }
+
+                    $("#ddlLoginType").trigger("change");
                 }
+            });
+
+            $("#ddlLoginType").on("change", function() {
+                var selectedValue = $(this).val();
+                setTextForLoginType(selectedValue);
             });
         });
 
@@ -321,8 +335,8 @@
             $("#ddlCompany option:selected").attr('selected', false);
             $("#ddlCompany option").eq(0).text(login_lang_list["COMPANY"]);
             $("#ddlCompany-button > span").text(login_lang_list["COMPANY"]);
-            $("#tbxName").attr("placeholder",login_lang_list["NAME"]);
-            $("#tbxPassword").attr("placeholder",login_lang_list["PASSWORD"]);
+            //$("#tbxName").attr("placeholder",login_lang_list["NAME"]);
+            //$("#tbxPassword").attr("placeholder",login_lang_list["PASSWORD"]);
             $("#btnLogin").text(login_lang_list["LOGIN"]);
             $("#btnOriLogin").text(login_lang_list["LOGIN"]);
             $("#btnOK").text(login_lang_list["OK_IKNOW"]);
@@ -330,35 +344,43 @@
             $("#messageContainer").text(login_lang_list["ERROR"]);
             $("#info_cell_verify").text(login_lang_list["VERIFY_SUCCESS"]);
             $("#info_cell_logout").text(login_lang_list["LOGOUT"]);
+
             if(window.localStorage){
-                if(window.localStorage.getItem("userName") !== null){
-                     $("#tbxName").val(window.localStorage.getItem("userName"));
-                }
                 if(window.localStorage.getItem("company") !== null){  
                     var $selectCompany =  $("#ddlCompany option[value='" + window.localStorage.getItem("company") + "']");
                     $selectCompany.attr('selected', true);
                     $("#ddlCompany-button > span").text($selectCompany.text());
 
                     //set login_type by localStorage or by default
+                    var logintTypeVal;
+                    var loginTypeImdex;
+
                     if (window.localStorage.getItem("loginType") !== null){
                         if (window.localStorage.getItem("loginType") === "AD") {
-                            $logintTypeVal = "AD";
-                            $loginTypeImdex = 1;
+                            logintTypeVal = "AD";
+                            loginTypeImdex = 1;
                         } else {
-                            $logintTypeVal = "QAccount";
-                            $loginTypeImdex = 2;
+                            logintTypeVal = "QAccount";
+                            loginTypeImdex = 2;
                         }
                     } else {
-                        $logintTypeVal = "none";
-                        $loginTypeImdex = 0;
+                        logintTypeVal = "AD";
+                        loginTypeImdex = 1;
                     }
 
-                    $("#ddlLoginType option[value='" + $logintTypeVal + "']").attr("selected", true);
+                    $("#ddlLoginType option[value='" + logintTypeVal + "']").attr("selected", true);
                     setTimeout(function() {
-                        $("#ddlLoginType-button > span").text($("#ddlLoginType option:eq(" + $loginTypeImdex + ")").text());
+                        $("#ddlLoginType-button > span").text($("#ddlLoginType option:eq(" + loginTypeImdex + ")").text());
                     }, 500);
+
+                    //set placeholder of Name & Password according to login_type
+                    setTextForLoginType(logintTypeVal);
                 } else {
                     $("#loginTypeData").hide();
+                    setTextForLoginType("none");
+                }
+                if(window.localStorage.getItem("userName") !== null){
+                    $("#tbxName").val(window.localStorage.getItem("userName"));
                 }
             } else {
                 $("#loginTypeData").hide();
@@ -663,6 +685,33 @@
                 var hash = CryptoJS.HmacSHA256(signatureTime.toString(), appSecretKey);
                 return CryptoJS.enc.Base64.stringify(hash);
             }
+        }
+
+        function setTextForLoginType(loginType) {
+            var placeholderName;
+            var placeholderPwd;
+
+            $(".adaccount, .qaccount, #info_cell_forget, #info_cell_logout").hide();
+
+            if (loginType === "none") {
+                placeholderName = "";
+                placeholderPwd = "";
+
+                $("#tbxName").val("");
+            } else if (loginType === "AD") {
+                placeholderName = login_lang_list["NAME"];
+                placeholderPwd = login_lang_list["PASSWORD"];
+
+                $(".adaccount, #info_cell_forget, #info_cell_logout").show();
+            } else if (loginType === "QAccount") {
+                placeholderName = login_lang_list["QACCOUNT_NAME"];
+                placeholderPwd = login_lang_list["QACCOUNT_PASSWORD"];
+
+                $(".qaccount, #info_cell_forget, #info_cell_logout").show();
+            }
+
+            $("#tbxName").attr("placeholder", placeholderName);
+            $("#tbxPassword").attr("placeholder", placeholderPwd);
         }
 
 

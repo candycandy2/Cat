@@ -175,6 +175,7 @@
     padding-left: 3vw;
     color: #253137;
     font-size: 3.768vw !important;
+    display: none;
 }
 
 /******************** message ********************/

@@ -29,7 +29,8 @@ $("#viewMessageList").pagecontainer({
         //根据message数据，动态生成html
         function createMessageByType() {
             //1. html
-            var resultArr = loginData['messagecontent']['message_list'];
+            //var resultArr = loginData['messagecontent']['message_list'];
+            var resultArr = JSON.parse(window.localStorage.getItem('messagecontent')).message_list;
             //console.log(resultArr);
 
             var newsContent = '';
