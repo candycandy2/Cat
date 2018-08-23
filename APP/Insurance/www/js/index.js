@@ -24,7 +24,35 @@ window.initialSuccess = function() {
 }
 
 function onBackKeyDown() {
-
+    var activePageID = visitedPageList[visitedPageList.length - 1];
+    var prePageID = visitedPageList[visitedPageList.length - 2];
+    if (checkPopupShown()) {
+        var popupID = $(".ui-popup-active")[0].children[0].id;
+        $('#' + popupID).popup("close");
+    } else if ($(".ui-page-active").jqmData("panel") === "open") {
+        $("#mypanel").panel("close");
+    } else if ($("#applyRemark").is(":focus")) {
+        $("#applyRemark").blur();
+    } else if ($("#backMain").css("display") == "inline") {
+        $("#backMain").click();
+    } else if ($("#backFamilyList").css("display") == "inline") {
+        $("#backFamilyList").click();
+    } else if ($("#backContactInfo").css("display") == "inline") {
+        $("#backContactInfo").click();
+    } else if ($("#backPersonalInsuranceFromApply").css("display") == "inline") {
+        $("#backPersonalInsuranceFromApply").click();
+    } else if ($("#backPersonalInsuranceFromDetail").css("display") == "inline") {
+        $("#backPersonalInsuranceFromDetail").click();
+    } else if ($("#backApplyInsurance").css("display") == "inline") {
+        $("#backApplyInsurance").click();
+    } else if ($("#backWithdrawDetail").css("display") == "inline") {
+        $("#backWithdrawDetail").click();
+    } else if (visitedPageList.length == 1) {
+        navigator.app.exitApp();
+    } else {
+        visitedPageList.pop();
+        changePageByPanel(prePageID);
+    }
 }
 
 function changePageByPanel(pageId) {
