@@ -1389,11 +1389,14 @@ input[type=radio]:checked + label {
     text-align: right;
 }
 
-.news-content ul.ui-listview,
-.event-content ul.ui-listview {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.message-type > div:nth-of-type(n+2) {
+    display: none;
+}
+
+.message-type ul {
+    list-style-type: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* .news-content ul.ui-listview > li,
@@ -1401,10 +1404,10 @@ input[type=radio]:checked + label {
     border-bottom: 1px solid #d6d6d6 !important;
 } */
 
-.news-content ul.ui-listview > li:last-of-type > a,
+/* .news-content ul.ui-listview > li:last-of-type > a,
 .event-content ul.ui-listview > li:last-of-type > a {
     border: none !important;
-}
+} */
 
 .msg-delete-btn {
     width: 6vw;
@@ -1459,7 +1462,8 @@ input[type=radio]:checked + label {
     padding-left: 2.81vw;
 }
 
-.ui-div {
+.ui-message,
+.ui-portal {
     border-top: none !important;
     padding: 3.36vw 3.71vw 3.27vw !important;
     background-color: #FFFFFF !important;

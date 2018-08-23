@@ -40,7 +40,8 @@ var favoriteList = null,
 var reserveCalendar = null;
 
 //viewMessageList
-var messageFrom = 'viewMain3';
+var portalURL = "",
+    messageFrom = 'viewMain3';
 
 //viewVersionRecord
 var versionFrom = true;
