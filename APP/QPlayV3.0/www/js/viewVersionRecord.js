@@ -1,14 +1,12 @@
 $("#viewVersionRecord").pagecontainer({
-    create: function (event, ui) {
-
-        
+    create: function(event, ui) {
 
         /********************************** page event ***********************************/
-        $("#viewVersionRecord").on("pagebeforeshow", function (event, ui) {
+        $("#viewVersionRecord").on("pagebeforeshow", function(event, ui) {
             $("#versionRecordList").html('');
         });
 
-        $("#viewVersionRecord").on("pageshow", function (event, ui) {
+        $("#viewVersionRecord").on("pageshow", function(event, ui) {
             if (versionFrom) {
                 var versionData = new getVersionRecord();
             } else {
@@ -16,14 +14,14 @@ $("#viewVersionRecord").pagecontainer({
             }
         });
 
-        $("#viewVersionRecord").on("pagehide", function (event, ui) {
+        $("#viewVersionRecord").on("pagehide", function(event, ui) {
 
         });
 
 
         /********************************** dom event *************************************/
         //返回上一页
-        $('#viewVersionRecord .q-btn-header').on('click', function () {
+        $('#viewVersionRecord .q-btn-header').on('click', function() {
             if (versionFrom) {
                 checkAppPage('viewAppSetting');
             } else {
