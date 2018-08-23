@@ -2,7 +2,11 @@ $("#viewAppList").pagecontainer({
     create: function(event, ui) {
 
         var checkAppInstallInterval = null,
-            intervalCount = 0;
+            intervalCount = 0,
+            alreadyDownloadList = [],
+            notDownloadList = [],
+            favoriteList = [],
+            appCheckFinish = false;
 
         //已知app分组，生成html
         function createAppListContent() {
@@ -116,6 +120,19 @@ $("#viewAppList").pagecontainer({
                 }
             });
         }
+
+        // //未安装表示卸载，不应出现在最爱列表当中
+        // function favoriteCallback(download, appcode) {
+        //     if (!download) {
+        //         for (var i in favoriteList) {
+        //             if (appcode == favoriteList[i].app_code) {
+        //                 favoriteList.splice(i, 1);
+        //                 localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
         //添加到最爱
         function setFavoriteList(code, name, status) {
@@ -241,8 +258,6 @@ $("#viewAppList").pagecontainer({
                     var packageNameArr = packageName.split(".");
 
                     checkAPPInstalled(checkAppVersionCallback, "appList", packageNameArr[2]);
-                    tempVersionArrData = appVersionRecord[applist[i].package_name]["installed_version"];
-                    tempVersionData = applist[i].app_version.toString();
                 }
                 appVersionRecord[applist[i].package_name]["latest_version"] = applist[i].app_version.toString();
 
@@ -301,6 +316,19 @@ $("#viewAppList").pagecontainer({
                 intervalCount = 0;
             } else {
                 intervalCount++;
+            }
+        }
+
+        function checkAppCallback(downloaded, index) {
+            //根据是否下载分组
+            if (downloaded) {
+                alreadyDownloadList.push(index);
+            } else {
+                notDownloadList.push(index);
+            }
+
+            if (index == applist.length - 1) {
+                appCheckFinish = true;
             }
         }
 
