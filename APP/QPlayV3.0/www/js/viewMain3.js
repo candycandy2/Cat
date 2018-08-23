@@ -39,7 +39,9 @@ $("#viewMain3").pagecontainer({
 
         $("#viewMain3").one("pageshow", function (event, ui) {
             //1. app list
-            var applist = new GetAppList();
+            //var applist = new GetAppList();
+            //var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
+            //appGroupByDownload(responsecontent);
 
             //2. widget enabled count
             var enabledLength = 0;

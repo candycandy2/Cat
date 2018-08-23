@@ -110,54 +110,6 @@ $("#viewMain2-1").pagecontainer({
             openAppDetailCheck();
         }
 
-        function QueryAppList() {
-            var self = this;
-
-            this.successCallback = function(data) {
-                var resultcode = data['result_code'];
-
-                if (resultcode == 1) {
-
-                    //save to local data
-                    window.localStorage.removeItem('QueryAppListData');
-                    var jsonData = {};
-                    jsonData = {
-                        lastUpdateTime: new Date(),
-                        content: data['content']
-                    };
-                    window.localStorage.setItem('QueryAppListData', JSON.stringify(jsonData));
-
-                    //record APP all data
-                    var responsecontent = data['content'];
-                    FillAppList(responsecontent);
-
-                } else {
-
-                }
-            };
-
-            this.failCallback = function(data) {};
-
-            var __construct = function() {
-
-                var limitSeconds = 1 * 60 * 60 * 24;
-                var QueryAppListData = JSON.parse(window.localStorage.getItem('QueryAppListData'));
-                if (loginData["versionName"].indexOf("Staging") !== -1) {
-                    limitSeconds = 1;
-                } else if (loginData["versionName"].indexOf("Development") !== -1) {
-                    limitSeconds = 1;
-                }
-                if (QueryAppListData === null || checkDataExpired(QueryAppListData['lastUpdateTime'], limitSeconds, 'ss')) {
-                    QPlayAPI("GET", "getAppList", self.successCallback, self.failCallback);
-                } else {
-                    var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
-                    FillAppList(responsecontent);
-                }
-
-            }();
-
-        }
-
         window.checkAPPOldVersion = function(oldVersionExist) {
             if (oldVersionExist) {
                 tempVersionArrData = "1";

@@ -13,7 +13,7 @@ $("#viewAppDetail2-2").pagecontainer({
             var packageName = applist[selectAppIndex].package_name;
             var packageNameArr = packageName.split(".");
             checkAPPKey = packageNameArr[2];
-            checkAPPInstalled(displayAppDetailStep2, "appDetail");
+            //checkAPPInstalled(displayAppDetailStep2, "appDetail");
 
             //Find the specific language to display,
             //if can not find the language to match the browser language,
