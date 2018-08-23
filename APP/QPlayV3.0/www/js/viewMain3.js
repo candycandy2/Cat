@@ -1,7 +1,7 @@
 $("#viewMain3").pagecontainer({
     create: function (event, ui) {
 
-        var widgetArr = null;
+        var enabledLength = 0;
 
         //widget排序
         function orderWidget() {
@@ -10,6 +10,7 @@ $("#viewMain3").pagecontainer({
             if (widgetListDirty == 'Y' || widgetListDirty == null) {
 
                 var arr = JSON.parse(window.localStorage.getItem('widgetList'));
+                enabledLength = arr.length;
                 for (var i = 0; i < arr.length - 1; i++) {
                     $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
                 }
@@ -19,17 +20,15 @@ $("#viewMain3").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
-            //1. localstorage
-            widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
             //2. load widget
             widget.init($('#widgetList'));
-            //3. get message
-            if (!callGetMessageList && loginData["msgDateFrom"] === null) {
-                msgDateFromType = 'month';
-                var clientTimestamp = getTimestamp();
-                loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
-                var messageList = new QueryMessageList();
-            }
+            // //3. get message
+            // if (!callGetMessageList && loginData["msgDateFrom"] === null) {
+            //     msgDateFromType = 'month';
+            //     var clientTimestamp = getTimestamp();
+            //     loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
+            //     var messageList = new QueryMessageList();
+            // }
 
         });
 
@@ -38,18 +37,6 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").one("pageshow", function (event, ui) {
-            //1. app list
-            //var applist = new GetAppList();
-            //var responsecontent = JSON.parse(window.localStorage.getItem('QueryAppListData'))['content'];
-            //appGroupByDownload(responsecontent);
-
-            //2. widget enabled count
-            var enabledLength = 0;
-            for (var i in widgetArr) {
-                if (widgetArr[i].enabled) {
-                    enabledLength++;
-                }
-            }
 
             //3. check element count
             var checkWidgetFinish = setInterval(function () {
@@ -107,12 +94,6 @@ $("#viewMain3").pagecontainer({
         $('#setting').on('click', function () {
             checkAppPage('viewAppSetting');
         });
-
-        //qpay test
-        // $('#widgetList').on('click','.weather-widget', function () {
-        //     checkAppPage('viewPay');
-        // });
-
 
     }
 

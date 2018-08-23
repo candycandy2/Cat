@@ -67,6 +67,7 @@ window.initialSuccess = function(data) {
                 var doPushToken = new sendPushToken();
             }
 
+            //review by alan
             //If User first time to use QPlay, never get message data from server,
             //don't call QueryMessageList() in background.
             if (loginData["msgDateFrom"] !== null) {
