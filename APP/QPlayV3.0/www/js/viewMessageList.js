@@ -4,6 +4,7 @@ $("#viewMessageList").pagecontainer({
         var messageType = "news",
             allChecked = false,
             deleteType,
+            msgUpdateDate,
             messageExist = true;
 
         //获取portal
@@ -27,12 +28,11 @@ $("#viewMessageList").pagecontainer({
 
                         //record APP all data
                         var responsecontent = jsonData['content'];
-                        console.log(responsecontent);
+                        //console.log(responsecontent);
                         createPortalByType(responsecontent, type.toLowerCase());
 
-                    } else if (data["ResultCode"] === "044901") {
-                        // $("#no" + type).show();
-                        // $("#updateTime" + type).hide();
+                    } else {
+                        createPortalByType([], type.toLowerCase());
                     }
 
                     loadingMask("hide");
@@ -54,7 +54,7 @@ $("#viewMessageList").pagecontainer({
                     CustomAPI("POST", true, "PortalList", successCallback, failCallback, queryData, "");
                 } else {
                     var responsecontent = QueryData['content'];
-                    console.log(responsecontent);
+                    //console.log(responsecontent);
                     createPortalByType(responsecontent, type.toLowerCase());
                 }
 
@@ -63,33 +63,56 @@ $("#viewMessageList").pagecontainer({
 
         //创建portal list
         function createPortalByType(arr, type) {
-            var content = '';
-            for (var i in arr) {
-                content += '<li data-icon="false" data-rowid="' + arr[i].PortalID +
-                    '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-portal ui-btn">' +
-                    '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title read-font-normal"><div>' +
-                    arr[i].PortalDate.replaceAll('/', '-') + '</div><div>' +
-                    arr[i].PortalSubject + '</div><div style="display:none"><input type="hidden" value="' +
-                    arr[i].PortalURL + '"></div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
+            if (arr.length > 0) {
+                //1. content
+                var content = '';
+                for (var i in arr) {
+                    content += '<li data-icon="false" data-rowid="' + arr[i].PortalID +
+                        '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-portal ui-btn">' +
+                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title read-font-normal"><div>' +
+                        arr[i].PortalDate.replaceAll('/', '-') + '</div><div>' +
+                        arr[i].PortalSubject + '</div><div style="display:none"><input type="hidden" value="' +
+                        arr[i].PortalURL + '"></div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
+                }
+
+                $("." + type + "-content ul").html('').append(content);
+
+                //2. detail
+                $('a.ui-portal').on("click", function (e) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+
+                    if (messageType != "Event" && messageType != "News") {
+                        messageFrom = 'viewMessageList';
+                        portalURL = $(this).find("input").val();
+                        //console.log(portalURL)
+                        checkAppPage('viewWebNews2-3-1');
+                    }
+                });
+
+                //3. update date
+                var portalUpdateDate = arr[0].PortalDate;
+                $('.msg-update-date').text(langStr['str_079'] + portalUpdateDate);
+
+                //4. set height
+                setMsgHeightByType(messageType);
+
+            } else {
+                //无消息情况
+                $("#noMessage").fadeIn(100).delay(2000).fadeOut(100);
+                $('.msg-update-date').text(langStr['str_079'] + getTodayStr('/'));
+                setMsgHeightByType(messageType);
             }
 
-            $("." + type + "-content ul").html('').append(content);
+        }
 
-            $('a.ui-portal').on("click", function (e) {
-                e.stopImmediatePropagation();
-                e.preventDefault();
-
-                if (messageType != "Event" && messageType != "News") {
-                    //console.log($(this).find("input").val());
-                    messageFrom = 'viewMessageList';
-                    portalURL = $(this).find("input").val();
-                    checkAppPage('viewWebNews2-3-1');
-                }
-            });
-
-            //set height
-            setMsgHeightByType(messageType);
-
+        function getTodayStr(str) {
+            var now = new Date();
+            var year = now.getFullYear().toString();
+            var month = now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1).toString() : (now.getMonth() + 1).toString();
+            var day = now.getDate() < 10 ? '0' + now.getDate().toString() : now.getDate().toString();
+            var today = year + str + month + str + day;
+            return today;
         }
 
         //根据不同类型显示不同消息
@@ -135,7 +158,12 @@ $("#viewMessageList").pagecontainer({
             $(".news-content ul").html('').append(newsContent);
             $(".event-content ul").html('').append(eventContent);
 
-            //2. swipe
+            //2. no data
+            if(newsContent == '') {
+                $("#noMessage").fadeIn(100).delay(2000).fadeOut(100);
+            } 
+
+            //3. swipe
             var x;
             $('.swipe-delete li > a')
                 .on('touchstart', function (event) {
@@ -177,7 +205,7 @@ $("#viewMessageList").pagecontainer({
                     enable_scroll()
                 });
 
-            //3. fixed top
+            //4. fixed top
             var msgHeaderTop = parseInt(document.documentElement.clientWidth * 13 / 100, 10);
             if (device.platform == 'iOS') {
                 msgHeaderTop += iOSFixedTopPX();
@@ -185,8 +213,7 @@ $("#viewMessageList").pagecontainer({
             $('.select-type').css('top', msgHeaderTop + 'px');
             $('.handle-msg').css('top', msgHeaderTop + 'px');
 
-            //4. message update
-            var msgUpdateDate;
+            //5. message update
             if (resultArr.length > 0) {
                 msgUpdateDate = resultArr[0].create_time.split(' ')[0].replaceAll('-', '/');
             } else {
@@ -195,7 +222,7 @@ $("#viewMessageList").pagecontainer({
             }
             $('.msg-update-date').text(langStr['str_079'] + msgUpdateDate);
 
-            //5. set height
+            //6. set height
             setMsgHeightByType(messageType);
         }
 
@@ -203,9 +230,6 @@ $("#viewMessageList").pagecontainer({
         function changeToDetail($target) {
             messageFrom = 'viewMessageList';
             messageRowId = $target.parents('li').attr('data-rowid');
-            if ($('.header-search').css('display') == 'block') {
-                $('#cancelSearch').trigger('click');
-            }
             checkAppPage('viewWebNews2-3-1');
         }
 
@@ -642,14 +666,17 @@ $("#viewMessageList").pagecontainer({
                     //news和event可以已读或删除
                     $('#editListview').show();
                     showDiffMessageByType(messageType);
-                    //news已经有数据了
+                    //news已经有数据了，高度重设
                     setMsgHeightByType(messageType);
+                    //change update date
+                    $('.msg-update-date').text(langStr['str_079'] + msgUpdateDate);
 
                 } else {
                     //portal不用编辑
                     $('#editListview').hide();
                     showDiffMessageByType(messageType);
                     QueryPortalList(currentType);
+
                 }
 
             }
@@ -741,7 +768,7 @@ $("#viewMessageList").pagecontainer({
             $('#editListview').show();
             $('#searchListview').show();
 
-            $("." + messageType + "-content .swipe-delete").listview('refresh');
+            $('.message-type ul').listview('refresh');
             setMsgHeightByType(messageType);
         });
 
