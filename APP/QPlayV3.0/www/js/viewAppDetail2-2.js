@@ -13,6 +13,7 @@ $("#viewAppDetail2-2").pagecontainer({
             var packageName = applist[selectAppIndex].package_name;
             var packageNameArr = packageName.split(".");
             window.sessionStorage.setItem('checkAPPKey', packageNameArr[2]);
+            appDetailInstalled(appDetailCallback, packageNameArr[2]);
             //checkAPPInstalled(displayAppDetailStep2, "appDetail");
 
             //Find the specific language to display,
@@ -84,12 +85,12 @@ $("#viewAppDetail2-2").pagecontainer({
             $("#appDetailPicListFullScreen").html('').append(fullContent);
 
             //Auto resize appDetailPicList
-            // if (device.platform === "iOS") {
-            //     var tempHeight = $("#appDetailPicList").height();
-            //     $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
-            //     var tempChildHeight = $("#appDetailPicListContent").height();
-            //     $("#appDetailPicListContent").css("height", parseInt(tempChildHeight + iOSFixedTopPX(), 10) + "px");
-            // }
+            if (device.platform === "iOS") {
+                var tempHeight = $("#appDetailPicList").height();
+                $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
+                var tempChildHeight = $("#appDetailPicListContent").height();
+                $("#appDetailPicListContent").css("height", parseInt(tempChildHeight + iOSFixedTopPX(), 10) + "px");
+            }
 
             //Auto resize appDetailPicListContent
             var pageWidth = $("#viewAppDetail2-2").width();
@@ -133,7 +134,36 @@ $("#viewAppDetail2-2").pagecontainer({
             //add by allen -- initial data
             offsetArr = [];
             imgItemLength = piclist.length;
+        }
 
+        function appDetailInstalled(callback, key) {
+
+            //var thisAppKey = checkAPPKey;
+            callback = callback || null;
+
+            var scheme;
+
+            if (device.platform === 'iOS') {
+                scheme = key + '://';
+            } else if (device.platform === 'Android') {
+                scheme = 'com.qplay.' + key;
+            }
+
+            var testInstalled = function () {
+                appAvailability.check(
+                    scheme,
+                    function () {
+                        callback(true);
+                    },
+                    function () {
+                        callback(false);
+                    }
+                );
+            }();
+        }
+
+        function appDetailCallback(install) {
+            window.sessionStorage.setItem('checkAPPInstall', install);
         }
 
         window.displayAppDetailStep2 = function (installed) {
@@ -161,6 +191,25 @@ $("#viewAppDetail2-2").pagecontainer({
 
         $("#viewAppDetail2-2").on("pageshow", function (event, ui) {
             displayAppDetailStep1();
+
+            var checkInstall = setInterval(function () {
+                var btnLength = $('#InstallApp').length;
+                var appInstall = window.sessionStorage.getItem('checkAPPInstall');
+
+                if(btnLength > 0 && appInstall !== null) {
+                    clearInterval(checkInstall);
+                    window.sessionStorage.removeItem('checkAPPInstall');
+                    $("#InstallApp .InstallAppStr").hide();
+
+                    if(appInstall == 'true') {
+                        $("#InstallApp #InstallAppStr03").show();
+
+                    } else {
+                        $("#InstallApp #InstallAppStr01").show();
+                    }
+                }
+
+            },500);
         });
 
         /********************************** dom event *************************************/
