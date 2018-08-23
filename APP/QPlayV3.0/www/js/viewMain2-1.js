@@ -42,8 +42,6 @@ $("#viewMain2-1").pagecontainer({
                             window.sessionStorage.setItem('checkAPPKey', packageNameArr[2]);
 
                             checkAPPInstalled(checkAPPOldVersion, "appList");
-                            tempVersionArrData = appVersionRecord[applist[appindex].package_name]["installed_version"];
-                            tempVersionData = applist[appindex].app_version.toString();
                         }
                         appVersionRecord[applist[appindex].package_name]["latest_version"] = applist[appindex].app_version.toString();
 
@@ -111,12 +109,6 @@ $("#viewMain2-1").pagecontainer({
         }
 
         window.checkAPPOldVersion = function(oldVersionExist) {
-            if (oldVersionExist) {
-                tempVersionArrData = "1";
-            } else {
-                tempVersionArrData = tempVersionData;
-            }
-
             checkAPPVersionRecord("updateFromAPI");
         };
 

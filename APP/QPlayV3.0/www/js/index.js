@@ -26,16 +26,6 @@ var messagecontent,
     listUpdateMsg = false,
     msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 
-//viewMain3
-
-//viewAppList
-var favoriteList = null,
-    appCheckFinish = false,
-    alreadyDownloadList = [],
-    notDownloadList = [],
-    tempVersionArrData,
-    tempVersionData;
-
 //viewMyCalendar
 var reserveCalendar = null;
 
@@ -150,32 +140,6 @@ function checkWidgetListOrder() {
         }
 
         window.localStorage.setItem('widgetList', JSON.stringify(widgetArr));
-    }
-}
-
-// //检查最爱列表里的app是否安装
-// function checkFavoriteInstall() {
-//     favoriteList = JSON.parse(localStorage.getItem('favoriteList'));
-
-//     if (favoriteList !== null) {
-//         for (var i in favoriteList) {
-//             var packageName = favoriteList[i].package_name;
-//             var index = favoriteList[i].app_code;
-//             checkAllAppInstalled(favoriteCallback, packageName, index);
-//         }
-//     }
-// }
-
-//未安装表示卸载，不应出现在最爱列表当中
-function favoriteCallback(download, appcode) {
-    if (!download) {
-        for (var i in favoriteList) {
-            if (appcode == favoriteList[i].app_code) {
-                favoriteList.splice(i, 1);
-                localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
-                break;
-            }
-        }
     }
 }
 
@@ -323,26 +287,7 @@ function checkAPPVersionRecord(action) {
     }
 }
 
-function checkAppCallback(downloaded, index) {
-    //根据是否下载分组
-    if (downloaded) {
-        alreadyDownloadList.push(index);
-    } else {
-        notDownloadList.push(index);
-    }
-
-    if (index == applist.length - 1) {
-        appCheckFinish = true;
-    }
-}
-
 function checkAppVersionCallback(oldVersionExist) {
-    if (oldVersionExist) {
-        tempVersionArrData = "1";
-    } else {
-        tempVersionArrData = tempVersionData;
-    }
-
     checkAPPVersionRecord("updateFromAPI");
 }
 
