@@ -315,12 +315,12 @@ $("#viewAppList").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewAppList").on("pagebeforeshow", function(event, ui) {
-            var applist = new getAppList();
         });
 
         $("#viewAppList").one("pageshow", function(event, ui) {
             loadingMask("show");
 
+            var applist = new getAppList();
             window.appCheckTimer = setInterval(function() {
                 var appList = window.localStorage.getItem('QueryAppListData');
                 if (appList != null) {
@@ -341,8 +341,8 @@ $("#viewAppList").pagecontainer({
                             loadingMask("hide");
                         }
                     }, 1000);
+                    loadingMask("hide");
                 }
-                window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
             }, 500);
 
         });
