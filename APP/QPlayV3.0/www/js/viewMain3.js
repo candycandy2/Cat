@@ -57,9 +57,9 @@ $("#viewMain3").pagecontainer({
                             $('.main-scroll > div').css('height', totalHeight + 'px');
                         }
 
-                    }, 2000);
+                    }, 500);
                 }
-            }, 2000);
+            }, 500);
 
         });
 
