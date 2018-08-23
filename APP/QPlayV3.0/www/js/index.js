@@ -12,7 +12,6 @@ var appVersionRecord = {};
 checkAPPVersionRecord("initial");
 
 //viewAppDetail2-2
-var checkAPPKey;
 var checkAPPKeyInstalled = false;
 
 //viewNewsEvents

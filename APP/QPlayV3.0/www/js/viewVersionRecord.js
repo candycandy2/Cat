@@ -7,11 +7,9 @@ $("#viewVersionRecord").pagecontainer({
         });
 
         $("#viewVersionRecord").on("pageshow", function(event, ui) {
-            if (versionFrom) {
-                var versionData = new getVersionRecord();
-            } else {
-                var versionData = new getVersionRecord(checkAPPKey);
-            }
+
+            var APPKey = window.sessionStorage.getItem('checkAPPKey');
+            var versionData = new getVersionRecord(APPKey);
         });
 
         $("#viewVersionRecord").on("pagehide", function(event, ui) {
