@@ -114,13 +114,6 @@ $("#viewMain3").pagecontainer({
             checkAppPage('viewAppList');
         });
 
-        //点击widget内message，跳转到message详情页
-        $('#widgetList').on('click', '.widget-msg-list', function () {
-            messageFrom = 'viewMain3';
-            messageRowId = $(this).attr('data-rowid');
-            $.mobile.changePage('#viewWebNews2-3-1');
-        });
-
         //跳转到MessageList
         $('.message-link').on('click', function () {
             checkAppPage('viewMessageList');
