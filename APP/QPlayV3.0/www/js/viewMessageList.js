@@ -116,6 +116,22 @@ $("#viewMessageList").pagecontainer({
             return today;
         }
 
+        function checkCompany() {
+            if(loginData['company'] == 'Qisda' ||loginData['company'] == 'BenQ') {
+                $('div[data-item="announcement"]').show();
+                $('div[data-item="communication"]').show();
+                $('div[data-item="cip"]').show();
+                $('div[data-item="csd"]').show();
+                $('div[data-item="its"]').show();
+            } else {
+                $('div[data-item="announcement"]').hide();
+                $('div[data-item="communication"]').hide();
+                $('div[data-item="cip"]').hide();
+                $('div[data-item="csd"]').hide();
+                $('div[data-item="its"]').hide();
+            }
+        }
+
         //根据不同类型显示不同消息
         function showDiffMessageByType(type) {
             $.each($('.message-type > div'), function(index, item) {
@@ -623,7 +639,9 @@ $("#viewMessageList").pagecontainer({
         $("#viewMessageList").one("pageshow", function(event, ui) {
             //filter placeholder
             $('#msgFilter').attr('placeholder', langStr['str_080']);
-
+            //only BenQ & Qisda can read portal
+            checkCompany();
+            //content
             createMessageByType();
         });
 
