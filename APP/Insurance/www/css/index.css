@@ -345,7 +345,7 @@ pre {
 .insurance-main >.health-insurance-list, .insurance-ownpaid >.ownpaid-insurance-list{ background-color: #ffffff; color:#323232;}
 
 .insurance-main-title { color:#0F0F0F; margin: 5vw 0 2.14vw 3.71vw;}
-.labor-insurance-remark  { color:#666666; margin: 5vw 0 2.14vw 3.71vw;}
+.labor-insurance-remark  { color:#666666; margin: 5vw 3.71vw 2.14vw 3.71vw;}
 
 
 .title-icon {
@@ -1149,7 +1149,8 @@ div.scrollmenu a {
 .recordTimeOverMsg >.ui-content,
 .confirmCancelApply >.ui-content,
 .beforeEditMsg >.ui-content,
-.confirmCancelPendingApply >.ui-content {
+.confirmCancelPendingApply >.ui-content,
+.confirmCancelApplyToDetail >.ui-content {
     padding: 0 !important;
 }
 
@@ -1164,7 +1165,8 @@ div.scrollmenu a {
 .recordTimeOverMsg .ui-content>.header,
 .confirmCancelApply .ui-content>.header,
 .beforeEditMsg .ui-content>.header,
-.confirmCancelPendingApply .ui-content>.header {
+.confirmCancelPendingApply .ui-content>.header,
+.confirmCancelApplyToDetail .ui-content>.header {
     margin-top: 14%;
 }
 
@@ -1178,7 +1180,8 @@ div.scrollmenu a {
 .selectTimeOverMsg .ui-content>.main,
 .recordTimeOverMsg .ui-content>.main,
 .confirmCancelApply .ui-content>.main 
-.beforeEditMsg .ui-content>.main {
+.beforeEditMsg .ui-content>.main,
+.confirmCancelApplyToDetail .ui-content>.main {
     margin-top: 12%;
 }
 
