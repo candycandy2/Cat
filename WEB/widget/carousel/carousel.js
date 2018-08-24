@@ -16,10 +16,12 @@ var carouselWidget = {
                 }
                 $('.swipslider ul').append(content);
 
-                $('.swipslider').swipeslider({
-                    prevNextButtons: false,
-                    autoPlayTimeout: 3000
-                });
+                setTimeout(function () {
+                    $('.swipslider').swipeslider({
+                        prevNextButtons: false,
+                        autoPlayTimeout: 3000
+                    });
+                }, 500);
 
             }, "html");
         }
