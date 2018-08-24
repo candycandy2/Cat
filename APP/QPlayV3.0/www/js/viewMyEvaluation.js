@@ -100,25 +100,25 @@ $("#viewMyEvaluation").pagecontainer({
 
         });
 
-        $(window).resize(function () {
-            var current = document.body.clientHeight;
+        // $(window).resize(function () {
+        //     var current = document.body.clientHeight;
 
-            if (current < blurHeight) {
-                focusHeight = current;
-                dValue = blurHeight - focusHeight;
+        //     if (current < blurHeight) {
+        //         focusHeight = current;
+        //         dValue = blurHeight - focusHeight;
 
-                if (device.platform === "iOS") {
-                    $('.comment-main').css('height', (mainHeight - dValue).toString() + 'px');
-                    $('.comment-text').css('height', (textareaHeight - dValue).toString() + 'px');
-                }
-            } else {
-                if (device.platform === "iOS") {
-                    $('.comment-main').css('height', (mainHeight + dValue).toString() + 'px');
-                    $('.comment-text').css('height', (textareaHeight + dValue).toString() + 'px');
-                }
-            }
+        //         if (device.platform === "iOS") {
+        //             $('.comment-main').css('height', (mainHeight - dValue).toString() + 'px');
+        //             $('.comment-text').css('height', (textareaHeight - dValue).toString() + 'px');
+        //         }
+        //     } else {
+        //         if (device.platform === "iOS") {
+        //             $('.comment-main').css('height', (mainHeight + dValue).toString() + 'px');
+        //             $('.comment-text').css('height', (textareaHeight + dValue).toString() + 'px');
+        //         }
+        //     }
 
-        });
+        // });
 
         
 
