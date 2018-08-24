@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="1084" id="com.qplay.appqplaydev" ios-CFBundleVersion="1084" version="1.0.0.1084[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="1085" id="com.qplay.appqplaydev" ios-CFBundleVersion="1085" version="1.0.0.1085[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QPlay</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -70,8 +70,6 @@
     </platform>
     <platform name="ios">
         <preference name="BackupWebStorage" value="local" />
-        <preference name="KeyboardShrinksView" value="true" />
-        <preference name="DisableScrollingWhenKeyboardShrinksView" value="true" />
         <hook src="hooks/xcode8.js" type="before_compile" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
@@ -131,7 +129,6 @@
     <plugin name="cordova-plugin-appavailability" spec="../../plugins/cordova-plugin-appavailability" />
     <plugin name="cordova-plugin-cache-clear" spec="../../plugins/cordova-plugin-cache-clear" />
     <plugin name="cordova-plugin-badge" spec="../../plugins/cordova-plugin-badge" />
-    <plugin name="cordova-plugin-keyboard" spec="^1.2.0" />
     <engine name="ios" spec="~4.5.5" />
     <engine name="android" spec="~6.3.0" />
 </widget>
