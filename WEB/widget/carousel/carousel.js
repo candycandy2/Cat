@@ -1,20 +1,33 @@
 //widget naming rule widget.js/list()[].name + "Widget"
 var carouselWidget = {
 
-    init: function(contentItem) {
+    init: function (contentItem) {
 
-        function createContent() {
-            var $container = $('<div></div>').addClass('carousel-widget');
-            var $img = $('<img>').attr('src', serverURL + '/widget/carousel/carousel.jpg');
-            $container.append($img);
+        var carouselLength = 5;
 
-            contentItem.html('').append($container);
+        function createContent(contentItem) {
+
+            $.get(serverURL + "/widget/carousel/carousel.html", function (data) {
+                contentItem.html('').append(data);
+
+                var content = '';
+                for (var i = 0; i < carouselLength; i++) {
+                    content += '<li class="sw-slide"><img src="' + serverURL + '/widget/carousel/img/portal_' + (i + 1) + '.jpg"></li>';
+                }
+                $('.swipslider ul').append(content);
+
+                $('.swipslider').swipeslider({
+                    prevNextButtons: false,
+                    autoPlayTimeout: 3000
+                });
+
+            }, "html");
         }
 
-        $.fn.carousel = function(options) {
+        $.fn.carousel = function (options) {
             options = options || {};
 
-            return this.each(function() {
+            return this.each(function () {
                 var state = $.data(this, 'carousel');
                 if (state) {
                     $.extend(state.options, options);
@@ -24,7 +37,7 @@ var carouselWidget = {
                     });
                 }
 
-                createContent();
+                createContent(contentItem);
 
             })
         };
