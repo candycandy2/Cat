@@ -469,6 +469,7 @@ $("#viewApplyInsurance").pagecontainer({
 
         //從保險明細返回到個人保險現況，
         $("#backPersonalInsuranceFromDetail").on("click", function () {
+            $('#backPersonalInsuranceFromDetail').hide(); 
             $.mobile.changePage("#viewPersonalInsurance");
         });
 
@@ -483,11 +484,7 @@ $("#viewApplyInsurance").pagecontainer({
 
         //返回到退保明細
         $('#backWithdrawDetail').on("click", function () {
-            $('#backWithdrawDetail').hide();
-            $("#viewInsurApplication").hide();
-            $("#previewBtn").hide();
-            $('#backPersonalInsuranceFromDetail').show();      
-            $("#viewPreviewApplication").show();
+            popupMsgInit('.confirmCancelApplyToDetail');
         });
 
         //預覽送簽按鈕
@@ -548,7 +545,17 @@ $("#viewApplyInsurance").pagecontainer({
         
         //確定取消新增，跳轉
         $("#confirmCancelApplyBtn").on("click", function () {
+            $('#backPersonalInsuranceFromApply').hide();
             $.mobile.changePage("#viewPersonalInsurance"); 
+        });
+
+        //確定取消新增，跳轉至明細
+        $("#confirmCancelApplyToDetailBtn").on("click", function () {
+            $('#backWithdrawDetail').hide();
+            $("#viewInsurApplication").hide();
+            $("#previewBtn").hide();
+            $('#backPersonalInsuranceFromDetail').show();      
+            $("#viewPreviewApplication").show();
         });
 
         //確定取消申請，跳轉
