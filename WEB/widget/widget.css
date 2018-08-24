@@ -1,7 +1,7 @@
 /******************** carousel ********************/
 .carousel-widget {
-    width: 100vw;
-    height: 50vw;
+    width: 100vw !important;
+    height: 50vw !important;
 }
 
 .carousel-widget img {
