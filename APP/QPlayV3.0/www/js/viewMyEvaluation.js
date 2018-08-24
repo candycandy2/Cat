@@ -1,6 +1,11 @@
 $("#viewMyEvaluation").pagecontainer({
     create: function (event, ui) {
 
+        var focusHeight,
+            blurHeight,
+            mainHeight,
+            textareaHeight,
+            dValue;
 
         function addAppEvaluation() {
             var self = this;
@@ -39,7 +44,9 @@ $("#viewMyEvaluation").pagecontainer({
         });
 
         $("#viewMyEvaluation").one("pageshow", function (event, ui) {
-
+            blurHeight = document.body.clientHeight;
+            mainHeight = $('.comment-main').height();
+            textareaHeight = $('.comment-text').height();
         });
 
         $("#viewMyEvaluation").on("pageshow", function (event, ui) {
@@ -86,29 +93,34 @@ $("#viewMyEvaluation").pagecontainer({
 
         //ios input 页面滚动
         $('.comment-text textarea').on('focus', function () {
-            //console.log('focus');
+
         });
 
         $('.comment-text textarea').on('blur', function () {
-            //console.log('blur');
+
         });
 
-        $('.comment-text textarea').on('focusin', function () {
-            //console.log('focusin');
-            if(device.platform === "iOS") {
-                $('#viewMyEvaluation .page-header').css('position', 'relative');
-                $('#viewMyEvaluation').css('overflow', 'hidden');
+        $(window).resize(function () {
+            var current = document.body.clientHeight;
+
+            if (current < blurHeight) {
+                focusHeight = current;
+                dValue = blurHeight - focusHeight;
+
+                if (device.platform === "iOS") {
+                    $('.comment-main').css('height', (mainHeight - dValue).toString() + 'px');
+                    $('.comment-text').css('height', (textareaHeight - dValue).toString() + 'px');
+                }
+            } else {
+                if (device.platform === "iOS") {
+                    $('.comment-main').css('height', (mainHeight + dValue).toString() + 'px');
+                    $('.comment-text').css('height', (textareaHeight + dValue).toString() + 'px');
+                }
             }
-            
+
         });
 
-        $('.comment-text textarea').on('focusout', function () {
-            //console.log('focusout');
-            if(device.platform === "iOS") {
-                $('#viewMyEvaluation .page-header').css('position', 'fixed');
-                $('#viewMyEvaluation').css('overflow', 'visible');
-            }
-        });
+        
 
     }
 });

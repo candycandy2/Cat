@@ -9,16 +9,8 @@
         </a>
         <div class="header-style">
             <div class="ui-title">
-                <!--加保申請-->
-                <span class="langStr apply-insur-title" data-id="str_111"></span>
-                <!--退保申請-->
-                <span class="langStr withdraw-insur-title" data-id="str_112"></span>
-                <!--停保申請-->
-                <span class="langStr stop-insur-title" data-id="str_113"></span>
-                <!--復保申請-->
-                <span class="langStr recover-insur-title" data-id="str_114"></span>
-                <!--眷屬健保-->
-                <span class="langStr family-insur-title" data-id="str_154"></span>
+                <!--加保/退保/停保申請/眷屬健保-->
+                <span class="langStr apply-insur-title"></span>
             </div>
         </div>
     </div>
@@ -36,8 +28,8 @@
             </div>
             <div class="apply-insurance-form">
                 <div for="applyDate" class="font-style11">
-                    <!--加保日期-->
-                    <span class="langStr" data-id="str_116"></span>
+                    <!--加保/退保/停保日期-->
+                    <span class="langStr insurDate"></span>
                 </div>
                 <input name="applyDate" id="applyDate" data-role="none" class="family-input-calendar" style="margin-left: 0vw;" readonly>
             </div>
@@ -56,6 +48,22 @@
                 </div>
                 <!-- 原因 dropdownlist -->
                 <div data-role="none" id="withdrawReason" class="font-style3"></div>
+            </div>
+            <div class="stop-insurance-ddl">
+                <div class="font-style11">
+                    <!-- 停保原因 -->
+                    <span class="langStr" data-id="str_124"></span>
+                </div>
+                <!-- 原因 dropdownlist -->
+                <div data-role="none" id="stopReason" class="font-style3"></div>
+            </div>
+            <div class="recover-insurance-ddl">
+                <div class="font-style11">
+                    <!-- 復保原因 -->
+                    <span class="langStr" data-id="str_127"></span>
+                </div>
+                <!-- 原因 dropdownlist -->
+                <div data-role="none" id="recoverReason" class="font-style3"></div>
             </div>
             <div id="newSubsidy">
                 <div class="font-style11">
@@ -158,14 +166,8 @@
                     </div>
                 </div>    
                 <div class="font-style11 insurance-main-title">
-                    <!-- 加保資訊 -->
-                    <span class="langStr new-insur-info" data-id="str_132"></span>
-                    <!-- 退保資訊 -->
-                    <span class="langStr withdraw-insur-info" data-id="str_149"></span>
-                    <!-- 停保資訊 -->
-                    <span class="langStr stop-insur-info" data-id="str_152"></span>
-                    <!-- 復保資訊 -->
-                    <span class="langStr recover-insur-info" data-id="str_153"></span>
+                    <!-- 加保/退保/停保/復保資訊 -->
+                    <span class="langStr insur-info-title"></span>
                 </div> 
                 <div class="health-insurance-content font-style7">
                     <div style="margin-bottom:2.14vw;">
@@ -206,6 +208,10 @@
                 <div id="insurBtn" class="font-style3">
                     <!-- 加保 -->
                     <span class="langStr" data-id="str_148"></span>
+                </div>
+                <div id="recoverBtn" class="font-style3">
+                    <!-- 復保 -->
+                    <span class="langStr" data-id="str_156"></span>
                 </div>
             </div> 
             <div class="two-button-style">
@@ -268,8 +274,8 @@
                         <img src="img/urgent.png">
                     </span>
                     <span class="header-text">
-                        <!--確定取消新增-->
-                        <span class="langStr" data-id="str_101"></span>
+                        <!--確定取消申請-->
+                        <span class="langStr" data-id="str_155"></span>
                     </span>
                 </div>
             </div>

@@ -929,7 +929,7 @@ div.scrollmenu a {
 }
 
 .health-insur-list > .content-list-only-img {
-    width: 65vw; 
+    width: 64.5vw; 
     height:14.5vw;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -957,7 +957,7 @@ div.scrollmenu a {
 }
 
 .health-insur-list > .list-only-img {
-    width: 21.5vw;
+    width: 22vw;
     height: 10vw;
     padding-top: 3.5vw;
 }
@@ -1191,6 +1191,8 @@ div.scrollmenu a {
 .apply-insurance-form, 
 .apply-insurance-ddl,
 .withdraw-insurance-ddl,
+.stop-insurance-ddl,
+.recover-insurance-ddl,
 #newSubsidy,
 #newHealthcard,
 #newCertificate {
@@ -1212,22 +1214,18 @@ div.scrollmenu a {
 }
 
 .apply-insurance-ddl>div:nth-of-type(2),
-.withdraw-insurance-ddl>div:nth-of-type(2) {
+.withdraw-insurance-ddl>div:nth-of-type(2),
+.stop-insurance-ddl>div:nth-of-type(2),
+.recover-insurance-ddl>div:nth-of-type(2) {
     margin-top: 0.2vw;
     margin-bottom: 1vw;
 }
 
-#applyReason>select {
+#applyReason>select,
+#withdrawReason>select,
+#stopReason>select, 
+#recoverReason>select {
     padding-left: 0;
-}
-
-.family-add-title, 
-.apply-insur-title, 
-.withdraw-insur-title, 
-.stop-insur-title,
-.recover-insur-title,
-.family-insur-title { 
-    display:none;
 }
 
 #backPersonalInsurance {

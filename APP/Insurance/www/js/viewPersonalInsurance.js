@@ -200,17 +200,23 @@ $("#viewPersonalInsurance").pagecontainer({
                     }  
                     var inHealthChangeWidth = $('#inHealthInsur').children(1).find(".list-text-img > label > span").filter(function(item){
                         var nonHealthStatusHTML = $('#inHealthInsur').children(1).find(".list-text-img > label > span")[item];
-                        if (nonHealthStatusHTML.textContent.length > 3) {
+                        if (nonHealthStatusHTML.textContent.length == 5) {
                             $('#inHealthInsur').children(1).find(".content-list-text-img")[item].style.width = "60vw";
                             $('#inHealthInsur').children(1).find(".list-text-img")[item].style.width = "26.5vw";
-                        }                 
+                        } else if (nonHealthStatusHTML.textContent.length == 4) {  
+                            $('#inHealthInsur').children(1).find(".content-list-text-img")[item].style.width = "63vw";
+                            $('#inHealthInsur').children(1).find(".list-text-img")[item].style.width = "23.5vw";
+                        }            
                     });              
                     var nonHealthChangeWidth = $('#nonHealthInsur').children(1).find(".list-text-img > label > span").filter(function(item){
                         var nonHealthStatusHTML = $('#nonHealthInsur').children(1).find(".list-text-img > label > span")[item];
-                        if (nonHealthStatusHTML.textContent.length > 3) {
+                        if (nonHealthStatusHTML.textContent.length == 5) {
                             $('#nonHealthInsur').children(1).find(".content-list-text-img")[item].style.width = "60vw";
                             $('#nonHealthInsur').children(1).find(".list-text-img")[item].style.width = "26.5vw";
-                        }                 
+                        } else if (nonHealthStatusHTML.textContent.length == 4) {
+                            $('#nonHealthInsur').children(1).find(".content-list-text-img")[item].style.width = "63vw";
+                            $('#nonHealthInsur').children(1).find(".list-text-img")[item].style.width = "23.5vw";
+                        }               
                     });              
                     loadingMask("hide");
                 } else if (data['ResultCode'] === "046902") {
@@ -308,6 +314,11 @@ $("#viewPersonalInsurance").pagecontainer({
             loadingMask("show");        
             clickFamilyID = $(this).parents('.health-insur-list').children("div").attr("data-id");       
             passValueToApplyInsurance(clickFamilyID);
+            if (clickCanApply === "停保+退保") {
+                nextPage = "cancelStopInsur";
+            } else if (clickCanApply === "取消申請") {
+                nextPage = "pendingDetail";
+            }
             $.mobile.changePage("#viewApplyInsurance");        
         });
 
@@ -318,7 +329,7 @@ $("#viewPersonalInsurance").pagecontainer({
             if (clickCanApply === "取消申請") { 
                 nextPage = "pendingDetail";
             } else if (clickCanApply === "復保") {
-
+                nextPage = "failedRecoverDetail";
             }                
             $.mobile.changePage("#viewApplyInsurance");   
         });
@@ -329,7 +340,10 @@ $("#viewPersonalInsurance").pagecontainer({
             passValueToApplyInsurance(clickFamilyID); 
             if (clickDealwith === "已退保") {
                 nextPage = "withdrawDetail";
-            }  
+            } else {
+                //加保駁回/加保暫存/取消加保
+                nextPage = "failedInsurDetail";
+            }
             $.mobile.changePage("#viewApplyInsurance"); 
         });
 

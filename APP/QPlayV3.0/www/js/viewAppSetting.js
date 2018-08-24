@@ -200,6 +200,7 @@ $("#viewAppSetting").pagecontainer({
         //QPlay版本记录
         $('.qplay-version').on('click', function() {
             versionFrom = true;
+            window.sessionStorage.setItem('checkAPPKey', qplayAppKey);
             checkAppPage('viewVersionRecord');
         });
 
@@ -211,7 +212,6 @@ $("#viewAppSetting").pagecontainer({
         //清理缓存
         $('.clear-cache').on('click', function() {
             window.CacheClear(clearSuccess, clearError);
-
         });
 
         //注销

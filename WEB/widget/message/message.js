@@ -4,7 +4,7 @@ var messageWidget = {
     init: function(contentItem) {
 
         function createMessage() {
-            var msgArr = loginData['messagecontent']['message_list'];
+            var msgArr = JSON.parse(window.localStorage.getItem('messagecontent')).message_list;
             var content = '';
             var count = 0;
 
@@ -22,12 +22,19 @@ var messageWidget = {
             }
 
             if (content == '') {
-                content = '<div class="widget-none-msg">' + langStr['str_069'] + '<div>';
+                content = '<div class="widget-none-msg">' + langStr['wgt_008'] + '<div>';
             }
 
             var $container = $('<div></div>').addClass('message-widget').append(content);
 
             contentItem.html('').append($container);
+
+            //点击widget内message，跳转到message详情页
+            contentItem.on('click', '.widget-msg-list', function() {
+                messageFrom = 'messageWidget';
+                messageRowId = $(this).attr('data-rowid');
+                checkAppPage('viewWebNews2-3-1');
+            });
         }
 
         $.fn.message = function(options, param) {
