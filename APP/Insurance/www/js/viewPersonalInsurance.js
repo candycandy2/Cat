@@ -227,6 +227,14 @@ $("#viewPersonalInsurance").pagecontainer({
                         $("#nonHealthInsur").empty().append(healthInsurList);
                     }
                     loadingMask("hide");
+                } else if (data['ResultCode'] === "046903") {
+                    healthInsurArr = data['Content'];
+                    if (healthInsurArr.length === 0){
+                        var healthInsurList = '<div class="empty-list"><div>無</div></div>';                
+                        $("#inHealthInsur").empty().append(healthInsurList);
+                        $("#nonHealthInsur").empty().append(healthInsurList);
+                    }
+                    loadingMask("hide");
                 }
             };
 

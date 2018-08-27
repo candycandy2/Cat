@@ -33,26 +33,51 @@ function onBackKeyDown() {
         $("#mypanel").panel("close");
     } else if ($("#applyRemark").is(":focus")) {
         $("#applyRemark").blur();
-    } else if ($("#backMain").css("display") == "inline") {
+    } else if ($("#backMain").css("display") == "block") {
         $("#backMain").click();
-    } else if ($("#backFamilyList").css("display") == "inline") {
+    } else if ($("#backFamilyList").css("display") == "block") {
         $("#backFamilyList").click();
-    } else if ($("#backContactInfo").css("display") == "inline") {
+    } else if ($("#backContactInfo").css("display") == "block") {
         $("#backContactInfo").click();
-    } else if ($("#backPersonalInsuranceFromApply").css("display") == "inline") {
+    } else if ($("#backPersonalInsuranceFromApply").css("display") == "block") {
         $("#backPersonalInsuranceFromApply").click();
-    } else if ($("#backPersonalInsuranceFromDetail").css("display") == "inline") {
+    } else if ($("#backPersonalInsuranceFromDetail").css("display") == "block") {
         $("#backPersonalInsuranceFromDetail").click();
-    } else if ($("#backApplyInsurance").css("display") == "inline") {
+    } else if ($("#backApplyInsurance").css("display") == "block") {
         $("#backApplyInsurance").click();
-    } else if ($("#backWithdrawDetail").css("display") == "inline") {
+    } else if ($("#backWithdrawDetail").css("display") == "block") {
         $("#backWithdrawDetail").click();
+    } else if (activePageID === "viewMain") {
+        if ($("#mainTab :radio:checked").val() == 'tab1') {
+            navigator.app.exitApp();
+        } else if ($("#mainTab :radio:checked").val() == 'tab2') {
+            $("input[id=tab1]").trigger('click');
+            $("label[for=tab1]").addClass('ui-btn-active');
+            $("label[for=tab2]").removeClass('ui-btn-active');
+            $("label[for=tab3]").removeClass('ui-btn-active');
+        } else {
+            $("input[id=tab1]").trigger('click');
+            $("label[for=tab1]").addClass('ui-btn-active');
+            $("label[for=tab2]").removeClass('ui-btn-active');
+            $("label[for=tab3]").removeClass('ui-btn-active');
+        }
+    } else if (activePageID === "viewPersonalInsurance") {
+        if ($("label[for=fam-insur-tab-1]").hasClass("ui-btn-active")) {
+            visitedPageList.pop();
+            changePageByPanel(prePageID);
+        } else {
+            $("input[id=fam-insur-tab-1]").trigger('click');
+            $("label[for=fam-insur-tab-1]").addClass('ui-btn-active');
+            $("label[for=fam-insur-tab-2]").removeClass('ui-btn-active');
+        } 
     } else if (visitedPageList.length == 1) {
         navigator.app.exitApp();
     } else {
         visitedPageList.pop();
         changePageByPanel(prePageID);
     }
+
+    
 }
 
 function changePageByPanel(pageId) {
