@@ -42,6 +42,19 @@ $("#viewMain").pagecontainer({
         });
 
         $("#viewMain").on("pageshow", function(event, ui) {
+          
+            /* var mainHeight = $('.insur-main-scroll > div').height();
+            var headHeight = $('#viewMain .page-header').height();
+
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (mainHeight + headHeight).toString();
+            }
+
+            $('.insur-main-scroll > div').css('height', totalHeight + 'px'); */
+
             loadingMask("hide");
         });
 
