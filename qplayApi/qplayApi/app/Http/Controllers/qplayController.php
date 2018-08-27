@@ -329,12 +329,12 @@ class qplayController extends Controller
                     //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
                     $companyData = $companyService->getCompanyData("user_domain", $domain);
                     foreach ($companyData as $company) {
-                        $loginType = $company->login_type;
+                        $authType = $company->login_type;
                         $serverIP = $company->server_ip;
                         $serverPort = $company->server_port;
                     }
 
-                    if ($loginType == "LDAP") {
+                    if ($authType == "LDAP") {
                         $LDAP_SERVER_IP = $serverIP;
                         $userId = $domain . "\\" . $loginid;
                         $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
@@ -345,7 +345,7 @@ class qplayController extends Controller
                             $loginFail = true;
                             $loginFailResultCode = ResultCode::_000902_passwordError;
                         }
-                    } else if ($loginType == "API") {
+                    } else if ($authType == "API") {
                         $header = [
                             'Content-type: application/json; charset=utf-8',
                             'Content-Length: 0',
@@ -812,12 +812,12 @@ class qplayController extends Controller
                     //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
                     $companyData = $companyService->getCompanyData("user_domain", $domain);
                     foreach ($companyData as $company) {
-                        $loginType = $company->login_type;
+                        $authType = $company->login_type;
                         $serverIP = $company->server_ip;
                         $serverPort = $company->server_port;
                     }
 
-                    if ($loginType == "LDAP") {
+                    if ($authType == "LDAP") {
                         $LDAP_SERVER_IP = $serverIP;
                         $userId = $domain . "\\" . $loginid;
                         $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
@@ -828,7 +828,7 @@ class qplayController extends Controller
                             $loginFail = true;
                             $loginFailResultCode = ResultCode::_000902_passwordError;
                         }
-                    } else if ($loginType == "API") {
+                    } else if ($authType == "API") {
                         $header = [
                             'Content-type: application/json; charset=utf-8',
                             'Content-Length: 0',
