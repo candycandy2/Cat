@@ -96,6 +96,12 @@ $("#viewMain3").pagecontainer({
             checkAppPage('viewAppSetting');
         });
 
+        //跳转用户版QPay
+        $('.qpay-link').on('click', function () {
+            checkAppPage('viewUserMain');
+        });
+
+
     }
 
 });
