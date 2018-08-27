@@ -219,9 +219,9 @@ $("#viewApplyInsurance").pagecontainer({
                 $("#newSubsidy").show();
                 $("#newHealthcard").show();
             }
-            $('#newSubsidy input[id^=subsidy]').removeAttr("checked");
-            $('#newCertificate input[id^=certi]').removeAttr("checked");
-            $('#newHealthcard input[id^=card]').removeAttr("checked");
+            $("#subsidyNo").prop("checked", "checked");
+            $("#certiNo").prop("checked", "checked");
+            $("#cardNo").prop("checked", "checked");
             $('#applyRemark').val('');
         }
 
