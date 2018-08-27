@@ -96,6 +96,8 @@ $("#viewMain3").pagecontainer({
             checkAppPage('viewAppSetting');
         });
 
+
+
     }
 
 });
