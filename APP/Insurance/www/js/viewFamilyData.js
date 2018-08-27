@@ -513,8 +513,6 @@ $("#viewFamilyData").pagecontainer({
             $("#familyInsurName").css("background", "#f9f9f9");
         });
 
-
-
         function applyInsurFromFamilyData() {
             clickFamilyName = $.trim(familyName);
             clickRelation =  $.trim(familyRelation);
@@ -524,6 +522,7 @@ $("#viewFamilyData").pagecontainer({
             $("#mypanelviewFamilyData").removeAttr("style");
             $("#mypanel #mypanelviewPersonalInsurance").css("background", "#503f81");
             $("#mypanel #mypanelviewPersonalInsurance").css("color", "#fff");   
+            nextPage = "addDetail";
             $.mobile.changePage("#viewApplyInsurance");     
         }
 
