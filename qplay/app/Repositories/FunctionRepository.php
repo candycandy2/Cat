@@ -58,10 +58,10 @@ class FunctionRepository
         
         //if request contains QAccount right level, then set the right level data
         $function->qaccount_use = $request['ddlQAccountUse'];
-        if(isset($request['ddlQAccountRightLevel'])){
-            
+        if(isset($request['ddlQAccountRightLevel']) && $request['ddlQAccountUse'] == "Y"){
             $function->qaccount_right_level = $request['ddlQAccountRightLevel'];
-        
+        }else{
+             $function->qaccount_right_level = null;
         }
         
         //if request contains app name, then set the app_row_id
@@ -109,13 +109,13 @@ class FunctionRepository
         $this->function->description = $request['tbxFunctionDescription'];
         $this->function->owner_app_row_id = $request['ddlOwnerApp'];
         $this->function->type = $request['ddlFunctionType'];
-        if(isset($request['ddlApp'])){
+        if(isset($request['ddlApp']) && $request['ddlApp']!=""){
             $this->function->app_row_id = $request['ddlApp'];
         }
         $this->function->status = $request['ddlFunctionStatus'];
         $this->function->created_user = $auth::user()->row_id;
         $this->function->created_at = date('Y-m-d H:i:s',time());
-
+        $this->function->timestamps = false;
         return $this->function->save();
     }
 
