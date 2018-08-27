@@ -439,7 +439,7 @@ class CommonUtil
         }
         $lang_row_id = self::getLanguageIdByName($lang);
         $project_id = self::getProjectInfo();
-        if ($project_id == null ||  count($project_id)<0){
+        if (is_null( $project_id )){
             return "";
         }
         $project_id =    $project_id->row_id;
@@ -906,4 +906,33 @@ class CommonUtil
         return trim($projectName);
     }
 
+    /**
+     * get user belone role list
+     * @param  int $userId qp_user.row_id
+     * @return array
+     */
+    public static function getUserRole($userId)
+    {
+        
+        $roles = \DB::table('qp_user_role')
+            -> where('user_row_id', '=', $userId)
+            -> lists('role_row_id');
+        return $roles;
+    }
+
+    /**
+     * get user login type by uuid, if login type is by qAccount,
+     * @param [type] $uuid [description]
+     * @return string
+     */
+    public static function ADFlag($uuid)
+    {
+        $session = \DB::table('qp_session')
+                -> where('uuid', '=', $uuid)
+                -> select('ad_flag')->first();
+        if(is_null($session)){
+            return null;
+        }
+        return $session->ad_flag;
+    }
 }
