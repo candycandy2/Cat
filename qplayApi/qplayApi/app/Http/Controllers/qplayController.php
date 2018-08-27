@@ -431,6 +431,12 @@ class qplayController extends Controller
                         //, 'remember_token'=>$token
                     ]);
 
+                    if ($loginType === "QAccount") {
+                        $ad_flag = "N";
+                    } else if ($loginType === "AD") {
+                        $ad_flag = "Y";
+                    }
+
                     $sessionList = \DB::table("qp_session")
                         -> where('uuid', "=", $uuid)
                         -> where('user_row_id', '=', $user->row_id)
@@ -440,7 +446,9 @@ class qplayController extends Controller
                         \DB::table("qp_session")
                             ->where('user_row_id', '=', $user->row_id)
                             ->where('uuid', '=', $uuid)
-                            ->update(['token'=>$token,
+                            ->update([
+                                'ad_flag'=>$ad_flag,
+                                'token'=>$token,
                                 'token_valid_date'=>$token_valid,
                                 'updated_at'=>$now,
                                 'updated_user'=>$user->row_id,
@@ -451,6 +459,7 @@ class qplayController extends Controller
                         \DB::table("qp_session")->insert([
                             'user_row_id'=>$user->row_id,
                             'uuid'=>$uuid,
+                            'ad_flag'=>$ad_flag,
                             'token'=>$token,
                             'token_valid_date'=>$token_valid,
                             'created_at'=>$now,
@@ -505,7 +514,6 @@ class qplayController extends Controller
                         "domain"=>$userInfo->user_domain,
                         "site_code"=>$userInfo->site_code,
                         "company"=>$userInfo->company,
-                        "ad_flag"=>$userInfo->ad_flag,
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ];
@@ -883,6 +891,12 @@ class qplayController extends Controller
                         -> select()
                         -> get();
 
+                    if ($loginType === "QAccount") {
+                        $ad_flag = "N";
+                    } else if ($loginType === "AD") {
+                        $ad_flag = "Y";
+                    }
+
                     if(count($sessionList) > 0)
                     {
                         $old_token_valid = $sessionList[0]->token_valid_date;
@@ -895,6 +909,7 @@ class qplayController extends Controller
                                 -> where('user_row_id', '=', $user->row_id)
                                 -> where('uuid', '=', $uuid)
                                 -> update([
+                                    'ad_flag'=>$ad_flag,
                                     'token'=>$token,
                                     'token_valid_date'=>$token_valid,
                                     'updated_at'=>$now,
@@ -908,6 +923,7 @@ class qplayController extends Controller
                             -> insert([
                                 'user_row_id'=>$user->row_id,
                                 'uuid'=>$uuid,
+                                'ad_flag'=>$ad_flag,
                                 'token'=>$token,
                                 'token_valid_date'=>$token_valid,//'token_valid_date'=>date('Y-m-d H:i:s',time()),
                                 'created_user'=>$user->row_id,
@@ -952,7 +968,6 @@ class qplayController extends Controller
                         "domain"=>$userInfo->user_domain,
                         "site_code"=>$userInfo->site_code,
                         "company"=>$userInfo->company,
-                        "ad_flag"=>$userInfo->ad_flag,
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ];
@@ -2308,7 +2323,8 @@ SQL;
                 }
                 if($projectId == 1){
                     //Register to JPush Tag
-                    $tag = PushUtil::GetTagByUserInfo($userInfo);
+                    //1. According to the ad_flag decide the [flag name]
+                    $tag = PushUtil::GetTagByUserInfo($userInfo, CommonUtil::ADFlag($uuid));
                     $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
 
                     if(!$pushResult["result"]) {

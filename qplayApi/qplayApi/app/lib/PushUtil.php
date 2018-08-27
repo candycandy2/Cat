@@ -235,11 +235,16 @@ class PushUtil
         return $result;
     }
 
-    public static function GetTagByUserInfo($userInfo) {
+    public static function GetTagByUserInfo($userInfo, $adFlag) {
         $userCompany = strtoupper($userInfo->company);
 
         //check if [blank] appear in string, replace with [underscore]
         $company = preg_replace("/\s+/", "_", $userCompany);
+
+        //check if login by QAccount(ad_flag=N || null)
+        if ($adFlag != "Y") {
+            $company = $company."_other";
+        }
 
         $firstLetter = strtoupper(substr($userInfo->login_id, 0, 1));
         switch ($firstLetter) {
