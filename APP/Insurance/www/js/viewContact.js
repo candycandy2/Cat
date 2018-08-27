@@ -23,7 +23,7 @@ $("#viewContact").pagecontainer({
                     +   '<div class="img-phone divvertical-center">'
                     +       '<div class="tel-num">'
                     +           '<img src = "img/phone.png">'
-                    +           '<a rel="external"  href="tel:"' + HR[i].ext + '">' + HR[i].ext + '</a>'
+                    +           '<a rel="external"  href="tel:' + HR[i].ext.replace('-', '') + '">' + HR[i].ext + '</a>'
                     +       '</div>'
                     +   '</div>'
                     +   '<div class="img-info divvertical-center">'
@@ -49,7 +49,7 @@ $("#viewContact").pagecontainer({
                     +   '<div class="img-phone divvertical-center">'
                     +       '<div class="tel-num">'
                     +           '<img src = "img/phone.png">'
-                    +           '<a rel="external"  href="tel:"' + insurStaff[i].ext + '">' + insurStaff[i].ext + '</a>'
+                    +           '<a rel="external"  href="tel:' + insurStaff[i].ext.replace('-', '') + '">' + insurStaff[i].ext + '</a>'
                     +       '</div>'
                     +   '</div>'
                     +   '<div class="img-info divvertical-center">'
@@ -91,7 +91,7 @@ $("#viewContact").pagecontainer({
                 + '<div class="site font-style3">' + HR[hrID].site + '</div>'
                 + '<li>'
                 +       '<div class="phone font-style7">電話</div>'
-                +       '<a rel="external" class="font-style10" href="tel:"' + HR[hrID].ext + '">'+ HR[hrID].ext + '</a>'
+                +       '<a rel="external" class="font-style10" href="tel:' + HR[hrID].ext.replace('-', '') + '">'+ HR[hrID].ext + '</a>'
                 + '</li>'
                 + '<li>'
                 +       '<div class="other font-style7">駐點時間</div>' 
@@ -103,7 +103,7 @@ $("#viewContact").pagecontainer({
                 + '</li>'
                 + '<li>'
                 +       '<div class="other font-style7">E-Mail</div>'  
-                +       '<a rel="external" class="font-style10" href="mailto:"' + HR[hrID].email + '">' + HR[hrID].email + '</a>'
+                +       '<a rel="external" class="font-style10" href="mailto:' + HR[hrID].email + '">' + HR[hrID].email + '</a>'
                 + '</li>';   
             $("#detailInfo").html("");
             $("#detailInfo").prepend($(DetailHtmlContent)).enhanceWithin();      
@@ -120,7 +120,7 @@ $("#viewContact").pagecontainer({
                 + '<div class="site font-style3">' + insurStaff[insurID].site + '</div>'
                 + '<li>'
                 +       '<div class="phone font-style7">電話</div>'
-                +       '<a rel="external" class="font-style10" href="tel:"' + insurStaff[insurID].ext + '">' + insurStaff[insurID].ext + '</a>'
+                +       '<a rel="external" class="font-style10" href="tel:' + insurStaff[insurID].ext.replace('-', '') + '">' + insurStaff[insurID].ext + '</a>'
                 + '</li>'
                 + '<li>'
                 +       '<div class="other font-style7">駐點時間</div>' 
@@ -132,7 +132,7 @@ $("#viewContact").pagecontainer({
                 + '</li>'
                 + '<li>'
                 +       '<div class="other font-style7">E-Mail</div>'  
-                +       '<a rel="external" class="font-style10" href="mailto:"' + insurStaff[insurID].email + '">' + insurStaff[insurID].email + '</a>'
+                +       '<a rel="external" class="font-style10" href="mailto:' + insurStaff[insurID].email + '">' + insurStaff[insurID].email + '</a>'
                 + '</li>';   
             $("#detailInfo").html("");
             $("#detailInfo").prepend($(DetailHtmlContent)).enhanceWithin();             
