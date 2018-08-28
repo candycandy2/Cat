@@ -28,9 +28,17 @@ $("#viewUserMain").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //前往结账，跳转选择店家
         $('.user-main-pay').on('click', function () {
             checkAppPage('viewUserSelect');
         });
+
+        //跳转交易记录
+        $('.record-link').on('click', function () {
+            checkAppPage('viewUserRecord');
+        });
+
+
 
     }
 });
