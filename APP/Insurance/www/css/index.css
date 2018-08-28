@@ -239,6 +239,15 @@ pre {
 
 /********************************** public area *************************************/
 
+.insur-main-scroll {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
 .insuranceMenu {
     width: 4.934VW;
 }
