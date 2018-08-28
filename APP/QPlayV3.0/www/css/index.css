@@ -403,10 +403,10 @@ input[type=radio]:checked + label {
     background-size: 10vw;
     height: 3.6vh;
     width: 10vw;
-    font-size: 2.3vh;
+    font-size: 3.5vw;
     color: #5C5C5C;
     text-align: center;
-    line-height: 1.5;
+    line-height: 1.7;
     background-color: #FFFFFF;
 }
 
@@ -2153,6 +2153,10 @@ input[type=radio]:checked + label {
     margin-right: -1px;
     color: #666666;
     font-size: 8.37vw;
+}
+
+.keydown-active {
+    background: #D6D6D6 !important;
 }
 
 /********************** test **********************/
