@@ -1,8 +1,6 @@
 $("#viewMain3").pagecontainer({
     create: function (event, ui) {
 
-        
-
         //widget排序
         function orderWidget() {
             var widgetListDirty = window.sessionStorage.getItem('widgetListDirty');
@@ -21,14 +19,6 @@ $("#viewMain3").pagecontainer({
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
             //2. load widget
             widget.init($('#widgetList'));
-            // //3. get message
-            // if (!callGetMessageList && loginData["msgDateFrom"] === null) {
-            //     msgDateFromType = 'month';
-            //     var clientTimestamp = getTimestamp();
-            //     loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
-            //     var messageList = new QueryMessageList();
-            // }
-
         });
 
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
@@ -67,6 +57,7 @@ $("#viewMain3").pagecontainer({
 
         $("#viewMain3").on("pageshow", function (event, ui) {
             orderWidget();
+            widget.show();
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {

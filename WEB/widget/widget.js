@@ -36,11 +36,20 @@ var widget = {
             }
         });
     },
+    show: function() {
+
+        $.each(this.list(), function(key, value) {
+            var widgetItem = value.name + "Widget";
+            if (value.enabled == true && window[widgetItem] != undefined && window[widgetItem].show != undefined) {
+                window[widgetItem].show();
+            }
+        });
+    },
     clear: function() {
 
         $.each(this.list(), function(key, value) {
             var widgetItem = value.name + "Widget";
-            if (window[widgetItem] != undefined && window[widgetItem].clear != undefined) {
+            if (value.enabled == true && window[widgetItem] != undefined && window[widgetItem].clear != undefined) {
                 window[widgetItem].clear();
             }
         });
