@@ -9,6 +9,7 @@
 /*var groupInsurArr = [{emplid:"1607001", name:"林偉人", goupinsurancetype:"自費意外險(南山)", groupinsurancefun:"本人自費一般險B方案", insuredday:"2017-10-01", status:"生效"},
                      {emplid:"1607001", name:"林小明", goupinsurancetype:"自費意外險(南山)", groupinsurancefun:"祖父母自費一般險B方案", insuredday:"2017-10-01", status:"生效"}];*/
 var healthInsurArr = {};
+var tab1FamiScrollHeight = false, tab2FamiScrollHeight = false;
 
 $("#viewPersonalInsurance").pagecontainer({
     create: function(event, ui) {
@@ -254,10 +255,19 @@ $("#viewPersonalInsurance").pagecontainer({
         });
 
         $("#viewPersonalInsurance").on("pageshow", function(event, ui) { 
+            activePageListID = visitedPageList[visitedPageList.length - 1];
+            scrollClassName = 'insur-personal-scroll';
             $('#pageInsurStatus-1').show();
             $('#pageInsurStatus-2').hide();
             $("label[for=fam-insur-tab-2]").removeClass('ui-btn-active');
             $("label[for=fam-insur-tab-1]").addClass('ui-btn-active');
+            if (!tab1FamiScrollHeight) {         
+                scrollHeightByTab(activePageListID, scrollClassName,'2');  
+                $("#" + activePageListID + ">.page-header").css({
+                    'position': 'fixed'
+                });          
+                tab1FamiScrollHeight = true;
+            }
             if (!viewPersonalInsuranceShow) {
                 QueryHealthInsuranceList();
                 QueryGroupInsuranceList();
@@ -280,7 +290,11 @@ $("#viewPersonalInsurance").pagecontainer({
             $("label[for=fam-insur-tab-1]").removeClass('ui-btn-active');   
             $("label[for=fam-insur-tab-2]").addClass('ui-btn-active'); 
             $('#pageInsurStatus-2').show();
-            $('#pageInsurStatus-1').hide();             
+            $('#pageInsurStatus-1').hide(); 
+            if (!tab2FamiScrollHeight) {         
+                scrollHeightByTab(activePageListID, scrollClassName,'3');           
+                tab2FamiScrollHeight = true;
+            }            
         });  
 
         function passValueToApplyInsurance(clickFamilyID) {

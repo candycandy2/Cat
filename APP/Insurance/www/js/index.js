@@ -13,6 +13,8 @@ var clickFamilyID, clickInsID, clickAppID, clickFamilyName, clickRelation, click
 var clickCanApply, clickDealwith, clickInsuredday, clickApplyday, clickDealday, clickReason, clickSubsidy, clickCerti, clickHealthcard;
 var applyType, nextPage;
 var viewPersonalInsuranceShow = false;
+var activePageListID;
+var scrollClassName;
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
@@ -143,4 +145,19 @@ function transferBirthToAge(birthday){
         age--;
     }
     return age;
+}
+
+//Set Each Tab Height in different View to Scroll Smoothly
+function scrollHeightByTab(viewName, className, num) {
+    // Tab1/Tab2/Tab3 height
+    var tabHeight = $('.'+ className +' > div:nth-child(1)').height();
+    var mainHeight = $('.'+ className +' > div:nth-child('+ num +')').height() + tabHeight;
+    var headHeight = $('#'+ viewName +' .page-header').height();
+    var totalHeight;
+    if (device.platform === "iOS") {
+        totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+    } else {
+        totalHeight = (mainHeight + headHeight).toString();
+    }
+    $('.'+ className +' > div:nth-child('+ num +')').css('height', totalHeight + 'px'); 
 }

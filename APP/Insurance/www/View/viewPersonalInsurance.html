@@ -13,66 +13,68 @@
         </div>
     </div>
     <div data-role="main" class="page-main">
-        <div class="ui-margin-public" style="text-align: center;">
-            <div id="insurTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50w">
-                <input type="radio" name="fam-insur-tab-1" id="fam-insur-tab-1" value="fam-insur-tab-1" checked="checked">
-                <label for="fam-insur-tab-1">
-                    <span class="langStr" data-id="str_104"></span>
-                </label>
-                <input type="radio" name="fam-insur-tab-2" id="fam-insur-tab-2" value="fam-insur-tab-2">
-                <label for="fam-insur-tab-2">
-                    <span class="langStr" data-id="str_105"></span>
-                </label>
-            </div>   
-        </div>
-        <div class="ui-margin-insurance-main" id="pageInsurStatus-1">
-            <div class="insurance-main">
-                <div class="font-style11 insurance-main-title">
-                    <!-- 本人健保/勞保/團保 -->
-                    <span class="langStr" data-id="str_063"></span>
-                </div>              
-                <div class="health-insurance-content font-style7">
-                    <div style="margin-bottom:2.33vw;">
-                        <!-- 內容01 -->
-                        <span class="langStr" data-id="str_066"></span>
-                    </div>
-                    <div style="margin-bottom:2.33vw;">
-                        <!-- 內容02 -->
-                        <span class="langStr" data-id="str_067"></span>
-                    </div>
-                    <div>
-                        <!-- 內容03 -->
-                        <span class="langStr" data-id="str_068"></span>
-                    </div>
-                </div>
-                <div class="font-style11 insurance-main-title" >
-                    <!-- 眷屬健保在保狀態 -->
-                    <span class="langStr" data-id="str_064"></span>
+        <div class="insur-personal-scroll">
+            <div class="ui-margin-public" style="text-align: center;">
+                <div id="insurTab" data-role="controlgroup" data-type="horizontal" class="ui-radio-50w">
+                    <input type="radio" name="fam-insur-tab-1" id="fam-insur-tab-1" value="fam-insur-tab-1" checked="checked">
+                    <label for="fam-insur-tab-1">
+                        <span class="langStr" data-id="str_104"></span>
+                    </label>
+                    <input type="radio" name="fam-insur-tab-2" id="fam-insur-tab-2" value="fam-insur-tab-2">
+                    <label for="fam-insur-tab-2">
+                        <span class="langStr" data-id="str_105"></span>
+                    </label>
                 </div>   
-                <div id="inHealthInsur" class="health-insurance-list font-style7"></div> 
-                <div class="font-style11 insurance-main-title">
-                    <!-- 健保不在保眷屬 -->
-                    <span class="langStr" data-id="str_065"></span>
-                </div>   
-                <div id="nonHealthInsur" class="health-insurance-list font-style7"></div>
             </div>
-        </div>
-        <div class="ui-margin-insurance-main" id="pageInsurStatus-2">
-            <div class="insurance-ownpaid">
-                <div class="font-style12 labor-insurance-remark" >
-                    <!-- 自費保險備註 -->
-                    <span class="langStr" data-id="str_108"></span>
-                </div>    
-                <div class="font-style11 insurance-main-title" >
-                    <!-- 自費一般險 -->
-                    <span class="langStr" data-id="str_109"></span>
-                </div>   
-                <div id="normalInsur" class="ownpaid-insurance-list font-style7"></div> 
-                <div class="font-style11 insurance-main-title" >
-                    <!-- 自費意外險 -->
-                    <span class="langStr" data-id="str_110"></span>
-                </div>   
-                <div id="accidentInsur" class="ownpaid-insurance-list font-style7"></div> 
+            <div class="ui-margin-insurance-main" id="pageInsurStatus-1">
+                <div class="insurance-main">
+                    <div class="font-style11 insurance-main-title">
+                        <!-- 本人健保/勞保/團保 -->
+                        <span class="langStr" data-id="str_063"></span>
+                    </div>              
+                    <div class="health-insurance-content font-style7">
+                        <div style="margin-bottom:2.33vw;">
+                            <!-- 內容01 -->
+                            <span class="langStr" data-id="str_066"></span>
+                        </div>
+                        <div style="margin-bottom:2.33vw;">
+                            <!-- 內容02 -->
+                            <span class="langStr" data-id="str_067"></span>
+                        </div>
+                        <div>
+                            <!-- 內容03 -->
+                            <span class="langStr" data-id="str_068"></span>
+                        </div>
+                    </div>
+                    <div class="font-style11 insurance-main-title" >
+                        <!-- 眷屬健保在保狀態 -->
+                        <span class="langStr" data-id="str_064"></span>
+                    </div>   
+                    <div id="inHealthInsur" class="health-insurance-list font-style7"></div> 
+                    <div class="font-style11 insurance-main-title">
+                        <!-- 健保不在保眷屬 -->
+                        <span class="langStr" data-id="str_065"></span>
+                    </div>   
+                    <div id="nonHealthInsur" class="health-insurance-list font-style7"></div>
+                </div>
+            </div>
+            <div class="ui-margin-insurance-main" id="pageInsurStatus-2">
+                <div class="insurance-ownpaid">
+                    <div class="font-style12 labor-insurance-remark" >
+                        <!-- 自費保險備註 -->
+                        <span class="langStr" data-id="str_108"></span>
+                    </div>    
+                    <div class="font-style11 insurance-main-title" >
+                        <!-- 自費一般險 -->
+                        <span class="langStr" data-id="str_109"></span>
+                    </div>   
+                    <div id="normalInsur" class="ownpaid-insurance-list font-style7"></div> 
+                    <div class="font-style11 insurance-main-title" >
+                        <!-- 自費意外險 -->
+                        <span class="langStr" data-id="str_110"></span>
+                    </div>   
+                    <div id="accidentInsur" class="ownpaid-insurance-list font-style7"></div> 
+                </div>
             </div>
         </div>
         <!-- toast display:none -->
