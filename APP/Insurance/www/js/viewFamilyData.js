@@ -8,6 +8,7 @@ $("#viewFamilyData").pagecontainer({
         var familyName, familyID , familyBirth, familyRelation, typeNo, addFamilyStatus = "";
         var familyNo = 'NULL';
         var timeoutFamilyName = null, timeoutFamilyID = null;
+        var familyListScrollHeight = false;
         var familyArr = {};
         var obj = new Object();
         var relationshipData = {
@@ -135,6 +136,9 @@ $("#viewFamilyData").pagecontainer({
                 if (data['ResultCode'] === "1") {
                     //重新顯示眷屬列表
                     QueryFamilyList();
+                    if (addFamilyStatus === "Add") {
+                        changeFamilyListHeight(activePageListID, scrollClassName, "add");
+                    }
                     viewPersonalInsuranceShow = false;
                 }else if (data['ResultCode'] === "046907") {
                     popupMsgInit('.familyErrorMsg');
@@ -168,6 +172,7 @@ $("#viewFamilyData").pagecontainer({
                 localStorage.setItem('familySettingData', JSON.stringify(familyArr));*/
                 if (data['ResultCode'] === "1") {
                     QueryFamilyList();
+                    changeFamilyListHeight(activePageListID, scrollClassName, "delete");
                     $('.family-edit-btn').trigger('click');
                     $("#deleteFamilyListMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                     viewPersonalInsuranceShow = false; 
@@ -190,6 +195,40 @@ $("#viewFamilyData").pagecontainer({
                 CustomAPI("POST", true, "ModifyFamilyData", self.successCallback, self.failCallback, queryData, "");
             }();
         };
+
+        function scrollHeightOnePage(viewName, className) {
+            var iconHeight = $('.family-add-img').height();
+            var mainHeight = $('.'+ className +' > div').height() + iconHeight;
+            var headHeight = $('#'+ viewName +' .page-header').height();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (mainHeight + headHeight).toString();
+            }
+            $('.'+ className +' > div').css('height', totalHeight + 'px'); 
+        }
+
+        function changeFamilyListHeight(viewName, className, addDelete) {
+            //改成判斷幾筆增加和減少長度
+            var iconHeight = $('.family-add-img').height();
+            var mainHeight = $('.'+ className +' > div').height() + iconHeight;
+            var headHeight = $('#'+ viewName +' .page-header').height();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                //totalHeight = mainHeight + headHeight + iOSFixedTopPX() - 106;
+                if (addDelete == "add") {
+                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+                } else if (addDelete == "delete") {
+                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX() - 212).toString();
+                    //totalHeight = (totalHeight - Math.round($(".family-list").height())).toString();
+                }
+            } else {
+                totalHeight = (mainHeight + headHeight).toString();
+            }
+
+            $('.'+ className +' > div').css('height', totalHeight + 'px'); 
+        }
 
         //生成關係和證號類別的dropdownlist
         function setDropdownlistByFamily() {
@@ -447,7 +486,16 @@ $("#viewFamilyData").pagecontainer({
 
         $("#viewFamilyData").on("pageshow", function (event, ui) {
             loadingMask("show");
-            QueryFamilyList();    
+            activePageListID = visitedPageList[visitedPageList.length - 1];   
+            scrollClassName = 'insur-family-scroll';
+            QueryFamilyList(); 
+            if (!familyListScrollHeight) {
+                scrollHeightOnePage(activePageListID, scrollClassName);
+                $("#" + activePageListID + ">.page-header").css({
+                    'position': 'fixed'
+                });
+                familyListScrollHeight = true;
+            }          
         });
         
         /******************************** datetimepicker ***********************************/
