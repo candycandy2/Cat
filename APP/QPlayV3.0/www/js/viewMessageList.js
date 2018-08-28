@@ -723,7 +723,7 @@ $("#viewMessageList").pagecontainer({
             $('.handle-msg').slideDown(300);
             $('.fill-handle-blank').show(300);
             $('#viewMessageList .ui-title').off('click');
-            $(document).off('click', '.swipe-delete li > a .msg-content-title,.swipe-delete li > a .msg-next-icon');
+            $(document).off('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon');
 
         });
 
@@ -784,7 +784,9 @@ $("#viewMessageList").pagecontainer({
             $('.header-search').hide();
             $('#viewMessageList .q-btn-header').show();
             $('#cancelSearch').hide();
-            $('#editListview').show();
+            if(messageType == 'news' || messageType == 'event') {
+                $('#editListview').show();
+            }
             $('#searchListview').show();
 
             $('.message-type ul').listview('refresh');
