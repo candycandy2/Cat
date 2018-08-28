@@ -2058,7 +2058,7 @@ input[type=radio]:checked + label {
     margin-left: -7vw;
 }
 
-.user-pay-number {
+.user-pay-total {
     color: #253137;
     font-size: 6.18vw;
 }
@@ -2104,6 +2104,7 @@ input[type=radio]:checked + label {
     text-align: right;
     color: #253137;
     font-size: 8.37vw;
+    overflow: hidden;
 }
 
 .user-pay-money > div:nth-of-type(3) {
@@ -2131,17 +2132,19 @@ input[type=radio]:checked + label {
     text-align: center;
     line-height: 10vw;
     color: #989898;
-    font-size: 4.18vw
+    font-size: 4.18vw;
 }
 
-.user-pay-keyboard {
+.user-pay-keyboard,
+.user-password-keyboard {
     width: 100vw;
     height: 80vw;
     position: fixed;
     bottom: 0;
 }
 
-.user-pay-keyboard > div {
+.user-pay-keyboard > div,
+.user-password-keyboard > div {
     width: 33vw;
     height: 20vw;
     background: #F6F6F6;
@@ -2159,59 +2162,230 @@ input[type=radio]:checked + label {
     background: #D6D6D6 !important;
 }
 
-/********************** test **********************/
-#viewPay .ui-content {
+.button-active {
+    background: #009688 !important;
+    color: #FFF !important;
+}
+
+.overBudgetMsg .ui-content>.header {
+    padding: 0 5.36vw;
+    margin-top: 10vw;
+}
+
+.overBudgetMsg .ui-content>.footer {
+    margin-top: 10%;
+}
+
+/****************************** viewUserPassword ******************************/
+#viewUserPassword .ui-content {
     padding: 0 !important;
 }
 
-.container {
+.user-password {
     width: 100vw;
-    height: 80vw;
+    height: 100vh;
     position: fixed;
-    bottom: 0;
+    background: #FFF;
 }
 
-.container > div {
-    width: 33vw;
-    height: 20vw;
-    display: inline-block;
-    text-align: center;
-    line-height: 20vw;
-    border: 1px solid #d6d6d6;
-    margin-bottom: -1px;
-    margin-right: -1px;
-    font-size: 8vw;
-    color: gray;
+.user-password-title {
+    width: 90.38vw;
+    padding: 6.5vw 3.71vw 5.7vw 5.91vw;
+    color: #253137;
+    font-size: 4.18vw;
 }
 
-.password {
-    width: 100vw;
-    height: 20vw;
-    padding-top: 5vw;
-}
-
-.password > div {
-    width: 15vw;
+.user-password-number {
+    width: 83vw;
     height: 15vw;
-    display: inline-block;
-    margin-left: 7.5vw;
-    border: 1px solid #d6d6d6;
+    padding: 0 0 5.37vw 16vw;
 }
 
-.circle {
+.user-password-number > div {
+    width: 13.25vw;
+    height: 13.25vw;
+    display: inline-block;
+    margin-right: 4.64vw;
+    border: 1px solid #989898;
+}
+
+.pwd-active {
+    border: 1px solid #119083 !important;
+}
+
+.pwd-circle {
     width: 2.5vw;
     height: 2.5vw;
     border-radius: 50%;
-    margin-left: 6vw;
-    margin-top: 6vw;
-    background: black;
+    margin-left: 5.5vw;
+    margin-top: 5.5vw;
+    background: #666;
     display: none;
 }
 
-.active {
-    border: 1px solid #13988A !important;
+.user-password-btn {
+    width: 100vw;
+    height: 10vw;
+    padding-bottom: 5.37vw;
 }
 
-.key-down {
-    background: lightgray;
+.user-password-next {
+    width: 33.5vw;
+    height: 100%;
+    margin-left: 33.3vw;
+    background: #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+    color: #989898;
+    font-size: 4.18vw;
+}
+
+.user-password-forget {
+    width: 100vw;
+    text-align: center;
+    color: #666;
+    font-size: 3.14vw;
+}
+
+/******************************* viewUserTrade *******************************/
+#viewUserTrade .ui-content {
+    padding: 0 !important;
+}
+
+.user-trade-main {
+    width: 90vw;
+    height: 100vh;
+    position: fixed;
+    background: #FFF;
+    padding: 0 4.9vw;
+}
+
+.user-trade-head {
+    width: 100%;
+    padding-top: 6.5vw;
+    border-bottom: 1px solid #D6D6D6;
+}
+
+.user-trade-normal {
+    width: 100%;
+    padding-top: 4.3vw;
+    border-bottom: 1px solid #D6D6D6;
+}
+
+.user-trade-head > div:nth-of-type(1),
+.user-trade-normal > div:nth-of-type(1) {
+    height: 6vw;
+    color: #0F0F0F;
+    font-size: 4.18vw;
+}
+
+.user-trade-head > div:nth-of-type(2),
+.user-trade-normal > div:nth-of-type(2) {
+    height: 6vw;
+    color: #2C87BA;
+    font-size: 4.18vw;
+}
+
+.user-trade-btn {
+    width: 100%;
+    height: 10vw;
+    padding-top: 10vw;
+}
+
+.user-trade-back {
+    width: 35.5vw;
+    height: 100%;
+    margin-left: 27.25vw;
+    background: #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+    color: #989898;
+    font-size: 4.18vw;
+}
+
+/******************************* viewUserRecord *******************************/
+#viewUserRecord .ui-content {
+    padding: 0 !important;
+}
+
+.user-record {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
+
+.user-record-type {
+    width: 92.58vw;
+    /* height: 15vw; */
+    margin: 6.5vw 3.71vw 0;
+    border-bottom: 1px solid #D6D6D6;
+}
+
+.user-record-type > div:nth-of-type(1) {
+    height: 6vw;
+    text-indent: 1.68vw;
+    color: #0F0F0F;
+    font-size: 3.349vw;
+}
+
+.user-record-type > div:nth-of-type(2) {
+    height: 7vw;
+    text-indent: 1.68vw;
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.user-record-date {
+    width: 92.58vw;
+    margin: 4.3vw 3.71vw 0;
+}
+
+.user-record-date > div:nth-of-type(1) {
+    height: 6vw;
+    text-indent: 1.68vw;
+    color: #0F0F0F;
+    font-size: 3.349vw;
+}
+
+.user-record-date > div:nth-of-type(2) {
+    width: 100%;
+    height: 6vw;
+    color: #0F0F0F;
+    font-size: 3.349vw;
+}
+
+.user-record-date > div:nth-of-type(2) > div {
+    float: left;
+    width: 50%;
+    text-indent: 1.68vw;
+}
+
+.user-record-date > div:nth-of-type(3) {
+    width: 100%;
+    height: 7vw;
+    color: #0F0F0F;
+    font-size: 4.18vw;
+}
+
+.user-record-date > div:nth-of-type(3) > div {
+    float: left;
+    width: 50%;
+    text-indent: 1.68vw;
+}
+
+.user-record-btn {
+    width: 100vw;
+    height: 10vw;
+    margin-top: 10vw;
+}
+
+.user-record-search {
+    width: 35.5vw;
+    height: 100%;
+    margin-left: 32.25vw;
+    background: #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+    color: #989898;
+    font-size: 4.18vw;
 }

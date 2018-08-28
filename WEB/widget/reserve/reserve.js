@@ -1,14 +1,63 @@
 //widget naming rule widget.js/list()[].name + "Widget"
 var reserveWidget = {
 
-    init: function(contentItem) {
+    reserveAppList: [
+        { key: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
+        { key: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
+        { key: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
+        { key: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
+    ],
+    getAllReserve: function(_reserveAppList) {
 
-        window.reserveAppList = [
-            { key: "apprrs", secretKey: "2e936812e205445490efb447da16ca13" },
-            { key: "apprelieve", secretKey: "00a87a05c855809a0600388425c55f0b" },
-            { key: "appparking", secretKey: "eaf786afb27f567a9b04803e4127cef3" },
-            { key: "appmassage", secretKey: "7f341dd51f8492ca49278142343558d0" }
-        ];
+        for (var i in _reserveAppList) {
+            //from component/function/
+            getMyReserve(_reserveAppList[i].key, _reserveAppList[i].secretKey);
+        }
+    },
+    createTodayReserve: function(arr) {
+
+        var now = new Date();
+        var year = now.getFullYear().toString();
+        var month = now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1).toString() : (now.getMonth() + 1).toString();
+        var day = now.getDate() < 10 ? '0' + now.getDate().toString() : now.getDate().toString();
+        var today = year + '-' + month + '-' + day;
+
+        if (typeof arr[today] == 'undefined') {
+            $('.widget-reserve-null').show();
+
+        } else {
+            var content = '';
+            for (var i in arr[today]) {
+                if (i < 3) {
+                    content += '<li class="reserve-today"><div><div>' +
+                        arr[today][i].ReserveBeginTime +
+                        '</div><div>' +
+                        arr[today][i].ReserveEndTime +
+                        '</div></div><div>' +
+                        arr[today][i].item +
+                        '</div></li>';
+                }
+            }
+            $('.widget-reserve-list').html('').append(content);
+            $('.widget-reserve-null').hide();
+        }
+    },
+    refresh: function() {
+
+        THIS = this;
+        //3.check data
+        var checkReserveData = setInterval(function() {
+            var reserveLocal = JSON.parse(sessionStorage.getItem('reserveList'));
+            var changeReserveListDirty = sessionStorage.getItem('changeReserveListDirty');
+
+            if (reserveLocal !== null && changeReserveListDirty == 'Y') {
+                clearInterval(checkReserveData);
+                THIS.createTodayReserve(reserveLocal);
+                sessionStorage.setItem('changeReserveListDirty','N')
+            }
+        }, 1000);
+    },
+    init: function(contentItem) {
 
         function createContent(contentItem) {
 
@@ -20,16 +69,6 @@ var reserveWidget = {
                 getCurrentDate();
                 //2.获取用户头像
                 checkPhotoUpload($('.reserve-default-photo img'));
-                //3.check data
-                var checkReserveData = setInterval(function() {
-                    var reserveLocal = JSON.parse(sessionStorage.getItem('reserveList'));
-                    var changeReserveListDirty = sessionStorage.getItem('changeReserveListDirty');
-
-                    if (reserveLocal !== null && changeReserveListDirty == 'Y') {
-                        clearInterval(checkReserveData);
-                        createTodayReserve(reserveLocal);
-                    }
-                }, 1000);
 
             }, "html");
 
@@ -47,44 +86,6 @@ var reserveWidget = {
             var name = window.localStorage.getItem('loginid');
             $('#widgetList .emp-name').text(name);
             $('.widget-reserve-null').text(langStr['wgt_006']);
-        }
-
-        function getAllReserve() {
-
-            for (var i in reserveAppList) {
-                //from component/function/
-                getMyReserve(reserveAppList[i].key, reserveAppList[i].secretKey);
-            }
-            //createTodayReserve();
-        }
-
-        function createTodayReserve(arr) {
-
-            var now = new Date();
-            var year = now.getFullYear().toString();
-            var month = now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1).toString() : (now.getMonth() + 1).toString();
-            var day = now.getDate() < 10 ? '0' + now.getDate().toString() : now.getDate().toString();
-            var today = year + '-' + month + '-' + day;
-
-            if (typeof arr[today] == 'undefined') {
-                $('.widget-reserve-null').show();
-
-            } else {
-                var content = '';
-                for (var i in arr[today]) {
-                    if (i < 3) {
-                        content += '<li class="reserve-today"><div><div>' +
-                            arr[today][i].ReserveBeginTime +
-                            '</div><div>' +
-                            arr[today][i].ReserveEndTime +
-                            '</div></div><div>' +
-                            arr[today][i].item +
-                            '</div></li>';
-                    }
-                }
-                $('.widget-reserve-list').html('').append(content);
-                $('.widget-reserve-null').hide();
-            }
         }
 
         //检查是否上传过头像
@@ -127,8 +128,6 @@ var reserveWidget = {
 
                 //1.创建DOM
                 createContent(contentItem);
-                //2.Call API
-                getAllReserve();
 
             });
         }
@@ -146,6 +145,10 @@ var reserveWidget = {
         $.fn.reserve.defaults = {}
         $('.reserveWidget').reserve();
     },
+    show: function() {
+        this.getAllReserve(this.reserveAppList);
+        this.refresh();
+    },
     clear: function() {
         //from component/
         var env = '';
@@ -159,5 +162,6 @@ var reserveWidget = {
         window.localStorage.removeItem('appmassage' + env);
         window.localStorage.removeItem('appparking' + env);
         window.localStorage.removeItem('apprelieve' + env);
+        sessionStorage.setItem('changeReserveListDirty', 'Y');
     }
 };

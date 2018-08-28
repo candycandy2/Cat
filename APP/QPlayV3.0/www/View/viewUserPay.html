@@ -29,7 +29,7 @@
                         <span class="langStr" data-id="str_107"></span>
                     </div>
                     <div class="user-pay-left">
-                        <span class="user-pay-unit">TWD</span><span class="user-pay-number">10000</span>
+                        <span class="user-pay-unit">TWD</span><span class="user-pay-total">10000</span>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                             <!--結帳金額-->
                             <span class="langStr" data-id="str_114"></span> 
                         </div>
-                        <div><span>$ </span><span>0</span></div>
+                        <div><span>$ </span><span class="user-pay-number">0</span></div>
                         <div class="user-pay-clear-all"><img src="img/field_clear.png"></div>
                     </div>
                 </div>
@@ -67,5 +67,31 @@
         --><div style="color:#f6f6f6">C</div><!--
         --><div class="num-keyboard" data-value="0">0</div><!--
         --><div class="num-keyboard user-pay-clear-one">C</div>
+    </div>
+    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup overBudgetMsg" for="overBudgetMsg" id="overBudgetMsg">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <!--您的余额不足喔！-->
+                    <span class="header-text langStr" data-id="str_116"></span>
+                </div>
+                <div class="header-title"></div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style11 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--确定-->
+                        <span class="langStr" data-id="str_040"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
