@@ -129,6 +129,7 @@ class FunctionController extends Controller
             'ddlQAccountUse'=>'required|in:Y,N',
             'ddlQAccountRightLevel'=>'required_if:ddlQAccountUse,Y|numeric',
             'ddlFunctionStatus' => 'required|in:Y,N',
+            'ddlUserSetting' => 'required|in:1,2',
         ]);
 
          //check parameter lost or incorrect 
