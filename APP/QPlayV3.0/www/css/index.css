@@ -921,7 +921,7 @@ input[type=radio]:checked + label {
 
 .other-link {
     width: 100vw;
-    height: 78vw;
+    /* height: 78vw; */
     background: #FFFFFF;
 }
 
