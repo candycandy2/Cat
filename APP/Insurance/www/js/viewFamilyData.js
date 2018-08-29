@@ -95,6 +95,13 @@ $("#viewFamilyData").pagecontainer({
                     $(".family-edit-btn").show();
                     $(".family-cancle-btn").hide();
                     $("#familyList").empty().append(familyList).children("div:last-child").remove();
+                    if (!familyListScrollHeight) {
+                        scrollHeightOnePage(activePageListID, scrollClassName);
+                        $("#" + activePageListID + ">.page-header").css({
+                            'position': 'fixed'
+                        });
+                        familyListScrollHeight = true;
+                    }          
                 } else {
                     familyArr = data["Content"];
                     $("#viewFamilyList").hide();
@@ -218,11 +225,14 @@ $("#viewFamilyData").pagecontainer({
             if (device.platform === "iOS") {
                 //totalHeight = mainHeight + headHeight + iOSFixedTopPX() - 106;
                 if (addDelete == "add") {
-                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX() - 33).toString();
+                    addPersonalInsur = true;
                 } else if (addDelete == "delete") {
-                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX() - 212).toString();
-                    //totalHeight = (totalHeight - Math.round($(".family-list").height())).toString();
+                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX() - 159).toString();
+                    deletePersonalInsur = true;
                 }
+                //familyListScrollHeight = false;
+                tab1FamiScrollHeight = false;
             } else {
                 totalHeight = (mainHeight + headHeight).toString();
             }
@@ -489,13 +499,6 @@ $("#viewFamilyData").pagecontainer({
             activePageListID = visitedPageList[visitedPageList.length - 1];   
             scrollClassName = 'insur-family-scroll';
             QueryFamilyList(); 
-            if (!familyListScrollHeight) {
-                scrollHeightOnePage(activePageListID, scrollClassName);
-                $("#" + activePageListID + ">.page-header").css({
-                    'position': 'fixed'
-                });
-                familyListScrollHeight = true;
-            }          
         });
         
         /******************************** datetimepicker ***********************************/
