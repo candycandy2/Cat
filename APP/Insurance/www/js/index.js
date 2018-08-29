@@ -15,6 +15,7 @@ var applyType, nextPage;
 var viewPersonalInsuranceShow = false;
 var activePageListID;
 var scrollClassName;
+var addPersonalInsur = false, deletePersonalInsur = false;
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];
@@ -155,9 +156,28 @@ function scrollHeightByTab(viewName, className, num) {
     var headHeight = $('#'+ viewName +' .page-header').height();
     var totalHeight;
     if (device.platform === "iOS") {
+        if (deletePersonalInsur) {
+            mainHeight = mainHeight - 93 - 47 - 19;
+            deletePersonalInsur = false;
+        } else if (addPersonalInsur) {
+            mainHeight = mainHeight - 47;
+            addPersonalInsur = false;
+        }
         totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
     } else {
         totalHeight = (mainHeight + headHeight).toString();
     }
     $('.'+ className +' > div:nth-child('+ num +')').css('height', totalHeight + 'px'); 
 }
+
+function scrollHeightFixedPage(viewName, className) {
+    var mainHeight = $('.'+ className +' > div').height();
+    var headHeight = $('#'+ viewName +' .page-header').height();
+    var totalHeight;
+    if (device.platform === "iOS") {
+        totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+    } else {
+        totalHeight = (mainHeight + headHeight).toString();
+    }
+    $('.'+ className +' > div').css('height', totalHeight + 'px'); 
+}     

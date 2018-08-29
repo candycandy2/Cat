@@ -222,7 +222,7 @@ $("#viewApplyInsurance").pagecontainer({
             $("#subsidyNo").prop("checked", "checked");
             $("#certiNo").prop("checked", "checked");
             $("#cardNo").prop("checked", "checked");
-            $('#applyRemark').val('');
+            $('#applyRemark').val('');    
         }
 
         //檢查所有欄位是否爲空
