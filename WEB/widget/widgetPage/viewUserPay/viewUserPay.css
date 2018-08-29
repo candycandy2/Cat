@@ -1,0 +1,175 @@
+/******************************** viewUserPay ********************************/
+#viewUserPay .ui-content {
+    padding: 0 !important;
+}
+
+.user-pay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
+
+.user-pay-title {
+    width: 92.58vw;
+    height: 10vw;
+    padding: 6.5vw 3.71vw;
+    background: #ECEEEF;
+}
+
+.user-pay-title > div {
+    float: left;
+}
+
+.user-pay-title > div:nth-of-type(1) {
+    width: 12vw;
+    height: 100%;
+}
+
+.user-pay-title > div:nth-of-type(2) {
+    width: 50vw;
+    height: 100%;
+}
+
+.user-pay-name {
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.user-pay-no {
+    color: #989898;
+    font-size: 4.18vw;
+}
+
+.user-pay-title > div:nth-of-type(3) {
+    width: 28vw;
+    height: 100%;
+}
+
+.user-pay-remain {
+    width: 100%;
+    height: 50%;
+    color: #253137;
+    font-size: 4.18vw;
+    text-align: right;
+}
+
+.user-pay-left {
+    width: 100%;
+    height: 50%;
+    text-align: right;
+}
+
+.user-pay-unit {
+    color: #989898;
+    font-size: 2.93vw;
+    position: absolute;
+    margin-top: 0.6vw;
+    margin-left: -7vw;
+}
+
+.user-pay-total {
+    color: #253137;
+    font-size: 6.18vw;
+}
+
+.user-pay-main {
+    width: 100vw;
+    height: 60vw;
+    background: #FFF;
+}
+
+.user-pay-text {
+    width: 92.58vw;
+    height: 20vw;
+    margin-left: 3.71vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.user-pay-shop {
+    width: 100%;
+    padding: 3.66vw 0 0 2vw;
+}
+
+.user-pay-money {
+    width: 100%;
+    height: 10vw;
+    padding-left: 2vw;
+}
+
+.user-pay-money > div {
+    float: left;
+}
+
+.user-pay-money > div:nth-of-type(1) {
+    width: 30vw;
+    margin-top: 3vw;
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.user-pay-money > div:nth-of-type(2) {
+    width: 50vw;
+    height: 100%;
+    text-align: right;
+    color: #253137;
+    font-size: 8.37vw;
+    overflow: hidden;
+}
+
+.user-pay-money > div:nth-of-type(3) {
+    width: 12vw;
+    height: 100%;
+}
+
+.user-pay-money > div:nth-of-type(3) img {
+    width: 5vw;
+    margin-left: 3vw;
+    margin-top: 3vw;
+}
+
+.user-pay-btn {
+    width: 100vw;
+    height: 10vw;
+    margin-top: 5.37vw;
+}
+
+.user-pay-next {
+    width: 33.5vw;
+    height: 100%;
+    margin-left: 33.3vw;
+    background: #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+    color: #989898;
+    font-size: 4.18vw;
+}
+
+.user-pay-keyboard {
+    width: 100vw;
+    height: 80vw;
+    position: fixed;
+    bottom: 0;
+}
+
+.user-pay-keyboard > div {
+    width: 33vw;
+    height: 20vw;
+    background: #F6F6F6;
+    display: inline-block;
+    text-align: center;
+    line-height: 20vw;
+    border: 1px solid #d6d6d6;
+    margin-bottom: -1px;
+    margin-right: -1px;
+    color: #666666;
+    font-size: 8.37vw;
+}
+
+.overBudgetMsg .ui-content>.header {
+    padding: 0 5.36vw;
+    margin-top: 10vw;
+}
+
+.overBudgetMsg .ui-content>.footer {
+    margin-top: 10%;
+}

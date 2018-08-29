@@ -6,8 +6,8 @@ $("#viewUserPassword").pagecontainer({
         function initialPage() {
             pwdNum = '';
             $('.pwd-circle').hide();
-            $('.pwd-box').removeClass('active');
-            $('.pwd-box:eq(0)').addClass('active');
+            $('.pwd-box').removeClass('pwd-active');
+            $('.pwd-box:eq(0)').addClass('pwd-active');
         }
 
         /********************************** page event ***********************************/
