@@ -28,7 +28,7 @@ class FunctionRepository
     public function getFunctionListByAppId($appId){
         return  $this->function
             -> select('row_id', 'owner_app_row_id',
-                      'app_row_id', 'type', 'name',
+                      'app_row_id', 'type', 'name','description',
                       'status', 'variable_name',
                       'company_label', 'qaccount_right_level',
                       'qaccount_use')

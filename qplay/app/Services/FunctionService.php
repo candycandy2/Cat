@@ -115,7 +115,7 @@ class FunctionService
             $functionId = $request['function_id'];
             $this->functionRepository->updateFunction($request,  $auth);
             
-            if(!isset($request['companyList']) || count($request['companyList']) == 0){
+            if($request['ddlUserSetting'] == 2){
                 
                 //set function auth by qp_role_function, qp_user_function
                 //set qp_function company_label null

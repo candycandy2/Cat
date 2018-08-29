@@ -10,6 +10,7 @@ use App\Repositories\RoleFunctionRepository;
 use App\Repositories\UserFunctionRepository;
 use App\Repositories\AppRepository;
 use App\Repositories\AppVersionRepository;
+use App\lib\FilePath;
 
 class FunctionService
 {
@@ -61,19 +62,18 @@ class FunctionService
             $data['function_variable'] = [];
 
             $data['function_variable']  = $function->variable_name;
+            $data['function_name']  = $function->name;
+            $data['function_description']  = $function->description;
             $data['function_content']['type']  = $function->type;
-            $data['function_content']['right']  = "N";
-            $data['function_content']['qaccount_use']  = $function->qaccount_use;
-            $data['function_content']['qaccount_right_level']  = $function->qaccount_right_level;
-            $data['function_content']['company_label']  = $function->company_label;
             $data['function_content']['right'] = $this->getFunctionRight($function, $userIdentify);
 
             if($function->type == 'APP' && !is_null($function->app_row_id)){
                 // get app name 
                 $funAppData = $this->appRepository->getAppBasicIfnoByAppId($function->app_row_id, $lang);
                 if(!is_null($funAppData)){
+                    $data['function_content']['package_name'] = $funAppData->package_name;
+                    $data['function_content']['icon'] = FilePath::getIconUrl($funAppData->row_id, $funAppData->icon_url);
                     $data['function_content']['app_name'] = $funAppData->app_name;
-                    $data['function_content']['icon'] = $funAppData->icon_url;
                     $data['function_content']['app_summary'] = $funAppData->app_summary;
                     $data['function_content']['app_description'] = $funAppData->app_description;
                 }            
@@ -93,35 +93,37 @@ class FunctionService
      */
     public function getFunctionRight($function, $userIdentify){
         $auth = 'N';
+        
+        //1. check user is in company_label
         if(!is_null($function->company_label)){
             $allowCompanys = explode(";" , $function->company_label);
             if(in_array($userIdentify['company'],$allowCompanys)){
                $auth = 'Y';
             }
         }else{
+            // 2. check user in role_function,user_function
             $allowRoles = $this->roleFunctionRepository->getAllowRole($function->row_id);
-            if(count($allowRoles) > 0){
-                $diff = array_diff($userIdentify['userRole'], $allowRoles);
-                if(count($diff) < count($userRole)){
-                   $auth = 'Y';
-                }
+            $diff = array_diff($userIdentify['userRole'], $allowRoles);
+            if(count($diff) < count($userIdentify['userRole'])){
+               $auth = 'Y';
+            }
+     
+            $allowUsers = $this->userFunctionRepository->getAllowUser($function->row_id);
+            if(in_array($userIdentify['userId'], $allowUsers)){
+               $auth = 'Y';               
+           }
+          
+        }
+
+        //3. if logn type is qAccount,check qaccount auth
+        if($userIdentify['adFlag'] == "N"){
+
+            if($function->qaccount_use == "N"){
+                $auth = 'N';
             }else{
-                $allowUsers = $this->userFunctionRepository->getAllowUser($function->row_id);
-                if(in_array($userIdentify['userId'], $allowUsers)){
-                   $auth = 'Y';               
-               }
-            }
-        }
-
-        if($function->qaccount_use == "N"){
-            if($userIdentify['adFlag'] == "N"){ //qAccount login
-               $auth = 'N';
-            }
-        }
-
-        if($function->qaccount_use == "Y" && $function->qaccount_right_level == "2"){
-            if($userIdentify['adFlag'] == "N"){ //qAccount login
-               $auth = 'N';
+                if( $function->qaccount_right_level == "2" ){ //QAccount > company, allow all qAccount to use
+                    $auth = 'Y';
+                }
             }
         }
 
