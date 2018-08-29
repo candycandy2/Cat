@@ -237,6 +237,13 @@ $("#viewPersonalInsurance").pagecontainer({
                     }
                     loadingMask("hide");
                 }
+                if (!tab1FamiScrollHeight) {         
+                    scrollHeightByTab(activePageListID, scrollClassName,'2');  
+                    $("#" + activePageListID + ">.page-header").css({
+                        'position': 'fixed'
+                    });          
+                    tab1FamiScrollHeight = true;
+                }
             };
 
             this.failCallback = function(data) {};
@@ -261,21 +268,13 @@ $("#viewPersonalInsurance").pagecontainer({
             $('#pageInsurStatus-2').hide();
             $("label[for=fam-insur-tab-2]").removeClass('ui-btn-active');
             $("label[for=fam-insur-tab-1]").addClass('ui-btn-active');
-            if (!tab1FamiScrollHeight) {         
-                scrollHeightByTab(activePageListID, scrollClassName,'2');  
-                $("#" + activePageListID + ">.page-header").css({
-                    'position': 'fixed'
-                });          
-                tab1FamiScrollHeight = true;
-            }
             if (!viewPersonalInsuranceShow) {
                 QueryHealthInsuranceList();
                 QueryGroupInsuranceList();
                 viewPersonalInsuranceShow = true; 
             } else {
                 loadingMask("hide");  
-            }  
-                     
+            }                  
         });
 
         /********************************** dom event *************************************/
