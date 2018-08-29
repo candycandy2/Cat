@@ -15,18 +15,32 @@ $("#viewMain3").pagecontainer({
             }
         }
 
+        var pullControl = null;
+        $(".main-scroll").on( 'scroll', function(){
+            if ($('#widgetList').offset().top > 50) {
+                if (pullControl == null) {
+
+                    pullControl = PullToRefresh.init({
+                        mainElement: '#widgetList',
+                        onRefresh: function() {
+                            //do something for refresh
+                            widget.clear();
+                            widget.show();
+                        }
+                    });
+                } else {}
+            } else {
+
+                if (pullControl != null) {
+                    pullControl.destroy();
+                    pullControl = null;
+                }
+            }
+        });
+
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function(event, ui) {
 
-            //review by alan
-            // var pullControl = PullToRefresh.init({
-            //     mainElement: '#widgetList',
-            //     onRefresh: function() {
-            //         //do something for refresh
-            //         widget.clear();
-            //         widget.show();
-            //     }
-            // });
             //2. load widget
             widget.init($('#widgetList'));
         });
