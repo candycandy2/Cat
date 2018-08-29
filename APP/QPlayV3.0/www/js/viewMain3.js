@@ -18,14 +18,15 @@ $("#viewMain3").pagecontainer({
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function(event, ui) {
 
-            var pullControl = PullToRefresh.init({
-                mainElement: '#widgetList',
-                onRefresh: function() {
-                    //do something for refresh
-                    widget.clear();
-                    widget.show();
-                }
-            });
+            //review by alan
+            // var pullControl = PullToRefresh.init({
+            //     mainElement: '#widgetList',
+            //     onRefresh: function() {
+            //         //do something for refresh
+            //         widget.clear();
+            //         widget.show();
+            //     }
+            // });
             //2. load widget
             widget.init($('#widgetList'));
         });
