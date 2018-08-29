@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\FunctionService;
-use App\Services\AppService;
 use Illuminate\Http\Request;
 use App\lib\Verify;
 use App\lib\ResultCode;
@@ -19,13 +18,10 @@ class appFunctionController extends Controller
     /**
      * FunctionController constructor.
      * @param FunctionService $functionService
-     * @param AppService      $appService
      */
-    public function __construct(FunctionService $functionService,
-                                AppService $appService)
+    public function __construct(FunctionService $functionService)
     {
         $this->functionService = $functionService;
-        $this->appService = $appService;
     }
     
     public function getFunctionList(Request $request)
@@ -33,7 +29,7 @@ class appFunctionController extends Controller
     
         //api common verify 
         $Verify = new Verify();
-        $verifyResult = $Verify->verify();
+        $verifyResult = $Verify->verifyWithCustomerAppKey();
 
         if($verifyResult["code"] != ResultCode::_1_reponseSuccessful){
             $result = ['result_code'=>$verifyResult["code"],
@@ -53,7 +49,8 @@ class appFunctionController extends Controller
             'device_type' => 'required|in:ios,android'
         ],
         [
-            'required' => ResultCode::_999001_requestParameterLostOrIncorrect
+            'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'in' => ResultCode::_999001_requestParameterLostOrIncorrect
         ]
         );
         if ($validator->fails()) {
@@ -72,11 +69,11 @@ class appFunctionController extends Controller
 
         //verify token
         $token = $request->header('token');
-        $verifyResult = $Verify->verifyToken($uuid, $token);
-        if($verifyResult["code"] != ResultCode::_1_reponseSuccessful)
+        $verifyTokenResult = $Verify->verifyToken($uuid, $token);
+        if($verifyTokenResult["code"] != ResultCode::_1_reponseSuccessful)
         {
-            $result = ['result_code'=>$verifyResult["code"],
-                    'message'=>CommonUtil::getMessageContentByCode($verifyResult["code"]),
+            $result = ['result_code'=>$verifyTokenResult["code"],
+                    'message'=>CommonUtil::getMessageContentByCode($verifyTokenResult["code"]),
                     'content'=>''];
                 return response()->json($result);
         }
@@ -126,6 +123,7 @@ class appFunctionController extends Controller
         
         $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
+                'token_valid'=>$verifyTokenResult["token_valid_date"],
                 'content'=>array("function_list"=>$functionList)
             ];
             return response()->json($result);

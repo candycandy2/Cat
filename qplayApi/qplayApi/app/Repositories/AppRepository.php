@@ -15,17 +15,14 @@ class AppRepository
     /** @var User Inject QP_App_Head model */
     protected $appHead;
 
-    /** @var User Inject QP_App_Line model */
-    protected $appLine;
     
     /*
      * AppRepository constructor.
      * @param QP_App_Head $appHead
      */
-    public function __construct(QP_App_Head $appHead, QP_App_Line $appLine)
+    public function __construct(QP_App_Head $appHead)
     {     
         $this->appHead = $appHead;
-        $this->appLine = $appLine;
     }
 
 
@@ -45,6 +42,7 @@ class AppRepository
             -> where('qp_language.lang_code',$lang)
             -> where('qp_app_head.row_id','=',$appId)
             -> select('qp_app_head.row_id',
+                      'qp_app_head.package_name',
                       'qp_project.app_key',
                       'qp_app_head.icon_url',
                       'qp_project.project_code',
@@ -61,6 +59,7 @@ class AppRepository
             -> join('qp_language','qp_app_line.lang_row_id','=','qp_app_head.default_lang_row_id')
             -> where('qp_app_head.row_id','=',$appId)
             -> select('qp_app_head.row_id',
+                      'qp_app_head.package_name',
                       'qp_project.app_key',
                       'qp_app_head.icon_url',
                       'qp_project.project_code',
