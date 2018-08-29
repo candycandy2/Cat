@@ -40,8 +40,7 @@ $("#viewMain3").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function(event, ui) {
-
-            //2. load widget
+            //1. load widget
             widget.init($('#widgetList'));
         });
 
