@@ -71,7 +71,7 @@ $("#viewUserPassword").pagecontainer({
             var has = $(this).hasClass('button-active');
             if (has) {
                 //Call API make trade
-                checkAppPage('viewUserTrade');
+                checkWidgetPage('viewUserTrade');
             }
         });
 
