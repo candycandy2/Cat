@@ -40,8 +40,7 @@ $("#viewMain3").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function(event, ui) {
-
-            //2. load widget
+            //1. load widget
             widget.init($('#widgetList'));
         });
 
@@ -110,13 +109,6 @@ $("#viewMain3").pagecontainer({
         $('#setting').on('click', function() {
             checkAppPage('viewAppSetting');
         });
-
-        //跳转到QPay测试
-        $('.pay-link').on('click', function() {
-            checkAppPage('viewUserMain');
-        });
-
-
 
 
     }

@@ -222,7 +222,7 @@ $("#viewApplyInsurance").pagecontainer({
             $("#subsidyNo").prop("checked", "checked");
             $("#certiNo").prop("checked", "checked");
             $("#cardNo").prop("checked", "checked");
-            $('#applyRemark').val('');
+            $('#applyRemark').val('');    
         }
 
         //檢查所有欄位是否爲空
@@ -490,6 +490,7 @@ $("#viewApplyInsurance").pagecontainer({
         //預覽送簽按鈕
         $("#previewBtn").on("click", function() {
             if ($('#previewBtn').hasClass('insurPreview-active-btn')) {
+                window.scrollBy(0, -50); 
                 detailType = "newApply";
                 changeToDetailPage(detailType);
                 $('.apply-button-style').show();  
@@ -512,7 +513,7 @@ $("#viewApplyInsurance").pagecontainer({
                     $('.insur-info-title').text(langStr["str_152"]);
                 } else if (applyType == "recoverInsur") {
                     $('.insur-info-title').text(langStr["str_153"]);
-                }                            
+                }                      
                 $('#viewPreviewApplication').show();
             }
         });

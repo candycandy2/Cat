@@ -20,7 +20,7 @@ $("#viewUserSelect").pagecontainer({
 
         /********************************** dom event *************************************/
         $('.user-select-shop').on('click', '.user-select-list', function () {
-            checkAppPage('viewUserPay');
+            checkWidgetPage('viewUserPay');
         });
 
     }

@@ -207,7 +207,7 @@ $("#viewMyCalendar").pagecontainer({
                 var changeReserveListDirty = sessionStorage.getItem('changeReserveListDirty');
                 var reserveArr = JSON.parse(sessionStorage.getItem('reserveList'));
 
-                if (reserveArr !== null && changeReserveListDirty == 'Y') {
+                if (reserveArr !== null && changeReserveListDirty == 'N') {
                     clearInterval(checkReserveData);
                     createReserveCarousel(reserveArr);
                 }
