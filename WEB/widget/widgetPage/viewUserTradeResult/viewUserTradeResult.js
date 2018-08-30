@@ -1,4 +1,4 @@
-$("#viewUserTrade").pagecontainer({
+$("#viewUserTradeResult").pagecontainer({
     create: function (event, ui) {
 
         function initialPage() {
@@ -6,15 +6,15 @@ $("#viewUserTrade").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewUserTrade").on("pagebeforeshow", function (event, ui) {
+        $("#viewUserTradeResult").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewUserTrade").on("pageshow", function (event, ui) {
+        $("#viewUserTradeResult").on("pageshow", function (event, ui) {
 
         });
 
-        $("#viewUserTrade").on("pagehide", function (event, ui) {
+        $("#viewUserTradeResult").on("pagehide", function (event, ui) {
 
         });
 

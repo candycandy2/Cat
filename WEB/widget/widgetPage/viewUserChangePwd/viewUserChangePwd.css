@@ -1,0 +1,60 @@
+/******************************* viewUserChangePwd *******************************/
+#viewUserChangePwd .ui-content {
+    padding: 0 !important;
+}
+
+.user-change {
+    width: 100vw;
+    height: 90vw;
+    position: fixed;
+}
+
+.user-change-head {
+    width: 84.22vw;
+    margin-left: 3.71vw;
+    padding: 8.81vw 5.17vw 4.4vw 3.19vw;
+    border-bottom: 1px solid #D6D6D6;
+}
+
+.user-change-main {
+    width: 84.22vw;
+    margin-left: 3.71vw;
+    padding: 6.14vw 5.17vw 4.4vw 3.19vw;
+    border-bottom: 1px solid #D6D6D6;
+}
+
+.user-change-head > input,
+.user-change-main > input {
+    border: none;
+    outline: none;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #F9F9F9;
+    font-size: 4.18vw;
+}
+
+.user-change-btn {
+    width: 100vw;
+    height: 10vw;
+    margin-top: 10vw;
+}
+
+.user-change-pwd {
+    width: 33.5vw;
+    height: 10vw;
+    margin-left: 32.25vw;
+    background: #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+    color: #989898;
+    font-size: 4.18vw;
+}
+
+.user-change-foot {
+    width: 100vw;
+    margin-top: 6vw;
+    color: #666666;
+    font-size: 3.14vw;
+    text-align: center;
+}
