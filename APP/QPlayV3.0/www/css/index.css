@@ -1860,7 +1860,15 @@ input[type=radio]:checked + label {
 .user-record-date > div:nth-of-type(3) > div {
     float: left;
     width: 50%;
+    height: 100%;
     text-indent: 1.68vw;
+    margin: 0;
+    padding: 0;
+}
+
+#startDate {
+    border: none;
+    outline: none;
 }
 
 .user-record-btn {

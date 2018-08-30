@@ -110,13 +110,6 @@ $("#viewMain3").pagecontainer({
             checkAppPage('viewAppSetting');
         });
 
-        //跳转到QPay测试
-        $('.pay-link').on('click', function() {
-            checkAppPage('viewUserMain');
-        });
-
-
-
 
     }
 
