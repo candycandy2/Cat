@@ -1,4 +1,4 @@
-$("#viewUserPassword").pagecontainer({
+$("#viewUserInputPwd").pagecontainer({
     create: function (event, ui) {
 
         var pwdNum = '';
@@ -11,15 +11,15 @@ $("#viewUserPassword").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewUserPassword").on("pagebeforeshow", function (event, ui) {
+        $("#viewUserInputPwd").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewUserPassword").on("pageshow", function (event, ui) {
+        $("#viewUserInputPwd").on("pageshow", function (event, ui) {
 
         });
 
-        $("#viewUserPassword").on("pagehide", function (event, ui) {
+        $("#viewUserInputPwd").on("pagehide", function (event, ui) {
 
         });
 
@@ -71,7 +71,7 @@ $("#viewUserPassword").pagecontainer({
             var has = $(this).hasClass('button-active');
             if (has) {
                 //Call API make trade
-                checkWidgetPage('viewUserTrade');
+                checkWidgetPage('viewUserTradeResult');
             }
         });
 

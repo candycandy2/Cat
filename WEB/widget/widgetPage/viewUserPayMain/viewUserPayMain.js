@@ -1,4 +1,4 @@
-$("#viewUserMain").pagecontainer({
+$("#viewUserPayMain").pagecontainer({
     create: function (event, ui) {
 
 
@@ -8,20 +8,22 @@ $("#viewUserMain").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewUserMain").on("pagebeforeshow", function (event, ui) {
+        $("#viewUserPayMain").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewUserMain").one("pageshow", function (event, ui) {
+        $("#viewUserPayMain").one("pageshow", function (event, ui) {
             var dueDay = getDueDay();
             $('.due-day').text(dueDay);
+            $('.user-main-name').text(loginData['loginid']);
+            $('.user-main-no').text(loginData['emp_no']);
         });
 
-        $("#viewUserMain").on("pageshow", function (event, ui) {
+        $("#viewUserPayMain").on("pageshow", function (event, ui) {
 
         });
 
-        $("#viewUserMain").on("pagehide", function (event, ui) {
+        $("#viewUserPayMain").on("pagehide", function (event, ui) {
 
         });
 
@@ -30,14 +32,18 @@ $("#viewUserMain").pagecontainer({
         /********************************** dom event *************************************/
         //前往结账，跳转选择店家
         $('.user-main-pay').on('click', function () {
-            checkWidgetPage('viewUserSelect');
+            checkWidgetPage('viewUserSelectShop');
         });
 
         //跳转交易记录
         $('.record-link').on('click', function () {
-            checkAppPage('viewUserRecord');
+            checkWidgetPage('viewUserQueryRecord');
         });
 
+        //跳转更改密码
+        $('.password-link').on('click', function () {
+            checkWidgetPage('viewUserChangePwd');
+        });
 
 
     }
