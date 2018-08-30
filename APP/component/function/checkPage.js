@@ -1,6 +1,6 @@
 
 
-//check app page before change
+//check app page on local
 function checkAppPage(pageID) {
     var pageStatus = false;
 
@@ -13,97 +13,95 @@ function checkAppPage(pageID) {
 
     if (pageStatus) {
         $.mobile.changePage('#' + pageID);
+
     } else {
-        $.ajax({
-            type: 'GET',
-            url: serverURL + '/widget/widgetPage/' + pageID + '/' + pageID + '.html',
-            dataType: 'html',
-            success: function (data) {
-                var pageInitial = window.sessionStorage.getItem(pageID);
+        var pageInitial = window.sessionStorage.getItem(pageID);
 
-                if (pageInitial == 'true') {
-                    $.mobile.changePage('#' + pageID);
+        if (pageInitial == 'true') {
+            $.mobile.changePage('#' + pageID);
 
-                } else {
-                    //1. css
-                    var link = document.createElement('link');
-                    link.rel = 'stylesheet';
-                    link.type = 'text/css';
-                    link.href = serverURL + '/widget/widgetPage/' + pageID + '/' + pageID + '.css';
-                    document.head.appendChild(link);
+        } else {
+            $.get('View/' + pageID + '.html', function (data) {
+                //1. html
+                $.mobile.pageContainer.append(data);
+                $('#' + pageID).page().enhanceWithin();
 
-                    //2. html
-                    $.mobile.pageContainer.append(data);
-                    $('#' + pageID).page().enhanceWithin();
+                //2. language string
+                setViewLanguage(pageID);
 
-                    //3. language string
-                    setViewLanguage(pageID);
-
-                    //4. water mark
-                    //According to the data [waterMarkPageList] which set in index.js
-                    if (!(typeof waterMarkPageList === 'undefined')) {
-                        if (waterMarkPageList.indexOf(pageID) !== -1) {
-                            $('#' + pageID).css('background-color', 'transparent');
-                        }
+                //3. water mark
+                //According to the data [waterMarkPageList] which set in index.js
+                if (!(typeof waterMarkPageList === 'undefined')) {
+                    if (waterMarkPageList.indexOf(pageID) !== -1) {
+                        $('#' + pageID).css('background-color', 'transparent');
                     }
-
-                    //5. js
-                    setTimeout(function () {
-                        var script = document.createElement('script');
-                        script.type = 'text/javascript';
-                        script.src = serverURL + '/widget/widgetPage/' + pageID + '/' + pageID + '.js';
-                        document.head.appendChild(script);
-                        
-                        //6. change page
-                        $.mobile.changePage('#' + pageID);
-                        window.sessionStorage.setItem(pageID, 'true');
-                        
-                    }, 200);
-
                 }
-            },
-            error: function () {
-                var pageInitial = window.sessionStorage.getItem(pageID);
 
-                if (pageInitial == 'true') {
+                //4. js
+                setTimeout(function () {
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.src = 'js/' + pageID + '.js';
+                    document.head.appendChild(script);
+
+                    //5. change page
                     $.mobile.changePage('#' + pageID);
+                    window.sessionStorage.setItem(pageID, 'true');
 
-                } else {
-                    $.get('View/' + pageID + '.html', function (serverData) {
-                        //1. html
-                        $.mobile.pageContainer.append(serverData);
-                        $('#' + pageID).page().enhanceWithin();
+                }, 200);
 
-                        //2. language string
-                        setViewLanguage(pageID);
+            }, 'html');
+        }
 
-                        //3. water mark
-                        //According to the data [waterMarkPageList] which set in index.js
-                        if (!(typeof waterMarkPageList === 'undefined')) {
-                            if (waterMarkPageList.indexOf(pageID) !== -1) {
-                                $('#' + pageID).css('background-color', 'transparent');
-                            }
-                        }
+    }
+}
 
-                        //4. js
-                        setTimeout(function () {
-                            var script = document.createElement('script');
-                            script.type = 'text/javascript';
-                            script.src = 'js/' + pageID + '.js';
-                            document.head.appendChild(script);
+//check app widgetPage on server
+function checkWidgetPage(pageID) {
+    var pageInitial = window.sessionStorage.getItem(pageID);
+    var url = serverURL + '/widget/widgetPage/' + pageID + '/' + pageID;
 
-                            //5. change page
-                            $.mobile.changePage('#' + pageID);
-                            window.sessionStorage.setItem(pageID, 'true');
+    if (pageInitial == 'true') {
+        $.mobile.changePage('#' + pageID);
 
-                        }, 200);
+    } else {
+        $.get(url + '.html', function (data) {
+            //1. css
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url + '.css';
+            document.head.appendChild(link);
 
-                    }, 'html');
+            //2. html
+            $.mobile.pageContainer.append(data);
+            $('#' + pageID).page().enhanceWithin();
+
+            //3. language string
+            setViewLanguage(pageID);
+
+            //4. water mark
+            //According to the data [waterMarkPageList] which set in index.js
+            if (!(typeof waterMarkPageList === 'undefined')) {
+                if (waterMarkPageList.indexOf(pageID) !== -1) {
+                    $('#' + pageID).css('background-color', 'transparent');
                 }
             }
 
-        })
+            //5. js
+            setTimeout(function () {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = url + '.js';
+                document.head.appendChild(script);
 
+                //6. change page
+                $.mobile.changePage('#' + pageID);
+                window.sessionStorage.setItem(pageID, 'true');
+
+            }, 200);
+
+        }, 'html');
     }
 }
 
