@@ -208,13 +208,13 @@ var messageReadRate = messageReadRate || function() {
             var td = '<td class="js-v-t text-blod" nowrap="nowrap" >0</td><td class="js-v-d text-blod" nowrap="nowrap">0</td>';
             $.each(companySiteArray, function(index, companySite){
                 var th = '<th class="table-title bg-color-blue"><div class="th-inner fit-cell">'+companySite+'</div></th>';
-                td+= '<td class="js-'+companySite+'_t">0</td>';
+                td+= '<td class="js-'+companySite.replace(/\s/g, "_")+'_t">0</td>';
                 $tableChartDiv.find('.js-sub-title').append(th);
             });
             //pink column
             $.each(companySiteArray, function(index, companySite){
                 var th = '<th class="table-title bg-color-pink"><div class="th-inner fit-cell">'+companySite+'</div></th>';
-                td+= '<td class="js-'+companySite+'_d">0</td>';
+                td+= '<td class="js-'+companySite.replace(/\s/g, "_")+'_d">0</td>';
                 $tableChartDiv.find('.js-sub-title').append(th);
             });
             //message source row
@@ -240,8 +240,8 @@ var messageReadRate = messageReadRate || function() {
                         readCount = readCount + dataArray[sourceName][companySite].read;
                     }
                      var sourceStr =  sourceName.replace(/\s+/g, "");
-                    $tableChartDiv.find('table .js-'+sourceStr+'> .js-'+companySite+'_t').html(sendCount);
-                    $tableChartDiv.find('table .js-'+sourceStr+'> .js-'+companySite+'_d').html(readCount);
+                    $tableChartDiv.find('table .js-'+sourceStr+'> .js-'+companySite.replace(/\s/g, "_")+'_t').html(sendCount);
+                    $tableChartDiv.find('table .js-'+sourceStr+'> .js-'+companySite.replace(/\s/g, "_")+'_d').html(readCount);
                 });
             });
             //  operate company-side 
