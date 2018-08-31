@@ -34,68 +34,70 @@ function getLanguageString() {
 }
 
 function addComponentView() {
-    //add component view template into index.html
-    $.get("View/APP.html", function (data) {
-        $.mobile.pageContainer.append(data);
+    //review by allen: don't initial twice
+    if ($('#viewInitial').length == 0) {
 
-        //Set viewInitial become the index page
-        $("#viewInitial").page().enhanceWithin();
-        $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
+        //add component view template into index.html
+        $.get("View/APP.html", function (data) {
+            $.mobile.pageContainer.append(data);
 
-        //set initial page's layout when landscape
-        $('#initialOther').css('top', (screen.height - $('#initialOther').height()) / 2);
+            //Set viewInitial become the index page
+            $("#viewInitial").page().enhanceWithin();
+            $("#viewInitial").addClass("ui-page ui-page-theme-a ui-page-active");
 
-        $("#APPLoginLink").on("click", function () {
-            getServerData();
-        });
-        //If is other APP, set APP name in initial page
-        if (appKey !== qplayAppKey) {
-            $("#initialAppName").html(initialAppName);
+            //set initial page's layout when landscape
+            $('#initialOther').css('top', (screen.height - $('#initialOther').height()) / 2);
 
-            //set Other APP initial page dispaly
-            $("#initialOther").removeClass("hide");
-            $("#initialQPlay").remove();
-            //when initialOther Page stay over 10 secs, show QPlay Login Link
-            setTimeout(function () {
-                $("#initialAppLoginTimeout").removeClass("hide");
-            }, 10000);
-        } else {
-            //set QPlay initial page dispaly
-            $("#initialQPlay").removeClass("hide");
-            $("#initialOther").remove();
-        }
+            $("#APPLoginLink").on("click", function () {
+                getServerData();
+            });
+            //If is other APP, set APP name in initial page
+            if (appKey !== qplayAppKey) {
+                $("#initialAppName").html(initialAppName);
 
-        //viewNotSignedIn, Login Again
-        $("#LoginAgain").on("click", function () {
-            //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
-            var checkAppVer = new checkAppVersion();
-        });
+                //set Other APP initial page dispaly
+                $("#initialOther").removeClass("hide");
+                $("#initialQPlay").remove();
+                //when initialOther Page stay over 10 secs, show QPlay Login Link
+                setTimeout(function () {
+                    $("#initialAppLoginTimeout").removeClass("hide");
+                }, 10000);
+            } else {
+                //set QPlay initial page dispaly
+                $("#initialQPlay").removeClass("hide");
+                $("#initialOther").remove();
+            }
 
-        //UI Popup : Event Add Confirm
-        //review by allen
-        if($('#disconnectNetwork').length == 0) {
+            //viewNotSignedIn, Login Again
+            $("#LoginAgain").on("click", function () {
+                //$("#viewNotSignedIn").removeClass("ui-page ui-page-theme-a ui-page-active");
+                var checkAppVer = new checkAppVersion();
+            });
+
+            //UI Popup : Event Add Confirm
             var disconnectNetworkData = {
                 id: "disconnectNetwork",
                 content: $("template#tplDisconnectNetwork").html()
             };
-    
+
             tplJS.Popup(null, null, "append", disconnectNetworkData);
-        }
 
-        //After all template load finished, processing language string
-        $(".langStr").each(function (index, element) {
-            var id = $(element).data("id");
 
-            $(".langStr[data-id='" + id + "']").each(function (index, element) {
-                if (langStr[id] !== undefined) {
-                    $(this).html(langStr[id]);
-                }
+            //After all template load finished, processing language string
+            $(".langStr").each(function (index, element) {
+                var id = $(element).data("id");
+
+                $(".langStr[data-id='" + id + "']").each(function (index, element) {
+                    if (langStr[id] !== undefined) {
+                        $(this).html(langStr[id]);
+                    }
+                });
             });
-        });
 
-        overridejQueryFunction();
+            overridejQueryFunction();
 
-    }, "html");
+        }, "html");
+    }
 }
 
 //Check Mobile Device Network Status
