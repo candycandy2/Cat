@@ -1,0 +1,102 @@
+/******************************* viewUserQueryRecord *******************************/
+#viewUserQueryRecord .ui-content {
+    padding: 0 !important;
+}
+
+.user-query {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
+
+.user-query-type {
+    width: 92.58vw;
+    margin: 6.5vw 3.71vw 0;
+    border-bottom: 1px solid #D6D6D6;
+}
+
+.user-query-type > div:nth-of-type(1) {
+    height: 6vw;
+    text-indent: 1.68vw;
+    color: #0F0F0F;
+    font-size: 3.349vw;
+}
+
+.user-query-type > div:nth-of-type(2) {
+    height: 7vw;
+    text-indent: 1.68vw;
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.user-query-date {
+    width: 92.58vw;
+    margin: 4.3vw 3.71vw 0;
+}
+
+.user-query-date > div:nth-of-type(1) {
+    height: 6vw;
+    text-indent: 1.68vw;
+    color: #0F0F0F;
+    font-size: 3.349vw;
+}
+
+.user-query-date > div:nth-of-type(2) {
+    width: 100%;
+    height: 6vw;
+    color: #0F0F0F;
+    font-size: 3.349vw;
+}
+
+.user-query-date > div:nth-of-type(2) > div {
+    float: left;
+    width: 50%;
+    text-indent: 1.68vw;
+}
+
+.user-query-date > div:nth-of-type(3) {
+    width: 100%;
+    height: 7vw;
+    color: #0F0F0F;
+    font-size: 4.18vw;
+}
+
+.user-query-date > div:nth-of-type(3) > div {
+    float: left;
+    width: 50%;
+    height: 100%;
+    text-indent: 1.68vw;
+    margin: 0;
+    padding: 0;
+}
+
+.user-query-date > div:nth-of-type(3) > div input {
+    border: none;
+    outline: none;
+    padding: 0;
+    width: 60%;
+    height: 100%;
+    background-color: #F9F9F9;
+    background: url('img/dropdown_incline.png') right transparent;
+    background-size: 2vw 2vw;
+    background-repeat: no-repeat;
+    font-size: 4.18vw !important;
+    color: #0F0F0F !important;
+}
+
+.user-query-btn {
+    width: 100vw;
+    height: 10vw;
+    margin-top: 10vw;
+}
+
+.user-query-search {
+    width: 35.5vw;
+    height: 100%;
+    margin-left: 32.25vw;
+    background: #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+    color: #989898;
+    font-size: 4.18vw;
+}

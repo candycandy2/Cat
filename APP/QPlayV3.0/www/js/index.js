@@ -402,6 +402,22 @@ function onBackKeyDown() {
         } else {
             checkAppPage('viewAppDetail2-2');
         }
+    } else if (activePageID === "viewUserPayMain") {
+        checkAppPage('viewMain3');
+    } else if (activePageID === "viewUserSelectShop") {
+        checkWidgetPage('viewUserPayMain');
+    } else if (activePageID === "viewUserInputAmount") {
+        checkWidgetPage('viewUserSelectShop');
+    } else if (activePageID === "viewUserInputPwd") {
+        checkWidgetPage('viewUserInputAmount');
+    } else if (activePageID === "viewUserTradeResult") {
+        checkAppPage('viewMain3');
+    } else if (activePageID === "viewUserQueryRecord") {
+        checkWidgetPage('viewUserPayMain');
+    } else if (activePageID === "viewUserRecordList") {
+        checkWidgetPage('viewUserQueryRecord');
+    } else if (activePageID === "viewUserChangePwd") {
+        checkWidgetPage('viewUserPayMain');
     } else if (activePageID === "viewNotSignedIn") {
         navigator.app.exitApp();
     } else {

@@ -1,4 +1,4 @@
-$("#viewUserPay").pagecontainer({
+$("#viewUserInputAmount").pagecontainer({
     create: function (event, ui) {
 
         var payNum = '';
@@ -10,15 +10,20 @@ $("#viewUserPay").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewUserPay").on("pagebeforeshow", function (event, ui) {
+        $("#viewUserInputAmount").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewUserPay").on("pageshow", function (event, ui) {
-
+        $("#viewUserInputAmount").one("pageshow", function (event, ui) {
+            $('.user-pay-name').text(loginData['loginid']);
+            $('.user-pay-no').text(loginData['emp_no']);
         });
 
-        $("#viewUserPay").on("pagehide", function (event, ui) {
+        $("#viewUserInputAmount").on("pageshow", function (event, ui) {
+            
+        });
+
+        $("#viewUserInputAmount").on("pagehide", function (event, ui) {
 
         });
 
@@ -82,7 +87,7 @@ $("#viewUserPay").pagecontainer({
             if(has) {
                 //判断输入金额是否小于剩余金额
                 if (Number(payNum) < 10000) {
-                    checkWidgetPage('viewUserPassword');
+                    checkWidgetPage('viewUserInputPwd');
                 } else {
                     //popup'您的余额不足喔'
                     popupMsgInit('.overBudgetMsg');

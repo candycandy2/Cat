@@ -1,18 +1,18 @@
-$("#viewUserSelect").pagecontainer({
+$("#viewUserSelectShop").pagecontainer({
     create: function (event, ui) {
 
 
 
         /********************************** page event ***********************************/
-        $("#viewUserSelect").on("pagebeforeshow", function (event, ui) {
+        $("#viewUserSelectShop").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewUserSelect").on("pageshow", function (event, ui) {
+        $("#viewUserSelectShop").on("pageshow", function (event, ui) {
 
         });
 
-        $("#viewUserSelect").on("pagehide", function (event, ui) {
+        $("#viewUserSelectShop").on("pagehide", function (event, ui) {
 
         });
 
@@ -20,7 +20,7 @@ $("#viewUserSelect").pagecontainer({
 
         /********************************** dom event *************************************/
         $('.user-select-shop').on('click', '.user-select-list', function () {
-            checkWidgetPage('viewUserPay');
+            checkWidgetPage('viewUserInputAmount');
         });
 
     }
