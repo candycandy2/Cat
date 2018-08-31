@@ -2,6 +2,7 @@
 var appKeyOriginal = "appqplay";
 var appKey = "appqplay";
 var pageList = ["viewMain2-1", "viewAppDetail2-2", "viewNewsEvents2-3", "viewWebNews2-3-1", "viewMain3"];
+var pageVisitedList = ["viewMain3"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
 //viewMain2
@@ -32,9 +33,6 @@ var reserveCalendar = null;
 //viewMessageList
 var portalURL = "",
     messageFrom = 'viewMain3';
-
-//viewVersionRecord
-var versionFrom = true;
 
 window.initialSuccess = function (data) {
     //1. widgetlist
@@ -367,60 +365,23 @@ function pageBeforeShow(pageID) {
 
 //[Android]Handle the back button
 function onBackKeyDown() {
-    var activePage = $.mobile.pageContainer.pagecontainer("getActivePage");
-    var activePageID = activePage[0].id;
+    // var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
+    var activePageID = pageVisitedList[pageVisitedList.length - 1];
+    var prevPageID = pageVisitedList[pageVisitedList.length - 2];
+
     if (checkPopupShown()) {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
-    } else if (activePageID === "viewAppDetail2-2") {
-        if ($("#viewAppDetail2-2 .ui-btn-word").css("display") == "none") {
-            checkAppPage('viewAppList');
-        } else {
-            $("#viewAppDetail2-2 .ui-btn-word").trigger("click");
-        }
-    } else if (activePageID === "viewNewsEvents2-3") {
-        if (delMsgActive) {
-            editModeChange();
-        } else {
-            $.mobile.changePage('#viewMain3');
-        }
-    } else if (activePageID === "viewWebNews2-3-1") {
-        if (messageFrom == 'viewMain3') {
-            $.mobile.changePage('#viewMain3');
-        } else if (messageFrom == 'viewMessageList') {
-            checkAppPage('viewMessageList');
-        } else {
-            $.mobile.changePage('#viewMain3');
-        }
-    } else if (activePageID === "viewAppList" || activePageID === "viewAppSetting" || activePageID === "viewFAQ" || activePageID === "viewMessageList" || activePageID === "viewMyCalendar") {
-        checkAppPage('viewMain3');
-    } else if (activePageID === "viewMyEvaluation" || activePageID === "viewGeneralSetting") {
-        checkAppPage('viewAppSetting');
-    } else if (activePageID === "viewVersionRecord") {
-        if (versionFrom) {
-            checkAppPage('viewAppSetting');
-        } else {
-            checkAppPage('viewAppDetail2-2');
-        }
-    } else if (activePageID === "viewUserPayMain") {
-        checkAppPage('viewMain3');
-    } else if (activePageID === "viewUserSelectShop") {
-        checkWidgetPage('viewUserPayMain');
-    } else if (activePageID === "viewUserInputAmount") {
-        checkWidgetPage('viewUserSelectShop');
-    } else if (activePageID === "viewUserInputPwd") {
-        checkWidgetPage('viewUserInputAmount');
-    } else if (activePageID === "viewUserTradeResult") {
-        checkAppPage('viewMain3');
-    } else if (activePageID === "viewUserQueryRecord") {
-        checkWidgetPage('viewUserPayMain');
-    } else if (activePageID === "viewUserRecordList") {
-        checkWidgetPage('viewUserQueryRecord');
-    } else if (activePageID === "viewUserChangePwd") {
-        checkWidgetPage('viewUserPayMain');
-    } else if (activePageID === "viewNotSignedIn") {
+
+    } else if (pageVisitedList.length == 1 || activePageID == 'viewNotSignedIn') {
         navigator.app.exitApp();
     } else {
-        navigator.app.exitApp();
+        pageVisitedList.pop();
+        $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
     }
 }
+
+//header区域返回button
+$(document).on('click', '.page-back', function () {
+    onBackKeyDown();
+})
