@@ -84,6 +84,8 @@ var app = {
     },
     // deviceready Event Handler
     onDeviceReady: function() {
+
+        window.sessionStorage.clear();
         app.receivedEvent('deviceready');
 
         //Ignore the font-size setting in Mobile Device
