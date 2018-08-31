@@ -52,7 +52,7 @@ class FunctionRepository
         //get the function by id,then set the value to update
         $function = $this->function->find($request['function_id']);
 
-        $function->variable_name = $request['tbxFunctionVariable'];
+        $function->name = $request['tbxFunctionName'];
         $function->description = $request['tbxFunctionDescription'];
         $function->owner_app_row_id = $request['ddlOwnerApp'];
         

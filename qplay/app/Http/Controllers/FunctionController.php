@@ -121,7 +121,7 @@ class FunctionController extends Controller
 
         $validator = Validator::make($request->all(), [
             'function_id' => 'required|numeric',
-            'tbxFunctionVariable' => 'required',
+            'tbxFunctionName' => 'required',
             'tbxFunctionDescription' => 'required',
             'ddlOwnerApp' => 'required|numeric',
             'ddlFunctionType' => 'required|in:FUN,APP',
