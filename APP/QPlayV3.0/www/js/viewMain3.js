@@ -71,7 +71,7 @@ $("#viewMain3").pagecontainer({
 
                         $('.main-scroll > div').css('height', totalHeight + 'px');
 
-                    }, 500);
+                    }, 800);
                 }
             }, 500);
 
