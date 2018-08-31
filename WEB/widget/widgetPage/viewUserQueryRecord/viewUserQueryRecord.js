@@ -12,7 +12,7 @@ $("#viewUserQueryRecord").pagecontainer({
                 id: "query-type",
                 option: [],
                 title: "",
-                defaultText: langStr["str_129"],
+                defaultText: langStr["wgt_032"],
                 changeDefaultText: true,
                 attr: {
                     class: "tpl-dropdown-list-icon-arrow-incline"
@@ -21,10 +21,10 @@ $("#viewUserQueryRecord").pagecontainer({
 
             typeData["option"][0] = {};
             typeData["option"][0]["value"] = "1";
-            typeData["option"][0]["text"] = langStr["str_130"];
+            typeData["option"][0]["text"] = langStr["wgt_033"];
             typeData["option"][1] = {};
             typeData["option"][1]["value"] = "2";
-            typeData["option"][1]["text"] = langStr["str_131"];
+            typeData["option"][1]["text"] = langStr["wgt_034"];
 
             tplJS.DropdownList("viewUserQueryRecord", "userQueryType", "prepend", "typeB", typeData);
             $('#query-type').css('padding', '0');
@@ -33,13 +33,13 @@ $("#viewUserQueryRecord").pagecontainer({
         }
 
         function initialDatetimePicker() {
-            $('#userStartDate').attr('placeholder', langStr['str_135']);
+            $('#userStartDate').attr('placeholder', langStr['wgt_038']);
             $('#userStartDate').datetimepicker({
                 format: 'Y/m/d',
                 timepicker: false,
             });
 
-            $('#userEndDate').attr('placeholder', langStr['str_135']);
+            $('#userEndDate').attr('placeholder', langStr['wgt_038']);
             $('#userEndDate').datetimepicker({
                 format: 'Y/m/d',
                 timepicker: false,
@@ -51,7 +51,7 @@ $("#viewUserQueryRecord").pagecontainer({
             var typeVal = $('#query-type').val();
             var startVal = $('#userStartDate').val();
             var endVal = $('#userEndDate').val();
-            if(typeVal != langStr["str_129"] && startVal != '' && endVal != '') {
+            if(typeVal != langStr["wgt_032"] && startVal != '' && endVal != '') {
                 $('.user-query-search').addClass('button-active');
             } else {
                 $('.user-query-search').removeClass('button-active');
