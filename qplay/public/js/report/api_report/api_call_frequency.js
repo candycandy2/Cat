@@ -170,13 +170,13 @@ var createCallApiTable = function(res, date){
     var td = '<td class="js-v-t text-blod" nowrap="nowrap" >0</td><td class="js-v-d text-blod" nowrap="nowrap">0</td>';
     $.each(companySiteArray, function(index, companySite){
         var th = '<th class="table-title bg-color-blue"><div class="th-inner fit-cell">'+companySite+'</div></th>';
-        td+= '<td class="js-'+companySite+'_t">0</td>';
+        td+= '<td class="js-'+companySite.replace(/\s/g, "_")+'_t">0</td>';
         $tableChartDiv.find('.js-sub-title').append(th);
     });
     //call api user
     $.each(companySiteArray, function(index, companySite){
         var th = '<th class="table-title bg-color-pink"><div class="th-inner fit-cell">'+companySite+'</div></th>';
-        td+= '<td class="js-'+companySite+'_d">0</td>';
+        td+= '<td class="js-'+companySite.replace(/\s/g, "_")+'_d">0</td>';
         $tableChartDiv.find('.js-sub-title').append(th);
     });
     //api action row
@@ -209,8 +209,8 @@ var createCallApiTable = function(res, date){
                     });
                 }
             });
-            $tableChartDiv.find('table .js-'+action+' .js-'+companySite+'_t').html(tmpTimesCount);
-            $tableChartDiv.find('table .js-'+action+' .js-'+companySite+'_d').html(tmpUsersCount);
+            $tableChartDiv.find('table .js-'+action+' .js-'+companySite.replace(/\s/g, "_")+'_t').html(tmpTimesCount);
+            $tableChartDiv.find('table .js-'+action+' .js-'+companySite.replace(/\s/g, "_")+'_d').html(tmpUsersCount);
         });
     });
 
@@ -239,10 +239,10 @@ var createCallApiTable = function(res, date){
             //modify last one
             if(type == 't'){
                 htotalArr[type][i-1] = parseInt(htotalArr[type][i-1]) + parseInt(vtotalArr[type]);
-                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite+'_' + type).html(vtotalArr[type]);
+                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(vtotalArr[type]);
             }else{
                 htotalArr[type][i-1] = totalDistinctUserCount.length;//real distinct user count
-                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite+'_' + type).html(tmpUsers[companySite].length);
+                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(tmpUsers[companySite].length);
             }
         });   
          
