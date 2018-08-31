@@ -38,11 +38,6 @@ window.initialSuccess = function (data) {
     //1. widgetlist
     checkWidgetListOrder();
 
-    //review by alan
-    //Not OO, it assume applist widget exist
-    //2. favorite app
-    //checkFavoriteInstall();
-
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -373,7 +368,7 @@ function onBackKeyDown() {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
 
-    } else if (pageVisitedList.length == 1 || activePageID == 'viewNotSignedIn') {
+    } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
     } else {
         pageVisitedList.pop();
