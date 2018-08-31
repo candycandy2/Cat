@@ -48,9 +48,9 @@ $("#viewUserChangePwd").pagecontainer({
         });
 
         $("#viewUserChangePwd").one("pageshow", function (event, ui) {
-            $('#userOldPwd').attr('placeholder', langStr['str_143']);
-            $('#userNewPwd').attr('placeholder', langStr['str_144']);
-            $('#userCofirmPwd').attr('placeholder', langStr['str_145']);
+            $('#userOldPwd').attr('placeholder', langStr['wgt_046']);
+            $('#userNewPwd').attr('placeholder', langStr['wgt_047']);
+            $('#userCofirmPwd').attr('placeholder', langStr['wgt_048']);
         });
 
         $("#viewUserChangePwd").on("pageshow", function (event, ui) {

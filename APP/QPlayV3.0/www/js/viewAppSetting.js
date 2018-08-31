@@ -58,10 +58,6 @@ $("#viewAppSetting").pagecontainer({
                         window.localStorage.setItem("msgDateFrom", msgDateFrom);
                     }
 
-                    checkAppPage('#viewNotSignedIn');
-                    $("#viewMain3").removeClass("ui-page-active");
-                    $("#viewNotSignedIn").addClass("ui-page-active");
-
                     // set need to login's layout when landscape
                     if (window.orientation === 90 || window.orientation === -90)
                         $('.main-updateAppVersion').css('top', (screen.height - $('.main-updateAppVersion').height()) / 4);
@@ -156,6 +152,9 @@ $("#viewAppSetting").pagecontainer({
 
             //2. clear widget
             widget.clear();
+
+            //3. remove localStorage
+            window.localStorage.removeItem('FunctionList');
 
         }
 
