@@ -433,6 +433,8 @@ $("#viewWebNews2-3-1").pagecontainer({
                 console.log(data);
                 var doUpdateLocalStorage = false;
 
+                messagecontent = JSON.parse(window.localStorage.getItem("messagecontent"));
+
                 if (type === "event") {
                     var resultcode = data.result_code;
 
@@ -669,19 +671,19 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $("#goList.nav-button").on("click", function() {
-            if (messageFrom == 'viewMain3' || messageFrom == 'push' || messageFrom == 'messageWidget') {
-                if (widgetUpdateMsg) {
-                    $('.messageWidget').message('refresh');
-                    widgetUpdateMsg = false;
-                }
-                checkAppPage('viewMain3');
+            // if (messageFrom == 'viewMain3' || messageFrom == 'push' || messageFrom == 'messageWidget') {
+            //     if (widgetUpdateMsg) {
+            //         $('.messageWidget').message('refresh');
+            //         widgetUpdateMsg = false;
+            //     }
+            //     checkAppPage('viewMain3');
 
-            } else if (messageFrom == 'viewMessageList') {
-                checkAppPage('viewMessageList');
+            // } else if (messageFrom == 'viewMessageList') {
+            //     checkAppPage('viewMessageList');
 
-            } else {
-                checkAppPage('#viewMain3');
-            }
+            // } else {
+            //     checkAppPage('#viewMain3');
+            // }
 
         });
 
