@@ -65,13 +65,7 @@ $("#viewGeneralSetting").pagecontainer({
 
                 //3. 更新local
                 window.localStorage.setItem('widgetList', JSON.stringify(arr));
-                window.sessionStorage.setItem('widgetListDirty', changeWidgetOrderDirty);
-
-                //review by alan
-                //4. 更新首页widget
-                // for (var i = 0; i < arr.length - 1; i++) {
-                //     $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
-                // }
+                window.sessionStorage.setItem('widgetListDirty', 'Y');
 
                 changeWidgetOrderDirty = 'N';
             }

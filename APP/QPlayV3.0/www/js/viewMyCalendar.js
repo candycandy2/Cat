@@ -1,8 +1,7 @@
 $("#viewMyCalendar").pagecontainer({
     create: function (event, ui) {
 
-        var reserveDateList = [],
-            reservePositionList = [],
+        var reservePositionList = [],
             pageInitial = false,
             leaveAppData = {
                 key: 'appleave',
