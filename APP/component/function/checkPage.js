@@ -13,12 +13,14 @@ function checkAppPage(pageID) {
 
     if (pageStatus) {
         $.mobile.changePage('#' + pageID);
+        pageVisitedList.push(pageID);
 
     } else {
         var pageInitial = window.sessionStorage.getItem(pageID);
 
         if (pageInitial == 'true') {
             $.mobile.changePage('#' + pageID);
+            pageVisitedList.push(pageID);
 
         } else {
             $.get('View/' + pageID + '.html', function (data) {
@@ -47,6 +49,7 @@ function checkAppPage(pageID) {
                     //5. change page
                     $.mobile.changePage('#' + pageID);
                     window.sessionStorage.setItem(pageID, 'true');
+                    pageVisitedList.push(pageID);
 
                 }, 200);
 
@@ -63,6 +66,7 @@ function checkWidgetPage(pageID) {
 
     if (pageInitial == 'true') {
         $.mobile.changePage('#' + pageID);
+        pageVisitedList.push(pageID);
 
     } else {
         $.get(url + '.html', function (data) {
@@ -98,6 +102,7 @@ function checkWidgetPage(pageID) {
                 //6. change page
                 $.mobile.changePage('#' + pageID);
                 window.sessionStorage.setItem(pageID, 'true');
+                pageVisitedList.push(pageID);
 
             }, 200);
 

@@ -50,7 +50,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                     if (eventType != "Event" && eventType != "News") {
                         console.log($(this).find("input").val());
                         portalURL = $(this).find("input").val();
-                        $.mobile.changePage("#viewWebNews2-3-1");
+                        checkAppPage("#viewWebNews2-3-1");
                     }
                 });
 
@@ -241,13 +241,13 @@ $("#viewNewsEvents2-3").pagecontainer({
                     widgetUpdateMsg = true;
                     listUpdateMsg = true;
                     messageFrom = 'push';
-                    $.mobile.changePage('#viewWebNews2-3-1', {
+                    checkAppPage('#viewWebNews2-3-1', {
                         allowSamePageTransition: true,
                         transition: 'none',
                         showLoadMsg: false,
                         reloadPage: true
                     });
-                    $.mobile.changePage("#viewWebNews2-3-1");
+                    checkAppPage("#viewWebNews2-3-1");
                 }
 
             };
@@ -397,7 +397,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                     messageRowId = $(this)[0].getAttribute("value");
                     messageArrIndex = $(this).parent().parent().val();
 
-                    $.mobile.changePage("#viewWebNews2-3-1");
+                    checkAppPage("#viewWebNews2-3-1");
                 }
             });
 

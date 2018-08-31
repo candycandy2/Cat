@@ -285,7 +285,7 @@ $("#viewMessageList").pagecontainer({
                         $(".textContent").show();
                     }
 
-                    $.mobile.changePage("#viewWebNews2-3-1");
+                    checkAppPage("#viewWebNews2-3-1");
 
                 } else if (resultcode === "000910") {
                     //Message was be deleted in server
@@ -659,11 +659,6 @@ $("#viewMessageList").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        //返回homepage
-        $('#viewMessageList .q-btn-header').on('click', function () {
-            $.mobile.changePage('#viewMain3');
-        });
-
         //弹出message下拉菜单
         $("#viewMessageList .ui-title").on("click", function () {
             $(".select-type").slideToggle(200);

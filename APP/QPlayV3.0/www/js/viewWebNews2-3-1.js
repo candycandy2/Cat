@@ -680,7 +680,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 checkAppPage('viewMessageList');
 
             } else {
-                $.mobile.changePage('#viewMain3');
+                checkAppPage('#viewMain3');
             }
 
         });

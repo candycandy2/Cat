@@ -1,11 +1,6 @@
 $("#viewMyEvaluation").pagecontainer({
     create: function (event, ui) {
 
-        var focusHeight,
-            blurHeight,
-            mainHeight,
-            textareaHeight,
-            dValue;
 
         function addAppEvaluation() {
             var self = this;
@@ -21,7 +16,7 @@ $("#viewMyEvaluation").pagecontainer({
 
                 if (data['result_code'] == '1') {
                     //changepage
-                    $.mobile.changePage('#viewAppSetting');
+                    checkAppPage('#viewAppSetting');
                     $("#feedback").fadeIn(100).delay(2000).fadeOut(100);
 
                     //clear
@@ -44,9 +39,7 @@ $("#viewMyEvaluation").pagecontainer({
         });
 
         $("#viewMyEvaluation").one("pageshow", function (event, ui) {
-            blurHeight = document.body.clientHeight;
-            mainHeight = $('.comment-main').height();
-            textareaHeight = $('.comment-text').height();
+            
         });
 
         $("#viewMyEvaluation").on("pageshow", function (event, ui) {
@@ -59,18 +52,8 @@ $("#viewMyEvaluation").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        $('.comment-text textarea').on('keyup', function () {
-            var val = $.trim($(this).val());
-            var has = $('.send-comment').hasClass('enabled-btn');
-
-            if (val != '' && !has) {
-                $('.send-comment').addClass('enabled-btn');
-            } else if (val == '' && has) {
-                $('.send-comment').removeClass('enabled-btn');
-            }
-        });
-
-        $('.comment-text textarea').on('change', function () {
+        //监听textarea，按钮可不可用
+        $('.comment-text textarea').on('input', function () {
             var val = $.trim($(this).val());
             var has = $('.send-comment').hasClass('enabled-btn');
 
@@ -90,35 +73,6 @@ $("#viewMyEvaluation").pagecontainer({
                 addAppEvaluation();
             }
         });
-
-        //ios input 页面滚动
-        $('.comment-text textarea').on('focus', function () {
-
-        });
-
-        $('.comment-text textarea').on('blur', function () {
-
-        });
-
-        // $(window).resize(function () {
-        //     var current = document.body.clientHeight;
-
-        //     if (current < blurHeight) {
-        //         focusHeight = current;
-        //         dValue = blurHeight - focusHeight;
-
-        //         if (device.platform === "iOS") {
-        //             $('.comment-main').css('height', (mainHeight - dValue).toString() + 'px');
-        //             $('.comment-text').css('height', (textareaHeight - dValue).toString() + 'px');
-        //         }
-        //     } else {
-        //         if (device.platform === "iOS") {
-        //             $('.comment-main').css('height', (mainHeight + dValue).toString() + 'px');
-        //             $('.comment-text').css('height', (textareaHeight + dValue).toString() + 'px');
-        //         }
-        //     }
-
-        // });
 
         
 

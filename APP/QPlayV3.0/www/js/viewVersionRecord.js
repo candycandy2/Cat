@@ -57,7 +57,6 @@ $("#viewVersionRecord").pagecontainer({
         });
 
         $("#viewVersionRecord").on("pageshow", function(event, ui) {
-
             var APPKey = window.sessionStorage.getItem('checkAPPKey');
             var versionData = new getVersionRecord(APPKey);
         });
@@ -68,14 +67,8 @@ $("#viewVersionRecord").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        //返回上一页
-        $('#viewVersionRecord .q-btn-header').on('click', function() {
-            if (versionFrom) {
-                checkAppPage('viewAppSetting');
-            } else {
-                checkAppPage('viewAppDetail2-2');
-            }
-        });
+        
+
 
     }
 });

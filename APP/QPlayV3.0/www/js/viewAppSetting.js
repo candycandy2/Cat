@@ -58,8 +58,7 @@ $("#viewAppSetting").pagecontainer({
                         window.localStorage.setItem("msgDateFrom", msgDateFrom);
                     }
 
-                    $.mobile.changePage('#viewNotSignedIn');
-                    //$("#viewMain2-1").removeClass("ui-page-active");
+                    checkAppPage('#viewNotSignedIn');
                     $("#viewMain3").removeClass("ui-page-active");
                     $("#viewNotSignedIn").addClass("ui-page-active");
 
@@ -199,7 +198,6 @@ $("#viewAppSetting").pagecontainer({
 
         //QPlay版本记录
         $('.qplay-version').on('click', function () {
-            versionFrom = true;
             window.sessionStorage.setItem('checkAPPKey', qplayAppKey);
             checkAppPage('viewVersionRecord');
         });
