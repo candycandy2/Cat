@@ -25,6 +25,7 @@ var langStr = {};
 var logFileName;
 
 var loginData = {
+    ad_flag: "",
     company: "",
     versionName: "",
     versionCode: "",
