@@ -343,7 +343,7 @@ $("#viewNewsEvents2-3").pagecontainer({
 
             //review by allen
             //cordova plugin badge: set badge
-            cordova.plugins.notification.badge.set(badgeCount);
+            //cordova.plugins.notification.badge.set(badgeCount);
 
             //If News or Events has no message, show [No News] [No Events]
             if (countNews === 0) {
