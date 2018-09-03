@@ -53,7 +53,7 @@ $("#viewPersonalInsurance").pagecontainer({
                         var isAccidentInsur = false;
                         
                         for (var i=0; i<groupInsurArr.length; i++ ) {
-                            var groupInsurType = groupInsurArr[i]["goupinsurancetype"];
+                            var groupInsurType = groupInsurArr[i]["groupinsurancetype"];
                             if (groupInsurType.substr(0,5) == "自費一般險"){
                                 normalInsurList += '<div class="group-list"><div><span>'
                                 + groupInsurArr[i]["name"]
@@ -102,6 +102,7 @@ $("#viewPersonalInsurance").pagecontainer({
                     }
                     loadingMask("hide");
                 }
+                scrollHeightByPersonalInsurTab(activePageListID, scrollClassName,'3', 'pageInsurStatus-2', 'insurance-ownpaid');  
             };
 
             this.failCallback = function(data) {};
@@ -326,11 +327,7 @@ $("#viewPersonalInsurance").pagecontainer({
             $("label[for=fam-insur-tab-1]").removeClass('ui-btn-active');   
             $("label[for=fam-insur-tab-2]").addClass('ui-btn-active'); 
             $('#pageInsurStatus-2').show();
-            $('#pageInsurStatus-1').hide(); 
-            if (!tab2FamiScrollHeight) {         
-                scrollHeightByPersonalInsurTab(activePageListID, scrollClassName,'3', 'pageInsurStatus-2', 'insurance-ownpaid');           
-                tab2FamiScrollHeight = true;
-            }            
+            $('#pageInsurStatus-1').hide();                            
         });  
 
         $(document).on("click", ".family-add", function() { 
