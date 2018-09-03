@@ -1,4 +1,3 @@
-
 function UpdateMessageListContent(messagecontent__) {
     var jsonData = {};
     jsonData = {
@@ -49,6 +48,11 @@ function QueryMessageListEx() {
     var __construct = function() {
 
         messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
+
+        if (messagecontent_ !== null && messagecontent_.lastUpdateTime === undefined) {
+            window.localStorage.removeItem('messagecontent');
+            messagecontent_ = null;
+        }
 
         if (messagecontent_ === null || checkDataExpired(messagecontent_['lastUpdateTime'], 1, 'hh')) {
             QPlayAPIEx("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
