@@ -573,7 +573,6 @@
                                 + '"emp_no" : "' + d.content.emp_no + '",'
                                 + '"domain" : "' + d.content.domain + '",'
                                 + '"company" : "' + d.content.company + '",'
-                                + '"ad_flag" : "' + d.content.ad_flag + '",'
                                 + '"site_code" : "' + d.content.site_code + '",'
                                 + '"checksum" : "' + d.content.checksum + '",'
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
@@ -636,7 +635,6 @@
                                 + '"emp_no" : "' + d.content.emp_no + '",'
                                 + '"domain" : "' + d.content.domain + '",'
                                 + '"company" : "' + d.content.company + '",'
-                                + '"ad_flag" : "' + d.content.ad_flag + '",'
                                 + '"site_code" : "' + d.content.site_code + '",'
                                 + '"checksum" : "' + d.content.checksum + '",'
                                 + '"security_updated_at" : "' + d.content.security_updated_at + '"}';
