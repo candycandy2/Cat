@@ -1,3 +1,14 @@
+
+function UpdateMessageListContent(messagecontent__) {
+    var jsonData = {};
+    jsonData = {
+        lastUpdateTime: new Date(),
+        content: messagecontent__
+    };
+    window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
+    sessionStorage.setItem('changeMessageContentDirty', 'Y');
+}
+
 function QueryMessageListEx() {
 
     var self = this;
@@ -13,15 +24,8 @@ function QueryMessageListEx() {
 
         if (resultcode === 1) {
 
-            window.localStorage.removeItem('messagecontent');
-            var jsonData = {};
-            jsonData = {
-                lastUpdateTime: new Date(),
-                content: data['content']
-            };
-
-            var messageCount = jsonData.content['message_count'];
-            var messagecontent = jsonData.content;
+            var messageCount = data['content']['message_count'];
+            var messagecontent = data['content'];
 
             //Update datetime according to local timezone
             var messageindexLength = parseInt(messagecontent.message_count - 1, 10);
@@ -34,8 +38,7 @@ function QueryMessageListEx() {
                 message.create_time = createTimeConvert;
             }
 
-            window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
-            sessionStorage.setItem('changeMessageContentDirty', 'Y');
+            UpdateMessageListContent(messagecontent);
 
         }
 
