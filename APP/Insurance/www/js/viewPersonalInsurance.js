@@ -236,14 +236,11 @@ $("#viewPersonalInsurance").pagecontainer({
                         $("#nonHealthInsur").empty().append(healthInsurList);
                     }
                     loadingMask("hide");
-                }
-                //if (!tab1FamiScrollHeight) {         
-                    scrollHeightByPersonalInsurTab(activePageListID, scrollClassName,'2', 'pageInsurStatus-1', 'insurance-main');  
-                    $("#" + activePageListID + ">.page-header").css({
-                        'position': 'fixed'
-                    });          
-                    //tab1FamiScrollHeight = true;
-                //}
+                }        
+                scrollHeightByPersonalInsurTab(activePageListID, scrollClassName,'2', 'pageInsurStatus-1', 'insurance-main');  
+                $("#" + activePageListID + ">.page-header").css({
+                    'position': 'fixed'
+                });          
             };
 
             this.failCallback = function(data) {};
