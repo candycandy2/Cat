@@ -183,8 +183,12 @@ $("#viewApplyInsurance").pagecontainer({
         }
 
         function setDefaultStatus(applyType) {
+            var today = new Date();
+            var month = ((today.getMonth() + 1 < 10) ? '0' + (today.getMonth() + 1) : today.getMonth() + 1 );
+            var date = ((today.getDate() < 10) ? '0' + today.getDate() : today.getDate());
+            var todayStr = today.getFullYear() + '/' + month + '/' + date;
             $("#familyName").text(clickFamilyName);
-            $("#applyDate").val("");
+            $("#applyDate").val(todayStr);
             $(".insurDate").text("");
             $(".apply-insurance-ddl").hide();
             $(".withdraw-insurance-ddl").hide();
