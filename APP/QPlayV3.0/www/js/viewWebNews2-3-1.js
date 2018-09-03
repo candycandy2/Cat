@@ -500,14 +500,8 @@ $("#viewWebNews2-3-1").pagecontainer({
                             }
                         }
                     }
-                    window.localStorage.removeItem('messagecontent');
-                    var jsonData = {};
-                    jsonData = {
-                        lastUpdateTime: new Date(),
-                        content: messagecontent
-                    };
-                    window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
-                    sessionStorage.setItem('changeMessageContentDirty', 'Y');
+
+                    UpdateMessageListContent(messagecontent);
 
                     loginData.messagecontent = messagecontent;
                     messageArrIndex = null;
