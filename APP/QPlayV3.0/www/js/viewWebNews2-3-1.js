@@ -433,7 +433,8 @@ $("#viewWebNews2-3-1").pagecontainer({
                 console.log(data);
                 var doUpdateLocalStorage = false;
 
-                messagecontent = JSON.parse(window.localStorage.getItem("messagecontent"));
+                messagecontent_ = JSON.parse(window.localStorage.getItem("messagecontent"));
+                messagecontent = messagecontent_.content;
 
                 if (type === "event") {
                     var resultcode = data.result_code;
@@ -499,15 +500,25 @@ $("#viewWebNews2-3-1").pagecontainer({
                             }
                         }
                     }
+                    window.localStorage.removeItem('messagecontent');
+                    var jsonData = {};
+                    jsonData = {
+                        lastUpdateTime: new Date(),
+                        content: messagecontent
+                    };
+                    window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
+                    sessionStorage.setItem('changeMessageContentDirty', 'Y');
 
                     loginData.messagecontent = messagecontent;
-                    window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
                     messageArrIndex = null;
 
                     updateMessageList("closePopup");
                     //如果是read，只需添加普通字体的样式；如果是delete，需要删除对应元素
                     if (status == 'read') {
                         updateNewMessageList(type);
+                        cordova.plugins.notification.badge.decrease(1, function(badge) {
+                            // badge is now 9 (11 - 2)
+                        });
                     } else if (status == 'delete') {
                         updateNewMessageList(type, status);
                     }
