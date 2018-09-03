@@ -29,7 +29,6 @@ $("#viewAppSetting").pagecontainer({
                     }
 
                     loginData = {
-                        ad_flag: "",
                         company: "",
                         versionName: "",
                         versionCode: "",

@@ -1555,25 +1555,22 @@ input[type=radio]:checked + label {
     height: 61vw;
 }
 
-.photo-default {
+.photo-setting > div:nth-of-type(1) {
     width: 26.5vw;
     height: 26.5vw;
     padding-top: 14vw;
     padding-left: 37vw;
 }
 
-.photo-default img {
+.photo-setting > div:nth-of-type(1) img {
     border-radius: 50%;
-    /* width: 100%;
-    26.5/29=91.38%
-    height: 91.38%; */
     max-width: 100%;
     max-height: 100%;
     min-height: 100%;
     min-width: 100%;
 }
 
-.name-user {
+.photo-setting > div:nth-of-type(2) {
     width: 100vw;
     height: 8vw;
     margin-top: 3vw;
@@ -1798,4 +1795,86 @@ input[type=radio]:checked + label {
 .enabled-btn {
     background: #009688 !important;
     color: #fff !important;
+}
+
+/***************************** viewShopPayMain ********************************/
+#viewShopPayMain .ui-content {
+    padding: 0 !important;
+}
+
+/***************************** viewShopSelectUser ********************************/
+#viewShopSelectUser .ui-content {
+    padding: 0 !important;
+}
+
+.select-user-type {
+    width: 100%;
+    height: 11.38vw;
+    border-bottom: 2px solid #D5D5D5;
+}
+
+.select-user-type > div {
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+
+.select-user-type > div > div:nth-of-type(1) {
+    width: 100%;
+    height: 10.28vw;
+    line-height: 10.28vw;
+    text-align: center;
+    font-size: 4.18vw;
+    color: #253137;
+}
+
+.select-user-type > div > div:nth-of-type(2) {
+    width: 100%;
+    height: 1.1vw;
+}
+
+.type-active > div:nth-of-type(1) {
+    color: #009587 !important;
+}
+
+.type-active > div:nth-of-type(2) {
+    background: #009587 !important;
+}
+
+.qplay-user ul li {
+    width: 88.62vw;
+    height: 10.79vw;
+    padding: 6.87vw 3.71vw 2.14vw 7.67vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.qplay-user-list > div:nth-of-type(1) {
+    width: 100%;
+    height: 6.5vw;
+}
+
+.qplay-user-list > div:nth-of-type(1) > div {
+    float: left;
+    color: #253137;
+}
+
+.qplay-user-list > div:nth-of-type(1) > div:nth-of-type(1) {
+    width: 70%;
+    height: 100%;
+    font-size: 3.14vw;
+}
+
+.qplay-user-list > div:nth-of-type(1) > div:nth-of-type(2) {
+    width: 30%;
+    height: 100%;
+    font-size: 4.18vw;
+    text-align: right;
+}
+
+.qplay-user-list > div:nth-of-type(2) {
+    width: 100%;
+    height: 4vw;
+    text-align: right;
+    color: #989898;
+    font-size: 3.14vw;
 }
