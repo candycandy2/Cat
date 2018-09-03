@@ -237,13 +237,13 @@ $("#viewPersonalInsurance").pagecontainer({
                     }
                     loadingMask("hide");
                 }
-                if (!tab1FamiScrollHeight) {         
-                    scrollHeightByTab(activePageListID, scrollClassName,'2');  
+                //if (!tab1FamiScrollHeight) {         
+                    scrollHeightByPersonalInsurTab(activePageListID, scrollClassName,'2', 'pageInsurStatus-1', 'insurance-main');  
                     $("#" + activePageListID + ">.page-header").css({
                         'position': 'fixed'
                     });          
-                    tab1FamiScrollHeight = true;
-                }
+                    //tab1FamiScrollHeight = true;
+                //}
             };
 
             this.failCallback = function(data) {};
@@ -252,6 +252,46 @@ $("#viewPersonalInsurance").pagecontainer({
                 CustomAPI("POST", true, "QueryHealthInsuranceFamily", self.successCallback, self.failCallback, queryData, "");
             }();
         };
+
+        //Set Each Tab Height in different View to Scroll Smoothly
+        function scrollHeightByPersonalInsurTab(viewName, className, num, mainContentID, mainContentClass) {
+            // Tab1/Tab2/Tab3 height
+            var tabHeight = $('.'+ className +' > div:nth-child(1)').height();
+            var mainHeight = $('#'+ mainContentID + ' .' + mainContentClass).height();
+            var headHeight = $('#'+ viewName +' .page-header').height();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (tabHeight + mainHeight + headHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (tabHeight + mainHeight + headHeight).toString();
+            }
+            $('.'+ className +' > div:nth-child('+ num +')').css('height', totalHeight + 'px'); 
+        }
+
+        function passValueToApplyInsurance(clickFamilyID) {
+            var clickFamilyData = healthInsurArr.filter(function(item, index, array){
+                if (item.family_id === clickFamilyID){
+                    return item.name;
+                }
+            });
+            //將QueryHealthInsuranceFamily回傳的值傳遞至viewApplyInsurance
+            clickInsID = $.trim(clickFamilyData[0].ins_id);
+            clickAppID = $.trim(clickFamilyData[0].app_id);
+            clickFamilyName = $.trim(clickFamilyData[0].name);
+            clickRelation = $.trim(clickFamilyData[0].relation);
+            clickBirth = $.trim(clickFamilyData[0].birthday);
+            clickAge = transferBirthToAge(clickBirth);
+            clickID = $.trim(clickFamilyData[0].idno);
+            clickCanApply = $.trim(clickFamilyData[0].can_apply);
+            clickDealwith = $.trim(clickFamilyData[0].dealwith);
+            clickInsuredday = $.trim(clickFamilyData[0].insuredday);
+            clickApplyday = $.trim(clickFamilyData[0].applyday);
+            clickDealday = $.trim(clickFamilyData[0].dealwithday);
+            clickReason = $.trim(clickFamilyData[0].reason);
+            clickSubsidy = $.trim(clickFamilyData[0].subsidy);
+            clickCerti = $.trim(clickFamilyData[0].certificate);
+            clickHealthcard = $.trim(clickFamilyData[0].healthcard);
+        }
 
         /********************************** page event *************************************/
         $("#viewPersonalInsurance").one("pagebeforeshow", function(event, ui) {
@@ -291,35 +331,10 @@ $("#viewPersonalInsurance").pagecontainer({
             $('#pageInsurStatus-2').show();
             $('#pageInsurStatus-1').hide(); 
             if (!tab2FamiScrollHeight) {         
-                scrollHeightByTab(activePageListID, scrollClassName,'3');           
+                scrollHeightByPersonalInsurTab(activePageListID, scrollClassName,'3', 'pageInsurStatus-2', 'insurance-ownpaid');           
                 tab2FamiScrollHeight = true;
             }            
         });  
-
-        function passValueToApplyInsurance(clickFamilyID) {
-            var clickFamilyData = healthInsurArr.filter(function(item, index, array){
-                if (item.family_id === clickFamilyID){
-                    return item.name;
-                }
-            });
-            //將QueryHealthInsuranceFamily回傳的值傳遞至viewApplyInsurance
-            clickInsID = $.trim(clickFamilyData[0].ins_id);
-            clickAppID = $.trim(clickFamilyData[0].app_id);
-            clickFamilyName = $.trim(clickFamilyData[0].name);
-            clickRelation = $.trim(clickFamilyData[0].relation);
-            clickBirth = $.trim(clickFamilyData[0].birthday);
-            clickAge = transferBirthToAge(clickBirth);
-            clickID = $.trim(clickFamilyData[0].idno);
-            clickCanApply = $.trim(clickFamilyData[0].can_apply);
-            clickDealwith = $.trim(clickFamilyData[0].dealwith);
-            clickInsuredday = $.trim(clickFamilyData[0].insuredday);
-            clickApplyday = $.trim(clickFamilyData[0].applyday);
-            clickDealday = $.trim(clickFamilyData[0].dealwithday);
-            clickReason = $.trim(clickFamilyData[0].reason);
-            clickSubsidy = $.trim(clickFamilyData[0].subsidy);
-            clickCerti = $.trim(clickFamilyData[0].certificate);
-            clickHealthcard = $.trim(clickFamilyData[0].healthcard);
-        }
 
         $(document).on("click", ".family-add", function() { 
             loadingMask("show");
