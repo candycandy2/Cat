@@ -4,6 +4,7 @@ function QueryMessageListEx() {
     var queryStr = "";
     var msgDateTo = getTimestamp();
     var msgDateFrom = parseInt(msgDateTo - 60 * 60 * 24 * 30, 10);
+    var messagecontent_ = null;
 
     queryStr = "&date_from=" + msgDateFrom + "&date_to=" + msgDateTo + "&overwrite_timestamp=1";
 
@@ -12,8 +13,15 @@ function QueryMessageListEx() {
 
         if (resultcode === 1) {
 
-            var messageCount = data['content']['message_count'];
-            var messagecontent = data['content'];
+            window.localStorage.removeItem('messagecontent');
+            var jsonData = {};
+            jsonData = {
+                lastUpdateTime: new Date(),
+                content: data['content']
+            };
+
+            var messageCount = jsonData.content['message_count'];
+            var messagecontent = jsonData.content;
 
             //Update datetime according to local timezone
             var messageindexLength = parseInt(messagecontent.message_count - 1, 10);
@@ -26,8 +34,9 @@ function QueryMessageListEx() {
                 message.create_time = createTimeConvert;
             }
 
-            window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
+            window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
             sessionStorage.setItem('changeMessageContentDirty', 'Y');
+
         }
 
     };
@@ -35,6 +44,11 @@ function QueryMessageListEx() {
     this.failCallback = function(data) {};
 
     var __construct = function() {
-        QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
+
+        messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
+
+        if (messagecontent_ === null || checkDataExpired(messagecontent_['lastUpdateTime'], 1, 'hh')) {
+            QPlayAPIEx("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
+        }
     }();
 }

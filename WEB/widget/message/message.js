@@ -3,14 +3,15 @@ var messageWidget = {
 
     contentItem: null,
     createMessage: function() {
-        var messagecontent = window.localStorage.getItem('messagecontent');
+        var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
         //alert(messagecontent);
-        if (messagecontent === null) {
+        if (messagecontent_ === null) {
             content = '<div class="widget-none-msg">' + langStr['wgt_008'] + '<div>';
             var $container = $('<div></div>').addClass('message-widget').append(content);
             this.contentItem.html('').append($container);
         } else {
-            var msgArr = JSON.parse(messagecontent).message_list;
+            var messagecontent = messagecontent_.content;
+            var msgArr = messagecontent.message_list;
             var content = '';
             var count = 0;
 
