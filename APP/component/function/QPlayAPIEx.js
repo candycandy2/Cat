@@ -1,9 +1,9 @@
 //QPlayAPIEx
 //priority == "high" "low" "", default == "high"
 //timer == integer, default ==
-//async == boolean, default == true
+//asyncType == boolean, default == true
 
-function QPlayAPIEx(requestType, requestAction, successCallback, failCallback, queryData, queryStr, priority, timer, async) {
+function QPlayAPIEx(requestType, requestAction, successCallback, failCallback, queryData, queryStr, priority, timer, asyncType) {
     //API [checkAppVersion] [getSecurityList]
     //even though these 2 API were from QPlay, the API path is [/public/v101/qplay/],
     //but, when other APP call these 2 API,
@@ -13,7 +13,7 @@ function QPlayAPIEx(requestType, requestAction, successCallback, failCallback, q
 
     priority = priority || "high";
     timer = timer || 30000;
-    async = async || true;
+    asyncType = asyncType || true;
     failCallback = failCallback || null;
     queryData = queryData || null;
     queryStr = queryStr || "";
@@ -56,6 +56,7 @@ function QPlayAPIEx(requestType, requestAction, successCallback, failCallback, q
         dataType: "json",
         data: queryData,
         cache: false,
+        async: asyncType,
         timeout: timer,
         success: requestSuccess,
         error: requestError
