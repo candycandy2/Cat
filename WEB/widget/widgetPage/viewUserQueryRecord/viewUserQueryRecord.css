@@ -16,6 +16,7 @@
 }
 
 .user-query-type > div:nth-of-type(1) {
+    width: 100%;
     height: 6vw;
     text-indent: 1.68vw;
     color: #0F0F0F;
@@ -23,6 +24,7 @@
 }
 
 .user-query-type > div:nth-of-type(2) {
+    width: 100%;
     height: 7vw;
     text-indent: 1.68vw;
     color: #253137;
@@ -66,11 +68,26 @@
     width: 50%;
     height: 100%;
     text-indent: 1.68vw;
+}
+
+.user-query-date > div:nth-of-type(4) {
+    width: 100%;
+    height: 7vw;
+    color: #0F0F0F;
+    font-size: 4.18vw;
+    display: none;
+}
+
+.user-query-date > div:nth-of-type(4) > div {
+    float: left;
+    width: 50%;
+    height: 100%;
+    text-indent: 1.68vw;
     margin: 0;
     padding: 0;
 }
 
-.user-query-date > div:nth-of-type(3) > div input {
+.user-query-date > div:nth-of-type(4) input {
     border: none;
     outline: none;
     padding: 0;
@@ -82,6 +99,12 @@
     background-repeat: no-repeat;
     font-size: 4.18vw !important;
     color: #0F0F0F !important;
+}
+
+.user-query-img {
+    width: 2vw;
+    height: 2vw;
+    margin-left: 2.5vw;
 }
 
 .user-query-btn {
