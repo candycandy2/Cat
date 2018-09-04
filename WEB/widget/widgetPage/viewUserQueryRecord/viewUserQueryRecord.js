@@ -42,7 +42,6 @@ $("#viewUserQueryRecord").pagecontainer({
         //宽度转换
         function widthUnitConversion(num) {
             return Math.floor(num * 100 / document.documentElement.clientWidth * 100) / 100;
-            
         }
 
         //初始化日期选择控件
