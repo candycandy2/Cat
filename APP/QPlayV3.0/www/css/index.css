@@ -51,7 +51,7 @@ ul {
 
 .ui-popup-container {
     position: fixed !important;
-    top: 225px !important;
+    top: 225px;
 }
 
 .tpl-dropdown-list-icon-arrow-incline {
@@ -1794,11 +1794,6 @@ input[type=radio]:checked + label {
 .enabled-btn {
     background: #009688 !important;
     color: #fff !important;
-}
-
-/***************************** viewShopPayMain ********************************/
-#viewShopPayMain .ui-content {
-    padding: 0 !important;
 }
 
 /***************************** viewShopSelectUser ********************************/

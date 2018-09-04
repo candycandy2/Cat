@@ -1,6 +1,8 @@
 $("#viewShopPayMain").pagecontainer({
     create: function (event, ui) {
 
+
+
         /********************************** page event ***********************************/
         $("#viewShopPayMain").on("pagebeforeshow", function (event, ui) {
 
@@ -24,11 +26,11 @@ $("#viewShopPayMain").pagecontainer({
 
         //店家记录
         $('.shop-record').on('click', function () {
-            checkAppPage('viewShopQueryRecord');
-            //checkWidgetPage('viewShopQueryRecord');
+            //checkAppPage('viewShopQueryRecord');
+            checkWidgetPage('viewShopQueryRecord');
         });
 
-
+        
 
 
     }

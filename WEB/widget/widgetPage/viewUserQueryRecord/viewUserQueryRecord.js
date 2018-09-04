@@ -7,10 +7,10 @@ $("#viewUserQueryRecord").pagecontainer({
 
         }
 
-        //交易类型
-        function createQueryType() {
+        //交易类型dropdownlist
+        function initialRecordType() {
             var typeData = {
-                id: "query-type",
+                id: "userQueryType",
                 option: [],
                 title: "",
                 defaultText: langStr["wgt_032"],
@@ -27,16 +27,16 @@ $("#viewUserQueryRecord").pagecontainer({
             typeData["option"][1]["value"] = "2";
             typeData["option"][1]["text"] = langStr["wgt_034"];
 
-            tplJS.DropdownList("viewUserQueryRecord", "userQueryType", "prepend", "typeB", typeData);
+            tplJS.DropdownList("viewUserQueryRecord", "userRecordType", "prepend", "typeB", typeData);
             //调整select宽度
-            var selectWidth = $('#query-type').width();
-            tplJS.reSizeDropdownList('query-type', null, widthUnitConversion(selectWidth) - 5);
-            $('#query-type').css('padding', '0');
-            $('#query-type-option').find('.close').css({
+            var selectWidth = $('#userQueryType').width();
+            tplJS.reSizeDropdownList('userQueryType', null, widthUnitConversion(selectWidth) - 5);
+            $('#userQueryType').css('padding', '0');
+            $('#userQueryType-option').find('.close').css({
                 'top': '0',
                 'left': '88%'
             });
-            $('#query-type-option-list').css('margin-top', '3vw');
+            $('#userQueryType-option-list').css('margin-top', '3vw');
         }
 
         //宽度转换
@@ -63,7 +63,7 @@ $("#viewUserQueryRecord").pagecontainer({
 
         //检查表单
         function checkForm() {
-            var typeVal = $('#query-type').val();
+            var typeVal = $('#userQueryType').val();
             var startVal = $('#userStartDate').val();
             var endVal = $('#userEndDate').val();
             if (typeVal != langStr["wgt_032"] && startVal != '' && endVal != '') {
@@ -79,7 +79,7 @@ $("#viewUserQueryRecord").pagecontainer({
         });
 
         $("#viewUserQueryRecord").one("pageshow", function (event, ui) {
-            createQueryType();
+            initialRecordType();
             initialDatetimePicker();
         });
 
@@ -95,9 +95,9 @@ $("#viewUserQueryRecord").pagecontainer({
 
         /********************************** dom event *************************************/
         //选择交易类型
-        $('#userQueryType').on('change', '#query-type', function () {
-            var selectWidth = $('#query-type').width();
-            tplJS.reSizeDropdownList('query-type', null, widthUnitConversion(selectWidth) - 6);
+        $('#userRecordType').on('change', '#userQueryType', function () {
+            var selectWidth = $('#userQueryType').width();
+            tplJS.reSizeDropdownList('userQueryType', null, widthUnitConversion(selectWidth) - 6);
             checkForm();
         });
 
