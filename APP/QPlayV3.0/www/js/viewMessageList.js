@@ -148,7 +148,10 @@ $("#viewMessageList").pagecontainer({
         function createMessageByType() {
             //1. html
             //var resultArr = loginData['messagecontent']['message_list'];
-            var resultArr = JSON.parse(window.localStorage.getItem('messagecontent')).message_list;
+            var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
+            var resultArr = null;
+            if(messagecontent_ != null)
+                resultArr = messagecontent_.content.message_list;
             //console.log(resultArr);
 
             var newsContent = '';
@@ -646,10 +649,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         $("#viewMessageList").on("pageshow", function (event, ui) {
-            if (listUpdateMsg) {
-                createMessageByType();
-                listUpdateMsg = false;
-            }
+            createMessageByType();
 
         });
 

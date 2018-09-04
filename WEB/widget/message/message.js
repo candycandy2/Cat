@@ -1,10 +1,17 @@
 //widget naming rule widget.js/list()[].name + "Widget"
 var messageWidget = {
 
-    init: function(contentItem) {
-
-        function createMessage() {
-            var msgArr = JSON.parse(window.localStorage.getItem('messagecontent')).message_list;
+    contentItem: null,
+    createMessage: function() {
+        var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
+        //alert(messagecontent);
+        if (messagecontent_ === null) {
+            content = '<div class="widget-none-msg">' + langStr['wgt_008'] + '<div>';
+            var $container = $('<div></div>').addClass('message-widget').append(content);
+            this.contentItem.html('').append($container);
+        } else {
+            var messagecontent = messagecontent_.content;
+            var msgArr = messagecontent.message_list;
             var content = '';
             var count = 0;
 
@@ -24,18 +31,32 @@ var messageWidget = {
             if (content == '') {
                 content = '<div class="widget-none-msg">' + langStr['wgt_008'] + '<div>';
             }
-
             var $container = $('<div></div>').addClass('message-widget').append(content);
-
-            contentItem.html('').append($container);
-
-            //点击widget内message，跳转到message详情页
-            contentItem.on('click', '.widget-msg-list', function() {
-                messageFrom = 'messageWidget';
-                messageRowId = $(this).attr('data-rowid');
-                checkAppPage('viewWebNews2-3-1');
-            });
+            this.contentItem.html('').append($container);
         }
+
+        //点击widget内message，跳转到message详情页
+        this.contentItem.on('click', '.widget-msg-list', function() {
+
+            messageFrom = 'messageWidget';
+            messageRowId = $(this).attr('data-rowid');
+            if (window.avoidDoubleProcess != null) {
+                clearTimeout(window.avoidDoubleProcess);
+            }
+            window.avoidDoubleProcess = setTimeout(function() {
+
+                clearTimeout(window.avoidDoubleProcess);
+                window.avoidDoubleProcess = null;
+
+                checkAppPage('viewWebNews2-3-1');
+            }, 500);
+        });
+    },
+    init: function(contentItem) {
+
+        messageWidgetTHIS = this;
+        this.contentItem = contentItem;
+        this.createMessage();
 
         $.fn.message = function(options, param) {
             if (typeof options == 'string') {
@@ -52,9 +73,7 @@ var messageWidget = {
                         options: $.extend({}, $.fn.message.defaults, options)
                     });
                 }
-
-                createMessage();
-
+                messageWidgetTHIS.createMessage();
             });
         }
 
@@ -64,14 +83,35 @@ var messageWidget = {
             },
             refresh: function(jq) {
                 return jq.each(function() {
-                    createMessage();
+                    messageWidgetTHIS.createMessage();
                 });
             }
         }
-
         $.fn.message.defaults = {}
-
         $('.messageWidget').message();
+    },
+    refresh: function() {
+
+        messageWidgetTHIS = this;
+        //3.check data
+        var checkmessagecontentData = setInterval(function() {
+            var messagecontent = JSON.parse(window.localStorage.getItem('messagecontent'));
+            var changeMessageContentDirty = sessionStorage.getItem('changeMessageContentDirty');
+
+            if (messagecontent !== null && changeMessageContentDirty == 'Y') {
+                clearInterval(checkmessagecontentData);
+                messageWidgetTHIS.createMessage(messagecontent);
+                sessionStorage.setItem('changeMessageContentDirty', 'N');
+            }
+        }, 1000);
+    },
+    show: function() {
+        QueryMessageListEx();
+        this.refresh();
+    },
+    clear: function() {
+        window.localStorage.removeItem('messagecontent');
+        sessionStorage.setItem('changeMessageContentDirty', 'Y');
     }
 
 };

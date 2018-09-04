@@ -25,7 +25,6 @@ var langStr = {};
 var logFileName;
 
 var loginData = {
-    ad_flag: "",
     company: "",
     versionName: "",
     versionCode: "",
@@ -84,6 +83,8 @@ var app = {
     },
     // deviceready Event Handler
     onDeviceReady: function() {
+
+        window.sessionStorage.clear();
         app.receivedEvent('deviceready');
 
         //Ignore the font-size setting in Mobile Device
@@ -899,7 +900,6 @@ function checkAppVersion() {
 
             // app is up to date
             $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
-            var FunctionList = new getFunctionList();
             var whiteList = new setWhiteList();
 
         } else if (resultcode == 999015) {
@@ -907,7 +907,6 @@ function checkAppVersion() {
             // app apk/ipa file does not upload to QPlay.
             // This status only for Developer to skip check the version of New Create APP.
             $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
-            var FunctionList = new getFunctionList();
             var whiteList = new setWhiteList();
 
         } else if (resultcode == 999012) {
@@ -945,6 +944,7 @@ function setWhiteList() {
         if (doCheckStorageData) {
             checkStorageData();
         }
+        var FunctionList = new getFunctionList();
 
         if (device.platform === "Android") {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');

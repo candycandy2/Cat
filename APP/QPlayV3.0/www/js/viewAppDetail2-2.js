@@ -85,12 +85,12 @@ $("#viewAppDetail2-2").pagecontainer({
             $("#appDetailPicListFullScreen").html('').append(fullContent);
 
             //Auto resize appDetailPicList
-            if (device.platform === "iOS") {
-                var tempHeight = $("#appDetailPicList").height();
-                $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
-                var tempChildHeight = $("#appDetailPicListContent").height();
-                $("#appDetailPicListContent").css("height", parseInt(tempChildHeight + iOSFixedTopPX(), 10) + "px");
-            }
+            // if (device.platform === "iOS") {
+            //     var tempHeight = $("#appDetailPicList").height();
+            //     $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
+            //     var tempChildHeight = $("#appDetailPicListContent").height();
+            //     $("#appDetailPicListContent").css("height", parseInt(tempChildHeight + iOSFixedTopPX(), 10) + "px");
+            // }
 
             //Auto resize appDetailPicListContent
             var pageWidth = $("#viewAppDetail2-2").width();
@@ -189,6 +189,16 @@ $("#viewAppDetail2-2").pagecontainer({
             //loadingMask("show");
         });
 
+        $("#viewAppDetail2-2").one("pageshow", function (event, ui) {
+            //fix定位top
+            if (device.platform === "iOS") {
+                $("#viewAppDetail2-2 .fix").css('top', iOSFixedTopPX() + 'px');
+            } else {
+                var headHeight = $('#viewAppDetail2-2 .page-header').height().toString();
+                $("#viewAppDetail2-2 .fix").css('top', headHeight + 'px');
+            }
+        })
+
         $("#viewAppDetail2-2").on("pageshow", function (event, ui) {
             displayAppDetailStep1();
 
@@ -196,12 +206,12 @@ $("#viewAppDetail2-2").pagecontainer({
                 var btnLength = $('#InstallApp').length;
                 var appInstall = window.sessionStorage.getItem('checkAPPInstall');
 
-                if(btnLength > 0 && appInstall !== null) {
+                if (btnLength > 0 && appInstall !== null) {
                     clearInterval(checkInstall);
                     window.sessionStorage.removeItem('checkAPPInstall');
                     $("#InstallApp .InstallAppStr").hide();
 
-                    if(appInstall == 'true') {
+                    if (appInstall == 'true') {
                         $("#InstallApp #InstallAppStr03").show();
 
                     } else {
@@ -209,7 +219,7 @@ $("#viewAppDetail2-2").pagecontainer({
                     }
                 }
 
-            },500);
+            }, 500);
         });
 
         /********************************** dom event *************************************/

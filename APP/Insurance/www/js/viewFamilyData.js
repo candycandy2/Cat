@@ -8,7 +8,6 @@ $("#viewFamilyData").pagecontainer({
         var familyName, familyID , familyBirth, familyRelation, typeNo, addFamilyStatus = "";
         var familyNo = 'NULL';
         var timeoutFamilyName = null, timeoutFamilyID = null;
-        var familyListScrollHeight = false;
         var familyArr = {};
         var obj = new Object();
         var relationshipData = {
@@ -94,14 +93,7 @@ $("#viewFamilyData").pagecontainer({
                     }
                     $(".family-edit-btn").show();
                     $(".family-cancle-btn").hide();
-                    $("#familyList").empty().append(familyList).children("div:last-child").remove();
-                    if (!familyListScrollHeight) {
-                        scrollHeightOnePage(activePageListID, scrollClassName);
-                        $("#" + activePageListID + ">.page-header").css({
-                            'position': 'fixed'
-                        });
-                        familyListScrollHeight = true;
-                    }          
+                    $("#familyList").empty().append(familyList).children("div:last-child").remove();       
                 } else {
                     familyArr = data["Content"];
                     $("#viewFamilyList").hide();
@@ -110,6 +102,10 @@ $("#viewFamilyData").pagecontainer({
                     $("#viewFamilyNone").show(); 
                 }
                 changeViewToList();
+                scrollHeightOnePage(activePageListID, scrollClassName);
+                $("#" + activePageListID + ">.page-header").css({
+                    'position': 'fixed'
+                });
                 loadingMask("hide");
             };
 
@@ -143,9 +139,6 @@ $("#viewFamilyData").pagecontainer({
                 if (data['ResultCode'] === "1") {
                     //重新顯示眷屬列表
                     QueryFamilyList();
-                    if (addFamilyStatus === "Add") {
-                        changeFamilyListHeight(activePageListID, scrollClassName, "add");
-                    }
                     viewPersonalInsuranceShow = false;
                 }else if (data['ResultCode'] === "046907") {
                     popupMsgInit('.familyErrorMsg');
@@ -179,7 +172,7 @@ $("#viewFamilyData").pagecontainer({
                 localStorage.setItem('familySettingData', JSON.stringify(familyArr));*/
                 if (data['ResultCode'] === "1") {
                     QueryFamilyList();
-                    changeFamilyListHeight(activePageListID, scrollClassName, "delete");
+                    //changeFamilyListHeight(activePageListID, scrollClassName, "delete");
                     $('.family-edit-btn').trigger('click');
                     $("#deleteFamilyListMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                     viewPersonalInsuranceShow = false; 
@@ -204,39 +197,17 @@ $("#viewFamilyData").pagecontainer({
         };
 
         function scrollHeightOnePage(viewName, className) {
-            var iconHeight = $('.family-add-img').height();
-            var mainHeight = $('.'+ className +' > div').height() + iconHeight;
             var headHeight = $('#'+ viewName +' .page-header').height();
+            var fixHeight = $('.family-edit-btn').height();
+            var iconHeight = ($('.family-add-img').height())*2;
+            var contentHeight = $('#familyList').height();
+            //var mainHeight = $('.'+ className +' > div').height() + iconHeight;
             var totalHeight;
             if (device.platform === "iOS") {
-                totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+                totalHeight = (headHeight + fixHeight + contentHeight + iconHeight + iOSFixedTopPX()).toString();
             } else {
-                totalHeight = (mainHeight + headHeight).toString();
+                totalHeight = (headHeight + fixHeight + contentHeight + iconHeight).toString();
             }
-            $('.'+ className +' > div').css('height', totalHeight + 'px'); 
-        }
-
-        function changeFamilyListHeight(viewName, className, addDelete) {
-            //改成判斷幾筆增加和減少長度
-            var iconHeight = $('.family-add-img').height();
-            var mainHeight = $('.'+ className +' > div').height() + iconHeight;
-            var headHeight = $('#'+ viewName +' .page-header').height();
-            var totalHeight;
-            if (device.platform === "iOS") {
-                //totalHeight = mainHeight + headHeight + iOSFixedTopPX() - 106;
-                if (addDelete == "add") {
-                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX() - 33).toString();
-                    addPersonalInsur = true;
-                } else if (addDelete == "delete") {
-                    totalHeight = (mainHeight + headHeight + iOSFixedTopPX() - 159).toString();
-                    deletePersonalInsur = true;
-                }
-                //familyListScrollHeight = false;
-                tab1FamiScrollHeight = false;
-            } else {
-                totalHeight = (mainHeight + headHeight).toString();
-            }
-
             $('.'+ className +' > div').css('height', totalHeight + 'px'); 
         }
 

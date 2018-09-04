@@ -1,6 +1,6 @@
 
 var panel = htmlContent
-        +'<div data-role="panel" id="mypanel" data-display="overlay">'
+        +'<div data-role="panel" id="mypanel" data-display="overlay" style="position:fixed;">'
         +   '<div class="ios-fix-overlap-div"></div>'
         +   '<div class="panel-content" id="mypanelviewMain">'
         //+       '<span class="panel-text">保險概要</span>'
