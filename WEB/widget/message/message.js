@@ -110,8 +110,15 @@ var messageWidget = {
         this.refresh();
     },
     clear: function() {
-        window.localStorage.removeItem('messagecontent');
-        sessionStorage.setItem('changeMessageContentDirty', 'Y');
+
+        var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
+        var jsonData = {};
+        var date = new Date();
+        jsonData = {
+            lastUpdateTime: date.setDate(date.getDate() - 1),
+            content: messagecontent_.content
+        };
+        window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
     }
 
 };

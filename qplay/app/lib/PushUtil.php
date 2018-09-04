@@ -40,7 +40,7 @@ class PushUtil
             'To' => $to,
             'Message' => $message,
             'Sound' => 'default',
-            'Badge' => '0',
+            //'Badge' => '0',
             'Timing' => '1900-01-01 00:00:00.000',
             'Expire' => '2099-12-31 00:00:00.000',
             'Status' => 'W',
@@ -74,7 +74,7 @@ class PushUtil
             $alert = $message;
             $ios_notification = array(
                 'sound' => 'default',
-                'badge' => '0',
+                //'badge' => '0', //API
                 'extras' => array(
                     'Parameter'=> $parameter
                 ),
@@ -145,7 +145,7 @@ class PushUtil
             $alert = $message;
             $ios_notification = array(
                 'sound' => 'default',
-                'badge' => '0',
+                //'badge' => '0',
                 'extras' => array(
                     'Parameter'=> $parameter
                 ),
@@ -434,7 +434,7 @@ class PushUtil
             $alert = $message;
             $ios_notification = array(
                 'sound' => 'default',
-                'badge' => '0',
+                //'badge' => '0',
                 'extras' => array(
                     'Parameter'=> $parameter
                 ),

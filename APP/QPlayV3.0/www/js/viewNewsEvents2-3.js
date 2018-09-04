@@ -130,137 +130,6 @@ $("#viewNewsEvents2-3").pagecontainer({
             }(type));
         };
 
-        window.QueryMessageList = function(action) {
-
-            //review by alan
-            callGetMessageList = true;
-
-            action = action || null;
-
-            var self = this;
-            var queryStr = "";
-            var msgDateTo = getTimestamp();
-
-            if (msgDateFromType.length > 0) {
-                queryStr = "&date_from=" + loginData["msgDateFrom"] + "&date_to=" + msgDateTo + "&overwrite_timestamp=1";
-                msgDateFromType = "";
-                window.localStorage.setItem("msgDateFrom", loginData["msgDateFrom"]);
-            }
-
-            this.successCallback = function(data) {
-                //console.log(data);
-                callGetMessageList = false;
-                var resultcode = data['result_code'];
-
-                if (resultcode === 1) {
-
-                    //$("#eventListContent .list-content").show();
-                    $("#eventListContent .list-content").hide();
-
-                    var messageCount = data['content']['message_count'];
-                    var messageContentIsNull = false;
-
-                    if (window.localStorage.getItem("messagecontent") === null) {
-                        //check data exit in Local Storage
-                        messageContentIsNull = true;
-                    } else if (window.localStorage.getItem("messagecontent") === "null") {
-                        //check data in Local Storage is null
-                        messageContentIsNull = true;
-                    }
-
-                    if (messageContentIsNull) {
-
-                        messagecontent = data['content'];
-
-                        //Update datetime according to local timezone
-                        var messageindexLength = parseInt(messagecontent.message_count - 1, 10);
-
-                        for (var messageindex = 0; messageindex < messageindexLength; messageindex++) {
-                            var message = messagecontent.message_list[messageindex];
-                            var tempDate = dateFormatYMD(message.create_time);
-                            var createTime = new Date(tempDate);
-                            var createTimeConvert = createTime.TimeZoneConvert();
-                            message.create_time = createTimeConvert;
-                        }
-
-                        window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
-                        loginData["messagecontent"] = messagecontent;
-
-                    } else {
-
-                        loginData["messagecontent"] = window.localStorage.getItem("messagecontent");
-                        var localContent = JSON.parse(loginData["messagecontent"]);
-                        messagecontent = data['content'];
-
-                        if (messagecontent.message_count !== 0) {
-                            var messageindexStart = parseInt(messagecontent.message_count - 1, 10);
-
-                            for (var messageindex = messageindexStart; messageindex >= 0; messageindex--) {
-                                var message = messagecontent.message_list[messageindex];
-
-                                //Update datetime according to local timezone
-                                var tempDate = dateFormatYMD(message.create_time);
-                                var createTime = new Date(tempDate);
-                                var createTimeConvert = createTime.TimeZoneConvert();
-                                message.create_time = createTimeConvert;
-
-                                localContent.message_count = parseInt(localContent.message_count + 1, 10);
-                                localContent.message_list.unshift(message);
-                            }
-                        }
-
-                        messagecontent = localContent;
-                        loginData["messagecontent"] = messagecontent;
-                        window.localStorage.setItem("messagecontent", JSON.stringify(messagecontent));
-                    }
-
-                    //Check if there still have a unread message, then show [red star]
-                    $("#eventTypeSelect .left .white").removeClass("red");
-
-                    for (var i = 0; i < messagecontent.message_count; i++) {
-                        if (messagecontent.message_list[i].read === "N") {
-
-                            if (messagecontent.message_list[i].message_type === "event") {
-                                $("#eventTypeSelect #Event .left .white").addClass("red");
-                            } else if (messagecontent.message_list[i].message_type === "news") {
-                                $("#eventTypeSelect #News .left .white").addClass("red");
-                            }
-
-                        }
-                    }
-
-                    updateMessageList();
-                }
-
-                if (messagePageShow) {
-                    loadingMask("hide");
-                }
-
-                //review by alan
-                if (window.localStorage.getItem("openMessage") === "true") {
-                    widgetUpdateMsg = true;
-                    listUpdateMsg = true;
-                    messageFrom = 'push';
-                    checkAppPage('#viewWebNews2-3-1', {
-                        allowSamePageTransition: true,
-                        transition: 'none',
-                        showLoadMsg: false,
-                        reloadPage: true
-                    });
-                    checkAppPage("#viewWebNews2-3-1");
-                }
-
-            };
-
-            this.failCallback = function(data) {
-                callGetMessageList = false;
-            };
-
-            var __construct = function() {
-                QPlayAPI("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
-            }();
-        }
-
         window.updateMessageList = function(action) {
             action = action || null;
 
@@ -272,7 +141,6 @@ $("#viewNewsEvents2-3").pagecontainer({
             var eventListItems = "";
             var countNews = 0;
             var countEvents = 0;
-            var badgeCount = 0;
 
             for (var messageindex = 0; messageindex < messagecontent.message_count; messageindex++) {
 
@@ -292,10 +160,6 @@ $("#viewNewsEvents2-3").pagecontainer({
 
                 if (message.read === "Y") {
                     readStatus = "hide";
-                }
-
-                if (message.read === "N") {
-                    badgeCount++;
                 }
 
                 var content = "<li value=" + messageindex.toString() + " class='msg-index'>" +
@@ -340,11 +204,6 @@ $("#viewNewsEvents2-3").pagecontainer({
             var datetimeStr = datetime.getFullYear() + "-" + padLeft(parseInt(datetime.getMonth() + 1, 10), 2) + "-" + padLeft(datetime.getUTCDate(), 2) + " " +
                 addZero(datetime.getHours()) + ":" + addZero(datetime.getMinutes());
             $(".update-time .update-time-str").html(datetimeStr);
-
-            //review by allen
-            //cordova plugin badge: set badge
-            //cordova.plugins.notification.badge.set(badgeCount);
-            window.plugins.QPushPlugin.setApplicationIconBadgeNumber(Math.max(0, badgeCount));
 
             //If News or Events has no message, show [No News] [No Events]
             if (countNews === 0) {
