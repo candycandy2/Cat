@@ -191,11 +191,11 @@ $("#viewAppDetail2-2").pagecontainer({
 
         $("#viewAppDetail2-2").one("pageshow", function (event, ui) {
             //fix定位top
+            var headHeight = $('#viewAppDetail2-2 .page-header').height();
             if (device.platform === "iOS") {
-                $("#viewAppDetail2-2 .fix").css('top', iOSFixedTopPX() + 'px');
+                $("#viewAppDetail2-2 .fix").css('top', (headHeight + iOSFixedTopPX()).toString() + 'px');
             } else {
-                var headHeight = $('#viewAppDetail2-2 .page-header').height().toString();
-                $("#viewAppDetail2-2 .fix").css('top', headHeight + 'px');
+                $("#viewAppDetail2-2 .fix").css('top', headHeight.toString() + 'px');
             }
         })
 
