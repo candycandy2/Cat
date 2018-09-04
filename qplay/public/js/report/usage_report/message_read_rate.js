@@ -249,7 +249,7 @@ var messageReadRate = messageReadRate || function() {
             $.each(companySiteArray, function(index, companySite){
                 var vtotalArr = {'t':0,'d':0};
                 $.each(vtotalArr, function(type,cnt){
-                   $companySiteObj =  $tableChartDiv.find('td.js-' + companySite + '_' + type);
+                   $companySiteObj =  $tableChartDiv.find('td.js-' + companySite.replace(/\s/g, "_") + '_' + type);
                    var i=0;
                     $.each($companySiteObj, function(subIndexnx,companySiteDataObj){
                         if(typeof htotalArr[type][i] =='undefined'){
