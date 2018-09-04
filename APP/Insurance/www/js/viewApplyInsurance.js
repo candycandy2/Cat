@@ -491,6 +491,42 @@ $("#viewApplyInsurance").pagecontainer({
             popupMsgInit('.confirmCancelApplyToDetail');
         });
 
+        $('#applyReason').on("click", function () {
+            $('#viewApplyInsurance').css({
+                'position': 'fixed'
+            }); 
+            $("#applyReason-popup-option-popup").css({
+                'position': 'fixed'
+            }); 
+        });
+
+        $('#withdrawReason').on("click", function () {
+            $('#viewApplyInsurance').css({
+                'position': 'fixed'
+            }); 
+            $("#withdrawReason-popup-option-popup").css({
+                'position': 'fixed'
+            }); 
+        });
+
+        $('#stopReason').on("click", function () {
+            $('#viewApplyInsurance').css({
+                'position': 'fixed'
+            }); 
+            $("#stopReason-popup-option-popup").css({
+                'position': 'fixed'
+            }); 
+        });
+
+        $('#recoverReason').on("click", function () {
+            $('#viewApplyInsurance').css({
+                'position': 'fixed'
+            }); 
+            $("#recoverReason-popup-option-popup").css({
+                'position': 'fixed'
+            }); 
+        });
+
         //預覽送簽按鈕
         $("#previewBtn").on("click", function() {
             if ($('#previewBtn').hasClass('insurPreview-active-btn')) {
@@ -620,6 +656,42 @@ $("#viewApplyInsurance").pagecontainer({
         });
         
         $(document).on("popupafterclose", "#applyReason-popup-option", function() { 
+            $('#viewApplyInsurance').css({
+                'position': ''
+            }); 
+            $("#applyReason-popup-option-popup").css({
+                'position': ''
+            }); 
+            checkFormByApplyInsur(applyType);
+        });
+
+        $(document).on("popupafterclose", "#withdrawReason-popup-option", function() { 
+            $('#viewApplyInsurance').css({
+                'position': ''
+            }); 
+            $("#withdrawReason-popup-option-popup").css({
+                'position': ''
+            }); 
+            checkFormByApplyInsur(applyType);
+        });
+
+        $(document).on("popupafterclose", "#stopReason-popup-option", function() { 
+            $('#viewApplyInsurance').css({
+                'position': ''
+            }); 
+            $("#stopReason-popup-option-popup").css({
+                'position': ''
+            }); 
+            checkFormByApplyInsur(applyType);
+        });
+
+        $(document).on("popupafterclose", "#recoverReason-popup-option", function() { 
+            $('#viewApplyInsurance').css({
+                'position': ''
+            }); 
+            $("#recoverReason-popup-option-popup").css({
+                'position': ''
+            }); 
             checkFormByApplyInsur(applyType);
         });
 
