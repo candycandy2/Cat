@@ -121,6 +121,23 @@ $("#viewAppSetting").pagecontainer({
             return new File([u8arr], filename, { type: mime });
         }
 
+        //检查该用户是否能修改密码
+        function checkUserChangePwd() {
+            var function_list = JSON.parse(window.localStorage.getItem('FunctionData'))['function_list'];
+            for (var i in function_list) {
+                //1. 先找到News
+                if (function_list[i].function_variable == 'ChangePassword') {
+                    //2. 再检查是否可用
+                    if (function_list[i].function_content.right == 'Y') {
+                        $('.change-password').show();
+                    } else {
+                        $('.change-password').hide();
+                    }
+                    break;
+                }
+            }
+        }
+
         //检查是否上传过头像
         function checkPhotoUpload($target) {
             //var url = 'https://bqgroupstoragedev.blob.core.windows.net/appqplaydev-portrait/1705055/1705055_1024.png';
@@ -169,6 +186,9 @@ $("#viewAppSetting").pagecontainer({
         $("#viewAppSetting").one("pageshow", function (event, ui) {
             //user name
             $('.name-user').text(loginData['loginid']);
+
+            //check can use changepassword
+            checkUserChangePwd();
 
             //check photo
             checkPhotoUpload($('#myPhoto'));
