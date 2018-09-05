@@ -168,16 +168,16 @@ $("#viewMessageList").pagecontainer({
                 if (resultArr[i]['message_type'] == 'event' && resultArr[i].read != 'D') {
                     eventContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
                         '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-message ui-btn">' +
-                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
-                        (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
+                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title' +
+                        (resultArr[i].read == "Y" ? " read-font-normal" : "") + '"><div>' +
                         resultArr[i].create_time.split(' ')[0] + '</div><div>' +
                         resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
 
                 } else if (resultArr[i]['message_type'] == 'news' && resultArr[i].read != 'D') {
                     newsContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
                         '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-message ui-btn">' +
-                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
-                        (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
+                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title' +
+                        (resultArr[i].read == "Y" ? " read-font-normal" : "") + '"><div>' +
                         resultArr[i].create_time.split(' ')[0] + '</div><div>' +
                         resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
                 }

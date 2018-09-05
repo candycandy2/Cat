@@ -1134,46 +1134,6 @@ input[type=radio]:checked + label {
     padding: 1.86vw 0 3.59vw 2.77vw;
 }
 
-
-/********************************* viewFAQ **************************************/
-#viewFAQ .ui-content {
-    padding: 0 !important;
-}
-
-.question-list {
-    padding: 3.188vw 3.71vw;
-    border-bottom: 1px solid #d6d6d6;
-}
-
-.question-content {
-    width: 92.58vw;
-    height: 11vw;
-}
-
-.question-content > div:nth-of-type(1) {
-    width: 80vw;
-    float: left;
-    padding:0 3vw 0 2.81vw; 
-}
-
-.question-content > div:nth-of-type(2) {
-    float: right;
-    width: 4vw;
-    height: 4vw;
-    margin-top: 3.5vw;
-}
-
-.question-content > div:nth-of-type(2) img {
-    width: 100%;
-    height: 100%;
-}
-
-.answer-content {
-    display: none;
-    padding: 3.188vw 15vw 3.188vw 5.62vw;
-}
-
-
 /***************************** viewMyCalendar ********************************/
 #viewMyCalendar .ui-content {
     padding: 0 !important;
@@ -1442,7 +1402,6 @@ input[type=radio]:checked + label {
     margin-top: 2.49vw;
     color: #263238;
     font-size: 3.768vw !important;
-    /* font-weight: normal !important; */
     overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
