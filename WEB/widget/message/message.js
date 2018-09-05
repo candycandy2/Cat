@@ -4,6 +4,21 @@ var messageWidget = {
     contentItem: null,
     createMessage: function() {
         var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
+
+        if (messagecontent_ !== null && messagecontent_.lastUpdateTime === undefined) {
+            //it's old data from QPlay2.0
+            //convert to new format
+            var jsonData = {};
+            var date = new Date();
+            jsonData = {
+                lastUpdateTime: date.setDate(date.getDate() - 1),
+                content: messagecontent_
+            };
+            window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
+
+            messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
+        }
+
         //alert(messagecontent);
         if (messagecontent_ === null) {
             content = '<div class="widget-none-msg">' + langStr['wgt_008'] + '<div>';
