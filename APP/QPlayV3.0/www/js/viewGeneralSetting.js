@@ -9,13 +9,11 @@ $("#viewGeneralSetting").pagecontainer({
         function setGeneralSetting() {
             var content = '';
             for (var i in widgetArr) {
-                if (widgetArr[i].enabled) {
-                    content += '<div class="default-item ' +
-                        (widgetArr[i].name == 'carousel' ? 'hide' : 'show') +
-                        '" data-item="' + widgetArr[i].name + '" data-index="' +
-                        i + '"><div>' + widgetArr[i].lang +
-                        '</div><div><img src="img/move.png" width="90%"></div></div>';
-                }
+                content += '<div class="default-item ' +
+                    (widgetArr[i].name == 'carousel' || !widgetArr[i].enabled ? 'hide' : 'show') +
+                    '" data-item="' + widgetArr[i].name + '" data-index="' +
+                    i + '"><div>' + widgetArr[i].lang +
+                    '</div><div><img src="img/move.png" width="90%"></div></div>';
             }
 
             $('#defaultList').html('').append(content);
