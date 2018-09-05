@@ -93,60 +93,68 @@ window.initialSuccess = function (data) {
 //检查widgetlist顺序
 function checkWidgetListOrder() {
     var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
-    var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'))['widget_list'];
+    var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'));
 
-    if (widgetArr == null) {
-        //1. 如果local没有数据，直接获取widget.js
-        var widget_arr = widget.list();
-        
-        //2. 以widget.js为主遍历FunctionList，如果任何一个为不可用，则enabled为false
-        var widgetObj = compareWidgetAndFunction(widget_arr, widget_list);
+    var checkFunctionList = setInterval(function () {
+        if (widget_list != null) {
+            clearInterval(checkFunctionList);
 
-        //3. 数据存到local
-        window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
-        window.sessionStorage.setItem('widgetLength', widgetObj['count']);
+            if (widgetArr == null) {
+                //1. 如果local没有数据，直接获取widget.js
+                var widget_arr = widget.list();
 
-    } else {
-        //1. check widget.js add
-        for (var i = 0; i < widget.list().length; i++) {
-            var found = false;
-            var obj = {};
-            for (var j = 0; j < widgetArr.length; j++) {
-                if (widget.list()[i].id == widgetArr[j].id) {
-                    found = true;
-                    obj = $.extend({}, widgetArr[j], widget.list()[i]);
-                    break;
-                }
-            }
+                //2. 以widget.js为主遍历FunctionList，如果任何一个为不可用，则enabled为false
+                var widgetObj = compareWidgetAndFunction(widget_arr, widget_list['widget_list']);
 
-            if (found) {
-                widgetArr.splice(j, 1, obj);
+                //3. 数据存到local
+                window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
+                window.sessionStorage.setItem('widgetLength', widgetObj['count']);
+
             } else {
-                widgetArr.push(widget.list()[i]);
-            }
-        }
+                //1. check widget.js add
+                for (var i = 0; i < widget.list().length; i++) {
+                    var found = false;
+                    var obj = {};
+                    for (var j = 0; j < widgetArr.length; j++) {
+                        if (widget.list()[i].id == widgetArr[j].id) {
+                            found = true;
+                            obj = $.extend({}, widgetArr[j], widget.list()[i]);
+                            break;
+                        }
+                    }
 
-        //2. check widget.js delete
-        for (var j = 0; j < widgetArr.length; j++) {
-            var found = false;
-            for (var i = 0; i < widget.list().length; i++) {
-                if (widgetArr[j].id == widget.list()[i].id) {
-                    found = true;
-                    break;
+                    if (found) {
+                        widgetArr.splice(j, 1, obj);
+                    } else {
+                        widgetArr.push(widget.list()[i]);
+                    }
                 }
-            }
 
-            if (!found) {
-                widgetArr.splice(j, 1);
-                j--;
+                //2. check widget.js delete
+                for (var j = 0; j < widgetArr.length; j++) {
+                    var found = false;
+                    for (var i = 0; i < widget.list().length; i++) {
+                        if (widgetArr[j].id == widget.list()[i].id) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        widgetArr.splice(j, 1);
+                        j--;
+                    }
+                }
+
+                //3. check FunctionList
+                var widgetObj = compareWidgetAndFunction(widgetArr, widget_list['widget_list']);
+                window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
+                window.sessionStorage.setItem('widgetLength', widgetObj['count']);
             }
         }
 
-        //3. check FunctionList
-        var widgetObj = compareWidgetAndFunction(widgetArr, widget_list);
-        window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
-        window.sessionStorage.setItem('widgetLength', widgetObj['count']);
-    }
+    }, 500);
+
 }
 
 //比较widget.js和FunctionList
