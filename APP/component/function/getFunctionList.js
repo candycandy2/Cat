@@ -36,7 +36,7 @@ function getFunctionList() {
             functionObj['widget_list'] = widgetArr;
             functionObj['function_list'] = functionArr;
             functionObj['app_list'] = appArr;
-            window.localStorage.setItem('FunctionObj', JSON.stringify(functionObj));
+            window.localStorage.setItem('FunctionData', JSON.stringify(functionObj));
 
         }
     };
