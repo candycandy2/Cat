@@ -507,7 +507,6 @@ $("#viewWebNews2-3-1").pagecontainer({
                     loginData.messagecontent = messagecontent;
                     messageArrIndex = null;
 
-                    updateMessageList("closePopup");
                     //如果是read，只需添加普通字体的样式；如果是delete，需要删除对应元素
                     if (status == 'read') {
                         updateNewMessageList(type);
@@ -556,7 +555,7 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
-            if (eventType === "Event" || eventType === "News" || portalURL == "") {
+            if (portalURL == "") {
                 $("#ITSEventNewContent").show();
                 $("#PortalContent").hide();
                 $(".footer-news").show();
