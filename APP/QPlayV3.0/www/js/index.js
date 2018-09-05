@@ -93,12 +93,21 @@ window.initialSuccess = function (data) {
 //检查widgetlist顺序
 function checkWidgetListOrder() {
     var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+    var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'))['widget_list'];
 
     if (widgetArr == null) {
-        window.localStorage.setItem('widgetList', JSON.stringify(widget.list()));
+        //1. 如果local没有数据，直接获取widget.js
+        var widget_arr = widget.list();
+        
+        //2. 以widget.js为主遍历FunctionList，如果任何一个为不可用，则enabled为false
+        var widgetObj = compareWidgetAndFunction(widget_arr, widget_list);
+
+        //3. 数据存到local
+        window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
+        window.sessionStorage.setItem('widgetLength', widgetObj['count']);
 
     } else {
-        //1. check add
+        //1. check widget.js add
         for (var i = 0; i < widget.list().length; i++) {
             var found = false;
             var obj = {};
@@ -117,7 +126,7 @@ function checkWidgetListOrder() {
             }
         }
 
-        //2. check delete
+        //2. check widget.js delete
         for (var j = 0; j < widgetArr.length; j++) {
             var found = false;
             for (var i = 0; i < widget.list().length; i++) {
@@ -131,20 +140,39 @@ function checkWidgetListOrder() {
                 widgetArr.splice(j, 1);
                 j--;
             }
-
         }
 
-        //3. check enabled count
-        var enabledCount = 0;
-        for (var i in widgetArr) {
-            if (widgetArr[i].enabled) {
-                enabledCount++;
+        //3. check FunctionList
+        var widgetObj = compareWidgetAndFunction(widgetArr, widget_list);
+        window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
+        window.sessionStorage.setItem('widgetLength', widgetObj['count']);
+    }
+}
+
+//比较widget.js和FunctionList
+function compareWidgetAndFunction(wdgArr, funArr) {
+    var count = 0;
+    for (var i = 0; i < wdgArr.length; i++) {
+        //先判断widget.js是否可用
+        if (wdgArr[i].enabled) {
+            count++;
+        }
+
+        //再寻找相同的FunctionList是否可用
+        for (var j = 0; j < funArr.length; j++) {
+            if ('widget_' + wdgArr[i].name == funArr[j].function_variable) {
+                if (!wdgArr[i].enabled || funArr[j].function_content.right != 'Y') {
+                    wdgArr[i].enabled = false;
+                }
+                break;
             }
         }
-
-        window.localStorage.setItem('widgetList', JSON.stringify(widgetArr));
-        window.sessionStorage.setItem('widgetLength', enabledCount);
     }
+
+    var obj = {};
+    obj['list'] = wdgArr;
+    obj['count'] = count;
+    return obj;
 }
 
 //先按照开始时间排序，如果开始时间一致再用结束时间排序

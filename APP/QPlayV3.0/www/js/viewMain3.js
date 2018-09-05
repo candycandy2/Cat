@@ -49,8 +49,15 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").one("pageshow", function(event, ui) {
+            //1. check FunctionList show or hide
+            var functionArr = JSON.parse(window.localStorage.getItem('widgetList'));
+            for(var i in functionArr) {
+                if(!functionArr[i].enabled) {
+                    $('.' + functionArr[i].name + 'Widget').hide();
+                }
+            }
 
-            //3. check element count
+            //2. check element count
             var checkWidgetFinish = setInterval(function() {
                 var childrenLength = $('#widgetList').children('div').length;
                 var enabledLength = parseInt(window.sessionStorage.getItem('widgetLength'));
