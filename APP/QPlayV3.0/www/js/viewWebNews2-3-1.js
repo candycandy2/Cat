@@ -469,6 +469,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                             for (i = 0; i < messagecontent.message_list.length; i++) {
                                 if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId) {
                                     messageArrIndex = i;
+                                    break;
                                 }
                             }
                         }
@@ -501,7 +502,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                         }
                     }
 
-                    UpdateMessageListContent(messagecontent);
+                    UpdateMessageListContent(messagecontent,false);//from component/function
 
                     loginData.messagecontent = messagecontent;
                     messageArrIndex = null;
@@ -510,13 +511,6 @@ $("#viewWebNews2-3-1").pagecontainer({
                     //如果是read，只需添加普通字体的样式；如果是delete，需要删除对应元素
                     if (status == 'read') {
                         updateNewMessageList(type);
-
-                        window.plugins.QPushPlugin.getApplicationIconBadgeNumber(function(badge) {
-                            window.plugins.QPushPlugin.setApplicationIconBadgeNumber(Math.max(0, badge - 1));
-                        });
-                        //cordova.plugins.notification.badge.decrease(1, function(badge) {
-                            // badge is now 9 (11 - 2)
-                        //});
                     } else if (status == 'delete') {
                         updateNewMessageList(type, status);
                     }
@@ -677,23 +671,6 @@ $("#viewWebNews2-3-1").pagecontainer({
             messageExist = true;
             $('#messageNotExist').popup('close');
             checkAppPage('viewMessageList');
-        });
-
-        $("#goList.nav-button").on("click", function() {
-            // if (messageFrom == 'viewMain3' || messageFrom == 'push' || messageFrom == 'messageWidget') {
-            //     if (widgetUpdateMsg) {
-            //         $('.messageWidget').message('refresh');
-            //         widgetUpdateMsg = false;
-            //     }
-            //     checkAppPage('viewMain3');
-
-            // } else if (messageFrom == 'viewMessageList') {
-            //     checkAppPage('viewMessageList');
-
-            // } else {
-            //     checkAppPage('#viewMain3');
-            // }
-
         });
 
         $(document).on("click", "#messageLoadErrorPopup #retry", function() {

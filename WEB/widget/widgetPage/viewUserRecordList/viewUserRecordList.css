@@ -5,8 +5,7 @@
 
 .user-record {
     width: 100vw;
-    height: 100vh;
-    position: fixed;
+    height: 120vw;
 }
 
 .user-record ul li {

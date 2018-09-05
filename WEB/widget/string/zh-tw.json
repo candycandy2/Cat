@@ -398,5 +398,101 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "wgt_051",
+    "definition": "QPay結帳",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_052",
+    "definition": "消費券類型",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_053",
+    "definition": "請選擇年份",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_054",
+    "definition": "請選擇月份",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_055",
+    "definition": "交易總額",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_056",
+    "definition": "QPlay使用者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_057",
+    "definition": "非QPlay使用者",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_058",
+    "definition": "*將手機交給消費者輸入",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_059",
+    "definition": "取消結帳",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_060",
+    "definition": "繼續結帳",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_061",
+    "definition": "您的個人資料將登出,",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_062",
+    "definition": "確定取消結帳?",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]
