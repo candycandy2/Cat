@@ -17,9 +17,6 @@ var messagecontent,
     listUpdateMsg = false,
     msgDateFromType = ""; //[month => 1 month] or [skip => skip all data]
 
-//viewMyCalendar
-var reserveCalendar = null;
-
 //viewMessageList
 var portalURL = "",
     messageFrom = 'viewMain3';

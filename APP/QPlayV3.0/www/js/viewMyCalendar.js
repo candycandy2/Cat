@@ -11,7 +11,7 @@ $("#viewMyCalendar").pagecontainer({
 
         /********************************** function ***********************************/
         function initialCalendar(holidayData) {
-            reserveCalendar = new Calendar({
+            var reserveCalendar = new Calendar({
                 renderTo: "#viewMyCalendar #myCalendar",
                 id: "reserveCalendar",
                 language: getCalendarLanguage(browserLanguage),
