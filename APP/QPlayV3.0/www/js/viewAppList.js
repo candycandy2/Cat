@@ -213,7 +213,6 @@ $("#viewAppList").pagecontainer({
                             callback(true);
                         }
 
-                        checkAPPKeyInstalled = true;
                         stopTestAPPInstalled();
                     },
                     function() { //Error callback
@@ -224,7 +223,6 @@ $("#viewAppList").pagecontainer({
                             callback(false);
                         }
 
-                        checkAPPKeyInstalled = false;
                         stopTestAPPInstalled();
                     }
                 );
