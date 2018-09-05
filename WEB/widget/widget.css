@@ -187,6 +187,11 @@
 .widget-msg-list {
     padding: 3.28vw 3.71vw 3.28vw 5.92vw;
     border-bottom: 1px solid #d6d6d6;
+    font-weight: bold;
+}
+
+.normal-font-weight {
+    font-weight: normal;
 }
 
 .widget-msg-list:last-of-type {
