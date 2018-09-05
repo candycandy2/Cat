@@ -3,6 +3,21 @@
     padding: 0 !important;
 }
 
+.shop-record-scroll {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.shop-record-scroll ul li {
+    width: 88.62vw;
+    height: 10.79vw;
+    padding: 6.87vw 3.71vw 2.14vw 7.67vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
 .shop-record-total {
     width: 100vw;
     /* height: 50vw; */
@@ -18,7 +33,7 @@
 
 .shop-record-money {
     height: 10vw;
-    padding-top: 2vw;
+    padding-top: 1vw;
 }
 
 .shop-record-money > div {
@@ -26,7 +41,7 @@
 }
 
 .shop-record-money > div:nth-of-type(1) {
-    width: 38%;
+    width: 35%;
     height: 100%;
     text-align: right;
     padding-right: 2vw;
@@ -35,7 +50,7 @@
 }
 
 .shop-record-money > div:nth-of-type(2) {
-    width: 58%;
+    width: 60%;
     height: 100%;
     color: #253137;
     font-size: 12.54vw;
@@ -48,23 +63,6 @@
     padding-top: 4.3vw;
     padding-bottom: 6vw;
     color: #989898;
-}
-
-.shop-record-scroll {
-    width: 100vw;
-    height: 100vh;
-}
-
-.shop-record-scroll > div {
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-}
-
-.shop-record-scroll ul li {
-    width: 88.62vw;
-    height: 10.79vw;
-    padding: 6.87vw 3.71vw 2.14vw 7.67vw;
-    border-bottom: 1px solid #d6d6d6;
 }
 
 .shop-record-list > div:nth-of-type(1) {

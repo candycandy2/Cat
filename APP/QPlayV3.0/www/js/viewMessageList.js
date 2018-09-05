@@ -116,19 +116,27 @@ $("#viewMessageList").pagecontainer({
             return today;
         }
 
-        function checkCompany() {
-            if (loginData['company'] == 'Qisda' || loginData['company'] == 'BenQ') {
-                $('div[data-item="announcement"]').show();
-                $('div[data-item="communication"]').show();
-                $('div[data-item="cip"]').show();
-                $('div[data-item="csd"]').show();
-                $('div[data-item="its"]').show();
-            } else {
-                $('div[data-item="announcement"]').hide();
-                $('div[data-item="communication"]').hide();
-                $('div[data-item="cip"]').hide();
-                $('div[data-item="csd"]').hide();
-                $('div[data-item="its"]').hide();
+        function checkPortalByFunctionList() {
+            var function_list = JSON.parse(window.localStorage.getItem('FunctionData'))['function_list'];
+            for (var i in function_list) {
+                //1. 先找到News
+                if (function_list[i].function_variable == 'News') {
+                    //2. 再检查是否可用
+                    if (function_list[i].function_content.right == 'Y') {
+                        $('div[data-item="announcement"]').show();
+                        $('div[data-item="communication"]').show();
+                        $('div[data-item="cip"]').show();
+                        $('div[data-item="csd"]').show();
+                        $('div[data-item="its"]').show();
+                    } else {
+                        $('div[data-item="announcement"]').hide();
+                        $('div[data-item="communication"]').hide();
+                        $('div[data-item="cip"]').hide();
+                        $('div[data-item="csd"]').hide();
+                        $('div[data-item="its"]').hide();
+                    }
+                    break;
+                }
             }
         }
 
@@ -150,7 +158,7 @@ $("#viewMessageList").pagecontainer({
             //var resultArr = loginData['messagecontent']['message_list'];
             var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
             var resultArr = null;
-            if(messagecontent_ != null)
+            if (messagecontent_ != null)
                 resultArr = messagecontent_.content.message_list;
             //console.log(resultArr);
 
@@ -160,16 +168,16 @@ $("#viewMessageList").pagecontainer({
                 if (resultArr[i]['message_type'] == 'event' && resultArr[i].read != 'D') {
                     eventContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
                         '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-message ui-btn">' +
-                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
-                        (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
+                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title' +
+                        (resultArr[i].read == "Y" ? " read-font-normal" : "") + '"><div>' +
                         resultArr[i].create_time.split(' ')[0] + '</div><div>' +
                         resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
 
                 } else if (resultArr[i]['message_type'] == 'news' && resultArr[i].read != 'D') {
                     newsContent += '<li data-icon="false" data-rowid="' + resultArr[i].message_send_row_id +
                         '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-message ui-btn">' +
-                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title ' +
-                        (resultArr[i].read == "Y" ? "read-font-normal" : "") + '"><div>' +
+                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title' +
+                        (resultArr[i].read == "Y" ? " read-font-normal" : "") + '"><div>' +
                         resultArr[i].create_time.split(' ')[0] + '</div><div>' +
                         resultArr[i].message_title + '</div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
                 }
@@ -642,8 +650,8 @@ $("#viewMessageList").pagecontainer({
         $("#viewMessageList").one("pageshow", function (event, ui) {
             //filter placeholder
             $('#msgFilter').attr('placeholder', langStr['str_080']);
-            //only BenQ & Qisda can read portal
-            checkCompany();
+            //check can not use portal 
+            checkPortalByFunctionList();
             //content
             createMessageByType();
         });
@@ -779,7 +787,7 @@ $("#viewMessageList").pagecontainer({
             $('.header-search').hide();
             $('#viewMessageList .q-btn-header').show();
             $('#cancelSearch').hide();
-            if(messageType == 'news' || messageType == 'event') {
+            if (messageType == 'news' || messageType == 'event') {
                 $('#editListview').show();
             }
             $('#searchListview').show();

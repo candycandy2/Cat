@@ -8,10 +8,17 @@ $("#viewMain3").pagecontainer({
             if (widgetListDirty == 'Y' || widgetListDirty == null) {
 
                 var arr = JSON.parse(window.localStorage.getItem('widgetList'));
-                for (var i = 0; i < arr.length - 1; i++) {
-                    $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
-                }
-                window.sessionStorage.setItem('widgetListDirty', 'N');
+
+                var widgetOrder = setInterval(function() {
+                    if(arr != null) {
+                        clearInterval(widgetOrder);
+
+                        for (var i = 0; i < arr.length - 1; i++) {
+                            $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
+                        }
+                        window.sessionStorage.setItem('widgetListDirty', 'N');
+                    }
+                },500);
             }
         }
 
@@ -49,8 +56,15 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").one("pageshow", function(event, ui) {
+            //1. check FunctionList show or hide
+            var functionArr = JSON.parse(window.localStorage.getItem('widgetList'));
+            for(var i in functionArr) {
+                if(!functionArr[i].enabled) {
+                    $('.' + functionArr[i].name + 'Widget').hide();
+                }
+            }
 
-            //3. check element count
+            //2. check element count
             var checkWidgetFinish = setInterval(function() {
                 var childrenLength = $('#widgetList').children('div').length;
                 var enabledLength = parseInt(window.sessionStorage.getItem('widgetLength'));
@@ -102,7 +116,7 @@ $("#viewMain3").pagecontainer({
 
         //跳转到FAQ
         $('.faq-link').on('click', function() {
-            checkAppPage('viewFAQ');
+            checkWidgetPage('viewFAQ');
         });
 
         //跳转到设定
