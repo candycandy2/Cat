@@ -5,14 +5,6 @@ var pageList = ["viewMain3"];
 var pageVisitedList = ["viewMain3"];
 var appSecretKey = "swexuc453refebraXecujeruBraqAc4e";
 
-//viewMain2
-// var appcategorylist;
-// var applist;
-// var appmultilang;
-
-//viewAppDetail2-2
-var checkAPPKeyInstalled = false;
-
 //viewNewsEvents
 var messagecontent,
     selectAppIndex = 0,
