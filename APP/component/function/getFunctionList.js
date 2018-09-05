@@ -5,10 +5,8 @@ function getFunctionList() {
     var queryStr = "&device_type=" + device.platform;
 
     this.successCallback = function (data) {
-        console.log(data);
 
         if (data['result_code'] == "1") {
-            //window.localStorage.removeItem('FunctionList');
             var jsonData = {};
             jsonData = {
                 lastUpdateTime: new Date(),
