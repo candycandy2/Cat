@@ -140,6 +140,7 @@ $("#viewFamilyData").pagecontainer({
                     //重新顯示眷屬列表
                     QueryFamilyList();
                     viewPersonalInsuranceShow = false;
+                    tab1FamiScrollHeight = false;
                 }else if (data['ResultCode'] === "046907") {
                     popupMsgInit('.familyErrorMsg');
                 }
@@ -176,6 +177,7 @@ $("#viewFamilyData").pagecontainer({
                     $('.family-edit-btn').trigger('click');
                     $("#deleteFamilyListMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                     viewPersonalInsuranceShow = false; 
+                    tab1FamiScrollHeight = false;
                 }else if (data['ResultCode'] === "046905") {
                     $(".deleteErrorMsg .hasInsurErr").addClass('addInlineBlock');  
                     $(".deleteErrorMsg .pendingInsurErr").removeClass('addInlineBlock');   
@@ -201,7 +203,6 @@ $("#viewFamilyData").pagecontainer({
             var fixHeight = $('.family-edit-btn').height();
             var iconHeight = ($('.family-add-img').height())*2;
             var contentHeight = $('#familyList').height();
-            //var mainHeight = $('.'+ className +' > div').height() + iconHeight;
             var totalHeight;
             if (device.platform === "iOS") {
                 totalHeight = (headHeight + fixHeight + contentHeight + iconHeight + iOSFixedTopPX()).toString();
