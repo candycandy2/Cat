@@ -22,9 +22,9 @@ static NSInteger registrationIDFailcode = 0;
 
 @implementation QPushPlugin
 +(void)registerForRemoteNotification{
-    
+
     NSString *advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    
+
     //2.1.9版本新增获取registration id block接口。
     [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationIDReturn) {
         if(resCode == 0){
@@ -36,7 +36,7 @@ static NSInteger registrationIDFailcode = 0;
             registrationIDFailcode = resCode;
         }
     }];
-    
+
     // 3.0.0及以后版本注册可以这样写，也可以继续用旧的注册方式
     JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
     entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound;
@@ -53,7 +53,7 @@ static NSInteger registrationIDFailcode = 0;
     }
     [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
     NSLog(@"registerForRemoteNotificationConfig");
-    
+
     //如不需要使用IDFA，advertisingIdentifier 可为nil
     //    [JPUSHService setupWithOption:launchOptions appKey:appKey
     //                          channel:channel
@@ -92,12 +92,12 @@ static NSInteger registrationIDFailcode = 0;
                       selector:@selector(networkDidReceiveMessage:)
                           name:kJPFNetworkDidReceiveMessageNotification
                         object:nil];
-    
+
     [defaultCenter addObserver:self
                       selector:@selector(networkDidReceiveNotification:)
                           name:kJPushPluginReceiveNotification
                         object:nil];
-    
+
     if (_launchOptions) {
         NSDictionary *userInfo = [_launchOptions
                                   valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -109,10 +109,8 @@ static NSInteger registrationIDFailcode = 0;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('jpush.openNotification',%@)",jsonString]];
                 });
-                
             }
         }
-        
     }
 }
 
@@ -132,6 +130,8 @@ static NSInteger registrationIDFailcode = 0;
     }
     NSNumber *badge = [argument objectAtIndex:0];
     [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
+    [JPUSHService setBadge:[badge intValue]];
+    NSLog(@"JPUSHService setBadge %d",[badge intValue]);
 }
 
 -(void)getApplicationIconBadgeNumber:(CDVInvokedUrlCommand *)command {
@@ -143,30 +143,30 @@ static NSInteger registrationIDFailcode = 0;
 #pragma mark- 内部方法
 +(void)setLaunchOptions:(NSDictionary *)theLaunchOptions{
     _launchOptions = theLaunchOptions;
-    
+
     //Fix #13335
     //[JPUSHService setDebugMode];
-    
+
     [QPushPlugin registerForRemoteNotification];
-    
+
     //read appkey and channel from PushConfig.plist
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:JPushConfigFileName ofType:@"plist"];
     if (plistPath == nil) {
         NSLog(@"error: PushConfig.plist not found");
         assert(0);
     }
-    
+
     NSMutableDictionary *plistData = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
     NSString * appkey       = [plistData valueForKey:JP_APP_KEY];
     NSString * channel      = [plistData valueForKey:JP_APP_CHANNEL];
     NSNumber * isProduction = [plistData valueForKey:JP_APP_ISPRODUCTION];
     NSNumber *isIDFA        = [plistData valueForKey:JP_APP_ISIDFA];
-    
+
     if (!appkey || appkey.length == 0) {
         NSLog(@"error: app key not found in PushConfig.plist ");
         assert(0);
     }
-    
+
     NSString *advertisingId = nil;
     if(isIDFA){
         advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
@@ -176,27 +176,27 @@ static NSInteger registrationIDFailcode = 0;
                           channel:channel
                  apsForProduction:[isProduction boolValue]
             advertisingIdentifier:advertisingId];
-    
+
 }
 
 #pragma mark 将参数返回给js
 -(void)handleResultWithValue:(id)value command:(CDVInvokedUrlCommand*)command{
     CDVPluginResult *result = nil;
     CDVCommandStatus status = CDVCommandStatus_OK;
-    
+
     if ([value isKindOfClass:[NSString class]]) {
         value = [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     } else if ([value isKindOfClass:[NSNull class]]) {
         value = nil;
     }
-    
+
     if ([value isKindOfClass:[NSObject class]]) {
         result = [CDVPluginResult resultWithStatus:status messageAsString:value];//NSObject 类型都可以
     } else {
         NSLog(@"Cordova callback block returned unrecognized type: %@", NSStringFromClass([value class]));
         result = nil;
     }
-    
+
     if (!result) {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
@@ -208,15 +208,15 @@ static NSInteger registrationIDFailcode = 0;
     if (notification) {
         NSDictionary *userInfo = [notification userInfo];
         //NSLog(@"%@",userInfo);
-        
+
         NSError  *error;
         NSData   *jsonData   = [NSJSONSerialization dataWithJSONObject:userInfo options:0 error:&error];
         NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
-        
+
         //NSLog(@"%@",jsonString);
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+
             [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('qpush.receiveMessage',%@)",jsonString]];
         });
     }
@@ -224,10 +224,10 @@ static NSInteger registrationIDFailcode = 0;
 
 #pragma mark 接收到APNS通知
 -(void)networkDidReceiveNotification:(id)notification{
-    
+
     NSError  *error;
     NSDictionary *userInfo = [notification object];
-    
+
     NSData   *jsonData   = [NSJSONSerialization dataWithJSONObject:userInfo options:0 error:&error];
     NSString *jsonString = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
     switch ([UIApplication sharedApplication].applicationState) {
