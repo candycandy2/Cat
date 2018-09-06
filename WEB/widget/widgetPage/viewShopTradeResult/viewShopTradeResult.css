@@ -1,0 +1,55 @@
+/******************************* viewShopTradeResult *******************************/
+#viewShopTradeResult .ui-content {
+    padding: 0 !important;
+}
+
+.shop-trade-main {
+    width: 90vw;
+    height: 100vh;
+    position: fixed;
+    background: #FFF;
+    padding: 0 4.9vw;
+}
+
+.shop-trade-head {
+    width: 100%;
+    padding-top: 6.5vw;
+    border-bottom: 1px solid #D6D6D6;
+}
+
+.shop-trade-normal {
+    width: 100%;
+    padding-top: 4.3vw;
+    border-bottom: 1px solid #D6D6D6;
+}
+
+.shop-trade-head > div:nth-of-type(1),
+.shop-trade-normal > div:nth-of-type(1) {
+    height: 6vw;
+    color: #0F0F0F;
+    font-size: 4.18vw;
+}
+
+.shop-trade-head > div:nth-of-type(2),
+.shop-trade-normal > div:nth-of-type(2) {
+    height: 6vw;
+    color: #2C87BA;
+    font-size: 4.18vw;
+}
+
+.shop-trade-btn {
+    width: 100%;
+    height: 10vw;
+    padding-top: 10vw;
+}
+
+.shop-trade-back {
+    width: 35.5vw;
+    height: 100%;
+    margin-left: 27.25vw;
+    background: #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+    color: #989898;
+    font-size: 4.18vw;
+}

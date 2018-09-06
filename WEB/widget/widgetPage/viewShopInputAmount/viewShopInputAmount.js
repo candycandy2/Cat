@@ -1,4 +1,4 @@
-$("#viewUserInputAmount").pagecontainer({
+$("#viewShopInputAmount").pagecontainer({
     create: function (event, ui) {
 
         var payNum = '';
@@ -10,20 +10,20 @@ $("#viewUserInputAmount").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewUserInputAmount").on("pagebeforeshow", function (event, ui) {
+        $("#viewShopInputAmount").on("pagebeforeshow", function (event, ui) {
 
         });
 
-        $("#viewUserInputAmount").one("pageshow", function (event, ui) {
+        $("#viewShopInputAmount").one("pageshow", function (event, ui) {
             $('.shop-input-name').text(loginData['loginid']);
             $('.shop-input-no').text(loginData['emp_no']);
         });
 
-        $("#viewUserInputAmount").on("pageshow", function (event, ui) {
+        $("#viewShopInputAmount").on("pageshow", function (event, ui) {
             
         });
 
-        $("#viewUserInputAmount").on("pagehide", function (event, ui) {
+        $("#viewShopInputAmount").on("pagehide", function (event, ui) {
 
         });
 
@@ -48,7 +48,7 @@ $("#viewUserInputAmount").pagecontainer({
                 //判断输入金额是否小于剩余金额
                 if (Number(payNum) < 10000) {
                     payNum += num;
-                    $('.user-pay-number').text(payNum);
+                    $('.shop-input-number').text(payNum);
 
                 } else {
                     //popup'您的余额不足喔'
@@ -58,16 +58,16 @@ $("#viewUserInputAmount").pagecontainer({
 
             //'下一步'按钮可用
             if(payNum.length > 0) {
-                $('.user-pay-next').addClass('button-active');
+                $('.shop-input-next').addClass('button-active');
             }
 
         })
 
         //回删输入金额
-        $('.user-pay-clear-one').on('click', function () {
+        $('.shop-input-clear-one').on('click', function () {
             if (payNum.length > 1) {
                 payNum = payNum.substring(0, payNum.length - 1);
-                $('.user-pay-number').text(payNum);
+                $('.shop-input-number').text(payNum);
                 
             } else {
                 //初始化
@@ -76,18 +76,50 @@ $("#viewUserInputAmount").pagecontainer({
         });
 
         //清空所输金额
-        $('.user-pay-clear-all').on('click', function () {
+        $('.shop-input-clear-all').on('click', function () {
             //初始化
             initialPage();
         });
 
+        //取消结帐提示
+        $('.amount-cancel-pay').on('click', function () {
+            $('#logoutUserAmount').popup('open');
+        });
+
+        //确定继续结帐
+        $('#viewShopInputAmount .btn-cancel').on('click', function () {
+            $('#logoutUserAmount').popup('close');
+        });
+
+        //确定取消结帐
+        $('#confirmLogoutUserAmount').on('click', function () {
+            $('#logoutUserAmount').popup('close');
+            //select -> amount -> pwd
+            //所以从后往前找，找到select后记录index
+            var index = 0;
+            for (var i = pageVisitedList.length - 1; i > -1; i--) {
+                if (pageVisitedList[i] == 'viewShopSelectUser') {
+                    index = i;
+                }
+            }
+
+            var arr = [];
+            for (var i = 0; i < index + 2; i++) {
+                arr.push(pageVisitedList[i]);
+            }
+            pageVisitedList = arr;
+
+            //执行back逻辑
+            onBackKeyDown();
+        });
+
         //下一步
-        $('.user-pay-next').on('click', function () {
+        $('.shop-input-next').on('click', function () {
             var has = $(this).hasClass('button-active');
             if(has) {
                 //判断输入金额是否小于剩余金额
                 if (Number(payNum) < 10000) {
-                    checkWidgetPage('viewUserInputPwd');
+                    checkWidgetPage('viewShopInputPwd');
                 } else {
                     //popup'您的余额不足喔'
                     popupMsgInit('.overBudgetMsg');
