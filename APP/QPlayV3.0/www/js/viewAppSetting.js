@@ -230,6 +230,11 @@ $("#viewAppSetting").pagecontainer({
             window.CacheClear(clearSuccess, clearError);
         });
 
+        //修改密码
+        $('.change-password').on('click', function () {
+            checkWidgetPage('viewShopChangePwd');
+        });
+
         //注销
         $("#logout").on("click", function () {
             $('#confirmLogout').popup('open');
