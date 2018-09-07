@@ -20,6 +20,7 @@ if(File::exists($deployJenkinsPath)){
     @if(strtolower(\Config::get('app.env')) != 'production') - {{\Config::get('app.env')}}@endif</p>
     <p>{{trans("messages.SYS_SUGGEST_BROWSER")}}</p>
     @if($showJenkinsInfo)
-    <p>{{trans("messages.JENKINS_DEPLOY_INFORMATION")}}: {{$contents}}</p>
+    <p>{{trans("messages.JENKINS_DEPLOY_INFORMATION")}}:</p>
+    <p>{!!nl2br($contents)!!}</p>
     @endif
 @endsection
