@@ -24,6 +24,22 @@ $("#viewMain3").pagecontainer({
             }
         }
 
+        //设置高度
+        function setHomepageHeight() {
+            var headHeight = $('#viewMain3 .page-header').height();
+            var widgetHeight = $('#widgetList').height();
+            var linkHeight = $('.other-link').height();
+
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (headHeight + widgetHeight + linkHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (headHeight + widgetHeight + linkHeight).toString();
+            }
+
+            $('.main-scroll > div').css('height', totalHeight + 'px');
+        }
+
         var pullControl = null;
         $(".main-scroll").on('scroll', function () {
             //不同设备不同处理
@@ -58,6 +74,10 @@ $("#viewMain3").pagecontainer({
                                 //do something for refresh
                                 widget.clear();
                                 widget.show();
+                                //数据量可能有变化，需重新计算高度
+                                setTimeout(function () {
+                                    setHomepageHeight();
+                                }, 1000);
                             }
                         });
                     }
@@ -102,18 +122,7 @@ $("#viewMain3").pagecontainer({
                     clearInterval(checkWidgetFinish);
 
                     setTimeout(function () {
-                        var mainHeight = $('.main-scroll > div').height();
-                        var headHeight = $('#viewMain3 .page-header').height();
-
-                        var totalHeight;
-                        if (device.platform === "iOS") {
-                            totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
-                        } else {
-                            totalHeight = (mainHeight + headHeight).toString();
-                        }
-
-                        $('.main-scroll > div').css('height', totalHeight + 'px');
-
+                        setHomepageHeight();
                     }, 800);
                 }
             }, 500);
