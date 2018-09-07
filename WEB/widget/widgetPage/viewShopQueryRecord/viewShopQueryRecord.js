@@ -13,6 +13,13 @@ $("#viewShopQueryRecord").pagecontainer({
                 }
             }
 
+            // var type_list = JSON.parse(window.localStorage.getItem('point_type_list'))['content'];
+            // for (var i in type_list) {
+            //     typeData["option"][i] = {};
+            //     typeData["option"][i]["value"] = type_list.point_type_id;
+            //     typeData["option"][i]["text"] = type_list.point_type_name;
+            // }
+
             typeData["option"][0] = {};
             typeData["option"][0]["value"] = "1";
             typeData["option"][0]["text"] = "BenQ消费券";
@@ -65,7 +72,7 @@ $("#viewShopQueryRecord").pagecontainer({
 
 
         //检查表单
-        function checkForm() {
+        function checkForm(type) {
             var typeVal = $('#shopQueryType').val();
             var startVal = $('#shopStartDate').val();
             var endVal = $('#shopEndDate').val();
@@ -73,6 +80,15 @@ $("#viewShopQueryRecord").pagecontainer({
                 $('.shop-query-search').addClass('button-active');
             } else {
                 $('.shop-query-search').removeClass('button-active');
+            }
+
+            if (type !== null) {
+                var queryData = {
+                    type: typeVal,
+                    start: startVal.replace(/\//g, '-').substring(0, 7),
+                    end: endVal.replace(/\//g, '-').substring(0, 7)
+                };
+                window.sessionStorage.setItem('query_shop_record', JSON.stringify(queryData));
             }
         }
 
@@ -126,7 +142,7 @@ $("#viewShopQueryRecord").pagecontainer({
         $('.shop-query-search').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
-                //checkAppPage('viewShopRecordList');
+                checkForm('save');
                 checkWidgetPage('viewShopRecordList');
             }
         });
