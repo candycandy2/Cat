@@ -339,15 +339,9 @@ function scrollLeftOffset(margin) {
 }
 
 //Change event type
-$(document).on("click", ".event-type", function() {
-    $("#eventTypeSelect").panel("open");
-});
-
-function pageBeforeShow(pageID) {
-    if (pageID == 'viewAppList') {
-
-    }
-}
+// $(document).on("click", ".event-type", function() {
+//     $("#eventTypeSelect").panel("open");
+// });
 
 //[Android]Handle the back button
 function onBackKeyDown() {
