@@ -294,17 +294,8 @@ $("#viewAccount").pagecontainer({
         }
 
         function Expiretime() {
-            var storagetimeYear = JSON.parse(localStorage.getItem('localYear'));
-            var storagetimeMon = JSON.parse(localStorage.getItem('localMonth'));
-            var storagetimeDate = JSON.parse(localStorage.getItem('localDate'));
-
-            if (storagetimeMon != null) {
-                window.UTCtime = Math.round(Date.UTC(storagetimeYear, storagetimeMon - 1, storagetimeDate) / 1000);
-                Parameter = UTCtime;
-            } else if (storagetimeMon == null) {
-                Parameter = TWOMonthDate;
-            }
-
+            //force update
+            Parameter = TWOMonthDate;
             var AccountingRate = new GetAccountingRate(); //call API1
         }
 
