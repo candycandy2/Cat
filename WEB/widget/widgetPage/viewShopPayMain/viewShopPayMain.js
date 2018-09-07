@@ -20,13 +20,11 @@ $("#viewShopPayMain").pagecontainer({
         /********************************** dom event *************************************/
         //店家结帐
         $('.shop-pay').on('click', function () {
-            checkAppPage('viewShopSelectUser');
-            //checkWidgetPage('viewShopSelectUser');
+            checkWidgetPage('viewShopSelectUser');
         });
 
         //店家记录
         $('.shop-record').on('click', function () {
-            //checkAppPage('viewShopQueryRecord');
             checkWidgetPage('viewShopQueryRecord');
         });
 

@@ -6,10 +6,6 @@ $("#viewNoneInstall").pagecontainer({
 
         });
 
-        $("#viewNoneInstall").scroll(function() {
-
-        });
-
         $("#viewNoneInstall").on("pageshow", function(event, ui) {
 
         });

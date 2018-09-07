@@ -1,0 +1,192 @@
+/******************************** viewShopInputAmount ********************************/
+#viewShopInputAmount .ui-content {
+    padding: 0 !important;
+}
+
+.shop-input {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
+
+.shop-input-title {
+    width: 92.58vw;
+    height: 10vw;
+    padding: 6.5vw 3.71vw;
+    background: #ECEEEF;
+}
+
+.shop-input-title > div {
+    float: left;
+}
+
+.shop-input-title > div:nth-of-type(1) {
+    width: 12vw;
+    height: 100%;
+}
+
+.shop-input-title > div:nth-of-type(2) {
+    width: 50vw;
+    height: 100%;
+}
+
+.shop-input-name {
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.shop-input-no {
+    color: #989898;
+    font-size: 4.18vw;
+}
+
+.shop-input-title > div:nth-of-type(3) {
+    width: 28vw;
+    height: 100%;
+}
+
+.shop-input-remain {
+    width: 100%;
+    height: 50%;
+    color: #253137;
+    font-size: 4.18vw;
+    text-align: right;
+}
+
+.shop-input-left {
+    width: 100%;
+    height: 50%;
+    text-align: right;
+}
+
+.shop-input-unit {
+    color: #989898;
+    font-size: 2.93vw;
+    position: absolute;
+    margin-top: 0.6vw;
+    margin-left: -7vw;
+}
+
+.shop-input-total {
+    color: #253137;
+    font-size: 6.18vw;
+}
+
+.shop-input-main {
+    width: 100vw;
+    height: 60vw;
+    background: #FFF;
+}
+
+.shop-input-text {
+    width: 92.58vw;
+    height: 20vw;
+    margin-left: 3.71vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.shop-input-shop {
+    width: 100%;
+    padding: 3.66vw 0 0 2vw;
+}
+
+.shop-input-money {
+    width: 100%;
+    height: 10vw;
+    padding-left: 2vw;
+}
+
+.shop-input-money > div {
+    float: left;
+}
+
+.shop-input-money > div:nth-of-type(1) {
+    width: 30vw;
+    margin-top: 3vw;
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.shop-input-money > div:nth-of-type(2) {
+    width: 50vw;
+    height: 100%;
+    text-align: right;
+    color: #253137;
+    font-size: 8.37vw;
+    overflow: hidden;
+}
+
+.shop-input-money > div:nth-of-type(3) {
+    width: 12vw;
+    height: 100%;
+}
+
+.shop-input-money > div:nth-of-type(3) img {
+    width: 5vw;
+    margin-left: 3vw;
+    margin-top: 3vw;
+}
+
+.shop-input-btn {
+    width: 100vw;
+    height: 10vw;
+    margin-top: 5.37vw;
+}
+
+.shop-input-next {
+    width: 33.5vw;
+    height: 100%;
+    margin-left: 33.3vw;
+    background: #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+    color: #989898;
+    font-size: 4.18vw;
+}
+
+.shop-input-keyboard {
+    width: 100vw;
+    height: 80vw;
+    position: fixed;
+    bottom: 0;
+}
+
+.shop-input-keyboard > div {
+    width: 33vw;
+    height: 20vw;
+    background: #F6F6F6;
+    display: inline-block;
+    text-align: center;
+    line-height: 20vw;
+    border: 1px solid #d6d6d6;
+    margin-bottom: -1px;
+    margin-right: -1px;
+    color: #666666;
+    font-size: 8.37vw;
+}
+
+.shop-input-foot {
+    width: 100vw;
+    padding: 5.37vw 0;
+    text-align: center;
+    color: #2A87BA;
+    font-size: 4.18vw;
+}
+
+.overBudgetMsg .ui-content>.header {
+    padding: 0 5.36vw;
+    margin-top: 10vw;
+}
+
+.overBudgetMsg .ui-content>.footer {
+    margin-top: 10%;
+}
+
+.logoutUserAmount .ui-content>.header {
+    padding: 0 5.36vw;
+    margin-top: 10vw;
+}
+
+.logoutUserAmount .ui-content>.footer {
+    margin-top: 10%;
+}
