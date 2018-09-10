@@ -82,7 +82,7 @@ $("#viewShopQueryRecord").pagecontainer({
                 $('.shop-query-search').removeClass('button-active');
             }
 
-            if (type !== null) {
+            if (type == 'save') {
                 var queryData = {
                     type: typeVal,
                     start: startVal.replace(/\//g, '-').substring(0, 7),

@@ -12,16 +12,18 @@ $("#viewMyCalendar").pagecontainer({
 
         /********************************** function ***********************************/
         function initialCalendar(holidayData) {
+            var calendar_language = getCalendarLanguage(browserLanguage);
+            var reserve_data = JSON.parse(window.sessionStorage.getItem('reserveList'));
             reserveCalendar = new Calendar({
                 renderTo: "#viewMyCalendar #myCalendar",
                 id: "reserveCalendar",
-                language: getCalendarLanguage(browserLanguage),
+                language: calendar_language,
                 show_days: true,
                 weekstartson: 0,
                 markToday: true,
                 markWeekend: true,
                 showNextyear: true,
-                reserveData: JSON.parse(sessionStorage.getItem('reserveList')),
+                reserveData: reserve_data,
                 infoData: holidayData,
                 showInfoListTo: "#viewMyCalendar .infoList",
                 changeDateEventListener: function (year, month) {
@@ -241,7 +243,8 @@ $("#viewMyCalendar").pagecontainer({
             var calendarDirty = window.sessionStorage.getItem('CalendarDirty');
             if(calendarDirty == 'Y') {
                 //calendar
-                reserveCalendar.refreshReserve(JSON.parse(window.sessionStorage.getItem('reserveList')));
+                var reserve_data = JSON.parse(window.sessionStorage.getItem('reserveList'));
+                reserveCalendar.refreshReserve(reserve_data);
                 //carousel
                 createCarousel();
                 //sessionStorage
