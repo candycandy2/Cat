@@ -73,7 +73,7 @@
   },
   {
     "term": "wgt_010",
-    "definition": "消费券余额e",
+    "definition": "Available balance",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -97,7 +97,7 @@
   },
   {
     "term": "wgt_013",
-    "definition": "交易记录e",
+    "definition": "Transaction record",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -105,7 +105,7 @@
   },
   {
     "term": "wgt_014",
-    "definition": "更改交易密码e",
+    "definition": "Change transcation password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -177,7 +177,7 @@
   },
   {
     "term": "wgt_023",
-    "definition": "交易状态e",
+    "definition": "Transaction status",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -193,7 +193,7 @@
   },
   {
     "term": "wgt_025",
-    "definition": "工号e",
+    "definition": "Employee ID",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -201,7 +201,7 @@
   },
   {
     "term": "wgt_026",
-    "definition": "交易码e",
+    "definition": "Transaction code",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -209,7 +209,7 @@
   },
   {
     "term": "wgt_027",
-    "definition": "交易金额e",
+    "definition": "Transaction amount",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -217,7 +217,7 @@
   },
   {
     "term": "wgt_028",
-    "definition": "时间e",
+    "definition": "Time",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -233,7 +233,7 @@
   },
   {
     "term": "wgt_030",
-    "definition": "返回e",
+    "definition": "Back",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -241,7 +241,7 @@
   },
   {
     "term": "wgt_031",
-    "definition": "交易类型e",
+    "definition": "Transaction type",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "wgt_032",
-    "definition": "请选择交易类型e",
+    "definition": "Please select transaction type",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -273,7 +273,7 @@
   },
   {
     "term": "wgt_035",
-    "definition": "交易时间e",
+    "definition": "Transcation time",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -281,7 +281,7 @@
   },
   {
     "term": "wgt_036",
-    "definition": "起e",
+    "definition": "From",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -289,7 +289,7 @@
   },
   {
     "term": "wgt_037",
-    "definition": "迄e",
+    "definition": "To",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -297,7 +297,7 @@
   },
   {
     "term": "wgt_038",
-    "definition": "请选择e",
+    "definition": "Please select",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -305,7 +305,7 @@
   },
   {
     "term": "wgt_039",
-    "definition": "查询e",
+    "definition": "Query",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -313,7 +313,7 @@
   },
   {
     "term": "wgt_040",
-    "definition": "更改密码e",
+    "definition": "Change password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -321,7 +321,7 @@
   },
   {
     "term": "wgt_041",
-    "definition": "更改e",
+    "definition": "Change",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "wgt_045",
-    "definition": "请重新输入!e",
+    "definition": "Please input again",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -393,7 +393,7 @@
   },
   {
     "term": "wgt_050",
-    "definition": "确定e",
+    "definition": "OK",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -417,7 +417,7 @@
   },
   {
     "term": "wgt_053",
-    "definition": "请选择年份e",
+    "definition": "Please select year",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -425,7 +425,7 @@
   },
   {
     "term": "wgt_054",
-    "definition": "请选择月份e",
+    "definition": "Please select month",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -441,7 +441,7 @@
   },
   {
     "term": "wgt_056",
-    "definition": "QPlay使用者e",
+    "definition": "QPlay user",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -449,7 +449,7 @@
   },
   {
     "term": "wgt_057",
-    "definition": "非QPlay使用者e",
+    "definition": "Non QPlay user",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -529,7 +529,7 @@
   },
   {
     "term": "wgt_067",
-    "definition": "请输入工号e",
+    "definition": "Please input employee ID",
     "context": "",
     "term_plural": "",
     "reference": "",
