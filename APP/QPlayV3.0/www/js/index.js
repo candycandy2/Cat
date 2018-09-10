@@ -153,14 +153,20 @@ function compareWidgetAndFunction(wdgArr, funArr) {
             count++;
         }
 
+        var found = false;
         //再寻找相同的FunctionList是否可用
         for (var j = 0; j < funArr.length; j++) {
             if ('widget_' + wdgArr[i].name == funArr[j].function_variable) {
+                found = true;
                 if (!wdgArr[i].enabled || funArr[j].function_content.right != 'Y') {
                     wdgArr[i].enabled = false;
                 }
                 break;
             }
+        }
+
+        if(!found) {
+            wdgArr[i].enabled = false;
         }
     }
 
