@@ -2,9 +2,8 @@
 var messageWidget = {
 
     contentItem: null,
-    createMessage: function () {
+    createMessage: function() {
         var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
-
         if (messagecontent_ !== null && messagecontent_.lastUpdateTime === undefined) {
             //it's old data from QPlay2.0
             //convert to new format
@@ -14,10 +13,15 @@ var messageWidget = {
                 lastUpdateTime: date.setDate(date.getDate() - 1),
                 content: messagecontent_
             };
-            window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
+            window.localStorage.setItem('messagecontentEx', JSON.stringify(jsonData));
+            window.localStorage.removeItem('messagecontent');
 
-            messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
+            messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
+        } else if (messagecontent_ !== null && messagecontent_.lastUpdateTime !== undefined) {
+            window.localStorage.setItem('messagecontentEx', JSON.stringify(messagecontent_));
+            window.localStorage.removeItem('messagecontent');
         }
+        messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
 
         //alert(messagecontent);
         if (messagecontent_ === null) {
@@ -53,14 +57,14 @@ var messageWidget = {
         }
 
         //点击widget内message，跳转到message详情页
-        this.contentItem.on('click', '.widget-msg-list', function () {
+        this.contentItem.on('click', '.widget-msg-list', function() {
 
             messageFrom = 'messageWidget';
             messageRowId = $(this).attr('data-rowid');
             if (window.avoidDoubleProcess != null) {
                 clearTimeout(window.avoidDoubleProcess);
             }
-            window.avoidDoubleProcess = setTimeout(function () {
+            window.avoidDoubleProcess = setTimeout(function() {
 
                 clearTimeout(window.avoidDoubleProcess);
                 window.avoidDoubleProcess = null;
@@ -69,19 +73,19 @@ var messageWidget = {
             }, 500);
         });
     },
-    init: function (contentItem) {
+    init: function(contentItem) {
 
         messageWidgetTHIS = this;
         this.contentItem = contentItem;
         this.createMessage();
 
-        $.fn.message = function (options, param) {
+        $.fn.message = function(options, param) {
             if (typeof options == 'string') {
                 return $.fn.message.methods[options](this, param);
             }
 
             options = options || {};
-            return this.each(function () {
+            return this.each(function() {
                 var state = $.data(this, 'message');
                 if (state) {
                     $.extend(state.options, options);
@@ -95,11 +99,11 @@ var messageWidget = {
         }
 
         $.fn.message.methods = {
-            options: function (jq) {
+            options: function(jq) {
                 return $.data(jq[0], 'message').options;
             },
-            refresh: function (jq) {
-                return jq.each(function () {
+            refresh: function(jq) {
+                return jq.each(function() {
                     messageWidgetTHIS.createMessage();
                 });
             }
@@ -107,12 +111,12 @@ var messageWidget = {
         $.fn.message.defaults = {}
         $('.messageWidget').message();
     },
-    refresh: function () {
+    refresh: function() {
 
         messageWidgetTHIS = this;
         //3.check data
-        var checkmessagecontentData = setInterval(function () {
-            var messagecontent = JSON.parse(window.localStorage.getItem('messagecontent'));
+        var checkmessagecontentData = setInterval(function() {
+            var messagecontent = JSON.parse(window.localStorage.getItem('messagecontentEx'));
             var changeMessageContentDirty = sessionStorage.getItem('changeMessageContentDirty');
 
             if (messagecontent !== null && changeMessageContentDirty == 'Y') {
@@ -122,20 +126,22 @@ var messageWidget = {
             }
         }, 1000);
     },
-    show: function () {
+    show: function() {
         QueryMessageListEx();
         this.refresh();
     },
-    clear: function () {
+    clear: function() {
 
-        var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
-        var jsonData = {};
-        var date = new Date();
-        jsonData = {
-            lastUpdateTime: date.setDate(date.getDate() - 1),
-            content: messagecontent_.content
-        };
-        window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
+        var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
+        if (messagecontent_ !== null) {
+            var jsonData = {};
+            var date = new Date();
+            jsonData = {
+                lastUpdateTime: date.setDate(date.getDate() - 1),
+                content: messagecontent_.content
+            };
+            window.localStorage.setItem('messagecontentEx', JSON.stringify(jsonData));
+        }
     }
 
 };
