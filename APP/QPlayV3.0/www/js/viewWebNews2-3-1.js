@@ -433,7 +433,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 console.log(data);
                 var doUpdateLocalStorage = false;
 
-                messagecontent_ = JSON.parse(window.localStorage.getItem("messagecontent"));
+                messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
                 messagecontent = messagecontent_.content;
 
                 if (type === "event") {
