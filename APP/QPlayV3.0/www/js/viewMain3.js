@@ -53,6 +53,14 @@ $("#viewMain3").pagecontainer({
                                 //do something for refresh
                                 widget.clear();
                                 widget.show();
+                                //数据量可能有变化，需重新计算高度
+                                setTimeout(function () {
+                                    setHomepageHeight();
+                                }, 1000);
+                                //clear FuntionList
+                                clearFunctionList();
+                                //refresh FunctionList
+                                refreshFunctionList();
                             }
                         });
                     }
@@ -78,6 +86,10 @@ $("#viewMain3").pagecontainer({
                                 setTimeout(function () {
                                     setHomepageHeight();
                                 }, 1000);
+                                //clear FuntionList
+                                clearFunctionList();
+                                //refresh FunctionList
+                                refreshFunctionList();
                             }
                         });
                     }
