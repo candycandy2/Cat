@@ -241,7 +241,7 @@ $("#viewMyCalendar").pagecontainer({
             var calendarDirty = window.sessionStorage.getItem('CalendarDirty');
             if(calendarDirty == 'Y') {
                 //calendar
-                reserveCalendar.refreshReserve(JSON.parse(sessionStorage.getItem('reserveList')));
+                reserveCalendar.refreshReserve(JSON.parse(window.sessionStorage.getItem('reserveList')));
                 //carousel
                 createCarousel();
                 //sessionStorage
