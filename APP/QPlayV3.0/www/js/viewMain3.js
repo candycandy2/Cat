@@ -58,9 +58,9 @@ $("#viewMain3").pagecontainer({
                                     setHomepageHeight();
                                 }, 1000);
                                 //clear FuntionList
-                                clearFunctionList();
+                                component.clear('FunctionList');
                                 //refresh FunctionList
-                                refreshFunctionList();
+                                component.refresh('FunctionList');
                             }
                         });
                     }
@@ -87,9 +87,9 @@ $("#viewMain3").pagecontainer({
                                     setHomepageHeight();
                                 }, 1000);
                                 //clear FuntionList
-                                clearFunctionList();
+                                component.clear('FunctionList');
                                 //refresh FunctionList
-                                refreshFunctionList();
+                                component.refresh('FunctionList');
                             }
                         });
                     }
