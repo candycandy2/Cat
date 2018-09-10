@@ -1,5 +1,5 @@
 $("#viewMessageList").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
         var messageType = "news",
             allChecked = false,
@@ -9,12 +9,12 @@ $("#viewMessageList").pagecontainer({
 
         //获取portal
         function QueryPortalList(type) {
-            (function (type) {
+            (function(type) {
 
                 //type: Announcement, Communication, CIP, CSD, ITS
                 var queryData = "<LayoutHeader><PortalCategory>" + type + "</PortalCategory></LayoutHeader>";
 
-                var successCallback = function (data) {
+                var successCallback = function(data) {
 
                     if (data["ResultCode"] === "1") {
                         //save to local data
@@ -38,7 +38,7 @@ $("#viewMessageList").pagecontainer({
                     loadingMask("hide");
                 };
 
-                var failCallback = function (data) {
+                var failCallback = function(data) {
                     loadingMask("hide");
                 };
 
@@ -79,7 +79,7 @@ $("#viewMessageList").pagecontainer({
                 $("." + type + "-content ul").html('').append(content);
 
                 //2. detail
-                $('a.ui-portal').on("click", function (e) {
+                $('a.ui-portal').on("click", function(e) {
                     e.stopImmediatePropagation();
                     e.preventDefault();
 
@@ -117,32 +117,40 @@ $("#viewMessageList").pagecontainer({
         }
 
         function checkPortalByFunctionList() {
-            var function_list = JSON.parse(window.localStorage.getItem('FunctionData'))['function_list'];
-            for (var i in function_list) {
-                //1. 先找到News
-                if (function_list[i].function_variable == 'News') {
-                    //2. 再检查是否可用
-                    if (function_list[i].function_content.right == 'Y') {
-                        $('div[data-item="announcement"]').show();
-                        $('div[data-item="communication"]').show();
-                        $('div[data-item="cip"]').show();
-                        $('div[data-item="csd"]').show();
-                        $('div[data-item="its"]').show();
-                    } else {
-                        $('div[data-item="announcement"]').hide();
-                        $('div[data-item="communication"]').hide();
-                        $('div[data-item="cip"]').hide();
-                        $('div[data-item="csd"]').hide();
-                        $('div[data-item="its"]').hide();
+            if (window.localStorage.getItem('FunctionData') !== null) {
+                var function_list = JSON.parse(window.localStorage.getItem('FunctionData'))['function_list'];
+                for (var i in function_list) {
+                    //1. 先找到News
+                    if (function_list[i].function_variable == 'News') {
+                        //2. 再检查是否可用
+                        if (function_list[i].function_content.right == 'Y') {
+                            $('div[data-item="announcement"]').show();
+                            $('div[data-item="communication"]').show();
+                            $('div[data-item="cip"]').show();
+                            $('div[data-item="csd"]').show();
+                            $('div[data-item="its"]').show();
+                        } else {
+                            $('div[data-item="announcement"]').hide();
+                            $('div[data-item="communication"]').hide();
+                            $('div[data-item="cip"]').hide();
+                            $('div[data-item="csd"]').hide();
+                            $('div[data-item="its"]').hide();
+                        }
+                        break;
                     }
-                    break;
                 }
+            } else {
+                $('div[data-item="announcement"]').hide();
+                $('div[data-item="communication"]').hide();
+                $('div[data-item="cip"]').hide();
+                $('div[data-item="csd"]').hide();
+                $('div[data-item="its"]').hide();
             }
         }
 
         //根据不同类型显示不同消息
         function showDiffMessageByType(type) {
-            $.each($('.message-type > div'), function (index, item) {
+            $.each($('.message-type > div'), function(index, item) {
                 if ($(item).attr('class') == type + '-content') {
                     $(item).show();
                 } else {
@@ -194,14 +202,14 @@ $("#viewMessageList").pagecontainer({
             //3. swipe
             var x;
             $('.swipe-delete li > a')
-                .on('touchstart', function (event) {
+                .on('touchstart', function(event) {
                     //console.log(event.originalEvent.pageX)
                     $('.swipe-delete li > a').css('left', '0px') // close em all
                     $(event.currentTarget).addClass('open')
                     //x为手指接触屏幕的点与屏幕左侧的边距，初始值（0~360）
                     x = event.originalEvent.targetTouches[0].pageX // anchor point
                 })
-                .on('touchmove', function (event) {
+                .on('touchmove', function(event) {
                     //结束位置 - 起始位置 = 滑动距离（-360~360），小于零表示左滑，反之右滑
                     var change = event.originalEvent.targetTouches[0].pageX - x
                     //(-100~0),右滑为0,左滑为距离
@@ -209,7 +217,7 @@ $("#viewMessageList").pagecontainer({
                     event.currentTarget.style.left = change + 'px'
                     if (change < -50) disable_scroll() // disable scroll once we hit 10px horizontal slide
                 })
-                .on('touchend', function (event) {
+                .on('touchend', function(event) {
                     var left = parseInt(event.currentTarget.style.left)
                     var itemWidth = $(this).prev().children("a").width()
                     var new_left;
@@ -267,7 +275,7 @@ $("#viewMessageList").pagecontainer({
 
             var queryStr = "&message_send_row_id=" + messageRowId;
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 console.log(data);
                 var resultcode = data.result_code;
                 var content = data.content;
@@ -310,17 +318,17 @@ $("#viewMessageList").pagecontainer({
                 }
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 QPlayAPI("POST", "getMessageDetail", self.successCallback, self.failCallback, null, queryStr);
             }();
         }
 
         function createMsgHtml(varURL) {
-            (function () {
+            (function() {
                 $(".htmlContent").html("");
-                $(".htmlContent").load(varURL, function () {
+                $(".htmlContent").load(varURL, function() {
                     $(".htmlContent").find("meta").remove();
                     $(".htmlContent").find("title").remove();
                     $(".htmlContent").find("base").remove();
@@ -347,7 +355,7 @@ $("#viewMessageList").pagecontainer({
                 left: 0
             });
 
-            $(".htmlContent").html(content).promise().done(function () {
+            $(".htmlContent").html(content).promise().done(function() {
 
                 var screenWidth = document.documentElement.clientWidth;
                 var $images = $('.htmlContent img');
@@ -355,7 +363,7 @@ $("#viewMessageList").pagecontainer({
                 var loaded_finish = false;
 
                 if ($images.length > 0) {
-                    $images.load(function () {
+                    $images.load(function() {
 
                         loaded_images_count++;
 
@@ -368,14 +376,14 @@ $("#viewMessageList").pagecontainer({
                             //$("#messageLoadErrorPopup").popup("close");
                             $("#viewMessageDetail").css("min-height", document.documentElement.clientHeight + "px");
 
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 doPanZoom();
                             }, 500);
                         }
 
                     });
 
-                    setTimeout(function () {
+                    setTimeout(function() {
                         if (!loaded_finish) {
                             //$("#messageLoadErrorPopup").popup("open");
                             $("#viewMessageDetail").css("min-height", document.documentElement.clientHeight + "px");
@@ -461,7 +469,7 @@ $("#viewMessageList").pagecontainer({
                     loadingMask("hide");
 
                     //panzoom start event
-                    $(".htmlContent").on("panzoomstart", function (e, panzoom, matrix, changed) {
+                    $(".htmlContent").on("panzoomstart", function(e, panzoom, matrix, changed) {
                         var canvasWidth = $(".htmlContent").width() * matrix[0];
                         var screenWidth = document.documentElement.clientWidth;
 
@@ -480,7 +488,7 @@ $("#viewMessageList").pagecontainer({
                     });
 
                     //panzoom start zoom
-                    $(".htmlContent").on("panzoomzoom", function (e, panzoom, scale, opts) {
+                    $(".htmlContent").on("panzoomzoom", function(e, panzoom, scale, opts) {
                         $(".htmlContent").panzoom("option", {
                             disablePan: true
                         });
@@ -503,7 +511,7 @@ $("#viewMessageList").pagecontainer({
                     });
 
                     //panzoom end event
-                    $(".htmlContent").on("panzoomend", function (e, panzoom, matrix, changed) {
+                    $(".htmlContent").on("panzoomend", function(e, panzoom, matrix, changed) {
 
                         var canvasWidth;
                         var screenWidth;
@@ -570,7 +578,7 @@ $("#viewMessageList").pagecontainer({
                     });
 
                     //Set Scroll Event
-                    $(".PortalContent").on("scroll", function () {
+                    $(".PortalContent").on("scroll", function() {
 
                         var matrix = $(".htmlContent").panzoom("getMatrix");
                         var canvasHeight = $(".htmlContent").height();
@@ -593,7 +601,7 @@ $("#viewMessageList").pagecontainer({
                     });
 
                     //Prevent Link Action
-                    $(".htmlContent a").on("click", function (event) {
+                    $(".htmlContent a").on("click", function(event) {
                         event.preventDefault();
                     });
                 }
@@ -604,7 +612,7 @@ $("#viewMessageList").pagecontainer({
         //记录已选消息数量
         function checkIconCount(type) {
             var count = 0;
-            $.each($('.' + type + '-content li'), function (index, item) {
+            $.each($('.' + type + '-content li'), function(index, item) {
                 if ($(item).find('.msg-check-btn').attr('data-src') == 'checkbox_green') {
                     count++;
                 }
@@ -643,11 +651,11 @@ $("#viewMessageList").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewMessageList").on("pagebeforeshow", function (event, ui) {
+        $("#viewMessageList").on("pagebeforeshow", function(event, ui) {
 
         });
 
-        $("#viewMessageList").one("pageshow", function (event, ui) {
+        $("#viewMessageList").one("pageshow", function(event, ui) {
             //filter placeholder
             $('#msgFilter').attr('placeholder', langStr['str_080']);
             //check can not use portal 
@@ -656,24 +664,24 @@ $("#viewMessageList").pagecontainer({
             createMessageByType();
         });
 
-        $("#viewMessageList").on("pageshow", function (event, ui) {
+        $("#viewMessageList").on("pageshow", function(event, ui) {
             createMessageByType();
 
         });
 
-        $("#viewMessageList").on("pagehide", function (event, ui) {
+        $("#viewMessageList").on("pagehide", function(event, ui) {
 
         });
 
 
         /********************************** dom event *************************************/
         //弹出message下拉菜单
-        $("#viewMessageList .ui-title").on("click", function () {
+        $("#viewMessageList .ui-title").on("click", function() {
             $(".select-type").slideToggle(200);
         });
 
         //选择message类型
-        $(".select-type > div").on("click", function () {
+        $(".select-type > div").on("click", function() {
             var self = this;
             var currentType = $(self).text();
             var lowerCase = $(self).attr('data-item');
@@ -707,7 +715,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //编辑listview
-        $('#editListview').on('click', function () {
+        $('#editListview').on('click', function() {
             if ($('.select-type').css('display') == 'block') {
                 $('.select-type').slideUp();
             }
@@ -731,7 +739,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //取消编辑listview
-        $('#cancelEdit').on('click', function () {
+        $('#cancelEdit').on('click', function() {
             //header
             $('.dropdown-title').removeClass('opacity');
             $('.dropdown-news').show();
@@ -745,15 +753,15 @@ $("#viewMessageList").pagecontainer({
             $('.msg-next-icon').show();
             $('.handle-msg').slideUp(300);
             $('.fill-handle-blank').hide(300);
-            $('#viewMessageList .ui-title').on('click', function () {
+            $('#viewMessageList .ui-title').on('click', function() {
                 $(".select-type").slideToggle(200);
             });
-            $(document).on('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon', function () {
+            $(document).on('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon', function() {
                 changeToDetail($(this));
             });
 
             //已选全部变为未选
-            $.each($('.msg-check-btn'), function (index, item) {
+            $.each($('.msg-check-btn'), function(index, item) {
                 if ($(item).attr('data-src') == 'checkbox_green') {
                     $(item).attr('data-src', 'checkbox');
                     $(item).attr('src', 'img/checkbox.png');
@@ -767,7 +775,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //搜索listview
-        $('#searchListview').on('click', function () {
+        $('#searchListview').on('click', function() {
             if ($('.select-type').css('display') == 'block') {
                 $('.select-type').slideUp();
             }
@@ -780,7 +788,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //取消搜索listview
-        $('#cancelSearch').on('click', function () {
+        $('#cancelSearch').on('click', function() {
             $('#msgFilter').val('');
             $('#msgFilter').blur();
 
@@ -797,7 +805,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //编辑
-        $('.message-scroll').on('click', '.msg-check-btn', function () {
+        $('.message-scroll').on('click', '.msg-check-btn', function() {
             var $self = $(this);
 
             if ($self.attr('data-src') == 'checkbox') {
@@ -822,7 +830,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //全选
-        $('.msg-select span').on('click', function () {
+        $('.msg-select span').on('click', function() {
             if (!allChecked) {
                 $('.' + messageType + '-content .msg-check-btn').attr('src', 'img/checkbox_green.png');
                 $('.' + messageType + '-content .msg-check-btn').attr('data-src', 'checkbox_green');
@@ -841,9 +849,9 @@ $("#viewMessageList").pagecontainer({
         });
 
         //标记已读
-        $('.msg-readed span').on('click', function () {
+        $('.msg-readed span').on('click', function() {
             if ($(this).parent().hasClass('enabled-font')) {
-                $.each($('.' + messageType + '-content .msg-check-btn'), function (index, item) {
+                $.each($('.' + messageType + '-content .msg-check-btn'), function(index, item) {
                     if ($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
                         messageRowId = $(item).parents('li').attr('data-rowid');
                         updateReadDelete(messageType, 'read');
@@ -853,7 +861,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //标记删除
-        $('.msg-delete span').on('click', function () {
+        $('.msg-delete span').on('click', function() {
             if ($(this).parent().hasClass('enabled-font')) {
                 $('#confirmDeleteMsg').popup('open');
                 $('#confirmDeleteMsg .header-title-main .header-text').text(messageType == 'news' ? langStr["str_039"] : langStr["str_042"]);
@@ -862,7 +870,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //左滑删除
-        $('.swipe-delete').on('click', 'a.delete-btn', function () {
+        $('.swipe-delete').on('click', 'a.delete-btn', function() {
             messageRowId = $(this).parents('li').attr('data-rowid');
             $('#confirmDeleteMsg').popup('open');
             $('#confirmDeleteMsg .header-title-main .header-text').text(messageType == 'news' ? langStr["str_039"] : langStr["str_042"]);
@@ -870,7 +878,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //取消删除
-        $('#viewMessageList .btn-cancel').on('click', function () {
+        $('#viewMessageList .btn-cancel').on('click', function() {
             $('#confirmDeleteMsg').popup('close');
             if ($(this).attr('id') != 'confirmDeleteBtn') {
                 $('.swipe-delete li[data-rowid="' + messageRowId + '"] > a').animate({ left: '0px' }, 200);
@@ -878,7 +886,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //确定删除：分为swipe（单个）删除和checkbox（群体）删除
-        $('#confirmDeleteBtn').on('click', function () {
+        $('#confirmDeleteBtn').on('click', function() {
 
             if (deleteType == 'swipe') {
 
@@ -886,7 +894,7 @@ $("#viewMessageList").pagecontainer({
 
             } else if (deleteType == 'checkbox') {
 
-                $.each($('.' + messageType + '-content .msg-check-btn'), function (index, item) {
+                $.each($('.' + messageType + '-content .msg-check-btn'), function(index, item) {
                     if ($(item).attr('data-src') == 'checkbox_green') {
                         messageRowId = $(item).parents('li').attr('data-rowid');
                         updateReadDelete(messageType, 'delete');
@@ -910,7 +918,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         //跳转详情
-        $(document).on('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon', function () {
+        $(document).on('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon', function() {
             changeToDetail($(this));
         });
 
