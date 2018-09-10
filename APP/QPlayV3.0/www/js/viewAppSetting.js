@@ -18,7 +18,7 @@ $("#viewAppSetting").pagecontainer({
                     qplayAppKey = "appqplay";
 
                     //logout can not clear messagecontent / pushToken / msgDateFrom / appVersionRecord
-                    var messagecontent = window.localStorage.getItem("messagecontent");
+                    var messagecontent = window.localStorage.getItem('messagecontentEx');
                     var pushToken = window.localStorage.getItem("pushToken");
                     var appVersionRecord = window.localStorage.getItem("appVersionRecord");
                     var storeMsgDateFrom = false;
@@ -49,7 +49,7 @@ $("#viewAppSetting").pagecontainer({
 
                     window.localStorage.clear();
 
-                    window.localStorage.setItem("messagecontent", messagecontent);
+                    window.localStorage.setItem('messagecontentEx', messagecontent);
                     window.localStorage.setItem("pushToken", pushToken);
                     window.localStorage.setItem("appVersionRecord", appVersionRecord);
 
