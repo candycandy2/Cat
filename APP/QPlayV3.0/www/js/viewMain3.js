@@ -61,6 +61,8 @@ $("#viewMain3").pagecontainer({
                                 component.clear('FunctionList');
                                 //refresh FunctionList
                                 component.refresh('FunctionList');
+                                //calendar update
+                                window.sessionStorage.setItem('CalendarDirty', 'Y');
                             }
                         });
                     }
@@ -90,6 +92,8 @@ $("#viewMain3").pagecontainer({
                                 component.clear('FunctionList');
                                 //refresh FunctionList
                                 component.refresh('FunctionList');
+                                //calendar update
+                                window.sessionStorage.setItem('CalendarDirty', 'Y');
                             }
                         });
                     }

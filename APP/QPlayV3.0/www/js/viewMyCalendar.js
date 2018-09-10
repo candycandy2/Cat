@@ -1,7 +1,8 @@
 $("#viewMyCalendar").pagecontainer({
     create: function (event, ui) {
 
-        var reservePositionList = [],
+        var reserveCalendar,
+            reservePositionList = [],
             pageInitial = false,
             leaveAppData = {
                 key: 'appleave',
@@ -11,7 +12,7 @@ $("#viewMyCalendar").pagecontainer({
 
         /********************************** function ***********************************/
         function initialCalendar(holidayData) {
-            var reserveCalendar = new Calendar({
+            reserveCalendar = new Calendar({
                 renderTo: "#viewMyCalendar #myCalendar",
                 id: "reserveCalendar",
                 language: getCalendarLanguage(browserLanguage),
@@ -203,8 +204,8 @@ $("#viewMyCalendar").pagecontainer({
         function createCarousel() {
 
             var checkReserveData = setInterval(function () {
-                var changeReserveListDirty = sessionStorage.getItem('changeReserveListDirty');
-                var reserveArr = JSON.parse(sessionStorage.getItem('reserveList'));
+                var changeReserveListDirty = window.sessionStorage.getItem('changeReserveListDirty');
+                var reserveArr = JSON.parse(window.sessionStorage.getItem('reserveList'));
 
                 if (reserveArr !== null && changeReserveListDirty == 'N') {
                     clearInterval(checkReserveData);
@@ -237,7 +238,16 @@ $("#viewMyCalendar").pagecontainer({
         });
 
         $("#viewMyCalendar").on("pageshow", function (event, ui) {
-
+            var calendarDirty = window.sessionStorage.getItem('CalendarDirty');
+            if(calendarDirty == 'Y') {
+                //calendar
+                reserveCalendar.refreshReserve(JSON.parse(window.sessionStorage.getItem('reserveList')));
+                //carousel
+                createCarousel();
+                //sessionStorage
+                window.sessionStorage.setItem('CalendarDirty', 'N');
+            }
+            
         });
 
         $("#viewMyCalendar").on("pagehide", function (event, ui) {
