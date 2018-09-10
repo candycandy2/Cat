@@ -221,6 +221,9 @@ Route::any('companyMaintain/updateCompany', ['middleware' => 'auth','uses'=>'Com
 Route::any('functionMaintain', ['middleware' => 'auth','uses'=>'FunctionController@functionList']);
 Route::any('functionMaintain/getFunctionList', ['middleware' => 'auth','uses'=>'FunctionController@getFunctionList']);
 Route::any('functionMaintain/newFunction', ['middleware' => 'auth','uses'=>'FunctionController@newFunction']);
+Route::any('functionMaintain/editFunction', ['middleware' => 'auth','uses'=>'FunctionController@editFunction']);
+Route::any('functionMaintain/updateFunction', ['middleware' => 'auth','uses'=>'FunctionController@updateFunction']);
+Route::any('functionMaintain/getUserFunctionList', ['middleware' => 'auth','uses'=>'FunctionController@getUserFunctionList']);
 
 
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){

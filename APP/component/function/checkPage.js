@@ -1,24 +1,90 @@
 
 
-//check app page before change
+//check app page on local
 function checkAppPage(pageID) {
-    var appStatus = false;
+    var pageStatus = false;
 
     for (var i in pageList) {
         if (pageID == pageList[i]) {
-            appStatus = true;
+            pageStatus = true;
             break;
         }
     }
 
-    if (appStatus) {
+    if (pageStatus) {
         $.mobile.changePage('#' + pageID);
+        pageVisitedList.push(pageID);
+
     } else {
-        $.get('View/' + pageID + '.html', function (data) {
+        var pageInitial = window.sessionStorage.getItem(pageID);
+
+        if (pageInitial == 'true') {
+            $.mobile.changePage('#' + pageID);
+            pageVisitedList.push(pageID);
+
+        } else {
+            $.get('View/' + pageID + '.html', function (data) {
+                //1. html
+                $.mobile.pageContainer.append(data);
+                $('#' + pageID).page().enhanceWithin();
+
+                //2. language string
+                setViewLanguage(pageID);
+
+                //3. water mark
+                //According to the data [waterMarkPageList] which set in index.js
+                if (!(typeof waterMarkPageList === 'undefined')) {
+                    if (waterMarkPageList.indexOf(pageID) !== -1) {
+                        $('#' + pageID).css('background-color', 'transparent');
+                    }
+                }
+
+                //4. js
+                setTimeout(function () {
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.src = 'js/' + pageID + '.js';
+                    document.head.appendChild(script);
+
+                    //5. change page
+                    $.mobile.changePage('#' + pageID);
+                    window.sessionStorage.setItem(pageID, 'true');
+                    pageVisitedList.push(pageID);
+
+                }, 200);
+
+            }, 'html');
+        }
+
+    }
+}
+
+//check app widgetPage on server
+function checkWidgetPage(pageID) {
+    var pageInitial = window.sessionStorage.getItem(pageID);
+    var url = serverURL + '/widget/widgetPage/' + pageID + '/' + pageID;
+
+    if (pageInitial == 'true') {
+        $.mobile.changePage('#' + pageID);
+        pageVisitedList.push(pageID);
+
+    } else {
+        $.get(url + '.html', function (data) {
+            //1. css
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url + '.css';
+            document.head.appendChild(link);
+
+            //2. html
             $.mobile.pageContainer.append(data);
             $('#' + pageID).page().enhanceWithin();
 
-            //Show Water Mark
+            //3. language string
+            setViewLanguage(pageID);
+
+            //4. water mark
             //According to the data [waterMarkPageList] which set in index.js
             if (!(typeof waterMarkPageList === 'undefined')) {
                 if (waterMarkPageList.indexOf(pageID) !== -1) {
@@ -26,19 +92,34 @@ function checkAppPage(pageID) {
                 }
             }
 
+            //5. js
             setTimeout(function () {
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
-                script.src = 'js/' + pageID + '.js';
+                script.src = url + '.js';
                 document.head.appendChild(script);
 
+                //6. change page
                 $.mobile.changePage('#' + pageID);
-                $('#' + pageID).on('pagebeforeshow', pageBeforeShow(pageID));
-                pageList.push(pageID);
+                window.sessionStorage.setItem(pageID, 'true');
+                pageVisitedList.push(pageID);
+
             }, 200);
 
         }, 'html');
     }
+}
+
+function setViewLanguage(view) {
+    $("#" + view + " .langStr").each(function (index, element) {
+        var id = $(element).data("id");
+
+        $(".langStr[data-id='" + id + "']").each(function (index, element) {
+            if (langStr[id] !== undefined) {
+                $(this).html(langStr[id]);
+            }
+        });
+    });
 }
 
 /*because pagebeforeshow event not work first time,

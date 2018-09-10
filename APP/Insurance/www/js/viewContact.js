@@ -5,6 +5,7 @@ var insurStaff = [{cName:"陳毓慈", site:"台北", ext:"0918-930118", time:"�
                   {cName:"吳宗穎", site:"台北", ext:"0918-880037", time:"星期二、星期四 12:30~13:30", room:"2F 物理治療室", email:"0094201669@agt.taiwanlife.com"},
                   {cName:"鄭鈞陽", site:"桃園", ext:"0927-261507", time:"星期一、星期四 12:00~13:20", room:"2F OK旁走廊", email:"nickyvi0203@gmail.com"},
                   {cName:"黃千芩", site:"桃園", ext:"0958-946371", time:"星期一、星期四 12:00~13:20", room:"2F OK旁走廊", email:"vivi732329@gmail.com"}];
+var contactScrollHeight = false;
 
 $("#viewContact").pagecontainer({
     create: function(event, ui) {
@@ -23,7 +24,7 @@ $("#viewContact").pagecontainer({
                     +   '<div class="img-phone divvertical-center">'
                     +       '<div class="tel-num">'
                     +           '<img src = "img/phone.png">'
-                    +           '<a rel="external"  href="tel:"' + HR[i].ext + '">' + HR[i].ext + '</a>'
+                    +           '<a rel="external"  href="tel:' + HR[i].ext.replace('-', '') + '">' + HR[i].ext + '</a>'
                     +       '</div>'
                     +   '</div>'
                     +   '<div class="img-info divvertical-center">'
@@ -49,7 +50,7 @@ $("#viewContact").pagecontainer({
                     +   '<div class="img-phone divvertical-center">'
                     +       '<div class="tel-num">'
                     +           '<img src = "img/phone.png">'
-                    +           '<a rel="external"  href="tel:"' + insurStaff[i].ext + '">' + insurStaff[i].ext + '</a>'
+                    +           '<a rel="external"  href="tel:' + insurStaff[i].ext.replace('-', '') + '">' + insurStaff[i].ext + '</a>'
                     +       '</div>'
                     +   '</div>'
                     +   '<div class="img-info divvertical-center">'
@@ -64,7 +65,26 @@ $("#viewContact").pagecontainer({
             $("#insranceStaffData").html("");
             $("#insranceStaffData").prepend($(insurHtmlContent)).enhanceWithin();
             $('#insranceStaffData').listview('refresh');
-        }      
+            if (!contactScrollHeight) {
+                scrollHeightFixedPage(activePageListID, scrollClassName);
+                $("#" + activePageListID + ">.page-header").css({
+                    'position': 'fixed'
+                });
+                contactScrollHeight = true;
+            }          
+        } 
+
+        function scrollHeightContactInfoPage(viewName, className) {
+            var mainHeight = $('.'+ className +' > div').height();
+            var headHeight = $('#'+ viewName +' .page-header').height();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (mainHeight + headHeight).toString();
+            }
+            $('.'+ className +' > div').css('height', totalHeight + 'px'); 
+        }     
 
         /********************************** page event *************************************/
         $("#viewContact").on("pagebeforeshow", function(event, ui){
@@ -73,6 +93,8 @@ $("#viewContact").pagecontainer({
 
         $("#viewContact").on("pageshow", function(event, ui) {
             loadingMask("hide");
+            activePageListID = visitedPageList[visitedPageList.length - 1];   
+            scrollClassName = 'insur-contactinfo-scroll';
             QueryContactInfo();
             $('.contact-info').show();
             $('.contact-detail').hide();
@@ -91,7 +113,7 @@ $("#viewContact").pagecontainer({
                 + '<div class="site font-style3">' + HR[hrID].site + '</div>'
                 + '<li>'
                 +       '<div class="phone font-style7">電話</div>'
-                +       '<a rel="external" class="font-style10" href="tel:"' + HR[hrID].ext + '">'+ HR[hrID].ext + '</a>'
+                +       '<a rel="external" class="font-style10" href="tel:' + HR[hrID].ext.replace('-', '') + '">'+ HR[hrID].ext + '</a>'
                 + '</li>'
                 + '<li>'
                 +       '<div class="other font-style7">駐點時間</div>' 
@@ -103,7 +125,7 @@ $("#viewContact").pagecontainer({
                 + '</li>'
                 + '<li>'
                 +       '<div class="other font-style7">E-Mail</div>'  
-                +       '<a rel="external" class="font-style10" href="mailto:"' + HR[hrID].email + '">' + HR[hrID].email + '</a>'
+                +       '<a rel="external" class="font-style10" href="mailto:' + HR[hrID].email + '">' + HR[hrID].email + '</a>'
                 + '</li>';   
             $("#detailInfo").html("");
             $("#detailInfo").prepend($(DetailHtmlContent)).enhanceWithin();      
@@ -120,7 +142,7 @@ $("#viewContact").pagecontainer({
                 + '<div class="site font-style3">' + insurStaff[insurID].site + '</div>'
                 + '<li>'
                 +       '<div class="phone font-style7">電話</div>'
-                +       '<a rel="external" class="font-style10" href="tel:"' + insurStaff[insurID].ext + '">' + insurStaff[insurID].ext + '</a>'
+                +       '<a rel="external" class="font-style10" href="tel:' + insurStaff[insurID].ext.replace('-', '') + '">' + insurStaff[insurID].ext + '</a>'
                 + '</li>'
                 + '<li>'
                 +       '<div class="other font-style7">駐點時間</div>' 
@@ -132,7 +154,7 @@ $("#viewContact").pagecontainer({
                 + '</li>'
                 + '<li>'
                 +       '<div class="other font-style7">E-Mail</div>'  
-                +       '<a rel="external" class="font-style10" href="mailto:"' + insurStaff[insurID].email + '">' + insurStaff[insurID].email + '</a>'
+                +       '<a rel="external" class="font-style10" href="mailto:' + insurStaff[insurID].email + '">' + insurStaff[insurID].email + '</a>'
                 + '</li>';   
             $("#detailInfo").html("");
             $("#detailInfo").prepend($(DetailHtmlContent)).enhanceWithin();             

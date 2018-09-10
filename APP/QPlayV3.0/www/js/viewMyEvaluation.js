@@ -16,7 +16,7 @@ $("#viewMyEvaluation").pagecontainer({
 
                 if (data['result_code'] == '1') {
                     //changepage
-                    $.mobile.changePage('#viewAppSetting');
+                    checkAppPage('#viewAppSetting');
                     $("#feedback").fadeIn(100).delay(2000).fadeOut(100);
 
                     //clear
@@ -39,10 +39,7 @@ $("#viewMyEvaluation").pagecontainer({
         });
 
         $("#viewMyEvaluation").one("pageshow", function (event, ui) {
-            //language
-            $('#viewMyEvaluation .ui-title div').text(langStr['str_086']).removeClass('opacity');
-            $('.comment-title').text(langStr['str_087']);
-            $('.send-comment').text(langStr['str_085']);
+            
         });
 
         $("#viewMyEvaluation").on("pageshow", function (event, ui) {
@@ -55,18 +52,8 @@ $("#viewMyEvaluation").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        $('.comment-text textarea').on('keyup', function () {
-            var val = $.trim($(this).val());
-            var has = $('.send-comment').hasClass('enabled-btn');
-
-            if (val != '' && !has) {
-                $('.send-comment').addClass('enabled-btn');
-            } else if (val == '' && has) {
-                $('.send-comment').removeClass('enabled-btn');
-            }
-        });
-
-        $('.comment-text textarea').on('change', function () {
+        //监听textarea，按钮可不可用
+        $('.comment-text textarea').on('input', function () {
             var val = $.trim($(this).val());
             var has = $('.send-comment').hasClass('enabled-btn');
 
@@ -86,6 +73,8 @@ $("#viewMyEvaluation").pagecontainer({
                 addAppEvaluation();
             }
         });
+
+        
 
     }
 });

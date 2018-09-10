@@ -1,7 +1,7 @@
 /******************** carousel ********************/
 .carousel-widget {
-    width: 100%;
-    height: 100%;
+    width: 100vw !important;
+    height: 50vw !important;
 }
 
 .carousel-widget img {
@@ -11,8 +11,8 @@
 
 /******************** weather ********************/
 .weather-widget {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 30vw;
 }
 
 .weather-widget > div {
@@ -24,14 +24,14 @@
 }
 
 .weather-temp {
-    width: 32.5vw;
+    width: 32vw;
     height: 100%;
 }
 
 .weather-loca {
-    width: 45vw;
+    width: 50vw;
     height: 100%;
-    font-size: 4.5vw;
+    font-size: 4.8vw;
 }
 
 .weather-temp > div:nth-of-type(1) {
@@ -48,7 +48,7 @@
 }
 
 .weather-loca > div:nth-of-type(1) {
-    padding-top: 7vw;
+    padding-top: 6vw;
 }
 
 .weather-loca > div:nth-of-type(2) {
@@ -66,8 +66,8 @@
 
 /******************** reserve ********************/
 .reserve-widget {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    min-height: 40vw;
 }
 
 .personal-info {
@@ -175,12 +175,57 @@
     padding-left: 3vw;
     color: #253137;
     font-size: 3.768vw !important;
+    /* display: none; */
+}
+
+/******************** message ********************/
+.message-widget {
+    width: 100vw;
+    min-height: 25vw;
+}
+
+.widget-msg-list {
+    padding: 3.28vw 3.71vw 3.28vw 5.92vw;
+    border-bottom: 1px solid #d6d6d6;
+    font-weight: bold;
+}
+
+.normal-font-weight {
+    font-weight: normal;
+}
+
+.widget-msg-list:last-of-type {
+    border: none;
+}
+
+.widget-msg-time {
+    padding-bottom: 1vw;
+    color: #8fa4ad;
+    font-size: 3.14vw !important;
+}
+
+.widget-msg-title {
+    width: 100%;
+    height: 9vw;
+    color: #253137;
+    font-size: 3.768vw !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.widget-none-msg {
+    height: 20vw;
+    line-height: 20vw;
+    padding-left: 5vw;
 }
 
 /******************** applist ********************/
 .applist-widget {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 38vw;
 }
 
 .applist-widget > .applist-title {
@@ -221,36 +266,24 @@
     text-overflow: ellipsis;
 }
 
-/******************** message ********************/
-.widget-msg-list {
-    padding: 3.28vw 3.71vw 3.28vw 5.92vw;
-    border-bottom: 1px solid #d6d6d6;
+/******************** qpay test ********************/
+.qpay-link {
+    width: 90vw;
+    height: 13.04vw;
+    padding: 6.24vw 3.71vw 6.24vw 5.92vw;
 }
 
-.widget-msg-list:last-of-type {
-    border: none;
+.qpay-link > div {
+    float: left;
 }
 
-.widget-msg-time {
-    padding-bottom: 1vw;
-    color: #8fa4ad;
-    font-size: 3.14vw !important;
+.qpay-link > div:nth-of-type(1) {
+    width: 16vw;
+    height: 100%;
 }
 
-.widget-msg-title {
-    width: 100%;
-    height: 9vw;
-    color: #253137;
-    font-size: 3.768vw !important;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-}
-
-.widget-none-msg {
-    height: 20vw;
-    line-height: 20vw;
-    padding-left: 5vw;
+.qpay-link > div:nth-of-type(2) {
+    width: 69vw;
+    height: 100%;
+    line-height: 13vw;
 }

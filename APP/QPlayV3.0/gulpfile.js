@@ -145,7 +145,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                             '<hook type="before_compile" src="hooks/xcode8.js" />' +
                             '<allow-intent href="itms:*" />' +
                             '<allow-intent href="itms-apps:*" />' +
-                            '<edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge"><string>your custom text here</string></edit-config>' +
+                            '<edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge"><string>Weather information</string></edit-config>' +
                             //'<preference name="iosPersistentFileLocation" value="Compatibility" />' +
                             process.env.iOSScreen +
                         '</platform>' +
@@ -224,6 +224,7 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-statusbar --nofetch',
     //'cordova plugin add ../../plugins/cordova-plugin-background-mode --nofetch',
     'cordova plugin add ../../plugins/cordova-plugin-appavailability --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-cache-clear --nofetch',
     'cordova plugin add ../../plugins/cordova-plugin-badge --nofetch'
     //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));

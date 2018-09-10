@@ -1,0 +1,94 @@
+<!-- viewShopUserAcount -->
+<div data-role="page" id="viewShopUserAcount">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div class="header-style">
+            <h1 class="ui-title">
+                <div>
+                    <!--QPay结帐-->
+                    <span class="langStr" data-id="wgt_051"></span>
+                </div>
+            </h1>
+        </div>
+        <a href="#" data-role="none">
+            <div class="q-btn-header page-back">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
+    </div>
+    <div data-role="main" class="ui-content page-main">
+        <div class="user-acount">
+            <div class="user-acount-icon">
+                <div>
+                    <img src="img/icon_pay.png">
+                </div>
+                <div>
+                    <div class="user-acount-name"></div>
+                    <div class="user-acount-no"></div>
+                </div>
+            </div>
+            <div class="user-acount-money">
+                <div class="user-acount-title">
+                    <!--消费券余额-->
+                    <span class="langStr" data-id="wgt_010"></span>
+                </div>
+                <div class="user-acount-remain">
+                    <div>TWD</div>
+                    <div class="remain-money">500</div>
+                </div>
+                <div class="user-acount-dueday">
+                    <!--到期日-->
+                    <span class="langStr" data-id="wgt_011"></span><span class="acount-due-day"></span>
+                </div>
+                <div class="user-acount-btn">
+                    <div class="user-acount-pay">
+                        <!--前往结帐-->
+                        <span class="langStr" data-id="wgt_012"></span>
+                    </div>
+                </div>
+                <div class="user-acount-cancel">
+                    <!--取消结帐-->
+                    <span class="shop-cancel-pay">
+                        <span>X </span><span class="langStr" data-id="wgt_059"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup logoutUserAcount"
+        for="logoutUserAcount" id="logoutUserAcount">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--您的个人资料将登出,-->
+                        <span class="langStr" data-id="wgt_061"></span>
+                    </span>
+                </div>
+                <div class="header-title">
+                    <!--确定取消结帐?-->
+                    <span class="langStr" data-id="wgt_062"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style11 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div id="confirmLogoutUserAcount">
+                        <!--取消结帐-->
+                        <span class="langStr" data-id="wgt_059"></span>
+                    </div>
+                    <div class="btn-cancel">
+                        <!--继续结帐-->
+                        <span class="langStr" data-id="wgt_060"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

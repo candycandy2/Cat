@@ -20,33 +20,33 @@
     </div>
     <div data-role="main" class="page-main">
         <!--1.暫無眷屬資料-->
-        <div id="viewFamilyNone" class="font-style12 font-color3">
+        <div id="viewFamilyNone" class="font-style12 font-color3" style="position: fixed;">
             <!--目前沒有眷屬資料-->
             <span class="langStr" data-id="str_070"></span>
         </div>
-
-        <!--2.眷屬資料列表-->
-        <div id="viewFamilyList">
-            <div class="family-cancle-btn font-style3">
-                <!--取消-->
-                <span class="langStr" data-id="str_073"></span>
-            </div>
-            <div class="family-edit-btn font-style3">
-                <!--編輯-->
-                <span class="langStr" data-id="str_072"></span>
-            </div>
-            <div id="familyList">
-                <!-- <div class="family-list">
-                    <div class="font-style10 font-color2 family-edit">
-                        <div>小花/子女</div>
-                        <div>1996/01/01</div>
-                        <div>F22123456</div>
-                    </div>
+        <div class="insur-family-scroll">
+            <!--2.眷屬資料列表-->
+            <div id="viewFamilyList">
+                <div class="family-cancle-btn font-style3">
+                    <!--取消-->
+                    <span class="langStr" data-id="str_073"></span>
                 </div>
-                <div class="activity-line"></div> -->
+                <div class="family-edit-btn font-style3">
+                    <!--編輯-->
+                    <span class="langStr" data-id="str_072"></span>
+                </div>
+                <div id="familyList">
+                    <!-- <div class="family-list">
+                        <div class="font-style10 font-color2 family-edit">
+                            <div>小花/子女</div>
+                            <div>1996/01/01</div>
+                            <div>F22123456</div>
+                        </div>
+                    </div>
+                    <div class="activity-line"></div> -->
+                </div>
             </div>
         </div>
-
         <!-- toast display:none -->
         <div class="popup-msg-style" id="deleteFamilyListMsg">
             <!-- 眷屬列表刪除成功 -->
@@ -54,7 +54,7 @@
         </div>
 
         <!--3.新增和編輯頁面-->
-        <div id="viewFamilyEdit">
+        <div id="viewFamilyEdit" style="position: fixed;">
             <div class="family-input-div">
                 <label for="familyInsurName">
                     <!--姓名-->

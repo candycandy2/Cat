@@ -6,6 +6,8 @@ var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallL
     sendLeaveCancelFormDataQueryData, queryEmployeeDetailQueryData;
 var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recallLeaveCancelFormQueryData, deleteLeaveCancelFormQueryData,
     backLeaveFormLeaveDetailQueryData;
+var queryEmployeeOvertimeApplyFormQueryData, overtimeApplyFormDetailQueryData, recallOvertimeApplyFormQueryData;
+var sendApplyOvertimeQueryData, updateOvertimeQueryData, countOvertimeHoursByEndQueryData; 
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
@@ -21,6 +23,7 @@ var notSignStr; //"未簽核";
 var editLeaveForm = false;
 var viewPersonalLeaveShow = false;
 var viewAcutalOTApplyShow = false;
+var viewEditOTApplyShow = false;
 var changePageFromSubmitToDetail = false;
 
 var time = new Date(Date.now());
@@ -45,6 +48,7 @@ var recordStartText = "";
 var defaultSettingDone = false;
 var reload = false;
 var hasAgentPanel, hasClockinOTPanel = false;
+var activePageListID;
 
 window.initialSuccess = function() {  
     originalEmpNo = localStorage["emp_no"];
@@ -178,6 +182,22 @@ function onBackKeyDown() {
         $("#backToList").click();
     } else if ($("#backToSign").css("display") == "inline") {
         $("#backToSign").click();
+    } else if ($("#backClockin").css("display") == "inline") {
+        $("#backClockin").click();
+    } else if ($("#backOvertime").css("display") == "inline") {
+        $("#backOvertime").click();
+    } else if ($("#backOTQueryDetail").css("display") == "inline") {
+        $("#backOTQueryDetail").click();
+    } else if ($("#backActualOTApply").css("display") == "inline") {
+        $("#backActualOTApply").click();
+    } else if ($("#backOTDetailList").css("display") == "inline") {
+        $("#backOTDetailList").click();
+    } else if ($("#backSignOTList").css("display") == "inline") {
+        $("#backSignOTList").click();
+    } else if ($("#backActualOTDetailList").css("display") == "inline") {
+        $("#backActualOTDetailList").click();
+    } else if ($("#backActualSignOTList").css("display") == "inline") {
+        $("#backActualSignOTList").click();
     } else if (visitedPageList.length == 1) {
         navigator.app.exitApp();
     } else {
@@ -349,8 +369,6 @@ function leaveListToDetail(btn1, btn2, btn3, state) {
 function overtimeListToDetail(btn1, btn2, btn3, btn4, state) {
     $("#viewOvertimeQuery .leaveMenu").hide();
     $(".leave-query-main").hide();
-    $("#backOTDetailList").show();
-    $(".leave-query-detail-sign").show();
     if (state == null) {
         $("#" + btn1).hide();
     } else {
@@ -513,9 +531,9 @@ function startMainPage() {
         queryEmployeeLeaveApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
         QueryEmployeeLeaveApplyForm();
 
-        //销假单查询——获取销假单列表
-        queryEmployeeLeaveCancelFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
-        QueryEmployeeLeaveCancelForm();
+        //加班單查询——获取加班单列表
+        queryEmployeeOvertimeApplyFormQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
+        QueryEmployeeOvertimeApplyForm();
 
         viewPersonalLeaveShow = true;
         defaultSettingDone = false;

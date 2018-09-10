@@ -2,6 +2,7 @@ var files = ["InsuranceRights.pdf"];
 var url = "";
 var mimeType = "application/pdf";
 var options = {};
+var tab1ScrollHeight = false, tab2ScrollHeight = false, tab3ScrollHeight = false;
 var encryptConfig = {
     clientId: "myAppName",
     username: "currentUser",
@@ -29,7 +30,7 @@ $("#viewMain").pagecontainer({
                 //CustomAPI("POST", true, "APIRequest", self.successCallback, self.failCallback, queryData, "");
             }();
 
-        };     
+        };    
 
         /********************************** page event *************************************/
         $("#viewMain").on("pagebeforeshow", function(event, ui) {
@@ -41,7 +42,16 @@ $("#viewMain").pagecontainer({
             $("label[for=tab1]").addClass('ui-btn-active');
         });
 
-        $("#viewMain").on("pageshow", function(event, ui) {
+        $("#viewMain").on("pageshow", function(event, ui) {  
+            activePageListID = visitedPageList[visitedPageList.length - 1];   
+            scrollClassName = 'insur-main-scroll';       
+            if (!tab1ScrollHeight) {         
+                scrollHeightByTab(activePageListID, scrollClassName, '2');
+                $("#" + activePageListID + ">.page-header").css({
+                    'position': 'fixed'
+                });       
+                tab1ScrollHeight = true;
+            }
             loadingMask("hide");
         });
 
@@ -52,16 +62,22 @@ $("#viewMain").pagecontainer({
                 $('#pageOne').show();
                 $('#pageTwo').hide();
                 $('#pageThree').hide();
-              
             } else if (tabValue == 'tab2') {
                 $('#pageTwo').show();
                 $('#pageOne').hide();
                 $('#pageThree').hide();
-                
+                if (!tab2ScrollHeight) {  
+                    scrollHeightByTab(activePageListID, scrollClassName, '3');
+                    tab2ScrollHeight = true;
+                }
             } else {
                 $('#pageThree').show();
                 $('#pageOne').hide();
                 $('#pageTwo').hide();
+                if (!tab3ScrollHeight) {  
+                    scrollHeightByTab(activePageListID, scrollClassName, '4');
+                    tab3ScrollHeight = true;
+                }
             }
         });
 

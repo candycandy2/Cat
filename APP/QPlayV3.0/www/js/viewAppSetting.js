@@ -18,7 +18,7 @@ $("#viewAppSetting").pagecontainer({
                     qplayAppKey = "appqplay";
 
                     //logout can not clear messagecontent / pushToken / msgDateFrom / appVersionRecord
-                    var messagecontent = window.localStorage.getItem("messagecontent");
+                    var messagecontent = window.localStorage.getItem('messagecontentEx');
                     var pushToken = window.localStorage.getItem("pushToken");
                     var appVersionRecord = window.localStorage.getItem("appVersionRecord");
                     var storeMsgDateFrom = false;
@@ -29,6 +29,7 @@ $("#viewAppSetting").pagecontainer({
                     }
 
                     loginData = {
+                        company: "",
                         versionName: "",
                         versionCode: "",
                         deviceType: "",
@@ -48,18 +49,13 @@ $("#viewAppSetting").pagecontainer({
 
                     window.localStorage.clear();
 
-                    window.localStorage.setItem("messagecontent", messagecontent);
+                    window.localStorage.setItem('messagecontentEx', messagecontent);
                     window.localStorage.setItem("pushToken", pushToken);
                     window.localStorage.setItem("appVersionRecord", appVersionRecord);
 
                     if (storeMsgDateFrom) {
                         window.localStorage.setItem("msgDateFrom", msgDateFrom);
                     }
-
-                    $.mobile.changePage('#viewNotSignedIn');
-                    //$("#viewMain2-1").removeClass("ui-page-active");
-                    $("#viewMain3").removeClass("ui-page-active");
-                    $("#viewNotSignedIn").addClass("ui-page-active");
 
                     // set need to login's layout when landscape
                     if (window.orientation === 90 || window.orientation === -90)
@@ -117,11 +113,29 @@ $("#viewAppSetting").pagecontainer({
             var arr = dataurl.split(','),
                 mime = arr[0].match(/:(.*?);/)[1],
                 bstr = atob(arr[1]),
-                n = bstr.length, u8arr = new Uint8Array(n);
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
             while (n--) {
                 u8arr[n] = bstr.charCodeAt(n);
             }
             return new File([u8arr], filename, { type: mime });
+        }
+
+        //检查该用户是否能修改密码
+        function checkUserChangePwd() {
+            var function_list = JSON.parse(window.localStorage.getItem('FunctionData'))['function_list'];
+            for (var i in function_list) {
+                //1. 先找到News
+                if (function_list[i].function_variable == 'ChangePassword') {
+                    //2. 再检查是否可用
+                    if (function_list[i].function_content.right == 'Y') {
+                        $('.change-password').show();
+                    } else {
+                        $('.change-password').hide();
+                    }
+                    break;
+                }
+            }
         }
 
         //检查是否上传过头像
@@ -146,6 +160,23 @@ $("#viewAppSetting").pagecontainer({
             });
         }
 
+        var clearSuccess = function (status) {
+            console.log('Message: ' + status);
+
+            //1. 成功提示
+            $("#clearSuccess").fadeIn(100).delay(2000).fadeOut(100);
+
+            //2. clear widget
+            widget.clear();
+
+            //3. remove localStorage
+            window.localStorage.removeItem('FunctionList');
+
+        }
+
+        var clearError = function (status) {
+            console.log('Error: ' + status);
+        }
 
         /********************************** page event ***********************************/
         $("#viewAppSetting").on("pagebeforeshow", function (event, ui) {
@@ -153,20 +184,11 @@ $("#viewAppSetting").pagecontainer({
         });
 
         $("#viewAppSetting").one("pageshow", function (event, ui) {
-            //language string
+            //user name
             $('.name-user').text(loginData['loginid']);
-            $('#viewAppSetting .ui-title div').text(langStr['str_082']);
-            $('.normal-setting-name').text(langStr['str_083']);
-            $('.qplay-version-name').text(langStr['str_081']);
-            $('.want-comment-name').text(langStr['str_088']);
-            $('.logout-fixed-btn').text(langStr['str_084']);
-            $('.choose-camera').text(langStr['str_089']);
-            $('.choose-picture').text(langStr['str_090']);
-            $('.cancel-choose').text(langStr['str_023']);
-            $('#feedback').text(langStr['str_103']);
-            $('#cameraFail').text(langStr['str_100']);
-            $('#uploadSuccess').text(langStr['str_101']);
-            $('#uploadFail').text(langStr['str_102']);
+
+            //check can use changepassword
+            checkUserChangePwd();
 
             //check photo
             checkPhotoUpload($('#myPhoto'));
@@ -194,13 +216,23 @@ $("#viewAppSetting").pagecontainer({
 
         //QPlay版本记录
         $('.qplay-version').on('click', function () {
-            versionFrom = true;
+            window.sessionStorage.setItem('checkAPPKey', qplayAppKey);
             checkAppPage('viewVersionRecord');
         });
 
         //我要评论
         $('.want-comment').on('click', function () {
             checkAppPage('viewMyEvaluation');
+        });
+
+        //清理缓存
+        $('.clear-cache').on('click', function () {
+            window.CacheClear(clearSuccess, clearError);
+        });
+
+        //修改密码
+        $('.change-password').on('click', function () {
+            checkWidgetPage('viewShopChangePwd');
         });
 
         //注销
@@ -230,11 +262,14 @@ $("#viewAppSetting").pagecontainer({
             $('.setting-mask').hide();
 
             navigator.camera.getPicture(onSuccess, onFail, {
-                quality: 50,
+                quality: 100,
                 sourceType: Camera.PictureSourceType.Camera,
                 //destinationType: Camera.DestinationType.FILE_URI,
                 destinationType: Camera.DestinationType.DATA_URL,
-                saveToPhotoAlbum: true
+                saveToPhotoAlbum: true,
+                allowEdit: true,
+                targetWidth: 500,
+                targetHeight: 500
             });
 
             function onSuccess(imageURI) {
@@ -265,9 +300,12 @@ $("#viewAppSetting").pagecontainer({
             $('.setting-mask').hide();
 
             navigator.camera.getPicture(onSuccess, onFail, {
-                quality: 50,
+                quality: 100,
                 sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
-                destinationType: Camera.DestinationType.DATA_URL
+                destinationType: Camera.DestinationType.DATA_URL,
+                allowEdit: true,
+                targetWidth: 500,
+                targetHeight: 500
             });
 
             function onSuccess(imageURI) {

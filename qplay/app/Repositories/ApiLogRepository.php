@@ -65,7 +65,7 @@ class ApiLogRepository
                  'count' => ['$sum' => 1]
                 ]
             ]
-        ]);
+        ],['allowDiskUse' => true]);
     }
 
     /**

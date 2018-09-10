@@ -12,8 +12,9 @@ $("#viewAppDetail2-2").pagecontainer({
             //Check if APP is installed
             var packageName = applist[selectAppIndex].package_name;
             var packageNameArr = packageName.split(".");
-            checkAPPKey = packageNameArr[2];
-            checkAPPInstalled(displayAppDetailStep2, "appDetail");
+            window.sessionStorage.setItem('checkAPPKey', packageNameArr[2]);
+            appDetailInstalled(appDetailCallback, packageNameArr[2]);
+            //checkAPPInstalled(displayAppDetailStep2, "appDetail");
 
             //Find the specific language to display,
             //if can not find the language to match the browser language,
@@ -133,7 +134,36 @@ $("#viewAppDetail2-2").pagecontainer({
             //add by allen -- initial data
             offsetArr = [];
             imgItemLength = piclist.length;
+        }
 
+        function appDetailInstalled(callback, key) {
+
+            //var thisAppKey = checkAPPKey;
+            callback = callback || null;
+
+            var scheme;
+
+            if (device.platform === 'iOS') {
+                scheme = key + '://';
+            } else if (device.platform === 'Android') {
+                scheme = 'com.qplay.' + key;
+            }
+
+            var testInstalled = function () {
+                appAvailability.check(
+                    scheme,
+                    function () {
+                        callback(true);
+                    },
+                    function () {
+                        callback(false);
+                    }
+                );
+            }();
+        }
+
+        function appDetailCallback(install) {
+            window.sessionStorage.setItem('checkAPPInstall', install);
         }
 
         window.displayAppDetailStep2 = function (installed) {
@@ -159,8 +189,37 @@ $("#viewAppDetail2-2").pagecontainer({
             //loadingMask("show");
         });
 
+        $("#viewAppDetail2-2").one("pageshow", function (event, ui) {
+            //fix定位top
+            var headHeight = $('#viewAppDetail2-2 .page-header').height();
+            if (device.platform === "iOS") {
+                $("#viewAppDetail2-2 .fix").css('top', (headHeight + iOSFixedTopPX()).toString() + 'px');
+            } else {
+                $("#viewAppDetail2-2 .fix").css('top', headHeight.toString() + 'px');
+            }
+        })
+
         $("#viewAppDetail2-2").on("pageshow", function (event, ui) {
             displayAppDetailStep1();
+
+            var checkInstall = setInterval(function () {
+                var btnLength = $('#InstallApp').length;
+                var appInstall = window.sessionStorage.getItem('checkAPPInstall');
+
+                if (btnLength > 0 && appInstall !== null) {
+                    clearInterval(checkInstall);
+                    window.sessionStorage.removeItem('checkAPPInstall');
+                    $("#InstallApp .InstallAppStr").hide();
+
+                    if (appInstall == 'true') {
+                        $("#InstallApp #InstallAppStr03").show();
+
+                    } else {
+                        $("#InstallApp #InstallAppStr01").show();
+                    }
+                }
+
+            }, 500);
         });
 
         /********************************** dom event *************************************/
@@ -219,7 +278,8 @@ $("#viewAppDetail2-2").pagecontainer({
         });
 
         $("#InstallApp #InstallAppStr02").on("click", function () { //開啟
-            var schemeURL = checkAPPKey + createAPPSchemeURL();
+            var APPKey = window.sessionStorage.getItem('checkAPPKey');
+            var schemeURL = APPKey + createAPPSchemeURL();
             openAPP(schemeURL);
         });
 
@@ -304,7 +364,6 @@ $("#viewAppDetail2-2").pagecontainer({
 
         //版本记录
         $(".version").on("click", function () {
-            versionFrom = false;
             checkAppPage('viewVersionRecord');
         });
 

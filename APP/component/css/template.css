@@ -215,6 +215,9 @@ html .ui-navbar li .ui-btn.ui-btn-active {
 .font-style11{ font-weight: normal; font-size: 3.349vw !important;}
 .font-style12{ font-weight: normal; font-size: 3.14vw !important;}
 .font-style13{ font-weight: normal; font-size: 2.93vw !important;}
+.font-style14{ font-weight: bold; font-size: 12.54vw !important;}
+.font-style15{ font-weight: normal; font-size: 6.18vw !important;}
+.font-style16{ font-weight: normal; font-size: 8.37vw !important;}
 
 /* ---header--- */
 .app-popup .header-title-main, .app-popup .header-title-subsub{ color: #0f0f0f;}

@@ -298,10 +298,21 @@ class qplayController extends Controller
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
         {
-            $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            //check domain & login_type
+            if ($domain === "shop" || $loginType === "QAccount") {
+                $verifyResult = $Verify->verifyUserByUserEmpNo($loginid, $domain);
+            } else {
+                $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            }
+
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
-                $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+                //check domain & login_type
+                if ($domain === "shop" || $loginType === "QAccount") {
+                    $user = CommonUtil::getUserInfoJustByUserEmpNo($loginid, $domain);
+                } else {
+                    $user = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+                }
 
                 $loginQAccount = false;
                 $loginFail = false;
@@ -318,12 +329,12 @@ class qplayController extends Controller
                     //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
                     $companyData = $companyService->getCompanyData("user_domain", $domain);
                     foreach ($companyData as $company) {
-                        $loginType = $company->login_type;
+                        $authType = $company->login_type;
                         $serverIP = $company->server_ip;
                         $serverPort = $company->server_port;
                     }
 
-                    if ($loginType == "LDAP") {
+                    if ($authType == "LDAP") {
                         $LDAP_SERVER_IP = $serverIP;
                         $userId = $domain . "\\" . $loginid;
                         $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
@@ -334,7 +345,7 @@ class qplayController extends Controller
                             $loginFail = true;
                             $loginFailResultCode = ResultCode::_000902_passwordError;
                         }
-                    } else if ($loginType == "API") {
+                    } else if ($authType == "API") {
                         $header = [
                             'Content-type: application/json; charset=utf-8',
                             'Content-Length: 0',
@@ -420,6 +431,12 @@ class qplayController extends Controller
                         //, 'remember_token'=>$token
                     ]);
 
+                    if ($loginType === "QAccount") {
+                        $ad_flag = "N";
+                    } else if ($loginType === "AD") {
+                        $ad_flag = "Y";
+                    }
+
                     $sessionList = \DB::table("qp_session")
                         -> where('uuid', "=", $uuid)
                         -> where('user_row_id', '=', $user->row_id)
@@ -429,7 +446,9 @@ class qplayController extends Controller
                         \DB::table("qp_session")
                             ->where('user_row_id', '=', $user->row_id)
                             ->where('uuid', '=', $uuid)
-                            ->update(['token'=>$token,
+                            ->update([
+                                'ad_flag'=>$ad_flag,
+                                'token'=>$token,
                                 'token_valid_date'=>$token_valid,
                                 'updated_at'=>$now,
                                 'updated_user'=>$user->row_id,
@@ -440,6 +459,7 @@ class qplayController extends Controller
                         \DB::table("qp_session")->insert([
                             'user_row_id'=>$user->row_id,
                             'uuid'=>$uuid,
+                            'ad_flag'=>$ad_flag,
                             'token'=>$token,
                             'token_valid_date'=>$token_valid,
                             'created_at'=>$now,
@@ -494,21 +514,21 @@ class qplayController extends Controller
                         "domain"=>$userInfo->user_domain,
                         "site_code"=>$userInfo->site_code,
                         "company"=>$userInfo->company,
-                        "ad_flag"=>$userInfo->ad_flag,
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ];
-        	//register to QMessage
-        	$QMessage_register_url = \Config::get('app.QMessage_Register_URL');
-        	if(!empty($QMessage_register_url)){
-           	 $qmessage_result = self::Register2QMessage($userInfo->login_id, $QMessage_register_url);
-            	CommonUtil::logApi("", "Register2Qmessage",
-                	response()->json(apache_response_headers()), $qmessage_result);
-            	//更新标志位
-            	\DB::table("qp_user")
-                	->where('login_id', '=', $userInfo->login_id)
-                	->update(['register_message'=>'Y']);
-        	}
+                /*20180821 Darren - Ignore to do [register QMessage]
+                //register to QMessage
+                $QMessage_register_url = \Config::get('app.QMessage_Register_URL');
+                if(!empty($QMessage_register_url)){
+                    $qmessage_result = self::Register2QMessage($userInfo->login_id, $QMessage_register_url);
+                    CommonUtil::logApi("", "Register2Qmessage", response()->json(apache_response_headers()), $qmessage_result);
+                    //更新标志位
+                    \DB::table("qp_user")
+                        ->where('login_id', '=', $userInfo->login_id)
+                        ->update(['register_message'=>'Y']);
+                }
+                */
         	return response()->json($result);
             }
         }
@@ -718,7 +738,14 @@ class qplayController extends Controller
         $uuid = $input["uuid"];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
-            $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+
+            //check domain & login_type
+            if ($domain === "shop" || $loginType === "QAccount") {
+                $verifyResult = $Verify->verifyUserByUserEmpNo($loginid, $domain);
+            } else {
+                $verifyResult = $Verify->verifyUserByUserID($loginid, $domain);
+            }
+
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful)
             {
                 $uuidList = \DB::table("qp_register")
@@ -741,7 +768,14 @@ class qplayController extends Controller
                 else
                 {
                     $uuidInDB = $uuidList[0];
-                    $tempUser = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+
+                    //check domain & login_type
+                    if ($domain === "shop" || $loginType === "QAccount") {
+                        $tempUser = CommonUtil::getUserInfoJustByUserEmpNo($loginid, $domain);
+                    } else {
+                        $tempUser = CommonUtil::getUserInfoJustByUserID($loginid, $domain);
+                    }
+
                     if($tempUser->row_id != $uuidInDB->user_row_id)
                     {
                         $message = CommonUtil::getMessageContentByCode(ResultCode::_000904_loginUserNotMathRegistered);
@@ -756,7 +790,12 @@ class qplayController extends Controller
                     }
                 }
 
-                $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
+                //check domain & login_type
+                if ($domain === "shop" || $loginType === "QAccount") {
+                    $user = CommonUtil::getUserInfoByUserEmpNo($loginid, $domain);
+                } else {
+                    $user = CommonUtil::getUserInfoByUserID($loginid, $domain);
+                }
 
                 $loginQAccount = false;
                 $loginFail = false;
@@ -773,12 +812,12 @@ class qplayController extends Controller
                     //$LDAP_SERVER_IP = "LDAP://10.82.12.61";
                     $companyData = $companyService->getCompanyData("user_domain", $domain);
                     foreach ($companyData as $company) {
-                        $loginType = $company->login_type;
+                        $authType = $company->login_type;
                         $serverIP = $company->server_ip;
                         $serverPort = $company->server_port;
                     }
 
-                    if ($loginType == "LDAP") {
+                    if ($authType == "LDAP") {
                         $LDAP_SERVER_IP = $serverIP;
                         $userId = $domain . "\\" . $loginid;
                         $ldapConnect = ldap_connect($LDAP_SERVER_IP);//ldap_connect($LDAP_SERVER_IP , $LDAP_SERVER_PORT );
@@ -789,7 +828,7 @@ class qplayController extends Controller
                             $loginFail = true;
                             $loginFailResultCode = ResultCode::_000902_passwordError;
                         }
-                    } else if ($loginType == "API") {
+                    } else if ($authType == "API") {
                         $header = [
                             'Content-type: application/json; charset=utf-8',
                             'Content-Length: 0',
@@ -852,6 +891,12 @@ class qplayController extends Controller
                         -> select()
                         -> get();
 
+                    if ($loginType === "QAccount") {
+                        $ad_flag = "N";
+                    } else if ($loginType === "AD") {
+                        $ad_flag = "Y";
+                    }
+
                     if(count($sessionList) > 0)
                     {
                         $old_token_valid = $sessionList[0]->token_valid_date;
@@ -864,6 +909,7 @@ class qplayController extends Controller
                                 -> where('user_row_id', '=', $user->row_id)
                                 -> where('uuid', '=', $uuid)
                                 -> update([
+                                    'ad_flag'=>$ad_flag,
                                     'token'=>$token,
                                     'token_valid_date'=>$token_valid,
                                     'updated_at'=>$now,
@@ -877,6 +923,7 @@ class qplayController extends Controller
                             -> insert([
                                 'user_row_id'=>$user->row_id,
                                 'uuid'=>$uuid,
+                                'ad_flag'=>$ad_flag,
                                 'token'=>$token,
                                 'token_valid_date'=>$token_valid,//'token_valid_date'=>date('Y-m-d H:i:s',time()),
                                 'created_user'=>$user->row_id,
@@ -921,7 +968,6 @@ class qplayController extends Controller
                         "domain"=>$userInfo->user_domain,
                         "site_code"=>$userInfo->site_code,
                         "company"=>$userInfo->company,
-                        "ad_flag"=>$userInfo->ad_flag,
                         "checksum"=>md5($password),
                         'security_update_list' => $security_update_list)
                 ];
@@ -937,6 +983,7 @@ class qplayController extends Controller
             'message'=>$message,
             'content'=>array("redirect_uri"=>$finalUrl)];
         return response()->json($result);
+
     }
 
     public function logout()
@@ -965,9 +1012,13 @@ class qplayController extends Controller
         $loginid = $input['loginid'];
 
         if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+
             $verifyResult = $Verify->verifyUserByUserID4Logout($loginid, $domain);
+
             if($verifyResult["code"] == ResultCode::_1_reponseSuccessful) {
+
                 $user = CommonUtil::getUserInfoByUserID4Logout($loginid, $domain);
+
                 //用户没找到则直接return
                 if (is_null($user)){
                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
@@ -2272,7 +2323,8 @@ SQL;
                 }
                 if($projectId == 1){
                     //Register to JPush Tag
-                    $tag = PushUtil::GetTagByUserInfo($userInfo);
+                    //1. According to the ad_flag decide the [flag name]
+                    $tag = PushUtil::GetTagByUserInfo($userInfo, CommonUtil::ADFlag($uuid));
                     $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
 
                     if(!$pushResult["result"]) {

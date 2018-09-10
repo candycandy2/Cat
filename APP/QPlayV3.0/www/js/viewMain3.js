@@ -1,51 +1,115 @@
 $("#viewMain3").pagecontainer({
     create: function (event, ui) {
 
-        var widgetArr = JSON.parse(localStorage.getItem('widgetList'));
+        var offsetTop;
 
-        var loadAndRunScript = function (index) {
-            //1. 条件判断
-            if (index == widgetArr.length) {
-                return;
+        //widget排序
+        function orderWidget() {
+            var widgetListDirty = window.sessionStorage.getItem('widgetListDirty');
+
+            if (widgetListDirty == 'Y' || widgetListDirty == null) {
+
+                var arr = JSON.parse(window.localStorage.getItem('widgetList'));
+
+                var widgetOrder = setInterval(function () {
+                    if (arr != null) {
+                        clearInterval(widgetOrder);
+
+                        for (var i = 0; i < arr.length - 1; i++) {
+                            $('.' + arr[i].name + 'Widget').after($('.' + arr[i + 1].name + 'Widget'));
+                        }
+                        window.sessionStorage.setItem('widgetListDirty', 'N');
+                    }
+                }, 500);
+            }
+        }
+
+        //设置高度
+        function setHomepageHeight() {
+            var headHeight = $('#viewMain3 .page-header').height();
+            var widgetHeight = $('#widgetList').height();
+            var linkHeight = $('.other-link').height();
+
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (headHeight + widgetHeight + linkHeight + iOSFixedTopPX()).toString();
             } else {
-                if (!widgetArr[index].enabled) {
-                    loadAndRunScript(index + 1);
-                }
+                totalHeight = (headHeight + widgetHeight + linkHeight).toString();
             }
 
-            //2. widget
-            var widgetItem = widgetArr[index].name + "Widget";
+            $('.main-scroll > div').css('height', totalHeight + 'px');
+        }
 
-            //3. container
-            var contentItem = $('<div class="' + widgetItem + '"></div>');
-            $('#widgetList').append(contentItem);
+        var pullControl = null;
+        $(".main-scroll").on('scroll', function () {
+            //不同设备不同处理
+            if (device.platform === "iOS") {
+                if ($('#widgetList').offset().top > 50) {
+                    if (pullControl == null) {
 
-            //4. sessionStorage
-            sessionStorage.setItem('widgetItem', widgetItem);
+                        pullControl = PullToRefresh.init({
+                            mainElement: '#widgetList',
+                            onRefresh: function () {
+                                //do something for refresh
+                                widget.clear();
+                                widget.show();
+                                //数据量可能有变化，需重新计算高度
+                                setTimeout(function () {
+                                    setHomepageHeight();
+                                }, 1000);
+                                //clear FuntionList
+                                component.clear('FunctionList');
+                                //refresh FunctionList
+                                component.refresh('FunctionList');
+                            }
+                        });
+                    }
+                } else {
 
-            //5. load js
-            $.getScript(serverURL + "/widget/" + widgetArr[index].name + "/" + widgetArr[index].name + ".js")
-                .done(function (script, textStatus) {
-                    loadAndRunScript(index + 1);
-                })
-                .fail(function (jqxhr, settings, exception) {
-                    console.log("Triggered ajaxError handler.");
-                });
-        };
+                    if (pullControl != null) {
+                        pullControl.destroy();
+                        pullControl = null;
+                    }
+                }
+            } else {
+                //如果滑动到顶部，初始化pullrefresh
+                if (offsetTop == $('#widgetList').offset().top) {
+                    if (pullControl == null) {
+
+                        pullControl = PullToRefresh.init({
+                            mainElement: '#widgetList',
+                            onRefresh: function () {
+                                //do something for refresh
+                                widget.clear();
+                                widget.show();
+                                //数据量可能有变化，需重新计算高度
+                                setTimeout(function () {
+                                    setHomepageHeight();
+                                }, 1000);
+                                //clear FuntionList
+                                component.clear('FunctionList');
+                                //refresh FunctionList
+                                component.refresh('FunctionList');
+                            }
+                        });
+                    }
+                } else {
+                    //滑动到其他
+                    if (pullControl != null) {
+                        pullControl.destroy();
+                        pullControl = null;
+                    }
+
+                }
+
+            }
+
+        });
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function (event, ui) {
             //1. load widget
-            loadAndRunScript(0);
-
-            //2. get message
-            if (!callGetMessageList && loginData["msgDateFrom"] === null) {
-                msgDateFromType = 'month';
-                var clientTimestamp = getTimestamp();
-                loginData["msgDateFrom"] = parseInt(clientTimestamp - 60 * 60 * 24 * 30, 10);
-                var messageList = new QueryMessageList();
-            }
-            
+            widget.init($('#widgetList'));
         });
 
         $("#viewMain3").on("pagebeforeshow", function (event, ui) {
@@ -53,31 +117,37 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").one("pageshow", function (event, ui) {
-            var applist = new GetAppList();
-
-            var checkHomepageHeight = setInterval(function () {
-                if (carouselFinish && weatherFinish && reserveFinish && messageFinish && applistFinish) {
-                    var mainHeight = $('.main-scroll > div').height();
-                    var headHeight = $('#viewMain3 .page-header').height();
-                    var totalHeight;
-
-                    if (device.platform === "iOS") {
-                        totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
-                        $('.main-scroll > div').css('height', totalHeight + 'px');
-                    } else {
-                        totalHeight = (mainHeight + headHeight + 2).toString();
-                        $('.main-scroll > div').css('height', totalHeight + 'px');
-                    }
-
-                    //clear
-                    clearInterval(checkHomepageHeight);
+            //1. check FunctionList show or hide
+            var functionArr = JSON.parse(window.localStorage.getItem('widgetList'));
+            for (var i in functionArr) {
+                if (!functionArr[i].enabled) {
+                    $('.' + functionArr[i].name + 'Widget').hide();
                 }
-            }, 1000);
+            }
+
+            //2. check element count
+            var checkWidgetFinish = setInterval(function () {
+                var childrenLength = $('#widgetList').children('div').length;
+                var enabledLength = parseInt(window.sessionStorage.getItem('widgetLength'));
+
+                if (enabledLength == childrenLength) {
+                    clearInterval(checkWidgetFinish);
+
+                    setTimeout(function () {
+                        setHomepageHeight();
+                    }, 800);
+                }
+            }, 500);
+
+            //3. pull refresh：save initial value
+            offsetTop = $('#widgetList').offset().top;
 
         });
 
-        $("#viewMain3").on("pageshow", function (event, ui) {
 
+        $("#viewMain3").on("pageshow", function (event, ui) {
+            orderWidget();
+            widget.show();
         });
 
         $("#viewMain3").on("pagehide", function (event, ui) {
@@ -86,34 +156,10 @@ $("#viewMain3").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        //跳转到行事历
-        $('#widgetList').on('click', '.personal-res', function () {
-            checkAppPage('viewMyCalendar');
-        });
-
-        //最爱列表打开APP
-        $('#widgetList').on('click', '.applist-item', function () {
-            var schemeURL = $(this).attr('data-name') + createAPPSchemeURL();
-            openAPP(schemeURL);
-        });
-
-        //点击添加按钮跳转到APPList
-        $('#widgetList').on('click', '.add-favorite-list', function () {
-            addAppToList = true;
-            checkAppPage('viewAppList');
-        });
 
         //点击Link跳转到APPList
         $('.applist-link').on('click', function () {
-            addAppToList = false;
             checkAppPage('viewAppList');
-        });
-
-        //点击widget内message，跳转到message详情页
-        $('#widgetList').on('click', '.widget-msg-list', function () {
-            messageFrom = 'viewMain3';
-            messageRowId = $(this).attr('data-rowid');
-            $.mobile.changePage('#viewWebNews2-3-1');
         });
 
         //跳转到MessageList
@@ -123,14 +169,13 @@ $("#viewMain3").pagecontainer({
 
         //跳转到FAQ
         $('.faq-link').on('click', function () {
-            checkAppPage('viewFAQ');
+            checkWidgetPage('viewFAQ');
         });
 
         //跳转到设定
         $('#setting').on('click', function () {
             checkAppPage('viewAppSetting');
         });
-
 
 
     }

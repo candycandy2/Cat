@@ -67,6 +67,7 @@ return [
     //validate
     'VALIDATE_ACCEPT' => 'accept only',
     'VALIDATE_ACCEPT_NUMERIC' => 'accept only numeric',
+    'VALIDATE_ACCEPT_WORD' => 'accept only letters, numbers, dash',
 
     //About
     'SYS_VERSION' => 'System Version',
@@ -430,8 +431,10 @@ return [
     'OWNER_APP' => 'Belong APP Name',
     'FUNCTION_NAME' => 'Function Name',
     'FUNCTION_TYPE' => 'Function Type',
-    'FUNCTION_VARIABLE_NAME' => 'Variable Name',
+    'FUNCTION_VARIABLE_NAME' => 'Function ID',
     'FUNCTION_DESCRIPTION' => 'Description',
+    'QACCOUNT_AVAILABLE' => 'QAccount Available',
+    'RIGHT_LEVEL' => 'Right Level',
     'ERR_FUNCTION_VARIABLE_EXIST' =>'function variable already exist!',
     'ERR_CREATE_FUNCTION_FAILED' => 'Create Function Failed!',
     'ERR_UPDATE_FUNCTION_FAILED' => 'Update Function Failed!'

@@ -67,6 +67,7 @@ return [
     //validate
     'VALIDATE_ACCEPT' => '仅接受',
     'VALIDATE_ACCEPT_NUMERIC' => '仅接受数字',
+    'VALIDATE_ACCEPT_WORD' => '仅接受英数字或底线',
 
     //About
     'SYS_VERSION' => '系统版本',
@@ -428,8 +429,10 @@ return [
     'OWNER_APP' => '所属App',
     'FUNCTION_NAME' => '功能名称',
     'FUNCTION_TYPE' => '功能类型',
-    'FUNCTION_VARIABLE_NAME' => '功能变数名称',
+    'FUNCTION_VARIABLE_NAME' => '功能ID',
     'FUNCTION_DESCRIPTION' => '功能描述',
+    'QACCOUNT_AVAILABLE' => 'QAccount使用权限',
+    'RIGHT_LEVEL' => '权限等级',
     'ERR_FUNCTION_VARIABLE_EXIST' =>'功能变数名称已经存在!',
     'ERR_CREATE_FUNCTION_FAILED' => '新增功能失败!',
     'ERR_UPDATE_FUNCTION_FAILED' => '更新功能失败!'

@@ -46,15 +46,37 @@
             </div>
             <!-- empty div -->
             <div class="apply-empty-div1"></div>
-            <!-- work type -->
-            <div class="apply-work-type">
+            <div id="newWorkType">
                 <div class="font-style11">
                     <!-- 刷卡類型 -->
                     <span class="langStr" data-id="str_192"></span>
                 </div>
+                <div>
+                    <input type="radio" data-role="none" name="setWorkType" id="typeIn" value='typeIn'>
+                    <label data-role="none" class="overlap-label-icon" for="typeIn"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 上班 -->
+                        <span class="langStr" data-id="str_228" class="font-style3"></span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" data-role="none" name="setWorkType" id="typeOut" value='typeOut'>
+                    <label data-role="none" class="overlap-label-icon" for="typeOut"></label>
+                    <label data-role="none" class="overlap-label-text">
+                        <!-- 下班 -->
+                        <span class="langStr" data-id="str_229" class="font-style3"></span>
+                    </label>
+                </div>
+            </div> 
+            <!-- work type -->
+            <!--<div class="apply-work-type">
+                <div class="font-style11">-->
+                    <!-- 刷卡類型 -->
+                    <!--<span class="langStr" data-id="str_192"></span>
+                </div>-->
                 <!-- 類型 dropdownlist -->
-                <div data-role="none" id="workType" class="font-style3"></div>
-            </div>
+                <!--<div data-role="none" id="workType" class="font-style3"></div>
+            </div>-->
             <!-- clockin date -->
             <div id="clockinDate">
                 <div class="font-style11">
@@ -99,8 +121,6 @@
             <div class="date-component">
                 <input data-role="none" id="newWorkDate" readonly="readonly" class="date-time-component">
                 <input data-role="none" id="newClockinDate" readonly="readonly" class="date-time-component">
-                <!--<input data-role="none" id="newClockinTime" readonly="readonly" class="date-time-component">-->
-                <!--<input type="text" name="timepicker" class="timepicker" id="newClockinTime">-->
                 <input data-role='datebox' id="timepicker" readonly="readonly" type="text" data-options='{"mode": "timeflipbox", "useInlineAlign":"center", "openCallback": "resizeDatebox", "closeCallback": "setDoneTime"}' name="timepicker" class="date-time-component">
             </div>
             <div class="apply-empty-div2"></div>
@@ -125,7 +145,7 @@
             <div class="preview-apply-date font-style12">
                 <!-- 申請日期： -->
                 <span class="langStr" data-id="str_080"></span>
-                <span id="previewApplyDay"></span>
+                <span id="previewClockinApplyDay"></span>
             </div>
             <div class="preview-apply-categroy">
                 <div></div>

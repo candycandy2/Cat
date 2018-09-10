@@ -136,8 +136,7 @@ class UserRepository
     public function QAccountLogin($account)
     {
         $result = DB::table("qp_user")
-                    -> where('login_id', "=", $account)
-                    -> where('ad_flag', "=", "N")
+                    -> where('emp_no', "=", $account)
                     -> select()
                     -> get();
 

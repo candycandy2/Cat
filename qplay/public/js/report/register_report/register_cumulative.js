@@ -255,12 +255,12 @@ var setCumulativeRegisterDonutChartData = function(r,type,queryDate,chart){
                 tmpData.drilldown.data.push(tmpCount); 
                 tmpSubSum = tmpSubSum + tmpCount;
             }
-        }
-        sum = sum + tmpSubSum;
-        tmpData.y = tmpSubSum;
-        data.push(tmpData);
-        x++;
 
+            sum = sum + tmpSubSum;
+            tmpData.y = tmpSubSum;
+            data.push(tmpData);
+            x++;
+        }
     }// end else if(type == '2' || type == '4')
 
     var dataLen = data.length;
@@ -358,13 +358,13 @@ var createCumulativeRegisterTable = function(res, date){
     var td = '<td class="js-v-t text-blod" nowrap="nowrap" >0</td><td class="js-v-d text-blod" nowrap="nowrap">0</td>';
     $.each(companySiteArray, function(index, companySite){
         var th = '<th class="table-title bg-color-blue"><div class="th-inner fit-cell">'+companySite+'</div></th>';
-        td+= '<td class="js-'+companySite+'_t">0</td>';
+        td+= '<td class="js-'+companySite.replace(/\s/g, "_")+'_t">0</td>';
         $tableChartDiv.find('.js-sub-title').append(th);
     });
     //register users
     $.each(companySiteArray, function(index, companySite){
         var th = '<th class="table-title bg-color-pink"><div class="th-inner fit-cell">'+companySite+'</div></th>';
-        td+= '<td class="js-'+companySite+'_d">0</td>';
+        td+= '<td class="js-'+companySite.replace(/\s/g, "_")+'_d">0</td>';
         $tableChartDiv.find('.js-sub-title').append(th);
     });
     //api deviceType row
@@ -396,8 +396,8 @@ var createCumulativeRegisterTable = function(res, date){
                     });
                 }
             });
-            $tableChartDiv.find('table .js-'+deviceType+' .js-'+companySite+'_t').html(tmpDeviceCount);
-            $tableChartDiv.find('table .js-'+deviceType+' .js-'+companySite+'_d').html(tmpUsersCount);
+            $tableChartDiv.find('table .js-'+deviceType+' .js-'+companySite.replace(/\s/g, "_")+'_t').html(tmpDeviceCount);
+            $tableChartDiv.find('table .js-'+deviceType+' .js-'+companySite.replace(/\s/g, "_")+'_d').html(tmpUsersCount);
         });
 
     });
@@ -411,7 +411,7 @@ var createCumulativeRegisterTable = function(res, date){
     $.each(companySiteArray, function(index, companySite){
         var vtotalArr = {'t':0,'d':0};
         $.each(vtotalArr, function(type,cnt){
-           $companySiteObj =  $tableChartDiv.find('td.js-' + companySite + '_' + type);
+           $companySiteObj =  $tableChartDiv.find('td.js-' + companySite.replace(/\s/g, "_") + '_' + type);
            var i=0;
             $.each($companySiteObj, function(subIndexnx,companySiteDataObj){
                 if(typeof htotalArr[type][i] =='undefined'){
@@ -427,10 +427,10 @@ var createCumulativeRegisterTable = function(res, date){
             //modify last one
             if(type == 't'){
                 htotalArr[type][i-1] = totalDistinctDeviceCount.length;//real distinct device count
-                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite+'_' + type).html(vtotalArr[type]);
+                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(vtotalArr[type]);
             }else{
                 htotalArr[type][i-1] = totalDistinctUserCount.length;//real distinct user count
-                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite+'_' + type).html(vtotalArr[type]);
+                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(vtotalArr[type]);
             }
         });   
          

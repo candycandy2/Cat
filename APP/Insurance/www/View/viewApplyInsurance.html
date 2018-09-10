@@ -2,19 +2,15 @@
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header" data-tap-toggle="false">
         <a class="menu-btn" data-role="none" style="margin-top: 0.31VH;">
-            <img src="img/002_nav_back_white.png" id="backPersonalInsurance">
+            <img src="img/002_nav_back_white.png" id="backPersonalInsuranceFromApply">
+            <img src="img/002_nav_back_white.png" id="backPersonalInsuranceFromDetail">
             <img src="img/002_nav_back_white.png" id="backApplyInsurance">
+            <img src="img/002_nav_back_white.png" id="backWithdrawDetail">
         </a>
         <div class="header-style">
             <div class="ui-title">
-                <!--加保申請-->
-                <span class="langStr apply-insur-title" data-id="str_111"></span>
-                <!--退保申請-->
-                <span class="langStr withdraw-insur-title" data-id="str_112"></span>
-                <!--停保申請-->
-                <span class="langStr stop-insur-title" data-id="str_113"></span>
-                <!--復保申請-->
-                <span class="langStr recover-insur-title" data-id="str_114"></span>
+                <!--加保/退保/停保申請/眷屬健保-->
+                <span class="langStr apply-insur-title"></span>
             </div>
         </div>
     </div>
@@ -32,8 +28,8 @@
             </div>
             <div class="apply-insurance-form">
                 <div for="applyDate" class="font-style11">
-                    <!--加保日期-->
-                    <span class="langStr" data-id="str_116"></span>
+                    <!--加保/退保/停保日期-->
+                    <span class="langStr insurDate"></span>
                 </div>
                 <input name="applyDate" id="applyDate" data-role="none" class="family-input-calendar" style="margin-left: 0vw;" readonly>
             </div>
@@ -52,6 +48,22 @@
                 </div>
                 <!-- 原因 dropdownlist -->
                 <div data-role="none" id="withdrawReason" class="font-style3"></div>
+            </div>
+            <div class="stop-insurance-ddl">
+                <div class="font-style11">
+                    <!-- 停保原因 -->
+                    <span class="langStr" data-id="str_124"></span>
+                </div>
+                <!-- 原因 dropdownlist -->
+                <div data-role="none" id="stopReason" class="font-style3"></div>
+            </div>
+            <div class="recover-insurance-ddl">
+                <div class="font-style11">
+                    <!-- 復保原因 -->
+                    <span class="langStr" data-id="str_127"></span>
+                </div>
+                <!-- 原因 dropdownlist -->
+                <div data-role="none" id="recoverReason" class="font-style3"></div>
             </div>
             <div id="newSubsidy">
                 <div class="font-style11">
@@ -135,6 +147,7 @@
                 <span class="langStr" data-id="str_131"></span>
             </div>
         </div> 
+
         <!--2.預覽加保/退保/停保/復保申請-->
         <div id="viewPreviewApplication" class="hide">
             <div class="insurance-main">
@@ -153,9 +166,9 @@
                         <span id="previewID"></span>
                     </div>
                 </div>    
-                <div class="font-style11 insurance-main-title" >
-                    <!-- 加保資訊 -->
-                    <span class="langStr" data-id="str_132"></span>
+                <div class="font-style11 insurance-main-title">
+                    <!-- 加保/退保/停保/復保資訊 -->
+                    <span class="langStr insur-info-title"></span>
                 </div> 
                 <div class="health-insurance-content font-style7">
                     <div style="margin-bottom:2.14vw;">
@@ -197,8 +210,27 @@
                     <!-- 加保 -->
                     <span class="langStr" data-id="str_148"></span>
                 </div>
+                <div id="recoverBtn" class="font-style3">
+                    <!-- 復保 -->
+                    <span class="langStr" data-id="str_156"></span>
+                </div>
             </div> 
+            <div class="two-button-style">
+                <div class="left-apply-button-style">
+                    <div id="withdrawBtn" class="font-style3">
+                        <!-- 退保 -->
+                        <span class="langStr" data-id="str_150"></span>
+                    </div>
+                </div> 
+                <div class="right-apply-button-style">
+                    <div id="stopBtn" class="font-style3">
+                        <!-- 停保 -->
+                        <span class="langStr" data-id="str_151"></span>
+                    </div>
+                </div>
+            </div>
         </div>
+ 
     </div>
 
     <!--確定刪除眷屬資料-->
@@ -234,7 +266,7 @@
         </div>
     </div>
 
-    <!--確定取消申請-->
+    <!--確定取消新增(回申請表的前一頁)-->
     <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelApply" for="confirmCancelApply"
         id="confirmCancelApply">
         <div data-role="main" class="ui-content">
@@ -244,8 +276,8 @@
                         <img src="img/urgent.png">
                     </span>
                     <span class="header-text">
-                        <!--確定取消新增-->
-                        <span class="langStr" data-id="str_101"></span>
+                        <!--確定取消申請-->
+                        <span class="langStr" data-id="str_155"></span>
                     </span>
                 </div>
             </div>
@@ -259,6 +291,72 @@
                         <span class="langStr" data-id="com_023"></span>
                     </div>
                     <div class="btn-cancel" id="confirmCancelApplyBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!--確定取消新增(回X保明細)-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelApplyToDetail" for="confirmCancelApplyToDetail"
+        id="confirmCancelApplyToDetail">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定取消申請-->
+                        <span class="langStr" data-id="str_155"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-cancel font-style3"> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmCancelApplyToDetailBtn">
+                        <!--確定-->
+                        <span class="langStr" data-id="com_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--確定取消申請(XX待處理取消申請)-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmCancelPendingApply" for="confirmCancelPendingApply"
+        id="confirmCancelPendingApply">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--確定取消申請-->
+                        <span class="langStr" data-id="str_155"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-cancel font-style3"> </p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="com_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="confirmCancelPendingApplyBtn">
                         <!--確定-->
                         <span class="langStr" data-id="com_016"></span>
                     </div>

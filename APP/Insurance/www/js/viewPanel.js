@@ -1,6 +1,6 @@
 
 var panel = htmlContent
-        +'<div data-role="panel" id="mypanel" data-display="overlay">'
+        +'<div data-role="panel" id="mypanel" data-display="overlay" style="position:fixed;">'
         +   '<div class="ios-fix-overlap-div"></div>'
         +   '<div class="panel-content" id="mypanelviewMain">'
         //+       '<span class="panel-text">保險概要</span>'
@@ -17,10 +17,6 @@ var panel = htmlContent
         +   '<div class="panel-content" id="mypanelviewContact">'
         //+       '<span class="panel-text">服務窗口</span>'
         +       '<span class="panel-text">' + langStr["str_053"] + '</span>'
-        +   '</div>'
-        +   '<div class="panel-content" id="mypanelviewInsuranceInfo">'
-        //+       '<span class="panel-text">保險小常識</span>'
-        +       '<span class="panel-text">' + langStr["str_054"] + '</span>'
         +   '</div>'
         +'</div>'
         +'<div class="page-mask" style="display: none;"></div>';
@@ -51,10 +47,6 @@ $(document).one("pagebeforeshow", function() {
 
     $("#mypanel #mypanelviewContact").on("click", function() {
         changePageByPanel("viewContact");
-    });
-
-    $("#mypanel #mypanelviewInsuranceInfo").on("click", function() {
-        changePageByPanel("viewInsuranceInfo");
     });
 
     $(".menu-btn .insuranceMenu").on("click", function() {

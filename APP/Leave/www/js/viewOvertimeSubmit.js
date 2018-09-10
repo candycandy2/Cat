@@ -107,6 +107,78 @@ $("#viewOvertimeSubmit").pagecontainer({
             }();
         };
 
+        //加班申請送簽
+        window.SendApplyOvertimeData = function() {
+
+            this.successCallback = function(data) {
+                //console.log(data);
+                if (data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var success = $("success", htmlDom);
+                    if ($(success).html() != undefined) {
+                        //如果送签成功，重新取得加班單列表，并跳转到“加班查詢/時數登入”页
+                        $("#backOvertime").click();
+                        QueryEmployeeOvertimeApplyForm();
+                        changePageByPanel("viewOvertimeQuery");
+                        $(".popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        //送签成功，清空申请表单
+                        $("#emptyOvertimeForm").trigger("click");
+                    } else {
+                        loadingMask("hide");
+                        var error = $("error", htmlDom);
+                        var errorMsg = $(error).html();
+                        $('.leftDaysByOT').find('.header-text').html(errorMsg);
+                        popupMsgInit('.leftDaysByOT');
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {
+                loadingMask("hide");
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "SendOvertimeFormData", self.successCallback, self.failCallback, sendApplyOvertimeQueryData, "");
+            }();
+        };
+
+        //加班時數登入申請送簽
+        window.UpdateOvertimeData = function() {
+
+            this.successCallback = function(data) {
+                //console.log(data);
+                if (data['ResultCode'] === "1") {
+                    var callbackData = data['Content'][0]["result"];
+                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
+                    var success = $("success", htmlDom);
+                    if ($(success).html() != undefined) {
+                        //如果送签成功，重新取得加班單列表，并跳转到“加班查詢/時數登入”页
+                        QueryEmployeeOvertimeApplyForm();
+                        changePageByPanel("viewOvertimeQuery");
+                        $(".popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                        //送签成功，清空申请表单
+                        $("#emptyOvertimeForm").trigger("click");
+                        viewAcutalOTApplyShow = false;
+                    } else {
+                        loadingMask("hide");
+                        var error = $("error", htmlDom);
+                        var errorMsg = $(error).html();
+                        $('.leftDaysByOT').find('.header-text').html(errorMsg);
+                        popupMsgInit('.leftDaysByOT');
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {
+                loadingMask("hide");
+            };
+
+            var __construct = function() {
+                CustomAPI("POST", true, "UpdateOvertimeForm", self.successCallback, self.failCallback, updateOvertimeQueryData, "");
+            }();
+        };
+
         /********************************** page event *************************************/
         $("#viewOvertimeSubmit").on("pagebeforeshow", function(event, ui) {          
             if (!viewAcutalOTApplyShow) {
@@ -151,13 +223,40 @@ $("#viewOvertimeSubmit").pagecontainer({
                 $("#chooseOTday").text(overtimeDetailObj["targetdate"]);
                 overtimeday = overtimeDetailObj["targetdate"];
                 getOTPaidType();
-                //viewAcutalOTApplyShow = false;
             }          
         });
 
         $("#viewOvertimeSubmit").on("pageshow", function(event, ui) {
+            activePageListID = visitedPageList[visitedPageList.length - 1];
             $('#applyOTDay').text(applyDay);
             $('#previewApplyDate').text(applyDay);
+            //從編輯加班單按鈕跳轉
+            if (viewEditOTApplyShow) {
+                var expOTHours = "0";
+                overtimeday = overtimeDetailObj["targetdate"];
+                $("#chooseOTday").text(overtimeday);
+                startottime = overtimeDetailObj["expectFrom"];
+                $("#startTimeText").html(startottime);
+                endottime = overtimeDetailObj["expectTo"];
+                $("#endTimeText").html(endottime);
+                countOvertimeHoursByEndQueryData = "<LayoutHeader><EmpNo>" +
+                    myEmpNo +
+                    "</EmpNo><targetdate>" +
+                    overtimeday +
+                    "</targetdate><begintime>" +
+                    startottime +
+                    "</begintime><endtime>" +
+                    endottime +
+                    "</endtime><expectTotalhours>" + 
+                    expOTHours +
+                    "</expectTotalhours></LayoutHeader>"; 
+                CountOvertimeHoursByEnd(); 
+                otreason = overtimeDetailObj["reason"]; 
+                $("#overtimeReason").val(otreason);
+                //檢查是否可以預覽送簽
+                checkOvertimeBeforePreview();
+                viewEditOTApplyShow = false;
+            }
             loadingMask("hide");
         });
 
@@ -217,6 +316,9 @@ $("#viewOvertimeSubmit").pagecontainer({
             } else {
                 $("#startOTPicker").trigger('datebox', { 'method': 'open' });
                 tplJS.preventPageScroll();
+                $("#" + activePageListID + ".ui-page").css({
+                    'position': 'fixed'
+                });       
             }           
         });
 
@@ -228,6 +330,9 @@ $("#viewOvertimeSubmit").pagecontainer({
             } else {
                 $("#endOTPicker").trigger('datebox', { 'method': 'open' });
                 tplJS.preventPageScroll();
+                $("#" + activePageListID + ".ui-page").css({
+                    'position': 'fixed'
+                });       
             }
 
         });
@@ -249,6 +354,9 @@ $("#viewOvertimeSubmit").pagecontainer({
                 endottime = "";
             } 
             tplJS.recoveryPageScroll();
+            $("#" + activePageListID + ".ui-page").css({
+                'position': ''
+            });     
 
             $(".ui-datebox-container").css("opacity", "0");
             if (!viewAcutalOTApplyShow) {
@@ -303,6 +411,9 @@ $("#viewOvertimeSubmit").pagecontainer({
                 }                             
             } 
             tplJS.recoveryPageScroll();
+            $("#" + activePageListID + ".ui-page").css({
+                'position': ''
+            });  
             $(".ui-datebox-container").css("opacity", "0");
         };
 
@@ -432,43 +543,6 @@ $("#viewOvertimeSubmit").pagecontainer({
             popupMsgInit('.confirmActualOvertime');
         });
 
-        //加班申請送簽
-        window.SendApplyOvertimeData = function() {
-
-            this.successCallback = function(data) {
-                //console.log(data);
-                if (data['ResultCode'] === "1") {
-                    var callbackData = data['Content'][0]["result"];
-                    var htmlDom = new DOMParser().parseFromString(callbackData, "text/html");
-                    var success = $("success", htmlDom);
-                    if ($(success).html() != undefined) {
-                        //如果送签成功，重新取得加班單列表，并跳转到“加班查詢/時數登入”页，并记录代理人到local端
-                        $("#backOvertime").click();
-                        QueryEmployeeOvertimeApplyForm();
-                        changePageByPanel("viewOvertimeQuery");
-                        $(".popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
-                        //送签成功，清空申请表单
-                        $("#emptyOvertimeForm").trigger("click");
-                    } else {
-                        loadingMask("hide");
-                        var error = $("error", htmlDom);
-                        var errorMsg = $(error).html();
-                        $('.leftDaysByOT').find('.header-text').html(errorMsg);
-                        popupMsgInit('.leftDaysByOT');
-                    }
-
-                }
-            };
-
-            this.failCallback = function(data) {
-                loadingMask("hide");
-            };
-
-            var __construct = function() {
-                CustomAPI("POST", true, "SendOvertimeFormData", self.successCallback, self.failCallback, sendApplyOvertimeQueryData, "");
-            }();
-        };
-
         //送簽popup確定
         $("#confirmSendOT").on("click", function() {
             //$("#previewOTBtn").hide();
@@ -500,7 +574,21 @@ $("#viewOvertimeSubmit").pagecontainer({
 
         //送簽時數登入popup確定
         $("#confirmSendActualOT").on("click", function() {
-            viewAcutalOTApplyShow = false;
+            updateOvertimeQueryData = '<LayoutHeader><EmpNo>' +
+                myEmpNo +
+                '</EmpNo><formid>' +
+                overtimeDetailObj["formid"] +
+                '</formid><actualFrom>' +
+                startottime +
+                '</actualFrom><actualTo>' +
+                endottime +
+                '</actualTo><actualHours>' +
+                countOTHours +
+                '</actualHours><type>' +
+                $("#paid-type-popup option").val() +
+                '</type></LayoutHeader>';
+            //呼叫API
+            UpdateOvertimeData();
         });
     }
 });

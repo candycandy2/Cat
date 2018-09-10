@@ -3,12 +3,23 @@
     height: 100% !important;
 }
 
-/* #viewMain3  {
-    height: 100% !important;
-} */
-
 #viewMain2-1  {
     height: 100% !important;
+}
+
+ul {
+    list-style-type: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.keydown-active {
+    background: #D6D6D6 !important;
+}
+
+.button-active {
+    background: #009688 !important;
+    color: #FFF !important;
 }
 
 .ui-page .ui-header {
@@ -40,7 +51,13 @@
 
 .ui-popup-container {
     position: fixed !important;
-    top: 225px !important;
+    top: 225px;
+}
+
+.tpl-dropdown-list-icon-arrow-incline {
+    background: url('../img/dropdown_incline.png') right transparent;
+    background-size: 2vw 2vw;
+    background-repeat: no-repeat;
 }
 
 #viewNewsEvents2-3 .ui-listview>.ui-li-static {
@@ -126,15 +143,6 @@
 .event-list-content.ui-content .ui-listview,
 .event-list-content.ui-panel-inner>.ui-listview {
     margin: 0;
-}
-
-* {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 
 /*----------------------new class----------------------*/
@@ -410,10 +418,10 @@ input[type=radio]:checked + label {
     background-size: 10vw;
     height: 3.6vh;
     width: 10vw;
-    font-size: 2.3vh;
+    font-size: 3.5vw;
     color: #5C5C5C;
     text-align: center;
-    line-height: 1.5;
+    line-height: 1.7;
     background-color: #FFFFFF;
 }
 
@@ -454,6 +462,7 @@ input[type=radio]:checked + label {
     width: 100%;
     height: 52vh;
     overflow-x: scroll;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     background: #edecec;
 }
@@ -502,17 +511,17 @@ input[type=radio]:checked + label {
 #viewAppDetail2-2 .fix {
     display: none;
     position: fixed;
-    top: 0;
     width: 100vw;
     height: 100vh;
     background: lightgray;
 }
 
 #viewAppDetail2-2 .fix > div:nth-of-type(1) {
-    margin: 20vw 0 0;
+    margin-top: 5vw;
     width: 100%;
     height: 80vh;
     overflow-x: scroll;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -915,34 +924,9 @@ input[type=radio]:checked + label {
     border-bottom: 1px solid #d6d6d6;
 }
 
-.carouselWidget {
-    width: 100vw;
-    height: 50vw;
-}
-
-.weatherWidget {
-    width: 100vw;
-    height: 30vw;
-}
-
-.reserveWidget {
-    width: 100vw;
-    min-height: 40vw;
-}
-
-.messageWidget {
-    width: 100vw;
-    min-height: 25vw;
-}
-
-.applistWidget {
-    width: 100vw;
-    height: 38vw;
-}
-
 .other-link {
     width: 100vw;
-    height: 78vw;
+    /* height: 78vw; */
     background: #FFFFFF;
 }
 
@@ -998,6 +982,22 @@ input[type=radio]:checked + label {
     margin-top: 4.5vw;
 }
 
+/*************************** viewNoneInstall ********************************/
+#viewNoneInstall .ui-content {
+    padding: 0 !important;
+}
+
+.app-no-download {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;  
+    text-align: center;
+    padding-top: 35vh;
+    background: #EDECEC;
+    color: #8fa4ac;
+    font-size: 4.18vw;
+}
+
 /*************************** viewAppList ********************************/
 #viewAppList .ui-content {
     padding: 0 !important;
@@ -1012,20 +1012,9 @@ input[type=radio]:checked + label {
     -webkit-overflow-scrolling: touch;
 }
 
-.app-no-download {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;  
-    text-align: center;
-    padding-top: 35vh;
-    background: #EDECEC;
-    color: #8fa4ac;
-    font-size: 4.18vw;
-    display: none;
-}
-
 .download-title {
     padding: 6.422vw 3.71vw 2.5vw;
+    font-size: 3.349vw !important;
     color: #0f0f0f;
     background: #edecec;
 }
@@ -1145,46 +1134,6 @@ input[type=radio]:checked + label {
     padding: 1.86vw 0 3.59vw 2.77vw;
 }
 
-
-/********************************* viewFAQ **************************************/
-#viewFAQ .ui-content {
-    padding: 0 !important;
-}
-
-.question-list {
-    padding: 3.188vw 3.71vw;
-    border-bottom: 1px solid #d6d6d6;
-}
-
-.question-content {
-    width: 92.58vw;
-    height: 11vw;
-}
-
-.question-content > div:nth-of-type(1) {
-    width: 80vw;
-    float: left;
-    padding:0 3vw 0 2.81vw; 
-}
-
-.question-content > div:nth-of-type(2) {
-    float: right;
-    width: 4vw;
-    height: 4vw;
-    margin-top: 3.5vw;
-}
-
-.question-content > div:nth-of-type(2) img {
-    width: 100%;
-    height: 100%;
-}
-
-.answer-content {
-    display: none;
-    padding: 3.188vw 15vw 3.188vw 5.62vw;
-}
-
-
 /***************************** viewMyCalendar ********************************/
 #viewMyCalendar .ui-content {
     padding: 0 !important;
@@ -1209,7 +1158,7 @@ input[type=radio]:checked + label {
 
 #reserveContent {
     /*（3.71+85.16）*30+3.71=2669.81 */
-    width: 2670vw;
+    /* width: 2670vw; */
     height: 100%;
 }
 
@@ -1297,7 +1246,7 @@ input[type=radio]:checked + label {
 
 .message-scroll {
     width: 100%;
-    height: 600px;
+    height: 100vh;
     position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -1327,7 +1276,7 @@ input[type=radio]:checked + label {
     margin-left: 2vw;
 }
 
-.select-news {
+.select-type {
     position: fixed;
     top: 0;
     left: 0;
@@ -1337,7 +1286,7 @@ input[type=radio]:checked + label {
     z-index: 1;
 }
 
-.select-news > div {
+.select-type > div {
     width: 100%;
     height: 11.47vw;
     color: #263238;
@@ -1348,12 +1297,12 @@ input[type=radio]:checked + label {
     background: #f9f9f9;
 }
 
-.select-news > div:hover {
+.select-type > div:hover {
     color: #f9f9f9 !important;
     background: #503e7f !important;
 }
 
-.msg-tool {
+.handle-msg {
     width: 92.58vw;
     height: 11.27vw;
     line-height: 11.27VW;
@@ -1364,22 +1313,20 @@ input[type=radio]:checked + label {
     z-index: 1;
 }
 
-.msg-tool-blank {
+.fill-handle-blank {
     width: 100vw;
     height: 11.27vw;
     display: none;
 }
 
-.news-select-btn,
-.event-select-btn {
+.msg-select {
     float: left;
     width: 30vw;
     color: #263238;
     font-size: 4.18vw;
 }
 
-.news-readed-btn,
-.event-readed-btn {
+.msg-readed {
     float: right;
     width: 30vw;
     color: #8fa4ac;
@@ -1387,8 +1334,7 @@ input[type=radio]:checked + label {
     text-align: right;
 }
 
-.news-delete-btn,
-.event-delete-btn {
+.msg-delete {
     float: right;
     width: 17.5vw;
     color: #8fa4ac;
@@ -1396,21 +1342,21 @@ input[type=radio]:checked + label {
     text-align: right;
 }
 
-.news-content ul.ui-listview,
-.event-content ul.ui-listview {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.message-type > div:nth-of-type(n+2) {
+    display: none;
 }
 
-/* .news-content ul.ui-listview > li,
-.event-content ul.ui-listview > li {
-    border-bottom: 1px solid #d6d6d6 !important;
-} */
+.message-type ul {
+    list-style-type: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
-.news-content ul.ui-listview > li:last-of-type > a,
-.event-content ul.ui-listview > li:last-of-type > a {
-    border: none !important;
+.no-data-li {
+    width: 100%;
+    height: 10vw;
+    text-align: center;
+    line-height: 10vw;
 }
 
 .msg-delete-btn {
@@ -1456,7 +1402,6 @@ input[type=radio]:checked + label {
     margin-top: 2.49vw;
     color: #263238;
     font-size: 3.768vw !important;
-    /* font-weight: normal !important; */
     overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
@@ -1466,7 +1411,8 @@ input[type=radio]:checked + label {
     padding-left: 2.81vw;
 }
 
-.ui-div {
+.ui-message,
+.ui-portal {
     border-top: none !important;
     padding: 3.36vw 3.71vw 3.27vw !important;
     background-color: #FFFFFF !important;
@@ -1557,8 +1503,8 @@ input[type=radio]:checked + label {
 
 .setting-main {
     width: 100vw;
-    height: 100vh;
-    position: fixed;
+    /* height: 100vh;
+    position: fixed; */
     background: #EEF2F5;
 }
 
@@ -1567,23 +1513,25 @@ input[type=radio]:checked + label {
     height: 61vw;
 }
 
-.photo-default {
+.photo-setting > div:nth-of-type(1) {
     width: 26.5vw;
-    height: 29vw;
+    height: 26.5vw;
     padding-top: 14vw;
     padding-left: 37vw;
 }
 
-.photo-default img {
+.photo-setting > div:nth-of-type(1) img {
     border-radius: 50%;
-    width: 100%;
-    /* 26.5/29=91.38% */
-    height: 91.38%;
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+    min-width: 100%;
 }
 
-.name-user {
+.photo-setting > div:nth-of-type(2) {
     width: 100vw;
     height: 8vw;
+    margin-top: 3vw;
     text-align: center;
     color: #263238;
     font-weight: normal;
@@ -1598,9 +1546,9 @@ input[type=radio]:checked + label {
     border-bottom: 1px solid #d6d6d6;
 }
 
-/* .link-setting > div:last-of-type {
+.link-setting > div:last-of-type {
     border: none;
-} */
+}
 
 .link-setting > div > div {
     float: left;
@@ -1616,13 +1564,18 @@ input[type=radio]:checked + label {
     line-height: 13vw;
     text-indent: 3vw;
     color: #263238;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 3.55vw !important;
 }
 
 .link-setting > div > div:nth-of-type(3) {
     width: 6.44vw;
     padding-top: 3vw;
+}
+
+.setting-foot-cover {
+    width: 100%;
+    height: 11.36vw;
 }
 
 .logout-fixed-btn {
@@ -1757,9 +1710,8 @@ input[type=radio]:checked + label {
 
 .comment-main {
     width: 100vw;
-    height: 100vh;
+    /* height: 70vw; */
     position: fixed;
-    background: #EEF2F5;
 }
 
 .comment-title {
@@ -1773,13 +1725,14 @@ input[type=radio]:checked + label {
 
 .comment-text {
     width: 100%;
-    height: 75vh;
+    height: 42vw;
+    overflow: hidden;
 }
 
 .comment-text textarea {
     resize: none;
     width: 92.58vw;
-    height: 73vh !important;
+    height: 35vw !important;
     margin-left: 3.71vw;
     color: #263238 !important;
     font-size: 4.18vw !important;
@@ -1796,9 +1749,6 @@ input[type=radio]:checked + label {
     height: 11.36vw;
     line-height: 11.36vw;
     text-align: center;
-    position: fixed;
-    left: 0;
-    bottom: 0;
     font-weight: normal;
     font-size: 4.18vw !important;
     color: #989898;

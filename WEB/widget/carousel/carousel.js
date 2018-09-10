@@ -1,36 +1,52 @@
-(function ($) {
-    var widgetItem = sessionStorage.getItem('widgetItem');
+//widget naming rule widget.js/list()[].name + "Widget"
+var carouselWidget = {
 
-    function createContent() {
-        var $container = $('<div></div>').attr('class', 'carousel-widget');
-        var $img = $('<img>').attr('src', serverURL + '/widget/carousel/carousel.jpg');
-        $container.append($img);
+    init: function (contentItem) {
 
-        $('.' + widgetItem).append($container);
-        carouselFinish = true;
+        var carouselLength = 4;
+
+        function createContent(contentItem) {
+
+            $.get(serverURL + "/widget/carousel/carousel.html", function (data) {
+                contentItem.html('').append(data);
+
+                var content = '';
+                for (var i = 0; i < carouselLength; i++) {
+                    content += '<li class="sw-slide"><img src="' + serverURL + '/widget/carousel/img/portal_' + (i + 1) + '.jpg"></li>';
+                }
+                $('.swipslider ul').append(content);
+
+                setTimeout(function () {
+                    $('.swipslider').swipeslider({
+                        prevNextButtons: false,
+                        autoPlayTimeout: 3000
+                    });
+                }, 500);
+
+            }, "html");
+        }
+
+        $.fn.carousel = function (options) {
+            options = options || {};
+
+            return this.each(function () {
+                var state = $.data(this, 'carousel');
+                if (state) {
+                    $.extend(state.options, options);
+                } else {
+                    $.data(this, 'carousel', {
+                        options: $.extend({}, $.fn.carousel.defaults, options)
+                    });
+                }
+
+                createContent(contentItem);
+
+            })
+        };
+
+        $.fn.carousel.defaults = {}
+
+        $('.carouselWidget').carousel();
     }
 
-    $.fn.carousel = function (options) {
-        options = options || {};
-
-        return this.each(function () {
-            var state = $.data(this, 'carousel');
-            if (state) {
-                $.extend(state.options, options);
-            } else {
-                $.data(this, 'carousel', {
-                    options: $.extend({}, $.fn.carousel.defaults, options)
-                });
-            }
-
-            createContent();
-
-        })
-    };
-
-    $.fn.carousel.defaults = {}
-
-    $('.' + widgetItem).carousel();
-
-})(jQuery);
-
+};

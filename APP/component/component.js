@@ -25,7 +25,6 @@ var langStr = {};
 var logFileName;
 
 var loginData = {
-    ad_flag: "",
     company: "",
     versionName: "",
     versionCode: "",
@@ -84,6 +83,8 @@ var app = {
     },
     // deviceready Event Handler
     onDeviceReady: function() {
+
+        window.sessionStorage.clear();
         app.receivedEvent('deviceready');
 
         //Ignore the font-size setting in Mobile Device
@@ -239,7 +240,7 @@ var app = {
                 //Before open Message Detail Data, update Message List
                 if (window.localStorage.getItem("msgDateFrom") === null) {
 
-					//review by allen
+                    //review by allen
                     //$.mobile.changePage('#viewNewsEvents2-3');
                 } else {
                     if (window.localStorage.getItem("uuid") !== null) {
@@ -943,6 +944,7 @@ function setWhiteList() {
         if (doCheckStorageData) {
             checkStorageData();
         }
+        var FunctionList = new getFunctionList();
 
         if (device.platform === "Android") {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');

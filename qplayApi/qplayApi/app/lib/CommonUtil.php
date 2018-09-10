@@ -33,8 +33,7 @@ class CommonUtil
             }
            $userList = $query-> select('qp_user.row_id', 'qp_user.login_id', 'qp_user.emp_no',
                 'qp_user.emp_name', 'qp_user.email', 'qp_user.user_domain', 'qp_user.company',
-                'qp_user.department','qp_user.site_code','qp_user.status', 'qp_user.resign',
-                'qp_user.ad_flag')->get();
+                'qp_user.department','qp_user.site_code','qp_user.status', 'qp_user.resign')->get();
         if(count($userList) < 1) {
             return null;
         }
@@ -50,6 +49,23 @@ class CommonUtil
             -> where('qp_user.status', '=', 'Y')
             -> where('qp_user.resign', '=', 'N')
             -> where('qp_user.login_id', '=', $loginId)
+            -> where('qp_user.user_domain', '=', $domain)
+            -> select('qp_user.row_id')->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0];
+    }
+
+    public static function getUserInfoByUserEmpNo($empNo, $domain)
+    {
+        $userList = \DB::table('qp_user')
+            -> join('qp_register', 'qp_user.row_id', '=', 'qp_register.user_row_id')
+            -> where('qp_register.status', '=', 'A')
+            -> where('qp_user.status', '=', 'Y')
+            -> where('qp_user.resign', '=', 'N')
+            -> where('qp_user.emp_no', '=', $empNo)
             -> where('qp_user.user_domain', '=', $domain)
             -> select('qp_user.row_id')->get();
         if(count($userList) < 1) {
@@ -83,6 +99,32 @@ class CommonUtil
             -> where('qp_user.status', '=', 'Y')
             -> where('qp_user.resign', '=', 'N')
             -> where('qp_user.login_id', '=', $loginId);
+            if(!is_null($domain)){
+                $userList = $userList->where('qp_user.user_domain', '=', $domain);
+            }
+            $userList = $userList->select('qp_user.row_id',
+                                          'qp_user.login_id',
+                                          'qp_user.company',
+                                          'qp_user.site_code',
+                                          'qp_user.ext_no',
+                                          'qp_user.emp_no',
+                                          'qp_user.emp_name',
+                                          'qp_user.user_domain',
+                                          'qp_user.department',
+                                          'qp_user.email')->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0];
+    }
+
+    public static function getUserInfoJustByUserEmpNo($empNo, $domain=null)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.status', '=', 'Y')
+            -> where('qp_user.resign', '=', 'N')
+            -> where('qp_user.emp_no', '=', $empNo);
             if(!is_null($domain)){
                 $userList = $userList->where('qp_user.user_domain', '=', $domain);
             }
@@ -263,6 +305,42 @@ class CommonUtil
         return 3; //正常
     }
 
+    public static function getUserStatusByUserEmpNo($empNo, $domain)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.emp_no', '=', $empNo)
+            -> where('qp_user.user_domain', '=', $domain)
+            -> select('qp_user.row_id', 'qp_user.status', 'qp_user.resign')->get();
+        if(count($userList) < 1) {
+            return 0; //用户不存在
+        }
+
+        if(count($userList) == 1) {
+            $user = $userList[0];
+            if($user->resign != "N") {
+                return 1; //用户已离职
+            }
+
+            if($user->status != "Y") {
+                return 2; //用户已停权
+            }
+        } else {
+            foreach ($userList as $user)
+            {
+                if($user->resign == "N") {
+                    if($user->status == "Y") {
+                        return 3; //正常
+                    } else {
+                        return 2; //停权
+                    }
+                }
+            }
+            return 1;  //离职
+        }
+
+        return 3; //正常
+    }
+
     public static function getUserStatusByUserIDAndCompany($loginId, $company)
     {
         $userList = \DB::table('qp_user')
@@ -360,7 +438,7 @@ class CommonUtil
         }
         $lang_row_id = self::getLanguageIdByName($lang);
         $project_id = self::getProjectInfo();
-        if ($project_id == null ||  count($project_id)<0){
+        if (is_null( $project_id )){
             return "";
         }
         $project_id =    $project_id->row_id;
@@ -584,7 +662,7 @@ class CommonUtil
         $operationTime = 0;
         $SignatureTime = 0;
         $needToLogArray = ["app-key", "signature", "signature-time", "token",
-            "domain", "loginid", "redirect-uri", "push-token"];
+            "domain", "loginid", "redirect-uri", "push-token","logintype"];
 
         foreach ($request_header as $key => $value) {
             $loweheaderKey = strtolower($key);
@@ -827,4 +905,33 @@ class CommonUtil
         return trim($projectName);
     }
 
+    /**
+     * get user belone role list
+     * @param  int $userId qp_user.row_id
+     * @return array
+     */
+    public static function getUserRole($userId)
+    {
+        
+        $roles = \DB::table('qp_user_role')
+            -> where('user_row_id', '=', $userId)
+            -> lists('role_row_id');
+        return $roles;
+    }
+
+    /**
+     * get user login type by uuid, if login type is by qAccount,
+     * @param [type] $uuid [description]
+     * @return string
+     */
+    public static function ADFlag($uuid)
+    {
+        $session = \DB::table('qp_session')
+                -> where('uuid', '=', $uuid)
+                -> select('ad_flag')->first();
+        if(is_null($session)){
+            return null;
+        }
+        return $session->ad_flag;
+    }
 }
