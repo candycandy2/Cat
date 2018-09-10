@@ -1,10 +1,25 @@
 
+//重新获取FunctionList
+function refreshFunctionList() {
+    //Call getFunctionList API again
+    getFunctionList();
+}
+
+//清空FunctionList
+function clearFunctionList() {
+    var function_list = window.localStorage.getItem('FunctionList');
+
+    if (function_list !== null) {
+        window.localStorage.removeItem('FunctionList');
+    }
+}
+
 //获取Function使用权限列表
 function getFunctionList() {
     var self = this;
     var queryStr = "&device_type=" + device.platform;
 
-    this.successCallback = function (data) {
+    this.successCallback = function(data) {
 
         if (data['result_code'] == "1") {
             var jsonData = {};
@@ -20,12 +35,12 @@ function getFunctionList() {
             var appArr = [];
             var resultArr = data['content']['function_list'];
             for (var i = 0; i < resultArr.length; i++) {
-                if(resultArr[i].function_variable.indexOf('widget_') != -1) {
+                if (resultArr[i].function_variable.indexOf('widget_') != -1) {
                     widgetArr.push(resultArr[i]);
                 } else {
-                    if(resultArr[i].function_content.type == 'FUN') {
+                    if (resultArr[i].function_content.type == 'FUN') {
                         functionArr.push(resultArr[i]);
-                    } else if(resultArr[i].function_content.type == 'APP') {
+                    } else if (resultArr[i].function_content.type == 'APP') {
                         appArr.push(resultArr[i]);
                     }
                 }
@@ -39,9 +54,9 @@ function getFunctionList() {
         }
     };
 
-    this.failCallback = function (data) { };
+    this.failCallback = function(data) {};
 
-    var __construct = function () {
+    var __construct = function() {
         var functionData = JSON.parse(window.localStorage.getItem('FunctionList'));
 
         if (functionData === null || checkDataExpired(functionData['lastUpdateTime'], 1, 'hh')) {
