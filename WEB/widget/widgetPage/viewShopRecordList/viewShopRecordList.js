@@ -73,9 +73,12 @@ $("#viewShopRecordList").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //更新消费券交易记录
         $('.recordRefresh').on('click', function () {
             //Call API
             //getTradeRecord();
+            //新增逻辑，只有再当月情况下，才可以更新
+            
         });
 
 

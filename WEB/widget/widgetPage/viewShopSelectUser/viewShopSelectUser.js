@@ -19,7 +19,7 @@ $("#viewShopSelectUser").pagecontainer({
                         }
                     }
 
-                    $('.qplay-user ul').html('').append(content);
+                    $('.qplay-user-ul').html('').append(content);
                     setRecordListHeight();
                 }
             };
@@ -34,7 +34,7 @@ $("#viewShopSelectUser").pagecontainer({
         function setRecordListHeight() {
             var headHeight = $('#viewShopSelectUser .page-header').height();
             var blankHeight = $('.select-user-blank').height();
-            var listHeight = $('.select-user-list').height();
+            var listHeight = $('.qplay-user-ul').height();
 
             var totalHeight;
             if (device.platform === "iOS") {
