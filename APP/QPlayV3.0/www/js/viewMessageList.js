@@ -156,7 +156,7 @@ $("#viewMessageList").pagecontainer({
         function createMessageByType() {
             //1. html
             //var resultArr = loginData['messagecontent']['message_list'];
-            var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontent'));
+            var messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
             var resultArr = null;
             if (messagecontent_ != null)
                 resultArr = messagecontent_.content.message_list;

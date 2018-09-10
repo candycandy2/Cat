@@ -1,7 +1,7 @@
 function UpdateMessageListContent(messagecontent__, fromAPI) {
 
     //0. check orginal
-    var orginalContent = JSON.parse(window.localStorage.getItem('messagecontent'));
+    var orginalContent = JSON.parse(window.localStorage.getItem('messagecontentEx'));
     if (orginalContent !== null && orginalContent.content !== null) {
         if (fromAPI) {
             for (var messageindex = 0; messageindex < orginalContent.content.message_count; messageindex++) {
@@ -26,7 +26,7 @@ function UpdateMessageListContent(messagecontent__, fromAPI) {
         lastUpdateTime: new Date(),
         content: messagecontent__
     };
-    window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
+    window.localStorage.setItem('messagecontentEx', JSON.stringify(jsonData));
     sessionStorage.setItem('changeMessageContentDirty', 'Y');
 
     //2. for badge
@@ -112,8 +112,13 @@ function QueryMessageListEx() {
                 lastUpdateTime: date.setDate(date.getDate() - 1),
                 content: messagecontent_
             };
-            window.localStorage.setItem('messagecontent', JSON.stringify(jsonData));
+            window.localStorage.setItem('messagecontentEx', JSON.stringify(jsonData));
+            window.localStorage.removeItem('messagecontent');
+        } else if (messagecontent_ !== null && messagecontent_.lastUpdateTime !== undefined) {
+            window.localStorage.setItem('messagecontentEx', JSON.stringify(messagecontent_));
+            window.localStorage.removeItem('messagecontent');
         }
+        messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
 
         if (messagecontent_ === null || checkDataExpired(messagecontent_['lastUpdateTime'], 1, 'hh')) {
             QPlayAPIEx("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);

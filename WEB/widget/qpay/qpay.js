@@ -9,7 +9,7 @@ var qpayWidget = {
             contentItem.html('').append(content);
 
             contentItem.on('click', function() {
-                
+
                 checkWidgetPage('viewUserPayMain');
             });
         }
