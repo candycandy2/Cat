@@ -1,5 +1,5 @@
 var appVersionRecord = {};
-checkAPPVersionRecord("initial");
+//checkAPPVersionRecord("initial");
 
 //Check APP version record
 function checkAPPVersionRecord(action) {
