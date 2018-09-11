@@ -4,7 +4,7 @@ var component = {
 
         var function_list = window.localStorage.getItem('FunctionList');
         if (function_list !== null) {
-            window.localStorage.removeItem(item);
+            window.localStorage.removeItem('FunctionList');
         }
 
     },
