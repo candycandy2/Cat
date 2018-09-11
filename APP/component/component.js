@@ -1188,7 +1188,7 @@ function handleOpenURL(url) {
             loginData['doLoginDataCallBack'] = true;
 
             //APP version record
-            checkAPPVersionRecord("updateFromScheme");
+            //checkAPPVersionRecord("updateFromScheme");
 
         } else if (appKey === qplayAppKey && queryData["action"] === "openAppDetailPage") {
 
@@ -1204,7 +1204,7 @@ function handleOpenURL(url) {
             }
 
             //APP version record
-            checkAPPVersionRecord("updateFromScheme");
+            //checkAPPVersionRecord("updateFromScheme");
 
         } else if (queryData["action"] === "retrunLoginData") {
 

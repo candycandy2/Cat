@@ -20,7 +20,7 @@ $("#viewAppSetting").pagecontainer({
                     //logout can not clear messagecontent / pushToken / msgDateFrom / appVersionRecord
                     var messagecontent = window.localStorage.getItem('messagecontentEx');
                     var pushToken = window.localStorage.getItem("pushToken");
-                    var appVersionRecord = window.localStorage.getItem("appVersionRecord");
+                    //var appVersionRecord = window.localStorage.getItem("appVersionRecord");
                     var storeMsgDateFrom = false;
 
                     if (window.localStorage.getItem("msgDateFrom") !== null) {
@@ -51,7 +51,7 @@ $("#viewAppSetting").pagecontainer({
 
                     window.localStorage.setItem('messagecontentEx', messagecontent);
                     window.localStorage.setItem("pushToken", pushToken);
-                    window.localStorage.setItem("appVersionRecord", appVersionRecord);
+                    //window.localStorage.setItem("appVersionRecord", appVersionRecord);
 
                     if (storeMsgDateFrom) {
                         window.localStorage.setItem("msgDateFrom", msgDateFrom);
