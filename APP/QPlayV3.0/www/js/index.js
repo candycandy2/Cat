@@ -46,28 +46,7 @@ window.initialSuccess = function(data) {
             if (!device.isVirtual) {
                 var doPushToken = new sendPushToken();
             }
-
-            //review by alan
-            //If User first time to use QPlay, never get message data from server,
-            //don't call QueryMessageList() in background.
-            if (loginData["msgDateFrom"] !== null) {
-                var messageList = new QueryMessageList("auto");
-            }
-
-            //review by alan
-            if (window.localStorage.getItem("openMessage") !== "true") {
-                $.mobile.changePage('#viewMain3', {
-                    allowSamePageTransition: true,
-                    transition: 'none',
-                    showLoadMsg: false,
-                    reloadPage: true
-                });
-                $.mobile.changePage('#viewMain3');
-            } else {
-                //If onOpenNotification, but not login.
-                //Atfer login, do onOpenNotification again.
-                openNewMessage(); //refectory
-            }
+            $.mobile.changePage('#viewMain3');
 
         }
     }

@@ -269,23 +269,15 @@ var app = {
     },
     onReceiveNotification: function(data) {
         //Plugin-QPush > 添加前台收到通知后需要執行的內容
-        if (window.localStorage.getItem("openMessage") === "false") {
-            getMessageID(data);
+        var messageList = new QueryMessageListEx(true);
+        getMessageID(data); //messageRowId
 
-            if (window.localStorage.getItem("loginid") === null) {
-                //remember to open Message Detail Data
-
-                loginData["openMessage"] = true;
-                window.localStorage.setItem("openMessage", "true");
-                window.localStorage.setItem("messageRowId", messageRowId);
-            }
-
+        if (window.localStorage.getItem("loginid") === null) {
+            //Donothing
+        } else {
             //While open APP in iOS, when get new message, iOS will not show message dialog in status bar,
             //need to do it by Javscript
             if (device.platform === "iOS") {
-                loginData["openMessage"] = true;
-                window.localStorage.setItem("openMessage", "true");
-                window.localStorage.setItem("messageRowId", messageRowId);
 
                 $("#newMessageTitle").html(data.aps["alert"]);
                 $('#iOSGetNewMessage').popup();
@@ -296,14 +288,13 @@ var app = {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
-                    openNewMessage();
+                    checkAppPage('viewWebNews2-3-1');
                 });
 
                 $("#cancelNewMessage").one("click", function() {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
-                    loginData["openMessage"] = false;
                     window.localStorage.setItem("openMessage", "false");
                 });
             }
@@ -730,11 +721,11 @@ function readConfig() {
     //Plugin-QPush
     if (appKey === qplayAppKey) {
         //後台打开通知
-        document.addEventListener('qpush.openNotification', app.onOpenNotification, false);
+        document.addEventListener('jpush.openNotification', app.onOpenNotification, false);
         //後台收到通知
-        document.addEventListener('qpush.backgoundNotification', app.onBackgoundNotification, false);
+        document.addEventListener('jpush.backgoundNotification', app.onBackgoundNotification, false);
         //前台收到通知
-        document.addEventListener('qpush.receiveNotification', app.onReceiveNotification, false);
+        document.addEventListener('jpush.receiveNotification', app.onReceiveNotification, false);
     }
 
     //QPlay need to get PushToken in the first step, else cannot do any continue steps.
@@ -744,7 +735,7 @@ function readConfig() {
         //If simulator, can't get push token
         if (!device.isVirtual) {
             //初始化JPush
-            window.plugins.QPushPlugin.init();
+            window.plugins.jPushPlugin.init();
         }
 
         //If pushToken exist in Local Storage, don't need to get new one.
@@ -755,7 +746,7 @@ function readConfig() {
                 app.onGetRegistradionID(device.uuid);
             } else {
                 window.checkTimer = setInterval(function() {
-                    window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+                    window.plugins.jPushPlugin.getRegistrationID(app.onGetRegistradionID);
                 }, 1000);
 
                 window.stopCheck = function() {
