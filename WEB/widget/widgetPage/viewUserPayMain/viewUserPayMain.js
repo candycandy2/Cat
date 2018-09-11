@@ -34,12 +34,7 @@ $("#viewUserPayMain").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewUserPayMain").on("pagebeforeshow", function (event, ui) {
-            var dirty = window.sessionStorage.getItem('user_point_dirty');
-            if(dirty == 'Y') {
-                //update余额
-                var point_now =  window.sessionStorage.getItem('user_point');
-                $('.remain-money').text(point_now);
-            }
+            
         });
 
         $("#viewUserPayMain").one("pageshow", function (event, ui) {
@@ -52,7 +47,13 @@ $("#viewUserPayMain").pagecontainer({
         });
 
         $("#viewUserPayMain").on("pageshow", function (event, ui) {
-
+            var dirty = window.sessionStorage.getItem('user_point_dirty');
+            if(dirty == 'Y') {
+                //update余额
+                var point_now =  window.sessionStorage.getItem('user_point');
+                $('.remain-money').text(point_now);
+                window.sessionStorage.setItem('user_point_dirty', 'N');
+            }
         });
 
         $("#viewUserPayMain").on("pagehide", function (event, ui) {

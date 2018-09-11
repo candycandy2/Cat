@@ -48,7 +48,10 @@ $("#viewUserInputPwd").pagecontainer({
                     trade_info['trade_status'] = langStr['wgt_068'];//交易成功
                     trade_info['trade_point'] = price;
                     
-                    
+                    //2. 交易成功，更新消费券余额
+                    window.sessionStorage.setItem('user_point', data['content'].point_now);
+                    window.sessionStorage.setItem('user_point_dirty', 'Y');
+
                 } else {
                     trade_info['trade_id'] = data['content'].trade_id;
                     trade_info['point_now'] = data['content'].point_now;
