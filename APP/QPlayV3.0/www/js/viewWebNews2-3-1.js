@@ -555,6 +555,10 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
+        });
+
+        $("#viewWebNews2-3-1").on("pageshow", function(event, ui) {
+
             if (portalURL == "") {
                 $("#ITSEventNewContent").show();
                 $("#PortalContent").hide();
@@ -586,9 +590,6 @@ $("#viewWebNews2-3-1").pagecontainer({
                 var portalHeaderTop = parseInt(document.documentElement.clientWidth * 13 / 100, 10) + iOSFixedTopPX();
                 $("#viewWebNews2-3-1 .portal-header").css("top", portalHeaderTop);
             }
-        });
-
-        $("#viewWebNews2-3-1").on("pageshow", function(event, ui) {
 
             //RWD header & footer
             var header = {

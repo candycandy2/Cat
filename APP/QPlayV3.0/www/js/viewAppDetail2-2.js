@@ -84,14 +84,6 @@ $("#viewAppDetail2-2").pagecontainer({
             $('#appDetailPicListContent').append(content);
             $("#appDetailPicListFullScreen").html('').append(fullContent);
 
-            //Auto resize appDetailPicList
-            // if (device.platform === "iOS") {
-            //     var tempHeight = $("#appDetailPicList").height();
-            //     $("#appDetailPicList").css("height", parseInt(tempHeight + iOSFixedTopPX(), 10) + "px");
-            //     var tempChildHeight = $("#appDetailPicListContent").height();
-            //     $("#appDetailPicListContent").css("height", parseInt(tempChildHeight + iOSFixedTopPX(), 10) + "px");
-            // }
-
             //Auto resize appDetailPicListContent
             var pageWidth = $("#viewAppDetail2-2").width();
             var tempIMG = $(".detail-img-style")[0];
@@ -166,23 +158,23 @@ $("#viewAppDetail2-2").pagecontainer({
             window.sessionStorage.setItem('checkAPPInstall', install);
         }
 
-        window.displayAppDetailStep2 = function (installed) {
-            //Check APP Install need process time, so need this step
+        // window.displayAppDetailStep2 = function (installed) {
+        //     //Check APP Install need process time, so need this step
 
-            $("#InstallApp .InstallAppStr").hide();
+        //     $("#InstallApp .InstallAppStr").hide();
 
-            if (installed) {
-                if (loginData['updateApp']) {
-                    $("#InstallApp #InstallAppStr03").show();
-                } else {
-                    $("#InstallApp #InstallAppStr02").show();
-                }
-            } else {
-                $("#InstallApp #InstallAppStr01").show();
-            }
+        //     if (installed) {
+        //         if (loginData['updateApp']) {
+        //             $("#InstallApp #InstallAppStr03").show();
+        //         } else {
+        //             $("#InstallApp #InstallAppStr02").show();
+        //         }
+        //     } else {
+        //         $("#InstallApp #InstallAppStr01").show();
+        //     }
 
-            loadingMask("hide");
-        }
+        //     loadingMask("hide");
+        // }
 
         /********************************** page event *************************************/
         $("#viewAppDetail2-2").on("pagebeforeshow", function (event, ui) {
