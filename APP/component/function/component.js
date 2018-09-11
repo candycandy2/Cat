@@ -1,19 +1,15 @@
-
 var component = {
 
-    clear: function (item) {
-        
-        var function_list = window.localStorage.getItem(item);
+    clear: function() {
 
-        if(function_list !== null) {
+        var function_list = window.localStorage.getItem('FunctionList');
+        if (function_list !== null) {
             window.localStorage.removeItem(item);
         }
-        
+
     },
-    refresh: function (item) {
-        if(item == 'FunctionList') {
-            getFunctionList();
-        }
+    refresh: function() {
+        getFunctionList();
     }
-    
+
 }

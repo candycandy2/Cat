@@ -57,10 +57,8 @@ $("#viewMain3").pagecontainer({
                                 setTimeout(function () {
                                     setHomepageHeight();
                                 }, 1000);
-                                //clear FuntionList
-                                component.clear('FunctionList');
-                                //refresh FunctionList
-                                component.refresh('FunctionList');
+                                component.clear();
+                                component.refresh();
                                 //calendar update
                                 window.sessionStorage.setItem('CalendarDirty', 'Y');
                             }
@@ -88,10 +86,8 @@ $("#viewMain3").pagecontainer({
                                 setTimeout(function () {
                                     setHomepageHeight();
                                 }, 1000);
-                                //clear FuntionList
-                                component.clear('FunctionList');
-                                //refresh FunctionList
-                                component.refresh('FunctionList');
+                                component.clear();
+                                component.refresh();
                                 //calendar update
                                 window.sessionStorage.setItem('CalendarDirty', 'Y');
                             }
