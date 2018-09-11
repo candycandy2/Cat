@@ -36,6 +36,8 @@ return [
     'PAGING_ROWS_PER_PAGE' => 'rows per page',
     'STATUS_HAS_RIGHT' => 'Normal',
     'STATUS_HAS_NO_RIGHT' => 'Disable',
+    'NEXT' => 'Next',
+    'BACK' => 'Back',
 
     'MENU' => 'Menu',
     'LOGOUT' => 'Logout',
@@ -61,6 +63,12 @@ return [
     'TITLE_REGISTER_MAINTAIN_TOOL' => 'Register Maintain Tool',
     'TITLE_COMPANY_MAINTAIN' => 'Company Maintain',
     'TITLE_FUNCTION_MAINTAIN' => 'Function Maintain',
+    'TITLE_QPAY_USER_MAINTAIN' => 'User Maintain',
+    'TITLE_QPAY_STORE_MAINTAIN' => 'Store Maintain',
+    'TITLE_QPAY_REIMBURSE_MAINTAIN' => 'Reimburse Maintain',
+    'TITLE_QPAY_REPORT_ANALYSIS' => 'Report Analysis',
+    'TITLE_QPAY_STORE_POINT' => 'Point Store',
+
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
 
@@ -437,5 +445,26 @@ return [
     'RIGHT_LEVEL' => 'Right Level',
     'ERR_FUNCTION_VARIABLE_EXIST' =>'function variable already exist!',
     'ERR_CREATE_FUNCTION_FAILED' => 'Create Function Failed!',
-    'ERR_UPDATE_FUNCTION_FAILED' => 'Update Function Failed!'
+    'ERR_UPDATE_FUNCTION_FAILED' => 'Update Function Failed!',
+
+    //QPay 
+    'QPAY_IMPORT_MEMBER_LIST' => 'Upload QPay Member',
+    'QPAY_EXPECT_MEMBER_COUNT'=>'Expected Total Employees',
+    'QPAY_EXPECT_STORED_POINT'=>'Expected Total Points',
+    'QPAY_POINT_TYPE'=>'Coupon Type',
+    'QPAY_MEMBER_EMP_NO'=>'Employee No.',
+    'QPAY_MEMBER_EMP_NAME_CH'=>'Chinese Name',
+    'QPAY_MEMBER_EMP_NAME_EN'=>'English Name',
+    'QPAY_MEMBER_COMPANY'=>'Company',
+    'QPAY_MEMBER_DEPARTMENT_CODE'=>'Department',
+    'QPAY_CONFIRM_TO_STORED'=>'Confirm To Store Point',
+    'QPAY_CHECK_STORE_RECORD'=>'Check Stored Records',
+    'QPAY_TRAD_STATUS'=>'Trade Status',
+    'QPAY_TRAD_DATE'=>'Trade Date',
+    'QPAY_ADMIN'=>'Administrator',
+    'QPAY_IMPORT_TOTAL_MEMBER'=>'Total People',
+    'QPAY_IMPORT_TOTAL_POINT'=>'Total points / amount',
+    'QPAY_IMPORT_EACH_MEMBER'=>'Total points / amount(each person)',
+    'POINT' => 'point',
+    'PERSON' => 'person'
 ];
