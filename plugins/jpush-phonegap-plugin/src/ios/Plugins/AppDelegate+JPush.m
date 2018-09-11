@@ -40,7 +40,8 @@ NSDictionary *_launchOptions;
       [JPushPlugin fireDocumentEvent:JPushDocumentEvent_receiveRegistrationId jsString:[event toJsonString]];
     }];
   
-    if (notification) {
+  if (notification != nil &&
+      [[UIDevice currentDevice].systemVersion floatValue] < 10.0) {// iOS 10 以后通过 openNotification 这个回调触发事件。
         if (notification.userInfo) {
           
           if ([notification.userInfo valueForKey:UIApplicationLaunchOptionsRemoteNotificationKey]) {
@@ -50,27 +51,27 @@ NSDictionary *_launchOptions;
           
           if ([notification.userInfo valueForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
             UILocalNotification *localNotification = [notification.userInfo valueForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-            
-            NSDictionary* localNotificationEvent = @{@"content":localNotification.alertBody,
-                                                     @"badge": @(localNotification.applicationIconBadgeNumber),
-                                                     @"extras":localNotification.userInfo,
-                                                     };
+            NSMutableDictionary *localNotificationEvent = @{}.mutableCopy;
+            localNotificationEvent[@"content"] = localNotification.alertBody;
+            localNotificationEvent[@"badge"] = @(localNotification.applicationIconBadgeNumber);
+            localNotificationEvent[@"extras"] = localNotification.userInfo;
+
             [JPushPlugin fireDocumentEvent:JPushDocumentEvent_OpenNotification jsString:[localNotificationEvent toJsonString]];
           }
         }
-      
-        [JPUSHService setDebugMode];
-
-        NSString *plistPath = [[NSBundle mainBundle] pathForResource:JPushConfig_FileName ofType:@"plist"];
-        NSMutableDictionary *plistData = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
-        NSNumber *delay       = [plistData valueForKey:JPushConfig_Delay];
-
-        _launchOptions = notification.userInfo;
-
-        if (![delay boolValue]) {
-            [self startJPushSDK];
-        }
     }
+  
+  [JPUSHService setDebugMode];
+  
+  NSString *plistPath = [[NSBundle mainBundle] pathForResource:JPushConfig_FileName ofType:@"plist"];
+  NSMutableDictionary *plistData = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
+  NSNumber *delay       = [plistData valueForKey:JPushConfig_Delay];
+  
+  _launchOptions = notification.userInfo;
+  
+  if (![delay boolValue]) {
+    [self startJPushSDK];
+  }
 }
 
 -(void)startJPushSDK{
@@ -136,17 +137,12 @@ NSDictionary *_launchOptions;
     [JPUSHService handleRemoteNotification:userInfo];
     NSString *eventName;
     switch ([UIApplication sharedApplication].applicationState) {
-        case UIApplicationStateInactive:
-            eventName = JPushDocumentEvent_OpenNotification;
-            break;
-        case UIApplicationStateActive:
-            eventName = JPushDocumentEvent_ReceiveNotification;
-            break;
-        case UIApplicationStateBackground:
-            eventName = JPushDocumentEvent_BackgroundNotification;
-            break;
-        default:
-            break;
+      case UIApplicationStateBackground:
+        eventName = JPushDocumentEvent_BackgroundNotification;
+        break;
+      default:
+        eventName = JPushDocumentEvent_ReceiveNotification;
+        break;
     }
 
     [JPushPlugin fireDocumentEvent:eventName jsString:[[self jpushFormatAPNSDic:userInfo] toJsonString]];
@@ -156,35 +152,39 @@ NSDictionary *_launchOptions;
 }
 
 -(void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler{
-  NSMutableDictionary *userInfo = @[].mutableCopy;
+  NSMutableDictionary *userInfo = @{}.mutableCopy;
   
   if ([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
     userInfo = [self jpushFormatAPNSDic:notification.request.content.userInfo];
   } else {
     UNNotificationContent *content = notification.request.content;
-    userInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"content": content.body,
-                                                               @"badge": content.badge,
-                                                               @"extras": content.userInfo
-                                                               }];
+    userInfo[@"content"] = content.body;
+    userInfo[@"badge"] = content.badge;
+    userInfo[@"extras"] = content.userInfo;
     userInfo[@"identifier"] = notification.request.identifier;
   }
   
-  [JPushPlugin fireDocumentEvent:JPushDocumentEvent_ReceiveNotification jsString:[userInfo toJsonString]];
   completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert);
+  
+  if ([userInfo[@"aps"][@"content-available"] isEqualToNumber:@(1)]) {// content-available 当用户开启后台推送是，防止触发两次事件
+    return;
+  }
+  
+  [JPushPlugin fireDocumentEvent:JPushDocumentEvent_ReceiveNotification jsString:[userInfo toJsonString]];
+  
 }
 
 -(void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
   UNNotification *notification = response.notification;
-  NSMutableDictionary *userInfo = nil;
+  NSMutableDictionary *userInfo = @{}.mutableCopy;
   
   if ([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
     userInfo = [self jpushFormatAPNSDic:notification.request.content.userInfo];
   } else {
     UNNotificationContent *content = notification.request.content;
-    userInfo = [NSMutableDictionary dictionaryWithDictionary:@{@"content": content.body,
-                                                               @"badge": content.badge,
-                                                               @"extras": content.userInfo
-                                                               }];
+    userInfo[@"content"] = content.body;
+    userInfo[@"badge"] = content.badge;
+    userInfo[@"extras"] = content.userInfo;
     userInfo[@"identifier"] = notification.request.identifier;
   }
   
@@ -193,12 +193,12 @@ NSDictionary *_launchOptions;
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-  NSDictionary* localNotificationEvent = @{@"content":notification.alertBody,
-                                           @"badge": @(notification.applicationIconBadgeNumber),
-                                           @"extras":notification.userInfo,
-                                           };
+  NSMutableDictionary *localNotificationEvent = @{}.mutableCopy;
+  localNotificationEvent[@"content"] = notification.alertBody;
+  localNotificationEvent[@"badge"] = @(notification.applicationIconBadgeNumber);
+  localNotificationEvent[@"extras"] = notification.userInfo;
   
-    [[NSNotificationCenter defaultCenter] postNotificationName:JPushDocumentEvent_ReceiveLocalNotification object:localNotificationEvent];
+  [[NSNotificationCenter defaultCenter] postNotificationName:JPushDocumentEvent_ReceiveLocalNotification object:localNotificationEvent];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
