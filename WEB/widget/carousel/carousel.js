@@ -3,7 +3,7 @@ var carouselWidget = {
 
     init: function (contentItem) {
 
-        var carouselLength = 5;
+        var carouselLength = 4;
 
         function createContent(contentItem) {
 

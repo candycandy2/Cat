@@ -825,7 +825,7 @@
   },
   {
     "term": "str_104",
-    "definition": "清理緩存",
+    "definition": "清理暫存區",
     "context": "",
     "term_plural": "",
     "reference": "",

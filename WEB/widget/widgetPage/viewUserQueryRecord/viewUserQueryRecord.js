@@ -62,7 +62,7 @@ $("#viewUserQueryRecord").pagecontainer({
         }
 
         //检查表单
-        function checkForm() {
+        function checkForm(type) {
             var typeVal = $('#userQueryType').val();
             var startVal = $('#userStartDate').val();
             var endVal = $('#userEndDate').val();
@@ -71,7 +71,18 @@ $("#viewUserQueryRecord").pagecontainer({
             } else {
                 $('.user-query-search').removeClass('button-active');
             }
+
+            if (type == 'store' || type == 'trade') {
+                var queryData = {
+                    type: type,
+                    start: startVal.replace(/\//g, '-').substring(0, 7),
+                    end: endVal.replace(/\//g, '-').substring(0, 7)
+                };
+                window.sessionStorage.setItem('query_user_record', JSON.stringify(queryData));
+            }
         }
+
+
 
         /********************************** page event ***********************************/
         $("#viewUserQueryRecord").on("pagebeforeshow", function (event, ui) {
@@ -125,9 +136,19 @@ $("#viewUserQueryRecord").pagecontainer({
             checkForm();
         });
 
+        //查询记录
         $('.user-query-search').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
+                var typeVal = $('#userQueryType').val();
+
+                if (typeVal == '1') {
+                    checkForm('store');
+
+                } else if (typeVal == '2') {
+                    checkForm('trade')
+                }
+
                 checkWidgetPage('viewUserRecordList');
             }
         });

@@ -5,18 +5,27 @@ $("#viewUserInputAmount").pagecontainer({
 
         function initialPage() {
             payNum = '';
-            $('.shop-input-number').text('0');
-            $('.shop-input-next').removeClass('button-active');
+            $('.user-pay-number').text('0');
+            $('.user-pay-next').removeClass('button-active');
+        }
+
+        function setShopAndPoint() {
+            var shop_name = JSON.parse(window.sessionStorage.getItem('sho_info'))['shop_name'];
+            $('.user-pay-shop').text(shop_name);
+
+            var point_now = window.sessionStorage.getItem('user_point');
+            $('.user-pay-total').text(point_now);
         }
 
         /********************************** page event ***********************************/
         $("#viewUserInputAmount").on("pagebeforeshow", function (event, ui) {
-
+            //setShopAndPoint();
         });
 
         $("#viewUserInputAmount").one("pageshow", function (event, ui) {
-            $('.shop-input-name').text(loginData['loginid']);
-            $('.shop-input-no').text(loginData['emp_no']);
+            //setShopAndPoint();
+            $('.user-pay-name').text(loginData['loginid']);
+            $('.user-pay-no').text(loginData['emp_no']);
         });
 
         $("#viewUserInputAmount").on("pageshow", function (event, ui) {

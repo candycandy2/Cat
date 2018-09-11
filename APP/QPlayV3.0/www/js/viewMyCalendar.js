@@ -1,7 +1,8 @@
 $("#viewMyCalendar").pagecontainer({
     create: function (event, ui) {
 
-        var reservePositionList = [],
+        var reserveCalendar,
+            reservePositionList = [],
             pageInitial = false,
             leaveAppData = {
                 key: 'appleave',
@@ -11,16 +12,18 @@ $("#viewMyCalendar").pagecontainer({
 
         /********************************** function ***********************************/
         function initialCalendar(holidayData) {
-            var reserveCalendar = new Calendar({
+            var calendar_language = getCalendarLanguage(browserLanguage);
+            var reserve_data = JSON.parse(window.sessionStorage.getItem('reserveList'));
+            reserveCalendar = new Calendar({
                 renderTo: "#viewMyCalendar #myCalendar",
                 id: "reserveCalendar",
-                language: getCalendarLanguage(browserLanguage),
+                language: calendar_language,
                 show_days: true,
                 weekstartson: 0,
                 markToday: true,
                 markWeekend: true,
                 showNextyear: true,
-                reserveData: JSON.parse(sessionStorage.getItem('reserveList')),
+                reserveData: reserve_data,
                 infoData: holidayData,
                 showInfoListTo: "#viewMyCalendar .infoList",
                 changeDateEventListener: function (year, month) {
@@ -203,8 +206,8 @@ $("#viewMyCalendar").pagecontainer({
         function createCarousel() {
 
             var checkReserveData = setInterval(function () {
-                var changeReserveListDirty = sessionStorage.getItem('changeReserveListDirty');
-                var reserveArr = JSON.parse(sessionStorage.getItem('reserveList'));
+                var changeReserveListDirty = window.sessionStorage.getItem('changeReserveListDirty');
+                var reserveArr = JSON.parse(window.sessionStorage.getItem('reserveList'));
 
                 if (reserveArr !== null && changeReserveListDirty == 'N') {
                     clearInterval(checkReserveData);
@@ -237,7 +240,17 @@ $("#viewMyCalendar").pagecontainer({
         });
 
         $("#viewMyCalendar").on("pageshow", function (event, ui) {
-
+            var calendarDirty = window.sessionStorage.getItem('CalendarDirty');
+            if(calendarDirty == 'Y') {
+                //calendar
+                var reserve_data = JSON.parse(window.sessionStorage.getItem('reserveList'));
+                reserveCalendar.refreshReserve(reserve_data);
+                //carousel
+                createCarousel();
+                //sessionStorage
+                window.sessionStorage.setItem('CalendarDirty', 'N');
+            }
+            
         });
 
         $("#viewMyCalendar").on("pagehide", function (event, ui) {

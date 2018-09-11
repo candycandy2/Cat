@@ -148,15 +148,20 @@ function checkWidgetListOrder() {
 function compareWidgetAndFunction(wdgArr, funArr) {
     var count = 0;
     for (var i = 0; i < wdgArr.length; i++) {
-        //先判断widget.js是否可用
+
         if (wdgArr[i].enabled) {
             count++;
         }
 
+        var found = false;
         //再寻找相同的FunctionList是否可用
         for (var j = 0; j < funArr.length; j++) {
             if ('widget_' + wdgArr[i].name == funArr[j].function_variable) {
-                if (!wdgArr[i].enabled || funArr[j].function_content.right != 'Y') {
+                found = true;
+                if (funArr[j].function_content.right == 'Y') {
+                    wdgArr[i].enabled = true;
+                }
+                if (funArr[j].function_content.right == 'N') {
                     wdgArr[i].enabled = false;
                 }
                 break;
