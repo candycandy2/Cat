@@ -36,6 +36,8 @@ return [
     'PAGING_ROWS_PER_PAGE' => '筆記錄每頁',
     'STATUS_HAS_RIGHT' => '正常',
     'STATUS_HAS_NO_RIGHT' => '停權中',
+    'NEXT' => '下一步',
+    'BACK' => '上一步',
 
     'MENU' => '選單',
     'LOGOUT' => '登出',
@@ -61,6 +63,12 @@ return [
     'TITLE_REGISTER_MAINTAIN_TOOL' => '註冊管理工具',
     'TITLE_COMPANY_MAINTAIN' => '公司管理',
     'TITLE_FUNCTION_MAINTAIN' => '功能管理',
+    'TITLE_QPAY_USER_MAINTAIN' => '用户管理',
+    'TITLE_QPAY_STORE_MAINTAIN' => '儲值管理',
+    'TITLE_QPAY_REIMBURSE_MAINTAIN' => '報銷管理',
+    'TITLE_QPAY_REPORT_ANALYSIS' => '報表分析',
+    'TITLE_QPAY_STORE_POINT' => '點數儲值',
+
     'ENABLE' => '啟用',
     'DISABLE' => '停用',
 
@@ -438,4 +446,25 @@ return [
     'ERR_FUNCTION_VARIABLE_EXIST' =>'功能變數名稱已經存在!',
     'ERR_CREATE_FUNCTION_FAILED' => '新增功能失敗!',
     'ERR_UPDATE_FUNCTION_FAILED' => '更新功能失敗!',
+
+    //QPay 
+    'QPAY_IMPORT_MEMBER_LIST' => '匯入員工名單',
+    'QPAY_EXPECT_MEMBER_COUNT'=>'預期員工總人數',
+    'QPAY_EXPECT_STORED_POINT'=>'預期發放總點數',
+    'QPAY_POINT_TYPE'=>'消費券類型',
+    'QPAY_MEMBER_EMP_NO'=>'工號',
+    'QPAY_MEMBER_EMP_NAME_CH'=>'中文名',
+    'QPAY_MEMBER_EMP_NAME_EN'=>'英文名',
+    'QPAY_MEMBER_COMPANY'=>'公司別',
+    'QPAY_MEMBER_DEPARTMENT_CODE'=>'部門代碼',
+    'QPAY_CONFIRM_TO_STORED'=>'確認儲值',
+    'QPAY_CHECK_STORE_RECORD'=>'查看儲值紀錄',
+    'QPAY_TRAD_STATUS'=>'交易狀態',
+    'QPAY_TRAD_DATE'=>'交易日期',
+    'QPAY_ADMIN'=>'管理員',
+    'QPAY_IMPORT_TOTAL_MEMBER'=>'轉入總人數',
+    'QPAY_IMPORT_TOTAL_POINT'=>'轉入總點數/金額',
+    'QPAY_IMPORT_EACH_MEMBER'=>'轉入點數/金額(每人)',
+    'POINT' => '點',
+    'PERSON' => '人'
 ];
