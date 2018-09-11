@@ -89,7 +89,7 @@
   },
   {
     "term": "wgt_012",
-    "definition": "前往结账e",
+    "definition": "Pay",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -249,7 +249,7 @@
   },
   {
     "term": "wgt_032",
-    "definition": "Please select transaction type",
+    "definition": "Select",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -297,7 +297,7 @@
   },
   {
     "term": "wgt_038",
-    "definition": "Please select",
+    "definition": "Select",
     "context": "",
     "term_plural": "",
     "reference": "",
