@@ -287,9 +287,9 @@ function openNewMessage() {
 //     }();
 // }
 
-function checkAppVersionCallback(oldVersionExist) {
-    checkAPPVersionRecord("updateFromAPI");
-}
+// function checkAppVersionCallback(oldVersionExist) {
+//     checkAPPVersionRecord("updateFromAPI");
+// }
 
 //un-register [User with Mobile Device UUID]
 function unregister() {

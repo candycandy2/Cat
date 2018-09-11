@@ -179,68 +179,51 @@ $("#viewAppList").pagecontainer({
         }
 
         //Check if APP is installed
-        function checkAPPInstalled(callback, page, APPKey) {
+        // function checkAPPInstalled(callback, APPKey) {
 
-            callback = callback || null;
+        //     callback = callback || null;
 
-            var scheme;
+        //     var scheme;
 
-            if (device.platform === 'iOS') {
-                scheme = APPKey + '://';
-            } else if (device.platform === 'Android') {
-                scheme = 'com.qplay.' + APPKey;
-            }
+        //     if (device.platform === 'iOS') {
+        //         scheme = APPKey + '://';
+        //     } else if (device.platform === 'Android') {
+        //         scheme = 'com.qplay.' + APPKey;
+        //     }
 
-            window.testAPPInstalledCount = 0;
+        //     window.testAPPInstalledCount = 0;
 
-            window.testAPPInstalled = setInterval(function() {
-                appAvailability.check(
-                    scheme, //URI Scheme or Package Name
-                    function() { //Success callback
+        //     window.testAPPInstalled = setInterval(function() {
+        //         appAvailability.check(
+        //             scheme, //URI Scheme or Package Name
+        //             function() { //Success callback
 
-                        if (page === "appDetail") {
-                            var latest_version = appVersionRecord["com.qplay." + APPKey]["latest_version"];
-                            var installed_version = appVersionRecord["com.qplay." + APPKey]["installed_version"];
+        //                 callback(true);
 
-                            if (latest_version === installed_version) {
-                                loginData['updateApp'] = false;
-                            } else {
-                                loginData['updateApp'] = true;
-                            }
+        //                 stopTestAPPInstalled();
+        //             },
+        //             function() { //Error callback
 
-                            callback(true);
-                        } else if (page === "appList") {
-                            callback(true);
-                        }
+        //                 callback(false);
 
-                        stopTestAPPInstalled();
-                    },
-                    function() { //Error callback
+        //                 stopTestAPPInstalled();
+        //             }
+        //         );
 
-                        if (page === "appDetail") {
-                            callback(false);
-                        } else if (page === "appList") {
-                            callback(false);
-                        }
+        //         testAPPInstalledCount++;
 
-                        stopTestAPPInstalled();
-                    }
-                );
+        //         if (testAPPInstalledCount === 3) {
+        //             stopTestAPPInstalled();
+        //             location.reload();
+        //         }
+        //     }, 1000);
 
-                testAPPInstalledCount++;
-
-                if (testAPPInstalledCount === 3) {
-                    stopTestAPPInstalled();
-                    location.reload();
-                }
-            }, 1000);
-
-            window.stopTestAPPInstalled = function() {
-                if (window.testAPPInstalled != null) {
-                    clearInterval(window.testAPPInstalled);
-                }
-            };
-        }
+        //     window.stopTestAPPInstalled = function() {
+        //         if (window.testAPPInstalled != null) {
+        //             clearInterval(window.testAPPInstalled);
+        //         }
+        //     };
+        // }
 
         //applist group by downloaded status
         function appGroupByDownload(responsecontent) {
@@ -250,13 +233,13 @@ $("#viewAppList").pagecontainer({
 
             for (var i = 0; i < applist.length; i++) {
                 //APP version record
-                if (typeof appVersionRecord[applist[i].package_name] === 'undefined') {
-                    appVersionRecord[applist[i].package_name] = {};
-                    var packageName = applist[i].package_name;
-                    var packageNameArr = packageName.split(".");
+                // if (typeof appVersionRecord[applist[i].package_name] === 'undefined') {
+                //     appVersionRecord[applist[i].package_name] = {};
+                //     var packageName = applist[i].package_name;
+                //     var packageNameArr = packageName.split(".");
 
-                    checkAPPInstalled(checkAppVersionCallback, "appList", packageNameArr[2]);
-                }
+                //     checkAPPInstalled(checkAppVersionCallback, packageNameArr[2]);
+                // }
                 appVersionRecord[applist[i].package_name]["latest_version"] = applist[i].app_version.toString();
 
                 //check app install，icon diff
