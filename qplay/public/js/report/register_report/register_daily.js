@@ -332,15 +332,23 @@ var createDailyRegisterTable = function(res, date){
 
     //append result data
     var totalDistinctUserCount = [];
+    var tmpUsers = [];
     $.each(deviceTypeArray, function(index, deviceType){
         $.each(companySiteArray, function(subIndex, companySite){
              var tmpTimesCount = 0;
              var tmpUsersCount = 0;
+             if(!tmpUsers.hasOwnProperty(companySite)){
+                tmpUsers[companySite] = [];
+             }
             $.each(departmentArray, function(nodeIndex, department){
                 if( (typeof dataArray[deviceType][companySite] != 'undefined') && (typeof dataArray[deviceType][companySite][department] != 'undefined')){
                     tmpTimesCount = tmpTimesCount + dataArray[deviceType][companySite][department].count;
                     tmpUsersCount = tmpUsersCount + dataArray[deviceType][companySite][department].users.length;
+
                     $.each(dataArray[deviceType][companySite][department].users,function(i,user){
+                        if($.inArray(user, tmpUsers[companySite] ) == -1){
+                            tmpUsers[companySite].push(user);
+                        }
                         if($.inArray(user, totalDistinctUserCount ) == -1){
                             totalDistinctUserCount.push(user);
                         }
@@ -381,7 +389,7 @@ var createDailyRegisterTable = function(res, date){
                 $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(vtotalArr[type]);
             }else{
                 htotalArr[type][i-1] = totalDistinctUserCount.length;//real distinct user count
-                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(vtotalArr[type]);
+                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(tmpUsers[companySite].length);
             }
         });   
          
