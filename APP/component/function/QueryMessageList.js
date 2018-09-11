@@ -64,9 +64,10 @@ function UpdateMessageListContent(messagecontent__, fromAPI) {
     window.plugins.QPushPlugin.setApplicationIconBadgeNumber(Math.max(0, badgeCount));
 }
 
-function QueryMessageListEx() {
+function QueryMessageListEx(bForce) {
 
     var self = this;
+    bForce = bForce || false;
     var queryStr = "";
     var msgDateTo = getTimestamp();
     var msgDateFrom = parseInt(msgDateTo - 60 * 60 * 24 * 30, 10);
@@ -120,7 +121,7 @@ function QueryMessageListEx() {
         }
         messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
 
-        if (messagecontent_ === null || checkDataExpired(messagecontent_['lastUpdateTime'], 1, 'hh')) {
+        if (bForce === true || messagecontent_ === null || checkDataExpired(messagecontent_['lastUpdateTime'], 1, 'hh')) {
             QPlayAPIEx("GET", "getMessageList", self.successCallback, self.failCallback, null, queryStr);
         }
     }();
