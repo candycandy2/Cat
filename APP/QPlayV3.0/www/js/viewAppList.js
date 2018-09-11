@@ -240,7 +240,7 @@ $("#viewAppList").pagecontainer({
 
                 //     checkAPPInstalled(checkAppVersionCallback, packageNameArr[2]);
                 // }
-                appVersionRecord[applist[i].package_name]["latest_version"] = applist[i].app_version.toString();
+                //appVersionRecord[applist[i].package_name]["latest_version"] = applist[i].app_version.toString();
 
                 //check app install，icon diff
                 var appName = applist[i].package_name;
