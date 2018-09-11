@@ -29,7 +29,8 @@ $("#viewUserInputAmount").pagecontainer({
         });
 
         $("#viewUserInputAmount").on("pageshow", function (event, ui) {
-            
+            var point_now =  window.sessionStorage.getItem('user_point');
+            $('.user-pay-total').text(point_now);
         });
 
         $("#viewUserInputAmount").on("pagehide", function (event, ui) {
