@@ -337,6 +337,8 @@ function onBackKeyDown() {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
 
+    } else if (activePageID == 'viewUserTradeResult') {
+        backToSomePage('viewMain3');
     } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
     } else {
@@ -349,3 +351,22 @@ function onBackKeyDown() {
 $(document).on('click', '.page-back', function() {
     onBackKeyDown();
 })
+
+//退回到某一特定页面
+function backToSomePage(pageID) {
+    var index = 0;
+    for (var i = pageVisitedList.length - 1; i > -1; i--) {
+        if (pageVisitedList[i] == pageID) {
+            index = i;
+        }
+    }
+
+    var arr = [];
+    for (var i = 0; i < index + 2; i++) {
+        arr.push(pageVisitedList[i]);
+    }
+    pageVisitedList = arr;
+
+    //执行back逻辑
+    onBackKeyDown();
+}

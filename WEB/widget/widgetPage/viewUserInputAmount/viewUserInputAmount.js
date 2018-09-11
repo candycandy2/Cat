@@ -29,7 +29,8 @@ $("#viewUserInputAmount").pagecontainer({
         });
 
         $("#viewUserInputAmount").on("pageshow", function (event, ui) {
-            
+            var point_now =  window.sessionStorage.getItem('user_point');
+            $('.user-pay-total').text(point_now);
         });
 
         $("#viewUserInputAmount").on("pagehide", function (event, ui) {
@@ -96,6 +97,7 @@ $("#viewUserInputAmount").pagecontainer({
             if(has) {
                 //判断输入金额是否小于剩余金额
                 if (Number(payNum) < 10000) {
+                    window.sessionStorage.setItem('trade_price', payNum);
                     checkWidgetPage('viewUserInputPwd');
                 } else {
                     //popup'您的余额不足喔'

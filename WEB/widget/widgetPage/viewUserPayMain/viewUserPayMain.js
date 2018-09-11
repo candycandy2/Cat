@@ -3,9 +3,8 @@ $("#viewUserPayMain").pagecontainer({
 
 
 
-        function getUserQPayInfo() {
+        function getQPayInfoEmp() {
             var self = this;
-            var queryStr = "&emp_type=emp";
 
             this.successCallback = function () {
                 if(data['result_code'] == '1') {
@@ -24,7 +23,7 @@ $("#viewUserPayMain").pagecontainer({
             this.failCallback = function () { };
 
             var __construct = function () {
-                QPlayAPIEx("POST", "getQPayInfo", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
+                QPlayAPIEx("GET", "getQPayInfoEmp", self.successCallback, self.failCallback, null, null, "low", 30000, true);
             }();
         }
 
@@ -35,12 +34,7 @@ $("#viewUserPayMain").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewUserPayMain").on("pagebeforeshow", function (event, ui) {
-            var dirty = window.sessionStorage.getItem('user_point_dirty');
-            if(dirty == 'Y') {
-                //update余额
-                var point_now =  window.sessionStorage.getItem('user_point');
-                $('.remain-money').text(point_now);
-            }
+            
         });
 
         $("#viewUserPayMain").one("pageshow", function (event, ui) {
@@ -49,11 +43,17 @@ $("#viewUserPayMain").pagecontainer({
             $('.user-main-name').text(loginData['loginid']);
             $('.user-main-no').text(loginData['emp_no']);
             //Call API
-            //getUserQPayInfo();
+            //getQPayInfoEmp();
         });
 
         $("#viewUserPayMain").on("pageshow", function (event, ui) {
-
+            var dirty = window.sessionStorage.getItem('user_point_dirty');
+            if(dirty == 'Y') {
+                //update余额
+                var point_now =  window.sessionStorage.getItem('user_point');
+                $('.remain-money').text(point_now);
+                window.sessionStorage.setItem('user_point_dirty', 'N');
+            }
         });
 
         $("#viewUserPayMain").on("pagehide", function (event, ui) {
