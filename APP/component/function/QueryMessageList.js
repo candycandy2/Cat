@@ -61,7 +61,8 @@ function UpdateMessageListContent(messagecontent__, fromAPI) {
         }
     }
 
-    window.plugins.QPushPlugin.setApplicationIconBadgeNumber(Math.max(0, badgeCount));
+    window.plugins.jPushPlugin.setBadge(Math.max(0, badgeCount));
+    window.plugins.jPushPlugin.setApplicationIconBadgeNumber(Math.max(0, badgeCount));
 }
 
 function QueryMessageListEx(bForce) {
