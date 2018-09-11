@@ -3,9 +3,8 @@ $("#viewUserPayMain").pagecontainer({
 
 
 
-        function getUserQPayInfo() {
+        function getQPayInfoEmp() {
             var self = this;
-            var queryStr = "&emp_type=emp";
 
             this.successCallback = function () {
                 if(data['result_code'] == '1') {
@@ -24,7 +23,7 @@ $("#viewUserPayMain").pagecontainer({
             this.failCallback = function () { };
 
             var __construct = function () {
-                QPlayAPIEx("POST", "getQPayInfo", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
+                QPlayAPIEx("GET", "getQPayInfoEmp", self.successCallback, self.failCallback, null, null, "low", 30000, true);
             }();
         }
 
@@ -49,7 +48,7 @@ $("#viewUserPayMain").pagecontainer({
             $('.user-main-name').text(loginData['loginid']);
             $('.user-main-no').text(loginData['emp_no']);
             //Call API
-            //getUserQPayInfo();
+            //getQPayInfoEmp();
         });
 
         $("#viewUserPayMain").on("pageshow", function (event, ui) {

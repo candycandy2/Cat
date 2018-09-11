@@ -1,9 +1,8 @@
 $("#viewShopPayMain").pagecontainer({
     create: function (event, ui) {
 
-        function getShopQPayInfo() {
+        function getQPayInfoShop() {
             var self = this;
-            var queryStr = "&emp_type=shop";
 
             this.successCallback = function () {
                 if (data['result_code'] == '1') {
@@ -15,6 +14,9 @@ $("#viewShopPayMain").pagecontainer({
                     };
                     window.localStorage.setItem('point_type_list', JSON.stringify(jsonData));
 
+                    //2. 记录店家信息
+                    var shop_id = data['content'].shop_id;
+                    window.sessionStorage.setItem('shop_id', shop_id);
                 }
             };
 
@@ -24,7 +26,7 @@ $("#viewShopPayMain").pagecontainer({
                 var typeData = JSON.parse(window.localStorage.getItem('point_type_list'));
 
                 if (typeData === null || checkDataExpired(typeData['lastUpdateTime'], 7, 'dd')) {
-                    QPlayAPIEx("POST", "getQPayInfo", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
+                    QPlayAPIEx("GET", "getQPayInfoShop", self.successCallback, self.failCallback, null, null, "low", 30000, true);
                 }
                 
             }();
@@ -37,7 +39,7 @@ $("#viewShopPayMain").pagecontainer({
 
         $("#viewShopPayMain").one("pageshow", function (event, ui) {
             //Call API
-            //getShopQPayInfo();
+            //getQPayInfoShop();
         });
 
         $("#viewShopPayMain").on("pageshow", function (event, ui) {
