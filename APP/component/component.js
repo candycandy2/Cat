@@ -225,7 +225,7 @@ var app = {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
-                    checkAppPage('viewWebNews2-3-1');
+                    checkAppPage('viewWebNews2-3-1', pageVisitedList);
                 });
 
                 $("#cancelNewMessage").one("click", function() {
@@ -271,7 +271,7 @@ var app = {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
-                    checkAppPage('viewWebNews2-3-1');
+                    checkAppPage('viewWebNews2-3-1', pageVisitedList);
                 });
 
                 $("#cancelNewMessage").one("click", function() {
