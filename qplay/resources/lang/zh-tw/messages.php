@@ -72,6 +72,19 @@ return [
     'ENABLE' => '啟用',
     'DISABLE' => '停用',
 
+    //pushservice
+    'TITLE_PUSH_SERVICE' => '推播服務',
+    'TITLE_PUSH_BATCH_SERVICE'  => '預約推播',
+    'TITLE_PUSH_BATCH_SERVICE_DATA' => '預約推播訊息紀錄',
+    'PUSH_NEW_BATCH_SERVICE' => '新增預約推播訊息',
+    'PUSH_UPLOAD_BATCH_SERVICE' => '上傳預約推播訊息 Excel',
+    'START_DATE' => '開始日期',
+    'END_DATE' => '結束日期',
+    'PUSH_DATE' => '推播日期',
+    'PUSH_READ' => '已讀',
+    'PUSH_COUNT_BATCH_PUSH' => '預約推播總數',
+    'PUSH_COUNT_BATCH_PUSH_READ' => '訊息已讀總數',
+
     //validate
     'VALIDATE_ACCEPT' => '僅接受',
     'VALIDATE_ACCEPT_NUMERIC' => '僅接受數字',

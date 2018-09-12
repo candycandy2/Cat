@@ -72,6 +72,19 @@ return [
     'ENABLE' => '启用',
     'DISABLE' => '停用',
 
+    //pushservice
+    'TITLE_PUSH_SERVICE' => '推播服务',
+    'TITLE_PUSH_BATCH_SERVICE'  => '预约推播',
+    'TITLE_PUSH_BATCH_SERVICE_DATA' => '预约推播讯息纪录',
+    'PUSH_NEW_BATCH_SERVICE' => '新增预约推播讯息',
+    'PUSH_UPLOAD_BATCH_SERVICE' => '上傳预约推播讯息 Excel',
+    'START_DATE' => '开始日期',
+    'END_DATE' => '结束日期',
+    'PUSH_DATE' => '推播日期',
+    'PUSH_READ' => '已读',
+    'PUSH_COUNT_BATCH_PUSH' => '预约推播总数',
+    'PUSH_COUNT_BATCH_PUSH_READ' => '讯息已读总数',
+
     //validate
     'VALIDATE_ACCEPT' => '仅接受',
     'VALIDATE_ACCEPT_NUMERIC' => '仅接受数字',
