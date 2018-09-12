@@ -1,0 +1,169 @@
+<!-- viewAppSetting -->
+<div data-role="page" id="viewAppSetting">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div class="header-style">
+            <h1 class="ui-title">
+                <div>
+                    <!--设定-->
+                    <span class="langStr" data-id="str_082"></span>
+                </div>
+            </h1>
+        </div>
+        <a href="#" data-role="none">
+            <div class="q-btn-header page-back">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
+    </div>
+    <div data-role="main" class="ui-content page-main" id="settingContent">
+        <div class="setting-main">
+            <div class="photo-setting">
+                <div class="photo-default">
+                    <img src="img/default_photo.png" id="myPhoto">
+                </div>
+                <div class="name-user"></div>
+            </div>
+            <div class="link-setting">
+                <div class="normal-setting">
+                    <div>
+                        <img src="img/icon_setting.png" width="100%">
+                    </div>
+                    <div class="normal-setting-name">
+                        <!--一般设定-->
+                        <span class="langStr" data-id="str_083"></span>
+                    </div>
+                    <div>
+                        <img src="img/nextpage.png" width="100%">
+                    </div>
+                </div>
+                <div class="qplay-version">
+                    <div>
+                        <img src="img/icon_history.png" width="100%">
+                    </div>
+                    <div class="qplay-version-name">
+                        <!--版本记录-->
+                        <span class="langStr" data-id="str_081"></span>
+                    </div>
+                    <div>
+                        <img src="img/nextpage.png" width="100%">
+                    </div>
+                </div>
+                <div class="want-comment">
+                    <div>
+                        <img src="img/icon_comment.png" width="100%">
+                    </div>
+                    <div class="want-comment-name">
+                        <!--我要评论-->
+                        <span class="langStr" data-id="str_088"></span>
+                    </div>
+                    <div>
+                        <img src="img/nextpage.png" width="100%">
+                    </div>
+                </div>
+                <div class="clear-cache">
+                    <div>
+                        <img src="img/icon_clean.png" width="100%">
+                    </div>
+                    <div class="clear-cache-name">
+                        <!--清理缓存-->
+                        <span class="langStr" data-id="str_104"></span>
+                    </div>
+                    <div>
+                        <img src="img/nextpage.png" width="100%">
+                    </div>
+                </div>
+                <div class="change-password">
+                    <div>
+                        <img src="img/icon_password.png" width="100%">
+                    </div>
+                    <div class="change-password-name">
+                        <!--更改密码-->
+                        <span class="langStr" data-id="str_107"></span>
+                    </div>
+                    <div>
+                        <img src="img/nextpage.png" width="100%">
+                    </div>
+                </div>
+            </div>
+            <!--foot cover-->
+            <div class="setting-foot-cover"></div>
+            <div class="logout-fixed-btn" id="logout">
+                <!--登出-->
+                <span class="langStr" data-id="str_084"></span>
+            </div>
+        </div>
+
+        <!--遮罩-->
+        <div class="setting-mask">
+            <div class="photo-choose">
+                <div class="choose-camera">
+                    <!--相机-->
+                    <span class="langStr" data-id="str_089"></span>
+                </div>
+                <div class="choose-picture">
+                    <!--图库-->
+                    <span class="langStr" data-id="str_090"></span>
+                </div>
+            </div>
+            <div class="cancel-choose">
+                <!--取消-->
+                <span class="langStr" data-id="str_023"></span>
+            </div>
+        </div>
+
+        <div class="popup-msg-style" id="feedback">
+            <!--msg感谢您的回馈-->
+            <span class="langStr" data-id="str_103"></span>
+        </div>
+        <div class="popup-msg-style" id="cameraFail">
+            <!--请更换图片-->
+            <span class="langStr" data-id="str_100"></span>
+        </div>
+        <div class="popup-msg-style" id="uploadSuccess">
+            <!--头像上传成功-->
+            <span class="langStr" data-id="str_101"></span>
+        </div>
+        <div class="popup-msg-style" id="uploadFail">
+            <!--头像上传失败-->
+            <span class="langStr" data-id="str_102"></span>
+        </div>
+        <div class="popup-msg-style" id="clearSuccess">
+            <!--清理成功-->
+            <span class="langStr" data-id="str_105"></span>
+        </div>
+    </div>
+    
+    <!--登出 popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" class="app-popup confirmLogout" for="confirmLogout" id="confirmLogout">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--确定注销吗？-->
+                        <span class="langStr" data-id="str_043"></span>
+                    </span>
+                </div>
+                <div class="header-title"></div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style11 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel" id="logoutCancel">
+                        <!--取消-->
+                        <span class="langStr" data-id="str_023"></span>
+                    </div>
+                    <div class="btn-cancel" id="logoutConfirm">
+                        <!--确定-->
+                        <span class="langStr" data-id="str_016"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

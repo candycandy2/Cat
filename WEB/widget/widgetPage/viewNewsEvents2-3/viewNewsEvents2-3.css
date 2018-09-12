@@ -1,0 +1,128 @@
+/*************************** viewNewsEvents2-3 ********************************/
+#viewNewsEvents2-3  {
+    height: 100% !important;
+}
+
+#viewNewsEvents2-3 .ui-listview>.ui-li-static {
+    padding: 0;
+}
+
+#viewNewsEvents2-3 #navMessage .ui-btn {
+    background-color: #492f7f;
+    padding: 5px 1em;
+    border-width: 0px;
+}
+
+#viewNewsEvents2-3 #navDelete .ui-btn {
+    background-color: #656565;
+    color: #FFF;
+    font-size: 4.39vw;
+    height: 6vw;
+    border-width: 0px;
+    text-shadow: none;
+}
+
+#viewNewsEvents2-3 #navDelete .ui-btn.btn-disabled {
+    color: #000000;
+    text-shadow: none;
+}
+
+.no-message {
+    color: #989898;
+    text-align: center;
+    margin-top: 40vh;
+    font-size: 2.9vh;
+}
+
+.reddot-list {
+    background-image: url(../img/reddot.png);
+    background-size: 1.5vw 1.5vw;
+    width: 1.5vw;
+    height: 1.5vw;
+}
+
+.msg-del-checkbox-content {
+    float: left;
+    width: 7vw;
+    display: none;
+}
+
+.msg-del-checkbox {
+    margin-top: 70%;
+    padding-left: 30%;
+}
+
+.msg-new-reddot-content {
+    float: left;
+    width: 2vw;
+    margin-left: 2vw;
+    padding-top: 13px;
+}
+
+.msg-list-content {
+    float: left;
+    width: 90vw;
+    margin-left: 1vw;
+}
+
+.msg-list-content-edit {
+    width: 83vw;
+}
+
+.msg-list-title {
+    color: #0f0f0f;
+    /* hide text if it more than N lines  */
+    overflow: hidden;
+    /* for set '...' in absolute position */
+    position: relative;
+    /* use this value to count block height */
+    line-height: 1.2em;
+    /* max-height = line-height (1.2) * lines max number (3) */
+    max-height: 2.2em;
+    /* fix problem when last visible word doesn't adjoin right side  */
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
+}
+
+.msg-list-title:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+}
+
+.msg-list-title:after {
+    /* points in the end */
+    content: '';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    width: 1em;
+    /* set width and height */
+    height: 1em;
+    background: white;
+}
+
+.msg-list-time {
+    text-align: right;
+    font-size: 3.14vw;
+    color: #989898;
+}
+
+.del-msg-btn {
+    width: 50%;
+
+}
+
+.update-time {
+    color: #989898;
+    font-size: 3.14vw;
+    margin: 0;
+    height: 3.14vw;
+    padding: 2.4vw 3.71vw;
+}

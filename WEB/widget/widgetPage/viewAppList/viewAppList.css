@@ -1,0 +1,101 @@
+/*************************** viewAppList ********************************/
+#viewAppList .ui-content {
+    padding: 0 !important;
+}
+
+.app-scroll {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    overflow-y: scroll;
+    /* overflow-x: hidden; */
+    -webkit-overflow-scrolling: touch;
+}
+
+.download-title {
+    padding: 6.422vw 3.71vw 2.5vw;
+    font-size: 3.349vw !important;
+    color: #0f0f0f;
+    background: #edecec;
+}
+
+.already-download-list, .not-download-list {
+    padding: 0 3.71vw;
+}
+
+.already-download-list > div:last-of-type,
+.not-download-list > div:last-of-type {
+    border: none;
+}
+
+.download-list {
+    padding: 3.36vw 0;
+    height: 13.44vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.download-list > div {
+    float: left;
+}
+
+.download-list::after {
+    clear: both;
+}
+
+.download-list > div:nth-of-type(1) {
+    width: 83.3vw;
+    height: 100%;
+}
+
+.download-list > div:nth-of-type(1) > div {
+    color: #323232;
+    float: left;
+}
+
+.download-list > div:nth-of-type(1)::after {
+    clear: both;
+}
+
+.download-icon {
+    width: 17.4vw;
+    height: 100%;
+}
+
+.download-name {
+    width: 65.8vw;
+    height: 100%;
+}
+
+.download-name > div:nth-of-type(1) {
+    width: 100%;
+    height: 7vw;
+    /* color: #323232;
+    display: table-cell;  
+    vertical-align: bottom; */
+    line-height: 7vw;
+}
+
+.download-name > div:nth-of-type(2) {
+    width: 95%;
+    height: 5.92vw;
+    /* overflow: -webkit-paged-x;
+    word-break: break-all;
+    color: #0f0f0f; */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.download-list > div:nth-of-type(1) img {
+    width: 13.44vw;
+}
+
+.download-list > div:nth-of-type(2) {
+    width: 9.25vw;
+    height: 100%;
+}
+
+.download-list > div:nth-of-type(2) img {
+    width: 6.44vw;
+    margin-top: 3.5vw;
+}
