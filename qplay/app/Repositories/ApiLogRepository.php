@@ -101,7 +101,7 @@ class ApiLogRepository
                  'avg' => ['$avg' => '$operation_time'],
                 ]
             ]
-        ]);
+        ],['allowDiskUse' => true]);
     }
     
     /**
@@ -145,7 +145,7 @@ class ApiLogRepository
                  'avg' => ['$avg' => '$operation_time'],
                 ]
             ]
-        ]);
+        ],['allowDiskUse' => true]);
     }
 
     /**
@@ -183,7 +183,7 @@ class ApiLogRepository
                                                     ]
                                  ];
         }
-        return $this->apiLog::raw()->aggregate($query);
+        return $this->apiLog::raw()->aggregate($query,['allowDiskUse' => true]);
     }
 
     /**
@@ -211,6 +211,6 @@ class ApiLogRepository
             ],
         ];
 
-        return $this->apiLog::raw()->aggregate($query);
+        return $this->apiLog::raw()->aggregate($query,['allowDiskUse' => true]);
     }
 }
