@@ -225,7 +225,7 @@ var app = {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
-                    checkAppPage('viewWebNews2-3-1', pageVisitedList);
+                    checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
                 });
 
                 $("#cancelNewMessage").one("click", function() {
@@ -247,39 +247,6 @@ var app = {
                 loginData["openMessage"] = true;
                 window.localStorage.setItem("openMessage", "true");
                 window.localStorage.setItem("messageRowId", messageRowId);
-            }
-        }
-    },
-    onReceiveNotification: function(data) {
-        //Plugin-QPush > 添加前台收到通知后需要執行的內容
-        var messageList = new QueryMessageListEx(true);
-        getMessageID(data); //messageRowId
-
-        if (window.localStorage.getItem("loginid") === null) {
-            //Donothing
-        } else {
-            //While open APP in iOS, when get new message, iOS will not show message dialog in status bar,
-            //need to do it by Javscript
-            if (device.platform === "iOS") {
-
-                $("#newMessageTitle").html(data.aps["alert"]);
-                $('#iOSGetNewMessage').popup();
-                $('#iOSGetNewMessage').show();
-                $('#iOSGetNewMessage').popup('open');
-
-                $("#openNewMessage").one("click", function() {
-                    $('#iOSGetNewMessage').popup('close');
-                    $('#iOSGetNewMessage').hide();
-
-                    checkAppPage('viewWebNews2-3-1', pageVisitedList);
-                });
-
-                $("#cancelNewMessage").one("click", function() {
-                    $('#iOSGetNewMessage').popup('close');
-                    $('#iOSGetNewMessage').hide();
-
-                    window.localStorage.setItem("openMessage", "false");
-                });
             }
         }
     },
@@ -708,7 +675,7 @@ function readConfig() {
         //後台收到通知
         document.addEventListener('jpush.backgoundNotification', app.onBackgoundNotification, false);
         //前台收到通知
-        document.addEventListener('jpush.receiveNotification', app.onReceiveNotification, false);
+        document.addEventListener('jpush.receiveNotification', app.onOpenNotification, false);
     }
 
     //QPlay need to get PushToken in the first step, else cannot do any continue steps.
