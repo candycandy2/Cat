@@ -634,11 +634,11 @@ $("#viewWebNews2-3-1").pagecontainer({
             }
         });
 
-        $("#viewWebNews2-3-1").on("pageshow", function(event, ui) {
-            if (!messageExist) {
-                $('#messageNotExist').popup('open');
-            }
-        });
+        // $("#viewWebNews2-3-1").on("pageshow", function(event, ui) {
+        //     if (!messageExist) {
+        //         $('#messageNotExist').popup('open');
+        //     }
+        // });
 
         /********************************** dom event *************************************/
         $("#confirmMessageNotExist").on("click", function() {
