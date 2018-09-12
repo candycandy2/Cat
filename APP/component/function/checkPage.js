@@ -1,74 +1,67 @@
 
 
 //check app page on local
-function checkAppPage(pageID) {
-    var pageStatus = false;
+function checkAppPage(pageID, visitedList_) {
+    var pageLength = $('#' + pageID).length;
 
-    for (var i in pageList) {
-        if (pageID == pageList[i]) {
-            pageStatus = true;
-            break;
-        }
-    }
+    //0表示没有该元素，直接从local添加，既第一次添加
+    //1表示有该元素，直接跳转，不用添加
+    if(pageLength == 0) {
+        $.get('View/' + pageID + '.html', function (data) {
+            //1. html
+            $.mobile.pageContainer.append(data);
+            $('#' + pageID).page().enhanceWithin();
 
-    if (pageStatus) {
-        $.mobile.changePage('#' + pageID);
-        pageVisitedList.push(pageID);
+            //2. language string
+            setViewLanguage(pageID);
+
+            //3. water mark
+            //According to the data [waterMarkPageList] which set in index.js
+            if (!(typeof waterMarkPageList === 'undefined')) {
+                if (waterMarkPageList.indexOf(pageID) !== -1) {
+                    $('#' + pageID).css('background-color', 'transparent');
+                }
+            }
+
+            //4. js
+            setTimeout(function () {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'js/' + pageID + '.js';
+                document.head.appendChild(script);
+
+                //5. change page
+                $.mobile.changePage('#' + pageID);
+                visitedList_.push(pageID);
+
+            }, 200);
+
+        }, 'html');
 
     } else {
-        var pageInitial = window.sessionStorage.getItem(pageID);
 
-        if (pageInitial == 'true') {
-            $.mobile.changePage('#' + pageID);
-            pageVisitedList.push(pageID);
+        //如果即将跳转的页面正好是当前页面（既visited最后一页），触发pageshow即可
+        if (pageID == visitedList_[visitedList_.length - 1]) {
+            $('#' + pageID).trigger('pageshow');
 
         } else {
-            $.get('View/' + pageID + '.html', function (data) {
-                //1. html
-                $.mobile.pageContainer.append(data);
-                $('#' + pageID).page().enhanceWithin();
-
-                //2. language string
-                setViewLanguage(pageID);
-
-                //3. water mark
-                //According to the data [waterMarkPageList] which set in index.js
-                if (!(typeof waterMarkPageList === 'undefined')) {
-                    if (waterMarkPageList.indexOf(pageID) !== -1) {
-                        $('#' + pageID).css('background-color', 'transparent');
-                    }
-                }
-
-                //4. js
-                setTimeout(function () {
-                    var script = document.createElement('script');
-                    script.type = 'text/javascript';
-                    script.src = 'js/' + pageID + '.js';
-                    document.head.appendChild(script);
-
-                    //5. change page
-                    $.mobile.changePage('#' + pageID);
-                    window.sessionStorage.setItem(pageID, 'true');
-                    pageVisitedList.push(pageID);
-
-                }, 200);
-
-            }, 'html');
+            $.mobile.changePage('#' + pageID);
+            visitedList_.push(pageID);
         }
 
     }
+
 }
 
 //check app widgetPage on server
-function checkWidgetPage(pageID) {
-    var pageInitial = window.sessionStorage.getItem(pageID);
+function checkWidgetPage(pageID, visitedList_) {
     var url = serverURL + '/widget/widgetPage/' + pageID + '/' + pageID;
+    var pageLength = $('#' + pageID).length;
 
-    if (pageInitial == 'true') {
-        $.mobile.changePage('#' + pageID);
-        pageVisitedList.push(pageID);
+    //0表示没有该元素，直接从local添加，既第一次添加
+    //1表示有该元素，直接跳转，不用添加
+    if(pageLength == 0) {
 
-    } else {
         $.get(url + '.html', function (data) {
             //1. css
             var link = document.createElement('link');
@@ -101,13 +94,25 @@ function checkWidgetPage(pageID) {
 
                 //6. change page
                 $.mobile.changePage('#' + pageID);
-                window.sessionStorage.setItem(pageID, 'true');
-                pageVisitedList.push(pageID);
+                visitedList_.push(pageID);
 
             }, 200);
 
         }, 'html');
+
+    } else {
+
+        //如果即将跳转的页面正好是当前页面（既visited最后一页），触发pageshow即可
+        if (pageID == visitedList_[visitedList_.length - 1]) {
+            $('#' + pageID).trigger('pageshow');
+
+        } else {
+            $.mobile.changePage('#' + pageID);
+            visitedList_.push(pageID);
+        }
+
     }
+
 }
 
 function setViewLanguage(view) {
@@ -121,9 +126,3 @@ function setViewLanguage(view) {
         });
     });
 }
-
-/*because pagebeforeshow event not work first time,
-need override pagebeforeshow in index.js*/
-// function pageBeforeShow(pageID) {
-//     if (pageID == 'viewAppList') {}
-// }
