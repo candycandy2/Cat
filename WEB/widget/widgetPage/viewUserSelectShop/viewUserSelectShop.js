@@ -43,7 +43,7 @@ $("#viewUserSelectShop").pagecontainer({
                 'shop_name': shop_name
             };
             window.sessionStorage.setItem('shop_info', JSON.stringify(shop_obj));
-            checkWidgetPage('viewUserInputAmount');
+            checkWidgetPage('viewUserInputAmount', pageVisitedList);
         });
 
     }

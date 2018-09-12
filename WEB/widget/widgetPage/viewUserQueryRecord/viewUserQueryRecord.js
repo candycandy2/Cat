@@ -149,7 +149,7 @@ $("#viewUserQueryRecord").pagecontainer({
                     checkForm('trade')
                 }
 
-                checkWidgetPage('viewUserRecordList');
+                checkWidgetPage('viewUserRecordList', pageVisitedList);
             }
         });
 

@@ -19,7 +19,7 @@ var applistWidget = {
 
             //点击添加按钮跳转到APPList
             contentItem.on('click', '.add-favorite-list', function () {
-                checkWidgetPage('viewAppList');//from app/component/function/
+                checkWidgetPage('viewAppList', pageVisitedList);//from app/component/function/
             });
         }
 

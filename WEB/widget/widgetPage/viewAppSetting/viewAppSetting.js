@@ -211,18 +211,18 @@ $("#viewAppSetting").pagecontainer({
 
         //一般设定
         $('.normal-setting').on('click', function () {
-            checkWidgetPage('viewGeneralSetting');
+            checkWidgetPage('viewGeneralSetting', pageVisitedList);
         });
 
         //QPlay版本记录
         $('.qplay-version').on('click', function () {
             window.sessionStorage.setItem('checkAPPKey', qplayAppKey);
-            checkWidgetPage('viewVersionRecord');
+            checkWidgetPage('viewVersionRecord', pageVisitedList);
         });
 
         //我要评论
         $('.want-comment').on('click', function () {
-            checkWidgetPage('viewMyEvaluation');
+            checkWidgetPage('viewMyEvaluation', pageVisitedList);
         });
 
         //清理缓存
@@ -232,7 +232,7 @@ $("#viewAppSetting").pagecontainer({
 
         //修改密码
         $('.change-password').on('click', function () {
-            checkWidgetPage('viewShopChangePwd');
+            checkWidgetPage('viewShopChangePwd', pageVisitedList);
         });
 
         //注销

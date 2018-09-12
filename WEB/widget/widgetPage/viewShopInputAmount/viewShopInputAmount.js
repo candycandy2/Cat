@@ -119,7 +119,7 @@ $("#viewShopInputAmount").pagecontainer({
             if(has) {
                 //判断输入金额是否小于剩余金额
                 if (Number(payNum) < 10000) {
-                    checkWidgetPage('viewShopInputPwd');
+                    checkWidgetPage('viewShopInputPwd', pageVisitedList);
                 } else {
                     //popup'您的余额不足喔'
                     popupMsgInit('.overBudgetMsg');

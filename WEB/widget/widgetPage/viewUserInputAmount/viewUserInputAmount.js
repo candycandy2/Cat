@@ -98,7 +98,7 @@ $("#viewUserInputAmount").pagecontainer({
                 //判断输入金额是否小于剩余金额
                 if (Number(payNum) < 10000) {
                     window.sessionStorage.setItem('trade_price', payNum);
-                    checkWidgetPage('viewUserInputPwd');
+                    checkWidgetPage('viewUserInputPwd', pageVisitedList);
                 } else {
                     //popup'您的余额不足喔'
                     popupMsgInit('.overBudgetMsg');
