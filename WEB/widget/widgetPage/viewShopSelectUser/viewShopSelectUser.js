@@ -112,7 +112,7 @@ $("#viewShopSelectUser").pagecontainer({
             var has = $(this).hasClass('button-active');
             if (has) {
                 //API:工号是否存在
-                checkWidgetPage('viewShopUserAcount');
+                checkWidgetPage('viewShopUserAcount', pageVisitedList);
             }
         });
 

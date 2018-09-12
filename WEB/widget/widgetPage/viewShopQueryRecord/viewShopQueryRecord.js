@@ -143,7 +143,7 @@ $("#viewShopQueryRecord").pagecontainer({
             var has = $(this).hasClass('button-active');
             if (has) {
                 checkForm('save');
-                checkWidgetPage('viewShopRecordList');
+                checkWidgetPage('viewShopRecordList', pageVisitedList);
             }
         });
 

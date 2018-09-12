@@ -71,7 +71,7 @@ $("#viewShopInputPwd").pagecontainer({
             var has = $(this).hasClass('button-active');
             if (has) {
                 //Call API make trade
-                checkWidgetPage('viewShopTradeResult');
+                checkWidgetPage('viewShopTradeResult', pageVisitedList);
             }
         });
 

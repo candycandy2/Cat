@@ -146,7 +146,7 @@ $("#viewUserInputPwd").pagecontainer({
             if (has) {
                 //Call API make trade
                 //makeNewTrade(pwdNum, shop_id, trade_price, trade_token);
-                checkWidgetPage('viewUserTradeResult');
+                checkWidgetPage('viewUserTradeResult', pageVisitedList);
             }
         });
 

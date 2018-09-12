@@ -1,6 +1,6 @@
 /********************************* viewAppDetail2-2 **************************************/
 #viewAppDetail2-2 .ui-content {
-    padding: 0;
+    padding: 0 !important;
     word-wrap: break-word !important;
 }
 
@@ -177,7 +177,7 @@
 }
 
 .detail-description-open-btn {
-    background: url(../img/more_btn.png) no-repeat;
+    background: url(img/more_btn.png) no-repeat;
     background-size: 10vw;
     height: 3.6vh;
     width: 10vw;
