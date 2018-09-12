@@ -232,7 +232,7 @@ $("#viewAppSetting").pagecontainer({
 
         //修改密码
         $('.change-password').on('click', function () {
-            checkWidgetPage('viewShopChangePwd');
+            checkWidgetPage('viewShopChangePwd', pageVisitedList);
         });
 
         //注销
