@@ -9,7 +9,7 @@ $("#viewShopQueryRecord").pagecontainer({
                 defaultText: "请选择消费券类型",
                 changeDefaultText: true,
                 attr: {
-                    class: "tpl-dropdown-list-icon-arrow-incline"
+                    class: "arrow-incline"
                 }
             }
 
