@@ -406,7 +406,7 @@ $("#viewAppList").pagecontainer({
             var self = this;
             var appcode = $(self).attr('data-code');
             selectAppIndex = getIndexByCode(appcode);
-            checkAppPage('viewAppDetail2-2');
+            checkWidgetPage('viewAppDetail2-2');
         });
 
         //download app

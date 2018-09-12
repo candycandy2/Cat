@@ -205,52 +205,35 @@ var app = {
         }
     },
     onOpenNotification: function(data) {
-        //review by alan
-        //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
-        var doOpenMessage = false;
-        //If APP not open, check message after checkAppVersion()
-        getMessageID(data);
+        //Plugin-QPush > 添加背景收到通知后需要執行的內容
+        var messageList = new QueryMessageListEx(true);
+        getMessageID(data); //messageRowId
 
-        if (window.localStorage.getItem("openMessage") === "false") {
-
-            doOpenMessage = true;
-
-            //remember to open Message Detail Data
-            loginData["openMessage"] = true;
-            window.localStorage.setItem("openMessage", "true");
-            window.localStorage.setItem("messageRowId", messageRowId);
-
-        } else if (window.localStorage.getItem("openMessage") === "true") {
-            //After onBackgoundNotification/onReceiveNotification, then do onOpenNotification
-            doOpenMessage = true;
+        if (window.localStorage.getItem("loginid") === null) {
+            //Donothing
         } else {
-            //review by alan
-            //do then same when (window.localStorage.getItem("openMessage") === "false")
-            doOpenMessage = true;
+            //While open APP in iOS, when get new message, iOS will not show message dialog in status bar,
+            //need to do it by Javscript
+            if (device.platform === "iOS") {
 
-            //remember to open Message Detail Data
-            loginData["openMessage"] = true;
-            window.localStorage.setItem("openMessage", "true");
-            window.localStorage.setItem("messageRowId", messageRowId);
-        }
+                $("#newMessageTitle").html(data.aps["alert"]);
+                $('#iOSGetNewMessage').popup();
+                $('#iOSGetNewMessage').show();
+                $('#iOSGetNewMessage').popup('open');
 
-        if (doOpenMessage) {
-            //Check if not login
-            if (window.localStorage.getItem("loginid") !== null) {
-                //Before open Message Detail Data, update Message List
-                if (window.localStorage.getItem("msgDateFrom") === null) {
+                $("#openNewMessage").one("click", function() {
+                    $('#iOSGetNewMessage').popup('close');
+                    $('#iOSGetNewMessage').hide();
 
-                    //review by allen
-                    //$.mobile.changePage('#viewNewsEvents2-3');
-                } else {
-                    if (window.localStorage.getItem("uuid") !== null) {
-                        loginData["uuid"] = window.localStorage.getItem("uuid");
-                        loginData["token"] = window.localStorage.getItem("token");
-                        loginData["pushToken"] = window.localStorage.getItem("pushToken");
+                    checkAppPage('viewWebNews2-3-1');
+                });
 
-                        var messageList = new QueryMessageList();
-                    }
-                }
+                $("#cancelNewMessage").one("click", function() {
+                    $('#iOSGetNewMessage').popup('close');
+                    $('#iOSGetNewMessage').hide();
+
+                    window.localStorage.setItem("openMessage", "false");
+                });
             }
         }
     },

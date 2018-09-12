@@ -1,29 +1,3 @@
-function cleanHTML(input) {
-    // 1. remove line breaks / Mso classes
-    var stringStripper = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;
-    var outputstringStripper = input.replace(stringStripper, ' ');
-    // 2. strip Word generated HTML comments
-    var commentSripper = new RegExp('<!--(.*?)-->', 'g');
-    var output = outputstringStripper.replace(commentSripper, '');
-    var tagStripper = new RegExp('<(/)*(meta|link|span|table|tbody|td|tr|body|div|strong|\\?xml:|st1:|o:)(.*?)>', 'gi');
-    // 3. remove tags leave content if any
-    output = output.replace(tagStripper, '');
-    // 4. Remove everything in between and including tags '<style(.)style(.)>'
-    var badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
-
-    for (var i = 0; i < badTags.length; i++) {
-        tagStripper = new RegExp('<' + badTags[i] + '.*?' + badTags[i] + '(.*?)>', 'gi');
-        output = output.replace(tagStripper, '');
-    }
-    // 5. remove attributes ' style="..."'
-    var badAttributes = ['style', 'start'];
-    for (i = 0; i < badAttributes.length; i++) {
-        var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"', 'gi');
-        output = output.replace(attributeStripper, '');
-    }
-    return output;
-}
-
 $("#viewWebNews2-3-1").pagecontainer({
     create: function(event, ui) {
 
@@ -306,10 +280,10 @@ $("#viewWebNews2-3-1").pagecontainer({
             }());
         }
 
-        function QueryMessageDetail() {
+        function QueryMessageDetail(messageRowId_) {
             var self = this;
 
-            var queryStr = "&message_send_row_id=" + messageRowId;
+            var queryStr = "&message_send_row_id=" + messageRowId_;
 
             this.successCallback = function(data) {
                 console.log(data);
@@ -330,7 +304,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 if (resultcode === 1) {
 
                     messageExist = true;
-                    updateReadDelete(content.message_type, "read");
+                    updateReadDelete(content.message_type, "read",messageRowId);
 
                     //If template_id == 999, it's Portal Event,
                     //need to be render become canvas
@@ -408,7 +382,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 } else if (resultcode === "000910") {
                     //Message was be deleted in server
                     messageExist = false;
-                    updateReadDelete("all", "delete");
+                    updateReadDelete("all", "delete",messageRowId);
                 }
 
                 if (window.localStorage.getItem("openMessage") === "true") {
@@ -424,10 +398,10 @@ $("#viewWebNews2-3-1").pagecontainer({
             }();
         }
 
-        window.updateReadDelete = function(type, status) {
+        window.updateReadDelete = function(type, status, messageRowId_) {
             var self = this;
 
-            var queryStr = "&message_send_row_id=" + messageRowId + "&message_type=" + type + "&status=" + status;
+            var queryStr = "&message_send_row_id=" + messageRowId_ + "&message_type=" + type + "&status=" + status;
 
             this.successCallback = function(data) {
                 console.log(data);
@@ -458,9 +432,9 @@ $("#viewWebNews2-3-1").pagecontainer({
                     var singleMessage = true;
                     var i, j;
 
-                    messageRowId = messageRowId.toString();
+                    messageRowId_ = messageRowId_.toString();
 
-                    if (messageRowId.indexOf(",") !== -1) {
+                    if (messageRowId_.indexOf(",") !== -1) {
                         singleMessage = false;
                     }
 
@@ -482,7 +456,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                             }
                         }
                     } else {
-                        var messageRowIdArr = messageRowId.split(",");
+                        var messageRowIdArr = messageRowId_.split(",");
 
                         for (i = 0; i < messageRowIdArr.length; i++) {
 
@@ -507,12 +481,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                     loginData.messagecontent = messagecontent;
                     messageArrIndex = null;
 
-                    //如果是read，只需添加普通字体的样式；如果是delete，需要删除对应元素
-                    if (status == 'read') {
-                        updateNewMessageList(type);
-                    } else if (status == 'delete') {
-                        updateNewMessageList(type, status);
-                    }
+                    updateNewMessageList(type, status,messageRowId_);
 
                 }
             };
@@ -533,12 +502,12 @@ $("#viewWebNews2-3-1").pagecontainer({
             }();
         };
 
-        function updateNewMessageList(type, status) {
+        function updateNewMessageList(type, status,messageRowId_) {
             status = status || null;
             if (status != null) {
-                $('.' + type + '-content li[data-rowid=' + messageRowId + ']').remove();
+                $('.' + type + '-content li[data-rowid=' + messageRowId_ + ']').remove();
             } else {
-                $('.' + type + '-content li[data-rowid=' + messageRowId + ']').find('.msg-content-title').addClass('read-font-normal');
+                $('.' + type + '-content li[data-rowid=' + messageRowId_ + ']').find('.msg-content-title').addClass('read-font-normal');
             }
         }
 
@@ -566,7 +535,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 $(".footer-portal").hide();
 
                 $("#viewWebNews2-3-1 .page-main").css("opacity", 0);
-                var messageDetail = new QueryMessageDetail();
+                var messageDetail = new QueryMessageDetail(messageRowId);
             } else {
                 //review by alan
                 //for speed up

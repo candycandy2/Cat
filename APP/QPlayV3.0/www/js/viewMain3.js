@@ -159,12 +159,12 @@ $("#viewMain3").pagecontainer({
 
         //点击Link跳转到APPList
         $('.applist-link').on('click', function () {
-            checkAppPage('viewAppList');
+            checkWidgetPage('viewAppList');
         });
 
         //跳转到MessageList
         $('.message-link').on('click', function () {
-            checkAppPage('viewMessageList');
+            checkWidgetPage('viewMessageList');
         });
 
         //跳转到FAQ
@@ -174,7 +174,7 @@ $("#viewMain3").pagecontainer({
 
         //跳转到设定
         $('#setting').on('click', function () {
-            checkAppPage('viewAppSetting');
+            checkWidgetPage('viewAppSetting');
         });
 
 

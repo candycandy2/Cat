@@ -87,7 +87,7 @@ $("#viewMessageList").pagecontainer({
                         messageFrom = 'viewMessageList';
                         portalURL = $(this).find("input").val();
                         //console.log(portalURL)
-                        checkAppPage('viewWebNews2-3-1');
+                        checkWidgetPage('viewWebNews2-3-1');
                     }
                 });
 
@@ -266,7 +266,7 @@ $("#viewMessageList").pagecontainer({
         function changeToDetail($target) {
             messageFrom = 'viewMessageList';
             messageRowId = $target.parents('li').attr('data-rowid');
-            checkAppPage('viewWebNews2-3-1');
+            checkWidgetPage('viewWebNews2-3-1');
         }
 
         //don't use
@@ -304,7 +304,7 @@ $("#viewMessageList").pagecontainer({
                         $(".textContent").show();
                     }
 
-                    checkAppPage("#viewWebNews2-3-1");
+                    checkWidgetPage("#viewWebNews2-3-1");
 
                 } else if (resultcode === "000910") {
                     //Message was be deleted in server

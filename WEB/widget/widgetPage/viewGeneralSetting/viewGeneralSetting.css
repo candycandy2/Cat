@@ -1,0 +1,41 @@
+/***************************** viewGeneralSetting ********************************/
+#viewGeneralSetting .ui-content {
+    padding: 0 !important;
+}
+
+.default-setting {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: #EEF2F5;
+}
+
+.default-setting > div {
+    width: 89.8vw;
+    height: 14.5vw;
+    padding: 0 3.71vw 0 6.48vw;
+    background: #fff;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.default-setting > div > div {
+    float: left;
+}
+
+.default-setting > div > div:nth-of-type(1) {
+    width: 83.3vw;
+    height: 100%;
+    line-height: 14.5vw;
+    color: #263238;
+    font-weight: normal;
+    font-size: 3.768vw !important;
+}
+
+.default-setting > div > div:nth-of-type(2) {
+    width: 6.44vw;
+    padding-top: 4vw; 
+}
+
+.show {
+    display: block;
+}
