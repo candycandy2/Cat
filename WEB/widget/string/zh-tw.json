@@ -534,5 +534,21 @@
     "term_plural": "",
     "reference": "",
     "comment": ""
+  },
+  {
+    "term": "wgt_068",
+    "definition": "交易成功",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_069",
+    "definition": "交易失敗",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]

@@ -46,28 +46,7 @@ window.initialSuccess = function(data) {
             if (!device.isVirtual) {
                 var doPushToken = new sendPushToken();
             }
-
-            //review by alan
-            //If User first time to use QPlay, never get message data from server,
-            //don't call QueryMessageList() in background.
-            if (loginData["msgDateFrom"] !== null) {
-                var messageList = new QueryMessageList("auto");
-            }
-
-            //review by alan
-            if (window.localStorage.getItem("openMessage") !== "true") {
-                $.mobile.changePage('#viewMain3', {
-                    allowSamePageTransition: true,
-                    transition: 'none',
-                    showLoadMsg: false,
-                    reloadPage: true
-                });
-                $.mobile.changePage('#viewMain3');
-            } else {
-                //If onOpenNotification, but not login.
-                //Atfer login, do onOpenNotification again.
-                openNewMessage(); //refectory
-            }
+            $.mobile.changePage('#viewMain3');
 
         }
     }
@@ -358,6 +337,8 @@ function onBackKeyDown() {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
 
+    } else if (activePageID == 'viewUserTradeResult') {
+        backToSomePage('viewMain3');
     } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
     } else {
@@ -370,3 +351,22 @@ function onBackKeyDown() {
 $(document).on('click', '.page-back', function() {
     onBackKeyDown();
 })
+
+//退回到某一特定页面
+function backToSomePage(pageID) {
+    var index = 0;
+    for (var i = pageVisitedList.length - 1; i > -1; i--) {
+        if (pageVisitedList[i] == pageID) {
+            index = i;
+        }
+    }
+
+    var arr = [];
+    for (var i = 0; i < index + 2; i++) {
+        arr.push(pageVisitedList[i]);
+    }
+    pageVisitedList = arr;
+
+    //执行back逻辑
+    onBackKeyDown();
+}

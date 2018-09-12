@@ -107,20 +107,23 @@
 .sw-bullet li {
   width: 10px;
   height: 10px;
-  background-color: rgba(255, 255, 255, 0);
+  /* background-color: rgba(255, 255, 255, 0); */
+  background-color: #fff;
   border-radius: 50%;
-  border: 1px solid #FCFCFC;
+  border: 1px solid #666;
   display: inline-block;
   cursor: pointer;
   transition: all .2s ease-out;
 }
 .sw-bullet li:hover {
-  background-color: rgba(255, 255, 255, 0.7);
+  /* background-color: rgba(255, 255, 255, 0.7); */
+  background-color: #2BD2B8;
 }
 .sw-bullet li.active {
-  background-color: rgba(255, 255, 255, 0.7);
+  /* background-color: rgba(255, 255, 255, 0.7); */
   /* box-shadow: 0 0 2px rgba(160, 160, 160, 0.53); */
-  border: 1px solid #FCFCFC !important;
+  background-color: #2BD2B8;
+  border: 1px solid #666 !important;
 }
 .sw-bullet li:not(:last-child) {
   margin-right: 5px;

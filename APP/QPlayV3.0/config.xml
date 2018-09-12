@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="1140" id="com.qplay.appqplaydev" ios-CFBundleVersion="1140" version="1.0.0.1140[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="1142" id="com.qplay.appqplaydev" ios-CFBundleVersion="1142" version="1.0.0.1142[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QPlay</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -92,8 +92,8 @@
     <plugin name="cordova-plugin-qlogin" spec="../../plugins/cordova-plugin-qlogin">
         <variable name="LOGIN_URL" value="https://qplaydev.benq.com/qplayApi/public/qplayauth_register" />
     </plugin>
-    <plugin name="cordova-plugin-qpush" spec="../../plugins/cordova-plugin-qpush">
-        <variable name="API_KEY" value="e343504d536ebce16b70167e" />
+    <plugin name="jpush-phonegap-plugin" spec="../../plugins/jpush-phonegap-plugin">
+        <variable name="APP_KEY" value="e343504d536ebce16b70167e" />
     </plugin>
     <plugin name="cordova-plugin-device" spec="../../plugins/cordova-plugin-device" />
     <plugin name="cordova-plugin-appversion" spec="../../plugins/cordova-plugin-appversion" />
