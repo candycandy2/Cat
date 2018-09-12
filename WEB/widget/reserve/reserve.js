@@ -74,7 +74,7 @@ var reserveWidget = {
 
             //跳转到行事历
             contentItem.on('click', '.personal-res', function() {
-                checkAppPage('viewMyCalendar');
+                checkWidgetPage('viewMyCalendar');
             });
         }
 
