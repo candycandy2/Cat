@@ -225,6 +225,10 @@ Route::any('functionMaintain/editFunction', ['middleware' => 'auth','uses'=>'Fun
 Route::any('functionMaintain/updateFunction', ['middleware' => 'auth','uses'=>'FunctionController@updateFunction']);
 Route::any('functionMaintain/getUserFunctionList', ['middleware' => 'auth','uses'=>'FunctionController@getUserFunctionList']);
 
+//QPay Maintain
+Route::any('QPayStorePoint', ['middleware' => 'auth', function() {
+    return view("qpay_maintain/point_store");
+}]);
 
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){
   Session::set('lang', $lang);
