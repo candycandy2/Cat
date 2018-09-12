@@ -1,0 +1,289 @@
+/********************************* viewAppDetail2-2 **************************************/
+#viewAppDetail2-2 .ui-content {
+    padding: 0;
+    word-wrap: break-word !important;
+}
+
+.app-list-category {
+    color: #0F0F0F;
+    display: inline-block;
+    line-height: 0;
+    font-size: 5vw;
+    margin-bottom: 4.39vw;
+}
+
+.app-list-hr {
+    color: #c7c6cb;
+    margin: 2.2vh 0 2.5vh;
+}
+
+.app-list-scroll-area {
+    width: 100%;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.appDetailIcon {
+    width: 25vw;
+    line-height: 1;
+    float: left;
+}
+
+.appDetailInfo {
+    float: left;
+    margin-left: 3.7vw;
+    width: 63.5vw;
+}
+
+.appDetailInfo p{
+    margin: 0;
+    line-height: 1;
+}
+
+.appDetailInfo .appDetailAppName {
+    color: #0F0F0F;
+    font-size: 2.8vh;
+    margin-bottom: 0.3vh;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.appDetailInfo .appDetailRank {
+    height: 2.3vh;
+    margin-bottom: 4vh;
+    opacity: 0;
+}
+
+.appDetailRank .star {
+    font-size: 2.5vw;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.appDetailRank .score {
+    font-size: 2.3vh;
+    color: #5C5C5C;
+}
+
+.appDetailInfo .appDetailRank {
+    height: 2.4vh;
+}
+
+.appDetailBottomLeft {
+    float: left;
+    width: 68%;
+}
+
+.appDetailAppVersion {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.appDetailAppVersion .title {
+    color: #0F0F0F;
+    font-size: 2.4vh;
+}
+
+.appDetailAppVersion .number {
+    color: #5C5C5C;
+    font-size: 2.3vh;
+}
+
+.appDetailInfo .appDetailAppSize {
+    height: 2.4vh;
+}
+
+.appDetailAppSize .title {
+    color: #0F0F0F;
+    font-size: 2.4vh;
+}
+
+.appDetailAppSize .number {
+    color: #5C5C5C;
+    font-size: 2.3vh;
+}
+
+.appDetailBottomRight {
+    float: left;
+    text-align: right;
+    width: 32%;
+    height: 4.8vh;
+}
+
+.install-btn {
+    width: 20vw;
+    height: 3.5vh;
+    border-radius: 25px;
+    background-color: #492F80;
+    cursor: pointer;
+    text-align: center;
+    color: #FFF;
+    font-size: 2.4vh;
+    text-shadow: none;
+    line-height: 1.5;
+}
+
+.detail-description {
+    color: #0f0f0f;
+    /* hide text if it more than N lines  */
+    overflow: hidden;
+    /* for set '...' in absolute position */
+    position: relative;
+    /* use this value to count block height */
+    line-height: 1.2em;
+    /* max-height = line-height (1.2) * lines max number (3) */
+    max-height: 3.4em;
+    /* fix problem when last visible word doesn't adjoin right side  */
+    text-align: justify;
+    margin-right: 0.5vw;
+    font-size: 2.4vh;
+}
+
+.detail-description-ellipsis:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 7vw;
+    width: 13vw;
+    padding-left: 1vw;
+    bottom: 0;
+    background-color: #FFF;
+}
+
+.detail-description-ellipsis:after {
+    /* points in the end */
+    content: '';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    width: 1em;
+    /* set width and height */
+    height: 1em;
+    background: white;
+}
+
+.detail-description-open {
+    position: relative;
+    width: 10%;
+    top: -2.7vh;
+    left: 89%;
+    background-color: #FFF;
+    margin-bottom: -2.6vh;
+}
+
+.detail-description-open-btn {
+    background: url(../img/more_btn.png) no-repeat;
+    background-size: 10vw;
+    height: 3.6vh;
+    width: 10vw;
+    font-size: 3.5vw;
+    color: #5C5C5C;
+    text-align: center;
+    line-height: 1.7;
+    background-color: #FFFFFF;
+}
+
+.detail-img-style {
+    float: left;
+    width: 52vw;
+    height: 52vh;
+    margin-right: 3.7vw;
+}
+
+.detail-img-style-full-screen {
+    float: left;
+    width: 80vw;
+    height: 80vh;
+    margin-left: 3.7vw;
+}
+
+#viewAppDetail2-2 .page-main {
+    background-color: #FFF;
+}
+
+#viewAppDetail2-2 .top {
+    height: 25vw;
+    padding: 6.422vw 3.7vw 9.24vw;
+}
+
+#viewAppDetail2-2 .bottom {
+    clear: both;
+    /* padding: 4vh 3.7vw 6.5vh; */
+}
+
+#viewAppDetail2-2 .bottom > div:nth-of-type(1) {
+    padding: 0 3.7vw 4.57vw;
+}
+
+#viewAppDetail2-2 .bottom > div:nth-of-type(2) {
+    padding: 3.71vw 0 4.13vw 3.71vw;
+    width: 100%;
+    height: 52vh;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    background: #edecec;
+}
+
+#viewAppDetail2-2 .bottom > div:nth-of-type(2) > div {
+    width: 100%;
+    height: 100%;
+}
+
+#viewAppDetail2-2 .version {
+    width: 92.58vw;
+    height: 13.04vw;
+    padding: 3.93vw 3.71vw;
+}
+
+#viewAppDetail2-2 .version > div:nth-of-type(1) {
+    width: 13.04vw;
+    height: 13.04vw;
+    margin: 0 2.9vw;
+    float: left;
+}
+
+#viewAppDetail2-2 .version > div:nth-of-type(1) > img {
+    width: 100%;
+    height: 100%;
+}
+
+#viewAppDetail2-2 .version > div:nth-of-type(2) {
+    float: left;
+    color: #323232;
+    line-height: 13.04vw;
+}
+
+#viewAppDetail2-2 .version > div:nth-of-type(3) {
+    width: 6.44vw;
+    height: 6.44vw;
+    margin-top: 3.3vw;
+    float: right;
+}
+
+#viewAppDetail2-2 .version > div:nth-of-type(3) > img {
+    width: 100%;
+    height: 100%;
+}
+
+#viewAppDetail2-2 .fix {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: lightgray;
+}
+
+#viewAppDetail2-2 .fix > div:nth-of-type(1) {
+    margin-top: 5vw;
+    width: 100%;
+    height: 80vh;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
