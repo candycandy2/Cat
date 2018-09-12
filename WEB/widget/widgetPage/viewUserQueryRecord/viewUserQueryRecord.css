@@ -123,3 +123,9 @@
     color: #989898;
     font-size: 4.18vw;
 }
+
+.arrow-incline {
+    background: url('img/dropdown_incline.png') right transparent;
+    background-size: 2vw 2vw;
+    background-repeat: no-repeat;
+}

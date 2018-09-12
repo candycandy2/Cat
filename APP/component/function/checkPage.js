@@ -1,13 +1,11 @@
-
-
 //check app page on local
-function checkAppPage(pageID, visitedList_) {
+function checkAppPage(pageID, pageVisitedList) {
     var pageLength = $('#' + pageID).length;
 
     //0表示没有该元素，直接从local添加，既第一次添加
     //1表示有该元素，直接跳转，不用添加
-    if(pageLength == 0) {
-        $.get('View/' + pageID + '.html', function (data) {
+    if (pageLength == 0) {
+        $.get('View/' + pageID + '.html', function(data) {
             //1. html
             $.mobile.pageContainer.append(data);
             $('#' + pageID).page().enhanceWithin();
@@ -24,7 +22,7 @@ function checkAppPage(pageID, visitedList_) {
             }
 
             //4. js
-            setTimeout(function () {
+            setTimeout(function() {
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
                 script.src = 'js/' + pageID + '.js';
@@ -32,21 +30,21 @@ function checkAppPage(pageID, visitedList_) {
 
                 //5. change page
                 $.mobile.changePage('#' + pageID);
-                visitedList_.push(pageID);
 
             }, 200);
+            pageVisitedList.push(pageID);
 
         }, 'html');
 
     } else {
 
         //如果即将跳转的页面正好是当前页面（既visited最后一页），触发pageshow即可
-        if (pageID == visitedList_[visitedList_.length - 1]) {
+        if (pageID == pageVisitedList[pageVisitedList.length - 1]) {
             $('#' + pageID).trigger('pageshow');
 
         } else {
             $.mobile.changePage('#' + pageID);
-            visitedList_.push(pageID);
+            pageVisitedList.push(pageID);
         }
 
     }
@@ -54,15 +52,15 @@ function checkAppPage(pageID, visitedList_) {
 }
 
 //check app widgetPage on server
-function checkWidgetPage(pageID, visitedList_) {
+function checkWidgetPage(pageID, pageVisitedList) {
     var url = serverURL + '/widget/widgetPage/' + pageID + '/' + pageID;
     var pageLength = $('#' + pageID).length;
 
     //0表示没有该元素，直接从local添加，既第一次添加
     //1表示有该元素，直接跳转，不用添加
-    if(pageLength == 0) {
+    if (pageLength == 0) {
 
-        $.get(url + '.html', function (data) {
+        $.get(url + '.html', function(data) {
             //1. css
             var link = document.createElement('link');
             link.rel = 'stylesheet';
@@ -86,7 +84,7 @@ function checkWidgetPage(pageID, visitedList_) {
             }
 
             //5. js
-            setTimeout(function () {
+            setTimeout(function() {
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
                 script.src = url + '.js';
@@ -94,21 +92,21 @@ function checkWidgetPage(pageID, visitedList_) {
 
                 //6. change page
                 $.mobile.changePage('#' + pageID);
-                visitedList_.push(pageID);
 
             }, 200);
+            pageVisitedList.push(pageID);
 
         }, 'html');
 
     } else {
 
         //如果即将跳转的页面正好是当前页面（既visited最后一页），触发pageshow即可
-        if (pageID == visitedList_[visitedList_.length - 1]) {
+        if (pageID == pageVisitedList[pageVisitedList.length - 1]) {
             $('#' + pageID).trigger('pageshow');
 
         } else {
             $.mobile.changePage('#' + pageID);
-            visitedList_.push(pageID);
+            pageVisitedList.push(pageID);
         }
 
     }
@@ -116,10 +114,10 @@ function checkWidgetPage(pageID, visitedList_) {
 }
 
 function setViewLanguage(view) {
-    $("#" + view + " .langStr").each(function (index, element) {
+    $("#" + view + " .langStr").each(function(index, element) {
         var id = $(element).data("id");
 
-        $(".langStr[data-id='" + id + "']").each(function (index, element) {
+        $(".langStr[data-id='" + id + "']").each(function(index, element) {
             if (langStr[id] !== undefined) {
                 $(this).html(langStr[id]);
             }

@@ -72,6 +72,19 @@ return [
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
 
+    //pushservice
+    'TITLE_PUSH_SERVICE' => 'Push Service',
+    'TITLE_PUSH_BATCH_SERVICE' => 'Batch Push Service',
+    'TITLE_PUSH_BATCH_SERVICE_DATA' => 'Batch Push Service Data',
+    'PUSH_NEW_BATCH_SERVICE' => 'Add Batch Push Service',
+    'PUSH_UPLOAD_BATCH_SERVICE' => 'Upload Batch Push Service Excel',
+    'START_DATE' => 'Start Date',
+    'END_DATE' => 'End Date',
+    'PUSH_DATE' => 'Push Date',
+    'PUSH_READ' => 'Read',
+    'PUSH_COUNT_BATCH_PUSH' => 'Count of Push Message',
+    'PUSH_COUNT_BATCH_PUSH_READ' => 'Count Read of Push Message',
+
     //validate
     'VALIDATE_ACCEPT' => 'accept only',
     'VALIDATE_ACCEPT_NUMERIC' => 'accept only numeric',
