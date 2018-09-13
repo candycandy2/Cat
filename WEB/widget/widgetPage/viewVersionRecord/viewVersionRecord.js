@@ -25,13 +25,13 @@ $("#viewVersionRecord").pagecontainer({
                             '</div></div>';
                     }
 
-                    $(".version-scroll > div").html('').append(content);
+                    $('.version-record-ul').html('').append(content);
 
                     //set language
                     $('#viewVersionRecord .ui-title div').text(langStr['str_081']);
 
                     //set height
-                    var contentHeight = $('.version-scroll > div').height();
+                    var contentHeight = $('.version-record-ul').height();
                     var headerHeight = $('#viewVersionRecord .page-header').height();
                     var totalHeight;
                     if (device.platform === "iOS") {
