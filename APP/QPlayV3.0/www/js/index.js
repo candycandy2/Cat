@@ -21,7 +21,7 @@ var messagecontent,
 var portalURL = "",
     messageFrom = 'viewMain3';
 
-window.initialSuccess = function(data) {
+window.initialSuccess = function (data) {
     //1. widgetlist
     checkWidgetListOrder();
 
@@ -61,7 +61,7 @@ function checkWidgetListOrder() {
     var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
     var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'));
 
-    var checkFunctionList = setInterval(function() {
+    var checkFunctionList = setInterval(function () {
         if (widget_list != null) {
             clearInterval(checkFunctionList);
 
@@ -156,7 +156,7 @@ function compareWidgetAndFunction(wdgArr, funArr) {
 
 //先按照开始时间排序，如果开始时间一致再用结束时间排序
 function sortByBeginTime(prop1, prop2) {
-    return function(obj1, obj2) {
+    return function (obj1, obj2) {
         var val1 = obj1[prop1].replace(':', '');
         var val2 = obj2[prop1].replace(':', '');
         var value1 = obj1[prop2].replace(':', '');
@@ -182,11 +182,11 @@ function sendPushToken() {
     var self = this;
     var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
 
-    this.successCallback = function() {};
+    this.successCallback = function () { };
 
-    this.failCallback = function() {};
+    this.failCallback = function () { };
 
-    var __construct = function() {
+    var __construct = function () {
         if (loginData.token !== null && loginData.token.length !== 0) {
             QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
         }
@@ -197,7 +197,7 @@ function sendPushToken() {
 function reNewToken() {
     var self = this;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         var resultcode = data['result_code'];
         var newToken = data['content'].token;
         var newTokenValid = data['token_valid'];
@@ -218,9 +218,9 @@ function reNewToken() {
         //}
     };
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         QPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
     }();
 }
@@ -276,13 +276,13 @@ function unregister() {
     var self = this;
     var queryStr = "&target_uuid=" + loginData.uuid;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         console.log(data);
     };
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         QPlayAPI("POST", "unregister", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
@@ -290,25 +290,25 @@ function unregister() {
 function addDownloadHit(appname) {
     var self = this;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         var resultcode = data['result_code'];
 
-        if (resultcode == 1) {} else {}
+        if (resultcode == 1) { } else { }
     };
 
-    this.failCallback = function(data) {
+    this.failCallback = function (data) {
         var resultcode = data['result_code'];
 
-        if (resultcode == 1) {} else {}
+        if (resultcode == 1) { } else { }
     };
 
-    var __construct = function() {
+    var __construct = function () {
         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
 
-Date.prototype.FormatReleaseDate = function() {
+Date.prototype.FormatReleaseDate = function () {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
 }
 
@@ -348,7 +348,7 @@ function onBackKeyDown() {
 }
 
 //header区域返回button
-$(document).on('click', '.page-back', function() {
+$(document).on('click', '.page-back', function () {
     onBackKeyDown();
 })
 

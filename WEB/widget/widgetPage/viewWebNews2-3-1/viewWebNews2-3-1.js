@@ -644,7 +644,7 @@ $("#viewWebNews2-3-1").pagecontainer({
         $("#confirmMessageNotExist").on("click", function() {
             messageExist = true;
             $('#messageNotExist').popup('close');
-            checkAppPage('viewMessageList');
+            checkWidgetPage('viewMessageList', pageVisitedList);
         });
 
         $(document).on("click", "#messageLoadErrorPopup #retry", function() {
@@ -652,7 +652,7 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $(document).on("click", "#messageLoadErrorPopup #back", function() {
-            checkAppPage('viewMessageList');
+            checkWidgetPage('viewMessageList', pageVisitedList);
         });
     }
 });
