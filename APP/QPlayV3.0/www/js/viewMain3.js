@@ -1,5 +1,5 @@
 $("#viewMain3").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
         var offsetTop;
 
@@ -11,7 +11,7 @@ $("#viewMain3").pagecontainer({
 
                 var arr = JSON.parse(window.localStorage.getItem('widgetList'));
 
-                var widgetOrder = setInterval(function () {
+                var widgetOrder = setInterval(function() {
                     if (arr != null) {
                         clearInterval(widgetOrder);
 
@@ -41,7 +41,7 @@ $("#viewMain3").pagecontainer({
         }
 
         var pullControl = null;
-        $(".main-scroll").on('scroll', function () {
+        $(".main-scroll").on('scroll', function() {
             //不同设备不同处理
             if (device.platform === "iOS") {
                 if ($('#widgetList').offset().top > 50) {
@@ -49,12 +49,12 @@ $("#viewMain3").pagecontainer({
 
                         pullControl = PullToRefresh.init({
                             mainElement: '#widgetList',
-                            onRefresh: function () {
+                            onRefresh: function() {
                                 //do something for refresh
                                 widget.clear();
                                 widget.show();
                                 //数据量可能有变化，需重新计算高度
-                                setTimeout(function () {
+                                setTimeout(function() {
                                     setHomepageHeight();
                                 }, 1000);
                                 component.clear();
@@ -78,12 +78,12 @@ $("#viewMain3").pagecontainer({
 
                         pullControl = PullToRefresh.init({
                             mainElement: '#widgetList',
-                            onRefresh: function () {
+                            onRefresh: function() {
                                 //do something for refresh
                                 widget.clear();
                                 widget.show();
                                 //数据量可能有变化，需重新计算高度
-                                setTimeout(function () {
+                                setTimeout(function() {
                                     setHomepageHeight();
                                 }, 1000);
                                 component.clear();
@@ -107,16 +107,16 @@ $("#viewMain3").pagecontainer({
         });
 
         /********************************** page event ***********************************/
-        $("#viewMain3").one("pagebeforeshow", function (event, ui) {
+        $("#viewMain3").one("pagebeforeshow", function(event, ui) {
             //1. load widget
             widget.init($('#widgetList'));
         });
 
-        $("#viewMain3").on("pagebeforeshow", function (event, ui) {
+        $("#viewMain3").on("pagebeforeshow", function(event, ui) {
 
         });
 
-        $("#viewMain3").one("pageshow", function (event, ui) {
+        $("#viewMain3").one("pageshow", function(event, ui) {
             //1. check FunctionList show or hide
             var functionArr = JSON.parse(window.localStorage.getItem('widgetList'));
             for (var i in functionArr) {
@@ -126,18 +126,18 @@ $("#viewMain3").pagecontainer({
             }
 
             //2. check element count
-            var checkWidgetFinish = setInterval(function () {
+            var checkWidgetFinish = setInterval(function() {
                 var childrenLength = $('#widgetList').children('div').length;
                 var enabledLength = parseInt(window.sessionStorage.getItem('widgetLength'));
 
                 if (enabledLength == childrenLength) {
                     clearInterval(checkWidgetFinish);
 
-                    setTimeout(function () {
+                    setTimeout(function() {
                         setHomepageHeight();
-                    }, 800);
+                    }, 750);
                 }
-            }, 500);
+            }, 750);
 
             //3. pull refresh：save initial value
             offsetTop = $('#widgetList').offset().top;
@@ -145,12 +145,12 @@ $("#viewMain3").pagecontainer({
         });
 
 
-        $("#viewMain3").on("pageshow", function (event, ui) {
+        $("#viewMain3").on("pageshow", function(event, ui) {
             orderWidget();
             widget.show();
         });
 
-        $("#viewMain3").on("pagehide", function (event, ui) {
+        $("#viewMain3").on("pagehide", function(event, ui) {
 
         });
 
@@ -158,23 +158,23 @@ $("#viewMain3").pagecontainer({
         /********************************** dom event *************************************/
 
         //点击Link跳转到APPList
-        $('.applist-link').on('click', function () {
-            checkAppPage('viewAppList');
+        $('.applist-link').on('click', function() {
+            checkWidgetPage('viewAppList', pageVisitedList);
         });
 
         //跳转到MessageList
-        $('.message-link').on('click', function () {
-            checkAppPage('viewMessageList');
+        $('.message-link').on('click', function() {
+            checkWidgetPage('viewMessageList', pageVisitedList);
         });
 
         //跳转到FAQ
-        $('.faq-link').on('click', function () {
-            checkWidgetPage('viewFAQ');
+        $('.faq-link').on('click', function() {
+            checkWidgetPage('viewFAQ', pageVisitedList);
         });
 
         //跳转到设定
-        $('#setting').on('click', function () {
-            checkAppPage('viewAppSetting');
+        $('#setting').on('click', function() {
+            checkWidgetPage('viewAppSetting', pageVisitedList);
         });
 
 

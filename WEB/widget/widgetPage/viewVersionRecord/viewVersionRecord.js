@@ -9,7 +9,7 @@ $("#viewVersionRecord").pagecontainer({
             var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if (data['result_code'] == "1") {
                     var versionLogList = data['content'].version_list;
@@ -25,13 +25,13 @@ $("#viewVersionRecord").pagecontainer({
                             '</div></div>';
                     }
 
-                    $(".version-scroll > div").html('').append(content);
+                    $('.version-record-ul').html('').append(content);
 
                     //set language
                     $('#viewVersionRecord .ui-title div').text(langStr['str_081']);
 
                     //set height
-                    var contentHeight = $('.version-scroll > div').height();
+                    var contentHeight = $('.version-record-ul').height();
                     var headerHeight = $('#viewVersionRecord .page-header').height();
                     var totalHeight;
                     if (device.platform === "iOS") {

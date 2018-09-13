@@ -16,7 +16,7 @@ $("#viewUserQueryRecord").pagecontainer({
                 defaultText: langStr["wgt_032"],
                 changeDefaultText: true,
                 attr: {
-                    class: "tpl-dropdown-list-icon-arrow-incline"
+                    class: "arrow-incline"
                 }
             }
 
@@ -149,7 +149,7 @@ $("#viewUserQueryRecord").pagecontainer({
                     checkForm('trade')
                 }
 
-                checkWidgetPage('viewUserRecordList');
+                checkWidgetPage('viewUserRecordList', pageVisitedList);
             }
         });
 

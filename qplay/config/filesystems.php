@@ -61,6 +61,10 @@ return [
             'region' => 'your-region',
             'bucket' => 'your-bucket',
         ],
+        'uploads' => [
+            'driver' => 'local',
+            'root'   => storage_path(''),
+        ],
 
     ],
 

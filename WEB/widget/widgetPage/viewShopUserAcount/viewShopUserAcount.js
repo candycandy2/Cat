@@ -32,7 +32,7 @@ $("#viewShopUserAcount").pagecontainer({
         /********************************** dom event *************************************/
         //前往结账
         $('.user-acount-pay').on('click', function () {
-            checkWidgetPage('viewShopInputAmount');
+            checkWidgetPage('viewShopInputAmount', pageVisitedList);
         });
 
         //取消结帐popup提示

@@ -1,61 +1,52 @@
 
 var iniRegisterDailyReport = function(appKey){
-    var storage = ExtSessionStorage(appKey);
     $('.loader').show();
     var mydata = {timeOffset:timeOffset},
         mydataStr = $.toJSON(mydata),
         res={};
-    if(storage("RegisterDaily")){
-        $('.loader').hide();
-        res =JSON.parse(storage("RegisterDaily"));
-        createChartDailyRegister(res);
-    }else{
-        
-        $.ajax({
-              url:"reportDetail/getRegisterDailyReport",
-              type:"POST",
-              dataType:"json",
-              data:mydataStr,
-              contentType: "application/json",
-                success: function(r){
+    $.ajax({
+          url:"reportDetail/getRegisterDailyReport",
+          type:"POST",
+          dataType:"json",
+          data:mydataStr,
+          contentType: "application/json",
+            success: function(r){
 
-                    $.each(r,function(i,d){
-                        if(!res.hasOwnProperty(d.register_date)){
-                            res[d.register_date] = {'count' : 0, 'users' : [], 'device_type':{}};
-                        }
-                        res[d.register_date].count =  parseInt(res[d.register_date].count) + parseInt(d.count);
-                      
-                        if($.inArray(d.user_row_id,  res[d.register_date].users) == -1){
-                            res[d.register_date].users.push(d.user_row_id);
-                        }
+                $.each(r,function(i,d){
+                    if(!res.hasOwnProperty(d.register_date)){
+                        res[d.register_date] = {'count' : 0, 'users' : [], 'device_type':{}};
+                    }
+                    res[d.register_date].count =  parseInt(res[d.register_date].count) + parseInt(d.count);
+                  
+                    if($.inArray(d.user_row_id,  res[d.register_date].users) == -1){
+                        res[d.register_date].users.push(d.user_row_id);
+                    }
 
-                        if(!res[d.register_date].device_type.hasOwnProperty(d.device_type)){
-                            res[d.register_date].device_type[d.device_type] = {};
-                        }
-                        var actionArray =  res[d.register_date].device_type[d.device_type];
-                        if(!actionArray.hasOwnProperty(d.company +'_'+ d.site_code)){
-                            actionArray[d.company +'_'+ d.site_code] = {};
-                        }
-                        var companySiteArray =  actionArray[d.company +'_'+ d.site_code];
-                        if(!companySiteArray.hasOwnProperty(d.department)){
-                            companySiteArray[d.department] = {'count' : 0, 'users' : []};
-                        }
-                        var departmentArray =  companySiteArray[d.department];
-                        departmentArray.count =  parseInt(departmentArray.count) + parseInt(d.count);
-                        if($.inArray(d.user_row_id,  departmentArray.users) == -1){
-                            departmentArray.users.push(d.user_row_id);
-                        }
-                    });
-                    storage("RegisterDaily",JSON.stringify(res));
-                    createChartDailyRegister(res);
-                },
-                error: function (e) {
-                    showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
-                }
-            }).done(function() {
-                $('.loader').hide();
-            });
-    }
+                    if(!res[d.register_date].device_type.hasOwnProperty(d.device_type)){
+                        res[d.register_date].device_type[d.device_type] = {};
+                    }
+                    var actionArray =  res[d.register_date].device_type[d.device_type];
+                    if(!actionArray.hasOwnProperty(d.company +'_'+ d.site_code)){
+                        actionArray[d.company +'_'+ d.site_code] = {};
+                    }
+                    var companySiteArray =  actionArray[d.company +'_'+ d.site_code];
+                    if(!companySiteArray.hasOwnProperty(d.department)){
+                        companySiteArray[d.department] = {'count' : 0, 'users' : []};
+                    }
+                    var departmentArray =  companySiteArray[d.department];
+                    departmentArray.count =  parseInt(departmentArray.count) + parseInt(d.count);
+                    if($.inArray(d.user_row_id,  departmentArray.users) == -1){
+                        departmentArray.users.push(d.user_row_id);
+                    }
+                });
+                createChartDailyRegister(res);
+            },
+            error: function (e) {
+                showMessageDialog(Messages.Error,Messages.MSG_OPERATION_FAILED, e.responseText);
+            }
+        }).done(function() {
+            $('.loader').hide();
+        });
 
 };
 
@@ -341,15 +332,23 @@ var createDailyRegisterTable = function(res, date){
 
     //append result data
     var totalDistinctUserCount = [];
+    var tmpUsers = [];
     $.each(deviceTypeArray, function(index, deviceType){
         $.each(companySiteArray, function(subIndex, companySite){
              var tmpTimesCount = 0;
              var tmpUsersCount = 0;
+             if(!tmpUsers.hasOwnProperty(companySite)){
+                tmpUsers[companySite] = [];
+             }
             $.each(departmentArray, function(nodeIndex, department){
                 if( (typeof dataArray[deviceType][companySite] != 'undefined') && (typeof dataArray[deviceType][companySite][department] != 'undefined')){
                     tmpTimesCount = tmpTimesCount + dataArray[deviceType][companySite][department].count;
                     tmpUsersCount = tmpUsersCount + dataArray[deviceType][companySite][department].users.length;
+
                     $.each(dataArray[deviceType][companySite][department].users,function(i,user){
+                        if($.inArray(user, tmpUsers[companySite] ) == -1){
+                            tmpUsers[companySite].push(user);
+                        }
                         if($.inArray(user, totalDistinctUserCount ) == -1){
                             totalDistinctUserCount.push(user);
                         }
@@ -390,7 +389,7 @@ var createDailyRegisterTable = function(res, date){
                 $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(vtotalArr[type]);
             }else{
                 htotalArr[type][i-1] = totalDistinctUserCount.length;//real distinct user count
-                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(vtotalArr[type]);
+                $tableChartDiv.find('table .js-'+'total'+' .js-'+companySite.replace(/\s/g, "_")+'_' + type).html(tmpUsers[companySite].length);
             }
         });   
          

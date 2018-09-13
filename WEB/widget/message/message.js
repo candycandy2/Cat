@@ -69,7 +69,7 @@ var messageWidget = {
                 clearTimeout(window.avoidDoubleProcess);
                 window.avoidDoubleProcess = null;
 
-                checkAppPage('viewWebNews2-3-1');
+                checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
             }, 500);
         });
     },

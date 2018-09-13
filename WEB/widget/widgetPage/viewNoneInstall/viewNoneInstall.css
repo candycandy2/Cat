@@ -1,0 +1,15 @@
+/*************************** viewNoneInstall ********************************/
+#viewNoneInstall .ui-content {
+    padding: 0 !important;
+}
+
+.app-no-download {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;  
+    text-align: center;
+    padding-top: 35vh;
+    background: #EDECEC;
+    color: #8fa4ac;
+    font-size: 4.18vw;
+}

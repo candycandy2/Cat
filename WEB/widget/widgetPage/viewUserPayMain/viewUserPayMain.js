@@ -65,17 +65,17 @@ $("#viewUserPayMain").pagecontainer({
         /********************************** dom event *************************************/
         //前往结账，跳转选择店家
         $('.user-main-pay').on('click', function () {
-            checkWidgetPage('viewUserSelectShop');
+            checkWidgetPage('viewUserSelectShop', pageVisitedList);
         });
 
         //跳转交易记录
         $('.record-link').on('click', function () {
-            checkWidgetPage('viewUserQueryRecord');
+            checkWidgetPage('viewUserQueryRecord', pageVisitedList);
         });
 
         //跳转更改密码
         $('.password-link').on('click', function () {
-            checkWidgetPage('viewUserChangePwd');
+            checkWidgetPage('viewUserChangePwd', pageVisitedList);
         });
 
 

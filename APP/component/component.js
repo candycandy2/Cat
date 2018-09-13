@@ -205,70 +205,7 @@ var app = {
         }
     },
     onOpenNotification: function(data) {
-        //review by alan
-        //Plugin-QPush > 添加後台打開通知后需要執行的內容，data.alert為消息內容
-        var doOpenMessage = false;
-        //If APP not open, check message after checkAppVersion()
-        getMessageID(data);
-
-        if (window.localStorage.getItem("openMessage") === "false") {
-
-            doOpenMessage = true;
-
-            //remember to open Message Detail Data
-            loginData["openMessage"] = true;
-            window.localStorage.setItem("openMessage", "true");
-            window.localStorage.setItem("messageRowId", messageRowId);
-
-        } else if (window.localStorage.getItem("openMessage") === "true") {
-            //After onBackgoundNotification/onReceiveNotification, then do onOpenNotification
-            doOpenMessage = true;
-        } else {
-            //review by alan
-            //do then same when (window.localStorage.getItem("openMessage") === "false")
-            doOpenMessage = true;
-
-            //remember to open Message Detail Data
-            loginData["openMessage"] = true;
-            window.localStorage.setItem("openMessage", "true");
-            window.localStorage.setItem("messageRowId", messageRowId);
-        }
-
-        if (doOpenMessage) {
-            //Check if not login
-            if (window.localStorage.getItem("loginid") !== null) {
-                //Before open Message Detail Data, update Message List
-                if (window.localStorage.getItem("msgDateFrom") === null) {
-
-                    //review by allen
-                    //$.mobile.changePage('#viewNewsEvents2-3');
-                } else {
-                    if (window.localStorage.getItem("uuid") !== null) {
-                        loginData["uuid"] = window.localStorage.getItem("uuid");
-                        loginData["token"] = window.localStorage.getItem("token");
-                        loginData["pushToken"] = window.localStorage.getItem("pushToken");
-
-                        var messageList = new QueryMessageList();
-                    }
-                }
-            }
-        }
-    },
-    onBackgoundNotification: function(data) {
-        //Plugin-QPush > 添加後台收到通知后需要執行的內容
-        if (window.localStorage.getItem("openMessage") === "false") {
-            getMessageID(data);
-
-            if (window.localStorage.getItem("loginid") === null) {
-                //remember to open Message Detail Data
-                loginData["openMessage"] = true;
-                window.localStorage.setItem("openMessage", "true");
-                window.localStorage.setItem("messageRowId", messageRowId);
-            }
-        }
-    },
-    onReceiveNotification: function(data) {
-        //Plugin-QPush > 添加前台收到通知后需要執行的內容
+        //Plugin-QPush > 添加背景收到通知后需要執行的內容
         var messageList = new QueryMessageListEx(true);
         getMessageID(data); //messageRowId
 
@@ -288,7 +225,7 @@ var app = {
                     $('#iOSGetNewMessage').popup('close');
                     $('#iOSGetNewMessage').hide();
 
-                    checkAppPage('viewWebNews2-3-1');
+                    checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
                 });
 
                 $("#cancelNewMessage").one("click", function() {
@@ -297,6 +234,19 @@ var app = {
 
                     window.localStorage.setItem("openMessage", "false");
                 });
+            }
+        }
+    },
+    onBackgoundNotification: function(data) {
+        //Plugin-QPush > 添加後台收到通知后需要執行的內容
+        if (window.localStorage.getItem("openMessage") === "false") {
+            getMessageID(data);
+
+            if (window.localStorage.getItem("loginid") === null) {
+                //remember to open Message Detail Data
+                loginData["openMessage"] = true;
+                window.localStorage.setItem("openMessage", "true");
+                window.localStorage.setItem("messageRowId", messageRowId);
             }
         }
     },
@@ -725,7 +675,7 @@ function readConfig() {
         //後台收到通知
         document.addEventListener('jpush.backgoundNotification', app.onBackgoundNotification, false);
         //前台收到通知
-        document.addEventListener('jpush.receiveNotification', app.onReceiveNotification, false);
+        document.addEventListener('jpush.receiveNotification', app.onOpenNotification, false);
     }
 
     //QPlay need to get PushToken in the first step, else cannot do any continue steps.

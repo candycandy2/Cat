@@ -356,7 +356,7 @@ $("#viewAppDetail2-2").pagecontainer({
 
         //版本记录
         $(".version").on("click", function () {
-            checkAppPage('viewVersionRecord');
+            checkWidgetPage('viewVersionRecord', pageVisitedList);
         });
 
 

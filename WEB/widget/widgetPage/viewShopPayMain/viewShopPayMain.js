@@ -54,12 +54,12 @@ $("#viewShopPayMain").pagecontainer({
         /********************************** dom event *************************************/
         //店家结帐
         $('.shop-pay').on('click', function () {
-            checkWidgetPage('viewShopSelectUser');
+            checkWidgetPage('viewShopSelectUser', pageVisitedList);
         });
 
         //店家记录
         $('.shop-record').on('click', function () {
-            checkWidgetPage('viewShopQueryRecord');
+            checkWidgetPage('viewShopQueryRecord', pageVisitedList);
         });
 
 
