@@ -52,8 +52,6 @@ window.initialSuccess = function (data) {
     }
 
     appInitialFinish = true;
-    //For test
-    //var unregisterTest = new unregister();
 }
 
 //检查widgetlist顺序
@@ -237,78 +235,7 @@ function addZero(number) {
     return number;
 }
 
-//review by alan
-function openNewMessage() {
-    messageRowId = window.localStorage.getItem("messageRowId");
-
-    //Before open Message Detail Data, update Message List
-    if (window.localStorage.getItem("msgDateFrom") === null) {
-        //$.mobile.changePage('#viewNewsEvents2-3');
-        //checkAppPage('viewMessageList');
-    } else {
-        var messageList = new QueryMessageList();
-    }
-}
-
-//获取版本记录
-// function getAppVersion(packageName, versionCode) {
-//     var self = this;
-//     var queryStr = "&package_name=" + packageName + "&device_type=" + loginData.deviceType + "&version_code=" + versionCode;
-
-//     this.successCallback = function(data) {
-//         console.log(data);
-//     };
-
-//     this.failCallback = function(data) {};
-
-//     var __construct = function() {
-//         QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
-//     }();
-// }
-
-// function checkAppVersionCallback(oldVersionExist) {
-//     checkAPPVersionRecord("updateFromAPI");
-// }
-
-//un-register [User with Mobile Device UUID]
-function unregister() {
-
-    var self = this;
-    var queryStr = "&target_uuid=" + loginData.uuid;
-
-    this.successCallback = function (data) {
-        console.log(data);
-    };
-
-    this.failCallback = function (data) { };
-
-    var __construct = function () {
-        QPlayAPI("POST", "unregister", self.successCallback, self.failCallback, null, queryStr);
-    }();
-}
-
-function addDownloadHit(appname) {
-    var self = this;
-
-    this.successCallback = function (data) {
-        var resultcode = data['result_code'];
-
-        if (resultcode == 1) { } else { }
-    };
-
-    this.failCallback = function (data) {
-        var resultcode = data['result_code'];
-
-        if (resultcode == 1) { } else { }
-    };
-
-    var __construct = function () {
-        var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
-        QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
-    }();
-}
-
-Date.prototype.FormatReleaseDate = function () {
+Date.prototype.FormatReleaseDate = function() {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
 }
 
@@ -322,11 +249,6 @@ function scrollLeftOffset(margin) {
     return screenWidth * margin * 2 / 100;
 }
 
-//Change event type
-// $(document).on("click", ".event-type", function() {
-//     $("#eventTypeSelect").panel("open");
-// });
-
 //[Android]Handle the back button
 function onBackKeyDown() {
     // var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
@@ -337,13 +259,17 @@ function onBackKeyDown() {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
 
-    } else if (activePageID == 'viewUserTradeResult') {
-        backToSomePage('viewMain3');
     } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
     } else {
-        pageVisitedList.pop();
-        $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
+        var backToPage = window.sessionStorage.getItem(activePageID + '_backTo');
+        if (backToPage != null) {
+            backToSpecifiedPage(backToPage, pageVisitedList);
+        } else {
+            pageVisitedList.pop();
+            $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
+        }
+
     }
 }
 
@@ -352,20 +278,29 @@ $(document).on('click', '.page-back', function () {
     onBackKeyDown();
 })
 
+function backToHome() {
+
+    for (; pageVisitedList.length !== 1;) {
+        pageVisitedList.pop();
+    }
+    if(pageVisitedList.length == 1) {
+    $.mobile.changePage('#' + pageVisitedList[0]);
+    }
+}
+
 //退回到某一特定页面
-function backToSomePage(pageID) {
+function backToSpecifiedPage(pageID, pageVisitedList_) {
     var index = 0;
-    for (var i = pageVisitedList.length - 1; i > -1; i--) {
-        if (pageVisitedList[i] == pageID) {
+    for (var i = pageVisitedList_.length - 1; i > -1; i--) {
+        if (pageVisitedList_[i] == pageID) {
             index = i;
         }
     }
 
-    var arr = [];
-    for (var i = 0; i < index + 2; i++) {
-        arr.push(pageVisitedList[i]);
+    var length = pageVisitedList_.length - index - 2;
+    for (var i = 0; i < length; i++) {
+        pageVisitedList_.pop();
     }
-    pageVisitedList = arr;
 
     //执行back逻辑
     onBackKeyDown();

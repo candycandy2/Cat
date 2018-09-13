@@ -25,7 +25,7 @@
   },
   {
     "term": "wgt_004",
-    "definition": "Latest News",
+    "definition": "The latest News",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -73,7 +73,7 @@
   },
   {
     "term": "wgt_010",
-    "definition": "Available balance",
+    "definition": "Balance",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -113,7 +113,7 @@
   },
   {
     "term": "wgt_015",
-    "definition": "密码更改成功e",
+    "definition": "Change successfully",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -121,7 +121,7 @@
   },
   {
     "term": "wgt_016",
-    "definition": "选择店家e",
+    "definition": "Select store",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -129,7 +129,7 @@
   },
   {
     "term": "wgt_017",
-    "definition": "结帐金额e",
+    "definition": "Total",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -145,7 +145,7 @@
   },
   {
     "term": "wgt_019",
-    "definition": "您的余额不足喔!e",
+    "definition": "Insufficient balance!",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -153,7 +153,7 @@
   },
   {
     "term": "wgt_020",
-    "definition": "请输入交易密码e",
+    "definition": "Enter transcation password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -161,7 +161,7 @@
   },
   {
     "term": "wgt_021",
-    "definition": "忘记密码请拨打e",
+    "definition": "If you forgot password please call",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -169,7 +169,7 @@
   },
   {
     "term": "wgt_022",
-    "definition": "消费店家e",
+    "definition": "Store",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -185,7 +185,7 @@
   },
   {
     "term": "wgt_024",
-    "definition": "失败原因e",
+    "definition": "Failure reason",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -225,7 +225,7 @@
   },
   {
     "term": "wgt_029",
-    "definition": "消费券剩余金额e",
+    "definition": "Balance",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -257,7 +257,7 @@
   },
   {
     "term": "wgt_033",
-    "definition": "消费记录e",
+    "definition": "Shopping sheet",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -265,7 +265,7 @@
   },
   {
     "term": "wgt_034",
-    "definition": "储值记录e",
+    "definition": "Reload records",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -329,7 +329,7 @@
   },
   {
     "term": "wgt_042",
-    "definition": "密码需为四个数字组成e",
+    "definition": "4 digits password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "wgt_043",
-    "definition": "(不包含英文字母或特殊符号)e",
+    "definition": "(no alphabets or special characters)",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -345,7 +345,7 @@
   },
   {
     "term": "wgt_044",
-    "definition": "您的新密码输入不一致,e",
+    "definition": "New passwords are different,",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -353,7 +353,7 @@
   },
   {
     "term": "wgt_045",
-    "definition": "Please input again",
+    "definition": "please enter again",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -361,7 +361,7 @@
   },
   {
     "term": "wgt_046",
-    "definition": "请输入四位数旧密码e",
+    "definition": "Please enter 4 digits old password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -369,7 +369,7 @@
   },
   {
     "term": "wgt_047",
-    "definition": "请输入四位数新密码e",
+    "definition": "Please enter 4 digits new password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -377,7 +377,7 @@
   },
   {
     "term": "wgt_048",
-    "definition": "请再次输入新密码e",
+    "definition": "Please re-enter new password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -385,7 +385,7 @@
   },
   {
     "term": "wgt_049",
-    "definition": "密码更改成功e",
+    "definition": "Change successfully",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -401,7 +401,7 @@
   },
   {
     "term": "wgt_051",
-    "definition": "QPay结帐e",
+    "definition": "QPay checkout",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -409,7 +409,7 @@
   },
   {
     "term": "wgt_052",
-    "definition": "消费券类型e",
+    "definition": "Coupon type",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -433,7 +433,7 @@
   },
   {
     "term": "wgt_055",
-    "definition": "交易总额e",
+    "definition": "Total",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -457,7 +457,7 @@
   },
   {
     "term": "wgt_058",
-    "definition": "*请将手机交给消费者输入e",
+    "definition": "*Input by consumer",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -465,7 +465,7 @@
   },
   {
     "term": "wgt_059",
-    "definition": "取消结帐e",
+    "definition": "Cancel checkout",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -473,7 +473,7 @@
   },
   {
     "term": "wgt_060",
-    "definition": "继续结帐e",
+    "definition": "Carry on checkout",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -481,7 +481,7 @@
   },
   {
     "term": "wgt_061",
-    "definition": "您的个人资料将登出,e",
+    "definition": "You will log out",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -489,7 +489,7 @@
   },
   {
     "term": "wgt_062",
-    "definition": "确定取消结帐?e",
+    "definition": "OK to cancel checkout ?",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -497,7 +497,7 @@
   },
   {
     "term": "wgt_063",
-    "definition": "请输入旧密码e",
+    "definition": "Please enter old password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -505,7 +505,7 @@
   },
   {
     "term": "wgt_064",
-    "definition": "请输入新密码e",
+    "definition": "Please enter new password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -513,7 +513,7 @@
   },
   {
     "term": "wgt_065",
-    "definition": "8-12字元,至少两个英文与两个数字,e",
+    "definition": "8-12 characters, at least two alphabets and two digits",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -521,7 +521,7 @@
   },
   {
     "term": "wgt_066",
-    "definition": "且不含空白与特殊符号e",
+    "definition": "and doesn't contain blanks and special characters",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -529,7 +529,7 @@
   },
   {
     "term": "wgt_067",
-    "definition": "Please input employee ID",
+    "definition": "Please enter employee ID",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -537,7 +537,7 @@
   },
   {
     "term": "wgt_068",
-    "definition": "交易成功e",
+    "definition": "Transaction accept",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -545,7 +545,7 @@
   },
   {
     "term": "wgt_069",
-    "definition": "交易失败e",
+    "definition": "Transaction fail",
     "context": "",
     "term_plural": "",
     "reference": "",
