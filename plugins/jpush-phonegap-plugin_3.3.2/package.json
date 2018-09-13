@@ -1,0 +1,62 @@
+{
+  "_from": "jpush-phonegap-plugin@3.3.2",
+  "_id": "jpush-phonegap-plugin@3.3.2",
+  "_inBundle": false,
+  "_integrity": "sha1-0bAXqilMPRq8iOwENqiohmdnaCo=",
+  "_location": "/jpush-phonegap-plugin",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "jpush-phonegap-plugin@3.3.2",
+    "name": "jpush-phonegap-plugin",
+    "escapedName": "jpush-phonegap-plugin",
+    "rawSpec": "3.3.2",
+    "saveSpec": null,
+    "fetchSpec": "3.3.2"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/jpush-phonegap-plugin/-/jpush-phonegap-plugin-3.3.2.tgz",
+  "_shasum": "d1b017aa294c3d1abc88ec0436a8a8866767682a",
+  "_spec": "jpush-phonegap-plugin@3.3.2",
+  "_where": "/Users/alan/Documents/EnterpriseAPPPlatform/APP/QPlayV3.0",
+  "author": {
+    "name": "JiGuang"
+  },
+  "bugs": {
+    "url": "https://github.com/jpush/jpush-phonegap-plugin/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "jpush-phonegap-plugin",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "deprecated": false,
+  "description": "JPush for cordova plugin",
+  "devDependencies": {
+    "cordova-plugin-device": "*",
+    "cordova-plugin-jcore": "*"
+  },
+  "homepage": "https://github.com/jpush/jpush-phonegap-plugin#readme",
+  "keywords": [
+    "JPush",
+    "push",
+    "Push",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "license": "MIT",
+  "name": "jpush-phonegap-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpush/jpush-phonegap-plugin.git"
+  },
+  "version": "3.3.2"
+}
