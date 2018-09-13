@@ -337,11 +337,13 @@ function onBackKeyDown() {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
 
-    } else if (activePageID == 'viewUserTradeResult') {
-        backToSomePage('viewMain3');
+    // } else if (activePageID == 'viewUserTradeResult') {
+    //     backToSomePage('viewMain3');
     } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
     } else {
+        if($('#' + pageID).onBackKeyDown !== null)
+            $('#' + pageID).onBackKeyDown();
         pageVisitedList.pop();
         $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
     }
