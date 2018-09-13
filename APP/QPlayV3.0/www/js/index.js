@@ -52,8 +52,6 @@ window.initialSuccess = function(data) {
     }
 
     appInitialFinish = true;
-    //For test
-    //var unregisterTest = new unregister();
 }
 
 //检查widgetlist顺序
@@ -237,56 +235,6 @@ function addZero(number) {
     return number;
 }
 
-//review by alan
-function openNewMessage() {
-    messageRowId = window.localStorage.getItem("messageRowId");
-
-    //Before open Message Detail Data, update Message List
-    if (window.localStorage.getItem("msgDateFrom") === null) {
-        //$.mobile.changePage('#viewNewsEvents2-3');
-        //checkAppPage('viewMessageList');
-    } else {
-        var messageList = new QueryMessageList();
-    }
-}
-
-//获取版本记录
-// function getAppVersion(packageName, versionCode) {
-//     var self = this;
-//     var queryStr = "&package_name=" + packageName + "&device_type=" + loginData.deviceType + "&version_code=" + versionCode;
-
-//     this.successCallback = function(data) {
-//         console.log(data);
-//     };
-
-//     this.failCallback = function(data) {};
-
-//     var __construct = function() {
-//         QPlayAPI("GET", "checkAppVersion", self.successCallback, self.failCallback, null, queryStr);
-//     }();
-// }
-
-// function checkAppVersionCallback(oldVersionExist) {
-//     checkAPPVersionRecord("updateFromAPI");
-// }
-
-//un-register [User with Mobile Device UUID]
-function unregister() {
-
-    var self = this;
-    var queryStr = "&target_uuid=" + loginData.uuid;
-
-    this.successCallback = function(data) {
-        console.log(data);
-    };
-
-    this.failCallback = function(data) {};
-
-    var __construct = function() {
-        QPlayAPI("POST", "unregister", self.successCallback, self.failCallback, null, queryStr);
-    }();
-}
-
 function addDownloadHit(appname) {
     var self = this;
 
@@ -321,11 +269,6 @@ function scrollLeftOffset(margin) {
     var screenWidth = window.screen.width;
     return screenWidth * margin * 2 / 100;
 }
-
-//Change event type
-// $(document).on("click", ".event-type", function() {
-//     $("#eventTypeSelect").panel("open");
-// });
 
 //[Android]Handle the back button
 function onBackKeyDown() {
