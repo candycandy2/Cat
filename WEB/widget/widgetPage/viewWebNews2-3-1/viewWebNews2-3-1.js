@@ -280,10 +280,10 @@ $("#viewWebNews2-3-1").pagecontainer({
             }());
         }
 
-        function QueryMessageDetail() {
+        function QueryMessageDetail(messageRowId_) {
             var self = this;
 
-            var queryStr = "&message_send_row_id=" + messageRowId;
+            var queryStr = "&message_send_row_id=" + messageRowId_;
 
             this.successCallback = function(data) {
                 console.log(data);
@@ -304,7 +304,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 if (resultcode === 1) {
 
                     messageExist = true;
-                    updateReadDelete(content.message_type, "read");
+                    updateDetailReadDelete(content.message_type, "read", messageRowId);
 
                     //If template_id == 999, it's Portal Event,
                     //need to be render become canvas
@@ -382,7 +382,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 } else if (resultcode === "000910") {
                     //Message was be deleted in server
                     messageExist = false;
-                    updateReadDelete("all", "delete");
+                    updateDetailReadDelete("all", "delete", messageRowId);
                 }
 
                 if (window.localStorage.getItem("openMessage") === "true") {
@@ -398,10 +398,10 @@ $("#viewWebNews2-3-1").pagecontainer({
             }();
         }
 
-        window.updateReadDelete = function(type, status) {
+        function updateDetailReadDelete(type, status, messageRowId_) {
             var self = this;
 
-            var queryStr = "&message_send_row_id=" + messageRowId + "&message_type=" + type + "&status=" + status;
+            var queryStr = "&message_send_row_id=" + messageRowId_ + "&message_type=" + type + "&status=" + status;
 
             this.successCallback = function(data) {
                 console.log(data);
@@ -432,16 +432,16 @@ $("#viewWebNews2-3-1").pagecontainer({
                     var singleMessage = true;
                     var i, j;
 
-                    messageRowId = messageRowId.toString();
+                    messageRowId_ = messageRowId_.toString();
 
-                    if (messageRowId.indexOf(",") !== -1) {
+                    if (messageRowId_.indexOf(",") !== -1) {
                         singleMessage = false;
                     }
 
                     if (singleMessage) {
                         if (messageArrIndex === null) {
                             for (i = 0; i < messagecontent.message_list.length; i++) {
-                                if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId) {
+                                if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId_) {
                                     messageArrIndex = i;
                                     break;
                                 }
@@ -456,7 +456,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                             }
                         }
                     } else {
-                        var messageRowIdArr = messageRowId.split(",");
+                        var messageRowIdArr = messageRowId_.split(",");
 
                         for (i = 0; i < messageRowIdArr.length; i++) {
 
@@ -481,12 +481,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                     loginData.messagecontent = messagecontent;
                     messageArrIndex = null;
 
-                    //如果是read，只需添加普通字体的样式；如果是delete，需要删除对应元素
-                    if (status == 'read') {
-                        updateNewMessageList(type);
-                    } else if (status == 'delete') {
-                        updateNewMessageList(type, status);
-                    }
+                    updateMessageListUI(type, status, messageRowId_);
 
                 }
             };
@@ -507,12 +502,11 @@ $("#viewWebNews2-3-1").pagecontainer({
             }();
         };
 
-        function updateNewMessageList(type, status) {
-            status = status || null;
-            if (status != null) {
-                $('.' + type + '-content li[data-rowid=' + messageRowId + ']').remove();
-            } else {
-                $('.' + type + '-content li[data-rowid=' + messageRowId + ']').find('.msg-content-title').addClass('read-font-normal');
+        function updateMessageListUI(type, status, messageRowId_) {
+            if (status == 'delete') {
+                $('.' + type + '-content li[data-rowid=' + messageRowId_ + ']').remove();
+            } else if(status == 'read') {
+                $('.' + type + '-content li[data-rowid=' + messageRowId_ + ']').find('.msg-content-title').addClass('read-font-normal');
             }
         }
 
@@ -540,7 +534,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 $(".footer-portal").hide();
 
                 $("#viewWebNews2-3-1 .page-main").css("opacity", 0);
-                var messageDetail = new QueryMessageDetail();
+                var messageDetail = new QueryMessageDetail(messageRowId);
             } else {
                 //review by alan
                 //for speed up
@@ -634,17 +628,17 @@ $("#viewWebNews2-3-1").pagecontainer({
             }
         });
 
-        // $("#viewWebNews2-3-1").on("pageshow", function(event, ui) {
-        //     if (!messageExist) {
-        //         $('#messageNotExist').popup('open');
-        //     }
-        // });
+        $("#viewWebNews2-3-1").on("pageshow", function(event, ui) {
+            if (!messageExist) {
+                $('#messageNotExist').popup('open');
+            }
+        });
 
         /********************************** dom event *************************************/
         $("#confirmMessageNotExist").on("click", function() {
             messageExist = true;
             $('#messageNotExist').popup('close');
-            checkWidgetPage('viewMessageList', pageVisitedList);
+            checkAppPage('viewMessageList');
         });
 
         $(document).on("click", "#messageLoadErrorPopup #retry", function() {
@@ -652,7 +646,7 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $(document).on("click", "#messageLoadErrorPopup #back", function() {
-            checkWidgetPage('viewMessageList', pageVisitedList);
+            checkAppPage('viewMessageList');
         });
     }
 });

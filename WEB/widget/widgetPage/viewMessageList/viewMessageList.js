@@ -284,7 +284,7 @@ $("#viewMessageList").pagecontainer({
 
                     messageExist = true;
                     //变为已读
-                    updateReadDelete(content.message_type, "read");
+                    updateListReadDelete(content.message_type, "read", messageRowId);
 
                     $('.msg-detail-title').text(content.message_title);
 
@@ -304,12 +304,12 @@ $("#viewMessageList").pagecontainer({
                         $(".textContent").show();
                     }
 
-                    checkWidgetPage('#viewWebNews2-3-1', pageVisitedList);
+                    checkWidgetPage("#viewWebNews2-3-1", pageVisitedList);
 
                 } else if (resultcode === "000910") {
                     //Message was be deleted in server
                     messageExist = false;
-                    updateReadDelete("all", "delete");
+                    updateListReadDelete("all", "delete", messageRowId);
                 }
 
                 if (window.localStorage.getItem("openMessage") === "true") {
@@ -609,6 +609,124 @@ $("#viewMessageList").pagecontainer({
             });
         }
 
+        function updateListReadDelete(type, status, messageRowId_) {
+            var self = this;
+
+            var queryStr = "&message_send_row_id=" + messageRowId_ + "&message_type=" + type + "&status=" + status;
+
+            this.successCallback = function(data) {
+                console.log(data);
+                var doUpdateLocalStorage = false;
+
+                messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
+                messagecontent = messagecontent_.content;
+
+                if (type === "event") {
+                    var resultcode = data.result_code;
+
+                    if (resultcode === 1) {
+                        doUpdateLocalStorage = true;
+                    } else if (resultcode === "000910") {
+                        //message not exist
+                        doUpdateLocalStorage = true;
+                    }
+                } else if (type === "news") {
+                    doUpdateLocalStorage = true;
+                } else if (type === "all") {
+                    doUpdateLocalStorage = true;
+                }
+
+                //Update [read / delete] status in Local Storage
+                if (doUpdateLocalStorage) {
+
+                    //Single / Multiple message update check
+                    var singleMessage = true;
+                    var i, j;
+
+                    messageRowId_ = messageRowId_.toString();
+
+                    if (messageRowId_.indexOf(",") !== -1) {
+                        singleMessage = false;
+                    }
+
+                    if (singleMessage) {
+                        if (messageArrIndex === null) {
+                            for (i = 0; i < messagecontent.message_list.length; i++) {
+                                if (messagecontent.message_list[i].message_send_row_id.toString() === messageRowId_) {
+                                    messageArrIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (messageArrIndex !== null) {
+                            if (status === "read") {
+                                messagecontent.message_list[messageArrIndex].read = "Y";
+                            } else if (status === "delete") {
+                                messagecontent.message_list[messageArrIndex].read = "D";
+                            }
+                        }
+                    } else {
+                        var messageRowIdArr = messageRowId_.split(",");
+
+                        for (i = 0; i < messageRowIdArr.length; i++) {
+
+                            for (j = 0; j < messagecontent.message_list.length; j++) {
+                                if (messagecontent.message_list[j].message_send_row_id.toString() === messageRowIdArr[i]) {
+                                    messageArrIndex = j;
+                                }
+                            }
+
+                            if (messageArrIndex !== null) {
+                                if (status === "read") {
+                                    messagecontent.message_list[messageArrIndex].read = "Y";
+                                } else if (status === "delete") {
+                                    messagecontent.message_list[messageArrIndex].read = "D";
+                                }
+                            }
+                        }
+                    }
+
+                    UpdateMessageListContent(messagecontent,false);//from component/function
+
+                    loginData.messagecontent = messagecontent;
+                    messageArrIndex = null;
+
+                    updateMessageListUI(type, status, messageRowId_);
+
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+
+                //[event] need to update [read / delete] status both in Server / Local Storage
+                //[news] just update [read / delete] in Local Storage
+                if (type === "event") {
+                    QPlayAPI("GET", "updateMessage", self.successCallback, self.failCallback, null, queryStr);
+                } else if (type === "news") {
+                    this.successCallback();
+                } else if (type === "all") {
+                    this.successCallback();
+                }
+            }();
+        };
+
+        function updateMessageListUI(type, status, messageRowId_) {
+            if (status == 'delete') {
+                $('.' + type + '-content li[data-rowid=' + messageRowId_ + ']').remove();
+            } else if(status == 'read') {
+                $('.' + type + '-content li[data-rowid=' + messageRowId_ + ']').find('.msg-content-title').addClass('read-font-normal');
+            }
+
+            var count = checkIconCount(type);
+            if(count == 0) {
+                $('.msg-delete').removeClass('enabled-font');
+                $('.msg-readed').removeClass('enabled-font');
+            }
+        }
+
         //记录已选消息数量
         function checkIconCount(type) {
             var count = 0;
@@ -652,7 +770,7 @@ $("#viewMessageList").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMessageList").on("pagebeforeshow", function(event, ui) {
-
+            createMessageByType();
         });
 
         $("#viewMessageList").one("pageshow", function(event, ui) {
@@ -665,8 +783,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         $("#viewMessageList").on("pageshow", function(event, ui) {
-            createMessageByType();
-
+            
         });
 
         $("#viewMessageList").on("pagehide", function(event, ui) {
@@ -731,8 +848,8 @@ $("#viewMessageList").pagecontainer({
             //listview
             $('.msg-next-icon').hide();
             $('.msg-check-icon').show();
-            $('.handle-msg').slideDown(300);
-            $('.fill-handle-blank').show(300);
+            $('.handle-msg').show();
+            $('.fill-handle-blank').show();
             $('#viewMessageList .ui-title').off('click');
             $(document).off('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon');
 
@@ -751,8 +868,8 @@ $("#viewMessageList").pagecontainer({
             //listview
             $('.msg-check-icon').hide();
             $('.msg-next-icon').show();
-            $('.handle-msg').slideUp(300);
-            $('.fill-handle-blank').hide(300);
+            $('.handle-msg').hide();
+            $('.fill-handle-blank').hide();
             $('#viewMessageList .ui-title').on('click', function() {
                 $(".select-type").slideToggle(200);
             });
@@ -850,11 +967,15 @@ $("#viewMessageList").pagecontainer({
 
         //标记已读
         $('.msg-readed span').on('click', function() {
-            if ($(this).parent().hasClass('enabled-font')) {
+            var has = $(this).parent().hasClass('enabled-font');
+            if (has) {
                 $.each($('.' + messageType + '-content .msg-check-btn'), function(index, item) {
-                    if ($(item).attr('data-src') == 'checkbox_green' && !$(item).parent().next().hasClass('read-font-normal')) {
+                    var src = $(item).attr('data-src');
+                    var readed = $(item).parent().next().hasClass('read-font-normal');
+
+                    if (src == 'checkbox_green' && !readed) {
                         messageRowId = $(item).parents('li').attr('data-rowid');
-                        updateReadDelete(messageType, 'read');
+                        updateListReadDelete(messageType, 'read', messageRowId);
                     }
                 })
             }
@@ -862,7 +983,8 @@ $("#viewMessageList").pagecontainer({
 
         //标记删除
         $('.msg-delete span').on('click', function() {
-            if ($(this).parent().hasClass('enabled-font')) {
+            var has = $(this).parent().hasClass('enabled-font');
+            if (has) {
                 $('#confirmDeleteMsg').popup('open');
                 $('#confirmDeleteMsg .header-title-main .header-text').text(messageType == 'news' ? langStr["str_039"] : langStr["str_042"]);
                 deleteType = 'checkbox';
@@ -890,24 +1012,17 @@ $("#viewMessageList").pagecontainer({
 
             if (deleteType == 'swipe') {
 
-                updateReadDelete(messageType, 'delete');
+                updateListReadDelete(messageType, 'delete', messageRowId);
 
             } else if (deleteType == 'checkbox') {
 
                 $.each($('.' + messageType + '-content .msg-check-btn'), function(index, item) {
                     if ($(item).attr('data-src') == 'checkbox_green') {
                         messageRowId = $(item).parents('li').attr('data-rowid');
-                        updateReadDelete(messageType, 'delete');
+                        updateListReadDelete(messageType, 'delete', messageRowId);
                     }
                 })
 
-            }
-
-            //after delete, button disabled
-            var msgCount = checkIconCount(messageType);
-            if (msgCount == 0) {
-                $('.' + messageType + '-delete-btn').removeClass('enabled-font');
-                $('.' + messageType + '-readed-btn').removeClass('enabled-font');
             }
 
             //after delete, set height
