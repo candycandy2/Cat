@@ -1,6 +1,8 @@
 $("#viewUserTradeResult").pagecontainer({
     create: function (event, ui) {
 
+        var backToPage = 'viewMain3';
+
         function initialPage() {
 
         }
@@ -26,11 +28,20 @@ $("#viewUserTradeResult").pagecontainer({
             $('.trade-pay').text(trade_result['trade_point']);
             $('.trade-time').text(trade_result['trade_time']);
             $('.trade-money').text(trade_result['point_now']);
+
+            //3. 交易结果有特殊的返回逻辑
+            window.sessionStorage.setItem('viewUserTradeResult_backTo', backToPage);
         }
+
 
         /********************************** page event ***********************************/
         $("#viewUserTradeResult").on("pagebeforeshow", function (event, ui) {
 
+        });
+
+        $("#viewUserTradeResult").one("pageshow", function (event, ui) {
+            //test
+            window.sessionStorage.setItem('viewUserTradeResult_backTo', backToPage);
         });
 
         $("#viewUserTradeResult").on("pageshow", function (event, ui) {
@@ -49,7 +60,8 @@ $("#viewUserTradeResult").pagecontainer({
             //交易结果返回需要特殊处理，不会返回前一页，而是返回viewMain3
             //main -> pay -> select -> amount -> pwd -> result
             //所以从后往前找，找到viewMain3后记录index
-            backToSomePage('viewMain3');
+            //backToSpecifiedPage(backToPage, pageVisitedList);
+            onBackKeyDown();
         });
 
     }

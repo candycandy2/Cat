@@ -21,7 +21,7 @@ var messagecontent,
 var portalURL = "",
     messageFrom = 'viewMain3';
 
-window.initialSuccess = function(data) {
+window.initialSuccess = function (data) {
     //1. widgetlist
     checkWidgetListOrder();
 
@@ -59,7 +59,7 @@ function checkWidgetListOrder() {
     var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
     var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'));
 
-    var checkFunctionList = setInterval(function() {
+    var checkFunctionList = setInterval(function () {
         if (widget_list != null) {
             clearInterval(checkFunctionList);
 
@@ -154,7 +154,7 @@ function compareWidgetAndFunction(wdgArr, funArr) {
 
 //先按照开始时间排序，如果开始时间一致再用结束时间排序
 function sortByBeginTime(prop1, prop2) {
-    return function(obj1, obj2) {
+    return function (obj1, obj2) {
         var val1 = obj1[prop1].replace(':', '');
         var val2 = obj2[prop1].replace(':', '');
         var value1 = obj1[prop2].replace(':', '');
@@ -180,11 +180,11 @@ function sendPushToken() {
     var self = this;
     var queryStr = "&app_key=" + qplayAppKey + "&device_type=" + loginData.deviceType;
 
-    this.successCallback = function() {};
+    this.successCallback = function () { };
 
-    this.failCallback = function() {};
+    this.failCallback = function () { };
 
-    var __construct = function() {
+    var __construct = function () {
         if (loginData.token !== null && loginData.token.length !== 0) {
             QPlayAPI("POST", "sendPushToken", self.successCallback, self.failCallback, null, queryStr);
         }
@@ -195,7 +195,7 @@ function sendPushToken() {
 function reNewToken() {
     var self = this;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         var resultcode = data['result_code'];
         var newToken = data['content'].token;
         var newTokenValid = data['token_valid'];
@@ -216,9 +216,9 @@ function reNewToken() {
         //}
     };
 
-    this.failCallback = function(data) {};
+    this.failCallback = function (data) { };
 
-    var __construct = function() {
+    var __construct = function () {
         QPlayAPI("POST", "renewToken", self.successCallback, self.failCallback, null, null);
     }();
 }
@@ -238,25 +238,25 @@ function addZero(number) {
 function addDownloadHit(appname) {
     var self = this;
 
-    this.successCallback = function(data) {
+    this.successCallback = function (data) {
         var resultcode = data['result_code'];
 
-        if (resultcode == 1) {} else {}
+        if (resultcode == 1) { } else { }
     };
 
-    this.failCallback = function(data) {
+    this.failCallback = function (data) {
         var resultcode = data['result_code'];
 
-        if (resultcode == 1) {} else {}
+        if (resultcode == 1) { } else { }
     };
 
-    var __construct = function() {
+    var __construct = function () {
         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
     }();
 }
 
-Date.prototype.FormatReleaseDate = function() {
+Date.prototype.FormatReleaseDate = function () {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
 }
 
@@ -280,47 +280,38 @@ function onBackKeyDown() {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
 
-        // } else if (activePageID == 'viewUserTradeResult') {
-        //     backToSomePage('viewMain3');
     } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
     } else {
-        if ($('#' + activePageID).onBackKeyDown !== undefined)
-            $('#' + activePageID).onBackKeyDown();
-        pageVisitedList.pop();
-        $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
+        var backToPage = window.sessionStorage.getItem(activePageID + '_backTo');
+        if (backToPage != null) {
+            backToSpecifiedPage(backToPage, pageVisitedList);
+        } else {
+            pageVisitedList.pop();
+            $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
+        }
+
     }
 }
 
 //header区域返回button
-$(document).on('click', '.page-back', function() {
+$(document).on('click', '.page-back', function () {
     onBackKeyDown();
 })
 
-function backToHome() {
-
-    for (; pageVisitedList.length !== 1;) {
-        pageVisitedList.pop();
-    }
-    if(pageVisitedList.length == 1) {
-    $.mobile.changePage('#' + pageVisitedList[0]);
-    }
-}
-
 //退回到某一特定页面
-function backToSomePage(pageID) {
+function backToSpecifiedPage(pageID, pageVisitedList_) {
     var index = 0;
-    for (var i = pageVisitedList.length - 1; i > -1; i--) {
-        if (pageVisitedList[i] == pageID) {
+    for (var i = pageVisitedList_.length - 1; i > -1; i--) {
+        if (pageVisitedList_[i] == pageID) {
             index = i;
         }
     }
 
-    var arr = [];
-    for (var i = 0; i < index + 2; i++) {
-        arr.push(pageVisitedList[i]);
+    var length = pageVisitedList_.length - index - 2;
+    for (var i = 0; i < length; i++) {
+        pageVisitedList_.pop();
     }
-    pageVisitedList = arr;
 
     //执行back逻辑
     onBackKeyDown();
