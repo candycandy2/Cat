@@ -67,6 +67,7 @@ function UpdateMessageListContent(messagecontent__, fromAPI) {
         window.cordova.plugins.notification.badge.set(Math.max(0, badgeCount));
     } else {
         window.plugins.QPushPlugin.setApplicationIconBadgeNumber(Math.max(0, badgeCount));
+        window.cordova.plugins.notification.badge.set(Math.max(0, badgeCount));
     }
 }
 
