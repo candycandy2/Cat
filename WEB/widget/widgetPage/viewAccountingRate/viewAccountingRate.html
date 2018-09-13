@@ -1,0 +1,140 @@
+<!-- viewAccountingRate -->
+<div data-role="page" id="viewAccountingRate">
+    <div class="ios-fix-overlap-div"></div>
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div class="header-style">
+            <div class="ui-title">
+                Accounting Rate
+            </div>
+        </div>
+        <a href="#" data-role="none">
+            <div class="q-btn-header page-back">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
+    </div>
+    <!--  Pop message ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    -->
+    <template id="tplAddConfirmA">
+        <div class="header font-style3">
+            Add to favorite ~
+        </div>
+        <div class="footer">
+            <div class="btn-two font-style8">
+                <div class="cancel">Cancel</div>
+                <div class="confirm">OK </div>
+            </div>
+        </div>
+    </template>
+    <template id="tplRemoveB">
+        <div class="header font-style0">
+            Remove from favorite~
+        </div>
+        <div class="footer">
+            <div class="btn-two font-style8">
+                <div class="cancel"> Cancel</div>
+                <div class="confirm">OK</div>
+            </div>
+        </div>
+    </template>
+    <!--  Pop message ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    -->
+    <!-- Main   ====================================================================== -->
+    <div data-role="main" class="page-main" class="ui-content" id="contentID">
+        <!-- Tab -->
+        <div data-role="tabs" class="frag" id="tabevent">
+            <div class="tabs-top-fixed">
+                <div class="frag0" data-role="navbar" data-iconpos="bottom" data-position="fixed">
+                    <ul>
+                        <li><a href="#fragment-1" class="frag1">Apr-17</a></li>
+                        <li><a href="#fragment-2" class="frag2">Mar-17</a></li>
+                    </ul>
+                </div>
+                <!-- Button1 head========================================================== -->
+                <div class="buttonone" style="" data-position="fixed">
+                    <a href="#popupA" class="buttononea" data-rel="popup">
+                        <img class="buttononeFlag1non buttonone1" src="img/tmp/AUD.png">
+                        <span class="buttononeCountry1" style="">All Currency</span>
+                        <img class="buttonone4img" src="img/tmp/dropdown_n.png">
+                    </a>
+                    <img class="buttontransfer" src="img/tmp/change.png">
+                </div>
+                <div class="buttontwo " style="" data-position="fixed">
+                    <a href="#popupB" class="buttontwoa" data-rel="popup">
+                        <img class="buttononeFlag2 buttontwo1" src="img/tmp/USD.png">
+                        <span class="buttononeCountry2" style="">USD</span>
+                        <img class="buttonone3img" src="img/tmp/dropdown_n.png">
+                    </a>
+                </div>
+                <!-- Button1 head========================================================== -->
+            </div>
+            <br>
+            <br>
+            <div class="mainword">
+                <center class="mainword1 info-string">From All currency to USD </center>
+                <center class="mainword3 info-string">Please wait for refresh data</center>
+                <center class="error-string">Please select a "From Currency"</center>
+                <center class="error-string">OR "To Currency".</center>
+            </div>
+            <!-- Fragment 1  ============================================================= -->
+            <div id="fragment-1" class="ui-content fragment">
+                <ul data-role="listview" class="test1" id="ultestA">
+                    <template>
+                        <li data-icon="false" class="1_li CountryA" id="litest">
+                            <div class="Listdiv1" id="MYR">
+                                <img class="star_icon" src="img/tmp/favorite.png">
+                                <img class="ListviewFlag1" src="img/tmp/NTD.png">
+                                <span class="ListRate1">1 NTD</span>
+                                <div class="Listdiv1equalmark4">=</div>
+                            </div>
+                            <div class="Listdiv2">
+                                <img class="nonstar_icon" src="img/tmp/favorite.png">
+                                <img class="ListviewFlag2" src="img/tmp/USD.png">
+                                <div class="Listdiv3">
+                                    <span class="ListDollar1">hello</span>
+                                    <span class="ListRate2">USD</span>
+                                    <br>
+                                </div>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+            <!-- Fragment 1  ============================================================= -->
+            <!-- Fragment 2  ============================================================= -->
+            <div id="fragment-2" class="ui-content fragment">
+                <ul data-role="listview" class="test12 " id="ultestB">
+                </ul>
+            </div>
+            <!-- Fragment 2  ============================================================= -->
+        </div>
+        <!-- Popup ================================================================================ -->
+        <div id="popupA" class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false">
+            <div data-role="main" class="ui-content">
+                <div class="header typeA close">
+                    <img src="img/component/close_new.png" width="100%" height="100%" class="close-popup">
+                </div>
+                <ul data-role="listview" class="main">
+                </ul>
+            </div>
+        </div>
+
+        <div id="popupB" class="app-popup" data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false">
+            <div data-role="main" class="ui-content">
+                <div class="header typeA close">
+                    <img src="img/component/close_new.png" width="100%" height="100%" class="close-popup">
+                </div>
+                <ul data-role="listview" class="main">
+                </ul>
+            </div>
+        </div>
+        <template id="tplPopupListLi">
+            <li class="popListdiv1 tpl-option-msg-list">
+                <div class="ListdivPopup">
+                    <img class="ListviewFlag1popup" src="img/tmp/AED.png">
+                    <span class="ListRate1popup">AED</span>
+                </div>
+            </li>
+            <hr class="ui-hr ui-hr-option">
+        </template>
+        <!-- Popup  ================================================================================ -->
+    </div>
+</div>
