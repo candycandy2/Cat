@@ -73,7 +73,7 @@
   },
   {
     "term": "wgt_010",
-    "definition": "Available balance",
+    "definition": "Balance",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -329,7 +329,7 @@
   },
   {
     "term": "wgt_042",
-    "definition": "Password contains 4 digits",
+    "definition": "4 digits password",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -337,7 +337,7 @@
   },
   {
     "term": "wgt_043",
-    "definition": "(Dosen't contain alphabets or special characters)",
+    "definition": "(no alphabets or special characters)",
     "context": "",
     "term_plural": "",
     "reference": "",
