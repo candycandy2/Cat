@@ -257,6 +257,13 @@ gulp.task('devinstall', ['copyRes'], shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-qpush --variable API_KEY=' + process.env.QPushAPPKey
 ]));
 
+gulp.task('clean', shell.task([
+    'rm -f *.json',
+    'rm -f -R ./platforms/',
+    'rm -f -R ./plugins/',
+    'rm -f -R ./node_modules/'
+]));
+
 gulp.task('patch', function() {
     return gulp.src(process.env.patchFolder + '/LoginActivity.java', { base: process.env.patchFolder + '/' })
         .pipe(gulp.dest('platforms/android/src/org/apache/cordova/qlogin/', { overwrite: true }));
