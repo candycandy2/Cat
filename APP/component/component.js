@@ -670,12 +670,21 @@ function readConfig() {
 
     //Plugin-QPush
     if (appKey === qplayAppKey) {
-        //後台打开通知
-        document.addEventListener('jpush.openNotification', app.onOpenNotification, false);
-        //後台收到通知
-        document.addEventListener('jpush.backgoundNotification', app.onBackgoundNotification, false);
-        //前台收到通知
-        document.addEventListener('jpush.receiveNotification', app.onOpenNotification, false);
+        if (device.platform === "iOS") {
+            //後台打开通知
+            document.addEventListener('jpush.openNotification', app.onOpenNotification, false);
+            //後台收到通知
+            document.addEventListener('jpush.backgoundNotification', app.onBackgoundNotification, false);
+            //前台收到通知
+            document.addEventListener('jpush.receiveNotification', app.onOpenNotification, false);
+        } else {
+            //後台打开通知
+            document.addEventListener('qpush.openNotification', app.onOpenNotification, false);
+            //後台收到通知
+            document.addEventListener('qpush.backgoundNotification', app.onBackgoundNotification, false);
+            //前台收到通知
+            document.addEventListener('qpush.receiveNotification', app.onOpenNotification, false);
+        }
     }
 
     //QPlay need to get PushToken in the first step, else cannot do any continue steps.
@@ -685,7 +694,11 @@ function readConfig() {
         //If simulator, can't get push token
         if (!device.isVirtual) {
             //初始化JPush
-            window.plugins.jPushPlugin.init();
+            if (device.platform === "iOS") {
+                window.plugins.jPushPlugin.init();
+            } else {
+                window.plugins.QPushPlugin.init();
+            }
         }
 
         //If pushToken exist in Local Storage, don't need to get new one.
@@ -696,7 +709,12 @@ function readConfig() {
                 app.onGetRegistradionID(device.uuid);
             } else {
                 window.checkTimer = setInterval(function() {
-                    window.plugins.jPushPlugin.getRegistrationID(app.onGetRegistradionID);
+
+                    if (device.platform === "iOS") {
+                        window.plugins.jPushPlugin.getRegistrationID(app.onGetRegistradionID);
+                    } else {
+                        window.plugins.QPushPlugin.getRegistrationID(app.onGetRegistradionID);
+                    }
                 }, 1000);
 
                 window.stopCheck = function() {
