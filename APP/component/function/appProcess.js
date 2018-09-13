@@ -341,10 +341,10 @@ function loadingMask(action, name) {
             $(".loader").css("top", scrollHeight + "px");
         }
         g_loadingMask_finish = false;
-        console.log('show by ' + name);
+        //console.log('show by ' + name);
     } else if (action === "hide") {
         g_loadingMask_finish = true;
-        console.log('hide by ' + name);
+        //console.log('hide by ' + name);
     }
 }
 
