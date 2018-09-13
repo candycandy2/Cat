@@ -285,8 +285,8 @@ function onBackKeyDown() {
     } else if (pageVisitedList.length == 1) {
         navigator.app.exitApp();
     } else {
-        if ($('#' + pageID).onBackKeyDown !== null)
-            $('#' + pageID).onBackKeyDown();
+        if ($('#' + activePageID).onBackKeyDown !== undefined)
+            $('#' + activePageID).onBackKeyDown();
         pageVisitedList.pop();
         $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
     }
