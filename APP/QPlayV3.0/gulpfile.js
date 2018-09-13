@@ -200,9 +200,9 @@ gulp.task('install', ['copyRes'], shell.task([
     //'cordova plugin add cordova-plugin-file'
 ]));
 
-gulp.task('jenkinsinstall', ['copyRes'], shell.task([
+gulp.task('jenkinsinstall_ios', ['copyRes'], shell.task([
+    //'cordova platform add android@6.3.0',
     'cordova platform add ios',
-    'cordova platform add android@6.3.0',
     'cordova plugin add ../../plugins/cordova-plugin-qlogin --nofetch --variable LOGIN_URL=' + process.env.apiServerURL + 'qplayApi/public/qplayauth_register',
     //'cordova plugin add ../../plugins/cordova-plugin-qpush --nofetch --variable API_KEY=' + process.env.QPushAPPKey,
     'cordova plugin add ../../plugins/jpush-phonegap-plugin --nofetch --variable APP_KEY=' + process.env.QPushAPPKey,
@@ -230,6 +230,35 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
     //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
 
+gulp.task('jenkinsinstall_android', ['copyRes'], shell.task([
+    //'cordova platform add ios',
+    'cordova platform add android@6.3.0',
+    'cordova plugin add ../../plugins/cordova-plugin-qlogin --nofetch --variable LOGIN_URL=' + process.env.apiServerURL + 'qplayApi/public/qplayauth_register',
+    'cordova plugin add ../../plugins/cordova-plugin-qpush --nofetch --variable API_KEY=' + process.env.QPushAPPKey,
+    //'cordova plugin add ../../plugins/jpush-phonegap-plugin --nofetch --variable APP_KEY=' + process.env.QPushAPPKey,
+    'cordova plugin add ../../plugins/cordova-plugin-device --nofetch',//
+    //'cordova plugin add cordova-plugin-console@1.0.5',
+    'cordova plugin add ../../plugins/cordova-plugin-appversion --nofetch',//
+    'cordova plugin add ../../plugins/cordova-plugin-customurlscheme --nofetch --variable URL_SCHEME=appqplay' + process.env.appNameDecorate,//
+    'cordova plugin add ../../plugins/cordova-plugin-qsecurity --nofetch --variable SCHEME_SETTING="' + schemeSetting + '"',
+    'cordova plugin add ../../plugins/cordova-plugin-app-update --nofetch',//
+    'cordova plugin add ../../plugins/cordova-plugin-android-permissions --nofetch',//
+    'cordova plugin add ../../plugins/cordova-plugin-whitelist --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-inappbrowser --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-camera --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-ios-camera-permissions --nofetch --save',
+    'cordova plugin add ../../plugins/cordova-plugin-proguard --nofetch',//
+    'cordova plugin add ../../plugins/cordova-plugin-network-information --nofetch',
+    'cordova plugin add ../../plugins/phonegap-plugin-mobile-accessibility --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-geolocation --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-splashscreen --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-statusbar --nofetch',
+    //'cordova plugin add ../../plugins/cordova-plugin-background-mode --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-appavailability --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-cache-clear --nofetch',
+    'cordova plugin add ../../plugins/cordova-plugin-badge --nofetch'
+    //'cordova plugin add cordova-plugin-file@4.3.1'
+]));
 
 gulp.task('devinstall', ['copyRes'], shell.task([
     'rm -f *.json',

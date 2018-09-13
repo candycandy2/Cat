@@ -61,9 +61,13 @@ function UpdateMessageListContent(messagecontent__, fromAPI) {
         }
     }
 
-    window.plugins.jPushPlugin.setBadge(Math.max(0, badgeCount));
-    window.plugins.jPushPlugin.setApplicationIconBadgeNumber(Math.max(0, badgeCount));
-    window.cordova.plugins.notification.badge.set(Math.max(0, badgeCount));
+    if (device.platform === "iOS") {
+        window.plugins.jPushPlugin.setBadge(Math.max(0, badgeCount));
+        window.plugins.jPushPlugin.setApplicationIconBadgeNumber(Math.max(0, badgeCount));
+        window.cordova.plugins.notification.badge.set(Math.max(0, badgeCount));
+    } else {
+        window.plugins.QPushPlugin.setApplicationIconBadgeNumber(Math.max(0, badgeCount));
+    }
 }
 
 function QueryMessageListEx(bForce) {
