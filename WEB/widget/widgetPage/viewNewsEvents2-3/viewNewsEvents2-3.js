@@ -50,7 +50,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                     if (eventType != "Event" && eventType != "News") {
                         console.log($(this).find("input").val());
                         portalURL = $(this).find("input").val();
-                        checkAppPage("#viewWebNews2-3-1");
+                        checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
                     }
                 });
 
@@ -257,7 +257,7 @@ $("#viewNewsEvents2-3").pagecontainer({
                     messageRowId = $(this)[0].getAttribute("value");
                     messageArrIndex = $(this).parent().parent().val();
 
-                    checkAppPage("#viewWebNews2-3-1");
+                    checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
                 }
             });
 

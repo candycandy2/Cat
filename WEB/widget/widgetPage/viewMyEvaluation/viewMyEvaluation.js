@@ -16,7 +16,7 @@ $("#viewMyEvaluation").pagecontainer({
 
                 if (data['result_code'] == '1') {
                     //changepage
-                    checkAppPage('#viewAppSetting');
+                    checkWidgetPage('viewAppSetting', pageVisitedList);
                     $("#feedback").fadeIn(100).delay(2000).fadeOut(100);
 
                     //clear

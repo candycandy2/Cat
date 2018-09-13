@@ -235,28 +235,7 @@ function addZero(number) {
     return number;
 }
 
-function addDownloadHit(appname) {
-    var self = this;
-
-    this.successCallback = function (data) {
-        var resultcode = data['result_code'];
-
-        if (resultcode == 1) { } else { }
-    };
-
-    this.failCallback = function (data) {
-        var resultcode = data['result_code'];
-
-        if (resultcode == 1) { } else { }
-    };
-
-    var __construct = function () {
-        var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname;
-        QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
-    }();
-}
-
-Date.prototype.FormatReleaseDate = function () {
+Date.prototype.FormatReleaseDate = function() {
     return this.getFullYear() + "年" + (parseInt(this.getMonth()) + 1) + "月" + this.getDate() + "日";
 }
 
@@ -298,6 +277,16 @@ function onBackKeyDown() {
 $(document).on('click', '.page-back', function () {
     onBackKeyDown();
 })
+
+function backToHome() {
+
+    for (; pageVisitedList.length !== 1;) {
+        pageVisitedList.pop();
+    }
+    if(pageVisitedList.length == 1) {
+    $.mobile.changePage('#' + pageVisitedList[0]);
+    }
+}
 
 //退回到某一特定页面
 function backToSpecifiedPage(pageID, pageVisitedList_) {
