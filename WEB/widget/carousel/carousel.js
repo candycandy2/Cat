@@ -21,7 +21,7 @@ var carouselWidget = {
                         prevNextButtons: false,
                         autoPlayTimeout: 3000
                     });
-                }, 1000);
+                }, 1500);
 
             }, "html");
         }
