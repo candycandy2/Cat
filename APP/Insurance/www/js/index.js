@@ -15,6 +15,7 @@ var applyType, nextPage;
 var viewPersonalInsuranceShow = false;
 var activePageListID;
 var scrollClassName;
+var familyNo = 'NULL';
 
 window.initialSuccess = function() {
     myEmpNo = localStorage["emp_no"];

@@ -6,7 +6,6 @@ $("#viewFamilyData").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         var familyName, familyID , familyBirth, familyRelation, typeNo, addFamilyStatus = "";
-        var familyNo = 'NULL';
         var timeoutFamilyName = null, timeoutFamilyID = null;
         var familyArr = {};
         var obj = new Object();
