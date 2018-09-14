@@ -124,3 +124,57 @@ function setViewLanguage(view) {
         });
     });
 }
+
+//[Android]Handle the back button
+function onBackKeyDown(bForceByPassPopup) {
+    // var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
+    var activePageID = pageVisitedList[pageVisitedList.length - 1];
+    var prevPageID = pageVisitedList[pageVisitedList.length - 2];
+    bForceByPassPopup = bForceByPassPopup || false;
+
+    if (bForceByPassPopup === false && checkPopupShown()) {
+        var popupID = $(".ui-popup-active")[0].children[0].id;
+        $('#' + popupID).popup("close");
+
+    } else if (pageVisitedList.length == 1) {
+        navigator.app.exitApp();
+    } else {
+        var backToPage = window.sessionStorage.getItem(activePageID + '_backTo');
+        if (backToPage != null) {
+            backToSpecifiedPage(backToPage, pageVisitedList);
+        } else {
+            pageVisitedList.pop();
+            $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
+        }
+
+    }
+}
+
+function backToHome() {
+
+    for (; pageVisitedList.length !== 1;) {
+        pageVisitedList.pop();
+    }
+
+    if (pageVisitedList.length == 1) {
+        $.mobile.changePage('#' + pageVisitedList[0]);
+    }
+}
+
+//退回到某一特定页面
+function backToSpecifiedPage(pageID, pageVisitedList) {
+    var index = 0;
+    for (var i = pageVisitedList.length - 1; i > -1; i--) {
+        if (pageVisitedList[i] == pageID) {
+            index = i;
+        }
+    }
+
+    var length = pageVisitedList.length - index - 2;
+    for (var i = 0; i < length; i++) {
+        pageVisitedList.pop();
+    }
+
+    //执行back逻辑
+    onBackKeyDown(true);
+}

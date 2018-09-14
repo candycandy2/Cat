@@ -320,59 +320,7 @@ function scrollLeftOffset(margin) {
     return screenWidth * margin * 2 / 100;
 }
 
-//[Android]Handle the back button
-function onBackKeyDown() {
-    // var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
-    var activePageID = pageVisitedList[pageVisitedList.length - 1];
-    var prevPageID = pageVisitedList[pageVisitedList.length - 2];
-
-    if (checkPopupShown()) {
-        var popupID = $(".ui-popup-active")[0].children[0].id;
-        $('#' + popupID).popup("close");
-
-    } else if (pageVisitedList.length == 1) {
-        navigator.app.exitApp();
-    } else {
-        var backToPage = window.sessionStorage.getItem(activePageID + '_backTo');
-        if (backToPage != null) {
-            backToSpecifiedPage(backToPage, pageVisitedList);
-        } else {
-            pageVisitedList.pop();
-            $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
-        }
-
-    }
-}
-
 //header区域返回button
 $(document).on('click', '.page-back', function () {
     onBackKeyDown();
 })
-
-function backToHome() {
-
-    for (; pageVisitedList.length !== 1;) {
-        pageVisitedList.pop();
-    }
-    if(pageVisitedList.length == 1) {
-    $.mobile.changePage('#' + pageVisitedList[0]);
-    }
-}
-
-//退回到某一特定页面
-function backToSpecifiedPage(pageID, pageVisitedList_) {
-    var index = 0;
-    for (var i = pageVisitedList_.length - 1; i > -1; i--) {
-        if (pageVisitedList_[i] == pageID) {
-            index = i;
-        }
-    }
-
-    var length = pageVisitedList_.length - index - 2;
-    for (var i = 0; i < length; i++) {
-        pageVisitedList_.pop();
-    }
-
-    //执行back逻辑
-    onBackKeyDown();
-}
