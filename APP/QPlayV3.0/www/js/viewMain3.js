@@ -135,9 +135,9 @@ $("#viewMain3").pagecontainer({
 
                     setTimeout(function() {
                         setHomepageHeight();
-                    }, 800);
+                    }, 750);
                 }
-            }, 500);
+            }, 750);
 
             //3. pull refresh：save initial value
             offsetTop = $('#widgetList').offset().top;
