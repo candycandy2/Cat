@@ -3,6 +3,32 @@ $("#viewApplyInsurance").pagecontainer({
     create: function (event, ui) {
         /********************************** function *************************************/
         var applyDate, applyDateVal, reasonVal, subsidyVal, certiVal, cardVal, remarkVal, detailType, applyType = "";
+        var healthInsurArrForApply = {};
+
+        window.QueryHealthInsuranceListForApply = function() {
+            loadingMask("show");
+            var self = this;
+            var queryData = '<empid>'+ myEmpNo +'</empid>';
+            this.successCallback = function(data) { 
+                if (data['ResultCode'] === "1") {
+                    healthInsurArrForApply = data['Content'];
+                    loadingMask("hide");
+                } else if (data['ResultCode'] === "046902") {
+                    healthInsurArrForApply = data['Content'];
+                    loadingMask("hide");
+                } else if (data['ResultCode'] === "046903") {
+                    healthInsurArrForApply = data['Content'];
+                    loadingMask("hide");
+                }
+                passValueToModifyInsurance();
+            };   
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryHealthInsuranceFamily", self.successCallback, self.failCallback, queryData, "");
+            }();
+        };
 
         //API:ModifyHealthInsurance
         window.QueryModifyHealthInsurance = function() {
@@ -35,6 +61,7 @@ $("#viewApplyInsurance").pagecontainer({
                     strApplyType = '健保復保';
                 }
             }
+            
             var queryData = '<LayoutHeader><ins_id>' + 
                 clickInsID +'</ins_id><app_id>' +
                 clickAppID +'</app_id><empid>' + 
@@ -50,7 +77,7 @@ $("#viewApplyInsurance").pagecontainer({
 
             this.successCallback = function(data) {
                 if (data['ResultCode'] === "1") {
-                    QueryHealthInsuranceList();
+                    viewPersonalInsuranceShow = false;
                     changePageByPanel("viewPersonalInsurance");
                     $("#applyInsurDoneMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
                 }
@@ -62,6 +89,18 @@ $("#viewApplyInsurance").pagecontainer({
                 CustomAPI("POST", true, "ModifyHealthInsurance", self.successCallback, self.failCallback, queryData, "");
             }();
         };
+
+        function passValueToModifyInsurance() {
+            var clickFamilyData = healthInsurArrForApply.filter(function(item, index, array){
+                if (item.family_id === familyNo){
+                    return item.name;
+                }
+            });
+            //將QueryHealthInsuranceFamily回傳的值傳遞至viewApplyInsurance
+            clickInsID = $.trim(clickFamilyData[0].ins_id);
+            clickAppID = $.trim(clickFamilyData[0].app_id);
+            clickFamilyID = $.trim(clickFamilyData[0].family_id);
+        }
 
         //加保原因DDL生成
         function getApplyReasonList() {
@@ -360,6 +399,7 @@ $("#viewApplyInsurance").pagecontainer({
         /********************************** page event *************************************/
         $("#viewApplyInsurance").one("pagebeforeshow", function (event, ui) {
             $("#applyRemark").attr("placeholder", langStr["str_130"]);
+            QueryHealthInsuranceListForApply();
         });
 
         $("#viewApplyInsurance").on("pageshow", function (event, ui) {  
