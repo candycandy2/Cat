@@ -7,7 +7,7 @@
     vertical-align: top;
     width: 14.25vw !important;
     overflow: hidden;
-    padding: 0;
+    padding: 0 2px 0 2px;
 }
 
 .QPlayCalendar .table td > div {
@@ -106,7 +106,7 @@
 }
 
 .reserveDay {
-    background-color: #F2FDF8;
+    /* background-color: #F2FDF8; */
 }
 
 .holiday-str {

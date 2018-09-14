@@ -270,8 +270,9 @@ $("#viewMyCalendar").pagecontainer({
         //点击有预约的日期，显示预约详情
         $("#myCalendar").on("click", "td", function () {
             var dateId = $(this).attr("id");
+            var has = $(this).hasClass('reserveDay');
 
-            if ($(this).hasClass('reserveDay')) {
+            if (has) {
                 $.each($(".reserve-list"), function (index, item) {
                     if (dateId == $(item).attr("data-id")) {
                         $("#myReserve").show();
@@ -285,21 +286,21 @@ $("#viewMyCalendar").pagecontainer({
         });
 
         //滑动切换月份
-        // var x;
-        // var change;
-        // $('#myCalendar').on('touchstart', function (event) {
-        //     x = event.originalEvent.targetTouches[0].pageX;
+        var x;
+        var change;
+        $('#myCalendar').on('touchstart', function (event) {
+            x = event.originalEvent.targetTouches[0].pageX;
 
-        // }).on('touchmove', function (event) {
-        //     change = event.originalEvent.targetTouches[0].pageX - x;
+        }).on('touchmove', function (event) {
+            change = event.originalEvent.targetTouches[0].pageX - x;
 
-        // }).on('touchend', function (event) {
-        //     if (change > 0 && Math.abs(change) > 150) {
-        //         $('.QPlayCalendar-navPrev').trigger('click');
-        //     } else if (change < 0 && Math.abs(change) > 150) {
-        //         $('.QPlayCalendar-navNext').trigger('click');
-        //     }
-        // });
+        }).on('touchend', function (event) {
+            if (change > 0 && Math.abs(change) > 150) {
+                $('.QPlayCalendar-navPrev').trigger('click');
+            } else if (change < 0 && Math.abs(change) > 150) {
+                $('.QPlayCalendar-navNext').trigger('click');
+            }
+        });
 
     }
 });

@@ -156,7 +156,6 @@ $("#viewMain3").pagecontainer({
 
 
         /********************************** dom event *************************************/
-
         //点击Link跳转到APPList
         $('.applist-link').on('click', function() {
             checkWidgetPage('viewAppList', pageVisitedList);
