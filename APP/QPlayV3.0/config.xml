@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="425" id="com.qplay.appqplaytest" ios-CFBundleVersion="425" version="1.0.0.425[NewStaging]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="427" id="com.qplay.appqplaytest" ios-CFBundleVersion="427" version="1.0.0.427[NewStaging]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QPlay</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -99,9 +99,6 @@
     <plugin name="cordova-plugin-appversion" spec="../../plugins/cordova-plugin-appversion" />
     <plugin name="cordova-plugin-customurlscheme" spec="../../plugins/cordova-plugin-customurlscheme">
         <variable name="URL_SCHEME" value="appqplaytest" />
-        <variable name="ANDROID_SCHEME" value=" " />
-        <variable name="ANDROID_HOST" value=" " />
-        <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
     <plugin name="cordova-plugin-qsecurity" spec="../../plugins/cordova-plugin-qsecurity">
         <variable name="SCHEME_SETTING" value="&lt;string&gt;appqplaytest&lt;/string&gt;&lt;string&gt;appyellowpagetest&lt;/string&gt;&lt;string&gt;appcalendartest&lt;/string&gt;&lt;string&gt;apprrstest&lt;/string&gt;&lt;string&gt;appaccountingratetest&lt;/string&gt;&lt;string&gt;appenstest&lt;/string&gt;&lt;string&gt;appeistest&lt;/string&gt;&lt;string&gt;appleavetest&lt;/string&gt;&lt;string&gt;apprelievetest&lt;/string&gt;&lt;string&gt;appmastest&lt;/string&gt;&lt;string&gt;appimtest&lt;/string&gt;&lt;string&gt;appcmtest&lt;/string&gt;&lt;string&gt;appcmtwotest&lt;/string&gt;&lt;string&gt;appeagletest&lt;/string&gt;&lt;string&gt;appbadmintontest&lt;/string&gt;&lt;string&gt;appqisdaeistest&lt;/string&gt;&lt;string&gt;appqchattest&lt;/string&gt;&lt;string&gt;apprmtest&lt;/string&gt;&lt;string&gt;appmassagetest&lt;/string&gt;&lt;string&gt;appparkingtest&lt;/string&gt;&lt;string&gt;appactivitiestest&lt;/string&gt;&lt;string&gt;appinsurancetest&lt;/string&gt;&lt;string&gt;appscheme01test&lt;/string&gt;&lt;string&gt;appscheme02test&lt;/string&gt;&lt;string&gt;appscheme03test&lt;/string&gt;&lt;string&gt;appscheme04test&lt;/string&gt;&lt;string&gt;appscheme05test&lt;/string&gt;&lt;string&gt;appscheme06test&lt;/string&gt;&lt;string&gt;appscheme07test&lt;/string&gt;&lt;string&gt;appscheme08test&lt;/string&gt;&lt;string&gt;appscheme09test&lt;/string&gt;&lt;string&gt;appscheme10test&lt;/string&gt;&lt;string&gt;appscheme11test&lt;/string&gt;&lt;string&gt;appscheme12test&lt;/string&gt;&lt;string&gt;appscheme13test&lt;/string&gt;&lt;string&gt;appscheme14test&lt;/string&gt;&lt;string&gt;appscheme15test&lt;/string&gt;&lt;string&gt;appscheme16test&lt;/string&gt;&lt;string&gt;appscheme17test&lt;/string&gt;&lt;string&gt;appscheme18test&lt;/string&gt;&lt;string&gt;appscheme19test&lt;/string&gt;&lt;string&gt;appscheme20test&lt;/string&gt;&lt;string&gt;qisdasesm&lt;/string&gt;" />
@@ -130,5 +127,4 @@
     <plugin name="cordova-plugin-cache-clear" spec="../../plugins/cordova-plugin-cache-clear" />
     <plugin name="cordova-plugin-badge" spec="../../plugins/cordova-plugin-badge" />
     <engine name="ios" spec="~4.5.5" />
-    <engine name="android" spec="~6.3.0" />
 </widget>

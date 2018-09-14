@@ -90,6 +90,8 @@ WEB/InstallQPlay/sftp-config.json
 
 APP/*/www/img/component/*
 APP/*/www/css/jquery.datetimepicker.css
+APP/*/build.json
+
 /qplay/.env
 /qplay/public/.htaccess
 vendor
@@ -113,3 +115,4 @@ API/C#/QTunnel/SourceCode/QTunnel/bin/*
 API/C#/QTunnel/SourceCode/QTunnel/.vs/*
 API/C#/QTunnel/SourceCode/QTunnel/obj/*
 API/C#/QTunnel/SourceCode/.vs/*
+

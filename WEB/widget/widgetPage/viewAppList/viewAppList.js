@@ -151,7 +151,7 @@ $("#viewAppList").pagecontainer({
                     }
                 }
 
-                localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
+                window.localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
 
             } else {
                 for (var i in favoriteList) {
@@ -161,7 +161,7 @@ $("#viewAppList").pagecontainer({
                     }
                 }
 
-                localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
+                window.localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
 
             }
 
