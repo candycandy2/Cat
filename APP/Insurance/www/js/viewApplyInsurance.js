@@ -77,7 +77,6 @@ $("#viewApplyInsurance").pagecontainer({
 
             this.successCallback = function(data) {
                 if (data['ResultCode'] === "1") {
-                    //QueryHealthInsuranceList();
                     viewPersonalInsuranceShow = false;
                     changePageByPanel("viewPersonalInsurance");
                     $("#applyInsurDoneMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
