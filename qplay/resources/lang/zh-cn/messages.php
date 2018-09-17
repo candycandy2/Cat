@@ -469,13 +469,15 @@ return [
     'QPAY_MEMBER_COMPANY'=>'公司别',
     'QPAY_MEMBER_DEPARTMENT_CODE'=>'部门代码',
     'QPAY_CONFIRM_TO_STORED'=>'确认储值',
+    'QPAY_CONFIRM_STORE_DIALOG'=>'确认储值此点数总额?',
     'QPAY_CHECK_STORE_RECORD'=>'查看储值纪录',
     'QPAY_TRAD_STATUS'=>'交易状态',
     'QPAY_TRAD_DATE'=>'交易日期',
     'QPAY_ADMIN'=>'管理员',
     'QPAY_IMPORT_TOTAL_MEMBER'=>'转入总人数',
-    'QPAY_IMPORT_TOTAL_POINT'=>'转入总点数/金额',
-    'QPAY_IMPORT_EACH_MEMBER'=>'转入点数/金额（每人）',
+    'QPAY_IMPORT_TOTAL_POINT'=>'转入总点数',
+    'QPAY_IMPORT_EACH_MEMBER'=>'转入点数(每人)',
+    'QPAY_MEMBER_EMP_NO_ERROR'=>'以下工號核對有誤!!',
     'POINT' => '点',
     'PERSON' => '人'
 ];

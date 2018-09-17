@@ -399,7 +399,6 @@ $("#viewApplyInsurance").pagecontainer({
         /********************************** page event *************************************/
         $("#viewApplyInsurance").one("pagebeforeshow", function (event, ui) {
             $("#applyRemark").attr("placeholder", langStr["str_130"]);
-            QueryHealthInsuranceListForApply();
         });
 
         $("#viewApplyInsurance").on("pageshow", function (event, ui) {  
@@ -416,6 +415,10 @@ $("#viewApplyInsurance").pagecontainer({
                 applyType = "applyInsur";
                 setDefaultStatus(applyType);
                 checkFormByApplyInsur(applyType);
+                if (!queryHealthInsurAPI) {
+                    QueryHealthInsuranceListForApply();
+                    queryHealthInsurAPI = true;
+                }
             } else {      
                 $('.apply-insur-title').text(langStr["str_154"]);            
                 $('#backPersonalInsuranceFromDetail').show(); 

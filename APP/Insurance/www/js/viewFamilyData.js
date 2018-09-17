@@ -613,6 +613,7 @@ $("#viewFamilyData").pagecontainer({
             //1.傳值
             var self = $(this).parent().siblings().attr("data-id");
             familyNo = self;  
+            queryHealthInsurAPI = false;
             popupMsgInit('.beforeEditMsg');          
         });
 

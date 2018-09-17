@@ -471,13 +471,15 @@ return [
     'QPAY_MEMBER_COMPANY'=>'Company',
     'QPAY_MEMBER_DEPARTMENT_CODE'=>'Department',
     'QPAY_CONFIRM_TO_STORED'=>'Confirm To Store Point',
+    'QPAY_CONFIRM_STORE_DIALOG'=>'Confirm the total points to be stored.',
     'QPAY_CHECK_STORE_RECORD'=>'Check Stored Records',
     'QPAY_TRAD_STATUS'=>'Trade Status',
     'QPAY_TRAD_DATE'=>'Trade Date',
     'QPAY_ADMIN'=>'Administrator',
-    'QPAY_IMPORT_TOTAL_MEMBER'=>'Total People',
-    'QPAY_IMPORT_TOTAL_POINT'=>'Total points / amount',
-    'QPAY_IMPORT_EACH_MEMBER'=>'Total points / amount(each person)',
+    'QPAY_IMPORT_TOTAL_MEMBER'=>'Total Employees',
+    'QPAY_IMPORT_TOTAL_POINT'=>'Total points',
+    'QPAY_IMPORT_EACH_MEMBER'=>'Points for each Employee',
+    'QPAY_MEMBER_EMP_NO_ERROR'=>'The following Emp No. were error!!',
     'POINT' => 'point',
     'PERSON' => 'person'
 ];
