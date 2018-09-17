@@ -21,10 +21,64 @@ var messagecontent,
 var portalURL = "",
     messageFrom = 'viewMain3';
 
+//notification
+var notification = {
+    onOpenNotification: function(data) {
+        //Plugin-QPush > 添加背景收到通知后需要執行的內容
+        var messageList = new QueryMessageListEx(true);
+        getMessageID(data); //messageRowId
+
+        if (window.localStorage.getItem("loginid") === null) {
+            //Donothing
+        } else {
+            //While open APP in iOS, when get new message, iOS will not show message dialog in status bar,
+            //need to do it by Javscript
+            if (device.platform === "iOS") {
+                $("#newMessageTitle").html(data.aps["alert"]);
+            } else {
+                $("#newMessageTitle").html(data["alert"]);
+            }
+
+            $('#iOSGetNewMessage').popup();
+            $('#iOSGetNewMessage').show();
+            $('#iOSGetNewMessage').popup('open');
+
+            $("#openNewMessage").one("click", function() {
+                $('#iOSGetNewMessage').popup('close');
+                $('#iOSGetNewMessage').hide();
+
+                checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
+            });
+
+            $("#cancelNewMessage").one("click", function() {
+                $('#iOSGetNewMessage').popup('close');
+                $('#iOSGetNewMessage').hide();
+
+                window.localStorage.setItem("openMessage", "false");
+            });
+            
+        }
+    },
+    onBackgoundNotification: function(data) {
+        //Plugin-QPush > 添加後台收到通知后需要執行的內容
+        if (window.localStorage.getItem("openMessage") === "false") {
+            getMessageID(data);
+
+            if (window.localStorage.getItem("loginid") === null) {
+                //remember to open Message Detail Data
+                loginData["openMessage"] = true;
+                window.localStorage.setItem("openMessage", "true");
+                window.localStorage.setItem("messageRowId", messageRowId);
+            }
+        }
+    }
+}
+
 window.initialSuccess = function (data) {
     //1. widgetlist
     checkWidgetListOrder();
 
+    //2. change page
     if (data !== undefined) {
 
         getDataFromServer = false;
@@ -52,6 +106,23 @@ window.initialSuccess = function (data) {
     }
 
     appInitialFinish = true;
+
+    //3. addEventListener notification
+    if (device.platform === "iOS") {
+        //後台打开通知
+        document.addEventListener('jpush.openNotification', notification.onOpenNotification, false);
+        //後台收到通知
+        document.addEventListener('jpush.backgoundNotification', notification.onBackgoundNotification, false);
+        //前台收到通知
+        document.addEventListener('jpush.receiveNotification', notification.onOpenNotification, false);
+    } else {
+        //後台打开通知
+        document.addEventListener('qpush.openNotification', notification.onOpenNotification, false);
+        //後台收到通知
+        document.addEventListener('qpush.backgoundNotification', notification.onBackgoundNotification, false);
+        //前台收到通知
+        document.addEventListener('qpush.receiveNotification', notification.onOpenNotification, false);
+    }
 }
 
 //检查widgetlist顺序
@@ -249,59 +320,7 @@ function scrollLeftOffset(margin) {
     return screenWidth * margin * 2 / 100;
 }
 
-//[Android]Handle the back button
-function onBackKeyDown() {
-    // var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
-    var activePageID = pageVisitedList[pageVisitedList.length - 1];
-    var prevPageID = pageVisitedList[pageVisitedList.length - 2];
-
-    if (checkPopupShown()) {
-        var popupID = $(".ui-popup-active")[0].children[0].id;
-        $('#' + popupID).popup("close");
-
-    } else if (pageVisitedList.length == 1) {
-        navigator.app.exitApp();
-    } else {
-        var backToPage = window.sessionStorage.getItem(activePageID + '_backTo');
-        if (backToPage != null) {
-            backToSpecifiedPage(backToPage, pageVisitedList);
-        } else {
-            pageVisitedList.pop();
-            $.mobile.changePage('#' + pageVisitedList[pageVisitedList.length - 1]);
-        }
-
-    }
-}
-
 //header区域返回button
 $(document).on('click', '.page-back', function () {
     onBackKeyDown();
 })
-
-function backToHome() {
-
-    for (; pageVisitedList.length !== 1;) {
-        pageVisitedList.pop();
-    }
-    if(pageVisitedList.length == 1) {
-    $.mobile.changePage('#' + pageVisitedList[0]);
-    }
-}
-
-//退回到某一特定页面
-function backToSpecifiedPage(pageID, pageVisitedList_) {
-    var index = 0;
-    for (var i = pageVisitedList_.length - 1; i > -1; i--) {
-        if (pageVisitedList_[i] == pageID) {
-            index = i;
-        }
-    }
-
-    var length = pageVisitedList_.length - index - 2;
-    for (var i = 0; i < length; i++) {
-        pageVisitedList_.pop();
-    }
-
-    //执行back逻辑
-    onBackKeyDown();
-}

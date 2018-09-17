@@ -238,7 +238,22 @@ function errorHandler(data, requestAction) {
 
 //Taphold APP Header to show Version/AD/UUID
 function infoMessage() {
-    $("#infoLoginid").html(loginData["loginid"]);
+    var function_list = JSON.parse(window.localStorage.getItem('FunctionData'))['function_list'];
+    var account = 'N';
+    if(function_list != null) {
+        for(var i in function_list) {
+            if(function_list[i].function_variable == 'QAccountOnly') {
+                account = function_list[i].function_content.right;
+                break;
+            }
+        }
+    }
+    if(account == 'Y') {
+        $("#infoLoginid").html(loginData["loginid"] + '(Account)');
+    } else {
+        $("#infoLoginid").html(loginData["loginid"]);
+    }
+    //$("#infoLoginid").html(loginData["loginid"]);
     $("#infoUUID").html(loginData["uuid"]);
     $("#infoVersionName").html(loginData["versionName"]);
     $('#infoMsg').popup();

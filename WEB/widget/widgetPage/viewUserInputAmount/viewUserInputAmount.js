@@ -55,15 +55,15 @@ $("#viewUserInputAmount").pagecontainer({
             //判断第一次输入是否为0
             if (num !== '0' || payNum !== '') {
 
-                //判断输入金额是否小于剩余金额
-                if (Number(payNum) < 10000) {
-                    payNum += num;
+                var cur = payNum + num;
+                if(Number(cur) < 10000) {
+                    payNum = cur;
                     $('.user-pay-number').text(payNum);
-
                 } else {
                     //popup'您的余额不足喔'
                     popupMsgInit('.overBudgetMsg');
                 }
+
             }
 
             //'下一步'按钮可用

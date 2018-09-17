@@ -286,7 +286,7 @@ $("#viewWebNews2-3-1").pagecontainer({
             var queryStr = "&message_send_row_id=" + messageRowId_;
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 var resultcode = data.result_code;
                 var content = data.content;
 
@@ -404,7 +404,7 @@ $("#viewWebNews2-3-1").pagecontainer({
             var queryStr = "&message_send_row_id=" + messageRowId_ + "&message_type=" + type + "&status=" + status;
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 var doUpdateLocalStorage = false;
 
                 messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
@@ -513,6 +513,14 @@ $("#viewWebNews2-3-1").pagecontainer({
 
         /********************************** page event *************************************/
         $("#viewWebNews2-3-1").one("pagebeforeshow", function(event, ui) {
+            
+        });
+
+        $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
+            
+        });
+
+        $("#viewWebNews2-3-1").one("pageshow", function(event, ui) {
             //Message Load Error Popup
             var messageLoadErrorPopupData = {
                 id: "messageLoadErrorPopup",
@@ -520,10 +528,7 @@ $("#viewWebNews2-3-1").pagecontainer({
             };
 
             tplJS.Popup("viewWebNews2-3-1", "viewWebNews2-3-1Content", "append", messageLoadErrorPopupData);
-        });
-
-        $("#viewWebNews2-3-1").on("pagebeforeshow", function(event, ui) {
-        });
+        })
 
         $("#viewWebNews2-3-1").on("pageshow", function(event, ui) {
 
@@ -646,7 +651,8 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $(document).on("click", "#messageLoadErrorPopup #back", function() {
-            checkWidgetPage('viewMessageList', pageVisitedList);
+            //checkWidgetPage('viewMessageList', pageVisitedList);//review
+            backToSpecifiedPage('viewMessageList', pageVisitedList);
         });
     }
 });
