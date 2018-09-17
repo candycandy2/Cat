@@ -10,8 +10,8 @@ $("#viewUserPayMain").pagecontainer({
                 if(data['result_code'] == '1') {
                     //1. 消费券余额
                     var point_now = data['content'].point_now;
-                    $('.remain-money').text(pointNow);
-                    window.sessionStorage.setItem('user_point', pointNow);
+                    $('.remain-money').text(point_now);
+                    window.sessionStorage.setItem('user_point', point_now);
                     window.sessionStorage.setItem('user_point_dirty', 'N');
 
                     //2. shop_list
