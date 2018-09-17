@@ -13,6 +13,7 @@ var clickFamilyID, clickInsID, clickAppID, clickFamilyName, clickRelation, click
 var clickCanApply, clickDealwith, clickInsuredday, clickApplyday, clickDealday, clickReason, clickSubsidy, clickCerti, clickHealthcard;
 var applyType, nextPage;
 var viewPersonalInsuranceShow = false;
+var queryHealthInsurAPI = true;
 var activePageListID;
 var scrollClassName;
 var familyNo = 'NULL';
