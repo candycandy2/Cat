@@ -46,4 +46,28 @@ class UserService
         }
     }
 
+    /**
+     * change QAccount password
+     * @param  int $userId qp_user.row_id
+     * @param  string $oldPwd old password
+     * @param  string $newPwd new password
+     * @return string  ResultCode    
+     */
+    public function changeQAccountPassword($userId, $oldPwd, $newPwd, $updatedUser, $updatedAt = null){
+        //1.check old passwd
+        $QAccountPwd = $this->UserRepository->getUserQAccountPwd($userId);
+        if (!password_verify($oldPwd, $QAccountPwd)) {
+             return ResultCode::_000926_oldLoginPasswordIncorrect;
+        }
+        //2.update passwd
+        $options = [
+            'cost' => '08',
+        ];
+        $pwd = password_hash($newPwd, PASSWORD_BCRYPT, $options);
+
+        $this->UserRepository->changeQAccountPassword($userId, $pwd, $updatedUser, $updatedAt);
+
+        return ResultCode::_1_reponseSuccessful;
+    }
+
 }

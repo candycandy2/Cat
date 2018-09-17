@@ -44,7 +44,25 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
     Route::any('/addDownloadHit', 'qplayController@addDownloadHit');
     Route::get('/getVersionLog', 'appVersionController@getVersionLog');
     Route::post('/addAppEvaluation', 'appEvaluationController@addAppEvaluation');
-    Route::get('/getFunctionList', 'appFunctionController@getFunctionList'); 
+    Route::get('/getFunctionList', 'appFunctionController@getFunctionList');
+    
+    //QPlay
+    Route::group(['namespace' => 'QPlay'], function()
+    {   
+        Route::group(['middleware' => 'auth.token'], function () {
+            Route::get('/changeQAccountPwd', 'UserController@changeQAccountPwd');
+        });
+    });
+
+    //QPay
+    Route::group(['namespace' => 'QPay'], function()
+    {   
+        //for app
+        Route::group(['middleware' => 'auth.token'], function () {
+            Route::get('/changeTradePwdForAPP', 'MemberController@changeTradePwdForAPP');
+        });
+        //for web
+    });
 });
 
 //syncUser
