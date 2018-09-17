@@ -226,9 +226,9 @@ Route::any('functionMaintain/updateFunction', ['middleware' => 'auth','uses'=>'F
 Route::any('functionMaintain/getUserFunctionList', ['middleware' => 'auth','uses'=>'FunctionController@getUserFunctionList']);
 
 //QPay Maintain
-Route::any('QPayStorePoint', ['middleware' => 'auth', function() {
-    return view("qpay_maintain/point_store");
-}]);
+Route::any('QPayStorePoint', ['middleware' => 'auth','uses'=>'qpayController@QPayStorePoint']);
+Route::any('uploadPointExcel', ['middleware' => 'auth','uses'=>'qpayController@uploadPointExcel']);
+Route::any('newPointStore', ['middleware' => 'auth','uses'=>'qpayController@newPointStore']);
 
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){
   Session::set('lang', $lang);
