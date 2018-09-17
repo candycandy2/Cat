@@ -17,6 +17,6 @@ var accountingrateWidget = {
             createContent();
         }
 
-        $('.accountingrate').accountingrate();
+        $('.accountingrateWidget').accountingrate();
     }
 }
