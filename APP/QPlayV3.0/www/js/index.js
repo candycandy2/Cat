@@ -138,7 +138,7 @@ function checkWidgetListOrder() {
                 //1. 如果local没有数据，直接获取widget.js
                 var widget_arr = widget.list();
 
-                //2. 以widget.js为主遍历FunctionList，如果任何一个为不可用，则enabled为false
+                //2. 遍历widgetlist，已functionlist为主
                 var widgetObj = compareWidgetAndFunction(widget_arr, widget_list['widget_list']);
 
                 //3. 数据存到local
@@ -192,25 +192,23 @@ function checkWidgetListOrder() {
 
 }
 
-//比较widget.js和FunctionList
+//比较WidgetList和FunctionList
 function compareWidgetAndFunction(wdgArr, funArr) {
-    var count = 0;
+    var count = wdgArr.length;
+
+    //遍历WidgetList
     for (var i = 0; i < wdgArr.length; i++) {
 
-        if (wdgArr[i].enabled) {
-            count++;
-        }
-
-        var found = false;
-        //再寻找相同的FunctionList是否可用
+        //再寻找FunctionList当中是否存在且是否可用
         for (var j = 0; j < funArr.length; j++) {
             if ('widget_' + wdgArr[i].name == funArr[j].function_variable) {
-                found = true;
+
                 if (funArr[j].function_content.right == 'Y') {
                     wdgArr[i].enabled = true;
-                }
-                if (funArr[j].function_content.right == 'N') {
+
+                } else if (funArr[j].function_content.right == 'N') {
                     wdgArr[i].enabled = false;
+
                 }
                 break;
             }
