@@ -19,7 +19,7 @@ var widget = {
             { id: 3, name: 'message', enabled: true, lang: langStr['wgt_004'] },
             { id: 4, name: 'applist', enabled: true, lang: langStr['wgt_005'] },
             { id: 5, name: 'qpay', enabled: true, lang: langStr['wgt_009'] },
-            { id: 6, name: 'accountingrate', enabled: false, lang: langStr['wgt_070'] }
+            { id: 6, name: 'accountingrate', enabled: true, lang: langStr['wgt_070'] }
         ];
     },
     load: function(id, div) {
