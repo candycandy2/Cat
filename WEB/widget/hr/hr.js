@@ -9,10 +9,6 @@ var hrWidget = {
             contentItem.html('').append(content);
         }
 
-        $.fn.hr = function(options, param) {
-            createContent();
-        }
-
-        $('.hrWidget').hr();
+        createContent();
     }
 }
