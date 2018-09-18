@@ -26,18 +26,16 @@ var widget = {
 
         return new Promise((resolve, reject) => {
 
-            if (this.list()[id].enabled == true) {
+            var widgetItem = this.list()[id].name + "Widget";
+            var contentItem = $('<div class="' + widgetItem + '"></div>');
+            div.append(contentItem);
 
-                var widgetItem = this.list()[id].name + "Widget";
-                var contentItem = $('<div class="' + widgetItem + '"></div>');
-                div.append(contentItem);
-
-                $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
-                    .done(function(script, textStatus) {
-                        if (window[widgetItem] != null)
-                            window[widgetItem].init(contentItem);
-                    });
-            }
+            $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
+                .done(function(script, textStatus) {
+                    if (window[widgetItem] != null)
+                        window[widgetItem].init(contentItem);
+                });
+            
         });
     },
     show: function() {
