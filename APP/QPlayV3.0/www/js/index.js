@@ -139,11 +139,10 @@ function checkWidgetListOrder() {
                 var widget_arr = widget.list();
 
                 //2. 遍历widgetlist，已functionlist为主
-                var widgetObj = compareWidgetAndFunction(widget_arr, widget_list['widget_list']);
+                var widgetArray = compareWidgetAndFunction(widget_arr, widget_list['widget_list']);
 
                 //3. 数据存到local
-                window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
-                window.sessionStorage.setItem('widgetLength', widgetObj['count']);
+                window.localStorage.setItem('widgetList', JSON.stringify(widgetArray));
 
             } else {
                 //1. check widget.js add
@@ -182,9 +181,8 @@ function checkWidgetListOrder() {
                 }
 
                 //3. check FunctionList
-                var widgetObj = compareWidgetAndFunction(widgetArr, widget_list['widget_list']);
-                window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
-                window.sessionStorage.setItem('widgetLength', widgetObj['count']);
+                var widgetArray = compareWidgetAndFunction(widgetArr, widget_list['widget_list']);
+                window.localStorage.setItem('widgetList', JSON.stringify(widgetArray));
             }
         }
 
@@ -194,8 +192,6 @@ function checkWidgetListOrder() {
 
 //比较WidgetList和FunctionList
 function compareWidgetAndFunction(wdgArr, funArr) {
-    var count = wdgArr.length;
-
     //遍历WidgetList
     for (var i = 0; i < wdgArr.length; i++) {
 
@@ -215,10 +211,7 @@ function compareWidgetAndFunction(wdgArr, funArr) {
         }
     }
 
-    var obj = {};
-    obj['list'] = wdgArr;
-    obj['count'] = count;
-    return obj;
+    return wdgArr;
 }
 
 //先按照开始时间排序，如果开始时间一致再用结束时间排序
