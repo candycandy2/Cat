@@ -1,5 +1,5 @@
 $("#viewAccountingRate").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
         var accountingRate_key = "appaccountingrate";
         var accountingRate_secretKey = "35ee8716067626e225d38b9a97ee49f8";
@@ -49,7 +49,7 @@ $("#viewAccountingRate").pagecontainer({
             var queryDataParameter = "<Last_update_date>" + Parameter + "</Last_update_date>";
             var queryData = "<LayoutHeader>" + queryDataParameter + "</LayoutHeader>";
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
                 var resultCode = data['ResultCode'];
                 if (resultCode == 1) {
                     loadingMask("hide");
@@ -63,29 +63,29 @@ $("#viewAccountingRate").pagecontainer({
                 dataListView();
             };
 
-            this.failCallback = function (data) {
+            this.failCallback = function(data) {
                 loadingMask("hide");
             };
 
-            var __construct = function () {
+            var __construct = function() {
                 //CustomAPI("POST", true, "GetAccountingRate", self.successCallback, self.failCallback, queryData, "");
-                CustomAPIByKey("POST", true, accountingRate_key, accountingRate_secretKey, "GetAccountingRate", self.successCallback, self.failCallback, queryData, "", 60 * 60, "low");
+                CustomAPIByKey("POST", true, accountingRate_key, accountingRate_secretKey, "GetAccountingRate", self.successCallback, self.failCallback, queryData, "", 14 * 24 * 60 * 60, "low");
             }();
         }
 
         /********************************** page event *************************************/
-        $("#viewAccountingRate").on("pagebeforeshow", function (event, ui) {
+        $("#viewAccountingRate").on("pagebeforeshow", function(event, ui) {
             // Expiretime();
             // initialPullRefresh();
         });
 
-        $("#viewAccountingRate").one("pageshow", function (event, ui) {
+        $("#viewAccountingRate").one("pageshow", function(event, ui) {
             $('.buttontransfer').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/tmp/change.png");
             $('.buttonone3img').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/tmp/dropdown_n.png");
             $('.buttonone4img').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/tmp/dropdown_n.png");
         });
 
-        $("#viewAccountingRate").on("pageshow", function (event, ui) {
+        $("#viewAccountingRate").on("pageshow", function(event, ui) {
             Expiretime();
             initialPullRefresh();
 
@@ -120,9 +120,9 @@ $("#viewAccountingRate").pagecontainer({
             var content = "";
             var currencyRate;
 
-            $.each(allCurrencyData, function (countryFrom, toData) {
+            $.each(allCurrencyData, function(countryFrom, toData) {
                 if (countryFrom === FromStatus) {
-                    $.each(toData[dataMonth], function (countryTo, currencyData) {
+                    $.each(toData[dataMonth], function(countryTo, currencyData) {
                         if (countryTo === ToStatus) {
                             currencyRate = currencyData["Ex_Rate"];
                             return false;
@@ -161,9 +161,9 @@ $("#viewAccountingRate").pagecontainer({
             var content = "";
 
             for (var i = 0; i < favoriteCurrencyData.length; i++) {
-                $.each(allCurrencyData, function (countryFrom, toData) {
+                $.each(allCurrencyData, function(countryFrom, toData) {
                     if (countryFrom === favoriteCurrencyData[i]) {
-                        $.each(toData[dataMonth], function (countryTo, currencyData) {
+                        $.each(toData[dataMonth], function(countryTo, currencyData) {
                             if (countryTo === ToStatus) {
                                 content += CountrylisthtmlFirst(favoriteCurrencyData[i], currencyData["Ex_Rate"], "star_icon", true);
                                 return false;
@@ -173,8 +173,8 @@ $("#viewAccountingRate").pagecontainer({
                 });
             }
 
-            $.each(allCurrencyData, function (countryFrom, toData) {
-                $.each(toData[dataMonth], function (countryTo, currencyData) {
+            $.each(allCurrencyData, function(countryFrom, toData) {
+                $.each(toData[dataMonth], function(countryTo, currencyData) {
                     if (favoriteCurrencyData.indexOf(countryFrom) == -1) {
                         if (countryTo === ToStatus) {
                             content += CountrylisthtmlFirst(countryFrom, currencyData["Ex_Rate"], "nonstar_icon", false);
@@ -195,9 +195,9 @@ $("#viewAccountingRate").pagecontainer({
             var content = "";
 
             for (var i = 0; i < favoriteCurrencyData.length; i++) {
-                $.each(allCurrencyData, function (countryFrom, toData) {
+                $.each(allCurrencyData, function(countryFrom, toData) {
                     if (countryFrom === FromStatus) {
-                        $.each(toData[dataMonth], function (countryTo, currencyData) {
+                        $.each(toData[dataMonth], function(countryTo, currencyData) {
                             if (countryTo === favoriteCurrencyData[i]) {
                                 content += CountrylisthtmlSecond(countryTo, currencyData["Ex_Rate"], "star_icon", true);
                                 return false;
@@ -208,9 +208,9 @@ $("#viewAccountingRate").pagecontainer({
                 });
             }
 
-            $.each(allCurrencyData, function (countryFrom, toData) {
+            $.each(allCurrencyData, function(countryFrom, toData) {
                 if (countryFrom === FromStatus) {
-                    $.each(toData[dataMonth], function (countryTo, currencyData) {
+                    $.each(toData[dataMonth], function(countryTo, currencyData) {
                         if (favoriteCurrencyData.indexOf(countryTo) == -1) {
                             content += CountrylisthtmlSecond(countryTo, currencyData["Ex_Rate"], "nonstar_icon", false);
                         }
@@ -299,7 +299,7 @@ $("#viewAccountingRate").pagecontainer({
             /* global PullToRefresh */
             PullToRefreshDestory = PullToRefresh.init({
                 mainElement: '.fragment',
-                onRefresh: function () {
+                onRefresh: function() {
                     //do something for refresh
                     Expiretime();
                 }
@@ -351,11 +351,11 @@ $("#viewAccountingRate").pagecontainer({
                     allCountry.push(getto);
                 }
 
-                Date.prototype.yyyymm = function () {
+                Date.prototype.yyyymm = function() {
                     var mm = this.getMonth() + 1; // getMonth() is zero-based
 
                     return [this.getFullYear(),
-                    (mm > 9 ? '' : '0') + mm
+                        (mm > 9 ? '' : '0') + mm
                     ].join('');
                 };
 
@@ -406,8 +406,8 @@ $("#viewAccountingRate").pagecontainer({
 
             //Remove the old data
             //ex: if now have data of month [4,5,6], and now date is June, then remove data of month [4]
-            $.each(allCurrencyData, function (countryFrom, toData) {
-                $.each(toData, function (month, currencyData) {
+            $.each(allCurrencyData, function(countryFrom, toData) {
+                $.each(toData, function(month, currencyData) {
                     if (showDataMonth.indexOf(parseInt(month, 10)) == -1) {
                         delete allCurrencyData[countryFrom][month];
                     }
@@ -651,10 +651,10 @@ $("#viewAccountingRate").pagecontainer({
                 if (FromStatus == "All Currency" && ToStatus != "All Currency" ||
                     FromStatus != "All Currency" && ToStatus != "All Currency") {
 
-                    $.each(allCurrencyData, function (countryFrom, toData) {
+                    $.each(allCurrencyData, function(countryFrom, toData) {
                         var currencyExist = false;
 
-                        $.each(toData[dataMonth], function (countryTo, currencyData) {
+                        $.each(toData[dataMonth], function(countryTo, currencyData) {
                             if (countryTo === ToStatus) {
                                 dataListCountry.push(countryFrom);
                             }
@@ -663,7 +663,7 @@ $("#viewAccountingRate").pagecontainer({
 
                     showAllCountryOption = true;
                 } else if (FromStatus != "All Currency" && ToStatus == "All Currency") {
-                    $.each(allCurrencyData, function (countryFrom, toData) {
+                    $.each(allCurrencyData, function(countryFrom, toData) {
                         var countryIndex = allCountry.indexOf(countryFrom);
                         if (countryIndex != -1) {
                             dataListCountry.push(countryFrom);
@@ -676,9 +676,9 @@ $("#viewAccountingRate").pagecontainer({
 
             if (popupID === "popupB") {
                 if (FromStatus != "All Currency") {
-                    $.each(allCurrencyData, function (countryFrom, toData) {
+                    $.each(allCurrencyData, function(countryFrom, toData) {
                         if (countryFrom === FromStatus) {
-                            $.each(toData[dataMonth], function (countryTo, currencyData) {
+                            $.each(toData[dataMonth], function(countryTo, currencyData) {
                                 dataListCountry.push(countryTo);
                             });
                         }
@@ -730,12 +730,12 @@ $("#viewAccountingRate").pagecontainer({
         }
 
         /********************************** dom event *************************************/
-        $(document).on("tabsactivate", function (event, ui) {
+        $(document).on("tabsactivate", function(event, ui) {
             tabActiveIDs = ui.newPanel.selector;
             dataListView();
         });
 
-        $(document).on("click", ".buttontransfer", function () {
+        $(document).on("click", ".buttontransfer", function() {
             var tmpsetF = $(".buttononeCountry1").html();
             var tmpsetT = $(".buttononeCountry2").html();
             $(".buttononeCountry1").html(tmpsetT);
@@ -756,7 +756,7 @@ $("#viewAccountingRate").pagecontainer({
         });
 
         /********************************** Popup *************************************/
-        $(document).on("click", "#eventWorkConfirmA .confirm", function () {
+        $(document).on("click", "#eventWorkConfirmA .confirm", function() {
             favoriteCurrencyData.push(statuscountrypop);
             Reorganization();
 
@@ -765,14 +765,14 @@ $("#viewAccountingRate").pagecontainer({
             initialPullRefresh();
         });
 
-        $(document).on("click", "#eventWorkConfirmA .cancel", function () {
+        $(document).on("click", "#eventWorkConfirmA .cancel", function() {
             $("#eventWorkConfirmA").popup('close');
             footerFixed();
             initialPullRefresh();
         });
 
         /********************************** Popup  *************************************/
-        $(document).on("click", "#eventWorkConfirmB .confirm", function () {
+        $(document).on("click", "#eventWorkConfirmB .confirm", function() {
             var index = favoriteCurrencyData.indexOf(statuscountrypop);
             if (index > -1) {
                 favoriteCurrencyData.splice(index, 1);
@@ -784,14 +784,14 @@ $("#viewAccountingRate").pagecontainer({
             initialPullRefresh();
         });
 
-        $(document).on("click", "#eventWorkConfirmB .cancel", function () { // B window OK
+        $(document).on("click", "#eventWorkConfirmB .cancel", function() { // B window OK
             $("#eventWorkConfirmB").popup('close');
             footerFixed();
             initialPullRefresh();
         });
 
         /********************************** Add/Remove Favorite *************************************/
-        $(document).on("click", ".select", function () {
+        $(document).on("click", ".select", function() {
             statuscountrypop = $(this).prop("id");
 
             if ($("#" + statuscountrypop).hasClass("favorite")) {
@@ -805,22 +805,22 @@ $("#viewAccountingRate").pagecontainer({
 
         //Popup - Select Country
         $(document).on({
-            popupafteropen: function () {
+            popupafteropen: function() {
                 var domID = $(this).prop("id");
                 popupPositionProcess(domID);
                 popupDataProcess(domID);
             },
-            popupbeforeposition: function () {
+            popupbeforeposition: function() {
                 tplJS.preventPageScroll();
                 if (PullToRefreshDestory != null) {
                     PullToRefreshDestory.destroy();
                     PullToRefreshDestory = null;
                 }
             },
-            popupafterclose: function () {
+            popupafterclose: function() {
                 footerFixed();
             },
-            click: function (event) {
+            click: function(event) {
                 var domID = $(this).prop("id");
 
                 //close popup
@@ -857,11 +857,11 @@ $("#viewAccountingRate").pagecontainer({
         }, ".app-popup");
 
         //Scenario
-        $("#deleteTest").on("click", function () {
+        $("#deleteTest").on("click", function() {
             $("#testContent").hide();
         });
 
-        $(document).on("click", ".buttonScenario", function () {
+        $(document).on("click", ".buttonScenario", function() {
             var id = $(this).prop("id");
             var testDate = new Date();
             var tempDate;
