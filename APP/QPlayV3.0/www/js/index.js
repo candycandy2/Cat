@@ -127,10 +127,11 @@ window.initialSuccess = function (data) {
 
 //检查widgetlist顺序
 function checkWidgetListOrder() {
-    var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
-    var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'));
-
+    
     var checkFunctionList = setInterval(function () {
+        var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+        var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'));
+
         if (widget_list != null) {
             clearInterval(checkFunctionList);
 
@@ -138,12 +139,11 @@ function checkWidgetListOrder() {
                 //1. 如果local没有数据，直接获取widget.js
                 var widget_arr = widget.list();
 
-                //2. 以widget.js为主遍历FunctionList，如果任何一个为不可用，则enabled为false
-                var widgetObj = compareWidgetAndFunction(widget_arr, widget_list['widget_list']);
+                //2. 遍历widgetlist，已functionlist为主
+                var widgetArray = compareWidgetAndFunction(widget_arr, widget_list['widget_list']);
 
                 //3. 数据存到local
-                window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
-                window.sessionStorage.setItem('widgetLength', widgetObj['count']);
+                window.localStorage.setItem('widgetList', JSON.stringify(widgetArray));
 
             } else {
                 //1. check widget.js add
@@ -182,9 +182,8 @@ function checkWidgetListOrder() {
                 }
 
                 //3. check FunctionList
-                var widgetObj = compareWidgetAndFunction(widgetArr, widget_list['widget_list']);
-                window.localStorage.setItem('widgetList', JSON.stringify(widgetObj['list']));
-                window.sessionStorage.setItem('widgetLength', widgetObj['count']);
+                var widgetArray = compareWidgetAndFunction(widgetArr, widget_list['widget_list']);
+                window.localStorage.setItem('widgetList', JSON.stringify(widgetArray));
             }
         }
 
@@ -192,35 +191,28 @@ function checkWidgetListOrder() {
 
 }
 
-//比较widget.js和FunctionList
+//比较WidgetList和FunctionList
 function compareWidgetAndFunction(wdgArr, funArr) {
-    var count = 0;
+    //遍历WidgetList
     for (var i = 0; i < wdgArr.length; i++) {
 
-        if (wdgArr[i].enabled) {
-            count++;
-        }
-
-        var found = false;
-        //再寻找相同的FunctionList是否可用
+        //再寻找FunctionList当中是否存在且是否可用
         for (var j = 0; j < funArr.length; j++) {
             if ('widget_' + wdgArr[i].name == funArr[j].function_variable) {
-                found = true;
+
                 if (funArr[j].function_content.right == 'Y') {
                     wdgArr[i].enabled = true;
-                }
-                if (funArr[j].function_content.right == 'N') {
+
+                } else if (funArr[j].function_content.right == 'N') {
                     wdgArr[i].enabled = false;
+
                 }
                 break;
             }
         }
     }
 
-    var obj = {};
-    obj['list'] = wdgArr;
-    obj['count'] = count;
-    return obj;
+    return wdgArr;
 }
 
 //先按照开始时间排序，如果开始时间一致再用结束时间排序

@@ -1175,7 +1175,7 @@ div.scrollmenu a {
 
 .confirmDeleteFamily .ui-content>.main,
 .confirmCancelEditFamily .ui-content>.main {
-    margin-top: 6%;
+    margin-top: 4%;
 }
 
 .familyAddCheckMsg >.ui-content>.header { margin-top: 12%;}
@@ -1228,8 +1228,7 @@ div.scrollmenu a {
 .recordTimeOverMsg .ui-content>.main,
 .confirmCancelApply .ui-content>.main 
 .beforeEditMsg .ui-content>.main,
-.confirmCancelApplyToDetail .ui-content>.main,
-.deleteErrorMsg .ui-content>.main {
+.confirmCancelApplyToDetail .ui-content>.main {
     margin-top: 12%;
 }
 

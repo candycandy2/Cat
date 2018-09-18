@@ -66,6 +66,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>QPlay - {{$title}}</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="{{{ asset('favicon.ico') }}}">
     <!-- Bootstrap 3.3.6 -->
     <link href="{{ asset('/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-table.min.css') }}" rel="stylesheet">

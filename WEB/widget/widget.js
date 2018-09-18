@@ -8,7 +8,8 @@ var widget = {
             .then(this.load(3, divItem))
             .then(this.load(4, divItem))
             .then(this.load(5, divItem))
-            .then(this.load(6, divItem));
+            .then(this.load(6, divItem))
+            .then(this.load(7, divItem));
     },
     list: function() {
 
@@ -19,25 +20,24 @@ var widget = {
             { id: 3, name: 'message', enabled: true, lang: langStr['wgt_004'] },
             { id: 4, name: 'applist', enabled: true, lang: langStr['wgt_005'] },
             { id: 5, name: 'qpay', enabled: true, lang: langStr['wgt_009'] },
-            { id: 6, name: 'accountingrate', enabled: false, lang: langStr['wgt_070'] }
+            { id: 6, name: 'accountingrate', enabled: true, lang: langStr['wgt_070'] },
+            { id: 7, name: 'hr', enabled: true, lang: langStr['wgt_071'] }
         ];
     },
     load: function(id, div) {
 
         return new Promise((resolve, reject) => {
 
-            if (this.list()[id].enabled == true) {
+            var widgetItem = this.list()[id].name + "Widget";
+            var contentItem = $('<div class="' + widgetItem + '"></div>');
+            div.append(contentItem);
 
-                var widgetItem = this.list()[id].name + "Widget";
-                var contentItem = $('<div class="' + widgetItem + '"></div>');
-                div.append(contentItem);
+            $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
+                .done(function(script, textStatus) {
+                    if (window[widgetItem] != null)
+                        window[widgetItem].init(contentItem);
+                });
 
-                $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
-                    .done(function(script, textStatus) {
-                        if (window[widgetItem] != null)
-                            window[widgetItem].init(contentItem);
-                    });
-            }
         });
     },
     show: function() {

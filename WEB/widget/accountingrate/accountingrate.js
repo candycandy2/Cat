@@ -4,7 +4,8 @@ var accountingrateWidget = {
     init: function(contentItem) {
 
         function createContent() {
-            var content = '<div class="qpay-link"><div><img src="img/icon_qpay.png" class="icon-img"></div><div>Corp Rate</div></div>';
+            var content = '<div class="qpay-link"><div><img src="' + serverURL +
+                '/widget/accountingrate/img/accounting_rate_icon.png" class="icon-img"></div><div>Corp Rate</div></div>';
 
             contentItem.html('').append(content);
 

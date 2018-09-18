@@ -906,7 +906,6 @@ function setWhiteList() {
         if (doCheckStorageData) {
             checkStorageData();
         }
-        var FunctionList = new getFunctionList();
 
         if (device.platform === "Android") {
             $('.ui-btn span').addClass('android-fix-btn-text-middle');
@@ -1046,6 +1045,7 @@ function processStorageData(action, data) {
             }
         });
 
+        var FunctionList = new getFunctionList();
         var securityList = new getSecurityList();
     } else if (action === "setLocalStorage") {
         $.map(data, function(value, key) {
@@ -1062,6 +1062,7 @@ function processStorageData(action, data) {
             if (loginData['doLoginDataCallBack'] === true) {
                 getLoginDataCallBack();
             } else {
+                var FunctionList = new getFunctionList();
                 var securityList = new getSecurityList();
             }
         }

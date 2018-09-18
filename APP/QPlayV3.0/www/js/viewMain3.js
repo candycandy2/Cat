@@ -128,7 +128,8 @@ $("#viewMain3").pagecontainer({
             //2. check element count
             var checkWidgetFinish = setInterval(function() {
                 var childrenLength = $('#widgetList').children('div').length;
-                var enabledLength = parseInt(window.sessionStorage.getItem('widgetLength'));
+                //var enabledLength = parseInt(window.sessionStorage.getItem('widgetLength'));
+                var enabledLength = widget.list().length;
 
                 if (enabledLength == childrenLength) {
                     clearInterval(checkWidgetFinish);
