@@ -179,12 +179,17 @@ $("#viewFamilyData").pagecontainer({
                     tab1FamiScrollHeight = false;
                 }else if (data['ResultCode'] === "046905") {
                     $(".deleteErrorMsg .hasInsurErr").addClass('addInlineBlock');  
-                    $(".deleteErrorMsg .pendingInsurErr").removeClass('addInlineBlock');   
+                    $(".deleteErrorMsg .pendingInsurErr").removeClass('addInlineBlock'); 
+                    $(".deleteErrorMsg .main-paragraph").text('');
+                    $(".deleteErrorMsg .ui-content>.main").css("margin-top", "");
+                    $(".deleteErrorMsg .ui-content>.main").css("margin-top", "10%");  
                     popupMsgInit('.deleteErrorMsg');
                 }else if (data['ResultCode'] === "046906") {
                     $(".deleteErrorMsg .hasInsurErr").removeClass('addInlineBlock');  
                     $(".deleteErrorMsg .pendingInsurErr").addClass('addInlineBlock');   
                     $(".deleteErrorMsg .main-paragraph").text(langStr["str_139"]);
+                    $(".deleteErrorMsg .ui-content>.main").css("margin-top", "");
+                    $(".deleteErrorMsg .ui-content>.main").css("margin-top", "2%"); 
                     popupMsgInit('.deleteErrorMsg');
                 }
                 loadingMask("hide");
