@@ -127,10 +127,11 @@ window.initialSuccess = function (data) {
 
 //检查widgetlist顺序
 function checkWidgetListOrder() {
-    var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
-    var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'));
-
+    
     var checkFunctionList = setInterval(function () {
+        var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+        var widget_list = JSON.parse(window.localStorage.getItem('FunctionData'));
+
         if (widget_list != null) {
             clearInterval(checkFunctionList);
 
