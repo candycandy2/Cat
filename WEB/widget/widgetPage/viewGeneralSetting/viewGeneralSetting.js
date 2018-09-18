@@ -6,13 +6,14 @@ $("#viewGeneralSetting").pagecontainer({
         var widgetArr = null,
             changeWidgetOrderDirty = 'N';
 
-        function setGeneralSetting() {
+        //根据widgetlist获取一般设定的顺序
+        function setGeneralSetting(widgetArr_) {
             var content = '';
-            for (var i in widgetArr) {
+            for (var i in widgetArr_) {
                 content += '<div class="default-item ' +
-                    (widgetArr[i].name == 'carousel' || !widgetArr[i].enabled ? 'hide' : 'show') +
-                    '" data-item="' + widgetArr[i].name + '" data-index="' +
-                    i + '"><div>' + widgetArr[i].lang +
+                    (widgetArr_[i].name == 'carousel' || !widgetArr_[i].enabled ? 'hide' : 'show') +
+                    '" data-item="' + widgetArr_[i].name + '" data-index="' +
+                    i + '"><div>' + widgetArr_[i].lang +
                     '</div><div><img src="img/move.png" width="90%"></div></div>';
             }
 
@@ -27,11 +28,11 @@ $("#viewGeneralSetting").pagecontainer({
         });
 
         $("#viewGeneralSetting").one("pageshow", function (event, ui) {
-            //1. localstorage
-            widgetArr = JSON.parse(localStorage.getItem('widgetList'));
+            //1. widget list (just get only once)
+            widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
 
             //2. create content
-            setGeneralSetting();
+            setGeneralSetting(widgetArr);
 
             //3. sort listview
             $("#defaultList").sortable();
@@ -61,7 +62,7 @@ $("#viewGeneralSetting").pagecontainer({
                     arr.push(item);
                 }
 
-                //3. 更新local
+                //3. 更新到local
                 window.localStorage.setItem('widgetList', JSON.stringify(arr));
                 window.sessionStorage.setItem('widgetListDirty', 'Y');
 

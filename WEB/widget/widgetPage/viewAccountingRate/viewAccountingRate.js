@@ -79,6 +79,12 @@ $("#viewAccountingRate").pagecontainer({
             // initialPullRefresh();
         });
 
+        $("#viewAccountingRate").one("pageshow", function (event, ui) {
+            $('.buttontransfer').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/tmp/change.png");
+            $('.buttonone3img').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/tmp/dropdown_n.png");
+            $('.buttonone4img').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/tmp/dropdown_n.png");
+        });
+
         $("#viewAccountingRate").on("pageshow", function (event, ui) {
             Expiretime();
             initialPullRefresh();
