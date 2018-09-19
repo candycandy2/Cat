@@ -121,19 +121,6 @@ $("#viewAppList").pagecontainer({
             });
         }
 
-        // //未安装表示卸载，不应出现在最爱列表当中
-        // function favoriteCallback(download, appcode) {
-        //     if (!download) {
-        //         for (var i in favoriteList) {
-        //             if (appcode == favoriteList[i].app_code) {
-        //                 favoriteList.splice(i, 1);
-        //                 localStorage.setItem('favoriteList', JSON.stringify(favoriteList));
-        //                 break;
-        //             }
-        //         }
-        //     }
-        // }
-
         //添加到最爱
         function setFavoriteList(code, name, status) {
             if (status) {
@@ -407,77 +394,6 @@ $("#viewAppList").pagecontainer({
             var appcode = $(self).attr('data-code');
             selectAppIndex = getIndexByCode(appcode);
             checkWidgetPage('viewAppDetail2-2', pageVisitedList);
-        });
-
-        //download app
-        $('#viewAppList').on('click', '.download-btn', function() {
-            var self = this;
-            var appcode = $(self).parent().prev().attr('data-code');
-            selectAppIndex = getIndexByCode(appcode);
-
-            //copy from appdetail
-            if (device.platform === "iOS") {
-
-                if (selectAppIndex != null) {
-                    addDownloadHit(applist[selectAppIndex].package_name);
-                    window.open(applist[selectAppIndex].url, '_system'); //download app
-                }
-            } else { //android
-
-                var pathArray = applist[selectAppIndex].url.split('/');
-                var protocol = pathArray[0];
-                if (protocol == "market:") {
-                    addDownloadHit(applist[selectAppIndex].package_name);
-                    window.open(applist[selectAppIndex].url, '_system'); //open url
-                    //cordova.InAppBrowser.open(applist[selectAppIndex].url, '_system', 'location=yes');
-
-                } else {
-
-                    var permissions = cordova.plugins.permissions;
-                    permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
-                        if (status.hasPermission) {
-                            addDownloadHit(applist[selectAppIndex].package_name);
-                            var updateUrl = applist[selectAppIndex].url;
-                            window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
-
-                            function onFail() {}
-
-                            function onSuccess() {}
-                        } else {
-                            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
-
-                            function error() {
-                                console.warn('WRITE_EXTERNAL_STORAGE permission is not turned on');
-                            }
-
-                            function success(status) {
-                                if (status.hasPermission) {
-
-                                    addDownloadHit(applist[selectAppIndex].package_name);
-                                    var updateUrl = applist[selectAppIndex].url;
-                                    window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
-
-                                    function onFail() {}
-
-                                    function onSuccess() {}
-                                }
-                            }
-                        }
-                    });
-                }
-
-            }
-
-            //check app install setInterval
-            var packageName = applist[selectAppIndex].package_name;
-            var packageNameArr = packageName.split(".");
-            var APPKey = packageNameArr[2];
-            intervalCount = 0;
-
-            checkAppInstallInterval = setInterval(function() {
-                checkAllAppInstalled(checkAppInstallAfterDownload, APPKey, selectAppIndex);
-            }, 2000);
-
         });
 
 
