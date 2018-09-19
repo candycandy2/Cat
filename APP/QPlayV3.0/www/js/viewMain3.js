@@ -70,7 +70,7 @@ $("#viewMain3").pagecontainer({
 
                     if (pullControl != null) {
                         pullControl.destroy();
-                        $('#widgetList').prev().remove();
+                        $('#viewMain3 .ptr--ptr').remove();
                         pullControl = null;
                     }
                 }
@@ -100,7 +100,7 @@ $("#viewMain3").pagecontainer({
                     //滑动到其他
                     if (pullControl != null) {
                         pullControl.destroy();
-                        $('#widgetList').prev().remove();
+                        $('#viewMain3 .ptr--ptr').remove();
                         pullControl = null;
                     }
 
