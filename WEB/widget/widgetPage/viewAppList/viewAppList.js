@@ -130,6 +130,7 @@ $("#viewAppList").pagecontainer({
                         appobj = {
                             app_code: applist[i].app_code,
                             icon_url: applist[i].icon_url,
+                            url: applist[i].url,
                             app_name: name,
                             package_name: applist[i].package_name.split('.')[2],
                         }
@@ -164,53 +165,6 @@ $("#viewAppList").pagecontainer({
                 }
             }
         }
-
-        //Check if APP is installed
-        // function checkAPPInstalled(callback, APPKey) {
-
-        //     callback = callback || null;
-
-        //     var scheme;
-
-        //     if (device.platform === 'iOS') {
-        //         scheme = APPKey + '://';
-        //     } else if (device.platform === 'Android') {
-        //         scheme = 'com.qplay.' + APPKey;
-        //     }
-
-        //     window.testAPPInstalledCount = 0;
-
-        //     window.testAPPInstalled = setInterval(function() {
-        //         appAvailability.check(
-        //             scheme, //URI Scheme or Package Name
-        //             function() { //Success callback
-
-        //                 callback(true);
-
-        //                 stopTestAPPInstalled();
-        //             },
-        //             function() { //Error callback
-
-        //                 callback(false);
-
-        //                 stopTestAPPInstalled();
-        //             }
-        //         );
-
-        //         testAPPInstalledCount++;
-
-        //         if (testAPPInstalledCount === 3) {
-        //             stopTestAPPInstalled();
-        //             location.reload();
-        //         }
-        //     }, 1000);
-
-        //     window.stopTestAPPInstalled = function() {
-        //         if (window.testAPPInstalled != null) {
-        //             clearInterval(window.testAPPInstalled);
-        //         }
-        //     };
-        // }
 
         //applist group by downloaded status
         function appGroupByDownload(responsecontent) {
