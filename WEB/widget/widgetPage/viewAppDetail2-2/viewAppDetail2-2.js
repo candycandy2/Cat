@@ -164,7 +164,13 @@ $("#viewAppDetail2-2").pagecontainer({
                     window.sessionStorage.removeItem('checkAPPInstall');
                     $("#InstallApp .InstallAppStr").hide();
 
-                    if (appInstall == 'true') {
+
+                    var pathArray = applist[selectAppIndex].url.split('/');
+                    var protocol = pathArray[0];
+                    var target = pathArray[2];
+                    if (protocol == "widgetPage:") {
+                        $("#InstallApp #InstallAppStr02").show();
+                    } else if (appInstall == 'true') {
                         $("#InstallApp #InstallAppStr03").show();
                     } else {
                         $("#InstallApp #InstallAppStr01").show();
@@ -178,8 +184,12 @@ $("#viewAppDetail2-2").pagecontainer({
         $("#InstallApp #InstallAppStr01").on("click", function() { //下載
             var pathArray = applist[selectAppIndex].url.split('/');
             var protocol = pathArray[0];
+            var target = pathArray[2];
 
-            if (device.platform === "iOS") {
+            if (protocol == "widgetPage:") {
+                //widgePage://viewAccountingRate
+                checkWidgetPage(target, pageVisitedList);
+            } else if (device.platform === "iOS") {
 
                 if (selectAppIndex != null) {
                     addDownloadHit(applist[selectAppIndex].package_name);
@@ -230,8 +240,17 @@ $("#viewAppDetail2-2").pagecontainer({
         });
 
         $("#InstallApp #InstallAppStr02").on("click", function() { //開啟
-            var schemeURL = APPKey + createAPPSchemeURL();
-            openAPP(schemeURL);
+            var pathArray = applist[selectAppIndex].url.split('/');
+            var protocol = pathArray[0];
+            var target = pathArray[2];
+
+            if (protocol == "widgetPage:") {
+                //widgePage://viewAccountingRate
+                checkWidgetPage(target, pageVisitedList);
+            } else {
+                var schemeURL = APPKey + createAPPSchemeURL();
+                openAPP(schemeURL);
+            }
         });
 
         $("#InstallApp #InstallAppStr03").on("click", function() { //更新

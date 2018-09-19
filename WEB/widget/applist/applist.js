@@ -12,14 +12,29 @@ var applistWidget = {
             }, 'html');
 
             //最爱列表打开APP
-            contentItem.on('click', '.applist-item', function () {
-                var schemeURL = $(this).attr('data-name') + createAPPSchemeURL();
-                openAPP(schemeURL);
+            contentItem.on('click', '.applist-item', function() {
+
+                var protocol = '';
+                var pathArray = [];
+
+                if ($(this).attr('data-url') !== undefined) {
+                    pathArray = $(this).attr('data-url').split('/');
+                    protocol = pathArray[0];
+                }
+
+                if (protocol == "widgetPage:") {
+                    //widgePage://viewAccountingRate
+                    var target = pathArray[2];
+                    checkWidgetPage(target, pageVisitedList);
+                } else {
+                    var schemeURL = $(this).attr('data-name') + createAPPSchemeURL();
+                    openAPP(schemeURL);
+                }
             });
 
             //点击添加按钮跳转到APPList
-            contentItem.on('click', '.add-favorite-list', function () {
-                checkWidgetPage('viewAppList', pageVisitedList);//from app/component/function/
+            contentItem.on('click', '.add-favorite-list', function() {
+                checkWidgetPage('viewAppList', pageVisitedList); //from app/component/function/
             });
         }
 
@@ -29,13 +44,27 @@ var applistWidget = {
             var content = '';
             if (favoriteApp != null && favoriteApp.length > 0) {
                 for (var i in favoriteApp) {
-                    content += '<div class="applist-item" data-name="' +
-                        favoriteApp[i].package_name +
-                        '"><a value="" id="" href="#"><img src="' +
-                        favoriteApp[i].icon_url +
-                        '" width="100%"></a><p class="app-list-name">' +
-                        favoriteApp[i].app_name +
-                        '</p></div>';
+                    if (favoriteApp[i].url == undefined) {
+
+                        content += '<div class="applist-item" data-name="' +
+                            favoriteApp[i].package_name +
+                            '"><a value="" id="" href="#"><img src="' +
+                            favoriteApp[i].icon_url +
+                            '" width="100%"></a><p class="app-list-name">' +
+                            favoriteApp[i].app_name +
+                            '</p></div>';
+                    } else {
+
+                        content += '<div class="applist-item" data-name="' +
+                            favoriteApp[i].package_name +
+                            '" data-url="' +
+                            favoriteApp[i].url +
+                            '"><a value="" id="" href="#"><img src="' +
+                            favoriteApp[i].icon_url +
+                            '" width="100%"></a><p class="app-list-name">' +
+                            favoriteApp[i].app_name +
+                            '</p></div>';
+                    }
                 }
             }
 
