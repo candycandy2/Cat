@@ -31,6 +31,37 @@ $("#viewShopSelectUser").pagecontainer({
             }();
         }
 
+        //店家获取员工资料
+        function getEmpInfoForShop(emp) {
+            var self = this;
+            var queryStr = '&emp_no=' + emp;
+
+            this.successCallback = function () {
+                if (data['result_code'] == '1') {
+                    //1. 记录当前登录用户的工号
+                    var emp_no = data['content'].emp_no;
+                    window.sessionStorage.setItem('current_emp', emp_no);
+
+                    //2. 记录当前用户的消费券余额
+                    var point_now = data['content'].point_now;
+                    window.sessionStorage.setItem('current_point', point_now);
+
+                } else if(data['result_code'] == '000901') {
+                    //员工信息错误
+                } else if(data['result_code'] == '000914') {
+                    //帐号已停权
+                } else {
+                    //重新输入
+                }
+            };
+
+            this.failCallback = function () { };
+
+            var __construct = function () {
+                QPlayAPIEx("GET", "getEmpInfoForShop", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
+            }();    
+        }
+
         function setRecordListHeight() {
             var headHeight = $('#viewShopSelectUser .page-header').height();
             var blankHeight = $('.select-user-blank').height();
@@ -111,7 +142,9 @@ $("#viewShopSelectUser").pagecontainer({
         $('.other-user-pwd').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
-                //API:工号是否存在
+                var emp_no = $.trim($('#inputEmpNo').val());
+                //API:获取员工资料及消费券余额
+                //getEmpInfoForShop(emp_no);
                 checkWidgetPage('viewShopUserAcount', pageVisitedList);
             }
         });

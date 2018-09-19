@@ -86,7 +86,7 @@ $("#viewShopChangePwd").pagecontainer({
                     console.log('新密码不一致！');
                 } else {
                     //API:修改密码
-
+                    //
                 }
             }
         });
