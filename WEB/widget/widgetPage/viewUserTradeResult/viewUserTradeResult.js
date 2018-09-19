@@ -58,9 +58,6 @@ $("#viewUserTradeResult").pagecontainer({
         //返回
         $('.user-trade-back').on('click', function () {
             //交易结果返回需要特殊处理，不会返回前一页，而是返回viewMain3
-            //main -> pay -> select -> amount -> pwd -> result
-            //所以从后往前找，找到viewMain3后记录index
-            //backToSpecifiedPage(backToPage, pageVisitedList);
             onBackKeyDown();
         });
 

@@ -1,7 +1,9 @@
 $("#viewShopInputAmount").pagecontainer({
     create: function (event, ui) {
 
-        var payNum = '';
+        var payNum = '',
+            currentEmp = '',
+            currentPoint = '';
 
         function initialPage() {
             payNum = '';
@@ -9,9 +11,16 @@ $("#viewShopInputAmount").pagecontainer({
             $('.shop-input-next').removeClass('button-active');
         }
 
+        //获取用户基本信息
+        function getUserInfoForShop() {
+            currentEmp = window.sessionStorage.getItem('current_emp');
+            currentPoint = window.sessionStorage.getItem('current_point');
+        }
+
         /********************************** page event ***********************************/
         $("#viewShopInputAmount").on("pagebeforeshow", function (event, ui) {
-
+            initialPage();
+            //getUserInfoForShop();
         });
 
         $("#viewShopInputAmount").one("pageshow", function (event, ui) {
@@ -20,7 +29,7 @@ $("#viewShopInputAmount").pagecontainer({
         });
 
         $("#viewShopInputAmount").on("pageshow", function (event, ui) {
-            
+
         });
 
         $("#viewShopInputAmount").on("pagehide", function (event, ui) {
@@ -119,6 +128,7 @@ $("#viewShopInputAmount").pagecontainer({
             if(has) {
                 //判断输入金额是否小于剩余金额
                 if (Number(payNum) < 10000) {
+                    window.sessionStorage.setItem('trade_price', payNum);
                     checkWidgetPage('viewShopInputPwd', pageVisitedList);
                 } else {
                     //popup'您的余额不足喔'

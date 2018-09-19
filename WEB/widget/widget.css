@@ -4,9 +4,97 @@
     height: 45vw !important;
 }
 
-.carousel-widget img {
+.sw-slides img {
     width: 100%;
     height: 100%;
+}
+
+.top-bulletin {
+    width: 100%;
+    height: 6vw;
+    z-index: 1;
+    line-height: 6.5vw;
+    position: relative;
+    background: rgba(155, 155, 155, 0.8);
+    font-size: 3.349vw;
+}
+
+.top-bulletin > div {
+    float: left;
+    height: 100%;
+}
+
+.top-bulletin > div:nth-of-type(1) {
+    width: 90%;
+    text-indent: 1.5vw;
+    overflow: hidden;
+}
+
+.top-bulletin > div:nth-of-type(1) span {
+    position: absolute;
+    -webkit-animation: marquee 10s linear infinite;
+    -moz-animation: marquee 10s linear infinite;
+    -ms-animation: marquee 10s linear infinite;
+    -o-animation: marquee 10s linear infinite;
+    animation: marquee 10s linear infinite;
+}
+
+.top-bulletin > div:nth-of-type(2) {
+    width: 10%;
+    text-align: center;
+}
+
+.cancel-bulletin {
+    width: 4vw;
+    margin-top: 1vw;
+}
+
+/* Safari 和 Chrome */
+@-webkit-keyframes marquee {
+    from {
+        left: 60%;
+    }
+    to {
+        left: -80%;
+    }
+}
+ 
+/* Firefox */
+@-moz-keyframes marquee {
+    from {
+        left: 60%;
+    }
+    to {
+        left: -80%;
+    }
+}
+ 
+@-ms-keyframes marquee {
+    0% {
+        left: 60%;
+    }
+    100% {
+        left: -80%;
+    }
+}
+ 
+/* Opera */
+@-o-keyframes marquee {
+    from {
+        left: 60%;
+    }
+    to {
+        left: -80%;
+    }
+}
+ 
+@keyframes marquee {
+    from {
+        left: 60%
+    }
+    to {
+        left: -80%
+    }
 }
 
 /******************** weather ********************/
