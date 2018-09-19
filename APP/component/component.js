@@ -62,16 +62,6 @@ var app = {
     // Application Constructor
     initialize: function() {
 
-        //For test, to clear localStorageData
-        /*
-        if (window.localStorage.length === 0) {
-            this.bindEvents();
-        } else {
-            window.localStorage.clear();
-            this.bindEvents();
-        }
-        */
-
         loadStringTable();
 
         //For release
@@ -621,25 +611,6 @@ function readConfig() {
         QMessageKey = "e343504d536ebce16b70167e";
         QMessageSecretKey = "62f87cad6de67db6c968ba50";
     }
-
-    //Plugin-QPush
-    // if (appKey === qplayAppKey) {
-    //     if (device.platform === "iOS") {
-    //         //後台打开通知
-    //         document.addEventListener('jpush.openNotification', app.onOpenNotification, false);
-    //         //後台收到通知
-    //         document.addEventListener('jpush.backgoundNotification', app.onBackgoundNotification, false);
-    //         //前台收到通知
-    //         document.addEventListener('jpush.receiveNotification', app.onOpenNotification, false);
-    //     } else {
-    //         //後台打开通知
-    //         document.addEventListener('qpush.openNotification', app.onOpenNotification, false);
-    //         //後台收到通知
-    //         document.addEventListener('qpush.backgoundNotification', app.onBackgoundNotification, false);
-    //         //前台收到通知
-    //         document.addEventListener('qpush.receiveNotification', app.onOpenNotification, false);
-    //     }
-    // }
 
     //QPlay need to get PushToken in the first step, else cannot do any continue steps.
     if (appKey === qplayAppKey) {
