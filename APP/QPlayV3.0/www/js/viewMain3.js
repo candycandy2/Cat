@@ -26,18 +26,20 @@ $("#viewMain3").pagecontainer({
 
         //设置高度
         function setHomepageHeight() {
-            var headHeight = $('#viewMain3 .page-header').height();
-            var widgetHeight = $('#widgetList').height();
-            var linkHeight = $('.other-link').height();
+            setTimeout(function() {
+                var headHeight = $('#viewMain3 .page-header').height();
+                var widgetHeight = $('#widgetList').height();
+                var linkHeight = $('.other-link').height();
 
-            var totalHeight;
-            if (device.platform === "iOS") {
-                totalHeight = (headHeight + widgetHeight + linkHeight + iOSFixedTopPX()).toString();
-            } else {
-                totalHeight = (headHeight + widgetHeight + linkHeight).toString();
-            }
+                var totalHeight;
+                if (device.platform === "iOS") {
+                    totalHeight = (headHeight + widgetHeight + linkHeight + iOSFixedTopPX()).toString();
+                } else {
+                    totalHeight = (headHeight + widgetHeight + linkHeight).toString();
+                }
 
-            $('.main-scroll > div').css('height', totalHeight + 'px');
+                $('.main-scroll > div').css('height', totalHeight + 'px');
+            }, 750); 
         }
 
         var pullControl = null;
@@ -133,10 +135,7 @@ $("#viewMain3").pagecontainer({
 
                 if (enabledLength == childrenLength) {
                     clearInterval(checkWidgetFinish);
-
-                    setTimeout(function() {
-                        setHomepageHeight();
-                    }, 750);
+                    setHomepageHeight();
                 }
             }, 750);
 

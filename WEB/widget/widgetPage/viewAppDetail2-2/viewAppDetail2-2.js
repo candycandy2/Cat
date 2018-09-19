@@ -1,7 +1,9 @@
 $("#viewAppDetail2-2").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
-        var pageHeight = null, offsetArr = [], imgItemLength;
+        var pageHeight = null,
+            offsetArr = [],
+            imgItemLength;
 
         /********************************** function *************************************/
 
@@ -12,9 +14,8 @@ $("#viewAppDetail2-2").pagecontainer({
             //Check if APP is installed
             var packageName = applist[selectAppIndex].package_name;
             var packageNameArr = packageName.split(".");
-            window.sessionStorage.setItem('checkAPPKey', packageNameArr[2]);
+            window.sessionStorage.setItem('checkAPPKey', packageNameArr[2]); //for viewVersionRecord
             appDetailInstalled(appDetailCallback, packageNameArr[2]);
-            //checkAPPInstalled(displayAppDetailStep2, "appDetail");
 
             //Find the specific language to display,
             //if can not find the language to match the browser language,
@@ -39,25 +40,6 @@ $("#viewAppDetail2-2").pagecontainer({
                 languageIndex = defaultLangIndex;
             }
 
-            //APP Name substring
-            //zh-tw / zh-cn: string max length is 6
-            //en-us / other: string max length is 12
-            /*
-            var language = navigator.language.toLowerCase();
-            var strLength;
-
-            if (language === "zh-tw" || language === "zh-cn") {
-                strLength = 6;
-            } else {
-                strLength = 12;
-            }
-
-            var appName = appmultilang[languageIndex].app_name.substr(0, strLength);
-
-            if (appmultilang[languageIndex].app_name.length > strLength) {
-                appName += "...";
-            }
-            */
             $("#appDetailAppName").html(appmultilang[languageIndex].app_name);
             $("#appDetailAppSummary").html(appmultilang[languageIndex].app_summary);
             $("#appDetailAppVersion").html(applist[selectAppIndex].app_version_name);
@@ -129,25 +111,22 @@ $("#viewAppDetail2-2").pagecontainer({
         }
 
         function appDetailInstalled(callback, key) {
-
-            //var thisAppKey = checkAPPKey;
             callback = callback || null;
 
             var scheme;
-
             if (device.platform === 'iOS') {
                 scheme = key + '://';
             } else if (device.platform === 'Android') {
                 scheme = 'com.qplay.' + key;
             }
 
-            var testInstalled = function () {
+            var testInstalled = function() {
                 appAvailability.check(
                     scheme,
-                    function () {
+                    function() {
                         callback(true);
                     },
-                    function () {
+                    function() {
                         callback(false);
                     }
                 );
@@ -158,30 +137,12 @@ $("#viewAppDetail2-2").pagecontainer({
             window.sessionStorage.setItem('checkAPPInstall', install);
         }
 
-        // window.displayAppDetailStep2 = function (installed) {
-        //     //Check APP Install need process time, so need this step
-
-        //     $("#InstallApp .InstallAppStr").hide();
-
-        //     if (installed) {
-        //         if (loginData['updateApp']) {
-        //             $("#InstallApp #InstallAppStr03").show();
-        //         } else {
-        //             $("#InstallApp #InstallAppStr02").show();
-        //         }
-        //     } else {
-        //         $("#InstallApp #InstallAppStr01").show();
-        //     }
-
-        //     loadingMask("hide");
-        // }
-
         /********************************** page event *************************************/
-        $("#viewAppDetail2-2").on("pagebeforeshow", function (event, ui) {
+        $("#viewAppDetail2-2").on("pagebeforeshow", function(event, ui) {
             //loadingMask("show");
         });
 
-        $("#viewAppDetail2-2").one("pageshow", function (event, ui) {
+        $("#viewAppDetail2-2").one("pageshow", function(event, ui) {
             //fix定位top
             var headHeight = $('#viewAppDetail2-2 .page-header').height();
             if (device.platform === "iOS") {
@@ -191,10 +152,10 @@ $("#viewAppDetail2-2").pagecontainer({
             }
         })
 
-        $("#viewAppDetail2-2").on("pageshow", function (event, ui) {
+        $("#viewAppDetail2-2").on("pageshow", function(event, ui) {
             displayAppDetailStep1();
 
-            var checkInstall = setInterval(function () {
+            var checkInstall = setInterval(function() {
                 var btnLength = $('#InstallApp').length;
                 var appInstall = window.sessionStorage.getItem('checkAPPInstall');
 
@@ -203,9 +164,14 @@ $("#viewAppDetail2-2").pagecontainer({
                     window.sessionStorage.removeItem('checkAPPInstall');
                     $("#InstallApp .InstallAppStr").hide();
 
-                    if (appInstall == 'true') {
-                        $("#InstallApp #InstallAppStr03").show();
 
+                    var pathArray = applist[selectAppIndex].url.split('/');
+                    var protocol = pathArray[0];
+                    var target = pathArray[2];
+                    if (protocol == "widgetPage:") {
+                        $("#InstallApp #InstallAppStr02").show();
+                    } else if (appInstall == 'true') {
+                        $("#InstallApp #InstallAppStr03").show();
                     } else {
                         $("#InstallApp #InstallAppStr01").show();
                     }
@@ -215,8 +181,15 @@ $("#viewAppDetail2-2").pagecontainer({
         });
 
         /********************************** dom event *************************************/
-        $("#InstallApp #InstallAppStr01").on("click", function () { //下載
-            if (device.platform === "iOS") {
+        $("#InstallApp #InstallAppStr01").on("click", function() { //下載
+            var pathArray = applist[selectAppIndex].url.split('/');
+            var protocol = pathArray[0];
+            var target = pathArray[2];
+
+            if (protocol == "widgetPage:") {
+                //widgePage://viewAccountingRate
+                checkWidgetPage(target, pageVisitedList);
+            } else if (device.platform === "iOS") {
 
                 if (selectAppIndex != null) {
                     addDownloadHit(applist[selectAppIndex].package_name);
@@ -224,25 +197,22 @@ $("#viewAppDetail2-2").pagecontainer({
                 }
             } else { //android
 
-                var pathArray = applist[selectAppIndex].url.split('/');
-                var protocol = pathArray[0];
                 if (protocol == "market:") {
                     addDownloadHit(applist[selectAppIndex].package_name);
                     window.open(applist[selectAppIndex].url, '_system'); //open url
-                    //cordova.InAppBrowser.open(applist[selectAppIndex].url, '_system', 'location=yes');
 
                 } else {
 
                     var permissions = cordova.plugins.permissions;
-                    permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function (status) {
+                    permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
                         if (status.hasPermission) {
                             addDownloadHit(applist[selectAppIndex].package_name);
                             var updateUrl = applist[selectAppIndex].url;
                             window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                            function onFail() { }
+                            function onFail() {}
 
-                            function onSuccess() { }
+                            function onSuccess() {}
                         } else {
                             permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
 
@@ -257,9 +227,9 @@ $("#viewAppDetail2-2").pagecontainer({
                                     var updateUrl = applist[selectAppIndex].url;
                                     window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                                    function onFail() { }
+                                    function onFail() {}
 
-                                    function onSuccess() { }
+                                    function onSuccess() {}
                                 }
                             }
                         }
@@ -269,13 +239,21 @@ $("#viewAppDetail2-2").pagecontainer({
             }
         });
 
-        $("#InstallApp #InstallAppStr02").on("click", function () { //開啟
-            var APPKey = window.sessionStorage.getItem('checkAPPKey');
-            var schemeURL = APPKey + createAPPSchemeURL();
-            openAPP(schemeURL);
+        $("#InstallApp #InstallAppStr02").on("click", function() { //開啟
+            var pathArray = applist[selectAppIndex].url.split('/');
+            var protocol = pathArray[0];
+            var target = pathArray[2];
+
+            if (protocol == "widgetPage:") {
+                //widgePage://viewAccountingRate
+                checkWidgetPage(target, pageVisitedList);
+            } else {
+                var schemeURL = APPKey + createAPPSchemeURL();
+                openAPP(schemeURL);
+            }
         });
 
-        $("#InstallApp #InstallAppStr03").on("click", function () { //更新
+        $("#InstallApp #InstallAppStr03").on("click", function() { //更新
             //1. Open Other APP, do checkAppVersion, need to update, then click button to open QPlay
             //2. In this case, show [update] in button
             if (device.platform === "iOS") {
@@ -286,14 +264,14 @@ $("#viewAppDetail2-2").pagecontainer({
             } else {
 
                 var permissions = cordova.plugins.permissions;
-                permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function (status) {
+                permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
                     if (status.hasPermission) {
                         var updateUrl = applist[selectAppIndex].url;
                         window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                        function onFail() { }
+                        function onFail() {}
 
-                        function onSuccess() { }
+                        function onSuccess() {}
                     } else {
                         console.warn("No :( ");
                         permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
@@ -307,9 +285,9 @@ $("#viewAppDetail2-2").pagecontainer({
                                 var updateUrl = applist[selectAppIndex].url;
                                 window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
 
-                                function onFail() { }
+                                function onFail() {}
 
-                                function onSuccess() { }
+                                function onSuccess() {}
                             }
                         }
                     }
@@ -318,7 +296,7 @@ $("#viewAppDetail2-2").pagecontainer({
         });
 
         //展开更多
-        $("#openDescription").on("click", function () {
+        $("#openDescription").on("click", function() {
             $("#appDetailAppDescription").removeClass("detail-description-ellipsis");
             $("#appDetailAppDescription").css({
                 "max-height": "none",
@@ -328,7 +306,7 @@ $("#viewAppDetail2-2").pagecontainer({
         });
 
         //放大图片
-        $("#appDetailPicListContent").on("click", ".detail-img-style", function () {
+        $("#appDetailPicListContent").on("click", ".detail-img-style", function() {
             var currentIndex = $(this).attr("data-index");
 
             $(".ui-btn-word").show();
@@ -348,14 +326,14 @@ $("#viewAppDetail2-2").pagecontainer({
         });
 
         //取消放大
-        $(".ui-btn-word").on("click", function () {
+        $(".ui-btn-word").on("click", function() {
             $(".ui-btn-word").hide();
             $("#viewAppDetail2-2 .q-btn-header").show();
             $("#viewAppDetail2-2 .fix").fadeOut(500);
         });
 
         //版本记录
-        $(".version").on("click", function () {
+        $(".version").on("click", function() {
             checkWidgetPage('viewVersionRecord', pageVisitedList);
         });
 
