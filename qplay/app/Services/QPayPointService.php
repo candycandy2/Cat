@@ -212,7 +212,7 @@ class QPayPointService
                     $options = [
                         'cost' => '08',
                     ];
-                    $trade_pwd = password_hash($data["emp_id"], PASSWORD_BCRYPT, $options);
+                    $trade_pwd = password_hash(substr($data["emp_id"], -4), PASSWORD_BCRYPT, $options);
 
                     $memberID = $this->qpayMemberRepository->newMember($data["row_id"], $trade_pwd);
                     $existQPayMemberID[] = $memberID;
