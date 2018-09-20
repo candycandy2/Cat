@@ -85,7 +85,7 @@ $("#viewAppListEx").pagecontainer({
                 var appurlicon = applist[notDownloadList[i]].icon_url;
                 var appcode = applist[notDownloadList[i]].app_code;
 
-                if (packagename.includes('Gaia',0) === false && packagename.includes('eLearning',0) === false && packagename.includes('無人搬運',0) === false) {
+                if (packagename.includes('Gaia',0) === false && packagename.includes('Learning',0) === false && packagename.includes('無人搬運',0) === false) {
                     //alert(packagename);
                     notdownloadContent += '<div class="downloadex-list"><div class="download-link" data-code="' +
                         appcode +
