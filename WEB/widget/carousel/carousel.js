@@ -10,6 +10,8 @@ var carouselWidget = {
             $.get(serverURL + "/widget/carousel/carousel.html", function (data) {
                 contentItem.html('').append(data);
 
+                $('.cancel-bulletin').attr('src', serverURL + '/widget/carousel/img/cancel.png');
+
                 var content = '';
                 for (var i = 0; i < carouselLength; i++) {
                     content += '<li class="sw-slide"><img src="' + serverURL + '/widget/carousel/img/portal_' + (i + 1) + '.jpg"></li>';
@@ -24,6 +26,11 @@ var carouselWidget = {
                 }, 1500);
 
             }, "html");
+
+            //关闭顶部公告
+            contentItem.on('click', '.cancel-bulletin', function () {
+                $('.top-bulletin').hide();
+            });
         }
 
         $.fn.carousel = function (options) {

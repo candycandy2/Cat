@@ -38,6 +38,22 @@ $("#viewShopRecordList").pagecontainer({
             }();
         }
 
+        //只有当年当月的数据才有必要刷新
+        function compareDate() {
+            //传值与当前日期进行比较
+            var queryData = JSON.parse(window.sessionStorage.getItem('query_shop_record'));
+            var startDate = queryData['start'];
+            var endDate = queryData['end'];
+
+            var now = new Date();
+            var curYear = now.getFullYear().toString();
+            var curMonth = (now.getMonth() + 1).toString();
+
+            if(startDate == curYear && endDate == curMonth) {
+                getTradeRecord();
+            }
+        }
+
         function setPageHeight() {
             var headHeight = $('#viewShopRecordList .page-header').height();
             var titleHeight = $('.shop-record-total').height();
@@ -75,10 +91,8 @@ $("#viewShopRecordList").pagecontainer({
         /********************************** dom event *************************************/
         //更新消费券交易记录
         $('.recordRefresh').on('click', function () {
-            //Call API
-            //getTradeRecord();
-            //新增逻辑，只有再当月情况下，才可以更新
-            
+            //新增逻辑，只有再当月情况下，才需要更新
+            //compareDate();
         });
 
 
