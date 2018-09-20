@@ -33,7 +33,8 @@ class MemberController extends Controller
      * @param  Request $request
      * @return json
      */
-    public function changeTradePwdForAPP(Request $request){
+    public function changeTradePwdForAPP(Request $request)
+    {
 
         $request->merge(['old_trade_pwd' => $request->header('old-trade-pwd')]);
         $request->merge(['new_trade_pwd' => $request->header('new-trade-pwd')]);
@@ -62,6 +63,7 @@ class MemberController extends Controller
         $now = date('Y-m-d H:i:s',$nowTimestamp);
 
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+
         $updateRs = $this->qpayMemberService->changeTradPassword($userInfo->row_id,
                                                            $oldPwd,
                                                            $newPwd,
@@ -87,4 +89,44 @@ class MemberController extends Controller
             ];
         return response()->json($result);
     }
+
+    /**
+     * get stored record by user
+     * @param  Request $request 
+     * @return json
+     */
+    public function getStoreRecord(Request $request)
+    {   
+        //parameter verify
+        $validator = Validator::make($request->all(),
+            [
+            'start_date' =>  ['required', 'digits:10|numeric'],
+            'end_date' =>  ['required', 'digits:10|numeric']
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'digits' =>ResultCode::_000930_newTradePasswordIncorrect
+            ]
+        );
+        
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+        $uuid = $request->uuid;
+        $userInfo = CommonUtil::getUserInfoByUUID($uuid);
+        $returnData = $this->qpayMemberService->getStoreRecord($userInfo->row_id, $request->start_date, $request->end_date);
+       
+
+        $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
+            'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
+            'content'=>["store_record" => $returnData],
+            'token_valid'=>$request->token_valid_date
+        ];
+        return response()->json($result);
+    } 
 }
+
+
+
