@@ -59,5 +59,6 @@ abstract class ResultCode
     const _000929_tradePasswordIncorrect = "000929"; //交易密碼不正確
     const _000930_newTradePasswordIncorrect = "000930"; //新的交易密碼不正確
     const _000931_newLoginPasswordIncorrect = "000931"; //新的登入密碼不正確
+    const _000932_shopNotExistError = "000932"; //店家資料異常
     //TODO 以下为各系统扩展
 }

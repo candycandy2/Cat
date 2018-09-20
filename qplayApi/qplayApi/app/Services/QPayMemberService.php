@@ -7,18 +7,22 @@ namespace App\Services;
 
 use App\lib\ResultCode;
 use App\Repositories\QPayMemberRepository;
+use App\Repositories\QPayMemberPointRepository;
 
 class QPayMemberService
 {
     protected $qpayMemberRepository;
+    protected $qpayMemberPointRepository;
 
     /**
-     * UserService constructor.
+     * QPayMemberService constructor.
      * @param UserRepository $UserRepository
      */
-    public function __construct(QPayMemberRepository $qpayMemberRepository)
+    public function __construct(QPayMemberRepository $qpayMemberRepository,
+                                QPayMemberPointRepository $qpayMemberPointRepository)
     {
         $this->qpayMemberRepository = $qpayMemberRepository;
+        $this->qpayMemberPointRepository = $qpayMemberPointRepository;
     }
 
     /**
@@ -29,12 +33,12 @@ class QPayMemberService
      * @return string  ResultCode    
      */
     public function changeTradPassword($userId, $oldPwd, $newPwd, $updatedUser, $updatedAt = null){
-        
+       
         $qpayMember = $this->qpayMemberRepository->getQPayMemberInfo($userId);
         if(is_null($qpayMember)){
             return ResultCode::_000901_userNotExistError;
         }
-       
+
         $TradPwd = $qpayMember->trade_password;
         if (!password_verify($oldPwd, $TradPwd)) {
              return ResultCode::_000925_oldTradePasswordIncorrect;
@@ -50,4 +54,36 @@ class QPayMemberService
         return ResultCode::_1_reponseSuccessful;
     }
 
+    /**
+     * get point stored record by user
+     * @param  int $userId    qp_user.user_id
+     * @param  int $startDate start timestamp
+     * @param  int $endDate   end timestamp
+     * @return array
+     */
+    public function getStoreRecord($userId, $startDate, $endDate){
+        
+        $qpayMember = $this->qpayMemberRepository->getQPayMemberInfo($userId);
+        if(is_null($qpayMember)){
+            return [];
+        }
+
+        return $this->qpayMemberPointRepository->getStoreRecord($qpayMember->row_id, $startDate, $endDate);
+
+    }
+
+    /**
+     * get Member Point Now (only this year)
+     * @param  user_row_id
+     * @return mixed
+     */
+    public function getPointNow($userRowId){
+
+        $pointNow = $this->qpayMemberPointRepository->getPointNow($userRowId);
+        if(is_null($pointNow)){
+            return 0;
+        }else{
+            return $pointNow;
+        }
+    }
 }
