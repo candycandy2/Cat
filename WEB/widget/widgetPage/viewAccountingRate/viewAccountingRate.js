@@ -114,6 +114,14 @@ $("#viewAccountingRate").pagecontainer({
             deviceHeight = parseInt(document.documentElement.clientWidth - mainwordMarginTop, 10);
         });
 
+        $("#viewAccountingRate").on("pagehide", function(event, ui) {
+            if(PullToRefreshDestory != null) {
+                PullToRefreshDestory.destroy();
+                $('#viewAccountingRate .ptr--ptr').remove();
+                PullToRefreshDestory = null;
+            }
+        });
+
         /********************************** html *************************************/
         function AddhtmlOne() {
 
