@@ -123,5 +123,23 @@ var applistWidget = {
         $.fn.applist.defaults = {}
 
         $('.reserveWidget').applist();
+    },
+    refresh: function() {
+    },
+    show: function() {
+        var applist = new getAppList();
+    },
+    clear: function() {
+
+        var content_ = JSON.parse(window.localStorage.getItem('QueryAppListData'));
+        if (content_ !== null) {
+            var jsonData = {};
+            var date = new Date();
+            jsonData = {
+                lastUpdateTime: date.setDate(date.getDate() - 1),
+                content: content_.content
+            };
+            window.localStorage.setItem('QueryAppListData', JSON.stringify(jsonData));
+        }
     }
 };
