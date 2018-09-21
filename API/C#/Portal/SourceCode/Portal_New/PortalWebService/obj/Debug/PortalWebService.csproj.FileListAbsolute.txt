@@ -10,3 +10,9 @@ C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\bi
 C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\obj\Debug\PortalWebService.csprojResolveAssemblyReference.cache
 C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\obj\Debug\PortalWebService.dll
 C:\Users\Hakkinen.YW.Fu\Desktop\RRS\Chris\Example\Portal_New\PortalWebService\obj\Debug\PortalWebService.pdb
+D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\bin\PortalWebService.dll.config
+D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\bin\PortalWebService.dll
+D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\bin\PortalWebService.pdb
+D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\obj\Debug\PortalWebService.csprojResolveAssemblyReference.cache
+D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\obj\Debug\PortalWebService.dll
+D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\obj\Debug\PortalWebService.pdb
