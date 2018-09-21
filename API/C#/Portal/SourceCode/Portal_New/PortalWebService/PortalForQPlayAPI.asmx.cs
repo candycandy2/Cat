@@ -323,6 +323,7 @@ namespace PortalWebService
             }
         }
 
+        // 公告圖片連結 Add by Jennifer
         private string _PortalImageURL;
         public string PortalImageURL
         {
