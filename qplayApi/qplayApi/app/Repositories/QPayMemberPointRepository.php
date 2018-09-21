@@ -7,7 +7,6 @@ use DB;
 
 class QPayMemberPointRepository 
 {
-
     protected $qpayMemberPoint;
 
     public function __construct(QPAY_Member_Point $qpayMemberPoint)
@@ -37,5 +36,56 @@ class QPayMemberPointRepository
              ->get();
         return $storeRecord;
 
+    }
+
+    /**
+     * get Member Point Now (only this year)
+     * @param  user_row_id
+     * @return mixed
+     */
+    public function getPointNow($userRowID)
+    {
+        $result = $this->qpayMemberPoint
+                    -> leftJoin("qpay_member", "qpay_member.row_id", "=", "qpay_member_point.member_row_id")
+                    -> where("qpay_member.user_row_id", "=", $userRowID)
+                    -> whereYear("qpay_member_point.created_at", "=", date("Y"))
+                    -> sum("qpay_member_point.stored_now");
+
+        return $result;
+    }
+
+    /**
+     * get Member Point Data (only this year)
+     * @param  user_row_id
+     * @return mixed
+     */
+    public function getPointData($userRowID)
+    {
+        $result = $this->qpayMemberPoint
+                    -> leftJoin("qpay_member", "qpay_member.row_id", "=", "qpay_member_point.member_row_id")
+                    -> select("qpay_member_point.*")
+                    -> where("qpay_member.user_row_id", "=", $userRowID)
+                    -> whereYear("qpay_member_point.created_at", "=", date("Y"))
+                    -> orderBy("qpay_member_point.created_at")
+                    -> get();
+
+        return $result;
+    }
+
+    /**
+     * update Member Point Data
+     * @param  user_row_id
+     * @return mixed
+     */
+    public function updatePointData($memberPointRowID, $newStoredNow,  $newStoredUsed)
+    {
+        $result = $this->qpayMemberPoint
+                    -> where("row_id", "=", $memberPointRowID)
+                    -> update([
+                        "stored_now" => $newStoredNow,
+                        "stored_used" => $newStoredUsed
+                    ]);
+
+        return $result;
     }
 }

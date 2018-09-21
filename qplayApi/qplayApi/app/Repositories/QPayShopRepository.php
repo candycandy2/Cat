@@ -40,4 +40,19 @@ class QPayShopRepository
             ->select('qp_user.emp_name as shop_name', 'qpay_shop.row_id as shop_id')
             ->get();
     }
+
+    /**
+     * get Shop Status
+     * @param  shop id
+     * @return mixed
+     */
+    public function getShopStatus($shopID)
+    {
+        return $this->qpayShop
+                -> leftJoin("qp_user", "qp_user.row_id", "=", "qpay_shop.user_row_id")
+                -> select("status", "trade_status")
+                -> where("qpay_shop.row_id", "=", $shopID)
+                -> get();
+
+    }
 }
