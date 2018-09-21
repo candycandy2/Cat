@@ -70,6 +70,9 @@ namespace PortalWebService
                         case "ITS":
                             strSQL = " Select * From myBenQ_Talk_ITS_View with(nolock) ";
                             break;
+                        case "IDEA":
+                            strSQL = " Select * From myBenQ_Talk_IDEA_View with(nolock) ";
+                            break;
                         default:
                             break;
 
@@ -107,7 +110,7 @@ namespace PortalWebService
                             TempPortalList.PortalDate = DataTablePortalListInfo.Rows[i]["PortalDate"].ToString().Trim();
                             // 20171018 Hakkinen 外網網址取代內網網址
                             TempPortalList.PortalURL = DataTablePortalListInfo.Rows[i]["PortalURL"].ToString().ToString().Replace("myqisda.qgroup.corp.com", "www.myqisda.com").Replace("QTYPortalSrv.qgroup.corp.com", "www.myqisda.com").Trim();
-
+                            TempPortalList.PortalImageURL = DataTablePortalListInfo.Rows[i]["PortalImageURL"].ToString().ToString().Replace("myqisda.qgroup.corp.com", "www.myqisda.com").Replace("QTYPortalSrv.qgroup.corp.com", "www.myqisda.com").Trim();
                             PortalListInfo.Add(TempPortalList);
                         }
 
@@ -122,7 +125,8 @@ namespace PortalWebService
                                                            new JProperty("PortalID", p.PortalID),
                                                            new JProperty("PortalSubject", p.PortalSubject),
                                                            new JProperty("PortalDate", p.PortalDate),
-                                                           new JProperty("PortalURL", p.PortalURL)
+                                                           new JProperty("PortalURL", p.PortalURL),
+                                                           new JProperty("PortalImageURL", p.PortalImageURL)
                                                            )
                                                       )
                                             )
@@ -316,6 +320,20 @@ namespace PortalWebService
             set
             {
                 _PortalURL = value;
+            }
+        }
+
+        // 公告圖片連結 Add by Jennifer
+        private string _PortalImageURL;
+        public string PortalImageURL
+        {
+            get
+            {
+                return _PortalImageURL;
+            }
+            set
+            {
+                _PortalImageURL = value;
             }
         }
     }
