@@ -65,6 +65,8 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
             Route::get('/getStoreRecord', 'MemberController@getStoreRecord');
             Route::get('/getTradeToken', 'TradeController@getTradeToken');
             Route::get('/newTrade', 'TradeController@newTrade');
+            Route::get('/getTradeRecordEmp', 'TradeController@getTradeRecordEmp');
+            Route::get('/getTradeRecordShop', 'TradeController@getTradeRecordShop');
         });
         //for web
     });
