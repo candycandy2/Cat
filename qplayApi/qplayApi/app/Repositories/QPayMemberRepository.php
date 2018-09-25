@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Model\QPAY_Member;
+use App\Model\QPay_Member;
 use DB;
 
 class QPayMemberRepository 
@@ -10,7 +10,7 @@ class QPayMemberRepository
 
     protected $qpayMember;
 
-    public function __construct(QPAY_Member $qpayMember)
+    public function __construct(QPay_Member $qpayMember)
     {   
         $this->qpayMember = $qpayMember;
     }

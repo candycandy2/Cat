@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Model\QPAY_Point_Type;
+use App\Model\QPay_Point_Type;
 use DB;
 
 class QPayPointTypeRepository 
@@ -10,7 +10,7 @@ class QPayPointTypeRepository
 
     protected $qpayPointType;
 
-    public function __construct(QPAY_Point_Type $qpayPointType)
+    public function __construct(QPay_Point_Type $qpayPointType)
     {   
         $this->qpayPointType = $qpayPointType;
     }

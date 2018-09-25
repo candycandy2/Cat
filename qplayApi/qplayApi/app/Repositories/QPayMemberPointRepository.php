@@ -2,14 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Model\QPAY_Member_Point;
+use App\Model\QPay_Member_Point;
 use DB;
 
 class QPayMemberPointRepository 
 {
     protected $qpayMemberPoint;
 
-    public function __construct(QPAY_Member_Point $qpayMemberPoint)
+    public function __construct(QPay_Member_Point $qpayMemberPoint)
     {   
         $this->qpayMemberPoint = $qpayMemberPoint;
     }
@@ -33,6 +33,7 @@ class QPayMemberPointRepository
              ->where('qpay_member_point.member_row_id', $memberId)
              ->where(DB::raw('UNIX_TIMESTAMP(qpay_member_point.created_at)'),'>=', $startDate)
              ->where(DB::raw('UNIX_TIMESTAMP(qpay_member_point.created_at)'),'<=', $endDate)
+             ->orderby('qpay_member_point.created_at','desc')
              ->get();
         return $storeRecord;
 
