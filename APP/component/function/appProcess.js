@@ -82,6 +82,12 @@ function addComponentView() {
 
             tplJS.Popup(null, null, "append", disconnectNetworkData);
 
+            var removeToQPlayData = {
+                id: "removeToQPlay",
+                content: $("template#tplRemoveToQPlay").html()
+            };
+
+            tplJS.Popup(null, null, "append", removeToQPlayData);
 
             //After all template load finished, processing language string
             $(".langStr").each(function(index, element) {
