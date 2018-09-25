@@ -114,14 +114,6 @@ $("#viewMain3").pagecontainer({
         $("#viewMain3").one("pagebeforeshow", function(event, ui) {
             //1. load widget
             widget.init($('#widgetList'));
-
-            //2. can download
-            var allowUpdate = window.sessionStorage.getItem('allowUpdateAPP');
-            if(allowUpdate == 'Y') {
-                $('#updateQPlay').show();
-            } else {
-                $('#updateQPlay').hide();
-            }
         });
 
         $("#viewMain3").on("pagebeforeshow", function(event, ui) {
@@ -190,15 +182,7 @@ $("#viewMain3").pagecontainer({
             checkWidgetPage('viewAppSetting', pageVisitedList);
         });
 
-        //手动更新
-        $('#updateQPlay').on('click', function() {
-            if (device.platform === "iOS") {
-                window.open(download_url, '_system');
-            } else { //android
-                var updateUrl = download_url;
-                updateAPP(updateUrl);
-            }
-        });
+
 
     }
 
