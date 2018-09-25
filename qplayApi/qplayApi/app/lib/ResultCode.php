@@ -57,8 +57,8 @@ abstract class ResultCode
     const _000927_tradeTokenIncorrect = "000927"; //交易驗證碼不正確
     const _000928_tradeTokenInvalid = "000928"; //交易驗證碼過期
     const _000929_tradePasswordIncorrect = "000929"; //交易密碼不正確
-    const _000930_newTradePasswordIncorrect = "000930"; //新的交易密碼不正確
-    const _000931_newLoginPasswordIncorrect = "000931"; //新的登入密碼不正確
+    const _000930_newTradePasswordIncorrect = "000930"; //新的交易密碼格式錯誤
+    const _000931_newLoginPasswordIncorrect = "000931"; //新的登入密碼格式錯誤
     const _000932_shopNotExistError = "000932"; //店家資料異常
     //TODO 以下为各系统扩展
 }

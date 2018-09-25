@@ -176,16 +176,6 @@ $("#viewAppListEx").pagecontainer({
             appmultilang = responsecontent.multi_lang;
 
             for (var i = 0; i < applist.length; i++) {
-                //APP version record
-                // if (typeof appVersionRecord[applist[i].package_name] === 'undefined') {
-                //     appVersionRecord[applist[i].package_name] = {};
-                //     var packageName = applist[i].package_name;
-                //     var packageNameArr = packageName.split(".");
-
-                //     checkAPPInstalled(checkAppVersionCallback, packageNameArr[2]);
-                // }
-                //appVersionRecord[applist[i].package_name]["latest_version"] = applist[i].app_version.toString();
-
                 //check app install，icon diff
                 var appName = applist[i].package_name;
                 var appNameArr = appName.split(".");
@@ -249,7 +239,14 @@ $("#viewAppListEx").pagecontainer({
             if (downloaded) {
                 alreadyDownloadList.push(index);
             } else {
-                notDownloadList.push(index);
+                var pathArray = applist[index].url.split('/');
+                var protocol = pathArray[0];
+                var target = pathArray[2];
+                if (protocol == "widgetPage:") {
+                    alreadyDownloadList.push(index);
+                } else {
+                    notDownloadList.push(index);
+                }
             }
 
             if (index == applist.length - 1) {
