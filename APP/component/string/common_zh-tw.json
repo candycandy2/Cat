@@ -78,5 +78,13 @@
     "term_plural": "",
     "reference": "",
     "comment": "[app name] 安裝成功"
+  },
+  {
+    "term": "com_026",
+    "definition": "app已移至QPlay",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
   }
 ]
