@@ -263,65 +263,72 @@ class AppVersionService
         $publishFilePath = FilePath::getApkPublishFilePath($appId,$deviceType);
         $OriPublish = $this->appVersionRepository->getPublishedApp($appId,$deviceType);
 
-        //發佈的版本不為外部連結
-        if(!is_null($OriPublish) && $OriPublish->external_app == 0){
+        //make version archived by different type
+        if(!is_null($OriPublish)){
             
-            if($OriPublish->url!=""){
-                //刪除發佈路徑檔案
-                if(file_exists($publishFilePath.$OriPublish->url)){
-                    $result = unlink($publishFilePath.$OriPublish->url);
-                }
-
-                //ios 需多刪除 manifest.plist
-                if($deviceType == 'ios'){
-                    if(file_exists($publishFilePath.'manifest.plist')){
-                        unlink($publishFilePath.'manifest.plist');
+            if($OriPublish->external_app == 0){
+                if($OriPublish->url!=""){
+                    //刪除發佈路徑檔案
+                    if(file_exists($publishFilePath.$OriPublish->url)){
+                        $result = unlink($publishFilePath.$OriPublish->url);
                     }
-                }
 
-                //remove ota
-                $data=array('app_id'=>$appId,'device_type'=>$deviceType, 'file_name'=>$OriPublish->url);
-                $res = QPlayApi::post('deleteAppFileFromPublish',  json_encode($data));
-                $res = json_decode($res,true);
-                if($res['result_code']!= ResultCode::_1_reponseSuccessful){
-                    throw new \Exception("OTA API deleteAppFileFromPublish Error");
-                }
+                    //ios 需多刪除 manifest.plist
+                    if($deviceType == 'ios'){
+                        if(file_exists($publishFilePath.'manifest.plist')){
+                            unlink($publishFilePath.'manifest.plist');
+                        }
+                    }
 
-                //不保留歷史檔案，刪除上上筆原始檔案
-                if( \Config::get('app.keep_history') == false &&  $deleteHistory == true){
-                    $archiveVersion = $this->getArchiveVersion($appId, $deviceType);
-                    if($archiveVersion != null){
-                        $destinationPath = FilePath::getApkUploadPath($appId,
-                                                                      $deviceType,
-                                                                      $archiveVersion['version_code']);
+                    //remove ota
+                    $data=array('app_id'=>$appId,'device_type'=>$deviceType, 'file_name'=>$OriPublish->url);
+                    $res = QPlayApi::post('deleteAppFileFromPublish',  json_encode($data));
+                    $res = json_decode($res,true);
+                    if($res['result_code']!= ResultCode::_1_reponseSuccessful){
+                        throw new \Exception("OTA API deleteAppFileFromPublish Error");
+                    }
 
-                        if(file_exists($destinationPath)){
-                            $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
-                            $files = new \RecursiveIteratorIterator($it,
-                                         \RecursiveIteratorIterator::CHILD_FIRST);
-                            foreach($files as $file) {
-                                if ($file->isDir()){
-                                    rmdir($file->getRealPath());
-                                } else {
-                                    unlink($file->getRealPath());
+                    //不保留歷史檔案，刪除上上筆原始檔案
+                    if( \Config::get('app.keep_history') == false &&  $deleteHistory == true){
+                        $archiveVersion = $this->getArchiveVersion($appId, $deviceType);
+                        if($archiveVersion != null){
+                            $destinationPath = FilePath::getApkUploadPath($appId,
+                                                                          $deviceType,
+                                                                          $archiveVersion['version_code']);
+
+                            if(file_exists($destinationPath)){
+                                $it = new \RecursiveDirectoryIterator($destinationPath, \RecursiveDirectoryIterator::SKIP_DOTS);
+                                $files = new \RecursiveIteratorIterator($it,
+                                             \RecursiveIteratorIterator::CHILD_FIRST);
+                                foreach($files as $file) {
+                                    if ($file->isDir()){
+                                        rmdir($file->getRealPath());
+                                    } else {
+                                        unlink($file->getRealPath());
+                                    }
                                 }
+                                rmdir($destinationPath);
                             }
-                            rmdir($destinationPath);
-                        }
 
-                        //remove ota
-                        $tmpHistoryData =  array('app_id'=>$appId,
-                                            'device_type'=>$deviceType,
-                                            'version_code'=>$archiveVersion['version_code']);
-                        $historyData[] = $tmpHistoryData;
-                        $res = QPlayApi::post('deleteAppFile', json_encode($historyData));
-                        $res = json_decode($res,true);
-                        if($res['result_code']!= ResultCode::_1_reponseSuccessful){
-                             throw new \Exception("OTA API deleteAppFile Error");
+                            //remove ota
+                            $tmpHistoryData =  array('app_id'=>$appId,
+                                                'device_type'=>$deviceType,
+                                                'version_code'=>$archiveVersion['version_code']);
+                            $historyData[] = $tmpHistoryData;
+                            $res = QPlayApi::post('deleteAppFile', json_encode($historyData));
+                            $res = json_decode($res,true);
+                            if($res['result_code']!= ResultCode::_1_reponseSuccessful){
+                                 throw new \Exception("OTA API deleteAppFile Error");
+                            }
+                            
+                            $this->appVersionRepository->setVersionArchived($archiveVersion['row_id']);
                         }
-                        
-                        $this->appVersionRepository->setVersionArchived($archiveVersion['row_id']);
                     }
+                }
+            }else{
+                $archiveVersion = $this->getArchiveVersion($appId, $deviceType);
+                if($archiveVersion != null){
+                     $this->appVersionRepository->setVersionArchived($archiveVersion['row_id']);
                 }
             }
         }
