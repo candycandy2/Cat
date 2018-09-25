@@ -47,7 +47,7 @@ class MemberController extends Controller
             ],
             [
                 'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
-                'digits' =>ResultCode::_999001_requestParameterLostOrIncorrect
+                'digits' =>ResultCode::_000930_newTradePasswordIncorrect
             ]
         );
 
@@ -105,7 +105,7 @@ class MemberController extends Controller
             ],
             [
                 'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
-                'digits' =>ResultCode::_000930_newTradePasswordIncorrect
+                'digits' =>ResultCode::_999001_requestParameterLostOrIncorrect
             ]
         );
         
@@ -127,6 +127,3 @@ class MemberController extends Controller
         return response()->json($result);
     } 
 }
-
-
-
