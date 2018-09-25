@@ -85,17 +85,15 @@ $("#viewAppList").pagecontainer({
                 var appurlicon = applist[notDownloadList[i]].icon_url;
                 var appcode = applist[notDownloadList[i]].app_code;
 
-                if (packagename.includes('Gaia',0) === false && packagename.includes('Learning',0) === false && packagename.includes('無人搬運',0) === false) {
-                    notdownloadContent += '<div class="download-list"><div class="download-link" data-code="' +
-                        appcode +
-                        '"><div class="download-icon"><img src="' +
-                        appurlicon +
-                        '"></div><div class="download-name"><div class="font-style10">' +
-                        packagename +
-                        '</div><div class="font-style7">' +
-                        appSummary +
-                        '</div></div></div><div><img src="img/download_icon.png" class="download-btn" data-src="download_icon"></div></div>';
-                }
+                notdownloadContent += '<div class="download-list"><div class="download-link" data-code="' +
+                    appcode +
+                    '"><div class="download-icon"><img src="' +
+                    appurlicon +
+                    '"></div><div class="download-name"><div class="font-style10">' +
+                    packagename +
+                    '</div><div class="font-style7">' +
+                    appSummary +
+                    '</div></div></div><div><img src="img/download_icon.png" class="download-btn" data-src="download_icon"></div></div>';
                 
             }
 
