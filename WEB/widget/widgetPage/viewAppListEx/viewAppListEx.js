@@ -309,7 +309,14 @@ $("#viewAppListEx").pagecontainer({
 
         /********************************** dom event *************************************/
         //add or remove favorite app
-        $('#viewAppListEx').on('click', '.favorite-btn', function() {
+        $('#viewAppListEx').on('click', '.favorite-btn', function(event) {
+            //阻止事件向上冒泡
+            if(event && event.stopPropagation) {
+                event.stopPropagation();
+            } else {
+                window.event.cancelBubble = true;
+            }
+
             var self = this;
             var src = $(self).attr('data-src');
             var appcode = $(self).parent().prev().attr('data-code');
@@ -342,10 +349,83 @@ $("#viewAppListEx").pagecontainer({
 
         });
 
-        //change page by app index
-        $('#viewAppListEx').on('click', '.download-link', function() {
+        //download app
+        $('#viewAppListEx').on('click', '.download-btn', function(event) {
+            //阻止事件向上冒泡
+            if(event && event.stopPropagation) {
+                event.stopPropagation();
+            } else {
+                window.event.cancelBubble = true;
+            }
+
+            //1. 获取applist中index
             var self = this;
-            var appcode = $(self).attr('data-code');
+            var appcode = $(self).parent().prev().data('code');
+            selectAppIndex = getIndexByCode(appcode);
+
+            //2. 获取下载url
+            var pathArray = applist[selectAppIndex].url.split('/');
+            var protocol = pathArray[0];
+            var target = pathArray[2];
+
+            //3. 是否为widgetPage
+            if (protocol == "widgetPage:") {
+                //widgePage://viewAccountingRate
+                checkWidgetPage(target, pageVisitedList);
+            } else if (device.platform === "iOS") {
+
+                if (selectAppIndex != null) {
+                    addDownloadHit(applist[selectAppIndex].package_name);
+                    window.open(applist[selectAppIndex].url, '_system'); //download app
+                }
+            } else { //android
+
+                if (protocol == "market:") {
+                    addDownloadHit(applist[selectAppIndex].package_name);
+                    window.open(applist[selectAppIndex].url, '_system'); //open url
+
+                } else {
+
+                    var permissions = cordova.plugins.permissions;
+                    permissions.hasPermission(permissions.WRITE_EXTERNAL_STORAGE, function(status) {
+                        if (status.hasPermission) {
+                            addDownloadHit(applist[selectAppIndex].package_name);
+                            var updateUrl = applist[selectAppIndex].url;
+                            window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                            function onFail() {}
+
+                            function onSuccess() {}
+                        } else {
+                            permissions.requestPermission(permissions.WRITE_EXTERNAL_STORAGE, success, error);
+
+                            function error() {
+                                console.warn('WRITE_EXTERNAL_STORAGE permission is not turned on');
+                            }
+
+                            function success(status) {
+                                if (status.hasPermission) {
+
+                                    addDownloadHit(applist[selectAppIndex].package_name);
+                                    var updateUrl = applist[selectAppIndex].url;
+                                    window.AppUpdate.AppUpdateNow(onSuccess, onFail, updateUrl);
+
+                                    function onFail() {}
+
+                                    function onSuccess() {}
+                                }
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
+        //change page by app index
+        $('#viewAppListEx').on('click', '.downloadex-list', function() {
+            var self = this;
+            var appcode = $(self).find('div:first-child').data('code');
             selectAppIndex = getIndexByCode(appcode);
             checkWidgetPage('viewAppDetail2-2', pageVisitedList);
         });
