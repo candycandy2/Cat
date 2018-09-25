@@ -733,6 +733,7 @@ function checkAppVersion() {
         var resultcode = data['result_code'];
 
         if (resultcode == '1') {
+            download_url = data['content']['download_url'];
 
             //1. 新增逻辑，只有QPlay允许用户选择更新
             var update_app = true;
@@ -749,7 +750,6 @@ function checkAppVersion() {
 
             if(update_app) {
                 //3. 更新维持原逻辑
-                download_url = data['content']['download_url'];
                 // need to update app
                 window.checkVerTimer = setInterval(function() {
                     $.mobile.changePage('#viewUpdateAppVersion');
