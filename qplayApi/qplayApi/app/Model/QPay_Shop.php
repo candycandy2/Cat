@@ -4,8 +4,9 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class QPAY_Member_Point extends Model
+class QPay_Shop extends Model
 {
-    protected $table = 'qpay_member_point';
+    protected $table = 'qpay_shop';
     protected $primaryKey = 'row_id';
+
 }

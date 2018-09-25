@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Model\QPAY_Shop;
+use App\Model\QPay_Shop;
 use DB;
 
 class QPayShopRepository 
@@ -10,7 +10,7 @@ class QPayShopRepository
 
     protected $qpayShop;
 
-    public function __construct(QPAY_Shop $qpayShop)
+    public function __construct(QPay_Shop $qpayShop)
     {   
         $this->qpayShop = $qpayShop;
     }
