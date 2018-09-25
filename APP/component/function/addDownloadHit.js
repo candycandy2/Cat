@@ -14,5 +14,6 @@ function addDownloadHit(appname_) {
     var __construct = function() {
         var queryStr = "&login_id=" + loginData.loginid + "&package_name=" + appname_;
         QPlayAPI("GET", "addDownloadHit", self.successCallback, self.failCallback, null, queryStr);
+        window.sessionStorage.setItem('addDownloadHitDirty', 'Y');
     }();
 }
