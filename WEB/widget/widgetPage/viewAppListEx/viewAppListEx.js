@@ -309,7 +309,14 @@ $("#viewAppListEx").pagecontainer({
 
         /********************************** dom event *************************************/
         //add or remove favorite app
-        $('#viewAppListEx').on('click', '.favorite-btn', function() {
+        $('#viewAppListEx').on('click', '.favorite-btn', function(event) {
+            //阻止事件向上冒泡
+            if(event && event.stopPropagation) {
+                event.stopPropagation();
+            } else {
+                window.event.cancelBubble = true;
+            }
+
             var self = this;
             var src = $(self).attr('data-src');
             var appcode = $(self).parent().prev().attr('data-code');
@@ -343,9 +350,9 @@ $("#viewAppListEx").pagecontainer({
         });
 
         //change page by app index
-        $('#viewAppListEx').on('click', '.download-link', function() {
+        $('#viewAppListEx').on('click', '.download-list', function() {
             var self = this;
-            var appcode = $(self).attr('data-code');
+            var appcode = $(self).find('div:first-child').data('code');
             selectAppIndex = getIndexByCode(appcode);
             checkWidgetPage('viewAppDetail2-2', pageVisitedList);
         });
