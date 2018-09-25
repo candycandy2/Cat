@@ -739,7 +739,9 @@ function checkAppVersion() {
             var update_app = true;
             if(appKey == qplayAppKey) {
                 //2. 新增逻辑，当新版本号为100的倍数时，强制用户更新
-                var latestVersion = data['content'].version_code;
+                //hardcode:先强制更新viewMain3
+                //var latestVersion = data['content'].version_code;
+                var latestVersion = 100;
                 var remainder = latestVersion % 100;
 
                 if(typeof remainder == 'number' && remainder != 0) {
