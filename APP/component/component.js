@@ -721,9 +721,6 @@ function updateAPP(updateUrl) {
     }
 }
 
-
-
-
 //API Check APP Version
 function checkAppVersion() {
     var self = this;
@@ -735,65 +732,101 @@ function checkAppVersion() {
 
         var resultcode = data['result_code'];
 
-        if (resultcode == 1) {
+        if (resultcode == '1') {
 
-            download_url = data['content']['download_url'];
-            // need to update app
-            window.checkVerTimer = setInterval(function() {
-                $.mobile.changePage('#viewUpdateAppVersion');
+            //1. 新增逻辑，只有QPlay允许用户选择更新
+            var update_app = true;
+            if(appKey == qplayAppKey) {
+                //2. 新增逻辑，当新版本号为100的倍数时，强制用户更新
+                var latestVersion = data['content'].version_code;
+                var remainder = latestVersion % 100;
 
-                if ($('#viewUpdateAppVersion').hasClass("ui-page-active")) {
-                    $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
-                    $('#viewUpdateAppVersion').removeClass("hide");
-                    $("#mainUpdateAppVersion").show();
-
-                    // set update app version's layout when landscape
-                    if (window.orientation === 90 || window.orientation === -90)
-                        $('.main-updateAppVersion').css('top', (screen.height - $('.main-updateAppVersion').height()) / 4);
-                    stopcheckVerTimer();
+                if(typeof remainder == 'number' && remainder != 0) {
+                    update_app = false;
+                    window.sessionStorage.setItem('allowUpdateAPP', 'Y');
                 }
-            }, 1000);
+            }
 
-            window.stopcheckVerTimer = function() {
-                clearInterval(checkVerTimer);
+            if(update_app) {
+                //3. 更新维持原逻辑
+                download_url = data['content']['download_url'];
+                // need to update app
+                window.checkVerTimer = setInterval(function() {
+                    $.mobile.changePage('#viewUpdateAppVersion');
 
-                loadingMask("hide");
-            };
+                    if ($('#viewUpdateAppVersion').hasClass("ui-page-active")) {
+                        $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
+                        $('#viewUpdateAppVersion').removeClass("hide");
+                        $("#mainUpdateAppVersion").show();
 
-            $("#UpdateAPP").on("click", function() {
-                if (appKey === qplayAppKey) {
-                    //qplay
-                    if (device.platform === "iOS") {
-                        window.open('itms-services://?action=download-manifest&url=' + serverURL + '/qplay/public/app/1/apk/ios/manifest.plist', '_system');
-                    } else { //android
-                        var updateUrl = '' + serverURL + '/qplay/public/app/1/apk/android/appqplay.apk';
-                        updateAPP(updateUrl);
+                        // set update app version's layout when landscape
+                        if (window.orientation === 90 || window.orientation === -90)
+                            $('.main-updateAppVersion').css('top', (screen.height - $('.main-updateAppVersion').height()) / 4);
+                        stopcheckVerTimer();
                     }
-                } else {
-                    //Download link without QPlay
-                    if (device.platform === "iOS") {
-                        window.open(download_url, '_system');
-                    } else { //android
-                        var updateUrl = download_url;
-                        updateAPP(updateUrl);
-                    }
-                }
-            });
+                }, 1000);
 
-        } else if (resultcode == 000913) {
+                window.stopcheckVerTimer = function() {
+                    clearInterval(checkVerTimer);
+
+                    loadingMask("hide");
+                };
+
+                $("#UpdateAPP").on("click", function() {
+                    if (appKey === qplayAppKey) {
+                        //qplay
+                        if (device.platform === "iOS") {
+                            window.open('itms-services://?action=download-manifest&url=' + serverURL + '/qplay/public/app/1/apk/ios/manifest.plist', '_system');
+                        } else { //android
+                            var updateUrl = '' + serverURL + '/qplay/public/app/1/apk/android/appqplay.apk';
+                            updateAPP(updateUrl);
+                        }
+                    } else {
+                        //4. 新增逻辑，如果其他APP有widgetPage，也不用更新
+                        if(download_url.indexOf('widgetPage') != -1) {
+                            //popup提示
+                            loadingMask("hide");
+                            
+                            $('#removeToQPlay').popup();
+                            $('#removeToQPlay').show();
+                            $('#removeToQPlay').popup('open');
+
+                            $('#closeRemoveMsg').on('click', function () {
+                                $('#removeToQPlay').popup('close');
+                            });
+
+                        } else {
+                            //Download link without QPlay
+                            if (device.platform === "iOS") {
+                                window.open(download_url, '_system');
+                            } else { //android
+                                var updateUrl = download_url;
+                                updateAPP(updateUrl);
+                            }
+                        }
+                    }
+                });
+            } else {
+                //与000913一致
+                // app is up to date
+                $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
+                var whiteList = new setWhiteList();
+            }
+
+        } else if (resultcode == '000913') {
 
             // app is up to date
             $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
 
-        } else if (resultcode == 999015) {
+        } else if (resultcode == '999015') {
 
             // app apk/ipa file does not upload to QPlay.
             // This status only for Developer to skip check the version of New Create APP.
             $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
 
-        } else if (resultcode == 999012) {
+        } else if (resultcode == '999012') {
             // app has been removed in QPlay.
         }
 
