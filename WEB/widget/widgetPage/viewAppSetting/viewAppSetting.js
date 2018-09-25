@@ -184,6 +184,14 @@ $("#viewAppSetting").pagecontainer({
         });
 
         $("#viewAppSetting").one("pageshow", function (event, ui) {
+            //can download
+            var allowUpdate = window.sessionStorage.getItem('allowUpdateAPP');
+            if(allowUpdate == 'Y') {
+                $('#updateQPlay').show();
+            } else {
+                $('#updateQPlay').hide();
+            }
+
             //user name
             $('.name-user').text(loginData['loginid']);
 
@@ -204,6 +212,16 @@ $("#viewAppSetting").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //手动更新
+        $('#updateQPlay').on('click', function() {
+            if (device.platform === "iOS") {
+                window.open(download_url, '_system');
+            } else { //android
+                var updateUrl = download_url;
+                updateAPP(updateUrl);
+            }
+        });
+
         //头像选择
         $('.photo-default').on('click', function () {
             $('.setting-mask').show();
