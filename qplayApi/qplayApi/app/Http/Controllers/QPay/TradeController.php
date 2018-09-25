@@ -86,8 +86,68 @@ class TradeController extends Controller
         } else {
             $result = $this->qpayTradeService->newTrade($request->uuid, $request->header("trade-pwd"), $request->header("trade-token"), 
                                                         $request->emp_no, $request->price, $request->shop_id);
-            
             $result["token_valid"] = $request->token_valid_date;
+
+            return response()->json($result);
+        }
+    }
+
+    /**
+     * QPay get trade record for Emp
+     * @param  Request $request
+     * @return json
+     */
+    public function getTradeRecordEmp(Request $request)
+    {
+        //parameter verify
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|digits:10',
+            'end_date' => 'required|digits:10'
+        ], [
+            'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'digits' => ResultCode::_999001_requestParameterLostOrIncorrect
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'result_code' => $validator->errors()->first(),
+                'message' => CommonUtil::getMessageContentByCode($validator->errors()->first())
+            ], 200);
+        } else {
+            $result = $this->qpayTradeService->getTradeRecordEmp($request->uuid, $request->start_date, $request->end_date);
+            $result["token_valid"] = $request->token_valid_date;
+
+            return response()->json($result);
+        }
+    }
+
+    /**
+     * QPay get trade record for Shop
+     * @param  Request $request
+     * @return json
+     */
+    public function getTradeRecordShop(Request $request)
+    {
+        //parameter verify
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|digits:10',
+            'end_date' => 'required|digits:10',
+            'point_type_id' => 'required|numeric'
+        ], [
+            'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'digits' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'result_code' => $validator->errors()->first(),
+                'message' => CommonUtil::getMessageContentByCode($validator->errors()->first())
+            ], 200);
+        } else {
+            $result = $this->qpayTradeService->getTradeRecordShop($request->uuid, $request->start_date, $request->end_date, $request->point_type_id);
+            $result["token_valid"] = $request->token_valid_date;
+
             return response()->json($result);
         }
     }
