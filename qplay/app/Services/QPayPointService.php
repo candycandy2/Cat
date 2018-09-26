@@ -111,6 +111,7 @@ class QPayPointService
                 $result = DB::table('qp_user')
                         -> select('emp_no')
                         -> whereIn('emp_no', $excelEmpNoArray)
+                        -> where('resign', '=', 'N')
                         -> get();
 
                 $result = array_map(function ($value) {
