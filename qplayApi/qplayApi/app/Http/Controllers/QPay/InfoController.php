@@ -84,6 +84,7 @@ class InfoController extends Controller
                                     'content'=>'']);
         }
         $retunData['shop_id'] = $shop->row_id;
+        $retunData['shop_name'] = $shop->emp_name;
 
         $pointTypeList =  $this->qpayPointService->getEnablePointTypeList();
 

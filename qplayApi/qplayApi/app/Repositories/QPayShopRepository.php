@@ -23,8 +23,9 @@ class QPayShopRepository
     public function getShopInfoByUserId($userId){
         
        return $this->qpayShop
+             ->join('qp_user','qp_user.row_id','=','qpay_shop.user_row_id')
              ->where('user_row_id',$userId)
-             ->select('row_id')
+             ->select('qpay_shop.row_id', 'qp_user.emp_name')
              ->first();
     }
 
