@@ -819,6 +819,11 @@ function checkAppVersion() {
             $("#viewGetQPush").removeClass("ui-page ui-page-theme-a ui-page-active");
             var whiteList = new setWhiteList();
 
+            //如果QPlay已安装最新版则不用更新（每次ViewAppSetting都可调用此API，及时掌握最新版本）
+            if(appKey == qplayAppKey) {
+                window.sessionStorage.setItem('allowUpdateAPP', 'N');
+            }
+
         } else if (resultcode == '999015') {
 
             // app apk/ipa file does not upload to QPlay.
