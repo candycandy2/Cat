@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
 use Storage;
 
-
 class pushController extends Controller {
 
     protected $pushService;
@@ -978,12 +977,12 @@ class pushController extends Controller {
     /*Push API  100-300筆
     驗證 981- 1174行 ,8/23驗證完畢故部分移除 mark after project close
      */
-    public function TestMessage() {//mark after project close
+    public function TestMessage() { //mark after project close
 
         $newMessageSendId = "0";
-        $schedule_datetime = mktime(18, 50, 15, 9, 15, 2018);
+        $schedule_datetime = mktime(15, 50, 15, 9, 25, 2018);
         echo $schedule_datetime;
-        $title = "candytest914-linuxconcon2";
+        $title = "test"; //"candytest914-linuxconcon2";
         $event_push_token_list =
         array("af86ba065d682d04", "1114a89792ff939e5c2");
         echo ("Time" . $schedule_datetime);
@@ -994,8 +993,23 @@ class pushController extends Controller {
         return $result;
     }
 
-    public function Arraytest() { //mark after project close
-
+    public function uuidget($empno) {
+        for ($i = 0; $i < 6; $i++) {
+            if (mb_strlen($empno, "utf-8") == "7") {break;
+            } else {
+                $empno = "0" . $empno;
+            }
+        }
+        $arruuidGet = array();
+        $newuuid = \DB::table("qp_register")
+            ->leftJoin("qp_user", "qp_user.row_id", "=", "qp_register.user_row_id")
+            ->select("qp_register.uuid")
+            ->where('emp_no', '=', $empno)
+            ->get();
+        foreach ($newuuid as $newuuid) {
+            array_push($arruuidGet, $newuuid->uuid);
+        }
+        return $arruuidGet;
     }
 
     public function pushBatchService() {
@@ -1008,10 +1022,17 @@ class pushController extends Controller {
         return $pushBatchServiceList;
     }
 
-    public function checkEmpExist() {//TODO
-
-        return "Y";
-
+    public function checkEmpExist() {
+        $checkEmp = [];
+        $checkEmpget = [];
+        $checkEmp = \DB::table("qp_user")
+            ->select("qp_user.emp_no", "qp_user.company")
+            ->where('qp_user.resign', '=', 'N')
+            ->get();
+        foreach ($checkEmp as $checkEmp) {
+            array_push($checkEmpget, $checkEmp->emp_no);
+        }
+        return $checkEmpget;
     }
 
     public function uploadPushBatchExcel($originalName, $realPath) {
@@ -1020,76 +1041,144 @@ class pushController extends Controller {
 
     }
 
-    public function Space() {
-        return view("space");
-
-    }
-
-    public function FunTest(Request $request) { //TODOadd route
-        $file = $request->file('doc');
-        $originalName = $file->getClientOriginalName();
-        echo ($originalName);
-
-    }
-
-
     public function newPushBatchData(Request $request) {
-
+        $message;
         $file = $request->file('basicInfoFile');
-        $originalName        = $file->getClientOriginalName();
-        $ext      = $file->getClientOriginalExtension();
+        $originalName = $file->getClientOriginalName();
+        $ext = $file->getClientOriginalExtension();
         $realPath = $file->getRealPath();
         $filename = date('Y-m-d-H-i-s') . '-' . uniqid() . '.' . $ext;
 
-        $Name
-        = $file->getFilename();
-
-        $this->uploadPushBatchExcel($originalName, $realPath);
-        $message = $this->checkEmpExist();
-
-        $now = date("Y-m-d H:i:s", (time() + 8 * 3600));
-        $datetime = $now;
+        $Name = $file->getFilename();
+        $saveName = substr($originalName, 0, -5) . uniqid() . "." . $ext;
+        $this->uploadPushBatchExcel($saveName, $realPath);
         $User_name = \Auth::user()->login_id;
         $ID = \Auth::user()->row_id;
 
+        $message = $this->ExcelGet($realPath, $originalName, $ext, $saveName);
 
-        $id = \DB::table("qp_message_batch")
+        if ($message) {return $message;} else {
+            return response()->json(['ResultCode' => ResultCode::_1_reponseSuccessful,
+                'Message' => "成功匯入",
+                'Content' => "成功匯入"]);
+        }
+
+    }
+
+    public function ExcelGet($realPath, $originalName, $ext, $saveName) {
+        $dataget = [];
+        Excel::load($realPath, function ($reader) use (&$dataget) {
+            $data = $reader->toArray();
+            $dataget = $data;
+        });
+        $message = $this->newPushBatchMessage($dataget, $originalName, $ext, $saveName);
+        return $message;
+    }
+
+
+    public function newPushBatchMessage($data, $originalName, $ext, $saveName) {
+        $Empno = [];
+        $Empnum = [];
+        $Empget = [];
+        $Empget = $this->checkEmpExist();
+        $arruuidGet = array();
+
+        $ID = \Auth::user()->row_id;
+        $now = date("Y-m-d H:i:s", (time() + 8 * 3600));
+        $datetime = $now;
+
+        foreach ($data as $another_arr) {
+            $emp_no = $another_arr['emp_no'];
+            array_push($Empnum, $emp_no);
+        }
+
+        foreach ($Empnum as $value) {
+            if (in_array($value, $Empget)) {
+            } else {
+                array_push($Empno, $value . ",");
+            }
+        }
+
+        if ($Empno) {
+            array_push($Empno, "請重新輸入ㄧ次");
+            return $result = response()->json(['ResultCode' => ResultCode::_999999_unknownError,
+                'Message' => "錯誤資訊",
+                'Content' => $Empno]);
+        }
+        $idBatch = \DB::table("qp_message_batch")
             ->insertGetId([
                 'file_original' => $originalName,
-                'file_saved' => $originalName,
+                'file_saved' => $saveName,
                 'created_user' => $ID,
                 'created_at' => $datetime,
             ]);
 
+        foreach ($data as $another_arr) {
 
-        $this->ExcelGet($realPath);
-        return 0 ;
+            $emp_no = $another_arr['emp_no'];
+            $company = $another_arr['company'];
+            $message_text = $another_arr['message_text'];
+            $title = $another_arr['message_text'];
+            $timeget = $another_arr['time'];
+            $arruuidGet = $this->uuidget($emp_no);
+            $NewString = preg_split("/\,/", $timeget);
+            $schedule_datetime =
+                mktime($NewString[0], $NewString[1], $NewString[2], $NewString[3], $NewString[4], $NewString[5]);
+            $now = date("Y-m-d H:i:s", (time() + 8 * 3600));
+
+            $newMessageSendId = $idBatch;
+            $messageSendId = $newMessageSendId;
+            $event_push_token_list = $arruuidGet;
+
+            $result
+            = PushUtil::PushScheduleMessageWithJPushWebAPI("send" . $newMessageSendId,
+                $schedule_datetime, $title, $event_push_token_list, $messageSendId, false);
+
+            if ($result["result"]) {
+                $resultdata = $result["content"]["body"]["schedule_id"];
+            } else {
+                $resultdata = "0";
+                return $result = response()->json(['ResultCode' => ResultCode::_999999_unknownError,
+                    'Message' => "時間過期",
+                    'Content' => $result["info"]]);
+            }
+
+            $id2 = \DB::table("qp_message")
+                ->insertGetId([
+                    'template_id' => "1",
+                    'batch_row_id' => $idBatch,
+                    'message_type' => "event",
+                    'message_title' => $title,
+                    'message_source' => "qplay",
+                    'message_source' => "qplay",
+                    'visible' => "Y",
+                ]);
+
+            $newMessageSendId = \DB::table("qp_message_send")
+                ->insertGetId([
+                    'message_row_id' => $id2,
+                    'source_user_row_id' => \Auth::user()->row_id,
+                    'company_label' => $company,
+                    'need_push' => 1,
+                    'push_flag' => 0,
+                    'created_user' => \Auth::user()->row_id,
+                    'created_at' => $now,
+                    'reserve_at' => $schedule_datetime,
+                    'schedule_id' => $resultdata,
+                ]);
+            //TODO
+            /*
+            $MessageSendId = \DB::table("qp_user_message")
+                ->insertGetId([
+                    'project_row_id' => '1',
+                    'user_row_id' => \Auth::user()->row_id,
+                    'message_send_row_id' => $newMessageSendId,
+
+                ]);
+            */
+
+        }
 
     }
-
-    public function ExcelGet($realPath) {
-
-        Excel::load($realPath, function ($reader) {
-            $data = $reader->toArray();
-
-            $this->newPushBatchMessage($data);
-
-        });
-            /*TODO for use
-        Excel::load($realPath, function ($reader) {
-        $data = $reader->toArray();
-        echo("<br>");
-        $this->newPushBatchMessage($data);
-        });*/
-
-    }
-
-    public function getPushBatchServiceDataList($data) { //TODO
-
-    }
-
-    public function newPushBatchMessage($data) { //TODO
-
-    } //func newPushBatchMessage
 
 }

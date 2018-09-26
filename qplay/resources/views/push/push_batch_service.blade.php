@@ -1,5 +1,6 @@
 @include("layouts.lang")
 <?php
+use App\lib\ResultCode;
 $menu_name = "PUSH_BATCH_SERVICE";
 ?>
 @extends('layouts.admin_template')
@@ -16,12 +17,13 @@ $menu_name = "PUSH_BATCH_SERVICE";
            data-show-toggle="true"  data-sortable="true"
            data-striped="true" data-page-size="20" data-page-list="[5,10,20]"
            data-click-to-select="false" data-single-select="false">
-        <thead>
+       <thead>
         <tr>
             <th data-field="row_id" data-sortable="true" data-visible="false" data-searchable="false">ID</th>
             <th data-field="file_original" data-sortable="true" data-visible="true" data-searchable="false" data-formatter="downloadPushBatchExcel">檔案名稱</th>
             <th data-field="login_id" data-sortable="true" data-visible="true" data-searchable="false">上傳人員</th>
             <th data-field="created_at" data-sortable="true" data-visible="true" data-searchable="false">時間</th>
+            <th data-field="file_saved" data-sortable="true" data-visible="false" data-searchable="true">檔案存名稱</th>
         </tr>
         </thead>
     </table>
@@ -32,21 +34,20 @@ $menu_name = "PUSH_BATCH_SERVICE";
         function createdDateFormatter(value, row){
             return convertUTCToLocalDateTime(value);
         };
-        function downloadPushBatchExcel(value) {
-//           return '<a href="file/'+ value +'" download="'+ value +'">' + value + '</a>';
-           return '<a href="../storage/'+ value +'" download="'+ value +'">' + value + '</a>';
-        };
 
+        function downloadPushBatchExcel(value, row) {
+            console.log(row.file_saved);
+            return '<a href="../storage/'+row.file_saved+'" download="'+ value  +'">' + value + '</a>';
+        };
         function newPush() {
             $("#blockDialogTitle").text("新增預約推播");
             $("#appPushDetailMaintainDialog").modal('show');
         };
 
-        function saveBlockL(){
+        function saveBlockList(){
              $("#appPushDetailMaintainDialog").modal('hide');
                 var formData = new FormData();
                 formData.append('basicInfoFile',$('#doc')[0].files[0]);
-               // var $test = $('#doc')[0].files[0];
 
             $.ajax({
                 url: "./getdata",
@@ -54,10 +55,15 @@ $menu_name = "PUSH_BATCH_SERVICE";
                 data:formData,
                 contentType: false,
                 processData: false,
-
+                async: false,
                 success: function (d, status, xhr) {
-                    console.log("success");
-                    console.log(d);
+                    if(d.ResultCode == 1) {
+                          showMessageDialog('操作成功','資料匯入成功','',true);
+
+                    }
+                    else if(d.ResultCode == {{ResultCode::_999999_unknownError }}){
+                        showMessageDialog('錯誤','上傳檔案錯誤',d.Content);
+                    }
                    $('#gridBatchPushList').bootstrapTable('refresh');
                 },
                 error: function (jqXHR, textStatus, errorThrown)  {
@@ -65,8 +71,6 @@ $menu_name = "PUSH_BATCH_SERVICE";
                     console.log(jqXHR);
                 }
             });
-
-
 
         }
 
@@ -101,7 +105,7 @@ $menu_name = "PUSH_BATCH_SERVICE";
 
                 <div class="modal-footer">
                     <button type="submit"  class="btn btn-danger"
-                    onclick="saveBlockL()">{{trans("messages.SAVE")}}
+                    onclick="saveBlockList()">{{trans("messages.SAVE")}}
                     </button>
 
 
