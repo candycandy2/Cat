@@ -77,6 +77,10 @@ function CustomAPIEx(requestType, asyncType, requestAction, successCallback, fai
             success: requestSuccess,
             error: requestError
         });
+
+        if (window.ga !== undefined) {
+            window.ga.trackEvent('CustomAPI', requestAction, appKey, urlStr);
+        }
     } else {
         var storageData = JSON.parse(localStorage.getItem(keyItem));
         successCallback(storageData[0].result);

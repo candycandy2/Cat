@@ -25,7 +25,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
 
     // review
     function requestError(data) {
-        errorHandler(data,requestAction);
+        errorHandler(data, requestAction);
         if (failCallback) {
             failCallback();
         }
@@ -53,4 +53,7 @@ function QPlayAPI(requestType, requestAction, successCallback, failCallback, que
         error: requestError
     });
 
+    if (window.ga !== undefined) {
+        window.ga.trackEvent('QPlayAPI', requestAction, appKey, serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr);
+    }
 }
