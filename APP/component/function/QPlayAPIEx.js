@@ -62,4 +62,7 @@ function QPlayAPIEx(requestType, requestAction, successCallback, failCallback, q
         error: requestError
     });
 
+    if (window.ga !== undefined) {
+        window.ga.trackEvent('QPlayAPI', requestAction, appKey, serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr);
+    }
 }

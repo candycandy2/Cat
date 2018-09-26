@@ -51,4 +51,8 @@ function QStorageAPI(requestType, asyncType, requestAction, successCallback, fai
         success: requestSuccess,
         error: requestError
     });
+
+    if (window.ga !== undefined) {
+        window.ga.trackEvent('QStorageAPI', requestAction, appKey, serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr);
+    }
 }
