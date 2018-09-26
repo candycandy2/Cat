@@ -75,6 +75,9 @@ var notification = {
 }
 
 window.initialSuccess = function (data) {
+
+    window.ga.startTrackerWithId('UA-126404580-1', 'auto');
+
     //1. widgetlist
     checkWidgetListOrder();
 
