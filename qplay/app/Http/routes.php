@@ -259,6 +259,4 @@ Route::post('auto/uploadAppVersion', 'AppVersionController@uploadAppVersion');
 Route::any('/pushBatchService'          ,'pushController@pushBatchService');
 Route::any('/getPushBatchServiceList'   ,'pushController@getPushBatchServiceList');
 Route::any('/getdata'                   ,'pushController@newPushBatchData');
-//TODO candy
-Route::any('/pushSchedule'              ,'pushController@TestMessage');
-Route::any('/testspace'                 ,'pushController@Space');
+

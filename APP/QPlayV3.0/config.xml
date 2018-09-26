@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="1177" id="com.qplay.appqplaydev" ios-CFBundleVersion="1177" version="1.0.0.1177[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="1179" id="com.qplay.appqplaydev" ios-CFBundleVersion="1179" version="1.0.0.1179[Development]" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QPlay</name>
     <description>A sample Apache Cordova application that responds to the deviceready event.</description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
@@ -128,6 +128,9 @@
     <plugin name="cordova-plugin-statusbar" spec="../../plugins/cordova-plugin-statusbar" />
     <plugin name="cordova-plugin-appavailability" spec="../../plugins/cordova-plugin-appavailability" />
     <plugin name="cordova-plugin-cache-clear" spec="../../plugins/cordova-plugin-cache-clear" />
+    <plugin name="cordova-plugin-google-analytics" spec="^1.8.6">
+        <variable name="GMS_VERSION" value="11.0.1" />
+    </plugin>
     <plugin name="cordova-plugin-badge" spec="../../plugins/cordova-plugin-badge" />
     <engine name="ios" spec="~4.5.5" />
     <engine name="android" spec="~6.3.0" />

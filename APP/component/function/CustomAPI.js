@@ -48,4 +48,8 @@ function CustomAPI(requestType, asyncType, requestAction, successCallback, failC
         error: requestError
     });
 
+    if(window.ga !== undefined) {
+        window.ga.trackEvent('CustomAPI', requestAction, appKey, serverURL + "/" + appApiPath + "/public/v101/custom/" + appKey + "/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr);
+    }
+
 }

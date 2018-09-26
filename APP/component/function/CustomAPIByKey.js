@@ -55,7 +55,7 @@ function CustomAPIByKey(requestType, asyncType, key, secret, requestAction, succ
         }
     }
 
-    if (localStorage.getItem(key) === null) { } else {
+    if (localStorage.getItem(key) === null) {} else {
         var storageData = JSON.parse(localStorage.getItem(key));
         if (checkDataExpired(storageData[0].time, expiredTimeSeconds, 'ss')) {
             localStorage.removeItem(key);
@@ -85,6 +85,10 @@ function CustomAPIByKey(requestType, asyncType, key, secret, requestAction, succ
             success: requestSuccess,
             error: requestError
         });
+
+        if (window.ga !== undefined) {
+            window.ga.trackEvent('CustomAPI', requestAction, appKey, urlStr);
+        }
     } else {
         var storageData = JSON.parse(localStorage.getItem(key));
         successCallback(storageData[0].result);

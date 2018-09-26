@@ -286,12 +286,19 @@ class QPayTradeService
         //Step Final. Return Result
         $tradeSerialID = "T".str_pad($newTradeID, 6, "0", STR_PAD_LEFT);
 
+        $pointNow = $this->qpayMemberPointRepository->getPointNow($user->row_id);
+
+        if (is_null($pointNow)) {
+            $pointNow = 0;
+        }
+
         $result = [
             "result_code" => $resultCode,
             "message" => CommonUtil::getMessageContentByCode($resultCode),
             "content" => [
-                "trade_success" => $tradeSuccess,
-                "trade_ID" => $tradeSerialID
+                "trade_id" => $tradeSerialID,
+                "point_now" => $pointNow,
+                "trade_time" => time()
             ]
         ];
 
