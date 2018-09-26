@@ -321,9 +321,13 @@ class QPayTradeService
 
     /**
     * Get Trade Record for Shop
-    * @return trade record
+    * @param  uuid
+    * @param  startDate
+    * @param  endDate
+    * @param  pointTypeID optional, if null return all type
+    * @return array
     */
-    public function getTradeRecordShop($uuid, $startDate, $endDate, $pointTypeID)
+    public function getTradeRecordShop($uuid, $startDate, $endDate, $pointTypeID=null)
     {
         $userRowID = CommonUtil::getUserIdByUUID($uuid);
 
