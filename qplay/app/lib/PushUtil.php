@@ -195,8 +195,7 @@ class PushUtil
                 $schedule_datetime = intval($schedule_datetime) / 1000;
             }
 
-            //TODO 暂时加8小时
-            $schedule_datetime += 8 * 60 * 60;
+            $schedule_datetime += 60 * 60;
 
             $trigger = array("time"=>date("Y-m-d H:i:s",$schedule_datetime));
             $result["content"] = $schedule->createSingleSchedule($scheduleName, $payload, $trigger);
