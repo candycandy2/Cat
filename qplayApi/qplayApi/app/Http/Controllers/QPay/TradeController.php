@@ -127,12 +127,13 @@ class TradeController extends Controller
      * @return json
      */
     public function getTradeRecordShop(Request $request)
-    {
+    {   
+
         //parameter verify
         $validator = Validator::make($request->all(), [
             'start_date' => 'required|digits:10',
             'end_date' => 'required|digits:10',
-            'point_type_id' => 'required|numeric'
+            'point_type_id' => 'numeric'
         ], [
             'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
             'digits' => ResultCode::_999001_requestParameterLostOrIncorrect,

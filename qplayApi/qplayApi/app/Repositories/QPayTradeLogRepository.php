@@ -86,12 +86,12 @@ class QPayTradeLogRepository
      * @param  uuid
      * @param  startDate
      * @param  endDate
-     * @param  pointTypeID
+     * @param  pointTypeID optional, if null return all type
      * @return mixed
      */
-    public function getTradeRecordShop($userRowID, $startDate, $endDate, $pointTypeID)
+    public function getTradeRecordShop($userRowID, $startDate, $endDate, $pointTypeID=null)
     {
-        $result = $this->qpayTradeLog
+        $query = $this->qpayTradeLog
                     -> leftJoin("qpay_shop", "qpay_shop.row_id", "=", "qpay_trade_log.shop_row_id")
                     -> leftJoin("qpay_member_point", "qpay_member_point.row_id", "=", "qpay_trade_log.member_point_row_id")
                     -> leftJoin("qpay_point_store", "qpay_point_store.row_id", "=", "qpay_member_point.point_store_row_id")
@@ -102,9 +102,13 @@ class QPayTradeLogRepository
                               "qpay_trade_log.error_code",
                               "qpay_trade_log.created_at AS trade_time",
                               "qpay_point_type.name AS point_type_name")
-                    -> where("qpay_shop.user_row_id", "=", $userRowID)
-                    -> where("qpay_point_store.point_type_row_id", "=", $pointTypeID)
-                    -> where("qpay_trade_log.multiple_row_id", "=", 0)
+                    -> where("qpay_shop.user_row_id", "=", $userRowID);
+
+                    if(!is_null($pointTypeID)){
+                        $query = $query-> where("qpay_point_store.point_type_row_id", "=", $pointTypeID);
+                    }
+                    
+                    $result = $query-> where("qpay_trade_log.multiple_row_id", "=", 0)
                     -> where(DB::raw('UNIX_TIMESTAMP(qpay_trade_log.created_at)'),'>=', $startDate)
                     -> where(DB::raw('UNIX_TIMESTAMP(qpay_trade_log.created_at)'),'<=', $endDate)
                     -> orderBy("qpay_trade_log.created_at", "DESC")
