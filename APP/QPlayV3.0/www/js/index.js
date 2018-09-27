@@ -98,6 +98,10 @@ window.initialSuccess = function(data) {
                 reloadPage: true
             });
             $.mobile.changePage('#viewMain3');
+
+            if (window.ga !== undefined) {
+                window.ga.trackView('viewMain3');
+            }
         }
     } else {
 
@@ -111,11 +115,14 @@ window.initialSuccess = function(data) {
             }
             $.mobile.changePage('#viewMain3');
 
+            if (window.ga !== undefined) {
+                window.ga.trackView('viewMain3');
+            }
+
         }
     }
 
     appInitialFinish = true;
-    window.ga.setUserId(window.localStorage.getItem("loginid"));
 
     //3. addEventListener notification
     if (device.platform === "iOS") {
