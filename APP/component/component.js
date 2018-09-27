@@ -737,18 +737,18 @@ function checkAppVersion() {
 
             //1. 新增逻辑，只有QPlay允许用户选择更新
             var update_app = true;
-            if(appKey == qplayAppKey) {
+            if (appKey == qplayAppKey) {
                 //2. 新增逻辑，当新版本号为100的倍数时，强制用户更新
                 var latestVersion = data['content'].version_code;
                 var remainder = latestVersion % 100;
 
-                if(typeof remainder == 'number' && remainder != 0) {
+                if (typeof remainder == 'number' && remainder != 0) {
                     update_app = false;
                     window.sessionStorage.setItem('allowUpdateAPP', 'Y');
                 }
             }
 
-            if(update_app) {
+            if (update_app) {
                 //3. 更新维持原逻辑
                 // need to update app
                 window.checkVerTimer = setInterval(function() {
@@ -783,15 +783,15 @@ function checkAppVersion() {
                         }
                     } else {
                         //4. 新增逻辑，如果其他APP有widgetPage，也不用更新
-                        if(download_url.indexOf('widgetPage') != -1) {
+                        if (download_url.indexOf('widgetPage') != -1) {
                             //popup提示
                             loadingMask("hide");
-                            
+
                             $('#removeToQPlay').popup();
                             $('#removeToQPlay').show();
                             $('#removeToQPlay').popup('open');
 
-                            $('#closeRemoveMsg').on('click', function () {
+                            $('#closeRemoveMsg').on('click', function() {
                                 $('#removeToQPlay').popup('close');
                             });
 
@@ -820,7 +820,7 @@ function checkAppVersion() {
             var whiteList = new setWhiteList();
 
             //如果QPlay已安装最新版则不用更新（每次ViewAppSetting都可调用此API，及时掌握最新版本）
-            if(appKey == qplayAppKey) {
+            if (appKey == qplayAppKey) {
                 window.sessionStorage.setItem('allowUpdateAPP', 'N');
             }
 
