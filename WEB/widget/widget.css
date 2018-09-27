@@ -9,14 +9,12 @@
     height: 100%;
 }
 
+/* 顶部公告 */
 .top-bulletin {
     width: 100%;
-    height: 6vw;
-    z-index: 1;
-    line-height: 6.5vw;
-    position: relative;
-    background: rgba(155, 155, 155, 0.8);
-    font-size: 3.349vw;
+    height: 10vw;
+    background: #EDECEC;
+    display: none;
 }
 
 .top-bulletin > div {
@@ -24,14 +22,35 @@
     height: 100%;
 }
 
-.top-bulletin > div:nth-of-type(1) {
-    width: 90%;
-    text-indent: 1.5vw;
+.bulletin-close {
+    width: 12vw;
+}
+
+.bulletin-close img {
+    width: 8vw;
+    margin-top: 1vw;
+    margin-left: 3vw;
+}
+
+.bulletin-icon {
+    width: 8vw;
+}
+
+.bulletin-icon img {
+    width: 5.5vw;
+    margin-top: 2vw;
+}
+
+.bulletin-text {
+    width: 58vw;
+    line-height: 10.5vw;
+    font-size: 3.55vw;
+    color: #253137;
     overflow: hidden;
 }
 
-.top-bulletin > div:nth-of-type(1) span {
-    position: absolute;
+.bulletin-text span {
+    position: relative;
     -webkit-animation: marquee 10s linear infinite;
     -moz-animation: marquee 10s linear infinite;
     -ms-animation: marquee 10s linear infinite;
@@ -39,61 +58,68 @@
     animation: marquee 10s linear infinite;
 }
 
-.top-bulletin > div:nth-of-type(2) {
-    width: 10%;
-    text-align: center;
+.bulletin-link {
+    width: 22vw;
 }
 
-.cancel-bulletin {
-    width: 4vw;
-    margin-top: 1vw;
+.bulletin-link div {
+    width: 15vw;
+    height: 5.5vw;
+    background: #4FAEA5;
+    color: #FFF;
+    font-size: 3.14vw;
+    line-height: 6vw;
+    text-align: center;
+    margin-top: 2vw;
+    margin-left: 3vw;
+    border-radius: 2px;
 }
 
 /* Safari 和 Chrome */
 @-webkit-keyframes marquee {
     from {
-        left: 60%;
+        left: 95%;
     }
     to {
-        left: -80%;
+        left: -100%;
     }
 }
  
 /* Firefox */
 @-moz-keyframes marquee {
     from {
-        left: 60%;
+        left: 95%;
     }
     to {
-        left: -80%;
+        left: -100%;
     }
 }
  
 @-ms-keyframes marquee {
     0% {
-        left: 60%;
+        left: 95%;
     }
     100% {
-        left: -80%;
+        left: -100%;
     }
 }
  
 /* Opera */
 @-o-keyframes marquee {
     from {
-        left: 60%;
+        left: 95%;
     }
     to {
-        left: -80%;
+        left: -100%;
     }
 }
  
 @keyframes marquee {
     from {
-        left: 60%
+        left: 95%
     }
     to {
-        left: -80%
+        left: -100%
     }
 }
 
