@@ -1,9 +1,9 @@
-//QPlayAPITrade
+//QPlayAPIChangePwd
 //priority == "high" "low" "", default == "high"
 //timer == integer, default ==
 //asyncType == boolean, default == true
 
-function QPlayAPITrade(requestType, requestAction, password, tradeToken, successCallback, failCallback, queryData, queryStr, priority, timer, asyncType) {
+function QPlayAPIChangePwd(requestType, requestAction, oldType, newType, oldPwd, newPwd, successCallback, failCallback, queryData, queryStr, priority, timer, asyncType) {
     //API [checkAppVersion] [getSecurityList]
     //even though these 2 API were from QPlay, the API path is [/public/v101/qplay/],
     //but, when other APP call these 2 API,
@@ -42,18 +42,20 @@ function QPlayAPITrade(requestType, requestAction, password, tradeToken, success
     var signatureTime = getSignature("getTime");
     var signatureInBase64 = getSignature("getInBase64", signatureTime);
 
+    var headerData = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'App-Key': appKey,
+        'Signature-Time': signatureTime,
+        'Signature': signatureInBase64,
+        'token': loginData.token,
+        'push-token': loginData.pushToken
+    }
+    headerData[oldType] = oldPwd;
+    headerData[newType] = newPwd;
+
     $.ajax({
         type: requestType,
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            'App-Key': appKey,
-            'Signature-Time': signatureTime,
-            'Signature': signatureInBase64,
-            'token': loginData.token,
-            'push-token': loginData.pushToken,
-            'trade-pwd': password,
-            'trade-token': tradeToken
-        },
+        headers: headerData,
         url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
         data: queryData,
