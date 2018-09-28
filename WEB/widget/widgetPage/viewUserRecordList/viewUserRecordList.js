@@ -16,16 +16,20 @@ $("#viewUserRecordList").pagecontainer({
                 console.log(data);
 
                 if (data['result_code'] == '1') {
-                    var record_list = data['content'];
+                    var record_list = data['content']['store_record'];
                     var content = '';
 
                     for (var i in record_list) {
                         content += '<li class="user-record-list"><div><div>' +
-                            record_list[i]['store_record'].point_type + ' / No.' + record_list[i]['store_record'].store_id +
-                            '</div><div>TWD ' + record_list[i]['store_record'].store_total +
-                            '</div></div><div>' + record_list[i]['store_record'].store_time + '</div></li>';
+                            record_list[i].point_type + ' / No.' + record_list[i].store_id +
+                            '</div><div>TWD ' + record_list[i].store_total +
+                            '</div></div><div>' + record_list[i].store_time + '</div></li>';
                     }
                     $('.user-record-ul').html('').append(content);
+
+                    loadingMask("hide");
+
+                    setRecordListHeight();
                 }
             };
 
@@ -45,18 +49,22 @@ $("#viewUserRecordList").pagecontainer({
                 console.log(data);
 
                 if (data['result_code'] == '1') {
-                    var record_list = data['content'];
+                    var record_list = data['content']['trade_record'];
                     var content = '';
 
                     for (var i in record_list) {
-                        if (record_list[i]['trade_record'].trade_success == 'Y') {
-                            content += '<li class="user-record-list"><div><div>' + record_list[i]['trade_record'].shop_name +
-                                ' / No.' + record_list[i]['trade_record'].trade_id + '</div><div>TWD -' +
-                                record_list[i]['trade_record'].trade_point + '</div></div><div>' +
-                                record_list[i]['trade_record'].trade_time + '</div></li>';
+                        if (record_list[i].trade_success == 'Y') {
+                            content += '<li class="user-record-list"><div><div>' + record_list[i].shop_name +
+                                ' / No.' + record_list[i].trade_id + '</div><div>TWD -' +
+                                record_list[i].trade_point + '</div></div><div>' +
+                                record_list[i].trade_time + '</div></li>';
                         }
                     }
                     $('.user-record-ul').html('').append(content);
+
+                    loadingMask("hide");
+
+                    setRecordListHeight();
                 }
             };
 
@@ -65,6 +73,20 @@ $("#viewUserRecordList").pagecontainer({
             var __construct = function () {
                 QPlayAPIEx("GET", "getTradeRecordEmp", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
             }();
+        }
+
+        //设置布局视口
+        function setRecordListHeight() {
+            var headHeight = $('#viewUserRecordList .page-header').height();
+            var mainHeight = $('.user-record-ul').height();
+            var totalHeight;
+
+            if (device.platform === "iOS") {
+                totalHeight = (headHeight + mainHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (headHeight + mainHeight).toString();
+            }
+            $('.user-record > div').css('height', totalHeight + 'px');
         }
 
 
@@ -96,6 +118,7 @@ $("#viewUserRecordList").pagecontainer({
 
         /********************************** dom event *************************************/
         $('#userRefresh').on('click', function () {
+            loadingMask("show");
             var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
             if (queryData['type'] == 'store') {
                 getStoreRecord(queryData['start'], queryData['end']);

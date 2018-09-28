@@ -76,7 +76,7 @@ $("#viewUserQueryRecord").pagecontainer({
                 var queryData = {
                     type: type,
                     start: new Date(startVal + ' 00:00:00').getTime() / 1000,
-                    end: new Date(startVal + ' 23:59:59').getTime() / 1000
+                    end: new Date(endVal + ' 23:59:59').getTime() / 1000
                 };
                 window.sessionStorage.setItem('query_user_record', JSON.stringify(queryData));
             }

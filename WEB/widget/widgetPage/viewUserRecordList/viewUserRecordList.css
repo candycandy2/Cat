@@ -5,7 +5,10 @@
 
 .user-record {
     width: 100vw;
-    height: 120vw;
+    height: 100vh;
+    position: fixed;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .user-record ul li {
