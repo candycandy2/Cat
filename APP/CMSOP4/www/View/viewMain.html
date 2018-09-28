@@ -264,6 +264,39 @@
                 });
             }
 
+            /*function markerText(nowMarker) {
+
+                //jQuery bind Marker title
+                //$(".gmnoprint").each(function(index, dom) {
+                $(window.allMarker).each(function(index, item) {
+                    if (item.attribution.source == nowMarker.attribution.source) {                
+                        //var title = $(dom).prop("title");
+                        var title = item.title;
+
+                        if (title.length > 0) {
+
+                            //marker.setIcon will recovery the css style,
+                            //so need to change it after every action.
+                            $(".gmnoprint").css({
+                                opacity: 1,
+                                overflow: "visible"
+                            });
+
+                            $(".gmnoprint").find("img").css({
+                                opacity: 0
+                            });
+
+                            if ($(".gmnoprint").find(".test").length > 0) {
+                                return;
+                            }
+
+                            //$("<div class='test'>[ " + title + " ]</div>").appendTo($(dom));
+                            $("<div class='test'>[ " + title + " ]</div>").appendTo($(".gmnoprint"));
+                        }
+                    }
+                });
+            }*/
+
             function markerIcon(nowMarker) {
                 $(window.allMarker).each(function(index, marker) {
                     //recovery the icon of all marker

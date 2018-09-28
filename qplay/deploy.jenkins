@@ -1,25 +1,47 @@
+<strong>Sep-28-18 11:30:58</strong>
+- Reason : 
+<p style=margin-bottom:-12px;margin-left:16px;>592</p>
+<p style=margin:-12px;margin-left:16px;>592</p>
+<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
+<strong>Sep-28-18 11:30:58</strong>
+- Reason : 592
+- PR# : daily build
+<strong>Sep-28-18 08:20:33</strong>
+- Reason : 
+<p style=margin-bottom:-12px;margin-left:16px;>591</p>
+<p style=margin:-12px;margin-left:16px;>591</p>
+<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
+<strong>Sep-28-18 08:20:33</strong>
+- Reason : 591
+- PR# : daily build
+<strong>Sep-28-18 00:31:36</strong>
+- Reason : 
+<p style=margin-bottom:-12px;margin-left:16px;>590</p>
+<p style=margin:-12px;margin-left:16px;>590</p>
+<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
+<strong>Sep-28-18 00:31:36</strong>
+- Reason : 590
+- PR# : daily build
 <strong>Sep-27-18 16:58:11</strong>
 - Reason : 
-<p style=margin:-12px;margin-left:16px;>589</p>
-<p style=margin:-12px;margin-left:16px;>589</p>
+<p style="margin-bottom:-12px;margin-left:16px;">589</p>
+<p style="margin:-12px;margin-left:16px;">589</p>
 <p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
 <strong>Sep-27-18 16:58:11</strong>
 - Reason : 589
 - PR# : daily build
-<strong>Sep-27-18 16:53:32
-</strong>
+<strong>Sep-27-18 16:53:32</strong>
 - Reason : 
-<p style=margin:-12px;margin-left:16px;>588</p>
-<p style=margin:-12px;margin-left:16px;>588</p>
-<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
-<strong>Sep-27-18 16:53:32
-</strong>
+<p style="margin-bottom:-12px;margin-left:16px;">588</p>
+<p style="margin:-12px;margin-left:16px;">588</p>
+<p style="margin:-12px;margin-left:0px;">- PR# : daily build</p>
+<strong>Sep-27-18 16:53:32</strong>
 - Reason : 588
 - PR# : daily build
 <strong>Set-26-18 16:11:27</strong>
 - Reason : 
-<p style="margin:-12px;margin-left:16px;">1. App管理的版本控制，出現多個版本可以 publish/unpublish</p>
-<p style="margin:-12px;margin-left:16px;">2. 上架理由二</blockquote></p>
+<p style="margin-bottom:-12px;margin-left:16px;">1. App管理的版本控制，出現多個版本可以 publish/unpublish</p>
+<p style="margin:-12px;margin-left:16px;">2. 上架理由二</p>
 <p style="margin:-12px;margin-left:0px;">- PR# : 3428</p>
 <strong>Set-19-18 17:22:33</strong>
 - Reason : support iOS 10.0

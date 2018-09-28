@@ -46,7 +46,9 @@ $("#viewUserChangePwd").pagecontainer({
         function changeTradePwd(oldPwd, newPwd) {
             var self = this;
 
-            this.successCallback = function () {
+            this.successCallback = function (data) {
+                console.log(data);
+
                 if (data['result_code'] == '1') {
                     //popup:交易密码更改成功
                     //返回上一页
@@ -58,7 +60,7 @@ $("#viewUserChangePwd").pagecontainer({
             this.failCallback = function () { };
 
             var __construct = function () {
-                QPlayAPIEx("GET", "changeTradePwdForAPP", oldPwd, newPwd, self.successCallback, self.failCallback, null, null, "low", 30000, true);
+                QPlayAPIChangePwd("GET", "changeTradePwdForAPP", 'old-trade-pwd', 'new-trade-pwd', oldPwd, newPwd, self.successCallback, self.failCallback, null, null, "low", 30000, true);
             }();
         }
 
@@ -126,8 +128,8 @@ $("#viewUserChangePwd").pagecontainer({
                             //提示新密码输入不一致
                             console.log('新密码输入不一致');
                         } else {
-                            //Call API
-                            //changeTradePwd(oldPwd, newPwd);
+                            //API
+                            changeTradePwd(oldPwd, newPwd);
                         }
                     }
                 }

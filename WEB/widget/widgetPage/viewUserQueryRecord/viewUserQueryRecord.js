@@ -75,8 +75,8 @@ $("#viewUserQueryRecord").pagecontainer({
             if (type == 'store' || type == 'trade') {
                 var queryData = {
                     type: type,
-                    start: startVal.replace(/\//g, '-').substring(0, 7),
-                    end: endVal.replace(/\//g, '-').substring(0, 7)
+                    start: new Date(startVal + ' 00:00:00').getTime() / 1000,
+                    end: new Date(endVal + ' 23:59:59').getTime() / 1000
                 };
                 window.sessionStorage.setItem('query_user_record', JSON.stringify(queryData));
             }
@@ -143,10 +143,10 @@ $("#viewUserQueryRecord").pagecontainer({
                 var typeVal = $('#userQueryType').val();
 
                 if (typeVal == '1') {
-                    checkForm('store');
+                    checkForm('trade');
 
                 } else if (typeVal == '2') {
-                    checkForm('trade')
+                    checkForm('store')
                 }
 
                 checkWidgetPage('viewUserRecordList', pageVisitedList);
