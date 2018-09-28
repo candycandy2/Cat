@@ -1,6 +1,7 @@
 $("#viewUserSelectShop").pagecontainer({
     create: function (event, ui) {
 
+        //生成店家列表
         function createShopList() {
             var shop_list = JSON.parse(window.sessionStorage.getItem('shop_list'));
             var content = '';
@@ -12,7 +13,25 @@ $("#viewUserSelectShop").pagecontainer({
                     '</div><div><img src="img/nextpage.png"></div></li>';
             }
             $('.user-select-shop ul').html('').append(content);
+
+            setShopListHeight();
         }
+
+        //设置高度
+        function setShopListHeight() {
+            var headHeight = $('#viewUserSelectShop .page-header').height();
+            var titleHeight = $('.user-select-title').height();
+            var mainHeight = $('.user-select-shop').height();
+            var totalHeight;
+
+            if (device.platform === "iOS") {
+                totalHeight = (headHeight + titleHeight + mainHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (headHeight + titleHeight + mainHeight).toString();
+            }
+            $('.user-select > div').css('height', totalHeight + 'px');
+        }
+
 
         /********************************** page event ***********************************/
         $("#viewUserSelectShop").on("pagebeforeshow", function (event, ui) {
@@ -20,7 +39,7 @@ $("#viewUserSelectShop").pagecontainer({
         });
 
         $("#viewUserSelectShop").one("pageshow", function (event, ui) {
-            //createShopList();
+            createShopList();
         });
 
         $("#viewUserSelectShop").on("pageshow", function (event, ui) {
@@ -32,12 +51,11 @@ $("#viewUserSelectShop").pagecontainer({
         });
 
 
-
         /********************************** dom event *************************************/
         $('.user-select-shop').on('click', '.user-select-list', function () {
             //记录 shop_id和shop_name
-            var shop_id = $(this).attr('data-id');
-            var shop_name = $(this).children().eq(0).text();
+            var shop_id = $(this).data('id');
+            var shop_name = $(this).children(':first').text();
             var shop_obj = {
                 'shop_id': shop_id,
                 'shop_name': shop_name
@@ -45,6 +63,7 @@ $("#viewUserSelectShop").pagecontainer({
             window.sessionStorage.setItem('shop_info', JSON.stringify(shop_obj));
             checkWidgetPage('viewUserInputAmount', pageVisitedList);
         });
+
 
     }
 });

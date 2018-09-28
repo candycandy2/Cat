@@ -12,7 +12,9 @@ $("#viewUserRecordList").pagecontainer({
             var self = this;
             var queryStr = "&start_date=" + startDate + "&end_date=" + endDate;
 
-            this.successCallback = function () {
+            this.successCallback = function (data) {
+                console.log(data);
+
                 if (data['result_code'] == '1') {
                     var record_list = data['content'];
                     var content = '';
@@ -37,9 +39,11 @@ $("#viewUserRecordList").pagecontainer({
         //获取交易记录
         function getTradeRecord(startDate, endDate) {
             var self = this;
-            var queryStr = "&emp_type=emp&start_date=" + startDate + "&end_date=" + endDate;
+            var queryStr = "&start_date=" + startDate + "&end_date=" + endDate;
 
-            this.successCallback = function () {
+            this.successCallback = function (data) {
+                console.log(data);
+
                 if (data['result_code'] == '1') {
                     var record_list = data['content'];
                     var content = '';
@@ -59,7 +63,7 @@ $("#viewUserRecordList").pagecontainer({
             this.failCallback = function () { };
 
             var __construct = function () {
-                QPlayAPIEx("GET", "getTradeRecord", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
+                QPlayAPIEx("GET", "getTradeRecordEmp", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
             }();
         }
 
@@ -74,14 +78,14 @@ $("#viewUserRecordList").pagecontainer({
         });
 
         $("#viewUserRecordList").on("pageshow", function (event, ui) {
-            // var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
-            // if (queryData['type'] == 'store') {
-            //     getStoreRecord(queryData['start'], queryData['end']);
+            var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
+            if (queryData['type'] == 'store') {
+                getStoreRecord(queryData['start'], queryData['end']);
 
-            // } else if (queryData['type'] == 'trade') {
-            //     getTradeRecord(queryData['start'], queryData['end']);
+            } else if (queryData['type'] == 'trade') {
+                getTradeRecord(queryData['start'], queryData['end']);
 
-            // }
+            }
         });
 
         $("#viewUserRecordList").on("pagehide", function (event, ui) {
@@ -92,14 +96,14 @@ $("#viewUserRecordList").pagecontainer({
 
         /********************************** dom event *************************************/
         $('#userRefresh').on('click', function () {
-            // var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
-            // if (queryData['type'] == 'store') {
-            //     getStoreRecord(queryData['start'], queryData['end']);
+            var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
+            if (queryData['type'] == 'store') {
+                getStoreRecord(queryData['start'], queryData['end']);
 
-            // } else if (queryData['type'] == 'trade') {
-            //     getTradeRecord(queryData['start'], queryData['end']);
+            } else if (queryData['type'] == 'trade') {
+                getTradeRecord(queryData['start'], queryData['end']);
 
-            // }
+            }
         });
 
 

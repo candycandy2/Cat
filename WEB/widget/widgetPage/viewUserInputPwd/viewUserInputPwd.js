@@ -13,9 +13,12 @@ $("#viewUserInputPwd").pagecontainer({
             trade_price = window.sessionStorage.getItem('trade_price');
             shop_id = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_id'];
             shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
-            var queryStr = '&emp_no=' + loginData['emp_no'] + '&trade_price=' + trade_price + '&shop_id=' + shop_id;
 
-            this.successCallback = function () {
+            var queryStr = '&emp_no=' + loginData['emp_no'] + '&price=' + trade_price + '&shop_id=' + shop_id;
+
+            this.successCallback = function (data) {
+                console.log(data);
+
                 if (data['result_code'] == '1') {
                     trade_token = data['content'].trade_token;
                     $('.user-password-next').addClass('button-active');
@@ -33,18 +36,22 @@ $("#viewUserInputPwd").pagecontainer({
         //进行交易
         function makeNewTrade(pwd, shop, price, token) {
             var self = this;
-            var queryStr = '&emp_no=' + loginData['emp_no'] + '&shop_id=' + shop + '&price=' + price + '&trade_token=' + token;
+            var queryStr = '&emp_no=' + loginData['emp_no'] + '&shop_id=' + shop + '&price=' + price;
 
-            this.successCallback = function () {
+            this.successCallback = function (data) {
+                console.log(data);
 
                 var trade_info = {};
                 trade_info['shop_name'] = shop_name;
+                trade_info['trade_id'] = data['content'].trade_id;
+                trade_info['point_now'] = data['content'].point_now;
+
+                var tradeDate = new Date(data['content'].trade_time * 1000).toLocaleDateString('zh');
+                var tradeTime = new Date(data['content'].trade_time * 1000).toTimeString().substr(0, 5);
+                trade_info['trade_time'] = tradeDate + ' ' + tradeTime;
 
                 if (data['result_code'] == '1') {
                     //1. save result
-                    trade_info['trade_id'] = data['content'].trade_id;
-                    trade_info['point_now'] = data['content'].point_now;
-                    trade_info['trade_time'] = data['content'].trade_time;
                     trade_info['trade_status'] = langStr['wgt_068'];//交易成功
                     trade_info['trade_point'] = price;
                     
@@ -53,21 +60,21 @@ $("#viewUserInputPwd").pagecontainer({
                     window.sessionStorage.setItem('user_point_dirty', 'Y');
 
                 } else {
-                    trade_info['trade_id'] = data['content'].trade_id;
-                    trade_info['point_now'] = data['content'].point_now;
-                    trade_info['trade_time'] = data['content'].trade_time;
                     trade_info['trade_status'] = langStr['wgt_069'];//交易失敗
                     trade_info['error_reason'] = data['message'];//失败原因
                     trade_info['trade_point'] = '0';
                 }
 
                 window.sessionStorage.setItem('trade_result', JSON.stringify(trade_info));
+                checkWidgetPage('viewUserTradeResult', pageVisitedList);
             };
 
-            this.failCallback = function () { };
+            this.failCallback = function () {
+                loadingMask("hide");
+            };
 
             var __construct = function () {
-                QPlayAPIPwd("GET", pwd, "newTrade", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
+                QPlayAPITrade("GET", "newTrade", pwd, token, self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
             }();
         }
 
@@ -79,6 +86,7 @@ $("#viewUserInputPwd").pagecontainer({
             $('.user-password-next').removeClass('button-active');
         }
 
+
         /********************************** page event ***********************************/
         $("#viewUserInputPwd").on("pagebeforeshow", function (event, ui) {
 
@@ -89,9 +97,8 @@ $("#viewUserInputPwd").pagecontainer({
         });
 
         $("#viewUserInputPwd").on("pagehide", function (event, ui) {
-
+            initialPage();
         });
-
 
 
         /********************************** dom event *************************************/
@@ -120,7 +127,7 @@ $("#viewUserInputPwd").pagecontainer({
                 $('.user-password-next').addClass('button-active');
                 //如果已输入4位数密码，就不能再输入
                 $('.num-keyboard[data-value]').removeClass('enter-pwd');
-                //getTradeToken();
+                getTradeToken();
             }
 
         })
@@ -144,12 +151,11 @@ $("#viewUserInputPwd").pagecontainer({
         $('.user-password-next').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
-                //Call API make trade
-                //makeNewTrade(pwdNum, shop_id, trade_price, trade_token);
-                checkWidgetPage('viewUserTradeResult', pageVisitedList);
+                //API
+                loadingMask("show");
+                makeNewTrade(pwdNum, shop_id, trade_price, trade_token);
             }
         });
-
 
 
     }

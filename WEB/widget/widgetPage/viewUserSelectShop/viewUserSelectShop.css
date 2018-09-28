@@ -6,8 +6,10 @@
 .user-select {
     width: 100vw;
     height: 100vh;
-    position: fixed;
     background: #ECEEEF;
+    position: fixed;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .user-select-title {

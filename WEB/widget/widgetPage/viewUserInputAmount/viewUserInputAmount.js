@@ -1,7 +1,8 @@
 $("#viewUserInputAmount").pagecontainer({
     create: function (event, ui) {
 
-        var payNum = '';
+        var payNum = '',
+            point_now;
 
         function initialPage() {
             payNum = '';
@@ -9,34 +10,37 @@ $("#viewUserInputAmount").pagecontainer({
             $('.user-pay-next').removeClass('button-active');
         }
 
+        //获取选择的店家和余额
         function setShopAndPoint() {
-            var shop_name = JSON.parse(window.sessionStorage.getItem('sho_info'))['shop_name'];
+            var shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
             $('.user-pay-shop').text(shop_name);
 
-            var point_now = window.sessionStorage.getItem('user_point');
+            point_now = window.sessionStorage.getItem('user_point');
             $('.user-pay-total').text(point_now);
         }
 
+
         /********************************** page event ***********************************/
         $("#viewUserInputAmount").on("pagebeforeshow", function (event, ui) {
-            //setShopAndPoint();
+            initialPage();
+            //API
+            setShopAndPoint();
         });
 
         $("#viewUserInputAmount").one("pageshow", function (event, ui) {
-            //setShopAndPoint();
             $('.user-pay-name').text(loginData['loginid']);
             $('.user-pay-no').text(loginData['emp_no']);
+            //API
+            setShopAndPoint();
         });
 
         $("#viewUserInputAmount").on("pageshow", function (event, ui) {
-            //var point_now =  window.sessionStorage.getItem('user_point');
-            //$('.user-pay-total').text(point_now);
+
         });
 
         $("#viewUserInputAmount").on("pagehide", function (event, ui) {
 
         });
-
 
 
         /********************************** dom event *************************************/
@@ -51,17 +55,14 @@ $("#viewUserInputAmount").pagecontainer({
 
         //输入金额
         $('.num-keyboard[data-value]').on('click', function () {
-            var num = $(this).attr('data-value');
-            //判断第一次输入是否为0
-            if (num !== '0' || payNum !== '') {
+            var num = $(this).data('value');
 
-                var cur = payNum + num;
-                if(Number(cur) < 10000) {
-                    payNum = cur;
+            //判断第一次输入是否为0
+            if (num !== 0 || payNum !== '') {
+
+                if(payNum.length < point_now.length) {
+                    payNum += num;
                     $('.user-pay-number').text(payNum);
-                } else {
-                    //popup'您的余额不足喔'
-                    popupMsgInit('.overBudgetMsg');
                 }
 
             }
@@ -70,8 +71,7 @@ $("#viewUserInputAmount").pagecontainer({
             if(payNum.length > 0) {
                 $('.user-pay-next').addClass('button-active');
             }
-
-        })
+        });
 
         //回删输入金额
         $('.user-pay-clear-one').on('click', function () {
@@ -96,7 +96,7 @@ $("#viewUserInputAmount").pagecontainer({
             var has = $(this).hasClass('button-active');
             if(has) {
                 //判断输入金额是否小于剩余金额
-                if (Number(payNum) < 10000) {
+                if (Number(payNum) < Number(point_now)) {
                     window.sessionStorage.setItem('trade_price', payNum);
                     checkWidgetPage('viewUserInputPwd', pageVisitedList);
                 } else {
@@ -105,7 +105,6 @@ $("#viewUserInputAmount").pagecontainer({
                 }
             }
         });
-
 
 
     }
