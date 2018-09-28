@@ -2,11 +2,13 @@ $("#viewUserPayMain").pagecontainer({
     create: function (event, ui) {
 
 
-
+        //获取用户信息
         function getQPayInfoEmp() {
             var self = this;
 
-            this.successCallback = function () {
+            this.successCallback = function (data) {
+                console.log(data);
+
                 if(data['result_code'] == '1') {
                     //1. 消费券余额
                     var point_now = data['content'].point_now;
@@ -27,26 +29,15 @@ $("#viewUserPayMain").pagecontainer({
             }();
         }
 
+        //获取到期日
         function getDueDay() {
             var year = new Date().getFullYear().toString();
             return new Date(year + '/12/31').toLocaleDateString(browserLanguage, { year: 'numeric', month: 'long', day: 'numeric' })
         }
 
+        
         /********************************** page event ***********************************/
         $("#viewUserPayMain").on("pagebeforeshow", function (event, ui) {
-            
-        });
-
-        $("#viewUserPayMain").one("pageshow", function (event, ui) {
-            var dueDay = getDueDay();
-            $('.due-day').text(dueDay);
-            $('.user-main-name').text(loginData['loginid']);
-            $('.user-main-no').text(loginData['emp_no']);
-            //Call API
-            //getQPayInfoEmp();
-        });
-
-        $("#viewUserPayMain").on("pageshow", function (event, ui) {
             var dirty = window.sessionStorage.getItem('user_point_dirty');
             if(dirty == 'Y') {
                 //update余额
@@ -56,10 +47,22 @@ $("#viewUserPayMain").pagecontainer({
             }
         });
 
-        $("#viewUserPayMain").on("pagehide", function (event, ui) {
+        $("#viewUserPayMain").one("pageshow", function (event, ui) {
+            var dueDay = getDueDay();
+            $('.due-day').text(dueDay);
+            $('.user-main-name').text(loginData['loginid']);
+            $('.user-main-no').text(loginData['emp_no']);
+            //API
+            getQPayInfoEmp();
+        });
+
+        $("#viewUserPayMain").on("pageshow", function (event, ui) {
 
         });
 
+        $("#viewUserPayMain").on("pagehide", function (event, ui) {
+
+        });
 
 
         /********************************** dom event *************************************/

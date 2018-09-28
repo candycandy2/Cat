@@ -29,8 +29,7 @@ $("#viewUserTradeResult").pagecontainer({
             $('.trade-time').text(trade_result['trade_time']);
             $('.trade-money').text(trade_result['point_now']);
 
-            //3. 交易结果有特殊的返回逻辑
-            window.sessionStorage.setItem('viewUserTradeResult_backTo', backToPage);
+            loadingMask("hide");
         }
 
 
@@ -40,13 +39,13 @@ $("#viewUserTradeResult").pagecontainer({
         });
 
         $("#viewUserTradeResult").one("pageshow", function (event, ui) {
-            //test
+            //backkey
             window.sessionStorage.setItem('viewUserTradeResult_backTo', backToPage);
         });
 
         $("#viewUserTradeResult").on("pageshow", function (event, ui) {
-            //获取交易结果
-            //getTradeResult();
+            //API
+            getTradeResult();
         });
 
         $("#viewUserTradeResult").on("pagehide", function (event, ui) {
