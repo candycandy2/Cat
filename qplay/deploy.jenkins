@@ -1,3 +1,32 @@
+<strong>Sep-27-18 16:58:11</strong>
+- Reason : 
+<p style=margin:-12px;margin-left:16px;>589</p>
+<p style=margin:-12px;margin-left:16px;>589</p>
+<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
+<strong>Sep-27-18 16:58:11</strong>
+- Reason : 589
+- PR# : daily build
+<strong>Sep-27-18 16:53:32
+</strong>
+- Reason : 
+<p style=margin:-12px;margin-left:16px;>588</p>
+<p style=margin:-12px;margin-left:16px;>588</p>
+<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
+<strong>Sep-27-18 16:53:32
+</strong>
+- Reason : 588
+- PR# : daily build
+<strong>Set-26-18 16:11:27</strong>
+- Reason : 
+<p style="margin:-12px;margin-left:16px;">1. App管理的版本控制，出現多個版本可以 publish/unpublish</p>
+<p style="margin:-12px;margin-left:16px;">2. 上架理由二</blockquote></p>
+<p style="margin:-12px;margin-left:0px;">- PR# : 3428</p>
+<strong>Set-19-18 17:22:33</strong>
+- Reason : support iOS 10.0
+- PR# : 3407
+
+
+deploy_ver=586 deploy_time=Sep-27-18 00:34:51
 deploy_ver=585 deploy_time=Sep-26-18 00:47:41
 deploy_ver=584 deploy_time=Sep-25-18 00:40:43
 deploy_ver=583 deploy_time=Sep-24-18 00:44:32

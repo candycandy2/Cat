@@ -108,6 +108,13 @@ $("#viewMain3").pagecontainer({
 
             }
 
+            //关闭公告，减去高度
+            var closeBulletin = parseInt(window.sessionStorage.getItem('closeBulletin'));
+            if(closeBulletin !== null) {
+                setHomepageHeight();
+                window.sessionStorage.removeItem('closeBulletin');
+            }
+
         });
 
         /********************************** page event ***********************************/

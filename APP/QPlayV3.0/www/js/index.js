@@ -76,7 +76,13 @@ var notification = {
 
 window.initialSuccess = function(data) {
 
-    window.ga.startTrackerWithId('UA-126404580-1', 'auto');
+    if (loginData["versionName"].indexOf("Staging") !== -1) {
+        window.ga.startTrackerWithId('UA-126559228-1', 'auto');
+    } else if (loginData["versionName"].indexOf("Development") !== -1) {
+        window.ga.startTrackerWithId('UA-126404580-1', 'auto');
+    } else {
+        window.ga.startTrackerWithId('UA-126570525-1', 'auto');
+    }
 
     //1. widgetlist
     checkWidgetListOrder();
@@ -92,6 +98,10 @@ window.initialSuccess = function(data) {
                 reloadPage: true
             });
             $.mobile.changePage('#viewMain3');
+
+            if (window.ga !== undefined) {
+                window.ga.trackView('viewMain3');
+            }
         }
     } else {
 
@@ -105,11 +115,14 @@ window.initialSuccess = function(data) {
             }
             $.mobile.changePage('#viewMain3');
 
+            if (window.ga !== undefined) {
+                window.ga.trackView('viewMain3');
+            }
+
         }
     }
 
     appInitialFinish = true;
-    window.ga.setUserId(window.localStorage.getItem("loginid"));
 
     //3. addEventListener notification
     if (device.platform === "iOS") {
