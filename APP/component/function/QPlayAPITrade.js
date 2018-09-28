@@ -1,9 +1,9 @@
-//QPlayAPIPwd
+//QPlayAPITrade
 //priority == "high" "low" "", default == "high"
 //timer == integer, default ==
 //asyncType == boolean, default == true
 
-function QPlayAPIPwd(requestType, password, requestAction, successCallback, failCallback, queryData, queryStr, priority, timer, asyncType) {
+function QPlayAPITrade(requestType, password, tradeToken, requestAction, successCallback, failCallback, queryData, queryStr, priority, timer, asyncType) {
     //API [checkAppVersion] [getSecurityList]
     //even though these 2 API were from QPlay, the API path is [/public/v101/qplay/],
     //but, when other APP call these 2 API,
@@ -51,7 +51,8 @@ function QPlayAPIPwd(requestType, password, requestAction, successCallback, fail
             'Signature': signatureInBase64,
             'token': loginData.token,
             'push-token': loginData.pushToken,
-            'trade_pwd': password
+            'trade-pwd': password,
+            'trade-token': tradeToken
         },
         url: serverURL + "/" + appApiPath + "/public/v101/qplay/" + requestAction + "?lang=" + browserLanguage + "&uuid=" + loginData.uuid + queryStr,
         dataType: "json",
