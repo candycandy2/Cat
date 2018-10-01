@@ -4,6 +4,7 @@ namespace App\Http\Controllers\QPay;
 
 use App\Http\Controllers\Controller;
 use App\Services\QPayMemberService;
+use App\Services\LogService;
 use Illuminate\Http\Request;
 use App\lib\Verify;
 use App\lib\ResultCode;
@@ -18,10 +19,13 @@ class MemberController extends Controller
      /**
      * qpalyAccountController constructor.
      * @param UserService $qpayMemberService
+     * @param LogService $logService
      */
-    public function __construct(QPayMemberService $qpayMemberService)
+    public function __construct(QPayMemberService $qpayMemberService,
+                                LogService $logService)
     {
         $this->qpayMemberService = $qpayMemberService;
+        $this->logService = $logService;
     }
 
     /**
@@ -59,9 +63,19 @@ class MemberController extends Controller
 
         DB::beginTransaction();
         try {
-            $updateRs = $this->qpayMemberService
-                             ->changeTradPassword($userInfo->row_id, $oldPwd,$newPwd);
 
+                $nowTimestamp = time(); 
+                $now = date('Y-m-d H:i:s',$nowTimestamp);
+
+                $updateRs = $this->qpayMemberService
+                                 ->changeTradPassword($userInfo->row_id, $oldPwd, $newPwd);
+
+                $this->logService
+                     ->writePasswordLog($userInfo->row_id,
+                                            LogService::PWD_TYPE_QPAY,
+                                            LogService::PWD_ACTION_CHANGE,
+                                            $userInfo->row_id,
+                                            $now);
             DB::commit();
 
         } catch (\Exception $e) {
