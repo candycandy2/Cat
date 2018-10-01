@@ -38,17 +38,17 @@ var panel = htmlContent +
     '</div>' +
     '<div class="panel-content" id="mypanelviewClockin">'
     //+       '<span class="panel-text">補刷卡申請</span>'
-    + 
+    +
     '<span class="panel-text">' + langStr["str_189"] + '</span>' +
-    '</div>' + 
+    '</div>' +
     '<div class="panel-content" id="mypanelviewOvertimeSubmit">'
     //+       '<span class="panel-text">加班申請</span>'
-    + 
+    +
     '<span class="panel-text">' + langStr["str_199"] + '</span>' +
     '</div>' +
     '<div class="panel-content" id="mypanelviewOvertimeQuery">'
     //+       '<span class="panel-text">加班查詢/時數登入</span>'
-    + 
+    +
     '<span class="panel-text">' + langStr["str_207"] + '</span>' +
     '</div>' +
     '</div>' +

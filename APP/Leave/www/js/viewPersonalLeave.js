@@ -1,11 +1,16 @@
-var leaveid = "", leaveType = "", agentid = "";
-var beginDate = "", endDate = "", beginTime = "", endTime = "";
+var leaveid = "",
+    leaveType = "",
+    agentid = "";
+var beginDate = "",
+    endDate = "",
+    beginTime = "",
+    endTime = "";
 var viewPersonalLeaveBeforeshow = false;
 var leaveTimetab = "leaveTime-tab1";
 var leaveTypeSelected = false;
 var timoutQueryEmployeeData = null;
 var calendarData = false;
-var  quickLeaveList= [];
+var quickLeaveList = [];
 var allLeaveList = [];
 var allLeaveCategroyStr = langStr["str_122"]; //所有類別
 
@@ -38,7 +43,7 @@ var categroyData = {
     title: "",
     //defaultText: langStr["str_069"],
     defaultText: (localStorage.getItem("agent") == null) ? langStr["str_069"] : JSON.parse(localStorage.getItem("agent"))[0],
-    changeDefaultText : true,
+    changeDefaultText: true,
     attr: {
         class: "tpl-dropdown-list-icon-arrow"
     }
@@ -223,7 +228,7 @@ $("#viewPersonalLeave").pagecontainer({
                     return false;
                 }
             });
-        } 
+        }
 
         //快速请假页——选择假别查看剩余天数
         function checkLeftDaysByQuickLeave(leftdays) {
@@ -405,12 +410,12 @@ $("#viewPersonalLeave").pagecontainer({
                     }
                     defaultSettingDone = true;
 
-                    var activePage = $.mobile.activePage[0].id;                
-                    if (activePage !== "viewPersonalLeave" || reload ) {
-                        $("#mypanel"+activePage).removeAttr("style");
+                    var activePage = $.mobile.activePage[0].id;
+                    if (activePage !== "viewPersonalLeave" || reload) {
+                        $("#mypanel" + activePage).removeAttr("style");
                         $("#mypanel #mypanelviewPersonalLeave").css("background", "#503f81");
                         $("#mypanel #mypanelviewPersonalLeave").css("color", "#fff");
-                        $.mobile.changePage("#viewPersonalLeave");                      
+                        $.mobile.changePage("#viewPersonalLeave");
                         reload = false;
                     } else {
                         startMainPage();
@@ -423,10 +428,10 @@ $("#viewPersonalLeave").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");            
+                CustomAPI("POST", true, "GetDefaultSetting", self.successCallback, self.failCallback, getDefaultSettingQueryData, "");
             }();
 
-        };  
+        };
 
         //根据leaveid查询假别剩余时数
         window.QueryLeftDaysData = function() {
@@ -456,7 +461,7 @@ $("#viewPersonalLeave").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPIEx("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");               
+                CustomAPIEx("POST", true, "QueryLeftDaysData", self.successCallback, self.failCallback, queryLeftDaysData, "");
             }();
         };
 
@@ -475,7 +480,7 @@ $("#viewPersonalLeave").pagecontainer({
                         if (tab2Status !== "none") {
                             $("#agent-popup-option").popup("close");
                             popupMsgInit('.agentNotExist');
-                        }else if (tab1Status !== "none") {
+                        } else if (tab1Status !== "none") {
                             $("#leave-agent-popup-option").popup("close");
                             popupMsgInit('.agentDetailNotExist');
                         }
@@ -497,7 +502,7 @@ $("#viewPersonalLeave").pagecontainer({
                                     '</li>';
                             }
                         }
-                        
+
                         if (agentList != "") {
                             //var visitedPage = visitedPageList[visitedPageList.length - 1];
                             if (tab2Status !== "none") {
@@ -523,7 +528,7 @@ $("#viewPersonalLeave").pagecontainer({
                             if (tab2Status !== "none") {
                                 $("#agent-popup-option").popup("close");
                                 popupMsgInit('.agentNotExist');
-                            }else if (tab1Status !== "none") {
+                            } else if (tab1Status !== "none") {
                                 $("#leave-agent-popup-option").popup("close");
                                 popupMsgInit('.agentDetailNotExist');
                             }
@@ -580,9 +585,9 @@ $("#viewPersonalLeave").pagecontainer({
                             "</formid>";
                         //filler: 本人或是秘書申請
                         if (myEmpNo === originalEmpNo) {
-                            sendLeaveApplicationData += '<filler>'+ myEmpNo +'</filler></LayoutHeader>';
+                            sendLeaveApplicationData += '<filler>' + myEmpNo + '</filler></LayoutHeader>';
                         } else {
-                            sendLeaveApplicationData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
+                            sendLeaveApplicationData += '<filler>' + originalEmpNo + '</filler></LayoutHeader>';
                         }
                         //console.log(sendLeaveApplicationData);
                         //呼叫API
@@ -593,7 +598,7 @@ $("#viewPersonalLeave").pagecontainer({
                         var msgContent = $(quickError).html();
                         $('.applyLeaveFail').find('.main-paragraph').html(msgContent);
                         popupMsgInit('.applyLeaveFail');
-                    }                    
+                    }
                 }
             };
 
@@ -1304,7 +1309,7 @@ $("#viewPersonalLeave").pagecontainer({
                     recordStartText = new Date(Date.now());
                 } else {
                     recordStartText = new Date($("#chooseBaseday").text());
-                }                       
+                }
                 //datetime-local
                 $('#newBaseDate').datetimepicker('show');
             }
@@ -1349,7 +1354,7 @@ $("#viewPersonalLeave").pagecontainer({
                     recordStartText = new Date(Date.now());
                 } else {
                     recordStartText = new Date($("#chooseBaseday").text());
-                }     
+                }
                 $('#oldBaseDate').datetimepicker('show');
             } else {
                 baseday = self;
@@ -1408,17 +1413,17 @@ $("#viewPersonalLeave").pagecontainer({
                             recordStartText = new Date(Date.now());
                         } else {
                             recordStartText = new Date($("#startText").text());
-                        }                       
+                        }
                         $('#starDateTime').datetimepicker('show');
                     } else {
                         popupMsgInit('.basedayFirst');
                     }
-                } else {                   
+                } else {
                     if ($("#startText").text() == pleaseSelectStr) {
                         recordStartText = new Date(Date.now());
                     } else {
                         recordStartText = new Date($("#startText").text());
-                    }                       
+                    }
                     $('#starDateTime').datetimepicker('show');
                 }
             }
@@ -1730,7 +1735,7 @@ $("#viewPersonalLeave").pagecontainer({
 
         //預覽送簽按鈕
         $("#previewBtn").on("click", function() {
-            GetReason();//手寫或語音輸入
+            GetReason(); //手寫或語音輸入
             if ($('#previewBtn').hasClass('leavePreview-active-btn')) {
                 //傳值到預覽頁面
                 $("#applyCategroy").text(leaveCategory);
@@ -1797,9 +1802,9 @@ $("#viewPersonalLeave").pagecontainer({
                 '</formid>';
             //filler: 本人或是秘書申請
             if (myEmpNo === originalEmpNo) {
-                sendApplyLeaveQueryData += '<filler>'+ myEmpNo +'</filler></LayoutHeader>';
+                sendApplyLeaveQueryData += '<filler>' + myEmpNo + '</filler></LayoutHeader>';
             } else {
-                sendApplyLeaveQueryData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
+                sendApplyLeaveQueryData += '<filler>' + originalEmpNo + '</filler></LayoutHeader>';
             }
             //console.log(sendApplyLeaveQueryData);
             //呼叫API

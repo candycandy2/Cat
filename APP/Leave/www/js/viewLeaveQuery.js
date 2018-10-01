@@ -87,7 +87,7 @@ $("#viewLeaveQuery").pagecontainer({
                         }
 
                         //添加假别名称
-                        for (var j = 0; j < allLeaveList.length; j++) {                           
+                        for (var j = 0; j < allLeaveList.length; j++) {
                             if (leaveObject["leaveid"] == allLeaveList[j]["leaveid"]) {
                                 leaveObject["name"] = allLeaveList[j]["name"];
                                 leaveObject["category"] = allLeaveList[j]["category"];
@@ -745,9 +745,9 @@ $("#viewLeaveQuery").pagecontainer({
                 '</reason>';
             //filler: 本人或是秘書申請
             if (myEmpNo === originalEmpNo) {
-                sendLeaveCancelFormDataQueryData += '<filler>'+ myEmpNo +'</filler></LayoutHeader>';
+                sendLeaveCancelFormDataQueryData += '<filler>' + myEmpNo + '</filler></LayoutHeader>';
             } else {
-                sendLeaveCancelFormDataQueryData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
+                sendLeaveCancelFormDataQueryData += '<filler>' + originalEmpNo + '</filler></LayoutHeader>';
             }
             //API
             SendLeaveCancelFormData();
