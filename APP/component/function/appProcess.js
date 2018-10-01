@@ -246,15 +246,15 @@ function errorHandler(data, requestAction) {
 function infoMessage() {
     var function_list = JSON.parse(window.localStorage.getItem('FunctionData'))['function_list'];
     var account = 'N';
-    if(function_list != null) {
-        for(var i in function_list) {
-            if(function_list[i].function_variable == 'QAccountOnly') {
+    if (function_list != null) {
+        for (var i in function_list) {
+            if (function_list[i].function_variable == 'QAccountOnly') {
                 account = function_list[i].function_content.right;
                 break;
             }
         }
     }
-    if(account == 'Y') {
+    if (account == 'Y') {
         $("#infoLoginid").html(loginData["loginid"] + '(Account)');
     } else {
         $("#infoLoginid").html(loginData["loginid"]);
@@ -287,6 +287,20 @@ function checkPopupShown() {
 //Hide APP initial page
 function hideInitialPage() {
     $("#viewInitial").removeClass("ui-page ui-page-theme-a ui-page-active");
+
+    if (window.ga !== undefined) {
+        if (loginData["versionName"].indexOf("Staging") !== -1) {
+            window.ga.startTrackerWithId('UA-126559228-1', 'auto');
+            window.ga.setAnonymizeIp(true);
+        } else if (loginData["versionName"].indexOf("Development") !== -1) {
+            window.ga.startTrackerWithId('UA-126404580-1', 'auto');
+            window.ga.setAnonymizeIp(true);
+        } else {
+            window.ga.startTrackerWithId('UA-126570525-1', 'auto');
+            window.ga.setAnonymizeIp(true);
+        }
+    }
+
     initialSuccess();
     waterMark();
 }
