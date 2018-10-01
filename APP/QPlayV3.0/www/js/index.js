@@ -76,17 +76,6 @@ var notification = {
 
 window.initialSuccess = function(data) {
 
-    if (loginData["versionName"].indexOf("Staging") !== -1) {
-        window.ga.startTrackerWithId('UA-126559228-1', 'auto');
-        window.ga.setAnonymizeIp(true);
-    } else if (loginData["versionName"].indexOf("Development") !== -1) {
-        window.ga.startTrackerWithId('UA-126404580-1', 'auto');
-        window.ga.setAnonymizeIp(true);
-    } else {
-        window.ga.startTrackerWithId('UA-126570525-1', 'auto');
-        window.ga.setAnonymizeIp(true);
-    }
-
     //1. widgetlist
     checkWidgetListOrder();
 
