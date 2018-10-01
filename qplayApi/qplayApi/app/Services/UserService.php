@@ -7,18 +7,25 @@ namespace App\Services;
 
 use App\lib\ResultCode;
 use App\Repositories\UserRepository;
+use App\Repositories\PasswordLogRepository;
 
 class UserService
 {
     protected $UserRepository;
+    protected $passwordLogRepository;
+
+    const PWD_TYPE_QACCOUNT = 'qaccount';
+    const PWD_ACTION_CHANGE = 'change';
 
     /**
      * UserService constructor.
      * @param UserRepository $UserRepository
      */
-    public function __construct(UserRepository $UserRepository)
+    public function __construct(UserRepository $UserRepository,
+                                PasswordLogRepository $passwordLogRepository)
     {
         $this->UserRepository = $UserRepository;
+        $this->passwordLogRepository = $passwordLogRepository;
     }
 
     /**
@@ -54,6 +61,10 @@ class UserService
      * @return string  ResultCode    
      */
     public function changeQAccountPassword($userId, $oldPwd, $newPwd, $updatedUser, $updatedAt = null){
+
+        $nowTimestamp = time();
+        $now = date('Y-m-d H:i:s',$nowTimestamp);
+
         //1.check old passwd
         $QAccountPwd = $this->UserRepository->getUserQAccountPwd($userId);
         if (!password_verify($oldPwd, $QAccountPwd)) {
@@ -66,6 +77,7 @@ class UserService
         $pwd = password_hash($newPwd, PASSWORD_BCRYPT, $options);
 
         $this->UserRepository->changeQAccountPassword($userId, $pwd, $updatedUser, $updatedAt);
+        $this->passwordLogRepository->writePasswordLog($userId, self::PWD_TYPE_QACCOUNT, self::PWD_ACTION_CHANGE, $userId, $now);
 
         return ResultCode::_1_reponseSuccessful;
     }

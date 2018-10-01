@@ -4,28 +4,24 @@ namespace App\Http\Controllers\QPlay;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
-use App\Services\LogService;
 use Illuminate\Http\Request;
 use App\lib\Verify;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
 use Validator;
+use DB;
 
 class UserController extends Controller
 {   
     protected $userService;
-    protected $logService;
 
      /**
      * qpalyAccountController constructor.
      * @param UserService $userService
-     * @param LogService $logService
      */
-    public function __construct(UserService $userService,
-                                LogService $logService)
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-        $this->logService = $logService;
     }
 
     /**
@@ -69,29 +65,32 @@ class UserController extends Controller
         $nowTimestamp = time();
         $now = date('Y-m-d H:i:s',$nowTimestamp);
         
-        $updateRs = $this->userService->changeQAccountPassword($userInfo->row_id,
-                                                               $oldPwd,
-                                                               $newPwd,
-                                                               $userInfo->row_id,
-                                                               $now);
-        // old login password does not match
-        if( $updateRs  != ResultCode::_1_reponseSuccessful){
-            $result = ['result_code'=>$updateRs,
-                'message'=>CommonUtil::getMessageContentByCode($updateRs),
-                'content'=>''];
-            return response()->json($result); 
+
+        DB::beginTransaction();
+        try {
+            $updateRs = $this->userService->changeQAccountPassword($userInfo->row_id,
+                                                                   $oldPwd,
+                                                                   $newPwd,
+                                                                   $userInfo->row_id,
+                                                                   $now);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
 
-        $this->logService->writePasswordLog($userInfo->row_id,
-                                            LogService::PWD_TYPE_QACCOUNT,
-                                            LogService::PWD_ACTION_CHANGE,
-                                            $userInfo->row_id,
-                                            $now);
-        
-        $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
-                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
-                'token_valid'=>$request->token_valid_date
-            ];
-            return response()->json($result);
+        if( $updateRs  != ResultCode::_1_reponseSuccessful){
+            return response()->json(['result_code'=>$updateRs,
+                                     'message'=>CommonUtil::getMessageContentByCode($updateRs)], 200);
+         
+        }
+
+        return response()->json(['result_code'=>ResultCode::_1_reponseSuccessful,
+                     'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
+                     'token_valid'=>$request->token_valid_date
+                    ],200);
+
     }
 }
