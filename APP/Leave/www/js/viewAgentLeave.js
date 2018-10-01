@@ -1,7 +1,8 @@
 var calendarData = false;
 var selectDept = "";
 var selectSite = "";
-var agent_ID = "", agent_Name = "";
+var agent_ID = "",
+    agent_Name = "";
 var timoutQueryAgentData = null;
 var deptData = {
     id: "dept-popup",
@@ -41,7 +42,7 @@ function checkAgentBeforeSend() {
     //必須符合3個條件：1.請假理由不能爲空 2.開始時間和结束时间 3.需要基准日的是否已选择 4.代理人必须选择
     //必須符合2個條件:1.部門 2.代理人
     if ($("#dept-popup option").text().trim() !== pleaseSelectStr &&
-        $("#dept-agent-popup option").text().trim() !== pleaseSelectStr ) {     
+        $("#dept-agent-popup option").text().trim() !== pleaseSelectStr) {
         $('#toBeAgent').addClass('leavePreview-active-btn');
     } else {
         $('#toBeAgent').removeClass('leavePreview-active-btn');
@@ -65,23 +66,23 @@ $("#viewAgentLeave").pagecontainer({
                     //$("#agentDept").empty();
                     //$("#dept-popup-option-popup").empty();
 
-                    for (var i = 0; i < callbackData.length; i++) {                                                                  
+                    for (var i = 0; i < callbackData.length; i++) {
                         var siteList = callbackData[i].Site;
                         var deptList = callbackData[i].Department;
                         for (var j in deptList) {
                             //agentDeptLeave.push(deptList[j]); 
-                            var deptObject = {};  
+                            var deptObject = {};
                             deptObject["site"] = siteList;
                             deptObject["dept"] = deptList[j];
                             agentDeptLeave.push(deptObject);
-                        }                       
+                        }
                     }
                     //循环所有类别到popup
                     for (var i in agentDeptLeave) {
                         deptData["option"][i] = {};
                         deptData["option"][i]["site"] = agentDeptLeave[i].site;
                         deptData["option"][i]["value"] = agentDeptLeave[i].dept;
-                        deptData["option"][i]["text"] = agentDeptLeave[i].site+ '/'+ agentDeptLeave[i].dept;
+                        deptData["option"][i]["text"] = agentDeptLeave[i].site + '/' + agentDeptLeave[i].dept;
                     }
                     //生成所有类别dropdownlist
                     tplJS.DropdownList("viewAgentLeave", "agentDept", "prepend", "typeB", deptData);
@@ -105,7 +106,7 @@ $("#viewAgentLeave").pagecontainer({
                 if (data['ResultCode'] === "1") {
                     var agentList = "";
                     if (data['Content'][0] == undefined) {
-                        $("#dept-agent-popup-option").popup("close");                       
+                        $("#dept-agent-popup-option").popup("close");
                         popupMsgInit('.agentDeptNotExist');
                     } else {
                         var callbackData = data['Content'][0]["result"];
@@ -134,8 +135,8 @@ $("#viewAgentLeave").pagecontainer({
                         } else {
                             $("#dept-agent-popup-option").popup("close");
                             popupMsgInit('.agentDeptNotExist');
-                        }                        
-                    } 
+                        }
+                    }
 
                 }
             };
@@ -152,8 +153,8 @@ $("#viewAgentLeave").pagecontainer({
             $("#agentDept").empty();
             $("#dept-popup-option-popup").empty();
             getAgentDeptData = '<LayoutHeader><EmpNo>' +
-                    myEmpNo +
-                    '</EmpNo></LayoutHeader>';
+                myEmpNo +
+                '</EmpNo></LayoutHeader>';
             //呼叫API
             GetAgentDeptAuthority();
             tplJS.DropdownList("viewAgentLeave", "agentName", "prepend", "typeB", deptAgentData);
@@ -168,9 +169,9 @@ $("#viewAgentLeave").pagecontainer({
         //選擇部門——select change
         $(document).on("change", "#dept-popup", function() {
             selectDept = $(this).val();
-            var selectSiteDept = $.trim($(this).text());;          
-            var chosenDeptList = deptData["option"].find(function(item, index, array){
-              return item.text === selectSiteDept;  
+            var selectSiteDept = $.trim($(this).text());;
+            var chosenDeptList = deptData["option"].find(function(item, index, array) {
+                return item.text === selectSiteDept;
             });
             selectSite = chosenDeptList.site;
             $("#agentName").empty();
@@ -226,7 +227,7 @@ $("#viewAgentLeave").pagecontainer({
                 "</qEmpno><qName>" +
                 searchName +
                 "</qName></LayoutHeader>";
-            
+
             if (timoutQueryAgentData != null) {
                 clearTimeout(timoutQueryAgentData);
                 timoutQueryAgentData = null;
@@ -247,7 +248,7 @@ $("#viewAgentLeave").pagecontainer({
             //點選“代理人”需要判断“部門”是否選擇
             if ($("#agentDept").text().trim() == pleaseSelectStr) {
                 popupMsgInit('.deptFirst');
-            } 
+            }
         });
 
         //清除代理請假選項
@@ -265,7 +266,7 @@ $("#viewAgentLeave").pagecontainer({
         $("#toBeAgent").on("click", function() {
             if ($('#toBeAgent').hasClass('leavePreview-active-btn')) {
                 loadingMask("show");
-                myEmpNo = agent_ID;               
+                myEmpNo = agent_ID;
                 getUserAuthorityData = '<LayoutHeader><EmpNo>' +
                     myEmpNo +
                     '</EmpNo></LayoutHeader>';
@@ -288,11 +289,11 @@ $("#viewAgentLeave").pagecontainer({
                 var endStr = langStr["str_188"]; //"結束";
                 var agentHTML = '<div class="agentLeave">' +
                     '<div class="agentName font-style5">' +
-                        '<span>'+ angetStr +'</span>' +
-                        '<span></span>' +
+                    '<span>' + angetStr + '</span>' +
+                    '<span></span>' +
                     '</div>' +
                     '<div class="agentEnd font-style5">' +
-                        '<span>'+ endStr +'</span>' +
+                    '<span>' + endStr + '</span>' +
                     '</div></div>';
                 $(".beingAgent").append(agentHTML).show();
                 $(".page-main").css("padding-top", "0");
@@ -300,11 +301,11 @@ $("#viewAgentLeave").pagecontainer({
                 //changing bar color
                 var light = ['1', '0.9', '0.8', '0.7', '0.6', '0.5', '0.6', '0.7', '0.8', '0.9'];
                 var currentIndex = 0;
-                setInterval(function () {
+                setInterval(function() {
                     $(".beingAgent").css({
-                         //backgroundColor: colors[currentIndex]
-                         "background-color":"rgba(201, 201, 201, " + light[currentIndex] + ")",
-                         //"opacity": light[currentIndex]
+                        //backgroundColor: colors[currentIndex]
+                        "background-color": "rgba(201, 201, 201, " + light[currentIndex] + ")",
+                        //"opacity": light[currentIndex]
                     });
                     if (!light[currentIndex]) {
                         currentIndex = 0;
