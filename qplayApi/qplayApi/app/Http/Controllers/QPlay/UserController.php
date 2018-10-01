@@ -4,6 +4,7 @@ namespace App\Http\Controllers\QPlay;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
+use App\Services\LogService;
 use Illuminate\Http\Request;
 use App\lib\Verify;
 use App\lib\ResultCode;
@@ -14,14 +15,18 @@ use DB;
 class UserController extends Controller
 {   
     protected $userService;
+    protected $logService;
 
      /**
      * qpalyAccountController constructor.
      * @param UserService $userService
+     * @param LogService $logService
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService,
+                                LogService $logService)
     {
         $this->userService = $userService;
+        $this->logService = $logService;
     }
 
     /**
@@ -62,17 +67,24 @@ class UserController extends Controller
         $newPwd =  $request->new_qaccount_pwd;
         $uuid = $request->uuid;
         $userInfo = CommonUtil::getUserInfoByUUID($uuid);     
-        $nowTimestamp = time();
-        $now = date('Y-m-d H:i:s',$nowTimestamp);
+       
         
-
         DB::beginTransaction();
         try {
-            $updateRs = $this->userService->changeQAccountPassword($userInfo->row_id,
+
+                $nowTimestamp = time();
+                $now = date('Y-m-d H:i:s',$nowTimestamp);
+                $updateRs = $this->userService->changeQAccountPassword($userInfo->row_id,
                                                                    $oldPwd,
                                                                    $newPwd,
                                                                    $userInfo->row_id,
                                                                    $now);
+
+                $this->logService->writePasswordLog($userInfo->row_id,
+                                            LogService::PWD_TYPE_QACCOUNT,
+                                            LogService::PWD_ACTION_CHANGE,
+                                            $userInfo->row_id,
+                                            $now);
 
             DB::commit();
 
