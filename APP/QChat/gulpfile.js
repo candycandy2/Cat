@@ -113,6 +113,7 @@ gulp.task('install', ['copyRes'], shell.task([
   'cordova plugin add jpush-phonegap-plugin@3.4.1 --variable APP_KEY=' + process.env.QPushQChatAPPKey,
   'cordova plugin add ../../plugins/cordova-plugin-statusbar',
   'cordova plugin add ../../plugins/cordova-plugin-background-mode',
+  'cordova plugin add ../../plugins/cordova-plugin-google-analytics',
   'cordova plugin add cordova-plugin-file@5.0.0'
 ]));
 
@@ -137,6 +138,7 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova plugin add jpush-phonegap-plugin@3.4.1 --variable APP_KEY=' + process.env.QPushQChatAPPKey + " --nofetch",
   'cordova plugin add ../../plugins/cordova-plugin-statusbar --nofetch',
   'cordova plugin add ../../plugins/cordova-plugin-background-mode --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-google-analytics --nofetch',
   'cordova plugin add cordova-plugin-file@5.0.0'
 ]));
 

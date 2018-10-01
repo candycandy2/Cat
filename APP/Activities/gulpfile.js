@@ -104,6 +104,7 @@ gulp.task('install', ['copyRes'], shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-splashscreen',
   'cordova plugin add ../../plugins/cordova-plugin-statusbar',
   'cordova plugin add ../../plugins/cordova-plugin-background-mode',
+  'cordova plugin add ../../plugins/cordova-plugin-google-analytics',
   'cordova plugin add cordova-plugin-inappbrowser'
   //'cordova plugin add cordova-plugin-file'
 ]));
@@ -125,6 +126,7 @@ gulp.task('jenkinsinstall', ['copyRes'], shell.task([
   'cordova plugin add ../../plugins/cordova-plugin-splashscreen --nofetch',
   'cordova plugin add ../../plugins/cordova-plugin-statusbar --nofetch',
   //'cordova plugin add ../../plugins/cordova-plugin-background-mode --nofetch',
+  'cordova plugin add ../../plugins/cordova-plugin-google-analytics --nofetch',
   'cordova plugin add ../../plugins/cordova-plugin-inappbrowser --nofetch'
   //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
