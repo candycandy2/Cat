@@ -8,21 +8,28 @@ namespace App\Services;
 use App\lib\ResultCode;
 use App\Repositories\QPayMemberRepository;
 use App\Repositories\QPayMemberPointRepository;
+use App\Repositories\PasswordLogRepository;
 
 class QPayMemberService
 {
     protected $qpayMemberRepository;
     protected $qpayMemberPointRepository;
+    protected $passwordLogRepository;
+
+    const PWD_TYPE_QPAY = 'qpay';
+    const PWD_ACTION_CHANGE = 'change';
 
     /**
      * QPayMemberService constructor.
      * @param UserRepository $UserRepository
      */
     public function __construct(QPayMemberRepository $qpayMemberRepository,
-                                QPayMemberPointRepository $qpayMemberPointRepository)
+                                QPayMemberPointRepository $qpayMemberPointRepository,
+                                PasswordLogRepository $passwordLogRepository)
     {
         $this->qpayMemberRepository = $qpayMemberRepository;
         $this->qpayMemberPointRepository = $qpayMemberPointRepository;
+        $this->passwordLogRepository = $passwordLogRepository;
     }
 
     /**
@@ -32,8 +39,11 @@ class QPayMemberService
      * @param  string $newPwd new password
      * @return string  ResultCode    
      */
-    public function changeTradPassword($userId, $oldPwd, $newPwd, $updatedUser, $updatedAt = null){
-       
+    public function changeTradPassword($userId, $oldPwd, $newPwd){
+        
+        $nowTimestamp = time();
+        $now = date('Y-m-d H:i:s',$nowTimestamp);
+
         $qpayMember = $this->qpayMemberRepository->getQPayMemberInfo($userId);
         if(is_null($qpayMember)){
             return ResultCode::_000901_userNotExistError;
@@ -49,8 +59,9 @@ class QPayMemberService
         ];
         $pwd = password_hash($newPwd, PASSWORD_BCRYPT, $options);
 
-        $this->qpayMemberRepository->changeTradPassword($qpayMember->row_id, $pwd, $updatedUser, $updatedAt);
+        $this->qpayMemberRepository->changeTradPassword($qpayMember->row_id, $pwd);
 
+        $this->passwordLogRepository->writePasswordLog($userId, self::PWD_TYPE_QPAY, self::PWD_ACTION_CHANGE, $userId, $now);
         return ResultCode::_1_reponseSuccessful;
     }
 

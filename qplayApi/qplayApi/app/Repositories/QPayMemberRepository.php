@@ -33,15 +33,12 @@ class QPayMemberRepository
      * @param  int $QPayMemberId qpay_member.row_id
      * @param  string $newPwd new pass word
      */
-    public function changeTradPassword($QPayMemberId, $newPwd, $updatedUser, $updatedAt = null){
-        if(is_null($updatedAt)){
-            $nowTimestamp = time();
-            $updatedAt = date('Y-m-d H:i:s',$nowTimestamp);
-        }
+    public function changeTradPassword($QPayMemberId, $newPwd){
+
         $user = $this->qpayMember::find($QPayMemberId);
         $user->trade_password = $newPwd;
-        $user->updated_at = $updatedAt;
-        $user->updated_user = $updatedUser;
+        $user->timestamps = false;
         $user->save();
+
     }
 }
