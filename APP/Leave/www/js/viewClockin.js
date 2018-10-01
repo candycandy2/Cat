@@ -1,6 +1,10 @@
-var workingday = "", clockinday = "", clockintime = "";
-var workNameVal = "", otherReason = "";
-var clockinWorkType= "", clockinReasonType = "";
+var workingday = "",
+    clockinday = "",
+    clockintime = "";
+var workNameVal = "",
+    otherReason = "";
+var clockinWorkType = "",
+    clockinReasonType = "";
 var doneDateTime = {};
 
 var workTypeData = {
@@ -27,7 +31,7 @@ var reasonTypeData = {
 
 //檢查是否符合預覽送簽標準
 function checkClockinBeforePreview() {
-    var  otherReasonStatus= $("#otherReason").css('display');
+    var otherReasonStatus = $("#otherReason").css('display');
     //必須符合3個條件：1.請假理由不能爲空 2.開始時間和结束时间 3.需要基准日的是否已选择 4.代理人必须选择
     if (otherReasonStatus === "none") {
         if (workNameVal !== "" &&
@@ -36,13 +40,13 @@ function checkClockinBeforePreview() {
             $('#chooseWorkday').text() !== pleaseSelectStr &&
             $('#chooseClockinday').text() !== pleaseSelectStr &&
             $('#chooseClockintime').text() !== pleaseSelectStr &&
-            $("#reason-type-popup option").text() !== pleaseSelectStr ) {
-                $('#previewClockinBtn').addClass('leavePreview-active-btn');
+            $("#reason-type-popup option").text() !== pleaseSelectStr) {
+            $('#previewClockinBtn').addClass('leavePreview-active-btn');
 
         } else {
             $('#previewClockinBtn').removeClass('leavePreview-active-btn');
         }
-    }else {
+    } else {
         if (workNameVal !== "" &&
             otherReason !== "" &&
             clockinWorkType !== "" &&
@@ -50,8 +54,8 @@ function checkClockinBeforePreview() {
             $('#chooseWorkday').text() !== pleaseSelectStr &&
             $('#chooseClockinday').text() !== pleaseSelectStr &&
             $('#chooseClockintime').text() !== pleaseSelectStr &&
-            $("#reason-type-popup option").text() !== pleaseSelectStr ) {
-                $('#previewClockinBtn').addClass('leavePreview-active-btn');
+            $("#reason-type-popup option").text() !== pleaseSelectStr) {
+            $('#previewClockinBtn').addClass('leavePreview-active-btn');
 
         } else {
             $('#previewClockinBtn').removeClass('leavePreview-active-btn');
@@ -78,9 +82,10 @@ function checkClockinBeforePreview() {
 
 //生成未刷卡理由
 function getReasonType() {
-    var reasonList = [{id:"01", name:"未帶卡"},
-                      {id:"02", name:"忘記刷卡"},
-                      {id:"03", name:"其他"}];
+    var reasonList = [{ id: "01", name: "未帶卡" },
+        { id: "02", name: "忘記刷卡" },
+        { id: "03", name: "其他" }
+    ];
     reasonTypeData["option"] = [];
     $("#clockinReason").empty();
     $("#reason-type-popup-option-popup").remove();
@@ -95,7 +100,7 @@ function getReasonType() {
 }
 
 $("#viewClockin").pagecontainer({
-    create: function(event, ui) { 
+    create: function(event, ui) {
 
         /********************************** function *************************************/
         //補登申请送签
@@ -163,7 +168,7 @@ $("#viewClockin").pagecontainer({
             checkClockinBeforePreview();
         });*/
 
-         //选择后检查是否符合预览要求
+        //选择后检查是否符合预览要求
         $(document).on("popupafterclose", "#reason-type-popup-option", function() {
             clockinReasonType = $("#reason-type-popup option").text();
             if (clockinReasonType === "其他") {
@@ -192,10 +197,10 @@ $("#viewClockin").pagecontainer({
                 recordStartText = new Date(Date.now());
             } else {
                 recordStartText = new Date($("#chooseWorkday").text());
-            }                    
+            }
             //datetime-local
             $('#newWorkDate').datetimepicker('show');
-            var currentStep = $('.xdsoft_datetimepicker').filter(function(item){
+            var currentStep = $('.xdsoft_datetimepicker').filter(function(item) {
                 var workingDatepickerStyle = $(".xdsoft_datetimepicker")[item].style;
                 if (workingDatepickerStyle.display === 'block') {
                     $(this).addClass('datepicker-position');
@@ -226,7 +231,7 @@ $("#viewClockin").pagecontainer({
                 recordStartText = new Date(Date.now());
             } else {
                 recordStartText = new Date($("#chooseClockinday").text());
-            }                    
+            }
             //datetime-local
             $('#newClockinDate').datetimepicker('show');
         });
@@ -243,12 +248,12 @@ $("#viewClockin").pagecontainer({
         });
 
         //選擇刷卡時間
-        $("#selectClockintime").on("click", function() {          
-            $("#timepicker").trigger('datebox', { 'method': 'open' });  
-            tplJS.preventPageScroll(); 
+        $("#selectClockintime").on("click", function() {
+            $("#timepicker").trigger('datebox', { 'method': 'open' });
+            tplJS.preventPageScroll();
             $("#" + activePageListID + ".ui-page").css({
                 'position': 'fixed'
-            });       
+            });
         });
 
         window.setDoneTime = function(obj) {
@@ -263,11 +268,11 @@ $("#viewClockin").pagecontainer({
                 //Create temporary data
                 tempDateTime = JSON.parse(JSON.stringify(doneDateTime));
 
-            } 
+            }
             tplJS.recoveryPageScroll();
             $("#" + activePageListID + ".ui-page").css({
                 'position': ''
-            });     
+            });
 
             $(".ui-datebox-container").css("opacity", "0");
             checkClockinBeforePreview();
@@ -314,7 +319,7 @@ $("#viewClockin").pagecontainer({
         //清除補登申請
         $("#emptyClockinForm").on("click", function() {
             //申請日期
-            $('#applyClockinDay').text(applyDay);           
+            $('#applyClockinDay').text(applyDay);
             //班別名稱
             $("#workName").val("");
             workNameVal = "";
@@ -344,15 +349,15 @@ $("#viewClockin").pagecontainer({
 
         //預覽送簽按鈕
         $("#previewClockinBtn").on("click", function() {
-            GetWorkName(); 
+            GetWorkName();
             if ($('#previewClockinBtn').hasClass('leavePreview-active-btn')) {
                 //傳值到預覽頁面
                 $("#previewWorkday").text(workingday);
                 $("#previewWorkName").text(workNameVal);
                 $("#previewWorkType").text(clockinWorkType);
-                $("#previewClockinDay").text(clockinday);               
-                $("#previewClockinTime").text(clockintime); 
-                $("#previewReason").text(clockinReasonType); 
+                $("#previewClockinDay").text(clockinday);
+                $("#previewClockinTime").text(clockintime);
+                $("#previewReason").text(clockinReasonType);
                 if (clockinReasonType === "其他") {
                     $('#otherReasonArea').show();
                     $("#previewOtherReason").text(otherReason);
@@ -400,15 +405,15 @@ $("#viewClockin").pagecontainer({
                 '</checktime>';
             //未刷卡原因若為其他，將reason 帶入使用者輸入的原因
             if (clockinReasonType === "其他") {
-                modifyAttendanceFormData += '<reason>'+ otherReason +'</reason><formid></formid>';
+                modifyAttendanceFormData += '<reason>' + otherReason + '</reason><formid></formid>';
             } else {
-                modifyAttendanceFormData += '<reason>'+ clockinReasonType +'</reason><formid></formid>';
-            } 
+                modifyAttendanceFormData += '<reason>' + clockinReasonType + '</reason><formid></formid>';
+            }
             //filler: 本人或是秘書申請
             if (myEmpNo === originalEmpNo) {
-                modifyAttendanceFormData += '<filler>'+ myEmpNo +'</filler></LayoutHeader>';
+                modifyAttendanceFormData += '<filler>' + myEmpNo + '</filler></LayoutHeader>';
             } else {
-                modifyAttendanceFormData += '<filler>'+ originalEmpNo +'</filler></LayoutHeader>';
+                modifyAttendanceFormData += '<filler>' + originalEmpNo + '</filler></LayoutHeader>';
             }
             //呼叫API
             SendModifyAttendanceFormData();

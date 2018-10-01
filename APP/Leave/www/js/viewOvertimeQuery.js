@@ -45,7 +45,7 @@ $("#viewOvertimeQuery").pagecontainer({
                         overtimeObject["formid"] = $(formidArr[i]).html();
                         overtimeObject["formno"] = $(formnoArr[i]).html();
                         overtimeObject["status"] = $(statusArr[i]).html();
-                        overtimeObject["period"] = $(periodArr[i]).html();                      
+                        overtimeObject["period"] = $(periodArr[i]).html();
                         overtimeObject["hours"] = ($(overtimehoursArr[i]).html().split(".")[1] == "0") ? $(overtimehoursArr[i]).html().split(".")[0] : $(overtimehoursArr[i]).html();
 
                         //表單簽核的4種狀態
@@ -114,7 +114,7 @@ $("#viewOvertimeQuery").pagecontainer({
                         setActualOTDataToDetail();
                     } else {
                         setOvertimeDataToDetail();
-                    }           
+                    }
                     //2.回傳簽核流程
                     var approveData = data['Content'][0]["approverecord"];
                     var approveDom = new DOMParser().parseFromString(approveData, "text/html");
@@ -168,7 +168,7 @@ $("#viewOvertimeQuery").pagecontainer({
                 }
             };
 
-            this.failCallback = function(data) {}; 
+            this.failCallback = function(data) {};
 
             var __construct = function() {
                 CustomAPI("POST", true, "RecallOvertimeForm", self.successCallback, self.failCallback, recallOvertimeApplyFormQueryData, "");
@@ -280,15 +280,15 @@ $("#viewOvertimeQuery").pagecontainer({
             //撤回頁面的“請假單號”
             $("#withdrawOTFormNo").text(overtimeDetailObj["formno"]);
             $(".actualot-query-detail-sign").hide();
-            $(".leave-query-detail-sign").show();            
+            $(".leave-query-detail-sign").show();
         }
 
         //加班單(有實際區間)詳情傳值
         function setActualOTDataToDetail() {
             $("#backActualOTDetailList").show();
             $("#backOTDetailList").hide();
-            var originalOTInterval = overtimeDetailObj["targetdate"] + " " + overtimeDetailObj["expectFrom"] + " - " + overtimeDetailObj["targetdate"] +  " " + overtimeDetailObj["expectTo"];
-            var actualOTInterval = overtimeDetailObj["targetdate"] + " " + overtimeDetailObj["actualFrom"] + " - " + overtimeDetailObj["targetdate"] +  " " + overtimeDetailObj["actualTo"];
+            var originalOTInterval = overtimeDetailObj["targetdate"] + " " + overtimeDetailObj["expectFrom"] + " - " + overtimeDetailObj["targetdate"] + " " + overtimeDetailObj["expectTo"];
+            var actualOTInterval = overtimeDetailObj["targetdate"] + " " + overtimeDetailObj["actualFrom"] + " - " + overtimeDetailObj["targetdate"] + " " + overtimeDetailObj["actualTo"];
             $("#otApplyDate").text(overtimeDetailObj["applydate"]);
             $("#otFormNo").text(overtimeDetailObj["formno"]);
             $("#otStatus").text(overtimeDetailObj["statusName"]);
@@ -297,9 +297,9 @@ $("#viewOvertimeQuery").pagecontainer({
             $("#otApplyReason").text(overtimeDetailObj["reason"]);
             $("#actualOTPeriod").text(actualOTInterval);
             $("#actualTotalHours").text(overtimeDetailObj["actualTotalhours"]);
-            $("#overtimePaid").text(overtimeDetailObj["type"]);           
+            $("#overtimePaid").text(overtimeDetailObj["type"]);
             //撤回頁面的“請假單號”
-            $("#withdrawOTFormNo").text(overtimeDetailObj["formno"]);            
+            $("#withdrawOTFormNo").text(overtimeDetailObj["formno"]);
             $(".actualot-query-detail-sign").show();
             $(".leave-query-detail-sign").hide();
         }
@@ -307,8 +307,8 @@ $("#viewOvertimeQuery").pagecontainer({
         function periodFromOvertimeDateToNow(overtimedate) {
             var today = new Date();
             var otDate = new Date(overtimedate);
-            var otperiod = otDate.getTime() - today.getTime(); 
-            var periodday = parseInt(otperiod/86400000) + 1;
+            var otperiod = otDate.getTime() - today.getTime();
+            var periodday = parseInt(otperiod / 86400000) + 1;
             return periodday;
         }
 
@@ -359,7 +359,7 @@ $("#viewOvertimeQuery").pagecontainer({
                     overtimeListToDetail("overtimeEnter", "overtimeWithdraw", "overtimeDelete", "overtimeNoEnter", "");
                 } else {
                     overtimeListToDetail("overtimeNoEnter", "overtimeWithdraw", "overtimeDelete", "overtimeEnter", "");
-                }               
+                }
             } else {
                 overtimeListToDetail("overtimeWithdraw", "overtimeDelete", "overtimeEnter", "overtimeNoEnter", null);
             }
@@ -492,9 +492,9 @@ $("#viewOvertimeQuery").pagecontainer({
         });
 
         $("#enterActualOT").on("click", function() {
-            viewAcutalOTApplyShow = true;   
+            viewAcutalOTApplyShow = true;
             changePageByPanel("viewOvertimeSubmit");
-        });   
+        });
 
         //刪除加班單——popup
         $("#deleteRefuseOT").on("click", function() {

@@ -7,7 +7,7 @@ var queryEmployeeLeaveApplyFormQueryData, leaveApplyFormDetailQueryData, recallL
 var queryEmployeeLeaveCancelFormQueryData, leaveCancelFormDetailQueryData, recallLeaveCancelFormQueryData, deleteLeaveCancelFormQueryData,
     backLeaveFormLeaveDetailQueryData;
 var queryEmployeeOvertimeApplyFormQueryData, overtimeApplyFormDetailQueryData, recallOvertimeApplyFormQueryData;
-var sendApplyOvertimeQueryData, updateOvertimeQueryData, countOvertimeHoursByEndQueryData; 
+var sendApplyOvertimeQueryData, updateOvertimeQueryData, countOvertimeHoursByEndQueryData;
 var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
@@ -50,18 +50,18 @@ var reload = false;
 var hasAgentPanel, hasClockinOTPanel = false;
 var activePageListID;
 
-window.initialSuccess = function() {  
+window.initialSuccess = function() {
     originalEmpNo = localStorage["emp_no"];
     //暂时工号：myEmpNo = 0003023
     myEmpNo = localStorage["emp_no"];
     reload = true;
 
     getUserAuthorityData = '<LayoutHeader><EmpNo>' +
-            myEmpNo +
-            '</EmpNo></LayoutHeader>';
+        myEmpNo +
+        '</EmpNo></LayoutHeader>';
     //呼叫API
-    GetUserAuthority(); 
-    loadingMask("show");   
+    GetUserAuthority();
+    loadingMask("show");
 }
 
 window.GetUserAuthority = function() {
@@ -74,9 +74,9 @@ window.GetUserAuthority = function() {
             var defaultSite = callbackData["DefaultSite"];
             viewPersonalLeaveShow = false;
             //console.log("1. callback length:"+ callbackData.length);
-            if (authSite.length === 0) {               
-                hasAgentPanel = false               
-            } else if (myEmpNo !== originalEmpNo && callbackData.length !== 0){                
+            if (authSite.length === 0) {
+                hasAgentPanel = false
+            } else if (myEmpNo !== originalEmpNo && callbackData.length !== 0) {
                 hasAgentPanel = false;
             } else {
                 hasAgentPanel = true;
@@ -138,9 +138,9 @@ function restartAgentLeave() {
     localStorage.removeItem("leaveDefaultSetting");
     //console.log("2.initialSuccess Func:"+localStorage.getItem("leaveDefaultSetting"));
     //默认设置GetDefaultSetting
-    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>"
-                               + myEmpNo
-                               + "</EmpNo><LastModified></LastModified></LayoutHeader>";
+    getDefaultSettingQueryData = "<LayoutHeader><EmpNo>" +
+        myEmpNo +
+        "</EmpNo><LastModified></LastModified></LayoutHeader>";
 
     GetDefaultSetting();
     //选择日期为“请选择”
@@ -148,7 +148,7 @@ function restartAgentLeave() {
     $("#endText").text(pleaseSelectStr);
 
     //data scroll menu
-    dateInit();        
+    dateInit();
 }
 
 //[Android]Handle the back button
@@ -340,7 +340,7 @@ function formatDate(str) {
     return newArr.join("/");
 }
 
-function formatDateForNumber(date) { 
+function formatDateForNumber(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -481,7 +481,7 @@ function resizePopup(popupID) {
 
 function startMainPage() {
     //agent
-    if(localStorage.getItem("agent") !== null) {
+    if (localStorage.getItem("agent") !== null) {
         //viewPersonalLeave
         $("#agent-popup option").text(JSON.parse(localStorage.getItem("agent"))[0]);
         tplJS.reSizeDropdownList("agent-popup", "typeB");
@@ -490,14 +490,14 @@ function startMainPage() {
         tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
         agentid = JSON.parse(localStorage.getItem("agent"))[1];
         agentName = JSON.parse(localStorage.getItem("agent"))[0];
-    }else {
+    } else {
         var options = '<option hidden>' + pleaseSelectStr + '</option>';
         $("#agent-popup").find("option").remove().end().append(options);
         tplJS.reSizeDropdownList("agent-popup", "typeB");
         $("#leave-agent-popup").find("option").remove().end().append(options);
-        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");    
+        tplJS.reSizeDropdownList("leave-agent-popup", "typeB");
         agentid = "";
-        agentName = "";             
+        agentName = "";
     }
     leaveid = "";
     beginTime = "08:00";
@@ -522,7 +522,7 @@ function startMainPage() {
         $("#mypanelviewOvertimeSubmit").hide();
         $("#mypanelviewOvertimeQuery").hide();
     }
-    if (!viewPersonalLeaveShow  && defaultSettingDone) {
+    if (!viewPersonalLeaveShow && defaultSettingDone) {
         //个人剩余假别资讯
         queryEmployeeLeaveInfoQueryData = "<LayoutHeader><EmpNo>" + myEmpNo + "</EmpNo></LayoutHeader>";
         QueryEmployeeLeaveInfo();
@@ -569,4 +569,4 @@ $(document).on("click", ".agentEnd span", function(e) {
     $(".agentName > span:nth-of-type(2)").text("");
     $(".beingAgent").empty().hide();
     $(".page-main").css("padding-top", "3.99vw");
-});              
+});
