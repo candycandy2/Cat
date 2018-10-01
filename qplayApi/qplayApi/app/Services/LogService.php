@@ -34,7 +34,7 @@ class LogService
      * @param  int $createdUser     created user_row_id
      * @param  int $createdAt       created time, default now
      */
-    public function writePasswordLog($userId, $type, $action, $createdAt = null){
-        $this->passwordLogRepository->writePasswordLog($userId, $type, $action, $createdAt);
+    public function writePasswordLog($userId, $type, $action, $createdUser, $createdAt = null){
+        $this->passwordLogRepository->writePasswordLog($userId, $type, $action, $createdUser, $createdAt);
     }
 }
