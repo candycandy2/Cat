@@ -9,6 +9,201 @@ $("#viewMain").pagecontainer({
         window.myLatLng;
         window.allMarker = [];
 
+        /********************************** viewMain *************************************/
+        function geocodeAddress(geocoder, resultsMap, address, name) {
+            //var address = document.getElementById('address').value;
+            //var address = "台北市內湖區基湖路16號";
+
+            (function(geocoder, resultsMap, address, name) {
+                geocoder.geocode({'address': address}, function(results, status) {
+
+                    if (status === 'OK') {
+                        resultsMap.setCenter(results[0].geometry.location);
+
+                        /*
+                        var iconImage = {
+                            url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+                            size: new google.maps.Size(20, 32),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(0, 32)
+                        }
+
+                        var shape = {
+                            coords: [1, 1, 1, 20, 18, 20, 18, 1],
+                            type: 'poly'
+                        };
+                        */
+
+                        var marker = new google.maps.Marker({
+                        //window.marker = new google.maps.Marker({
+                            map: resultsMap,
+                            position: results[0].geometry.location,
+                            title: name,
+                            attribution: {
+                                source: results[0].geometry.location.toString()
+                            },
+                            //icon: iconImage,
+                            //shape: shape
+                            icon: "img/markerA.png"
+                        });
+
+                        window.allMarker.push(marker);
+
+                        //Info Window
+                        var contentString = '<div id="content"> 這個地址是:' + address +'</div>';
+
+                        var infowindow = new google.maps.InfoWindow({
+                            content: contentString
+                        });
+
+                        marker.addListener('click', function() {
+                            //infowindow.open(resultsMap, marker);
+
+                            //marker.setIcon("img/markerB.png");
+                            markerIcon(marker);
+
+                            markerInCenter(marker);
+
+                            markerDetail(marker);
+                        });
+
+                        /*marker.addListener('icon_changed', function() {
+                            setTimeout(function(){
+                                markerText(marker);
+                            }, 500);
+                        });*/
+
+                        /*
+                        setTimeout(function(){
+                            window.marker.setMap(null);
+                        }, 10000);
+                        */
+
+                    } else {
+                        //alert('Geocode was not successful for the following reason: ' + status);
+                    }
+
+                });
+            }(geocoder, resultsMap, address, name));
+
+        }
+
+        //Add by Jennifer
+        //Show QStore Detail Info
+        function markerDetail(nowMarker) {
+
+            $(window.allMarker).each(function(index, item) {
+
+                if (typeof nowMarker !== "undefined") {
+
+                    if (item.attribution.source == nowMarker.attribution.source) {  
+
+                        var title = item.title;
+
+                        $.each($(food), function (index, item) {
+                            if (this.name == title) {  
+                                var shopDetailInfo = $("#tplShopDetailInfo");
+                                shopDetailInfo.find(".name").html(title);
+                                shopDetailInfo.find(".address").html(this.address);
+                                //$("#detailContentOnMap").append(shopDetailInfo);
+                            }
+                        });
+                    }
+                }
+            });
+
+            $("#detailContentOnMap").fadeIn();
+        }
+
+        /*function markerText() {
+
+            //jQuery bind Marker title
+            $(".gmnoprint").each(function(index, dom) {
+
+                var title = $(dom).prop("title");
+
+                if (title.length > 0) {
+
+                    //marker.setIcon will recovery the css style,
+                    //so need to change it after every action.
+                    $(dom).css({
+                        opacity: 1,
+                        overflow: "visible"
+                    });
+
+                    $(dom).find("img").css({
+                        opacity: 0
+                    });
+
+                    if ($(dom).find(".test").length > 0) {
+                        return;
+                    }
+
+                    $("<div class='test'>[ " + title + " ]</div>").appendTo($(dom));
+                }
+            });
+        }*/
+
+        //Show Marker Label
+        /*function markerText(nowMarker) {
+            //jQuery bind Marker title
+            $(window.allMarker).each(function(index, item) {
+
+                  if (typeof nowMarker !== "undefined") {
+
+                    if (item.attribution.source == nowMarker.attribution.source) {  
+
+                        var title = item.title;
+
+                        if (title.length > 0) {
+                            $("#map").find(".gm-style").find("img").each(function(i, dom) {
+                                var markerSrc = $(dom).context.src;
+                                var srcSection = markerSrc.split(/[\s/]+/);
+                                var imgSrc = srcSection[srcSection.length-2] + '/' + srcSection[srcSection.length-1];
+                                if (imgSrc == "img/markerB.png") {
+                                    $("<div class='test'>[ " + title + " ]</div>").appendTo(dom.parentNode.parentNode);
+                                }
+
+                            });
+                            
+                        }
+                    }
+                }
+            });
+        }*/
+
+        function markerIcon(nowMarker) {
+            $(window.allMarker).each(function(index, marker) {
+                //recovery the icon of all marker
+                marker.setIcon("img/markerA.png");
+            });
+
+            nowMarker.setIcon("img/markerB.png");
+        }
+
+        function markerInCenter(nowMarker) {
+            window.map.setCenter(nowMarker.getPosition());
+        }
+
+        function positionInCenter(position) {
+
+            $(window.allMarker).each(function(index, marker) {
+                //find the marker which need to be set in center
+                if (position == marker.getAttribution().source) {
+                    window.map.setCenter(marker.getPosition());
+
+                    markerIcon(marker);
+                }
+            });
+
+        }
+
+        function clearAllMarker() {
+            $(window.allMarker).each(function(index, marker) {
+                marker.setMap(null);
+            });
+        }
+
         /********************************** function *************************************/
 
         function menuChange(type) {
@@ -372,11 +567,11 @@ $("#viewMain").pagecontainer({
                         geocodeAddress(window.geocoder, window.map, food[i].address, food[i].name);
                     }
 
-                    window.map.addListener('center_changed', function() {
+                    /*window.map.addListener('center_changed', function() {
                         setTimeout(function(){
                             markerText();
                         }, 2000);
-                    });
+                    });*/
 
                     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {
                         enableHighAccuracy: true

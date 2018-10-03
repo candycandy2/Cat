@@ -169,6 +169,14 @@ Google Map
     background-color: #FFF;
 }
 
+#detailContentOnMap {
+    position: fixed;
+    width: 100vw;
+    z-index: 1000;
+    background-color: #FFF;
+    bottom: 0;
+}
+
 #searchList {
     position: fixed;
     top: 8vh;
@@ -280,4 +288,8 @@ Google Map
     width: 20vw;
     color: #FF1493;
     background-color: rgba(255,255,255,0.5);
+}
+
+#detailContentOnMap .left, #detailContentOnMap .right {
+    float: left;
 }
