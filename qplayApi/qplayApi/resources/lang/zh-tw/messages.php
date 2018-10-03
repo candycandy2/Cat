@@ -18,6 +18,7 @@ return [
     'MSG_IS_LOGIN'=>'已登錄',
     'MSG_CALL_SERVICE_ERROR'=>'呼叫服務失敗',
     'MSG_UNKNOWN_ERROR'=>'未知錯誤',
-    'MSG_ADD_TAG_TO_JPUSH_FAILED'=>'添加Tag到JPush失敗'
-
+    'MSG_ADD_TAG_TO_JPUSH_FAILED'=>'添加Tag到JPush失敗',
+    'MSG_QPAY_1'=>'[消費券消費通知]',
+    'MSG_QPAY_2'=>'您於 %0 有一筆交易，交易碼: %1 (詳情點消費券支付 > 查詢交易紀錄)'
 ];

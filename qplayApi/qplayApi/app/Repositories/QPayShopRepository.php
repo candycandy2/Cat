@@ -16,7 +16,7 @@ class QPayShopRepository
     }
     
     /**
-     * get enable point type list
+     * get Shop data by qp_user.row_id
      * @param  int $userId qp_user.row_id
      * @return mixed
      */
@@ -43,7 +43,7 @@ class QPayShopRepository
     }
 
     /**
-     * get Shop Status
+     * get Shop Status by qpay_shop.row_id
      * @param  shop id
      * @return mixed
      */
@@ -52,6 +52,21 @@ class QPayShopRepository
         return $this->qpayShop
                 -> leftJoin("qp_user", "qp_user.row_id", "=", "qpay_shop.user_row_id")
                 -> select("status", "trade_status")
+                -> where("qpay_shop.row_id", "=", $shopID)
+                -> get();
+
+    }
+
+    /**
+     * get Shop data by qpay_shop.row_id
+     * @param  shop id
+     * @return mixed
+     */
+    public function getShopInfoByShopID($shopID)
+    {
+        return $this->qpayShop
+                -> leftJoin("qp_user", "qp_user.row_id", "=", "qpay_shop.user_row_id")
+                -> select("qp_user.login_id", "qp_user.user_domain")
                 -> where("qpay_shop.row_id", "=", $shopID)
                 -> get();
 

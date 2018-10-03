@@ -29,15 +29,19 @@ class TradeController extends Controller
      */
     public function getTradeToken(Request $request)
     {
+        $request->merge(['trade_pwd' => $request->header('trade-pwd')]);
+
         //parameter verify
         $validator = Validator::make($request->all(), [
             'emp_no' => 'required|numeric',
             'price' => 'required|numeric|max:1000',
-            'shop_id' => 'required|numeric'
+            'shop_id' => 'required|numeric',
+            'trade_pwd' => 'required|size:4'
         ], [
             'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
             'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
-            'max' => ResultCode::_999001_requestParameterLostOrIncorrect
+            'max' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            'size' => ResultCode::_999001_requestParameterLostOrIncorrect
         ]);
 
         if ($validator->fails()) {
@@ -46,7 +50,8 @@ class TradeController extends Controller
                 'message' => CommonUtil::getMessageContentByCode($validator->errors()->first())
             ], 200);
         } else {
-            $result = $this->qpayTradeService->getTradeToken($request->uuid, $request->emp_no, $request->price, $request->shop_id);
+            $result = $this->qpayTradeService->getTradeToken($request->uuid, $request->emp_no, $request->header("trade-pwd"), 
+                                                             $request->price, $request->shop_id);
 
             $result["token_valid"] = $request->token_valid_date;
             return response()->json($result);
@@ -85,7 +90,7 @@ class TradeController extends Controller
             ], 200);
         } else {
             $result = $this->qpayTradeService->newTrade($request->uuid, $request->header("trade-pwd"), $request->header("trade-token"), 
-                                                        $request->emp_no, $request->price, $request->shop_id);
+                                                        $request->emp_no, $request->price, $request->shop_id, $request->lang);
             $result["token_valid"] = $request->token_valid_date;
 
             return response()->json($result);
