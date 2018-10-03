@@ -66,7 +66,7 @@ class PushUtil
         return $result;
     }
 
-    public static function PushMessageWithJPushWebAPI($message, $to, $parameter = '', $send_by_tag = false, $appKey = null) {
+    public static function PushMessageWithJPushWebAPI($message_title, $message_text, $to, $parameter = '', $send_by_tag = false, $appKey = null) {
         $result = array();
         $result["result"] = true;
         $response = null;
@@ -80,7 +80,13 @@ class PushUtil
         }
         try {
             $platform = array('ios', 'android');
-            $alert = $message;
+
+            $alert_ios = array(
+                'title' => $message_title,
+                'body' => $message_text
+            );
+            $alert_android = $message_text;
+
             $ios_notification = array(
                 'sound' => 'default',
                 //'badge' => '0', //API
@@ -89,13 +95,15 @@ class PushUtil
                 ),
             );
             $android_notification = array(
+                'title' => $message_title,
                 'extras' => array(
                     'Parameter'=> $parameter
                 ),
             );
-            $content = $message;
+
+            $content = $message_text;
             $message = array(
-                'title' => $message,
+                'title' => $message_title,
                 'content_type' => 'text',
                 'extras' => array(
                     'Parameter'=> $parameter
@@ -110,16 +118,18 @@ class PushUtil
             if($send_by_tag) {
                 $response = $client->push()->setPlatform($platform)
                     ->addTag($to)
-                    ->iosNotification($alert, $ios_notification)
-                    ->androidNotification($alert, $android_notification)
+                    ->setNotificationAlert("")
+                    ->iosNotification($alert_ios, $ios_notification)
+                    ->androidNotification($alert_android, $android_notification)
                     ->message($content, $message)
                     ->options($options)
                     ->send();
             } else {
                 $response = $client->push()->setPlatform($platform)
                     ->addRegistrationId($to)
-                    ->iosNotification($alert, $ios_notification)
-                    ->androidNotification($alert, $android_notification)
+                    ->setNotificationAlert("")
+                    ->iosNotification($alert_ios, $ios_notification)
+                    ->androidNotification($alert_android, $android_notification)
                     ->message($content, $message)
                     ->options($options)
                     ->send();
@@ -143,7 +153,7 @@ class PushUtil
         return $result;
     }
 
-    public static function PushScheduleMessageWithJPushWebAPI($schedule_name, $schedule_datetime, $message, $to, $parameter = '', $send_by_tag = false, $appKey = null) {
+    public static function PushScheduleMessageWithJPushWebAPI($schedule_name, $schedule_datetime, $message_title, $message_text, $to, $parameter = '', $send_by_tag = false, $appKey = null) {
         $result = array();
         $result["result"] = true;
         $result["info"] = "success";
@@ -158,7 +168,13 @@ class PushUtil
         }
         try {
             $platform = array('ios', 'android');
-            $alert = $message;
+
+            $alert_ios = array(
+                'title' => $message_title,
+                'body' => $message_text
+            );
+            $alert_android = $message_text;
+
             $ios_notification = array(
                 'sound' => 'default',
                 //'badge' => '0',
@@ -171,10 +187,11 @@ class PushUtil
                     'Parameter'=> $parameter
                 ),
             );
-            $content = $message;
+
+            $content = $message_text;
             $scheduleName = $schedule_name; //time();//$message;
             $message = array(
-                'title' => $message,
+                'title' => $message_title,
                 'content_type' => 'text',
                 'extras' => array(
                     'Parameter'=> $parameter
@@ -189,8 +206,9 @@ class PushUtil
             if($send_by_tag) {
                 $payload = $client->push()
                     ->setPlatform($platform)
-                    ->iosNotification($alert, $ios_notification)
-                    ->androidNotification($alert, $android_notification)
+                    ->setNotificationAlert("")
+                    ->iosNotification($alert_ios, $ios_notification)
+                    ->androidNotification($alert_android, $android_notification)
                     ->message($content, $message)
                     ->options($options)
                     ->addTag($to) //以Tag发送
@@ -198,8 +216,9 @@ class PushUtil
             } else {
                 $payload = $client->push()
                     ->setPlatform($platform)
-                    ->iosNotification($alert, $ios_notification)
-                    ->androidNotification($alert, $android_notification)
+                    ->setNotificationAlert("")
+                    ->iosNotification($alert_ios, $ios_notification)
+                    ->androidNotification($alert_android, $android_notification)
                     ->message($content, $message)
                     ->options($options)
                     ->addRegistrationId($to)  //以注册ID发送
@@ -390,5 +409,71 @@ class PushUtil
             $result["info"] = "Exception occurred";
         }
         return $result;
+    }
+
+    /**
+    * 根據員工編號產生收件者/寄件者
+    * @param  string  $empNo 員工編號
+    * @return string  'Domain\\LoginId'
+    */
+    public static function getPushUserByEmpNo($empNo)
+    {
+        $user = CommonUtil::getUserInfoJustByUserEmpNo($empNo);
+        return $user->user_domain."\\".$user->login_id;
+    }
+
+    /**
+    * 根據 UUID 產生收件者/寄件者
+    * @param  string  $uuid
+    * @return string  'Domain\\LoginId'
+    */
+    public static function getPushUserByUUID($uuid)
+    {
+        $user = CommonUtil::getUserInfoByUUID($uuid);
+        return $user->user_domain."\\".$user->login_id;
+    }
+
+    /**
+     * 發送推播訊息
+     * @param  String $from       發訊人
+     * @param  Array  $to         收訊人
+     * @param  String $title      訊息標題
+     * @param  String $text       訊息內容
+     * @param  Array  $queryParam 
+     * @return json               訊息推播結果
+     */
+    public static function sendPushMessage($from, Array $to, $title, $text, $extra, Array $queryParam=[])
+    {
+            $apiFunction = 'sendPushMessage';
+            $signatureTime = time();
+            $appKey = CommonUtil::getContextAppKey(Config::get('app.env'), 'qplay');
+
+            $queryParam['app_key'] = $appKey;
+            $queryParam['need_push'] = 'Y';
+            $queryParam['qplay_message_list'] = 'Y';
+            $url = Config::get('app.qplay_api_server').$apiFunction.'?'.http_build_query($queryParam);
+
+            $header = array('Content-Type: application/json',
+                        'App-Key: '.$appKey,
+                        'Signature-Time: '.$signatureTime,
+                        'Signature: '.CommonUtil::getCustomSignature($signatureTime));
+
+            $data = array(
+                'template_id' =>'0',
+                'message_title' => base64_encode($title),
+                'message_type' => 'event',
+                'message_text' => base64_encode($text),
+                'message_html' => '',
+                'message_url' => '',
+                'message_source' => CommonUtil::getProjectName($appKey),
+                'source_user_id' => $from,
+                'destination_user_id' => $to,
+                'destination_role_id' => array(),
+                'extra' => $extra
+            );
+
+            $data = json_encode($data);
+            $result = CommonUtil::callAPI('POST', $url,  $header, $data);
+            return $result;
     }
 }
