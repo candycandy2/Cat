@@ -98,6 +98,36 @@
 
         <div id="map" style="width:100vw; height:90vh;"></div>
 
+        <div id="detailContentOnMap" class="hide">
+            <div id="tplShopDetailInfo">
+                <div class="list-item">
+                    <div class="left icon-content">
+                        <svg class="icon">
+                            <use xlink:href="#icon-btn_floating_chatroom"></use>
+                        </svg>
+                    </div>
+                    <div class="right data-content">
+                        <div>
+                            <div class="left name">7-11門市</div>
+                            <div class="right distance">0.15公里</div>
+                        </div>
+                        <div>
+                            <div class="left address-phone">
+                                <div class="address">台北市內湖區內湖路一段</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="ui-hr">
+            </div>
+            <ul>
+                <li> - 麵包及派類 9 折優惠</li>
+                <li> - 當月壽星來店消費 5500 以上, 加送禮物乙份</li>
+                <li> - 單次團購滿 3000 以上 85 折優惠</li>
+                <li> - 不定期優惠</li>
+            </ul>
+        </div> 
+
         <script>
 
             function initMap() {
@@ -157,176 +187,6 @@
                 //geocodeAddress(window.geocoder, window.map, "台北市內湖區基湖路18號", "西雅圖");
 
 
-            }
-
-            function geocodeAddress(geocoder, resultsMap, address, name) {
-                //var address = document.getElementById('address').value;
-                //var address = "台北市內湖區基湖路16號";
-
-                (function(geocoder, resultsMap, address, name) {
-                    geocoder.geocode({'address': address}, function(results, status) {
-
-                        if (status === 'OK') {
-                            resultsMap.setCenter(results[0].geometry.location);
-
-                            /*
-                            var iconImage = {
-                                url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-                                size: new google.maps.Size(20, 32),
-                                origin: new google.maps.Point(0, 0),
-                                anchor: new google.maps.Point(0, 32)
-                            }
-
-                            var shape = {
-                                coords: [1, 1, 1, 20, 18, 20, 18, 1],
-                                type: 'poly'
-                            };
-                            */
-
-                            var marker = new google.maps.Marker({
-                            //window.marker = new google.maps.Marker({
-                                map: resultsMap,
-                                position: results[0].geometry.location,
-                                title: name,
-                                attribution: {
-                                    source: results[0].geometry.location.toString()
-                                },
-                                //icon: iconImage,
-                                //shape: shape
-                                icon: "img/markerA.png"
-                            });
-
-                            window.allMarker.push(marker);
-
-                            //Info Window
-                            var contentString = '<div id="content"> 這個地址是:' + address +'</div>';
-
-                            var infowindow = new google.maps.InfoWindow({
-                                content: contentString
-                            });
-
-                            marker.addListener('click', function() {
-                                //infowindow.open(resultsMap, marker);
-
-                                //marker.setIcon("img/markerB.png");
-                                markerIcon(marker);
-
-                                markerInCenter(marker);
-                            });
-
-                            marker.addListener('icon_changed', function() {
-                                setTimeout(function(){
-                                    markerText();
-                                }, 500);
-                            });
-
-                            /*
-                            setTimeout(function(){
-                                window.marker.setMap(null);
-                            }, 10000);
-                            */
-
-                        } else {
-                            //alert('Geocode was not successful for the following reason: ' + status);
-                        }
-
-                    });
-                }(geocoder, resultsMap, address, name));
-
-            }
-
-            function markerText() {
-
-                //jQuery bind Marker title
-                $(".gmnoprint").each(function(index, dom) {
-
-                    var title = $(dom).prop("title");
-
-                    if (title.length > 0) {
-
-                        //marker.setIcon will recovery the css style,
-                        //so need to change it after every action.
-                        $(dom).css({
-                            opacity: 1,
-                            overflow: "visible"
-                        });
-
-                        $(dom).find("img").css({
-                            opacity: 0
-                        });
-
-                        if ($(dom).find(".test").length > 0) {
-                            return;
-                        }
-
-                        $("<div class='test'>[ " + title + " ]</div>").appendTo($(dom));
-                    }
-                });
-            }
-
-            /*function markerText(nowMarker) {
-
-                //jQuery bind Marker title
-                //$(".gmnoprint").each(function(index, dom) {
-                $(window.allMarker).each(function(index, item) {
-                    if (item.attribution.source == nowMarker.attribution.source) {                
-                        //var title = $(dom).prop("title");
-                        var title = item.title;
-
-                        if (title.length > 0) {
-
-                            //marker.setIcon will recovery the css style,
-                            //so need to change it after every action.
-                            $(".gmnoprint").css({
-                                opacity: 1,
-                                overflow: "visible"
-                            });
-
-                            $(".gmnoprint").find("img").css({
-                                opacity: 0
-                            });
-
-                            if ($(".gmnoprint").find(".test").length > 0) {
-                                return;
-                            }
-
-                            //$("<div class='test'>[ " + title + " ]</div>").appendTo($(dom));
-                            $("<div class='test'>[ " + title + " ]</div>").appendTo($(".gmnoprint"));
-                        }
-                    }
-                });
-            }*/
-
-            function markerIcon(nowMarker) {
-                $(window.allMarker).each(function(index, marker) {
-                    //recovery the icon of all marker
-                    marker.setIcon("img/markerA.png");
-                });
-
-                nowMarker.setIcon("img/markerB.png");
-            }
-
-            function markerInCenter(nowMarker) {
-                window.map.setCenter(nowMarker.getPosition());
-            }
-
-            function positionInCenter(position) {
-
-                $(window.allMarker).each(function(index, marker) {
-                    //find the marker which need to be set in center
-                    if (position == marker.getAttribution().source) {
-                        window.map.setCenter(marker.getPosition());
-
-                        markerIcon(marker);
-                    }
-                });
-
-            }
-
-            function clearAllMarker() {
-                $(window.allMarker).each(function(index, marker) {
-                    marker.setMap(null);
-                });
             }
 
         </script>
