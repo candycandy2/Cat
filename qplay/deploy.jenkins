@@ -1,3 +1,25 @@
+<strong>Oct-03-18 11:18:07</strong>
+- Reason : 65532cf54 - DarrenTi, 2 days ago : Merge pull request #3466 from CleoWChan/master
+70bee7efb - CleoWChan, 2 days ago : [QPay] fix bug add back createdUser param
+2e000968d - CleoWChan, 2 days ago : [QPay] add back LogService, and if change password faild still log
+33fa336b6 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+6363e7db4 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+5a0b7a656 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+2f0de8106 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+b951d0e47 - DarrenTi, 2 days ago : Merge pull request #3463 from CleoWChan/master
+0185d8eaf - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+7e2729768 - CleoWChan, 2 days ago : [QPay] fix bug
+8fcf6b0dc - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+6851ccd59 - CleoWChan, 5 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+52aa2b0b5 - CleoWChan, 5 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+4771b631f - DarrenTi, 6 days ago : Merge pull request #3450 from CleoWChan/master
+9df79068d - CleoWChan, 6 days ago : [QPay] fix bug getStoreRecord, make store_id start with "S" literal
+d421981c4 - CleoWChan, 7 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+e56942cc9 - DarrenTi, 7 days ago : Merge pull request #3447 from DarrenTi/master
+b4e1cf36a - DarrenTi, 7 days ago : Merge pull request #3442 from candycandy2/master
+a4982a0d9 - Candy.XC.Lee, 7 days ago : Prevent jpush unsupport, Check employee, Solve duplicate file naming
+e0514a3b1 - CleoWChan, 7 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+- PR# : daily build
 <strong>Oct-03-18 00:36:23</strong>
 - Reason : 
 <p style=margin-bottom:-12px;margin-left:16px;>597</p>
