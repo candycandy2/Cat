@@ -23,14 +23,12 @@ $("#viewUserInputAmount").pagecontainer({
         /********************************** page event ***********************************/
         $("#viewUserInputAmount").on("pagebeforeshow", function (event, ui) {
             initialPage();
-            //API
             setShopAndPoint();
         });
 
         $("#viewUserInputAmount").one("pageshow", function (event, ui) {
             $('.user-pay-name').text(loginData['loginid']);
             $('.user-pay-no').text(loginData['emp_no']);
-            //API
             setShopAndPoint();
         });
 
@@ -44,7 +42,7 @@ $("#viewUserInputAmount").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        //模拟键盘按下的动画效果
+        //模拟键盘
         $('.num-keyboard').on('touchstart', function () {
             $(this).addClass('keydown-active');
         });
