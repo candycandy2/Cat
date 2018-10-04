@@ -29,7 +29,7 @@ class QPayMemberPointRepository
              ->select(DB::raw('CONCAT("S", LPAD(qpay_point_store.row_id, 6, 0)) AS store_id'),
                       'qpay_point_type.name as point_type',
                       'qpay_member_point.stored_total as store_total',
-                      'qpay_member_point.created_at as store_time')
+                      DB::raw('UNIX_TIMESTAMP(qpay_member_point.created_at) as store_time'))
              ->where('qpay_member_point.member_row_id', $memberId)
              ->where(DB::raw('UNIX_TIMESTAMP(qpay_member_point.created_at)'),'>=', $startDate)
              ->where(DB::raw('UNIX_TIMESTAMP(qpay_member_point.created_at)'),'<=', $endDate)

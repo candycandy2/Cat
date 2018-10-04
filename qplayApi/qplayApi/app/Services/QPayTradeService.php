@@ -299,6 +299,8 @@ class QPayTradeService
 
                     PushUtil::sendPushMessage($form, $to, $title, $text, $extra, $queryParam);
                 }
+
+                DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
                 throw $e;
