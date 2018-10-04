@@ -69,7 +69,7 @@ class QPayTradeLogRepository
                               "qpay_trade_log.trade_point",
                               "qpay_trade_log.success AS trade_success",
                               "qpay_trade_log.error_code",
-                              "qpay_trade_log.created_at AS trade_time",
+                              DB::raw("UNIX_TIMESTAMP(qpay_trade_log.created_at) AS trade_time"),
                               "qp_user.emp_name AS shop_name")
                     -> where("qpay_member.user_row_id", "=", $userRowID)
                     -> where("qpay_trade_log.multiple_row_id", "=", 0)
@@ -100,7 +100,7 @@ class QPayTradeLogRepository
                               "qpay_trade_log.trade_point AS trade_point",
                               "qpay_trade_log.success AS trade_success",
                               "qpay_trade_log.error_code",
-                              "qpay_trade_log.created_at AS trade_time",
+                              DB::raw("UNIX_TIMESTAMP(qpay_trade_log.created_at) AS trade_time"),
                               "qpay_point_type.name AS point_type_name")
                     -> where("qpay_shop.user_row_id", "=", $userRowID);
 
