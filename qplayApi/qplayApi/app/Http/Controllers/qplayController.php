@@ -2631,9 +2631,9 @@ SQL;
                                 }
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $extraParam, true, $pushAppKey);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $message_text, $to, $extraParam, true, $pushAppKey);
                                 } else {
-                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $extraParam, true, $pushAppKey);
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $message_text, $to, $extraParam, true, $pushAppKey);
                                 }
 
                                 if(!$result["result"]) {
@@ -2850,9 +2850,9 @@ SQL;
                                 }
 
                                 if($isSchedule) {
-                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $to, $extraParam, false, $pushAppKey);
+                                    $result = PushUtil::PushScheduleMessageWithJPushWebAPI("send".$newMessageSendId, $push_time_utc, $message_title, $message_text, $to, $extraParam, false, $pushAppKey);
                                 } else {
-                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $to, $extraParam, false, $pushAppKey);
+                                    $result = PushUtil::PushMessageWithJPushWebAPI($message_title, $message_text, $to, $extraParam, false, $pushAppKey);
                                 }
                                 if(!$result["result"]) {
                                     if($showInMessageList){

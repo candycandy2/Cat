@@ -1,105 +1,99 @@
-<strong>Oct-02-18 00:38:41</strong>
-- Reason : 
-<p style=margin-bottom:-12px;margin-left:16px;>596</p>
-<p style=margin:-12px;margin-left:16px;>596</p>
-<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
-<strong>Oct-02-18 00:38:41</strong>
-- Reason : 596
-- PR# : daily build
-<strong>Oct-01-18 00:34:46</strong>
-- Reason : 
-<p style=margin-bottom:-12px;margin-left:16px;>595</p>
-<p style=margin:-12px;margin-left:16px;>595</p>
-<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
-<strong>Oct-01-18 00:34:46</strong>
-- Reason : 595
-- PR# : daily build
-<strong>Sep-30-18 00:44:56</strong>
-- Reason : 
-<p style=margin-bottom:-12px;margin-left:16px;>594</p>
-<p style=margin:-12px;margin-left:16px;>594</p>
-<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
-<strong>Sep-30-18 00:44:56</strong>
-- Reason : 594
-- PR# : daily build
-<strong>Sep-29-18 00:45:26</strong>
-- Reason : 
-<p style=margin-bottom:-12px;margin-left:16px;>593</p>
-<p style=margin:-12px;margin-left:16px;>593</p>
-<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
-<strong>Sep-29-18 00:45:26</strong>
-- Reason : 593
-- PR# : daily build
-<strong>Sep-28-18 11:30:58</strong>
-- Reason : 
-<p style=margin-bottom:-12px;margin-left:16px;>592</p>
-<p style=margin:-12px;margin-left:16px;>592</p>
-<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
-<strong>Sep-28-18 11:30:58</strong>
-- Reason : 592
-- PR# : daily build
-<strong>Sep-28-18 08:20:33</strong>
-- Reason : 
-<p style=margin-bottom:-12px;margin-left:16px;>591</p>
-<p style=margin:-12px;margin-left:16px;>591</p>
-<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
-<strong>Sep-28-18 08:20:33</strong>
-- Reason : 591
-- PR# : daily build
-<strong>Sep-28-18 00:31:36</strong>
-- Reason : 
-<p style=margin-bottom:-12px;margin-left:16px;>590</p>
-<p style=margin:-12px;margin-left:16px;>590</p>
-<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
-<strong>Sep-28-18 00:31:36</strong>
-- Reason : 590
-- PR# : daily build
-<strong>Sep-27-18 16:58:11</strong>
-- Reason : 
-<p style="margin-bottom:-12px;margin-left:16px;">589</p>
-<p style="margin:-12px;margin-left:16px;">589</p>
-<p style=margin:-12px;margin-left:0px;>- PR# : daily build</p>
-<strong>Sep-27-18 16:58:11</strong>
-- Reason : 589
-- PR# : daily build
-<strong>Sep-27-18 16:53:32</strong>
-- Reason : 
-<p style="margin-bottom:-12px;margin-left:16px;">588</p>
-<p style="margin:-12px;margin-left:16px;">588</p>
-<p style="margin:-12px;margin-left:0px;">- PR# : daily build</p>
-<strong>Sep-27-18 16:53:32</strong>
-- Reason : 588
-- PR# : daily build
-<strong>Set-26-18 16:11:27</strong>
-- Reason : 
-<p style="margin-bottom:-12px;margin-left:16px;">1. App管理的版本控制，出現多個版本可以 publish/unpublish</p>
-<p style="margin:-12px;margin-left:16px;">2. 上架理由二</p>
-<p style="margin:-12px;margin-left:0px;">- PR# : 3428</p>
-<strong>Set-19-18 17:22:33</strong>
-- Reason : support iOS 10.0
-- PR# : 3407
+<strong>Oct-04-18 08:29:24</strong>
+- Reason : daily build
+- Commit# : 
+4b7592943 - DarrenTi, 18 hours ago : Merge pull request #3468 from DarrenTi/master
+
+<strong>Oct-04-18 00:31:58</strong>
+- Reason : daily build
+- Commit# : 
 
 
-deploy_ver=586 deploy_time=Sep-27-18 00:34:51
-deploy_ver=585 deploy_time=Sep-26-18 00:47:41
-deploy_ver=584 deploy_time=Sep-25-18 00:40:43
-deploy_ver=583 deploy_time=Sep-24-18 00:44:32
-deploy_ver=582 deploy_time=Sep-23-18 00:46:07
-deploy_ver=581 deploy_time=Sep-22-18 00:48:13
-deploy_ver=580 deploy_time=Sep-21-18 00:35:32
-deploy_ver=579 deploy_time=Sep-20-18 00:35:00
-deploy_ver=578 deploy_time=Sep-19-18 00:43:38
-deploy_ver=577 deploy_time=Sep-18-18 00:37:03
-deploy_ver=576 deploy_time=Sep-17-18 00:34:11
-deploy_ver=575 deploy_time=Sep-16-18 00:33:47
-deploy_ver=574 deploy_time=Sep-15-18 00:36:47
-deploy_ver=573 deploy_time=Sep-14-18 00:34:37
-deploy_ver=572 deploy_time=Sep-13-18 08:24:12
-deploy_ver=571 deploy_time=Sep-13-18 00:37:00
-deploy_ver=570 deploy_time=Sep-12-18 00:38:22
-deploy_ver=568 deploy_time=Sep-10-18 00:34:36
-deploy_ver=567 deploy_time=Sep-09-18 00:33:57
-deploy_ver=566 deploy_time=Sep-08-18 00:36:10
-deploy_ver=565 deploy_time=Sep-07-18 00:36:02
-deploy_ver=564 deploy_time=Sep-06-18 17:54:17
-deploy_ver=561 deploy_time=Sep-06-18 00:36:18
+<strong>Oct-03-18 14:31:46</strong>
+- Reason : daily build
+- Commit# : 
+65532cf54 - DarrenTi, 2 days ago : Merge pull request #3466 from CleoWChan/master
+70bee7efb - CleoWChan, 2 days ago : [QPay] fix bug add back createdUser param
+2e000968d - CleoWChan, 2 days ago : [QPay] add back LogService, and if change password faild still log
+33fa336b6 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+6363e7db4 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+5a0b7a656 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+2f0de8106 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+b951d0e47 - DarrenTi, 2 days ago : Merge pull request #3463 from CleoWChan/master
+0185d8eaf - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+7e2729768 - CleoWChan, 2 days ago : [QPay] fix bug
+8fcf6b0dc - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+
+<strong>Oct-03-18 14:30:05</strong>
+- Reason : daily build
+- Commit# : 
+65532cf54 - DarrenTi, 2 days ago : Merge pull request #3466 from CleoWChan/master
+70bee7efb - CleoWChan, 2 days ago : [QPay] fix bug add back createdUser param
+2e000968d - CleoWChan, 2 days ago : [QPay] add back LogService, and if change password faild still log
+33fa336b6 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+6363e7db4 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+5a0b7a656 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+2f0de8106 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+b951d0e47 - DarrenTi, 2 days ago : Merge pull request #3463 from CleoWChan/master
+0185d8eaf - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+7e2729768 - CleoWChan, 2 days ago : [QPay] fix bug
+8fcf6b0dc - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+
+<strong>Oct-03-18 14:29:23</strong>
+- Reason : daily build
+- Commit# : 
+65532cf54 - DarrenTi, 2 days ago : Merge pull request #3466 from CleoWChan/master
+70bee7efb - CleoWChan, 2 days ago : [QPay] fix bug add back createdUser param
+2e000968d - CleoWChan, 2 days ago : [QPay] add back LogService, and if change password faild still log
+33fa336b6 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+6363e7db4 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+5a0b7a656 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+2f0de8106 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+b951d0e47 - DarrenTi, 2 days ago : Merge pull request #3463 from CleoWChan/master
+0185d8eaf - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+7e2729768 - CleoWChan, 2 days ago : [QPay] fix bug
+8fcf6b0dc - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+
+<strong>Oct-03-18 14:26:13</strong>
+- Reason : daily build
+- PR# : 
+65532cf54 - DarrenTi, 2 days ago : Merge pull request #3466 from CleoWChan/master
+70bee7efb - CleoWChan, 2 days ago : [QPay] fix bug add back createdUser param
+2e000968d - CleoWChan, 2 days ago : [QPay] add back LogService, and if change password faild still log
+33fa336b6 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+6363e7db4 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+5a0b7a656 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+2f0de8106 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+b951d0e47 - DarrenTi, 2 days ago : Merge pull request #3463 from CleoWChan/master
+0185d8eaf - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+7e2729768 - CleoWChan, 2 days ago : [QPay] fix bug
+8fcf6b0dc - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+
+<strong>Oct-03-18 14:24:36</strong>
+- Reason : daily build
+- PR# :
+65532cf54 - DarrenTi, 2 days ago : Merge pull request #3466 from CleoWChan/master
+70bee7efb - CleoWChan, 2 days ago : [QPay] fix bug add back createdUser param
+2e000968d - CleoWChan, 2 days ago : [QPay] add back LogService, and if change password faild still log
+33fa336b6 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+6363e7db4 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+5a0b7a656 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+2f0de8106 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+b951d0e47 - DarrenTi, 2 days ago : Merge pull request #3463 from CleoWChan/master
+0185d8eaf - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+7e2729768 - CleoWChan, 2 days ago : [QPay] fix bug
+8fcf6b0dc - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+
+<strong>Oct-03-18 14:22:16</strong>
+- Reason : daily build
+- PR# :
+65532cf54 - DarrenTi, 2 days ago : Merge pull request #3466 from CleoWChan/master
+70bee7efb - CleoWChan, 2 days ago : [QPay] fix bug add back createdUser param
+2e000968d - CleoWChan, 2 days ago : [QPay] add back LogService, and if change password faild still log
+33fa336b6 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+6363e7db4 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+5a0b7a656 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+2f0de8106 - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+b951d0e47 - DarrenTi, 2 days ago : Merge pull request #3463 from CleoWChan/master
+0185d8eaf - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
+7e2729768 - CleoWChan, 2 days ago : [QPay] fix bug
+8fcf6b0dc - CleoWChan, 2 days ago : Merge remote-tracking branch 'refs/remotes/BenQdigiPages/master'
