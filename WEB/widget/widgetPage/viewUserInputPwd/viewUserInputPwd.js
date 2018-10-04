@@ -8,7 +8,7 @@ $("#viewUserInputPwd").pagecontainer({
             trade_token;
 
         //获取交易token
-        function getTradeToken() {
+        function getTradeToken(pwd) {
             var self = this;
             trade_price = window.sessionStorage.getItem('trade_price');
             shop_id = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_id'];
@@ -23,13 +23,17 @@ $("#viewUserInputPwd").pagecontainer({
                     trade_token = data['content'].trade_token;
                     $('.user-password-next').addClass('button-active');
 
+                } else if(data['result_code'] == '000929') {
+                    //密码错误，popup msg
+                    popupMsgInit('.userErrorPwd');
+                    initialPage();
                 }
             };
 
             this.failCallback = function () { };
 
             var __construct = function () {
-                QPlayAPIEx("GET", "getTradeToken", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
+                QPlayAPINewHeader("GET", "getTradeToken", 'trade-pwd', null, pwd, null, self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
             }();
         }
 
@@ -69,12 +73,10 @@ $("#viewUserInputPwd").pagecontainer({
                 checkWidgetPage('viewUserTradeResult', pageVisitedList);
             };
 
-            this.failCallback = function () {
-                loadingMask("hide");
-            };
+            this.failCallback = function () { };
 
             var __construct = function () {
-                QPlayAPITrade("GET", "newTrade", pwd, token, self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
+                QPlayAPINewHeader("GET", "newTrade", 'trade-pwd', 'trade-token', pwd, token, self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
             }();
         }
 
@@ -102,7 +104,7 @@ $("#viewUserInputPwd").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        //模拟键盘按下的动画效果
+        //模拟键盘
         $('.num-keyboard').on('touchstart', function () {
             $(this).addClass('keydown-active');
         });
@@ -123,11 +125,10 @@ $("#viewUserInputPwd").pagecontainer({
             }
 
             if (pwdNum.length == 4) {
-                //'下一步'按钮可用
-                $('.user-password-next').addClass('button-active');
                 //如果已输入4位数密码，就不能再输入
                 $('.num-keyboard[data-value]').removeClass('enter-pwd');
-                getTradeToken();
+                //API:获取token
+                getTradeToken(pwdNum);
             }
 
         })
@@ -151,8 +152,8 @@ $("#viewUserInputPwd").pagecontainer({
         $('.user-password-next').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
-                //API
                 loadingMask("show");
+                //API:进行交易
                 makeNewTrade(pwdNum, shop_id, trade_price, trade_token);
             }
         });

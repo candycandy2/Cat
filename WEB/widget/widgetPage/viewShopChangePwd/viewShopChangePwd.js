@@ -1,6 +1,15 @@
 $("#viewShopChangePwd").pagecontainer({
     create: function (event, ui) {
 
+        //页面初始化
+        function initialPage() {
+            $('#shopOldPwd').val('');
+            $('#shopNewPwd').val('');
+            $('#shopCofirmPwd').val('');
+            $('.shop-change-pwd').removeClass('button-active');
+        }
+
+        //检查表单
         function checkFormPwd(compare) {
             var oldPwd = $('#shopOldPwd').val();
             var newPwd = $('#shopNewPwd').val();
@@ -25,10 +34,13 @@ $("#viewShopChangePwd").pagecontainer({
         function changeQAccountPwd(oldPwd, newPwd) {
             var self = this;
 
-            this.successCallback = function () {
+            this.successCallback = function (data) {
+                console.log(data);
+
                 if (data['result_code'] == '1') {
                     //popup:交易密码更改成功
-                    //返回上一页
+                    $('#viewShopChangePwd .page-back').trigger('click');
+                    window.sessionStorage.setItem('shopChangePwdSuccess', 'Y');
                 } else {
                     //popup:失败原因
                 }
@@ -37,7 +49,8 @@ $("#viewShopChangePwd").pagecontainer({
             this.failCallback = function () { };
 
             var __construct = function () {
-                QPlayAPIEx("GET", "changeQAccountPwd", oldPwd, newPwd, self.successCallback, self.failCallback, null, null, "low", 30000, true);
+                //QPlayAPIEx("GET", "changeQAccountPwd", oldPwd, newPwd, self.successCallback, self.failCallback, null, null, "low", 30000, true);
+                QPlayAPINewHeader("GET", "changeQAccountPwd", 'old-qaccount-pwd', 'new-qaccount-pwd', oldPwd, newPwd, self.successCallback, self.failCallback, null, null, "low", 30000, true);
             }();
         }
 
@@ -57,7 +70,8 @@ $("#viewShopChangePwd").pagecontainer({
         });
 
         $("#viewShopChangePwd").on("pagehide", function (event, ui) {
-
+            //initial
+            initialPage();
         });
 
 
@@ -85,8 +99,11 @@ $("#viewShopChangePwd").pagecontainer({
                 if(!result) {
                     console.log('新密码不一致！');
                 } else {
-                    //API:修改密码
-                    //
+                    var oldPwd = $('#shopOldPwd').val();
+                    var newPwd = $('#shopNewPwd').val();
+
+                    //API:修改登录密码
+                    changeQAccountPwd(oldPwd, newPwd);
                 }
             }
         });

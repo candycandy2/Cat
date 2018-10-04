@@ -114,13 +114,11 @@ $("#viewUserQueryRecord").pagecontainer({
 
         //点击开始日期弹出日期选择控件
         $('#userStart').on('click', function () {
-            //$('#userStartDate').blur();
             $('#userStartDate').datetimepicker('show');
         });
 
         //点击结束日期弹出日期选择控件
         $('#userEnd').on('click', function () {
-            //$('#userEndDate').blur();
             $('#userEndDate').datetimepicker('show');
         });
 
@@ -140,8 +138,9 @@ $("#viewUserQueryRecord").pagecontainer({
         $('.user-query-search').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
-                var typeVal = $('#userQueryType').val();
+                loadingMask("show");
 
+                var typeVal = $('#userQueryType').val();
                 if (typeVal == '1') {
                     checkForm('trade');
 

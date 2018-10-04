@@ -57,7 +57,11 @@ $("#viewUserPayMain").pagecontainer({
         });
 
         $("#viewUserPayMain").on("pageshow", function (event, ui) {
-
+            var changePwd = window.sessionStorage.getItem('userChangePwdSuccess');
+            if(changePwd == 'Y') {
+                $("#userChangeSuccess").fadeIn(100).delay(2000).fadeOut(100);
+                window.sessionStorage.removeItem('userChangePwdSuccess');
+            }
         });
 
         $("#viewUserPayMain").on("pagehide", function (event, ui) {

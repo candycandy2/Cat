@@ -161,8 +161,6 @@ $("#viewAppSetting").pagecontainer({
         }
 
         var clearSuccess = function (status) {
-            console.log('Message: ' + status);
-
             //1. 成功提示
             $("#clearSuccess").fadeIn(100).delay(2000).fadeOut(100);
 
@@ -195,7 +193,11 @@ $("#viewAppSetting").pagecontainer({
         });
 
         $("#viewAppSetting").on("pageshow", function (event, ui) {
-
+            var changePwd = window.sessionStorage.getItem('shopChangePwdSuccess');
+            if(changePwd == 'Y') {
+                $("#shopChangePwd").fadeIn(100).delay(2000).fadeOut(100);
+                window.sessionStorage.removeItem('shopChangePwdSuccess');
+            }
         });
 
         $("#viewAppSetting").on("pagehide", function (event, ui) {
