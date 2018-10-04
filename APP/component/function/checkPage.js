@@ -30,7 +30,10 @@ function checkAppPage(pageID, pageVisitedList) {
 
                 //5. change page
                 $.mobile.changePage('#' + pageID);
-                window.ga.trackView(pageID);
+
+                if (window.ga !== undefined) {
+                    window.ga.trackView(pageID);
+                }
 
             }, 200);
             pageVisitedList.push(pageID);
@@ -45,7 +48,9 @@ function checkAppPage(pageID, pageVisitedList) {
 
         } else {
             $.mobile.changePage('#' + pageID);
-            window.ga.trackView(pageID);
+            if (window.ga !== undefined) {
+                window.ga.trackView(pageID);
+            }
             pageVisitedList.push(pageID);
         }
 
@@ -94,7 +99,9 @@ function checkWidgetPage(pageID, pageVisitedList) {
 
                 //6. change page
                 $.mobile.changePage('#' + pageID);
-                window.ga.trackView(pageID);
+                if (window.ga !== undefined) {
+                    window.ga.trackView(pageID);
+                }
 
             }, 200);
             pageVisitedList.push(pageID);
@@ -109,7 +116,9 @@ function checkWidgetPage(pageID, pageVisitedList) {
 
         } else {
             $.mobile.changePage('#' + pageID);
-            window.ga.trackView(pageID);
+            if (window.ga !== undefined) {
+                window.ga.trackView(pageID);
+            }
             pageVisitedList.push(pageID);
         }
 
