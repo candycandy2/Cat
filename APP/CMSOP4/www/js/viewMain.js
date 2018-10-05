@@ -560,7 +560,7 @@ $("#viewMain").pagecontainer({
                     window.locationError = function(error) {
                         //console.log("------error");
                         console.log(error);
-                        alert(error);
+                        alert("------error");
                     };
 
                     //set food in marker
