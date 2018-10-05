@@ -45,7 +45,7 @@
                             <td>{{trans('messages.VERSION_LOG')}}:</td>
                             <td style="padding: 10px;">
                                 <textarea data-clear-btn="true" class="form-control" name="tbxVersionLog"
-                                       id="tbxVersionLog" value="" style="height: 100px;"/></textarea>
+                                       id="tbxVersionLog" value="" style="height: 300px"/></textarea>
                                 <span style="color: red;" class="error" for="tbxVersionLog"></span>
                             </td>
                             <td><span style="color: red;">*</span></td>
@@ -105,7 +105,7 @@
                         <td>{{trans('messages.VERSION_LOG')}}:</td>
                         <td style="padding: 10px;">
                             <textarea data-clear-btn="true" class="form-control" name="tbxEditVersionLog"
-                                   id="tbxEditVersionLog" value="" style="height: 100px;"/></textarea>
+                                   id="tbxEditVersionLog" value="" style="height: 300px"/></textarea>
                             <span style="color: red;" class="error" for="tbxEditVersionLog"></span>
                         </td>
                         <td><span style="color: red;">*</span></td>
@@ -163,7 +163,7 @@
                             <td>{{trans('messages.VERSION_LOG')}}:</td>
                             <td style="padding: 10px;">
                                 <textarea data-clear-btn="true" class="form-control" name="tbxExternalLog"
-                                       id="tbxExternalLog" value="" style="height: 100px;"/></textarea>
+                                       id="tbxExternalLog" value="" style="height: 300px"></textarea>
                                 <span style="color: red;" class="error" for="tbxExternalLog"></span>
                             </td>
                             <td><span style="color: red;">*</span></td>
@@ -205,12 +205,8 @@ function historySwitchFormatter(value, row, index) {
     }
 };
 
-function versionNameFormatter(value, row) {
-    
-    if(row.ready_date != null && row.status == 'cancel'){
-            return value;
-    }
-    return '<a href="#" class="editVersion data-rowid="'+ row.row_id  +'" data-device="'+row.device_type+'" data-version_name="'+row.version_name+'" data-version_code="'+row.version_code+'" data-download_url="'+row.download_url+'" data-external="'+row.external_app+'" data-log="'+row.version_log+'" data-url="'+row.url+'"><span class="glyphicon glyphicon-edit"></span> '+ value +'</a>';
+function versionNameFormatter(value, row) {    
+    return '<a href="#" class="editVersion"><span class="glyphicon glyphicon-edit"></span> '+ value +'</a>';
 };
 
 function createdDateFormatter(value, row){
@@ -227,12 +223,17 @@ function readyDateFormatter(UNIX_timestamp){
 
 function versionLogDateFormatter(value, row){
     if( value !=null ){
-        var versionLog = value.replace(new RegExp('\r?\n','g'), '<br />');
+       
+       var versionLog = value.replace(new RegExp('\r?\n','g'), '<br />');
+       if(versionLog.length > 100){
+            versionLog = versionLog.slice(0,100);
+            return versionLog + '...';       
+       }
        return versionLog;
+       
     }
     return '-';   
 }
-
 function fileSizeFormatter(value, row){
     return formatSizeUnits(value);
 }
@@ -243,7 +244,7 @@ var newAppVersion = function (device){
         $dialogObj.find('#versionFile').val("");
         $dialogObj.find('.file-input-name').text("");
         $dialogObj.find('input[type=text]').val("");
-        $dialogObj.find('textarea').val("");
+        $dialogObj.find('textarea').val("").height("300px");
         $dialogObj.find('span.error').html("");
         $dialogObj.modal('show');
 }
@@ -252,7 +253,7 @@ var newExternalLink = function (device){
         $('form').attr('device',device);
         $dialogObj = $("#appNewExternalLinkDialog");
         $dialogObj.find('input[type=text]').val("");
-        $dialogObj.find('textarea').val("");
+        $dialogObj.find('textarea').val("").height("300px");
         $dialogObj.find('span.error').html("");
         $dialogObj.modal('show');
 }
@@ -502,7 +503,7 @@ function ajxValidVersion(errors, mydataStr, field){
         dataType: "json",
         type: "POST",
         contentType: "application/json",
-        async: false,//啟用同步請
+        //async: false,//啟用同步請求
         data: mydataStr,
         success: function (d, status, xhr) {
             if(d.result_code != 1){
@@ -543,6 +544,7 @@ $(function () {
     $('body').on('keypress','input[type=text]', function(){clearError($(this));});
     $('body').on('change','input[type=file]', function(){clearError($(this));});
     $('body').on('change','textarea', function(){clearError($(this));});
+
     //unpublish
     $('body').on('click','div.switch-success', function(){
         $(this).removeClass('switch-success').addClass('switch-off');
@@ -574,21 +576,34 @@ $(function () {
         });
     });
 
-     $('body').on('click','.editVersion',function(e) {  
+    $('body').on('click','.editVersion',function(e) {
+
         $currentTarget = $(e.currentTarget);
         var disabled = true;
-        
-        if($currentTarget.data('external') == 1){
+        var currentData = $currentTarget.parents('table.bootstrapTable').bootstrapTable('getData');
+        var index = $currentTarget.parent().parent().data('index');
+        if(currentData[0].external_app == 1){
             disabled = false;
         }
-        $('#hidIndex').val($currentTarget.parent().parent().data('index'));
-        $('#hidVersionRowId').val($currentTarget.data('rowid'));
+        $('#hidIndex').val(index);
+        $('#hidVersionRowId').val(currentData[index].row_id);
         $('#hidGridId').val($currentTarget.parents('table.bootstrapTable').attr('id'));
-        $('#hidUrl').val($currentTarget.data('url'));
-        $('#tbxEditVersionName').val($currentTarget.data('version_name')).prop('disabled', disabled);
-        $('#tbxEditVersionNo').val($currentTarget.data('version_code')).prop('disabled', disabled);
-        $('#tbxEditVersionUrl').val($currentTarget.data('download_url')).prop('disabled', disabled);
-        $('#tbxEditVersionLog').val($currentTarget.data('log'));
+        $('#hidUrl').val(currentData[index].url);
+        $('#tbxEditVersionName').val(currentData[index].version_name).prop('disabled', true);
+        $('#tbxEditVersionNo').val(currentData[index].version_code).prop('disabled', true);
+        $('#tbxEditVersionUrl').val(currentData[index].download_url).prop('disabled', true);
+        
+        if(currentData[index].version_log === ""){
+            $('#tbxEditVersionLog').height("300px");
+        }else{
+            $('#tbxEditVersionLog').val(currentData[index].version_log);
+        }
+        
+        if(currentData[index].archived == 'Y'){
+            $('#tbxEditVersionLog').prop('disabled', true); 
+        }else{
+            $('#tbxEditVersionLog').prop('disabled', false); 
+        }
 
         $('#appVersionDialog').modal('show');
         $('#appVersionDialog').find('span.error').html("");
