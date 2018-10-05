@@ -64,8 +64,8 @@ $("#viewUserChangePwd").pagecontainer({
 
                 } else if(data['result_code'] == '000925') {
                     //旧密码错误 popup msg
-                    $('#userChangePwdError .header-title-main .header-text').text(langStr['wgt_078']);
-                    $('#userChangePwdError .header-title .header-text').text(langStr['wgt_045']);
+                    $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_078']);
+                    $('.userChangePwdError .header-title .header-text').text(langStr['wgt_045']);
                     $('.userChangePwdError').popup('open');
                 }
             };
@@ -133,24 +133,24 @@ $("#viewUserChangePwd").pagecontainer({
 
                     if(!oldResult) {
                         //提示旧密码格式错误
-                        $('#userChangePwdError .header-title-main .header-text').text(langStr['wgt_082']);
-                        $('#userChangePwdError .header-title .header-text').text(langStr['wgt_045']);
+                        $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_082']);
+                        $('.userChangePwdError .header-title .header-text').text(langStr['wgt_045']);
                         $('.userChangePwdError').popup('open');
                     } else {
                         //2.检查新密码
                         var newResult = checkPwdFormat(newPwd);
                         if(!newResult) {
                             //提示新密码格式错误
-                            $('#userChangePwdError .header-title-main .header-text').text(langStr['wgt_080']);
-                            $('#userChangePwdError .header-title .header-text').text(langStr['wgt_081']);
+                            $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_080']);
+                            $('.userChangePwdError .header-title .header-text').text(langStr['wgt_081']);
                             $('.userChangePwdError').popup('open');
                         } else {
                             //3.确认新密码
                             var confirmResult = checkPwdFormat(newPwd, confirmPwd);
                             if(!confirmResult) {
                                 //提示新密码输入不一致
-                                $('#userChangePwdError .header-title-main .header-text').text(langStr['wgt_079']);
-                                $('#userChangePwdError .header-title .header-text').text(langStr['wgt_045']);
+                                $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_079']);
+                                $('.userChangePwdError .header-title .header-text').text(langStr['wgt_045']);
                                 $('.userChangePwdError').popup('open');
                             } else {
                                 //API:修改交易密码
@@ -158,13 +158,13 @@ $("#viewUserChangePwd").pagecontainer({
                             }
                         }
                     }
-                },500)
+                }, 500)
 
             }
         });
 
         //关闭popup
-        $('#userChangePwdError .btn-cancel').on('click', function() {
+        $('.userChangePwdError .btn-cancel').on('click', function() {
             $('.userChangePwdError').popup('close');
         })
 

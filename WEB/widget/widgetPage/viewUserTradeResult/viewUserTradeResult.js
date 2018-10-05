@@ -35,17 +35,19 @@ $("#viewUserTradeResult").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewUserTradeResult").on("pagebeforeshow", function (event, ui) {
-
+            //API
+            getTradeResult();
         });
 
         $("#viewUserTradeResult").one("pageshow", function (event, ui) {
+            //API
+            getTradeResult();
             //backkey
             window.sessionStorage.setItem('viewUserTradeResult_backTo', backToPage);
         });
 
         $("#viewUserTradeResult").on("pageshow", function (event, ui) {
-            //API
-            getTradeResult();
+
         });
 
         $("#viewUserTradeResult").on("pagehide", function (event, ui) {

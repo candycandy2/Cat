@@ -16,6 +16,7 @@
     height: 10.79vw;
     padding: 6.87vw 3.71vw 2.14vw 7.67vw;
     border-bottom: 1px solid #d6d6d6;
+    background: #FFF;
 }
 
 .user-record-list > div:nth-of-type(1) {

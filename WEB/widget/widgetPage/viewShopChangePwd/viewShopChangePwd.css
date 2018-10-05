@@ -57,3 +57,8 @@
     font-size: 3.14vw;
     text-align: center;
 }
+
+.shopChangePwdError .ui-content > .header {
+    padding: 0 5.36vw;
+    margin-top: 8vw;
+}

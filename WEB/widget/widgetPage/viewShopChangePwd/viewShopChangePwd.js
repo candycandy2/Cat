@@ -41,8 +41,26 @@ $("#viewShopChangePwd").pagecontainer({
                     //popup:交易密码更改成功
                     $('#viewShopChangePwd .page-back').trigger('click');
                     window.sessionStorage.setItem('shopChangePwdSuccess', 'Y');
+
+                } else if(data['result_code'] == '000926') {
+                    //popup:失败原因，旧密码错误
+                    $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_078']);
+                    $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_045']);
+                    $('.shopChangePwdError').popup('open');
+
+                } else if(data['result_code'] == '000931') {
+                    //popup:失败原因，新密码格式错误
+                    $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_080']);
+                    $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_091']);
+                    $('.shopChangePwdError').popup('open');
+
                 } else {
-                    //popup:失败原因
+                    //popup:失败原因，其他原因
+                    var errorReason = data['message'];
+                    $('.shopChangePwdError .header-title-main .header-text').text(errorReason);
+                    $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_045']);
+                    $('.shopChangePwdError').popup('open');
+
                 }
             };
 
@@ -95,19 +113,32 @@ $("#viewShopChangePwd").pagecontainer({
         $('.shop-change-pwd').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
-                var result = checkFormPwd('compare');
-                if(!result) {
-                    console.log('新密码不一致！');
-                } else {
-                    var oldPwd = $('#shopOldPwd').val();
-                    var newPwd = $('#shopNewPwd').val();
+                //失去焦点
+                document.activeElement.blur();
 
-                    //API:修改登录密码
-                    changeQAccountPwd(oldPwd, newPwd);
-                }
+                setTimeout(function() {
+                    var result = checkFormPwd('compare');
+                    if(!result) {
+                        //popup:新密码不一致
+                        $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_079']);
+                        $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_045']);
+                        $('.shopChangePwdError').popup('open');
+                    } else {
+                        var oldPwd = $('#shopOldPwd').val();
+                        var newPwd = $('#shopNewPwd').val();
+
+                        //API:修改登录密码
+                        changeQAccountPwd(oldPwd, newPwd);
+                    }
+                }, 500)
+                
             }
         });
 
+        //关闭popup
+        $('.shopChangePwdError .btn-cancel').on('click', function() {
+            $('.shopChangePwdError').popup('close');
+        })
 
 
     }

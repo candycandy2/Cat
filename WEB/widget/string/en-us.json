@@ -641,7 +641,7 @@
   },
   {
     "term": "wgt_081",
-    "definition": "新密码需为4个数字组成e",
+    "definition": "新密码须为4个数字组成e",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -657,7 +657,7 @@
   },
   {
     "term": "wgt_083",
-    "definition": "旧密码需为4个数字组成e",
+    "definition": "旧密码须为4个数字组成e",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -714,6 +714,14 @@
   {
     "term": "wgt_090",
     "definition": "系统功能异常e",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_091",
+    "definition": "新密码须为8-12个英文数字组成e",
     "context": "",
     "term_plural": "",
     "reference": "",
