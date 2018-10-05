@@ -84,27 +84,34 @@ class QPayPointService
                 $excelData = $reader->get();
 
                 //Get All emp_no & datas
+                $excelDataCount = 0;
                 $excelEmpNoArray = [];
                 $point = 0;
 
                 foreach ($excelData as $data) {
-                    $excelEmpNoArray[] = $data["empno"];
-                    $point = $data["point"];
+                    if (strlen(strval(trim($data["empno"]))) == 0) {
+                        continue;
+                    }
+
+                    $excelEmpNoArray[] = strval(trim($data["empno"]));
+                    $point = strval(trim($data["point"]));
 
                     $empData = [
-                        "company" => $data["company"],
-                        "department" => $data["department"],
-                        "namech" => $data["namech"],
-                        "nameen" => $data["nameen"],
-                        "empno" => $data["empno"]
+                        "company" => trim($data["company"]),
+                        "department" => trim($data["department"]),
+                        "namech" => trim($data["namech"]),
+                        "nameen" => trim($data["nameen"]),
+                        "empno" => strval(trim($data["empno"]))
                     ];
                     $this->allEmpDataArray[] = $empData;
+
+                    $excelDataCount++;
                 }
 
                 //Count excel data
                 $this->excelDataInfo["point"] = $point;
-                $this->excelDataInfo["empCount"] = number_format(count($excelData));
-                $this->excelDataInfo["pointCount"] = number_format(count($excelData) * $point);
+                $this->excelDataInfo["empCount"] = number_format($excelDataCount);
+                $this->excelDataInfo["pointCount"] = number_format($excelDataCount * $point);
                 Session::set("excelDataInfo", $this->excelDataInfo);
 
                 //Find All emp_no which exist in `qp_user`
@@ -183,7 +190,11 @@ class QPayPointService
                 $excelEmpNoArray = [];
 
                 foreach ($excelData as $data) {
-                    $excelEmpNoArray[] = $data["empno"];
+                    if (strlen(strval(trim($data["empno"]))) == 0) {
+                        continue;
+                    }
+
+                    $excelEmpNoArray[] = strval(trim($data["empno"]));
                 }
 
                 //Find exist member
@@ -213,7 +224,7 @@ class QPayPointService
                     $options = [
                         'cost' => '08',
                     ];
-                    $trade_pwd = password_hash(substr($data["emp_id"], -4), PASSWORD_BCRYPT, $options);
+                    $trade_pwd = password_hash(substr(strval(trim($data["emp_id"])), -4), PASSWORD_BCRYPT, $options);
 
                     $memberID = $this->qpayMemberRepository->newMember($data["row_id"], $trade_pwd);
                     $existQPayMemberID[] = $memberID;
