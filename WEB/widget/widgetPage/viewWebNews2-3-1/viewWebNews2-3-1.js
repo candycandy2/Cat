@@ -656,7 +656,8 @@ $("#viewWebNews2-3-1").pagecontainer({
         });
 
         $(document).on("click", "#messageLoadErrorPopup #back", function () {
-            checkWidgetPage('viewMessageList', pageVisitedList);
+            //checkWidgetPage('viewMessageList', pageVisitedList);
+            backToSpecifiedPage('viewMessageList', pageVisitedList);
         });
     }
 });
