@@ -1,6 +1,12 @@
+<strong>Oct-06-18 00:34:30</strong>
+- Reason : daily build, 612
+- Commit# : 
+8b4abb872 - Darren Ti, 10 hours ago : [QPay]FixBug for Backend update Point Excel
+b5cafd832 - CleoWChan, 16 hours ago : [QPlayPlatform] fix bug [Staging] QPlayPlatform APP管理 APP版本描述過多時點開編輯，沒有顯示所有文字 #3387
+
 <strong>Oct-05-18 00:34:54</strong>
 - Reason : daily build, 611
-- Commit# : 
+- Commit# :
 d5473dc8c - Darren Ti, 8 hours ago : [QPay]Fix bug for API-getTradeRecord/getStoreRecord/newTrade
 
 <strong>Oct-04-18 09:14:42</strong>
