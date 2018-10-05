@@ -1,7 +1,7 @@
 $("#viewShopTradeResult").pagecontainer({
     create: function (event, ui) {
 
-        var backToPage = 'viewMain3';
+        var backToPage = 'viewShopSelectUser';
 
         function initialPage() {
 
@@ -28,9 +28,6 @@ $("#viewShopTradeResult").pagecontainer({
             $('.trade-pay').text(trade_result['trade_point']);
             $('.trade-time').text(trade_result['trade_time']);
             $('.trade-money').text(trade_result['point_now']);
-
-            //3. 交易结果有特殊的返回逻辑
-            window.sessionStorage.setItem('viewShopTradeResult_backTo', backToPage);
         }
 
         /********************************** page event ***********************************/

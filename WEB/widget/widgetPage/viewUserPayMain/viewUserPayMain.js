@@ -77,7 +77,9 @@ $("#viewUserPayMain").pagecontainer({
 
         //跳转交易记录
         $('.record-link').on('click', function () {
-            checkWidgetPage('viewUserQueryRecord', pageVisitedList);
+            //暂时不要查询条件，show全年所有记录
+            //checkWidgetPage('viewUserQueryRecord', pageVisitedList);
+            checkWidgetPage('viewUserRecordList', pageVisitedList);
         });
 
         //跳转更改密码

@@ -27,8 +27,9 @@ $("#viewUserQueryRecord").pagecontainer({
             typeData["option"][1]["value"] = "2";
             typeData["option"][1]["text"] = langStr["wgt_034"];
 
+            //initial
             tplJS.DropdownList("viewUserQueryRecord", "userRecordType", "prepend", "typeB", typeData);
-            //调整select宽度
+            //调整select UI
             var selectWidth = $('#userQueryType').width();
             tplJS.reSizeDropdownList('userQueryType', null, widthUnitConversion(selectWidth) - 5);
             $('#userQueryType').css('padding', '0');
@@ -37,6 +38,13 @@ $("#viewUserQueryRecord").pagecontainer({
                 'left': '88%'
             });
             $('#userQueryType-option-list').css('margin-top', '3vw');
+
+            //预设值
+            let userRecordQuery = JSON.parse(window.localStorage.getItem('user_record_query'));
+            if(userRecordQuery == null) {
+                //如果没有记录查询条件，默认选中第一个
+                $('#userQueryType-option').find('li').first().trigger('click');
+            }
         }
 
         //宽度转换
@@ -81,7 +89,6 @@ $("#viewUserQueryRecord").pagecontainer({
                 window.sessionStorage.setItem('query_user_record', JSON.stringify(queryData));
             }
         }
-
 
 
         /********************************** page event ***********************************/

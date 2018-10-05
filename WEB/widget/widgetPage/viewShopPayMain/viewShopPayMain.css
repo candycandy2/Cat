@@ -5,8 +5,8 @@
 
 .shop-pay-main {
     width: 100vw;
-    height: 100vh;
-    position: fixed;
+    /* height: 100vh;
+    position: fixed; */
     background: #EEF2F5;
 }
 
@@ -48,9 +48,9 @@
     border-bottom: 1px solid #d6d6d6;
 }
 
-.link-shop > div:last-of-type {
+/* .link-shop > div:last-of-type {
     border: none;
-}
+} */
 
 .link-shop > div > div {
     float: left;

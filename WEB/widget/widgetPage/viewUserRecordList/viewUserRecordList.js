@@ -8,9 +8,14 @@ $("#viewUserRecordList").pagecontainer({
         }
 
         //获取储值记录
-        function getStoreRecord(startDate, endDate) {
+        function getStoreRecord() {
             var self = this;
-            var queryStr = "&start_date=" + startDate + "&end_date=" + endDate;
+            //开始时间为当年的第一天
+            let start_time = new Date(new Date().getFullYear().toString() + '/1/1 00:00:00').getTime() / 1000;
+            //结束时间为当天
+            let end_time = Math.round(new Date().getTime() / 1000);
+            //查询条件
+            let queryStr = "&start_date=" + start_time.toString() + "&end_date=" + end_time.toString();
 
             this.successCallback = function (data) {
                 console.log(data);
@@ -28,13 +33,7 @@ $("#viewUserRecordList").pagecontainer({
                             '</div></div><div><div></div><div>' + storeDate + ' ' + storeTime + '</div></div></li>';
                     }
                     
-                    $('.user-record-ul').html('').append(content);
-
-                    loadingMask("hide");
-
-                    if(content == '') {
-                        $("#userRecordNoData").fadeIn(100).delay(2000).fadeOut(100);
-                    }
+                    $('.user-store-record-ul').html('').append(content);
 
                     setRecordListHeight();
                 }
@@ -48,9 +47,14 @@ $("#viewUserRecordList").pagecontainer({
         }
 
         //获取交易记录
-        function getTradeRecord(startDate, endDate) {
+        function getTradeRecord() {
             var self = this;
-            var queryStr = "&start_date=" + startDate + "&end_date=" + endDate;
+            //开始时间为当年的第一天
+            let start_time = new Date(new Date().getFullYear().toString() + '/1/1 00:00:00').getTime() / 1000;
+            //结束时间为当天
+            let end_time = Math.round(new Date().getTime() / 1000);
+            //查询条件
+            let queryStr = "&start_date=" + start_time.toString() + "&end_date=" + end_time.toString();
 
             this.successCallback = function (data) {
                 console.log(data);
@@ -100,13 +104,9 @@ $("#viewUserRecordList").pagecontainer({
                             '</div><div>' + tradeDate + ' ' + tradeTime + '</div></div></li>';
                     }
 
-                    $('.user-record-ul').html('').append(content);
+                    $('.user-trade-record-ul').html('').append(content);
 
                     loadingMask("hide");
-
-                    if(content == '') {
-                        $("#userRecordNoData").fadeIn(100).delay(2000).fadeOut(100);
-                    }
 
                     setRecordListHeight();
                 }
@@ -122,13 +122,14 @@ $("#viewUserRecordList").pagecontainer({
         //动态设置页面高度
         function setRecordListHeight() {
             var headHeight = $('#viewUserRecordList .page-header').height();
-            var mainHeight = $('.user-record-ul').height();
+            var storeHeight = $('.user-store-record-ul').height();
+            var tradeHeight = $('.user-trade-record-ul').height();
             var totalHeight;
 
             if (device.platform === "iOS") {
-                totalHeight = (headHeight + mainHeight + iOSFixedTopPX()).toString();
+                totalHeight = (headHeight + storeHeight + tradeHeight + iOSFixedTopPX()).toString();
             } else {
-                totalHeight = (headHeight + mainHeight).toString();
+                totalHeight = (headHeight + storeHeight + tradeHeight).toString();
             }
             $('.user-record > div').css('height', totalHeight + 'px');
         }
@@ -140,18 +141,19 @@ $("#viewUserRecordList").pagecontainer({
         });
 
         $("#viewUserRecordList").one("pageshow", function (event, ui) {
-
+            getStoreRecord();
+            getTradeRecord();
         });
 
         $("#viewUserRecordList").on("pageshow", function (event, ui) {
-            var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
-            if (queryData['type'] == 'store') {
-                getStoreRecord(queryData['start'], queryData['end']);
+            // var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
+            // if (queryData['type'] == 'store') {
+            //     getStoreRecord();
 
-            } else if (queryData['type'] == 'trade') {
-                getTradeRecord(queryData['start'], queryData['end']);
+            // } else if (queryData['type'] == 'trade') {
+            //     getTradeRecord();
 
-            }
+            // }
         });
 
         $("#viewUserRecordList").on("pagehide", function (event, ui) {
@@ -162,14 +164,16 @@ $("#viewUserRecordList").pagecontainer({
         /********************************** dom event *************************************/
         $('#userRefresh').on('click', function () {
             loadingMask("show");
-            var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
-            if (queryData['type'] == 'store') {
-                getStoreRecord(queryData['start'], queryData['end']);
+            getStoreRecord();
+            getTradeRecord();
+            // var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
+            // if (queryData['type'] == 'store') {
+            //     getStoreRecord();
 
-            } else if (queryData['type'] == 'trade') {
-                getTradeRecord(queryData['start'], queryData['end']);
+            // } else if (queryData['type'] == 'trade') {
+            //     getTradeRecord();
 
-            }
+            // }
         });
 
 
