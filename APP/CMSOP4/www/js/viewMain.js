@@ -559,7 +559,8 @@ $("#viewMain").pagecontainer({
 
                     window.locationError = function(error) {
                         //console.log("------error");
-                        alert("------error");
+                        console.log(error);
+                        alert(error);
                     };
 
                     //set food in marker
@@ -573,9 +574,9 @@ $("#viewMain").pagecontainer({
                         }, 2000);
                     });*/
 
-                    navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {
+                    navigator.geolocation.getCurrentPosition(locationSuccess, locationError/*, {       
                         enableHighAccuracy: true
-                    });
+                    }*/);
                 } else {
                     console.log("---------2");
                 }
