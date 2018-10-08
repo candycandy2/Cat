@@ -119,6 +119,11 @@ class InfoController extends Controller
             ]
         );
 
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
         $empNo = $request->emp_no;
         $user = CommonUtil::getUserInfoJustByUserEmpNo($empNo);
         if(is_null($user)){
@@ -128,8 +133,8 @@ class InfoController extends Controller
                                     'content'=>'']);
         }
 
-        $retunData['point_now']  = $this->qpayMemberService->getPointNow($user->row_id);
         $retunData['emp_loginid']  = $user->login_id;
+        $retunData['point_now']  = $this->qpayMemberService->getPointNow($user->row_id);
 
         $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                 'content'=>$retunData,
