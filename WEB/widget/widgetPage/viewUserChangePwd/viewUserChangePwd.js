@@ -73,7 +73,6 @@ $("#viewUserChangePwd").pagecontainer({
             this.failCallback = function () { };
 
             var __construct = function () {
-                //QPlayAPIChangePwd("GET", "changeTradePwdForAPP", 'old-trade-pwd', 'new-trade-pwd', oldPwd, newPwd, self.successCallback, self.failCallback, null, null, "low", 30000, true);
                 QPlayAPINewHeader("GET", "changeTradePwdForAPP", 'old-trade-pwd', 'new-trade-pwd', oldPwd, newPwd, self.successCallback, self.failCallback, null, null, "low", 30000, true);
             }();
         }
@@ -97,7 +96,6 @@ $("#viewUserChangePwd").pagecontainer({
             //initial
             initialPage();
         });
-
 
 
         /********************************** dom event *************************************/

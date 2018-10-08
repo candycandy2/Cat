@@ -4,7 +4,7 @@ $("#viewUserInputAmount").pagecontainer({
         var payNum = '',
             point_now;
 
-        function initialPage() {
+        function initialAmountPage() {
             payNum = '';
             $('.user-pay-number').text('0');
             $('.user-pay-next').removeClass('button-active');
@@ -22,8 +22,12 @@ $("#viewUserInputAmount").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewUserInputAmount").on("pagebeforeshow", function (event, ui) {
-            initialPage();
             setShopAndPoint();
+            var initialPage = window.sessionStorage.getItem('initialAmountPage');
+            if(initialPage == 'Y') {
+                initialAmountPage();
+                window.sessionStorage.removeItem('initialAmountPage');
+            }
         });
 
         $("#viewUserInputAmount").one("pageshow", function (event, ui) {
@@ -79,14 +83,14 @@ $("#viewUserInputAmount").pagecontainer({
                 
             } else {
                 //初始化
-                initialPage();
+                initialAmountPage();
             }
         });
 
         //清空所输金额
         $('.user-pay-clear-all').on('click', function () {
             //初始化
-            initialPage();
+            initialAmountPage();
         });
 
         //下一步

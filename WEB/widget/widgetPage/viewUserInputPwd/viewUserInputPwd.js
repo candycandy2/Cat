@@ -56,7 +56,9 @@ $("#viewUserInputPwd").pagecontainer({
 
                 if (data['result_code'] == '1') {
                     //1. save result
+                    trade_info['trade_success'] = 'Y';
                     trade_info['trade_status'] = langStr['wgt_068'];//交易成功
+                    trade_info['error_reason'] = '';
                     trade_info['trade_point'] = price;
                     
                     //2. 交易成功，更新消费券余额
@@ -64,6 +66,7 @@ $("#viewUserInputPwd").pagecontainer({
                     window.sessionStorage.setItem('user_point_dirty', 'Y');
 
                 } else {
+                    trade_info['trade_success'] = 'N';
                     trade_info['trade_status'] = langStr['wgt_069'];//交易失敗
                     trade_info['error_reason'] = data['message'];//失败原因
                     trade_info['trade_point'] = '0';
@@ -131,7 +134,7 @@ $("#viewUserInputPwd").pagecontainer({
                 getTradeToken(pwdNum);
             }
 
-        })
+        });
 
         //回删输入密码
         $('.user-password-clear-one').on('click', function () {
