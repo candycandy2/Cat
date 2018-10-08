@@ -1,3 +1,10 @@
+<strong>Oct-09-18 00:34:48</strong>
+- Reason : daily build, 615
+- Commit# : 
+4d549a882 - CleoWChan, 10 hours ago : [QPay] Fix parameter verify and change the return node order
+cd11473ad - CleoWChan, 13 hours ago : [QPay] Update return node loing_id to emp_loginid
+5117160a5 - CleoWChan, 15 hours ago : [QPay] Add getEmpInfoForShop API
+
 <strong>Oct-08-18 00:34:18</strong>
 - Reason : daily build, 614
 - Commit# : 
