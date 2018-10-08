@@ -39,8 +39,6 @@ $("#viewUserTradeResult").pagecontainer({
         $("#viewUserTradeResult").one("pageshow", function (event, ui) {
             //API
             getTradeResult();
-            //backkey
-            window.sessionStorage.setItem('viewUserTradeResult_backTo', backToPage);
         });
 
         $("#viewUserTradeResult").on("pageshow", function (event, ui) {
@@ -55,6 +53,10 @@ $("#viewUserTradeResult").pagecontainer({
         /********************************** dom event *************************************/
         //返回
         $('.user-trade-back').on('click', function () {
+            var backPage = window.sessionStorage.getItem('viewUserTradeResult_backTo');
+            if(backPage == null) {
+                window.sessionStorage.setItem('viewUserTradeResult_backTo', backToPage);
+            }
             //交易结果返回需要特殊处理，不会返回前一页，而是返回viewMain3
             onBackKeyDown();
         });
