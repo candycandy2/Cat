@@ -99,5 +99,43 @@ class InfoController extends Controller
                 'token_valid'=>$request->token_valid_date
             ];
         return response()->json($result);
-    } 
+    }
+
+    /**
+     * get point now by emp_no
+     * @param  Request $request
+     * @return json
+     */
+    public function getEmpInfoForShop(Request $request)
+    {
+        
+        //parameter verify
+        $validator = Validator::make($request->all(),
+            [
+            'emp_no' => 'required'
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
+        );
+
+        $empNo = $request->emp_no;
+        $user = CommonUtil::getUserInfoJustByUserEmpNo($empNo);
+        if(is_null($user)){
+            $resultCode = ResultCode::_000901_userNotExistError;
+            return response()->json(['result_code'=>$resultCode ,
+                                    'message'=>CommonUtil::getMessageContentByCode($resultCode ),
+                                    'content'=>'']);
+        }
+
+        $retunData['point_now']  = $this->qpayMemberService->getPointNow($user->row_id);
+        $retunData['login_id']  = $user->login_id;
+
+        $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
+                'content'=>$retunData,
+                'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
+                'token_valid'=>$request->token_valid_date
+            ];
+        return response()->json($result);
+    }
 }
