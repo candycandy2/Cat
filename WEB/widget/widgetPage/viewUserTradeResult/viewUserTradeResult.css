@@ -53,3 +53,7 @@
     color: #989898;
     font-size: 4.18vw;
 }
+
+.trade-reason-container {
+    display: none;
+}

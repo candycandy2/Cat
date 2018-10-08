@@ -2,11 +2,6 @@ $("#viewUserRecordList").pagecontainer({
     create: function (event, ui) {
 
 
-
-        function initialPage() {
-
-        }
-
         //获取储值记录
         function getStoreRecord() {
             var self = this;
@@ -34,8 +29,6 @@ $("#viewUserRecordList").pagecontainer({
                     }
                     
                     $('.user-store-record-ul').html('').append(content);
-
-                    setRecordListHeight();
                 }
             };
 
@@ -146,14 +139,7 @@ $("#viewUserRecordList").pagecontainer({
         });
 
         $("#viewUserRecordList").on("pageshow", function (event, ui) {
-            // var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
-            // if (queryData['type'] == 'store') {
-            //     getStoreRecord();
 
-            // } else if (queryData['type'] == 'trade') {
-            //     getTradeRecord();
-
-            // }
         });
 
         $("#viewUserRecordList").on("pagehide", function (event, ui) {
@@ -166,14 +152,6 @@ $("#viewUserRecordList").pagecontainer({
             loadingMask("show");
             getStoreRecord();
             getTradeRecord();
-            // var queryData = JSON.parse(window.sessionStorage.getItem('query_user_record'));
-            // if (queryData['type'] == 'store') {
-            //     getStoreRecord();
-
-            // } else if (queryData['type'] == 'trade') {
-            //     getTradeRecord();
-
-            // }
         });
 
 
