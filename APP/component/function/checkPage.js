@@ -143,9 +143,15 @@ function onBackKeyDown(bForceByPassPopup) {
     // var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
     var activePageID = pageVisitedList[pageVisitedList.length - 1];
     var prevPageID = pageVisitedList[pageVisitedList.length - 2];
-    bForceByPassPopup = bForceByPassPopup || false;
+    //bForceByPassPopup = bForceByPassPopup || false;
 
-    if (bForceByPassPopup === false && checkPopupShown()) {
+    //param可为event对象,只有当参数为boolean类型时才赋值
+    var passPopup = false;
+    if(typeof bForceByPassPopup == 'boolean') {
+        passPopup = bForceByPassPopup;
+    }
+
+    if (passPopup === false && checkPopupShown()) {
         var popupID = $(".ui-popup-active")[0].children[0].id;
         $('#' + popupID).popup("close");
 
