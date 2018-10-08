@@ -61,6 +61,8 @@ $("#viewUserSelectShop").pagecontainer({
                 'shop_name': shop_name
             };
             window.sessionStorage.setItem('shop_info', JSON.stringify(shop_obj));
+            //初始化后一页（输入金额页面）
+            window.sessionStorage.setItem('initialAmountPage', 'Y');
             checkWidgetPage('viewUserInputAmount', pageVisitedList);
         });
 
