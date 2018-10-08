@@ -574,9 +574,9 @@ $("#viewMain").pagecontainer({
                         }, 2000);
                     });*/
 
-                    navigator.geolocation.getCurrentPosition(locationSuccess, locationError/*, {       
+                    navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {       
                         enableHighAccuracy: true
-                    }*/);
+                    });
                 } else {
                     console.log("---------2");
                 }
