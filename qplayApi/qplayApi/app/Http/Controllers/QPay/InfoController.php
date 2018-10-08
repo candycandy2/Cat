@@ -129,7 +129,7 @@ class InfoController extends Controller
         }
 
         $retunData['point_now']  = $this->qpayMemberService->getPointNow($user->row_id);
-        $retunData['login_id']  = $user->login_id;
+        $retunData['emp_loginid']  = $user->login_id;
 
         $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                 'content'=>$retunData,
