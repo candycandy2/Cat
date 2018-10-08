@@ -76,6 +76,7 @@ $("#viewShopPayMain").pagecontainer({
         /********************************** dom event *************************************/
         //店家结帐
         $('.shop-pay').on('click', function () {
+            loadingMask('show');
             checkWidgetPage('viewShopSelectUser', pageVisitedList);
         });
 

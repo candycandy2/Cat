@@ -4,43 +4,54 @@ $("#viewShopSelectUser").pagecontainer({
         //快速获取当天交易记录（QPlay使用者）
         function getCurrentTradeRecord() {
             var self = this;
+            let start = new Date(new Date().yyyymmdd("/") + " 00:00:00").getTime() / 1000;
+            let end = new Date(new Date().yyyymmdd("/") + " 23:59:59").getTime() / 1000;
+            let queryStr = '&start_date=' + start.toString() + '&end_date=' + end.toString();
 
-            this.successCallback = function () {
+            this.successCallback = function (data) {
+                console.log(data);
+
                 if (data['result_code'] == '1') {
-                    var record_list = data['content'];
+                    var shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
+                    var record_list = data['content'].trade_record;
 
                     var content = '';
                     for (var i in record_list) {
-                        if (record_list[i]['trade_record'].trade_success == 'Y') {
-                            content += '<li class="qplay-user-list"><div><div>QTY 早餐吧 / No.' +
-                                record_list[i]['trade_record'].trade_id +
-                                '</div><div>TWD ' + record_list[i]['trade_record'].trade_point +
-                                '</div></div><div>' + record_list[i]['trade_record'].trade_time + '</div></li>';
-                        }
+                        let tradeDate = new Date(record_list[i].trade_time * 1000).toLocaleDateString('zh');
+                        let tradeTime = new Date(record_list[i].trade_time * 1000).toTimeString().substr(0, 5);
+
+                        content += '<li class="qplay-user-list"><div><div>' + shop_name + ' / No.' +
+                            record_list[i].trade_id + '</div><div>TWD ' + record_list[i].trade_point +
+                            '</div></div><div>' + tradeDate + ' ' + tradeTime + '</div></li>';
+                        
                     }
 
                     $('.qplay-user-ul').html('').append(content);
                     setRecordListHeight();
                 }
+
+                loadingMask('hide');
             };
 
             this.failCallback = function () { };
 
             var __construct = function () {
-                QPlayAPIEx("GET", "checkTradeRecord", self.successCallback, self.failCallback, null, null, "low", 30000, true);
+                QPlayAPIEx("GET", "getTradeRecordShop", self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
             }();
         }
 
-        //店家获取员工资料
+        //店家获取员工资料（非QPlay使用者）
         function getEmpInfoForShop(emp) {
             var self = this;
             var queryStr = '&emp_no=' + emp;
 
-            this.successCallback = function () {
+            this.successCallback = function (data) {
+                console.log(data);
+
                 if (data['result_code'] == '1') {
                     //1. 记录当前登录用户的工号
-                    var emp_no = data['content'].emp_no;
-                    window.sessionStorage.setItem('current_emp', emp_no);
+                    var emp_id = data['content'].emp_loginid;
+                    window.sessionStorage.setItem('current_emp', emp_id);
 
                     //2. 记录当前用户的消费券余额
                     var point_now = data['content'].point_now;
@@ -83,12 +94,12 @@ $("#viewShopSelectUser").pagecontainer({
         });
 
         $("#viewShopSelectUser").one("pageshow", function (event, ui) {
-            $('inputEmpNo').attr('placeholder', langStr['wgt_067']);
+            $('#inputEmpNo').attr('placeholder', langStr['wgt_067']);
         });
 
         $("#viewShopSelectUser").on("pageshow", function (event, ui) {
-            //Call API
-            //getCurrentTradeRecord();
+            //API:快速获取当天所有交易记录（不分类别）
+            getCurrentTradeRecord();
         });
 
         $("#viewShopSelectUser").on("pagehide", function (event, ui) {
@@ -118,8 +129,9 @@ $("#viewShopSelectUser").pagecontainer({
 
         //刷新列表
         $('#qplayRefresh').on('click', function () {
-            //Call API
-            //getCurrentTradeRecord();
+            loadingMask('show');
+            //API
+            getCurrentTradeRecord();
         });
 
         //输入工号
@@ -143,8 +155,8 @@ $("#viewShopSelectUser").pagecontainer({
             var has = $(this).hasClass('button-active');
             if (has) {
                 var emp_no = $.trim($('#inputEmpNo').val());
-                //API:获取员工资料及消费券余额
-                //getEmpInfoForShop(emp_no);
+                //API:获取员工资料及该员工消费券余额
+                getEmpInfoForShop(emp_no);
                 checkWidgetPage('viewShopUserAcount', pageVisitedList);
             }
         });

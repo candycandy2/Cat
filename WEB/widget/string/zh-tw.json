@@ -329,7 +329,7 @@
   },
   {
     "term": "wgt_042",
-    "definition": "密碼需爲四個數字組成",
+    "definition": "密碼須爲四個數字組成",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -641,7 +641,7 @@
   },
   {
     "term": "wgt_081",
-    "definition": "新密碼需爲4個數字組成",
+    "definition": "新密碼須爲4個數字組成",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -657,7 +657,7 @@
   },
   {
     "term": "wgt_083",
-    "definition": "舊密碼需爲4個數字組成",
+    "definition": "舊密碼須爲4個數字組成",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -714,6 +714,14 @@
   {
     "term": "wgt_090",
     "definition": "系統功能異常",
+    "context": "",
+    "term_plural": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "wgt_091",
+    "definition": "新密碼須爲8-12個英文數字組成",
     "context": "",
     "term_plural": "",
     "reference": "",
