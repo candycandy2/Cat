@@ -95,13 +95,11 @@ class QPayTradeLogRepository
                     -> leftJoin("qpay_shop", "qpay_shop.row_id", "=", "qpay_trade_log.shop_row_id")
                     -> leftJoin("qpay_member_point", "qpay_member_point.row_id", "=", "qpay_trade_log.member_point_row_id")
                     -> leftJoin("qpay_point_store", "qpay_point_store.row_id", "=", "qpay_member_point.point_store_row_id")
-                    -> leftJoin("qpay_point_type", "qpay_point_type.row_id", "=", "qpay_point_store.point_type_row_id")
                     -> select(DB::raw("CONCAT('T', LPAD(qpay_trade_log.row_id, 6, 0)) AS trade_id"),
                               "qpay_trade_log.trade_point AS trade_point",
                               "qpay_trade_log.success AS trade_success",
                               "qpay_trade_log.error_code",
-                              DB::raw("UNIX_TIMESTAMP(qpay_trade_log.created_at) AS trade_time"),
-                              "qpay_point_type.name AS point_type_name")
+                              DB::raw("UNIX_TIMESTAMP(qpay_trade_log.created_at) AS trade_time"))
                     -> where("qpay_shop.user_row_id", "=", $userRowID);
 
                     if(!is_null($pointTypeID)){

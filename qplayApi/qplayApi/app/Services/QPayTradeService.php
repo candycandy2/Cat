@@ -385,11 +385,9 @@ class QPayTradeService
 
         $resultData = $this->qpayTradeLogRepository->getTradeRecordShop($userRowID, $startDate, $endDate, $pointTypeID);
 
-        $pointTypeName = "";
         $tradePointTotal = 0;
 
         foreach ($resultData as $data) {
-            $pointTypeName = $data->point_type_name;
             $tradePointTotal += $data->trade_point;
             unset($data["point_type_name"]);
         }
@@ -398,7 +396,6 @@ class QPayTradeService
             "result_code" => ResultCode::_1_reponseSuccessful,
             "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
             "content" => [
-                "point_type_name" => $pointTypeName,
                 "sum_trade_point" => $tradePointTotal,
                 "trade_record" => $resultData
             ]
