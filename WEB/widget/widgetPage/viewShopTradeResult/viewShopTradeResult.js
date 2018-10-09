@@ -1,11 +1,8 @@
 $("#viewShopTradeResult").pagecontainer({
     create: function (event, ui) {
 
-        var backToPage = 'viewShopSelectUser';
+        var backToPage = 'viewShopPayMain';
 
-        function initialPage() {
-
-        }
 
         //获取交易结果
         function getTradeResult() {
@@ -30,18 +27,19 @@ $("#viewShopTradeResult").pagecontainer({
             $('.trade-money').text(trade_result['point_now']);
         }
 
+
         /********************************** page event ***********************************/
         $("#viewShopTradeResult").on("pagebeforeshow", function (event, ui) {
-
+            //getTradeResult();
         });
 
         $("#viewShopTradeResult").one("pageshow", function (event, ui) {
-            window.sessionStorage.setItem('viewShopTradeResult_backTo', backToPage);
+            //获取交易结果
+            //getTradeResult();
         });
 
         $("#viewShopTradeResult").on("pageshow", function (event, ui) {
-            //获取交易结果
-            //getTradeResult();
+
         });
 
         $("#viewShopTradeResult").on("pagehide", function (event, ui) {
@@ -52,9 +50,13 @@ $("#viewShopTradeResult").pagecontainer({
         /********************************** dom event *************************************/
         //返回
         $('.shop-trade-back').on('click', function () {
-            //交易结果返回需要特殊处理，不会返回前一页，而是返回viewMain3
+            var backPage = window.sessionStorage.getItem('viewShopTradeResult_backTo');
+            if(backPage == null) {
+                window.sessionStorage.setItem('viewShopTradeResult_backTo', backToPage);
+            }
             onBackKeyDown();
         });
+
 
     }
 });

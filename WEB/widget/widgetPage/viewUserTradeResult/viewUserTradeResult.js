@@ -1,7 +1,7 @@
 $("#viewUserTradeResult").pagecontainer({
     create: function (event, ui) {
 
-        var backToPage = 'viewMain3';
+        var backToPage = 'viewUserPayMain';
 
 
         //获取交易结果
@@ -57,7 +57,6 @@ $("#viewUserTradeResult").pagecontainer({
             if(backPage == null) {
                 window.sessionStorage.setItem('viewUserTradeResult_backTo', backToPage);
             }
-            //交易结果返回需要特殊处理，不会返回前一页，而是返回viewMain3
             onBackKeyDown();
         });
 
