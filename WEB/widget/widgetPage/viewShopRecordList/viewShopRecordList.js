@@ -7,45 +7,62 @@ $("#viewShopRecordList").pagecontainer({
             var self = this;
 
             var query_data = JSON.parse(window.localStorage.getItem('shop_record_query'));
-            var type = query_data['point_type_id'].toString();
-            var startDate = query_data['start_date'].toString();
-            var endDate = query_data['end_date'].toString();
+            var type_id = query_data['point_type_id'];
+            var startDate = query_data['start_date'];
+            var endDate = query_data['end_date'];
 
-            var queryStr = "&point_type_id=" + type + "&start_date=" + startDate + "&end_date=" + endDate;
+            //url query string
+            var queryStr = "&point_type_id=" + type_id.toString() + "&start_date=" + startDate.toString() + "&end_date=" + endDate.toString();
+
+            //month
+            var recordYear = new Date(startDate * 1000).getFullYear();
+            var recordMonth = new Date(startDate * 1000).getMonth() + 1;
+            var recordTime = recordYear.toString() + '/' + recordMonth.toString();
+            $('.shop-record-month').text(recordTime);
+            //type
+            var type_name = query_data['point_type_name'];
+            $('.shop-point-type').text(type_name);
 
             this.successCallback = function (data) {
                 console.log(data);
 
                 if (data['result_code'] == '1') {
-                    //month
-                    var recordYear = new Date(query_data['start_date'] * 1000).getFullYear();
-                    var recordMonth = new Date(query_data['start_date'] * 1000).getMonth() + 1;
-                    var recordTime = recordYear.toString() + '/' + recordMonth.toString();
-                    $('.shop-record-month').text(recordTime);
                     //total money
                     var totalMoney = data['content']['sum_trade_point'].toString();
                     $('.shop-record-point').text(totalMoney);
-                    //type
-                    $('.shop-point-type').text(data['content']['point_type_name']);
                     //shop name
                     var shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
                     //API回传数据
                     var record_list = data['content']['trade_record'];
-                    var content = '';
-                    for (var i in record_list) {
-                        var tradeDate = new Date(record_list[i].trade_time * 1000).toLocaleDateString('zh');
-                        var tradeTime = new Date(record_list[i].trade_time * 1000).toTimeString().substr(0, 5);
+                    if(record_list.length != 0) {
+                        var content = '';
+                        for (var i in record_list) {
 
-                        content += '<li class="shop-record-list"><div><div>' + shop_name + ' / No.' +
-                            record_list[i].trade_id + '</div><div>TWD ' + record_list[i].trade_point + 
-                            '</div></div><div>' + tradeDate + ' ' + tradeTime + '</div></li>';
-                        
+                            if(record_list[i]['trade_success'] == 'Y') {
+                                var tradeDate = new Date(record_list[i].trade_time * 1000).toLocaleDateString('zh');
+                                var tradeTime = new Date(record_list[i].trade_time * 1000).toTimeString().substr(0, 5);
+
+                                content += '<li class="shop-record-list"><div><div>' + shop_name + ' / No.' +
+                                    record_list[i].trade_id + '</div><div>TWD ' + record_list[i].trade_point + 
+                                    '</div></div><div>' + tradeDate + ' ' + tradeTime + '</div></li>';
+                            }
+
+                        }
+
+                        $('.shop-no-record').hide();
+                        $('.shop-record-ul').html('').append(content);
+
+                    } else {
+                        //无数据提示
+                        $('.shop-record-ul').html('');
+                        $('.shop-no-record').show();
                     }
-                    $('.shop-record-ul').html('').append(content);
-                    setPageHeight();
+                    
                 }
 
                 loadingMask("hide");
+
+                setPageHeight();
             };
 
             this.failCallback = function () { };
@@ -93,7 +110,7 @@ $("#viewShopRecordList").pagecontainer({
 
         /********************************** dom event *************************************/
         //更新消费券交易记录
-        $('.recordRefresh').on('click', function () {
+        $('#recordRefresh').on('click', function () {
             //1.获取当前年月
             var now = new Date();
             var curYear = now.getFullYear();

@@ -1,5 +1,5 @@
-/******************************** viewShopUserAcount ********************************/
-#viewShopUserAcount .ui-content {
+/******************************** viewShopUserAccount ********************************/
+#viewShopUserAccount .ui-content {
     padding: 0 !important;
 }
 
@@ -65,29 +65,21 @@
 .user-acount-remain {
     width: 100%;
     height: 10vw;
-    padding-bottom: 5.4vw; 
+    padding-bottom: 5.4vw;
+    text-align: center;
 }
 
-.user-acount-remain > div {
-    float: left;
-}
-
-.user-acount-remain > div:nth-of-type(1) {
-    width: 38%;
-    height: 100%;
-    text-align: right;
-    padding-right: 2vw;
+.user-acount-remain > span:nth-of-type(1) {
+    vertical-align: top;
     color: #989898;
     font-size: 4.18vw;
 }
 
-.user-acount-remain > div:nth-of-type(2) {
-    width: 58%;
-    height: 100%;
+.user-acount-remain > span:nth-of-type(2) {
     color: #253137;
     font-size: 12.54vw;
     font-weight: bold;
-    line-height: 0.9;
+    line-height: 11.5vw;
 }
 
 .user-acount-dueday {
