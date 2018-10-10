@@ -89,3 +89,8 @@
     color: #666666;
     font-size: 8.37vw;
 }
+
+.shopErrorPwd .ui-content > .header {
+    padding: 0 5.36vw;
+    margin-top: 8vw;
+}

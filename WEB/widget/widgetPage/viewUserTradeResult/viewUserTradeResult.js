@@ -3,17 +3,16 @@ $("#viewUserTradeResult").pagecontainer({
 
         var backToPage = 'viewUserPayMain';
 
-
         //获取交易结果
         function getTradeResult() {
             var trade_result = JSON.parse(window.sessionStorage.getItem('trade_result'));
 
             //1. 交易失败才需显示原因
             var trade_success = trade_result['trade_success'];
-            if (trade_success == 'Y') {
-                $('.trade-reason-container').hide();
+            if(trade_success == 'Y') {
+                $('.user-fail-reason').hide();
             } else {
-                $('.trade-reason-container').show();
+                $('.user-fail-reason').show();
             }
 
             //2. 其他信息
