@@ -110,16 +110,17 @@ $("#viewUserInputPwd").pagecontainer({
         //模拟键盘
         $('.num-keyboard').on('touchstart', function () {
             $(this).addClass('keydown-active');
-        });
 
-        $('.num-keyboard').on('touchend', function () {
+        }).on('touchend', function () {
             $(this).removeClass('keydown-active');
+
         });
 
         //输入交易密码
-        $('.enter-pwd').on('click', function () {
-            var num = $(this).attr('data-value');
+        $('.enter-pwd').on('tap', function (event) {
+            event.preventDefault();
 
+            var num = $(this).attr('data-value');
             if (pwdNum.length < 4) {
                 pwdNum += num;
                 $('.pwd-box:eq(' + (pwdNum.length - 1).toString() + ')').removeClass('pwd-active');
@@ -133,11 +134,12 @@ $("#viewUserInputPwd").pagecontainer({
                 //API:获取token并验证密码
                 getTradeToken(pwdNum);
             }
-
         });
 
         //回删输入密码
-        $('.user-password-clear-one').on('click', function () {
+        $('.user-password-clear-one').on('tap', function (event) {
+            event.preventDefault();
+
             if (pwdNum.length > 0) {
                 pwdNum = pwdNum.substring(0, pwdNum.length - 1);
                 $('.pwd-box:eq(' + (pwdNum.length + 1).toString() + ')').removeClass('pwd-active');
