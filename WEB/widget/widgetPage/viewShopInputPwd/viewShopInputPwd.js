@@ -136,7 +136,7 @@ $("#viewShopInputPwd").pagecontainer({
         });
 
         //回删输入密码
-        $('.shop-password-clear-one').on('click', function (event) {
+        $('.shop-password-clear-one').on('tap', function (event) {
             event.preventDefault();
 
             if (pwdNum.length > 0) {
