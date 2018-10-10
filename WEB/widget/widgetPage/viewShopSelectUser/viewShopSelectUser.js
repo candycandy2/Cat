@@ -14,31 +14,30 @@ $("#viewShopSelectUser").pagecontainer({
                 if (data['result_code'] == '1') {
                     var shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
                     var record_list = data['content'].trade_record;
+                    var content = '';
+                    for (var i in record_list) {
 
-                    if(record_list.length != 0) {
-                        var content = '';
-                        for (var i in record_list) {
+                        if(record_list[i]['trade_success'] == 'Y') {
+                            let tradeDate = new Date(record_list[i].trade_time * 1000).toLocaleDateString('zh');
+                            let tradeTime = new Date(record_list[i].trade_time * 1000).toTimeString().substr(0, 5);
 
-                            if(record_list[i]['trade_success'] == 'Y') {
-                                let tradeDate = new Date(record_list[i].trade_time * 1000).toLocaleDateString('zh');
-                                let tradeTime = new Date(record_list[i].trade_time * 1000).toTimeString().substr(0, 5);
-
-                                content += '<li class="qplay-user-list"><div><div>' + shop_name + ' / No.' +
-                                    record_list[i].trade_id + '</div><div>TWD ' + record_list[i].trade_point +
-                                    '</div></div><div>' + tradeDate + ' ' + tradeTime + '</div></li>';
-                            }
-                            
+                            content += '<li class="qplay-user-list"><div><div>' + shop_name + ' / No.' +
+                                record_list[i].trade_id + '</div><div>TWD ' + record_list[i].trade_point +
+                                '</div></div><div>' + tradeDate + ' ' + tradeTime + '</div></li>';
                         }
+                        
+                    }
 
+                    if(content != '') {
                         $('.today-no-record').hide();
                         $('.qplay-user-ul').html('').append(content);
 
                     } else {
-                        //no data
+                        //no success data
                         $('.qplay-user-ul').html('');
                         $('.today-no-record').show();
                     }
-                    
+
                 }
 
                 loadingMask('hide');

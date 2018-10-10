@@ -130,7 +130,7 @@ $("#viewUserInputPwd").pagecontainer({
             if (pwdNum.length == 4) {
                 //如果已输入4位数密码，就不能再输入
                 $('.num-keyboard[data-value]').removeClass('enter-pwd');
-                //API:获取token
+                //API:获取token并验证密码
                 getTradeToken(pwdNum);
             }
 

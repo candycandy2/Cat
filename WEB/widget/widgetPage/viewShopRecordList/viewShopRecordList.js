@@ -34,30 +34,31 @@ $("#viewShopRecordList").pagecontainer({
                     var shop_name = JSON.parse(window.sessionStorage.getItem('shop_info'))['shop_name'];
                     //API回传数据
                     var record_list = data['content']['trade_record'];
-                    if(record_list.length != 0) {
-                        var content = '';
-                        for (var i in record_list) {
+                    var content = '';
+                    for (var i in record_list) {
 
-                            if(record_list[i]['trade_success'] == 'Y') {
-                                var tradeDate = new Date(record_list[i].trade_time * 1000).toLocaleDateString('zh');
-                                var tradeTime = new Date(record_list[i].trade_time * 1000).toTimeString().substr(0, 5);
+                        if(record_list[i]['trade_success'] == 'Y') {
+                            var tradeDate = new Date(record_list[i].trade_time * 1000).toLocaleDateString('zh');
+                            var tradeTime = new Date(record_list[i].trade_time * 1000).toTimeString().substr(0, 5);
 
-                                content += '<li class="shop-record-list"><div><div>' + shop_name + ' / No.' +
-                                    record_list[i].trade_id + '</div><div>TWD ' + record_list[i].trade_point + 
-                                    '</div></div><div>' + tradeDate + ' ' + tradeTime + '</div></li>';
-                            }
-
+                            content += '<li class="shop-record-list"><div><div>' + shop_name + ' / No.' +
+                                record_list[i].trade_id + '</div><div>TWD ' + record_list[i].trade_point + 
+                                '</div></div><div>' + tradeDate + ' ' + tradeTime + '</div></li>';
                         }
 
+                    }
+
+                    if(content != '') {
                         $('.shop-no-record').hide();
                         $('.shop-record-ul').html('').append(content);
 
                     } else {
-                        //无数据提示
+                        //no success data
                         $('.shop-record-ul').html('');
                         $('.shop-no-record').show();
+
                     }
-                    
+
                 }
 
                 loadingMask("hide");
