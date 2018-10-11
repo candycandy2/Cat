@@ -49,16 +49,17 @@ $("#viewUserInputAmount").pagecontainer({
         //模拟键盘
         $('.num-keyboard').on('touchstart', function () {
             $(this).addClass('keydown-active');
-        });
 
-        $('.num-keyboard').on('touchend', function () {
+        }).on('touchend', function () {
             $(this).removeClass('keydown-active');
+
         });
 
         //输入金额
-        $('.num-keyboard[data-value]').on('click', function () {
-            var num = $(this).data('value');
+        $('.num-keyboard[data-value]').on('tap', function (event) {
+            event.preventDefault();
 
+            var num = $(this).data('value');
             //判断第一次输入是否为0
             if (num !== 0 || payNum !== '') {
 
@@ -66,7 +67,6 @@ $("#viewUserInputAmount").pagecontainer({
                     payNum += num;
                     $('.user-pay-number').text(payNum);
                 }
-
             }
 
             //'下一步'按钮可用
@@ -76,11 +76,12 @@ $("#viewUserInputAmount").pagecontainer({
         });
 
         //回删输入金额
-        $('.user-pay-clear-one').on('click', function () {
+        $('.user-pay-clear-one').on('tap', function (event) {
+            event.preventDefault();
+
             if (payNum.length > 1) {
                 payNum = payNum.substring(0, payNum.length - 1);
                 $('.user-pay-number').text(payNum);
-                
             } else {
                 //初始化
                 initialAmountPage();
@@ -88,7 +89,7 @@ $("#viewUserInputAmount").pagecontainer({
         });
 
         //清空所输金额
-        $('.user-pay-clear-all').on('click', function () {
+        $('.user-pay-clear-all').on('tap', function () {
             //初始化
             initialAmountPage();
         });

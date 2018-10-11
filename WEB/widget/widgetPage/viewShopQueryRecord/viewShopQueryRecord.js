@@ -228,6 +228,7 @@ $("#viewShopQueryRecord").pagecontainer({
             if (has) {
                 //1.获取dropdownlist值
                 let trade_type = $('#shopQueryType').val();
+                let type_name = $('#shopQueryType option:selected').text();
                 let trade_year = $('#shopQueryYear').val();
                 let trade_month = $('#shopQueryMonth').val();
                 //2.根据年月获取该月最后一天
@@ -238,6 +239,7 @@ $("#viewShopQueryRecord").pagecontainer({
                 //4.记录查询条件
                 let shop_query_data = {
                     'point_type_id': parseInt(trade_type),
+                    'point_type_name': type_name,
                     'start_date': trade_start,
                     'end_date': trade_end
                 }

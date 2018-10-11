@@ -615,7 +615,7 @@ $("#viewMessageList").pagecontainer({
             var queryStr = "&message_send_row_id=" + messageRowId_ + "&message_type=" + type + "&status=" + status;
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 var doUpdateLocalStorage = false;
 
                 messagecontent_ = JSON.parse(window.localStorage.getItem('messagecontentEx'));
@@ -770,7 +770,7 @@ $("#viewMessageList").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewMessageList").on("pagebeforeshow", function(event, ui) {
-            createMessageByType();
+            //createMessageByType();
         });
 
         $("#viewMessageList").one("pageshow", function(event, ui) {

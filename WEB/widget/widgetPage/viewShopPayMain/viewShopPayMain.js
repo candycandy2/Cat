@@ -49,7 +49,7 @@ $("#viewShopPayMain").pagecontainer({
                 $target.attr('src', url);
             });
         }
-        
+
 
         /********************************** page event ***********************************/
         $("#viewShopPayMain").on("pagebeforeshow", function (event, ui) {
@@ -76,7 +76,6 @@ $("#viewShopPayMain").pagecontainer({
         /********************************** dom event *************************************/
         //店家结帐
         $('.shop-pay').on('click', function () {
-            loadingMask('show');
             checkWidgetPage('viewShopSelectUser', pageVisitedList);
         });
 
@@ -84,7 +83,6 @@ $("#viewShopPayMain").pagecontainer({
         $('.shop-record').on('click', function () {
             checkWidgetPage('viewShopQueryRecord', pageVisitedList);
         });
-
 
 
     }

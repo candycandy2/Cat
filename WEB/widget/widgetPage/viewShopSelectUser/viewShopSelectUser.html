@@ -41,6 +41,10 @@
         <div class="select-user-blank"></div>
         <div class="select-user-scroll">
             <div class="qplay-user">
+                <div class="today-no-record">
+                    <!--您今日尚无任何交易-->
+                    <span class="langStr" data-id="wgt_098"></span>
+                </div>
                 <ul data-role="none" class="qplay-user-ul">
                     <!-- <li class="qplay-user-list">
                         <div>
@@ -65,6 +69,35 @@
             <div class="other-user-foot">
                 <!--*请将手机交给消费者输入-->
                 <span class="langStr" data-id="wgt_058"></span>
+            </div>
+        </div>
+    </div>
+    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup shopEmpError" for="shopEmpError" id="shopEmpError">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <!--員工信息錯誤-->
+                    <span class="header-text langStr" data-id="wgt_095"></span>
+                </div>
+                <div class="font-style3 header-title">
+                    <!--请重新输入-->
+                    <span class="header-text langStr" data-id="wgt_045"></span>
+                </div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style11 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--确定-->
+                        <span class="langStr" data-id="wgt_050"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
