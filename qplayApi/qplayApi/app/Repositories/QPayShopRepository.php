@@ -66,7 +66,7 @@ class QPayShopRepository
     {
         return $this->qpayShop
                 -> leftJoin("qp_user", "qp_user.row_id", "=", "qpay_shop.user_row_id")
-                -> select("qp_user.login_id", "qp_user.user_domain")
+                -> select("qp_user.login_id", "qp_user.emp_name", "qp_user.user_domain")
                 -> where("qpay_shop.row_id", "=", $shopID)
                 -> get();
 
