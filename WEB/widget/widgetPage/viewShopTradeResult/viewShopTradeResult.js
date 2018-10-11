@@ -29,13 +29,13 @@ $("#viewShopTradeResult").pagecontainer({
 
                 //交易成功或失败
                 if (data['result_code'] == '1') {
-                    $('.user-fail-reason').hide();
+                    $('.shop-fail-reason').hide();
                     $('.trade-status').text(langStr['wgt_068']);
                     $('.trade-reason').text('');
                     $('.trade-pay').text(trade_price);
 
                 } else {
-                    $('.user-fail-reason').show();
+                    $('.shop-fail-reason').show();
                     $('.trade-status').text(langStr['wgt_069']);
                     $('.trade-reason').text(data['message']);
                     $('.trade-pay').text('0');

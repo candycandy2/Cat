@@ -28,7 +28,7 @@ $("#viewUserTradeResult").pagecontainer({
 
                 //交易成功或失败
                 if (data['result_code'] == '1') {
-                    $('.shop-fail-reason').hide();
+                    $('.user-fail-reason').hide();
                     $('.trade-status').text(langStr['wgt_068']);
                     $('.trade-reason').text('');
                     $('.trade-pay').text(trade_price);
@@ -37,7 +37,7 @@ $("#viewUserTradeResult").pagecontainer({
                     window.sessionStorage.setItem('user_point_dirty', 'Y');
                     window.sessionStorage.setItem('user_point', data['content'].point_now);
                 } else {
-                    $('.shop-fail-reason').show();
+                    $('.user-fail-reason').show();
                     $('.trade-status').text(langStr['wgt_069']);
                     $('.trade-reason').text(data['message']);
                     $('.trade-pay').text('0');

@@ -1,8 +1,9 @@
 $("#viewShopSelectUser").pagecontainer({
     create: function (event, ui) {
 
+
         //快速获取当天交易记录（QPlay使用者）
-        function getCurrentTradeRecord() {
+        function getCurrentTradeRecord(tab) {
             var self = this;
             let start = new Date(new Date().yyyymmdd("/") + " 00:00:00").getTime() / 1000;
             let end = new Date(new Date().yyyymmdd("/") + " 23:59:59").getTime() / 1000;
@@ -37,12 +38,16 @@ $("#viewShopSelectUser").pagecontainer({
                         $('.qplay-user-ul').html('');
                         $('.today-no-record').show();
                     }
-
                 }
 
                 loadingMask('hide');
 
-                setRecordListHeight();
+                if(tab == 'qplay') {
+                    setRecordListHeight();
+                } else {
+                    //no qplay user after set height
+                    window.sessionStorage.setItem('afterSetHeight', 'Y');
+                }
             };
 
             this.failCallback = function () { };
@@ -86,6 +91,7 @@ $("#viewShopSelectUser").pagecontainer({
             }();    
         }
 
+        //动态设置QPlay使用者高度
         function setRecordListHeight() {
             var headHeight = $('#viewShopSelectUser .page-header').height();
             var blankHeight = $('.select-user-blank').height();
@@ -108,11 +114,14 @@ $("#viewShopSelectUser").pagecontainer({
 
         $("#viewShopSelectUser").one("pageshow", function (event, ui) {
             $('#inputEmpNo').attr('placeholder', langStr['wgt_067']);
+            //第一次记录当前tab
+            var activeTab = $('.type-active').data('type');
+            //API:快速获取当天所有交易记录（不分类别）
+            getCurrentTradeRecord(activeTab);
         });
 
         $("#viewShopSelectUser").on("pageshow", function (event, ui) {
-            //API:快速获取当天所有交易记录（不分类别）
-            getCurrentTradeRecord();
+
         });
 
         $("#viewShopSelectUser").on("pagehide", function (event, ui) {
@@ -125,28 +134,36 @@ $("#viewShopSelectUser").pagecontainer({
         /********************************** dom event *************************************/
         //切换类型
         $('.select-user-type > div').on('click', function () {
-            var type = $(this).attr('data-type');
+            var activeTab = $(this).data('type');
             var has = $(this).hasClass('type-active');
 
-            if (!has && type == 'qplay') {
+            if (!has && activeTab == 'qplay') {
                 $('.other-user-title').removeClass('type-active');
                 $('.other-user').hide();
                 $('.qplay-user-title').addClass('type-active');
                 $('.select-user-scroll').show();
-            } else if (!has && type == 'other') {
+
+            } else if (!has && activeTab == 'other') {
                 $('.qplay-user-title').removeClass('type-active');
                 $('.select-user-scroll').hide();
                 $('.other-user-title').addClass('type-active');
                 $('.other-user').show();
             }
 
+            //切换tab时判断是否需要更新高度
+            var setHeight = window.sessionStorage.getItem('afterSetHeight');
+            if(setHeight == 'Y') {
+                setRecordListHeight();
+                window.sessionStorage.setItem('afterSetHeight', 'N');
+            }
         });
 
         //刷新列表
         $('#qplayRefresh').on('click', function () {
             loadingMask('show');
+            var activeTab = $('.type-active').data('type');
             //API:获取当天所有类别的交易记录
-            getCurrentTradeRecord();
+            getCurrentTradeRecord(activeTab);
         });
 
         //输入工号
