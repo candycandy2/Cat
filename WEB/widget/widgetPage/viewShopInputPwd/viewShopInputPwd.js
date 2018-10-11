@@ -2,11 +2,11 @@ $("#viewShopInputPwd").pagecontainer({
     create: function (event, ui) {
 
         var pwdNum = '',
-            trade_price,
             shop_id,
             shop_name,
-            current_emp,
-            trade_token;
+            trade_price,
+            trade_token,
+            current_emp;
 
         //获取交易token
         function getTradeToken(pwd) {
@@ -36,49 +36,6 @@ $("#viewShopInputPwd").pagecontainer({
 
             var __construct = function () {
                 QPlayAPINewHeader("GET", "getTradeToken", 'trade-pwd', null, pwd, null, self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
-            }();
-        }
-
-        //进行交易
-        function makeNewTrade(pwd, emp, shop, price, token) {
-            var self = this;
-            var queryStr = '&emp_no=' + emp + '&shop_id=' + shop + '&price=' + price;
-
-            this.successCallback = function (data) {
-                console.log(data);
-
-                var trade_info = {};
-                trade_info['shop_name'] = shop_name;
-                trade_info['emp_no'] = current_emp;
-                trade_info['trade_id'] = data['content'].trade_id;
-                trade_info['point_now'] = data['content'].point_now;
-                
-                var tradeDate = new Date(data['content'].trade_time * 1000).toLocaleDateString('zh');
-                var tradeTime = new Date(data['content'].trade_time * 1000).toTimeString().substr(0, 5);
-                trade_info['trade_time'] = tradeDate + ' ' + tradeTime;
-
-                if (data['result_code'] == '1') {
-                    //1. save result
-                    trade_info['trade_success'] = 'Y';
-                    trade_info['trade_status'] = langStr['wgt_068'];//交易成功
-                    trade_info['error_reason'] = '';
-                    trade_info['trade_point'] = price;
-
-                } else {
-                    trade_info['trade_success'] = 'N';
-                    trade_info['trade_status'] = langStr['wgt_069'];//交易失敗
-                    trade_info['error_reason'] = data['message'];//失败原因
-                    trade_info['trade_point'] = '0';
-                }
-
-                window.sessionStorage.setItem('trade_result', JSON.stringify(trade_info));
-                checkWidgetPage('viewShopTradeResult', pageVisitedList);
-            };
-
-            this.failCallback = function () { };
-
-            var __construct = function () {
-                QPlayAPINewHeader("GET", "newTrade", 'trade-pwd', 'trade-token', pwd, token, self.successCallback, self.failCallback, null, queryStr, "low", 30000, true);
             }();
         }
 
@@ -157,8 +114,16 @@ $("#viewShopInputPwd").pagecontainer({
             var has = $(this).hasClass('button-active');
             if (has) {
                 loadingMask("show");
-                //API:进行交易
-                makeNewTrade(pwdNum, current_emp, shop_id, trade_price, trade_token);
+                var trade_info = {
+                    'shop_id': shop_id,
+                    'shop_name': shop_name,
+                    'trade_pwd': pwdNum,
+                    'trade_price': trade_price,
+                    'trade_token': trade_token,
+                    'emp_no': current_emp
+                };
+                window.sessionStorage.setItem('trade_info', JSON.stringify(trade_info));
+                checkWidgetPage('viewShopTradeResult', pageVisitedList);
             }
         });
 
