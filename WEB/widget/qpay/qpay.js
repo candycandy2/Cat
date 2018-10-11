@@ -10,7 +10,11 @@ var qpayWidget = {
 
             contentItem.on('click', function() {
 
-                checkWidgetPage('viewUserPayMain', pageVisitedList);
+                if(loginData['company'] == 'shop') {
+                    checkWidgetPage('viewShopPayMain', pageVisitedList);
+                } else {
+                    checkWidgetPage('viewUserPayMain', pageVisitedList);
+                }
             });
         }
 
