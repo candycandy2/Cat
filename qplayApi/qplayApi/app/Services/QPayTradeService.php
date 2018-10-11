@@ -293,7 +293,7 @@ class QPayTradeService
                         $shopData[0]->user_domain . "\\" . $shopData[0]->login_id
                     );
                     $title = trans("messages.MSG_QPAY_1");
-                    $text = str_replace("%0", date("m/d h:i"), trans("messages.MSG_QPAY_2"));
+                    $text = str_replace("%0", date("m/d H:i"), trans("messages.MSG_QPAY_2"));
                     $text = str_replace("%1", $successTradeID, $text);
                     $extra = [];
 
