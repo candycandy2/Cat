@@ -286,15 +286,30 @@ class QPayTradeService
                     $queryParam =  array(
                         'lang' => $lang
                     );
-                    //$form = $shopData[0]->user_domain . "\\" . $shopData[0]->login_id;
-                    $form = PushUtil::getPushUserByEmpNo($empNO);
+                    $form = $shopData[0]->user_domain . "\\" . $shopData[0]->login_id;
+                    //$form = PushUtil::getPushUserByEmpNo($empNO);
+
+                    //Push for Shop
                     $to = array(
-                        PushUtil::getPushUserByEmpNo($empNO),
                         $shopData[0]->user_domain . "\\" . $shopData[0]->login_id
                     );
                     $title = trans("messages.MSG_QPAY_1");
                     $text = str_replace("%0", date("m/d H:i"), trans("messages.MSG_QPAY_2"));
-                    $text = str_replace("%1", $successTradeID, $text);
+                    $text = str_replace("%1", $price, $text);
+                    $text = str_replace("%2", $successTradeID, $text);
+                    $extra = [];
+
+                    PushUtil::sendPushMessage($form, $to, $title, $text, $extra, $queryParam);
+
+                    //Push for Emp
+                    $to = array(
+                        PushUtil::getPushUserByEmpNo($empNO)
+                    );
+                    $title = trans("messages.MSG_QPAY_1");
+                    $text = str_replace("%0", date("m/d H:i"), trans("messages.MSG_QPAY_3"));
+                    $text = str_replace("%1", $price, $text);
+                    $text = str_replace("%2", $shopData[0]->emp_name, $text);
+                    $text = str_replace("%3", $successTradeID, $text);
                     $extra = [];
 
                     PushUtil::sendPushMessage($form, $to, $title, $text, $extra, $queryParam);
