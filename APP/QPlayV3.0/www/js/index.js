@@ -44,10 +44,17 @@ var notification = {
             $('#iOSGetNewMessage').popup('open');
 
             $("#openNewMessage").one("click", function() {
-                $('#iOSGetNewMessage').popup('close');
-                $('#iOSGetNewMessage').hide();
+                if(window.openMessageDetailPage != null) {
+                    clearTimeout(window.openMessageDetailPage);
+                }
+                window.openMessageDetailPage = setTimeout(function() {
+                    clearTimeout(window.openMessageDetailPage);
+                    window.openMessageDetailPage = null;
 
-                checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
+                    $('#iOSGetNewMessage').popup('close');
+                    $('#iOSGetNewMessage').hide();
+                    checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
+                }, 500);
             });
 
             $("#cancelNewMessage").one("click", function() {
