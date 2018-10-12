@@ -309,25 +309,10 @@ class PushUtil
             $masterSecret =  Config::get('jpushkey.auth.'.$appName.'.master_secret');
             $client = new JPush($appId, $masterSecret);
         }
-        try {
-            $device = $client->device();
-            $device->addDevicesToTag($tag, $registrationId);
-        } catch (APIConnectionException $e) {
-            $result["result"] = false;
-            $result["info"] = "APIConnection Exception occurred";
-        }catch (APIRequestException $e) {
-            $result["result"] = false;
-            $result["info"] = "APIRequest Exception occurred";
-        }catch (JPushException $e) {
-            $result["result"] = false;
-            $result["info"] = "JPush Exception occurred";
-        }catch (\ErrorException $e) {
-            $result["result"] = false;
-            $result["info"] = "Error Exception occurred";
-        }catch (\Exception $e){
-            $result["result"] = false;
-            $result["info"] = "Exception occurred";
-        }
+
+        $device = $client->device();
+        $device->addDevicesToTag($tag, $registrationId);
+        
         return $result;
     }
 
