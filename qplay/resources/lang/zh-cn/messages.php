@@ -38,6 +38,7 @@ return [
 	'STATUS_HAS_NO_RIGHT' => '停权中',
     'NEXT' => '下一步',
     'BACK' => '上一步',
+    'SEARCH' => '重新查询',
 
     'MENU' => '菜单',
     'LOGOUT' => '登出',
@@ -68,6 +69,7 @@ return [
     'TITLE_QPAY_REIMBURSE_MAINTAIN' => '报销管理',
     'TITLE_QPAY_REPORT_ANALYSIS' => '报表分析',
     'TITLE_QPAY_STORE_POINT' => '点数储值',
+    'TITLE_QPAY_STORE_RECORD' => '储值纪录',
 
     'ENABLE' => '启用',
     'DISABLE' => '停用',
@@ -479,5 +481,11 @@ return [
     'QPAY_IMPORT_EACH_MEMBER'=>'转入点数(每人)',
     'QPAY_MEMBER_EMP_NO_ERROR'=>'以下工號核對有誤!!',
     'POINT' => '点',
-    'PERSON' => '人'
+    'PERSON' => '人',
+    'QPAY_SELECT_STORE_INTERVAL' => '选择储值区间',
+    'QPAY_POINT_STORED_DATE' => '储值日期',
+    'QPAY_POINT_STORED_USER' => '管理者',
+    'QPAY_STORED_MEMBER_COUNT' => '储值人数',
+    'QPAY_STORED_POINT' => '储值金额',
+    'QPAY_STORED_ID' => '储值码',
 ];

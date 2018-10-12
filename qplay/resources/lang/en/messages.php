@@ -38,6 +38,7 @@ return [
     'STATUS_HAS_NO_RIGHT' => 'Disable',
     'NEXT' => 'Next',
     'BACK' => 'Back',
+    'SEARCH' => 'Search',
 
     'MENU' => 'Menu',
     'LOGOUT' => 'Logout',
@@ -68,6 +69,7 @@ return [
     'TITLE_QPAY_REIMBURSE_MAINTAIN' => 'Reimburse Maintain',
     'TITLE_QPAY_REPORT_ANALYSIS' => 'Report Analysis',
     'TITLE_QPAY_STORE_POINT' => 'Point Store',
+    'TITLE_QPAY_STORE_RECORD' => 'Store Record',
 
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
@@ -481,5 +483,11 @@ return [
     'QPAY_IMPORT_EACH_MEMBER'=>'Points for each Employee',
     'QPAY_MEMBER_EMP_NO_ERROR'=>'The following Emp No. were error!!',
     'POINT' => 'point',
-    'PERSON' => 'person'
+    'PERSON' => 'person',
+    'QPAY_SELECT_STORE_INTERVAL' => 'Select a stored point interval',
+    'QPAY_POINT_STORED_DATE' => 'Stored Date',
+    'QPAY_POINT_STORED_USER' => 'Manager',
+    'QPAY_STORED_MEMBER_COUNT' => 'People Stored',
+    'QPAY_STORED_POINT' => 'Stored Point',
+    'QPAY_STORED_ID' => 'Stored ID',
 ];
