@@ -123,7 +123,10 @@ $("#viewUserChangePwd").pagecontainer({
 
             if (has) {
                 //0.input失去焦点
-                document.activeElement.blur();
+                //document.activeElement.blur();
+                $('#userOldPwd').blur();
+                $('#userNewPwd').blur();
+                $('#userCofirmPwd').blur();
 
                 setTimeout(function() {
                     //1.检查旧密码
@@ -156,7 +159,7 @@ $("#viewUserChangePwd").pagecontainer({
                             }
                         }
                     }
-                }, 500)
+                }, 750)
 
             }
         });

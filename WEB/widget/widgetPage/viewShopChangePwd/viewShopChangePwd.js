@@ -114,7 +114,10 @@ $("#viewShopChangePwd").pagecontainer({
             var has = $(this).hasClass('button-active');
             if (has) {
                 //失去焦点
-                document.activeElement.blur();
+                //document.activeElement.blur();
+                $('#shopOldPwd').blur();
+                $('#shopNewPwd').blur();
+                $('#shopCofirmPwd').blur();
 
                 setTimeout(function() {
                     var result = checkFormPwd('compare');
@@ -130,7 +133,7 @@ $("#viewShopChangePwd").pagecontainer({
                         //API:修改登录密码
                         changeQAccountPwd(oldPwd, newPwd);
                     }
-                }, 500)
+                }, 750)
                 
             }
         });
