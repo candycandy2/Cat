@@ -110,6 +110,11 @@ $("#viewAppListEx").pagecontainer({
                 }
             }
 
+            //4. 如果没有可用APP，提示信息
+            if(alreadyDownloadList.length == 0 && notDownloadList.length == 0) {
+                $("#noAppListEx").fadeIn(100).delay(2000).fadeOut(100);
+            }
+
         }
 
         //change favorite icon after create content
@@ -175,12 +180,18 @@ $("#viewAppListEx").pagecontainer({
             applist = responsecontent.app_list;
             appmultilang = responsecontent.multi_lang;
 
-            for (var i = 0; i < applist.length; i++) {
-                //check app install，icon diff
-                var appName = applist[i].package_name;
-                var appNameArr = appName.split(".");
-                var checkKey = appNameArr[2];
-                checkAllAppInstalled(checkAppCallback, checkKey, i);
+            if(applist.length != 0) {
+                for (var i = 0; i < applist.length; i++) {
+                    //check app install，icon diff
+                    var appName = applist[i].package_name;
+                    var appNameArr = appName.split(".");
+                    var checkKey = appNameArr[2];
+                    checkAllAppInstalled(checkAppCallback, checkKey, i);
+                }
+
+            } else {
+                //没有AppList可检查
+                appCheckFinish = true;
             }
         }
 
@@ -290,12 +301,12 @@ $("#viewAppListEx").pagecontainer({
                             createAppListContent();
                             //set hieght
                             setAppListHeight();
-                            loadingMask("hide");
                         }
                     }, 1000);
                 }
             }, 500);
 
+            loadingMask("hide");
         });
 
         $("#viewAppListEx").on("pageshow", function(event, ui) {
