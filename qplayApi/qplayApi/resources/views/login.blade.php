@@ -374,7 +374,6 @@
                 if(window.localStorage.getItem("company") !== null){  
                     var $selectCompany =  $("#ddlCompany option[value='" + window.localStorage.getItem("company") + "']");
                     $selectCompany.attr('selected', true);
-                    $("#ddlCompany-button > span").text($selectCompany.text());
 
                     //set login_type by localStorage or by default
                     var logintTypeVal;
@@ -395,6 +394,7 @@
 
                     $("#ddlLoginType option[value='" + logintTypeVal + "']").attr("selected", true);
                     setTimeout(function() {
+                        $("#ddlCompany-button > span").text($selectCompany.text());
                         $("#ddlLoginType-button > span").text($("#ddlLoginType option:eq(" + loginTypeImdex + ")").text());
                     }, 500);
 
