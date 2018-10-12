@@ -1,3 +1,10 @@
+<strong>Oct-13-18 00:34:05</strong>
+- Reason : daily build, 619
+- Commit# : 
+d345e98b6 - Darren Ti, 8 hours ago : [QLogin]Fix Bug for Login Page UI
+e20186165 - CleoWChan, 10 hours ago : [QPay] Phase2 Platform Query QPay Stored Record
+937e1fe18 - CleoWChan, 14 hours ago : [QPlayAPI]Fixed sendPushToken API to throw JPush exception
+
 <strong>Oct-12-18 00:35:17</strong>
 - Reason : daily build, 618
 - Commit# : 
