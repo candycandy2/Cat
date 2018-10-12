@@ -2326,11 +2326,7 @@ SQL;
                     //1. According to the ad_flag decide the [flag name]
                     $tag = PushUtil::GetTagByUserInfo($userInfo, CommonUtil::ADFlag($uuid));
                     $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
-
-                    if(!$pushResult["result"]) {
-                        \DB::rollBack();
-                        throw new Exception(trans('messages.MSG_ADD_TAG_TO_JPUSH_FAILED'), 1);
-                    }
+                    
                 }
                 \DB::commit();
             } catch (\Exception $e) {
