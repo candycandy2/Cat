@@ -38,6 +38,7 @@ return [
     'STATUS_HAS_NO_RIGHT' => '停權中',
     'NEXT' => '下一步',
     'BACK' => '上一步',
+    'SEARCH' => '重新查詢',
 
     'MENU' => '選單',
     'LOGOUT' => '登出',
@@ -68,6 +69,7 @@ return [
     'TITLE_QPAY_REIMBURSE_MAINTAIN' => '報銷管理',
     'TITLE_QPAY_REPORT_ANALYSIS' => '報表分析',
     'TITLE_QPAY_STORE_POINT' => '點數儲值',
+    'TITLE_QPAY_STORE_RECORD' => '儲值紀錄',
 
     'ENABLE' => '啟用',
     'DISABLE' => '停用',
@@ -481,5 +483,11 @@ return [
     'QPAY_IMPORT_EACH_MEMBER'=>'轉入點數(每人)',
     'QPAY_MEMBER_EMP_NO_ERROR'=>'以下工號核對有誤!!',
     'POINT' => '點',
-    'PERSON' => '人'
+    'PERSON' => '人',
+    'QPAY_SELECT_STORE_INTERVAL' => '選擇儲值區間',
+    'QPAY_POINT_STORED_DATE' => '儲值日期',
+    'QPAY_POINT_STORED_USER' => '管理者',
+    'QPAY_STORED_MEMBER_COUNT' => '儲值人數',
+    'QPAY_STORED_POINT' => '儲值金額',
+    'QPAY_STORED_ID' => '儲值碼',
 ];

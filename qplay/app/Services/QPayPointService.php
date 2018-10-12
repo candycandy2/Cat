@@ -264,4 +264,34 @@ class QPayPointService
         return json_encode($result);
     }
 
+    /**
+     * get QPay Stored Record List
+     * @param  string $startDate [description]
+     * @param  string $endDate   [description]
+     * @return mixed
+     */
+    public function getQPayStoreRecordList($startDate, $endDate)
+    {
+        return $this->qpayPointStoreRepository->getQPayStoreRecordList($startDate, $endDate);
+    }
+
+    /**
+     * create a file download response to down load point excel use orignal file name
+     * @param  int $pointStoreId qp_point_store.row_id
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function getDownloadPointExcel($pointStoreId){
+
+        $folder = 'saved_upload';
+        $pointStore =  $this->qpayPointStoreRepository->getPonintStoreById($pointStoreId);
+        $fileSaved = $pointStore->file_saved;
+        $fileOriginal = $pointStore->file_original;
+        
+        $file = public_path() . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $fileSaved;
+        $headers = array(
+            'Content-Type: application/xlsx',
+        );
+        return response()->download($file, $fileOriginal . '.xlsx', $headers);
+    }
+
 }

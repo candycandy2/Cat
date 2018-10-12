@@ -6,6 +6,7 @@
 namespace App\Repositories;
 
 use App\Model\QPay_Point_Store;
+use App\Model\QPay_Member_Point;
 use DB;
 use Auth;
 use Session;
@@ -61,6 +62,39 @@ class QPayPointStoreRepository
                     'stored_used' => 0,
                     'created_at' => $now
                 ]);
+    }
+
+    /**
+     * Get QPay Point Store Record
+     * @return mixed
+     */
+    public function getQPayStoreRecordList($startDate, $endDate){
+
+         return $this->qpayPointStore
+                -> join('qp_user', 'qp_user.row_id', '=', 'qpay_point_store.created_user')
+                -> join('qpay_point_type', 'qpay_point_type.row_id', '=', 'qpay_point_store.point_type_row_id')
+                -> where(DB::raw('UNIX_TIMESTAMP(qpay_point_store.created_at)'),'>=', $startDate)
+                -> where(DB::raw('UNIX_TIMESTAMP(qpay_point_store.created_at)'),'<=', $endDate)
+                -> select(DB::raw('CONCAT("S", LPAD(qpay_point_store.row_id, 6, 0)) AS store_id'),
+                      'qpay_point_type.name as point_type',
+                      'qpay_point_store.stored_total as stored_total',
+                      'qp_user.login_id as stored_user',
+                      'color',
+                      'file_saved',
+                      'file_original',
+                      'member_count',
+                      'qpay_point_store.row_id as point_saved_id',
+                      'qpay_point_store.created_at as store_time')
+                -> get();
+    }
+
+    /**
+     * get point store information
+     * @param  int $pointStoreId qp_pont_store.row_id
+     * @return mixed
+     */
+    public function getPonintStoreById($pointStoreId){
+        return $this->qpayPointStore::find($pointStoreId);
     }
 
 }

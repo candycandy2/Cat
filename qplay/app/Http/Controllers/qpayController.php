@@ -74,4 +74,33 @@ class qpayController extends Controller
         return $this->qpayPointService->newPointStore();
     }
 
+    /**
+     * QPay Store Record - View
+     * @return view
+     */
+    public function QPayStoreRecord(){
+        return view("qpay_maintain/store_record");   
+    }
+
+    /**
+     * QPay Store Record - get store record list
+     * @return result
+    */
+    public function getQPayStoreRecordList(Request $request){
+
+        return $this->qpayPointService->getQPayStoreRecordList($request->startDate, $request->endDate);
+    
+    }
+
+    /**
+     * Download point store excel by qp_point_store.row_id 
+     * @param  Request $request 
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadPointExcel(Request $request){
+
+        return $this->qpayPointService->getDownloadPointExcel($request->point_saved_id);
+    
+    }
+
 }
