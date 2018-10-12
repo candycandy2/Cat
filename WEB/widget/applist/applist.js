@@ -36,6 +36,15 @@ var applistWidget = {
             contentItem.on('click', '.add-favorite-list', function() {
                 checkWidgetPage('viewAppListEx', pageVisitedList); //from app/component/function/
             });
+
+            //点击添加按钮跳转到APPList
+            contentItem.on('click', '.qpay-enter', function() {
+                if(loginData['company'] == 'shop') {
+                    checkWidgetPage('viewShopPayMain', pageVisitedList);
+                } else {
+                    checkWidgetPage('viewUserPayMain', pageVisitedList);
+                }
+            });
         }
 
         function getFavoriteApp() {
@@ -68,19 +77,43 @@ var applistWidget = {
                 }
             }
 
+            //先设置容器宽度
             var iconWidget = 18; //unit:vw
             var iconMargin = 3.5; //unit:vw
-            var contentWidth = (((favoriteApp == null ? 0 : favoriteApp.length) + 1) * (iconWidget + iconMargin)).toString();
+            var otherLength = 1 + checkQPayAuthority();
+            var contentWidth = (((favoriteApp == null ? 0 : favoriteApp.length) + otherLength) * (iconWidget + iconMargin)).toString();
 
-            content += '<div class="applist-item add-favorite-list">' +
-                '<a href="#"><img src="' + serverURL + '/widget/applist/addfavorite.png" style="width:18vw;">' +
-                '</a><p class="app-list-name" style="opacity:0;">Add</p></div>';
+            //qpay icon & add favorite icon
+            content += '<div class="applist-item qpay-enter" style="display:' + (otherLength == 1 ? 'none' : 'block') +
+                '"><a href="#"><img src="' + serverURL + '/widget/applist/img/qpay_icon.png" style="width:18vw;"></a>' +
+                '<p class="app-list-name">QPay</p></div><div class="applist-item add-favorite-list"><a href="#"><img src="' + serverURL + 
+                '/widget/applist/img/addfavorite.png" style="width:18vw;"></a><p class="app-list-name" style="opacity:0;">Add</p></div>';
 
             $('.applist-main-icon').css('width', contentWidth + 'vw').html('').append(content);
         }
 
         function destroyApplist(target) {
             $(target).children('div.applist-widget').remove();
+        }
+
+        //检查是否有QPay使用权限
+        function checkQPayAuthority() {
+            var function_list = JSON.parse(window.localStorage.getItem('FunctionData'))['function_list'];
+            var found = false;
+            for (var i in function_list) {
+                if (function_list[i].function_variable == 'qpay') {
+                    found = true;
+                    if (function_list[i].function_content.right == 'Y') {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+
+                }
+            }
+            if(!found){
+                return 0;
+            }
         }
 
         $.fn.applist = function(options, param) {

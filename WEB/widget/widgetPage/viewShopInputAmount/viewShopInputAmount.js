@@ -134,7 +134,7 @@ $("#viewShopInputAmount").pagecontainer({
             var has = $(this).hasClass('button-active');
             if(has) {
                 //判断输入金额是否小于剩余金额
-                if (Number(payNum) < Number(current_point)) {
+                if (Number(payNum) <= Number(current_point)) {
                     window.sessionStorage.setItem('trade_price', payNum);
                     checkWidgetPage('viewShopInputPwd', pageVisitedList);
                 } else {
