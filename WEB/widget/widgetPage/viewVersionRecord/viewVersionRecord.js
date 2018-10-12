@@ -4,7 +4,7 @@ $("#viewVersionRecord").pagecontainer({
         //获取版本记录
         function getVersionRecord(key) {
 
-            key = key || null;
+            key = key || qplayAppKey;
             var self = this;
             var queryStr = "&app_key=" + key + "&device_type=" + device.platform;
 
@@ -24,7 +24,8 @@ $("#viewVersionRecord").pagecontainer({
                                 new Date(versionLogList[i].online_date * 1000).FormatReleaseDate() +
                                 '</div><div class="font-style11">' +
                                 versionLogList[i].version_log.replace(new RegExp('\r?\n', 'g'), '<br />') +
-                                '</div><div class="latest-version-record"></div></div>';
+                                '</div><div class="latest-version-record" style="display:' +
+                                (key == qplayAppKey ? 'block' : 'none') + '"></div></div>';
                         } else {
                             contentMore += '<div class="version-record-list"><div class="font-style12">' +
                                 versionLogList[i].version_name +
@@ -39,6 +40,8 @@ $("#viewVersionRecord").pagecontainer({
                     $('.version-record-first').html('').append(contentFirst);
                     $('.version-record-more').html('').append(contentMore);
 
+                    //set height
+                    setVersionRecordHeight('first');
                 }
             };
 
@@ -70,10 +73,7 @@ $("#viewVersionRecord").pagecontainer({
                         if(btnLength != 0) {
                             clearInterval(latestVersion);
                             $('.latest-version-record').text(langStr['wgt_074']).addClass('active-update-btn');
-
-                            loadingMask("hide");
                         }
-
                     },500);
 
                 } else if (resultcode == '000913') {
@@ -84,16 +84,11 @@ $("#viewVersionRecord").pagecontainer({
                         if(btnLength != 0) {
                             clearInterval(latestVersion);
                             $('.latest-version-record').text(langStr['wgt_075']).removeClass('active-update-btn');
-
-                            loadingMask("hide");
                         }
-
                     },500);
-
-                } else {
-                    loadingMask("hide");
                 }
 
+                loadingMask("hide");
             }
 
             this.failCallback = function(data) {};
@@ -120,6 +115,11 @@ $("#viewVersionRecord").pagecontainer({
             $(".version-scroll > div").css('height', totalHeight + 'px');
         }
 
+        //页面恢复初始状态
+        function initialVersionPage() {
+            $('.version-record-more').hide();
+            $('.version-record-msg').show();
+        }
 
         /********************************** page event ***********************************/
         $("#viewVersionRecord").on("pagebeforeshow", function(event, ui) {
@@ -127,22 +127,19 @@ $("#viewVersionRecord").pagecontainer({
         });
 
         $("#viewVersionRecord").one("pageshow", function(event, ui) {
-            //title language
-            $('#viewVersionRecord .ui-title div').text(langStr['str_081']);
-            //set height
-            setVersionRecordHeight('first');
+
         });
 
         $("#viewVersionRecord").on("pageshow", function(event, ui) {
             //version record
             var APPKey = window.sessionStorage.getItem('checkAPPKey');
             var versionData = new getVersionRecord(APPKey);
-            //check version
+            //check qplay version
             var qplayVersion = new checkQPlayVersion();
         });
 
         $("#viewVersionRecord").on("pagehide", function(event, ui) {
-
+            initialVersionPage();
         });
 
 

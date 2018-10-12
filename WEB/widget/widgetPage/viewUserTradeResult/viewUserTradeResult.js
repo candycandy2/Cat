@@ -41,6 +41,12 @@ $("#viewUserTradeResult").pagecontainer({
                     $('.trade-status').text(langStr['wgt_069']);
                     $('.trade-reason').text(data['message']);
                     $('.trade-pay').text('0');
+
+                    //如果余额不足，更新消费券余额
+                    if(data['result_code'] == '000924') {
+                        window.sessionStorage.setItem('user_point_dirty', 'Y');
+                        window.sessionStorage.setItem('user_point', data['content'].point_now);
+                    }
                 }
 
                 loadingMask("hide");
