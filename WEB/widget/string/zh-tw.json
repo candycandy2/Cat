@@ -513,7 +513,7 @@
   },
   {
     "term": "wgt_065",
-    "definition": "8-12字元,至少兩個英文與兩個數字,",
+    "definition": "8-20字元,下列條件至少符合兩個, 英文與數字與符號,",
     "context": "",
     "term_plural": "",
     "reference": "",
