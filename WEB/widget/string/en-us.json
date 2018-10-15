@@ -721,7 +721,7 @@
   },
   {
     "term": "wgt_091",
-    "definition": "新密码须为8-12个英文数字组成e",
+    "definition": "新密码须为8-20个英文数字或符号组成e",
     "context": "",
     "term_plural": "",
     "reference": "",

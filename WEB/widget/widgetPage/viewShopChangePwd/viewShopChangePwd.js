@@ -10,7 +10,7 @@ $("#viewShopChangePwd").pagecontainer({
         }
 
         //检查表单
-        function checkFormPwd(compare) {
+        function checkForm() {
             var oldPwd = $('#shopOldPwd').val();
             var newPwd = $('#shopNewPwd').val();
             var confirmPwd = $('#shopCofirmPwd').val();
@@ -20,12 +20,30 @@ $("#viewShopChangePwd").pagecontainer({
             } else {
                 $('.shop-change-pwd').removeClass('button-active');
             }
+        }
 
-            if(compare !== null) {
-                if(newPwd !== confirmPwd) {
+        //检查密码
+        function checkPwdFormat(pwd1, pwd2) {
+            pwd2 = pwd2 || null;
+
+            if(pwd2 == null) {
+                var flag = false;
+                for(var i = 0; i < pwd1.length; i++) {
+                    if(pwd1.charCodeAt(i) > 255) {
+                        flag = true;
+                        break;
+                    }
+                }
+                if(flag) {
                     return false;
                 } else {
                     return true;
+                }
+            } else {
+                if(pwd1 == pwd2) {
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }
@@ -67,10 +85,10 @@ $("#viewShopChangePwd").pagecontainer({
             this.failCallback = function () { };
 
             var __construct = function () {
-                //QPlayAPIEx("GET", "changeQAccountPwd", oldPwd, newPwd, self.successCallback, self.failCallback, null, null, "low", 30000, true);
                 QPlayAPINewHeader("GET", "changeQAccountPwd", 'old-qaccount-pwd', 'new-qaccount-pwd', oldPwd, newPwd, self.successCallback, self.failCallback, null, null, "low", 30000, true);
             }();
         }
+
 
         /********************************** page event ***********************************/
         $("#viewShopChangePwd").on("pagebeforeshow", function (event, ui) {
@@ -96,23 +114,30 @@ $("#viewShopChangePwd").pagecontainer({
         /********************************** dom event *************************************/
         //旧密码
         $('#shopOldPwd').on('input', function () {
-            checkFormPwd();
+            checkForm();
         });
 
         //新密码
         $('#shopNewPwd').on('input', function () {
-            checkFormPwd();
+            checkForm();
         });
 
         //确认新密码
         $('#shopCofirmPwd').on('input', function () {
-            checkFormPwd();
+            checkForm();
         });
 
         //修改密码
-        $('.shop-change-pwd').on('click', function () {
+        $('.shop-change-pwd').on('touchstart', function (event) {
+            event.preventDefault();
+
             var has = $(this).hasClass('button-active');
+            var oldPwd = $('#shopOldPwd').val();
+            var newPwd = $('#shopNewPwd').val();
+            var confirmPwd = $('#shopCofirmPwd').val();
+
             if (has) {
+                loadingMask("show");
                 //失去焦点
                 //document.activeElement.blur();
                 $('#shopOldPwd').blur();
@@ -120,28 +145,55 @@ $("#viewShopChangePwd").pagecontainer({
                 $('#shopCofirmPwd').blur();
 
                 setTimeout(function() {
-                    var result = checkFormPwd('compare');
-                    if(!result) {
-                        //popup:新密码不一致
-                        $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_079']);
+                    //1.检查旧密码是否包含中文
+                    var oldResult = checkPwdFormat(oldPwd);
+                    if(!oldResult) {
+                        loadingMask("hide");
+                        $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_082']);
                         $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_045']);
                         $('.shopChangePwdError').popup('open');
-                    } else {
-                        var oldPwd = $('#shopOldPwd').val();
-                        var newPwd = $('#shopNewPwd').val();
 
-                        //API:修改登录密码
-                        changeQAccountPwd(oldPwd, newPwd);
+                    } else {
+                        //2.检查新密码
+                        var newResult = checkPwdFormat(newPwd);
+                        if(!newResult) {
+                            loadingMask("hide");
+                            $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_080']);
+                            $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_091']);
+                            $('.shopChangePwdError').popup('open');
+
+                        } else {
+                            //3.确认密码
+                            var confirmResult = checkPwdFormat(newPwd, confirmPwd);
+                            if(!confirmResult) {
+                                loadingMask("hide");
+                                $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_079']);
+                                $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_045']);
+                                $('.shopChangePwdError').popup('open');
+                            } else {
+                                loadingMask("hide");
+                                //API:修改登录密码
+                                changeQAccountPwd(oldPwd, newPwd);
+                            }
+                        }
                     }
+
                 }, 750)
-                
             }
+
+            return false;
+        });
+
+        //阻止事件冒泡
+        $('.shop-change-foot').on('touchstart', function(event) {
+            event.preventDefault();
+            return false;
         });
 
         //关闭popup
         $('.shopChangePwdError .btn-cancel').on('click', function() {
             $('.shopChangePwdError').popup('close');
-        })
+        });
 
 
     }
