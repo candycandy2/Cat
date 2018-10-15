@@ -128,7 +128,7 @@ $("#viewShopChangePwd").pagecontainer({
         });
 
         //修改密码
-        $('.shop-change-pwd').on('click', function (event) {
+        $('.shop-change-pwd').on('touchstart', function (event) {
             event.preventDefault();
 
             var has = $(this).hasClass('button-active');
