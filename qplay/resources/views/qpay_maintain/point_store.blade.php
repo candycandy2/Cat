@@ -34,9 +34,6 @@
 .float-right-btn{
     float: right;
 }
-.point-type-title {
-    padding: 0px 0px 5px 3px;
-}
 #importQPayMember {
     margin-left: 10px;
 }
@@ -75,10 +72,9 @@
     <div class="row">
         <div class="col-lg-8 col-xs-6">
             <form class="form-inline" role="form">
-                <div class="form-group point-type-title">
-                     {{trans('messages.QPAY_POINT_TYPE')}}
-                </div><br>
-
+                <div class="col-md-12">
+                    <label for="selectPointType">{{trans('messages.QPAY_POINT_TYPE')}}</label>
+                </div>
                 <div class="form-group">
                     <div class="input-group">
                         <select class="form-control" required="required" id="selectPointType">
