@@ -39,6 +39,8 @@ return [
     'NEXT' => 'Next',
     'BACK' => 'Back',
     'SEARCH' => 'Search',
+    'SEARCH_FROM' => 'From',
+    'SEARCH_TO' => 'To',
 
     'MENU' => 'Menu',
     'LOGOUT' => 'Logout',

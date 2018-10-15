@@ -39,6 +39,8 @@ return [
     'NEXT' => '下一步',
     'BACK' => '上一步',
     'SEARCH' => '重新查询',
+    'SEARCH_FROM' => '起',
+    'SEARCH_TO' => '迄',
 
     'MENU' => '菜单',
     'LOGOUT' => '登出',

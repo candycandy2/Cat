@@ -7,14 +7,14 @@
 @extends('layouts.admin_template')
 @section('content')
     <h1></h1>
-    <div class="row">
+    <div class="row form-inline">
         <div class="col-lg-12 col-xs-12">
-                <div class="col-lg-12 col-xs-12">
-                    {{trans('messages.QPAY_SELECT_STORE_INTERVAL')}}
+                <div class="col-md-12">
+                    <label for="date">{{trans('messages.QPAY_SELECT_STORE_INTERVAL')}}</label>
                 </div>
-                <br>
-                <div class='col-md-3'>
+                <div class="col-md-12">
                     <div class="form-group">
+                        <label for="datetimepicker1">{{trans('messages.SEARCH_FROM')}}</label>
                         <div class='input-group date' id='datetimepicker1'>
                             <input type='text' class="form-control" />
                             <span class="input-group-addon">
@@ -22,9 +22,8 @@
                             </span>
                         </div>
                     </div>
-                </div>
-                <div class='col-md-3'>
                     <div class="form-group">
+                        <label for="datetimepicker2">~{{trans('messages.SEARCH_TO')}}</label>
                         <div class='input-group date' id='datetimepicker2'>
                             <input type='text' class="form-control" />
                             <span class="input-group-addon">
@@ -32,10 +31,8 @@
                             </span>
                         </div>
                     </div>
-                </div>
-                <div class='col-md-3'>
                     <div class="form-group">
-                        <input type="hidden" id="tbxScheduleDateTime" value="" />
+                        <label for="datetimepicker2">&nbsp;&nbsp;</label>
                         <button type="button" id="searchStoreRecord" class="btn btn-primary">{{trans('messages.SEARCH')}}</button>
                     </div>
                 </div>
