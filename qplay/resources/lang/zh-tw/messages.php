@@ -72,6 +72,7 @@ return [
     'TITLE_QPAY_REPORT_ANALYSIS' => '報表分析',
     'TITLE_QPAY_STORE_POINT' => '點數儲值',
     'TITLE_QPAY_STORE_RECORD' => '儲值紀錄',
+    'TITLE_QPAY_STORE_EMPLOYEE' => '員工發放紀錄',
 
     'ENABLE' => '啟用',
     'DISABLE' => '停用',
@@ -492,4 +493,9 @@ return [
     'QPAY_STORED_MEMBER_COUNT' => '儲值人數',
     'QPAY_STORED_POINT' => '儲值金額',
     'QPAY_STORED_ID' => '儲值碼',
+    'QPAY_SELECT_POINT_TYPE' => '請選擇消費券類型',
+    'QPAY_SELECT_DEPARTMENT_CODE' => '請選擇部門代碼',
+    'QPAY_INPUT_EMP_NO' => '請輸入員工編號',
+    'QPAY_SELECT_GIVEN_INTERVAL' => '選擇發放區間',
+    'STORED_POINT' => '發放點數',
 ];

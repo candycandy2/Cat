@@ -79,7 +79,7 @@ class qpayController extends Controller
      * @return view
      */
     public function QPayStoreRecord(){
-        return view("qpay_maintain/store_record");   
+        return view("qpay_maintain/store_record");
     }
 
     /**
@@ -100,6 +100,43 @@ class qpayController extends Controller
     public function downloadPointExcel(Request $request){
 
         return $this->qpayPointService->getDownloadPointExcel($request->point_saved_id);
+    
+    }
+
+    /**
+     * QPay Store Employee - view
+     * 
+     */
+    public function QPayStoreEmployee(){
+        
+        //get all departments
+        $departments = Auth::user()->getAllDepartment();
+
+        //get point type list
+        $pointTypeList =  $this->qpayPointService->getQPayPointTypeList();
+
+        return view("qpay_maintain/point_get_record")->with(['pointTypeList'=>$pointTypeList,
+                                                            'departments'=>$departments]);
+    
+    }
+
+    /**
+     * QPay Get Stored Recored each Employee
+     * @param  Request $request 
+     * @return json
+     */
+    public function getQPayPointGetRecordList(Request $request){
+        
+        $pointType = ($request->pointType == "")?null:$request->pointType;
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $department = ($request->department == "")?null:$request->department;
+        $empNo = (trim($request->empNo) == "")?null:trim($request->empNo);
+        $limit = (trim($request->limit) == "")?null:trim($request->limit);
+        $offset = (trim($request->offset) == "")?null:trim($request->offset);
+
+       $pointGetRecord =  $this->qpayPointService->getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset);
+       return response()->json(["total"=>$pointGetRecord->total(),"rows"=>$pointGetRecord->items()]);
     
     }
 

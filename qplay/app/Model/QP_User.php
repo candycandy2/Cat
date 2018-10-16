@@ -195,6 +195,7 @@ SQL;
         return $user->row_id;
         return 32;
     }
+
     /**
      * 是否使用群組清單
      * @return int 清單Id
@@ -213,5 +214,17 @@ SQL;
         return $groupId;
     }
 
+    /**
+     * get all distinct department from qp_user
+     * @return mixed
+     */
+    public function getAllDepartment(){
+        return \DB::table($this->table)
+        ->whereNotNull('department')
+        ->distinct('department')
+        ->select('department')
+        ->orderBy('department')
+        ->get();
+    }
 
 }

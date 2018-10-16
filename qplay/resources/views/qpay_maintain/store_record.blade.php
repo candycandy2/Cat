@@ -73,7 +73,7 @@
         };
 
         function downloadFormatter(value, row){
-            var fileUrl = '{{asset("downloadPointExcel")}}?point_saved_id=' + row.point_saved_id;
+            var fileUrl = '{{asset("QPayStoreMaintain\downloadPointExcel")}}?point_saved_id=' + row.point_saved_id;
             return '<a href="' + fileUrl + '"' + '" title="'+ row.file_original +'"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a>';
         }
 

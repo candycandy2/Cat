@@ -72,6 +72,7 @@ return [
     'TITLE_QPAY_REPORT_ANALYSIS' => '报表分析',
     'TITLE_QPAY_STORE_POINT' => '点数储值',
     'TITLE_QPAY_STORE_RECORD' => '储值纪录',
+    'TITLE_QPAY_STORE_EMPLOYEE' => '員工發放紀錄',
 
     'ENABLE' => '启用',
     'DISABLE' => '停用',
@@ -490,4 +491,9 @@ return [
     'QPAY_STORED_MEMBER_COUNT' => '储值人数',
     'QPAY_STORED_POINT' => '储值金额',
     'QPAY_STORED_ID' => '储值码',
+    'QPAY_SELECT_POINT_TYPE' => '请选择消费券类型',
+    'QPAY_SELECT_DEPARTMENT_CODE' => '请选择部门代码',
+    'QPAY_INPUT_EMP_NO' => '请输入员工编号',
+    'QPAY_SELECT_GIVEN_INTERVAL' => '选择发放区间',
+    'STORED_POINT' => '发放点数',
 ];

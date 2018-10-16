@@ -294,4 +294,9 @@ class QPayPointService
         return response()->download($file, $fileOriginal . '.xlsx', $headers);
     }
 
+    public function getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset){
+
+        return $this->qpayPointStoreRepository
+                ->getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset);
+    }
 }
