@@ -601,7 +601,7 @@
   },
   {
     "term": "wgt_076",
-    "definition": "您输入的密码有误,e",
+    "definition": "Password incorrect,",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -609,7 +609,7 @@
   },
   {
     "term": "wgt_077",
-    "definition": "请您再输入一次喔!e",
+    "definition": "Please input again!",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -617,7 +617,7 @@
   },
   {
     "term": "wgt_078",
-    "definition": "您的旧密码输入错误,e",
+    "definition": "Old password incorrect,",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -625,7 +625,7 @@
   },
   {
     "term": "wgt_079",
-    "definition": "您的新密码输入不一致,e",
+    "definition": "New passwords are different,",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -633,7 +633,7 @@
   },
   {
     "term": "wgt_080",
-    "definition": "您的新密码格式输入错误,e",
+    "definition": "New password format incorrect,",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -641,7 +641,7 @@
   },
   {
     "term": "wgt_081",
-    "definition": "新密码须为4个数字组成e",
+    "definition": "New password consists of 4 digits",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -649,7 +649,7 @@
   },
   {
     "term": "wgt_082",
-    "definition": "您的旧密码格式输入错误e",
+    "definition": "Old password format incorrect",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -657,7 +657,7 @@
   },
   {
     "term": "wgt_083",
-    "definition": "旧密码须为4个数字组成e",
+    "definition": "Old password consits of 4 digits",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -665,7 +665,7 @@
   },
   {
     "term": "wgt_084",
-    "definition": "暂无记录e",
+    "definition": "No records",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -673,7 +673,7 @@
   },
   {
     "term": "wgt_085",
-    "definition": "店家未启动交易e",
+    "definition": "Store didn't initiate the transcation",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -681,7 +681,7 @@
   },
   {
     "term": "wgt_086",
-    "definition": "消费券余额不足e",
+    "definition": "Insufficient balance",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -689,7 +689,7 @@
   },
   {
     "term": "wgt_087",
-    "definition": "交易验证码不正确e",
+    "definition": "Transcation secure code incorrect",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -697,7 +697,7 @@
   },
   {
     "term": "wgt_088",
-    "definition": "交易验证码过期e",
+    "definition": "Transcation secure code overdue",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -705,7 +705,7 @@
   },
   {
     "term": "wgt_089",
-    "definition": "交易密码不正确e",
+    "definition": "Transcation password incorrect",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -713,7 +713,7 @@
   },
   {
     "term": "wgt_090",
-    "definition": "系统功能异常e",
+    "definition": "System error",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -721,7 +721,7 @@
   },
   {
     "term": "wgt_091",
-    "definition": "新密码须为8-20个英文数字或符号组成e",
+    "definition": "8-20 characters consist of alphabet, digit or symbol",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -729,7 +729,7 @@
   },
   {
     "term": "wgt_092",
-    "definition": "请选择消费券类型e",
+    "definition": "Please select coupon type",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -753,7 +753,7 @@
   },
   {
     "term": "wgt_095",
-    "definition": "您的工号输入错误e",
+    "definition": "Employee ID incorrect",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -761,7 +761,7 @@
   },
   {
     "term": "wgt_096",
-    "definition": "储值e",
+    "definition": "Top up",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -769,7 +769,7 @@
   },
   {
     "term": "wgt_097",
-    "definition": "您本月尚无任何交易e",
+    "definition": "No transcaion this month",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -777,7 +777,7 @@
   },
   {
     "term": "wgt_098",
-    "definition": "您今日尚无任何交易e",
+    "definition": "No transcation today",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -785,7 +785,7 @@
   },
   {
     "term": "wgt_099",
-    "definition": "您暂无可用APP",
+    "definition": "No available APP",
     "context": "",
     "term_plural": "",
     "reference": "",
