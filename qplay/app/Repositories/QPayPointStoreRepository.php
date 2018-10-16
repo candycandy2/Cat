@@ -20,9 +20,11 @@ class QPayPointStoreRepository
      * QPayPointStoreRepository constructor.
      * @param QPay_Point_Store $qpayPointStore
      */
-    public function __construct(QPay_Point_Store $qpayPointStore)
+    public function __construct(QPay_Point_Store $qpayPointStore,
+                                QPay_Member_Point $qpayMemberPoint)
     {
         $this->qpayPointStore = $qpayPointStore;
+        $this->qpayMemberPoint = $qpayMemberPoint;
     }
 
     /**
@@ -89,7 +91,7 @@ class QPayPointStoreRepository
     }
 
     /**
-     * get point store information
+     * Get point store information
      * @param  int $pointStoreId qp_pont_store.row_id
      * @return mixed
      */
@@ -97,4 +99,50 @@ class QPayPointStoreRepository
         return $this->qpayPointStore::find($pointStoreId);
     }
 
+    /**
+     * Get QPay Point Stored For Each Employee Record List 
+     * @param  int $pointType  query point type , allow nill
+     * @param  int $startDate  query start date , unix timestamp required
+     * @param  int $endDate    query end date, unix timestamp required
+     * @param  string $department query user department, allow null
+     * @param  string $empNo      query user employee no, allow null
+     * @param  int $limit      the record count limit of one page
+     * @param  int $offset     page offset
+     * @return mixed
+     */
+    public function getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset){
+
+        $query = $this->qpayMemberPoint
+                ->join('qpay_member','qpay_member.row_id', '=' ,'qpay_member_point.member_row_id')
+                ->join('qp_user','qp_user.row_id', '=', 'qpay_member.user_row_id')
+                ->join('qpay_point_store','qpay_point_store.row_id', '=', 'qpay_member_point.point_store_row_id')
+                ->join('qpay_point_type', 'qpay_point_type.row_id','=', 'qpay_point_store.point_type_row_id')
+                -> where(DB::raw('UNIX_TIMESTAMP(qpay_member_point.created_at)'),'>=', $startDate)
+                -> where(DB::raw('UNIX_TIMESTAMP(qpay_member_point.created_at)'),'<=', $endDate);
+                
+                if(!is_null($pointType)){
+                    $query = $query->where('qpay_point_store.point_type_row_id',$pointType);
+                }
+
+                if(!is_null($department)){
+                    $query = $query->where('qp_user.department',$department);
+                }
+
+                if(!is_null($empNo)){
+                    $query = $query->where('qp_user.emp_no',$empNo);
+                }
+
+        $query = $query->select(DB::raw('CONCAT("S", LPAD(qpay_point_store.row_id, 6, 0)) AS store_id'),
+                      'qpay_point_type.name as point_type',
+                      'qpay_member_point.stored_total',
+                      'qp_user.login_id as stored_user',
+                      'qp_user.emp_no as emp_no',
+                      'qp_user.emp_name as emp_name',
+                      'qp_user.department as department',
+                      'qpay_point_type.color as color',
+                      'qpay_point_store.created_at as store_time')
+                ->Paginate($limit,['*'],null,($offset/$limit)+1);//paginate(rowCount, ['*'], page, current])
+
+        return $query;
+    }
 }

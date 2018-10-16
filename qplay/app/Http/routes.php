@@ -226,12 +226,16 @@ Route::any('functionMaintain/updateFunction', ['middleware' => 'auth','uses'=>'F
 Route::any('functionMaintain/getUserFunctionList', ['middleware' => 'auth','uses'=>'FunctionController@getUserFunctionList']);
 
 //QPay Maintain
-Route::any('QPayStorePoint', ['middleware' => 'auth','uses'=>'qpayController@QPayStorePoint']);
-Route::any('uploadPointExcel', ['middleware' => 'auth','uses'=>'qpayController@uploadPointExcel']);
-Route::any('newPointStore', ['middleware' => 'auth','uses'=>'qpayController@newPointStore']);
-Route::any('QPayStoreRecord', ['middleware' => 'auth','uses'=>'qpayController@QPayStoreRecord']);
-Route::any('getQPayStoreRecordList', ['middleware' => 'auth','uses'=>'qpayController@getQPayStoreRecordList']);
-Route::any('downloadPointExcel', ['middleware' => 'auth','uses'=>'qpayController@downloadPointExcel']);
+Route::group(['prefix' => 'QPayStoreMaintain'], function () {
+    Route::any('QPayStorePoint', ['middleware' => 'auth','uses'=>'qpayController@QPayStorePoint']);
+    Route::any('uploadPointExcel', ['middleware' => 'auth','uses'=>'qpayController@uploadPointExcel']);
+    Route::any('newPointStore', ['middleware' => 'auth','uses'=>'qpayController@newPointStore']);
+    Route::any('QPayStoreRecord', ['middleware' => 'auth','uses'=>'qpayController@QPayStoreRecord']);
+    Route::any('getQPayStoreRecordList', ['middleware' => 'auth','uses'=>'qpayController@getQPayStoreRecordList']);
+    Route::any('downloadPointExcel', ['middleware' => 'auth','uses'=>'qpayController@downloadPointExcel']);
+    Route::any('QPayStoreEmployee', ['middleware' => 'auth','uses'=>'qpayController@QPayStoreEmployee']);
+    Route::any('getQPayPointGetRecordList', ['middleware' => 'auth','uses'=>'qpayController@getQPayPointGetRecordList']);
+});
 
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){
   Session::set('lang', $lang);

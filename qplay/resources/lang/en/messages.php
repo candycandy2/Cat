@@ -72,6 +72,7 @@ return [
     'TITLE_QPAY_REPORT_ANALYSIS' => 'Report Analysis',
     'TITLE_QPAY_STORE_POINT' => 'Point Store',
     'TITLE_QPAY_STORE_RECORD' => 'Store Record',
+    'TITLE_QPAY_STORE_EMPLOYEE' => 'Employee Points',
 
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
@@ -492,4 +493,9 @@ return [
     'QPAY_STORED_MEMBER_COUNT' => 'People Stored',
     'QPAY_STORED_POINT' => 'Stored Point',
     'QPAY_STORED_ID' => 'Stored ID',
+    'QPAY_SELECT_POINT_TYPE' => 'Coupon Type',
+    'QPAY_SELECT_DEPARTMENT_CODE' => 'Department',
+    'QPAY_INPUT_EMP_NO' => 'Employee No.',
+    'QPAY_SELECT_GIVEN_INTERVAL' => 'Select a stored point interval',
+    'STORED_POINT' => 'Stored Points',
 ];
