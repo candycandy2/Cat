@@ -129,15 +129,13 @@ $("#viewShopChangePwd").pagecontainer({
 
         //修改密码
         $('.shop-change-pwd').on('touchstart', function (event) {
-            event.preventDefault();
-
+            //event.stopPropagation();
             var has = $(this).hasClass('button-active');
             var oldPwd = $('#shopOldPwd').val();
             var newPwd = $('#shopNewPwd').val();
             var confirmPwd = $('#shopCofirmPwd').val();
 
             if (has) {
-                loadingMask("show");
                 //失去焦点
                 //document.activeElement.blur();
                 $('#shopOldPwd').blur();
@@ -148,7 +146,6 @@ $("#viewShopChangePwd").pagecontainer({
                     //1.检查旧密码是否包含中文
                     var oldResult = checkPwdFormat(oldPwd);
                     if(!oldResult) {
-                        loadingMask("hide");
                         $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_082']);
                         $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_045']);
                         $('.shopChangePwdError').popup('open');
@@ -157,7 +154,6 @@ $("#viewShopChangePwd").pagecontainer({
                         //2.检查新密码
                         var newResult = checkPwdFormat(newPwd);
                         if(!newResult) {
-                            loadingMask("hide");
                             $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_080']);
                             $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_091']);
                             $('.shopChangePwdError').popup('open');
@@ -166,27 +162,30 @@ $("#viewShopChangePwd").pagecontainer({
                             //3.确认密码
                             var confirmResult = checkPwdFormat(newPwd, confirmPwd);
                             if(!confirmResult) {
-                                loadingMask("hide");
                                 $('.shopChangePwdError .header-title-main .header-text').text(langStr['wgt_079']);
                                 $('.shopChangePwdError .header-title .header-text').text(langStr['wgt_045']);
                                 $('.shopChangePwdError').popup('open');
                             } else {
-                                loadingMask("hide");
                                 //API:修改登录密码
                                 changeQAccountPwd(oldPwd, newPwd);
                             }
                         }
                     }
 
-                }, 750)
+                }, 500)
             }
 
             return false;
         });
 
+        //removeClass
+        $('.shop-change-pwd').on('touchend', function () {
+            $('#viewShopChangePwd .ui-header').removeClass('ui-fixed-hidden');
+        });
+
         //阻止事件冒泡
         $('.shop-change-foot').on('touchstart', function(event) {
-            event.preventDefault();
+            //event.stopPropagation();
             return false;
         });
 

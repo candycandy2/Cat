@@ -16,6 +16,11 @@ $("#viewAccountingRate").pagecontainer({
         var resizePopupB = false;
         var popupMinHeight = 0;
 
+        //for AccountingRate Widget, add by allen
+        var allFavoriteRate = {};
+        var currentFavoriteRate = {};
+        var updateFavoriteRate = false;
+
         var MonthWord = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var FromStatus = "USD";
         var ToStatus = "All Currency";
@@ -80,15 +85,15 @@ $("#viewAccountingRate").pagecontainer({
         });
 
         $("#viewAccountingRate").one("pageshow", function(event, ui) {
-            $('.buttontransfer').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/tmp/change.png");
-            $('.buttonone3img').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/tmp/dropdown_n.png");
-            $('.buttonone4img').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/tmp/dropdown_n.png");
+            $('.buttontransfer').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/change.png");
+            $('.buttonone3img').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/dropdown_n.png");
+            $('.buttonone4img').attr('src', serverURL + "/widget/widgetPage/viewAccountingRate/img/dropdown_n.png");
+
+            Expiretime();
+            initialPullRefresh();
         });
 
         $("#viewAccountingRate").on("pageshow", function(event, ui) {
-            Expiretime();
-            initialPullRefresh();
-
             var eventConfirmA = {
                 id: "eventWorkConfirmA",
                 content: $("template#tplAddConfirmA").html()
@@ -119,6 +124,19 @@ $("#viewAccountingRate").pagecontainer({
                 PullToRefreshDestory.destroy();
                 $('#viewAccountingRate .ptr--ptr').remove();
                 PullToRefreshDestory = null;
+            }
+
+            //如果local没有rateList或者rateList需要更新，则记录到local端
+            var favoriteRateList = JSON.parse(window.localStorage.getItem('FavoriteRateList'));
+            if(updateFavoriteRate || favoriteRateList == null || favoriteRateList.length == 0) {
+                favoriteRateList = [];
+                for(var i in allFavoriteRate) {
+                    favoriteRateList.push(allFavoriteRate[i]);
+                }
+                window.localStorage.setItem('FavoriteRateList', JSON.stringify(favoriteRateList));
+                updateFavoriteRate = false;
+                //refresh accountingrate
+                $('.accountingrateWidget').accountingrate('refresh');
             }
         });
 
@@ -243,6 +261,18 @@ $("#viewAccountingRate").pagecontainer({
 
             if (favoriteTo) {
                 var favoriteClassTo = " favorite";
+
+                //push to favoriteList,add by allen
+                var favoriteObj = {
+                    'fromStatus': FromStatus,
+                    'toStatus': ToStatus,
+                    'rate': rate
+                }
+
+                if(typeof allFavoriteRate[FromStatus + '-' + ToStatus] == 'undefined') {
+                    allFavoriteRate[FromStatus + '-' + ToStatus] = favoriteObj;
+                }
+
             } else {
                 var favoriteClassTo = "";
             }
@@ -250,12 +280,12 @@ $("#viewAccountingRate").pagecontainer({
             return '<li data-icon="false" class="1_li CountryA" id="litest">' +
                 '<div class="Listdiv1 select choose ' + FromStatus + favoriteClassFrom +
                 '"' + 'id=' + FromStatus + '>' +
-                '<img  class="' + cssClassFrom + '" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/favorite.png"> ' +
+                '<img  class="' + cssClassFrom + '" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/favorite.png"> ' +
                 '<img  class="ListviewFlag1" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' + FromStatus + '.png"> ' +
                 '<span class="ListRate1">' + '1 ' + FromStatus + '</span>  ' +
                 '<div  class="Listdiv1equalmark4">=</div>' + '</div>' +
                 '<div class="Listdiv2 select choose ' + ToStatus + favoriteClassTo + '"' + 'id=' + ToStatus + '>' +
-                '<img  class="' + cssClassTo + '" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/favorite.png"> ' +
+                '<img  class="' + cssClassTo + '" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/favorite.png"> ' +
                 '<img  class="ListviewFlag2" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' + ToStatus + '.png">' +
                 '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate +
                 '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' +
@@ -265,17 +295,29 @@ $("#viewAccountingRate").pagecontainer({
         function CountrylisthtmlFirst(country, rate, cssClass, favorite) {
             if (favorite) {
                 var favoriteClass = " favorite";
+
+                //push to favoriteList,add by allen
+                var favoriteObj = {
+                    'fromStatus': country,
+                    'toStatus': ToStatus,
+                    'rate': rate
+                }
+
+                if(typeof allFavoriteRate[country + '-' + ToStatus] == 'undefined') {
+                    allFavoriteRate[country + '-' + ToStatus] = favoriteObj;
+                }
+
             } else {
                 var favoriteClass = "";
             }
 
             return '<li data-icon="false" class="1_li CountryA ">' +
                 '<div class="Listdiv1 select choose ' + country + favoriteClass + '"' + 'id=' +
-                country + '>' + '<img  class="' + cssClass + '" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/favorite.png"> ' +
+                country + '>' + '<img  class="' + cssClass + '" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/favorite.png"> ' +
                 '<img  class="ListviewFlag1" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' + country + '.png"> ' +
                 '<span class="ListRate1">' + '1 ' + country + '</span>  ' +
                 '<div  class="Listdiv1equalmark4">=</div>' + '</div>' + '<div class="Listdiv2">' +
-                '<img  class="nonstar_icon" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/favorite.png"> ' +
+                '<img  class="nonstar_icon" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/favorite.png"> ' +
                 '<img  class="ListviewFlag2" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' + ToStatus + '.png">' +
                 '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate +
                 '</span> ' + '<span class="ListRate2">' + ToStatus + '</span>' + '<br> ' + '</div>' +
@@ -285,18 +327,30 @@ $("#viewAccountingRate").pagecontainer({
         function CountrylisthtmlSecond(country, rate, cssClass, favorite) {
             if (favorite) {
                 var favoriteClass = " favorite";
+
+                //push to favoriteList,add by allen
+                var favoriteObj = {
+                    'fromStatus': FromStatus,
+                    'toStatus': country,
+                    'rate': rate
+                }
+
+                if(typeof allFavoriteRate[FromStatus + '-' + country] == 'undefined') {
+                    allFavoriteRate[FromStatus + '-' + country] = favoriteObj;
+                }
+
             } else {
                 var favoriteClass = "";
             }
 
             return '<li data-icon="false" class="1_li CountryA">' +
                 '<div class="Listdiv1" id=' + FromStatus + '>' +
-                '<img  class="nonstar_icon" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/favorite.png"> ' +
+                '<img  class="nonstar_icon" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/favorite.png"> ' +
                 '<img  class="ListviewFlag1" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' + FromStatus +
                 '.png"> ' + '<span class="ListRate1">' + '1 ' + FromStatus +
                 '</span>  ' + '<div  class="Listdiv1equalmark4">=</div>' +
                 '</div>' + '<div class="Listdiv2 select choose ' + country + favoriteClass + '"' +
-                'id= ' + country + '>' + '<img  class="' + cssClass + '" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/favorite.png"> ' +
+                'id= ' + country + '>' + '<img  class="' + cssClass + '" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/favorite.png"> ' +
                 '<img  class="ListviewFlag2" src ="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' + country + '.png">' +
                 '<div class="Listdiv3">' + '<span class="ListDollar1" >' + rate +
                 '</span> ' + '<span class="ListRate2">' + country + '</span>' + '<br> ' +
@@ -580,6 +634,7 @@ $("#viewAccountingRate").pagecontainer({
                         'min-height': deviceHeight
                     });
                 }
+
             }
         }
 
@@ -771,6 +826,12 @@ $("#viewAccountingRate").pagecontainer({
             $("#eventWorkConfirmA").popup('close');
             footerFixed();
             initialPullRefresh();
+
+            //confirm add current favorite rate
+            var currentFrom = currentFavoriteRate['fromStatus'];
+            var currentTo = currentFavoriteRate['toStatus'];
+            allFavoriteRate[currentFrom + '-' + currentTo] = currentFavoriteRate;
+            updateFavoriteRate = true;
         });
 
         $(document).on("click", "#eventWorkConfirmA .cancel", function() {
@@ -790,6 +851,12 @@ $("#viewAccountingRate").pagecontainer({
             $("#eventWorkConfirmB").popup('close');
             footerFixed();
             initialPullRefresh();
+
+            //confirm delete current favorite rate
+            var currentFrom = currentFavoriteRate['fromStatus'];
+            var currentTo = currentFavoriteRate['toStatus'];
+            delete allFavoriteRate[currentFrom + '-' + currentTo];
+            updateFavoriteRate = true;
         });
 
         $(document).on("click", "#eventWorkConfirmB .cancel", function() { // B window OK
@@ -801,6 +868,16 @@ $("#viewAccountingRate").pagecontainer({
         /********************************** Add/Remove Favorite *************************************/
         $(document).on("click", ".select", function() {
             statuscountrypop = $(this).prop("id");
+
+            //save current favorite rate
+            var fromCountry = $(this).prev().attr('id');
+            var toCountry = $(this).attr('id');
+            var countryRate = $(this).find('.ListDollar1').text();
+            currentFavoriteRate = {
+                'fromStatus': fromCountry,
+                'toStatus': toCountry,
+                'rate': countryRate
+            }
 
             if ($("#" + statuscountrypop).hasClass("favorite")) {
                 $("#eventWorkConfirmB .header.font-style1").html("Remove「" + statuscountrypop + "」from favorite ?");

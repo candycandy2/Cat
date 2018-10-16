@@ -117,15 +117,13 @@ $("#viewUserChangePwd").pagecontainer({
 
         //更改密码
         $('.user-change-pwd').on('touchstart', function (event) {
-            event.preventDefault();
-
+            //event.stopPropagation();
             var has = $(this).hasClass('button-active');
             var oldPwd = $('#userOldPwd').val();
             var newPwd = $('#userNewPwd').val();
             var confirmPwd = $('#userCofirmPwd').val();
 
             if (has) {
-                loadingMask("show");
                 //0.input失去焦点
                 //document.activeElement.blur();
                 $('#userOldPwd').blur();
@@ -136,7 +134,6 @@ $("#viewUserChangePwd").pagecontainer({
                     //1.检查旧密码
                     var oldResult = checkPwdFormat(oldPwd);
                     if(!oldResult) {
-                        loadingMask("hide");
                         //提示旧密码格式错误
                         $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_082']);
                         $('.userChangePwdError .header-title .header-text').text(langStr['wgt_045']);
@@ -145,7 +142,6 @@ $("#viewUserChangePwd").pagecontainer({
                         //2.检查新密码
                         var newResult = checkPwdFormat(newPwd);
                         if(!newResult) {
-                            loadingMask("hide");
                             //提示新密码格式错误
                             $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_080']);
                             $('.userChangePwdError .header-title .header-text').text(langStr['wgt_081']);
@@ -154,27 +150,30 @@ $("#viewUserChangePwd").pagecontainer({
                             //3.确认新密码
                             var confirmResult = checkPwdFormat(newPwd, confirmPwd);
                             if(!confirmResult) {
-                                loadingMask("hide");
                                 //提示新密码输入不一致
                                 $('.userChangePwdError .header-title-main .header-text').text(langStr['wgt_079']);
                                 $('.userChangePwdError .header-title .header-text').text(langStr['wgt_045']);
                                 $('.userChangePwdError').popup('open');
                             } else {
-                                loadingMask("hide");
                                 //API:修改交易密码
                                 changeTradePwd(oldPwd, newPwd);
                             }
                         }
                     }
-                }, 750)
+                }, 500)
             }
 
             return false;
         });
 
+        //removeClass
+        $('.user-change-pwd').on('touchend', function () {
+            $('#viewUserChangePwd .ui-header').removeClass('ui-fixed-hidden');
+        });
+
         //阻止事件冒泡
         $('.user-change-foot').on('touchstart', function(event) {
-            event.preventDefault();
+            //event.stopPropagation();
             return false;
         });
 
