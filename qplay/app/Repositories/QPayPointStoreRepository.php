@@ -101,16 +101,18 @@ class QPayPointStoreRepository
 
     /**
      * Get QPay Point Stored For Each Employee Record List 
-     * @param  int $pointType  query point type , allow nill
-     * @param  int $startDate  query start date , unix timestamp required
-     * @param  int $endDate    query end date, unix timestamp required
-     * @param  string $department query user department, allow null
-     * @param  string $empNo      query user employee no, allow null
-     * @param  int $limit      the record count limit of one page
-     * @param  int $offset     page offset
+     * @param  int      $pointType  query point type , allow nill
+     * @param  int      $startDate  query start date , unix timestamp required
+     * @param  int      $endDate    query end date, unix timestamp required
+     * @param  string   $department query user department, allow null
+     * @param  string   $empNo      query user employee no, allow null
+     * @param  int      $limit      the record count limit of one page
+     * @param  int      $offset     page offset
+     * @param  string   $sort       sort by field
+     * @param  string   $order      order
      * @return mixed
      */
-    public function getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset){
+    public function getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset, $sort, $order){
 
         $query = $this->qpayMemberPoint
                 ->join('qpay_member','qpay_member.row_id', '=' ,'qpay_member_point.member_row_id')
@@ -132,6 +134,7 @@ class QPayPointStoreRepository
                     $query = $query->where('qp_user.emp_no',$empNo);
                 }
 
+        $query = $query->orderBy($sort, $order);
         $query = $query->select(DB::raw('CONCAT("S", LPAD(qpay_point_store.row_id, 6, 0)) AS store_id'),
                       'qpay_point_type.name as point_type',
                       'qpay_member_point.stored_total',
@@ -140,7 +143,7 @@ class QPayPointStoreRepository
                       'qp_user.emp_name as emp_name',
                       'qp_user.department as department',
                       'qpay_point_type.color as color',
-                      'qpay_point_store.created_at as store_time')
+                      'qpay_member_point.created_at as store_time')
                 ->Paginate($limit,['*'],null,($offset/$limit)+1);//paginate(rowCount, ['*'], page, current])
 
         return $query;

@@ -216,7 +216,7 @@ SQL;
 
     /**
      * get all distinct department from qp_user
-     * @return mixed
+     * @return array
      */
     public function getAllDepartment(){
         return \DB::table($this->table)
@@ -224,7 +224,7 @@ SQL;
         ->distinct('department')
         ->select('department')
         ->orderBy('department')
-        ->get();
+        ->pluck('department');
     }
 
 }

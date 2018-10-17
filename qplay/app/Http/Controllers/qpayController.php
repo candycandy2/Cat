@@ -134,8 +134,10 @@ class qpayController extends Controller
         $empNo = (trim($request->empNo) == "")?null:trim($request->empNo);
         $limit = (trim($request->limit) == "")?null:trim($request->limit);
         $offset = (trim($request->offset) == "")?null:trim($request->offset);
+        $sort = (trim($request->sort) == "")?null:trim($request->sort);
+        $order = (trim($request->order) == "")?null:trim($request->order);
 
-       $pointGetRecord =  $this->qpayPointService->getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset);
+       $pointGetRecord =  $this->qpayPointService->getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset, $sort, $order);
        return response()->json(["total"=>$pointGetRecord->total(),"rows"=>$pointGetRecord->items()]);
     
     }

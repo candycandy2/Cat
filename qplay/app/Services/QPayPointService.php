@@ -294,9 +294,22 @@ class QPayPointService
         return response()->download($file, $fileOriginal . '.xlsx', $headers);
     }
 
-    public function getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset){
+     /**
+     * Get QPay Point Stored For Each Employee Record List 
+     * @param  int      $pointType  query point type , allow nill
+     * @param  int      $startDate  query start date , unix timestamp required
+     * @param  int      $endDate    query end date, unix timestamp required
+     * @param  string   $department query user department, allow null
+     * @param  string   $empNo      query user employee no, allow null
+     * @param  int      $limit      the record count limit of one page
+     * @param  int      $offset     page offset
+     * @param  string   $sort       sort by field
+     * @param  string   $order      order
+     * @return mixed
+     */
+    public function getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset, $sort, $order){
 
         return $this->qpayPointStoreRepository
-                ->getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset);
+                ->getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset, $sort, $order);
     }
 }
