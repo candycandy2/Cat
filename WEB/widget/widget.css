@@ -491,12 +491,13 @@
 .rate-no-favorite {
     width: 90vw;
     height: 10vw;
-    font-size: 3.349vw;
+    padding: 5vw;
     text-indent: 6vw;
-    display: none;
+    font-size: 3.349vw;
+    color: #666;
     word-break: break-all;
     word-wrap: break-word;
-    padding: 5vw;
+    display: none;
 }
 
 .rate-more-icon {

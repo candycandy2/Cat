@@ -17,7 +17,7 @@ var accountingrateWidget = {
 
             }, "html");
 
-            contentItem.on('click', function() {
+            contentItem.on('click', '.rate-more-icon', function() {
                 checkWidgetPage('viewAccountingRate', pageVisitedList);
             });
         }
