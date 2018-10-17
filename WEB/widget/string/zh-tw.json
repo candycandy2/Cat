@@ -441,7 +441,7 @@
   },
   {
     "term": "wgt_056",
-    "definition": "QPlay使用者",
+    "definition": "使用QPlay付款",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -449,7 +449,7 @@
   },
   {
     "term": "wgt_057",
-    "definition": "非QPlay使用者",
+    "definition": "自行輸入工號付款",
     "context": "",
     "term_plural": "",
     "reference": "",
