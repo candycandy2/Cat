@@ -40,7 +40,7 @@ var carouselWidget = {
                 $('.top-bulletin').hide();
 
                 var bulletinHeight = $('.top-bulletin').height();
-                window.sessionStorage.setItem('closeBulletin', bulletinHeight);
+                window.sessionStorage.setItem('updateHomePageHeight', bulletinHeight);
             });
 
             //去版本记录页下载最新版

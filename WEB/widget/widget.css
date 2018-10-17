@@ -489,17 +489,29 @@
 }
 
 .rate-no-favorite {
-    width: 100vw;
-    height: 20vw;
-    line-height: 20vw;
+    width: 90vw;
+    height: 10vw;
     font-size: 3.349vw;
     text-indent: 6vw;
     display: none;
+    word-break: break-all;
+    word-wrap: break-word;
+    padding: 5vw;
+}
+
+.rate-more-icon {
+    width: 100%;
+    height: 6vw;
+}
+
+.rate-more-icon img {
+    width: 6vw;
+    margin-left: 88vw;
 }
 
 .rate-padding-bottom {
     width: 100%;
-    height: 4vw;
+    height: 2.5vw;
 }
 
 /******************** qpay test ********************/

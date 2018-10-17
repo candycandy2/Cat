@@ -1028,8 +1028,11 @@ $("#viewMessageList").pagecontainer({
             //after delete, set height
             setMsgHeightByType(messageType);
 
-            //after delete，updatewidget
-            $('.messageWidget').message('refresh');
+            //after delete，refresh message widget
+            //$('.messageWidget').message('refresh');
+            var evalString = '$(".messageWidget").message("refresh");';
+            window.sessionStorage.setItem('needRefreshWidget', evalString);
+            window.sessionStorage.setItem('updateHomePageHeight', 'Y');
         });
 
         //跳转详情
