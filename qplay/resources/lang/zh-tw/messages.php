@@ -494,7 +494,7 @@ return [
     'QPAY_STORED_POINT' => '儲值金額',
     'QPAY_STORED_ID' => '儲值碼',
     'QPAY_SELECT_POINT_TYPE' => '請選擇消費券類型',
-    'QPAY_SELECT_DEPARTMENT_CODE' => '請選擇部門代碼',
+    'QPAY_INPUT_DEPARTMENT_CODE' => '請輸入部門代碼',
     'QPAY_INPUT_EMP_NO' => '請輸入員工編號',
     'QPAY_SELECT_GIVEN_INTERVAL' => '選擇發放區間',
     'STORED_POINT' => '發放點數',

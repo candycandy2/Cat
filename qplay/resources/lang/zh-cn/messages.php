@@ -492,7 +492,7 @@ return [
     'QPAY_STORED_POINT' => '储值金额',
     'QPAY_STORED_ID' => '储值码',
     'QPAY_SELECT_POINT_TYPE' => '请选择消费券类型',
-    'QPAY_SELECT_DEPARTMENT_CODE' => '请选择部门代码',
+    'QPAY_INPUT_DEPARTMENT_CODE' => '请输入部门代码',
     'QPAY_INPUT_EMP_NO' => '请输入员工编号',
     'QPAY_SELECT_GIVEN_INTERVAL' => '选择发放区间',
     'STORED_POINT' => '发放点数',

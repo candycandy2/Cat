@@ -494,7 +494,7 @@ return [
     'QPAY_STORED_POINT' => 'Stored Point',
     'QPAY_STORED_ID' => 'Stored ID',
     'QPAY_SELECT_POINT_TYPE' => 'Coupon Type',
-    'QPAY_SELECT_DEPARTMENT_CODE' => 'Department',
+    'QPAY_INPUT_DEPARTMENT_CODE' => 'Department',
     'QPAY_INPUT_EMP_NO' => 'Employee No.',
     'QPAY_SELECT_GIVEN_INTERVAL' => 'Select a stored point interval',
     'STORED_POINT' => 'Stored Points',

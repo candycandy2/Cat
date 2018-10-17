@@ -2,6 +2,7 @@
 <?php
     use App\lib\ResultCode;
     $menu_name = "QPAY_STORE_EMPLOYEE";
+    $departments = json_encode($departments);
 ?>
 @extends('layouts.admin_template')
 @section('content')
@@ -25,12 +26,7 @@
                     <div class="form-group">
                         <label for="department">{{trans('messages.QPAY_MEMBER_DEPARTMENT_CODE')}}</label>
                         <div class="input-group" >
-                            <select class="form-control" required="required" id="selectDepartment">
-                                <option value="" selected>{{trans('messages.QPAY_SELECT_DEPARTMENT_CODE')}}</option>
-                            @foreach ($departments as $row)
-                                <option value="{{ $row->department }}">{{ $row->department }}</option>
-                            @endforeach
-                            </select>
+                            <input class="form-control" type="text" name="" id="tbxDepartment" placeholder="{{trans('messages.QPAY_INPUT_DEPARTMENT_CODE')}}">
                         </div>
                     </div>
                 </div>
@@ -92,7 +88,7 @@
                     <th data-field="department" data-sortable="true" data-searchable="false" >{{trans('messages.QPAY_MEMBER_DEPARTMENT_CODE')}}</th>
                     <th data-field="store_time" data-sortable="true" data-searchable="false" data-formatter="storeTimeFormatter">{{trans('messages.QPAY_POINT_STORED_DATE')}}</th>
                     <th data-field="stored_total" data-sortable="false" data-searchable="false">{{trans('messages.STORED_POINT')}}</th>
-                    <th data-field="store_id" data-sortable="false" data-searchable="false">{{trans('messages.QPAY_STORED_ID')}}</th>
+                    <th data-field="store_id" data-sortable="true" data-searchable="false">{{trans('messages.QPAY_STORED_ID')}}</th>
                 </tr>
                 </thead>
             </table>
@@ -110,19 +106,21 @@
         };
 
         $(function () {
-        
+            var departments = <?=$departments?>;
             var startDate = new Date(new Date().getFullYear(), 0, 1, 0, 0, 0) ;
             var endDate = new Date(new Date().getFullYear(), 11, 31, 23, 59, 59);
 
             var $dpFrom = $("#datetimepicker1");
             var $dpTo = $("#datetimepicker2");
 
+            //date picker
             $dpFrom.datetimepicker({
                 minView: "month", 
                 format: 'yyyy/mm/dd',
                 autoclose: true
             }).on("changeDate", function(e) {
                 $dpTo.data("datetimepicker").setStartDate(e.date);
+                $("#searchStoreRecord").click();
             });
 
             $dpTo.datetimepicker({
@@ -131,16 +129,36 @@
                 autoclose: true,
             }).on("changeDate", function(e) {
                 $dpFrom.data("datetimepicker").setEndDate(e.date);
+                $("#searchStoreRecord").click();
             });
             
             $dpFrom.data("datetimepicker").setDate(startDate);
             $dpTo.data("datetimepicker").setDate(endDate);
             
+            // department autocomplete
+            $("#tbxDepartment").autocomplete({
+               source:departments
+            });
+            
+            //init grid table
             initRecordList();
             $("#searchStoreRecord").on("click", function(){
                 $("#gridEmployeePointRecordList").bootstrapTable("refresh");
             });
-         
+            
+            $("input").on("keyup",function(event){
+                // Cancel the default action, if needed
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    // Trigger the button element with a click
+                    $("#searchStoreRecord").click();
+                }
+            });
+
+            $("select").change(function() {
+               $("#searchStoreRecord").click();
+            });
+
     });
 
     var initRecordList = function () {
@@ -162,10 +180,10 @@
                 var startDate = $("#datetimepicker1").data("datetimepicker").getDate();
                 var endDate = $("#datetimepicker2").data("datetimepicker").getDate();
                     endDate.setHours(23, 59, 59)
+                                        
                 var pointType = $("#selectPointType").val();
-                var department = $("#selectDepartment").val();
+                var department = $("#tbxDepartment").val();
                 var empNo = $("#txbEmpNo").val();
-
                 var mydata = {
                             pointType: pointType,
                             startDate:  startDate.getTime()/1000,
@@ -173,7 +191,9 @@
                             department: department,
                             empNo: empNo,
                             offset:params.offset,
-                            limit:params.limit
+                            limit:params.limit,
+                            sort:params.sort,
+                            order:params.order
                         };
 
                 return mydata;
