@@ -8,8 +8,7 @@ var widget = {
             .then(this.load(3, divItem))
             .then(this.load(4, divItem))
             .then(this.load(5, divItem))
-            .then(this.load(6, divItem))
-            .then(this.load(7, divItem));
+            .then(this.load(6, divItem));
     },
     list: function() {
 
