@@ -108,14 +108,14 @@ $("#viewMain3").pagecontainer({
 
             }
 
-            //关闭公告，减去高度
-            var closeBulletin = parseInt(window.sessionStorage.getItem('closeBulletin'));
-            if(closeBulletin !== null) {
+            //任何widget数据量发生变化的情况都可以主动更新页面高度(比如关闭顶部公告)
+            var updateHeight = window.sessionStorage.getItem('updateHomePageHeight');
+            if(updateHeight !== null) {
                 setHomepageHeight();
-                window.sessionStorage.removeItem('closeBulletin');
+                window.sessionStorage.removeItem('updateHomePageHeight');
             }
-
         });
+
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function(event, ui) {
@@ -150,13 +150,17 @@ $("#viewMain3").pagecontainer({
 
             //3. pull refresh：save initial value
             offsetTop = $('#widgetList').offset().top;
-
         });
-
 
         $("#viewMain3").on("pageshow", function(event, ui) {
             orderWidget();
             widget.show();
+            //是否需要refresh widget
+            var needRefresh = window.sessionStorage.getItem('needRefreshWidget');
+            if(needRefresh != null) {
+                eval(needRefresh);
+                window.sessionStorage.removeItem('needRefreshWidget');
+            }
         });
 
         $("#viewMain3").on("pagehide", function(event, ui) {
@@ -190,7 +194,5 @@ $("#viewMain3").pagecontainer({
         });
 
 
-
     }
-
 });
