@@ -32,7 +32,7 @@ var widget = {
 
             $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
                 .done(function(script, textStatus) {
-                    if (window[widgetItem] != null)
+                    if (typeof window[widgetItem] != 'undefined')
                         window[widgetItem].init(contentItem);
                 });
 

@@ -10,6 +10,8 @@ var accountingrateWidget = {
                 //2.img
                 var rateImg = $('<img>').attr('src', serverURL + '/widget/accountingrate/img/widget_accountingrate.png');
                 $('.rate-widget-icon').html('').append(rateImg);
+                var moreImg = $('<img>').attr('src', serverURL + '/widget/accountingrate/img/more_green.png');
+                $('.rate-more-icon').html('').append(moreImg);
                 //3.list
                 getFavoriteRate();
 
@@ -33,11 +35,13 @@ var accountingrateWidget = {
                 //rate list
                 var content = '';
                 for(var i in favorateRateList) {
-                    content += '<li class="rate-list-li"><div><img src="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' +
-                        favorateRateList[i]['fromStatus'] + '.png"></div><div>1' + favorateRateList[i]['fromStatus'] +
-                        '</div><div>=</div><div><img src="https://qplaydev.benq.com/widget/widgetPage/viewAccountingRate/img/favorite.png">'+
-                        '</div><div><img src="https://qplaydev.benq.com/widget/widgetPage/viewAccountingRate/img/tmp/' + favorateRateList[i]['toStatus'] +
-                        '.png"></div><div>' + favorateRateList[i]['rate'] + favorateRateList[i]['toStatus'] + '</div></li>';
+                    if(i < 3) {
+                        content += '<li class="rate-list-li"><div><img src="' + serverURL + '/widget/widgetPage/viewAccountingRate/img/tmp/' +
+                            favorateRateList[i]['fromStatus'] + '.png"></div><div>1' + favorateRateList[i]['fromStatus'] +
+                            '</div><div>=</div><div><img src="https://qplaydev.benq.com/widget/widgetPage/viewAccountingRate/img/favorite.png">'+
+                            '</div><div><img src="https://qplaydev.benq.com/widget/widgetPage/viewAccountingRate/img/tmp/' + favorateRateList[i]['toStatus'] +
+                            '.png"></div><div>' + favorateRateList[i]['rate'] + favorateRateList[i]['toStatus'] + '</div></li>';
+                    }
                 }
                 $('.rate-favorite-ul').append(content).show();
             }

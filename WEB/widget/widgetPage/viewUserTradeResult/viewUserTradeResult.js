@@ -62,6 +62,7 @@ $("#viewUserTradeResult").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewUserTradeResult").on("pagebeforeshow", function (event, ui) {
+            //只有从上一页（输入密码）跳转过来才有trade_info，才需要API
             var trade_info = JSON.parse(window.sessionStorage.getItem('trade_info'));
             if(trade_info !== null) {
                 //API
@@ -70,6 +71,7 @@ $("#viewUserTradeResult").pagecontainer({
         });
 
         $("#viewUserTradeResult").one("pageshow", function (event, ui) {
+            //只有从上一页（输入密码）跳转过来才有trade_info，才需要API
             var trade_info = JSON.parse(window.sessionStorage.getItem('trade_info'));
             if(trade_info !== null) {
                 //API
@@ -84,6 +86,7 @@ $("#viewUserTradeResult").pagecontainer({
         });
 
         $("#viewUserTradeResult").on("pagehide", function (event, ui) {
+            //离开此页清除trade_info
             window.sessionStorage.removeItem('trade_info');
         });
 

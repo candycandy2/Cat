@@ -20,6 +20,8 @@ $("#viewUserPayMain").pagecontainer({
                     var shop_list = data['content'].shop_list;
                     window.sessionStorage.setItem('shop_list', JSON.stringify(shop_list));
                 }
+
+                loadingMask('hide');
             };
 
             this.failCallback = function () { };
@@ -85,6 +87,13 @@ $("#viewUserPayMain").pagecontainer({
         //跳转更改密码
         $('.password-link').on('click', function () {
             checkWidgetPage('viewUserChangePwd', pageVisitedList);
+        });
+
+        //更新剩余消费券
+        $('#userQPayRefresh').on('click', function() {
+            loadingMask('show');
+            //API
+            getQPayInfoEmp();
         });
 
 

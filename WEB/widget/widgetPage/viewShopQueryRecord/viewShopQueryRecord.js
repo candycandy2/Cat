@@ -15,18 +15,21 @@ $("#viewShopQueryRecord").pagecontainer({
             }
 
             let type_list = JSON.parse(window.sessionStorage.getItem('point_type_list'));
-            for (let i in type_list) {
-                typeData["option"][i] = {};
-                typeData["option"][i]["value"] = type_list[i].point_type_id;
-                typeData["option"][i]["text"] = type_list[i].point_type_name;
-            }
+            if(type_list !== null) {
+                for (let i in type_list) {
+                    typeData["option"][i] = {};
+                    typeData["option"][i]["value"] = type_list[i].point_type_id;
+                    typeData["option"][i]["text"] = type_list[i].point_type_name;
+                }
 
-            // typeData["option"][0] = {};
-            // typeData["option"][0]["value"] = "1";
-            // typeData["option"][0]["text"] = "BenQ";
-            // typeData["option"][1] = {};
-            // typeData["option"][1]["value"] = "2";
-            // typeData["option"][1]["text"] = "Qisda";
+            } else {
+                typeData["option"][0] = {};
+                typeData["option"][0]["value"] = "1";
+                typeData["option"][0]["text"] = "BenQ";
+                typeData["option"][1] = {};
+                typeData["option"][1]["value"] = "2";
+                typeData["option"][1]["text"] = "Qisda";
+            }
 
             //初始化dropdownlist
             tplJS.DropdownList("viewShopQueryRecord", "shopRecordType", "prepend", "typeB", typeData);
@@ -87,10 +90,10 @@ $("#viewShopQueryRecord").pagecontainer({
             var currenMonth = new Date().getMonth();
             yearData["option"][0] = {};
             yearData["option"][0]["value"] = currentYear - 1;
-            yearData["option"][0]["text"] = (currentYear - 1).toString() + langStr['wgt_093'];
+            yearData["option"][0]["text"] = new Date((currentYear - 1).toString()).toLocaleDateString(browserLanguage, {year: 'numeric'});
             yearData["option"][1] = {};
             yearData["option"][1]["value"] = currentYear;
-            yearData["option"][1]["text"] = currentYear.toString() + langStr['wgt_093'];
+            yearData["option"][1]["text"] = new Date(currentYear.toString()).toLocaleDateString(browserLanguage, {year: 'numeric'});
 
             //初始化年份dropdownlist
             tplJS.DropdownList("viewShopQueryRecord", "shopRecordYear", "prepend", "typeB", yearData);
@@ -139,9 +142,10 @@ $("#viewShopQueryRecord").pagecontainer({
 
             //数据：显示12个月
             for(var i = 0; i < 12; i++) {
+                var _month = i + 1;
                 monthData["option"][i] = {};
-                monthData["option"][i]["value"] = i + 1;
-                monthData["option"][i]["text"] = (i + 1).toString() + langStr['wgt_094'];
+                monthData["option"][i]["value"] = _month;
+                monthData["option"][i]["text"] = new Date(currentYear + '/' + _month.toString() + '/1').toLocaleDateString(browserLanguage, {month: 'short'});
             }
 
             //初始化月份dropdownlist

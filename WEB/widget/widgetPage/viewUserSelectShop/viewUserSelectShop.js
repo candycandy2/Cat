@@ -35,7 +35,7 @@ $("#viewUserSelectShop").pagecontainer({
 
         /********************************** page event ***********************************/
         $("#viewUserSelectShop").on("pagebeforeshow", function (event, ui) {
-
+            createShopList();
         });
 
         $("#viewUserSelectShop").one("pageshow", function (event, ui) {
