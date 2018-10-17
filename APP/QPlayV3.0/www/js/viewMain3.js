@@ -161,6 +161,11 @@ $("#viewMain3").pagecontainer({
                 eval(needRefresh);
                 window.sessionStorage.removeItem('needRefreshWidget');
             }
+            var updateHeight = window.sessionStorage.getItem('updateHomePageHeight');
+            if(updateHeight !== null) {
+                setHomepageHeight();
+                window.sessionStorage.removeItem('updateHomePageHeight');
+            }
         });
 
         $("#viewMain3").on("pagehide", function(event, ui) {
