@@ -1,5 +1,5 @@
 
-//CallAPI get applist
+//Call API getPhoneBook for yellowpage widget
 function getMyPhoneBook(key, secret) {
     var self = this;
     var queryData = '<LayoutHeader><User_EmpID>' + loginData["emp_no"] + '</User_EmpID></LayoutHeader>';
