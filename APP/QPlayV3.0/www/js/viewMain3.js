@@ -1,7 +1,8 @@
 $("#viewMain3").pagecontainer({
     create: function(event, ui) {
 
-        var offsetTop;
+        var offsetTop,
+            currentWidgetLength = 0;
 
         //widget排序
         function orderWidget() {
@@ -128,21 +129,19 @@ $("#viewMain3").pagecontainer({
         });
 
         $("#viewMain3").one("pageshow", function(event, ui) {
-            //1. check FunctionList show or hide
+            //1. check widget enabled length
             var functionArr = JSON.parse(window.localStorage.getItem('widgetList'));
             for (var i in functionArr) {
-                if (!functionArr[i].enabled) {
-                    $('.' + functionArr[i].name + 'Widget').hide();
+                if (functionArr[i].enabled) {
+                    currentWidgetLength++;
                 }
             }
 
             //2. check element count
             var checkWidgetFinish = setInterval(function() {
                 var childrenLength = $('#widgetList').children('div').length;
-                //var enabledLength = parseInt(window.sessionStorage.getItem('widgetLength'));
-                var enabledLength = widget.list().length;
 
-                if (enabledLength == childrenLength) {
+                if (currentWidgetLength == childrenLength) {
                     clearInterval(checkWidgetFinish);
                     setHomepageHeight();
                 }
@@ -161,6 +160,7 @@ $("#viewMain3").pagecontainer({
                 eval(needRefresh);
                 window.sessionStorage.removeItem('needRefreshWidget');
             }
+            //是否需要重设高度
             var updateHeight = window.sessionStorage.getItem('updateHomePageHeight');
             if(updateHeight !== null) {
                 setHomepageHeight();
