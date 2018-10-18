@@ -689,7 +689,7 @@
   },
   {
     "term": "wgt_087",
-    "definition": "Transcation secure code incorrect",
+    "definition": "Transcation token incorrect",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -697,7 +697,7 @@
   },
   {
     "term": "wgt_088",
-    "definition": "Transcation secure code overdue",
+    "definition": "Transcation token overdue",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -721,7 +721,7 @@
   },
   {
     "term": "wgt_091",
-    "definition": "8-20 characters consist of alphabet, digit or symbol",
+    "definition": "8-20 characters which meets at least 3 following requirements: upper case alphabet, lower case alphabet, digit or symbol",
     "context": "",
     "term_plural": "",
     "reference": "",
@@ -729,7 +729,7 @@
   },
   {
     "term": "wgt_092",
-    "definition": "Please select coupon type",
+    "definition": "Please select the type of shopping voucher",
     "context": "",
     "term_plural": "",
     "reference": "",
