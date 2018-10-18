@@ -73,6 +73,7 @@ return [
     'TITLE_QPAY_STORE_POINT' => 'Point Store',
     'TITLE_QPAY_STORE_RECORD' => 'Store Record',
     'TITLE_QPAY_STORE_EMPLOYEE' => 'Employee Points',
+    'TITLE_QPAY_REIMBURSE_PURCHASE_RECORD' => 'Reimburse Purchase Record',
 
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
@@ -498,4 +499,10 @@ return [
     'QPAY_INPUT_EMP_NO' => 'Employee No.',
     'QPAY_SELECT_GIVEN_INTERVAL' => 'Select a stored point interval',
     'STORED_POINT' => 'Stored Points',
+    'QPAY_SELECT_TRADE_INTERVAL' => 'Select trade date interval',
+    'QPAY_POINT_NOW'=> 'Balance',
+    'QPAY_TRADE_LOCATION'=> 'Location',
+    'QPAY_TRADE_POINT'=> 'Point',
+    'QPAY_TRADE_ID'=> 'Trade ID',
+    'QPAY_TRADE_STATUS'=> 'Trade Status'
 ];

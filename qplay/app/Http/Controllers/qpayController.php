@@ -7,13 +7,15 @@ use App\Http\Controllers\Controller;
 //use App\Services\QPayManagerService;
 //use App\Services\QPayShopService;
 use App\Services\QPayPointService;
-//use App\Services\QPayMemberService;
-//use App\Services\QPayTradeService;
+use App\Services\QPayMemberService;
+use App\Services\QPayTradeService;
 //use App\Services\LogService;
 use App\lib\ResultCode;
+use App\lib\CommonUtil;
 use DB;
 use Validator;
 use Auth;
+
 
 class qpayController extends Controller
 {
@@ -21,27 +23,29 @@ class qpayController extends Controller
     //protected $qpayManagerService;
     //protected $qpayShopService;
     protected $qpayPointService;
-    //protected $qpayMemberService;
-    //protected $qpayTradeService;
+    protected $qpayMemberService;
+    protected $qpayTradeService;
     //protected $logService;
 
     /**
      * FunctionController constructor.
-     * @param FunctionService $functionService
-     * @param AppService      $appService
+     * @param QPayPointService $qpayPointService
+     * @param QPayTradeService      $qpayTradeService
+     * @param QPayMemberService      $qpayMemberService
      */
-    public function __construct(/*QPayManagerService $qpayManagerService,
-                                QPayShopService $qpayShopService,*/
-                                QPayPointService $qpayPointService/*,
-                                QPayMemberService $qpayMemberService,
+    public function __construct(QPayPointService $qpayPointService,
                                 QPayTradeService $qpayTradeService,
+                                QPayMemberService $qpayMemberService
+                                /*QPayManagerService $qpayManagerService,
+                                QPayShopService $qpayShopService,
+                                QPayMemberService $qpayMemberService,
                                 LogService $logService*/)
     {
         //$this->qpayManagerService = $qpayManagerService;
         //$this->qpayShopService = $qpayShopService;
         $this->qpayPointService = $qpayPointService;
-        //$this->qpayMemberService = $qpayMemberService;
-        //$this->qpayTradeService = $qpayTradeService;
+        $this->qpayMemberService = $qpayMemberService;
+        $this->qpayTradeService = $qpayTradeService;
         //$this->logService = $logService;
     }
 
@@ -53,7 +57,7 @@ class qpayController extends Controller
     {
         $pointTypeList =  $this->qpayPointService->getQPayPointTypeList();
 
-        return view("qpay_maintain/point_store")->with('pointTypeList', $pointTypeList);
+        return view("qpay_maintain/qpay_store_maintain/point_store")->with('pointTypeList', $pointTypeList);
     }
 
     /**
@@ -79,7 +83,7 @@ class qpayController extends Controller
      * @return view
      */
     public function QPayStoreRecord(){
-        return view("qpay_maintain/store_record");
+        return view("qpay_maintain/qpay_store_maintain/store_record");
     }
 
     /**
@@ -115,7 +119,7 @@ class qpayController extends Controller
         //get point type list
         $pointTypeList =  $this->qpayPointService->getQPayPointTypeList();
 
-        return view("qpay_maintain/point_get_record")->with(['pointTypeList'=>$pointTypeList,
+        return view("qpay_maintain/qpay_store_maintain/point_get_record")->with(['pointTypeList'=>$pointTypeList,
                                                             'departments'=>$departments]);
     
     }
@@ -142,4 +146,41 @@ class qpayController extends Controller
     
     }
 
+    /**
+     * QPay Reimburse Purchase - view
+     * @param  Request $request
+     * @return view
+     */
+    public function QPayReimbursePurchase(){
+
+        return view("qpay_maintain/qpay_reimburse_maintain/reimburse_purchase");
+
+    }
+
+    /**
+     * Get Reimburse Purchase
+     * @param  Request $request
+     * @return json
+     */
+    public function getQPayReimbursePurchaseList(Request $request){
+        
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $empNo = (trim($request->empNo) == "")?null:trim($request->empNo);
+        
+        //1. get user info
+        $userInfo = CommonUtil::getUserInfoJustByUserEmpNo($empNo);
+
+        if(is_null($userInfo)){
+           return response()->json(["purchaseList"=>[],"userInfo"=>null]);
+        }
+        //2. get point now
+        $pointNow = $this->qpayMemberService->getPointNow($userInfo->row_id);
+        //3. get trade record
+        $purchaseList = $this->qpayTradeService->getQPayReimbursePurchaseList($userInfo->row_id, $startDate, $endDate);
+
+        return response()->json(["purchaseList"=>$purchaseList,
+                                 "userInfo"=>$userInfo,
+                                 "pointNow"=>$pointNow]);
+    }
 }

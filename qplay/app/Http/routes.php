@@ -225,7 +225,7 @@ Route::any('functionMaintain/editFunction', ['middleware' => 'auth','uses'=>'Fun
 Route::any('functionMaintain/updateFunction', ['middleware' => 'auth','uses'=>'FunctionController@updateFunction']);
 Route::any('functionMaintain/getUserFunctionList', ['middleware' => 'auth','uses'=>'FunctionController@getUserFunctionList']);
 
-//QPay Maintain
+//QPay Store Maintain
 Route::group(['prefix' => 'QPayStoreMaintain'], function () {
     Route::any('QPayStorePoint', ['middleware' => 'auth','uses'=>'qpayController@QPayStorePoint']);
     Route::any('uploadPointExcel', ['middleware' => 'auth','uses'=>'qpayController@uploadPointExcel']);
@@ -235,6 +235,12 @@ Route::group(['prefix' => 'QPayStoreMaintain'], function () {
     Route::any('downloadPointExcel', ['middleware' => 'auth','uses'=>'qpayController@downloadPointExcel']);
     Route::any('QPayStoreEmployee', ['middleware' => 'auth','uses'=>'qpayController@QPayStoreEmployee']);
     Route::any('getQPayPointGetRecordList', ['middleware' => 'auth','uses'=>'qpayController@getQPayPointGetRecordList']);
+});
+
+//QPay Reimburse Maintain
+Route::group(['prefix' => 'QPayReimburseMaintain'], function () {
+    Route::any('QPayReimbursePurchase', ['middleware' => 'auth','uses'=>'qpayController@QPayReimbursePurchase']);
+    Route::any('getQPayReimbursePurchaseList', ['middleware' => 'auth','uses'=>'qpayController@getQPayReimbursePurchaseList']);
 });
 
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){

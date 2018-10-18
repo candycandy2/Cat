@@ -73,6 +73,7 @@ return [
     'TITLE_QPAY_STORE_POINT' => '點數儲值',
     'TITLE_QPAY_STORE_RECORD' => '儲值紀錄',
     'TITLE_QPAY_STORE_EMPLOYEE' => '員工發放紀錄',
+    'TITLE_QPAY_REIMBURSE_PURCHASE_RECORD' => '員工消費紀錄',
 
     'ENABLE' => '啟用',
     'DISABLE' => '停用',
@@ -498,4 +499,10 @@ return [
     'QPAY_INPUT_EMP_NO' => '請輸入員工編號',
     'QPAY_SELECT_GIVEN_INTERVAL' => '選擇發放區間',
     'STORED_POINT' => '發放點數',
+    'QPAY_SELECT_TRADE_INTERVAL' => '選擇交易區間',
+    'QPAY_POINT_NOW'=> '剩餘金額',
+    'QPAY_TRADE_LOCATION'=> '交易地點',
+    'QPAY_TRADE_POINT'=> '交易金額',
+    'QPAY_TRADE_ID'=> '交易碼',
+    'QPAY_TRADE_STATUS'=> '交易狀態'
 ];
