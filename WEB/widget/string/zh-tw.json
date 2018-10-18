@@ -721,7 +721,7 @@
   },
   {
     "term": "wgt_091",
-    "definition": "新密碼須爲8-20個英文數字或符號組成",
+    "definition": "8-20字元，下列條件至少符合3個， 英文大寫、英文小寫、數字或符號",
     "context": "",
     "term_plural": "",
     "reference": "",
