@@ -81,7 +81,7 @@ var accountingrateWidget = {
             }
         }
 
-        $.fn.applist.defaults = {}
+        $.fn.accountingrate.defaults = {};
 
         $('.accountingrateWidget').accountingrate();
     }
