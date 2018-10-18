@@ -1,3 +1,10 @@
+<strong>Oct-19-18 00:41:41</strong>
+- Reason : daily build, 625
+- Commit# : 
+af370dd2f - CleoWChan, 9 hours ago : [QPay ]Fix Bug - store record down load store record excle 404
+03b7d5df3 - CleoWChan, 9 hours ago : [QPay] Add QPayPointTradeLogRepository
+7c46f811d - CleoWChan, 9 hours ago : [QPay] Add Platform Reimburse Purchase Record
+
 <strong>Oct-18-18 00:39:32</strong>
 - Reason : daily build, 624
 - Commit# : 
