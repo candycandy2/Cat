@@ -723,4 +723,36 @@ SQL;
 
         return null;
     }
+
+    /**
+     * Get QPlay User Information By Employee No , additional can search spefic domain
+     * @param  string $empNo  qp_user.emp_no
+     * @param  string $domain qp_user.user_domain
+     * @return mixed          if not fount , return null
+     */
+    public static function getUserInfoJustByUserEmpNo($empNo, $domain=null)
+    {
+        $userList = \DB::table('qp_user')
+            -> where('qp_user.status', '=', 'Y')
+            -> where('qp_user.resign', '=', 'N')
+            -> where('qp_user.emp_no', '=', $empNo);
+            if(!is_null($domain)){
+                $userList = $userList->where('qp_user.user_domain', '=', $domain);
+            }
+            $userList = $userList->select('qp_user.row_id',
+                                          'qp_user.login_id',
+                                          'qp_user.company',
+                                          'qp_user.site_code',
+                                          'qp_user.ext_no',
+                                          'qp_user.emp_no',
+                                          'qp_user.emp_name',
+                                          'qp_user.user_domain',
+                                          'qp_user.department',
+                                          'qp_user.email')->get();
+        if(count($userList) < 1) {
+            return null;
+        }
+
+        return $userList[0];
+    }
 }

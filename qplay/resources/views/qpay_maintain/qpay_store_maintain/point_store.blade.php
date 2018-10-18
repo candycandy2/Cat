@@ -31,6 +31,9 @@
     float: left;
     font-size: 20px
 }
+.panel-row-title{
+    margin-right: 20px
+}
 .float-right-btn{
     float: right;
 }
@@ -108,16 +111,19 @@
     <h1></h1>
     <div id="importDataInfo" class="panel panel-default" style="display:none;">
         <div class="panel-body">
-            <div class="container panel-title">
+            <div class="container col-lg-12 col-xs-12 panel-title">
                 <div class="row">
                     <div class="col-lg-4 col-xs-12 col-sm-12">
-                        <div>{{trans('messages.QPAY_EXPECT_MEMBER_COUNT')}} <label class="text-primary" id="empCount">500</label></div>
+                        <label class="panel-row-title">{{trans('messages.QPAY_EXPECT_MEMBER_COUNT')}}</label>
+                        <label class="text-primary" id="empCount"></label>
                     </div>
                     <div class="col-lg-4 col-xs-12 col-sm-12">
-                        <div>{{trans('messages.QPAY_EXPECT_STORED_POINT')}} <label class="text-primary" id="pointCount">250,000</label></div>
+                        <label class="panel-row-title">{{trans('messages.QPAY_EXPECT_STORED_POINT')}}</label>
+                        <label class="text-primary" id="pointCount"></label>
                     </div>
                     <div class="col-lg-4 col-xs-12 col-sm-12">
-                        <div>{{trans('messages.QPAY_POINT_TYPE')}} <label class="text-primary" id="pointType"></label></div>
+                        <label class="panel-row-title">{{trans('messages.QPAY_POINT_TYPE')}}</label>
+                        <label class="text-primary" id="pointType"></label>
                     </div>
                 </div>
             </div>
@@ -355,6 +361,10 @@ $(function() {
         storePoint();
     });
 
+    //Chech Stored Record
+    $("#storedRecord").on("click", function(){
+        location.href = 'QPayStoreRecord';
+    });
     //Store Point
     function storePoint() {
 
