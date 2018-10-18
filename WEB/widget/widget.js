@@ -24,6 +24,17 @@ var widget = {
     },
     load: function(id, div) {
 
+        var widgetArr = JSON.parse(window.localStorage.getItem('widgetList'));
+        if (widgetArr !== null) {
+            for (var j = 0; j < widgetArr.length; j++) {
+                if (id == widgetArr[j].id) {
+                    if (widgetArr[j].enabled == false)
+                        new Promise((resolve, reject) => {});
+                    break;
+                }
+            }
+        }
+
         return new Promise((resolve, reject) => {
 
             var widgetItem = this.list()[id].name + "Widget";
