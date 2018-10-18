@@ -61,7 +61,6 @@ var yellowpageWidget = {
 
         this.successCallback = function(data) {
             var resultCode = data['ResultCode'];
-            
             if(resultCode == '1') {
                 $('.no-phone-book').hide();
                 //book list
@@ -69,9 +68,11 @@ var yellowpageWidget = {
                 var content = '';
                 for(var i in phoneList) {
                     if(i < 3) {
+                        var extNo = $.trim(phoneList[i]['Ext_No']).split(';')[0];
+
                         content += '<li class="phone-book-li"><div class="phone-book-name"><div>' + $.trim(phoneList[i]['Name_EN']) +
                             '</div><div>' + $.trim(phoneList[i]['Name_CH']) + '</div></div><div><img src="' + serverURL +
-                            '/widget/yellowpage/img/phone.png"></div><div>' + $.trim(phoneList[i]['Ext_No']) + '</div><div><img src="' +
+                            '/widget/yellowpage/img/phone.png"></div><div>' + extNo + '</div><div><img src="' +
                             serverURL + '/widget/yellowpage/img/info.png"></div></li>';
                     }
                 }

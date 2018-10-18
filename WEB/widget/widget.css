@@ -444,7 +444,7 @@
 }
 
 .rate-list-li > div:nth-of-type(2) {
-    width: 20vw;
+    width: 23vw;
     line-height: 14vw;
     color: #253137;
     font-size: 3.97vw;
@@ -474,7 +474,7 @@
 }
 
 .rate-list-li > div:nth-of-type(6) {
-    width: 29vw;
+    width: 26vw;
     line-height: 14vw;
     color: #253137;
     font-size: 3.97vw;
@@ -503,16 +503,12 @@
 .rate-more-icon {
     width: 100%;
     height: 6vw;
+    padding-bottom: 2.5vw;
 }
 
 .rate-more-icon img {
     width: 6vw;
     margin-left: 88vw;
-}
-
-.rate-padding-bottom {
-    width: 100%;
-    height: 2.5vw;
 }
 
 /******************** yellowpage ********************/
@@ -548,6 +544,10 @@
     margin-top: 2.5vw;
 }
 
+.yellowpage-phone-book {
+    padding-bottom: 2.5vw;
+}
+
 .phone-book-ul {
     display: none;
 }
@@ -569,14 +569,14 @@
 }
 
 .phone-book-li > div:nth-of-type(1) {
-    width: 46vw;
+    width: 50vw;
 }
 
 .phone-book-name > div:nth-of-type(1) {
     height: 7vw;
     color: #253137;
     font-size: 3.97vw;
-    text-indent: 2vw;
+    text-indent: 3vw;
     line-height: 8.5vw;
 }
 
@@ -584,7 +584,7 @@
     height: 6.3vw;
     color: #666;
     font-size: 3.55vw;
-    text-indent: 2vw;
+    text-indent: 3vw;
 }
 
 .phone-book-li > div:nth-of-type(2) {
@@ -597,7 +597,7 @@
 }
 
 .phone-book-li > div:nth-of-type(3) {
-    width: 28vw;
+    width: 24vw;
     line-height: 13vw;
     color: #1F84BC;
     font-size: 3.768vw;
@@ -609,7 +609,7 @@
 
 .phone-book-li > div:nth-of-type(4) img {
     width: 6vw;
-    margin-top: 3vw;
+    margin-top: 3.25vw;
 }
 
 .no-phone-book {
@@ -622,11 +622,6 @@
     word-break: break-all;
     word-wrap: break-word;
     display: none;
-}
-
-.phone-book-padding {
-    width: 100%;
-    height: 2.5vw;
 }
 
 /******************** qpay test ********************/
