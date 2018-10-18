@@ -29,7 +29,7 @@ var widget = {
             for (var j = 0; j < widgetArr.length; j++) {
                 if (id == widgetArr[j].id) {
                     if (widgetArr[j].enabled == false)
-                        new Promise((resolve, reject) => {});
+                        return new Promise((resolve, reject) => {});
                     break;
                 }
             }
