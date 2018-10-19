@@ -17,6 +17,7 @@ var accountingrateWidget = {
 
             }, "html");
 
+            //点击更多，跳转widgetPage
             contentItem.on('click', '.rate-more-icon', function() {
                 checkWidgetPage('viewAccountingRate', pageVisitedList);
             });

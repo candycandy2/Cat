@@ -167,13 +167,14 @@ $("#viewAppDetail2-2").pagecontainer({
 
                     var pathArray = applist[selectAppIndex].url.split('/');
                     var protocol = pathArray[0];
-                    var target = pathArray[2];
                     if (protocol == "widgetPage:") {
                         $("#InstallApp #InstallAppStr02").show();
-                    } else if (appInstall == 'true') {
-                        $("#InstallApp #InstallAppStr03").show();
                     } else {
-                        $("#InstallApp #InstallAppStr01").show();
+                        if(appInstall == 'true') {
+                            $("#InstallApp #InstallAppStr02").show();
+                        } else {
+                            $("#InstallApp #InstallAppStr01").show();
+                        }
                     }
                 }
 
@@ -240,15 +241,12 @@ $("#viewAppDetail2-2").pagecontainer({
         });
 
         $("#InstallApp #InstallAppStr02").on("click", function() { //開啟
-            var pathArray = applist[selectAppIndex].url.split('/');
-            var protocol = pathArray[0];
-            var target = pathArray[2];
-
-            if (protocol == "widgetPage:") {
-                //widgePage://viewAccountingRate
-                checkWidgetPage(target, pageVisitedList);
+            var pathArr = applist[selectAppIndex]['url'];
+            if(pathArr.indexOf('widgetPage://') != -1) {
+                checkWidgetPage(pathArr.split('widgetPage://')[1], pageVisitedList);
             } else {
-                var schemeURL = APPKey + createAPPSchemeURL();
+                var appPackageName = applist[selectAppIndex]['package_name'].split('.')[2];
+                var schemeURL = appPackageName + createAPPSchemeURL();
                 openAPP(schemeURL);
             }
         });
