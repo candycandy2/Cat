@@ -16,3 +16,9 @@ D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\bin\Porta
 D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\obj\Debug\PortalWebService.csprojResolveAssemblyReference.cache
 D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\obj\Debug\PortalWebService.dll
 D:\Qplay API\Portal 公告 (C#)\SourceCode\Portal_New\PortalWebService\obj\Debug\PortalWebService.pdb
+D:\EnterpriseAPPPlatform\API\C#\Portal\SourceCode\Portal_New\PortalWebService\bin\PortalWebService.dll.config
+D:\EnterpriseAPPPlatform\API\C#\Portal\SourceCode\Portal_New\PortalWebService\bin\PortalWebService.dll
+D:\EnterpriseAPPPlatform\API\C#\Portal\SourceCode\Portal_New\PortalWebService\bin\PortalWebService.pdb
+D:\EnterpriseAPPPlatform\API\C#\Portal\SourceCode\Portal_New\PortalWebService\obj\Debug\PortalWebService.csprojResolveAssemblyReference.cache
+D:\EnterpriseAPPPlatform\API\C#\Portal\SourceCode\Portal_New\PortalWebService\obj\Debug\PortalWebService.dll
+D:\EnterpriseAPPPlatform\API\C#\Portal\SourceCode\Portal_New\PortalWebService\obj\Debug\PortalWebService.pdb
