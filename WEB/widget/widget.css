@@ -491,7 +491,7 @@
 .rate-no-favorite {
     width: 90vw;
     height: 10vw;
-    padding: 5vw;
+    padding: 5vw 5vw 0 5vw;
     text-indent: 6vw;
     font-size: 3.349vw;
     color: #666;
@@ -503,7 +503,7 @@
 .rate-more-icon {
     width: 100%;
     height: 6vw;
-    padding-bottom: 2.5vw;
+    padding-bottom: 4vw;
 }
 
 .rate-more-icon img {
@@ -545,7 +545,7 @@
 }
 
 .yellowpage-phone-book {
-    padding-bottom: 2.5vw;
+    padding-bottom: 4vw;
 }
 
 .phone-book-ul {
@@ -603,6 +603,16 @@
     font-size: 3.768vw;
 }
 
+.phone-book-li > div:nth-of-type(3) a {
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.phone-book-li > div:nth-of-type(3) a:visited,
+.phone-book-li > div:nth-of-type(3) a:hover {
+    color: #1F84BC;
+}
+
 .phone-book-li > div:nth-of-type(4) {
     width: 10vw;
 }
@@ -613,16 +623,40 @@
 }
 
 .no-phone-book {
+    display: none;
+}
+
+.phone-book-msg {
     width: 90vw;
     height: 10vw;
-    padding: 5vw;
+    padding: 5vw 5vw 0 5vw;
     text-indent: 6vw;
     font-size: 3.349vw;
     color: #666;
     word-break: break-all;
     word-wrap: break-word;
-    display: none;
 }
+
+.phone-book-more {
+    width: 100%;
+    height: 6vw;
+}
+
+.phone-book-more img {
+    width: 6vw;
+    margin-left: 88vw;
+}
+
+/* mvpn select popup window for yellow page */
+#numSelectPopupWindow-popup {left: 10% !important;}
+#numSelectPopupWindow #msgTitle{ margin: 0 5%; padding: 5% 0; font-size: 5vw; border-bottom: 1px solid #d4d4d4; position: relative;}
+#numSelectPopupWindow ul{ list-style: none; padding: 0;}
+#numSelectPopupWindow li{ font-size: 4.5vw; font-family:Arial; font-weight: normal; padding-bottom: 5%;}
+#numSelectPopupWindow li:first-of-type { padding-top: 5%;}
+#numSelectPopupWindow li a{ color:#2d87ba;}
+#numSelectPopupWindow img{ margin-right: 1.9vw;}
+#numPopupCloseBtn{ width: 7%; position: absolute; right: 0; top: 5%;}
+#numPopupCloseBtn:after{ content: "\d7"; font-size: 7vw; font-weight: normal;}
 
 /******************** qpay test ********************/
 .qpay-link {
