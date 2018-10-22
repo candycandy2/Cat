@@ -79,18 +79,18 @@ var yellowpageWidget = {
             $('.phone-book-ul').html('');
             //result code
             var resultCode = data['ResultCode'];
-            if(resultCode == '1') {
+            if (resultCode == '1') {
                 $('.no-phone-book').hide();
                 //book list
                 var phoneList = data['Content'];
                 //var content = '';
-                for(var i in phoneList) {
-                    if(i < 3) {
+                for (var i in phoneList) {
+                    if (i < 3) {
                         //merge tel & vpn
                         var telArr = ($.trim(phoneList[i]['Ext_No']) + ';' + $.trim(phoneList[i]['Mvpn'])).split(';');
                         var arr = [];
-                        for(var j in telArr) {
-                            if(telArr[j] != '') {
+                        for (var j in telArr) {
+                            if (telArr[j] != '') {
                                 arr.push(telArr[j]);
                             }
                         }
@@ -103,19 +103,19 @@ var yellowpageWidget = {
                         $('.phone-book-ul').append(content);
                         //bind data
                         $('.phone-book-li[data-index="' + i + '"]').data('tel', arr);
-                        
+
                     }
                 }
                 $('.phone-book-ul').show();
 
                 //bind a href='#' click
-                $('.phone-book-ul').on('click', 'a[href="#"]' ,function() {
+                $('.phone-book-ul').on('click', 'a[href="#"]', function() {
                     //get bind data
                     var telArr = $(this).parents('.phone-book-li').data('tel');
-                    if(telArr.length > 0) {
+                    if (telArr.length > 0) {
                         //append html
                         var content = '';
-                        for(var i in telArr) {
+                        for (var i in telArr) {
                             content += '<li><img src="' + serverURL + '/widget/yellowpage/img/phone.png" style="width:4vw; height:auto;"><span>' +
                                 '<a href="tel:' + telArr[i] + '" style="text-decoration: none; font-weight: normal;">' + telArr[i] + '</a></span></li>';
                         }
@@ -128,7 +128,7 @@ var yellowpageWidget = {
                 });
 
                 //close popup
-                $('#numPopupCloseBtn').on('click', function(){
+                $('#numPopupCloseBtn').on('click', function() {
                     $('#numSelectPopupWindow').popup('close');
                 });
 
