@@ -291,6 +291,26 @@ $("#viewMain").pagecontainer({
 
         }
 
+        window.QueryStoreList = function() {
+            loadingMask("show");
+            var self = this;
+            this.successCallback = function(data) { 
+                if (data['ResultCode'] === "1") {
+                    QueryStoreListCallBackData = data['Content'];
+                    loadingMask("hide");
+                } else if (data['ResultCode'] === "044901") {
+                    QueryStoreListCallBackData = data['Content'];
+                    loadingMask("hide");
+                } 
+            };   
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "StoreList", self.successCallback, self.failCallback, QueryStoreListQueryData, "");
+            }();
+        };
+
         /********************************** page event *************************************/
         $("#viewMain").one("pagebeforeshow", function(event, ui) {
 
@@ -358,6 +378,17 @@ $("#viewMain").pagecontainer({
                     tplJS.recoveryPageScroll();
                 }
             });
+
+            var categoryVal = '';
+            var updateDate = '';
+            var today = new Date();
+            
+            QueryStoreListQueryData = '<LayoutHeader><Category>' + 
+                categoryVal + 
+                '</Category><UpdateDate>' + 
+                updateDate + 
+                '</UpdateDate></LayoutHeader>';
+            QueryStoreList();
 
             //Menu data list
             food = [{
