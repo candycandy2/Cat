@@ -105,41 +105,32 @@
             $dpFrom.data("datetimepicker").setDate(startDate);
             $dpTo.data("datetimepicker").setDate(endDate);
             
-            getStoreRecord();
-
+            initRecordList();
             $("#searchStoreRecord").on("click", function(){
-                getStoreRecord();
+                $("#gridStoreRecordList").bootstrapTable("refresh");
             });
         });
 
-        var getStoreRecord = function(){
+        var initRecordList = function () {
             
-            var startDate = $("#datetimepicker1").data("datetimepicker").getDate();
-           
-            var endDate = $("#datetimepicker2").data("datetimepicker").getDate();
-                endDate.setHours(23, 59, 59)
+            var $table = $('#gridStoreRecordList');
+            $table.bootstrapTable({
+                "url": "getQPayStoreRecordList",
+                "method":"get",
+                "dataType": "json",
+                "queryParams": function(params){
+                    var startDate = $("#datetimepicker1").data("datetimepicker").getDate();
+                    var endDate = $("#datetimepicker2").data("datetimepicker").getDate();
+                        endDate.setHours(23, 59, 59);
+                    var mydata = {
+                                startDate:  startDate.getTime()/1000,
+                                endDate:    endDate.getTime()/1000,
+                            };
 
-            var mydata = {
-                        startDate:  startDate.getTime()/1000,
-                        endDate:    endDate.getTime()/1000,
-                    };
-
-            $.ajax({
-                url: "getQPayStoreRecordList",
-                dataType: "json",
-                type: "GET",
-                data: mydata,
-                success: function (d, status, xhr) {
-                    $("#gridStoreRecordList").bootstrapTable('load', d);
-                },
-                error: function (e) {
-
-                    if (handleAJAXError(this,e)) {
-                        return false;
-                    }
+                    return mydata;
                 }
             });
-        }
+        };
     </script>
 
 @endsection
