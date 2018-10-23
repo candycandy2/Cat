@@ -10,7 +10,7 @@ var qpayWidget = {
 
             contentItem.on('click', function() {
 
-                if(loginData['company'] == 'shop') {
+                if (loginData['company'] == 'shop') {
                     checkWidgetPage('viewShopPayMain', pageVisitedList);
                 } else {
                     checkWidgetPage('viewUserPayMain', pageVisitedList);
