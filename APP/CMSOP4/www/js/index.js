@@ -4,6 +4,7 @@ var initialAppName = "CMSOP4";
 var appKeyOriginal = "appcmtwo";
 var appKey = "appcmtwo";
 var appSecretKey = "a8af829aef9dbb69bcaf740a78c45299";
+var QueryStoreListQueryData, QueryStoreListCallBackData;
 
 window.initialSuccess = function() {
 
