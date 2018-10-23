@@ -291,7 +291,7 @@ class QPayPointService
         $headers = array(
             'Content-Type: application/xlsx',
         );
-        return response()->download($file, $fileOriginal . '.xlsx', $headers);
+        return response()->download($file, $fileOriginal, $headers);
     }
 
      /**

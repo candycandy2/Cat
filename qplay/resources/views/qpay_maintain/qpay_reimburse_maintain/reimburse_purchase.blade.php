@@ -144,7 +144,8 @@
         $dpFrom.data("datetimepicker").setDate(startDate);
         $dpTo.data("datetimepicker").setDate(endDate);
         
-        
+        initRecordList();
+        getRecordList();
         $("#searchStoreRecord").on("click", function(){
             getRecordList();
         });
@@ -165,13 +166,16 @@
 });
 
 var getRecordList = function () {
-    
-    var $table = $('#gridQPayReimbursePurchaseList');
 
     var startDate = $("#datetimepicker1").data("datetimepicker").getDate();
     var endDate = $("#datetimepicker2").data("datetimepicker").getDate();
-        endDate.setHours(23, 59, 59)
+        endDate.setHours(23, 59, 59);
     var empNo = $("#txbEmpNo").val();
+
+    $('#empName').text("");
+    $('#loginId').text("");
+    $('#empNo').text("");
+    $('#pointNow').text("");
 
     var mydata = {
                 startDate:  startDate.getTime()/1000,
@@ -185,9 +189,11 @@ var getRecordList = function () {
         type: "GET",
         data: mydata,
         success: function (d, status, xhr) {
-            $('#empName').text(d.userInfo.emp_name);
-            $('#loginId').text(d.userInfo.login_id);
-            $('#empNo').text(d.userInfo.emp_no);
+            if(d.userInfo!=null){
+               $('#empName').text(d.userInfo.emp_name);
+               $('#loginId').text(d.userInfo.login_id);
+               $('#empNo').text(d.userInfo.emp_no);
+            }
             $('#pointNow').text(d.pointNow);
             $("#gridQPayReimbursePurchaseList").bootstrapTable('load', d.purchaseList);
         },
@@ -197,6 +203,14 @@ var getRecordList = function () {
                 return false;
             }
         }
+    });
+};
+
+var initRecordList = function () {
+     var $table = $('#gridQPayReimbursePurchaseList');
+    $table.bootstrapTable({
+        "url": "getQPayReimbursePurchaseList",
+        "dataType": "json"
     });
 };
 </script>

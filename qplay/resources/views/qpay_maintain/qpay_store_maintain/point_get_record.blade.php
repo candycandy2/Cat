@@ -179,7 +179,7 @@
             "queryParams": function(params){
                 var startDate = $("#datetimepicker1").data("datetimepicker").getDate();
                 var endDate = $("#datetimepicker2").data("datetimepicker").getDate();
-                    endDate.setHours(23, 59, 59)
+                    endDate.setHours(23, 59, 59);
                                         
                 var pointType = $("#selectPointType").val();
                 var department = $("#tbxDepartment").val();
