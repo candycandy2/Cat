@@ -100,7 +100,6 @@ $("#viewApplyInsurance").pagecontainer({
             clickInsID = $.trim(clickFamilyData[0].ins_id);
             clickAppID = $.trim(clickFamilyData[0].app_id);
             clickFamilyID = $.trim(clickFamilyData[0].family_id);
-            clickDealwith = $.trim(clickFamilyData[0].dealwith);
         }
 
         //加保原因DDL生成
