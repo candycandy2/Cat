@@ -32,6 +32,33 @@ $("#viewFamilyData").pagecontainer({
             }
         };
 
+        var healthInsurArrForFamilyData = {};      
+
+        window.QueryHealthInsuranceListForFamilyData = function() {
+            loadingMask("show");
+            var self = this;
+            var queryData = '<empid>'+ myEmpNo +'</empid>';
+            this.successCallback = function(data) { 
+                if (data['ResultCode'] === "1") {
+                    healthInsurArrForFamilyData = data['Content'];
+                    loadingMask("hide");
+                } else if (data['ResultCode'] === "046902") {
+                    healthInsurArrForFamilyData = data['Content'];
+                    loadingMask("hide");
+                } else if (data['ResultCode'] === "046903") {
+                    healthInsurArrForFamilyData = data['Content'];
+                    loadingMask("hide");
+                }
+                QueryFamilyList();
+            };   
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "QueryHealthInsuranceFamily", self.successCallback, self.failCallback, queryData, "");
+            }();
+        };
+
         //API:QueryFamilyData
         //function queryFamilyList() {
         window.QueryFamilyList = function() {
@@ -74,9 +101,16 @@ $("#viewFamilyData").pagecontainer({
                     //for (var i=0; i<familyArr.content.length; i++ ) {
                     for (var i in familyArr) {
                         //replace familyArr.content[i] to familyArr[i]
+                        //mapping fmailyid to get dealwith data
+                        var clickFamilyData = healthInsurArrForFamilyData.filter(function(item, index, array){
+                            if (item.family_id === familyArr[i]["family_id"]){
+                                return item.name;
+                            }
+                        });
+                        var dealwith = $.trim(clickFamilyData[0].dealwith);
                         var ageDate = new Date(Date.now() - new Date(familyArr[i]["birthday"]).getTime()); 
                         var familyAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-                        familyList += '<div class="family-list"><div class="font-style10 font-color2" data-id="'
+                        familyList += '<div class="family-list"><div class="font-style10 font-color2" deal-with="' + dealwith + '" data-id="'
                             + familyArr[i]["family_id"]
                             + '"><div><span>'
                             + $.trim(familyArr[i]["name"])
@@ -137,7 +171,11 @@ $("#viewFamilyData").pagecontainer({
             this.successCallback = function(data) { 
                 if (data['ResultCode'] === "1") {
                     //重新顯示眷屬列表
-                    QueryFamilyList();
+                    if (addFamilyStatus === "Modify") {
+                        QueryFamilyList();
+                    } else {
+                        QueryHealthInsuranceListForFamilyData();
+                    }
                     viewPersonalInsuranceShow = false;
                     tab1FamiScrollHeight = false;
                 }else if (data['ResultCode'] === "046907") {
@@ -487,7 +525,7 @@ $("#viewFamilyData").pagecontainer({
             loadingMask("show");
             activePageListID = visitedPageList[visitedPageList.length - 1];   
             scrollClassName = 'insur-family-scroll';
-            QueryFamilyList(); 
+            QueryHealthInsuranceListForFamilyData(); 
         });
         
         /******************************** datetimepicker ***********************************/
@@ -514,6 +552,7 @@ $("#viewFamilyData").pagecontainer({
         //刪除眷屬資料彈窗popup
         $("#familyList").on("click", ".family-delete", function () {
             familyNo = $(this).parent().prev().attr("data-id");
+            clickDealwith = $(this).parent().prev().attr("deal-with");
             familyName = $.trim($(this).parent().prev().children("div:first-child").children("span:first-child").text());
             $(".confirmDeleteFamily .main-paragraph").text(familyName);
             popupMsgInit('.confirmDeleteFamily');
