@@ -210,7 +210,7 @@ $("#viewFamilyData").pagecontainer({
                 localStorage.setItem('familySettingData', JSON.stringify(familyArr));*/
                 if (data['ResultCode'] === "1") {
                     if (clickDealwith === "未申請") {
-                        QueryFamilyList();
+                        QueryHealthInsuranceListForFamilyData();
                         //changeFamilyListHeight(activePageListID, scrollClassName, "delete");
                         $('.family-edit-btn').trigger('click');
                         $("#deleteFamilyListMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
