@@ -203,36 +203,39 @@ $("#viewAgentLeave").pagecontainer({
         });
 
         $(document).on("keyup", "#searchDeptAgent", function(e) {
-            if ($("#searchDeptAgent").val().length == 0) {
-                $("#loaderQueryAgent").hide();
-                $("#dept-agent-popup-option-list").hide();
-                return;
-            }
-            var searchEmpNo = "";
-            var searchName = "";
-            var searchData = $("#searchDeptAgent").val().match(/^[A-Za-z\.]*/);
-            if (searchData[0] != "") {
-                searchName = searchData[0];
-            } else {
-                searchEmpNo = $("#searchDeptAgent").val();
-            }
-            queryAgentEmployeeData = "<LayoutHeader><EmpNo>" +
-                myEmpNo +
-                "</EmpNo><qSite>" +
-                selectSite +
-                "</qSite><qDeptCode>" +
-                selectDept +
-                "</qDeptCode><qEmpno>" +
-                searchEmpNo +
-                "</qEmpno><qName>" +
-                searchName +
-                "</qName></LayoutHeader>";
-
-            if (timoutQueryAgentData != null) {
-                clearTimeout(timoutQueryAgentData);
-                timoutQueryAgentData = null;
-            }
             timoutQueryAgentData = setTimeout(function() {
+
+
+                if ($("#searchDeptAgent").val().length == 0) {
+                    $("#loaderQueryAgent").hide();
+                    $("#dept-agent-popup-option-list").hide();
+                    return;
+                }
+                var searchEmpNo = "";
+                var searchName = "";
+                //var searchData = $("#searchDeptAgent").val().match(/^[A-Za-z\.]*/);
+                var searchData = $("#searchDeptAgent").val();
+                //if (searchData[0] != "") {
+                searchName = searchData[0];
+                //} else {
+                //searchEmpNo = $("#searchDeptAgent").val();
+                //}
+                queryAgentEmployeeData = "<LayoutHeader><EmpNo>" +
+                    myEmpNo +
+                    "</EmpNo><qSite>" +
+                    selectSite +
+                    "</qSite><qDeptCode>" +
+                    selectDept +
+                    "</qDeptCode><qEmpno>" +
+                    searchEmpNo +
+                    "</qEmpno><qName>" +
+                    searchName +
+                    "</qName></LayoutHeader>";
+
+                if (timoutQueryAgentData != null) {
+                    clearTimeout(timoutQueryAgentData);
+                    timoutQueryAgentData = null;
+                }
                 //呼叫API
                 QueryAgentEmployeeData();
                 $("#loaderQueryAgent").show();
