@@ -1,0 +1,555 @@
+
+.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper, .ui-bar-a, 
+.ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, 
+html body .ui-group-theme-a .ui-bar-inherit {
+    text-shadow: none;
+}
+.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, 
+html body .ui-group-theme-a .ui-bar-inherit {
+    font-weight: normal;
+    line-height: 1;
+}
+.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, 
+html body .ui-group-theme-a .ui-bar-inherit {
+    background-color: #f9f9f9;
+    border: none;
+}
+.main {
+    margin: 0 auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.content {
+    width: 86%;
+    margin-left: 7%;
+}
+.icon-content {
+    text-align: center;
+}
+.text-title-content {
+    color: #333;
+}
+.text-info-content {
+    color: #666;
+    text-align: center;
+}
+.input-text {
+    color: #323232;
+    border: 1px solid #CCC
+}
+.button {
+    color: #FFF;
+    background-color: #009587;
+    margin: 0 auto;
+    text-align: center;
+    cursor: pointer;
+}
+.button-enable {
+    background-color: #009587;
+}
+.button-disable {
+    background-color: #B7B7B7;
+}
+.mask, .message-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    height: 100%;
+    width: 100%;
+    background: rgba(35,31,32,0.3);
+    text-align: center;
+    padding-top: 0;
+}
+.message {
+    background-color: #FFF;
+}
+.message .title {
+    color: #333;
+}
+#viewRecord .link {
+    color: #666;
+    font-weight: unset;
+    text-decoration: none;
+    cursor: pointer;
+}
+#viewRecord .record-table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+#viewRecord .record-table thead {
+    background-color: #f0f0f0;
+}
+#viewRecord .record-table-title-shop {
+}
+#viewRecord .record-table-title-point {
+}
+.point-add {
+    color: #009587;
+}
+
+/*--mobile--*/
+@media screen and (max-width: 480px) {
+    .icon {
+        width: 22vw;
+        height: 22vw;
+    }
+    .icon-content {
+        display: inline-block;
+        margin-top: 8.6vw;
+        margin-bottom: 6vw;
+    }
+    .main {
+        width: 80vw;
+        height: 100%;
+    }
+    .text-title-content {
+        margin-bottom: 2.74vw;
+        font-size: 3.768vw;
+    }
+    .input-text {
+        width: 64.5vw;
+        height: 6.78vw;
+        padding-left: 3.71vw;
+        font-size: 2.93vw;
+    }
+    .button {
+        height: 10.32vw;
+        line-height: 10.32vw;
+        font-size: 3.768vw;
+        margin-bottom: 4vw;
+    }
+    .message {
+        width: 70vw;
+        height: auto;
+        margin: 0 auto;
+        display: inline-block;
+    }
+    .message .title {
+        font-size: 3.768vw;
+        margin-top: 10vw;
+        margin-bottom: 6.6vw;
+    }
+    .message .button {
+        width: 37vw;
+    }
+    .hr {
+        border-bottom: 1px solid #CCC;
+        margin-bottom: 24px;
+        width: 90vw;
+        margin-left: 5vw;
+    }
+    /*--viewLogin--*/
+    #viewLogin .text-info-content {
+        margin-bottom: 7.3vw;
+        font-size: 3.14vw;
+    }
+    #viewLogin .input-empno-content {
+        margin-bottom: 2.74vw;
+    }
+    #viewLogin .input-pwd-content {
+        margin-bottom: 4.16vw;
+    }
+    #viewLogin .button {
+        width: 48.7vw;
+    }
+    /*--viewChangePwd--*/
+    #viewChangePwd .icon-content {
+        display: inline-block;
+        margin-top: 8.6vw;
+        margin-bottom: 6vw;
+    }
+    #viewChangePwd .text-big-title-content {
+        text-align: center;
+        font-size: 4.18vw;
+        margin-bottom: 10.4vw;
+    }
+    #viewChangePwd .input-pwd-content {
+        margin-bottom: 3.81vw;
+    }
+    #viewChangePwd .button-content {
+        margin-top: 2.19vw;
+        display: inline-block;
+    }
+    #viewChangePwd .button {
+        width: 33vw;
+        float: left;
+    }
+    #viewChangePwd .button:first-child {
+        margin-right: 2.5vw;
+        background-color: #B7B7B7;
+    }
+    /*--viewChangePwd--*/
+    #viewRecord .main {
+        width: 100vw;
+        height: 75vh;
+        box-shadow: none;
+    }
+    #viewRecord .icon-content {
+        margin: 0 0 3vw 17.34vw;
+    }
+    #viewRecord .icon-content .icon {
+        width: 16vw;
+        height: 16vw;
+        float: left;
+        margin-right: 4.78vw;
+    }
+    #viewRecord .icon-content .text-title-content {
+        width: 21vw;
+        float: left;
+        line-height: 1;
+        text-align: right;
+        margin-right: 4vw;
+    }
+    #viewRecord .icon-content .text-title-content .title:first-child {
+        margin-top: 2.75vw;
+        margin-bottom: 3.06vw;
+    }
+    #viewRecord .icon-content .text-info-content {
+        width: 25vw;
+        float: left;
+        font-size: 5.02vw;
+        font-weight: bold;
+        line-height: 1;
+        text-align: left;
+    }
+    #viewRecord .icon-content .text-info-content .info:first-child {
+        margin-top: 1.75vw;
+        margin-bottom: 1.9vw;
+    }
+    #viewRecord .link-content {
+        width: 91vw;
+        text-align: right;
+        margin-top: 2.74vw;
+    }
+    #viewRecord .link-content .link {
+        font-size: 3.349vw;
+    }
+    #viewRecord .link-content .link-slash {
+        margin-left: 2vw;
+    }
+    #viewRecord .datetime-content {
+        padding-left: 3vw;
+        margin-bottom: 10.14vw;
+    }
+    #viewRecord .datetime-content span {
+    }
+    #viewRecord .datetime-content .text-title-content {
+        font-size: 3.349vw;
+        line-height: 1;
+    }
+    #viewRecord .datetime-content .text-1 {
+        display: block;
+        margin-bottom: 2vw;
+    }
+    #viewRecord .datetime-content .text-2, #viewRecord .datetime-content .text-4 {
+        margin-right: 1vw;
+    }
+    #viewRecord .datetime-content .input-text {
+        width: 21.5vw;
+        height: 4.78vw;
+        padding-left: 1.5vw;
+    }
+    #viewRecord .datetime-content .button-content {
+        position: relative;
+    }
+    #viewRecord .datetime-content .button {
+        position: absolute;
+        display: inline-block;
+        width: 13.5vw;
+        height: 6.5vw;
+        line-height: 6.5vw;
+        margin-left: 2.5vw;
+        margin-bottom: 0;
+        font-size: 3.349vw;
+    }
+    #viewRecord .record-content {
+        width: 92vw;
+        margin-left: 4vw;
+    }
+    #viewRecord .record-table thead .text-title-content {
+        font-size: 3.14vw;
+    }
+    #viewRecord .record-table thead tr {
+        height: 8.53vw;
+    }
+    #viewRecord .record-table .column-1 {
+        width: 26vw;
+        text-align: left;
+    }
+    #viewRecord .record-table .column-2 {
+        width: 20vw;
+    }
+    #viewRecord .record-table .column-3 {
+        width: 23vw;
+    }
+    #viewRecord .record-table .column-4 {
+        width: 19vw;
+    }
+    #viewRecord .record-table .shop-point {
+        margin-left: 2vw;
+    }
+    #viewRecord .record-table .point-number {
+        float: right;
+        margin-right: 3vw;
+    }
+    #viewRecord .record-body {
+        height: 45vh;
+        overflow: scroll;
+    }
+    #viewRecord .record-body .record {
+        height: 11vw;
+    }
+    #viewRecord .record-body .record div {
+        float: left;
+        font-size: 3.349vw;
+        height: 11.3vw;
+        border: 1px solid #f9f9f9;
+    }
+    #viewRecord .record-body .column-1 {
+        width: 26.5vw;
+        line-height: 11.3vw;
+        text-align: left;
+    }
+    #viewRecord .record-body .column-2 {
+        width: 20.5vw;
+        line-height: 11.3vw;
+        text-align: center;
+    }
+    #viewRecord .record-body .column-3 {
+        width: 23.5vw;
+        text-align: center;
+    }
+    #viewRecord .record-body .column-4 {
+        width: 19vw;
+        line-height: 11.3vw;
+    }
+    #viewRecord .record-body .datetime {
+        margin-top: 1vw;
+        display: inline-block;
+    }
+    #viewRecord .record-body .shop-point {
+        margin-left: 2vw;
+    }
+    #viewRecord .record-body .point-number {
+        float: right;
+        margin-right: 3vw;
+    }
+    /*--Date Picker--*/
+    .ui-widget {
+        font-size: 3.768vw;
+    }
+}
+
+/*--desktop--*/
+@media screen and (min-width: 500px) {
+    #viewLogin, #viewChangePwd {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #viewRecord {
+        display: flex;
+    }
+    .icon {
+        width: 70px;
+        height: 70px;
+    }
+    .text-title-content {
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+    .input-text {
+        width: 236px;
+        height: 26px;
+        padding-left: 10px;
+        font-size: 12px;
+    }
+    .button {
+        height: 32px;
+        line-height: 32px;
+        font-size: 12px;
+    }
+    .mask, .message-mask {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .message {
+        width: 250px;
+        height: auto;
+    }
+    .message .title {
+        font-size: 12px;
+        margin-top: 36px;
+        margin-bottom: 22px;
+    }
+    .message .button {
+        width: 118px;
+        margin-bottom: 12px;
+    }
+    .hr {
+        border-bottom: 1px solid #CCC;
+        margin-bottom: 24px;
+    }
+    /*--viewLogin--*/
+    #viewLogin .main {
+        width: 288px;
+        height: 384px;
+    }
+    #viewLogin .icon-content {
+        margin-top: 34px;
+        margin-bottom: 28px;
+    }
+    #viewLogin .text-info-content {
+        margin-bottom: 28px;
+        font-size: 12px;
+    }
+    #viewLogin .input-empno-content {
+        margin-bottom: 12px;
+    }
+    #viewLogin .input-pwd-content {
+        margin-bottom: 16px;
+    }
+    #viewLogin .button {
+        width: 186px;
+    }
+    /*--viewChangePwd--*/
+    #viewChangePwd .main {
+        width: 288px;
+        height: 430px;
+    }
+    #viewChangePwd .icon-content {
+        margin-top: 34px;
+        margin-bottom: 20px;
+    }
+    #viewChangePwd .text-big-title-content {
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 32px;
+    }
+    #viewChangePwd .input-pwd-content {
+        margin-bottom: 12px;
+    }
+    #viewChangePwd .button-content {
+        margin-top: 18px;
+    }
+    #viewChangePwd .button {
+        width: 118px;
+        float: left;
+    }
+    #viewChangePwd .button:first-child {
+        margin-right: 10px;
+        background-color: #B7B7B7;
+    }
+    /*--viewRecord--*/
+    #viewRecord .main {
+        width: 612px;
+        height: 430px;
+        box-shadow: none;
+    }
+    #viewRecord .content {
+        width: 100%;
+        margin-left: 0;
+    }
+    #viewRecord .record-content {
+        height: 235px;
+        margin-bottom: 46px;
+    }
+    #viewRecord .icon-content .icon-text-content {
+        width: max-content;
+        display: inline-block;
+    }
+    #viewRecord .icon-content .icon {
+        float: left;
+    }
+    #viewRecord .icon-content .text-title-content {
+        float: left;
+        padding: 15px 12px 15px 16px;
+        line-height: 1;
+        text-align: right;
+    }
+    #viewRecord .icon-content .text-title-content .title:first-child {
+        margin-bottom: 16px;
+    }
+    #viewRecord .icon-content .text-info-content {
+        float: left;
+        padding: 9px 0px;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 1;
+        text-align: left;
+    }
+    #viewRecord .icon-content .text-info-content .info:first-child {
+        margin-bottom: 8px;
+    }
+    #viewRecord .link-content {
+        width: 612px;
+        text-align: right;
+        margin: 0 auto;
+        padding: 16px 0;
+    }
+    #viewRecord .link-content .link-slash {
+        margin-left: 5px;
+    }
+    #viewRecord .datetime-content {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    #viewRecord .datetime-content .input-text {
+        width: 80px;
+    }
+    #viewRecord .datetime-content .text-1 {
+        margin-right: 12px;
+    }
+    #viewRecord .datetime-content .text-2, #viewRecord .datetime-content .text-4 {
+        margin-right: 5px;
+    }
+    #viewRecord .datetime-content .button {
+        display: inline-block;
+        width: 45px;
+        height: 30px;
+        margin-left: 15px;
+    }
+    #viewRecord .record-table thead tr {
+        height: 36px;
+    }
+    #viewRecord .record-table tbody tr {
+        height: 38px;
+        border-bottom: 2px solid #F0F0F0;
+    }
+    #viewRecord .record-table .column-1 {
+        text-align: left;
+        position: relative;
+    }
+    #viewRecord .record-table .column-4 {
+        text-align: right;
+        position: relative;
+    }
+    #viewRecord .record-table .shop-point {
+        position: relative;
+        left: 25px;
+    }
+    #viewRecord .record-table .point-number {
+        position: relative;
+        right: 30%;
+    }
+    #viewRecord .record-body .point-number {
+    }
+    #viewRecord .number-content > div {
+        float: left;
+        font-size: 14px;
+        line-height: 1.8
+    }
+    #viewRecord .number-content .arrow-left {
+        margin-right: 8px;
+    }
+    #viewRecord .number-content .arrow-right {
+        margin-right: 16px;
+    }
+    #viewRecord .number-content .arrow {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+    }
+}

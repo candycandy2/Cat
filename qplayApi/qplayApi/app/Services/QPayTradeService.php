@@ -418,4 +418,84 @@ class QPayTradeService
 
         return $result;
     }
+
+    /**
+    * Get Trade Record-Store for QPay Web APP
+    * @param  userId
+    * @param  startDate
+    * @param  endDate
+    * @return array
+    */
+    public function tradeRecordQPayWeb($userId, $startDate, $endDate)
+    {
+        $qpayMember = $this->qpayMemberRepository->getQPayMemberInfo($userId);
+
+        $storeData = $this->qpayMemberPointRepository->getStoreRecord($qpayMember->row_id, $startDate, $endDate);
+        $tradeData = $this->qpayTradeLogRepository->getTradeRecordEmp($userId, $startDate, $endDate);
+
+        //Merge 2 data
+        $recordData = [];
+
+        foreach ($storeData as $data) {
+            $recordData[$data->store_time] = $data;
+        }
+
+        foreach ($tradeData as $data) {
+            $recordData[$data->trade_time] = $data;
+        }
+
+        //Create result content
+        $resultContent = [];
+
+        foreach ($recordData as $time => $data) {
+            $data = $data->toArray();
+
+            $tempArray = [];
+            $tradeSuccess = "";
+
+            foreach ($data as $key => $val) {
+                //Store Data
+                if ($key == "store_id") {
+                    $tempArray["trade_id"] = $val;
+                    $tempArray["trade_type"] = "store";
+                }
+                if ($key == "store_total") {
+                    $tempArray["trade_point"] = $val;
+                }
+                if ($key == "store_time") {
+                    $tempArray["trade_time"] = $val;
+                }
+                if ($key == "point_type") {
+                    $tempArray["point_type_name"] = $val;
+                }
+
+                //Trade Data
+                if ($key == "trade_id") {
+                    $tempArray["trade_id"] = $val;
+                    $tempArray["trade_type"] = "trade";
+                }
+                if ($key == "trade_point") {
+                    $tempArray["trade_point"] = $val;
+                }
+                if ($key == "trade_time") {
+                    $tempArray["trade_time"] = $val;
+                }
+                if ($key == "trade_success") {
+                    $tradeSuccess = $val;
+                }
+                if ($key == "shop_name") {
+                    $tempArray["shop_name"] = $val;
+                }
+            }
+
+            $tempArray["trade_success"] = $tradeSuccess;
+            $resultContent[] = $tempArray;
+        }
+
+        $result = [
+            "trade_record" => $resultContent
+        ];
+
+        return $result;
+    }
 }

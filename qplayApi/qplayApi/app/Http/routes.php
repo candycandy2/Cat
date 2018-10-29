@@ -70,6 +70,10 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
             Route::get('/getTradeRecordShop', 'TradeController@getTradeRecordShop');
         });
         //for web
+        Route::get('/loginQPayWeb', 'WebController@loginQPayWeb');
+        Route::get('/changeTradePwdForWeb', 'WebController@changeTradePwdForWeb');
+        Route::get('/logoutQPayWeb', 'WebController@logoutQPayWeb');
+        Route::get('/tradeRecordQPayWeb', 'WebController@tradeRecordQPayWeb');
     });
 });
 
