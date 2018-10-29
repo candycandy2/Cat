@@ -6,6 +6,7 @@
 namespace App\Services;
 
 use App\lib\ResultCode;
+use App\lib\CommonUtil;
 use App\Repositories\QPayMemberRepository;
 use App\Repositories\QPayMemberPointRepository;
 
@@ -85,5 +86,42 @@ class QPayMemberService
         }else{
             return $pointNow;
         }
+    }
+
+    /**
+     * login QPay Web
+     * @param  emp_no
+     * @param  trade_pwd
+     * @return mixed
+     */
+    public function loginQPayWeb($userId, $tradePWD)
+    {
+        $qpayMemberData = $this->qpayMemberRepository->getQPayMemberInfo($userId);
+
+        if (password_verify($tradePWD, $qpayMemberData["trade_password"])) {
+            //Trade Password Valid
+            $resultCode = ResultCode::_1_reponseSuccessful;
+
+            $pointNow = $this->qpayMemberPointRepository->getPointNow($userId);
+            if (is_null($pointNow)) {
+                $pointNow = 0;
+            }
+
+            $result = [
+                "result_code" => $resultCode,
+                "message" => CommonUtil::getMessageContentByCode($resultCode),
+                "point_now" => $pointNow
+            ];
+        } else {
+            //Trade Password Invalid
+            $resultCode = ResultCode::_000929_tradePasswordIncorrect;
+
+            $result = [
+                "result_code" => $resultCode,
+                "message" => CommonUtil::getMessageContentByCode($resultCode)
+            ];
+        }
+
+        return $result;
     }
 }

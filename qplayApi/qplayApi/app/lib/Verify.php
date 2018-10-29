@@ -799,4 +799,72 @@ class Verify
         }
     }
 //custom end
+//web begin
+    public static function verifyWeb()
+    {
+        $input = Input::get();
+        $request = Request::instance();
+        $headerContentType = $request->header('Content-Type');
+        $headerAppKey = $request->header('App-Key');
+
+        //verify parameter count
+        if ($headerContentType == null || $headerAppKey == null || trim($headerContentType) == "" || trim($headerAppKey) == "" ) {
+            return array("code"=>ResultCode::_999001_requestParameterLostOrIncorrect);
+        }
+
+        if ($headerAppKey != CommonUtil::getContextAppKey()) {
+            return array("code"=>ResultCode::_999010_appKeyIncorrect);
+        }
+
+        //verify language input
+        if (!array_key_exists('lang', $input) || trim($input["lang"]) == "") {
+            return array("code"=>ResultCode::_999004_parameterLangLostOrIncorrect);
+        }
+
+        //verify content-type
+        if (!stristr($headerContentType, 'application/json')) {
+            return array("code"=>ResultCode::_999006_contentTypeParameterInvalid);
+        }
+
+        return array("code"=>ResultCode::_1_reponseSuccessful, "message"=>"");
+    }
+
+    public static function setWebAuthData()
+    {
+        $signatureTime = time();
+        $key = CommonUtil::getSecretKeyByAppKey(CommonUtil::getContextAppKey());
+        $signature = base64_encode(hash_hmac('sha256', $signatureTime, $key, true));
+
+        $token = uniqid();
+        $tokenValid = $signatureTime + (60 * 5);
+
+        return array(
+            "signature" => $signature,
+            "signature_time" => $signatureTime,
+            "token" => $token,
+            "token_valid" => $tokenValid
+        );
+    }
+
+    public static function chkWebAuthData($webAuthData, $sessionAuthData)
+    {
+        if (is_null($sessionAuthData)) {
+            return array("code"=>ResultCode::_999008_signatureIsInvalid);
+        } else {
+            if ($webAuthData["signature"] != $sessionAuthData["signature"]) {
+                return array("code"=>ResultCode::_999008_signatureIsInvalid);
+            }
+
+            if ($webAuthData["signature_time"] != $sessionAuthData["signature_time"]) {
+                return array("code"=>ResultCode::_999008_signatureIsInvalid);
+            }
+
+            if (time() > $webAuthData["token_valid"] || $webAuthData["token_valid"] != $sessionAuthData["token_valid"]) {
+                return array("code"=>ResultCode::_000908_tokenInvalid);
+            }
+        }
+
+        return array("code" => ResultCode::_1_reponseSuccessful);
+    }
+//web end
 }
