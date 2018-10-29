@@ -1039,32 +1039,34 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $(document).on("keyup", "#searchBar", function(e) {
-            if ($("#searchBar").val().length == 0) {
-                $("#queryLoader").hide();
-                $("#agent-popup-option-list").hide();
-                return;
-            }
-            var searchEmpNo = "";
-            var searchName = "";
-            var searchData = $("#searchBar").val().match(/^[A-Za-z\.]*/);
-            if (searchData[0] != "") {
-                searchName = searchData[0];
-            } else {
-                searchEmpNo = $("#searchBar").val();
-            }
-            queryEmployeeData = "<LayoutHeader><EmpNo>" +
-                myEmpNo +
-                "</EmpNo><qSite></qSite><qDeptCode></qDeptCode><qEmpno>" +
-                searchEmpNo +
-                "</qEmpno><qName>" +
-                searchName +
-                "</qName></LayoutHeader>";
-
+            //review by alan
             if (timoutQueryEmployeeData != null) {
                 clearTimeout(timoutQueryEmployeeData);
                 timoutQueryEmployeeData = null;
             }
             timoutQueryEmployeeData = setTimeout(function() {
+
+                if ($("#searchBar").val().length == 0) {
+                    $("#queryLoader").hide();
+                    $("#agent-popup-option-list").hide();
+                    return;
+                }
+                var searchEmpNo = "";
+                var searchName = "";
+                var searchData = $("#searchBar").val().match(/^[A-Za-z\.]*/);
+                if (searchData[0] != "") {
+                    searchName = searchData[0];
+                } else {
+                    searchEmpNo = $("#searchBar").val();
+                }
+                queryEmployeeData = "<LayoutHeader><EmpNo>" +
+                    myEmpNo +
+                    "</EmpNo><qSite></qSite><qDeptCode></qDeptCode><qEmpno>" +
+                    searchEmpNo +
+                    "</qEmpno><qName>" +
+                    searchName +
+                    "</qName></LayoutHeader>";
+
                 //呼叫API
                 QueryEmployeeData();
 
