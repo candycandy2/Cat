@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+
+        <script type="text/javascript" src="js/jquery-1.12.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+
+        <title>QPay APP</title>
+    </head>
+<body>
+
+<div data-role="page" class="page" id="viewLogin">
+    <div data-role="main" class="main">
+        <div class="content icon-content">
+            <img class="icon" src="images/129_icon_qpay.png">
+        </div>
+        <div class="content text-title-content">
+            工號
+        </div>
+        <div class="content input-empno-content">
+            <input type="text" data-role="none" class="input-text" maxlength="10" id="empNo">
+        </div>
+        <div class="content text-title-content">
+            交易密碼
+        </div>
+        <div class="content input-pwd-content">
+            <input type="password" data-role="none" class="input-text" maxlength="4" id="tradePwd">
+        </div>
+        <div class="content text-info-content">
+            忘記密碼 Qisda 員工請撥打 Cindy#3346<br>
+            BenQ 員工請撥打 Jeffery#7624
+        </div>
+        <div class="content button-content">
+            <div class="button" id="login">
+                登入
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" class="page" id="viewChangePwd">
+    <div data-role="main" class="main">
+        <div class="content icon-content">
+            <img class="icon" src="images/119_icon_changepassword.png">
+        </div>
+        <div class="content text-big-title-content">
+            更改交易密碼
+        </div>
+        <div class="content text-title-content">
+            請輸入舊密碼
+        </div>
+        <div class="content input-pwd-content">
+            <input type="password" data-role="none" class="input-text" maxlength="4" id="oldPwd">
+        </div>
+        <div class="content text-title-content">
+            請輸入新密碼
+        </div>
+        <div class="content input-pwd-content">
+            <input type="password" data-role="none" class="input-text" maxlength="4" id="newPwd">
+        </div>
+        <div class="content text-title-content">
+            請再次輸入新密碼
+        </div>
+        <div class="content input-pwd-content">
+            <input type="password" data-role="none" class="input-text" maxlength="4" id="newPwd2">
+        </div>
+        <div class="content button-content">
+            <div class="button" id="actionBack">
+                返回
+            </div>
+            <div class="button" id="changePwd">
+                更改
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" class="page" id="viewRecord">
+    <div data-role="header" data-position="fixed" class="page-header">
+        <div class="content text-title-content link-content">
+            <a class="link" id="actionChangePwd">
+                更改交易密碼
+            </a>
+            <span class="link-slash">/</span> 
+            <a class="link" id="actionLogout">
+                登出
+            </a>
+        </div>
+    </div>
+    <div data-role="main" class="main">
+        <div class="content icon-content">
+            <div class="icon-text-content">
+                <img class="icon" src="images/129_icon_qpay.png">
+                <div class="text-title-content">
+                    <div class="title">
+                        工號
+                    </div>
+                    <div class="title">
+                        消費券餘額
+                    </div>
+                </div>
+                <div class="text-info-content">
+                    <div class="info">
+                        1609009
+                    </div>
+                    <div class="info">
+                        TWD <span id="pointNow">1000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hr"></div>
+        <div class="content datetime-content">
+            <span class="text-title-content text-1">
+                選擇交易時間
+            </span>
+            <span class="text-title-content text-2">
+                起
+            </span>
+            <span>
+                <input type="text" data-role="none" class="input-text date-picker" readonly="true" id="startDate">
+            </span>
+            <span class="text-title-content text-3">
+                ~
+            </span>
+            <span class="text-title-content text-4">
+                迄
+            </span>
+            <span>
+                <input type="text" data-role="none" class="input-text date-picker" readonly="true" id="endDate">
+            </span>
+            <span class="button-content">
+                <span class="button" id="search">
+                    查詢
+                </span>
+            </span>
+        </div>
+        <div class="content record-content">
+            <table class="record-table desktop">
+                <thead>
+                    <tr class="text-title-content">
+                        <td class="column-1">
+                            <span class="shop-point">
+                                <span class="record-table-title-shop">店家</span>
+                                 / 
+                                <span class="record-table-title-point">消費券</span>
+                            </span>
+                        </td>
+                        <td class="column-2">交易碼</td>
+                        <td class="column-3">交易日期</td>
+                        <td class="column-4">
+                            <span class="point-number">
+                                交易金額
+                            </span>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template id="tplRecordDesktop">
+                        <tr class="text-title-content">
+                            <td class="column-1">
+                                <span class="shop-point">
+                                    BenQ
+                                </span>
+                            </td>
+                            <td class="column-2">
+                                S000001
+                            </td>
+                            <td class="column-3">
+                                <span class="datetime">
+                                    2018/09/01<br>13:20
+                                </span>
+                            </td>
+                            <td class="column-4 point-add">
+                                <span class="point-number">
+                                    +500
+                                </span>
+                            </td>
+                        </tr>
+                    </template>
+                    <!--
+                    <tr class="text-title-content">
+                        <td class="column-1 record-table-title-point">
+                            <span class="shop-point">
+                                BenQ
+                            </span>
+                        </td>
+                        <td>
+                            S000001
+                        </td>
+                        <td>
+                            2018/09/01<br>13:20
+                        </td>
+                        <td class="column-4 point-add">
+                            <span class="point-number">
+                                +500
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class="text-title-content">
+                        <td class="column-1 record-table-title-shop">
+                            <span class="shop-point"> 
+                                店家
+                            </span>
+                        </td>
+                        <td>
+                            T000002
+                        </td>
+                        <td>
+                            2018/09/11<br>08:43
+                        </td>
+                        <td class="column-4">
+                            <span class="point-number">
+                                -25
+                            </span>
+                        </td>
+                    </tr>
+                    -->
+                </tbody>
+            </table>
+            <table class="record-table mobile">
+                <thead>
+                    <tr class="text-title-content">
+                        <td class="column-1">
+                            <span class="shop-point">
+                                <span class="record-table-title-shop">店家</span>
+                                 / 
+                                <span class="record-table-title-point">消費券</span>
+                            </span>
+                        </td>
+                        <td class="column-2">交易碼</td>
+                        <td class="column-3">交易日期</td>
+                        <td class="column-4">
+                            <span class="point-number">
+                                交易金額
+                            </span>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+            <div class="record-body mobile">
+                <template id="tplRecordMobile">
+                    <div class="record">
+                        <div class="record-table-title-point column-1">
+                            <span class="shop-point record-table-title-point">
+                                BenQ
+                            </span>
+                        </div>
+                        <div class="column-2">S000001</div>
+                        <div class="column-3">
+                            <span class="datetime">
+                                2018/09/01<br>13:20
+                            </span>
+                        </div>
+                        <div class="column-4">
+                            <span class="point-number point-add">
+                                +500
+                            </span>
+                        </div>
+                    </div>
+                </template>
+                <!--
+                <div class="record">
+                    <div class="record-table-title-point column-1">
+                        <span class="shop-point record-table-title-point">
+                            BenQ
+                        </span>
+                    </div>
+                    <div class="column-2">S000001</div>
+                    <div class="column-3">
+                        <span class="datetime">
+                            2018/09/01<br>13:20
+                        </span>
+                    </div>
+                    <div class="column-4">
+                        <span class="point-number point-add">
+                            +500
+                        </span>
+                    </div>
+                </div>
+                <div class="record">
+                    <div class="record-table-title-point column-1">
+                        <span class="shop-point record-table-title-shop">
+                            店家
+                        </span>
+                    </div>
+                    <div class="column-2">T000002</div>
+                    <div class="column-3">
+                        <span class="datetime">
+                            2018/09/11<br>08:43
+                        </span>
+                    </div>
+                    <div class="column-4">
+                        <span class="point-number">
+                            -25
+                        </span>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+        <div class="content number-content" style="display:none;">
+            <div class="arrow-left">
+                <img class="arrow" src="images/134_btn_pre.png" id="btnPre">
+                <img class="arrow" src="images/135_btn_pre_dis.png" id="btnPreDis">
+            </div>
+            <div class="arrow-right">
+                <img class="arrow" src="images/136_btn_next.png" id="btnNext">
+                <img class="arrow" src="images/137_btn_next_dis.png" id="btnNextDis">
+            </div>
+            <div class="number">
+                <span id="pageNow">2</span>
+                /
+                <span id="pageTotal">6</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mask" style="display:none;"></div>
+
+<div class="message-mask" style="display:none;">
+    <div class="message">
+        <div class="title">
+            您輸入的新密碼不一致，<br>請您重新輸入
+        </div>
+        <div class="button" id="closeMessage">
+            確認
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
