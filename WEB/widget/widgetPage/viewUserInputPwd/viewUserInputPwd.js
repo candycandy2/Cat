@@ -111,7 +111,7 @@ $("#viewUserInputPwd").pagecontainer({
         $('.user-password-next').on('click', function () {
             var has = $(this).hasClass('button-active');
             if (has) {
-                loadingMask("show");
+                //loadingMask("show");
                 var trade_info = {
                     'shop_id': shop_id,
                     'shop_name': shop_name,

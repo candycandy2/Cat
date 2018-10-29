@@ -18,29 +18,34 @@ $("#viewUserTradeResult").pagecontainer({
             this.successCallback = function (data) {
                 console.log(data);
 
-                $('.trade-shop').text(shop_name);
-                $('.trade-no').text(loginData['emp_no']);
-                $('.trade-id').text(data['content'].trade_id);
-                $('.trade-money').text(data['content'].point_now);
                 var tradeDate = new Date(data['content'].trade_time * 1000).toLocaleDateString('zh');
                 var tradeTime = new Date(data['content'].trade_time * 1000).toTimeString().substr(0, 5);
-                $('.trade-time').text(tradeDate + ' ' + tradeTime);
+                $('.user-trade-time').text(tradeDate + ' ' + tradeTime);
+                $('.user-trade-shop').text(shop_name);
+                $('.user-trade-emp').text(loginData['emp_no']);
+                $('.user-trade-id').text(data['content'].trade_id);
+                $('.user-trade-remain').text(data['content'].point_now);
 
                 //交易成功或失败
                 if (data['result_code'] == '1') {
-                    $('.user-fail-reason').hide();
-                    $('.trade-status').text(langStr['wgt_068']);
-                    $('.trade-reason').text('');
-                    $('.trade-pay').text(trade_price);
+                    $('.user-trade-fail').hide();
+                    $('.user-trade-icon img').attr('src', serverURL + '/widget/widgetPage/viewUserTradeResult/img/result_success.png');
+                    $('.user-trade-status').css('color', '#009688');
+                    $('.user-trade-status').text(langStr['wgt_068']);
+                    $('.user-trade-money').text(trade_price);
+                    $('.trade-fail-reason').text('');
 
                     //更新消费券余额
                     window.sessionStorage.setItem('user_point_dirty', 'Y');
                     window.sessionStorage.setItem('user_point', data['content'].point_now);
+
                 } else {
-                    $('.user-fail-reason').show();
-                    $('.trade-status').text(langStr['wgt_069']);
-                    $('.trade-reason').text(data['message']);
-                    $('.trade-pay').text('0');
+                    $('.user-trade-fail').show();
+                    $('.user-trade-icon img').attr('src', serverURL + '/widget/widgetPage/viewUserTradeResult/img/result_warn.png');
+                    $('.user-trade-status').css('color', '#C22C2B');
+                    $('.user-trade-status').text(langStr['wgt_069']);
+                    $('.user-trade-money').text('0');
+                    $('.trade-fail-reason').text(data['message']);
 
                     //如果余额不足，更新消费券余额
                     if(data['result_code'] == '000924') {
@@ -49,7 +54,9 @@ $("#viewUserTradeResult").pagecontainer({
                     }
                 }
 
-                loadingMask("hide");
+                //loadingMask("hide");
+                $('.user-trade-loading').hide();
+                $('.user-trade-main').show();
             };
 
             this.failCallback = function () { };
@@ -65,6 +72,9 @@ $("#viewUserTradeResult").pagecontainer({
             //只有从上一页（输入密码）跳转过来才有trade_info，才需要API
             var trade_info = JSON.parse(window.sessionStorage.getItem('trade_info'));
             if(trade_info !== null) {
+                //loading
+                $('.user-trade-main').hide();
+                $('.user-trade-loading').show();
                 //API
                 makeNewTrade(trade_info);
             }

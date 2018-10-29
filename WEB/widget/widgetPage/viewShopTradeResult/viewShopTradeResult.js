@@ -19,29 +19,35 @@ $("#viewShopTradeResult").pagecontainer({
             this.successCallback = function (data) {
                 console.log(data);
 
-                $('.trade-shop').text(shop_name);
-                $('.trade-no').text(current_emp);
-                $('.trade-id').text(data['content'].trade_id);
-                $('.trade-money').text(data['content'].point_now);
                 var tradeDate = new Date(data['content'].trade_time * 1000).toLocaleDateString('zh');
                 var tradeTime = new Date(data['content'].trade_time * 1000).toTimeString().substr(0, 5);
-                $('.trade-time').text(tradeDate + ' ' + tradeTime);
+                $('.shop-trade-time').text(tradeDate + ' ' + tradeTime);
+                $('.shop-trade-shop').text(shop_name);
+                $('.shop-trade-emp').text(current_emp);
+                $('.shop-trade-id').text(data['content'].trade_id);
+                $('.shop-trade-remain').text(data['content'].point_now);
 
                 //交易成功或失败
                 if (data['result_code'] == '1') {
-                    $('.shop-fail-reason').hide();
-                    $('.trade-status').text(langStr['wgt_068']);
-                    $('.trade-reason').text('');
-                    $('.trade-pay').text(trade_price);
+                    $('.shop-trade-fail').hide();
+                    $('.shop-trade-icon img').attr('src', serverURL + '/widget/widgetPage/viewShopTradeResult/img/result_success.png');
+                    $('.shop-trade-status').css('color', '#009688');
+                    $('.shop-trade-status').text(langStr['wgt_068']);
+                    $('.shop-trade-money').text(trade_price);
+                    $('.trade-fail-reason').text('');
 
                 } else {
-                    $('.shop-fail-reason').show();
-                    $('.trade-status').text(langStr['wgt_069']);
-                    $('.trade-reason').text(data['message']);
-                    $('.trade-pay').text('0');
+                    $('.shop-trade-fail').show();
+                    $('.shop-trade-icon img').attr('src', serverURL + '/widget/widgetPage/viewShopTradeResult/img/result_warn.png');
+                    $('.shop-trade-status').css('color', '#C22C2B');
+                    $('.shop-trade-status').text(langStr['wgt_069']);
+                    $('.shop-trade-money').text('0');
+                    $('.trade-fail-reason').text(data['message']);
                 }
 
-                loadingMask("hide");
+                //loadingMask("hide");
+                $('.shop-trade-loading').hide();
+                $('.shop-trade-main').show();
             };
 
             this.failCallback = function () { };
@@ -56,6 +62,9 @@ $("#viewShopTradeResult").pagecontainer({
         $("#viewShopTradeResult").on("pagebeforeshow", function (event, ui) {
             var trade_info = JSON.parse(window.sessionStorage.getItem('trade_info'));
             if(trade_info !== null) {
+                //loading
+                $('.shop-trade-main').hide();
+                $('.shop-trade-loading').show();
                 //API
                 makeNewTrade(trade_info);
             }
