@@ -445,7 +445,7 @@ html body .ui-group-theme-a .ui-bar-inherit {
     /*--viewRecord--*/
     #viewRecord .main {
         width: 612px;
-        height: 430px;
+        height: 480px;
         box-shadow: none;
     }
     #viewRecord .content {
@@ -519,8 +519,15 @@ html body .ui-group-theme-a .ui-bar-inherit {
         border-bottom: 2px solid #F0F0F0;
     }
     #viewRecord .record-table .column-1 {
+        width: 192px;
         text-align: left;
         position: relative;
+    }
+    #viewRecord .record-table .column-2 {
+        width: 133px;
+    }
+    #viewRecord .record-table .column-3 {
+        width: 162px;
     }
     #viewRecord .record-table .column-4 {
         text-align: right;

@@ -408,11 +408,7 @@ $(function() {
         }(oldPwd, newPwd));
     }
 
-    $(document).on("click", "#actionBack", function() {
-        changePage("viewRecord");
-    });
-
-    $(document).on("click", "#changePwd", function() {
+    function checkPwdData() {
         var oldPwd = $("#oldPwd").val();
         var newPwd = $("#newPwd").val();
         var newPwd2 = $("#newPwd2").val();
@@ -427,6 +423,32 @@ $(function() {
             message("open", "兩次新密碼的輸入不一致");
         } else {
             changeTradePwdForWeb(oldPwd, newPwd);
+        }
+    }
+
+    $(document).on("click", "#actionBack", function() {
+        changePage("viewRecord");
+    });
+
+    $(document).on("click", "#changePwd", function() {
+        checkPwdData();
+    });
+
+    $(document).on("keyup", "#oldPwd", function(event) {
+        if (event.keyCode === 13) {
+            $("#newPwd").focus();
+        }
+    });
+
+    $(document).on("keyup", "#newPwd", function(event) {
+        if (event.keyCode === 13) {
+            $("#newPwd2").focus();
+        }
+    });
+
+    $(document).on("keyup", "#newPwd2", function(event) {
+        if (event.keyCode === 13) {
+            checkPwdData();
         }
     });
 
