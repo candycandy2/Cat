@@ -9,7 +9,8 @@ var widget = {
             .then(this.load(4, divItem))
             .then(this.load(5, divItem))
             .then(this.load(6, divItem))
-            .then(this.load(7, divItem));
+            .then(this.load(7, divItem))
+            .then(this.load(8, divItem));
     },
     list: function() {
 
@@ -21,7 +22,8 @@ var widget = {
             { id: 4, name: 'applist', enabled: true, lang: langStr['wgt_005'] },
             { id: 5, name: 'qpay', enabled: true, lang: langStr['wgt_009'] },
             { id: 6, name: 'accountingrate', enabled: true, lang: langStr['wgt_070'] },
-            { id: 7, name: 'yellowpage', enabled: true, lang: 'Yellow Page' }
+            { id: 7, name: 'yellowpage', enabled: true, lang: 'Yellow Page' },
+            { id: 8, name: 'qstore', enabled: true, lang: 'QStore' }
         ];
     },
     load: function(id, div) {
