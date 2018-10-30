@@ -1039,11 +1039,12 @@ $("#viewPersonalLeave").pagecontainer({
         });
 
         $(document).on("keyup", "#searchBar", function(e) {
-            //review by alan
+
             if (timoutQueryEmployeeData != null) {
                 clearTimeout(timoutQueryEmployeeData);
                 timoutQueryEmployeeData = null;
             }
+
             timoutQueryEmployeeData = setTimeout(function() {
 
                 if ($("#searchBar").val().length == 0) {
@@ -1056,7 +1057,7 @@ $("#viewPersonalLeave").pagecontainer({
                 //var searchData = $("#searchBar").val().match(/^[A-Za-z\.]*/);
                 var searchData = $("#searchBar").val();
                 //if (searchData[0] != "") {
-                    searchName = searchData[0];
+                searchName = searchData;
                 //} else {
                 //    searchEmpNo = $("#searchBar").val();
                 //}
@@ -1073,7 +1074,8 @@ $("#viewPersonalLeave").pagecontainer({
 
                 $("#queryLoader").show();
                 $("#agent-popup-option-list").hide();
-            }, 2000);
+            }, 3000);
+
             if (e.which == 13) {
                 $("#searchBar").blur();
             }
@@ -1238,6 +1240,12 @@ $("#viewPersonalLeave").pagecontainer({
 
         //搜索代理人
         $(document).on("keyup", "#searchAgent", function(e) {
+
+            if (timeoutQueryEmployee != null) {
+                clearTimeout(timeoutQueryEmployee);
+                timeoutQueryEmployee = null;
+            }
+
             timeoutQueryEmployee = setTimeout(function() {
 
                 if ($("#searchAgent").val().length == 0) {
@@ -1250,7 +1258,7 @@ $("#viewPersonalLeave").pagecontainer({
                 //var searchData = $("#searchAgent").val().match(/^[A-Za-z\.]*/);
                 var searchData = $("#searchAgent").val();
                 //if (searchData[0] != "") {
-                    searchName = searchData[0];
+                searchName = searchData;
                 //} else {
                 //    searchEmpNo = $("#searchAgent").val();
                 //}
@@ -1262,16 +1270,12 @@ $("#viewPersonalLeave").pagecontainer({
                     searchName +
                     "</qName></LayoutHeader>";
                 //console.log(queryEmployeeData);
-                if (timeoutQueryEmployee != null) {
-                    clearTimeout(timeoutQueryEmployee);
-                    timeoutQueryEmployee = null;
-                }
 
                 QueryEmployeeData();
 
                 $("#loaderQuery").show();
                 $("#leave-agent-popup-option-list").hide();
-            }, 2000);
+            }, 3000);
 
             if (e.which == 13) {
                 $("#searchAgent").blur();
