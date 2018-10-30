@@ -217,9 +217,9 @@ $("#viewFamilyData").pagecontainer({
                         viewPersonalInsuranceShow = false; 
                         tab1FamiScrollHeight = false;
                     } else {
-                        $(".deleteErrorMsg .recordInsurErr").addClass('addInlineBlock'); 
                         $(".deleteErrorMsg .hasInsurErr").removeClass('addInlineBlock');
                         $(".deleteErrorMsg .pendingInsurErr").removeClass('addInlineBlock');
+                        $(".deleteErrorMsg .recordInsurErr").addClass('addInlineBlock'); 
                         $(".deleteErrorMsg .main-paragraph").text('');
                         $(".deleteErrorMsg .ui-content>.main").css("margin-top", "");
                         $(".deleteErrorMsg .ui-content>.main").css("margin-top", "10%");
