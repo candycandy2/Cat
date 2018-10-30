@@ -385,10 +385,12 @@ $("#viewLeaveSubmit").pagecontainer({
 
         //搜索代理人
         $(document).on("keyup", "#searchAgent", function(e) {
+
             if (timeoutQueryEmployee != null) {
                 clearTimeout(timeoutQueryEmployee);
                 timeoutQueryEmployee = null;
             }
+
             timeoutQueryEmployee = setTimeout(function() {
 
                 if ($("#searchAgent").val().length == 0) {
@@ -401,7 +403,7 @@ $("#viewLeaveSubmit").pagecontainer({
                 //var searchData = $("#searchAgent").val().match(/^[A-Za-z\.]*/);
                 var searchData = $("#searchAgent").val();
                 //if (searchData[0] != "") {
-                    searchName = searchData[0];
+                    searchName = searchData;
                 //} else {
                 //    searchEmpNo = $("#searchAgent").val();
                 //}
@@ -418,7 +420,7 @@ $("#viewLeaveSubmit").pagecontainer({
 
                 $("#loaderQuery").show();
                 $("#leave-agent-popup-option-list").hide();
-            }, 2000);
+            }, 3000);
 
             if (e.which == 13) {
                 $("#searchAgent").blur();

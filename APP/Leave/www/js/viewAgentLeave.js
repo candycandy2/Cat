@@ -203,8 +203,13 @@ $("#viewAgentLeave").pagecontainer({
         });
 
         $(document).on("keyup", "#searchDeptAgent", function(e) {
-            timoutQueryAgentData = setTimeout(function() {
 
+            if (timoutQueryAgentData != null) {
+                clearTimeout(timoutQueryAgentData);
+                timoutQueryAgentData = null;
+            }
+
+            timoutQueryAgentData = setTimeout(function() {
 
                 if ($("#searchDeptAgent").val().length == 0) {
                     $("#loaderQueryAgent").hide();
@@ -216,7 +221,7 @@ $("#viewAgentLeave").pagecontainer({
                 //var searchData = $("#searchDeptAgent").val().match(/^[A-Za-z\.]*/);
                 var searchData = $("#searchDeptAgent").val();
                 //if (searchData[0] != "") {
-                searchName = searchData[0];
+                searchName = searchData;
                 //} else {
                 //searchEmpNo = $("#searchDeptAgent").val();
                 //}
@@ -231,16 +236,11 @@ $("#viewAgentLeave").pagecontainer({
                     "</qEmpno><qName>" +
                     searchName +
                     "</qName></LayoutHeader>";
-
-                if (timoutQueryAgentData != null) {
-                    clearTimeout(timoutQueryAgentData);
-                    timoutQueryAgentData = null;
-                }
                 //呼叫API
                 QueryAgentEmployeeData();
                 $("#loaderQueryAgent").show();
                 $("#dept-agent-popup-option-list").hide();
-            }, 2000);
+            }, 3000);
             if (e.which == 13) {
                 $("#searchDeptAgent").blur();
             }
