@@ -278,6 +278,8 @@ $(function() {
                 var resultCode = data["result_code"];
 
                 if (resultCode === 1) {
+                    $("#empNumber").html(window.loginData["empNO"]);
+                    $("#pointNow").html(data["point_now"]);
                     window.loginData["signature"] = data["signature"];
                     window.loginData["signatureTime"] = data["signature_time"];
                     window.loginData["token"] = data["token"];
