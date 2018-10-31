@@ -23,7 +23,7 @@ var widget = {
             { id: 5, name: 'qpay', enabled: true, lang: langStr['wgt_009'] },
             { id: 6, name: 'accountingrate', enabled: true, lang: langStr['wgt_070'] },
             { id: 7, name: 'yellowpage', enabled: true, lang: 'Yellow Page' },
-            { id: 8, name: 'qstore', enabled: true, lang: 'QStore' }
+            { id: 8, name: 'qstore', enabled: true, lang: langStr['wgt_100'] }
         ];
     },
     load: function(id, div) {
