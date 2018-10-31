@@ -343,13 +343,13 @@ html body .ui-group-theme-a .ui-bar-inherit {
 
 /*--desktop--*/
 @media screen and (min-width: 500px) {
-    #viewLogin, #viewChangePwd {
+    .ui-page-header-fixed {
+        padding-top: 0;
+    }
+    #viewLogin, #viewChangePwd, #viewRecord {
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-    #viewRecord {
-        display: flex;
     }
     .icon {
         width: 70px;
@@ -417,7 +417,7 @@ html body .ui-group-theme-a .ui-bar-inherit {
     /*--viewChangePwd--*/
     #viewChangePwd .main {
         width: 288px;
-        height: 430px;
+        height: 632px;
     }
     #viewChangePwd .icon-content {
         margin-top: 34px;
@@ -443,9 +443,12 @@ html body .ui-group-theme-a .ui-bar-inherit {
         background-color: #B7B7B7;
     }
     /*--viewRecord--*/
+    #viewRecord .ui-header {
+        background: rgba(0, 0, 0, 0);
+    }
     #viewRecord .main {
         width: 612px;
-        height: 480px;
+        height: 632px;
         box-shadow: none;
     }
     #viewRecord .content {
@@ -453,7 +456,7 @@ html body .ui-group-theme-a .ui-bar-inherit {
         margin-left: 0;
     }
     #viewRecord .record-content {
-        height: 235px;
+        height: 395px;
         margin-bottom: 46px;
     }
     #viewRecord .icon-content .icon-text-content {
