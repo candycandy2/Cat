@@ -49,14 +49,12 @@ $(function() {
                 if (inst.id === "startDate") {
                     var startDate = $("#startDate").datepicker("getDate");
                     var endDate = new Date(startDate.setDate(startDate.getDate() + 7));
-                    //var endDateStr = endDate.getFullYear() + "/" + padLeft(parseInt(endDate.getMonth() + 1, 10), 2) + "/" + padLeft(endDate.getUTCDate(), 2);
                     var endDateStr = formatDate(endDate);
 
                     $("#endDate").datepicker("setDate", endDateStr);
                 } else {
                     var endDate = $("#endDate").datepicker("getDate");
                     var startDate = new Date(endDate.setDate(endDate.getDate() - 5));
-                    //var startDateStr = startDate.getFullYear() + "/" + padLeft(parseInt(startDate.getMonth() + 1, 10), 2) + "/" + padLeft(startDate.getUTCDate(), 2);
                     var startDateStr = formatDate(startDate);
 
                     $("#startDate").datepicker("setDate", startDateStr);
