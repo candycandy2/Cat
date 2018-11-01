@@ -20,7 +20,7 @@
 .page-tab {
     width: 92.58vw;
     height: 8vw;
-    padding: 4vw 3.74vw 8vw;
+    padding: 6vw 3.74vw 8vw;
 }
 
 .page-tab > div {
@@ -48,10 +48,6 @@
 }
 
 /***************************** input item ****************************/
-.page-input {
-    padding-bottom: 5vw;
-}
-
 .input-item {
     width: 100vw;
     height: 15vw;
@@ -66,13 +62,16 @@
 }
 
 .input-item select {
-    width: 51vw;
+    width: 50.5vw;
     height: 8vw;
+    background: #ffffff;
+    border: 1px solid #d6d6d6;
 }
 
 .input-item input {
     width: 50vw;
     height: 6vw;
+    border: 1px solid #d6d6d6;
 }
 
 .btn-long {
