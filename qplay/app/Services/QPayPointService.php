@@ -312,4 +312,38 @@ class QPayPointService
         return $this->qpayPointStoreRepository
                 ->getQPayPointGetRecordList($pointType, $startDate, $endDate, $department, $empNo, $limit, $offset, $sort, $order);
     }
+
+    /**
+     * Get Point Type List
+     * @return mixed
+     */
+    public function getQPayUserPointTypeList()
+    {
+
+        return $this->qpayPointTypeRepository->getAllQPayPointTypeList();
+    }
+
+    /**
+     * Add New Point Type　
+     * @param  string $name        point type name
+     * @param  string $color       point type color
+     * @return boolean insert result
+     */
+    public function newPointType($name, $color)
+    {
+        return $this->qpayPointTypeRepository->newPointType($name, $color, Auth::user()->row_id);
+    }
+
+    /**
+     * Edit Point Type
+     * @param  int    $rowId       the point type row_id which will been update
+     * @param  string $name        update point type name
+     * @param  string $color       update point type color
+     * @param  string $status      update point type status (Y|N)
+     * @return int                 updated result
+     */
+    public function editPointType($rowId, $name, $color, $status)
+    {
+        return $this->qpayPointTypeRepository->editPointType($rowId, $name, $color, $status, Auth::user()->row_id);
+    }
 }

@@ -74,6 +74,7 @@ return [
     'TITLE_QPAY_STORE_RECORD' => 'Store Record',
     'TITLE_QPAY_STORE_EMPLOYEE' => 'Employee Points',
     'TITLE_QPAY_REIMBURSE_PURCHASE_RECORD' => 'Reimburse Purchase Record',
+    'TITLE_QPAY_USER_POINT_TYPE' => 'Point Type',
 
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
@@ -504,5 +505,8 @@ return [
     'QPAY_TRADE_LOCATION'=> 'Location',
     'QPAY_TRADE_POINT'=> 'Point',
     'QPAY_TRADE_ID'=> 'Trade ID',
-    'QPAY_TRADE_STATUS'=> 'Trade Status'
+    'QPAY_TRADE_STATUS'=> 'Trade Status',
+    'QPAY_POINT_COLOR'=>'Color',
+    'QPAY_INPUT_POINT_TYPE'=>'Input Type Name',
+    'QPAY_UPDATE_POINT_TYPE'=>'Edit Coupon'
 ];

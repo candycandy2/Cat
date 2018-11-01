@@ -74,6 +74,7 @@ if(array_key_exists('with_msg_id', $input)) {
     <link href="{{ asset('/bootstrap/css/bootstrap-datetimepicker.css') }}" rel="stylesheet">
     <link href="{{ asset('/bootstrap/css/bootstrap-table-click-edit-row.css') }}" rel="stylesheet">
     <link href="{{ asset('/ui/css/jquery-ui.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/plugins/jQuery-colorpicker/colorpicker.css') }}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{{ asset('/bootstrap/css/font-awesome.min.css') }}" rel="stylesheet">
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">--}}
@@ -89,6 +90,7 @@ if(array_key_exists('with_msg_id', $input)) {
     {{--<link rel="stylesheet" href="style.css">--}}
     
     <script src="{{ asset('/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('/plugins/jQuery-colorpicker/colorpicker.js') }}"></script>
     <script src="{{ asset('/js/extension.js?v='.config('app.static_version')) }}"></script>
     <script src="{{ asset('/js/common.js?v='.config('app.static_version')) }}"></script>
     <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
