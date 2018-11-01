@@ -137,7 +137,7 @@ $(function() {
 
         if (action == "open") {
             $(".message-mask .message .title").html(title);
-            $(".message-mask").show();
+            $(".message-mask").css("display", "flex");
 
             if (redirect != "") {
                 $(".message-mask .message").data("changePage", redirect);
@@ -182,6 +182,7 @@ $(function() {
     }
 
     function logout() {
+        message("close", "");
         window.loginData = {};
 
         clearInterval(window.checkout);
@@ -214,54 +215,69 @@ $(function() {
     initialAPP();
 
     //------------------------General Event------------------------
-    if (window.mobilecheck()) {
-        var screenHeight = document.documentElement.clientHeight;
+    //Modify UI
+    function modifyUI() {
+        if (window.mobilecheck()) {
 
-        //Page
-        $(".page").each(function(index, dom) {
-            if ($(dom).prop("id") == "viewRecord") {
-                $(dom).find(".main").css("margin-top", "26px");
-            } else {
-                var contentHeight = $(dom).find(".main").height();
+            $(".page").css("opacity", 0);
+
+            setTimeout(function() {
+                var screenHeight = document.documentElement.clientHeight;
+
+                //Page
+                $(".page").each(function(index, dom) {
+                    if ($(dom).prop("id") == "viewRecord") {
+                        $(dom).find(".main").css("margin-top", "26px");
+                    } else {
+                        var contentHeight = $(dom).find(".main").height();
+                        var contentMarginTop = parseInt((screenHeight - contentHeight) / 2, 10);
+                        $(dom).find(".main").css("margin-top", contentMarginTop + "px");
+                    }
+                });
+
+                //Message
+                var contentHeight = $(".message").height();
                 var contentMarginTop = parseInt((screenHeight - contentHeight) / 2, 10);
-                $(dom).find(".main").css("margin-top", contentMarginTop + "px");
-            }
-        });
-        
-        //Message
-        var contentHeight = $(".message").height();
-        var contentMarginTop = parseInt((screenHeight - contentHeight) / 2, 10);
-        $(".message").css("margin-top", contentMarginTop + "px");
+                $(".message").css("margin-top", contentMarginTop + "px");
 
-        //Hide number-content
-        $("#viewRecord .number-content").hide();
+                //Hide number-content
+                $("#viewRecord .number-content").hide();
 
-        //Switch Record UI
-        $("#viewRecord .mobile").show();
-        $("#viewRecord .desktop").hide();
+                //Switch Record UI
+                $("#viewRecord .mobile").show();
+                $("#viewRecord .desktop").hide();
 
-        //Page Event
-        changePage("viewLogin");
-    } else {
-        //Switch Record UI
-        $("#viewRecord .mobile").hide();
-        $("#viewRecord .desktop").show();
+                //Set CSS
+                $(".page").css({
+                    "opacity": 1,
+                    "min-height": screenHeight + "px"
+                });
 
-        //Page Event
-        $("#viewLogin").page();
-        $("#viewChangePwd").page();
-        $("#viewRecord").page();
+                //Page Event
+                changePage("viewLogin");
+            }, 100);
+        } else {
+            //Switch Record UI
+            $("#viewRecord .mobile").hide();
+            $("#viewRecord .desktop").show();
 
-        //Page
-        $(".page").each(function(index, dom) {
-            $(dom).css({
-                "min-height": document.documentElement.clientHeight + "px",
-                "padding-top": 0
+            //Page Event
+            $("#viewLogin").page();
+            $("#viewChangePwd").page();
+            $("#viewRecord").page();
+
+            //Page
+            $(".page").each(function(index, dom) {
+                $(dom).css({
+                    "min-height": document.documentElement.clientHeight + "px",
+                    "padding-top": 0
+                });
             });
-        });
 
-        changePage("viewLogin");
+            changePage("viewLogin");
+        }
     }
+    modifyUI();
 
     //Mask
     $(document).on("click", ".mask", function() {
@@ -293,12 +309,36 @@ $(function() {
         message("close", "");
     });
 
+    //Check orientation
+    $(window).on("orientationchange", function(event) {
+        setTimeout(function() {
+
+            if (event.orientation === "landscape") {
+                var divisor = 3;
+                $(".page").css("opacity", 0);
+                message("open", "不支援橫向操作");
+            } else {
+                var divisor = 2;
+                $(".page").css("opacity", 1);
+                message("close", "");
+            }
+
+            //Message
+            var contentHeight = $(".message").height();
+            var contentMarginTop = parseInt((document.documentElement.clientHeight - contentHeight) / divisor, 10);
+            $(".message").css("margin-top", contentMarginTop + "px");
+
+        }, 200);
+    });
+
     //------------------------Page Event------------------------
     //viewLogin
     $("#viewLogin").on("pageshow", function(event, ui) {
         if (checkLogin()) {
             changePage("viewRecord");
         }
+
+        modifyUI();
     });
 
     function loginQPayWeb (tradePwd) {
@@ -542,6 +582,7 @@ $(function() {
 
         if (recordData.length == 0) {
             $("#viewRecord .number-content").hide();
+            message("open", "查無資料");
         } else {
             for (var i=0; i<recordData.length; i++) {
                 var record = $(recordHTML);
