@@ -1,3 +1,10 @@
+<strong>Nov-02-18 00:39:30</strong>
+- Reason : daily build, 639
+- Commit# : 
+058b2b86e - CleoWChan, 8 hours ago : [QPlay API] fix sendPushToken Lock table error
+ff1cfa751 - Darren Ti, 9 hours ago : [QPayWebAPP]Fix Bug
+0bd13f01a - CleoWChan, 16 hours ago : [QPay] PlatForm Add QPayUserPointType Maintain
+
 <strong>Nov-01-18 00:40:46</strong>
 - Reason : daily build, 638
 - Commit# : 
