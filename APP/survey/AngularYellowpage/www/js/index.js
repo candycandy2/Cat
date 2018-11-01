@@ -40,14 +40,66 @@ app.initialize();
 
 var yellowPageApp = angular.module('yellowPage', []);
 
-yellowPageApp.controller('selectTab', function($scope){
-    
+//配置config——变量
+yellowPageApp.config(function($provide) {
+    $provide.value('token', '5bd6a1677793d');
+    $provide.value('pushToken', '140fe1da9e96bb6c81a');
+    $provide.value('uuid', '140fe1da9e96bb6c81a');
+    $provide.value('appKey', 'appyellowpagedev');
+    $provide.value('appSercetKey', 'c103dd9568f8493187e02d4680e1bf2f');
+})
+
+//获取当前时间戳以及sercetKey加密
+yellowPageApp.service('encTimeStamp', function(appSercetKey) {
+    this.getTimeStamp = function() {
+        return Math.round(new Date().getTime() / 1000).toString();
+    }
+
+    this.getSercetKey = function() {
+        var hash = CryptoJS.HmacSHA256(this.getTimeStamp(), appSercetKey);
+        return CryptoJS.enc.Base64.stringify(hash);
+    }
 });
 
-yellowPageApp.controller('queryEmp', function($scope) {
-    $scope.company = 'all';
-
+//控制器
+yellowPageApp.controller('queryEmp', function($scope, $http, encTimeStamp, appKey, uuid, token) {
+    //初始值
+    $scope.company = 'All Company';
+    $scope.cnName = '';
+    $scope.enName = '';
+    $scope.dept = '';
+    $scope.tel = '';
+    
+    //click event
     $scope.checkEmp = function() {
-        alert($scope.company);
+
+        //query data
+        var queryData = '<LayoutHeader><Company>' + $scope.company + '</Company><Name_CH></Name_CH>' + $scope.cnName + '<Name_EN>' +
+            $scope.enName + '</Name_EN><DeptCode>' + $scope.dept + '</DeptCode><Ext_No>' + $scope.tel + '</Ext_No></LayoutHeader>';
+
+        //$http
+        $http({
+            method: 'POST',
+            url: 'https://qplaydev.benq.com/qplayApi/public/v101/custom/'+appKey+'/QueryEmployeeData?lang=zh-cn&uuid='+uuid,
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'App-Key': appKey,
+                'Signature-Time': encTimeStamp.getTimeStamp(),
+                'Signature': encTimeStamp.getSercetKey(),
+                'token': token
+            },
+            dataType: "json",
+            data: queryData,
+            async: true,
+            cache: false,
+            timeout: 30000
+        }).then(function success(data) {
+            console.log(data);
+
+        }, function error() {});
+
+        // $http.get('https://qplaydev.benq.com/widget/string/zh-cn.json').then(function success(data) {
+        //     console.log(data)
+        // }, function error() {});
     }
-})
+});
