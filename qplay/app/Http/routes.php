@@ -243,6 +243,14 @@ Route::group(['prefix' => 'QPayReimburseMaintain'], function () {
     Route::any('getQPayReimbursePurchaseList', ['middleware' => 'auth','uses'=>'qpayController@getQPayReimbursePurchaseList']);
 });
 
+//QPay User Maintain
+Route::group(['prefix' => 'QPayUserMaintain'], function () {
+    Route::any('QPayUserPointType', ['middleware' => 'auth','uses'=>'qpayController@QPayUserPointType']);
+    Route::any('getQPayUserPointTypeList', ['middleware' => 'auth','uses'=>'qpayController@getQPayUserPointTypeList']);
+    Route::any('newPointType', ['middleware' => 'auth','uses'=>'qpayController@newPointType']);
+    Route::any('editPointType', ['middleware' => 'auth','uses'=>'qpayController@editPointType']);
+});
+
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){
   Session::set('lang', $lang);
   return redirect()->to(urldecode($uri));

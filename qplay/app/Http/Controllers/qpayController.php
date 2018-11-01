@@ -183,4 +183,57 @@ class qpayController extends Controller
                                  "userInfo"=>$userInfo,
                                  "pointNow"=>$pointNow]);
     }
+
+    /**
+     * QPay Point Type List - view
+     */
+    public function QPayUserPointType(){            
+        return view("qpay_maintain/qpay_user_maintain/point_type");
+    }
+
+    /**
+     * Get QPay User Point Type List
+     * @param  Request $request
+     * @return mixed
+     */
+    public function getQPayUserPointTypeList(Request $request){
+        return $this->qpayPointService->getQPayUserPointTypeList();
+    }
+
+    /**
+     * Add New Point Type
+     * @param  Request $request
+     * @return json
+     */
+    public function newPointType(Request $request){
+        $name =  (trim($request->name) == "")?null:trim($request->name);
+        $color = $request->color;
+        $insertRs = $this->qpayPointService->newPointType($name, $color);
+
+        if ($insertRs) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+
+        return json_encode($result);
+    }
+
+    public function editPointType(Request $request){
+
+        $rowId = $request->rowId;
+        $color = $request->color;
+        $status = $request->status;
+        $name =  (trim($request->name) == "")?null:trim($request->name);
+        
+        $updateRs = $this->qpayPointService->editPointType($rowId, $name, $color, $status);
+        
+        if ($updateRs == 1) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+        return json_encode($result);
+        
+    }
 }

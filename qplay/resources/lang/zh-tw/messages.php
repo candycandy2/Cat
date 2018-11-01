@@ -74,6 +74,7 @@ return [
     'TITLE_QPAY_STORE_RECORD' => '儲值紀錄',
     'TITLE_QPAY_STORE_EMPLOYEE' => '員工發放紀錄',
     'TITLE_QPAY_REIMBURSE_PURCHASE_RECORD' => '員工消費紀錄',
+    'TITLE_QPAY_USER_POINT_TYPE' => '消費券資料',
 
     'ENABLE' => '啟用',
     'DISABLE' => '停用',
@@ -504,5 +505,10 @@ return [
     'QPAY_TRADE_LOCATION'=> '交易地點',
     'QPAY_TRADE_POINT'=> '交易金額',
     'QPAY_TRADE_ID'=> '交易碼',
-    'QPAY_TRADE_STATUS'=> '交易狀態'
+    'QPAY_TRADE_STATUS'=> '交易狀態',
+    'QPAY_POINT_TYPE_STATUS'=> '狀態',
+    'QPAY_POINT_COLOR'=>'代表色',
+    'QPAY_INPUT_POINT_TYPE'=>'請輸入消費券類型',
+    'QPAY_UPDATE_POINT_TYPE'=>'修改消費券資料'
+
 ];
