@@ -2301,43 +2301,39 @@ SQL;
 
             $now = date('Y-m-d H:i:s',time());
             $user = CommonUtil::getUserInfoByUUID($uuid);
-            \DB::beginTransaction();
-            try {
-                if(count($existPushToken) > 0) {
-                    \DB::table("qp_push_token")
-                        -> where('register_row_id', "=", $registerId)
-                        -> where('project_row_id', "=", $projectId)
-                        -> where('device_type', "=", $deviceType)
-                        ->update([
-                            'push_token'=>$pushToken,
-                            'updated_at'=>$now,
-                            'updated_user'=>$user->row_id,]);
-                } else {
-                    \DB::table("qp_push_token")->insert([
-                        'register_row_id'=>$registerId,
-                        'project_row_id'=>$projectId,
-                        'push_token'=>$pushToken,
-                        'created_user'=>$user->row_id,
-                        'created_at'=>$now,
-                        'device_type'=>$deviceType]);
-                }
-                if($projectId == 1){
-                    //Register to JPush Tag
-                    //1. According to the ad_flag decide the [flag name]
-                    $tag = PushUtil::GetTagByUserInfo($userInfo, CommonUtil::ADFlag($uuid));
-                    $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
-                    
-                }
-                \DB::commit();
-            } catch (\Exception $e) {
-                \DB::rollBack();
-                throw $e;
+             
+            if($projectId == 1){
+                //Register to JPush Tag
+                //1. According to the ad_flag decide the [flag name]
+                $tag = PushUtil::GetTagByUserInfo($userInfo, CommonUtil::ADFlag($uuid));
+                $pushResult = PushUtil::AddTagsWithJPushWebAPI($pushToken, $tag);
+                
             }
 
+            if(count($existPushToken) > 0) {
+                \DB::table("qp_push_token")
+                    -> where('register_row_id', "=", $registerId)
+                    -> where('project_row_id', "=", $projectId)
+                    -> where('device_type', "=", $deviceType)
+                    ->update([
+                        'push_token'=>$pushToken,
+                        'updated_at'=>$now,
+                        'updated_user'=>$user->row_id,]);
+            } else {
+                \DB::table("qp_push_token")->insert([
+                    'register_row_id'=>$registerId,
+                    'project_row_id'=>$projectId,
+                    'push_token'=>$pushToken,
+                    'created_user'=>$user->row_id,
+                    'created_at'=>$now,
+                    'device_type'=>$deviceType]);
+            }
+            
             $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
                 'message'=>trans("messages.MSG_CALL_SERVICE_SUCCESS"),
                 'content'=>array('uuid'=>$uuid)
             ];
+            
             return response()->json($result);
         } else {
             $result = ['result_code'=>$verifyResult["code"],
