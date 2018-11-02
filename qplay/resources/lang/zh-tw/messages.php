@@ -75,6 +75,7 @@ return [
     'TITLE_QPAY_STORE_EMPLOYEE' => '員工發放紀錄',
     'TITLE_QPAY_REIMBURSE_PURCHASE_RECORD' => '員工消費紀錄',
     'TITLE_QPAY_USER_POINT_TYPE' => '消費券資料',
+    'TITLE_QPAY_USER_SHOP' => '店家資料',
 
     'ENABLE' => '啟用',
     'DISABLE' => '停用',

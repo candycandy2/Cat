@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 //use App\Services\QPayManagerService;
-//use App\Services\QPayShopService;
+use App\Services\QPayShopService;
 use App\Services\QPayPointService;
 use App\Services\QPayMemberService;
 use App\Services\QPayTradeService;
@@ -35,9 +35,9 @@ class qpayController extends Controller
      */
     public function __construct(QPayPointService $qpayPointService,
                                 QPayTradeService $qpayTradeService,
-                                QPayMemberService $qpayMemberService
+                                QPayMemberService $qpayMemberService,
+                                QPayShopService $qpayShopService
                                 /*QPayManagerService $qpayManagerService,
-                                QPayShopService $qpayShopService,
                                 QPayMemberService $qpayMemberService,
                                 LogService $logService*/)
     {
@@ -46,6 +46,7 @@ class qpayController extends Controller
         $this->qpayPointService = $qpayPointService;
         $this->qpayMemberService = $qpayMemberService;
         $this->qpayTradeService = $qpayTradeService;
+        $this->qpayShopService = $qpayShopService;
         //$this->logService = $logService;
     }
 
@@ -219,6 +220,11 @@ class qpayController extends Controller
         return json_encode($result);
     }
 
+    /**
+     * Edit Point Type
+     * @param  Request $request
+     * @return json
+     */
     public function editPointType(Request $request){
 
         $rowId = $request->rowId;
@@ -229,6 +235,34 @@ class qpayController extends Controller
         $updateRs = $this->qpayPointService->editPointType($rowId, $name, $color, $status);
         
         if ($updateRs == 1) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+        return json_encode($result);
+        
+    }
+
+
+    public function QPayUserShop(){
+        return view("qpay_maintain/qpay_user_maintain/shop");
+    }
+
+    public function getQPayShopList(){
+        return $this->qpayShopService->getQPayShopList();
+    }
+
+    public function newQPayShop(Request $request){
+        
+        $name = ($request->name == "")?null:$request->name;
+        $address = (trim($request->address) == "")?null:trim($request->address);
+        $tel = (trim($request->tel) == "")?null:trim($request->tel);
+        $loginId = (trim($request->loginId) == "")?null:trim($request->loginId);
+        $pwd = (trim($request->pwd) == "")?null:trim($request->pwd);
+
+        $newShopRs = $this->qpayShopService->newQPayShop($name, $address, $tel, $loginId, $pwd);
+
+        if ($newShopRs) {
             $result["result_code"] = ResultCode::_1_reponseSuccessful;
         } else {
             $result["result_code"] = ResultCode::_999999_unknownError;

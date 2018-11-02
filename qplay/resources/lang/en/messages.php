@@ -75,6 +75,7 @@ return [
     'TITLE_QPAY_STORE_EMPLOYEE' => 'Employee Points',
     'TITLE_QPAY_REIMBURSE_PURCHASE_RECORD' => 'Reimburse Purchase Record',
     'TITLE_QPAY_USER_POINT_TYPE' => 'Point Type',
+    'TITLE_QPAY_USER_SHOP' => 'Shop',
 
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',

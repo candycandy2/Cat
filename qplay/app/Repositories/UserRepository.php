@@ -33,5 +33,9 @@ class UserRepository
         ->where('login_id','=', $loginId)
         ->update($updateData);
     }
+
+    public function newUser($userData){
+        return $this->user->insert($userData);
+    }
     
 }
