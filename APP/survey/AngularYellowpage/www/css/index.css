@@ -1,3 +1,18 @@
+ul {
+    margin: 0;
+    list-style-type: none;
+}
+
+a {
+    color: #1F84BC;
+    text-decoration: none;
+}
+
+a :hover,
+a :visited {
+    color: #1F84BC;
+}
+
 /********************************* header *********************************/
 .page-header {
     position: fixed;
@@ -104,4 +119,92 @@
     border: none;
     background: #fff;
     outline: none;
+}
+
+/***************************** result ****************************/
+.result-list {
+    width: 92.58vw;
+    padding: 0 3.71vw;
+}
+
+.result-list li {
+    width: 92.58%;
+    height: 12vw;
+    padding: 3vw 3.71vw;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.result-list li > div {
+    height: 100%;
+    float: left;
+}
+
+.result-list li > div:nth-of-type(1) {
+    width: 55%;
+}
+
+.result-list li > div:nth-of-type(2) {
+    width: 8%;
+}
+
+.result-list li > div:nth-of-type(2) img {
+    width: 4vw;
+    margin-top: 4vw;
+}
+
+.result-list li > div:nth-of-type(3) {
+    width: 25%;
+    line-height: 12vw;
+    font-size: 4.18vw;
+}
+
+.result-list li > div:nth-of-type(4) {
+    width: 12%;
+}
+
+.result-list li > div:nth-of-type(4) img {
+    width: 6vw;
+    margin-top: 3vw;
+    margin-left: 4vw;
+}
+
+/***************************** detail ****************************/
+.info-detail {
+    width: 92.58vw;
+    padding: 0 3.71vw;
+}
+
+.info-head {
+    width: 100%;
+    height: 15vw;
+    padding: 3vw 0 0;
+}
+
+.info-head > div {
+    height: 100%;
+    float: left;
+}
+
+.info-head > div:nth-of-type(1) {
+    width: 90%;
+}
+
+.info-head > div:nth-of-type(2) {
+    width: 10%;
+}
+
+.info-head > div:nth-of-type(2) img {
+    width: 8vw;
+    margin-top: 2vw;
+}
+
+.info-main {
+    width: 100%;
+    height: 12vw;
+    padding: 3vw 0;
+    border-bottom: 1px solid #d6d6d6; 
+}
+
+.info-main > div:nth-of-type(2) {
+    color: #1F84BC;
 }
