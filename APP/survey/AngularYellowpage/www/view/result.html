@@ -1,0 +1,14 @@
+<div class="page-header">查询结果</div>
+<div class="page-main">
+    <ul class="result-list">
+        <li ng-repeat="i in list">
+            <div>
+                <div>{{i.Name_EN}}</div>
+                <div>{{i.Name_CH}}</div>
+            </div>
+            <div><img src="img/phone.png"></div>
+            <div><a href="tel:{{i.Ext_No}}">{{i.Ext_No | telFilter}}</a></div>
+            <div><img src="img/info.png" ng-click="empDetail(i.Company, i.Name_EN)"></div>
+        </li>
+    </ul>
+</div>

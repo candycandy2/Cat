@@ -1,0 +1,46 @@
+<div class="page-header">Yellow Page</div>
+<div class="page-main">
+    <!--tab-->
+    <div class="page-tab">
+        <div>
+            <div class="active-tab">我要查询</div>
+            <div>我的电话薄</div>
+        </div>
+    </div>
+    <!--form-->
+    <div class="page-input">
+        <form>
+            <div class="input-item">
+                <label for="company">公司名称</label>
+                <select name="company" ng-model="company" ng-init="company='All Company'">
+                    <option value="All Company">All Company</option>
+                    <option value="BenQ">BenQ</option>
+                    <option value="Qisda">Qisda</option>
+                </select>
+            </div>
+            <div class="input-item">
+                <label for="cnName">中文姓名</label>
+                <input type="text" name="cnName" ng-model="cnName">
+            </div>
+            <div class="input-item">
+                <label for="enName">英文姓名</label>
+                <input type="text" name="enName" ng-model="enName">
+            </div>
+            <div class="input-item">
+                <label for="dept">部门名称</label>
+                <input type="text" name="dept" ng-model="dept">
+            </div>
+            <div class="input-item">
+                <label for="tel">分机号码</label>
+                <input type="text" name="tel" ng-model="tel">
+            </div>
+            <!--button-->
+            <div class="btn-long">
+                <button class="active-btn" ng-click="checkEmp()">查询</button>
+            </div>
+            <div class="btn-short">
+                <button type="reset" class="clear-btn">X 清除</button>
+            </div>
+        </form>
+    </div>
+</div>
