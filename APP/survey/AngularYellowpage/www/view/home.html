@@ -2,13 +2,13 @@
 <div class="page-main">
     <!--tab-->
     <div class="page-tab">
-        <div>
-            <div class="active-tab">我要查询</div>
-            <div>我的电话薄</div>
-        </div>
+        <ul>
+            <li ng-class="{activeTab:type == 'search'}" ng-click="changeTab('search')">我要查询</li>
+            <li ng-class="{activeTab:type == 'phonebook'}" ng-click="changeTab('phonebook')">我的电话薄</li>
+        </ul>
     </div>
     <!--form-->
-    <div class="page-input">
+    <div ng-show="tab1">
         <form>
             <div class="input-item">
                 <label for="company">公司名称</label>
@@ -42,5 +42,49 @@
                 <button type="reset" class="clear-btn">X 清除</button>
             </div>
         </form>
+    </div>
+    <div ng-show="tab2">
+        <div>
+            <div class="edit-btn" ng-show="toolbar1">
+                <span ng-click="editPhonebook()">编辑</span>
+            </div>
+            <div class="cancel-btn" ng-show="toolbar2">
+                <div>
+                    <span ng-click="editPhonebook()">取消</span>
+                </div>
+                <div>
+                    <!-- <span>删除</span> -->
+                    <button class="delete-emp" ng-disabled="deleteDisabled" ng-click="deletePhonebook()">删除</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="book-list">
+                <li ng-repeat="i in newPhonebook">
+                    <div ng-show="toolbar2">
+                        <div class="bookList{{$index}}" ng-click="empSelect($index)"></div>
+                    </div>
+                    <div>
+                        <div>{{i.Name_EN}}</div>
+                        <div>{{i.Name_CH}}</div>
+                    </div>
+                    <div>
+                        <img src="img/phone.png">
+                    </div>
+                    <div>
+                        <a href="tel:{{i.Ext_No}}">{{i.Ext_No | telFilter}}</a>
+                    </div>
+                    <div ng-show="toolbar1">
+                        <img src="img/info.png" ng-click="empDetail(i.Company, i.Name_EN)">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="mask" ng-show="msgCheck">
+    <div class="dialog">
+        <div class="dialog-header">请输入查询条件!</div>
+        <div class="dialog-footer one-btn" ng-click="closePopup()">确认</div>
     </div>
 </div>
