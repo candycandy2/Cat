@@ -20,17 +20,21 @@ var app = {
 
 app.initialize();
 
+
 /*********************************************** Angular *************************************************/
 var yellowPageApp = angular.module('yellowPage', ['ngRoute']);
+
 
 /*********************************************** Config *************************************************/
 //配置变量
 yellowPageApp.config(function($provide) {
-    $provide.value('token', '5bdfcfa7413f1');
+    //$provide.value('token', '5bdfcfa7413f1'); //模拟QPlay登录获取token
     $provide.value('pushToken', '140fe1da9e96bb6c81a');
     $provide.value('uuid', '140fe1da9e96bb6c81a');
     $provide.value('appKey', 'appyellowpagedev');
     $provide.value('appSercetKey', 'c103dd9568f8493187e02d4680e1bf2f');
+    $provide.value('qplayAppKey', 'appqplaydev');
+    $provide.value('qplaySercetKey', 'swexuc453refebraXecujeruBraqAc4e');
 });
 
 //配置路由
@@ -53,9 +57,10 @@ yellowPageApp.config(function($routeProvider) {
         });
 })
 
+
 /*********************************************** Service *************************************************/
 //获取当前时间戳以及sercetKey加密
-yellowPageApp.service('encTimeStamp', function(appSercetKey) {
+yellowPageApp.service('encTimeStamp', function(appSercetKey, qplaySercetKey) {
     this.getTimeStamp = function() {
         return Math.round(new Date().getTime() / 1000).toString();
     }
@@ -64,11 +69,53 @@ yellowPageApp.service('encTimeStamp', function(appSercetKey) {
         var hash = CryptoJS.HmacSHA256(this.getTimeStamp(), appSercetKey);
         return CryptoJS.enc.Base64.stringify(hash);
     }
+
+    this.getQPlaySercetKey = function() {
+        var hash = CryptoJS.HmacSHA256(this.getTimeStamp(), qplaySercetKey);
+        return CryptoJS.enc.Base64.stringify(hash);
+    }
 });
 
 
 /*********************************************** Factory *************************************************/
-yellowPageApp.factory('myPhonebook', function($rootScope, $http, appKey, uuid, token, encTimeStamp) {
+yellowPageApp.factory('QPlayLogin', function($rootScope, $http, qplayAppKey, uuid, encTimeStamp, myPhonebook) {
+    var factory = {};
+    
+    factory.getToken = function() {
+        $http({
+            method: 'GET',
+            url: 'https://qplaydev.benq.com/qplayApi/public/v101/qplay/login?lang=en-us&uuid=' + uuid + '&device_type=android',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'App-Key': qplayAppKey,
+                'Signature-Time': encTimeStamp.getTimeStamp(),
+                'Signature': encTimeStamp.getQPlaySercetKey(),
+                'domain': 'qgroup',
+                'loginid': 'allen.z.yuan',
+                'password': 'yz$881215',
+                'redirect-uri': 'http://benQ.com.tw',
+                'loginType': 'AD'
+            },
+            dataType: "json",
+            data: null,
+            async: true,
+            cache: false,
+            timeout: 30000
+        }).then(function success(data) {
+            $rootScope.token = data['data']['content']['token'];
+            //console.log($rootScope.token);
+            window.sessionStorage.setItem('haveToken', 'Y');
+            //获取token后再获取电话薄
+            myPhonebook.getMyPhonebook();
+
+        }, function error() {});
+    }
+
+    return factory;
+});
+
+
+yellowPageApp.factory('myPhonebook', function($rootScope, $http, appKey, uuid, encTimeStamp) {
     var factory = {};
 
     factory.getMyPhonebook = function() {
@@ -77,13 +124,13 @@ yellowPageApp.factory('myPhonebook', function($rootScope, $http, appKey, uuid, t
         //$http
         $http({
             method: 'POST',
-            url: 'https://qplaydev.benq.com/qplayApi/public/v101/custom/'+appKey+'/QueryMyPhoneBook?lang=zh-cn&uuid='+uuid,
+            url: 'https://qplaydev.benq.com/qplayApi/public/v101/custom/' + appKey + '/QueryMyPhoneBook?lang=zh-cn&uuid=' + uuid,
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 'App-Key': appKey,
                 'Signature-Time': encTimeStamp.getTimeStamp(),
                 'Signature': encTimeStamp.getSercetKey(),
-                'token': token
+                'token': $rootScope.token
             },
             dataType: "json",
             data: queryData,
@@ -93,7 +140,6 @@ yellowPageApp.factory('myPhonebook', function($rootScope, $http, appKey, uuid, t
         }).then(function success(data) {
             $rootScope.newPhonebook = data['data']['Content'];
             //console.log($rootScope.newPhonebook);
-            window.sessionStorage.setItem('firstQueryPhonebook', 'Y');
 
         }, function error() {});
 
@@ -103,7 +149,7 @@ yellowPageApp.factory('myPhonebook', function($rootScope, $http, appKey, uuid, t
 
 });
 
-yellowPageApp.factory('deleteMyPhonebook', function($http, appKey, uuid, token, encTimeStamp, myPhonebook) {
+yellowPageApp.factory('deleteMyPhonebook', function($rootScope, $http, appKey, uuid, encTimeStamp, myPhonebook) {
     var factory = {};
 
     factory.deletePhonebook = function(empId, empCompany) {
@@ -113,13 +159,13 @@ yellowPageApp.factory('deleteMyPhonebook', function($http, appKey, uuid, token, 
         //$http
         $http({
             method: 'POST',
-            url: 'https://qplaydev.benq.com/qplayApi/public/v101/custom/'+appKey+'/DeleteMyPhoneBook?lang=zh-cn&uuid='+uuid,
+            url: 'https://qplaydev.benq.com/qplayApi/public/v101/custom/' + appKey + '/DeleteMyPhoneBook?lang=zh-cn&uuid=' + uuid,
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 'App-Key': appKey,
                 'Signature-Time': encTimeStamp.getTimeStamp(),
                 'Signature': encTimeStamp.getSercetKey(),
-                'token': token
+                'token': $rootScope.token
             },
             dataType: "json",
             data: queryData,
@@ -140,7 +186,7 @@ yellowPageApp.factory('deleteMyPhonebook', function($http, appKey, uuid, token, 
     return factory;
 });
 
-yellowPageApp.factory('ToDetail', function($http, $location, appKey, uuid, token, encTimeStamp) {
+yellowPageApp.factory('ToDetail', function($rootScope, $http, $location, appKey, uuid, encTimeStamp) {
     var factory = {};
 
     factory.changeView = function(company, enName) {
@@ -150,13 +196,13 @@ yellowPageApp.factory('ToDetail', function($http, $location, appKey, uuid, token
         //$http
         $http({
             method: 'POST',
-            url: 'https://qplaydev.benq.com/qplayApi/public/v101/custom/'+appKey+'/QueryEmployeeDataDetail?lang=zh-cn&uuid='+uuid,
+            url: 'https://qplaydev.benq.com/qplayApi/public/v101/custom/' + appKey + '/QueryEmployeeDataDetail?lang=zh-cn&uuid=' + uuid,
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 'App-Key': appKey,
                 'Signature-Time': encTimeStamp.getTimeStamp(),
                 'Signature': encTimeStamp.getSercetKey(),
-                'token': token
+                'token': $rootScope.token
             },
             dataType: "json",
             data: queryData,
@@ -188,8 +234,9 @@ yellowPageApp.filter('telFilter', function() {
     }
 });
 
+
 /************************************************ Controller ************************************************/
-yellowPageApp.controller('HomeController', function($rootScope, $scope, $http, $location, encTimeStamp, appKey, uuid, token, myPhonebook, deleteMyPhonebook, ToDetail) {
+yellowPageApp.controller('HomeController', function($rootScope, $scope, $http, $location, encTimeStamp, appKey, uuid, deleteMyPhonebook, ToDetail, QPlayLogin) {
     //初始值
     $scope.cnName = '';
     $scope.enName = '';
@@ -203,11 +250,11 @@ yellowPageApp.controller('HomeController', function($rootScope, $scope, $http, $
     $scope.selectCount = 0;
     $scope.deleteDisabled = true;
     $scope.msgCheck = false;
-    
-    //first get my phonebook
-    var first = window.sessionStorage.getItem('firstQueryPhonebook');
-    if(first == null) {
-        myPhonebook.getMyPhonebook();
+
+    //get token just once
+    var haveToken = window.sessionStorage.getItem('haveToken');
+    if(haveToken == null) {
+        QPlayLogin.getToken();
     }
 
     //change tab
@@ -239,7 +286,7 @@ yellowPageApp.controller('HomeController', function($rootScope, $scope, $http, $
                     'App-Key': appKey,
                     'Signature-Time': encTimeStamp.getTimeStamp(),
                     'Signature': encTimeStamp.getSercetKey(),
-                    'token': token
+                    'token': $rootScope.token
                 },
                 dataType: "json",
                 data: queryData,
@@ -247,7 +294,7 @@ yellowPageApp.controller('HomeController', function($rootScope, $scope, $http, $
                 cache: false,
                 timeout: 30000
             }).then(function success(data) {
-                console.log(data);
+                //console.log(data);
                 window.sessionStorage.setItem('recordList', JSON.stringify(data['data']['Content']));
                 $location.path('/result');
 
@@ -334,7 +381,7 @@ yellowPageApp.controller('ResultController', function($scope, $location, ToDetai
 
 });
 
-yellowPageApp.controller('DetailController', function($rootScope, $scope, $location, $http, encTimeStamp, appKey, uuid, token, myPhonebook) {
+yellowPageApp.controller('DetailController', function($rootScope, $scope, $location, $http, encTimeStamp, appKey, uuid, myPhonebook) {
     //get data
     $scope.info = JSON.parse(window.sessionStorage.getItem('empDetail'));
     //console.log($scope.info);
@@ -402,7 +449,7 @@ yellowPageApp.controller('DetailController', function($rootScope, $scope, $locat
                 'App-Key': appKey,
                 'Signature-Time': encTimeStamp.getTimeStamp(),
                 'Signature': encTimeStamp.getSercetKey(),
-                'token': token
+                'token': $rootScope.token
             },
             dataType: "json",
             data: queryData,
@@ -439,7 +486,7 @@ yellowPageApp.controller('DetailController', function($rootScope, $scope, $locat
                 'App-Key': appKey,
                 'Signature-Time': encTimeStamp.getTimeStamp(),
                 'Signature': encTimeStamp.getSercetKey(),
-                'token': token
+                'token': $rootScope.token
             },
             dataType: "json",
             data: queryData,
