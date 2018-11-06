@@ -28,9 +28,8 @@ var yellowPageApp = angular.module('yellowPage', ['ngRoute']);
 /*********************************************** Config *************************************************/
 //配置变量
 yellowPageApp.config(function($provide) {
-    //$provide.value('token', '5bdfcfa7413f1'); //模拟QPlay登录获取token
     $provide.value('pushToken', '140fe1da9e96bb6c81a');
-    $provide.value('uuid', '140fe1da9e96bb6c81a');
+    $provide.value('uuid', '1a0018970aaa9490a51');
     $provide.value('appKey', 'appyellowpagedev');
     $provide.value('appSercetKey', 'c103dd9568f8493187e02d4680e1bf2f');
     $provide.value('qplayAppKey', 'appqplaydev');
@@ -55,7 +54,7 @@ yellowPageApp.config(function($routeProvider) {
         .otherwise({
             redirectTo:'/home'
         });
-})
+});
 
 
 /*********************************************** Service *************************************************/
@@ -78,6 +77,7 @@ yellowPageApp.service('encTimeStamp', function(appSercetKey, qplaySercetKey) {
 
 
 /*********************************************** Factory *************************************************/
+//模拟登录QPlay获取token
 yellowPageApp.factory('QPlayLogin', function($rootScope, $http, qplayAppKey, uuid, encTimeStamp, myPhonebook) {
     var factory = {};
     
@@ -90,9 +90,9 @@ yellowPageApp.factory('QPlayLogin', function($rootScope, $http, qplayAppKey, uui
                 'App-Key': qplayAppKey,
                 'Signature-Time': encTimeStamp.getTimeStamp(),
                 'Signature': encTimeStamp.getQPlaySercetKey(),
-                'domain': 'qgroup',
-                'loginid': 'allen.z.yuan',
-                'password': 'yz$881215',
+                'domain': 'benq',
+                'loginid': 'QPlay',
+                'password': 'BenQ5678',
                 'redirect-uri': 'http://benQ.com.tw',
                 'loginType': 'AD'
             },
@@ -102,19 +102,20 @@ yellowPageApp.factory('QPlayLogin', function($rootScope, $http, qplayAppKey, uui
             cache: false,
             timeout: 30000
         }).then(function success(data) {
+            //console.log(data);
             $rootScope.token = data['data']['content']['token'];
-            //console.log($rootScope.token);
             window.sessionStorage.setItem('haveToken', 'Y');
             //获取token后再获取电话薄
             myPhonebook.getMyPhonebook();
 
         }, function error() {});
+
     }
 
     return factory;
 });
 
-
+//获取我的电话薄
 yellowPageApp.factory('myPhonebook', function($rootScope, $http, appKey, uuid, encTimeStamp) {
     var factory = {};
 
@@ -146,9 +147,9 @@ yellowPageApp.factory('myPhonebook', function($rootScope, $http, appKey, uuid, e
     }
 
     return factory;
-
 });
 
+//删除电话薄常用联系人
 yellowPageApp.factory('deleteMyPhonebook', function($rootScope, $http, appKey, uuid, encTimeStamp, myPhonebook) {
     var factory = {};
 
@@ -181,11 +182,13 @@ yellowPageApp.factory('deleteMyPhonebook', function($rootScope, $http, appKey, u
             }
 
         }, function error() {});
+
     }
 
     return factory;
 });
 
+//获取联系人详细信息
 yellowPageApp.factory('ToDetail', function($rootScope, $http, $location, appKey, uuid, encTimeStamp) {
     var factory = {};
 
@@ -215,6 +218,7 @@ yellowPageApp.factory('ToDetail', function($rootScope, $http, $location, appKey,
             $location.path('/detail');
 
         }, function error() {});
+
     }
 
     return factory;
@@ -223,6 +227,7 @@ yellowPageApp.factory('ToDetail', function($rootScope, $http, $location, appKey,
 
 
 /*********************************************** Filter *************************************************/
+//过滤多余联系方式
 yellowPageApp.filter('telFilter', function() {
     return function(str) {
         var index = str.indexOf(';');
@@ -275,7 +280,7 @@ yellowPageApp.controller('HomeController', function($rootScope, $scope, $http, $
         } else {
             //query data
             var queryData = '<LayoutHeader><Company>' + $scope.company + '</Company><Name_CH>' + $scope.cnName + '</Name_CH><Name_EN>' +
-            $scope.enName + '</Name_EN><DeptCode>' + $scope.dept + '</DeptCode><Ext_No>' + $scope.tel + '</Ext_No></LayoutHeader>';
+                $scope.enName + '</Name_EN><DeptCode>' + $scope.dept + '</DeptCode><Ext_No>' + $scope.tel + '</Ext_No></LayoutHeader>';
 
             //$http
             $http({
@@ -321,11 +326,11 @@ yellowPageApp.controller('HomeController', function($rootScope, $scope, $http, $
         if(!haveClass.hasClass('activeBackground')) {
             haveClass.addClass('activeBackground');
             $scope.selectCount++;
-            $rootScope.newPhonebook[index].confirmDelete = true;
+            $rootScope.newPhonebook[index].canDelete = true;
         } else {
             haveClass.removeClass('activeBackground');
             $scope.selectCount--;
-            $rootScope.newPhonebook[index].confirmDelete = false;
+            $rootScope.newPhonebook[index].canDelete = false;
         }
 
         //delete btn disabled
@@ -339,7 +344,7 @@ yellowPageApp.controller('HomeController', function($rootScope, $scope, $http, $
     //confirm delete phonebook
     $scope.deletePhonebook = function() {
         angular.forEach($rootScope.newPhonebook, function(item, index) {
-            if(item.confirmDelete) {
+            if(item.canDelete) {
                 deleteMyPhonebook.deletePhonebook(item.EmployeeID, item.Company);
             }
         });
@@ -352,7 +357,7 @@ yellowPageApp.controller('HomeController', function($rootScope, $scope, $http, $
 
     //change page to detail
     $scope.empDetail = function(company, enName) {
-        window,sessionStorage.setItem('detailFrom', 'home');
+        window.sessionStorage.setItem('detailFrom', 'home');
         ToDetail.changeView(company, enName);
     }
 
@@ -370,7 +375,7 @@ yellowPageApp.controller('ResultController', function($scope, $location, ToDetai
 
     //employee detail
     $scope.empDetail = function(company, enName) {
-        window,sessionStorage.setItem('detailFrom', 'result');
+        window.sessionStorage.setItem('detailFrom', 'result');
         ToDetail.changeView(company, enName);
     }
 
