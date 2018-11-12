@@ -104,7 +104,7 @@ class UserRepository
      * @param  Array $data   user data to be updated
      * @return boolean  update() result
      */
-    public function updatUser($userId, $data){
+    public function updateUser($userId, $data){
 
          return $this->user::find($userId)
                      ->update($data);

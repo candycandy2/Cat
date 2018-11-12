@@ -41,7 +41,7 @@ return [
     'SEARCH' => 'Search',
     'SEARCH_FROM' => 'From',
     'SEARCH_TO' => 'To',
-    'OPEN' => 'ppen',
+    'OPEN' => 'open',
     'CLOSE' => 'close',
     'CONFIRM' => 'confirm',
 

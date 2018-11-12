@@ -156,7 +156,7 @@ class QPayShopService
                         'login_id'      => $loginId,
                         'updated_user'  => Auth::user()->row_id
                        ];
-           $updateUserRs = $this->userRepository->updatUser($shopUserInfo->user_row_id, $userData);
+           $updateUserRs = $this->userRepository->updateUser($shopUserInfo->user_row_id, $userData);
 
            $shopData = ['address'       => $address,
                         'updated_user'  => Auth::user()->row_id
@@ -194,7 +194,7 @@ class QPayShopService
                             'updated_user'  => Auth::user()->row_id,
                             'deleted_at'    => $now 
                            ];
-               $updateUserRs = $this->userRepository->updatUser($shopUserInfo->user_row_id, $userData);
+               $updateUserRs = $this->userRepository->updateUser($shopUserInfo->user_row_id, $userData);
 
                $shopData = [
                             'updated_user'  => Auth::user()->row_id,
