@@ -12,7 +12,8 @@ class QP_User extends Model implements  Authenticatable
 {
     protected $table = 'qp_user';
     protected $primaryKey = 'row_id';
-
+    protected $guarded = [];
+    
     public static $rules = [
         'login_id' => 'required',
         'password'=>'required|alpha_num|between:6,12|confirmed',
