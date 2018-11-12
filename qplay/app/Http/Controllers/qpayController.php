@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 //use App\Services\QPayManagerService;
-//use App\Services\QPayShopService;
+use App\Services\QPayShopService;
 use App\Services\QPayPointService;
 use App\Services\QPayMemberService;
 use App\Services\QPayTradeService;
-//use App\Services\LogService;
+use App\Services\LogService;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
 use DB;
@@ -35,18 +35,19 @@ class qpayController extends Controller
      */
     public function __construct(QPayPointService $qpayPointService,
                                 QPayTradeService $qpayTradeService,
-                                QPayMemberService $qpayMemberService
-                                /*QPayManagerService $qpayManagerService,
-                                QPayShopService $qpayShopService,
                                 QPayMemberService $qpayMemberService,
-                                LogService $logService*/)
+                                QPayShopService $qpayShopService,
+                                LogService $logService
+                                /*QPayManagerService $qpayManagerService,
+                                QPayMemberService $qpayMemberService*/)
     {
         //$this->qpayManagerService = $qpayManagerService;
         //$this->qpayShopService = $qpayShopService;
         $this->qpayPointService = $qpayPointService;
         $this->qpayMemberService = $qpayMemberService;
         $this->qpayTradeService = $qpayTradeService;
-        //$this->logService = $logService;
+        $this->qpayShopService = $qpayShopService;
+        $this->logService = $logService;
     }
 
     /**
@@ -219,6 +220,11 @@ class qpayController extends Controller
         return json_encode($result);
     }
 
+    /**
+     * Edit Point Type
+     * @param  Request $request
+     * @return json
+     */
     public function editPointType(Request $request){
 
         $rowId = $request->rowId;
@@ -236,4 +242,187 @@ class qpayController extends Controller
         return json_encode($result);
         
     }
+
+    /**
+     * QPay shop list - view
+     */
+    public function QPayUserShop(){
+        return view("qpay_maintain/qpay_user_maintain/shop");
+    }
+
+    /**
+     * Get enable QPay shop list
+     * @return array
+     */
+    public function getQPayShopList(){
+        return $this->qpayShopService->getQPayShopList();
+    }
+
+    /**
+     * Add a new QPay shop
+     * @param  Request $request
+     * @return json
+     */
+    public function newQPayShop(Request $request){
+        
+        $name = ($request->name == "")?null:$request->name;
+        $address = (trim($request->address) == "")?null:trim($request->address);
+        $tel = (trim($request->tel) == "")?null:trim($request->tel);
+        $loginId = (trim($request->loginId) == "")?null:trim($request->loginId);
+        $pwd = (trim($request->pwd) == "")?null:trim($request->pwd);
+
+
+        $existLoginId = CommonUtil::getUserInfoJustByUserID($loginId,'shop');
+        if(!is_null($existLoginId)){
+            $result["result_code"] = ResultCode::_000922_qpayShopAlreadyExist;
+            return json_encode($result);
+        }
+        $newShopRs = $this->qpayShopService->newQPayShop($name, $address, $tel, $loginId, $pwd);
+
+        if ($newShopRs) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+        return json_encode($result);
+        
+    }
+
+    /**
+     * Update QAccount user status
+     * if set requset parameter action = 'close', user will be blocked,and can't use QPlay;
+     * else set request parameter action = 'open', user can use QPlay
+     * @param  Request $request 
+     * @return json
+     */
+    public function updateUserStatus(Request $request){
+        
+        $userId = trim($request->userId);
+        $action = trim($request->action);
+        
+        $status = ( strtolower($action) == 'open')?'Y':'N';
+
+        $updateRs = $this->qpayShopService->updateUserStatus($userId, $status);
+        
+        if ($updateRs) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+
+        return json_encode($result);
+    } 
+
+    /**
+     * Update QPay Trade Status
+     * if set requset parameter action = 'close', user will be blocked,and can't have a Transaction;
+     * else set request parameter action = 'open', user can use have a Transcation with QPay
+     * @param  Request $request 
+     * @return json
+     */
+    public function updateTradeStatus(Request $request){
+        
+        $shopId = trim($request->shopId);
+        $action = trim($request->action);
+        
+        $status = ( strtolower($action) == 'open')?'Y':'N';
+
+        $updateRs = $this->qpayShopService->updateTradeStatus($shopId, $status);
+        
+        if ($updateRs) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+
+        return json_encode($result);
+    }
+
+    /**
+     * Reset QAccount Password
+     * if passed request parameter restPwd, it will be updated to new password,
+     * else if resetPwd is null,it will be updated to original password
+     * @param  Request $request
+     * @return json
+     */
+    public function resetQAccountPwd(Request $request){
+
+        $userId = trim($request->userId);
+        $resetPwd = (isset($request->resetPwd))?$request->resetPwd:null;
+
+        DB::beginTransaction();
+        try {
+
+            $nowTimestamp = time();
+            $now = date('Y-m-d H:i:s',$nowTimestamp);
+
+            $updateRs = $this->qpayShopService->resetQAccountPwd($userId, $resetPwd,$now);
+            $this->logService->writePasswordLog($userId,
+                                            LogService::PWD_TYPE_QACCOUNT,
+                                            LogService::PWD_ACTION_RESET,
+                                            Auth::user()->row_id,
+                                            $now);
+         DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        if(is_null($updateRs)){
+            $result["result_code"] = ResultCode::_000901_userNotExistError;
+        } else if ($updateRs) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+
+        return json_encode($result);   
+    }
+
+    /**
+     * Update shop infomation
+     * @param  Request $request 
+     * @return json
+     */
+    public function updateShop(Request $request){
+
+        $shopId = trim($request->shopId);
+        $name = trim($request->name);
+        $address = trim($request->address);
+        $tel = trim($request->tel);
+        $loginId = trim($request->account);
+        
+        
+        $updateRs = $this->qpayShopService->updateShop($shopId, $name, $address, $tel, $loginId);
+
+        if ($updateRs) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+
+        return json_encode($result);
+
+    }
+
+    /**
+     * Soft delete shop, and close the trade status
+     * @param  Request $request
+     * @return json
+     */
+    public function deleteShop(Request $request){
+        
+        $shopIdList = $request->shopIdList;
+        $deleteRs = $this->qpayShopService->deleteShop($shopIdList);
+
+        if ($deleteRs) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+
+        return json_encode($result);
+    }
+
 }

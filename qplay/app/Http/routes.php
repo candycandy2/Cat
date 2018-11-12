@@ -249,6 +249,15 @@ Route::group(['prefix' => 'QPayUserMaintain'], function () {
     Route::any('getQPayUserPointTypeList', ['middleware' => 'auth','uses'=>'qpayController@getQPayUserPointTypeList']);
     Route::any('newPointType', ['middleware' => 'auth','uses'=>'qpayController@newPointType']);
     Route::any('editPointType', ['middleware' => 'auth','uses'=>'qpayController@editPointType']);
+    Route::any('QPayUserShop', ['middleware' => 'auth','uses'=>'qpayController@QPayUserShop']);
+    Route::any('getQPayShopList', ['middleware' => 'auth','uses'=>'qpayController@getQPayShopList']);
+    Route::any('newQPayShop', ['middleware' => 'auth','uses'=>'qpayController@newQPayShop']);
+    Route::any('updateUserStatus', ['middleware' => 'auth','uses'=>'qpayController@updateUserStatus']);
+    Route::any('updateTradeStatus', ['middleware' => 'auth','uses'=>'qpayController@updateTradeStatus']);
+    Route::any('resetQAccountPwd', ['middleware' => 'auth','uses'=>'qpayController@resetQAccountPwd']);
+    Route::any('updateShop', ['middleware' => 'auth','uses'=>'qpayController@updateShop']);
+    Route::any('deleteShop', ['middleware' => 'auth','uses'=>'qpayController@deleteShop']);
+    
 });
 
 Route::any('/lang/{lang}/{uri}', function($lang, $uri){

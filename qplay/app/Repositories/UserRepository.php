@@ -33,5 +33,81 @@ class UserRepository
         ->where('login_id','=', $loginId)
         ->update($updateData);
     }
+
+    /**
+     * Add new QPlay user
+     * @param  Array $userData user data
+     * @return int   
+     */
+    public function newUser($userData){
+        return $this->user->insertGetId($userData);
+    }
     
+    /**
+     * update specific user status
+     * @param  int    $userId qp_user.row_id
+     * @param  string $status N|Y
+     * @return boolean
+     */
+    public function updateUserStatus($userId, $status){
+        
+        $user =  $this->user::find($userId);
+        $user->status = $status;
+
+        return $user->save();
+
+    }
+
+    /**
+     * Get QPlay user information 
+     * @param  int  $userId qp_user.row_id
+     * @return mixed
+     */
+    public function getUserInfo($userId){
+        return $this->user
+             ->where('row_id', $userId )
+             ->select( 'row_id',
+                       'login_id',
+                       'company',
+                       'site_code',
+                       'ext_no',
+                       'emp_no',
+                       'emp_name',
+                       'user_domain',
+                       'department',
+                       'emp_id',
+                       'email')
+             ->first();
+    }
+
+    /**
+     * Reset user's QAccount password
+     * @param  int $userId qp_user.row_id
+     * @param  string $newPwd new pass word
+     */
+    public function resetQAccountPassword($userId, $newPwd, $updatedUser, $updatedAt = null){
+        if(is_null($updatedAt)){
+            $nowTimestamp = time();
+            $updatedAt = date('Y-m-d H:i:s',$nowTimestamp);
+        }
+        $user = $this->user::find($userId);
+        $user->password = $newPwd;
+        $user->change_pwd = 'N';
+        $user->updated_at = $updatedAt;
+        $user->updated_user = $updatedUser;
+        return $user->save();
+    }
+
+    /**
+     * Update qplay user data
+     * @param  int $userId   qp_user.row_id
+     * @param  Array $data   user data to be updated
+     * @return boolean  update() result
+     */
+    public function updateUser($userId, $data){
+
+         return $this->user::find($userId)
+                     ->update($data);
+
+    }
 }
