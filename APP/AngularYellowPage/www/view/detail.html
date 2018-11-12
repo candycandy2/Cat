@@ -1,0 +1,59 @@
+<div class="page-header">
+    <div class="left-area">
+        <img src="img/back.png" ng-click="backToResult()">
+    </div>
+    <div class="main-area">详细资料</div>
+</div>
+<div class="page-main">
+    <div class="info-detail">
+        <div class="info-head">
+            <div>
+                <div>{{info.Name_EN}}</div>
+                <div>{{info.Name_CH}}</div>
+            </div>
+            <div><img src="img/favorite_{{status}}.png" ng-click="toggle()"></div>
+        </div>
+        <div class="info-main">
+            <div>分机</div>
+            <div><a href="tel:{{info.Ext_No | telFilter}}">{{info.Ext_No | telFilter}}</a></div>
+        </div>
+        <div class="info-main">
+            <div>公司</div>
+            <div>{{info.Company}}</div>
+        </div>
+        <div class="info-main">
+            <div>部门</div>
+            <div>{{info.Dept}}</div>
+        </div>
+        <div class="info-main">
+            <div>部门名称</div>
+            <div>{{info.DeptCode}}</div>
+        </div>
+        <div class="info-main">
+            <div>事业区</div>
+            <div>{{info.SiteCode}}</div>
+        </div>
+        <div class="info-main">
+            <div>E-mail</div>
+            <div>{{info.EMail}}</div>
+        </div>
+    </div>
+</div>
+<div class="mask" ng-show="add">
+    <div class="dialog">
+        <div class="dialog-header">确定要加到我的电话薄?!</div>
+        <div class="dialog-footer two-btn">
+            <div ng-click="cancel('a')">取消</div>
+            <div ng-click="confirmAdd()">确定</div>
+        </div>
+    </div>
+</div>
+<div class="mask" ng-show="delete">
+    <div class="dialog">
+        <div class="dialog-header">确定要从我的电话薄删除?!</div>
+        <div class="dialog-footer two-btn">
+            <div ng-click="cancel('d')">取消</div>
+            <div ng-click="confirmDelete()">确定</div>
+        </div>
+    </div>
+</div>

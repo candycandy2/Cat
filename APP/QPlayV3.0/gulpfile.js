@@ -49,6 +49,7 @@ var schemeSetting =   "<string>appqplay"    + process.env.appNameDecorate + "</s
                     + "<string>appparking"  + process.env.appNameDecorate + "</string>"
                     + "<string>appactivities"  + process.env.appNameDecorate + "</string>"
                     + "<string>appinsurance"   + process.env.appNameDecorate + "</string>"
+                    + "<string>appangularyellowpage" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme01" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme02" + process.env.appNameDecorate + "</string>"
                     + "<string>appscheme03" + process.env.appNameDecorate + "</string>"
@@ -113,6 +114,7 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="appparking'  + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appactivities'  + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appinsurance'   + process.env.appNameDecorate + ':*" />' +
+                        '<allow-intent href="appangularyellowpage'   + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme01' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme02' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="appscheme03' + process.env.appNameDecorate + ':*" />' +

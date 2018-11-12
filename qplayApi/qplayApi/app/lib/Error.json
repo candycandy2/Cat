@@ -1,0 +1,823 @@
+{
+  "error_list": {
+    "appkey": "appqplay",
+    "code_list": [
+        {
+        "error_code": "1",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "OK"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "成功"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "成功"
+          }
+        ]
+      },
+      {
+        "error_code": "999001",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Parameter missing or format error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "傳入參數不足或傳入參數格式錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "传入参数不足或传入参数格式错误"
+          }
+        ]
+      },
+      {
+        "error_code": "999002",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Need version parameter or version parameter is error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "version參數錯誤或不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "version参数错误或不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "999003",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Need action parameter or action parameter is error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "action參數錯誤或不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "action参数错误或不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "999004",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Need lang parameter or lang parameter is error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "lang參數錯誤或不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "lang参数错误或不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "999005",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "HTTP method error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "HTTP傳送方法錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "HTTP传送方法错误"
+          }
+        ]
+      },
+      {
+        "error_code": "999006",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Content-Type error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "Content-Type錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "Content-Type错误"
+          }
+        ]
+      },
+      {
+        "error_code": "999007",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Input json format error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "傳入的json格式錯誤, Server端無法解析"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "传入的json格式错误, Server端无法解析"
+          }
+        ]
+      },
+      {
+        "error_code": "999008",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Signature is error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "Signature驗證碼錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "Signature验证码错误"
+          }
+        ]
+      },
+      {
+        "error_code": "999009",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Access API forbidden"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "禁止存取API"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "禁止存取API"
+          }
+        ]
+      },
+      {
+        "error_code": "999010",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "app-key parameter error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "app-key參數錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "app-key参数错误"
+          }
+        ]
+      },
+      {
+        "error_code": "999011",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "signature parameter error or the TIME gap is over 15 minutes compared with current time"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "signature參數錯誤或誤差超過15分鐘"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "signature参数错误或误差超过15分钟"
+          }
+        ]
+      },
+      {
+        "error_code": "999012",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "App is un-published"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "app已經下架"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "app已经下架"
+          }
+        ]
+      },
+      {
+        "error_code": "999013",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Push token is duplicated with others"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "push token已經使用"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "push token已经使用"
+          }
+        ]
+      },
+      {
+        "error_code": "999014",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "company parameter is errors"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "company不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "company不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "999015",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "No app uploaded"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "未上傳app"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "未上传app"
+          }
+        ]
+      },
+      {
+        "error_code": "999016",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Request customAPI Parameter Error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "調用customAPI的Url參數有誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "调用customAPI的Url参数有误"
+          }
+        ]
+      },
+      {
+        "error_code": "999999",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Unexpected error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "其他未知錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "其他未知错误"
+          }
+        ]
+      },
+      {
+        "error_code": "000901",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Employee data is error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "員工資訊錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "员工信息错误"
+          }
+        ]
+      },
+      {
+        "error_code": "000902",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Password is error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "密碼錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "密码错误"
+          }
+        ]
+      },
+      {
+        "error_code": "000903",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "This device was already been registered"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "設備已經註冊"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "设备已经注册"
+          }
+        ]
+      },
+      {
+        "error_code": "000904",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The registration data is not matched with this account"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "登錄使用者與設備認證時的使用者不同"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "登录用户与设备认证时的用户不同"
+          }
+        ]
+      },
+      {
+        "error_code": "000905",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "This device is not registered"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "設備未認證"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "设备未认证"
+          }
+        ]
+      },
+      {
+        "error_code": "000907",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The token is overdue"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "Token過期"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "Token过期"
+          }
+        ]
+      },
+      {
+        "error_code": "000908",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The token is invalid"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "Token失效"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "Token失效"
+          }
+        ]
+      },
+      {
+        "error_code": "000909",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "App key is invalid"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "app key不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "app key不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000910",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The message does not exist"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "此消息不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "此消息不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000911",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "This uuid is invalid"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "uuid不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "uuid不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000912",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The push receiver does not exist"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "接收推播用户不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "接收推播用户不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000913",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "App version is latest"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "app無需更新"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "app无需更新"
+          }
+        ]
+      },
+      {
+        "error_code": "000914",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "This user account is invalid"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "用戶停權"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "用户停权"
+          }
+        ]
+      },
+      {
+        "error_code": "000915",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The package name does not exist"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "package不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "package不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000916",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The length of title is too long"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "標題欄位太長"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "标题栏位太长"
+          }
+        ]
+      },
+      {
+        "error_code": "000917",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The role does not exist"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "角色不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "角色不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000918",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The data is not complete"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "資料不完整"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "数据不完整"
+          }
+        ]
+      },
+      {
+        "error_code": "000920",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Update Jpush tag failed"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "向JPush更新tag資訊失敗"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "向JPush更新tag信息失败"
+          }
+        ]
+      },
+      {
+        "error_code": "000921",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The url parameter on custom API is error"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "調用customAPI的Url參數有錯"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "调用customAPI的Url参数有错"
+          }
+        ]
+      },
+      {
+        "error_code": "044901",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "No Data Found"
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "查無資料"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "查无资料"
+          }
+        ]
+      },
+      {
+        "error_code": "000923",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The shop is disabled to be traded, please contact to staff."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "店家未啟動交易，請聯絡相關人員"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "店家未启动交易，请联络相关人员"
+          }
+        ]
+      },
+      {
+        "error_code": "000924",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Insufficient balance of coupons."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "消費券餘額不足"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "消费券余额不足"
+          }
+        ]
+      },
+      {
+        "error_code": "000925",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Old transaction password is incorrect."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "舊的交易密碼不正確"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "旧的交易密码不正确"
+          }
+        ]
+      },
+      {
+        "error_code": "000926",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Old login password is incorrect."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "舊的登入密碼不正確"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "旧的登入密码不正确"
+          }
+        ]
+      },
+      {
+        "error_code": "000927",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Trade Token is incorrect."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "交易驗證碼不正確"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "交易验证码不正确"
+          }
+        ]
+      },
+      {
+        "error_code": "000928",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Trade Token is invalid."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "交易驗證碼過期"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "交易验证码过期"
+          }
+        ]
+      },
+      {
+        "error_code": "000929",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "Transaction password is incorrect."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "交易密碼不正確"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "交易密码不正确"
+          }
+        ]
+      },
+      {
+        "error_code": "000930",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "New transaction password format is incorrect."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "新的交易密碼格式錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "新的交易密码格式错误"
+          }
+        ]
+      },
+      {
+        "error_code": "000931",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "New login password format is incorrect."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "新的登入密碼格式錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "新的登入密码格式错误"
+          }
+        ]
+      },
+      {
+        "error_code": "000932",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "The shop data error."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "店家資料異常"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "店家资料异常"
+          }
+        ]
+      }
+    ]
+  }
+}
