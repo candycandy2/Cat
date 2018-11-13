@@ -285,10 +285,16 @@ input[type=radio]:checked + label {
 
 /*************************** viewMain3 widget ********************************/
 #viewMain3 .ui-content {
+    position: fixed;
+    bottom: 0;
     padding: 0 !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #edecec;
+    -webkit-overflow-scrolling: touch;
 }
 
-.main-scroll {
+/* .main-scroll {
     width: 100%;
     height: 100vh;
     position: fixed;
@@ -296,7 +302,7 @@ input[type=radio]:checked + label {
     overflow-x: hidden;
     background: #edecec;
     -webkit-overflow-scrolling: touch;
-}
+} */
 
 #widgetList > div {
     background: #FFFFFF;
@@ -315,7 +321,6 @@ input[type=radio]:checked + label {
     height: 13.04vw;
     padding: 6.24vw 3.71vw 6.24vw 5.92vw;
     border-bottom: 1px solid #d6d6d6;
-    /* border-bottom: 1px solid #bdbcbc; */
 }
 
 .other-link > div:last-of-type {
