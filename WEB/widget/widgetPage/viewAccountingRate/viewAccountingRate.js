@@ -139,7 +139,6 @@ $("#viewAccountingRate").pagecontainer({
                 //$('.accountingrateWidget').accountingrate('refresh');
                 var evalString = '$(".accountingrateWidget").accountingrate("refresh");';
                 window.sessionStorage.setItem('needRefreshWidget', evalString);
-                window.sessionStorage.setItem('updateHomePageHeight', 'Y');
             }
         });
 
