@@ -117,6 +117,12 @@ $("#viewMain3").pagecontainer({
             }
         });
 
+        $(window).on('scroll.elasticity', function (event) {
+            event.preventDefault();
+        }).on('touchmove.elasticity', function (event) {
+            event.preventDefault();
+        });
+
 
         /********************************** page event ***********************************/
         $("#viewMain3").one("pagebeforeshow", function(event, ui) {
