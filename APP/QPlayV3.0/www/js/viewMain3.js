@@ -43,79 +43,79 @@ $("#viewMain3").pagecontainer({
             }, 750); 
         }
 
-        // var pullControl = null;
-        // $(".main-scroll").on('scroll', function() {
-        //     //不同设备不同处理
-        //     if (device.platform === "iOS") {
-        //         if ($('#widgetList').offset().top > 50) {
-        //             if (pullControl == null) {
+        var pullControl = null;
+        $("#widgetListContent").on('scroll', function() {
+            //不同设备不同处理
+            if (device.platform === "iOS") {
+                if ($('#widgetList').offset().top > 50) {
+                    if (pullControl == null) {
 
-        //                 pullControl = PullToRefresh.init({
-        //                     mainElement: '#widgetList',
-        //                     onRefresh: function() {
-        //                         //do something for refresh
-        //                         widget.clear();
-        //                         widget.show();
-        //                         //数据量可能有变化，需重新计算高度
-        //                         setTimeout(function() {
-        //                             setHomepageHeight();
-        //                         }, 1000);
-        //                         component.clear();
-        //                         component.refresh();
-        //                         //calendar update
-        //                         window.sessionStorage.setItem('CalendarDirty', 'Y');
-        //                     }
-        //                 });
-        //             }
-        //         } else {
+                        pullControl = PullToRefresh.init({
+                            mainElement: '#widgetList',
+                            onRefresh: function() {
+                                //do something for refresh
+                                widget.clear();
+                                widget.show();
+                                //数据量可能有变化，需重新计算高度
+                                // setTimeout(function() {
+                                //     setHomepageHeight();
+                                // }, 1000);
+                                component.clear();
+                                component.refresh();
+                                //calendar update
+                                window.sessionStorage.setItem('CalendarDirty', 'Y');
+                            }
+                        });
+                    }
+                } else {
 
-        //             if (pullControl != null) {
-        //                 pullControl.destroy();
-        //                 $('#viewMain3 .ptr--ptr').remove();
-        //                 pullControl = null;
-        //             }
-        //         }
-        //     } else {
-        //         //如果滑动到顶部，初始化pullrefresh
-        //         if (offsetTop == $('#widgetList').offset().top) {
-        //             if (pullControl == null) {
+                    if (pullControl != null) {
+                        pullControl.destroy();
+                        $('#viewMain3 .ptr--ptr').remove();
+                        pullControl = null;
+                    }
+                }
+            } else {
+                //如果滑动到顶部，初始化pullrefresh
+                if (offsetTop == $('#widgetList').offset().top) {
+                    if (pullControl == null) {
 
-        //                 pullControl = PullToRefresh.init({
-        //                     mainElement: '#widgetList',
-        //                     onRefresh: function() {
-        //                         //do something for refresh
-        //                         widget.clear();
-        //                         widget.show();
-        //                         //数据量可能有变化，需重新计算高度
-        //                         setTimeout(function() {
-        //                             setHomepageHeight();
-        //                         }, 1000);
-        //                         component.clear();
-        //                         component.refresh();
-        //                         //calendar update
-        //                         window.sessionStorage.setItem('CalendarDirty', 'Y');
-        //                     }
-        //                 });
-        //             }
-        //         } else {
-        //             //滑动到其他
-        //             if (pullControl != null) {
-        //                 pullControl.destroy();
-        //                 $('#viewMain3 .ptr--ptr').remove();
-        //                 pullControl = null;
-        //             }
+                        pullControl = PullToRefresh.init({
+                            mainElement: '#widgetList',
+                            onRefresh: function() {
+                                //do something for refresh
+                                widget.clear();
+                                widget.show();
+                                //数据量可能有变化，需重新计算高度
+                                // setTimeout(function() {
+                                //     setHomepageHeight();
+                                // }, 1000);
+                                component.clear();
+                                component.refresh();
+                                //calendar update
+                                window.sessionStorage.setItem('CalendarDirty', 'Y');
+                            }
+                        });
+                    }
+                } else {
+                    //滑动到其他
+                    if (pullControl != null) {
+                        pullControl.destroy();
+                        $('#viewMain3 .ptr--ptr').remove();
+                        pullControl = null;
+                    }
 
-        //         }
+                }
 
-        //     }
+            }
 
-        //     //任何widget数据量发生变化的情况都可以主动更新页面高度(比如关闭顶部公告)
-        //     var updateHeight = window.sessionStorage.getItem('updateHomePageHeight');
-        //     if(updateHeight !== null) {
-        //         setHomepageHeight();
-        //         window.sessionStorage.removeItem('updateHomePageHeight');
-        //     }
-        // });
+            //任何widget数据量发生变化的情况都可以主动更新页面高度(比如关闭顶部公告)
+            // var updateHeight = window.sessionStorage.getItem('updateHomePageHeight');
+            // if(updateHeight !== null) {
+            //     setHomepageHeight();
+            //     window.sessionStorage.removeItem('updateHomePageHeight');
+            // }
+        });
 
 
         /********************************** page event ***********************************/
@@ -138,17 +138,21 @@ $("#viewMain3").pagecontainer({
             }
 
             //2. check element count
-            var checkWidgetFinish = setInterval(function() {
-                var childrenLength = $('#widgetList').children('div').length;
+            // var checkWidgetFinish = setInterval(function() {
+            //     var childrenLength = $('#widgetList').children('div').length;
 
-                if (currentWidgetLength == childrenLength) {
-                    clearInterval(checkWidgetFinish);
-                    setHomepageHeight();
-                }
-            }, 750);
+            //     if (currentWidgetLength == childrenLength) {
+            //         clearInterval(checkWidgetFinish);
+            //         setHomepageHeight();
+            //     }
+            // }, 750);
 
             //3. pull refresh：save initial value
             offsetTop = $('#widgetList').offset().top;
+
+            //4. main height
+            var mainHeight = ($(window).height() - $('#viewMain3 .page-header').height()).toString();
+            $('#viewMain3 .ui-content').css('height', mainHeight + 'px');
         });
 
         $("#viewMain3").on("pageshow", function(event, ui) {
@@ -161,11 +165,11 @@ $("#viewMain3").pagecontainer({
                 window.sessionStorage.removeItem('needRefreshWidget');
             }
             //是否需要重设高度
-            var updateHeight = window.sessionStorage.getItem('updateHomePageHeight');
-            if(updateHeight !== null) {
-                setHomepageHeight();
-                window.sessionStorage.removeItem('updateHomePageHeight');
-            }
+            // var updateHeight = window.sessionStorage.getItem('updateHomePageHeight');
+            // if(updateHeight !== null) {
+            //     setHomepageHeight();
+            //     window.sessionStorage.removeItem('updateHomePageHeight');
+            // }
         });
 
         $("#viewMain3").on("pagehide", function(event, ui) {
