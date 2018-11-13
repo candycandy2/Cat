@@ -1,8 +1,4 @@
 /*override jQuery Mobile*/
-#viewMain2-1  {
-    height: 100% !important;
-}
-
 ul {
     list-style-type: none !important;
     margin: 0 !important;
@@ -87,7 +83,6 @@ ul {
 }
 
 /*----------------------new class----------------------*/
-
 .initialMain {
     width: 100%;
     height: 100%;
@@ -102,7 +97,6 @@ ul {
 }
 
 /* qplay button */
-
 .q-btn-footer-icon {
     width: 4.3vh;
     margin-left: 18vw;
@@ -199,90 +193,6 @@ input[type=radio]:checked + label {
     display: none;
 }
 
-/******************************** old message list / detail *******************************/
-
-/* .reddot-tab {
-    background-image: url(../img/reddot.png);
-    background-size: 1.5vw 1.5vw;
-    width: 1.5vw;
-    height: 1.5vw;
-    float: left;
-    margin-left: 3px;
-}
-
-.html2canvas-container {
-    width: 3000px !important;
-    height: 3000px !important;
-} */
-
-/*-----------------------------------------------------------------Event Type Panel*/
-#eventTypeSelect {
-    background-color: #CECECE;
-    width: 65.395vw;
-}
-
-#eventTypeSelect .ui-panel-inner {
-    padding: 0;
-}
-
-#eventTypeSelect .ui-hr {
-    background-color: #666666;
-}
-
-#eventTypeSelect div {
-    line-height: 1;
-    font-size: 3.97vw;
-    padding: 4.05vw 0 4.05vw 3.71vw;
-    background-color: #F9F9F9;
-    color: #333333;
-}
-
-#eventTypeSelect .header {
-    background-color: #4C4C4C;
-    color: #FFFFFF;
-    padding: 4.615vw 0 4.615vw 3.71vw;
-}
-
-#eventTypeSelect .select {
-    background-color: #492f7f;
-    color: #FFFFFF;
-}
-
-#eventTypeSelect .item .left {
-    width: 1.878vw;
-    margin-right: 1.878vw;
-    float: left;
-    padding: 0;
-}
-
-#eventTypeSelect .item .white {
-    width: 1.878vw;
-    height: 1.878vw;
-    background-color: #FFFFFF;
-    margin-top: 1vw;
-    border-radius: 50%;
-    padding: 0;
-}
-
-#eventTypeSelect .item .red {
-    background-color: red;
-}
-
-.ui-panel-background {
-    background-color: rgba(50, 50, 50, 0.8);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    height: 100vh;
-    width: 100vw;
-    touch-action: none;
-}
-
-.event-list-content{
-    padding: 0;
-}
-
 /*************************** viewMain3 widget ********************************/
 #viewMain3 .ui-content {
     position: fixed;
@@ -293,16 +203,6 @@ input[type=radio]:checked + label {
     background: #edecec;
     -webkit-overflow-scrolling: touch;
 }
-
-/* .main-scroll {
-    width: 100%;
-    height: 100vh;
-    position: fixed;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background: #edecec;
-    -webkit-overflow-scrolling: touch;
-} */
 
 #widgetList > div {
     background: #FFFFFF;
