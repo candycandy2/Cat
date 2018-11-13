@@ -98,7 +98,7 @@ $("#viewMain3").pagecontainer({
             //main height and offsetTop
             offsetTop = $('#viewMain3 .page-header').height();
             var winHeight = $(window).height();
-            var mainHeight; 
+            var mainHeight;
             if(device.platform === "iOS") {
                 mainHeight = winHeight - offsetTop - iOSFixedTopPX();
             } else {
