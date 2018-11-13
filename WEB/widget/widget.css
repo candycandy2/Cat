@@ -1,3 +1,31 @@
+/******************** widget ********************/
+.widget-header {
+    width: 100%;
+    height: 12.54vw;
+}
+
+.widget-header>div {
+    float: left;
+    height: 100%;
+}
+
+.widget-header>div:nth-of-type(1) {
+    width: 90%;
+    line-height: 12.54vw;
+    color: #233138;
+    font-size: 3.349vw;
+    text-indent: 6vw;
+}
+
+.widget-header>div:nth-of-type(2) {
+    width: 10%;
+}
+
+.widget-header>div:nth-of-type(2)>img {
+    width: 10vw;
+    margin-top: 2.5vw;
+}
+
 /******************** carousel ********************/
 .carousel-widget {
     width: 100vw !important;
@@ -700,6 +728,69 @@
     content: "\d7";
     font-size: 7vw;
     font-weight: normal;
+}
+
+/******************** idea ********************/
+.idea-widget {
+    width: 100vw;
+    min-height: 35vw;
+}
+
+.idea-main {
+    width: 100%;
+    height: 17vw;
+}
+
+.idea-main>div {
+    float: left;
+    height: 100%;
+}
+
+.idea-main>div:nth-of-type(1) {
+    width: 23.7%;
+}
+
+.idea-main>div:nth-of-type(1)>div {
+    width: 14.5vw;
+    height: 14.5vw;
+    margin-left: 5.92vw;
+    background: #666;
+}
+
+.idea-main>div:nth-of-type(2) {
+    width: 72.6%;
+}
+
+.idea-main>div:nth-of-type(2)>div:nth-of-type(1) {
+    height: 10vw;
+    font-size: 3.97vw;
+    color: #253137;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.idea-main>div:nth-of-type(2)>div:nth-of-type(2) {
+    font-size: 3.55vw;
+    color: #666;
+    line-height: 6.5vw;
+}
+
+.idea-footer {
+    width: 100%;
+    height: 8.5vw;
+}
+
+.idea-footer>div {
+    width: 6.44vw;
+    height: 6.44vw;
+    margin-left: 90vw;
+}
+
+.idea-footer img {
+    width: 6.44vw;
 }
 
 /******************** qpay test ********************/

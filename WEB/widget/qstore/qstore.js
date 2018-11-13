@@ -18,6 +18,24 @@ var qstoreWidget = {
 
         }
 
+        $.fn.qstore = function (options) {
+            options = options || {};
+
+            return this.each(function () {
+                var state = $.data(this, 'qstore');
+                if (state) {
+                    $.extend(state.options, options);
+                } else {
+                    $.data(this, 'qstore', {
+                        options: $.extend({}, $.fn.qstore.defaults, options)
+                    });
+                }
+
+                createContent(contentItem);
+
+            })
+        };
+
         $.fn.qstore.methods = {
             options: function(jq) {
                 return $.data(jq[0], 'qstore').options;
