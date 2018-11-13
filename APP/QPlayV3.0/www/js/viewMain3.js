@@ -43,85 +43,79 @@ $("#viewMain3").pagecontainer({
             }, 750); 
         }
 
-        var pullControl = null;
-        $(".main-scroll").on('scroll', function() {
-            //不同设备不同处理
-            if (device.platform === "iOS") {
-                if ($('#widgetList').offset().top > 50) {
-                    if (pullControl == null) {
+        // var pullControl = null;
+        // $(".main-scroll").on('scroll', function() {
+        //     //不同设备不同处理
+        //     if (device.platform === "iOS") {
+        //         if ($('#widgetList').offset().top > 50) {
+        //             if (pullControl == null) {
 
-                        pullControl = PullToRefresh.init({
-                            mainElement: '#widgetList',
-                            onRefresh: function() {
-                                //do something for refresh
-                                widget.clear();
-                                widget.show();
-                                //数据量可能有变化，需重新计算高度
-                                setTimeout(function() {
-                                    setHomepageHeight();
-                                }, 1000);
-                                component.clear();
-                                component.refresh();
-                                //calendar update
-                                window.sessionStorage.setItem('CalendarDirty', 'Y');
-                            }
-                        });
-                    }
-                } else {
+        //                 pullControl = PullToRefresh.init({
+        //                     mainElement: '#widgetList',
+        //                     onRefresh: function() {
+        //                         //do something for refresh
+        //                         widget.clear();
+        //                         widget.show();
+        //                         //数据量可能有变化，需重新计算高度
+        //                         setTimeout(function() {
+        //                             setHomepageHeight();
+        //                         }, 1000);
+        //                         component.clear();
+        //                         component.refresh();
+        //                         //calendar update
+        //                         window.sessionStorage.setItem('CalendarDirty', 'Y');
+        //                     }
+        //                 });
+        //             }
+        //         } else {
 
-                    if (pullControl != null) {
-                        pullControl.destroy();
-                        $('#viewMain3 .ptr--ptr').remove();
-                        pullControl = null;
-                    }
-                }
-            } else {
-                //如果滑动到顶部，初始化pullrefresh
-                if (offsetTop == $('#widgetList').offset().top) {
-                    if (pullControl == null) {
+        //             if (pullControl != null) {
+        //                 pullControl.destroy();
+        //                 $('#viewMain3 .ptr--ptr').remove();
+        //                 pullControl = null;
+        //             }
+        //         }
+        //     } else {
+        //         //如果滑动到顶部，初始化pullrefresh
+        //         if (offsetTop == $('#widgetList').offset().top) {
+        //             if (pullControl == null) {
 
-                        pullControl = PullToRefresh.init({
-                            mainElement: '#widgetList',
-                            onRefresh: function() {
-                                //do something for refresh
-                                widget.clear();
-                                widget.show();
-                                //数据量可能有变化，需重新计算高度
-                                setTimeout(function() {
-                                    setHomepageHeight();
-                                }, 1000);
-                                component.clear();
-                                component.refresh();
-                                //calendar update
-                                window.sessionStorage.setItem('CalendarDirty', 'Y');
-                            }
-                        });
-                    }
-                } else {
-                    //滑动到其他
-                    if (pullControl != null) {
-                        pullControl.destroy();
-                        $('#viewMain3 .ptr--ptr').remove();
-                        pullControl = null;
-                    }
+        //                 pullControl = PullToRefresh.init({
+        //                     mainElement: '#widgetList',
+        //                     onRefresh: function() {
+        //                         //do something for refresh
+        //                         widget.clear();
+        //                         widget.show();
+        //                         //数据量可能有变化，需重新计算高度
+        //                         setTimeout(function() {
+        //                             setHomepageHeight();
+        //                         }, 1000);
+        //                         component.clear();
+        //                         component.refresh();
+        //                         //calendar update
+        //                         window.sessionStorage.setItem('CalendarDirty', 'Y');
+        //                     }
+        //                 });
+        //             }
+        //         } else {
+        //             //滑动到其他
+        //             if (pullControl != null) {
+        //                 pullControl.destroy();
+        //                 $('#viewMain3 .ptr--ptr').remove();
+        //                 pullControl = null;
+        //             }
 
-                }
+        //         }
 
-            }
+        //     }
 
-            //任何widget数据量发生变化的情况都可以主动更新页面高度(比如关闭顶部公告)
-            var updateHeight = window.sessionStorage.getItem('updateHomePageHeight');
-            if(updateHeight !== null) {
-                setHomepageHeight();
-                window.sessionStorage.removeItem('updateHomePageHeight');
-            }
-        });
-
-        $(window).on('scroll.elasticity', function (event) {
-            event.preventDefault();
-        }).on('touchmove.elasticity', function (event) {
-            event.preventDefault();
-        });
+        //     //任何widget数据量发生变化的情况都可以主动更新页面高度(比如关闭顶部公告)
+        //     var updateHeight = window.sessionStorage.getItem('updateHomePageHeight');
+        //     if(updateHeight !== null) {
+        //         setHomepageHeight();
+        //         window.sessionStorage.removeItem('updateHomePageHeight');
+        //     }
+        // });
 
 
         /********************************** page event ***********************************/
