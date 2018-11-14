@@ -29,7 +29,11 @@ $("#viewMessageList").pagecontainer({
                         //record APP all data
                         var responsecontent = jsonData['content'];
                         //console.log(responsecontent);
-                        createPortalByType(responsecontent, type.toLowerCase());
+                        if(type == 'IDEA') {
+                            createIdeaPortal(responsecontent, type.toLowerCase());
+                        } else {
+                            createPortalByType(responsecontent, type.toLowerCase());
+                        }
 
                     } else {
                         createPortalByType([], type.toLowerCase());
@@ -56,7 +60,11 @@ $("#viewMessageList").pagecontainer({
                 } else {
                     var responsecontent = QueryData['content'];
                     //console.log(responsecontent);
-                    createPortalByType(responsecontent, type.toLowerCase());
+                    if(type == 'IDEA') {
+                        createIdeaPortal(responsecontent, type.toLowerCase());
+                    } else {
+                        createPortalByType(responsecontent, type.toLowerCase());
+                    }
                 }
 
             }(type));
@@ -101,19 +109,52 @@ $("#viewMessageList").pagecontainer({
             } else {
                 //无消息情况
                 $("#noMessage").fadeIn(100).delay(2000).fadeOut(100);
-                $('.msg-update-date').text(langStr['str_079'] + getTodayStr('/'));
+                $('.msg-update-date').text(langStr['str_079'] + new Date().yyyymmdd('/'));
                 setMsgHeightByType(messageType);
             }
 
         }
 
-        function getTodayStr(str) {
-            var now = new Date();
-            var year = now.getFullYear().toString();
-            var month = now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1).toString() : (now.getMonth() + 1).toString();
-            var day = now.getDate() < 10 ? '0' + now.getDate().toString() : now.getDate().toString();
-            var today = year + str + month + str + day;
-            return today;
+        //創意園地
+        function createIdeaPortal(arr, type) {
+            if (arr.length > 0) {
+                //1. content
+                var content = '';
+                for (var i in arr) {
+                    content += '<li data-icon="false" data-rowid="' + arr[i].PortalID + '"><a href="#" class="ui-portal ui-btn idea-portal">' +
+                        '<div class="msg-thumbnail" style="background:url(' + arr[i].PortalImageURL + ');background-size:cover;"></div><div class="msg-idea-title read-font-normal"><div>' +
+                        arr[i].PortalSubject + '</div><div>' + new Date(arr[i].PortalDate).yyyymmdd('/') + '</div><div style="display:none"><input type="hidden" value="' +
+                        arr[i].PortalURL + '"></div></div></a></li>';
+                }
+
+                $("." + type + "-content ul").html('').append(content);
+
+                //2. detail
+                $('a.idea-portal').on("click", function(e) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+
+                    if (messageType != "Event" && messageType != "News") {
+                        messageFrom = 'viewMessageList';
+                        portalURL = $(this).find("input").val();
+                        //console.log(portalURL)
+                        checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
+                    }
+                });
+
+                //3. update date
+                var portalUpdateDate = new Date(arr[0].PortalDate).yyyymmdd('/');
+                $('.msg-update-date').text(langStr['str_079'] + portalUpdateDate);
+
+                //4. set height
+                setMsgHeightByType(messageType);
+
+            } else {
+                //无消息情况
+                $("#noMessage").fadeIn(100).delay(2000).fadeOut(100);
+                $('.msg-update-date').text(langStr['str_079'] + new Date().yyyymmdd('/'));
+                setMsgHeightByType(messageType);
+            }
         }
 
         function checkPortalByFunctionList() {
@@ -819,7 +860,12 @@ $("#viewMessageList").pagecontainer({
                     //portal不用编辑
                     $('#editListview').hide();
                     showDiffMessageByType(messageType);
-                    QueryPortalList(currentType);
+                    if(lowerCase == 'idea') {
+                        QueryPortalList(lowerCase.toUpperCase());
+                    } else {
+                        QueryPortalList(currentType);
+                    }
+                    
 
                 }
 

@@ -632,11 +632,11 @@
 .phone-book-li>div:nth-of-type(3) {
     width: 24vw;
     line-height: 13vw;
-    color: #1F84BC;
     font-size: 3.768vw;
 }
 
 .phone-book-li>div:nth-of-type(3) a {
+    color: #1F84BC;
     text-decoration: none;
     font-weight: normal;
 }
@@ -791,6 +791,52 @@
 
 .idea-footer img {
     width: 6.44vw;
+}
+
+/******************** qpay ********************/
+.qpay-widget {
+    width: 100vw;
+    min-height: 41vw;
+}
+
+.qpay-due {
+    width: 100%;
+    color: #989898;
+    font-size: 3.349vw;
+    text-align: center;
+}
+
+.qpay-point {
+    width: 100%;
+    text-align: center;
+    margin-top: 2.37vw;
+}
+
+.qpay-point>span:nth-of-type(1) {
+    font-size: 3.768vw;
+    vertical-align: middle;
+}
+
+.qpay-point>span:nth-of-type(2),
+.qpay-point>span:nth-of-type(3) {
+    font-size:5.02vw;
+}
+
+.qpay-go {
+    width: 100%;
+    height: 6.44vw;
+    margin-top: 4.3vw;
+}
+
+.qpay-go>div{
+    width: 18.8vw;
+    height: 6.44vw;
+    margin: auto;
+    background: #4BB5AB;
+    color: #fff;
+    font-size: 3.14vw;
+    text-align: center;
+    line-height: 6.44vw;
 }
 
 /******************** qpay test ********************/
