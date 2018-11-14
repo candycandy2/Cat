@@ -164,9 +164,9 @@
     overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
-    display: -webkit-box; 
+    display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; 
+    -webkit-line-clamp: 2;
     padding-left: 2.81vw;
 }
 
@@ -176,6 +176,41 @@
     padding: 3.36vw 3.71vw 3.27vw !important;
     background-color: #FFFFFF !important;
     border-bottom: 1px solid #d6d6d6 !important;
+}
+
+.msg-thumbnail {
+    float: left;
+    width: 14.5vw;
+    height: 14.5vw;
+    border-radius: 2px;
+}
+
+/* .msg-thumbnail img {
+    width: 14.5vw;
+    height: 14.5vw;
+} */
+
+.msg-idea-title {
+    float: left;
+    width: 75vw;
+    margin-left: 3vw;
+}
+
+.msg-idea-title>div:nth-of-type(1) {
+    height: 11vw;
+    color: #263238;
+    font-size: 3.768vw !important;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.msg-idea-title>div:nth-of-type(2) {
+    color: #8fa4ac;
+    font-size: 3.14vw !important;
 }
 
 /*** swipe start ***/

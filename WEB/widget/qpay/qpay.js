@@ -4,18 +4,14 @@ var qpayWidget = {
     init: function(contentItem) {
 
         function createContent() {
-            var content = '<div class="qpay-link"><div><img src="img/icon_qpay.png" class="icon-img"></div><div>QPay测试</div></div>';
+            $.get(serverURL + "/widget/qpay/qpay.html", function (data) {
+                //1.html
+                contentItem.html('').append(data);
+                //2.img
+                var ideaImg = $('<img>').attr('src', serverURL + '/widget/qpay/img/widget_pay.png');
+                $('.qpay-icon').html('').append(ideaImg);
 
-            contentItem.html('').append(content);
-
-            contentItem.on('click', function() {
-
-                if (loginData['company'] == 'shop') {
-                    checkWidgetPage('viewShopPayMain', pageVisitedList);
-                } else {
-                    checkWidgetPage('viewUserPayMain', pageVisitedList);
-                }
-            });
+            }, "html");
         }
 
         $.fn.qpay = function(options, param) {
