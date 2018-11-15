@@ -79,6 +79,7 @@ return [
     'TITLE_QPAY_REIMBURSE_PURCHASE_RECORD' => 'Reimburse Purchase Record',
     'TITLE_QPAY_USER_POINT_TYPE' => 'Point Type',
     'TITLE_QPAY_USER_SHOP' => 'Shop',
+    'TITLE_QPAY_MAINTAIN' => 'QPay-User Maintain',
 
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
@@ -532,4 +533,6 @@ return [
     'QPAY_INPUT_LOGIN_ID' => 'Input Login ID',
     'QPAY_INPUT_ORI_PWD' => 'Input Default Login Password',
     'QPAY_INPUT_NEW_PWD' => 'Input New Password',
+    'QPAY_TRADE_PWD' => 'Transation password',
+    'QPAY_CONFIRM_TO_RESET_TRADE_PWD' => 'Confirm to reset the transaction password of %s?'
 ];

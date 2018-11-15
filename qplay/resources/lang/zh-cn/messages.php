@@ -79,6 +79,7 @@ return [
     'TITLE_QPAY_REIMBURSE_PURCHASE_RECORD' => '员工消费纪录',
     'TITLE_QPAY_USER_POINT_TYPE' => '消费券资料',
     'TITLE_QPAY_USER_SHOP' => '店家资料',
+    'TITLE_QPAY_MAINTAIN' => '消费券管理-用户管理',
 
     'ENABLE' => '启用',
     'DISABLE' => '停用',
@@ -531,4 +532,6 @@ return [
     'QPAY_INPUT_LOGIN_ID' => '请输入店家登入帐号',
     'QPAY_INPUT_ORI_PWD' => '请输入预设登入密码',
     'QPAY_INPUT_NEW_PWD' => '请输入新密码',
+    'QPAY_TRADE_PWD' => '交易密码',
+    'QPAY_CONFIRM_TO_RESET_TRADE_PWD' => '确定要重置%s的交易密码吗?'
 ];

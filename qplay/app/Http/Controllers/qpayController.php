@@ -21,11 +21,11 @@ class qpayController extends Controller
 {
 
     //protected $qpayManagerService;
-    //protected $qpayShopService;
+    protected $qpayShopService;
     protected $qpayPointService;
     protected $qpayMemberService;
     protected $qpayTradeService;
-    //protected $logService;
+    protected $logService;
 
     /**
      * FunctionController constructor.
@@ -377,7 +377,7 @@ class qpayController extends Controller
             $result["result_code"] = ResultCode::_999999_unknownError;
         }
 
-        return json_encode($result);   
+        return json_encode($result);
     }
 
     /**
@@ -425,4 +425,77 @@ class qpayController extends Controller
         return json_encode($result);
     }
 
+    /**
+     * QPay user maintain - view
+     */
+    public function QPayUserMaintain(){
+        //get all departments
+        $departments = Auth::user()->getAllDepartment();
+
+        //get point type list
+        $pointTypeList =  $this->qpayPointService->getQPayPointTypeList();
+
+        return view("qpay_maintain/qpay_user_maintain/member")->with(['pointTypeList'=>$pointTypeList,
+                                                            'departments'=>$departments]);
+    }
+
+    /**
+     * get QPay member list
+     * @param  Request $request
+     * @return json
+     */
+    public function getQPayMemberList(Request $request){
+
+        $pointType = ($request->pointType == "")?null:$request->pointType;
+        $department = ($request->department == "")?null:$request->department;
+        $empNo = (trim($request->empNo) == "")?null:trim($request->empNo);
+        $limit = (trim($request->limit) == "")?null:trim($request->limit);
+        $offset = (trim($request->offset) == "")?null:trim($request->offset);
+        $sort = (trim($request->sort) == "")?null:trim($request->sort);
+        $order = (trim($request->order) == "")?null:trim($request->order);
+
+        $memberList = $this->qpayMemberService->getQPayMemberList($pointType, $department, $empNo, $limit, $offset, $sort, $order);
+
+        return response()->json(["total"=>$memberList->total(),"rows"=>$memberList->items()]);
+    }
+
+    /**
+     * Reset QPay member transaction password
+     * @param  Request $request
+     * @return json
+     */
+    public function resetQPayMemberTradPwd(Request $request){
+        
+        $userId = trim($request->userId);
+        
+        DB::beginTransaction();
+        try {
+
+                $nowTimestamp = time(); 
+                $now = date('Y-m-d H:i:s',$nowTimestamp);
+                $updateRs = $this->qpayMemberService->resetTradPassword($userId);
+
+                $this->logService
+                     ->writePasswordLog($userId,
+                                        LogService::PWD_TYPE_QPAY,
+                                        LogService::PWD_ACTION_RESET,
+                                        Auth::user()->row_id,
+                                        $now);
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        if(is_null($updateRs)){
+            $result["result_code"] = ResultCode::_000901_userNotExistError;
+        } else if ($updateRs) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+
+        return json_encode($result);
+    }
 }
