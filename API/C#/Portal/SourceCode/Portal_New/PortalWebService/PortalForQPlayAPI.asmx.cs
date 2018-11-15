@@ -111,6 +111,7 @@ namespace PortalWebService
                             // 20171018 Hakkinen 外網網址取代內網網址
                             TempPortalList.PortalURL = DataTablePortalListInfo.Rows[i]["PortalURL"].ToString().ToString().Replace("myqisda.qgroup.corp.com", "www.myqisda.com").Replace("QTYPortalSrv.qgroup.corp.com", "www.myqisda.com").Trim();
                             TempPortalList.PortalImageURL = DataTablePortalListInfo.Rows[i]["PortalImageURL"].ToString().ToString().Replace("myqisda.qgroup.corp.com", "www.myqisda.com").Replace("QTYPortalSrv.qgroup.corp.com", "www.myqisda.com").Trim();
+                            TempPortalList.PortalSource = DataTablePortalListInfo.Rows[i]["Source"].ToString().Trim();
                             PortalListInfo.Add(TempPortalList);
                         }
 
@@ -126,7 +127,8 @@ namespace PortalWebService
                                                            new JProperty("PortalSubject", p.PortalSubject),
                                                            new JProperty("PortalDate", p.PortalDate),
                                                            new JProperty("PortalURL", p.PortalURL),
-                                                           new JProperty("PortalImageURL", p.PortalImageURL)
+                                                           new JProperty("PortalImageURL", p.PortalImageURL),
+                                                           new JProperty("PortalSource", p.PortalSource)
                                                            )
                                                       )
                                             )
@@ -494,6 +496,20 @@ namespace PortalWebService
             set
             {
                 _PortalImageURL = value;
+            }
+        }
+
+        // 公告出處 Add by Jennifer
+        private string _PortalSource;
+        public string PortalSource
+        {
+            get
+            {
+                return _PortalSource;
+            }
+            set
+            {
+                _PortalSource = value;
             }
         }
     }
