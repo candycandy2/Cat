@@ -76,6 +76,11 @@ var reserveWidget = {
             contentItem.on('click', '.personal-res', function() {
                 checkWidgetPage('viewMyCalendar', pageVisitedList);
             });
+
+            //点击头像跳转到设定页
+            contentItem.on('click', '.reserve-default-photo', function() {
+                checkWidgetPage('viewAppSetting', pageVisitedList);
+            });
         }
 
         function getCurrentDate() {

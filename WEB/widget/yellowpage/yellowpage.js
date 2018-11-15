@@ -13,7 +13,7 @@ var yellowpageWidget = {
                 contentItem.html('').append(data);
                 //2.img
                 var rateImg = $('<img>').attr('src', serverURL + '/widget/yellowpage/img/widget_yellowpage.png');
-                $('.yellowpage-widget-icon').html('').append(rateImg);
+                $('.yellowpage-icon').html('').append(rateImg);
                 var moreImg = $('<img>').attr('src', serverURL + '/widget/yellowpage/img/more_green.png');
                 $('.phone-book-more').html('').append(moreImg);
 
