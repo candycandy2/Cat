@@ -122,7 +122,7 @@ $("#viewMessageList").pagecontainer({
                 var content = '';
                 for (var i in arr) {
                     content += '<li data-icon="false" data-rowid="' + arr[i].PortalID + '"><a href="#" class="ui-portal ui-btn idea-portal">' +
-                        '<div class="msg-thumbnail" style="background:url(' + arr[i].PortalImageURL + ');background-size:cover;"></div><div class="msg-idea-title read-font-normal"><div>' +
+                        '<div class="msg-thumbnail" style="background:url(' + arr[i].PortalImageURL + ') 0% / cover;"></div><div class="msg-idea-title read-font-normal"><div>' +
                         arr[i].PortalSubject + '</div><div>' + new Date(arr[i].PortalDate).yyyymmdd('/') + '</div><div style="display:none"><input type="hidden" value="' +
                         arr[i].PortalURL + '"></div></div></a></li>';
                 }
@@ -821,7 +821,12 @@ $("#viewMessageList").pagecontainer({
         });
 
         $("#viewMessageList").on("pageshow", function(event, ui) {
-            
+            //open idea portal from idea widget
+            var openIdea = window.sessionStorage.getItem('openIdeaPortal');
+            if(openIdea != null) {
+                $('div[data-item="idea"]').trigger('click');
+                window.sessionStorage.removeItem('openIdeaPortal');
+            }
         });
 
         $("#viewMessageList").on("pagehide", function(event, ui) {

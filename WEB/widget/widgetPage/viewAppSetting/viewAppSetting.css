@@ -117,7 +117,7 @@
     height: 15vw;
     line-height: 15vw;
     text-align: center;
-    color: #4274BA;
+    color: #1F84BC;
 }
 
 .photo-choose > div:first-of-type {
@@ -133,7 +133,7 @@
     background: #fff;
     line-height: 15vw;
     text-align: center;
-    color: #4274BA;
+    color: #1F84BC;
 }
 
 .confirmLogout .ui-content>.header {

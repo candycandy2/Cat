@@ -9,16 +9,16 @@ var accountingrateWidget = {
                 contentItem.html('').append(data);
                 //2.img
                 var rateImg = $('<img>').attr('src', serverURL + '/widget/accountingrate/img/widget_accountingrate.png');
-                $('.rate-widget-icon').html('').append(rateImg);
+                $('.rate-icon').html('').append(rateImg);
                 var moreImg = $('<img>').attr('src', serverURL + '/widget/accountingrate/img/more_green.png');
-                $('.rate-more-icon').html('').append(moreImg);
+                $('.rate-more').html('').append(moreImg);
                 //3.list
                 getFavoriteRate();
 
             }, "html");
 
             //点击更多，跳转widgetPage
-            contentItem.on('click', '.rate-more-icon', function() {
+            contentItem.on('click', '.rate-more', function() {
                 checkWidgetPage('viewAccountingRate', pageVisitedList);
             });
         }
@@ -46,7 +46,6 @@ var accountingrateWidget = {
                 }
                 $('.rate-favorite-ul').append(content).show();
             }
-            
         }
 
 
