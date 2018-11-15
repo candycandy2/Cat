@@ -9,10 +9,10 @@
     <h1></h1>
     <div class="row">
         <div class="col-lg-6 col-xs-6">
-            <div class='col-md-2'>
+            <div class='col-md-3'>
                  <div class="form-group">
                     <label for="pointType">{{trans('messages.QPAY_POINT_TYPE')}}</label>
-                    <div class="input-group">
+                    <div class="input-group" style="width:100%">
                         <select class="form-control" required="required" id="selectPointType">
                         @foreach ($pointTypeList as $pointType)
                             <option value="{{ $pointType['row_id'] }}">{{ $pointType['name'] }}</option>
@@ -24,7 +24,7 @@
             <div class='col-md-3'>
                 <div class="form-group">
                     <label for="department">{{trans('messages.QPAY_MEMBER_DEPARTMENT_CODE')}}</label>
-                    <div class="input-group" >
+                    <div class="input-group" style="width:100%">
                         <input class="form-control" type="text" name="" id="tbxDepartment" placeholder="{{trans('messages.QPAY_INPUT_DEPARTMENT_CODE')}}">
                     </div>
                 </div>
@@ -32,7 +32,7 @@
             <div class='col-md-3'>
                 <div class="form-group">
                     <label for="empNo">{{trans('messages.USER_EMP_NO')}}</label>
-                    <div class="input-group">
+                    <div class="input-group" style="width:100%">
                         <input class="form-control" type="text" name="" id="txbEmpNo" placeholder="{{trans('messages.QPAY_INPUT_EMP_NO')}}">
                     </div>
                 </div>
