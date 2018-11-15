@@ -544,6 +544,7 @@ $("#viewWebNews2-3-1").pagecontainer({
                 $(".footer-portal").hide();
 
                 $("#viewWebNews2-3-1 .page-main").css("opacity", 0);
+                messageRowId = window.localStorage.getItem('messageRowId');
                 var messageDetail = new QueryMessageDetail(messageRowId);
             } else {
                 //review by alan
