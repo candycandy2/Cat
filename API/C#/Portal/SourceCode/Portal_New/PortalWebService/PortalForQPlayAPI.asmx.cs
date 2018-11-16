@@ -111,7 +111,10 @@ namespace PortalWebService
                             // 20171018 Hakkinen 外網網址取代內網網址
                             TempPortalList.PortalURL = DataTablePortalListInfo.Rows[i]["PortalURL"].ToString().ToString().Replace("myqisda.qgroup.corp.com", "www.myqisda.com").Replace("QTYPortalSrv.qgroup.corp.com", "www.myqisda.com").Trim();
                             TempPortalList.PortalImageURL = DataTablePortalListInfo.Rows[i]["PortalImageURL"].ToString().ToString().Replace("myqisda.qgroup.corp.com", "www.myqisda.com").Replace("QTYPortalSrv.qgroup.corp.com", "www.myqisda.com").Trim();
-                            TempPortalList.PortalSource = DataTablePortalListInfo.Rows[i]["Source"].ToString().Trim();
+                            if (PortalCategory == "IDEA")
+                            {
+                                TempPortalList.PortalSource = DataTablePortalListInfo.Rows[i]["Source"].ToString().Trim();
+                            }
                             PortalListInfo.Add(TempPortalList);
                         }
 
