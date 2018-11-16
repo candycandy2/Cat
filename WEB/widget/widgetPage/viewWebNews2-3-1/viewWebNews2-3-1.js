@@ -21,23 +21,27 @@ $("#viewWebNews2-3-1").pagecontainer({
                 var loaded_images_count = 0;
                 var loaded_finish = false;
 
+                //width与img load没有关系，review by allen
+                if ($("#htmlContent")[0].scrollWidth < screenWidth) {
+                    $("#htmlContent").css("width", (screenWidth) + "px");
+                }
+
+                //panZoom与img load也没有关系，review by allen
+                setTimeout(function() {
+                    doPanZoom();
+                }, 1000);
+
+                //等待的提示
                 if ($images.length > 0) {
                     $images.load(function () {
 
                         loaded_images_count++;
 
                         if (loaded_images_count == $images.length) {
-                            if ($("#htmlContent")[0].scrollWidth < screenWidth) {
-                                $("#htmlContent").css("width", (screenWidth) + "px");
-                            }
 
                             loaded_finish = true;
                             $("#messageLoadErrorPopup").popup("close");
                             $("#viewWebNews2-3-1").css("min-height", document.documentElement.clientHeight + "px");
-
-                            setTimeout(function () {
-                                doPanZoom();
-                            }, 500);
                         }
 
                     });
@@ -48,14 +52,6 @@ $("#viewWebNews2-3-1").pagecontainer({
                             $("#viewWebNews2-3-1").css("min-height", document.documentElement.clientHeight + "px");
                         }
                     }, 3000);
-                } else {
-                    if ($("#htmlContent")[0].scrollWidth < screenWidth) {
-                        $("#htmlContent").css("width", (screenWidth) + "px");
-                    }
-
-                    // setTimeout(function() {
-                    //     doPanZoom();
-                    // }, 500);
                 }
 
                 function doPanZoom() {
