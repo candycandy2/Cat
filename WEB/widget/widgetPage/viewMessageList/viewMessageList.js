@@ -4,8 +4,7 @@ $("#viewMessageList").pagecontainer({
         var messageType = "news",
             allChecked = false,
             deleteType,
-            msgUpdateDate,
-            messageExist = true;
+            msgUpdateDate;
 
         //获取portal
         function QueryPortalList(type) {
@@ -76,12 +75,11 @@ $("#viewMessageList").pagecontainer({
                 //1. content
                 var content = '';
                 for (var i in arr) {
-                    content += '<li data-icon="false" data-rowid="' + arr[i].PortalID +
-                        '"><div class="behind"><a href="#" class="ui-btn delete-btn"><img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-portal ui-btn">' +
-                        '<div class="msg-check-icon"><img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title read-font-normal"><div>' +
-                        arr[i].PortalDate.replaceAll('/', '-') + '</div><div>' +
-                        arr[i].PortalSubject + '</div><div style="display:none"><input type="hidden" value="' +
-                        arr[i].PortalURL + '"></div></div><div class="msg-next-icon"><img src="img/nextpage.png" class="msg-next-btn"></div></a></li>';
+                    content += '<li data-icon="false" data-rowid="' + arr[i].PortalID + '"><div class="behind"><a href="#" class="ui-btn delete-btn">' +
+                        '<img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-portal ui-btn"><div class="msg-check-icon">' +
+                        '<img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title read-font-normal"><div>' +
+                        arr[i].PortalDate.replaceAll('/', '-') + '</div><div>' + arr[i].PortalSubject + '</div></div><div class="msg-next-icon">' +
+                        '<img src="img/nextpage.png" class="msg-next-btn"></div><input type="hidden" value="' + arr[i].PortalURL + '"></a></li>';
                 }
 
                 $("." + type + "-content ul").html('').append(content);
@@ -112,7 +110,6 @@ $("#viewMessageList").pagecontainer({
                 $('.msg-update-date').text(langStr['str_079'] + new Date().yyyymmdd('/'));
                 setMsgHeightByType(messageType);
             }
-
         }
 
         //創意園地
@@ -123,8 +120,8 @@ $("#viewMessageList").pagecontainer({
                 for (var i in arr) {
                     content += '<li data-icon="false" data-rowid="' + arr[i].PortalID + '"><a href="#" class="ui-portal ui-btn idea-portal">' +
                         '<div class="msg-thumbnail" style="background:url(' + arr[i].PortalImageURL + ') 0% / cover;"></div><div class="msg-idea-title read-font-normal"><div>' +
-                        arr[i].PortalSubject + '</div><div>' + new Date(arr[i].PortalDate).yyyymmdd('/') + '</div><div style="display:none"><input type="hidden" value="' +
-                        arr[i].PortalURL + '"></div></div></a></li>';
+                        arr[i].PortalSubject + '</div><div><span>' + arr[i].PortalSource + '</span>&nbsp;&nbsp;<span>' + new Date(arr[i].PortalDate).yyyymmdd('/') +
+                        '</span></div></div><input type="hidden" value="' + arr[i].PortalURL + '"></a></li>';
                 }
 
                 $("." + type + "-content ul").html('').append(content);
@@ -199,7 +196,6 @@ $("#viewMessageList").pagecontainer({
                 }
             });
         }
-
 
         //根据message数据，动态生成html
         function createMessageByType() {
@@ -305,346 +301,6 @@ $("#viewMessageList").pagecontainer({
             messageFrom = 'viewMessageList';
             messageRowId = $target.parents('li').attr('data-rowid');
             checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
-        }
-
-        //don't use
-        function getMessageDetail() {
-            var self = this;
-
-            var queryStr = "&message_send_row_id=" + messageRowId;
-
-            this.successCallback = function(data) {
-                console.log(data);
-                var resultcode = data.result_code;
-                var content = data.content;
-
-                if (resultcode === 1) {
-
-                    messageExist = true;
-                    //变为已读
-                    updateListReadDelete(content.message_type, "read", messageRowId);
-
-                    $('.msg-detail-title').text(content.message_title);
-
-                    //If template_id == 999, it's Portal Event,
-                    //need to be render become canvas
-                    if (content.template_id === 999) {
-                        portalURL = content.message_text;
-                        createMsgHtml(portalURL);
-
-                        $(".PortalContent").show();
-                        $(".textContent").hide();
-
-                    } else {
-
-                        $(".textContent").html(cleanHTML(content.message_text));
-                        $(".PortalContent").hide();
-                        $(".textContent").show();
-                    }
-
-                    checkWidgetPage("#viewWebNews2-3-1", pageVisitedList);
-
-                } else if (resultcode === "000910") {
-                    //Message was be deleted in server
-                    messageExist = false;
-                    updateListReadDelete("all", "delete", messageRowId);
-                }
-
-                if (window.localStorage.getItem("openMessage") === "true") {
-                    loginData.openMessage = false;
-                    window.localStorage.setItem("openMessage", "false");
-                }
-            };
-
-            this.failCallback = function(data) {};
-
-            var __construct = function() {
-                QPlayAPI("POST", "getMessageDetail", self.successCallback, self.failCallback, null, queryStr);
-            }();
-        }
-
-        function createMsgHtml(varURL) {
-            (function() {
-                $(".htmlContent").html("");
-                $(".htmlContent").load(varURL, function() {
-                    $(".htmlContent").find("meta").remove();
-                    $(".htmlContent").find("title").remove();
-                    $(".htmlContent").find("base").remove();
-
-                    drawCanvas($(".htmlContent").html());
-
-                    //Had used the URL
-                    portalURL = "";
-                    //Had openMessage
-                    if (window.localStorage.getItem('openMessage') === "true") {
-                        loginData.openMessage = false;
-                        window.localStorage.setItem('openMessage', "false");
-                    }
-                });
-            }());
-        }
-
-        function drawCanvas(content) {
-
-            //$("#viewWebNews2-3-1 .portal-header").hide();
-
-            $(".htmlContent").css({
-                top: 0,
-                left: 0
-            });
-
-            $(".htmlContent").html(content).promise().done(function() {
-
-                var screenWidth = document.documentElement.clientWidth;
-                var $images = $('.htmlContent img');
-                var loaded_images_count = 0;
-                var loaded_finish = false;
-
-                if ($images.length > 0) {
-                    $images.load(function() {
-
-                        loaded_images_count++;
-
-                        if (loaded_images_count == $images.length) {
-                            if ($(".htmlContent")[0].scrollWidth < screenWidth) {
-                                $(".htmlContent").css("width", (screenWidth) + "px");
-                            }
-
-                            loaded_finish = true;
-                            //$("#messageLoadErrorPopup").popup("close");
-                            $("#viewMessageDetail").css("min-height", document.documentElement.clientHeight + "px");
-
-                            setTimeout(function() {
-                                doPanZoom();
-                            }, 500);
-                        }
-
-                    });
-
-                    setTimeout(function() {
-                        if (!loaded_finish) {
-                            //$("#messageLoadErrorPopup").popup("open");
-                            $("#viewMessageDetail").css("min-height", document.documentElement.clientHeight + "px");
-                        }
-                    }, 3000);
-                } else {
-                    if ($(".htmlContent")[0].scrollWidth < screenWidth) {
-                        $(".htmlContent").css("width", (screenWidth) + "px");
-                    }
-
-                    // setTimeout(function() {
-                    //     doPanZoom();
-                    // }, 500);
-                }
-
-                //隐藏页面中的header和footer
-                // $('.htmlContent center > table > tbody > tr:eq(0)').hide();
-                // $('.htmlContent center > table > tbody > tr:eq(1)').hide();
-                // $('.htmlContent center > table > tbody > tr:eq(2)').hide();
-                // $('.htmlContent center > table > tbody > tr:eq(4)').hide();
-                // $('.htmlContent center > table > tbody > tr:eq(5)').hide();
-                // $('.htmlContent center > table > tbody > tr:eq(6)').hide();
-
-                function doPanZoom() {
-
-                    window.minScale = parseInt(document.documentElement.clientWidth * 100 / $(".htmlContent")[0].scrollWidth * 0.9, 10) / 100;
-                    var marginLeft = parseInt(document.documentElement.clientWidth * 10 / 100, 10);
-
-                    //Resize HtmlContent
-                    $(".htmlContent").css("width", $(".htmlContent")[0].scrollWidth + "px");
-                    $(".htmlContent").css("height", $(".htmlContent")[0].scrollHeight + "px");
-
-                    //Remove Listener Event
-                    $(".PortalContent").off("scroll");
-                    $(".htmlContent").off("panzoomstart");
-                    $(".htmlContent").off("panzoomzoom");
-                    $(".htmlContent").off("panzoomend");
-
-                    //Panzoom Initial
-                    $(".htmlContent").panzoom();
-                    $(".htmlContent").panzoom("option", {
-                        minScale: minScale
-                    });
-
-                    $(".htmlContent").panzoom("zoom", minScale, { silent: true });
-
-                    //Resize PortalContent
-                    var screenHeight = document.documentElement.clientHeight;
-                    var screenWidth = document.documentElement.clientWidth;
-                    $(".PortalContent").css("overflow-y", "auto");
-                    $(".PortalContent").css("overflow-x", "hidden");
-                    $(".viewWebNews2-3-1 .page-main").css("overflow-x", "auto");
-                    $(".PortalContent").css("top", "0px");
-                    //var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height() + 5;
-                    var portalHeaderHeight = 0;
-
-                    if (device.platform === "iOS") {
-                        portalHeaderHeight += iOSFixedTopPX();
-                    }
-
-                    $(".PortalContent").css("padding-top", "0px");
-                    var matrixNewTopY = parseInt(portalHeaderHeight, 10);
-
-                    $(".PortalContent").css("height", screenHeight + "px");
-                    $(".PortalContent").css("width", screenWidth + "px");
-
-                    //Reset matrix of canvas
-                    var canvasHeight = $(".htmlContent").height();
-                    var canvasWidth = $(".htmlContent").width();
-                    var matrix = $(".htmlContent").panzoom("getMatrix");
-                    var matrixLeftX = document.documentElement.clientWidth - $(".htmlContent").width();
-                    var matrixNewLeftX = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
-
-                    $(".htmlContent").css({
-                        transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + "," + matrixNewLeftX + "," + matrixNewTopY + ")"
-                    });
-
-                    $(".htmlContent").offset({
-                        left: matrixNewLeftX,
-                        top: matrixNewTopY
-                    });
-
-                    loadingMask("hide");
-
-                    //panzoom start event
-                    $(".htmlContent").on("panzoomstart", function(e, panzoom, matrix, changed) {
-                        var canvasWidth = $(".htmlContent").width() * matrix[0];
-                        var screenWidth = document.documentElement.clientWidth;
-
-                        $("#viewMessageDetail .page-main").css("overflow-x", "auto");
-                        $(".PortalContent").css({
-                            "overflow-y": "auto",
-                            "overflow-x": "auto",
-                            "top": "0px",
-                            "height": screenHeight + "px",
-                            "width": canvasWidth + "px"
-                        });
-
-                        if (device.platform === "iOS") {
-                            $(".PortalContent").css("width", screenWidth + "px");
-                        }
-                    });
-
-                    //panzoom start zoom
-                    $(".htmlContent").on("panzoomzoom", function(e, panzoom, scale, opts) {
-                        $(".htmlContent").panzoom("option", {
-                            disablePan: true
-                        });
-
-                        var matrix = $(".htmlContent").panzoom("getMatrix");
-                        var canvasWidth = $(".htmlContent").width() * matrix[0];
-
-                        $("#viewMessageDetail .page-main").css("overflow-x", "auto");
-                        $(".PortalContent").css({
-                            "overflow-y": "auto",
-                            "overflow-x": "auto",
-                            "top": "0px",
-                            "height": screenHeight + "px",
-                            "width": canvasWidth + "px"
-                        });
-
-                        $(".htmlContent").css({
-                            transform: " matrix(" + scale + "," + matrix[1] + "," + matrix[2] + "," + scale + ", 0, " + matrix[5] + ")"
-                        });
-                    });
-
-                    //panzoom end event
-                    $(".htmlContent").on("panzoomend", function(e, panzoom, matrix, changed) {
-
-                        var canvasWidth;
-                        var screenWidth;
-                        var canvasOffsetTop;
-
-                        matrix = $(".htmlContent").panzoom("getMatrix");
-
-                        if (matrix[0] == minScale) {
-
-                            screenWidth = document.documentElement.clientWidth;
-                            $(".PortalContent").css({
-                                "width": screenWidth + "px",
-                                "overflow-x": "hidden"
-                            });
-
-                            canvasWidth = $(".htmlContent").width();
-                            canvasOffset = $(".htmlContent").offset();
-                            canvasOffsetTop = canvasOffset.top;
-                            var left = Math.abs(parseInt((screenWidth - canvasWidth * matrix[0]) / 2, 10));
-
-                            $(".htmlContent").css({
-                                top: matrixNewTopY,
-                                transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + ", 0, 0)"
-                            });
-
-                            $(".htmlContent").offset({
-                                top: matrixNewTopY,
-                                left: left
-                            });
-
-                        } else if (matrix[0] > minScale) {
-
-                            canvasWidth = $(".htmlContent").width() * matrix[0];
-                            screenWidth = document.documentElement.clientWidth;
-
-                            $("#viewMessageDetail .page-main").css("overflow-x", "auto");
-                            $(".PortalContent").css({
-                                "overflow-y": "auto",
-                                "overflow-x": "auto",
-                                "top": "0px",
-                                "height": screenHeight + "px",
-                                "width": canvasWidth + "px"
-                            });
-
-                            if (device.platform === "iOS") {
-                                $(".PortalContent").css("width", screenWidth + "px");
-                            }
-
-                            $(".htmlContent").css({
-                                top: 0,
-                                transform: " matrix(" + matrix[0] + "," + matrix[1] + "," + matrix[2] + "," + matrix[3] + ", 0, 0)"
-                            });
-
-                            canvasOffset = $(".htmlContent").offset();
-                            canvasOffsetTop = canvasOffset.top;
-
-                            $(".htmlContent").offset({
-                                top: canvasOffsetTop,
-                                left: 0
-                            });
-
-                        }
-
-                    });
-
-                    //Set Scroll Event
-                    $(".PortalContent").on("scroll", function() {
-
-                        var matrix = $(".htmlContent").panzoom("getMatrix");
-                        var canvasHeight = $(".htmlContent").height();
-                        var headerHeight = $("#viewMessageDetail .page-header").height();
-                        //var portalHeaderHeight = $("#viewWebNews2-3-1 .portal-header").height();
-                        var portalHeaderHeight = 0;
-                        var scrollTop = $(".PortalContent").scrollTop();
-                        var limitPercent = matrix[0];
-
-                        if (device.platform === "iOS") {
-                            headerHeight += iOSFixedTopPX();
-                        }
-
-                        if ((canvasHeight * matrix[0] - scrollTop) < (screenHeight * limitPercent - headerHeight - portalHeaderHeight)) {
-                            $(".PortalContent").animate({
-                                scrollTop: ((canvasHeight * matrix[0]) - (screenHeight * limitPercent - headerHeight - portalHeaderHeight))
-                            }, 0);
-                        }
-
-                    });
-
-                    //Prevent Link Action
-                    $(".htmlContent a").on("click", function(event) {
-                        event.preventDefault();
-                    });
-                }
-
-            });
         }
 
         function updateListReadDelete(type, status, messageRowId_) {
@@ -806,15 +462,16 @@ $("#viewMessageList").pagecontainer({
             $(document).unbind('touchmove', prevent_default);
         }
 
+
         /********************************** page event ***********************************/
         $("#viewMessageList").on("pagebeforeshow", function(event, ui) {
-            //createMessageByType();
+
         });
 
         $("#viewMessageList").one("pageshow", function(event, ui) {
             //filter placeholder
             $('#msgFilter').attr('placeholder', langStr['str_080']);
-            //check can not use portal 
+            //check can not use portal
             checkPortalByFunctionList();
             //content
             createMessageByType();

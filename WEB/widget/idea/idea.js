@@ -16,10 +16,17 @@ var ideaWidget = {
 
             }, "html");
 
-            //点击更多，跳转widgetPage
+            //点击更多，跳转消息列表
             contentItem.on('click', '.idea-more', function() {
                 window.sessionStorage.setItem('openIdeaPortal', 'Y');
                 checkWidgetPage('viewMessageList', pageVisitedList);
+            });
+
+            //点击idea，跳转消息内容
+            contentItem.on('click', '.idea-main', function() {
+                messageFrom = 'ideaWidget';
+                portalURL = $(this).find('input[type="hidden"]').val();
+                checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
             });
         }
 
@@ -64,7 +71,9 @@ var ideaWidget = {
                 'background-size': 'cover'
             });
             $('.idea-widget-title').text(firstIdeaPortal['content'][0].PortalSubject);
+            $('.idea-widget-source').text(firstIdeaPortal['content'][0].PortalSource);
             $('.idea-widget-date').text(new Date(firstIdeaPortal['content'][0].PortalDate).yyyymmdd('/'));
+            $('.idea-main input[type="hidden"]').val(firstIdeaPortal['content'][0].PortalURL);
             $('.idea-main').show();
         }
     }
