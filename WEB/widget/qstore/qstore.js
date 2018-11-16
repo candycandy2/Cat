@@ -11,6 +11,10 @@ var qstoreWidget = {
                 //2.img
                 var qstoreImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/widget_store.png');
                 $('.qstore-icon').html('').append(qstoreImg);
+                var qstoreallImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_all.png');
+                $('.store-all-img').html('').append(qstoreallImg);
+                var qstorenearImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_near.png');
+                $('.store-near-img').html('').append(qstorenearImg);
 
             }, "html");
 
