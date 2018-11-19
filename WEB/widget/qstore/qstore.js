@@ -7,12 +7,14 @@ var qstoreWidget = {
         function createContent(key) {
             $.get(serverURL + "/widget/qstore/qstore.html", function(data) {
                 //1.html
-                /*contentItem.html('').append(data);*/
+                contentItem.html('').append(data);
                 //2.img
-                /*var rateImg = $('<img>').attr('src', serverURL + '/widget/yellowpage/img/widget_yellowpage.png');
-                $('.yellowpage-widget-icon').html('').append(rateImg);
-                var moreImg = $('<img>').attr('src', serverURL + '/widget/yellowpage/img/more_green.png');
-                $('.phone-book-more').html('').append(moreImg);*/
+                var qstoreImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/widget_store.png');
+                $('.qstore-icon').html('').append(qstoreImg);
+                var qstoreallImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_all.png');
+                $('.store-all-img').html('').append(qstoreallImg);
+                var qstorenearImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_near.png');
+                $('.store-near-img').html('').append(qstorenearImg);
 
             }, "html");
 
