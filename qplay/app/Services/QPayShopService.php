@@ -214,4 +214,16 @@ class QPayShopService
 
         return $updateShopRs;
     }
+
+    /**
+     * 
+     * Get specific shop user data
+     * @param  int $shopId qpay_shop.row_id as shop id
+     * @return mixed
+     */
+    public function getShopUserByShopId($shopId){
+
+        return $this->qpayShopRepository->getShopUserByShopId($shopId);
+
+    }
 }
