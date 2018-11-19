@@ -950,3 +950,18 @@
     margin-left: 30%;
     border-radius: 2px;
 }
+
+/*********************** tea ***********************/
+.tea-update {
+    text-align: center;
+    font-size: 3.349vw;
+    color: #666;
+}
+
+.tea-none {
+    display: block;
+    text-align: center;
+    text-indent: 0;
+    font-size: 3.349vw;
+    color: #666;
+}
