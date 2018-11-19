@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>scope</title>
+</head>
+
+<body>
+    <div ng-controller="myCtrl">
+        <div>Ctrl:</div>
+        <div>{{student}}</div>
+        <hr>
+        <div>Directive:</div>
+        <first-name name="student"></first-name>
+    </div>
+
+    
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+
+        angularApp.controller('myCtrl', function($scope) {
+            $scope.student = "Jack";
+        });
+
+        angularApp.directive('firstName', function() {
+            return {
+                scope: {
+                    name: '='
+                },
+                template: '<input type="text" ng-model="name">'
+            }
+        });
+    </script>
+</body>
+
+</html>

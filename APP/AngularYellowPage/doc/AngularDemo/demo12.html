@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>controller</title>
+    <link rel="stylesheet" href="css/demo.css">
+</head>
+
+<body>
+    <div ng-controller="MyCtrl">
+        <div>
+            <label for="">firstName: </label>
+            <input type="text" ng-model="firstName">
+        </div>
+        <div>
+            <label for="">lastName: </label>
+            <input type="text" ng-model="lastName">
+        </div>
+        <div>{{firstName}} {{lastName}}</div>
+        <br>
+        <hr>
+        <br>
+
+        <div class="container" ng-show="main">我可以隐藏和显示</div>
+        <button ng-click="toggle()" ng-disabled="btnDisabled">控制显示和隐藏</button>
+        <input type="checkbox" ng-model="btnDisabled" name="checkbox">不可用
+        <br>
+        <hr>
+        <br>
+
+        <div class="menu">
+            <div ng-class="{activeMenu:tab == 'home'}" ng-click="changeTab('home')">首页</div>
+            <div ng-class="{activeMenu:tab == 'detail'}" ng-click="changeTab('detail')">详情</div>
+        </div>
+
+    </div>
+    
+
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+        
+        angularApp.controller('MyCtrl', function($scope) {
+            $scope.firstName = "Jack";
+            $scope.lastName = "Chen";
+
+            $scope.main = true;
+            $scope.toggle = function() {
+                $scope.main = !$scope.main;
+            }
+
+            $scope.tab = 'home';
+            $scope.changeTab = function(item) {
+                if(item !== $scope.tab) {
+                    $scope.tab = item;
+                }
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>

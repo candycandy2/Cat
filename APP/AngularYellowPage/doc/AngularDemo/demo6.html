@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>terminal</title>
+</head>
+
+<body>
+    <div>
+        <p first-name last-name></p>
+    </div>
+
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+
+        angularApp.directive('firstName', function() {
+            return {
+                priority: 2,
+                template: 'Jack'
+            }
+        });
+
+        angularApp.directive('lastName', function() {
+            return {
+                priority: 2,
+                terminal: true,
+                link: function(scope, element, attrs) {
+                    element[0].textContent += 'Chen';
+                }
+                
+            }
+        });
+    </script>
+</body>
+
+</html>

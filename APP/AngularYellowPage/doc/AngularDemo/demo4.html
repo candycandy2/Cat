@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>directive</title>
+</head>
+
+<body>
+    <first-name></first-name>
+
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+
+        angularApp.directive('firstName', function() {
+            return {
+                template: '<h1>自定义指令！</h1>'
+            }
+        });
+    </script>
+</body>
+
+</html>

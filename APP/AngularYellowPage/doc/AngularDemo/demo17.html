@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>service</title>
+</head>
+
+<body>
+    <div ng-controller="MyCtrl">
+        <div>
+            <input type="number" ng-model="number">
+            <button ng-click="checkNum(number)">change</button>
+        </div>
+        <div>{{result}}</div>
+
+    </div>
+
+
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+
+        angularApp.service('hexafy', function () {
+            this.myFunc = function (x) {
+                return x*x;
+            }
+        });
+
+        angularApp.controller('MyCtrl', function ($scope, hexafy) {
+
+            $scope.number = 0;
+
+            $scope.checkNum = function () {
+                $scope.result = hexafy.myFunc($scope.number);
+            };
+
+        });
+
+    </script>
+</body>
+
+</html>

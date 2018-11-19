@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>factory</title>
+</head>
+
+<body>
+    <div ng-controller="MyCtrl">
+        <div>
+            <input type="number" ng-model="numb1"> *
+            <input type="number" ng-model="numb2">
+            <button ng-click="sumNum(numb1, numb2)">change</button>
+        </div>
+        <div>{{result}}</div>
+
+    </div>
+
+
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+
+        angularApp.factory('sum', function () {
+            var factory = {};
+            factory.multiply = function (a, b) {
+                return a * b;
+            }
+            return factory;
+        });
+
+        angularApp.controller('MyCtrl', function ($scope, sum) {
+
+            $scope.numb1 = 0;
+            $scope.numb2 = 0;
+
+            $scope.sumNum = function () {
+                $scope.result = sum.multiply($scope.numb1, $scope.numb2);
+            };
+
+        });
+
+    </script>
+</body>
+
+</html>
