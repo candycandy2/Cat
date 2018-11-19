@@ -428,7 +428,7 @@ class qpayController extends Controller
     /**
      * QPay user maintain - view
      */
-    public function QPayUserMaintain(){
+    public function QPayUserEmployee(){
         //get all departments
         $departments = Auth::user()->getAllDepartment();
 

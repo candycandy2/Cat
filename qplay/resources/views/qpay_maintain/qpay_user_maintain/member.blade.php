@@ -1,7 +1,7 @@
 @include("layouts.lang")
 <?php
     use App\lib\ResultCode;
-    $menu_name = "QPAY_USER_MAINTAIN";
+    $menu_name = "QPAY_USER_EMPLOYEE";
     $departments = json_encode($departments);
 ?>
 @extends('layouts.admin_template')
@@ -117,7 +117,7 @@
                     }
                 },
                 error: function (e) {
-                    if(handleAJAXError(this,e)){
+                    if(handleAJAXError(this,e,"../")){
                         return false;
                     }
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
