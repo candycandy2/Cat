@@ -1,0 +1,528 @@
+{
+  "id": "fa1f2ff0-6928-49ae-a60d-1ec859db0b4c",
+  "version": "1.1",
+  "name": "QPlayWeb-dev",
+  "url": "http://qplaydev.benq.com",
+  "tests": [{
+    "id": "f6d8af61-1bbd-4ad2-8b78-361b698fd0f4",
+    "name": "test",
+    "commands": [{
+      "id": "fffed336-8168-415b-b479-026457a95943",
+      "comment": "",
+      "command": "open",
+      "target": "/qplay/public/auth/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "08efedef-fa74-4e82-a7c1-9bd3fbb57682",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1200x1000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2e517490-8784-4ce1-bd41-895d67eabd40",
+      "comment": "",
+      "command": "type",
+      "target": "id=loginid",
+      "targets": [
+        ["id=loginid", "id"],
+        ["name=loginid", "name"],
+        ["css=#loginid", "css"],
+        ["css=#loginid", "css:finder"],
+        ["xpath=//input[@id='loginid']", "xpath:attributes"],
+        ["xpath=//form[@id='loginForm']/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "samuel.hsieh"
+    }, {
+      "id": "323b8cd5-edb0-42a6-acb7-a5be043db221",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//form[@id='loginForm']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Winter2j/"
+    }, {
+      "id": "68970a80-4a70-4691-9e42-b043b573f093",
+      "comment": "",
+      "command": "click",
+      "target": "id=domain",
+      "targets": [
+        ["id=domain", "id"],
+        ["name=domain", "name"],
+        ["css=#domain", "css"],
+        ["css=#domain", "css:finder"],
+        ["xpath=//select[@id='domain']", "xpath:attributes"],
+        ["xpath=//form[@id='loginForm']/div[3]/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "932c1127-8eda-49ef-b20d-7636079cfd41",
+      "comment": "",
+      "command": "select",
+      "target": "id=domain",
+      "targets": [],
+      "value": "label=Qisda"
+    }, {
+      "id": "a49bb5cf-763f-457f-9a36-e52a77f07454",
+      "comment": "",
+      "command": "click",
+      "target": "id=domain",
+      "targets": [
+        ["id=domain", "id"],
+        ["name=domain", "name"],
+        ["css=#domain", "css"],
+        ["css=#domain", "css:finder"],
+        ["xpath=//select[@id='domain']", "xpath:attributes"],
+        ["xpath=//form[@id='loginForm']/div[3]/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7775e09e-4739-45a8-9e09-ff054635076f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-block",
+      "targets": [
+        ["css=.btn-block", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form[@id='loginForm']/div[5]/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7e690b39-c7f2-40dc-9c64-794ee3071c58",
+      "comment": "",
+      "command": "click",
+      "target": "css=ul.nav.treeview-menu > li.active > a",
+      "targets": [
+        ["css=ul.nav.treeview-menu > li.active > a", "css"],
+        ["css=.active:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'帳號管理')]", "xpath:link"],
+        ["xpath=//li[@id='scrollspy-components']/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/accountMaintain']", "xpath:href"],
+        ["xpath=//li[2]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "762d1e36-1bab-43fa-b90f-27817c19c965",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'企業角色管理')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'企業角色管理')]", "xpath:link"],
+        ["xpath=//li[@id='scrollspy-components']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/roleMaintain']", "xpath:href"],
+        ["xpath=//li[2]/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "23cb4d29-f61e-49f7-a3b4-da1235257953",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=系統管理",
+      "targets": [
+        ["linkText=系統管理", "linkText"],
+        ["xpath=//a[contains(text(),'系統管理')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[2]", "xpath:idRelative"],
+        ["xpath=(//a[@href='http://qplaydev.benq.com/qplay/public/'])[2]", "xpath:href"],
+        ["xpath=//li[4]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cedcd26a-ac1a-4969-9710-7e4f0fd3fb02",
+      "comment": "",
+      "command": "click",
+      "target": "css=.menu-open > li:nth-child(1) > a",
+      "targets": [
+        ["css=.menu-open > li:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'選單維護')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[3]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/menuMaintain']", "xpath:href"],
+        ["xpath=//li[4]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "857bc23b-662b-4181-b8ab-08be82faaed5",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'群組維護')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'群組維護')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[2]/a)[2]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/groupMaintain']", "xpath:href"],
+        ["xpath=//li[4]/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a26a4dec-3a5d-4f0d-bb66-be4166e950c6",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'參數維護')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'參數維護')]", "xpath:link"],
+        ["xpath=//li[@id='scrollspy-components']/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/parameterMaintain']", "xpath:href"],
+        ["xpath=//li[4]/ul/li[3]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "213ba391-adaf-4f6a-a053-befd84426c80",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=APP管理",
+      "targets": [
+        ["linkText=APP管理", "linkText"],
+        ["xpath=//a[contains(text(),'APP管理')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[3]", "xpath:idRelative"],
+        ["xpath=(//a[@href='http://qplaydev.benq.com/qplay/public/'])[3]", "xpath:href"],
+        ["xpath=//li[6]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5c490622-9873-42a3-88df-f03dccd08f10",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "xpath=//a[contains(text(),'類別管理')]",
+      "targets": [],
+      "value": "2000"
+    }, {
+      "id": "e6865edf-29c9-4d48-ac0c-5b3e11eb6c89",
+      "comment": "",
+      "command": "//click",
+      "target": "css=.treeview-menu > li:nth-child(4) > a",
+      "targets": [
+        ["css=.treeview-menu > li:nth-child(4) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'項目維護')]", "xpath:link"],
+        ["xpath=//li[@id='scrollspy-components']/ul/li[4]/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/projectMaintain']", "xpath:href"],
+        ["xpath=//li[6]/ul/li[4]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "410b8b5e-d86e-4c2e-a5ac-8aa2611cba31",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'類別管理')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'類別管理')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[6]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/categoryMaintain']", "xpath:href"],
+        ["xpath=//li[6]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "55111614-e777-4f92-957b-b0ef57e0be51",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'安全設定')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'安全設定')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[2]/a)[3]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/securitySetting']", "xpath:href"],
+        ["xpath=//li[6]/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "aaa6d590-d86c-47af-943c-2d37dff3496c",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'App 管理')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'App 管理')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[3]/a)[2]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/AppMaintain']", "xpath:href"],
+        ["xpath=//li[6]/ul/li[3]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bdbe1968-1ca7-43ad-bc08-808ae89c4399",
+      "comment": "",
+      "command": "click",
+      "target": "css=.treeview-menu > li:nth-child(4) > a",
+      "targets": [
+        ["css=.treeview-menu > li:nth-child(4) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'項目維護')]", "xpath:link"],
+        ["xpath=//li[@id='scrollspy-components']/ul/li[4]/a", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/projectMaintain']", "xpath:href"],
+        ["xpath=//li[6]/ul/li[4]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1ecb0c6e-453d-40a9-8b67-01fa2b35fa63",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=推播服務",
+      "targets": [
+        ["linkText=推播服務", "linkText"],
+        ["xpath=//a[contains(text(),'推播服務')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[4]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/push']", "xpath:href"],
+        ["xpath=//li[8]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6039f2cc-dc9b-4ee7-ba0f-9ae7de915cc6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.menu-open > li:nth-child(1) > a",
+      "targets": [
+        ["css=.menu-open > li:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'預約推播')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[10]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/pushBatchService']", "xpath:href"],
+        ["xpath=//li[8]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3e2adaab-1197-48dd-b100-c7c9802377c3",
+      "comment": "",
+      "command": "//click",
+      "target": "xpath=//a[contains(text(),'預約推播訊息紀錄')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'預約推播訊息紀錄')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[2]/a)[4]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/pushBatchServiceData']", "xpath:href"],
+        ["xpath=//li[8]/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3edb1ef8-d2e1-40f8-b11b-72874bffb762",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//a[contains(text(),'推播服務')])[2]",
+      "targets": [
+        ["xpath=(//a[contains(text(),'推播服務')])[2]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[3]/a)[3]", "xpath:idRelative"],
+        ["xpath=(//a[@href='http://qplaydev.benq.com/qplay/public/push'])[2]", "xpath:href"],
+        ["xpath=//li[8]/ul/li[3]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "47b85e85-2b01-4636-b97f-5f23cedbe680",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=秘書推播",
+      "targets": [
+        ["linkText=秘書推播", "linkText"],
+        ["xpath=//a[contains(text(),'秘書推播')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[5]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/secretaryPush']", "xpath:href"],
+        ["xpath=//li[10]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b30d4708-51cf-4269-beac-45ce7b32cf1f",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=報表",
+      "targets": [
+        ["linkText=報表", "linkText"],
+        ["xpath=//a[contains(text(),'報表')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[6]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/report']", "xpath:href"],
+        ["xpath=//li[12]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e3d39532-4624-4f4d-a153-94a38553e586",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=註冊管理工具",
+      "targets": [
+        ["linkText=註冊管理工具", "linkText"],
+        ["xpath=//a[contains(text(),'註冊管理工具')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[7]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/registerMaintain']", "xpath:href"],
+        ["xpath=//li[14]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cbd8646d-ea1a-4802-8a46-a7bcd4e69c45",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=公司管理",
+      "targets": [
+        ["linkText=公司管理", "linkText"],
+        ["xpath=//a[contains(text(),'公司管理')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[8]", "xpath:idRelative"],
+        ["xpath=(//a[@href='http://qplaydev.benq.com/qplay/public/'])[4]", "xpath:href"],
+        ["xpath=//li[16]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6c3b137f-d769-453f-889e-e3ab5ac21e5c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.menu-open a",
+      "targets": [
+        ["css=.menu-open a", "css:finder"],
+        ["xpath=(//a[contains(text(),'公司管理')])[2]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[13]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/companyMaintain']", "xpath:href"],
+        ["xpath=//li[16]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dea3b801-3310-4eb3-b60b-2536185bce8c",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=功能管理",
+      "targets": [
+        ["linkText=功能管理", "linkText"],
+        ["xpath=//a[contains(text(),'功能管理')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[9]", "xpath:idRelative"],
+        ["xpath=(//a[@href='http://qplaydev.benq.com/qplay/public/'])[5]", "xpath:href"],
+        ["xpath=//li[18]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5c31307e-3b5e-42a8-abc3-cc0072f2c9d3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.menu-open a",
+      "targets": [
+        ["css=.menu-open a", "css:finder"],
+        ["xpath=(//a[contains(text(),'功能管理')])[2]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[14]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/functionMaintain']", "xpath:href"],
+        ["xpath=//li[18]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f5a9c64d-bf35-484c-8e91-54f32f7dc7ad",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=事件通報系統",
+      "targets": [
+        ["linkText=事件通報系統", "linkText"],
+        ["xpath=//a[contains(text(),'事件通報系統')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[10]", "xpath:idRelative"],
+        ["xpath=(//a[@href='http://qplaydev.benq.com/qplay/public/'])[6]", "xpath:href"],
+        ["xpath=//li[20]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "51cd3336-5e22-4641-a8ab-662b920979ad",
+      "comment": "",
+      "command": "click",
+      "target": "css=.menu-open a",
+      "targets": [
+        ["css=.menu-open a", "css:finder"],
+        ["xpath=//a[contains(text(),'成員資訊維護')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[15]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/basicInfo']", "xpath:href"],
+        ["xpath=//li[20]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6108367d-d9df-4065-ab99-df9d0569e63c",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=消費券管理-儲值管理",
+      "targets": [
+        ["linkText=消費券管理-儲值管理", "linkText"],
+        ["xpath=//a[contains(text(),'消費券管理-儲值管理')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[11]", "xpath:idRelative"],
+        ["xpath=(//a[@href='http://qplaydev.benq.com/qplay/public/'])[7]", "xpath:href"],
+        ["xpath=//li[22]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9ad7ac94-15cf-4a1e-8e4a-412343aac6f8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.menu-open > li:nth-child(1) > a",
+      "targets": [
+        ["css=.menu-open > li:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'點數儲值')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[16]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/QPayStoreMaintain/QPayStorePoint']", "xpath:href"],
+        ["xpath=//li[22]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "23ab1065-baa1-43d8-8c66-8e2f3ab3b557",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'儲值紀錄')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'儲值紀錄')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[2]/a)[5]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/QPayStoreMaintain/QPayStoreRecord']", "xpath:href"],
+        ["xpath=//li[22]/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a2d8ef4b-1bbf-4204-95d9-cc1c592dab1b",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'員工發放紀錄')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'員工發放紀錄')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[3]/a)[4]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/QPayStoreMaintain/QPayStoreEmployee']", "xpath:href"],
+        ["xpath=//li[22]/ul/li[3]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0bd138fa-5e3a-4225-8e38-1d55bd036adb",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=消費券管理-報銷管理",
+      "targets": [
+        ["linkText=消費券管理-報銷管理", "linkText"],
+        ["xpath=//a[contains(text(),'消費券管理-報銷管理')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[12]", "xpath:idRelative"],
+        ["xpath=(//a[@href='http://qplaydev.benq.com/qplay/public/'])[8]", "xpath:href"],
+        ["xpath=//li[24]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f09783f6-c545-4593-92e7-94f35f4c43bf",
+      "comment": "",
+      "command": "click",
+      "target": "css=.menu-open a",
+      "targets": [
+        ["css=.menu-open a", "css:finder"],
+        ["xpath=//a[contains(text(),'員工消費紀錄')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[19]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/QPayReimburseMaintain/QPayReimbursePurchase']", "xpath:href"],
+        ["xpath=//li[24]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d0536db-b62b-4109-86fc-7f201185b702",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=關於",
+      "targets": [
+        ["linkText=關於", "linkText"],
+        ["xpath=//a[contains(text(),'關於')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[13]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/about']", "xpath:href"],
+        ["xpath=//li[26]/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "260e1e0d-a45f-44e9-91a7-8a44af026aa4",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["f6d8af61-1bbd-4ad2-8b78-361b698fd0f4"]
+  }],
+  "urls": ["http://qplaydev.benq.com/", "http://qplaytest.benq.com/"],
+  "plugins": []
+}
