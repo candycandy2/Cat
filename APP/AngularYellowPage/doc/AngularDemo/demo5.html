@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>restrict</title>
+</head>
+
+<body>
+    <first-name></first-name>
+    <div first-name></div>
+    <div class="first-name"></div>
+    <!-- directive: first-name -->
+
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+
+        angularApp.directive('firstName', function() {
+            return {
+                restrict: 'EA',
+                replace: true,
+                template: '<h1>自定义指令！</h1>'
+            }
+        });
+    </script>
+</body>
+
+</html>

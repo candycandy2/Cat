@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>value</title>
+</head>
+
+<body>
+    <div ng-controller="MyCtrl">
+        <div>
+            <input type="text" ng-model="lastName">
+            <button ng-click="checkName()">全名</button>
+        </div>
+        <div>{{fullName}}</div>
+
+    </div>
+    
+
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+
+        angularApp.value('firstName', 'Rose');
+        
+        angularApp.controller('MyCtrl', function($scope, firstName) {
+            
+            $scope.lastName = '';
+
+            $scope.checkName = function() {
+                $scope.fullName = firstName + '.' + $scope.lastName;
+            };
+
+        });
+
+    </script>
+</body>
+
+</html>

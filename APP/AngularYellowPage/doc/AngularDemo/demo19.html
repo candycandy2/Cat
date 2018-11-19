@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>route</title>
+</head>
+
+<body>
+    <div>
+        <ul>
+            <li><a href="#!/home">Home</a></li>
+            <li><a href="#!/detail">Detail</a></li>
+        </ul>
+    </div>
+    <div ng-view></div>
+
+
+
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', ['ngRoute']);
+
+        angularApp.config(function ($routeProvider) {
+            $routeProvider
+                .when('/home', {
+                    templateUrl: 'view/home.html',
+                    controller: 'HomeController'
+                })
+                .when('/detail', {
+                    templateUrl: 'view/detail.html',
+                    controller: 'DetailController'
+                })
+                .otherwise({
+                    redirectTo: '/home'
+                });
+        });
+
+        angularApp.controller('HomeController', function ($scope) {
+
+        });
+
+        angularApp.controller('DetailController', function ($scope, $location) {
+            $scope.goBack = function() {
+                $location.path('/home');
+            }
+        });
+
+    </script>
+</body>
+
+</html>

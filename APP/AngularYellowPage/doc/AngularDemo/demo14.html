@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>filter</title>
+    <style>
+        li > div {float:left}
+        li > div:nth-of-type(2) {margin-left: 10px;}
+    </style>
+</head>
+
+<body>
+    <div ng-controller="MyCtrl">
+        <div>
+            <ul>
+                <li ng-repeat="i in phoneList">
+                    <div>{{i.name}}:</div>
+                    <div>{{i.tel | oneTel}}</div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    
+
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+        
+        angularApp.controller('MyCtrl', function($scope) {
+            
+            $scope.phoneList = [
+                {name: 'Jack', tel: '1863;1924'},
+                {name: 'Tom', tel: '1927'},
+                {name: 'Jerry', tel: '1420'},
+                {name: 'Rose', tel: '1674;1825;1903'},
+                {name: 'Alan', tel: '1505;1798'},
+            ];
+
+        });
+
+        angularApp.filter('oneTel', function() {
+            return function(str) {
+                var index = str.indexOf(';');
+                if(index > 0) {
+                    return str.substring(0, index);
+                } else {
+                    return str;
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

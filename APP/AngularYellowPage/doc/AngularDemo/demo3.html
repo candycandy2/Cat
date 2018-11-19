@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="">
+
+<head>
+    <meta charset="UTF-8">
+    <title>init & repeat</title>
+    <style>
+        li>div{float: left};
+    </style>
+</head>
+
+<body>
+    <div ng-init="student='jack'">
+        <label for="">student: </label>
+        <input type="text" ng-model="student">
+    </div>
+    <div>{{student}}</div>
+
+    <hr>
+
+    <div ng-init="result=[{item:'语文',score:80},{item:'数学',score:95},{item:'英语',score:100}]">
+        <div>{{student}}成绩:</div>
+        <ul>
+            <li ng-repeat="x in result">
+                <div>{{x.item}}： </div>
+                <div>{{x.score}}</div>
+            </li>
+        </ul>
+    </div>
+
+
+    <script src="js/angular.min.js"></script>
+</body>
+
+</html>

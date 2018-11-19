@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>http</title>
+</head>
+
+<body>
+    <div ng-controller="MyCtrl">
+        <div>
+            <button ng-click="getData()">获取资料</button>
+        </div>
+        <div>
+            <ul>
+                <li ng-repeat="x in list">
+                    <div></div>
+                    <div></div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    
+
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+        
+        angularApp.controller('MyCtrl', function($scope, $http) {
+
+            $scope.getData = function() {
+                $http({
+                    method: 'GET',
+                    url: 'http://10.85.10.115:8021/Weather/zh-cn.json'
+                }).then(function successCallback(response) {
+                    console.log(response);
+                }, function errorCallback(response) {});
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>

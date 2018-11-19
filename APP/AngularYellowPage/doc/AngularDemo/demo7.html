@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html ng-app="angularApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>link</title>
+</head>
+
+<body>
+    <first-name></first-name>
+
+    
+    <script src="js/angular.min.js"></script>
+    <script>
+        var angularApp = angular.module('angularApp', []);
+
+        angularApp.directive('firstName', function() {
+            return {
+                template: '<h1>这里是指令！</h1>',
+                link:function(scope, element, attrs, supermanCtrl){
+                    console.log(element);
+                    element.bind("mouseenter",function(){
+                        console.log("鼠标进入...");
+                    });
+                    element.bind("mouseout",function(){
+                        console.log("鼠标滑出...");
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
