@@ -278,7 +278,7 @@ $("#viewApplyInsurance").pagecontainer({
             cardVal = $("#newHealthcard :radio:checked").val();
             if (applyType == "applyInsur") {
                 reasonVal = $.trim($("#applyReason").text());  
-                if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && subsidyVal !== undefined && certiVal !== undefined && cardVal !== undefined && remarkVal !== "") {
+                if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && subsidyVal !== undefined && certiVal !== undefined && cardVal !== undefined) {
                     $('#previewBtn').addClass('insurPreview-active-btn');
                 } else {
                     $('#previewBtn').removeClass('insurPreview-active-btn');
@@ -286,7 +286,7 @@ $("#viewApplyInsurance").pagecontainer({
             } else if (applyType == "withdrawInsur") {
                 reasonVal = $.trim($("#withdrawReason").text());  
                 //退保需檢查的欄位
-                if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && certiVal !== undefined && remarkVal !== "") {
+                if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && certiVal !== undefined) {
                     $('#previewBtn').addClass('insurPreview-active-btn');
                 } else {
                     $('#previewBtn').removeClass('insurPreview-active-btn');
@@ -294,14 +294,14 @@ $("#viewApplyInsurance").pagecontainer({
             } else if (applyType == "stopInsur") {
                 reasonVal = $.trim($("#stopReason").text());  
                 //退保需檢查的欄位
-                if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && certiVal !== undefined && remarkVal !== "") {
+                if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && certiVal !== undefined) {
                     $('#previewBtn').addClass('insurPreview-active-btn');
                 } else {
                     $('#previewBtn').removeClass('insurPreview-active-btn');
                 }
             } else if (applyType == "recoverInsur") {
                 reasonVal = $.trim($("#recoverReason").text());
-                if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && subsidyVal !== undefined && certiVal !== undefined && cardVal !== undefined && remarkVal !== "") {
+                if (nameVal !== "" && applyDateVal !== "" && reasonVal !== "" && subsidyVal !== undefined && certiVal !== undefined && cardVal !== undefined) {
                     $('#previewBtn').addClass('insurPreview-active-btn');
                 } else {
                     $('#previewBtn').removeClass('insurPreview-active-btn');

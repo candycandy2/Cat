@@ -209,23 +209,13 @@ $("#viewFamilyData").pagecontainer({
                 }
                 localStorage.setItem('familySettingData', JSON.stringify(familyArr));*/
                 if (data['ResultCode'] === "1") {
-                    if (clickDealwith === "未申請") {
-                        QueryHealthInsuranceListForFamilyData();
-                        //changeFamilyListHeight(activePageListID, scrollClassName, "delete");
-                        $('.family-edit-btn').trigger('click');
-                        $("#deleteFamilyListMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
-                        viewPersonalInsuranceShow = false; 
-                        tab1FamiScrollHeight = false;
-                    } else {
-                        $(".deleteErrorMsg .hasInsurErr").removeClass('addInlineBlock');
-                        $(".deleteErrorMsg .pendingInsurErr").removeClass('addInlineBlock');
-                        $(".deleteErrorMsg .recordInsurErr").addClass('addInlineBlock'); 
-                        $(".deleteErrorMsg .main-paragraph").text('');
-                        $(".deleteErrorMsg .ui-content>.main").css("margin-top", "");
-                        $(".deleteErrorMsg .ui-content>.main").css("margin-top", "10%");
-                        popupMsgInit('.deleteErrorMsg');
-                    }
-                }else if (data['ResultCode'] === "046905") {
+                    QueryHealthInsuranceListForFamilyData();
+                    //changeFamilyListHeight(activePageListID, scrollClassName, "delete");
+                    $('.family-edit-btn').trigger('click');
+                    $("#deleteFamilyListMsg.popup-msg-style").fadeIn(100).delay(2000).fadeOut(100);
+                    viewPersonalInsuranceShow = false; 
+                    tab1FamiScrollHeight = false;
+                } else if (data['ResultCode'] === "046905") {
                     $(".deleteErrorMsg .recordInsurErr").removeClass('addInlineBlock'); 
                     $(".deleteErrorMsg .hasInsurErr").addClass('addInlineBlock');  
                     $(".deleteErrorMsg .pendingInsurErr").removeClass('addInlineBlock'); 
@@ -233,7 +223,7 @@ $("#viewFamilyData").pagecontainer({
                     $(".deleteErrorMsg .ui-content>.main").css("margin-top", "");
                     $(".deleteErrorMsg .ui-content>.main").css("margin-top", "10%");  
                     popupMsgInit('.deleteErrorMsg');
-                }else if (data['ResultCode'] === "046906") {
+                } else if (data['ResultCode'] === "046906") {
                     $(".deleteErrorMsg .recordInsurErr").removeClass('addInlineBlock'); 
                     $(".deleteErrorMsg .hasInsurErr").removeClass('addInlineBlock');  
                     $(".deleteErrorMsg .pendingInsurErr").addClass('addInlineBlock');   
@@ -562,7 +552,18 @@ $("#viewFamilyData").pagecontainer({
         $("#confirmDeleteFamilyBtn").on("click", function () {
             addFamilyStatus = "Delete";
             //API: ModifyFamilyData (入參)
-            QueryInsuranceFamilyDelete();
+            if (clickDealwith !== "未申請") {
+                //popupMsgCloseInit('.confirmDeleteFamily');
+                $(".deleteErrorMsg .hasInsurErr").removeClass('addInlineBlock');
+                $(".deleteErrorMsg .pendingInsurErr").removeClass('addInlineBlock');
+                $(".deleteErrorMsg .recordInsurErr").addClass('addInlineBlock'); 
+                $(".deleteErrorMsg .main-paragraph").text('');
+                $(".deleteErrorMsg .ui-content>.main").css("margin-top", "");
+                $(".deleteErrorMsg .ui-content>.main").css("margin-top", "10%");
+                popupMsgInit('.deleteErrorMsg');
+            } else {
+                QueryInsuranceFamilyDelete();
+            }
         });
 
         //確定取消新增，跳轉
