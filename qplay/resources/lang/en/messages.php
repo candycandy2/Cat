@@ -80,6 +80,7 @@ return [
     'TITLE_QPAY_USER_POINT_TYPE' => 'Point Type',
     'TITLE_QPAY_USER_SHOP' => 'Shop',
     'TITLE_QPAY_MAINTAIN' => 'QPay-User Maintain',
+    'TITLE_QPAY_USER_EMPLOYEE' =>'Employee Maintain',
 
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
