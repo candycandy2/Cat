@@ -122,20 +122,6 @@ class QPayMemberRepository
 
     /**
      * update user's QPay trad password
-     * @param  int $QPayMemberId qpay_member.row_id
-     * @param  string $newPwd new pass word
-     */
-    public function changeTradPassword($QPayMemberId, $newPwd){
-
-        $user = $this->qpayMember::find($QPayMemberId);
-        $user->trade_password = $newPwd;
-        $user->timestamps = false;
-        $user->save();
-
-    }
-
-    /**
-     * update user's QPay trad password
      * @param  int    $QPayMemberId qpay_member.row_id
      * @param  string $newPwd new pass word
      */

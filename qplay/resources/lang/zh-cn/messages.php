@@ -80,6 +80,7 @@ return [
     'TITLE_QPAY_USER_POINT_TYPE' => '消费券资料',
     'TITLE_QPAY_USER_SHOP' => '店家资料',
     'TITLE_QPAY_MAINTAIN' => '消费券管理-用户管理',
+    'TITLE_QPAY_USER_EMPLOYEE' =>'员工资料',
 
     'ENABLE' => '启用',
     'DISABLE' => '停用',
