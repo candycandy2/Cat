@@ -1,5 +1,8 @@
 
 function htmlEscape(str) {
+    if(str == null){
+        return null;
+    }
     return str
         .replace(/&/g, '&amp;')
         .replace(/"/g, '&quot;')
@@ -126,9 +129,13 @@ function getUrlVar(name){
 
 }
 
-function handleAJAXError(ajax,error) {
+function handleAJAXError(ajax, error, path) {
+    var rootPath = "";
+    if(typeof path != 'undefined'){
+        var rootPath = path;
+    }
     if(error.status ==401 &&  error.responseText == "Unauthorized."){
-        window.location.href = "auth/login";
+        window.location.href = rootPath + "auth/login";
         return true;
     }else {
         return false;

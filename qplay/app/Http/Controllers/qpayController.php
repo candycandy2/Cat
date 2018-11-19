@@ -389,11 +389,23 @@ class qpayController extends Controller
 
         $shopId = trim($request->shopId);
         $name = trim($request->name);
-        $address = trim($request->address);
-        $tel = trim($request->tel);
-        $loginId = trim($request->account);
+        $address = (trim($request->address) == "")?null:trim($request->address);
+        $tel = (trim($request->tel) == "")?null:trim($request->tel);
+        $loginId = trim($request->loginId);
         
+        $existLoginId = CommonUtil::getUserInfoJustByUserID($loginId,'shop');
         
+        //if has changed and login and duplicated return error
+        if(!is_null($existLoginId)){
+            
+            $shopUserResult = $this->qpayShopService->getShopUserByShopId($shopId);
+            if($shopUserResult->user_row_id != $existLoginId->row_id) {
+                $result["result_code"] = ResultCode::_000922_qpayShopAlreadyExist;
+                return json_encode($result);
+            }
+
+        }
+
         $updateRs = $this->qpayShopService->updateShop($shopId, $name, $address, $tel, $loginId);
 
         if ($updateRs) {

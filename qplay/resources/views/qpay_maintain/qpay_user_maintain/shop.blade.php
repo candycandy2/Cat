@@ -67,9 +67,9 @@
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
                     <th data-field="emp_name" data-sortable="true" data-searchable="true"  data-formatter="shopNameFormatter">{{trans('messages.QPAY_SHOP_NAME')}}</th>
-                    <th data-field="address" data-sortable="true" data-searchable="false"  data-formatter="">{{trans('messages.QPAY_SHOP_ADDRESS')}}</th>
-                    <th data-field="ext_no" data-sortable="true" data-searchable="false" data-formatter="">{{trans('messages.QPAY_SHOP_TEL')}}</th>
-                    <th data-field="login_id" data-sortable="true" data-searchable="false" data-formatter="">{{trans('messages.USER_LOGIN_ID')}}</th>
+                    <th data-field="address" data-sortable="true" data-searchable="true"  data-formatter="addressFormatter">{{trans('messages.QPAY_SHOP_ADDRESS')}}</th>
+                    <th data-field="ext_no" data-sortable="true" data-searchable="true" data-formatter="telFormatter">{{trans('messages.QPAY_SHOP_TEL')}}</th>
+                    <th data-field="login_id" data-sortable="true" data-searchable="true" data-formatter="loginIdFormatter">{{trans('messages.USER_LOGIN_ID')}}</th>
                     <th data-field="password" data-searchable="false" data-formatter="passwordFormatter">{{trans('messages.USER_PWD')}}</th>
                     <th data-field="" data-width="5px" data-searchable="false" data-formatter="resetPwdFormatter">{{trans('messages.RESET_PWD')}}</th>
                     <th data-field="" data-width="5px" data-searchable="false" data-formatter="resetOriginFormatter">{{trans('messages.RESET_TO_ORIGIN')}}</th>
@@ -101,21 +101,21 @@
                             <td>{{trans('messages.QPAY_SHOP_ADDRESS')}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" class="form-control" data-clear-btn="true" id="editShopAddress" value="" placeholder="{{trans('messages.QPAY_INPUT_SHOP_ADDRESS')}}"/>
-                                <span style="color: red;" class="error" for="editPointTypeName"></span>
+                                <span style="color: red;" class="error" for="editShopAddress"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>{{trans('messages.QPAY_SHOP_TEL')}}:</td>
                             <td style="padding: 10px;">
                                 <input type="text" class="form-control" data-clear-btn="true" id="editShopTel" value="" placeholder="{{trans('messages.QPAY_INPUT_SHOP_TEL')}}"/>
-                                <span style="color: red;" class="error" for="editPointTypeName"></span>
+                                <span style="color: red;" class="error" for="editShopTel"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>{{trans('messages.USER_LOGIN_ID')}}:</td>
                             <td style="padding: 10px;">
-                                <input type="text" class="form-control" data-clear-btn="true" id="editShopAccount" value="" placeholder="{{trans('messages.QPAY_INPUT_LOGIN_ID')}}"/>
-                                <span style="color: red;" class="error" for="editPointTypeName"></span>
+                                <input type="text" class="form-control" data-clear-btn="true" id="editLoginId" value="" placeholder="{{trans('messages.QPAY_INPUT_LOGIN_ID')}}"/>
+                                <span style="color: red;" class="error" for="editLoginId"></span>
                             </td>
                             <td><span style="color: red;">*</span></td>
                         </tr>
@@ -162,8 +162,20 @@
     <script type="text/javascript">
         
         function shopNameFormatter(value, row, index) {
-            return '<a href="#" class="editShop" data-index="'+ index +'" data-id="' + row.row_id +'"><span class="glyphicon glyphicon-edit"></span> '+ value +'</a>';
-        };
+            return '<a href="#" class="editShop" data-index="'+ index +'" data-id="' + row.row_id +'"><span class="glyphicon glyphicon-edit"></span> '+ htmlEscape(value) +'</a>';
+        }
+
+        function addressFormatter(value, row, index){
+            return htmlEscape(value);
+        }
+
+        function telFormatter(value, row, index){
+            return htmlEscape(value);
+        }
+
+        function loginIdFormatter(value, row, index){
+            return htmlEscape(value);
+        }
 
         function userStatusFormatter(value, row, index){
             
@@ -231,7 +243,7 @@
                     },
                     error: function (e) {
 
-                        if (handleAJAXError(this,e)) {
+                        if (handleAJAXError(this, e, "../")) {
                             return false;
                         }
 
@@ -247,10 +259,10 @@
             var name = $('#editShopName').val();
             var address = $('#editShopAddress').val();
             var tel = $('#editShopTel').val();
-            var account = $('#editShopAccount').val();
+            var loginId = $('#editLoginId').val();
             
             //Check Data Empty
-            if (name.length == 0 || account.length == 0 ) {
+            if (name.length == 0 || loginId.length == 0 ) {
                 showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                 return false;
             }
@@ -258,7 +270,7 @@
             var mydata = {
                     shopId:  shopId,
                     address: address,
-                    account: account,
+                    loginId: loginId,
                     name: name,
                     tel: tel
                     
@@ -272,16 +284,25 @@
                 data: $.toJSON(mydata),
                 success: function (d, status, xhr) {
                     if (d.result_code == 1) {
+
                        $('#editShopDialog').modal('hide');
                        $("#gridShopList").bootstrapTable("refresh");
+
+                    } else if(d.result_code == "000922"){
+
+                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.QPAY_ERROR_MSG_DUPLICATE_SHOP_LOGIN_ID")}}");
+                        return false;
+
                     } else {
+
                         showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}");
+
                     }
 
                 },
                 error: function (e) {
 
-                    if (handleAJAXError(this,e)) {
+                    if (handleAJAXError(this, e, "../")) {
                         return false;
                     }
 
@@ -356,7 +377,7 @@
                     }
                 },
                 error: function (e) {
-                    if(handleAJAXError(this,e)){
+                    if(handleAJAXError(this, e, "../")){
                         return false;
                     }
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
@@ -415,13 +436,15 @@
                         data: mydataStr,
                         success: function (d, status, xhr) {
                             if(d.result_code != 1) {
+                                
                                 showMessageDialog("{{trans("messages.ERROR")}}","{{trans("messages.MSG_OPERATION_FAILED")}}", d.message);
                                 $("#gridShopList").bootstrapTable("refresh");
                                 return false;
+
                             }
                         },
                         error: function (e) {
-                            if(handleAJAXError(this,e)){
+                            if(handleAJAXError(this, e, "../")){
                                 return false;
                             }
                               showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
@@ -475,7 +498,7 @@
                             }
                         },
                         error: function (e) {
-                            if(handleAJAXError(this,e)){
+                            if(handleAJAXError(this, e, "../")){
                                 return false;
                             }
                               showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", e.responseText);
@@ -531,7 +554,7 @@
                 var pwd = $('#newPwd').val();
 
                 //Check Data Empty
-                if (name.length == 0 || address.length == 0 || tel.length ==0 || loginId.length ==0 || pwd.length ==0) {
+                if (name.length == 0 || loginId.length ==0 || pwd.length ==0) {
                     showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
                     return false;
                 }
@@ -551,7 +574,6 @@
                     contentType: "application/json",
                     data: $.toJSON(mydata),
                     success: function (d, status, xhr) {
-                        console.log(d.result_code);
                         if (d.result_code == 1) {
                             
                             $('#newName').val("");
@@ -571,7 +593,7 @@
                     },
                     error: function (e) {
 
-                        if (handleAJAXError(this,e)) {
+                        if (handleAJAXError(this, e, "../")) {
                             return false;
                         }
 
@@ -590,7 +612,7 @@
                 $('#editShopName').val(currentData[index].emp_name);
                 $('#editShopAddress').val(currentData[index].address);
                 $('#editShopTel').val(currentData[index].ext_no);
-                $('#editShopAccount').val(currentData[index].login_id);
+                $('#editLoginId').val(currentData[index].login_id);
                 $('#editShopDialog').modal('show');
             });
 
