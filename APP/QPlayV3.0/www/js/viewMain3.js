@@ -54,7 +54,8 @@ $("#viewMain3").pagecontainer({
                 }
             } else {
                 //如果滑动到顶部，初始化pullrefresh
-                if (offsetTop == $('.main-scroll').offset().top) {
+                //if (offsetTop == $('.main-scroll').offset().top) {
+                if (Math.abs(offsetTop - $('.main-scroll').offset().top) < 3) {
                     if (pullControl == null) {
 
                         pullControl = PullToRefresh.init({
