@@ -951,14 +951,14 @@
     border-radius: 2px;
 }
 
-/*********************** tea ***********************/
-.tea-update {
+/*********************** staff ***********************/
+.staff-update {
     text-align: center;
     font-size: 3.349vw;
     color: #666;
 }
 
-.tea-none {
+.staff-none {
     display: block;
     text-align: center;
     text-indent: 0;

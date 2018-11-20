@@ -28,7 +28,7 @@ var widget = {
             { id: 7, name: 'yellowpage', enabled: true, lang: 'Yellow Page' },
             { id: 8, name: 'idea', enabled: true, lang: langStr['wgt_101'] },
             { id: 9, name: 'qstore', enabled: true, lang: langStr['wgt_100'] },
-            { id: 10, name: 'tea', enabled: true, lang: langStr['wgt_102'] }
+            { id: 10, name: 'staff', enabled: true, lang: langStr['wgt_102'] }
             
         ];
     },
