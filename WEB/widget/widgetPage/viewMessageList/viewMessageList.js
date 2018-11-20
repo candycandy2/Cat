@@ -106,7 +106,6 @@ $("#viewMessageList").pagecontainer({
 
             } else {
                 //无消息情况
-                $("#noMessage").fadeIn(100).delay(2000).fadeOut(100);
                 $('.msg-update-date').text(langStr['str_079'] + new Date().yyyymmdd('/'));
                 setMsgHeightByType(messageType);
             }
@@ -148,7 +147,6 @@ $("#viewMessageList").pagecontainer({
 
             } else {
                 //无消息情况
-                $("#noMessage").fadeIn(100).delay(2000).fadeOut(100);
                 $('.msg-update-date').text(langStr['str_079'] + new Date().yyyymmdd('/'));
                 setMsgHeightByType(messageType);
             }
@@ -162,12 +160,14 @@ $("#viewMessageList").pagecontainer({
                     if (function_list[i].function_variable == 'News') {
                         //2. 再检查是否可用
                         if (function_list[i].function_content.right == 'Y') {
+                            $('div[data-item="idea"]').show();
                             $('div[data-item="announcement"]').show();
                             $('div[data-item="communication"]').show();
                             $('div[data-item="cip"]').show();
                             $('div[data-item="csd"]').show();
                             $('div[data-item="its"]').show();
                         } else {
+                            $('div[data-item="idea"]').hide();
                             $('div[data-item="announcement"]').hide();
                             $('div[data-item="communication"]').hide();
                             $('div[data-item="cip"]').hide();
@@ -178,6 +178,7 @@ $("#viewMessageList").pagecontainer({
                     }
                 }
             } else {
+                $('div[data-item="idea"]').hide();
                 $('div[data-item="announcement"]').hide();
                 $('div[data-item="communication"]').hide();
                 $('div[data-item="cip"]').hide();
@@ -231,12 +232,7 @@ $("#viewMessageList").pagecontainer({
             $(".news-content ul").html('').append(newsContent);
             $(".event-content ul").html('').append(eventContent);
 
-            //2. no data
-            if (newsContent == '') {
-                $("#noMessage").fadeIn(100).delay(2000).fadeOut(100);
-            }
-
-            //3. swipe
+            //2. swipe
             var x;
             $('.swipe-delete li > a')
                 .on('touchstart', function(event) {

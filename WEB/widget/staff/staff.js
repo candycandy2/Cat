@@ -19,7 +19,7 @@ var staffWidget = {
 
             //点击更多，跳转到快速叫茶
             contentItem.on('click', '.staff-more', function() {
-                checkWidgetPage('viewUserAddTea', pageVisitedList);
+                //checkWidgetPage('viewUserAddTea', pageVisitedList);
             });
 
         }
