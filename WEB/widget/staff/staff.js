@@ -1,25 +1,25 @@
 //widget naming rule widget.js/list()[].name + "Widget"
-var teaWidget = {
+var staffWidget = {
 
     init: function(contentItem) {
 
         function createContent() {
-            $.get(serverURL + "/widget/tea/tea.html", function(data) {
+            $.get(serverURL + "/widget/staff/staff.html", function(data) {
                 //1.html
                 contentItem.html('').append(data);
                 //2.img
-                var teaImg = $('<img>').attr('src', serverURL + '/widget/tea/img/widget_tea.png');
-                $('.tea-icon').html('').append(teaImg);
-                var moreImg = $('<img>').attr('src', serverURL + '/widget/tea/img/more_green.png');
-                $('.tea-more').html('').append(moreImg);
+                var teaImg = $('<img>').attr('src', serverURL + '/widget/staff/img/widget_tea.png');
+                $('.staff-icon').html('').append(teaImg);
+                var moreImg = $('<img>').attr('src', serverURL + '/widget/staff/img/more_green.png');
+                $('.staff-more').html('').append(moreImg);
                 //3.update
-                $('.tea-update-time').text(updateTime());
+                $('.staff-update-time').text(updateTime());
 
             }, "html");
 
-            //点击更多，跳转user pay
-            contentItem.on('click', '.tea-more', function() {
-                //checkWidgetPage('', pageVisitedList);
+            //点击更多，跳转到快速叫茶
+            contentItem.on('click', '.staff-more', function() {
+                checkWidgetPage('viewUserAddTea', pageVisitedList);
             });
 
         }
@@ -32,16 +32,16 @@ var teaWidget = {
             return date + ' ' + hour.toString() + ':' + min.toString();
         }
 
-        $.fn.tea = function (options) {
+        $.fn.staff = function (options) {
             options = options || {};
 
             return this.each(function () {
-                var state = $.data(this, 'tea');
+                var state = $.data(this, 'staff');
                 if (state) {
                     $.extend(state.options, options);
                 } else {
-                    $.data(this, 'tea', {
-                        options: $.extend({}, $.fn.tea.defaults, options)
+                    $.data(this, 'staff', {
+                        options: $.extend({}, $.fn.staff.defaults, options)
                     });
                 }
 
@@ -50,9 +50,9 @@ var teaWidget = {
             })
         };
 
-        $.fn.tea.methods = {
+        $.fn.staff.methods = {
             options: function(jq) {
-                return $.data(jq[0], 'tea').options;
+                return $.data(jq[0], 'staff').options;
             },
             refresh: function(jq) {
                 return jq.each(function() {
@@ -61,8 +61,8 @@ var teaWidget = {
             }
         }
 
-        $.fn.tea.defaults = {};
+        $.fn.staff.defaults = {};
 
-        $('.teaWidget').tea();
+        $('.staffWidget').staff();
     }
 }
