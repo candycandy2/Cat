@@ -196,7 +196,7 @@ input[type=radio]:checked + label {
 /*************************** viewMain3 widget ********************************/
 #viewMain3 .ui-content {
     position: fixed;
-    bottom: 0;
+    /*bottom: 0;*/
     padding: 0 !important;
     overflow-y: auto;
     overflow-x: hidden;
