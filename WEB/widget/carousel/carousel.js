@@ -1,17 +1,17 @@
 //widget naming rule widget.js/list()[].name + "Widget"
 var carouselWidget = {
 
-    init: function (contentItem) {
+    init: function(contentItem) {
 
         var carouselLength = 4;
 
         function createContent(contentItem) {
 
-            $.get(serverURL + "/widget/carousel/carousel.html", function (data) {
+            $.get(serverURL + "/widget/carousel/carousel.html", function(data) {
                 contentItem.html('').append(data);
 
                 var allowUpdate = window.sessionStorage.getItem('allowUpdateAPP');
-                if(allowUpdate == 'Y') {
+                if (allowUpdate == 'Y') {
                     $('.bulletin-close img').attr('src', serverURL + '/widget/carousel/img/close.png');
                     $('.bulletin-icon img').attr('src', serverURL + '/widget/carousel/img/announce.png');
                     $('.bulletin-link div').text(langStr['wgt_072']);
@@ -19,14 +19,23 @@ var carouselWidget = {
                 } else {
                     $('.top-bulletin').hide();
                 }
-                
+
                 var content = '';
+
+                //support 創意園地
+                content += '<li class="sw-slide"><div class="idea-more2"><img src="' + serverURL + '/widget/carousel/img/02_1242_559.jpg"></div></li>';
                 for (var i = 0; i < carouselLength; i++) {
                     content += '<li class="sw-slide"><img src="' + serverURL + '/widget/carousel/img/portal_' + (i + 1) + '.jpg"></li>';
                 }
                 $('.swipslider ul').append(content);
 
-                setTimeout(function () {
+                //support 創意園地
+                contentItem.on('click', '.idea-more2', function() {
+                    window.sessionStorage.setItem('openIdeaPortal', 'Y');
+                    checkWidgetPage('viewMessageList', pageVisitedList);
+                });
+
+                setTimeout(function() {
                     $('.swipslider').swipeslider({
                         prevNextButtons: false,
                         autoPlayTimeout: 3000
@@ -36,7 +45,7 @@ var carouselWidget = {
             }, "html");
 
             //关闭顶部公告
-            contentItem.on('click', '.bulletin-close', function () {
+            contentItem.on('click', '.bulletin-close', function() {
                 $('.top-bulletin').hide();
 
                 var bulletinHeight = $('.top-bulletin').height();
@@ -44,16 +53,16 @@ var carouselWidget = {
             });
 
             //去版本记录页下载最新版
-            contentItem.on('click', '.bulletin-link div', function () {
+            contentItem.on('click', '.bulletin-link div', function() {
                 window.sessionStorage.setItem('checkAPPKey', qplayAppKey);
                 checkWidgetPage('viewVersionRecord', pageVisitedList);
             });
         }
 
-        $.fn.carousel = function (options) {
+        $.fn.carousel = function(options) {
             options = options || {};
 
-            return this.each(function () {
+            return this.each(function() {
                 var state = $.data(this, 'carousel');
                 if (state) {
                     $.extend(state.options, options);
