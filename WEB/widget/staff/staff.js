@@ -19,7 +19,7 @@ var staffWidget = {
 
             //点击更多，跳转到快速叫茶
             contentItem.on('click', '.staff-more', function() {
-                //checkWidgetPage('viewUserAddTea', pageVisitedList);
+                checkWidgetPage('viewUserAddTea', pageVisitedList);
             });
 
         }
@@ -27,9 +27,8 @@ var staffWidget = {
         function updateTime() {
             var now = new Date();
             var date = now.yyyymmdd('/');
-            var hour = now.getHours();
-            var min = now.getMinutes();
-            return date + ' ' + hour.toString() + ':' + min.toString();
+            var time = now.hhmm();
+            return date + ' ' + time;
         }
 
         $.fn.staff = function (options) {
