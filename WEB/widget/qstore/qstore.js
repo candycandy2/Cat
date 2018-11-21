@@ -18,6 +18,15 @@ var qstoreWidget = {
 
             }, "html");
 
+            //點擊我附近商店，跳轉特約商店地圖頁面
+            contentItem.on('click', '.store-near-img', function() {
+                checkWidgetPage('viewQStoreMain', pageVisitedList);
+            });
+
+            //點擊我所有商店，跳轉所有商店分類頁面
+            contentItem.on('click', '.store-all-img', function() {
+                checkWidgetPage('viewQStoreSearchList', pageVisitedList);
+            });
         }
 
         $.fn.qstore = function (options) {
