@@ -1105,7 +1105,7 @@
   },
   {
     "term": "str_139",
-    "definition": "該員有保單待處理，請先取消申請才可刪除眷屬資料",
+    "definition": "系統中有此眷屬之加退保申請紀錄",
     "context": "",
     "term_plural": "",
     "reference": "",

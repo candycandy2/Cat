@@ -552,18 +552,7 @@ $("#viewFamilyData").pagecontainer({
         $("#confirmDeleteFamilyBtn").on("click", function () {
             addFamilyStatus = "Delete";
             //API: ModifyFamilyData (入參)
-            if (clickDealwith !== "未申請") {
-                //popupMsgCloseInit('.confirmDeleteFamily');
-                $(".deleteErrorMsg .hasInsurErr").removeClass('addInlineBlock');
-                $(".deleteErrorMsg .pendingInsurErr").removeClass('addInlineBlock');
-                $(".deleteErrorMsg .recordInsurErr").addClass('addInlineBlock'); 
-                $(".deleteErrorMsg .main-paragraph").text('');
-                $(".deleteErrorMsg .ui-content>.main").css("margin-top", "");
-                $(".deleteErrorMsg .ui-content>.main").css("margin-top", "10%");
-                popupMsgInit('.deleteErrorMsg');
-            } else {
-                QueryInsuranceFamilyDelete();
-            }
+            QueryInsuranceFamilyDelete();
         });
 
         //確定取消新增，跳轉
