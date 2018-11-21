@@ -930,10 +930,11 @@
 }
 
 .qstore-main>div:nth-of-type(1) {
-    width: 50%;
+    width: 49%;
+    border-right: 1px solid #98989898;
 }
 
-.qstore-main>div:nth-of-type(1)>img {
+.qstore-main>div:nth-of-type(1)>div>img {
     width: 10.63vw;
     height: 11.27vw;
     margin-left: 50%;
@@ -944,11 +945,23 @@
     width: 50%;
 }
 
-.qstore-main>div:nth-of-type(2)>img {
+.qstore-main>div:nth-of-type(2)>div>img {
     width: 10.63vw;
     height: 11.27vw;
     margin-left: 30%;
     border-radius: 2px;
+}
+
+.store-near {
+    margin-left: 35%;
+    color: #253137;
+    font-size: 3.768vw;
+}
+
+.store-all {
+    margin-left: 20%;
+    color: #253137;
+    font-size: 3.768vw;
 }
 
 /*********************** staff ***********************/
