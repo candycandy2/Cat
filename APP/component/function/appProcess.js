@@ -547,7 +547,11 @@ function checkiPhoneX() {
     };
 
     if (screen.width === 1125 && screen.height === 2436) {
-        return true;
+        return true; //IphoneX
+    } else if (screen.width === 1242 && screen.height === 2688) {
+        return true; //IphoneX MAX
+    } else if (screen.width === 828 && screen.height === 1792) {
+        return true; //IphoneX R
     } else {
         return false;
     }
