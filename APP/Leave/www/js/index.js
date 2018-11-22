@@ -237,82 +237,31 @@ function changePageByPanel(pageId) {
 }
 
 function dateInit() {
-    var year = currentYear;
-    var month = currentMonth;
-    var date = currentDate;
-    var day = currentDay;
-    for (var i = 1; i <= 14; i++) {
-        if (day > 0 && day < 6) {
-            $("#leaveDate").append('<a href="#" class="ui-link">' + month + "/" + date + " " + dayTable[day] + '</a>');
-            $("#leaveDate a:last-child").data("value", year + "/" + month + "/" + date);
 
-            day++;
-            if (day == 6) {
-                day = 1;
-                if ((Number(date) + 3) <= lastDateOfMonth) {
-                    date = ((Number(date) + 3) < 10) ? "0" + (Number(date) + 3) : (Number(date) + 3);
-                } else if ((Number(date) + 3) > lastDateOfMonth) {
-                    //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
-                    if ((Number(month) + 1) < 10) {
-                        month = "0" + (Number(month) + 1);
-                    } else if ((Number(month) + 1) < 12) {
-                        month = (Number(month) + 1) + "";
-                    } else {
-                        month = "01";
-                        year = (Number(year) + 1) + "";
-                    }
-                    date = ((Number(date) + 3 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 3 - lastDateOfMonth) : (Number(date) + 3 - lastDateOfMonth);
-                }
-            } else if ((Number(date) + 1) <= lastDateOfMonth) {
-                date = ((Number(date) + 1) < 10) ? "0" + (Number(date) + 1) : (Number(date) + 1);
-            } else if ((Number(date) + 1) > lastDateOfMonth) {
-                //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
-                if ((Number(month) + 1) < 10) {
-                    month = "0" + (Number(month) + 1);
-                } else if ((Number(month) + 1) < 12) {
-                    month = (Number(month) + 1) + "";
-                } else {
-                    month = "01";
-                    year = (Number(year) + 1) + "";
-                }
-                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
-            }
-        } else if (day == 6) {
-            day = 1;
-            i = 0;
-            if ((Number(date) + 2) <= lastDateOfMonth) {
-                date = ((Number(date) + 2) < 10) ? "0" + (Number(date) + 2) : (Number(date) + 2);
-            } else if ((Number(date) + 2) > lastDateOfMonth) {
-                //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
-                if ((Number(month) + 1) < 10) {
-                    month = "0" + (Number(month) + 1);
-                } else if ((Number(month) + 1) < 12) {
-                    month = (Number(month) + 1) + "";
-                } else {
-                    month = "01";
-                    year = (Number(year) + 1) + "";
-                }
-                date = ((Number(date) + 2 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 2 - lastDateOfMonth) : (Number(date) + 2 - lastDateOfMonth);
-            }
-        } else if (day == 0) {
-            day = 1;
-            i = 0;
-            if ((Number(date) + 1) <= lastDateOfMonth) {
-                date = ((Number(date) + 1) < 10) ? "0" + (Number(date) + 1) : (Number(date) + 1);
-            } else if ((Number(date) + 1) > lastDateOfMonth) {
-                //month = ((Number(month) + 1) < 10) ? "0"+(Number(month) + 1) : Number(month) + 1;
-                if ((Number(month) + 1) < 10) {
-                    month = "0" + (Number(month) + 1);
-                } else if ((Number(month) + 1) < 12) {
-                    month = (Number(month) + 1) + "";
-                } else {
-                    month = "01";
-                    year = (Number(year) + 1) + "";
-                }
-                date = ((Number(date) + 1 - lastDateOfMonth) < 10) ? "0" + (Number(date) + 1 - lastDateOfMonth) : (Number(date) + 1 - lastDateOfMonth);
-            }
+    /////////////Refectory by alan
+    var reserveDays = 14;
+    var addOneDate = new Date();
+    var dictDayOfWeek = {
+        '1': '(一)',
+        '2': '(二)',
+        '3': '(三)',
+        '4': '(四)',
+        '5': '(五)',
+        '6': '(六)',
+        '0': '(日)'
+    };
+
+    for (var i = 0; i < reserveDays; i++) {
+        if (i != 0) {
+            addOneDate.addDays(1);
+        }
+        if (addOneDate.getDay() > 0 && addOneDate.getDay() < 6) {
+
+            $("#leaveDate").append('<a href="#" class="ui-link">' + addOneDate.mmdd('/') + dictDayOfWeek[addOneDate.getDay()] + '</a>');
+            $("#leaveDate a:last-child").data("value",addOneDate.yyyymmdd('/'));
         }
     }
+    /////////////
 
     //$("#leaveDate a:eq(0)").addClass("hover");
     //modify by Allen
