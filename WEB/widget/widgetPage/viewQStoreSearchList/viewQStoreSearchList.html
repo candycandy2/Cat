@@ -2,10 +2,46 @@
 <div data-role="page" id="viewQStoreSearchList">
     <div class="ios-fix-overlap-div"></div>
     <div data-role="header" data-position="fixed" class="page-header">
-        
+        <div class="header-style">
+            <h1 class="ui-title">
+                <div>
+                	<!--所有的商店-->
+                	<span class="langStr" data-id="wgt_105"></span>
+                </div>
+            </h1>
+        </div>
+        <a href="#" data-role="none">
+            <div class="q-btn-header page-back">
+                <img src="img/component/back_nav.png" width="100%" height="100%">
+            </div>
+        </a>
     </div>
     <div data-role="main" class="ui-content page-main">
-
+    	<!-- classify by city and category -->
+        <div class="choose-by-dll">
+            <div class="font-style11">
+                <div>
+                    <!-- 選擇縣市 -->
+                    <span class="langStr" data-id="wgt_106"></span>
+                </div>
+                <div>
+                    <!-- 選擇類別 -->
+                    <span class="langStr" data-id="wgt_107"></span>
+                </div>
+            </div>
+            <div class="font-style3">
+                <div id="btnCity">
+                    <!-- 所有縣市 -->
+                    <span id="cityText"></span>
+                    <img src="img/dropdown_incline.png" class="ddl-select-img">
+                </div>
+                <div id="btnCategory">
+                    <!-- 所有類別 -->
+                    <span id="categoryText"></span>
+                    <img src="img/dropdown_incline.png" class="ddl-select-img">
+                </div>
+            </div>
+        </div>
     </div>
     <!--popup-->
 </div>

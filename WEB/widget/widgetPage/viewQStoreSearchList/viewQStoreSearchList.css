@@ -1,0 +1,24 @@
+/***************************** viewQStoreSearchList ********************************/
+
+.choose-by-dll {
+    color: #0f0f0f;
+}
+
+.ddl-select-img {
+    margin-left: 3.28vw;
+    width: 2vw;
+    height: 2vw;
+}
+
+.choose-by-dll>div:nth-of-type(1)>div {
+    display: inline-block;
+    height: 5vw;
+    line-height: 5vw;
+    margin-right: 30.2vw;
+}
+
+.choose-by-dll>div:nth-of-type(2)>div {
+    display: inline-block;
+    height: 7vw;
+    line-height: 7vw;
+}
