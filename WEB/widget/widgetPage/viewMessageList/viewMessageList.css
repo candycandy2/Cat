@@ -269,3 +269,13 @@
 .confirmDeleteMsg .ui-content>.footer {
     margin-top: 10%;
 }
+
+.idea-loading{
+    width: 10vw;
+    height: 10vw;
+    margin: 0 auto;
+}
+
+.idea-loading img{
+    width: 10vw;
+}
