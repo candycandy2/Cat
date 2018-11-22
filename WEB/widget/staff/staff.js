@@ -17,6 +17,48 @@ var staffWidget = {
 
             }, "html");
 
+            //添加staff菜單
+            $.get(serverURL + "/widget/staff/menu.html", function(data) {
+                $.mobile.pageContainer.append(data);
+            }, 'html');
+
+            //调出菜单(如果需要在其他頁面使用，必須添加樣式staff-menu-btn)
+            $(document).on('click', '.staff-menu-btn', function() {
+                $('.staff-menu-mask').show();
+                $('.staff-menu-main').animate({left: '40vw'}, 500);
+            });
+
+            //隐藏菜单
+            $(document).on('swiperight', '.staff-menu-mask', function() {
+                $('.staff-menu-main').animate({left: '100vw'}, 500, function(){
+                    $('.staff-menu-mask').hide();
+                });
+            });
+
+            //隐藏菜单
+            $(document).on('click', '.staff-menu-mask', function(e) {
+
+                if(e.target != this) {
+                    return;
+                } else {
+                    $('.staff-menu-main').animate({left: '100vw'}, 500, function(){
+                        $('.staff-menu-mask').hide();
+                    });
+                }
+            });
+
+            //選擇菜單
+            $(document).on('click', '.staff-menu-list li', function(e) {
+                //1. remove class
+                $('.staff-menu-list').find('.active-staff').removeClass('active-staff');
+                //2. add class
+                $(this).addClass('active-staff');
+                //3. close panel
+                $('.staff-menu-main').animate({left: '100vw'}, 500, function(){
+                    $('.staff-menu-mask').hide();
+                });
+            });
+
             //点击更多，跳转到快速叫茶
             contentItem.on('click', '.staff-more', function() {
                 checkWidgetPage('viewUserAddTea', pageVisitedList);
