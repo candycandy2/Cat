@@ -5,9 +5,9 @@ $("#viewMessageList").pagecontainer({
             allChecked = false,
             deleteType,
             msgUpdateDate,
-            currentPage = 1,//当前页
-            sumPage = 0,//总页数
-            numPerPage = 10,//每页数据量
+            currentPage = 1, //当前页
+            sumPage = 0, //总页数
+            numPerPage = 10, //每页数据量
             responsecontent,
             imgURL = '/widget/widgetPage/viewMessageList/img/';
 
@@ -32,8 +32,8 @@ $("#viewMessageList").pagecontainer({
 
                         //record APP all data
                         responsecontent = jsonData['content'];
-                        if(responsecontent.length > 0) {
-                            if(type == 'IDEA') {
+                        if (responsecontent.length > 0) {
+                            if (type == 'IDEA') {
                                 //获取idea portal总页数，向上取整
                                 sumPage = Math.ceil(responsecontent.length / numPerPage);
                                 createIdeaPortal(responsecontent, currentPage, sumPage, numPerPage);
@@ -66,8 +66,8 @@ $("#viewMessageList").pagecontainer({
                     CustomAPI("POST", true, "PortalList", successCallback, failCallback, queryData, "");
                 } else {
                     responsecontent = QueryData['content'];
-                    if(responsecontent.length > 0) {
-                        if(type == 'IDEA') {
+                    if (responsecontent.length > 0) {
+                        if (type == 'IDEA') {
                             //获取idea portal总页数，向上取整
                             sumPage = Math.ceil(responsecontent.length / numPerPage);
                             createIdeaPortal(responsecontent, currentPage, sumPage, numPerPage);
@@ -203,14 +203,14 @@ $("#viewMessageList").pagecontainer({
                 .on('touchmove', function(event) {
                     //结束位置 - 起始位置 = 滑动距离（-360~360），小于零表示左滑，反之右滑
                     var change = event.originalEvent.targetTouches[0].pageX - x;
-                    if(change < -50) {
+                    if (change < -50) {
                         disable_scroll() // disable scroll once we hit 10px horizontal slide
                     } else {
                         //(-100~0),右滑为0,左滑为距离
                         change = Math.min(Math.max(-100, change), 0) // restrict to -100px left, 0px right
                         event.currentTarget.style.left = change + 'px';
                     }
-                    
+
                 })
                 .on('touchend', function(event) {
                     var left = parseInt(event.currentTarget.style.left)
@@ -327,7 +327,7 @@ $("#viewMessageList").pagecontainer({
                         }
                     }
 
-                    UpdateMessageListContent(messagecontent,false);//from component/function
+                    UpdateMessageListContent(messagecontent, false); //from component/function
 
                     loginData.messagecontent = messagecontent;
                     messageArrIndex = null;
@@ -356,12 +356,12 @@ $("#viewMessageList").pagecontainer({
         function updateMessageListUI(type, status, messageRowId_) {
             if (status == 'delete') {
                 $('.' + type + '-content li[data-rowid=' + messageRowId_ + ']').remove();
-            } else if(status == 'read') {
+            } else if (status == 'read') {
                 $('.' + type + '-content li[data-rowid=' + messageRowId_ + ']').find('.msg-content-title').addClass('read-font-normal');
             }
 
             var count = checkIconCount(type);
-            if(count == 0) {
+            if (count == 0) {
                 $('.msg-delete').removeClass('enabled-font');
                 $('.msg-readed').removeClass('enabled-font');
             }
@@ -391,6 +391,18 @@ $("#viewMessageList").pagecontainer({
             $(document).unbind('touchmove', prevent_default);
         }
 
+        //page-main height
+        function getPageMainHeight_(view) {
+            var win = $(window).height();
+            var header = $('#' + view + ' .page-header').height();
+            var main;
+            if (device.platform === "iOS") {
+                main = win - header - iOSFixedTopPX();
+            } else {
+                main = win - header;
+            }
+            return main.toString();
+        }
 
         /********************************** page event ***********************************/
         $("#viewMessageList").on("pagebeforeshow", function(event, ui) {
@@ -398,7 +410,7 @@ $("#viewMessageList").pagecontainer({
         });
 
         $("#viewMessageList").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewMessageList');
+            var mainHeight = getPageMainHeight_('viewMessageList');
             $('.message-scroll').css('height', mainHeight + 'px');
             //filter placeholder
             $('#msgFilter').attr('placeholder', langStr['str_080']);
@@ -412,7 +424,7 @@ $("#viewMessageList").pagecontainer({
         $("#viewMessageList").on("pageshow", function(event, ui) {
             //open idea portal from idea widget
             var openIdea = window.sessionStorage.getItem('openIdeaPortal');
-            if(openIdea != null) {
+            if (openIdea != null) {
                 $('div[data-item="idea"]').trigger('click');
                 window.sessionStorage.removeItem('openIdeaPortal');
             }
@@ -426,19 +438,19 @@ $("#viewMessageList").pagecontainer({
         /********************************** dom event *************************************/
         //idea 分页
         $('.message-scroll').on('scroll', function() {
-            if(messageType == 'idea') {
+            if (messageType == 'idea') {
                 var winHeight = $(window).height();
                 var loadingTop = $('.idea-loading').offset().top;
                 var loadingShow = $('.idea-loading').css('display') == 'block' ? true : false;
 
                 //loading图片小于表示在可是区域内，可以添加下一页数据
-                if(loadingTop < winHeight && loadingShow && currentPage < sumPage) {
+                if (loadingTop < winHeight && loadingShow && currentPage < sumPage) {
                     currentPage++;
                     createIdeaPortal(responsecontent, currentPage, sumPage, numPerPage);
                 }
 
                 //如果相等，表示所有数据加载完成，隐藏loading
-                if(currentPage == sumPage) {
+                if (currentPage == sumPage) {
                     $('.idea-loading').css('display', 'none');
                 }
             }
@@ -472,7 +484,7 @@ $("#viewMessageList").pagecontainer({
                     //portal不用编辑
                     $('#editListview').hide();
                     showDiffMessageByType(messageType);
-                    if(lowerCase == 'idea') {
+                    if (lowerCase == 'idea') {
                         QueryPortalList(lowerCase.toUpperCase());
                     } else {
                         QueryPortalList(currentType);
