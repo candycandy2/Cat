@@ -4,7 +4,12 @@ $("#viewMessageList").pagecontainer({
         var messageType = "news",
             allChecked = false,
             deleteType,
-            msgUpdateDate;
+            msgUpdateDate,
+            currentPage = 1,//当前页
+            sumPage = 0,//总页数
+            numPerPage = 10,//每页数据量
+            responsecontent,
+            imgURL = '/widget/widgetPage/viewMessageList/img/';
 
         //获取portal
         function QueryPortalList(type) {
@@ -26,22 +31,25 @@ $("#viewMessageList").pagecontainer({
                         window.localStorage.setItem(queryData, JSON.stringify(jsonData));
 
                         //record APP all data
-                        var responsecontent = jsonData['content'];
-                        //console.log(responsecontent);
-                        if(type == 'IDEA') {
-                            createIdeaPortal(responsecontent, type.toLowerCase());
-                        } else {
-                            createPortalByType(responsecontent, type.toLowerCase());
+                        responsecontent = jsonData['content'];
+                        if(responsecontent.length > 0) {
+                            if(type == 'IDEA') {
+                                //获取idea portal总页数，向上取整
+                                sumPage = Math.ceil(responsecontent.length / numPerPage);
+                                createIdeaPortal(responsecontent, currentPage, sumPage, numPerPage);
+                            } else {
+                                createPortalByType(responsecontent, type.toLowerCase());
+                            }
                         }
-
-                    } else {
-                        createPortalByType([], type.toLowerCase());
                     }
 
+                    //portal update date
+                    $('.msg-update-date').text(langStr['str_079'] + new Date().yyyymmdd('/'));
                     loadingMask("hide");
                 };
 
                 var failCallback = function(data) {
+                    $('.msg-update-date').text(langStr['str_079'] + new Date().yyyymmdd('/'));
                     loadingMask("hide");
                 };
 
@@ -57,13 +65,19 @@ $("#viewMessageList").pagecontainer({
                     loadingMask("show");
                     CustomAPI("POST", true, "PortalList", successCallback, failCallback, queryData, "");
                 } else {
-                    var responsecontent = QueryData['content'];
-                    //console.log(responsecontent);
-                    if(type == 'IDEA') {
-                        createIdeaPortal(responsecontent, type.toLowerCase());
-                    } else {
-                        createPortalByType(responsecontent, type.toLowerCase());
+                    responsecontent = QueryData['content'];
+                    if(responsecontent.length > 0) {
+                        if(type == 'IDEA') {
+                            //获取idea portal总页数，向上取整
+                            sumPage = Math.ceil(responsecontent.length / numPerPage);
+                            createIdeaPortal(responsecontent, currentPage, sumPage, numPerPage);
+                        } else {
+                            createPortalByType(responsecontent, type.toLowerCase());
+                        }
                     }
+
+                    //portal update date
+                    $('.msg-update-date').text(langStr['str_079'] + new Date(QueryData['lastUpdateTime']).yyyymmdd('/'));
                 }
 
             }(type));
@@ -71,85 +85,29 @@ $("#viewMessageList").pagecontainer({
 
         //创建portal list
         function createPortalByType(arr, type) {
-            if (arr.length > 0) {
-                //1. content
-                var content = '';
-                for (var i in arr) {
-                    content += '<li data-icon="false" data-rowid="' + arr[i].PortalID + '"><div class="behind"><a href="#" class="ui-btn delete-btn">' +
-                        '<img src="img/delete.png" class="msg-delete-btn"></a></div><a href="#" class="ui-portal ui-btn"><div class="msg-check-icon">' +
-                        '<img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title read-font-normal"><div>' +
-                        arr[i].PortalDate.replaceAll('/', '-') + '</div><div>' + arr[i].PortalSubject + '</div></div><div class="msg-next-icon">' +
-                        '<img src="img/nextpage.png" class="msg-next-btn"></div><input type="hidden" value="' + arr[i].PortalURL + '"></a></li>';
-                }
-
-                $("." + type + "-content ul").html('').append(content);
-
-                //2. detail
-                $('a.ui-portal').on("click", function(e) {
-                    e.stopImmediatePropagation();
-                    e.preventDefault();
-
-                    if (messageType != "Event" && messageType != "News") {
-                        messageFrom = 'viewMessageList';
-                        portalURL = $(this).find("input").val();
-                        //console.log(portalURL)
-                        checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
-                    }
-                });
-
-                //3. update date
-                var portalUpdateDate = arr[0].PortalDate;
-                $('.msg-update-date').text(langStr['str_079'] + portalUpdateDate);
-
-                //4. set height
-                setMsgHeightByType(messageType);
-
-            } else {
-                //无消息情况
-                $('.msg-update-date').text(langStr['str_079'] + new Date().yyyymmdd('/'));
-                setMsgHeightByType(messageType);
+            var content = '';
+            for (var i in arr) {
+                content += '<li data-icon="false" data-rowid="' + arr[i].PortalID + '"><a href="#" class="ui-portal ui-btn"><div class="msg-check-icon">' +
+                    '<img src="img/checkbox.png" data-src="checkbox" class="msg-check-btn"></div><div class="msg-content-title read-font-normal"><div>' +
+                    arr[i].PortalDate.replaceAll('/', '-') + '</div><div>' + arr[i].PortalSubject + '</div></div><div class="msg-next-icon">' +
+                    '<img src="img/nextpage.png" class="msg-next-btn"></div><input type="hidden" value="' + arr[i].PortalURL + '"></a></li>';
             }
+
+            $("." + type + "-content ul").html('').append(content);
         }
 
         //創意園地
-        function createIdeaPortal(arr, type) {
-            if (arr.length > 0) {
-                //1. content
-                var content = '';
-                for (var i in arr) {
-                    content += '<li data-icon="false" data-rowid="' + arr[i].PortalID + '"><a href="#" class="ui-portal ui-btn idea-portal">' +
-                        '<div class="msg-thumbnail" style="background:url(' + arr[i].PortalImageURL + ') 0% / cover;"></div><div class="msg-idea-title read-font-normal"><div>' +
-                        arr[i].PortalSubject + '</div><div><span>' + arr[i].PortalSource + '</span>&nbsp;&nbsp;<span>' + new Date(arr[i].PortalDate).yyyymmdd('/') +
-                        '</span></div></div><input type="hidden" value="' + arr[i].PortalURL + '"></a></li>';
-                }
+        function createIdeaPortal(arr, cur, sum, num) {
+            var content = '';
 
-                $("." + type + "-content ul").html('').append(content);
-
-                //2. detail
-                $('a.idea-portal').on("click", function(e) {
-                    e.stopImmediatePropagation();
-                    e.preventDefault();
-
-                    if (messageType != "Event" && messageType != "News") {
-                        messageFrom = 'viewMessageList';
-                        portalURL = $(this).find("input").val();
-                        //console.log(portalURL)
-                        checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
-                    }
-                });
-
-                //3. update date
-                var portalUpdateDate = new Date(arr[0].PortalDate).yyyymmdd('/');
-                $('.msg-update-date').text(langStr['str_079'] + portalUpdateDate);
-
-                //4. set height
-                setMsgHeightByType(messageType);
-
-            } else {
-                //无消息情况
-                $('.msg-update-date').text(langStr['str_079'] + new Date().yyyymmdd('/'));
-                setMsgHeightByType(messageType);
+            for (var i = (cur - 1) * num; i < (cur < sum ? cur * num : arr.length); i++) {
+                content += '<li data-icon="false" data-rowid="' + arr[i].PortalID + '"><a href="#" class="ui-portal ui-btn">' +
+                    '<div class="msg-thumbnail" style="background:url(' + arr[i].PortalImageURL + ') 0% / cover;"></div><div class="msg-idea-title read-font-normal"><div>' +
+                    arr[i].PortalSubject + '</div><div><span>' + arr[i].PortalSource + '</span>&nbsp;&nbsp;<span>' + new Date(arr[i].PortalDate).yyyymmdd('/') +
+                    '</span></div></div><input type="hidden" value="' + arr[i].PortalURL + '"></a></li>';
             }
+
+            $(".idea-content ul").append(content);
         }
 
         function checkPortalByFunctionList() {
@@ -271,7 +229,7 @@ $("#viewMessageList").pagecontainer({
                     enable_scroll()
                 });
 
-            //4. fixed top
+            //3. fixed top
             var msgHeaderTop = parseInt(document.documentElement.clientWidth * 13 / 100, 10);
             if (device.platform == 'iOS') {
                 msgHeaderTop += iOSFixedTopPX();
@@ -279,17 +237,9 @@ $("#viewMessageList").pagecontainer({
             $('.select-type').css('top', msgHeaderTop + 'px');
             $('.handle-msg').css('top', msgHeaderTop + 'px');
 
-            //5. message update
-            if (resultArr.length > 0) {
-                msgUpdateDate = resultArr[0].create_time.split(' ')[0].replaceAll('-', '/');
-            } else {
-                var msgDate = parseInt(localStorage.getItem('msgDateFrom')) * 1000;
-                msgUpdateDate = new Date(msgDate).toLocaleDateString(browserLanguage);
-            }
+            //4. message update date
+            msgUpdateDate = new Date(messagecontent_['lastUpdateTime']).yyyymmdd('/');
             $('.msg-update-date').text(langStr['str_079'] + msgUpdateDate);
-
-            //6. set height
-            setMsgHeightByType(messageType);
         }
 
         //跳转详情事件
@@ -428,23 +378,6 @@ $("#viewMessageList").pagecontainer({
             return count;
         }
 
-        //设置messageList高度
-        function setMsgHeightByType(type) {
-            var headHeight = $('#viewMessageList .page-header').height();
-            var footHeight = $('.msg-update-date').height();
-            var fixHeight = $('.fill-handle-blank').height();
-            var contentHeight = $('.' + type + '-content').height();
-
-            var totalHeight;
-            if (device.platform === "iOS") {
-                totalHeight = (contentHeight + headHeight + footHeight + fixHeight + iOSFixedTopPX()).toString();
-            } else {
-                totalHeight = (contentHeight + headHeight + footHeight + fixHeight).toString();
-            }
-
-            $('.message-scroll > div').css('height', totalHeight + 'px');
-        }
-
         //swipe to delete function
         function prevent_default(event) {
             event.preventDefault();
@@ -465,8 +398,11 @@ $("#viewMessageList").pagecontainer({
         });
 
         $("#viewMessageList").one("pageshow", function(event, ui) {
+            var mainHeight = getPageMainHeight('viewMessageList');
+            $('.message-scroll').css('height', mainHeight + 'px');
             //filter placeholder
             $('#msgFilter').attr('placeholder', langStr['str_080']);
+            $('.idea-loading-img').attr('src', serverURL + imgURL + 'loading.gif');
             //check can not use portal
             checkPortalByFunctionList();
             //content
@@ -488,6 +424,26 @@ $("#viewMessageList").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //idea 分页
+        $('.message-scroll').on('scroll', function() {
+            if(messageType == 'idea') {
+                var winHeight = $(window).height();
+                var loadingTop = $('.idea-loading').offset().top;
+                var loadingShow = $('.idea-loading').css('display') == 'block' ? true : false;
+
+                //loading图片小于表示在可是区域内，可以添加下一页数据
+                if(loadingTop < winHeight && loadingShow && currentPage < sumPage) {
+                    currentPage++;
+                    createIdeaPortal(responsecontent, currentPage, sumPage, numPerPage);
+                }
+
+                //如果相等，表示所有数据加载完成，隐藏loading
+                if(currentPage == sumPage) {
+                    $('.idea-loading').css('display', 'none');
+                }
+            }
+        });
+
         //弹出message下拉菜单
         $("#viewMessageList .ui-title").on("click", function() {
             $(".select-type").slideToggle(200);
@@ -509,8 +465,6 @@ $("#viewMessageList").pagecontainer({
                     //news和event可以已读或删除
                     $('#editListview').show();
                     showDiffMessageByType(messageType);
-                    //news已经有数据了，高度重设
-                    setMsgHeightByType(messageType);
                     //change update date
                     $('.msg-update-date').text(langStr['str_079'] + msgUpdateDate);
 
@@ -523,10 +477,7 @@ $("#viewMessageList").pagecontainer({
                     } else {
                         QueryPortalList(currentType);
                     }
-                    
-
                 }
-
             }
 
             $(".select-type").slideUp(200);
@@ -552,8 +503,8 @@ $("#viewMessageList").pagecontainer({
             $('.handle-msg').show();
             $('.fill-handle-blank').show();
             $('#viewMessageList .ui-title').off('click');
+            //取消绑定跳转详情
             $(document).off('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon');
-
         });
 
         //取消编辑listview
@@ -574,6 +525,8 @@ $("#viewMessageList").pagecontainer({
             $('#viewMessageList .ui-title').on('click', function() {
                 $(".select-type").slideToggle(200);
             });
+
+            //再次绑定跳转详情
             $(document).on('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon', function() {
                 changeToDetail($(this));
             });
@@ -619,7 +572,6 @@ $("#viewMessageList").pagecontainer({
             $('#searchListview').show();
 
             $('.message-type ul').listview('refresh');
-            setMsgHeightByType(messageType);
         });
 
         //编辑
@@ -726,18 +678,28 @@ $("#viewMessageList").pagecontainer({
 
             }
 
-            //after delete, set height
-            setMsgHeightByType(messageType);
-
             //after delete，refresh message widget
             //$('.messageWidget').message('refresh');
             var evalString = '$(".messageWidget").message("refresh");';
             window.sessionStorage.setItem('needRefreshWidget', evalString);
         });
 
-        //跳转详情
+        //news & event 跳转到详情
         $(document).on('click', 'a.ui-message .msg-content-title,a.ui-message .msg-next-icon', function() {
             changeToDetail($(this));
+        });
+
+        //portal 跳转到详情
+        $(document).on("click", 'a.ui-portal', function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+
+            if (messageType != "Event" && messageType != "News") {
+                messageFrom = 'viewMessageList';
+                portalURL = $(this).find("input").val();
+                //console.log(portalURL)
+                checkWidgetPage('viewWebNews2-3-1', pageVisitedList);
+            }
         });
 
 
