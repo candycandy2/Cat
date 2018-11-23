@@ -1,0 +1,18 @@
+/********************************* viewHolidayCalendar *******************************/
+#viewHolidayCalendar .infoList ul>li {
+    margin-left: 6.71Vw;
+    margin-top: 3.71VW;
+    font-size: smaller;
+}
+
+.weekend-icon {
+    content: url("img/weekend_icon.png");
+    width: 2.415VW;
+    margin-right: 1.5VW;
+}
+
+.holiday-icon {
+    content: url("img/holiday_icon.png");
+    width: 2.415VW;
+    margin-right: 1.5VW;
+}
