@@ -4,12 +4,6 @@
     color: #0f0f0f;
 }
 
-.ddl-select-img {
-    margin-left: 3.28vw;
-    width: 2vw;
-    height: 2vw;
-}
-
 .choose-by-dll>div:nth-of-type(1)>div {
     display: inline-block;
     height: 5vw;
@@ -19,6 +13,9 @@
 
 .choose-by-dll>div:nth-of-type(2)>div {
     display: inline-block;
-    height: 7vw;
-    line-height: 7vw;
+    margin-left: -1.5%;
+}
+
+#categoryValue {
+	margin-left: 16%;
 }
