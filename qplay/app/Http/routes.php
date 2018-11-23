@@ -241,6 +241,10 @@ Route::group(['prefix' => 'QPayStoreMaintain'], function () {
 Route::group(['prefix' => 'QPayReimburseMaintain'], function () {
     Route::any('QPayReimbursePurchase', ['middleware' => 'auth','uses'=>'qpayController@QPayReimbursePurchase']);
     Route::any('getQPayReimbursePurchaseList', ['middleware' => 'auth','uses'=>'qpayController@getQPayReimbursePurchaseList']);
+    Route::any('QPayReimburseFinance', ['middleware' => 'auth','uses'=>'qpayController@QPayReimburseFinance']);
+    Route::any('getQPayReimburseFinanceList', ['middleware' => 'auth','uses'=>'qpayController@getQPayReimburseFinanceList']);
+    Route::any('getQPayTradeTotal', ['middleware' => 'auth','uses'=>'qpayController@getQPayTradeTotal']);
+    Route::any('downloadReimburseFinanceExcel', ['middleware' => 'auth','uses'=>'qpayController@downloadReimburseFinanceExcel']);
 });
 
 //QPay User Maintain
