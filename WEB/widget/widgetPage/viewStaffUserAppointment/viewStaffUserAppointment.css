@@ -1,0 +1,140 @@
+/*************************** viewStaffUserAppointment ********************************/
+#viewStaffUserAppointment .ui-content{
+    width: 100vw;
+    padding: 0 !important;
+    /* position: fixed; */
+}
+
+.appointment-room{
+    width: 96.29vw;
+    padding: 5vw 0 3.71vw 3.71vw;
+}
+
+.appointment-room>div:nth-of-type(1),
+.appointment-room>div:nth-of-type(2){
+    width: 100%;
+    height: 6vw;
+}
+
+.appointment-room>div:nth-of-type(3){
+    width: 100%;
+    height: 12vw;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.appointment-room>div:nth-of-type(3) div{
+    width: 130vw;
+}
+
+.appointment-room li{
+    float: left;
+    width: 30vw;
+    height: 10vw;
+    border: 1px solid #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+}
+
+.appointment-room li:not(:first-child){
+    margin-left: -1px;
+}
+
+.appointment-date{
+    width: 96.29vw;
+    padding: 0vw 0 3.71vw 3.71vw;
+}
+
+.appointment-date>div:nth-of-type(1){
+    width: 100%;
+    height: 6vw;
+}
+
+.appointment-date>div:nth-of-type(2){
+    width: 100%;
+    height: 12vw;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.appointment-date>div:nth-of-type(2) div{
+    width: 130vw;
+}
+
+.appointment-date li{
+    float: left;
+    width: 30vw;
+    height: 10vw;
+    border: 1px solid #d6d6d6;
+    text-align: center;
+    line-height: 10vw;
+}
+
+.appointment-date li:not(:first-child){
+    margin-left: -1px;
+}
+
+.appointment-hour{
+    padding: 0 3.71vw;
+}
+
+.appointment-hour ul{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.appointment-hour ul li{
+    width: 22.5vw;
+    height: 12vw;
+    text-align: center;
+    line-height: 12vw;
+    border: 1px solid #d6d6d6;
+}
+
+.appointment-hour ul li:not(:nth-of-type(4n+1)){
+    margin-left: -1px;
+}
+
+.appointment-hour ul li:nth-of-type(n+5){
+    margin-top: -1px;
+}
+
+.appointment-tea{
+    width: 92.58vw;
+    height: 24vw;
+    padding: 0 3.71vw;
+}
+
+.appointment-count{
+    width: 100%;
+    margin-top: 4vw;
+}
+
+.appointment-count>div{
+    float: left;
+}
+
+.appointment-count>div:nth-of-type(2){
+    margin-left: 10vw;
+}
+
+.appointment-edit{
+    width: 100vw;
+    height: 10.4vw;
+}
+
+.appointment-edit>div{
+    width: 35.5vw;
+    height: 10.4vw;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 10.4vw;
+    background: #d5d5d5;
+    color: #979797;
+    font-size: 4.18vw;
+}
+
+.appointment-clear{
+    padding-top: 2.14vw;
+    text-align: center;
+}
