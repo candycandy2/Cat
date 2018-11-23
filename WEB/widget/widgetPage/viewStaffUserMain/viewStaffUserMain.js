@@ -1,16 +1,16 @@
-$("#viewUserAddTea").pagecontainer({
+$("#viewStaffUserMain").pagecontainer({
     create: function(event, ui) {
 
-        var imgURL = '/widget/widgetPage/viewUserAddTea/img/';
+        var imgURL = '/widget/widgetPage/viewStaffUserMain/img/';
 
         /********************************** page event ***********************************/
-        $("#viewUserAddTea").on("pagebeforeshow", function(event, ui) {
+        $("#viewStaffUserMain").on("pagebeforeshow", function(event, ui) {
 
         });
 
-        $("#viewUserAddTea").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewUserAddTea');
-            $('#viewUserAddTea .ui-content').css('height', mainHeight + 'px');
+        $("#viewStaffUserMain").one("pageshow", function(event, ui) {
+            var mainHeight = getPageMainHeight('viewStaffUserMain');
+            $('#viewStaffUserMain .ui-content').css('height', mainHeight + 'px');
 
             $('.tea-user-photo').attr('src', serverURL + imgURL + 'default_photo.png');
             $('.tea-user-name').text(loginData['loginid']);
@@ -24,11 +24,11 @@ $("#viewUserAddTea").pagecontainer({
             $('.room-refresh').attr('src', serverURL + imgURL + 'loading.png');
         });
 
-        $("#viewUserAddTea").on("pageshow", function(event, ui) {
+        $("#viewStaffUserMain").on("pageshow", function(event, ui) {
 
         });
 
-        $("#viewUserAddTea").on("pagehide", function(event, ui) {
+        $("#viewStaffUserMain").on("pagehide", function(event, ui) {
 
         });
 

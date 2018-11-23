@@ -25,23 +25,23 @@ var staffWidget = {
             //调出菜单(如果需要在其他頁面使用，必須添加樣式staff-menu-btn)
             $(document).on('click', '.staff-menu-btn', function() {
                 $('.staff-menu-mask').show();
-                $('.staff-menu-main').animate({left: '40vw'}, 500);
+                $('.staff-menu-main').animate({left: '40vw'}, 300);
             });
 
-            //隐藏菜单
+            //右滑隐藏菜单
             $(document).on('swiperight', '.staff-menu-mask', function() {
-                $('.staff-menu-main').animate({left: '100vw'}, 500, function(){
+                $('.staff-menu-main').animate({left: '100vw'}, 300, function(){
                     $('.staff-menu-mask').hide();
                 });
             });
 
-            //隐藏菜单
+            //点击非菜单区域隐藏菜单
             $(document).on('click', '.staff-menu-mask', function(e) {
 
                 if(e.target != this) {
                     return;
                 } else {
-                    $('.staff-menu-main').animate({left: '100vw'}, 500, function(){
+                    $('.staff-menu-main').animate({left: '100vw'}, 300, function(){
                         $('.staff-menu-mask').hide();
                     });
                 }
@@ -49,19 +49,38 @@ var staffWidget = {
 
             //選擇菜單
             $(document).on('click', '.staff-menu-list li', function(e) {
-                //1. remove class
-                $('.staff-menu-list').find('.active-staff').removeClass('active-staff');
-                //2. add class
-                $(this).addClass('active-staff');
-                //3. close panel
-                $('.staff-menu-main').animate({left: '100vw'}, 500, function(){
+                //1. get active page & target page
+                var activePage = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
+                var targetPage = $(this).data('view');
+
+                if(activePage !== targetPage) {
+                    //2. remove class
+                    $('.staff-menu-list').find('.active-staff').removeClass('active-staff');
+                    //3. add class
+                    $(this).addClass('active-staff');
+                }
+
+                //4. close panel
+                $('.staff-menu-main').animate({left: '100vw'}, 300, function(){
                     $('.staff-menu-mask').hide();
                 });
+
+                //5. change page
+                if(activePage !== targetPage) {
+                    checkWidgetPage(targetPage, pageVisitedList);
+                }
             });
+
+            //sync menu when back key
+            $(document).on('click', '.staff-back', function() {
+                staffBackKey();
+            });
+            document.addEventListener("backbutton", staffBackKey, false);
 
             //点击更多，跳转到快速叫茶
             contentItem.on('click', '.staff-more', function() {
-                checkWidgetPage('viewUserAddTea', pageVisitedList);
+                var targetPage = $('.active-staff').data('view');
+                checkWidgetPage(targetPage, pageVisitedList);
             });
 
         }
@@ -71,6 +90,25 @@ var staffWidget = {
             var date = now.yyyymmdd('/');
             var time = now.hhmm();
             return date + ' ' + time;
+        }
+
+        function staffBackKey() {
+            //1. panel
+            var panelShow = $('.staff-menu-mask').css('display') == 'block' ? true : false;
+            if(panelShow) {
+                $('.staff-menu-main').animate({left: '100vw'}, 300, function(){
+                    $('.staff-menu-mask').hide();
+                });
+            }
+
+            //2. back page
+            var curPage = pageVisitedList[pageVisitedList.length - 1];
+            $.each($('.staff-menu-list li'), function(index, item) {
+                if(curPage == $(item).data('view')) {
+                    $('.staff-menu-list').find('.active-staff').removeClass('active-staff');
+                    $('.staff-menu-list li[data-view="' + curPage + '"]').addClass('active-staff');
+                }
+            })
         }
 
         $.fn.staff = function (options) {
