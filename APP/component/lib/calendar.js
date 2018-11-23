@@ -47,6 +47,7 @@ function Calendar(options) {
 
     $calendarElement.data('initYear', opts.year);
     $calendarElement.data('initMonth', opts.month);
+    $calendarElement.data('language', opts.language);
     $calendarElement.data('monthLabels', opts.month_labels);
     $calendarElement.data('weekStartsOn', opts.weekstartson);
     $calendarElement.data('navIcons', opts.nav_icon);
@@ -196,9 +197,12 @@ function Calendar(options) {
 
     function prependMonthHeader($calendarElement, $tableObj, year, month) {
         var navIcons = $calendarElement.data('navIcons');
-        var monthLabels = $calendarElement.data('monthLabels');
-        var $currMonthLabel = $('<span>' + monthLabels[month] + ' ' + year + '</span>');
-        $currMonthLabel.dblclick(function() {
+        //var monthLabels = $calendarElement.data('monthLabels');
+        var language = $calendarElement.data('language');
+        var monthStr = year.toString() + '-' + ((month + 1) < 10 ? '0' + (month + 1).toString() : (month + 1).toString()) + '-01';
+        var monthLabel = new Date(monthStr).toLocaleDateString(language, { year: 'numeric', month: 'short' });
+        var $currMonthLabel = $('<span>' + monthLabel + '</span>');
+        $currMonthLabel.dblclick(function () {
             var dateInitObj = $calendarElement.data('initDate');
             drawTable($calendarElement, $tableObj, dateInitObj.getFullYear(), dateInitObj.getMonth());
         });
@@ -240,7 +244,10 @@ function Calendar(options) {
                 if (enable) {
                     drawTable($calendarElement, $tableObj, _year, _month);
                     $("#" + _id + " #right-navigation").css("opacity", "100");
-                    $("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
+                    //$("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
+                    var monthPrevStr = _year.toString() + '-' + ((_month + 1) < 10 ? '0' + (_month + 1).toString() : (_month + 1).toString()) + '-01';
+                    var monthPrevLabel = new Date(monthPrevStr).toLocaleDateString(language, { year: 'numeric', month: 'short' });
+                    $("#" + _id + " #dateTitle span").text(monthPrevLabel);
                     if (_month == 0 && (_year + 1 == _nextyear || $calendarElement.data("showNextyear") == false)) {
                         $("#" + _id + " #left-navigation").css("opacity", "0");
                     }
@@ -283,7 +290,10 @@ function Calendar(options) {
                 if (enable) {
                     drawTable($calendarElement, $tableObj, _year, _month);
                     $("#" + _id + " #left-navigation").css("opacity", "100");
-                    $("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
+                    //$("#" + _id + " #dateTitle span").html(monthLabels[_month] + ' ' + _year);
+                    var monthNextStr = _year.toString() + '-' + ((_month + 1) < 10 ? '0' + (_month + 1).toString() : (_month + 1).toString()) + '-01';
+                    var monthNextLabel = new Date(monthNextStr).toLocaleDateString(language, { year: 'numeric', month: 'short' });
+                    $("#" + _id + " #dateTitle span").text(monthNextLabel);
                     if (_month == 11 && (_year == _nextyear || $calendarElement.data("showNextyear") == false)) {
                         $("#" + _id + " #right-navigation").css("opacity", "0");
                     }
@@ -302,7 +312,11 @@ function Calendar(options) {
             });
         }
 
-        var $monthHeaderRow = $('<div class="calendar-month-header"></div>').append($prevMonthNav, $currMonthCell, $nextMonthNav);
+        //var $monthHeaderRow = $('<div class="calendar-month-header"></div>').append($prevMonthNav, $currMonthCell, $nextMonthNav);
+        var $monthHeaderRow = $('<div class="calendar-month-header"></div>');
+        $monthHeaderRow.append($prevMonthNav);
+        $monthHeaderRow.append($currMonthCell);
+        $monthHeaderRow.append($nextMonthNav);
         return $monthHeaderRow;
     }
 
@@ -677,7 +691,7 @@ function calendar_defaults() {
     var settings = {
         renderTo: undefined,
         id: "calendar_ID",
-        language: false,
+        language: 'zh',
         year: year,
         month: month,
         show_previous: true,
@@ -708,8 +722,8 @@ function calendar_defaults() {
  * @returns {{month_labels: Array, dow_labels: Array}}
  */
 function calendar_language(lang) {
-    if (typeof(lang) == 'undefined' || lang === false) {
-        lang = 'default';
+    if (typeof (lang) == 'undefined' || lang === false || lang === 'default') {
+        lang = 'zh';
     }
 
     switch (lang.toLowerCase()) {
@@ -721,7 +735,7 @@ function calendar_language(lang) {
             };
             break;
 
-        case 'default':
+        case 'zh':
             return {
                 month_labels: ["Jan.", "Feb.", "Mar.", "Apr.", "May.", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."],
                 dow_labels: ["一", "二", "三", "四", "五", "六", "日"]
