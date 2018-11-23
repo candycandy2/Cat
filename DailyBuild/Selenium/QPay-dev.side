@@ -96,11 +96,11 @@
       "command": "waitForElementVisible",
       "target": "id=search",
       "targets": [],
-      "value": "3000"
+      "value": "15000"
     }, {
       "id": "0aa1521c-9261-43e1-99c4-f001066f6c00",
       "comment": "",
-      "command": "click",
+      "command": "//click",
       "target": "id=search",
       "targets": [
         ["id=search", "id"],
