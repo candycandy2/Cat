@@ -42,6 +42,7 @@ class QPayPointTypeRepository
     {
         return  $this->qpayPointType
             -> select('row_id', 'name', 'color', 'status')
+            -> orderby('status','desc')
             -> get();   
     }
 
@@ -79,6 +80,18 @@ class QPayPointTypeRepository
                          'status'=>$status,
                          'updated_user'=>$createdUser
                         ]);
+    }
+
+    /**
+     * Get point type infomation by point_type_row_id
+     * @param  int $rowId point type row_id
+     * @return mixed        query result
+     */
+    public function getPointTypeById($rowId){
+        return $this->qpayPointType
+                -> where('row_id',$rowId)
+                -> select('name','color','status')
+                -> first();
     }
 
 }

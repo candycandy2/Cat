@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-//use App\Services\QPayManagerService;
 use App\Services\QPayShopService;
 use App\Services\QPayPointService;
 use App\Services\QPayMemberService;
@@ -15,12 +14,11 @@ use App\lib\CommonUtil;
 use DB;
 use Validator;
 use Auth;
-
+use DateTime;
 
 class qpayController extends Controller
 {
 
-    //protected $qpayManagerService;
     protected $qpayShopService;
     protected $qpayPointService;
     protected $qpayMemberService;
@@ -29,20 +27,18 @@ class qpayController extends Controller
 
     /**
      * FunctionController constructor.
-     * @param QPayPointService $qpayPointService
-     * @param QPayTradeService      $qpayTradeService
-     * @param QPayMemberService      $qpayMemberService
+     * @param QPayPointService  $qpayPointService
+     * @param QPayTradeService  $qpayTradeService
+     * @param QPayMemberService $qpayMemberService
+     * @param QPayShopService   $shopService
      */
     public function __construct(QPayPointService $qpayPointService,
                                 QPayTradeService $qpayTradeService,
                                 QPayMemberService $qpayMemberService,
                                 QPayShopService $qpayShopService,
-                                LogService $logService
-                                /*QPayManagerService $qpayManagerService,
-                                QPayMemberService $qpayMemberService*/)
+                                LogService $logService)
     {
-        //$this->qpayManagerService = $qpayManagerService;
-        //$this->qpayShopService = $qpayShopService;
+
         $this->qpayPointService = $qpayPointService;
         $this->qpayMemberService = $qpayMemberService;
         $this->qpayTradeService = $qpayTradeService;
@@ -509,5 +505,91 @@ class qpayController extends Controller
         }
 
         return json_encode($result);
+    }
+
+    /**
+     * QPay Reimburse Finance - view
+     */
+    public function QPayReimburseFinance(){
+
+        //get point type list
+        $pointTypeList =  $this->qpayPointService->getAllQPayPointTypeList();
+
+        //get shop list 
+        
+        $shopList = $this->qpayShopService->getAllShopList();
+        
+        //get month list
+        $months = array('1','2','3','4','5','6','7','8','9','10','11','12');
+        
+        
+        return view("qpay_maintain/qpay_reimburse_maintain/reimburse_finance")->with(['pointTypeList'=>$pointTypeList,
+                                                                                       'shopList'=>$shopList,
+                                                                                       'months'=>$months
+                                                                                      ]);
+    }
+
+    /**
+     * get QPay Reimburse Finance list, shows a specific month trading amount
+     * @param  Request $request 
+     * @return json
+     */
+    public function getQPayReimburseFinanceList(Request $request){
+
+        $startDate = date('Y/'.$request->month.'/01');
+        $endDate = date('Y/'.$request->month.'/t');
+
+        $shopId = (trim($request->shopId) == "")?null:trim($request->shopId);;
+        $pointType = (trim($request->pointType) == "")?null:trim($request->pointType);
+
+        $limit = (trim($request->limit) == "")?null:trim($request->limit);
+        $offset = (trim($request->offset) == "")?null:trim($request->offset);
+        $sort = (trim($request->sort) == "")?null:trim($request->sort);
+        $order = (trim($request->order) == "")?null:trim($request->order);
+
+        $tradeRecord =  $this->qpayTradeService
+                             ->getTradeRecord($shopId, $startDate, $endDate, $pointType, $limit, $offset, $sort, $order);
+    
+
+        
+
+        return response()->json(["total" => $tradeRecord->total(),
+                                 "rows"  => $tradeRecord->items(),
+                                ]);
+    
+    }
+
+    /**
+     * get QPay Trade total amount of a specific month
+     * @param  Request $request
+     * @return json
+     */
+    public function getQPayTradeTotal(Request $request){
+
+        $startDate = date('Y/'.$request->month.'/01');
+        $endDate = date('Y/'.$request->month.'/t');
+
+        $shopId = (trim($request->shopId) == "")?null:trim($request->shopId);;
+        $pointType = (trim($request->pointType) == "")?null:trim($request->pointType);
+
+        $tradeTotal = $this->qpayTradeService->getTradeTotal($shopId, $startDate, $endDate, $pointType);
+
+        return response()->json(["tradeTotal" => $tradeTotal]);
+    }
+
+    /**
+     * export and download reimburse finance report of specific month 
+     * @param  Request $request
+     */
+    public function downloadReimburseFinanceExcel(Request $request){
+   
+        $startDate = date('Y/'.$request->month.'/01');
+        $endDate = date('Y/'.$request->month.'/t');
+
+        $shopId = (trim($request->shopId) == "")?null:trim($request->shopId);;
+        $pointType = (trim($request->pointType) == "")?null:trim($request->pointType);
+
+        $result =  $this->qpayTradeService->downloadReimburseFinanceExcel($shopId, $startDate, $endDate, $pointType);
+
     }
 }

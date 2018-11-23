@@ -346,4 +346,12 @@ class QPayPointService
     {
         return $this->qpayPointTypeRepository->editPointType($rowId, $name, $color, $status, Auth::user()->row_id);
     }
+
+    /**
+     * Get all QPay point list
+     * @return mixed
+     */
+    public function getAllQPayPointTypeList(){
+        return $this->qpayPointTypeRepository->getAllQPayPointTypeList();
+    }
 }

@@ -44,6 +44,7 @@ return [
     'OPEN' => 'open',
     'CLOSE' => 'close',
     'CONFIRM' => 'confirm',
+    'EXPORT' => 'export',
 
     'MENU' => 'Menu',
     'LOGOUT' => 'Logout',
@@ -81,9 +82,12 @@ return [
     'TITLE_QPAY_USER_SHOP' => 'Shop',
     'TITLE_QPAY_MAINTAIN' => 'QPay-User Maintain',
     'TITLE_QPAY_USER_EMPLOYEE' =>'Employee Maintain',
+    'TITLE_QPAY_REIMBURSE_FINANCE' =>'Reimburse Finance',
 
     'ENABLE' => 'Enable',
     'DISABLE' => 'Disable',
+    'DISABLED' => 'Disabled',
+    'DELETED' => 'Deleted',
 
     //pushservice
     'TITLE_PUSH_SERVICE' => 'Push Service',
@@ -535,5 +539,13 @@ return [
     'QPAY_INPUT_ORI_PWD' => 'Input Default Login Password',
     'QPAY_INPUT_NEW_PWD' => 'Input New Password',
     'QPAY_TRADE_PWD' => 'Transation password',
-    'QPAY_CONFIRM_TO_RESET_TRADE_PWD' => 'Confirm to reset the transaction password of %s?'
+    'QPAY_CONFIRM_TO_RESET_TRADE_PWD' => 'Confirm to reset the transaction password of %s?',
+    'QPAY_SELECT_SHOP_NAME' => 'Select Shop Name',
+    'QPAY_TRADE_MONTH' => 'Trading month',
+    'QPAY_SELECT_TRADE_MONTH' => 'Select the trading month',
+    'QPAY_TRADE_TOTAL' => 'Total transaction amount',
+    'QPAY_TRADE_AMOUNT' => 'The transaction amount',
+    'QPAY_MONTH' =>'Month',
+    'QPAY_COUNT' =>'Record',
+    'QPAY_DATE' =>'Daily'
 ];
