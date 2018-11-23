@@ -83,7 +83,8 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #mypanelviewHolidayCalendar").on("click", function() {
-        changePageByPanel("viewHolidayCalendar");
+        //changePageByPanel("viewHolidayCalendar");
+        checkWidgetPage('viewHolidayCalendar', visitedPageList);
     });
 
     $("#mypanel #mypanelviewPersonalLeaveCalendar").on("click", function() {

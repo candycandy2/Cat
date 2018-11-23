@@ -979,7 +979,7 @@ html body .ui-group-theme-a a:visited {
 
 /**************************************** viewHolidayCalendar ***************************************/
 
-#viewHolidayCalendar .infoList ul>li {
+/* #viewHolidayCalendar .infoList ul>li {
     margin-left: 6.71Vw;
     margin-top: 3.71VW;
     font-size: smaller;
@@ -995,7 +995,7 @@ html body .ui-group-theme-a a:visited {
     content: url("../img/holiday_icon.png");
     width: 2.415VW;
     margin-right: 1.5VW;
-}
+} */
 
 /**************************************** viewAgentLeave ********************************************/
 
