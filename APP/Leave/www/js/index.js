@@ -12,9 +12,10 @@ var lastPageID = "viewPersonalLeave";
 var initialAppName = "Leave";
 var appKeyOriginal = "appleave";
 var appKey = "appleave";
-var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewHolidayCalendar", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin", "viewOvertimeSubmit", "viewOvertimeQuery"];
+var pageList = ["viewPanel", "viewPersonalLeave", "viewLeaveQuery", "viewBackLeaveQuery", "viewPersonalLeaveCalendar", "viewAgentLeave", "viewClockin", "viewOvertimeSubmit", "viewOvertimeQuery"];
 var appSecretKey = "86883911af025422b626131ff932a4b5";
 var visitedPageList = ["viewPersonalLeave"];
+var pageVisitedList = ["viewPersonalLeave"];
 var htmlContent = "";
 var signedStr; //"已簽核";
 var withdrawedStr; //"已撤回";
@@ -62,6 +63,11 @@ window.initialSuccess = function() {
     //呼叫API
     GetUserAuthority();
     loadingMask("show");
+
+    //解除原本的事件监听
+    document.removeEventListener("backbutton", onBackKeyDown, false);
+    //监听本页自己的backkey logic
+    document.addEventListener("backbutton", onBackKeyDownSpecial, false);
 }
 
 window.GetUserAuthority = function() {
@@ -152,7 +158,7 @@ function restartAgentLeave() {
 }
 
 //[Android]Handle the back button
-function onBackKeyDown() {
+function onBackKeyDownSpecial() {
     //var activePageID = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
     var activePageID = visitedPageList[visitedPageList.length - 1];
     var prePageID = visitedPageList[visitedPageList.length - 2];
@@ -208,13 +214,13 @@ function onBackKeyDown() {
 }
 
 $(document).ready(function() {
-    $.getJSON("string/QTY-holiday.json", function(data) {
+    $.getJSON(serverURL + "/widget/widgetPage/viewHolidayCalendar/string/QTY-holiday.json", function(data) {
         QTYholidayData = data;
     });
-    $.getJSON("string/BQC-holiday.json", function(data) {
+    $.getJSON(serverURL + "/widget/widgetPage/viewHolidayCalendar/string/BQC-holiday.json", function(data) {
         BQCholidayData = data;
     });
-    $.getJSON("string/QCS-holiday.json", function(data) {
+    $.getJSON(serverURL + "/widget/widgetPage/viewHolidayCalendar/string/QCS-holiday.json", function(data) {
         QCSholidayData = data;
     });
 });
