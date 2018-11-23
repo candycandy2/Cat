@@ -503,6 +503,19 @@ $("#viewFamilyData").pagecontainer({
             return [year, month, day].join('-');
         }
 
+        function applyInsurFromFamilyData() {
+            clickFamilyName = $.trim(familyName);
+            clickRelation =  $.trim(familyRelation);
+            clickAge = transferBirthToAge(familyBirth);
+            clickBirth = $.trim(familyBirth);
+            clickID = $.trim(familyID)
+            $("#mypanelviewFamilyData").removeAttr("style");
+            $("#mypanel #mypanelviewPersonalInsurance").css("background", "#503f81");
+            $("#mypanel #mypanelviewPersonalInsurance").css("color", "#fff");   
+            nextPage = "addDetail";
+            $.mobile.changePage("#viewApplyInsurance");     
+        }
+        
         /********************************** page event *************************************/
         $("#viewFamilyData").on("pagebeforeshow", function (event, ui) {
             if (viewFamilyInit) {
@@ -580,19 +593,6 @@ $("#viewFamilyData").pagecontainer({
             $("#familyInsurName").removeAttr("readonly");
             $("#familyInsurName").css("background", "#f9f9f9");
         });
-
-        function applyInsurFromFamilyData() {
-            clickFamilyName = $.trim(familyName);
-            clickRelation =  $.trim(familyRelation);
-            clickAge = transferBirthToAge(familyBirth);
-            clickBirth = $.trim(familyBirth);
-            clickID = $.trim(familyID)
-            $("#mypanelviewFamilyData").removeAttr("style");
-            $("#mypanel #mypanelviewPersonalInsurance").css("background", "#503f81");
-            $("#mypanel #mypanelviewPersonalInsurance").css("color", "#fff");   
-            nextPage = "addDetail";
-            $.mobile.changePage("#viewApplyInsurance");     
-        }
 
         //健保加保申請，跳轉
         $(".addInsuranceImg").on("click", function () {
