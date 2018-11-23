@@ -44,6 +44,7 @@ return [
     'OPEN' => '開啟',
     'CLOSE' => '關閉',
     'CONFIRM' => '確認',
+    'EXPORT' => '匯出',
 
     'MENU' => '選單',
     'LOGOUT' => '登出',
@@ -81,9 +82,12 @@ return [
     'TITLE_QPAY_USER_SHOP' => '店家資料',
     'TITLE_QPAY_MAINTAIN' => '消費券管理-用戶管理',
     'TITLE_QPAY_USER_EMPLOYEE' =>'員工資料',
+    'TITLE_QPAY_REIMBURSE_FINANCE' =>'財務請款',
     
     'ENABLE' => '啟用',
     'DISABLE' => '停用',
+    'DISABLED' => '停用',
+    'DELETED' => '已刪除',
 
     //pushservice
     'TITLE_PUSH_SERVICE' => '推播服務',
@@ -536,5 +540,13 @@ return [
     'QPAY_INPUT_ORI_PWD' => '請輸入預設登入密碼',
     'QPAY_INPUT_NEW_PWD' => '請輸入新密碼',
     'QPAY_TRADE_PWD' => '交易密碼',
-    'QPAY_CONFIRM_TO_RESET_TRADE_PWD' => '確定要重置%s的交易密碼嗎?'
+    'QPAY_CONFIRM_TO_RESET_TRADE_PWD' => '確定要重置%s的交易密碼嗎?',
+    'QPAY_SELECT_SHOP_NAME' => '請選擇店家名稱',
+    'QPAY_TRADE_MONTH' => '交易月份',
+    'QPAY_SELECT_TRADE_MONTH' => '請選擇交易月份',
+    'QPAY_TRADE_TOTAL' => '交易總額',
+    'QPAY_TRADE_AMOUNT' => '交易金額',
+    'QPAY_MONTH' =>'月',
+    'QPAY_COUNT' =>'筆',
+    'QPAY_DATE' =>'日'
 ];

@@ -226,4 +226,12 @@ class QPayShopService
         return $this->qpayShopRepository->getShopUserByShopId($shopId);
 
     }
+
+    /**
+     * get all QPay shop list
+     * @return mixed
+     */
+    public function getAllShopList(){
+        return $this->qpayShopRepository->getAllShopList();
+    }
 }

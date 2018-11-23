@@ -100,4 +100,57 @@ class QPayShopRepository
 
     }
 
+    /**
+     * Get all QPay shop list
+     * @return mixed
+     */
+    public function getAllShopList(){
+        return $this->user
+                ->LeftJoin('qpay_shop','qp_user.row_id','=','qpay_shop.user_row_id')
+                ->where('source_from','shop')
+                ->select('qpay_shop.row_id as shop_id',
+                        'qp_user.row_id as user_id',
+                        'qpay_shop.created_at as created_at',
+                        'qp_user.deleted_at as user_delete_at',
+                        'qpay_shop.deleted_at as shop_delete_at',
+                        'password',
+                        'address',
+                        'status',
+                        'login_id',
+                        'trade_status',
+                        'ext_no',
+                        'emp_id',
+                        'emp_name')
+                ->orderBy('status','desc')
+                ->orderBy('user_delete_at','asc')
+                ->orderBy('shop_delete_at','desc')
+                ->get();
+    }
+
+    /**
+     * Get QPay shop infomation by shop row_id
+     * @param  int  $shopId shop row_id
+     * @return mixed
+     */
+    public function getShopInfoByShopId($shopId){
+        return $this->qpayShop
+                ->join('qp_user','qp_user.row_id','=','qpay_shop.user_row_id')
+                ->where('source_from','shop')
+                ->where('qpay_shop.row_id',$shopId)
+                ->select('qpay_shop.row_id as shop_id',
+                        'qp_user.row_id as user_id',
+                        'qpay_shop.created_at as created_at',
+                        'qp_user.deleted_at as user_delete_at',
+                        'qpay_shop.deleted_at as shop_delete_at',
+                        'password',
+                        'address',
+                        'status',
+                        'login_id',
+                        'trade_status',
+                        'ext_no',
+                        'emp_id',
+                        'emp_name as shop_name')
+                ->first();
+    }
+
 }

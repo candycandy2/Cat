@@ -44,6 +44,7 @@ return [
     'OPEN' => '开启',
     'CLOSE' => '关闭',
     'CONFIRM' => '确认',
+    'EXPORT' => '汇出',
 
     'MENU' => '菜单',
     'LOGOUT' => '登出',
@@ -81,9 +82,12 @@ return [
     'TITLE_QPAY_USER_SHOP' => '店家资料',
     'TITLE_QPAY_MAINTAIN' => '消费券管理-用户管理',
     'TITLE_QPAY_USER_EMPLOYEE' =>'员工资料',
+    'TITLE_QPAY_REIMBURSE_FINANCE' =>'财务请款',
 
     'ENABLE' => '启用',
     'DISABLE' => '停用',
+    'DISABLED' => '停用',
+    'DELETED' => '已删除',
 
     //pushservice
     'TITLE_PUSH_SERVICE' => '推播服务',
@@ -534,5 +538,13 @@ return [
     'QPAY_INPUT_ORI_PWD' => '请输入预设登入密码',
     'QPAY_INPUT_NEW_PWD' => '请输入新密码',
     'QPAY_TRADE_PWD' => '交易密码',
-    'QPAY_CONFIRM_TO_RESET_TRADE_PWD' => '确定要重置%s的交易密码吗?'
+    'QPAY_CONFIRM_TO_RESET_TRADE_PWD' => '确定要重置%s的交易密码吗?',
+    'QPAY_SELECT_SHOP_NAME' => '请选择店家名称',
+    'QPAY_TRADE_MONTH' => '交易月份',
+    'QPAY_SELECT_TRADE_MONTH' => '请选择交易月份',
+    'QPAY_TRADE_TOTAL' => '交易总额',
+    'QPAY_TRADE_AMOUNT' => '交易金额',
+    'QPAY_MONTH' =>'月',
+    'QPAY_COUNT' =>'笔',
+    'QPAY_DATE' =>'日'
 ];

@@ -199,6 +199,7 @@ function sortObjectByKey(o) {
     }
     return sorted;
 }
+
 function getMaxIndexFromObjByAttr(obj, attr){
 
 return Object.keys(obj).reduce(
@@ -217,4 +218,8 @@ function getFormData($form){
     });
 
     return indexed_array;
+}
+
+function numberWithCommas(number){
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
