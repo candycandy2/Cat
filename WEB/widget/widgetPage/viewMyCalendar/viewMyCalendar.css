@@ -9,7 +9,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 #myReserveList {
@@ -26,7 +26,7 @@
     height: 100%;
 }
 
-#reserveContent > div {
+#reserveContent>div {
     float: left;
     width: 85.16vw;
     height: 100%;
@@ -64,7 +64,7 @@
     margin-bottom: 2vw;
 }
 
-.reserve-li > div {
+.reserve-li>div {
     float: left;
 }
 

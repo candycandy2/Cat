@@ -1,5 +1,5 @@
 $("#viewMyCalendar").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
         var reserveCalendar,
             reservePositionList = [],
@@ -26,7 +26,7 @@ $("#viewMyCalendar").pagecontainer({
                 reserveData: reserve_data,
                 infoData: holidayData,
                 showInfoListTo: "#viewMyCalendar .infoList",
-                changeDateEventListener: function (year, month) {
+                changeDateEventListener: function(year, month) {
                     //leave
                     QueryCalendarData(year, month);
                     //切换月份需要更新carousel
@@ -51,7 +51,7 @@ $("#viewMyCalendar").pagecontainer({
             //1. content
             var length = 0;
             var content = '';
-            $.each($('#reserveCalendar td'), function (index, item) {
+            $.each($('#reserveCalendar td'), function(index, item) {
                 content += '<div class="reserve-list" data-index="' + index +
                     '" data-id="' + $(item).attr('id') +
                     '"><div class="reserve-title">' +
@@ -68,7 +68,7 @@ $("#viewMyCalendar").pagecontainer({
             $("#reserveContent").html('').append(content);
 
             //3. 遍历当天所有预约
-            $.each($(".reserve-list"), function (index, item) {
+            $.each($(".reserve-list"), function(index, item) {
                 for (var i in arr) {
                     if ($(item).attr("data-id") == i) {
                         var detailContent = '';
@@ -94,7 +94,7 @@ $("#viewMyCalendar").pagecontainer({
             reservePositionList = [];
             var today = new Date().yyyymmdd("-");
             var todayIndex = '';
-            $.each($(".reserve-list"), function (index, item) {
+            $.each($(".reserve-list"), function(index, item) {
                 // save position
                 var x = $(item).offset().left;
                 reservePositionList.push(x);
@@ -129,7 +129,7 @@ $("#viewMyCalendar").pagecontainer({
             var key = leaveAppData.key;
             var secret = leaveAppData.secretKey;
 
-            this.successCallback = function (data) {
+            this.successCallback = function(data) {
 
                 //console.log(data);
 
@@ -174,9 +174,9 @@ $("#viewMyCalendar").pagecontainer({
                 loadingMask("hide");
             };
 
-            this.failCallback = function (data) { };
+            this.failCallback = function(data) {};
 
-            var __construct = function () {
+            var __construct = function() {
                 CustomAPIByKey("POST", true, key, secret, "QueryCalendarData", self.successCallback, self.failCallback, queryData, "", 15, "low");
             }();
         };
@@ -205,7 +205,7 @@ $("#viewMyCalendar").pagecontainer({
         //reserve carousel
         function createCarousel() {
 
-            var checkReserveData = setInterval(function () {
+            var checkReserveData = setInterval(function() {
                 var changeReserveListDirty = window.sessionStorage.getItem('changeReserveListDirty');
                 var reserveArr = JSON.parse(window.sessionStorage.getItem('reserveList'));
 
@@ -217,19 +217,19 @@ $("#viewMyCalendar").pagecontainer({
         }
 
         /********************************** page event ***********************************/
-        $("#viewMyCalendar").on("pagebeforeshow", function (event, ui) {
+        $("#viewMyCalendar").on("pagebeforeshow", function(event, ui) {
 
         });
 
-        $("#viewMyCalendar").one("pageshow", function (event, ui) {
+        $("#viewMyCalendar").one("pageshow", function(event, ui) {
             //1. calendar
             var siteCode = localStorage.getItem("site_code");
             if (siteCode == "QCS" || siteCode == "BQC") {
-                $.getJSON("string/" + siteCode + "-holiday.json", function (data) {
+                $.getJSON("string/" + siteCode + "-holiday.json", function(data) {
                     createCalendarPage(data);
                 });
             } else {
-                $.getJSON("string/QTY-holiday.json", function (data) {
+                $.getJSON("string/QTY-holiday.json", function(data) {
                     createCalendarPage(data);
                 });
             }
@@ -239,9 +239,9 @@ $("#viewMyCalendar").pagecontainer({
 
         });
 
-        $("#viewMyCalendar").on("pageshow", function (event, ui) {
+        $("#viewMyCalendar").on("pageshow", function(event, ui) {
             var calendarDirty = window.sessionStorage.getItem('CalendarDirty');
-            if(calendarDirty == 'Y') {
+            if (calendarDirty == 'Y') {
                 //calendar
                 var reserve_data = JSON.parse(window.sessionStorage.getItem('reserveList'));
                 reserveCalendar.refreshReserve(reserve_data);
@@ -250,17 +250,17 @@ $("#viewMyCalendar").pagecontainer({
                 //sessionStorage
                 window.sessionStorage.setItem('CalendarDirty', 'N');
             }
-            
+
         });
 
-        $("#viewMyCalendar").on("pagehide", function (event, ui) {
+        $("#viewMyCalendar").on("pagehide", function(event, ui) {
 
         });
 
 
         /********************************** dom event *************************************/
         //点击空白区域，隐藏预约
-        $("#myReserve").on("click", function (event) {
+        $("#myReserve").on("click", function(event) {
             var tag = event.target.id;
             if (tag == "myReserve") {
                 $("#myReserve").hide();
@@ -268,12 +268,12 @@ $("#viewMyCalendar").pagecontainer({
         });
 
         //点击有预约的日期，显示预约详情
-        $("#myCalendar").on("click", "td", function () {
+        $("#myCalendar").on("click", "td", function() {
             var dateId = $(this).attr("id");
             var has = $(this).hasClass('reserveDay');
 
             if (has) {
-                $.each($(".reserve-list"), function (index, item) {
+                $.each($(".reserve-list"), function(index, item) {
                     if (dateId == $(item).attr("data-id")) {
                         $("#myReserve").show();
                         $("#myReserveList").scrollLeft(0).scrollLeft(reservePositionList[index] - scrollLeftOffset(3.71));
@@ -288,13 +288,13 @@ $("#viewMyCalendar").pagecontainer({
         //滑动切换月份
         var x;
         var change;
-        $('#myCalendar').on('touchstart', function (event) {
+        $('#myCalendar').on('touchstart', function(event) {
             x = event.originalEvent.targetTouches[0].pageX;
 
-        }).on('touchmove', function (event) {
+        }).on('touchmove', function(event) {
             change = event.originalEvent.targetTouches[0].pageX - x;
 
-        }).on('touchend', function (event) {
+        }).on('touchend', function(event) {
             if (change > 0 && Math.abs(change) > 150) {
                 $('.QPlayCalendar-navPrev').trigger('click');
             } else if (change < 0 && Math.abs(change) > 150) {
