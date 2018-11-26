@@ -10,15 +10,23 @@
     padding: 5vw 0 3.71vw 3.71vw;
 }
 
-.appointment-room>div:nth-of-type(1),
+.appointment-room>div:nth-of-type(1){
+    width: 100%;
+    height: 5vw;
+    font-size: 3.14vw;
+    color: #0f0f0f;
+}
+
 .appointment-room>div:nth-of-type(2){
     width: 100%;
     height: 6vw;
+    font-size: 4.18vw;
+    color: #253137;
 }
 
 .appointment-room>div:nth-of-type(3){
     width: 100%;
-    height: 12vw;
+    height: 11vw;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
@@ -47,12 +55,14 @@
 
 .appointment-date>div:nth-of-type(1){
     width: 100%;
-    height: 6vw;
+    height: 5vw;
+    font-size: 3.14vw;
+    color: #0f0f0f;
 }
 
 .appointment-date>div:nth-of-type(2){
     width: 100%;
-    height: 12vw;
+    height: 11vw;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
@@ -75,7 +85,7 @@
 }
 
 .appointment-hour{
-    padding: 0 3.71vw;
+    padding: 0 3.71vw 4vw;
 }
 
 .appointment-hour ul{
@@ -84,10 +94,10 @@
 }
 
 .appointment-hour ul li{
-    width: 22.5vw;
-    height: 12vw;
-    text-align: center;
-    line-height: 12vw;
+    width: 22.8vw;
+    height: 14vw;
+    /* text-align: center;
+    line-height: 14vw; */
     border: 1px solid #d6d6d6;
 }
 
@@ -99,19 +109,59 @@
     margin-top: -1px;
 }
 
+.hour-list>div:nth-of-type(1){
+    width: 100%;
+    height: 7vw;
+    line-height: 8vw;
+    text-indent: 2vw;
+    font-size: 4.18vw;
+}
+
+.hour-list>div:nth-of-type(2){
+    width: 100%;
+    height: 7vw;
+}
+
+.hour-list>div:nth-of-type(2)>div{
+    float: left;
+    height: 100%;
+}
+
+.hour-list>div:nth-of-type(2)>div:nth-of-type(1){
+    width: 70%;
+    font-size: 3.14vw;
+    text-indent: 2vw;
+    line-height: 7vw;
+}
+
+.hour-list>div:nth-of-type(2)>div:nth-of-type(2){
+    width: 30%;
+}
+
+.checkbox-hour{
+    width: 5vw;
+    margin-top: 1vw;
+    margin-left: 0.5vw;
+}
+
 .appointment-tea{
     width: 92.58vw;
-    height: 24vw;
+    height: 20vw;
     padding: 0 3.71vw;
 }
 
 .appointment-count{
     width: 100%;
-    margin-top: 4vw;
 }
 
 .appointment-count>div{
     float: left;
+}
+
+.appointment-count>div>div:nth-of-type(1){
+    height: 5vw;
+    color: #0f0f0f;
+    font-size: 3.14vw;
 }
 
 .appointment-count>div:nth-of-type(2){
@@ -121,6 +171,7 @@
 .appointment-edit{
     width: 100vw;
     height: 10.4vw;
+    padding-bottom: 2.14vw;
 }
 
 .appointment-edit>div{
@@ -135,6 +186,6 @@
 }
 
 .appointment-clear{
-    padding-top: 2.14vw;
     text-align: center;
+    display: none;
 }
