@@ -2,20 +2,23 @@
 
 .choose-by-dll {
     color: #0f0f0f;
+    padding: 6.5vw 3.71vw 0vw 5.39vw;
 }
 
 .choose-by-dll>div:nth-of-type(1)>div {
     display: inline-block;
-    height: 5vw;
-    line-height: 5vw;
-    margin-right: 30.2vw;
+    width: 43vw;
 }
 
 .choose-by-dll>div:nth-of-type(2)>div {
     display: inline-block;
+    width: 44vw;
     margin-left: -1.5%;
 }
 
-#categoryValue {
-	margin-left: 16%;
+.activity-line {
+    width: 100vw;
+    height: 1px;
+    background-color: #d5d5d5;
+    overflow: hidden;
 }

@@ -1,3 +1,7 @@
+var categoryList = [ "所有類別", "食",  "衣", "住", "行", "育", "樂", "其他"];
+var cityList = [ "所有縣市", "基隆市",  "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市" ,"嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
+var selectCategory = ""; //选择的类别，可能为“所有类别”
+var updateDate = "";
 $("#viewQStoreSearchList").pagecontainer({
     create: function (event, ui) {
 
@@ -23,8 +27,9 @@ $("#viewQStoreSearchList").pagecontainer({
             }
         };
 
+        var qstoreListReturnArr = {}; 
+
         function getAllCityList() {
-            var  cityList = [ "所有縣市", "基隆市",  "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市" ,"嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
             cityData["option"] = [];
             $("#cityValue").empty();
             $("#city-popup-option-popup").remove();
@@ -43,7 +48,6 @@ $("#viewQStoreSearchList").pagecontainer({
         }
 
         function getAllCategoryList() {
-            var  categoryList = [ "所有類別", "食",  "衣", "住", "行", "育", "樂", "其他"];
             categoryData["option"] = [];
             $("#categoryValue").empty();
             $("#category-popup-option-popup").remove();
@@ -60,11 +64,58 @@ $("#viewQStoreSearchList").pagecontainer({
             tplJS.DropdownList("viewQStoreSearchList", "categoryValue", "prepend", "typeB", categoryData);
         }
 
+        function formatDate() {
+            var d = new Date(),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+        window.QueryStoreList = function() {
+            
+            this.successCallback = function(data) { 
+                if (data['ResultCode'] === "1") {
+                    qstoreListReturnArr = data['Content'];
+                    loadingMask("hide");
+                } else if (data['ResultCode'] === "044901") {
+                    qstoreListReturnArr = data['Content'];
+                    loadingMask("hide");
+                } 
+                QueryFamilyList();
+            };   
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                CustomAPI("POST", true, "StoreList", self.successCallback, self.failCallback, queryData, "");
+            }();
+        };
+
         /********************************** page event ***********************************/
 
         $("#viewQStoreSearchList").one("pageshow", function (event, ui) {
             getAllCityList();
             getAllCategoryList();
+            if (localStorage.getItem("reneweddate") !== null) {
+                updateDate = formatDate();
+                //第二次之後進入，UpdateDate更新到local端
+                localStorage.setItem("reneweddate", JSON.stringify(updateDate));
+            } else {
+                updateDate = "";
+                var today = formatDate();
+                //第一次進入，UpdateDate存到local端
+                //localStorage.setItem("reneweddate", JSON.stringify(today));
+            }
+            loadingMask("show");
+            var self = this;
+            for (var i = 1; i < categoryList.length; i++) {
+                var queryData = '<LayoutHeader><Category>'+ categoryList[i] +'</<Category><UpdateDate>'+ updateDate +'</UpdateDate></LayoutHeader>'; 
+                //將QStoreList按七種類別，存入localStorage
+            }
         });
 
         $("#viewQStoreSearchList").on("pagebeforeshow", function (event, ui) {
@@ -82,6 +133,12 @@ $("#viewQStoreSearchList").pagecontainer({
 
         /********************************** dom event *************************************/
 
+        //選擇類別——select change
+        $(document).on("change", "#categroy-popup", function() {
+            //selectCategory = $.trim($(this).text()); 
+            selectCategory = $(this).val();
+            //filter localStorage: QStoreList
+        });
 
     }
 });
