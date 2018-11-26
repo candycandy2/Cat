@@ -70,8 +70,14 @@
 
 .add-tea-room>div:nth-of-type(1){
     height: 5vw;
-    color: #0f0f0f;
     font-size: 3.14vw;
+    color: #0f0f0f;
+}
+
+.add-tea-room>div:nth-of-type(2){
+    height: 5vw;
+    font-size: 4.18vw;
+    color: #253137;
 }
 
 .add-tea-radio{
@@ -268,4 +274,14 @@
 
 .past-time{
     color: #999999 !important;
+}
+
+.active-staff{
+    background: #00B2B3 !important;
+    color: #fff !important;
+}
+
+.rest-staff,
+.checked-staff{
+    background: #DCDCDC !important;
 }

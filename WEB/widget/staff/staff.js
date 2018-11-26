@@ -17,9 +17,21 @@ var staffWidget = {
 
             }, "html");
 
+            //点击更多，跳转到快速叫茶
+            contentItem.on('click', '.staff-more', function() {
+                var targetPage = $('.active-menu').data('view');
+                checkWidgetPage(targetPage, pageVisitedList);
+            });
+
             //添加staff菜單
             $.get(serverURL + "/widget/staff/menu.html", function(data) {
                 $.mobile.pageContainer.append(data);
+
+                //ios top
+                if(device.platform === "iOS") {
+                    $('.staff-menu-mask').css('top', iOSFixedTopPX().toString() + 'px');
+                }
+                
             }, 'html');
 
             //调出菜单(如果需要在其他頁面使用，必須添加樣式staff-menu-btn)
@@ -37,7 +49,7 @@ var staffWidget = {
 
             //点击非菜单区域隐藏菜单
             $(document).on('click', '.staff-menu-mask', function(e) {
-
+                //document.write(e.target+'; '+this);
                 if(e.target != this) {
                     return;
                 } else {
@@ -52,12 +64,12 @@ var staffWidget = {
                 //1. get active page & target page
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
                 var targetPage = $(this).data('view');
-
-                if(activePage !== targetPage) {
+                //document.write(activePage+'; '+targetPage);
+                if(activePage != targetPage) {
                     //2. remove class
-                    $('.staff-menu-list').find('.active-staff').removeClass('active-staff');
+                    $('.staff-menu-list').find('.active-menu').removeClass('active-menu');
                     //3. add class
-                    $(this).addClass('active-staff');
+                    $(this).addClass('active-menu');
                 }
 
                 //4. close panel
@@ -66,7 +78,7 @@ var staffWidget = {
                 });
 
                 //5. change page
-                if(activePage !== targetPage) {
+                if(activePage != targetPage) {
                     checkWidgetPage(targetPage, pageVisitedList);
                 }
             });
@@ -76,12 +88,6 @@ var staffWidget = {
                 staffBackKey();
             });
             document.addEventListener("backbutton", staffBackKey, false);
-
-            //点击更多，跳转到快速叫茶
-            contentItem.on('click', '.staff-more', function() {
-                var targetPage = $('.active-staff').data('view');
-                checkWidgetPage(targetPage, pageVisitedList);
-            });
 
         }
 
@@ -105,8 +111,8 @@ var staffWidget = {
             var curPage = pageVisitedList[pageVisitedList.length - 1];
             $.each($('.staff-menu-list li'), function(index, item) {
                 if(curPage == $(item).data('view')) {
-                    $('.staff-menu-list').find('.active-staff').removeClass('active-staff');
-                    $('.staff-menu-list li[data-view="' + curPage + '"]').addClass('active-staff');
+                    $('.staff-menu-list').find('.active-menu').removeClass('active-menu');
+                    $('.staff-menu-list li[data-view="' + curPage + '"]').addClass('active-menu');
                 }
             })
         }
