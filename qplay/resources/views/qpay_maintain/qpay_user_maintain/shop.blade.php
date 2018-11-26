@@ -564,7 +564,7 @@
                         address:  address,
                         tel: tel,
                         loginId: loginId,
-                        pwd
+                        pwd: pwd
                 };
 
                 $.ajax({
