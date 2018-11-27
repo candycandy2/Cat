@@ -7,37 +7,38 @@
 @section('content')
     <h1></h1>
     <div class="row">
-        <div class="col-lg-10 col-xs-10">
+        <form id="newShopForm" name="newShopForm">
+            <div class="col-lg-10 col-xs-10">
                 <div class='col-md-2'>
                     <div class="form-group">
-                        <label for="newName">{{trans('messages.QPAY_SHOP_NAME')}}</label>
+                        <label for="shopName">{{trans('messages.QPAY_SHOP_NAME')}}</label>
                         <div class="input-group">
-                            <input class="form-control" type="text" name="" id="newName" placeholder="{{trans('messages.QPAY_INPUT_SHOP_NAME')}}">
+                            <input class="form-control" type="text" name="shopName" placeholder="{{trans('messages.QPAY_INPUT_SHOP_NAME')}}">
                         </div>
                     </div>
                 </div>
                 <div class='col-md-2'>
-                    <label for="newAddress">{{trans('messages.QPAY_SHOP_ADDRESS')}}</label>
+                    <label for="address">{{trans('messages.QPAY_SHOP_ADDRESS')}}</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" name="" id="newAddress" placeholder="{{trans('messages.QPAY_INPUT_SHOP_ADDRESS')}}">
+                        <input class="form-control" type="text" name="address" placeholder="{{trans('messages.QPAY_INPUT_SHOP_ADDRESS')}}">
                     </div>
                 </div>
                 <div class='col-md-2'>
-                    <label for="newTel">{{trans('messages.QPAY_SHOP_TEL')}}</label>
+                    <label for="tel">{{trans('messages.QPAY_SHOP_TEL')}}</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" name="" id="newTel" placeholder="{{trans('messages.QPAY_INPUT_SHOP_TEL')}}">
+                        <input class="form-control" type="text" name="tel" placeholder="{{trans('messages.QPAY_INPUT_SHOP_TEL')}}">
                     </div>
                 </div>
                 <div class='col-md-2'>
-                    <label for="newLoginId">{{trans('messages.USER_LOGIN_ID')}}</label>
+                    <label for="loginId">{{trans('messages.USER_LOGIN_ID')}}</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" name="" id="newLoginId" placeholder="{{trans('messages.QPAY_INPUT_LOGIN_ID')}}">
+                        <input class="form-control" type="text" name="loginId" placeholder="{{trans('messages.QPAY_INPUT_LOGIN_ID')}}">
                     </div>
                 </div>
                 <div class='col-md-2'>
-                    <label for="newPwd">{{trans('messages.USER_PWD')}}</label>
+                    <label for="pwd">{{trans('messages.USER_PWD')}}</label>
                     <div class="input-group">
-                        <input class="form-control" type="text" name="" id="newPwd" placeholder="{{trans('messages.QPAY_INPUT_ORI_PWD')}}">
+                        <input class="form-control" type="text" name="pwd" placeholder="{{trans('messages.QPAY_INPUT_ORI_PWD')}}">
                     </div>
                 </div>
                  <div class='col-md-2'>
@@ -46,10 +47,11 @@
                         <button type="button" id="addShop" class="btn btn-primary">{{trans('messages.NEW')}}</button>
                     </div>
                 </div>
-        </div>
+            </div>
+        </form>
     </div>
     <div id="toolbar">
-        <button type="button" class="btn btn-danger" onclick="deleteWhite()" id="btnDeleteShop" style="display: none">
+        <button type="button" class="btn btn-danger" onclick="deleteShop()" id="btnDeleteShop" style="display: none">
                 {{trans("messages.DELETE")}}
         </button>
     </div>
@@ -81,53 +83,55 @@
     </div>
 
     <div id="editShopDialog" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h1 class="modal-title" id="editShopTitle">{{trans('messages.QPAY_UPDATE_SHOP_INFO')}}</h1>
-                </div>
-                <div class="modal-body">
-                    <table style="width:100%">
-                        <tr>
-                            <td>{{trans('messages.QPAY_SHOP_NAME')}}:</td>
-                            <td style="padding: 10px;">
-                                <input type="text" class="form-control" data-clear-btn="true" id="editShopName" value="" placeholder="{{trans('messages.QPAY_INPUT_SHOP_NAME')}}"/>
-                                <span style="color: red;" class="error" for="editPointTypeName"></span>
-                            </td>
-                            <td><span style="color: red;">*</span></td>
-                        </tr>
-                        <tr>
-                            <td>{{trans('messages.QPAY_SHOP_ADDRESS')}}:</td>
-                            <td style="padding: 10px;">
-                                <input type="text" class="form-control" data-clear-btn="true" id="editShopAddress" value="" placeholder="{{trans('messages.QPAY_INPUT_SHOP_ADDRESS')}}"/>
-                                <span style="color: red;" class="error" for="editShopAddress"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{{trans('messages.QPAY_SHOP_TEL')}}:</td>
-                            <td style="padding: 10px;">
-                                <input type="text" class="form-control" data-clear-btn="true" id="editShopTel" value="" placeholder="{{trans('messages.QPAY_INPUT_SHOP_TEL')}}"/>
-                                <span style="color: red;" class="error" for="editShopTel"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{{trans('messages.USER_LOGIN_ID')}}:</td>
-                            <td style="padding: 10px;">
-                                <input type="text" class="form-control" data-clear-btn="true" id="editLoginId" value="" placeholder="{{trans('messages.QPAY_INPUT_LOGIN_ID')}}"/>
-                                <span style="color: red;" class="error" for="editLoginId"></span>
-                            </td>
-                            <td><span style="color: red;">*</span></td>
-                        </tr>
-                        <input id="editRowId" type="hidden" value="" />
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button"  class="btn btn-danger" onclick="editShop()">{{trans("messages.SAVE")}}</button>
-                    <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
+        <form id="editShopForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h1 class="modal-title" id="editShopTitle">{{trans('messages.QPAY_UPDATE_SHOP_INFO')}}</h1>
+                    </div>
+                    <div class="modal-body">
+                        <table style="width:100%">
+                            <tr>
+                                <td>{{trans('messages.QPAY_SHOP_NAME')}}:</td>
+                                <td style="padding: 10px;">
+                                    <input type="text" class="form-control" data-clear-btn="true" name="shopName" value="" placeholder="{{trans('messages.QPAY_INPUT_SHOP_NAME')}}"/>
+                                    <span style="color: red;" class="error" for="editPointTypeName"></span>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <tr>
+                                <td>{{trans('messages.QPAY_SHOP_ADDRESS')}}:</td>
+                                <td style="padding: 10px;">
+                                    <input type="text" class="form-control" data-clear-btn="true" name="address" value="" placeholder="{{trans('messages.QPAY_INPUT_SHOP_ADDRESS')}}"/>
+                                    <span style="color: red;" class="error" for="address"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{trans('messages.QPAY_SHOP_TEL')}}:</td>
+                                <td style="padding: 10px;">
+                                    <input type="text" class="form-control" data-clear-btn="true" name="tel" value="" placeholder="{{trans('messages.QPAY_INPUT_SHOP_TEL')}}"/>
+                                    <span style="color: red;" class="error" for="tel"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{trans('messages.USER_LOGIN_ID')}}:</td>
+                                <td style="padding: 10px;">
+                                    <input type="text" class="form-control" data-clear-btn="true" name="loginId" value="" placeholder="{{trans('messages.QPAY_INPUT_LOGIN_ID')}}"/>
+                                    <span style="color: red;" class="error" for="loginId"></span>
+                                </td>
+                                <td><span style="color: red;">*</span></td>
+                            </tr>
+                            <input name="shopId" type="hidden" value="" />
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"  class="btn btn-danger" id="submitEditShop">{{trans("messages.SAVE")}}</button>
+                        <button type="button"  class="btn btn-primary" data-dismiss="modal">{{trans("messages.CLOSE")}}</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <div id="resetPwdDialog" class="modal fade">
@@ -212,7 +216,7 @@
 
         }
         
-        function deleteWhite(){
+        function deleteShop(){
 
             showConfirmDialog('{{trans("messages.CONFIRM")}}', '{{trans("messages.QPAY_SHOP_CONFIRM_DELETE_DIALOG")}}?','', function () {
                 hideConfirmDialog();
@@ -251,65 +255,6 @@
                             e.responseText);
                     }
                 });
-            });
-        }
-
-        function editShop(){
-            var shopId = $('#editRowId').val();
-            var name = $('#editShopName').val();
-            var address = $('#editShopAddress').val();
-            var tel = $('#editShopTel').val();
-            var loginId = $('#editLoginId').val();
-            
-            //Check Data Empty
-            if (name.length == 0 || loginId.length == 0 ) {
-                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
-                return false;
-            }
-
-            var mydata = {
-                    shopId:  shopId,
-                    address: address,
-                    loginId: loginId,
-                    name: name,
-                    tel: tel
-                    
-                };
-
-            $.ajax({
-                url: "updateShop",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json",
-                data: $.toJSON(mydata),
-                success: function (d, status, xhr) {
-                    if (d.result_code == 1) {
-
-                       $('#editShopDialog').modal('hide');
-                       $("#gridShopList").bootstrapTable("refresh");
-
-                    } else if(d.result_code == "000922"){
-
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.QPAY_ERROR_MSG_DUPLICATE_SHOP_LOGIN_ID")}}");
-                        return false;
-
-                    } else {
-
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}");
-
-                    }
-
-                },
-                error: function (e) {
-
-                    if (handleAJAXError(this, e, "../")) {
-                        return false;
-                    }
-
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", 
-                        e.responseText);
-
-                }
             });
         }
 
@@ -387,6 +332,26 @@
         }
         
         $(function () {
+
+            $.validator.addMethod(
+                    "account",
+                    function(value, element) {
+                        var regexp = '[a-zA-Z0-9.]';
+                        var re = new RegExp(regexp);
+                        return this.optional(element) || re.test(value);
+                    },
+                    "Please check your input of login id it's only allowed english letters and numbers."
+            );
+
+            $.validator.addMethod(
+                    "password",
+                    function(value, element) {
+                        var regexp = '[a-zA-Z0-9.]';
+                        var re = new RegExp(regexp);
+                        return this.optional(element) || re.test(value);
+                    },
+                    "Please check your input."
+            );
 
             $('#gridShopList').on('check.bs.table', selectedChanged);
             $('#gridShopList').on('uncheck.bs.table', selectedChanged);
@@ -547,73 +512,161 @@
 
             //new shop
             $('#addShop').on("click",function(){
-                var name = $('#newName').val();
-                var address = $('#newAddress').val();
-                var tel = $('#newTel').val();
-                var loginId = $('#newLoginId').val();
-                var pwd = $('#newPwd').val();
-
-                //Check Data Empty
-                if (name.length == 0 || loginId.length ==0 || pwd.length ==0) {
-                    showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_REQUIRED_FIELD_MISSING")}}");
-                    return false;
-                }
-
-                var mydata = {
-                        name:   name,
-                        address:  address,
-                        tel: tel,
-                        loginId: loginId,
-                        pwd: pwd
-                };
-
-                $.ajax({
-                    url: "newQPayShop",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: $.toJSON(mydata),
-                    success: function (d, status, xhr) {
-                        if (d.result_code == 1) {
-                            
-                            $('#newName').val("");
-                            $('#newAddress').val("");
-                            $('#newTel').val("");
-                            $('#newLoginId').val("");
-                            $('#newPwd').val("");
-                        
-                        }else if(d.result_code == "000922"){
-                            showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.QPAY_ERROR_MSG_DUPLICATE_SHOP_LOGIN_ID")}}");
-                        }else{
-                            showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}");
-                        }
-
-                        $("#gridShopList").bootstrapTable("refresh");
-
-                    },
-                    error: function (e) {
-
-                        if (handleAJAXError(this, e, "../")) {
-                            return false;
-                        }
-
-                        showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", 
-                            e.responseText);
-
-                    }
-                });
+                $('#newShopForm').submit();
             });
 
-            //edit point type
+            $("#newShopForm").validate({
+                rules: {           
+                    shopName: {
+                        required: true,
+                        maxlength: 20
+                    },
+                    address: {
+                        maxlength: 50
+                    },
+                    tel: {
+                        maxlength: 50
+                    },
+                    loginId:{
+                        required: true,
+                        rangelength: [4,20],
+                        account
+                    },
+                    pwd:{
+                        required: true,
+                        rangelength: [8,20],
+                        password: true
+                    }
+                },
+                submitHandler: function(form) {
+                    
+                    var name = $(form).find('input[name=shopName]').val();
+                    var address = $(form).find('input[name=address]').val();
+                    var tel = $(form).find('input[name=tel]').val();
+                    var loginId = $(form).find('input[name=loginId]').val();
+                    var pwd = $(form).find('input[name=pwd]').val();
+
+                    var mydata = {
+                            name:   name,
+                            address:  address,
+                            tel: tel,
+                            loginId: loginId,
+                            pwd: pwd
+                    };
+                    $.ajax({
+                        url: "newQPayShop",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: $.toJSON(mydata),
+                        success: function (d, status, xhr) {
+                            if (d.result_code == 1) {
+                                $(form).find('input').val("");
+                            
+                            }else if(d.result_code == "000922"){
+                                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.QPAY_ERROR_MSG_DUPLICATE_SHOP_LOGIN_ID")}}");
+                            }else{
+                                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}");
+                            }
+
+                            $("#gridShopList").bootstrapTable("refresh");
+
+                        },
+                        error: function (e) {
+
+                            if (handleAJAXError(this, e, "../")) {
+                                return false;
+                            }
+
+                            showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", 
+                                e.responseText);
+
+                        }
+                    });       
+                }
+            });
+
+            //edit shop
             $('body').on('click','.editShop',function(e) {
                 var currentData = $("#gridShopList").bootstrapTable('getData');
+                var $form =  $("#editShopForm");
                 var index = ($(this).data('index'));
-                $('#editRowId').val(currentData[index].shop_id);
-                $('#editShopName').val(currentData[index].emp_name);
-                $('#editShopAddress').val(currentData[index].address);
-                $('#editShopTel').val(currentData[index].ext_no);
-                $('#editLoginId').val(currentData[index].login_id);
+                $form.find('input[name=shopId]').val(currentData[index].shop_id);
+                $form.find('input[name=shopName]').val(currentData[index].emp_name);
+                $form.find('input[name=address]').val(currentData[index].address);
+                $form.find('input[name=tel]').val(currentData[index].ext_no);
+                $form.find('input[name=loginId]').val(currentData[index].login_id);
+                $form.find("input").removeClass("error");
+                $form.find("label.error").hide();
                 $('#editShopDialog').modal('show');
+            });
+
+            $('body').on('click','#submitEditShop',function(e) {
+                $("#editShopForm").submit();
+            });
+             $("#editShopForm").validate({
+                rules: {           
+                    shopName: {
+                        required: true,
+                        maxlength: 20
+                    },
+                    address: {
+                        maxlength: 50
+                    },
+                    tel: {
+                        maxlength: 50
+                    },
+                    loginId:{
+                        required: true,
+                        rangelength: [4,20],
+                        account: true
+                    }
+                },
+                submitHandler: function(form) {
+                    
+                    var name = $(form).find('input[name=shopName]').val();
+                    var address = $(form).find('input[name=address]').val();
+                    var tel = $(form).find('input[name=tel]').val();
+                    var loginId = $(form).find('input[name=loginId]').val();
+                    var shopId = $(form).find('input[name=shopId]').val();
+                    
+                    var mydata = {
+                            shopId:  shopId,
+                            name:   name,
+                            address:  address,
+                            tel: tel,
+                            loginId: loginId
+                    };
+                    $.ajax({
+                        url: "updateShop",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: $.toJSON(mydata),
+                        success: function (d, status, xhr) {
+                            if (d.result_code == 1) {
+                                $('#editShopDialog').modal('hide');
+                            }else if(d.result_code == "000922"){
+                                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.QPAY_ERROR_MSG_DUPLICATE_SHOP_LOGIN_ID")}}");
+                            }else{
+                                showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}");
+                            }
+
+                            $("#gridShopList").bootstrapTable("refresh");
+
+                        },
+                        error: function (e) {
+
+                            if (handleAJAXError(this, e, "../")) {
+                                return false;
+                            }
+
+                            showMessageDialog("{{trans("messages.ERROR")}}", "{{trans("messages.MSG_OPERATION_FAILED")}}", 
+                                e.responseText);
+
+                        }
+                    });       
+                }
             });
 
         });
