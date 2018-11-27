@@ -2,7 +2,7 @@ var categoryList = [ "所有類別", "食",  "衣", "住", "行", "育", "樂", 
 var cityList = [ "所有縣市", "基隆市",  "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市" ,"嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
 var selectCategory = ""; //选择的类别，可能为“所有类别”
 var updateDate = "";
-var qstorelistQueryData = "";
+var storelistQueryData = "";
 var allQStoreList = [];
 var fristCallStoreList = true;
 
@@ -103,7 +103,7 @@ $("#viewQStoreSearchList").pagecontainer({
 
             var failCallback = function(data) {};
 
-            CustomAPI("POST", true, "StoreList", successCallback, failCallback, qstorelistQueryData, "");
+            CustomAPI("POST", true, "StoreList", successCallback, failCallback, storelistQueryData, "");
         };
 
         /********************************** page event ***********************************/
@@ -124,7 +124,7 @@ $("#viewQStoreSearchList").pagecontainer({
             loadingMask("show");
             allQStoreList = [];
             for (var i = 1; i < categoryList.length; i++) {
-                qstorelistQueryData = '<LayoutHeader><Category>'+ categoryList[i] +'</Category><UpdateDate>'+ updateDate +'</UpdateDate></LayoutHeader>'; 
+                storelistQueryData = '<LayoutHeader><Category>'+ categoryList[i] +'</Category><UpdateDate>'+ updateDate +'</UpdateDate></LayoutHeader>'; 
                 //將QStoreList按七種類別，存入localStorage
                 QueryStoreList();    
             }
