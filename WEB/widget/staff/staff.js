@@ -31,7 +31,7 @@ var staffWidget = {
                 if(device.platform === "iOS") {
                     $('.staff-menu-mask').css('top', iOSFixedTopPX().toString() + 'px');
                 }
-                
+
             }, 'html');
 
             //调出菜单(如果需要在其他頁面使用，必須添加樣式staff-menu-btn)
@@ -48,8 +48,7 @@ var staffWidget = {
             });
 
             //点击非菜单区域隐藏菜单
-            $(document).on('click', '.staff-menu-mask', function(e) {
-                //document.write(e.target+'; '+this);
+            $(document).on('tap', '.staff-menu-mask', function(e) {
                 if(e.target != this) {
                     return;
                 } else {
@@ -60,11 +59,10 @@ var staffWidget = {
             });
 
             //選擇菜單
-            $(document).on('click', '.staff-menu-list li', function(e) {
+            $(document).on('tap', '.staff-menu-list li', function(e) {
                 //1. get active page & target page
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
                 var targetPage = $(this).data('view');
-                //document.write(activePage+'; '+targetPage);
                 if(activePage != targetPage) {
                     //2. remove class
                     $('.staff-menu-list').find('.active-menu').removeClass('active-menu');
