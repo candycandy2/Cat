@@ -61,5 +61,15 @@ var qstoreWidget = {
         $.fn.qstore.defaults = {};
 
         $('.qstoreWidget').qstore();
+    },
+    clear: function() {
+        var qstoredatecontent_ = JSON.parse(window.localStorage.getItem('reneweddate'));
+        var qstorecontent_ = JSON.parse(window.localStorage.getItem('allQstoreListData'));
+        if (qstoredatecontent_ !== null) {
+            localStorage.removeItem('reneweddate');
+        }
+        if (qstorecontent_ !== null) {
+            localStorage.removeItem('allQstoreListData');
+        }
     }
 }
