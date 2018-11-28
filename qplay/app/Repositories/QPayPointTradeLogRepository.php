@@ -71,13 +71,11 @@ class QPayPointTradeLogRepository
                     -> leftJoin("qpay_shop", "qpay_shop.row_id", "=", "qpay_trade_log.shop_row_id")
                     -> leftJoin("qpay_member_point", "qpay_member_point.row_id", "=", "qpay_trade_log.member_point_row_id")
                     -> leftJoin("qpay_point_store", "qpay_point_store.row_id", "=", "qpay_member_point.point_store_row_id")
-                    -> where("qpay_trade_log.multiple_row_id", "=", 0)
                     -> where("qpay_trade_log.shop_row_id", "=", $shopID)
                     -> where("qpay_point_store.point_type_row_id", "=", $pointTypeID)
                     -> where(DB::raw('UNIX_TIMESTAMP(qpay_trade_log.created_at)'),'>=', $startDate)
                     -> where(DB::raw('UNIX_TIMESTAMP(qpay_trade_log.created_at)'),'<=', $endDate)
-                    -> select(DB::raw("CONCAT('T', LPAD(qpay_trade_log.row_id, 6, 0)) AS trade_id"),
-                              "qpay_trade_log.trade_point AS trade_point",
+                    -> select(DB::raw(" (CASE WHEN  `qpay_trade_log`.`multiple_pay`='Y' AND `qpay_trade_log`.`multiple_row_id`<> 0 THEN  Concat('T', Lpad (qpay_trade_log.multiple_row_id, 6, 0)) ELSE Concat('T', Lpad(qpay_trade_log.`row_id`, 6, 0)) END) AS trade_id,(CASE WHEN  `qpay_trade_log`.`multiple_pay`='Y' THEN `qpay_trade_log`.`multiple_point` ELSE `qpay_trade_log`.`trade_point` END) AS trade_point"),
                               "qpay_trade_log.success AS trade_success",
                               "qpay_trade_log.error_code",
                               DB::raw("UNIX_TIMESTAMP(qpay_trade_log.created_at) AS trade_time"));
@@ -98,10 +96,11 @@ class QPayPointTradeLogRepository
     public function getTradeTotal($shopID, $startDate, $endDate, $pointTypeID){
         
 
-        $result = $this->qpayTradeLog
+        $signle = $this->qpayTradeLog
                     -> leftJoin("qpay_shop", "qpay_shop.row_id", "=", "qpay_trade_log.shop_row_id")
                     -> leftJoin("qpay_member_point", "qpay_member_point.row_id", "=", "qpay_trade_log.member_point_row_id")
                     -> leftJoin("qpay_point_store", "qpay_point_store.row_id", "=", "qpay_member_point.point_store_row_id")
+                    -> where("qpay_trade_log.multiple_pay", "=", 'N')
                     -> where("qpay_trade_log.multiple_row_id", "=", 0)
                     -> where("qpay_trade_log.shop_row_id", "=", $shopID)
                     -> where("qpay_point_store.point_type_row_id", "=", $pointTypeID)
@@ -109,7 +108,18 @@ class QPayPointTradeLogRepository
                     -> where(DB::raw('UNIX_TIMESTAMP(qpay_trade_log.created_at)'),'<=', $endDate)
                     -> sum("qpay_trade_log.trade_point");
 
-        return $result;
+        $multiple = $this->qpayTradeLog
+                    -> leftJoin("qpay_shop", "qpay_shop.row_id", "=", "qpay_trade_log.shop_row_id")
+                    -> leftJoin("qpay_member_point", "qpay_member_point.row_id", "=", "qpay_trade_log.member_point_row_id")
+                    -> leftJoin("qpay_point_store", "qpay_point_store.row_id", "=", "qpay_member_point.point_store_row_id")
+                    -> where("qpay_trade_log.multiple_pay", "=", 'Y')
+                    -> where("qpay_trade_log.shop_row_id", "=", $shopID)
+                    -> where("qpay_point_store.point_type_row_id", "=", $pointTypeID)
+                    -> where(DB::raw('UNIX_TIMESTAMP(qpay_trade_log.created_at)'),'>=', $startDate)
+                    -> where(DB::raw('UNIX_TIMESTAMP(qpay_trade_log.created_at)'),'<=', $endDate)
+                    -> sum("qpay_trade_log.multiple_point");
+
+        return $signle + $multiple;
     }
 
     /**
@@ -125,13 +135,12 @@ class QPayPointTradeLogRepository
         $result = $this->qpayTradeLog
                     -> Join("qpay_member_point", "qpay_member_point.row_id", "=", "qpay_trade_log.member_point_row_id")
                     -> Join("qpay_point_store", "qpay_point_store.row_id", "=", "qpay_member_point.point_store_row_id")
-                    -> where("qpay_trade_log.multiple_row_id", "=", 0)
                     -> where("qpay_trade_log.shop_row_id", "=", $shopID)
                     -> where("qpay_point_store.point_type_row_id", "=", $pointTypeID)
                     -> where(DB::raw('UNIX_TIMESTAMP(qpay_trade_log.created_at)'),'>=', $startDate)
                     -> where(DB::raw('UNIX_TIMESTAMP(qpay_trade_log.created_at)'),'<=', $endDate)
                     -> groupBy(DB::raw('ndate'))
-                    -> select(DB::raw("FROM_UNIXTIME(UNIX_TIMESTAMP(qpay_trade_log.created_at), '%Y/%m/%d') as ndate,sum(qpay_trade_log.trade_point) as sum"))
+                    -> select(DB::raw("FROM_UNIXTIME(UNIX_TIMESTAMP(qpay_trade_log.created_at), '%Y/%m/%d') as ndate,sum(CASE WHEN qpay_trade_log.multiple_pay = 'Y' THEN qpay_trade_log.multiple_point ELSE qpay_trade_log.trade_point END) as sum"))
                     -> get();
     
         return $result;
