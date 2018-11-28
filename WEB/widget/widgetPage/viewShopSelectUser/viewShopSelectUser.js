@@ -1,6 +1,7 @@
 $("#viewShopSelectUser").pagecontainer({
     create: function (event, ui) {
 
+        var refreshInterval = null;//每3秒refresh金額
 
         //快速获取当天交易记录（QPlay使用者）
         function getCurrentTradeRecord(tab) {
@@ -121,13 +122,19 @@ $("#viewShopSelectUser").pagecontainer({
         });
 
         $("#viewShopSelectUser").on("pageshow", function (event, ui) {
-
+            //進入該頁面，每3秒refresh金額
+            refreshInterval = setInterval(function() {
+                $('#qplayRefresh').trigger('click');
+            }, 3000);
         });
 
         $("#viewShopSelectUser").on("pagehide", function (event, ui) {
             //离开此页，初始化工号输入框和下一步按钮
             $('#inputEmpNo').val('');
             $('.other-user-pwd').removeClass('button-active');
+            //離開該頁面，取消refresh
+            clearInterval(refreshInterval);
+            refreshInterval = null;
         });
 
 
@@ -160,7 +167,7 @@ $("#viewShopSelectUser").pagecontainer({
 
         //刷新列表
         $('#qplayRefresh').on('click', function () {
-            loadingMask('show');
+            //loadingMask('show');
             var activeTab = $('.type-active').data('type');
             //API:获取当天所有类别的交易记录
             getCurrentTradeRecord(activeTab);
