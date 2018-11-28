@@ -333,24 +333,20 @@
         
         $(function () {
 
-            $.validator.addMethod(
-                    "account",
-                    function(value, element) {
-                        var regexp = '[a-zA-Z0-9.]';
-                        var re = new RegExp(regexp);
-                        return this.optional(element) || re.test(value);
-                    },
-                    "Please check your input of login id it's only allowed english letters and numbers."
-            );
+            var passwordRegexp = /((^(?!.*[^\x21-\x7e])(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$)|(^(?!.*[^\x21-\x7e])(?=.*[\W])(?=.*[A-Z])(?=.*\d).*$)|(^(?!.*[^\x21-\x7e])(?=.*[\W])(?=.*[a-z])(?=.*[A-Z]).*$)|(^(?!.*[^\x21-\x7e])(?=.*[\W])(?=.*[a-z])(?=.*\d).*$))/;
+            
+            var accountRegexp = /^[A-Za-z0-9.]*$/;
 
             $.validator.addMethod(
-                    "password",
-                    function(value, element) {
-                        var regexp = '[a-zA-Z0-9.]';
-                        var re = new RegExp(regexp);
-                        return this.optional(element) || re.test(value);
-                    },
-                    "Please check your input."
+                    "regex",
+                    function(value, element, regexp) {
+                        var m;
+                        var test = false;
+                        if ((m = regexp.exec(value)) !== null) {
+                            test = true;
+                        }
+                        return this.optional(element) || test;
+                    }
             );
 
             $('#gridShopList').on('check.bs.table', selectedChanged);
@@ -530,12 +526,12 @@
                     loginId:{
                         required: true,
                         rangelength: [4,20],
-                        account
+                        regex: accountRegexp
                     },
                     pwd:{
                         required: true,
                         rangelength: [8,20],
-                        password: true
+                        regex: passwordRegexp
                     }
                 },
                 submitHandler: function(form) {
@@ -619,7 +615,7 @@
                     loginId:{
                         required: true,
                         rangelength: [4,20],
-                        account: true
+                        regex: accountRegexp
                     }
                 },
                 submitHandler: function(form) {
