@@ -55,8 +55,8 @@ class QPayPointTradeLogRepository
     /**
      * Get trade log in wich sepcific shop and point type by interval
      * @param  int      $shopID         shop row_id
-     * @param  string   $startDate      formated start date yyyy/mm/dd
-     * @param  string   $endDate        formated end date yyyy/mm/dd
+     * @param  int      $startDate      start date timestamp
+     * @param  int      $endDate        end date timestamp
      * @param  int      $pointTypeID    point type row_id
      * @param  int      $limit          limit
      * @param  int      $offset         offset
@@ -66,8 +66,6 @@ class QPayPointTradeLogRepository
      */
     public function getTradeRecord($shopID, $startDate, $endDate, $pointTypeID, $limit, $offset, $sort, $order)
     {
-        $startDate = strtotime($startDate);
-        $endDate = strtotime($endDate);
 
         $query = $this->qpayTradeLog
                     -> leftJoin("qpay_shop", "qpay_shop.row_id", "=", "qpay_trade_log.shop_row_id")
@@ -92,15 +90,13 @@ class QPayPointTradeLogRepository
     /**
      * Get sum of trade in wich sepcific shop and point type by interval
      * @param  int      $shopID         shop row_id
-     * @param  string   $startDate      formated start date yyyy/mm/dd
-     * @param  string   $endDate        formated end date yyyy/mm/dd
+     * @param  int      $startDate      start date timestamp
+     * @param  int      $endDate        end date timestamp
      * @param  int      $pointTypeID    point type row_id
      * @return mixed                    query result
      */
     public function getTradeTotal($shopID, $startDate, $endDate, $pointTypeID){
         
-        $startDate = strtotime($startDate);
-        $endDate = strtotime($endDate);
 
         $result = $this->qpayTradeLog
                     -> leftJoin("qpay_shop", "qpay_shop.row_id", "=", "qpay_trade_log.shop_row_id")
@@ -119,15 +115,12 @@ class QPayPointTradeLogRepository
     /**
      * Get sum of trade by each day in wich sepcific shop and point type duing interval
      * @param  int      $shopID         shop row_id
-     * @param  string   $startDate      formated start date yyyy/mm/dd
-     * @param  string   $endDate        formated end date yyyy/mm/dd
+     * @param  int      $startDate      start date timestamp
+     * @param  int      $endDate        end date timestamp
      * @param  int      $pointTypeID    point type row_id
      * @return mixed                    query result
      */
     public function getTradeTotalByEachDay($shopID, $startDate, $endDate, $pointTypeID){
-        
-        $startDate = strtotime($startDate);
-        $endDate = strtotime($endDate);
 
         $result = $this->qpayTradeLog
                     -> Join("qpay_member_point", "qpay_member_point.row_id", "=", "qpay_trade_log.member_point_row_id")
