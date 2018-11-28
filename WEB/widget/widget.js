@@ -13,7 +13,7 @@ var widget = {
             .then(this.load(8, divItem))
             .then(this.load(9, divItem))
             .then(this.load(10, divItem));
-            
+
     },
     list: function() {
 
@@ -29,7 +29,7 @@ var widget = {
             { id: 8, name: 'idea', enabled: true, lang: langStr['wgt_101'] },
             { id: 9, name: 'qstore', enabled: true, lang: langStr['wgt_100'] },
             { id: 10, name: 'staff', enabled: true, lang: langStr['wgt_102'] }
-            
+
         ];
     },
     load: function(id, div) {
@@ -69,7 +69,7 @@ var widget = {
         });
     },
     refresh: function() {
-        
+
     },
     clear: function() {
 
