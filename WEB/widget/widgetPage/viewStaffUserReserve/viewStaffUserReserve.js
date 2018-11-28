@@ -10,8 +10,8 @@ $("#viewStaffUserReserve").pagecontainer({
 
         $("#viewStaffUserReserve").one("pageshow", function(event, ui) {
             var mainHeight = getPageMainHeight('viewStaffUserReserve');
-            $('#viewStaffUserReserve .ui-content').css('height', mainHeight + 'px');
-
+            $('#viewStaffUserReserve .page-main').css('height', mainHeight + 'px');
+            //popupMsgInit('.reserveTeaDelete');
         });
 
         $("#viewStaffUserReserve").on("pageshow", function(event, ui) {

@@ -1,0 +1,6 @@
+/*************************** viewStaffUserFeedback ********************************/
+#viewStaffUserFeedback .ui-content{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}

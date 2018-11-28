@@ -2,6 +2,10 @@ var categoryList = [ "所有類別", "食",  "衣", "住", "行", "育", "樂", 
 var cityList = [ "所有縣市", "基隆市",  "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市" ,"嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
 var selectCategory = ""; //选择的类别，可能为“所有类别”
 var updateDate = "";
+var storelistQueryData = "";
+var allQStoreList = [];
+var fristCallStoreList = true;
+
 $("#viewQStoreSearchList").pagecontainer({
     create: function (event, ui) {
 
@@ -75,24 +79,31 @@ $("#viewQStoreSearchList").pagecontainer({
             return [year, month, day].join('-');
         }
 
-        window.QueryStoreList = function() {
-            
-            this.successCallback = function(data) { 
+        function QueryStoreList() {
+            var self = this;
+            var successCallback = function(data) { 
                 if (data['ResultCode'] === "1") {
+                    //第一次Call StoreList API，將七種類別的StoreList依序存入localStorage
                     qstoreListReturnArr = data['Content'];
+                    if (fristCallStoreList) {
+                        allQStoreList.push(qstoreListReturnArr);
+                        fristCallStoreList = false;
+                    } else {
+                        for (var i in qstoreListReturnArr) {
+                            allQStoreList[0].push(qstoreListReturnArr[i]);
+                        }
+                    }
                     loadingMask("hide");
                 } else if (data['ResultCode'] === "044901") {
                     qstoreListReturnArr = data['Content'];
                     loadingMask("hide");
                 } 
-                QueryFamilyList();
+                localStorage.setItem("allQstoreListData", JSON.stringify(allQStoreList[0]));
             };   
 
-            this.failCallback = function(data) {};
+            var failCallback = function(data) {};
 
-            var __construct = function() {
-                CustomAPI("POST", true, "StoreList", self.successCallback, self.failCallback, queryData, "");
-            }();
+            CustomAPI("POST", true, "StoreList", successCallback, failCallback, storelistQueryData, "");
         };
 
         /********************************** page event ***********************************/
@@ -111,10 +122,11 @@ $("#viewQStoreSearchList").pagecontainer({
                 //localStorage.setItem("reneweddate", JSON.stringify(today));
             }
             loadingMask("show");
-            var self = this;
+            allQStoreList = [];
             for (var i = 1; i < categoryList.length; i++) {
-                var queryData = '<LayoutHeader><Category>'+ categoryList[i] +'</<Category><UpdateDate>'+ updateDate +'</UpdateDate></LayoutHeader>'; 
+                storelistQueryData = '<LayoutHeader><Category>'+ categoryList[i] +'</Category><UpdateDate>'+ updateDate +'</UpdateDate></LayoutHeader>'; 
                 //將QStoreList按七種類別，存入localStorage
+                QueryStoreList();    
             }
         });
 
