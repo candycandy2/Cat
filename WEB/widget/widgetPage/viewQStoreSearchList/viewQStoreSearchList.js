@@ -5,6 +5,7 @@ var updateDate = "";
 var storelistQueryData = "";
 var allQStoreList = [];
 var fristCallStoreList = true;
+var hasUpdateDateVal = false;
 
 $("#viewQStoreSearchList").pagecontainer({
     create: function (event, ui) {
@@ -79,7 +80,7 @@ $("#viewQStoreSearchList").pagecontainer({
             return [year, month, day].join('-');
         }
 
-        function QueryStoreList() {
+        function QueryStoreList(hasUpdateDateVal) {
             var self = this;
             var successCallback = function(data) { 
                 if (data['ResultCode'] === "1") {
@@ -98,7 +99,29 @@ $("#viewQStoreSearchList").pagecontainer({
                     qstoreListReturnArr = data['Content'];
                     loadingMask("hide");
                 } 
-                localStorage.setItem("allQstoreListData", JSON.stringify(allQStoreList[0]));
+                if (!hasUpdateDateVal) {
+                    localStorage.setItem("allQstoreListData", JSON.stringify(allQStoreList[0]));
+                } else {
+                    var qstoreListFromLocalStorage =  JSON.parse(localStorage.getItem("allQstoreListData"));
+
+                    for (var i in qstoreListReturnArr) {
+                        //find object in list
+                        var findNewAddQStoreIndex = $.map(qstoreListFromLocalStorage, function(item, index) {
+                            return item.MIndex;
+                        }).indexOf(qstoreListReturnArr[i]["MIndex"]);
+
+                        if (findNewAddQStoreIndex !== -1 ) {
+                            //QStoreList From localStorage 和 UpdatedData From API 比對
+                            //若有對應的MIndex，代表是修改資料，splice 該 array list from allQstoreListData &  push NEW array list into allQstoreListData
+                            qstoreListFromLocalStorage.splice(findNewAddQStoreIndex, 1, qstoreListReturnArr[i]);
+                            localStorage.setItem("allQstoreListData", JSON.stringify(qstoreListFromLocalStorage));  
+                        } else {
+                            //若沒有對應的MIndex，代表資料新增，push 該 array list into allQstoreListData
+                            qstoreListFromLocalStorage.push(qstoreListReturnArr[i]);
+                            localStorage.setItem("allQstoreListData", JSON.stringify(qstoreListFromLocalStorage));
+                        }
+                    }
+                }
             };   
 
             var failCallback = function(data) {};
@@ -112,26 +135,27 @@ $("#viewQStoreSearchList").pagecontainer({
             getAllCityList();
             getAllCategoryList();
             if (localStorage.getItem("reneweddate") !== null) {
+                hasUpdateDateVal = true;
                 updateDate = formatDate();
                 //第二次之後進入，UpdateDate更新到local端
                 localStorage.setItem("reneweddate", JSON.stringify(updateDate));
+                storelistQueryData = '<LayoutHeader><Category></Category><UpdateDate>'+ updateDate +'</UpdateDate></LayoutHeader>';
+                QueryStoreList(hasUpdateDateVal);
+                fristCallStoreList = true;
             } else {
+                hasUpdateDateVal = false;
                 updateDate = "";
                 var today = formatDate();
                 //第一次進入，UpdateDate存到local端
-                //localStorage.setItem("reneweddate", JSON.stringify(today));
+                localStorage.setItem("reneweddate", JSON.stringify(today));
+                loadingMask("show");
+                allQStoreList = [];
+                for (var i = 1; i < categoryList.length; i++) {
+                    storelistQueryData = '<LayoutHeader><Category>'+ categoryList[i] +'</Category><UpdateDate>'+ updateDate +'</UpdateDate></LayoutHeader>'; 
+                    //將QStoreList按七種類別，存入localStorage
+                    QueryStoreList(hasUpdateDateVal);    
+                }
             }
-            loadingMask("show");
-            allQStoreList = [];
-            for (var i = 1; i < categoryList.length; i++) {
-                storelistQueryData = '<LayoutHeader><Category>'+ categoryList[i] +'</Category><UpdateDate>'+ updateDate +'</UpdateDate></LayoutHeader>'; 
-                //將QStoreList按七種類別，存入localStorage
-                QueryStoreList();    
-            }
-        });
-
-        $("#viewQStoreSearchList").on("pagebeforeshow", function (event, ui) {
-
         });
 
         $("#viewQStoreSearchList").on("pageshow", function (event, ui) {
