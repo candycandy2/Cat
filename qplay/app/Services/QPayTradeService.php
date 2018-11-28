@@ -52,8 +52,8 @@ class QPayTradeService
     /**
      * Get trade log in wich sepcific shop and point type by interval
      * @param  int      $shopID         shop row_id
-     * @param  string   $startDate      formated start date yyyy/mm/dd
-     * @param  string   $endDate        formated end date yyyy/mm/dd
+     * @param  int      $startDate      start date timestamp
+     * @param  int      $endDate        end date timestamp
      * @param  int      $pointTypeID    point type row_id
      * @param  int      $limit          limit
      * @param  int      $offset         offset
@@ -71,8 +71,8 @@ class QPayTradeService
     /**
      * Get sum of trade in wich sepcific shop and point type by interval
      * @param  int      $shopID         shop row_id
-     * @param  string   $startDate      formated start date yyyy/mm/dd
-     * @param  string   $endDate        formated end date yyyy/mm/dd
+     * @param  int      $startDate      start date timestamp
+     * @param  int      $endDate        end date timestamp
      * @param  int      $pointTypeID    point type row_id
      * @return mixed                    query result
      */
@@ -84,11 +84,12 @@ class QPayTradeService
     /**
      * export and down load reimburse finance report
      * @param  int      $shopID         shop row_id
-     * @param  string   $startDate      formated start date yyyy/mm/dd
-     * @param  string   $endDate        formated end date yyyy/mm/dd
+     * @param  int      $startDate      start date timestamp
+     * @param  int      $endDate        end date timestamp
+     * @param  int      $timeOffset     localization time offset
      * @param  int      $pointTypeID    point type row_id
      */
-    public function downloadReimburseFinanceExcel($shopID, $startDate, $endDate, $pointTypeID){
+    public function downloadReimburseFinanceExcel($shopID, $startDate, $endDate, $timeOffset, $pointTypeID){
         
         App::setLocale(Session::get("lang"));
 
@@ -108,9 +109,8 @@ class QPayTradeService
             $pointTypeName = $pointTypeInfo->name;
         }
         
-       
-        $date = explode("/", $startDate);
-        $dateStr = $date[0].'/'. $date[1];
+        $localTime = $startDate - $timeOffset * 60;
+        $dateStr = gmdate("Y/m", $localTime);
 
         //set default title for excel data
         $shopHeadLine = trans('messages.QPAY_SHOP_NAME') . ':' . $shopName;

@@ -536,9 +536,8 @@ class qpayController extends Controller
      */
     public function getQPayReimburseFinanceList(Request $request){
 
-        $startDate = date('Y/'.$request->month.'/01');
-        $endDate = date('Y/'.$request->month.'/t');
-
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
         $shopId = (trim($request->shopId) == "")?null:trim($request->shopId);;
         $pointType = (trim($request->pointType) == "")?null:trim($request->pointType);
 
@@ -566,9 +565,8 @@ class qpayController extends Controller
      */
     public function getQPayTradeTotal(Request $request){
 
-        $startDate = date('Y/'.$request->month.'/01');
-        $endDate = date('Y/'.$request->month.'/t');
-
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
         $shopId = (trim($request->shopId) == "")?null:trim($request->shopId);;
         $pointType = (trim($request->pointType) == "")?null:trim($request->pointType);
 
@@ -582,14 +580,14 @@ class qpayController extends Controller
      * @param  Request $request
      */
     public function downloadReimburseFinanceExcel(Request $request){
-   
-        $startDate = date('Y/'.$request->month.'/01');
-        $endDate = date('Y/'.$request->month.'/t');
 
+        $startDate = $request->startDate;
+        $endDate = $request->endDate;
+        $timeOffset = $request->timeOffset;
         $shopId = (trim($request->shopId) == "")?null:trim($request->shopId);;
         $pointType = (trim($request->pointType) == "")?null:trim($request->pointType);
 
-        $result =  $this->qpayTradeService->downloadReimburseFinanceExcel($shopId, $startDate, $endDate, $pointType);
+        $result =  $this->qpayTradeService->downloadReimburseFinanceExcel($shopId, $startDate, $endDate, $timeOffset, $pointType);
 
     }
 }
