@@ -234,6 +234,14 @@ class QPayTradeService
 
                     foreach ($allPointData as $pointData) {
                         if ($dataProcessNumber == 1) {
+                            //Check if the First Member Point's stored_now = 0, If true, ignore it,
+                            //Not a Multiple Point Trade
+                            if (intval($pointData["stored_now"]) == 0) {
+                                $multiplePay = "N";
+                                $dataProcessNumber++;
+                                continue;
+                            }
+
                             $newStoredNow = 0;
                             $newStoredUsed = $pointData["stored_used"] + $pointData["stored_now"];
                             $multiplePoint = $pointData["stored_now"];
@@ -241,7 +249,12 @@ class QPayTradeService
                         } else if ($dataProcessNumber == 2) {
                             $newStoredNow = $pointData["stored_now"] - $tradePriceLeft;
                             $newStoredUsed = $pointData["stored_used"] + $tradePriceLeft;
-                            $multiplePoint = $tradePriceLeft;
+
+                            if ($multiplePay == "Y") {
+                                $multiplePoint = $tradePriceLeft;
+                            } else {
+                                $multiplePoint = 0;
+                            }
                         }
 
                         $updatePointDataResult = $this->qpayMemberPointRepository->updatePointData($pointData["row_id"], $newStoredNow,  $newStoredUsed);
