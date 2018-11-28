@@ -1,6 +1,7 @@
 $("#viewShopRecordList").pagecontainer({
     create: function (event, ui) {
 
+        var refreshInterval = null;//每3秒refresh金額
 
         //获取店家消费券交易记录
         function getTradeRecordForShop() {
@@ -102,10 +103,16 @@ $("#viewShopRecordList").pagecontainer({
         $("#viewShopRecordList").on("pageshow", function (event, ui) {
             //API：获取交易记录
             getTradeRecordForShop();
+            //進入該頁面，每3秒refresh金額
+            refreshInterval = setInterval(function() {
+                $('#recordRefresh').trigger('click');
+            }, 3000);
         });
 
         $("#viewShopRecordList").on("pagehide", function (event, ui) {
-
+            //離開該頁面，取消refresh
+            clearInterval(refreshInterval);
+            refreshInterval = null;
         });
 
 
@@ -122,7 +129,7 @@ $("#viewShopRecordList").pagecontainer({
             var queryMonth = new Date(queryData['start_date'] * 1000).getMonth() + 1;
             //3.比较年月
             if(queryYear == curYear && queryMonth == curMonth) {
-                loadingMask("show");
+                //loadingMask("show");
                 getTradeRecordForShop();
             }
         });
