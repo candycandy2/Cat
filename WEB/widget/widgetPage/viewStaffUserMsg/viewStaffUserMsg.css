@@ -1,0 +1,27 @@
+/*************************** viewStaffUserMsg ********************************/
+#viewStaffUserMsg .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}
+
+.notice-msg-text{
+    width: 92.58vw;
+    padding: 5vw 3.71vw 0;
+    color: #253137;
+    font-size: 3.768vw;
+}
+
+.notice-msg-time{
+    width: 92.58vw;
+    padding: 2.14vw 3.71vw 0;
+    color: #8ea3ac;
+    font-size: 3.349vw;
+}
+
+.notice-msg-img{
+    width: 92.58vw;
+    height: 50vw;
+    margin: 5vw 3.71vw 0;
+    background: lightgray;
+}
