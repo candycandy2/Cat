@@ -20,8 +20,9 @@ $.extend( $.validator.messages, {
     range: $.validator.format("Please enter a value between {0} and {1}."),
     max: $.validator.format("Please enter a value less than or equal to {0}."),
     min: $.validator.format("Please enter a value greater than or equal to {0}."),
-    setAppUser: ("Please select roles or users"),
-    icon: ('Please upload icon'),
-    screenshot: ('Please upload screenshot'),
-    appKeyFormat:"Please Input lowercase letters, do not allow blank or underline and other symbols"
+    setAppUser: "Please select roles or users",
+    icon: "Please upload icon",
+    screenshot: "Please upload screenshot",
+    appKeyFormat:"Please Input lowercase letters, do not allow blank or underline and other symbols",
+    regex: "Format incorrect"
 } );
