@@ -1,0 +1,55 @@
+/*************************** viewStaffUserTop ********************************/
+#viewStaffUserTop .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}
+
+.top-head{
+    width: 92.58vw;
+    padding: 5vw 3.71vw 2.14vw;
+    color: #0f0f0f;
+    font-size: 3.14vw;
+    background: #f9f9f9;
+}
+
+.top-main{
+    width: 92.58vw;
+    /* height: 80vw; */
+    margin-left: 3.71vw;
+    border: 1px solid #d5d5d5;
+    border-radius: 2px;
+    background: #fff;
+}
+
+.top-week{
+    width: 85.16vw;
+    height: 4vw;
+    margin-left: 3.71vw;
+    padding: 4vw 0;
+    border-bottom: 1px solid #323232;
+}
+
+.top-week>div{
+    float: left;
+    width: 20%;
+    height: 100%;
+    text-align: center;
+    color: #253137;
+    font-size: 3.349vw;
+}
+
+.top-hour{
+    width: 85.16vw;
+    height: 8vw;
+    margin-left: 3.71vw;
+    padding: 4vw 0;
+    text-align: center;
+    color: #253137;
+    font-size: 3.349vw;
+    border-bottom: 1px solid #989898;
+}
+
+.top-hour:last-of-type{
+    border: none;
+}

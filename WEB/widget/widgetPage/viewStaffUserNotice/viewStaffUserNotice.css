@@ -1,0 +1,91 @@
+/*************************** viewStaffUserNotice ********************************/
+#viewStaffUserNotice .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}
+
+.notice-first-title{
+    width: 92.58vw;
+    padding: 5vw 3.71vw 2.14vw;
+    color: #0f0f0f;
+    font-size: 3.14vw;
+    background: #f9f9f9;
+}
+
+.notice-second-title{
+    width: 92.58vw;
+    padding: 6.44vw 3.71vw 2.14vw;
+    color: #0f0f0f;
+    font-size: 3.14vw;
+    background: #f9f9f9;
+}
+
+.notice-top{
+    width: 93.4vw;
+    height: 4vw;
+    padding: 6vw 0 6vw 6.5vw;
+    background: #fff;
+}
+
+.notice-top>div{
+    float: left;
+    height: 100%;
+}
+
+.notice-top>div:nth-of-type(1){
+    width: 82vw;
+    color: #253137;
+    font-size: 3.768vw;
+}
+
+.notice-top>div:nth-of-type(2){
+    width: 8vw;
+    background: url(img/next.png) no-repeat;
+    background-size: 6vw;
+    background-position: 1vw -1vw;
+}
+
+.notice-list{
+    width: 100vw;
+    height: 10vw;
+    padding: 3.36vw 0;
+    border-bottom: 1px solid #d6d6d6;
+    background: #fff;
+}
+
+.notice-list:last-of-type{
+    border: none;
+}
+
+.notice-list>div{
+    float: left;
+    height: 100%;
+}
+
+.notice-list>div:nth-of-type(1){
+    width: 90vw;
+    text-indent: 6.5vw;
+}
+
+.notice-list>div:nth-of-type(1)>div:nth-of-type(1){
+    height: 5.5vw;
+    color: #8ea3ac;
+    font-size: 3.14vw;
+}
+
+.notice-list>div:nth-of-type(1)>div:nth-of-type(2){
+    height: 4.5vw;
+    color: #253137;
+    font-size: 3.768vw;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.notice-list>div:nth-of-type(2){
+    width: 10vw;
+    background: url(img/next.png) no-repeat;
+    background-size: 6vw;
+    background-position: 0;
+}

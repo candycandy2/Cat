@@ -174,6 +174,9 @@ $("#viewQStoreSearchList").pagecontainer({
             //selectCategory = $.trim($(this).text()); 
             selectCategory = $(this).val();
             //filter localStorage: QStoreList
+            //if no data: 
+            //$("#viewQstoreList").hide();
+            //$("#viewQstoreNone").show();
         });
 
     }
