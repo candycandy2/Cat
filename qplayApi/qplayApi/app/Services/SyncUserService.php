@@ -340,8 +340,10 @@ class SyncUserService
     {
         $resignUserRowIDArray = [];
 
-        foreach ($this->resignUserFormEHR as $data) {
-            $resignUserRowIDArray[] = $data["row_id"];
+        if (isset($this->resignUserFormEHR)) {
+            foreach ($this->resignUserFormEHR as $data) {
+                $resignUserRowIDArray[] = $data["row_id"];
+            }
         }
 
         return $resignUserRowIDArray;
