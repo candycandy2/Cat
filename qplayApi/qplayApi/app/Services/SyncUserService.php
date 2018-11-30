@@ -279,12 +279,19 @@ class SyncUserService
 
                 //Check if source_form=ehr or other
                 if ($userDataArray[$empNO]["source_from"] == "ehr") {
+
+                    if (strtoupper(trim($EHRData["company"])) == "QISDA") {
+                        $domain = "Qgroup";
+                    } else {
+                        $domain = strval(trim($EHRData["company"]));
+                    }
+
                     $updateData = [
                         "emp_name"      => strval(trim($EHRData["emp_name"])),
                         "email"         => strval(trim($EHRData["mail_account"])),
                         "ext_no"        => strval(trim($EHRData["ext_no"])),
                         "company"       => strval(trim($EHRData["company"])),
-                        "user_domain"   => strval(trim($EHRData["company"])),
+                        "user_domain"   => $domain,
                         "department"    => strval(trim($EHRData["dept_code"])),
                         "updated_at"    => $now
                     ];
