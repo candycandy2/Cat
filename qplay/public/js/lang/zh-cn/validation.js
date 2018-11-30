@@ -23,5 +23,6 @@ $.extend( $.validator.messages, {
     setAppUser:"请选择企业角色或加入用户",
     icon:"请上传 icon",
     screenshot:"请上传 screenshot",
-    appKeyFormat:"只允许小写英文字母, 不允许空白及或下底线等其他符号"
+    appKeyFormat:"只允许小写英文字母, 不允许空白及或下底线等其他符号",
+    regex: "格式错误"
 } );
