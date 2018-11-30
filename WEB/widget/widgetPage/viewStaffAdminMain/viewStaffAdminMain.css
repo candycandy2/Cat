@@ -1,0 +1,237 @@
+/*************************** viewStaffAdminMain ********************************/
+#viewStaffAdminMain .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}
+
+.admin-main-title{
+    width: 89.22vw;
+    height: 12.9vw;
+    padding: 6.5vw 5.39vw 4.3vw;
+}
+
+.admin-main-title>div{
+    float: left;
+    height: 100%;
+}
+
+.main-title-img{
+    width: 17.2vw;
+    position: relative;
+}
+
+.main-title-img>div:nth-of-type(1){
+    width: 12.9vw;
+    height: 12.9vw;
+    background: url(img/default_photo.png) no-repeat;
+    background-size: 12.9vw;
+}
+
+.main-title-img>div:nth-of-type(2){
+    width: 2.9vw;
+    height: 2.9vw;
+    position: absolute;
+    left: 10vw;
+    top: 10vw;
+    background: #FF0000;
+    border-radius: 50%;
+}
+
+.main-title-text{
+    width: 72vw;
+}
+
+.title-text-row1{
+    width: 100%;
+    height: 5.5vw;
+    padding-top: 2vw;
+}
+
+.title-text-row1>div{
+    float: left;
+    height: 100%;
+}
+
+.title-text-row1>div:nth-of-type(1){
+    width: 45%;
+    line-height: 1;
+}
+
+.title-text-row1>div:nth-of-type(1)>span:nth-of-type(1){
+    color: #253137;
+    font-size: 3.768vw;
+}
+
+.title-text-row1>div:nth-of-type(1)>span:nth-of-type(2){
+    display: inline-block;
+    width: 4vw;
+    height: 4vw;
+    background: url(img/setting.png) no-repeat;
+    background-size: 4vw;
+    vertical-align: middle;
+}
+
+.title-text-row1>div:nth-of-type(2){
+    width: 55%;
+    text-align: right;
+    color: #8fa3ad;
+    font-size: 3.55vw;
+}
+
+.title-text-row2{
+    width: 100%;
+    height: 5.9vw;
+}
+
+.title-text-row2>div{
+    float: left;
+    height: 100%;
+}
+
+.title-text-row2>div:nth-of-type(1){
+    width: 80%;
+    color: #253137;
+    font-size: 3.768vw;
+    line-height: 1.5;
+}
+
+.title-text-row2>div:nth-of-type(2){
+    width: 20%;
+    text-align: right;
+    color: #253137;
+    font-size: 4.81vw;
+}
+
+.admin-main-date{
+    width: 100vw;
+    height: 10vw;
+    border-bottom: 1px solid #d5d5d5;
+}
+
+.admin-main-date>div{
+    float: left;
+    width: 50%;
+    height: 10vw;
+}
+
+.admin-main-date>div>div:nth-of-type(1){
+    width: 100%;
+    height: 9vw;
+    text-align: center;
+    line-height: 9vw;
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.admin-main-date>div>div:nth-of-type(2){
+    width: 100%;
+    height: 1vw;
+}
+
+.active-date>div:nth-of-type(1){
+    color: #009587 !important;
+}
+
+.active-date>div:nth-of-type(2){
+    background: #009587 !important;
+}
+
+.admin-main-update{
+    width: 100vw;
+    padding: 5.3vw 0 6.5vw;
+    text-align: center;
+    color: #989898;
+    font-size: 3.14vw;
+}
+
+.admin-main-today,
+.admin-main-tomorrow{
+    width: 100vw;
+    min-height: 4vw;
+    /* position: absolute;
+    width: 100vw;
+    bottom: 0; */
+}
+
+.today-no-data,
+.tomorrow-no-data{
+    width: 100vw;
+    text-indent: 3.71vw;
+    color: #253137;
+    font-size: 3.768vw;
+}
+
+.today-list{
+    position: relative;
+    width: 100vw;
+    height: 12.4vw;
+    border-bottom: 1px solid #d5d5d5;
+}
+
+.today-item{
+    position: relative;
+    width: 100%;
+    height: 12.4vw;
+    text-indent: 3.7vw;
+    line-height: 12.4vw;
+    color: #253137;
+    font-size: 3.768vw;
+    background: #F9F9F9;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.today-handle{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40vw;
+    height: 12.4vw;
+    background: #009587;
+}
+
+.today-handle>div{
+    float: left;
+    width: 49.5%;
+    height: 100%;
+}
+
+.today-handle>div:nth-of-type(1){
+    border-right: 1px solid #fff;
+}
+
+.today-done-btn{
+    background: url(img/done.png) no-repeat center;
+    background-size: 8vw;
+}
+
+.today-tel-btn{
+    background: url(img/phone.png) no-repeat center;
+    background-size: 8vw;
+}
+
+.complete-list{
+    width: 100vw;
+    height: 12.4vw;
+    border-bottom: 1px solid #d5d5d5;
+}
+
+.complete-list>div{
+    float: left;
+    height: 100%;
+}
+
+.complete-list>div:nth-of-type(1){
+    width: 85%;
+    text-indent: 3.7vw;
+    line-height: 12.4vw;
+    color: #c4c4c4;
+    font-size: 3.768vw;
+}
+
+.complete-list>div:nth-of-type(2){
+    width: 15%;
+    background: url(img/done_gray.png) no-repeat center;
+    background-size: 5vw;
+}

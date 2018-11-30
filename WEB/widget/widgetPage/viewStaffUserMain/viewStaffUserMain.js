@@ -10,7 +10,7 @@ $("#viewStaffUserMain").pagecontainer({
 
         $("#viewStaffUserMain").one("pageshow", function(event, ui) {
             var mainHeight = getPageMainHeight('viewStaffUserMain');
-            $('#viewStaffUserMain .ui-content').css('height', mainHeight + 'px');
+            $('#viewStaffUserMain .page-main').css('height', mainHeight + 'px');
 
             $('.tea-user-photo').attr('src', serverURL + imgURL + 'default_photo.png');
             $('.tea-user-name').text(loginData['loginid']);

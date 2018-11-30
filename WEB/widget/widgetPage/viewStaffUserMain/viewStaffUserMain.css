@@ -1,5 +1,5 @@
 /*************************** viewStaffUserMain ********************************/
-#viewStaffUserMain .ui-content{
+#viewStaffUserMain .page-main{
     width: 100vw;
     padding: 0 !important;
     position: fixed;
@@ -277,7 +277,7 @@
 }
 
 .active-staff{
-    background: #00B2B3 !important;
+    background: #009587 !important;
     color: #fff !important;
 }
 
