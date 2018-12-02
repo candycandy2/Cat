@@ -215,7 +215,7 @@ class SyncUserService
                     "status"            => $status,
                     "resign"            => $resign,
                     "register_message"  => "N",
-                    "reset_pwd"         => "N",
+                    "change_pwd"         => "N",
                     "source_from"       => "ehr",
                     "created_user"      => "-1",
                     "updated_user"      => "-1",
