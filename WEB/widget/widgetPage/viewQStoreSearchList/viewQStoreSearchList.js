@@ -36,6 +36,7 @@ $("#viewQStoreSearchList").pagecontainer({
         };
 
         var qstoreListReturnArr = {}; 
+        var callbackTime = 0;
 
         function getAllCityList() {
             cityData["option"] = [];
@@ -84,6 +85,7 @@ $("#viewQStoreSearchList").pagecontainer({
         }
 
         function QueryStoreList(hasUpdateDateVal) {
+            loadingMask("show");
             var self = this;
             var successCallback = function(data) { 
                 if (data['ResultCode'] === "1") {
@@ -125,7 +127,8 @@ $("#viewQStoreSearchList").pagecontainer({
                         }
                     }
                 }
-                getDistanceFromCurrentPosition()
+                getDistanceFromCurrentPosition();
+
             };   
 
             var failCallback = function(data) {};
@@ -133,8 +136,64 @@ $("#viewQStoreSearchList").pagecontainer({
             CustomAPI("POST", true, "StoreList", successCallback, failCallback, storelistQueryData, "");
         };
 
-        function getDistanceFromCurrentPosition() {
+        function showQStoreList() {
+            var qstoreListArr = JSON.parse(localStorage.getItem("allQstoreListData"));
+            qstoreListArr = qstoreListArr.sort(function (a, b) {
+                return a.Distance < b.Distance ? 1 : -1;
+            });
+            var qStoreList = ""; 
+            for (var i in qstoreListArr) {
+                
+                qStoreList += '<div class="qstore-list font-style10" data-rowid="'
+                                + qstoreListArr[i]["MIndex"]
+                                + '">';
+                switch (qstoreListArr[i]["Category"]) {
+                    case '食':
+                        qStoreList += '<div><img src="img/eat.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        break;
+                    case '衣':
+                        qStoreList += '<div><img src="img/cloth.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        break;
+                    case '住':
+                        qStoreList += '<div><img src="img/live.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        break;
+                    case '行':
+                        qStoreList += '<div><img src="img/moving.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        break;
+                    case '育':
+                        qStoreList += '<div><img src="img/education.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        break;
+                    case '樂':
+                        qStoreList += '<div><img src="img/recreation.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        break;
+                    case '其他':
+                        qStoreList += '<div><img src="img/others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        break;
+                    default:
+                        qStoreList += '<div><img src="img/others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                }
 
+                if (qstoreListArr[i]["Distance"] == undefined) {
+                    var distanceVal = "";
+                } else {
+                    var distanceVal = qstoreListArr[i]["Distance"];
+                }
+
+                qStoreList +=  $.trim(qstoreListArr[i]["Subject"])
+                                + '</div><div>'
+                                + qstoreListArr[i]["Address"]
+                                + '</div><div>電話：'
+                                + qstoreListArr[i]["Phone"]
+                                + '</div></div><div><div>'
+                                + distanceVal
+                                + '</div></div></div>'
+                                + '<div class="qstore-more"><img src="img/btn_more.png" class="store-more-img"></div><div class="activity-line"></div>';
+            }
+            $("#viewQstoreList").empty().append(qStoreList).children("div:last-child").remove(); 
+            loadingMask("hide");
+        }
+
+        function getDistanceFromCurrentPosition() {
                 if (navigator.geolocation) {
                     console.log("---------1");
 
@@ -156,14 +215,13 @@ $("#viewQStoreSearchList").pagecontainer({
                         
                         //Google API: Server-side requests using mode=transit or using the optional parameter departure_time when mode=driving are limited to 100 elements per request.
                         //Check the length
-                        var numToRunDistanceMatrix = qstoreListFromLocalStorage.length/100;
+                        /*var numToRunDistanceMatrix = qstoreListFromLocalStorage.length/100;
                         //可否被100整除
                         if (Math.round(numToRunDistanceMatrix) === numToRunDistanceMatrix) {
                             numToRunDistanceMatrix = numToRunDistanceMatrix;
                         } else {
                             numToRunDistanceMatrix = parseInt(numToRunDistanceMatrix)+1;
-                        }
-
+                        }*/
 
                         var i = 0;
                         for (var j=1; j < 5; j++) {  
@@ -187,7 +245,7 @@ $("#viewQStoreSearchList").pagecontainer({
                             service.getDistanceMatrix({
                                 origins: [myLatLng],
                                 destinations: allQStoreLatLng,
-                                travelMode: 'DRIVING',
+                                travelMode: 'WALKING',
                                 unitSystem: google.maps.UnitSystem.METRIC,
                                 avoidHighways: false,
                                 avoidTolls: false
@@ -199,14 +257,27 @@ $("#viewQStoreSearchList").pagecontainer({
                                     for (var j=0; j<response.rows[i].elements.length; j++) {
                                         //console.log("從 '" + response.originAddresses[i] + "' 往 '" + response.destinationAddresses[j] + "'");
                                         //console.log("--距離: " + response.rows[i].elements[j].distance.text);
-                                        var distance = response.rows[i].elements[j].distance.text.replace(" 公里", "km");
+                                        if (response.rows[i].elements[j].distance == undefined) {
+                                            var distance = "";
+                                        } else {
+                                            var distance = response.rows[i].elements[j].distance.text.replace(" 公里", "km");
+                                        }
                                         allQStoreDistance.push(distance);
+                                        callbackTime++;
                                     }
                                 }
                                 console.log(status);
+                                if (callbackTime == 100) {
+                                    for (var k=0; k<100; k++) {
+                                        qstoreListFromLocalStorage[k].Distance = allQStoreDistance[k];
+                                    }
+                                    localStorage.setItem("allQstoreListData", JSON.stringify(qstoreListFromLocalStorage));
+                                    showQStoreList();
+                                    callbackTime = 0;
+                                }
                             }
                         }
-                     
+
                     };
 
                     window.locationError = function(error) {
@@ -243,7 +314,6 @@ $("#viewQStoreSearchList").pagecontainer({
                 var today = formatDate();
                 //第一次進入，UpdateDate存到local端
                 localStorage.setItem("reneweddate", JSON.stringify(today));
-                loadingMask("show");
                 allQStoreList = [];
                 for (var i = 1; i < categoryList.length; i++) {
                     storelistQueryData = '<LayoutHeader><Category>'+ categoryList[i] +'</Category><UpdateDate>'+ updateDate +'</UpdateDate></LayoutHeader>'; 
