@@ -26,22 +26,24 @@
             <div class="admin-main-title">
                 <div class="main-title-img">
                     <div></div>
-                    <div></div>
+                    <div class="main-title-status"></div>
                 </div>
                 <div class="main-title-text">
                     <div class="title-text-row1">
                         <div>
-                            <span>總機服務中</span>&nbsp;
-                            <span></span>
+                            <span>總機</span><span class="title-text-status">暫停服務</span>&nbsp;
+                            <span id="adminSettingBtn"></span>
                         </div>
                         <div>11月30日星期五</div>
                     </div>
                     <div class="title-text-row2">
-                        <div>14:00-14:30暫停服務</div>
+                        <div class="title-text-now"></div>
                         <div>總機</div>
                     </div>
                 </div>
             </div>
+            <!--dropdownlist:hidden-->
+            <div id="adminSettingHidden"></div>
             <div class="admin-main-date">
                 <div class="active-date" data-type="today">
                     <div>本日</div>
@@ -108,6 +110,34 @@
                     </ul>
                 </div>
             </div>
+        </div>
+    </div>
+    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup adminStatus">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon btn-cancel'>
+                        <img src="img/component/close.png">
+                    </span>
+                </div>
+                <div class="font-style3 header-title">
+                    <input type="text" maxlength="12" placeholder="總機公告（限12字）">
+                </div>
+            </div>
+            <div class="main">
+                <!-- <p class="main-paragraph font-style11 font-color3"></p> -->
+                <ul>
+                    <li>服務中</li>
+                    <li>忙碌中</li>
+                    <li>暫停服務</li>
+                </ul>
+            </div>
+            <!-- <div class="footer">
+                <div class="btn-one font-style1 btnArea">
+                    <div class="btn-cancel">OK</div>
+                </div>
+            </div> -->
         </div>
     </div>
 </div>

@@ -29,10 +29,21 @@
     width: 2.9vw;
     height: 2.9vw;
     position: absolute;
-    right: 4.3vw;
-    bottom: 0;
-    background: #32CD32;/*#FF0000;*/
+    left: 9.5vw;
+    top: 9.5vw;
+    background: #FFF;
+    border: 1px solid #D5D5D5;
     border-radius: 50%;
+}
+
+.active-status-true {
+    background: #32CD32 !important;
+    border: 1px solid #32CD32 !important;
+}
+
+.active-status-false {
+    background: #FF0000 !important;
+    border: 1px solid #FF0000 !important;
 }
 
 .add-tea-title>div:nth-of-type(2){

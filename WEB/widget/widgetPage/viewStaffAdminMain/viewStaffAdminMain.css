@@ -32,10 +32,21 @@
     width: 2.9vw;
     height: 2.9vw;
     position: absolute;
-    left: 10vw;
-    top: 10vw;
-    background: #FF0000;
+    left: 9.5vw;
+    top: 9.5vw;
+    background: #FFF;
+    border: 1px solid #D5D5D5;
     border-radius: 50%;
+}
+
+.active-status-true {
+    background: #32CD32 !important;
+    border: 1px solid #32CD32 !important;
+}
+
+.active-status-false {
+    background: #FF0000 !important;
+    border: 1px solid #FF0000 !important;
 }
 
 .main-title-text{
@@ -58,12 +69,13 @@
     line-height: 1;
 }
 
-.title-text-row1>div:nth-of-type(1)>span:nth-of-type(1){
+.title-text-row1>div:nth-of-type(1)>span:nth-of-type(1),
+.title-text-row1>div:nth-of-type(1)>span:nth-of-type(2){
     color: #253137;
     font-size: 3.768vw;
 }
 
-.title-text-row1>div:nth-of-type(1)>span:nth-of-type(2){
+.title-text-row1>div:nth-of-type(1)>span:nth-of-type(3){
     display: inline-block;
     width: 4vw;
     height: 4vw;
@@ -234,4 +246,37 @@
     width: 15%;
     background: url(img/done_gray.png) no-repeat center;
     background-size: 5vw;
+}
+
+.adminStatus .header-title-main{
+    text-align: right;
+}
+
+.adminStatus input[type="text"]{
+    -webkit-appearance: none;
+    appearance: none;
+    background: #fff;
+}
+
+#adminSettingHidden{
+    display: none;
+}
+
+#adminSettingPopup-option .header.typeB{
+    height: 18vw;
+}
+
+#adminSettingPopup-option .header.typeB .title{
+    height: 15vw;
+    top: -5vw;
+}
+
+#adminSettingPopup-option .close{
+    top: -5vw;
+}
+
+#adminSettingPopup-option input[type="text"]{
+    width: 93%;
+    height: 8vw;
+    padding: 0 2vw;
 }
