@@ -28,21 +28,35 @@ var carouselWidget = {
                         var name = "portal_" + (j + 1);
                         if (data[j].definition != "") {
 
-                            contentItem.on('click', '.' + name, function() {
+                            contentItem.on('click', '.' + name, function(obj) {
 
-                                // if (data[1].comment != "") {
-                                //     window.sessionStorage.setItem(data[1].comment, 'Y');
-                                // }
-                                // checkWidgetPage(data[1].definition, pageVisitedList);
+                                var carouselLinkJSON = JSON.parse(window.localStorage.getItem('carouselLink'));
+                                //alert(obj.currentTarget.parentElement.id);
+                                var index = obj.currentTarget.parentElement.id;
+                                if (carouselLinkJSON !== null && carouselLinkJSON.content[index].comment !== "") {
+                                    if (carouselLinkJSON.content[index].comment != "") {
+                                        window.sessionStorage.setItem(carouselLinkJSON.content[index].comment, 'Y');
+                                    }
+                                    checkWidgetPage(carouselLinkJSON.content[index].definition, pageVisitedList);
+                                }
                             });
                         }
                     }
+
+
+                    var jsonData = {};
+                    var date = new Date();
+                    jsonData = {
+                        lastUpdateTime: date.setDate(date.getDate() - 1),
+                        content: data
+                    };
+                    window.localStorage.setItem('carouselLink', JSON.stringify(jsonData));
                 });
 
                 var content = '';
 
                 for (var i = 0; i < carouselLength; i++) {
-                    content += '<li class="sw-slide"><img class="portal_' + (i + 1) + '" src="' + serverURL + '/widget/carousel/img/portal_' + (i + 1) + '.jpg"/></li>';
+                    content += '<li id= "' + i + '" class="sw-slide"><img class="portal_' + (i + 1) + '" src="' + serverURL + '/widget/carousel/img/portal_' + (i + 1) + '.jpg"/></li>';
                 }
 
                 $('.swipslider ul').append(content);
