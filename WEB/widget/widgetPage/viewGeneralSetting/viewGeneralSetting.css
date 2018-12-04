@@ -6,7 +6,7 @@
 .default-setting {
     width: 100vw;
     height: 100vh;
-    position: fixed;
+    /* position: fixed; */
     background: #EEF2F5;
 }
 

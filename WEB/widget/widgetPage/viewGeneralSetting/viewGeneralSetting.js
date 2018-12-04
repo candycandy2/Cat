@@ -40,6 +40,9 @@ $("#viewGeneralSetting").pagecontainer({
             $("#defaultList").on("sortstop", function (event, ui) {
                 changeWidgetOrderDirty = 'Y';
             });
+
+            //$("#defaultList").sortable('disable'); //禁用
+            //$("#defaultList").sortable('enable'); //啓用
         });
 
         $("#viewGeneralSetting").on("pageshow", function (event, ui) {

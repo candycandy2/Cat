@@ -1,0 +1,34 @@
+/*************************** viewStaffAdminFeedback ********************************/
+#viewStaffAdminFeedback .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}
+
+.admin-feedback-list{
+    width: 86.96vw;
+    height: 14vw;
+    padding: 3.2vw 6.52vw;
+    border-bottom: 1px solid #D5D5D5; 
+}
+
+.admin-feedback-list>div:nth-of-type(1){
+    width: 100%;
+    height: 5vw;
+    color: #8EA3AC;
+    font-size: 3.14vw;
+}
+
+.admin-feedback-list>div:nth-of-type(2){
+    width: 100%;
+    height: 9vw;
+    color: #253137;
+    font-size: 3.768vw;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.unread{
+    font-weight: bold;
+}
