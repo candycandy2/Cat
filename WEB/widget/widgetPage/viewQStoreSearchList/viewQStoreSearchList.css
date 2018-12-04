@@ -42,6 +42,15 @@
     display: none;
 }
 
+.qstore-list-scroll {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
 .qstore-list {
     height: 14.5vw;
     padding: 6vw 3.71vw;
