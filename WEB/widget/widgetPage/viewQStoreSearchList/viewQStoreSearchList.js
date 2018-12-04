@@ -1,14 +1,18 @@
 var categoryList = [ "所有類別", "食",  "衣", "住", "行", "育", "樂", "其他"];
 var cityList = [ "所有縣市", "基隆市",  "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市" ,"嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
-var selectCategory = ""; //选择的类别，可能为“所有类别”
+var selectCategory, selectCity = ""; //选择的类别，可能为“所有类别”
 var updateDate = "";
 var storelistQueryData = "";
 var allQStoreList = [];
 var allQStoreAddress = [];
 var allQStoreLatLng = [];
 var allQStoreDistance = [];
+var filterQStoreListByCategory = [];
+var filterQStoreListByCity = [];
 var fristCallStoreList = true;
 var hasUpdateDateVal = false;
+var activePageListID;
+var scrollClassName;
 
 $("#viewQStoreSearchList").pagecontainer({
     create: function (event, ui) {
@@ -99,10 +103,10 @@ $("#viewQStoreSearchList").pagecontainer({
                             allQStoreList[0].push(qstoreListReturnArr[i]);
                         }
                     }
-                    loadingMask("hide");
+                    //loadingMask("hide");
                 } else if (data['ResultCode'] === "044901") {
                     qstoreListReturnArr = data['Content'];
-                    loadingMask("hide");
+                    //loadingMask("hide");
                 } 
                 if (!hasUpdateDateVal) {
                     localStorage.setItem("allQstoreListData", JSON.stringify(allQStoreList[0]));
@@ -136,8 +140,7 @@ $("#viewQStoreSearchList").pagecontainer({
             CustomAPI("POST", true, "StoreList", successCallback, failCallback, storelistQueryData, "");
         };
 
-        function showQStoreList() {
-            var qstoreListArr = JSON.parse(localStorage.getItem("allQstoreListData"));
+        function showQStoreList(qstoreListArr) {
             qstoreListArr = qstoreListArr.sort(function (a, b) {
                 return a.Distance < b.Distance ? 1 : -1;
             });
@@ -190,7 +193,28 @@ $("#viewQStoreSearchList").pagecontainer({
                                 + '<div class="qstore-more"><img src="img/btn_more.png" class="store-more-img"></div><div class="activity-line"></div>';
             }
             $("#viewQstoreList").empty().append(qStoreList).children("div:last-child").remove(); 
+            $("#viewQstoreNone").hide();
+            $("#viewQstoreList").show();
+            //2018/12/04
+            /*scrollHeightOnePage(activePageListID, scrollClassName);
+            $("#" + activePageListID + ">.page-header").css({
+                'position': 'fixed'
+            });*/
             loadingMask("hide");
+        }
+
+        function scrollHeightOnePage(viewName, className) {
+            var headHeight = $('#'+ viewName +' .page-header').height();
+            var fixHeight = $('.family-edit-btn').height();
+            var iconHeight = ($('.family-add-img').height())*2;
+            var contentHeight = $('#familyList').height();
+            var totalHeight;
+            if (device.platform === "iOS") {
+                totalHeight = (headHeight + fixHeight + contentHeight + iconHeight + iOSFixedTopPX()).toString();
+            } else {
+                totalHeight = (headHeight + fixHeight + contentHeight + iconHeight).toString();
+            }
+            $('.'+ className +' > div').css('height', totalHeight + 'px'); 
         }
 
         function getDistanceFromCurrentPosition() {
@@ -211,7 +235,6 @@ $("#viewQStoreSearchList").pagecontainer({
 
                         //Crate New destinations array from QStoreList in localStorage
                         var qstoreListFromLocalStorage =  JSON.parse(localStorage.getItem("allQstoreListData"));
-
                         
                         //Google API: Server-side requests using mode=transit or using the optional parameter departure_time when mode=driving are limited to 100 elements per request.
                         //Check the length
@@ -272,7 +295,7 @@ $("#viewQStoreSearchList").pagecontainer({
                                         qstoreListFromLocalStorage[k].Distance = allQStoreDistance[k];
                                     }
                                     localStorage.setItem("allQstoreListData", JSON.stringify(qstoreListFromLocalStorage));
-                                    showQStoreList();
+                                    showQStoreList(JSON.parse(localStorage.getItem("allQstoreListData")));
                                     callbackTime = 0;
                                 }
                             }
@@ -284,7 +307,12 @@ $("#viewQStoreSearchList").pagecontainer({
                         //return black distance value
                         //console.log("------error");
                         console.log(error);
-                        alert("------error");
+                        var qstoreListFromLocalStorage =  JSON.parse(localStorage.getItem("allQstoreListData"));
+                        for (var i in qstoreListFromLocalStorage) {
+                            qstoreListFromLocalStorage[i].Distance = ""; 
+                        }
+                        localStorage.setItem("allQstoreListData", JSON.stringify(qstoreListFromLocalStorage));
+                        showQStoreList(JSON.parse(localStorage.getItem("allQstoreListData")));
                     };
 
                     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {       
@@ -321,6 +349,9 @@ $("#viewQStoreSearchList").pagecontainer({
                     QueryStoreList(hasUpdateDateVal);    
                 }
             }
+            //2018/12/04
+            //activePageListID = visitedPageList[visitedPageList.length - 1];   
+            //scrollClassName = 'qstore-list-scroll';
         });
 
         $("#viewQStoreSearchList").on("pageshow", function (event, ui) {
@@ -334,14 +365,63 @@ $("#viewQStoreSearchList").pagecontainer({
 
         /********************************** dom event *************************************/
 
+        //選擇城市——select change
+        $(document).on("change", "#city-popup", function() {
+            loadingMask("show");
+            selectCity = $.trim($(this).text()); 
+            var qstoreListArr = JSON.parse(localStorage.getItem("allQstoreListData"));
+            filterQStoreListByCity = [];
+            //先檢查類別是否有被選取
+            if (filterQStoreListByCategory.length == 0) {
+                filterQStoreListByCity = qstoreListArr.filter(function(item, index, array){
+                    if (item.County === selectCity) {
+                        return item;
+                    }
+                });
+            } else {
+                filterQStoreListByCity = filterQStoreListByCategory.filter(function(item, index, array){
+                    if (item.County === selectCity) {
+                        return item;
+                    }
+                });
+            }
+
+            if (filterQStoreListByCity.length == 0) {
+                $("#viewQstoreList").hide();
+                $("#viewQstoreNone").show();
+                loadingMask("hide");
+            } else {
+                showQStoreList(filterQStoreListByCity);
+            }
+
+        });
+
         //選擇類別——select change
-        $(document).on("change", "#categroy-popup", function() {
-            //selectCategory = $.trim($(this).text()); 
-            selectCategory = $(this).val();
-            //filter localStorage: QStoreList
-            //if no data: 
-            //$("#viewQstoreList").hide();
-            //$("#viewQstoreNone").show();
+        $(document).on("change", "#category-popup", function() {
+            loadingMask("show");
+            selectCategory = $.trim($(this).text()); 
+            var qstoreListArr = JSON.parse(localStorage.getItem("allQstoreListData"));
+            filterQStoreListByCategory = [];
+            if (filterQStoreListByCity.length == 0) {
+                filterQStoreListByCategory = qstoreListArr.filter(function(item, index, array){
+                    if (item.Category === selectCategory) {
+                        return item;
+                    }
+                });
+            } else {
+                filterQStoreListByCategory = filterQStoreListByCity.filter(function(item, index, array){
+                    if (item.Category === selectCategory) {
+                        return item;
+                    }
+                });
+            }
+            if (filterQStoreListByCategory.length == 0) {
+                $("#viewQstoreList").hide();
+                $("#viewQstoreNone").show();
+                loadingMask("hide");
+            } else {
+                showQStoreList(filterQStoreListByCategory);
+            }
         });
 
     }
