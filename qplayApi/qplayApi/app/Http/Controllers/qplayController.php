@@ -2609,8 +2609,11 @@ SQL;
                                     ]);
                                 $extraParam = $newMessageSendId;
                             }else{
+                                //20181205 Darren - hide for MongoDB
+                                /*
                                 $newMessageSendId = $this->appPushService
                                 ->newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url,  $extraParam, $companyStr);
+                                */
                             }
                             $countFlag = 0;
                             if($need_push == "Y") {
@@ -2638,8 +2641,11 @@ SQL;
                                             'updated_at'=>$now
                                         ]);
                                     }else{
+                                        //20181205 Darren - hide for MongoDB
+                                        /*
                                         $this->appPushService
                                              ->updatePushMessageStatus($sourceUserInfo, $newMessageSendId, $result);
+                                        */
                                     }
                                     \DB::commit();
                                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
@@ -2732,8 +2738,11 @@ SQL;
                                     ]);
                                 $extraParam = $newMessageSendId;
                             }else{
+                                //20181205 Darren - hide for MongoDB
+                                /*
                                 $newMessageSendId = $this->appPushService
                                 ->newAppPushMessage($sourceUserInfo, $message_title, $message_text, $message_html, $message_url,  $extraParam);
+                                */
                             }
                             $hasSentUserIdList = array();
                             $real_push_user_list = array();
@@ -2856,8 +2865,11 @@ SQL;
                                             'updated_at'=>$now
                                         ]);
                                     }else{
+                                        //20181205 Darren - hide for MongoDB
+                                        /*
                                         $this->appPushService
                                              ->updatePushMessageStatus($sourceUserInfo, $newMessageSendId, $result);
+                                        */
                                     }
                                     \DB::commit();
                                     $result = ['result_code'=>ResultCode::_1_reponseSuccessful,
