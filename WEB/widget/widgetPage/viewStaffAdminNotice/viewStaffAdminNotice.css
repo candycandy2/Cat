@@ -1,5 +1,5 @@
-/*************************** viewStaffUserNotice ********************************/
-#viewStaffUserNotice .page-main{
+/*************************** viewStaffAdminNotice ********************************/
+#viewStaffAdminNotice .page-main{
     width: 100vw;
     padding: 0 !important;
     position: fixed;

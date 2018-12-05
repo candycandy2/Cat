@@ -11,15 +11,15 @@ var staffWidget = {
                 var teaImg = $('<img>').attr('src', serverURL + '/widget/staff/img/widget_tea.png');
                 $('.staff-icon').html('').append(teaImg);
                 var moreImg = $('<img>').attr('src', serverURL + '/widget/staff/img/more_green.png');
-                $('.staff-more').html('').append(moreImg);
+                $('.staff-user-more').html('').append(moreImg);
                 //3.update
                 $('.staff-update-time').text(updateTime());
 
             }, "html");
 
             //点击更多，跳转到快速叫茶
-            contentItem.on('click', '.staff-more', function() {
-                var targetPage = $('.active-menu').data('view');
+            contentItem.on('click', '.staff-user-more', function() {
+                var targetPage = $('.userStaffMenu .active-menu').data('view');
                 checkWidgetPage(targetPage, pageVisitedList);
             });
 
@@ -29,50 +29,50 @@ var staffWidget = {
 
                 //ios top
                 if(device.platform === "iOS") {
-                    $('.staff-menu-mask').css('top', iOSFixedTopPX().toString() + 'px');
+                    $('.userStaffMenu').css('top', iOSFixedTopPX().toString() + 'px');
                 }
 
             }, 'html');
 
             //调出菜单(如果需要在其他頁面使用，必須添加樣式staff-menu-btn)
             $(document).on('click', '.staff-menu-btn', function() {
-                $('.staff-menu-mask').show();
-                $('.staff-menu-main').animate({left: '40vw'}, 300);
+                $('.userStaffMenu').show();
+                $('.userStaffMenu .staff-menu-main').animate({left: '40vw'}, 300);
             });
 
             //右滑隐藏菜单
-            $(document).on('swiperight', '.staff-menu-mask', function() {
-                $('.staff-menu-main').animate({left: '100vw'}, 300, function(){
-                    $('.staff-menu-mask').hide();
+            $(document).on('swiperight', '.userStaffMenu', function() {
+                $('.userStaffMenu .staff-menu-main').animate({left: '100vw'}, 300, function(){
+                    $('.userStaffMenu').hide();
                 });
             });
 
             //点击非菜单区域隐藏菜单
-            $(document).on('tap', '.staff-menu-mask', function(e) {
+            $(document).on('tap', '.userStaffMenu', function(e) {
                 if(e.target != this) {
                     return;
                 } else {
-                    $('.staff-menu-main').animate({left: '100vw'}, 300, function(){
-                        $('.staff-menu-mask').hide();
+                    $('.userStaffMenu .staff-menu-main').animate({left: '100vw'}, 300, function(){
+                        $('.userStaffMenu').hide();
                     });
                 }
             });
 
             //選擇菜單
-            $(document).on('tap', '.staff-menu-list li', function(e) {
+            $(document).on('tap', '.userStaffMenu .staff-menu-list li', function(e) {
                 //1. get active page & target page
                 var activePage = $.mobile.pageContainer.pagecontainer("getActivePage")[0].id;
                 var targetPage = $(this).data('view');
                 if(activePage != targetPage) {
                     //2. remove class
-                    $('.staff-menu-list').find('.active-menu').removeClass('active-menu');
+                    $('.userStaffMenu .staff-menu-list').find('.active-menu').removeClass('active-menu');
                     //3. add class
                     $(this).addClass('active-menu');
                 }
 
                 //4. close panel
-                $('.staff-menu-main').animate({left: '100vw'}, 300, function(){
-                    $('.staff-menu-mask').hide();
+                $('.userStaffMenu .staff-menu-main').animate({left: '100vw'}, 300, function(){
+                    $('.userStaffMenu').hide();
                 });
 
                 //5. change page
@@ -97,20 +97,20 @@ var staffWidget = {
         }
 
         function staffBackKey() {
-            //1. panel
-            var panelShow = $('.staff-menu-mask').css('display') == 'block' ? true : false;
+            //1. close panel
+            var panelShow = $('.userStaffMenu').css('display') == 'block' ? true : false;
             if(panelShow) {
-                $('.staff-menu-main').animate({left: '100vw'}, 300, function(){
-                    $('.staff-menu-mask').hide();
+                $('.userStaffMenu .staff-menu-main').animate({left: '100vw'}, 300, function(){
+                    $('.userStaffMenu').hide();
                 });
             }
 
-            //2. back page
+            //2. change menu class
             var curPage = pageVisitedList[pageVisitedList.length - 1];
-            $.each($('.staff-menu-list li'), function(index, item) {
+            $.each($('.userStaffMenu .staff-menu-list li'), function(index, item) {
                 if(curPage == $(item).data('view')) {
-                    $('.staff-menu-list').find('.active-menu').removeClass('active-menu');
-                    $('.staff-menu-list li[data-view="' + curPage + '"]').addClass('active-menu');
+                    $('.userStaffMenu .staff-menu-list').find('.active-menu').removeClass('active-menu');
+                    $('.userStaffMenu .staff-menu-list li[data-view="' + curPage + '"]').addClass('active-menu');
                 }
             })
         }

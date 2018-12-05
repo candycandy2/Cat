@@ -1,0 +1,108 @@
+/*************************** viewStaffAdminAdd ********************************/
+#viewStaffAdminAdd .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+}
+
+.add-notice-title{
+    width: 92.58vw;
+    padding: 5vw 3.71vw 0;
+}
+
+.add-notice-title>div:nth-of-type(1){
+    height: 6vw;
+    color: #0f0f0f;
+    font-size: 3.14vw;
+}
+
+.add-notice-title>div:nth-of-type(2){
+    height: 15vw;
+}
+
+.add-notice-title>div:nth-of-type(2) textarea{
+    width: 92.58vw;
+    height: 15vw !important;
+    max-width: 92.58vw;
+    max-height: 15vw;
+    resize: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    outline: none;
+    box-shadow: 0px 0px 0px rgba(0,0,0,0);
+    margin: 0;
+}
+
+.add-notice-main{
+    width: 92.58vw;
+    padding: 5vw 3.71vw 0;
+}
+
+.add-notice-main>div:nth-of-type(1){
+    height: 6vw;
+    color: #0f0f0f;
+    font-size: 3.14vw;
+}
+
+.add-notice-main>div:nth-of-type(2){
+    height: 35vw;
+}
+
+.add-notice-main>div:nth-of-type(2) textarea{
+    width: 92.58vw;
+    height: 35vw !important;
+    max-width: 92.58vw;
+    max-height: 35vw;
+    resize: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    outline: none;
+    box-shadow: 0px 0px 0px rgba(0,0,0,0);
+    margin: 0;
+}
+
+.add-notice-upload{
+    width: 92.58vw;
+    padding: 5vw 3.71vw 0;
+}
+
+.add-notice-upload>div:nth-of-type(1){
+    height: 6vw;
+    color: #0f0f0f;
+    font-size: 3.14vw;
+}
+
+.add-notice-upload>div:nth-of-type(2){
+    height: 4.4vw;
+    font-size: 4.18vw;
+}
+
+.upload-icon{
+    display: inline-block;
+    width: 4.4vw;
+    height: 4.4vw;
+    background: url(img/upload.png) no-repeat;
+    background-size: 4.4vw;
+    vertical-align: middle;
+}
+
+.add-notice-img{
+    width: 92.58vw;
+    height: 15vw;
+    padding: 5vw 3.71vw 0;
+}
+
+.add-notice-btn{
+    position: absolute;
+    width: 35.5vw;
+    height: 10.5vw;
+    bottom: 5vw;
+    left: 32.25vw;
+    text-align: center;
+    line-height: 10.5vw;
+    background: #d5d5d5;
+    color: #979797;
+    font-size: 4.18vw;
+}

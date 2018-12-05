@@ -1,13 +1,10 @@
 /***************************** viewGeneralSetting ********************************/
-#viewGeneralSetting .ui-content {
-    padding: 0 !important;
-}
-
-.default-setting {
+#viewGeneralSetting .page-main {
     width: 100vw;
-    height: 100vh;
-    /* position: fixed; */
-    background: #EEF2F5;
+    padding: 0 !important;
+    position: fixed;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .default-setting > div {

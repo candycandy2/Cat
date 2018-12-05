@@ -18,7 +18,6 @@ $("#viewGeneralSetting").pagecontainer({
             }
 
             $('#defaultList').html('').append(content);
-
         }
 
 
@@ -36,6 +35,9 @@ $("#viewGeneralSetting").pagecontainer({
 
             //3. sort listview
             $("#defaultList").sortable();
+            $("#defaultList").sortable({
+                delay: 1000
+            });
             $("#defaultList").disableSelection();
             $("#defaultList").on("sortstop", function (event, ui) {
                 changeWidgetOrderDirty = 'Y';
@@ -43,6 +45,10 @@ $("#viewGeneralSetting").pagecontainer({
 
             //$("#defaultList").sortable('disable'); //禁用
             //$("#defaultList").sortable('enable'); //啓用
+
+            //4. set main height
+            var mainHeight = getPageMainHeight('viewGeneralSetting');
+            $('#viewGeneralSetting .page-main').css('height', mainHeight + 'px');
         });
 
         $("#viewGeneralSetting").on("pageshow", function (event, ui) {
