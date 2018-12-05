@@ -1,6 +1,7 @@
 var categoryList = [ "所有類別", "食",  "衣", "住", "行", "育", "樂", "其他"];
 var cityList = [ "所有縣市", "基隆市",  "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市" ,"嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
-var selectCategory, selectCity = ""; //选择的类别，可能为“所有类别”
+var selectCategory= ""; 
+var selectCity = ""; 
 var updateDate = "";
 var storelistQueryData = "";
 var allQStoreList = [];
@@ -131,8 +132,8 @@ $("#viewQStoreSearchList").pagecontainer({
                         }
                     }
                 }
-                getDistanceFromCurrentPosition();
-
+                //getDistanceFromCurrentPosition();
+                showQStoreList(JSON.parse(localStorage.getItem("allQstoreListData")), JSON.parse(localStorage.getItem("allQstoreListData")).length);
             };   
 
             var failCallback = function(data) {};
@@ -140,13 +141,12 @@ $("#viewQStoreSearchList").pagecontainer({
             CustomAPI("POST", true, "StoreList", successCallback, failCallback, storelistQueryData, "");
         };
 
-        function showQStoreList(qstoreListArr) {
+        function showQStoreList(qstoreListArr, qstoreListLength) {
             qstoreListArr = qstoreListArr.sort(function (a, b) {
                 return a.Distance < b.Distance ? 1 : -1;
             });
             var qStoreList = ""; 
             for (var i in qstoreListArr) {
-                
                 qStoreList += '<div class="qstore-list font-style10" data-rowid="'
                                 + qstoreListArr[i]["MIndex"]
                                 + '">';
@@ -196,23 +196,24 @@ $("#viewQStoreSearchList").pagecontainer({
             $("#viewQstoreNone").hide();
             $("#viewQstoreList").show();
             //2018/12/04
-            /*scrollHeightOnePage(activePageListID, scrollClassName);
-            $("#" + activePageListID + ">.page-header").css({
+            scrollHeightOnePage(activePageListID, scrollClassName, qstoreListLength);
+            /*$("#" + activePageListID + ">.page-header").css({
                 'position': 'fixed'
             });*/
             loadingMask("hide");
         }
 
-        function scrollHeightOnePage(viewName, className) {
-            var headHeight = $('#'+ viewName +' .page-header').height();
-            var fixHeight = $('.family-edit-btn').height();
-            var iconHeight = ($('.family-add-img').height())*2;
-            var contentHeight = $('#familyList').height();
+        function scrollHeightOnePage(viewName, className, listLength) {
+            //var headHeight = $('#'+ viewName +' .page-header').height();
+            //var fixHeight = $('.choose-by-dll').height();
+            //var contentHeight = $('#viewQstoreList').height();
             var totalHeight;
             if (device.platform === "iOS") {
-                totalHeight = (headHeight + fixHeight + contentHeight + iconHeight + iOSFixedTopPX()).toString();
+                //totalHeight = (headHeight + fixHeight + contentHeight + iOSFixedTopPX()).toString();
+                totalHeight = ( 118.75 * listLength + iOSFixedTopPX()).toString();
             } else {
-                totalHeight = (headHeight + fixHeight + contentHeight + iconHeight).toString();
+                //totalHeight = (headHeight + fixHeight + contentHeight).toString();
+                totalHeight = ( 118.75 * listLength).toString();
             }
             $('.'+ className +' > div').css('height', totalHeight + 'px'); 
         }
@@ -295,7 +296,7 @@ $("#viewQStoreSearchList").pagecontainer({
                                         qstoreListFromLocalStorage[k].Distance = allQStoreDistance[k];
                                     }
                                     localStorage.setItem("allQstoreListData", JSON.stringify(qstoreListFromLocalStorage));
-                                    showQStoreList(JSON.parse(localStorage.getItem("allQstoreListData")));
+                                    showQStoreList(JSON.parse(localStorage.getItem("allQstoreListData")), JSON.parse(localStorage.getItem("allQstoreListData")).length);
                                     callbackTime = 0;
                                 }
                             }
@@ -312,7 +313,7 @@ $("#viewQStoreSearchList").pagecontainer({
                             qstoreListFromLocalStorage[i].Distance = ""; 
                         }
                         localStorage.setItem("allQstoreListData", JSON.stringify(qstoreListFromLocalStorage));
-                        showQStoreList(JSON.parse(localStorage.getItem("allQstoreListData")));
+                        showQStoreList(JSON.parse(localStorage.getItem("allQstoreListData")), JSON.parse(localStorage.getItem("allQstoreListData")).length);
                     };
 
                     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {       
@@ -349,9 +350,8 @@ $("#viewQStoreSearchList").pagecontainer({
                     QueryStoreList(hasUpdateDateVal);    
                 }
             }
-            //2018/12/04
-            //activePageListID = visitedPageList[visitedPageList.length - 1];   
-            //scrollClassName = 'qstore-list-scroll';
+            activePageListID = 'viewQStoreSearchList';   
+            scrollClassName = 'qstore-list-scroll';
         });
 
         $("#viewQStoreSearchList").on("pageshow", function (event, ui) {
@@ -371,19 +371,34 @@ $("#viewQStoreSearchList").pagecontainer({
             selectCity = $.trim($(this).text()); 
             var qstoreListArr = JSON.parse(localStorage.getItem("allQstoreListData"));
             filterQStoreListByCity = [];
-            //先檢查類別是否有被選取
-            if (filterQStoreListByCategory.length == 0) {
-                filterQStoreListByCity = qstoreListArr.filter(function(item, index, array){
-                    if (item.County === selectCity) {
-                        return item;
-                    }
-                });
+            //是否選擇所有縣市
+            if (selectCity == "所有縣市") {
+                //先檢查類別是否有被選取
+                if (selectCategory == "所有類別" || selectCategory == "") {
+                    filterQStoreListByCity = qstoreListArr;
+                } else {
+                    filterQStoreListByCity = qstoreListArr.filter(function(item, index, array){
+                        if (item.Category === selectCategory) {
+                            return item;
+                        }
+                    });
+                }
             } else {
-                filterQStoreListByCity = filterQStoreListByCategory.filter(function(item, index, array){
-                    if (item.County === selectCity) {
-                        return item;
-                    }
-                });
+                if (selectCategory == "所有類別" || selectCategory == "") {
+                    filterQStoreListByCity = qstoreListArr.filter(function(item, index, array){
+                        if (item.County === selectCity) {
+                            return item;
+                        }
+                    });
+                } else {
+                    filterQStoreListByCity = qstoreListArr.filter(function(item, index, array){
+                        if (item.County === selectCity) {
+                            if (item.Category === selectCategory) {
+                                return item;
+                            }
+                        }
+                    });
+                }
             }
 
             if (filterQStoreListByCity.length == 0) {
@@ -391,7 +406,7 @@ $("#viewQStoreSearchList").pagecontainer({
                 $("#viewQstoreNone").show();
                 loadingMask("hide");
             } else {
-                showQStoreList(filterQStoreListByCity);
+                showQStoreList(filterQStoreListByCity, filterQStoreListByCity.length);
             }
 
         });
@@ -402,25 +417,40 @@ $("#viewQStoreSearchList").pagecontainer({
             selectCategory = $.trim($(this).text()); 
             var qstoreListArr = JSON.parse(localStorage.getItem("allQstoreListData"));
             filterQStoreListByCategory = [];
-            if (filterQStoreListByCity.length == 0) {
-                filterQStoreListByCategory = qstoreListArr.filter(function(item, index, array){
-                    if (item.Category === selectCategory) {
-                        return item;
-                    }
-                });
+            if (selectCategory == "所有類別") {
+                if (selectCity == "所有縣市" || selectCity == "") {
+                    filterQStoreListByCategory = qstoreListArr;
+                } else {
+                    filterQStoreListByCategory = qstoreListArr.filter(function(item, index, array){
+                        if (item.County === selectCity) {
+                            return item;
+                        }
+                    });
+                }
             } else {
-                filterQStoreListByCategory = filterQStoreListByCity.filter(function(item, index, array){
-                    if (item.Category === selectCategory) {
-                        return item;
-                    }
-                });
+                if (selectCity == "所有縣市" || selectCity == "") {
+                    filterQStoreListByCategory = qstoreListArr.filter(function(item, index, array){
+                        if (item.Category === selectCategory) {
+                            return item;
+                        }
+                    });
+                } else {
+                    filterQStoreListByCategory = qstoreListArr.filter(function(item, index, array){
+                        if (item.County === selectCity) {
+                            if (item.Category === selectCategory) {
+                                return item;
+                            }
+                        }
+                    });
+                }
             }
+
             if (filterQStoreListByCategory.length == 0) {
                 $("#viewQstoreList").hide();
                 $("#viewQstoreNone").show();
                 loadingMask("hide");
             } else {
-                showQStoreList(filterQStoreListByCategory);
+                showQStoreList(filterQStoreListByCategory, filterQStoreListByCategory.length);
             }
         });
 
