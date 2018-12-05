@@ -23,12 +23,14 @@ $("#viewStaffUserNotice").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //跳转置顶公告（用户版和总机版通用）
         $('.notice-top').on('click', function() {
             checkWidgetPage('viewStaffUserTop', pageVisitedList);
         });
 
+        //跳转到消息详情
         $('.notice-list').on('click', function() {
-            checkWidgetPage('viewStaffUserMsg', pageVisitedList);
+            checkWidgetPage('viewStaffUserDetail', pageVisitedList);
         });
 
 
