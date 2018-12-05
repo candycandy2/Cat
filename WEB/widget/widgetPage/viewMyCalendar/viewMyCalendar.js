@@ -225,11 +225,11 @@ $("#viewMyCalendar").pagecontainer({
             //1. calendar
             var siteCode = localStorage.getItem("site_code");
             if (siteCode == "QCS" || siteCode == "BQC") {
-                $.getJSON("string/" + siteCode + "-holiday.json", function(data) {
+                $.getJSON(serverURL + "/widget/widgetPage/viewMyCalendar/string/" + siteCode + "-holiday.json", function(data) {
                     createCalendarPage(data);
                 });
             } else {
-                $.getJSON("string/QTY-holiday.json", function(data) {
+                $.getJSON(serverURL + "/widget/widgetPage/viewMyCalendar/string/QTY-holiday.json", function(data) {
                     createCalendarPage(data);
                 });
             }
