@@ -94,7 +94,7 @@
     padding: 5vw 3.71vw 0;
 }
 
-.add-notice-btn{
+.addNoticePreviewBtn{
     position: absolute;
     width: 35.5vw;
     height: 10.5vw;
@@ -105,4 +105,13 @@
     background: #d5d5d5;
     color: #979797;
     font-size: 4.18vw;
+    display: none;
+}
+
+.cancelAddNotice .ui-content{
+    padding: 0;
+}
+
+.cancelAddNotice .ui-content>.header{
+    padding: 10vw 0 5vw;
 }

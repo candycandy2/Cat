@@ -33,7 +33,7 @@ $("#viewStaffAdminNotice").pagecontainer({
 
         //编辑已有公告
         $('.notice-list').on('click', function() {
-            //checkWidgetPage('viewStaffAdminEdit', pageVisitedList);
+            checkWidgetPage('viewStaffAdminDetail', pageVisitedList);
         });
 
         //新增公告

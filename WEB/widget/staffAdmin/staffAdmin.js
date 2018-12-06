@@ -82,10 +82,10 @@ var staffAdminWidget = {
             });
 
             //sync menu when back key
-            $(document).on('click', '.staff-back', function() {
-                staffBackKey();
+            document.addEventListener("backbutton", staffAdminBackKey, false);
+            $(document).on('click', '.staff-admin-back', function() {
+                staffAdminBackKey();
             });
-            document.addEventListener("backbutton", staffBackKey, false);
 
         }
 
@@ -96,7 +96,7 @@ var staffAdminWidget = {
             return date + ' ' + time;
         }
 
-        function staffBackKey() {
+        function staffAdminBackKey() {
             //1. close panel
             var panelShow = $('.adminStaffMenu').css('display') == 'block' ? true : false;
             if(panelShow) {
