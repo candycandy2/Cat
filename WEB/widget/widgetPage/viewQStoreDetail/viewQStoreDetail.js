@@ -21,6 +21,10 @@ $("#viewQStoreDetail").pagecontainer({
             });
             var qstoreName = qstoreDetailData[0].Subject.toString().replace(/[\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]/g,"");
             $(".qstore-name-title").empty().append(qstoreName);
+            var qstoreAddress = qstoreDetailData[0].Address.toString();
+            var qstorePhone = qstoreDetailData[0].Phone.toString();
+            var qstoreCategory = qstoreDetailData[0].Category.toString();
+            var qstoreSummary = qstoreDetailData[0].Summary.toString();
 
         });
 
