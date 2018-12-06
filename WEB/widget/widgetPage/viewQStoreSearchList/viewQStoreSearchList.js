@@ -14,6 +14,7 @@ var fristCallStoreList = true;
 var hasUpdateDateVal = false;
 var activePageListID;
 var scrollClassName;
+var qstoreNo;
 
 $("#viewQStoreSearchList").pagecontainer({
     create: function (event, ui) {
@@ -190,7 +191,9 @@ $("#viewQStoreSearchList").pagecontainer({
                                 + '</div></div><div><div>'
                                 + distanceVal
                                 + '</div></div></div>'
-                                + '<div class="qstore-more"><img src="img/btn_more.png" class="store-more-img"></div><div class="activity-line"></div>';
+                                + '<div class="qstore-more" ><img src="img/btn_more.png" class="store-more-img" data-rowid="'
+                                + qstoreListArr[i]["MIndex"]
+                                + '"></div><div class="activity-line"></div>';
             }
             $("#viewQstoreList").empty().append(qStoreList).children("div:last-child").remove(); 
             $("#viewQstoreNone").hide();
@@ -452,6 +455,14 @@ $("#viewQStoreSearchList").pagecontainer({
             } else {
                 showQStoreList(filterQStoreListByCategory, filterQStoreListByCategory.length);
             }
+        });
+
+        //查看詳細特約商店資訊
+        $("#viewQstoreList").on("click", ".qstore-more", function () {
+            //1.傳值
+            var self = $(this).children().attr("data-rowid");
+            qstoreNo = self;  
+            checkWidgetPage('viewQStoreDetail', pageVisitedList);
         });
 
     }
