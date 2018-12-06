@@ -53,6 +53,11 @@
     display: none;
 }
 
+.active-btn-green{
+    background: #009587 !important;
+    color: #fff !important;
+}
+
 /******************** carousel ********************/
 .carousel-widget {
     width: 100vw !important;
