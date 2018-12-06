@@ -204,16 +204,16 @@ $("#viewQStoreSearchList").pagecontainer({
         }
 
         function scrollHeightOnePage(viewName, className, listLength) {
-            //var headHeight = $('#'+ viewName +' .page-header').height();
-            //var fixHeight = $('.choose-by-dll').height();
-            //var contentHeight = $('#viewQstoreList').height();
+            var headHeight = $('#'+ viewName +' .page-header').height();
+            var fixHeight = $('.choose-by-dll').height();
+            var contentHeight = $(".qstore-list").height() + $(".qstore-more").height() + $(".activity-line").height();
             var totalHeight;
             if (device.platform === "iOS") {
                 //totalHeight = (headHeight + fixHeight + contentHeight + iOSFixedTopPX()).toString();
-                totalHeight = ( 118.75 * listLength + iOSFixedTopPX()).toString();
+                totalHeight = ( headHeight + fixHeight + contentHeight * listLength + iOSFixedTopPX()).toString();
             } else {
                 //totalHeight = (headHeight + fixHeight + contentHeight).toString();
-                totalHeight = ( 118.75 * listLength).toString();
+                totalHeight = ( headHeight + fixHeight + contentHeight * listLength).toString();
             }
             $('.'+ className +' > div').css('height', totalHeight + 'px'); 
         }
