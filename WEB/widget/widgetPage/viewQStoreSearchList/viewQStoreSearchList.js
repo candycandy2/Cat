@@ -198,9 +198,6 @@ $("#viewQStoreSearchList").pagecontainer({
             $("#viewQstoreList").empty().append(qStoreList).children("div:last-child").remove(); 
             $("#viewQstoreNone").hide();
             $("#viewQstoreList").show();
-            //Scrolling Height
-            var mainHeight = getPageMainHeight('viewQStoreSearchList');
-            $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
             loadingMask("hide");
         }
 
@@ -318,6 +315,10 @@ $("#viewQStoreSearchList").pagecontainer({
         /********************************** page event ***********************************/
 
         $("#viewQStoreSearchList").one("pageshow", function (event, ui) {
+            //Scrolling Height
+            var mainHeight = getPageMainHeight('viewQStoreSearchList');
+            $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
+            
             getAllCityList();
             getAllCategoryList();
             if (localStorage.getItem("reneweddate") !== null) {
@@ -341,8 +342,6 @@ $("#viewQStoreSearchList").pagecontainer({
                     QueryStoreList(hasUpdateDateVal);    
                 }
             }
-            activePageListID = 'viewQStoreSearchList';   
-            scrollClassName = 'qstore-list-scroll';
         });
 
         $("#viewQStoreSearchList").on("pageshow", function (event, ui) {
