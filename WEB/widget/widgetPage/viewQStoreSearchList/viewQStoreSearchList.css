@@ -1,8 +1,35 @@
 /***************************** viewQStoreSearchList ********************************/
+#viewQStoreSearchList .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+    overflow-y: auto;
+    background: #FFFFFF;
+    -webkit-overflow-scrolling: touch;
+}
 
 .choose-by-dll {
     color: #0f0f0f;
-    padding: 6.5vw 3.71vw 0vw 5.39vw;
+    position: fixed;
+    width: 100vw;
+    height: 15vw;
+    background: #FFFFFF;
+    z-index: 1;
+}
+
+.choose-by-dll>div:nth-of-type(1) {
+    padding: 13vw 3.71vw 0vw 5.39vw;
+    background: #FFFFFF;
+}
+
+.choose-by-dll>div:nth-of-type(2) {
+    padding-left: 5.39vw;
+    background: #FFFFFF;
+}
+
+.main-top-blank {
+    width: 100vw;
+    height: 20vw;
 }
 
 .choose-by-dll>div:nth-of-type(1)>div {
@@ -40,15 +67,6 @@
     text-align: center;
     margin: 12vw 0vw;
     display: none;
-}
-
-.qstore-list-scroll {
-    width: 100%;
-    height: 100vh;
-    position: fixed;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
 }
 
 .qstore-list {

@@ -16,54 +16,55 @@
             </div>
         </a>
     </div>
-    <div data-role="main" class="page-main" style="position: fixed; overflow-y:visible;">
-    	<!-- classify by city and category -->
-        <div class="choose-by-dll">
-            <div class="font-style11">
-                <div>
-                    <!-- 選擇縣市 -->
-                    <span class="langStr" data-id="wgt_106"></span>
-                </div>
-                <div>
-                    <!-- 選擇類別 -->
-                    <span class="langStr" data-id="wgt_107"></span>
-                </div>
+    <!-- classify by city and category -->
+    <div class="choose-by-dll">        
+        <div class="font-style11">
+            <div>
+                <!-- 選擇縣市 -->
+                <span class="langStr" data-id="wgt_106"></span>
             </div>
-            <div class="font-style3">
-            	<!-- 所有縣市 -->
-            	<div data-role="none" id="cityValue" class="font-style3"></div>
-            	<!-- 所有類別 -->
-            	<div data-role="none" id="categoryValue" class="font-style3"></div>
+            <div>
+                <!-- 選擇類別 -->
+                <span class="langStr" data-id="wgt_107"></span>
             </div>
         </div>
+        <div class="font-style3">
+            <!-- 所有縣市 -->
+            <div data-role="none" id="cityValue" class="font-style3"></div>
+            <!-- 所有類別 -->
+            <div data-role="none" id="categoryValue" class="font-style3"></div>
+        </div>  
         <div class="activity-line"></div>
+    </div>
+    <div data-role="main" class="page-main">
+        <!--空div与choose-by-dll等高，占位作用-->
+        <div class="main-top-blank"></div>
         <!-- qstore list -->
          <!--1.無特約商店資料-->
-        <div id="viewQstoreNone" class="font-style12 font-color3" style="position: fixed;">
+        <div id="viewQstoreNone" class="font-style12 font-color3">
             <!--很抱歉, 本縣市/類別尚無特約商店-->
             <span class="langStr" data-id="wgt_110"></span>
         </div>
-        <div class="qstore-list-scroll">
-            <!--2.特約商店列表-->
-            <div id="viewQstoreList">
-                 <!--<div class="qstore-list font-style10" data-icon="false" data-rowid="">
-                    <div>
-                        <img src="img/live.png" class="store-type-img">
-                    </div>
-                    <div class="qstore-list-detail read-font-normal">
-                        <div>三五家有限公司(Test牌彈簧床內湖經銷商)</div>
-                        <div>台北市內湖區港墘路221巷41號1樓</div>
-                        <div>電話：02-26586048</div>
-                    </div>
-                    <div>
-                        <div>0.15km</div>
-                    </div>
+        <!--2.特約商店列表-->
+        <div id="viewQstoreList">
+             <!--<div class="qstore-list font-style10" data-icon="false" data-rowid="">
+                <div>
+                    <img src="img/live.png" class="store-type-img">
                 </div>
-                <div class="qstore-more">
-                    <img src="img/btn_more.png" class="store-more-img" data-rowid="">
+                <div class="qstore-list-detail read-font-normal">
+                    <div>三五家有限公司(Test牌彈簧床內湖經銷商)</div>
+                    <div>台北市內湖區港墘路221巷41號1樓</div>
+                    <div>電話：02-26586048</div>
                 </div>
-                <div class="activity-line"></div>-->
+                <div>
+                    <div>0.15km</div>
+                </div>
             </div>
+            <div class="qstore-more">
+                <img src="img/btn_more.png" class="store-more-img" data-rowid="">
+            </div>
+            <div class="activity-line"></div>-->
+        </div>
         </div>
         <!--popup-->
         <script>
