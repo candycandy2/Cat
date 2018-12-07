@@ -1,1 +1,96 @@
 /***************************** viewQStoreDetail ********************************/
+
+.basic-info {
+	height: 18vw;
+}
+
+.basic-info > div:nth-of-type(1) {
+    margin-right: 3.06vw;
+    float: left;
+}
+
+.basic-info > div:nth-of-type(2) {
+    width: 45vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    float: left;
+    color: #253137;
+    padding-top: 1vw;
+}
+
+.basic-info > div:nth-of-type(3) {
+    height: 10vw;
+    float: right;
+    color: #989898;
+    padding-top: 1vw;
+}
+
+.detail-type-img {
+	float: left;
+    width: 15vw;
+    height: 15vw;
+}
+
+.qstore-detail-info {
+	padding: 8vw 5vw 0vw;
+}
+
+.address-info > div:nth-of-type(1) {
+    margin-right: 3.06vw;
+    float: left;
+}
+
+.phone-info > div:nth-of-type(1) {
+    margin-right: 3.06vw;
+    float: left;
+}
+
+.pin-img {
+	float: left;
+    width: 4vw;
+    height: 4vw;
+}
+
+.phone-img {
+	float: left;
+    width: 4vw;
+    height: 4vw;
+}
+
+.address-info {
+	margin-top: 3.27vw;
+}
+
+.phone-info {
+	margin-top: 3.27vw;
+	margin-bottom: 3.27vw
+}
+
+.detail-info-line {
+	height: 1px;
+	background-color: #d5d5d5;
+	overflow: hidden;
+}
+
+.summary-title {
+	color: #253137;
+	margin-top: 5vw;
+}
+
+.date-title {
+	color: #253137;
+	margin-top: 5vw;
+}
+
+.summary-content {
+	color: #253137;
+	margin-top: 3.27vw;
+}
+
+.date-content {
+	color: #253137;
+	margin-top: 3.27vw;
+}
