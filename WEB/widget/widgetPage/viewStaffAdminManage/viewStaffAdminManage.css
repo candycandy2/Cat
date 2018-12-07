@@ -1,0 +1,91 @@
+/*************************** viewStaffAdminManage ********************************/
+#viewStaffAdminManage .page-main{
+    width: 100vw;
+    padding: 0 !important;
+    position: fixed;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.admin-manage-navbar{
+    width: 100vw;
+    height: 10vw;
+    padding-top: 4.3vw;
+    background: #fff;
+    border-bottom: 1px solid #d5d5d5;
+}
+
+.admin-manage-navbar>div{
+    float: left;
+    width: 50%;
+    height: 10vw;
+}
+
+.admin-manage-navbar>div>div:nth-of-type(1){
+    width: 100%;
+    height: 9vw;
+    text-align: center;
+    line-height: 9vw;
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.admin-manage-navbar>div>div:nth-of-type(2){
+    width: 100%;
+    height: 1vw;
+}
+
+.select-meeting-room{
+    width: 90.9vw;
+    height: 10vw;
+    padding: 5.3vw 3.71vw 5.3vw 5.39vw;
+}
+
+.select-meeting-room>div{
+    height: 5vw;
+}
+
+.select-meeting-room>div:nth-of-type(1){
+    color: #0f0f0f;
+    font-size: 3.14vw;
+}
+
+.select-meeting-room>div:nth-of-type(2){
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.meeting-room-list{
+    width: 89.81vw;
+    height: 5.5vw;
+    padding: 4.5vw 3.71vw 4.5vw 6.48vw;
+    background: #fff;
+    border-bottom: 1px solid #d5d5d5;
+}
+
+.meeting-room-list>div{
+    float: left;
+    height: 100%;
+}
+
+.meeting-room-list>div:nth-of-type(1){
+    width: 70.56vw;
+    color: #253137;
+    font-size: 4.18vw;
+}
+
+.meeting-room-list>div:nth-of-type(2){
+    width: 19.25vw;
+    font-size: 3.14vw;
+    line-height: 5.5vw;
+    text-align: right;
+}
+
+.meeting-room-list>div:nth-of-type(2) img{
+    width: 9.25vw;
+    margin-left: 10vw;
+}
+
+.selected-meeting-room-ul{
+    padding-top: 5.3vw !important;
+}

@@ -18,6 +18,48 @@
         </a>
     </div>
     <div data-role="main" class="ui-content page-main">
-        <div></div>
+        <div>
+            <div class="notice-detail-text">失物招領</div>
+            <div class="notice-detail-time">2018/11/28</div>
+            <div class="notice-detail-img"></div>
+            <div class="notice-detail-text">T02拾獲一把雨傘，已暫放總機，請遺失的同仁前往領取，謝謝</div>
+        </div>
+        <div class="editNoticeBtn active-btn-green">編輯</div>
+        <div class="deleteNoticeBtn">x 刪除</div>
+    </div>
+    <!--popup-->
+    <div data-role="popup" data-history="false" data-overlay-theme="b" data-dismissible="false" class="app-popup deleteNoticePopup">
+        <div data-role="main" class="ui-content">
+            <div class="header">
+                <div class="font-style3 header-title-main">
+                    <span class='header-icon hidden'>
+                        <img src="img/urgent.png">
+                    </span>
+                    <span class="header-text">
+                        <!--您的个人资料将登出,-->
+                        <!-- <span class="langStr" data-id="wgt_061"></span> -->
+                        確定刪除?
+                    </span>
+                </div>
+                <div class="font-style3 header-title"></div>
+            </div>
+            <div class="main">
+                <p class="main-paragraph font-style11 font-color3"></p>
+            </div>
+            <div class="footer">
+                <div class="btn-two font-style1 btnArea">
+                    <div class="btn-cancel">
+                        <!--取消-->
+                        <!-- <span class="langStr" data-id="wgt_059"></span> -->
+                        取消
+                    </div>
+                    <div class="btn-cancel confirmDeleteNotice">
+                        <!--確定-->
+                        <!-- <span class="langStr" data-id="wgt_060"></span> -->
+                        確定
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

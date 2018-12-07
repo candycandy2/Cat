@@ -12,6 +12,9 @@ $("#viewStaffAdminDetail").pagecontainer({
         $("#viewStaffAdminDetail").one("pageshow", function(event, ui) {
             var mainHeight = getPageMainHeight('viewStaffAdminDetail');
             $('#viewStaffAdminDetail .page-main').css('height', mainHeight + 'px');
+
+            $('.editNoticeBtn').show();
+            $('.deleteNoticeBtn').show();
         });
 
         $("#viewStaffAdminDetail").on("pageshow", function(event, ui) {
@@ -24,7 +27,15 @@ $("#viewStaffAdminDetail").pagecontainer({
 
 
         /********************************** dom event *************************************/
+        //enter edit page
+        $('.editNoticeBtn').on('click', function() {
+            checkWidgetPage('viewStaffAdminEdit', pageVisitedList);
+        });
 
+        //open delete confirm popup
+        $('.deleteNoticeBtn').on('click', function() {
+            popupMsgInit('.deleteNoticePopup');
+        });
 
 
     }

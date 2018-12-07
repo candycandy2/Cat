@@ -57,17 +57,17 @@ $("#viewStaffAdminMain").pagecontainer({
 
         /********************************** dom event *************************************/
         //切換本日和明日
-        $('.admin-main-date > div').on('click', function() {
-            var has = $(this).hasClass('active-date');
+        $('.admin-main-navbar > div').on('click', function() {
+            var has = $(this).hasClass('active-navbar');
 
             if(!has) {
                 var type = $(this).data('type');
-                $(this).addClass('active-date');
+                $(this).addClass('active-navbar');
                 if(type == 'today') {
-                    $('div[data-type="tomorrow"]').removeClass('active-date');
+                    $('div[data-type="tomorrow"]').removeClass('active-navbar');
                     $('.admin-main-tomorrow').hide();
                 } else {
-                    $('div[data-type="today"]').removeClass('active-date');
+                    $('div[data-type="today"]').removeClass('active-navbar');
                     $('.admin-main-today').hide();
                 }
                 $('.admin-main-' + type).show();
