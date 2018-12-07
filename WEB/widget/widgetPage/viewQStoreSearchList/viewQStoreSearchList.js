@@ -198,28 +198,16 @@ $("#viewQStoreSearchList").pagecontainer({
             $("#viewQstoreList").empty().append(qStoreList).children("div:last-child").remove(); 
             $("#viewQstoreNone").hide();
             $("#viewQstoreList").show();
-            //2018/12/04
-            scrollHeightOnePage(activePageListID, scrollClassName, qstoreListLength);
-            /*$("#" + activePageListID + ">.page-header").css({
-                'position': 'fixed'
-            });*/
+            //Scrolling Height
+            var mainHeight = getPageMainHeight('viewQStoreSearchList');
+            $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
             loadingMask("hide");
         }
 
-        function scrollHeightOnePage(viewName, className, listLength) {
-            var headHeight = $('#'+ viewName +' .page-header').height();
-            var fixHeight = $('.choose-by-dll').height();
-            var contentHeight = $(".qstore-list").height() + $(".qstore-more").height() + $(".activity-line").height();
-            var totalHeight;
-            if (device.platform === "iOS") {
-                //totalHeight = (headHeight + fixHeight + contentHeight + iOSFixedTopPX()).toString();
-                totalHeight = ( headHeight + fixHeight + contentHeight * listLength + iOSFixedTopPX()).toString();
-            } else {
-                //totalHeight = (headHeight + fixHeight + contentHeight).toString();
-                totalHeight = ( headHeight + fixHeight + contentHeight * listLength).toString();
-            }
-            $('.'+ className +' > div').css('height', totalHeight + 'px'); 
-        }
+        /*function scrollHeightOnePage() {
+            var mainHeight = getPageMainHeight('viewQStoreSearchList');
+            $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
+        }*/
 
         function getDistanceFromCurrentPosition() {
                 if (navigator.geolocation) {
