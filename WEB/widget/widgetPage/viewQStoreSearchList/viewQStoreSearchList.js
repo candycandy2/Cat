@@ -198,15 +198,16 @@ $("#viewQStoreSearchList").pagecontainer({
             $("#viewQstoreList").empty().append(qStoreList).children("div:last-child").remove(); 
             $("#viewQstoreNone").hide();
             $("#viewQstoreList").show();
+            //Scrolling Height
             var mainHeight = getPageMainHeight('viewQStoreSearchList');
             $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
             loadingMask("hide");
         }
 
-        function scrollHeightOnePage() {
+        /*function scrollHeightOnePage() {
             var mainHeight = getPageMainHeight('viewQStoreSearchList');
             $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
-        }
+        }*/
 
         function getDistanceFromCurrentPosition() {
                 if (navigator.geolocation) {
