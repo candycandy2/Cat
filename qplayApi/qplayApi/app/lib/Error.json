@@ -817,6 +817,23 @@
             "error_description": "店家资料异常"
           }
         ]
+      },
+      {
+        "error_code": "052001",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "this service_id  already exist."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "service_id已存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "service_id已存在"
+          }
+        ]
       }
     ]
   }

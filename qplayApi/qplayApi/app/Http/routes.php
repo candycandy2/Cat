@@ -75,6 +75,15 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
         Route::get('/logoutQPayWeb', 'WebController@logoutQPayWeb');
         Route::get('/tradeRecordQPayWeb', 'WebController@tradeRecordQPayWeb');
     });
+
+    //EmpService
+    Route::group(['namespace' => 'EmpService'], function()
+    {   
+        //for app
+        Route::group(['middleware' => 'auth.token'], function () {
+            Route::post('/newEmpService', 'ServiceController@newEmpService');
+        });
+    });
 });
 
 //syncUser
