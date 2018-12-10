@@ -1,4 +1,10 @@
 /***************************** viewQStoreDetail ********************************/
+#viewQStoreDetail .page-main {
+    width: 100vw;
+    position: fixed;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
 .basic-info {
 	height: 18vw;
@@ -93,4 +99,29 @@
 .date-content {
 	color: #253137;
 	margin-top: 3.27vw;
+}
+
+.phone-type {
+    font-weight: normal !important;
+	color: #253137 !important;
+	text-decoration: none !important;
+}
+
+.ui-header .qstore-detail-header {
+    font-weight: normal;
+	font-size: 4.39vw !important;
+	padding: 3.328vw 0;
+	color: #ffffff;
+	margin-top: 3vw;
+}
+
+.qstore-detail-header {
+    min-height: 0.8em;
+    text-align: center;
+    display: block;
+    margin: 0 20%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    outline: 0!important;
 }

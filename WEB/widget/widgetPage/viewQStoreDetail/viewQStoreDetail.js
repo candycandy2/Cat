@@ -25,7 +25,14 @@ $("#viewQStoreDetail").pagecontainer({
             var qstorePhone = qstoreDetailData[0].Phone.toString();
             var qstoreCategory = qstoreDetailData[0].Category.toString();
             var qstoreSummary = qstoreDetailData[0].Summary.toString();
-            var qstoreEndDate =  qstoreDetailData[0].Date2;
+            var endDate =  new Date(qstoreDetailData[0].Date2);
+            var month = ((endDate.getMonth() + 1 < 10) ? '0' + (endDate.getMonth() + 1) : endDate.getMonth() + 1 );
+            var date = ((endDate.getDate() < 10) ? '0' + endDate.getDate() : endDate.getDate());
+            var qstoreEndDate = endDate.getFullYear() + '/' + month + '/' + date;
+            if (qstoreEndDate.substring(0, 4) === "9999") {
+                qstoreEndDate = "無限期"
+            } 
+
             if (qstoreDetailData[0].Distance == undefined) {
                 var qstoreDistance = "";
             } else {
@@ -66,11 +73,13 @@ $("#viewQStoreDetail").pagecontainer({
                                 + qstoreDistance
                                 + '</div></div></div><div class="address-info font-style10"><div><img src="img/pin.png" class="pin-img"></div><div>'
                                 + qstoreAddress
-                                + '</div></div><div class="phone-info font-style10"><div><img src="img/phone.png" class="phone-img"></div><div>'
+                                + '</div></div><div class="phone-info font-style10"><div><img src="img/phone.png" class="phone-img"></div><a class="phone-type" rel="external"  href="tel:"' 
+                                + qstorePhone.replace('-', '') 
+                                + '">'
                                 + qstorePhone
-                                + '</div></div><div class="detail-info-line"></div><div class="summary-title font-style11"><span class="langStr" data-id="wgt_111"></span></div><div class="summary-content font-style7">'
+                                + '</a></div><div class="detail-info-line"></div><div class="summary-title font-style11">特約優惠</div><div class="summary-content font-style7">'
                                 + qstoreSummary
-                                + '</div><div class="date-title font-style11"><span class="langStr" data-id="wgt_112"></span></div><div class="date-content font-style7">'
+                                + '</div><div class="date-title font-style11">優惠日期</div><div class="date-content font-style7">'
                                 + qstoreEndDate
                                 + '</div>'
 
