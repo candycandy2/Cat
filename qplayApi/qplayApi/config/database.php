@@ -108,6 +108,20 @@ return [
             'engine' => null,
         ],
 
+        'mysql_emp_service' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_EMP_SERVICE'),
+            'port' => env('DB_PORT_EMP_SERVICE'),
+            'database' => env('DB_DATABASE_EMP_SERVICE'),
+            'username' => env('DB_USERNAME_EMP_SERVICE'),
+            'password' => env('DB_PASSWORD_EMP_SERVICE'),
+            'charset' => 'utf8',
+            'collation' => 'utf8_general_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'mongodb' => [
             'driver'   => 'mongodb',
             'host'     => env('MONGO_HOST'),

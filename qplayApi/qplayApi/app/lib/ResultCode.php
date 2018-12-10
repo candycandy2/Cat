@@ -61,4 +61,8 @@ abstract class ResultCode
     const _000931_newLoginPasswordIncorrect = "000931"; //新的登入密碼格式錯誤
     const _000932_shopNotExistError = "000932"; //店家資料異常
     //TODO 以下为各系统扩展
+    
+    //Emp Service
+    const _052001_empServiceExist = "052001"; //emp service id 已經存在
+    
 }
