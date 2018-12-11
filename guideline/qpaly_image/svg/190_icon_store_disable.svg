@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 218 140" style="enable-background:new 0 0 218 140;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#CCCBCB;stroke-width:5;stroke-miterlimit:10;}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#CCCBCB;}
+	.st3{fill:#989898;}
+	.st4{fill:#FFFFFF;}
+	.st5{font-family:'MicrosoftJhengHeiBold';}
+	.st6{font-size:33px;}
+</style>
+<g>
+	<g>
+		<path class="st0" d="M171.1,26.2v-1.8c0-11.9-9.8-21.7-21.7-21.7c-11.9,0-21.7,9.8-21.7,21.7v1.8"/>
+		<path class="st0" d="M177,103.3V24.8H99.1c-6.7,0-12.1,5.5-12.1,12.1v66c0,6.7,5.5,12.1,12.1,12.1H177v-8.9V103.3z"/>
+		<path class="st0" d="M193.1,115v-0.5c-0.9,0.3-1.8,0.5-2.8,0.5H193.1z"/>
+		<path class="st0" d="M183.6,115h6.7c-0.8,0-1.5-0.1-2.2-0.3C186.8,114.9,185.4,115,183.6,115z"/>
+		<path class="st0" d="M177,24.8v78.6v2.8v8.9h6.2c1.7,0,5.9,0,6.7,0c1,0,1.9-0.2,2.8-0.5c3.5-1.2,6.1-4.5,6.1-8.4V24.8H177z"/>
+		<ellipse transform="matrix(0.7071 -0.7071 0.7071 0.7071 -4.3649 91.5358)" class="st0" cx="108.3" cy="51" rx="9.1" ry="9.1"/>
+		<ellipse transform="matrix(0.9239 -0.3827 0.3827 0.9239 -8.0093 61.8083)" class="st0" cx="151.4" cy="51" rx="9.1" ry="9.1"/>
+		<path class="st0" d="M151.5,41.9V24.3c0-11.9-9.8-21.7-21.7-21.7c-11.9,0-21.7,9.8-21.7,21.7v17.6"/>
+		<line class="st0" x1="187.2" y1="61.6" x2="187.2" y2="114.7"/>
+	</g>
+	<circle class="st1" cx="191.6" cy="93.6" r="13.5"/>
+	<path class="st2" d="M172.2,78.1c9.9-9.9,26-9.9,35.9,0c9.9,9.9,9.9,26,0,35.9l-18,18l-18-18C162.7,104.1,162.7,88,172.2,78.1z
+		 M190.2,107.1c6.1,0,10.7-5,10.7-10.7c0-5.7-4.6-11.1-10.7-11.1c-6.1,0-10.7,5-10.7,10.7C179.5,101.8,184.4,107.1,190.2,107.1z"/>
+	<line class="st0" x1="180.5" y1="137.4" x2="199.7" y2="137.4"/>
+	<circle class="st3" cx="53.9" cy="79.6" r="51.4"/>
+	<text transform="matrix(0.966 -0.2585 0.2585 0.966 21.0319 85.0584)"><tspan x="0" y="0" class="st4 st5 st6">敬請</tspan><tspan x="0" y="32.1" class="st4 st5 st6">期待</tspan></text>
+</g>
+</svg>
