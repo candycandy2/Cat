@@ -318,11 +318,7 @@ $("#viewQStoreSearchList").pagecontainer({
 
         /********************************** page event ***********************************/
 
-        $("#viewQStoreSearchList").one("pageshow", function (event, ui) {
-            //Scrolling Height
-            var mainHeight = getPageMainHeight('viewQStoreSearchList');
-            $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
-            
+        $("#viewQStoreSearchList").one("pageshow", function (event, ui) {            
             getAllCityList();
             getAllCategoryList();
             if (localStorage.getItem("reneweddate") !== null) {
