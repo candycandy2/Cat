@@ -13,7 +13,8 @@ var qstoreWidget = {
                 $('.qstore-icon').html('').append(qstoreImg);
                 var qstoreallImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_all.png');
                 $('.store-all-img').html('').append(qstoreallImg);
-                var qstorenearImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_near.png');
+                //var qstorenearImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_near.png');
+                var qstorenearImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/icon_store_disable.png');
                 $('.store-near-img').html('').append(qstorenearImg);
 
             }, "html");
