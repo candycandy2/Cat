@@ -1,6 +1,5 @@
 /***************************** viewQStoreDetail ********************************/
 #viewQStoreDetail .page-main {
-    width: 100vw;
     position: fixed;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
