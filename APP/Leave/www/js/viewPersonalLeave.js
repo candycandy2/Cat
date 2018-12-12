@@ -890,8 +890,8 @@ $("#viewPersonalLeave").pagecontainer({
 
                 }
                 //datetime-local max value (hard code)
-                $("#startDate").attr("max", "2018-12-31T23:59");
-                $("#endDate").attr("max", "2018-12-31T23:59");
+                $("#startDate").attr("max", "2019-12-31T23:59");
+                $("#endDate").attr("max", "2019-12-31T23:59");
                 $("#leaveReason").attr("placeholder", langStr["str_090"]);
                 $("#withdrawReason").attr("placeholder", langStr["str_090"]);
                 $("#dispelReason").attr("placeholder", langStr["str_090"]);
@@ -1308,7 +1308,7 @@ $("#viewPersonalLeave").pagecontainer({
         $('#newBaseDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            yearEnd: '2018'
+            yearEnd: '2019'
         });
 
         //選擇基準日，根據是否有有效基準日操作——click
@@ -1344,7 +1344,7 @@ $("#viewPersonalLeave").pagecontainer({
         $('#oldBaseDate').datetimepicker({
             timepicker: false,
             yearStart: '2016',
-            yearEnd: '2018'
+            yearEnd: '2019'
         });
 
         //選擇有效基準日列表——click basedaylist
@@ -1404,7 +1404,7 @@ $("#viewPersonalLeave").pagecontainer({
         $('#starDateTime').datetimepicker({
             step: 30,
             yearStart: '2016',
-            yearEnd: '2018',
+            yearEnd: '2019',
             onSelectTime: function(current_time, $input) {
                 $("#starDateTime").blur();
             }
@@ -1528,7 +1528,7 @@ $("#viewPersonalLeave").pagecontainer({
         $('#endDateTime').datetimepicker({
             step: 30,
             yearStart: '2016',
-            yearEnd: '2018',
+            yearEnd: '2019',
             onSelectTime: function(current_time, $input) {
                 $("#endDateTime").blur();
             }
