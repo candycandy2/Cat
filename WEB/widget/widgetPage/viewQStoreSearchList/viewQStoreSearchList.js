@@ -13,10 +13,6 @@ var activePageListID;
 var scrollClassName;
 var qstoreNo;
 
-
-var QStoreUpdateDateLocalStorageKey = "QStore_reneweddate";
-var QStoreLocalStorageKey = "QStore_listdata";
-
 $("#viewQStoreSearchList").pagecontainer({
     create: function(event, ui) {
 

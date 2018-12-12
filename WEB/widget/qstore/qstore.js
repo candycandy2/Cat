@@ -1,4 +1,7 @@
 //widget naming rule widget.js/list()[].name + "Widget"
+var QStoreUpdateDateLocalStorageKey = "QStore_reneweddate";
+var QStoreLocalStorageKey = "QStore_listdata";
+
 var qstoreWidget = {
 
     init: function(contentItem) {
@@ -64,13 +67,7 @@ var qstoreWidget = {
         $('.qstoreWidget').qstore();
     },
     clear: function() {
-        var qstoredatecontent_ = JSON.parse(window.localStorage.getItem('reneweddate'));
-        var qstorecontent_ = JSON.parse(window.localStorage.getItem('allQstoreListData'));
-        if (qstoredatecontent_ !== null) {
-            localStorage.removeItem('reneweddate');
-        }
-        if (qstorecontent_ !== null) {
-            localStorage.removeItem('allQstoreListData');
-        }
+        window.localStorage.removeItem(QStoreUpdateDateLocalStorageKey);
+        window.localStorage.removeItem(QStoreLocalStorageKey);
     }
 }
