@@ -16,8 +16,37 @@
             </div>
         </a>
     </div>
-    <div data-role="main" class="ui-content page-main">
+    <div data-role="main" class="page-main" style="line-height: initial !important;">
+        <div id="map" style="width:100vw; height:90vh;"></div>
+        <script>
+            function initMap() {
+                var myStyles = [{
+                    featureType: "poi",
+                    elementType: "labels",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }];
 
+                var uluru = {lat: 25.0811469, lng: 121.56481370000006};
+
+                window.map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 18,
+                    center: uluru,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    rotateControl: false,
+                    fullscreenControl: false,
+                    styles: myStyles
+                });
+
+                window.geocoder = new google.maps.Geocoder();
+                console.log(window.geocoder);
+            }
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfNc3zYF_DVZRjsqJrkxU2-WbjYmPxEjg&callback=initMap">
+        </script>
     </div>
     <!--popup-->
 </div>
