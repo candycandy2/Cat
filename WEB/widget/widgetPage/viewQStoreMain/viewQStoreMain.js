@@ -35,9 +35,9 @@ $("#viewQStoreMain").pagecontainer({
 
                         var iconImage = {
                             url: "img/storepin.png",
-                            size: new google.maps.Size(20, 32),
+                            scaledSize: new google.maps.Size(34, 40),
                             origin: new google.maps.Point(0, 0),
-                            anchor: new google.maps.Point(0, 32)
+                            anchor: new google.maps.Point(0, 40)
                         }
 
                         var marker = new google.maps.Marker({
@@ -45,7 +45,6 @@ $("#viewQStoreMain").pagecontainer({
                             map: resultsMap,
                             position: results[0].geometry.location,
                             title: name,
-                            opacity: 1.0,
                             attribution: {
                                 source: results[0].geometry.location.toString()
                             },
@@ -54,14 +53,7 @@ $("#viewQStoreMain").pagecontainer({
                             //icon: "img/storepin.png"
                         });
 
-
                         window.allMarker.push(marker);
-
-                        //marker.setOpacity(1.0);
-                        window.allMarker.forEach(function(marker) {
-                            marker.setOpacity(1.0);
-                        });
-
 
                         //Info Window
                         var contentString = '<div id="content"> 這個地址是:' + address +'</div>';
