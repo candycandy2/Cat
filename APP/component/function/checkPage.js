@@ -1,5 +1,8 @@
 //check app page on local
-function checkAppPage(pageID, pageVisitedList) {
+function checkAppPage(pageID, pageVisitedList, parmData) {
+    //新增参数：用于不同页面间传值
+    parmData = parmData || null;
+
     var pageLength = $('#' + pageID).length;
 
     //0表示没有该元素，直接从local添加，既第一次添加
@@ -56,10 +59,18 @@ function checkAppPage(pageID, pageVisitedList) {
 
     }
 
+    //判断是否需要传值:需要且数据类型为对象，则存到session
+    if(parmData != null && typeof parmData == 'object') {
+        window.sessionStorage.setItem(pageID + "_parmData", JSON.stringify(parmData));
+    }
+
 }
 
 //check app widgetPage on server
-function checkWidgetPage(pageID, pageVisitedList) {
+function checkWidgetPage(pageID, pageVisitedList, parmData) {
+    //新增参数：用于不同页面间传值
+    parmData = parmData || null;
+
     var url = serverURL + '/widget/widgetPage/' + pageID + '/' + pageID;
     var pageLength = $('#' + pageID).length;
 
@@ -122,6 +133,11 @@ function checkWidgetPage(pageID, pageVisitedList) {
             pageVisitedList.push(pageID);
         }
 
+    }
+
+    //判断是否需要传值:需要且数据类型为对象，则存到session
+    if(parmData != null && typeof parmData == 'object') {
+        window.sessionStorage.setItem(pageID + "_parmData", JSON.stringify(parmData));
     }
 
 }
