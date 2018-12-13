@@ -19,20 +19,6 @@ $("#viewQStoreMain").pagecontainer({
                     if (status === 'OK') {
                         resultsMap.setCenter(results[0].geometry.location);
 
-                        /*
-                        var iconImage = {
-                            url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-                            size: new google.maps.Size(40, 62),
-                            origin: new google.maps.Point(0, 0),
-                            anchor: new google.maps.Point(0, 62)
-                        }
-
-                        var shape = {
-                            coords: [1, 1, 1, 20, 18, 20, 18, 1],
-                            type: 'poly'
-                        };
-                        */
-
                         var iconImage = {
                             url: "img/storepin.png",
                             scaledSize: new google.maps.Size(34, 40),
@@ -49,8 +35,6 @@ $("#viewQStoreMain").pagecontainer({
                                 source: results[0].geometry.location.toString()
                             },
                             icon: iconImage
-                            //shape: shape
-                            //icon: "img/storepin.png"
                         });
 
                         window.allMarker.push(marker);
@@ -102,6 +86,21 @@ $("#viewQStoreMain").pagecontainer({
         /********************************** page event ***********************************/
 
         $("#viewQStoreMain").one("pageshow", function (event, ui) {
+            if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
+                allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
+            } else {
+                //第一次進入
+                //將QStoreList按七種類別，存入localStorage
+                loadingMask("show");
+                QueryStoreList(1)
+                    .then(QueryStoreList(2))
+                    .then(QueryStoreList(3))
+                    .then(QueryStoreList(4))
+                    .then(QueryStoreList(5))
+                    .then(QueryStoreList(6))
+                    .then(QueryStoreList(7))
+                    .then(showQStoreList(allQStoreList));
+            }
             food = [{
                 name: "丹提咖啡",
                 distance: 0.3,
@@ -145,20 +144,6 @@ $("#viewQStoreMain").pagecontainer({
                         };
 
                         console.log(pos);
-
-                        //Custom Marker icon
-                        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-                        var icons = {
-                            parking: {
-                                icon: iconBase + 'parking_lot_maps.png'
-                            },
-                            library: {
-                                icon: iconBase + 'library_maps.png'
-                            },
-                            info: {
-                                icon: iconBase + 'info-i_maps.png'
-                            }
-                        };
 
                         var iconImage = {
                             url: "img/icon_locationpin.png",
