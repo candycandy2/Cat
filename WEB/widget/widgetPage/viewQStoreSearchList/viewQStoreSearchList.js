@@ -81,16 +81,16 @@ $("#viewQStoreSearchList").pagecontainer({
         }
 
         function QueryStoreList(index) {
-            //loadingMask("show");
-            var storelistQueryData = '<LayoutHeader><Category>' + categoryList[index] + '</Category><UpdateDate></UpdateDate></LayoutHeader>';
-            if (index == 0) {
-                var updateDate = formatUpdateDate();
-                storelistQueryData = '<LayoutHeader><Category></Category><UpdateDate>' + updateDate + '</UpdateDate></LayoutHeader>';
-            }
 
             var self = this;
 
             return new Promise(function(resolve, reject) {
+
+                var storelistQueryData = '<LayoutHeader><Category>' + categoryList[index] + '</Category><UpdateDate></UpdateDate></LayoutHeader>';
+                if (index == 0) {
+                    var updateDate = formatUpdateDate();
+                    storelistQueryData = '<LayoutHeader><Category></Category><UpdateDate>' + updateDate + '</UpdateDate></LayoutHeader>';
+                }
                 var successCallback = function(data) {
                     if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) != null) {
                         allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
