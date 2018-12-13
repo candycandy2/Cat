@@ -14,7 +14,7 @@ var widget = {
             .then(this.load(9, divItem))
             .then(this.load(10, divItem))
             .then(this.load(11, divItem));
-
+//for test
     },
     list: function() {
 
