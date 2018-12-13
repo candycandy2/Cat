@@ -32,7 +32,6 @@ $("#viewQStoreSearchList").pagecontainer({
             }
         };
 
-        var qstoreListReturnArr = {};
         var callbackTime = 0;
 
         function getAllCityList() {
@@ -96,6 +95,8 @@ $("#viewQStoreSearchList").pagecontainer({
                     if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) != null) {
                         allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
                     }
+
+                    var qstoreListReturnArr = {};
                     if (data['ResultCode'] === "1") {
                         //第一次Call StoreList API，將七種類別的StoreList依序存入localStorage
                         qstoreListReturnArr = data['Content'];
@@ -109,7 +110,7 @@ $("#viewQStoreSearchList").pagecontainer({
                         // 查無資料
                     }
 
-                    resolve();
+                    resolve(qstoreListReturnArr.length);
                 };
 
                 var failCallback = function(data) {
@@ -187,10 +188,17 @@ $("#viewQStoreSearchList").pagecontainer({
             $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
             getAllCityList();
             getAllCategoryList();
+            if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) != null) {
+                allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
+            }
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
                 //第二次之後進入
+                showQStoreList(allQStoreList);
                 QueryStoreList(0)
-                    .then(showQStoreList(allQStoreList));
+                    .then(function(val) {
+                        if (val > 0)
+                            showQStoreList(allQStoreList);
+                    });
             } else {
                 //第一次進入
                 //將QStoreList按七種類別，存入localStorage
