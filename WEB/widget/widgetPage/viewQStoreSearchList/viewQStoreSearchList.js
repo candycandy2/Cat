@@ -102,8 +102,6 @@ $("#viewQStoreSearchList").pagecontainer({
                     }
 
                     localStorage.setItem(qstoreWidget.QStoreLocalStorageKey, JSON.stringify(allQStoreList));
-                    var today = formatUpdateDate();
-                    localStorage.setItem(qstoreWidget.QStoreUpdateDateLocalStorageKey, JSON.stringify(today));
 
                 } else if (data['ResultCode'] === "044901") {
                     // 查無資料
@@ -185,7 +183,7 @@ $("#viewQStoreSearchList").pagecontainer({
             $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
             getAllCityList();
             getAllCategoryList();
-            if (localStorage.getItem(qstoreWidget.QStoreUpdateDateLocalStorageKey) !== null) {
+            if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
                 //第二次之後進入
                 var updateDate = formatUpdateDate();
                 var storelistQueryData = '<LayoutHeader><Category></Category><UpdateDate>' + updateDate + '</UpdateDate></LayoutHeader>';
