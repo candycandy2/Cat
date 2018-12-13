@@ -1,16 +1,10 @@
 var categoryList = ["所有類別", "食", "衣", "住", "行", "育", "樂", "其他"];
 //var categoryList = ["所有類別", "食"];
 var cityList = ["所有縣市", "基隆市", "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
+var allQStoreList = [];
 var selectCategory = "";
 var selectCity = "";
-var allQStoreList = [];
-var allQStoreAddress = [];
-var allQStoreLatLng = [];
-var allQStoreDistance = [];
-var filterQStoreListByCategory = [];
-var filterQStoreListByCity = [];
-var activePageListID;
-var scrollClassName;
+
 var qstoreNo;
 
 $("#viewQStoreSearchList").pagecontainer({
@@ -131,9 +125,9 @@ $("#viewQStoreSearchList").pagecontainer({
         };
 
         function showQStoreList(qstoreListArr) {
-            qstoreListArr = qstoreListArr.sort(function(a, b) {
-                return a.Distance < b.Distance ? 1 : -1;
-            });
+            // qstoreListArr = qstoreListArr.sort(function(a, b) {
+            //     return a.Distance < b.Distance ? 1 : -1;
+            // });
             var qStoreList = "";
             for (var i in qstoreListArr) {
                 qStoreList += '<div class="qstore-list font-style10" data-rowid="' +
@@ -165,11 +159,12 @@ $("#viewQStoreSearchList").pagecontainer({
                         qStoreList += '<div><img src="img/others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                 }
 
-                if (qstoreListArr[i]["Distance"] == undefined) {
-                    var distanceVal = "";
-                } else {
-                    var distanceVal = qstoreListArr[i]["Distance"];
-                }
+                // if (qstoreListArr[i]["Distance"] == undefined) {
+                //     var distanceVal = "";
+                // } else {
+                //     var distanceVal = qstoreListArr[i]["Distance"];
+                // }
+                var distanceVal = "";
 
                 qStoreList += $.trim(qstoreListArr[i]["Subject"]) +
                     '</div><div>' +
@@ -231,7 +226,7 @@ $("#viewQStoreSearchList").pagecontainer({
             selectCity = $.trim($(this).text());
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
                 var qstoreListArr = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
-                filterQStoreListByCity = [];
+                var filterQStoreListByCity = [];
                 //是否選擇所有縣市
                 if (selectCity == "所有縣市") {
                     //先檢查類別是否有被選取
@@ -278,7 +273,7 @@ $("#viewQStoreSearchList").pagecontainer({
             selectCategory = $.trim($(this).text());
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
                 var qstoreListArr = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
-                filterQStoreListByCategory = [];
+                var filterQStoreListByCategory = [];
                 if (selectCategory == "所有類別") {
                     if (selectCity == "所有縣市" || selectCity == "") {
                         filterQStoreListByCategory = qstoreListArr;
