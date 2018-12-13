@@ -87,34 +87,47 @@ $("#viewQStoreSearchList").pagecontainer({
             return [year, month, day].join('-');
         }
 
-        function QueryStoreList(hasUpdateDateVal, storelistQueryData) {
-            loadingMask("show");
+        function QueryStoreList(index) {
+            //loadingMask("show");
+            var storelistQueryData = '<LayoutHeader><Category>' + categoryList[index] + '</Category><UpdateDate></UpdateDate></LayoutHeader>';
+            if (index == 0) {
+                var updateDate = formatUpdateDate();
+                storelistQueryData = '<LayoutHeader><Category></Category><UpdateDate>' + updateDate + '</UpdateDate></LayoutHeader>';
+            }
+
             var self = this;
-            var successCallback = function(data) {
-                if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) != null) {
-                    allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
-                }
-                if (data['ResultCode'] === "1") {
-                    //第一次Call StoreList API，將七種類別的StoreList依序存入localStorage
-                    qstoreListReturnArr = data['Content'];
-                    for(var i=0;i<qstoreListReturnArr.length;i++){
-                        allQStoreList.push(qstoreListReturnArr[i]);
+
+            return new Promise(function(resolve, reject) {
+                var successCallback = function(data) {
+                    if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) != null) {
+                        allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
+                    }
+                    if (data['ResultCode'] === "1") {
+                        //第一次Call StoreList API，將七種類別的StoreList依序存入localStorage
+                        qstoreListReturnArr = data['Content'];
+                        for (var i = 0; i < qstoreListReturnArr.length; i++) {
+                            allQStoreList.push(qstoreListReturnArr[i]);
+                        }
+
+                        localStorage.setItem(qstoreWidget.QStoreLocalStorageKey, JSON.stringify(allQStoreList));
+
+                    } else if (data['ResultCode'] === "044901") {
+                        // 查無資料
                     }
 
-                    localStorage.setItem(qstoreWidget.QStoreLocalStorageKey, JSON.stringify(allQStoreList));
+                    showQStoreList(allQStoreList);
+                    setTimeout(function() {
+                        resolve();
+                    }, 3000);
+                };
 
-                } else if (data['ResultCode'] === "044901") {
-                    // 查無資料
-                }
+                var failCallback = function(data) {
+                    //loadingMask("hide");
+                    reject();
+                };
 
-                showQStoreList(allQStoreList);
-            };
-
-            var failCallback = function(data) {
-                loadingMask("hide");
-            };
-
-            CustomAPI("POST", true, "StoreList", successCallback, failCallback, storelistQueryData, "");
+                CustomAPI("POST", true, "StoreList", successCallback, failCallback, storelistQueryData, "");
+            });
         };
 
         function showQStoreList(qstoreListArr) {
@@ -185,16 +198,19 @@ $("#viewQStoreSearchList").pagecontainer({
             getAllCategoryList();
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
                 //第二次之後進入
-                var updateDate = formatUpdateDate();
-                var storelistQueryData = '<LayoutHeader><Category></Category><UpdateDate>' + updateDate + '</UpdateDate></LayoutHeader>';
-                QueryStoreList(true, storelistQueryData);
+                QueryStoreList(0);
             } else {
                 //第一次進入
                 //將QStoreList按七種類別，存入localStorage
-                for (var i = 1; i < categoryList.length; i++) {
-                    var storelistQueryData = '<LayoutHeader><Category>' + categoryList[i] + '</Category><UpdateDate></UpdateDate></LayoutHeader>';
-                    QueryStoreList(false, storelistQueryData);
-                }
+                loadingMask("show");
+                QueryStoreList(1)
+                    .then(QueryStoreList(2))
+                    .then(QueryStoreList(3))
+                    .then(QueryStoreList(4))
+                    .then(QueryStoreList(5))
+                    .then(QueryStoreList(6))
+                    .then(QueryStoreList(7))
+                    .then(loadingMask("hide"));
             }
         });
 
