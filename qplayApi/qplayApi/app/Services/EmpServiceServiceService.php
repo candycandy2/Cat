@@ -6,6 +6,7 @@
 namespace App\Services;
 
 use App\Repositories\EmpServiceServiceIDRepository;
+use App\Repositories\EmpServiceDataLogRepository as EmpServiceLog;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
 
@@ -13,9 +14,7 @@ use App\lib\CommonUtil;
 class EmpServiceServiceService
 {
 
-    const TABLE_SERVICE_ID = 'service_id';
-    const TABLE_TARGET_ID = 'target_id';
-    const TABLE_SERVICE_RECORD = 'reserve_record';
+    const TABLE = 'service_id';
 
     const ACTION_ADD = 'add';
     const ACTION_UPDATE = 'update';
@@ -28,6 +27,10 @@ class EmpServiceServiceService
         $this->serviceIDRepository = $serviceIDRepository;
     }
 
+    public function getServiceRowId($serviceId){
+        return $this->serviceIDRepository->getServiceRowId($serviceId);
+    }
+
     /**
      * new a EmpService
      * @param  string $serviceId unique service id
@@ -37,10 +40,10 @@ class EmpServiceServiceService
      */
     public function newEmpService($serviceId, $type, $loginId, $domain, $empNo){
 
-        $serviceRs = $this->serviceIDRepository->getServiceRowId($serviceId, $type);
+        $serviceRs = $this->serviceIDRepository->getServiceRowId($serviceId);
         $logData = [];
 
-        if(count($serviceRs) > 0){
+        if(!is_null($serviceRs)){
             $result = ["result_code" => ResultCode::_052001_empServiceExist, "message"
                                  => CommonUtil::getMessageContentByCode(ResultCode::_052001_empServiceExist)
                   ];
@@ -53,16 +56,10 @@ class EmpServiceServiceService
 
             $newServiceRowId = $this->serviceIDRepository->newEmpService($data);
 
-
-            $logData = [
-                    "table_name" => self::TABLE_SERVICE_ID,
-                    "table_row_id" => $newServiceRowId,
-                    "action" => self::ACTION_ADD,
-                    "login_id" => $loginId,
-                    "domain" => $domain,
-                    "emp_no" => $empNo,
-                    "content" =>"service_id:=>".$serviceId.",type:=>".$type
-                ];
+            $logData = EmpServiceLog::getLogData(self::TABLE,$newServiceRowId,
+                                                 self::ACTION_ADD,$loginId,
+                                                 $domain,$empNo,
+                                                 $data);
 
 
             $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
@@ -73,4 +70,6 @@ class EmpServiceServiceService
 
         return [$result,$logData];
     }
+
+
 }
