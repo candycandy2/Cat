@@ -13,7 +13,7 @@ $("#viewQStoreDetail").pagecontainer({
         });
 
         $("#viewQStoreDetail").on("pageshow", function(event, ui) {
-            var qstoreListArr = JSON.parse(localStorage.getItem(QStoreLocalStorageKey));
+            var qstoreListArr = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
             qstoreDetailData = qstoreListArr.filter(function(item, index, array) {
                 if (item.MIndex === parseInt(qstoreNo)) {
                     return item;
