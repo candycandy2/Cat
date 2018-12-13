@@ -3,6 +3,8 @@
     position: fixed;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    width: 100vw;
+    padding: 0;
 }
 
 .basic-info {
@@ -40,7 +42,7 @@
 }
 
 .qstore-detail-info {
-	padding: 8vw 5vw 0vw;
+	padding: 9.72vw 9.2vw 0vw;
 }
 
 .address-info > div:nth-of-type(1) {

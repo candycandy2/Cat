@@ -145,12 +145,9 @@ function checkWidgetPage(pageID, pageVisitedList, parmData) {
 function setViewLanguage(view) {
     $("#" + view + " .langStr").each(function(index, element) {
         var id = $(element).data("id");
-
-        $(".langStr[data-id='" + id + "']").each(function(index, element) {
-            if (langStr[id] !== undefined) {
-                $(this).html(langStr[id]);
-            }
-        });
+        if (typeof langStr[id] !== 'undefined') {
+            $(this).html(langStr[id]);
+        }
     });
 }
 

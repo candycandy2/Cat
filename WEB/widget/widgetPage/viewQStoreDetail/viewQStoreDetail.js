@@ -40,40 +40,41 @@ $("#viewQStoreDetail").pagecontainer({
             }
 
             var qStoreDetailInfo = "";
+            var imgURL = "/widget/widgetPage/viewQStoreDetail/img/";
             qStoreDetailInfo += ' <div class="basic-info font-style10">';
             switch (qstoreCategory) {
                 case '食':
-                    qStoreDetailInfo += '<div><img src="img/eat.png" class="detail-type-img"></div>';
+                    qStoreDetailInfo += '<div><img src="'+ serverURL + imgURL +'eat.png" class="detail-type-img"></div>';
                     break;
                 case '衣':
-                    qStoreDetailInfo += '<div><img src="img/cloth.png" class="detail-type-img"></div>';
+                    qStoreDetailInfo += '<div><img src="'+ serverURL + imgURL +'cloth.png" class="detail-type-img"></div>';
                     break;
                 case '住':
-                    qStoreDetailInfo += '<div><img src="img/live.png" class="detail-type-img"></div>';
+                    qStoreDetailInfo += '<div><img src="'+ serverURL + imgURL +'live.png" class="detail-type-img"></div>';
                     break;
                 case '行':
-                    qStoreDetailInfo += '<div><img src="img/moving.png" class="detail-type-img"></div>';
+                    qStoreDetailInfo += '<div><img src="'+ serverURL + imgURL +'moving.png" class="detail-type-img"></div>';
                     break;
                 case '育':
-                    qStoreDetailInfo += '<div><img src="img/education.png" class="detail-type-img"></div>';
+                    qStoreDetailInfo += '<div><img src="'+ serverURL + imgURL +'education.png" class="detail-type-img"></div>';
                     break;
                 case '樂':
-                    qStoreDetailInfo += '<div><img src="img/recreation.png" class="detail-type-img"></div>';
+                    qStoreDetailInfo += '<div><img src="'+ serverURL + imgURL +'recreation.png" class="detail-type-img"></div>';
                     break;
                 case '其他':
-                    qStoreDetailInfo += '<div><img src="img/others.png" class="detail-type-img"></div>';
+                    qStoreDetailInfo += '<div><img src="'+ serverURL + imgURL +'others.png" class="detail-type-img"></div>';
                     break;
                 default:
-                    qStoreDetailInfo += '<div><img src="img/others.png" class="detail-type-img"></div>';
+                    qStoreDetailInfo += '<div><img src="'+ serverURL + imgURL +'others.png" class="detail-type-img"></div>';
             }
 
             qStoreDetailInfo += '<div class="qstore-list-detail read-font-normal"><div>' +
                 qstoreName +
                 '</div></div><div><div>' +
                 qstoreDistance +
-                '</div></div></div><div class="address-info font-style10"><div><img src="img/pin.png" class="pin-img"></div><div>' +
+                '</div></div></div><div class="address-info font-style10"><div><img src="'+ serverURL + imgURL +'pin.png" class="pin-img"></div><div>' +
                 qstoreAddress +
-                '</div></div><div class="phone-info font-style10"><div><img src="img/phone.png" class="phone-img"></div><a class="phone-type" rel="external"  href="tel:"' +
+                '</div></div><div class="phone-info font-style10"><div><img src="'+ serverURL + imgURL +'phone.png" class="phone-img"></div><a class="phone-type" rel="external"  href="tel:"' +
                 qstorePhone.replace('-', '') +
                 '">' +
                 qstorePhone +

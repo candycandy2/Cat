@@ -92,12 +92,9 @@ function addComponentView() {
             //After all template load finished, processing language string
             $(".langStr").each(function(index, element) {
                 var id = $(element).data("id");
-
-                $(".langStr[data-id='" + id + "']").each(function(index, element) {
-                    if (langStr[id] !== undefined) {
-                        $(this).html(langStr[id]);
-                    }
-                });
+                if (typeof langStr[id] !== 'undefined') {
+                    $(this).html(langStr[id]);
+                }
             });
 
             overridejQueryFunction();
