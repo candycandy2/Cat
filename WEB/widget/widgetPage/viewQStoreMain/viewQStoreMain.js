@@ -160,6 +160,13 @@ $("#viewQStoreMain").pagecontainer({
                             }
                         };
 
+                        var iconImage = {
+                            url: "img/icon_locationpin.png",
+                            scaledSize: new google.maps.Size(34, 40),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(0, 40)
+                        }
+
                         //Google Map Marker
                         window.myLatLng = {
                             lat: position.coords.latitude,
@@ -173,7 +180,8 @@ $("#viewQStoreMain").pagecontainer({
                         window.myLocate = new google.maps.Marker({
                             position: myLatLng,
                             map: window.map,
-                            icon: "img/icon_locationpin.png"
+                            icon: iconImage
+                            //icon: "img/icon_locationpin.png"
                             //label: ""
                         });
 
@@ -185,16 +193,13 @@ $("#viewQStoreMain").pagecontainer({
                     };
 
                     window.locationError = function(error) {
-                        //console.log("------error");
                         console.log(error);
-                        alert("------error");
                     };
 
                     //set food in marker
                     for (var i=0; i<food.length; i++) {
                         geocodeAddress(window.geocoder, window.map, food[i].address, food[i].name);
                     }
-
 
                     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {       
                         enableHighAccuracy: true

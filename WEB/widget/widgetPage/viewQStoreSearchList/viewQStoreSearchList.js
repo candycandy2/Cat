@@ -129,34 +129,35 @@ $("#viewQStoreSearchList").pagecontainer({
             //     return a.Distance < b.Distance ? 1 : -1;
             // });
             var qStoreList = "";
+            var imgURL = "/widget/widgetPage/viewQStoreSearchList/img/";
             for (var i in qstoreListArr) {
                 qStoreList += '<div class="qstore-list font-style10" data-rowid="' +
                     qstoreListArr[i]["MIndex"] +
                     '">';
                 switch (qstoreListArr[i]["Category"]) {
                     case '食':
-                        qStoreList += '<div><img src="img/eat.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="'+ serverURL + imgURL +'eat.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '衣':
-                        qStoreList += '<div><img src="img/cloth.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="'+ serverURL + imgURL +'cloth.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '住':
-                        qStoreList += '<div><img src="img/live.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="'+ serverURL + imgURL +'live.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '行':
-                        qStoreList += '<div><img src="img/moving.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="'+ serverURL + imgURL +'moving.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '育':
-                        qStoreList += '<div><img src="img/education.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="'+ serverURL + imgURL +'education.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '樂':
-                        qStoreList += '<div><img src="img/recreation.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="'+ serverURL + imgURL +'recreation.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '其他':
-                        qStoreList += '<div><img src="img/others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="'+ serverURL + imgURL +'others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     default:
-                        qStoreList += '<div><img src="img/others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="'+ serverURL + imgURL +'others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                 }
 
                 // if (qstoreListArr[i]["Distance"] == undefined) {
@@ -174,7 +175,7 @@ $("#viewQStoreSearchList").pagecontainer({
                     '</div></div><div><div>' +
                     distanceVal +
                     '</div></div></div>' +
-                    '<div class="qstore-more" ><img src="img/btn_more.png" class="store-more-img" data-rowid="' +
+                    '<div class="qstore-more" ><img src="'+ serverURL + imgURL +'btn_more.png" class="store-more-img" data-rowid="' +
                     qstoreListArr[i]["MIndex"] +
                     '"></div><div class="activity-line"></div>';
             }
