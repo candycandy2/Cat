@@ -4,12 +4,15 @@ var qstoreWidget = {
     QStoreLocalStorageKey : "QStore_listdata",
     init: function(contentItem) {
         var _key = this.qstorePageKey;
+        var self = this;
 
         function createContent(key) {
             $.get(serverURL + "/widget/qstore/qstore.html", function(data) {
                 //1.html
                 contentItem.html('').append(data);
-                //2.img
+                //2.lang
+                self.lang();
+                //3.img
                 var qstoreImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/widget_store.png');
                 $('.qstore-icon').html('').append(qstoreImg);
                 var qstoreallImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_all.png');
@@ -66,5 +69,13 @@ var qstoreWidget = {
     },
     clear: function() {
         window.localStorage.removeItem(qstoreWidget.QStoreLocalStorageKey);
+    },
+    lang: function() {
+        $(".qstoreWidget .langStr").each(function(index, element) {
+            var id = $(element).data("id");
+            if (typeof langStr[id] !== 'undefined') {
+                $(this).html(langStr[id]);
+            }
+        });
     }
 }
