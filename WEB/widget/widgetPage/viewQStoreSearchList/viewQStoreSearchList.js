@@ -109,18 +109,14 @@ $("#viewQStoreSearchList").pagecontainer({
                         // 查無資料
                     }
 
-                    showQStoreList(allQStoreList);
-                    setTimeout(function() {
-                        resolve();
-                    }, 3000);
+                    resolve();
                 };
 
                 var failCallback = function(data) {
-                    //loadingMask("hide");
                     reject();
                 };
 
-                CustomAPI("POST", true, "StoreList", successCallback, failCallback, storelistQueryData, "");
+                CustomAPI("POST", false, "StoreList", successCallback, failCallback, storelistQueryData, "");
             });
         };
 
@@ -193,7 +189,8 @@ $("#viewQStoreSearchList").pagecontainer({
             getAllCategoryList();
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
                 //第二次之後進入
-                QueryStoreList(0);
+                QueryStoreList(0)
+                    .then(showQStoreList(allQStoreList));
             } else {
                 //第一次進入
                 //將QStoreList按七種類別，存入localStorage
@@ -205,7 +202,7 @@ $("#viewQStoreSearchList").pagecontainer({
                     .then(QueryStoreList(5))
                     .then(QueryStoreList(6))
                     .then(QueryStoreList(7))
-                    .then(loadingMask("hide"));
+                    .then(showQStoreList(allQStoreList));
             }
         });
 
