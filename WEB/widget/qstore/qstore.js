@@ -1,7 +1,6 @@
 
 var qstoreWidget = {
 
-    QStoreUpdateDateLocalStorageKey : "QStore_reneweddate",
     QStoreLocalStorageKey : "QStore_listdata",
     init: function(contentItem) {
         var _key = this.qstorePageKey;
@@ -66,7 +65,6 @@ var qstoreWidget = {
         $('.qstoreWidget').qstore();
     },
     clear: function() {
-        window.localStorage.removeItem(qstoreWidget.QStoreUpdateDateLocalStorageKey);
         window.localStorage.removeItem(qstoreWidget.QStoreLocalStorageKey);
     }
 }
