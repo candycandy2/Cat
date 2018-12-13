@@ -1,9 +1,8 @@
-//widget naming rule widget.js/list()[].name + "Widget"
-var QStoreUpdateDateLocalStorageKey = "QStore_reneweddate";
-var QStoreLocalStorageKey = "QStore_listdata";
 
 var qstoreWidget = {
 
+    QStoreUpdateDateLocalStorageKey : "QStore_reneweddate",
+    QStoreLocalStorageKey : "QStore_listdata",
     init: function(contentItem) {
         var _key = this.qstorePageKey;
 
@@ -24,7 +23,7 @@ var qstoreWidget = {
 
             //點擊我附近商店，跳轉特約商店地圖頁面
             contentItem.on('click', '.store-near-img', function() {
-                checkWidgetPage('viewQStoreMain', pageVisitedList);
+                //checkWidgetPage('viewQStoreMain', pageVisitedList);
             });
 
             //點擊我所有商店，跳轉所有商店分類頁面
@@ -67,7 +66,7 @@ var qstoreWidget = {
         $('.qstoreWidget').qstore();
     },
     clear: function() {
-        window.localStorage.removeItem(QStoreUpdateDateLocalStorageKey);
-        window.localStorage.removeItem(QStoreLocalStorageKey);
+        window.localStorage.removeItem(qstoreWidget.QStoreUpdateDateLocalStorageKey);
+        window.localStorage.removeItem(qstoreWidget.QStoreLocalStorageKey);
     }
 }
