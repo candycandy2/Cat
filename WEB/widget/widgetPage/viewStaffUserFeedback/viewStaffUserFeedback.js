@@ -76,8 +76,8 @@ $("#viewStaffUserFeedback").pagecontainer({
         });
 
         $("#viewStaffUserFeedback").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewStaffUserFeedback');
-            $('#viewStaffUserFeedback .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewStaffUserFeedback .page-main').css('height', mainHeight);
 
             initFeedback();
         });

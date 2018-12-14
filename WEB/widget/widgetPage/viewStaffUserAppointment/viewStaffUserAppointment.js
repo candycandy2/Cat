@@ -22,6 +22,7 @@ $("#viewStaffUserAppointment").pagecontainer({
 
         });
 
+
         /********************************** dom event *************************************/
         $('.hour-list').on('click', function() {
             var rest = $(this).hasClass('rest-staff');
@@ -32,7 +33,6 @@ $("#viewStaffUserAppointment").pagecontainer({
                 if(hasSrc == 'checkbox_false') {
                     //1.
                     $(this).addClass('active-staff');
-    
     
                     $(this).find('.checkbox-hour').data('src', 'checkbox_true');
                     $(this).find('.checkbox-hour').attr('src', serverURL + imgURL + 'checkbox_true.png');

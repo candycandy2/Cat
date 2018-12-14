@@ -391,18 +391,6 @@ $("#viewMessageList").pagecontainer({
             $(document).unbind('touchmove', prevent_default);
         }
 
-        //page-main height
-        function getPageMainHeight_(view) {
-            var win = $(window).height();
-            var header = $('#' + view + ' .page-header').height();
-            var main;
-            if (device.platform === "iOS") {
-                main = win - header - iOSFixedTopPX();
-            } else {
-                main = win - header;
-            }
-            return main.toString();
-        }
 
         /********************************** page event ***********************************/
         $("#viewMessageList").on("pagebeforeshow", function(event, ui) {
@@ -410,8 +398,8 @@ $("#viewMessageList").pagecontainer({
         });
 
         $("#viewMessageList").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight_('viewMessageList');
-            $('.message-scroll').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('.message-scroll').css('height', mainHeight);
             //filter placeholder
             $('#msgFilter').attr('placeholder', langStr['str_080']);
             $('.idea-loading-img').attr('src', serverURL + imgURL + 'loading.gif');
