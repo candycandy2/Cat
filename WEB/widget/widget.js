@@ -2,7 +2,6 @@ var widget = {
 
     init: function(divItem) {
 
-        this.height();
         this.load(0, divItem)
             .then(this.load(1, divItem))
             .then(this.load(2, divItem))
@@ -15,7 +14,6 @@ var widget = {
             .then(this.load(9, divItem))
             .then(this.load(10, divItem))
             .then(this.load(11, divItem));
-
     },
     list: function() {
 
@@ -64,6 +62,7 @@ var widget = {
     },
     show: function() {
 
+        this.height();
         $.each(this.list(), function(key, value) {
             var widgetItem = value.name + "Widget";
             if (value.enabled == true && window[widgetItem] != undefined && window[widgetItem].show != undefined) {
@@ -84,18 +83,21 @@ var widget = {
         });
     },
     height: function() {
-        let win = $(window).height();
-        let header = $('#viewMain3 .page-header').height();
-        let main;
-        if(device.platform === "iOS") {
-            main = win - header - iOSFixedTopPX();
-        } else {
-            main = win - header;
+        let hasHeight = window.sessionStorage.getItem('pageMainHeight');
+        if(hasHeight == null) {
+            let win = $(window).height();
+            let header = $('#viewMain3 .page-header').height();
+            let main;
+            if(device.platform === "iOS") {
+                main = win - header - iOSFixedTopPX();
+            } else {
+                main = win - header;
+            }
+            var mainHeight = main.toString() + 'px';
+            //设置首页main高度
+            $('#viewMain3 .page-main').css('height', mainHeight);
+            //记录高度，供其他页使用
+            window.sessionStorage.setItem('pageMainHeight', mainHeight);
         }
-        var mainHeight = main.toString() + 'px';
-        //设置首页main高度
-        $('#viewMain3 .page-main').css('height', mainHeight);
-        //记录高度，供其他页使用
-        window.sessionStorage.setItem('pageMainHeight', mainHeight);
     }
 };
