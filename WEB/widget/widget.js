@@ -13,7 +13,8 @@ var widget = {
             .then(this.load(8, divItem))
             .then(this.load(9, divItem))
             .then(this.load(10, divItem))
-            .then(this.load(11, divItem));
+            .then(this.load(11, divItem))
+            .then(this.env());
     },
     list: function() {
 
@@ -98,6 +99,16 @@ var widget = {
             $('#viewMain3 .page-main').css('height', mainHeight);
             //记录高度，供其他页使用
             window.sessionStorage.setItem('pageMainHeight', mainHeight);
+        }
+    },
+    env: function() {
+        //获取当前环境，appEnvironment:app.min.js
+        if (loginData["versionName"].indexOf("Staging") !== -1) {
+            appEnvironment = "test";
+        } else if (loginData["versionName"].indexOf("Development") !== -1) {
+            appEnvironment = "dev";
+        } else {
+            appEnvironment = "";
         }
     }
 };
