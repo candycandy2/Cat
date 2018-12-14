@@ -1,9 +1,8 @@
 var categoryList = ["所有類別", "食", "衣", "住", "行", "育", "樂", "其他"];
-//var categoryList = ["所有類別", "食"];
 var cityList = ["所有縣市", "基隆市", "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
 var allQStoreList = [];
-var selectCategory = "";
-var selectCity = "";
+var selectCategory = "所有類別";
+var selectCity = "所有類別";
 
 var qstoreNo;
 
@@ -111,17 +110,17 @@ $("#viewQStoreSearchList").pagecontainer({
                                         "UpdateDate": "10/22/2018 5:46:18 PM"
                                 }
                             */
-                            var index = allQStoreList.map(function (item) { return item.MIndex; }).indexOf(qstoreListReturnArr[i].MIndex);
-                            if(index >= 0) {
+                            var index = allQStoreList.map(function(item) { return item.MIndex; }).indexOf(qstoreListReturnArr[i].MIndex);
+                            if (index >= 0) {
                                 //移除找到的
-                                allQStoreList.splice(index,1);
+                                allQStoreList.splice(index, 1);
                             }
                             //塞入新增的
                             allQStoreList.push(qstoreListReturnArr[i]);
                         }
 
                         //更新日期由近到遠
-                        allQStoreList.sort(function(a, b){
+                        allQStoreList.sort(function(a, b) {
                             let aDate = new Date(a.UpdateDate);
                             let bDate = new Date(b.UpdateDate);
                             return aDate < bDate;
@@ -247,96 +246,41 @@ $("#viewQStoreSearchList").pagecontainer({
 
         /********************************** dom event *************************************/
 
+        function filterQStore(selectCity_, selectCategory_) {
+            loadingMask("show");
+            var filterQStoreList = [];
+
+            filterQStoreList = allQStoreList.filter(function(item) {
+                if (selectCategory_ === "所有類別" && selectCity_ === "所有縣市") {
+                    return item;
+                } else if (selectCategory_ === "所有類別" && item.County === selectCity_) {
+                    return item;
+                } else if (selectCity_ === "所有縣市" && item.Category === selectCategory_) {
+                    return item;
+                } else if (item.Category === selectCategory_ && item.County === selectCity_) {
+                    return item;
+                }
+            });
+
+            if (filterQStoreList.length == 0) {
+                $("#viewQstoreList").hide();
+                $("#viewQstoreNone").show();
+                loadingMask("hide");
+            } else {
+                showQStoreList(filterQStoreList);
+            }
+        }
+
         //選擇城市——select change
         $(document).on("change", "#city-popup", function() {
-            loadingMask("show");
             selectCity = $.trim($(this).text());
-            if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
-                var qstoreListArr = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
-                var filterQStoreListByCity = [];
-                //是否選擇所有縣市
-                if (selectCity == "所有縣市") {
-                    //先檢查類別是否有被選取
-                    if (selectCategory == "所有類別" || selectCategory == "") {
-                        filterQStoreListByCity = qstoreListArr;
-                    } else {
-                        filterQStoreListByCity = qstoreListArr.filter(function(item, index, array) {
-                            if (item.Category === selectCategory) {
-                                return item;
-                            }
-                        });
-                    }
-                } else {
-                    if (selectCategory == "所有類別" || selectCategory == "") {
-                        filterQStoreListByCity = qstoreListArr.filter(function(item, index, array) {
-                            if (item.County === selectCity) {
-                                return item;
-                            }
-                        });
-                    } else {
-                        filterQStoreListByCity = qstoreListArr.filter(function(item, index, array) {
-                            if (item.County === selectCity) {
-                                if (item.Category === selectCategory) {
-                                    return item;
-                                }
-                            }
-                        });
-                    }
-                }
-
-                if (filterQStoreListByCity.length == 0) {
-                    $("#viewQstoreList").hide();
-                    $("#viewQstoreNone").show();
-                    loadingMask("hide");
-                } else {
-                    showQStoreList(filterQStoreListByCity, filterQStoreListByCity.length);
-                }
-            }
+            filterQStore(selectCity, selectCategory);
         });
 
         //選擇類別——select change
         $(document).on("change", "#category-popup", function() {
-            loadingMask("show");
             selectCategory = $.trim($(this).text());
-            if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
-                var qstoreListArr = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
-                var filterQStoreListByCategory = [];
-                if (selectCategory == "所有類別") {
-                    if (selectCity == "所有縣市" || selectCity == "") {
-                        filterQStoreListByCategory = qstoreListArr;
-                    } else {
-                        filterQStoreListByCategory = qstoreListArr.filter(function(item, index, array) {
-                            if (item.County === selectCity) {
-                                return item;
-                            }
-                        });
-                    }
-                } else {
-                    if (selectCity == "所有縣市" || selectCity == "") {
-                        filterQStoreListByCategory = qstoreListArr.filter(function(item, index, array) {
-                            if (item.Category === selectCategory) {
-                                return item;
-                            }
-                        });
-                    } else {
-                        filterQStoreListByCategory = qstoreListArr.filter(function(item, index, array) {
-                            if (item.County === selectCity) {
-                                if (item.Category === selectCategory) {
-                                    return item;
-                                }
-                            }
-                        });
-                    }
-                }
-
-                if (filterQStoreListByCategory.length == 0) {
-                    $("#viewQstoreList").hide();
-                    $("#viewQstoreNone").show();
-                    loadingMask("hide");
-                } else {
-                    showQStoreList(filterQStoreListByCategory, filterQStoreListByCategory.length);
-                }
-            }
+            filterQStore(selectCity, selectCategory);
         });
 
         //查看詳細特約商店資訊
