@@ -98,9 +98,6 @@ $("#viewMain3").pagecontainer({
         $("#viewMain3").one("pageshow", function(event, ui) {
             //main height and offsetTop
             offsetTop = $('#viewMain3 .page-header').height();
-
-            var mainHeight = getPageMainHeight('viewMain3');
-            $('#viewMain3 .ui-content').css('height', mainHeight + 'px');
         });
 
         $("#viewMain3").on("pageshow", function(event, ui) {
