@@ -86,8 +86,10 @@ $("#viewQStoreSearchList").pagecontainer({
 
             return new Promise(function(resolve, reject) {
 
+                var async = false;
                 var storelistQueryData = '<LayoutHeader><Category>' + categoryList[index] + '</Category><UpdateDate></UpdateDate></LayoutHeader>';
                 if (index == 0) {
+                    async = true;
                     var updateDate = formatUpdateDate();
                     storelistQueryData = '<LayoutHeader><Category></Category><UpdateDate>' + updateDate + '</UpdateDate></LayoutHeader>';
                 }
@@ -117,7 +119,7 @@ $("#viewQStoreSearchList").pagecontainer({
                     reject();
                 };
 
-                CustomAPI("POST", false, "StoreList", successCallback, failCallback, storelistQueryData, "");
+                CustomAPI("POST", async, "StoreList", successCallback, failCallback, storelistQueryData, "");
             });
         };
 
@@ -133,28 +135,28 @@ $("#viewQStoreSearchList").pagecontainer({
                     '">';
                 switch (qstoreListArr[i]["Category"]) {
                     case '食':
-                        qStoreList += '<div><img src="'+ serverURL + imgURL +'eat.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="' + serverURL + imgURL + 'eat.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '衣':
-                        qStoreList += '<div><img src="'+ serverURL + imgURL +'cloth.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="' + serverURL + imgURL + 'cloth.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '住':
-                        qStoreList += '<div><img src="'+ serverURL + imgURL +'live.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="' + serverURL + imgURL + 'live.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '行':
-                        qStoreList += '<div><img src="'+ serverURL + imgURL +'moving.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="' + serverURL + imgURL + 'moving.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '育':
-                        qStoreList += '<div><img src="'+ serverURL + imgURL +'education.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="' + serverURL + imgURL + 'education.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '樂':
-                        qStoreList += '<div><img src="'+ serverURL + imgURL +'recreation.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="' + serverURL + imgURL + 'recreation.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     case '其他':
-                        qStoreList += '<div><img src="'+ serverURL + imgURL +'others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="' + serverURL + imgURL + 'others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                         break;
                     default:
-                        qStoreList += '<div><img src="'+ serverURL + imgURL +'others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
+                        qStoreList += '<div><img src="' + serverURL + imgURL + 'others.png" class="store-type-img"></div><div class="qstore-list-detail read-font-normal"><div>';
                 }
 
                 // if (qstoreListArr[i]["Distance"] == undefined) {
@@ -172,7 +174,7 @@ $("#viewQStoreSearchList").pagecontainer({
                     '</div></div><div><div>' +
                     distanceVal +
                     '</div></div></div>' +
-                    '<div class="qstore-more" ><img src="'+ serverURL + imgURL +'btn_more.png" class="store-more-img" data-rowid="' +
+                    '<div class="qstore-more" ><img src="' + serverURL + imgURL + 'btn_more.png" class="store-more-img" data-rowid="' +
                     qstoreListArr[i]["MIndex"] +
                     '"></div><div class="activity-line"></div>';
             }
