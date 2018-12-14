@@ -7,8 +7,8 @@ $("#viewScrollTest").pagecontainer({
         });
 
         $("#viewScrollTest").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewScrollTest');
-            $('#viewScrollTest .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewScrollTest .page-main').css('height', mainHeight);
         });
 
         $("#viewScrollTest").on("pageshow", function(event, ui) {

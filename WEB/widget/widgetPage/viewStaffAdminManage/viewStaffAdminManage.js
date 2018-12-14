@@ -10,8 +10,8 @@ $("#viewStaffAdminManage").pagecontainer({
         });
 
         $("#viewStaffAdminManage").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewStaffAdminManage');
-            $('#viewStaffAdminManage .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewStaffAdminManage .page-main').css('height', mainHeight);
             $('.editNoticePreviewBtn').show();
 
             $('.select-room-icon').attr('src', serverURL + imgURL + 'switch_close.png');

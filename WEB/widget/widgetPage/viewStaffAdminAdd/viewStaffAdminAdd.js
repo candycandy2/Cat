@@ -36,8 +36,8 @@ $("#viewStaffAdminAdd").pagecontainer({
         });
 
         $("#viewStaffAdminAdd").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewStaffAdminAdd');
-            $('#viewStaffAdminAdd .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewStaffAdminAdd .page-main').css('height', mainHeight);
             $('.addNoticePreviewBtn').show();
         });
 

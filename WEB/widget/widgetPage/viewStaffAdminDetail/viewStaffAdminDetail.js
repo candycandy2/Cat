@@ -10,8 +10,8 @@ $("#viewStaffAdminDetail").pagecontainer({
         });
 
         $("#viewStaffAdminDetail").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewStaffAdminDetail');
-            $('#viewStaffAdminDetail .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewStaffAdminDetail .page-main').css('height', mainHeight);
 
             $('.editNoticeBtn').show();
             $('.deleteNoticeBtn').show();

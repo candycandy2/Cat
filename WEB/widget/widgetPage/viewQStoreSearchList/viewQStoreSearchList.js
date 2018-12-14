@@ -186,22 +186,9 @@ $("#viewQStoreSearchList").pagecontainer({
 
         /********************************** page event ***********************************/
 
-        //page-main height
-        function getPageMainHeight_(view) {
-            var win = $(window).height();
-            var header = $('#' + view + ' .page-header').height();
-            var main;
-            if (device.platform === "iOS") {
-                main = win - header - iOSFixedTopPX();
-            } else {
-                main = win - header;
-            }
-            return main.toString();
-        }
-
         $("#viewQStoreSearchList").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight_('viewQStoreSearchList');
-            $('#viewQStoreSearchList .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewQStoreSearchList .page-main').css('height', mainHeight);
             getAllCityList();
             getAllCategoryList();
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) != null) {
