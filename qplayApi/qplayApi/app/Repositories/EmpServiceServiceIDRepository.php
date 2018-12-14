@@ -21,13 +21,12 @@ class EmpServiceServiceIDRepository
     /**
      * get service row_id by service_id and type
      * @param  string $serviceId service_id
-     * @param  string $type      type
      * @return mixed
      */
-    public function getServiceRowId($serviceId, $type){
+    public function getServiceRowId($serviceId){
         return $this->serviceId->where('service_id', $serviceId)
-                        ->where('type', $type)
-                        ->get();
+                        ->where('active', 'Y')
+                        ->first();
     }
 
     /**
@@ -38,5 +37,6 @@ class EmpServiceServiceIDRepository
     public function newEmpService($data){
         return $this->serviceId->insertGetId($data);
     }
+
     
 }

@@ -82,6 +82,7 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
         //for app
         Route::group(['middleware' => 'auth.token'], function () {
             Route::post('/newEmpService', 'ServiceController@newEmpService');
+            Route::post('/setEmpServiceTarget', 'TargetController@setEmpServiceTarget');
         });
     });
 });

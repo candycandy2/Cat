@@ -10,5 +10,5 @@ class EmpService_Target_ID extends Model
     protected $table = 'target_id';
     protected $primaryKey = 'row_id';
 
-    public $timestamp = false;
+    public $timestamps = false;
 }

@@ -19,7 +19,6 @@ class AuthenticateWithToken
      */
     public function handle($request, Closure $next, $guard = null)
     {
-
         //common verify
         $Verify = new Verify();
         $verifyResult = $Verify->verify();
@@ -41,10 +40,6 @@ class AuthenticateWithToken
                        'message'=>CommonUtil::getMessageContentByCode($verifyTokenResult["code"]),
                        'content'=>''];
                 return response()->json($result);
-        }
-
-        foreach ($request->all() as $k=>$v) {
-           $request->merge([strtolower($k) => strtolower($v)]);
         }
 
         $request->merge(['token_valid_date' => $verifyTokenResult["token_valid_date"]]);
