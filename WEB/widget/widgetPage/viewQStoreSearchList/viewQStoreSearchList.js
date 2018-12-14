@@ -187,8 +187,7 @@ $("#viewQStoreSearchList").pagecontainer({
         /********************************** page event ***********************************/
 
         $("#viewQStoreSearchList").one("pageshow", function(event, ui) {
-            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
-            $('#viewQStoreSearchList .page-main').css('height', mainHeight);
+            $('#viewQStoreSearchList .page-main').css('height', window.sessionStorage.getItem('pageMainHeight'));
             getAllCityList();
             getAllCategoryList();
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) != null) {
