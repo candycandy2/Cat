@@ -10,8 +10,8 @@ $("#viewStaffAdminNotice").pagecontainer({
         });
 
         $("#viewStaffAdminNotice").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewStaffAdminNotice');
-            $('#viewStaffAdminNotice .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewStaffAdminNotice .page-main').css('height', mainHeight);
 
             $('.add-notice img').attr('src', serverURL + imgURL + 'add.png');
         });

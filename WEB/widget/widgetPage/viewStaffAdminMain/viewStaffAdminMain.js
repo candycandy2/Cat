@@ -1,8 +1,10 @@
 $("#viewStaffAdminMain").pagecontainer({
     create: function(event, ui) {
 
-        var imgURL = '/widget/widgetPage/viewStaffAdminMain/img/';
-        var statusList = [
+        var imgURL = '/widget/widgetPage/viewStaffAdminMain/img/',
+            rrsKey = 'apprrs',
+            rrsSecret = '2e936812e205445490efb447da16ca13',
+            statusList = [
             {id: 1, item: '服務中'},
             {id: 2, item: '忙碌中'},
             {id: 3, item: '暫停服務'},
@@ -34,6 +36,22 @@ $("#viewStaffAdminMain").pagecontainer({
             //$('#adminSettingPopup-option-list .tpl-dropdown-list-selected').removeClass('tpl-dropdown-list-selected');
         }
 
+        function getMeetingRoom() {
+            var self = this;
+            var queryData = {};
+
+            this.successCallback = function(data) {
+                console.log(data);
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                //CustomAPIByKey("POST", true, rrsKey, rrsSecret, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "", 60 * 60, "low");
+                CustomAPI("POST", true, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "");
+            }();
+        }
+
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminMain").on("pagebeforeshow", function(event, ui) {
@@ -41,13 +59,13 @@ $("#viewStaffAdminMain").pagecontainer({
         });
 
         $("#viewStaffAdminMain").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewStaffAdminMain');
-            $('#viewStaffAdminMain .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewStaffAdminMain .page-main').css('height', mainHeight);
             initAdminSetting();
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
-
+            getMeetingRoom();
         });
 
         $("#viewStaffAdminMain").on("pagehide", function(event, ui) {

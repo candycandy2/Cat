@@ -47,8 +47,8 @@ $("#viewGeneralSetting").pagecontainer({
             //$("#defaultList").sortable('enable'); //啓用
 
             //4. set main height
-            var mainHeight = getPageMainHeight('viewGeneralSetting');
-            $('#viewGeneralSetting .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewGeneralSetting .page-main').css('height', mainHeight);
         });
 
         $("#viewGeneralSetting").on("pageshow", function (event, ui) {

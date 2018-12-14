@@ -9,8 +9,8 @@ $("#viewStaffUserTop").pagecontainer({
         });
 
         $("#viewStaffUserTop").one("pageshow", function(event, ui) {
-            var mainHeight = getPageMainHeight('viewStaffUserTop');
-            $('#viewStaffUserTop .page-main').css('height', mainHeight + 'px');
+            var mainHeight = window.sessionStorage.getItem('pageMainHeight');
+            $('#viewStaffUserTop .page-main').css('height', mainHeight);
         });
 
         $("#viewStaffUserTop").on("pageshow", function(event, ui) {
