@@ -10,5 +10,6 @@ class EmpService_Data_Log extends Model
     protected $table = 'data_log';
     protected $primaryKey = 'row_id';
 
-    public $timestamp = false;
+    public $timestamps = false;
+    protected $guarded = [];
 }

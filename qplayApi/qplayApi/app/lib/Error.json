@@ -823,7 +823,7 @@
         "language_list": [
           {
             "language": "en-us",
-            "error_description": "this service_id  already exist."
+            "error_description": "this service_id already exist."
           },
           {
             "language": "zh-tw",
@@ -832,6 +832,23 @@
           {
             "language": "zh-cn",
             "error_description": "service_id已存在"
+          }
+        ]
+      },
+      {
+        "error_code": "052002",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "this service not exist."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "service_id不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "service_id不存在"
           }
         ]
       }

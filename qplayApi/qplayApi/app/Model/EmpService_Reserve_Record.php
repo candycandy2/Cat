@@ -10,5 +10,5 @@ class EmpService_Reserve_Record extends Model
     protected $table = 'reserve_record';
     protected $primaryKey = 'row_id';
 
-    public $timestamp = false;
+    public $timestamps = false;
 }

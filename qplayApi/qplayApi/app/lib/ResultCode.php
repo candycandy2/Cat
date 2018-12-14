@@ -64,5 +64,6 @@ abstract class ResultCode
     
     //Emp Service
     const _052001_empServiceExist = "052001"; //emp service id 已經存在
+    const _052002_empServiceNotExist = "052002"; //emp service id 不存在
     
 }

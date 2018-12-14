@@ -56,34 +56,31 @@ class ServiceController extends Controller
         $domain = $request->domain;
         $empNo = $request->emp_no;
 
-        
         try {
             
             $DBconn = DB::connection($this->connection);
             $DBconn->beginTransaction();
             
-            $newEmpServiceRs = $this->empService->newEmpService($serviceId,
-                                                                $type,
-                                                                $loginId,
-                                                                $domain,
-                                                                $empNo);
-            
-            if($newEmpServiceRs[0]['result_code'] == ResultCode::_1_reponseSuccessful){
-                $this->empServiceLog->newDataLog($newEmpServiceRs[1]);
-            }else{
-                return response()->json($newEmpServiceRs[0]);
+            $result = $this->empService->newEmpService($serviceId,
+                                                        $type,
+                                                        $loginId,
+                                                        $domain,
+                                                        $empNo);
+    
+            if($result[0]['result_code'] == ResultCode::_1_reponseSuccessful){
+
+                $this->empServiceLog->newDataLog($result[1]);
+
             }
 
             $DBconn->commit();
-
+            return response()->json($result[0]);
+        
         } catch (\Exception $e) {
             $DBconn->rollBack();
             throw $e;
-        }      
-        
-        $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
-                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)];                
-        return response()->json($result);
+        }
+
     }
 
 
