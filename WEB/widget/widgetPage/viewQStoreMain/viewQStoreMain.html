@@ -24,14 +24,14 @@
                     featureType: "poi",
                     elementType: "labels",
                     stylers: [{
-                        visibility: "off"
+                        visibility: "false"
                     }]
                 }];
 
                 var uluru = {lat: 25.0811469, lng: 121.56481370000006};
 
                 window.map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 18,
+                    zoom: 11,
                     center: uluru,
                     mapTypeControl: false,
                     streetViewControl: false,
@@ -49,4 +49,21 @@
         </script>
     </div>
     <!--popup-->
+
+    <!--template @popup content > User Info -->
+    <template id="tplStoreInfoPopup">
+        <div class="header">
+            <div></div>
+            <div class="close-popup">
+                <svg class="close-popup-button">
+                    <img src="img/component/close.png" width="9.6vw" height="9.6vw">
+                </svg>
+            </div>
+            <div></div>
+        </div>
+        <div class="main">
+        </div>
+        <div class="footer">
+        </div>
+    </template>
 </div>
