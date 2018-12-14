@@ -103,9 +103,29 @@ $("#viewQStoreSearchList").pagecontainer({
                         //第一次Call StoreList API，將七種類別的StoreList依序存入localStorage
                         qstoreListReturnArr = data['Content'];
                         for (var i = 0; i < qstoreListReturnArr.length; i++) {
+                            //Need to check MIndex & UpdateDate
+                            /*
+                                {
+                                        "MIndex": 28,
+                                        ...
+                                        "UpdateDate": "10/22/2018 5:46:18 PM"
+                                }
+                            */
+                            var index = allQStoreList.map(function (item) { return item.MIndex; }).indexOf(qstoreListReturnArr[i].MIndex);
+                            if(index >= 0) {
+                                //移除找到的
+                                allQStoreList.splice(index,1);
+                            }
+                            //塞入新增的
                             allQStoreList.push(qstoreListReturnArr[i]);
                         }
 
+                        //更新日期由近到遠
+                        allQStoreList.sort(function(a, b){
+                            let aDate = new Date(a.UpdateDate);
+                            let bDate = new Date(b.UpdateDate);
+                            return aDate < bDate;
+                        });
                         localStorage.setItem(qstoreWidget.QStoreLocalStorageKey, JSON.stringify(allQStoreList));
 
                     } else if (data['ResultCode'] === "044901") {
