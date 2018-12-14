@@ -244,8 +244,7 @@ $("#viewQStoreSearchList").pagecontainer({
             filterQStore(selectCity, selectCategory);
         });
 
-        $("#viewQStoreSearchList").on("pagehide", function(event, ui) {
-        });
+        $("#viewQStoreSearchList").on("pagehide", function(event, ui) {});
 
 
         /********************************** dom event *************************************/
@@ -255,11 +254,11 @@ $("#viewQStoreSearchList").pagecontainer({
             var filterQStoreList = [];
 
             filterQStoreList = allQStoreList.filter(function(item) {
-                if (selectCategory_ === "所有類別" && selectCity_ === "所有縣市") {
+                if (selectCategory_ === categoryList[0] && selectCity_ === cityList[0]) {
                     return item;
-                } else if (selectCategory_ === "所有類別" && item.County === selectCity_) {
+                } else if (selectCategory_ === categoryList[0] && item.County === selectCity_) {
                     return item;
-                } else if (selectCity_ === "所有縣市" && item.Category === selectCategory_) {
+                } else if (selectCity_ === cityList[0] && item.Category === selectCategory_) {
                     return item;
                 } else if (item.Category === selectCategory_ && item.County === selectCity_) {
                     return item;
