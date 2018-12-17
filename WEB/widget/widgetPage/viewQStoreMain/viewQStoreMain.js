@@ -2,7 +2,6 @@
 $("#viewQStoreMain").pagecontainer({
     create: function (event, ui) {
 
-        var food;
         window.myLocate;
         window.myLatLng;
         window.allMarker = [];
@@ -79,7 +78,7 @@ $("#viewQStoreMain").pagecontainer({
 
         }
 
-        window.storeInfoPopup = function(marker) {
+        window.storeInfoPopup = function(nowMarker) {
 
             //User Info Popup
             $("#qstoreInfoPopup").popup("destroy").remove();
@@ -91,8 +90,78 @@ $("#viewQStoreMain").pagecontainer({
 
             tplJS.Popup(null, null, "append", qstoreInfoPopupData);
 
+            $("hr").remove(".ui-hr-bottom");
             $("#qstoreInfoPopup .button").hide();
             $("#qstoreInfoPopup .footer").hide();
+
+            $(window.allMarker).each(function(index, item) {
+
+                if (typeof nowMarker !== "undefined") {
+
+                    if (item.attribution.source == nowMarker.attribution.source) {  
+
+                        var title = item.title;
+
+                        $.each($(qstoreMapFromLocal), function (index, item) {
+                            if (this.Subject == title) {  
+                                
+                                var imgURL = "/widget/widgetPage/viewQStoreMain/img/";
+                                var selectCategory = this.Category;
+                                var categoryImgUrl = "";
+                                var pinImgUrl = serverURL + imgURL + 'pin.png';
+                                var phoneImgUrl = serverURL + imgURL + 'phone.png';
+                                switch (selectCategory) {
+                                    case '食':
+                                        categoryImgUrl = serverURL + imgURL + 'eat.png';
+                                        break;
+                                    case '衣':
+                                        categoryImgUrl = serverURL + imgURL + 'cloth.png';
+                                        break;
+                                    case '住':
+                                        categoryImgUrl = serverURL + imgURL + 'live.png';
+                                        break;
+                                    case '行':
+                                        categoryImgUrl = serverURL + imgURL + 'moving.png';
+                                        break;
+                                    case '育':
+                                        categoryImgUrl = serverURL + imgURL + 'education.png';
+                                        break;
+                                    case '樂':
+                                        categoryImgUrl = serverURL + imgURL + 'recreation.png';
+                                        break;
+                                    case '其他':
+                                        categoryImgUrl = serverURL + imgURL + 'others.png';
+                                        break;
+                                    default:
+                                        categoryImgUrl = serverURL + imgURL + 'others.png';
+                                }
+
+                                $("#qstoreInfoPopup .detail-type-img").attr("src", categoryImgUrl);
+                                $("#qstoreInfoPopup .pin-img").attr("src", pinImgUrl);
+                                $("#qstoreInfoPopup .phone-img").attr("src", phoneImgUrl);
+                                $("#qstoreInfoPopup .qstore-list-detail").html(title);
+                                $("#qstoreInfoPopup .address-detail").html(this.Address);
+                                var phoneUrl = "tel:" + this.Phone;
+                                $("#qstoreInfoPopup .phone-type").attr("href", phoneUrl);
+                                $("#qstoreInfoPopup .phone-type").html(this.Phone);
+                                $("#qstoreInfoPopup .summary-content").html(this.Summary);
+
+                                var endDate = new Date(this.Date2);
+                                var month = ((endDate.getMonth() + 1 < 10) ? '0' + (endDate.getMonth() + 1) : endDate.getMonth() + 1);
+                                var date = ((endDate.getDate() < 10) ? '0' + endDate.getDate() : endDate.getDate());
+                                var qstoreEndDate = endDate.getFullYear() + '/' + month + '/' + date;
+                                if (qstoreEndDate.substring(0, 4) === "9999") {
+                                    qstoreEndDate = "無限期";
+                                }
+                                $("#qstoreInfoPopup .date-content").html(qstoreEndDate);
+                            }
+                        });
+                    }
+                }
+            });
+
+            
+
             $("#qstoreInfoPopup").popup("open");
         };
 
@@ -147,34 +216,6 @@ $("#viewQStoreMain").pagecontainer({
                     .then(QueryStoreList(7))
                     .then(qstoreMapFromLocal = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey)));                    
             }
-
-
-
-            food = [{
-                name: "丹提咖啡",
-                distance: 0.3,
-                position: "(25.0810692, 121.5636862)",
-                address: "台北市內湖區堤頂大道二段407巷24號",
-                phone: "02 2658 4755"
-            }, {
-                name: "西雅圖極品咖啡",
-                distance: 0.017,
-                position: "(25.0810089, 121.56473299999993)",
-                address: "台北市內湖區基湖路18號",
-                phone: "02 8751 2128"
-            }, {
-                name: "星巴克",
-                distance: 0.074,
-                position: "(25.0803921, 121.56507120000003)",
-                address: "台北市內湖區基湖路25號",
-                phone: "02 2799 9334"
-            }, {
-                name: "珮斯坦咖啡館",
-                distance: 0.092,
-                position: "(25.0813135, 121.56576429999996)",
-                address: "台北市內湖區基湖路3巷1號1樓",
-                phone: "02 8797 8027"
-            }];
 
         });
 
