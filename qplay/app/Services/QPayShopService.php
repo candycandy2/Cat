@@ -65,6 +65,7 @@ class QPayShopService
                 'department'    =>'shop',
                 'status'        =>'Y',
                 'resign'        =>'N',
+                'ad_flag'       =>'N',
                 'source_from'   =>'shop',
                 'created_at'    =>$now,
                 'created_user'  =>Auth::user()->row_id
