@@ -18,8 +18,43 @@ $("#viewQStoreMain").pagecontainer({
                 geocoder.geocode({'address': address}, function(results, status) {
 
                     if (status === 'OK') {
+
+                        var categoryType = "";
+                        var categoryIconUrl = "";
+                        var imgURL = "/widget/widgetPage/viewQStoreMain/img/";
+                        $.each($(filterQStoreListByCity), function (index, item) {
+                            if (this.Address == address) { 
+                                categoryType = this.Category
+                                switch (categoryType) {
+                                    case '食':
+                                        categoryIconUrl = serverURL + imgURL + 'icon_eatpin.png';
+                                        break;
+                                    case '衣':
+                                        categoryIconUrl = serverURL + imgURL + 'icon_clothpin.png';
+                                        break;
+                                    case '住':
+                                        categoryIconUrl = serverURL + imgURL + 'icon_livepin.png';
+                                        break;
+                                    case '行':
+                                        categoryIconUrl = serverURL + imgURL + 'icon_movingpin.png';
+                                        break;
+                                    case '育':
+                                        categoryIconUrl = serverURL + imgURL + 'icon_educationpin.png';
+                                        break;
+                                    case '樂':
+                                        categoryIconUrl = serverURL + imgURL + 'icon_recreationpin.png';
+                                        break;
+                                    case '其他':
+                                        categoryIconUrl = serverURL + imgURL + 'icon_otherspin.png';
+                                        break;
+                                    default:
+                                        categoryIconUrl = serverURL + imgURL + 'icon_otherspin.png';
+                                }
+                            }
+                        });
+
                         var iconImage = {
-                            url: "img/storepin.png",
+                            url: categoryIconUrl,
                             scaledSize: new google.maps.Size(34, 40),
                             origin: new google.maps.Point(0, 0),
                             anchor: new google.maps.Point(0, 40)
@@ -53,7 +88,6 @@ $("#viewQStoreMain").pagecontainer({
 
                             markerInCenter(marker);
 
-                            //markerDetail(marker);
                             window.storeInfoPopup(marker);
                         });
 
@@ -75,7 +109,6 @@ $("#viewQStoreMain").pagecontainer({
 
         function markerInCenter(nowMarker) {
             window.map.setCenter(nowMarker.getPosition());
-
         }
 
         window.storeInfoPopup = function(nowMarker) {
@@ -104,7 +137,6 @@ $("#viewQStoreMain").pagecontainer({
 
                         $.each($(qstoreMapFromLocal), function (index, item) {
                             if (this.Subject == title) {  
-                                
                                 var imgURL = "/widget/widgetPage/viewQStoreMain/img/";
                                 var selectCategory = this.Category;
                                 var categoryImgUrl = "";
@@ -170,32 +202,6 @@ $("#viewQStoreMain").pagecontainer({
                 $("#qstoreInfoPopup").popup("close");
             }
         }, "#qstoreInfoPopup .close-popup");
-
-        //Show QStore Detail Info
-        function markerDetail(nowMarker) {
-
-            $(window.allMarker).each(function(index, item) {
-
-                if (typeof nowMarker !== "undefined") {
-
-                    if (item.attribution.source == nowMarker.attribution.source) {  
-
-                        var title = item.title;
-
-                        $.each($(qstoreMapFromLocal), function (index, item) {
-                            if (this.Subject == title) {  
-                                var shopDetailInfo = $("#tplShopDetailInfo");
-                                shopDetailInfo.find(".name").html(title);
-                                shopDetailInfo.find(".address").html(this.Address);
-                                $("#detailContentOnMap").append(shopDetailInfo);
-                            }
-                        });
-                    }
-                }
-            });
-
-            $("#detailContentOnMap").fadeIn();
-        }
 
         /********************************** page event ***********************************/
 
