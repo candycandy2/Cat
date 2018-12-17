@@ -25,7 +25,7 @@ var qstoreWidget = {
 
             //點擊我附近商店，跳轉特約商店地圖頁面
             contentItem.on('click', '.store-near-img', function() {
-                //checkWidgetPage('viewQStoreMain', pageVisitedList);
+                checkWidgetPage('viewQStoreMain', pageVisitedList);
             });
 
             //點擊我所有商店，跳轉所有商店分類頁面
