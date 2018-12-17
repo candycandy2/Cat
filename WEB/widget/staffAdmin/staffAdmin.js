@@ -147,5 +147,9 @@ var staffAdminWidget = {
         $.fn.staffAdmin.defaults = {};
 
         $('.staffAdminWidget').staffAdmin();
+    },
+    plugin: function() {
+        let dependency = ['QForumPlugin'];
+        widget.plugin(dependency);
     }
 }

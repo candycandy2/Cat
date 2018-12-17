@@ -55,8 +55,14 @@ var widget = {
 
             $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
                 .done(function(script, textStatus) {
-                    if (typeof window[widgetItem] != 'undefined')
+                    if (typeof window[widgetItem] != 'undefined') {
                         window[widgetItem].init(contentItem);
+                        //是否需要plugin
+                        if(typeof window[widgetItem].plugin != 'undefined') {
+                            window[widgetItem].plugin();
+                        }
+                    }
+
                 });
 
         });
@@ -109,6 +115,21 @@ var widget = {
             appEnvironment = "dev";
         } else {
             appEnvironment = "";
+        }
+    },
+    plugin: function(arr) {
+        for(var i = 0; i < arr.length; i++) {
+            let status = false;
+            for(var j = 0; j < pluginList.length; j++) {
+                if(arr[i] == pluginList[j]) {
+                    status = true;
+                    break;
+                }
+            }
+            if(!status) {
+                pluginList.push(arr[i]);
+                $.getScript(serverURL + '/widget/widgetPlugin/' + arr[i] + '.js');
+            }
         }
     }
 };
