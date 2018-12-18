@@ -7,9 +7,10 @@ $("#viewQStoreMain").pagecontainer({
         window.allMarker = [];
         var qstoreMapFromLocal = [];
         var filterQStoreListByCity;
+        var locatedCity = "";
+        var cityList = ["所有縣市", "基隆市", "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
 
         /********************************** function *************************************/
-       
         function geocodeAddress(geocoder, resultsMap, address, name, category) {
             //var address = document.getElementById('address').value;
             //var address = "台北市內湖區基湖路16號";
@@ -219,6 +220,62 @@ $("#viewQStoreMain").pagecontainer({
 
         });
 
+        function getLocatedCityByLatLng(lat, lng) {
+            var latlng = new google.maps.LatLng(lat, lng);
+            geocoder.geocode({latLng: latlng}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[1]) {
+                        var arrAddress = results;
+                        $.each(arrAddress, function(i, address_component) {
+                            if (address_component.types[0] == "administrative_area_level_1") {
+                                locatedCity = address_component.address_components[0].long_name;
+                            }
+                        });
+                    } else {
+                        locatedCity = "台北市";
+                    }
+                } else {
+                    console.log("Geocoder failed due to: " + status);
+                    locatedCity = "台北市";
+                }
+
+                filterQStoreListByCity = qstoreMapFromLocal.filter(function(item, index, array) {
+                    if (item.County === locatedCity) {
+                        return item;
+                    }
+                });
+
+                var cityStoreLength = filterQStoreListByCity.length;
+                var frequency = cityStoreLength/10;
+                var count = 0;
+
+                if (frequency < 1) {
+                    for (var i=0; i<cityStoreLength; i++) {
+                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category); 
+                    }
+                } else {
+                    var i = 0;
+                    var j = 1;
+                    var repeatCallGecodeAddress = setInterval(function() {
+                        if (count === Math.round(frequency)) {
+                            //window.clearInterval(this.setInterval());
+                            clearInterval(repeatCallGecodeAddress);
+                        } else {
+                            for (i; i<10*j; i++) {
+                                if (i < cityStoreLength) {
+                                    geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);   
+                                }
+                            } 
+                            count ++;
+                            j++
+                        }
+
+                    }, 1000);
+                }
+
+            });
+        }
+
         $("#viewQStoreMain").on("pageshow", function (event, ui) {
                    console.log("=========== ready");
 
@@ -234,6 +291,8 @@ $("#viewQStoreMain").pagecontainer({
                         };
 
                         console.log(pos);
+
+                        getLocatedCityByLatLng(pos.lat, pos.lng);
 
                         var iconImage = {
                             url: "img/icon_locationpin.png",
@@ -268,28 +327,15 @@ $("#viewQStoreMain").pagecontainer({
                     };
 
                     window.locationError = function(error) {
-                        console.log(error);
+                        //未開啟定位服務，位置固定在BenQ台北總部
+                        var pos = {
+                          lat:  25.0811469,
+                          lng: 121.56481370000006
+                        };
+                        getLocatedCityByLatLng(pos.lat, pos.lng);
                     };
 
-                    /*callGeocodeAddress(0)
-                    .then(callGeocodeAddress(10))*/
-
-                    filterQStoreListByCity = qstoreMapFromLocal.filter(function(item, index, array) {
-                        if (item.County === "台北市") {
-                            return item;
-                        }
-                    });
-                    
-                    for (var i=0; i<10; i++) {
-                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);   
-                    } 
-
-                    setTimeout(function() {
-                        for (var i=10; i<20; i++) {
-                            geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);   
-                        }
-                    }, 1000);
-
+                   
                     navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {       
                         enableHighAccuracy: true
                     });
