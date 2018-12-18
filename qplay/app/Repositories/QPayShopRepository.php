@@ -44,7 +44,6 @@ class QPayShopRepository
                         'login_id',
                         'trade_status',
                         'ext_no',
-                        'emp_id',
                         'emp_name')
                 ->orderBy('qpay_shop.created_at','desc')
                 ->get();
@@ -119,7 +118,6 @@ class QPayShopRepository
                         'login_id',
                         'trade_status',
                         'ext_no',
-                        'emp_id',
                         'emp_name')
                 ->orderBy('status','desc')
                 ->orderBy('user_delete_at','asc')
@@ -148,7 +146,6 @@ class QPayShopRepository
                         'login_id',
                         'trade_status',
                         'ext_no',
-                        'emp_id',
                         'emp_name as shop_name')
                 ->first();
     }

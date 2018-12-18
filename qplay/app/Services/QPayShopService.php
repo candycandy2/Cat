@@ -57,7 +57,7 @@ class QPayShopService
                 'ext_no'        =>$tel,
                 'login_id'      =>$loginId,
                 'password'      =>$pwdEncode,
-                'emp_id'        =>$pwd,
+                'password_original' =>$pwdEncode,
                 'emp_no'        =>$loginId,
                 'user_domain'   =>'shop',
                 'site_code'     =>'shop',
@@ -122,16 +122,16 @@ class QPayShopService
             return null;
         }
 
-        if($resetPwd == null){
-            $resetPwd = $user->emp_id;
+        if ($resetPwd == null) {
+            $pwd = $user->password_original;
+        } else {
+            $options = [
+                'cost' => '08',
+            ];
+
+            $pwd = password_hash($resetPwd, PASSWORD_BCRYPT, $options);            
         }
 
-        $options = [
-            'cost' => '08',
-        ];
-
-        $pwd = password_hash($resetPwd, PASSWORD_BCRYPT, $options);
-        
         return $this->userRepository->resetQAccountPassword($userId, $pwd, Auth::user()->row_id, $updatedAt);
     }
 

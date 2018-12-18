@@ -212,7 +212,7 @@ class QPayPointService
 
                 //Find emp data which not exist in `qpay_member`, Insert new data
                 $result = DB::table('qp_user')
-                        -> select('row_id', 'emp_id')
+                        -> select('row_id', 'trade_pwd_original')
                         -> whereIn('emp_no', $notExistEmpNo)
                         -> get();
 
@@ -221,12 +221,7 @@ class QPayPointService
                 }, $result);
 
                 foreach ($result as $data) {
-                    $options = [
-                        'cost' => '08',
-                    ];
-                    $trade_pwd = password_hash(substr(strval(trim($data["emp_id"])), -4), PASSWORD_BCRYPT, $options);
-
-                    $memberID = $this->qpayMemberRepository->newMember($data["row_id"], $trade_pwd);
+                    $memberID = $this->qpayMemberRepository->newMember($data["row_id"], $data["trade_pwd_original"]);
                     $existQPayMemberID[] = $memberID;
                 }
 
