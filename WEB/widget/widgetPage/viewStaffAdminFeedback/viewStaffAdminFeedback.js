@@ -2,6 +2,8 @@ $("#viewStaffAdminFeedback").pagecontainer({
     create: function(event, ui) {
 
         var imgURL = '/widget/widgetPage/viewStaffAdminFeedback/img/';
+        let staffKey = 'appempservice';
+        let faqBoardID = JSON.parse(window.localStorage.getItem('staffBoardType'))['staffFAQ']['board_id'].toString();
 
         //初始化總機狀態dropdownlist
         function initAdminSetting() {
@@ -29,6 +31,41 @@ $("#viewStaffAdminFeedback").pagecontainer({
             //$('#adminSettingPopup-option-list .tpl-dropdown-list-selected').removeClass('tpl-dropdown-list-selected');
         }
 
+        //获取所有反馈问题
+        function getFAQPostList() {
+            var queryData = "<LayoutHeader><emp_no>" +
+                loginData["emp_no"] +
+                "</emp_no><source>" +
+                staffKey +
+                appEnvironment +
+                "</source><board_id>" +
+                faqBoardID +
+                "</board_id></LayoutHeader>";
+
+            var successCallback = function(data) {
+                console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    let faqPostList = data['Content'];
+                    let content = '';
+                    for(var i in faqPostList) {
+                        content += '<li class="admin-feedback-list"><div>' +
+                            faqPostList[i]['post_create_time'] +
+                            '</div><div class="unread">' +
+                            faqPostList[i]['post_title'] +
+                            '</div></li>';
+                    }
+                    $('.admin-feedback-ul').append(content);
+                }
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                QForumPlugin.CustomAPI("POST", true, "getPostList", successCallback, failCallback, queryData, "");
+            }();
+        }
+
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminFeedback").on("pagebeforeshow", function(event, ui) {
@@ -41,7 +78,7 @@ $("#viewStaffAdminFeedback").pagecontainer({
         });
 
         $("#viewStaffAdminFeedback").on("pageshow", function(event, ui) {
-
+            getFAQPostList();
         });
 
         $("#viewStaffAdminFeedback").on("pagehide", function(event, ui) {

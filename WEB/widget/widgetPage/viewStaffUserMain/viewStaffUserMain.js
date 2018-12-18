@@ -2,35 +2,45 @@ $("#viewStaffUserMain").pagecontainer({
     create: function(event, ui) {
 
         var imgURL = '/widget/widgetPage/viewStaffUserMain/img/',
-            forumKey = 'appqforum',
-            forumSecret = 'c40a5073000796596c2ba5e70579b1e6';
+            staffKey = 'appempservice';
 
         function getBoardType() {
-            var self = this;
+            let queryData = "<LayoutHeader><emp_no>" +
+                loginData["emp_no"] +
+                "</emp_no><source>" +
+                staffKey +
+                appEnvironment +
+                "</source></LayoutHeader>";
 
-            var queryData = "<LayoutHeader><emp_no>" +
-                loginData["emp_no"] + "</emp_no><source>appempservicedev</source></LayoutHeader>";
+            var successCallback = function(data) {
 
-            this.successCallback = function(data) {
-                console.log(data);
+                if(data['ResultCode'] == '1') {
+                    let boardArr = data['Content']['board_list'];
+                    let boardObj = {};
+                    for(var i in boardArr) {
+                        if(boardArr[i].board_name == 'staffFAQ') {
+                            boardObj['staffFAQ'] = boardArr[i];
+
+                        } else if(boardArr[i].board_name == 'staffAnnounce') {
+                            boardObj['staffAnnounce'] = boardArr[i];
+                        }
+                    }
+                    boardObj['lastUpdateTime'] = new Date();
+                    window.localStorage.setItem('staffBoardType', JSON.stringify(boardObj));
+                }
+
             };
 
-            this.failCallback = function(data) {};
+            var failCallback = function(data) {};
 
             var __construct = function() {
-                CustomAPIByKey("POST", true, forumKey, forumSecret, "getBoardList", self.successCallback, self.failCallback, queryData, "", 60 * 60, "low");
+                let staffBoardType = JSON.parse(window.localStorage.getItem('staffBoardType'));
+                if(staffBoardType == null || checkDataExpired(staffBoardType['lastUpdateTime'], 1, 'dd')) {
+                    QForumPlugin.CustomAPI("POST", true, "getBoardList", successCallback, failCallback, queryData, "");
+                }
             }();
         }
 
-        function createXMLDataToString(data) {
-            var XMLDataString = "";
-
-            $.each(data, function(key, value) {
-                XMLDataString += "<" + key + ">" + htmlspecialchars(value) + "</" + key + ">";
-            });
-
-            return XMLDataString;
-        }
 
         /********************************** page event ***********************************/
         $("#viewStaffUserMain").on("pagebeforeshow", function(event, ui) {
@@ -51,12 +61,12 @@ $("#viewStaffUserMain").pagecontainer({
             $('.subtract').attr('src', serverURL + imgURL + 'subtraction_gray.png');
             $('.add').attr('src', serverURL + imgURL + 'addition_blue.png');
             $('.room-refresh').attr('src', serverURL + imgURL + 'loading.png');
-            //
+            //获取所有staff的board主题
             getBoardType();
         });
 
         $("#viewStaffUserMain").on("pageshow", function(event, ui) {
-            
+
         });
 
         $("#viewStaffUserMain").on("pagehide", function(event, ui) {
@@ -65,7 +75,7 @@ $("#viewStaffUserMain").pagecontainer({
 
 
         /********************************** dom event *************************************/
-        
+
 
     }
 });

@@ -19,11 +19,17 @@ var QForumPlugin = {
 
         function requestSuccess(data) {
             checkTokenValid(data['ResultCode'], data['token_valid'], successCallback, data);
+
+            var dataArr = [
+                "Call API",
+                requestAction,
+                data['ResultCode']
+            ];
+            LogFile.createAndWriteFile(dataArr);
         }
 
         function requestError(data) {
             errorHandler(data);
-
             if (typeof failCallback === "function") {
                 failCallback();
             }
@@ -60,6 +66,6 @@ var QForumPlugin = {
         });
 
         return XMLDataString;
-    },
+    }
 
 };
