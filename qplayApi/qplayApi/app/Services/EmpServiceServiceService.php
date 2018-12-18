@@ -71,5 +71,50 @@ class EmpServiceServiceService
         return [$result,$logData];
     }
 
+    /**
+     * Get enable service list result info by service type, id serviceType is All, 
+     * it will return all type of service
+     * @param  String $serviceType service type
+     * @return json
+     */
+    public function getEmpServiceList($serviceType){
+        
+        $serviceTypeList = ["service_type_list" => []];
+
+        $serviceList = $this->serviceIDRepository->getServiceByServiceType($serviceType);
+        
+        $serviceTypeArr = [];
+        
+        foreach ($serviceList as $service) {
+            $tmpServiceIdList = [];
+            $updatedUser = EmpServiceLog::getLastUpdatedUser(self::TABLE,$service->row_id);
+            if(!is_null($updatedUser)){
+                
+                $serviceTypeArr[$service->type][] = ["service_id" => $service->service_id,
+                                                      "owner_login_id" => $updatedUser->login_id,
+                                                      "owner_domain" => $updatedUser->domain,
+                                                      "owner_emp_no" => $updatedUser->emp_no];
+            }
+        }
+
+        foreach ($serviceTypeArr as $key => $value) {
+            array_push($serviceTypeList["service_type_list"],
+                      ["service_type" => $key,"service_id_list" => $value]);
+        }
+
+        if(count($serviceTypeArr) <= 0 ){
+            $result = ["result_code" => ResultCode::_052003_empServiceTypeNotExist, "message"
+                                 => CommonUtil::getMessageContentByCode(ResultCode::_052003_empServiceTypeNotExist)
+                  ];
+        }else{
+            $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
+                       "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
+                       "content" => $serviceTypeList
+                      ];
+        }
+
+        return $result;
+
+    }
 
 }

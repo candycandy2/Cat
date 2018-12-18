@@ -66,4 +66,18 @@ class EmpServiceDataLogRepository
         ));
 
     }
+
+    /**
+     * Get lasted updated user info by table and row_id
+     * @param  string $tableName  table name
+     * @param  int $tableRowId record row_id
+     * @return mixed
+     */
+    public static function getLastUpdatedUser($tableName, $tableRowId){
+        $dataLog = new EmpService_Data_Log();
+        return $dataLog->where('table_name',$tableName)
+                    ->where('table_row_id',$tableRowId)
+                    ->orderby('created_at','desc')
+                    ->first();
+    }
 }
