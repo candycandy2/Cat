@@ -75,7 +75,9 @@ class UserRepository
                        'emp_name',
                        'user_domain',
                        'department',
-                       'emp_id',
+                       'password',
+                       'password_original',
+                       'trade_pwd_original',
                        'email')
              ->first();
     }
