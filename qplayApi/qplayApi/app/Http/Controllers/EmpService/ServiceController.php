@@ -83,5 +83,31 @@ class ServiceController extends Controller
 
     }
 
+    /**
+     * Get EmpService list by servicr type,
+     * you can set service_type to "All" to get all type of sercive
+     * @param  Request $request 
+     * @return json
+     */
+    public function getEmpServiceList(Request $request){
+        //parameter verify
+        $validator = Validator::make($request->all(),
+            [
+            'service_type' => 'required',
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+        $serviceType = $request->service_type;
+        $serviceList = $this->empService->getEmpServiceList($serviceType);
+        return $serviceList;
+    }
+
 
 }

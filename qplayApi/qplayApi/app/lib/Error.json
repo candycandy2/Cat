@@ -827,11 +827,11 @@
           },
           {
             "language": "zh-tw",
-            "error_description": "service_id已存在"
+            "error_description": "service_id 已存在"
           },
           {
             "language": "zh-cn",
-            "error_description": "service_id已存在"
+            "error_description": "service_id 已存在"
           }
         ]
       },
@@ -844,11 +844,28 @@
           },
           {
             "language": "zh-tw",
-            "error_description": "service_id不存在"
+            "error_description": "service_id 不存在"
           },
           {
             "language": "zh-cn",
-            "error_description": "service_id不存在"
+            "error_description": "service_id 不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "052003",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "this service type not exist."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "service type 不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "service type 不存在"
           }
         ]
       }
