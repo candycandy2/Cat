@@ -38,6 +38,7 @@
 .feedback-textarea{
     width: 92.58vw;
     padding: 5vw 3.71vw 0;
+    display: none;
 }
 
 .feedback-textarea>div:nth-of-type(1){

@@ -2,8 +2,7 @@ $("#viewStaffAdminMain").pagecontainer({
     create: function(event, ui) {
 
         var imgURL = '/widget/widgetPage/viewStaffAdminMain/img/',
-            rrsKey = 'apprrs',
-            rrsSecret = '2e936812e205445490efb447da16ca13',
+            staffKey = 'appempservice',
             statusList = [
             {id: 1, item: '服務中'},
             {id: 2, item: '忙碌中'},
@@ -36,12 +35,12 @@ $("#viewStaffAdminMain").pagecontainer({
             //$('#adminSettingPopup-option-list .tpl-dropdown-list-selected').removeClass('tpl-dropdown-list-selected');
         }
 
-        function getMeetingRoom() {
+        function getMeetingRoom(id, name, selfCallback) {
             var self = this;
             var queryData = {};
 
             this.successCallback = function(data) {
-                console.log(data);
+                selfCallback(data);
             };
 
             this.failCallback = function(data) {};
@@ -52,6 +51,46 @@ $("#viewStaffAdminMain").pagecontainer({
             }();
         }
 
+        var meetingCallback = function(data) {
+            console.log(data);
+        }
+
+        function getBoardType() {
+            let queryData = "<LayoutHeader><emp_no>" +
+                loginData["emp_no"] +
+                "</emp_no><source>" +
+                staffKey +
+                appEnvironment +
+                "</source></LayoutHeader>";
+
+            var successCallback = function(data) {
+
+                if(data['ResultCode'] == '1') {
+                    let boardArr = data['Content']['board_list'];
+                    let boardObj = {};
+                    for(var i in boardArr) {
+                        if(boardArr[i].board_name == 'staffFAQ') {
+                            boardObj['staffFAQ'] = boardArr[i];
+
+                        } else if(boardArr[i].board_name == 'staffAnnounce') {
+                            boardObj['staffAnnounce'] = boardArr[i];
+                        }
+                    }
+                    boardObj['lastUpdateTime'] = new Date();
+                    window.localStorage.setItem('staffBoardType', JSON.stringify(boardObj));
+                }
+
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                let staffBoardType = JSON.parse(window.localStorage.getItem('staffBoardType'));
+                if(staffBoardType == null || checkDataExpired(staffBoardType['lastUpdateTime'], 1, 'dd')) {
+                    QForumPlugin.CustomAPI("POST", true, "getBoardList", successCallback, failCallback, queryData, "");
+                }
+            }();
+        }
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminMain").on("pagebeforeshow", function(event, ui) {
@@ -62,10 +101,12 @@ $("#viewStaffAdminMain").pagecontainer({
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminMain .page-main').css('height', mainHeight);
             initAdminSetting();
+            //获取所有staff的board主题
+            getBoardType();
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
-            getMeetingRoom();
+            getMeetingRoom('1705', 'allen', meetingCallback);
         });
 
         $("#viewStaffAdminMain").on("pagehide", function(event, ui) {

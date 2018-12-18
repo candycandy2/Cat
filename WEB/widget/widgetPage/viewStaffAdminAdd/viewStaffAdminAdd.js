@@ -3,7 +3,9 @@ $("#viewStaffAdminAdd").pagecontainer({
 
         let noticeTitle = '',
             noticeContext = '',
+            postURL = '',
             imgURL = '/widget/widgetPage/viewStaffAdminAdd/img/';
+            
 
         function openConfirmPopup() {
             //當未輸入任何信息時，直接返回上一頁；否則提示用戶
@@ -27,8 +29,35 @@ $("#viewStaffAdminAdd").pagecontainer({
             $('.new-notice-context').val('');
             noticeTitle = '';
             noticeContext = '';
+            postURL = '';
         }
 
+        function onSuccess(imageURI) {
+            //1. API: get new post id
+            //getNewPostID(formData);
+
+            //2. DOM
+            $('.add-notice-img').show();
+
+            //3. url: get base64
+            postURL = 'data:image/jpeg;base64,' + imageURI;
+            $('.add-img-now').html('').append('<img src="' + postURL + '">');
+
+            // //4. base64 to file
+            // var file = QStoragePlugin.dataURLtoFile(url);
+
+            // //5. formData
+            // var formData = new FormData();
+            // formData.append('files', file);
+
+            // //6. API: upload file
+            // let resource = announceBoardID + '/' + thisPostID;
+            // uploadFile(formData, resource);
+        }
+
+        function onFail(message) {
+            console.log('Failed because: ' + message);
+        }
 
         /********************************** page event ***********************************/
         $("#viewStaffAdminAdd").on("pagebeforeshow", function(event, ui) {
@@ -74,11 +103,38 @@ $("#viewStaffAdminAdd").pagecontainer({
             checkTextarea();
         });
 
+        //upload img
+        $('.add-upload-icon').on('click', function() {
+            //有且只能上传一张图档
+            var imgCount = $('.add-img-now').children().length;
+            if(imgCount == 0) {
+                navigator.camera.getPicture(onSuccess, onFail, {
+                    quality: 100,
+                    sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+                    destinationType: Camera.DestinationType.DATA_URL,
+                    allowEdit: true,
+                    targetWidth: 500,
+                    targetHeight: 500
+                });
+            }
+        });
+
+        //remove img
+        $('.remove-img-now').on('click', function() {
+            $('.add-notice-img').hide();
+            $('.add-img-now').html('');
+        });
+
         //预览
         $('.addNoticePreviewBtn').on('click', function() {
             let has = $(this).hasClass('active-btn-green');
             if(has) {
-                checkWidgetPage('viewStaffAdminAddPreview', pageVisitedList)
+                var noticeData = {
+                    'postTitle': noticeTitle,
+                    'postContent': noticeContext,
+                    'postURL': postURL
+                };
+                checkWidgetPage('viewStaffAdminAddPreview', pageVisitedList, noticeData);
             }
         })
 

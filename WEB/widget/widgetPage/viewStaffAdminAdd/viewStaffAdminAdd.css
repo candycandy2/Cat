@@ -79,7 +79,7 @@
     font-size: 4.18vw;
 }
 
-.upload-icon{
+.add-upload-icon{
     display: inline-block;
     width: 4.4vw;
     height: 4.4vw;
@@ -92,6 +92,28 @@
     width: 92.58vw;
     height: 15vw;
     padding: 5vw 3.71vw 0;
+    display: none;
+    position: relative;
+}
+
+.add-img-now{
+    width: 15vw;
+    height: 15vw;
+    overflow: hidden;
+}
+
+.add-img-now img{
+    width: 15vw;
+}
+
+.remove-img-now{
+    position: absolute;
+    top: 2.5vw;
+    left: 15vw;
+    width: 5vw;
+    height: 5vw;
+    background: url(img/delete.png) no-repeat;
+    background-size: 5vw;
 }
 
 .addNoticePreviewBtn{
