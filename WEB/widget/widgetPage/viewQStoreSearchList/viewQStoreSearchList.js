@@ -1,7 +1,6 @@
 var categoryList = ["所有類別", "食", "衣", "住", "行", "育", "樂", "其他"];
 var cityList = ["所有縣市", "基隆市", "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
-var allQStoreList = [];
-var selectCategory = categoryList[0];
+var selectCategory = qstoreWidget.categoryList[0];
 var selectCity = cityList[0];
 
 var qstoreNo;
@@ -68,80 +67,6 @@ $("#viewQStoreSearchList").pagecontainer({
             tplJS.DropdownList("viewQStoreSearchList", "categoryValue", "prepend", "typeB", categoryData);
         }
 
-        function formatUpdateDate() {
-            var d = new Date(),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-
-            return [year, month, day].join('-');
-        }
-
-        function QueryStoreList(index) {
-
-            var self = this;
-
-            return new Promise(function(resolve, reject) {
-
-                var async = false;
-                var storelistQueryData = '<LayoutHeader><Category>' + categoryList[index] + '</Category><UpdateDate></UpdateDate></LayoutHeader>';
-                if (index == 0) {
-                    async = true;
-                    var updateDate = formatUpdateDate();
-                    storelistQueryData = '<LayoutHeader><Category></Category><UpdateDate>' + updateDate + '</UpdateDate></LayoutHeader>';
-                }
-                var successCallback = function(data) {
-                    if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) != null) {
-                        allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
-                    }
-
-                    var qstoreListReturnArr = {};
-                    if (data['ResultCode'] === "1") {
-                        //第一次Call StoreList API，將七種類別的StoreList依序存入localStorage
-                        qstoreListReturnArr = data['Content'];
-                        for (var i = 0; i < qstoreListReturnArr.length; i++) {
-                            //Need to check MIndex & UpdateDate
-                            /*
-                                {
-                                        "MIndex": 28,
-                                        ...
-                                        "UpdateDate": "10/22/2018 5:46:18 PM"
-                                }
-                            */
-                            var index = allQStoreList.map(function(item) { return item.MIndex; }).indexOf(qstoreListReturnArr[i].MIndex);
-                            if (index >= 0) {
-                                //移除找到的
-                                allQStoreList.splice(index, 1);
-                            }
-                            //塞入新增的
-                            allQStoreList.push(qstoreListReturnArr[i]);
-                        }
-
-                        //更新日期由近到遠
-                        allQStoreList.sort(function(a, b) {
-                            let aDate = new Date(a.UpdateDate);
-                            let bDate = new Date(b.UpdateDate);
-                            return aDate < bDate;
-                        });
-                        localStorage.setItem(qstoreWidget.QStoreLocalStorageKey, JSON.stringify(allQStoreList));
-
-                    } else if (data['ResultCode'] === "044901") {
-                        // 查無資料
-                    }
-
-                    resolve(qstoreListReturnArr.length);
-                };
-
-                var failCallback = function(data) {
-                    reject();
-                };
-
-                CustomAPI("POST", async, "StoreList", successCallback, failCallback, storelistQueryData, "");
-            });
-        };
-
         function showQStoreList(qstoreListArr) {
             // qstoreListArr = qstoreListArr.sort(function(a, b) {
             //     return a.Distance < b.Distance ? 1 : -1;
@@ -207,27 +132,27 @@ $("#viewQStoreSearchList").pagecontainer({
         function fetchQStore() {
 
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) != null) {
-                allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
+                qstoreWidget.allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
             }
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
                 //第二次之後進入
-                showQStoreList(allQStoreList);
-                QueryStoreList(0)
+                showQStoreList(qstoreWidget.allQStoreList);
+                qstoreWidget.QueryStoreList(0)
                     .then(function(val) {
                         if (val > 0)
-                            showQStoreList(allQStoreList);
+                            showQStoreList(qstoreWidget.allQStoreList);
                     });
             } else {
                 //第一次進入
                 loadingMask("show");
-                QueryStoreList(1)
-                    .then(QueryStoreList(2))
-                    .then(QueryStoreList(3))
-                    .then(QueryStoreList(4))
-                    .then(QueryStoreList(5))
-                    .then(QueryStoreList(6))
-                    .then(QueryStoreList(7))
-                    .then(showQStoreList(allQStoreList));
+                qstoreWidget.QueryStoreList(1)
+                    .then(qstoreWidget.QueryStoreList(2))
+                    .then(qstoreWidget.QueryStoreList(3))
+                    .then(qstoreWidget.QueryStoreList(4))
+                    .then(qstoreWidget.QueryStoreList(5))
+                    .then(qstoreWidget.QueryStoreList(6))
+                    .then(qstoreWidget.QueryStoreList(7))
+                    .then(showQStoreList(qstoreWidget.allQStoreList));
             }
         }
 
@@ -253,7 +178,7 @@ $("#viewQStoreSearchList").pagecontainer({
             loadingMask("show");
             var filterQStoreList = [];
 
-            filterQStoreList = allQStoreList.filter(function(item) {
+            filterQStoreList = qstoreWidget.allQStoreList.filter(function(item) {
                 if (selectCategory_ === categoryList[0] && selectCity_ === cityList[0]) {
                     return item;
                 } else if (selectCategory_ === categoryList[0] && item.County === selectCity_) {
