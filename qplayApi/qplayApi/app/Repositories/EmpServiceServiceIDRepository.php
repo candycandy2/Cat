@@ -38,5 +38,21 @@ class EmpServiceServiceIDRepository
         return $this->serviceId->insertGetId($data);
     }
 
-    
+
+    /**
+     * Get enable service list info by service type, id serviceType is All, 
+     * it will return all type of service
+     * @param  String $serviceType service type name
+     * @return mixed
+     */
+    public function getServiceByServiceType($serviceType){
+        $query =  $this->serviceId->where('active','Y');
+        if(strtolower($serviceType) == 'all'){
+            $query = $query->orderby('type');
+        }else{
+            $query = $query->where('type',$serviceType);
+        }
+        return $query->select('row_id', 'service_id', 'type', 'active')->get();
+    }
+
 }
