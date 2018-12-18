@@ -10,48 +10,42 @@ $("#viewQStoreMain").pagecontainer({
 
         /********************************** function *************************************/
        
-        function geocodeAddress(geocoder, resultsMap, address, name) {
+        function geocodeAddress(geocoder, resultsMap, address, name, category) {
             //var address = document.getElementById('address').value;
             //var address = "台北市內湖區基湖路16號";
 
-            (function(geocoder, resultsMap, address, name) {
+            (function(geocoder, resultsMap, address, name, category) {
                 geocoder.geocode({'address': address}, function(results, status) {
 
                     if (status === 'OK') {
-
-                        var categoryType = "";
                         var categoryIconUrl = "";
                         var imgURL = "/widget/widgetPage/viewQStoreMain/img/";
-                        $.each($(filterQStoreListByCity), function (index, item) {
-                            if (this.Address == address) { 
-                                categoryType = this.Category
-                                switch (categoryType) {
-                                    case '食':
-                                        categoryIconUrl = serverURL + imgURL + 'icon_eatpin.png';
-                                        break;
-                                    case '衣':
-                                        categoryIconUrl = serverURL + imgURL + 'icon_clothpin.png';
-                                        break;
-                                    case '住':
-                                        categoryIconUrl = serverURL + imgURL + 'icon_livepin.png';
-                                        break;
-                                    case '行':
-                                        categoryIconUrl = serverURL + imgURL + 'icon_movingpin.png';
-                                        break;
-                                    case '育':
-                                        categoryIconUrl = serverURL + imgURL + 'icon_educationpin.png';
-                                        break;
-                                    case '樂':
-                                        categoryIconUrl = serverURL + imgURL + 'icon_recreationpin.png';
-                                        break;
-                                    case '其他':
-                                        categoryIconUrl = serverURL + imgURL + 'icon_otherspin.png';
-                                        break;
-                                    default:
-                                        categoryIconUrl = serverURL + imgURL + 'icon_otherspin.png';
-                                }
-                            }
-                        });
+
+                        switch (category) {
+                            case '食':
+                                categoryIconUrl = serverURL + imgURL + 'icon_eatpin.png';
+                                break;
+                            case '衣':
+                                categoryIconUrl = serverURL + imgURL + 'icon_clothpin.png';
+                                break;
+                            case '住':
+                                categoryIconUrl = serverURL + imgURL + 'icon_livepin.png';
+                                break;
+                            case '行':
+                                categoryIconUrl = serverURL + imgURL + 'icon_movingpin.png';
+                                break;
+                            case '育':
+                                categoryIconUrl = serverURL + imgURL + 'icon_educationpin.png';
+                                break;
+                            case '樂':
+                                categoryIconUrl = serverURL + imgURL + 'icon_recreationpin.png';
+                                break;
+                            case '其他':
+                                categoryIconUrl = serverURL + imgURL + 'icon_otherspin.png';
+                                break;
+                            default:
+                                categoryIconUrl = serverURL + imgURL + 'icon_otherspin.png';
+                        }
 
                         var iconImage = {
                             url: categoryIconUrl,
@@ -103,7 +97,7 @@ $("#viewQStoreMain").pagecontainer({
                     }
 
                 });
-            }(geocoder, resultsMap, address, name));
+            }(geocoder, resultsMap, address, name, category));
 
         }
 
@@ -287,12 +281,12 @@ $("#viewQStoreMain").pagecontainer({
                     });
                     
                     for (var i=0; i<10; i++) {
-                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject);   
+                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);   
                     } 
 
                     setTimeout(function() {
                         for (var i=10; i<20; i++) {
-                            geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject);   
+                            geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);   
                         }
                     }, 1000);
 
