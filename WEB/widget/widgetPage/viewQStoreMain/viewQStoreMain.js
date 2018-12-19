@@ -9,6 +9,7 @@ $("#viewQStoreMain").pagecontainer({
         var filterQStoreListByCity;
         var locatedCity = "";
         var cityList = ["所有縣市", "基隆市", "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
+        
 
         /********************************** function *************************************/
         function geocodeAddress(geocoder, resultsMap, address, name, category) {
@@ -254,10 +255,19 @@ $("#viewQStoreMain").pagecontainer({
                         geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category); 
                     }
                 } else {
-                    var i = 0;
-                    var j = 1;
-                    var repeatCallGecodeAddress = setInterval(function() {
-                        if (count === Math.round(frequency)) {
+                    var storeByCityIndex = 0;
+                    var repeatCallGecodeAddress = window.setInterval(function() {
+                        if (storeByCityIndex < cityStoreLength) {
+                        //if (j < Math.ceil(frequency)+1) {
+                            geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[storeByCityIndex].Address, filterQStoreListByCity[storeByCityIndex].Subject, filterQStoreListByCity[storeByCityIndex].Category);
+                            storeByCityIndex++;
+                        } else {
+                            clearInterval(repeatCallGecodeAddress);
+                        }
+                    }, 100);
+
+                    /*var repeatCallGecodeAddress = window.setInterval(function() {
+                        if (count === Math.ceil(frequency)) {
                             //window.clearInterval(this.setInterval());
                             clearInterval(repeatCallGecodeAddress);
                         } else {
@@ -270,11 +280,18 @@ $("#viewQStoreMain").pagecontainer({
                             j++
                         }
 
-                    }, 1000);
+                    }, 1000);*/
                 }
 
             });
         }
+
+        /*function createIdeaPortal(geo, map, arr, cur, i, sum, num) { 
+            if (i < arr.length) {
+                geocodeAddress(geo, map, arr[i].Address, arr[i].Subject, arr[i].Category);   
+                i ++;
+            }
+        }*/
 
         $("#viewQStoreMain").on("pageshow", function (event, ui) {
                    console.log("=========== ready");
