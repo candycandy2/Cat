@@ -35,26 +35,6 @@ $("#viewStaffAdminMain").pagecontainer({
             //$('#adminSettingPopup-option-list .tpl-dropdown-list-selected').removeClass('tpl-dropdown-list-selected');
         }
 
-        function getMeetingRoom(id, name, selfCallback) {
-            var self = this;
-            var queryData = {};
-
-            this.successCallback = function(data) {
-                selfCallback(data);
-            };
-
-            this.failCallback = function(data) {};
-
-            var __construct = function() {
-                //CustomAPIByKey("POST", true, rrsKey, rrsSecret, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "", 60 * 60, "low");
-                CustomAPI("POST", true, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "");
-            }();
-        }
-
-        var meetingCallback = function(data) {
-            console.log(data);
-        }
-
         function getBoardType() {
             let queryData = "<LayoutHeader><emp_no>" +
                 loginData["emp_no"] +
@@ -106,7 +86,7 @@ $("#viewStaffAdminMain").pagecontainer({
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
-            getMeetingRoom('1705', 'allen', meetingCallback);
+
         });
 
         $("#viewStaffAdminMain").on("pagehide", function(event, ui) {
