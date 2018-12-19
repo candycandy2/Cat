@@ -86,7 +86,7 @@ class EmpServiceServiceService
         $serviceTypeArr = [];
         
         foreach ($serviceList as $service) {
-            $tmpServiceIdList = [];
+
             $updatedUser = EmpServiceLog::getLastUpdatedUser(self::TABLE,$service->row_id);
             if(!is_null($updatedUser)){
                 
@@ -115,6 +115,15 @@ class EmpServiceServiceService
 
         return $result;
 
+    }
+
+    /**
+     * Get service list by type 
+     * @param  String $serviceType service type
+     * @return mixed
+     */
+    public function getServiceListByType($serviceType){
+        return $this->serviceIDRepository->getServiceListByType($serviceType);
     }
 
 }

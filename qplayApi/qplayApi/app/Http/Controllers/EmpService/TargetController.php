@@ -94,4 +94,52 @@ class TargetController extends Controller
             throw $e;
         } 
     }
+
+    /**
+     * Get EmpService and it's associate target list
+     * @param  Request $request
+     * @return json
+     */
+    public function getEmpServiceTargetList(Request $request){
+        
+        //parameter verify
+        $validator = Validator::make($request->all(),
+            [
+            'service_id' => 'required_without:servuce_type',
+            'servuce_type' =>'required_without:service_id',
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
+        );
+
+        //between service_type and service_id chooese one to query.
+
+        if(isset($request->service_type)){
+
+            $serviceRs = $this->empService->getServiceListByType($request->service_type);
+
+            if(count($serviceRs) == 0){
+                  return ["result_code" => ResultCode::_052003_empServiceTypeNotExist, 
+                        "message" => CommonUtil::getMessageContentByCode(ResultCode::_052003_empServiceTypeNotExist)];
+            }
+
+            $serviceListRs = $this->targetService->getTargetByServiceType($request->service_type);
+            
+            return response()->json($serviceListRs);
+            
+        }else if(isset($request->service_id)){
+
+            $serviceRs = $this->empService->getServiceRowId($request->service_id);
+            if(is_null($serviceRs)){
+                  return ["result_code" => ResultCode::_052002_empServiceNotExist, 
+                        "message" => CommonUtil::getMessageContentByCode(ResultCode::_052002_empServiceNotExist)];
+            }
+
+            $serviceListRs = $this->targetService->getTargetByServiceId($request->service_id);
+            
+            return response()->json($serviceListRs);
+        }
+    }
+
 }
