@@ -1,15 +1,15 @@
 $("#viewStaffAdminAdd").pagecontainer({
     create: function(event, ui) {
 
-        let noticeTitle = '',
-            noticeContext = '',
+        let postTitle = '',
+            postContent = '',
             postURL = '',
             imgURL = '/widget/widgetPage/viewStaffAdminAdd/img/';
             
 
         function openConfirmPopup() {
             //當未輸入任何信息時，直接返回上一頁；否則提示用戶
-            if(noticeTitle == '' && noticeContext == '') {
+            if(postTitle == '' && postContent == '') {
                 onBackKeyDown();
             } else {
                 popupMsgInit('.cancelAddNotice');
@@ -17,7 +17,7 @@ $("#viewStaffAdminAdd").pagecontainer({
         }
 
         function checkTextarea() {
-            if(noticeTitle != '' && noticeContext != '') {
+            if(postTitle != '' && postContent != '') {
                 $('.addNoticePreviewBtn').addClass('active-btn-green');
             } else {
                 $('.addNoticePreviewBtn').removeClass('active-btn-green');
@@ -25,10 +25,11 @@ $("#viewStaffAdminAdd").pagecontainer({
         }
 
         function initThisPage() {
+            $('.remove-img-now').trigger('click');
             $('.new-notice-title').val('');
             $('.new-notice-context').val('');
-            noticeTitle = '';
-            noticeContext = '';
+            postTitle = '';
+            postContent = '';
             postURL = '';
         }
 
@@ -95,18 +96,18 @@ $("#viewStaffAdminAdd").pagecontainer({
 
         //獲取textarea
         $('.new-notice-title').on('input', function() {
-            noticeTitle = $.trim($(this).val());
+            postTitle = $.trim($(this).val());
             checkTextarea();
         });
         $('.new-notice-context').on('input', function() {
-            noticeContext = $.trim($(this).val());
+            postContent = $.trim($(this).val());
             checkTextarea();
         });
 
         //upload img
         $('.add-upload-icon').on('click', function() {
             //有且只能上传一张图档
-            var imgCount = $('.add-img-now').children().length;
+            let imgCount = $('.add-img-now').children().length;
             if(imgCount == 0) {
                 navigator.camera.getPicture(onSuccess, onFail, {
                     quality: 100,
@@ -123,18 +124,19 @@ $("#viewStaffAdminAdd").pagecontainer({
         $('.remove-img-now').on('click', function() {
             $('.add-notice-img').hide();
             $('.add-img-now').html('');
+            postURL = '';
         });
 
         //预览
         $('.addNoticePreviewBtn').on('click', function() {
             let has = $(this).hasClass('active-btn-green');
             if(has) {
-                var noticeData = {
-                    'postTitle': noticeTitle,
-                    'postContent': noticeContext,
+                let postData = {
+                    'postTitle': postTitle,
+                    'postContent': postContent,
                     'postURL': postURL
                 };
-                checkWidgetPage('viewStaffAdminAddPreview', pageVisitedList, noticeData);
+                checkWidgetPage('viewStaffAdminAddPreview', pageVisitedList, postData);
             }
         })
 

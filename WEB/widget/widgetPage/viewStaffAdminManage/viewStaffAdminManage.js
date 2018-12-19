@@ -1,7 +1,68 @@
 $("#viewStaffAdminManage").pagecontainer({
     create: function(event, ui) {
 
-        var imgURL = '/widget/widgetPage/viewStaffAdminManage/img/';
+        var imgURL = '/widget/widgetPage/viewStaffAdminManage/img/',
+            limitMeetingRoom = ['T00', 'T13'];
+
+        function getMeetingRoom() {
+            var self = this;
+            var queryData = {};
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    let meetingRoomArr = data['Content'];
+                    let meetingRoomObj = {
+                        'content': meetingRoomArr,
+                        'lastUpdateTime': new Date()
+                    };
+                    window.localStorage.setItem('AllMeetingRoomData', JSON.stringify(meetingRoomObj));
+
+                    var bqtMeetingRoom = getMeetingRoomBySite(meetingRoomArr, limitMeetingRoom, '2');
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                let meetingRoomData = JSON.parse(window.localStorage.getItem('AllMeetingRoomData'));
+                if(meetingRoomData == null || checkDataExpired(meetingRoomData['lastUpdateTime'], 7, 'dd')) {
+                    CustomAPI("POST", true, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "");
+                } else {
+                    var bqtMeetingRoom = getMeetingRoomBySite(meetingRoomData['content'], limitMeetingRoom, '2');
+                }
+            }();
+        }
+
+        //MeetingRoomSite: 1:QTY、2:BQT/QTT、43:双星、100:QTH
+        function getMeetingRoomBySite(arr, limit, site) {
+            var siteObj = {};
+            for(var i in arr) {
+                //找site
+                if(site == arr[i]['MeetingRoomSite']) {
+                    var status = false;
+                    for(var j in limit) {
+                        //找limit
+                        if(arr[i]['MeetingRoomName'] == limit[j]) {
+                            status = true;
+                            break;
+                        }
+                    }
+                    if(!status) {
+                        //找floor
+                        if(typeof siteObj[arr[i]['MeetingRoomFloor']] == 'undefined') {
+                            siteObj[arr[i]['MeetingRoomFloor']] = [];
+                            siteObj[arr[i]['MeetingRoomFloor']].push(arr[i]);
+                        } else {
+                            siteObj[arr[i]['MeetingRoomFloor']].push(arr[i]);
+                        }
+                    }
+                }
+            }
+
+            return siteObj;
+        }
 
 
         /********************************** page event ***********************************/
@@ -16,6 +77,8 @@ $("#viewStaffAdminManage").pagecontainer({
 
             $('.select-room-icon').attr('src', serverURL + imgURL + 'switch_close.png');
             $('.selected-room-icon').attr('src', serverURL + imgURL + 'switch_open.png');
+
+            getMeetingRoom();
         });
 
         $("#viewStaffAdminManage").on("pageshow", function(event, ui) {
