@@ -95,7 +95,7 @@ $("#viewQStoreMain").pagecontainer({
 
                     } else if (status === 'OVER_QUERY_LIMIT'){
                         //alert('Geocode was not successful for the following reason: ' + status);
-                        //return new Promise(resolve => setTimeout(resolve, 2000));
+                        //return new Promise(resolve => setTimeout(resolve, 2000));                 
                     }
 
                 });
@@ -209,13 +209,13 @@ $("#viewQStoreMain").pagecontainer({
                 //第一次進入
                 //將QStoreList按七種類別，存入localStorage
                 loadingMask("show");
-                QueryStoreList(1)
-                    .then(QueryStoreList(2))
-                    .then(QueryStoreList(3))
-                    .then(QueryStoreList(4))
-                    .then(QueryStoreList(5))
-                    .then(QueryStoreList(6))
-                    .then(QueryStoreList(7))
+                qstoreWidget.QueryStoreList(1)
+                    .then(qstoreWidget.QueryStoreList(2))
+                    .then(qstoreWidget.QueryStoreList(3))
+                    .then(qstoreWidget.QueryStoreList(4))
+                    .then(qstoreWidget.QueryStoreList(5))
+                    .then(qstoreWidget.QueryStoreList(6))
+                    .then(qstoreWidget.QueryStoreList(7))
                     .then(qstoreMapFromLocal = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey)));                    
             }
 
@@ -255,43 +255,21 @@ $("#viewQStoreMain").pagecontainer({
                         geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category); 
                     }
                 } else {
-                    var storeByCityIndex = 0;
-                    var repeatCallGecodeAddress = window.setInterval(function() {
-                        if (storeByCityIndex < cityStoreLength) {
-                        //if (j < Math.ceil(frequency)+1) {
-                            geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[storeByCityIndex].Address, filterQStoreListByCity[storeByCityIndex].Subject, filterQStoreListByCity[storeByCityIndex].Category);
-                            storeByCityIndex++;
-                        } else {
-                            clearInterval(repeatCallGecodeAddress);
-                        }
-                    }, 100);
+                    for (var i=0; i<10; i++) {
+                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);   
+                    } 
 
-                    /*var repeatCallGecodeAddress = window.setInterval(function() {
-                        if (count === Math.ceil(frequency)) {
-                            //window.clearInterval(this.setInterval());
-                            clearInterval(repeatCallGecodeAddress);
-                        } else {
-                            for (i; i<10*j; i++) {
-                                if (i < cityStoreLength) {
-                                    geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);   
-                                }
-                            } 
-                            count ++;
-                            j++
-                        }
-
-                    }, 1000);*/
+                    var j = 10;
+                    setInterval(function() {
+                        if (j < 20) {
+                            geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[j].Address, filterQStoreListByCity[j].Subject, filterQStoreListByCity[j].Category);
+                            j++;
+                        }                         
+                     }, 1000);
                 }
 
             });
         }
-
-        /*function createIdeaPortal(geo, map, arr, cur, i, sum, num) { 
-            if (i < arr.length) {
-                geocodeAddress(geo, map, arr[i].Address, arr[i].Subject, arr[i].Category);   
-                i ++;
-            }
-        }*/
 
         $("#viewQStoreMain").on("pageshow", function (event, ui) {
                    console.log("=========== ready");
