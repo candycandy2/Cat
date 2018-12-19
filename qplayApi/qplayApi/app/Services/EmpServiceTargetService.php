@@ -139,11 +139,11 @@ class EmpServiceTargetService
 
     /**
      * Delete a target from specific service, and set data to be log
-     * @param  [type] $serviceRowId service_id.row_id
-     * @param  [type] $loginId      user login id
-     * @param  [type] $domain       user domain
-     * @param  [type] $empNo        user emp no
-     * @param  [type] $targetId     target_id
+     * @param  int $serviceRowId service_id.row_id
+     * @param  int $loginId      user login id
+     * @param  string $domain       user domain
+     * @param  string $empNo        user emp no
+     * @param  int $targetId     target_id
      */
     private function deleteEmpServiceTarget($serviceRowId, $loginId, $domain, $empNo, $targetId){
 
@@ -159,5 +159,94 @@ class EmpServiceTargetService
                                                         $empNo,
                                                         ['active'=>'N']);
         }
+    }
+
+    /**
+     * Get arranged service list and it's associate target info with update user data
+     * of specific service type
+     * @param  String $serviceType service type
+     * @return result array
+     */
+    public function getTargetByServiceType($serviceType){
+        $targetList = $this->targetIDRepository->getTargetByServiceType($serviceType);
+        return $this->getTargetResult($targetList);
+    }
+
+    /**
+     * Get arranged service list and it's associate target info with update user data
+     * of specific service id
+     * @param  string $serviceId service id
+     * @return result array
+     */
+    public function getTargetByServiceId($serviceId){
+        $targetList = $this->targetIDRepository->getTargetByServiceId($serviceId);
+        return $this->getTargetResult($targetList);
+    }
+
+    /**
+     * Get arranged target result
+     * @param  Array $targetList service and it's associate target list
+     * @return arranged result array
+     */
+    private function getTargetResult($targetList){
+        
+        $serviceTypeList = ["service_type_list" => []];
+
+        $serviceTypeArr = [];
+        
+        foreach ($targetList as $target) {
+            $updatedUser = EmpServiceLog::getLastUpdatedUser(self::TABLE,$target->target_id_row_id);
+                $tmp = [];
+                
+                if(!is_null($target->target_id) && !is_null($updatedUser)){
+                    $tmp = [
+                          "target_id"        => $target->target_id,
+                          "target_id_row_id" => $target->target_id_row_id,
+                          "life_type"        => $target->life_type,
+                          "life_start"       => $target->life_start,
+                          "life_end"         => $target->life_end,
+                          "reserve_limit"    => $target->reserve_limit,
+                          "reserve_count"    => $target->reserve_count,
+                          "owner_login_id"   => $updatedUser->login_id,
+                          "owner_domain"     => $updatedUser->domain,
+                          "owner_emp_no"     => $updatedUser->emp_no
+                    ];
+                }
+
+                if($target->life_type == 0){
+                    unset($tmp['life_start']);
+                    unset($tmp['life_end']);
+                }
+
+                if($target->reserve_limit == 0){
+                    unset($tmp['reserve_count']);
+                }
+
+                if(count($tmp) > 0){
+                    $serviceTypeArr[$target->service_type][$target->service_id][] = $tmp;
+                }else{
+                    $serviceTypeArr[$target->service_type][$target->service_id] = $tmp;
+                }
+        }
+
+        //arrange result
+        foreach ($serviceTypeArr as $serviceType => $targetItem) {
+            array_push($serviceTypeList["service_type_list"],["service_type"=>$serviceType, "service_id_list"=>[]]);
+            $index = 0;
+            foreach ($targetItem as $serviceId => $targetList) {
+                $serviceTypeList["service_type_list"][0]["service_id_list"][] = ["service_id"=>$serviceId, "target_id_list"=>[]];
+                foreach ($targetList as $target) {
+                   $serviceTypeList["service_type_list"][0]["service_id_list"][$index]["target_id_list"][] = $target;
+                }
+                $index++;
+            }
+        }
+
+        $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
+                   "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
+                   "content" => $serviceTypeList
+                  ];
+                      
+        return $result;
     }
 }
