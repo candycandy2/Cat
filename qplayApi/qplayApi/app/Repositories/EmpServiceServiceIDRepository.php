@@ -55,4 +55,15 @@ class EmpServiceServiceIDRepository
         return $query->select('row_id', 'service_id', 'type', 'active')->get();
     }
 
+    /**
+     * Get enable service list by service type
+     * @param  String $serviceType service type
+     * @return mixed
+     */
+    public function getServiceListByType($serviceType){
+        return $this->serviceId
+             ->where('type', $serviceType)
+             ->where('active','Y')
+             ->get();
+    }
 }

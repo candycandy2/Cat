@@ -91,4 +91,57 @@ class EmpServiceTargetIDRepository
         return false;
     }
 
+    /**
+     * Get service info and it's assoicate target list by service type
+     * @param  String $serviceType service type
+     * @return mixed
+     */
+    public function getTargetByServiceType($serviceType){
+
+        return $this->targetId
+                    ->RightJoin('service_id','target_id.service_id_row_id','=', 'service_id.row_id')
+                    ->where('service_id.type', $serviceType)
+                    ->where('service_id.active', 'Y')
+                    ->where(function($q) {
+                        $q->where('target_id.active', 'Y')
+                          ->orWhere('target_id.active',null);
+                    })
+                    ->select('service_id',
+                             'service_id.type as service_type',
+                             'target_id',
+                             'target_id.row_id as target_id_row_id',
+                             'life_type',
+                             'life_start',
+                             'life_end',
+                             'reserve_count',
+                             'reserve_limit')
+                    ->get();
+    }
+
+    /**
+     *  Get service info and it's assoicate target list by service id
+     * @param  String $serviceId service id
+     * @return mixed
+     */
+    public function getTargetByServiceId($serviceId){
+
+        return $this->targetId
+                    ->RightJoin('service_id','target_id.service_id_row_id','=', 'service_id.row_id')
+                    ->where('service_id.service_id', $serviceId)
+                    ->where('service_id.active', 'Y')
+                    ->where(function($q) {
+                        $q->where('target_id.active', 'Y')
+                          ->orWhere('target_id.active',null);
+                    })
+                    ->select('service_id',
+                             'service_id.type as service_type',
+                             'target_id',
+                             'target_id.row_id as target_id_row_id',
+                             'life_type',
+                             'life_start',
+                             'life_end',
+                             'reserve_count',
+                             'reserve_limit')
+                    ->get();
+    }
 }
