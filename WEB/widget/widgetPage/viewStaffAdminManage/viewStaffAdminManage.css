@@ -55,6 +55,16 @@
     font-size: 4.18vw;
 }
 
+.select-meeting-room>div:nth-of-type(2)>div{
+    float: left;
+    width: 30%;
+    height: 100%;
+}
+
+#meetingRoomFloor select{
+    padding: 0;
+}
+
 .meeting-room-list{
     width: 89.81vw;
     height: 5.5vw;
@@ -88,4 +98,10 @@
 
 .selected-meeting-room-ul{
     padding-top: 5.3vw !important;
+}
+
+.dropdown-arrow {
+    background: url('img/dropdown_incline.png') right transparent;
+    background-size: 2vw 2vw;
+    background-repeat: no-repeat;
 }
