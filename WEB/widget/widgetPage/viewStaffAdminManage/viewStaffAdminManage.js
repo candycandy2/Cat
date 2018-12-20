@@ -2,7 +2,8 @@ $("#viewStaffAdminManage").pagecontainer({
     create: function(event, ui) {
 
         var imgURL = '/widget/widgetPage/viewStaffAdminManage/img/',
-            limitMeetingRoom = ['T00', 'T13'];
+            limitMeetingRoom = ['T00', 'T13'],
+            siteMeetingRoom;
 
         function getMeetingRoom() {
             var self = this;
@@ -19,7 +20,10 @@ $("#viewStaffAdminManage").pagecontainer({
                     };
                     window.localStorage.setItem('AllMeetingRoomData', JSON.stringify(meetingRoomObj));
 
-                    var bqtMeetingRoom = getMeetingRoomBySite(meetingRoomArr, limitMeetingRoom, '2');
+                    //1.获取BQT所有会议室
+                    siteMeetingRoom = getMeetingRoomBySite(meetingRoomArr, limitMeetingRoom, '2');
+                    //2.根据楼层生成dropdownlist
+                    createFloorSelect(siteMeetingRoom);
                 }
             };
 
@@ -30,7 +34,10 @@ $("#viewStaffAdminManage").pagecontainer({
                 if(meetingRoomData == null || checkDataExpired(meetingRoomData['lastUpdateTime'], 7, 'dd')) {
                     CustomAPI("POST", true, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "");
                 } else {
-                    var bqtMeetingRoom = getMeetingRoomBySite(meetingRoomData['content'], limitMeetingRoom, '2');
+                    //1.获取BQT所有会议室
+                    siteMeetingRoom = getMeetingRoomBySite(meetingRoomData['content'], limitMeetingRoom, '2');
+                    //2.根据楼层生成dropdownlist
+                    createFloorSelect(siteMeetingRoom);
                 }
             }();
         }
@@ -53,15 +60,53 @@ $("#viewStaffAdminManage").pagecontainer({
                         //找floor
                         if(typeof siteObj[arr[i]['MeetingRoomFloor']] == 'undefined') {
                             siteObj[arr[i]['MeetingRoomFloor']] = [];
-                            siteObj[arr[i]['MeetingRoomFloor']].push(arr[i]);
-                        } else {
-                            siteObj[arr[i]['MeetingRoomFloor']].push(arr[i]);
                         }
+                        siteObj[arr[i]['MeetingRoomFloor']].push(arr[i]);
                     }
                 }
             }
 
             return siteObj;
+        }
+
+        //遍历BQT所有会议室所在楼层
+        function createFloorSelect(arr) {
+            let floorData = {
+                id: "bqtFloor",
+                option: [],
+                title: "",
+                defaultText: langStr['wgt_038'],
+                changeDefaultText: true,
+                attr: {
+                    class: "dropdown-arrow"
+                }
+            }
+
+            let j = 0;
+            for(var i in arr) {
+                floorData["option"][j] = {};
+                floorData["option"][j]["value"] = i;
+                floorData["option"][j]["text"] = i + 'L';
+                j++;
+            }
+
+            tplJS.DropdownList("viewStaffAdminManage", "meetingRoomFloor", "prepend", "typeB", floorData);
+
+            $('#bqtFloor-option-list li:eq(0)').trigger('click');
+        }
+
+        //选择楼层显示不同的会议室
+        function getMeetingRoomByFloor(arr, floor) {
+            let content = '';
+            for(var i in arr[floor]) {
+                content += '<li class="meeting-room-list"><div>' +
+                    arr[floor][i]['MeetingRoomName'] +
+                    '</div><div><img class="select-room-icon" data-src="close" src="' +
+                    serverURL + imgURL +
+                    'switch_close.png"></div></li>';
+            }
+
+            $('.meeting-room-ul').html('').append(content);
         }
 
 
@@ -75,8 +120,8 @@ $("#viewStaffAdminManage").pagecontainer({
             $('#viewStaffAdminManage .page-main').css('height', mainHeight);
             $('.editNoticePreviewBtn').show();
 
-            $('.select-room-icon').attr('src', serverURL + imgURL + 'switch_close.png');
-            $('.selected-room-icon').attr('src', serverURL + imgURL + 'switch_open.png');
+            // $('.select-room-icon').attr('src', serverURL + imgURL + 'switch_close.png');
+            // $('.selected-room-icon').attr('src', serverURL + imgURL + 'switch_open.png');
 
             getMeetingRoom();
         });
@@ -110,11 +155,17 @@ $("#viewStaffAdminManage").pagecontainer({
         });
 
         //單選按鈕
-        $('.select-room-icon, .selected-room-icon').on('click', function() {
+        $('.meeting-room-ul').on('click', '.select-room-icon, .selected-room-icon', function() {
             let dataSrc = $(this).attr('data-src');
             let reverseSrc = dataSrc == 'close' ? 'open' : 'close';
             $(this).attr('src', serverURL + imgURL + 'switch_' + reverseSrc + '.png');
             $(this).attr('data-src', reverseSrc);
+        });
+
+        //筛选楼层
+        $('#meetingRoomFloor').on('change', 'select', function() {
+            let floor = $(this).val();
+            getMeetingRoomByFloor(siteMeetingRoom, floor);
         });
 
 
