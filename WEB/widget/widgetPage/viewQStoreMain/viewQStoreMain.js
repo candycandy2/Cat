@@ -6,15 +6,16 @@ $("#viewQStoreMain").pagecontainer({
         window.allMarker = [];
         var locatedCity = "";
         var cityList = ["所有縣市", "基隆市", "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
+        var cityList_english = ["所有縣市", "基隆市", "Taipei City", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
 
 
         /********************************** function *************************************/
-        function geocodeAddress(geocoder, resultsMap, address, name, category) {
+        function geocodeAddress(address, name, category) {
             //var address = document.getElementById('address').value;
             //var address = "台北市內湖區基湖路16號";
 
-            (function(geocoder, resultsMap, address, name, category) {
-                geocoder.geocode({ 'address': address }, function(results, status) {
+            (function(address, name, category) {
+                window.geocoder.geocode({ 'address': address }, function(results, status) {
 
                     if (status === 'OK') {
                         var categoryIconUrl = "";
@@ -55,7 +56,7 @@ $("#viewQStoreMain").pagecontainer({
 
                         var marker = new google.maps.Marker({
                             //window.marker = new google.maps.Marker({
-                            map: resultsMap,
+                            map: window.map,
                             position: results[0].geometry.location,
                             title: name,
                             attribution: {
@@ -67,7 +68,7 @@ $("#viewQStoreMain").pagecontainer({
                         window.allMarker.push(marker);
 
                         //Info Window
-                        var contentString = '<div id="content"> 這個地址是:' + address + '</div>';
+                        var contentString = '<div id="content"> 這個地址是:' + address + '</div>';
 
                         var infowindow = new google.maps.InfoWindow({
                             content: contentString
@@ -96,7 +97,7 @@ $("#viewQStoreMain").pagecontainer({
                     }
 
                 });
-            }(geocoder, resultsMap, address, name, category));
+            }(address, name, category));
 
         }
 
@@ -220,8 +221,24 @@ $("#viewQStoreMain").pagecontainer({
 
         function getLocatedCityByLatLng(lat, lng) {
             var latlng = new google.maps.LatLng(lat, lng);
-            geocoder.geocode({ latLng: latlng }, function(results, status) {
+            window.geocoder.geocode({ latLng: latlng }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
+                    /*Google 回傳的內容, 英文版
+                    address_components: Array (6)
+                    0 {long_name: "14", short_name: "14", types: ["street_number"]}
+                    1 {long_name: "Jihu Road", short_name: "Jihu Road", types: ["route"]}
+                    2 {long_name: "Neihu District", short_name: "Neihu District", types: ["administrative_area_level_3", "political"]}
+                    3 {long_name: "Taipei City", short_name: "Taipei City", types: ["administrative_area_level_1", "political"]}
+                    4 {long_name: "Taiwan", short_name: "TW", types: ["country", "political"]}
+                    5 {long_name: "114", short_name: "114", types: ["postal_code"]}
+                    Array Prototype
+                    formatted_address: "No. 14, Jihu Road, Neihu District, Taipei City, Taiwan 114"
+                    geometry: {location: P, location_type: "ROOFTOP", viewport: Q}
+                    place_id: "ChIJSdTQxG2sQjQRr-TloYoxPnI"
+                    plus_code: {compound_code: "3HJ7+GV Taipei, Taiwan", global_code: "7QQ33HJ7+GV"}
+                    types: ["street_address"] (1)
+                    Object Prototype
+                    */
                     if (results[1]) {
                         var arrAddress = results;
                         $.each(arrAddress, function(i, address_component) {
@@ -250,17 +267,17 @@ $("#viewQStoreMain").pagecontainer({
 
                 if (frequency < 1) {
                     for (var i = 0; i < cityStoreLength; i++) {
-                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);
+                        geocodeAddress(filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);
                     }
                 } else {
                     for (var i = 0; i < 10; i++) {
-                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);
+                        geocodeAddress(filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);
                     }
 
                     var j = 10;
                     setInterval(function() {
                         if (j < 20) {
-                            geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[j].Address, filterQStoreListByCity[j].Subject, filterQStoreListByCity[j].Category);
+                            geocodeAddress(filterQStoreListByCity[j].Address, filterQStoreListByCity[j].Subject, filterQStoreListByCity[j].Category);
                             j++;
                         }
                     }, 1000);
@@ -285,8 +302,6 @@ $("#viewQStoreMain").pagecontainer({
 
                     console.log(pos);
 
-                    getLocatedCityByLatLng(pos.lat, pos.lng);
-
                     var iconImage = {
                         url: "img/icon_locationpin.png",
                         scaledSize: new google.maps.Size(34, 40),
@@ -300,34 +315,16 @@ $("#viewQStoreMain").pagecontainer({
                         lng: position.coords.longitude
                     };
 
-                    if (typeof myLocate !== "undefined") {
-                        myLocate.setMap(null);
-                    }
-
                     window.myLocate = new google.maps.Marker({
                         position: myLatLng,
                         map: window.map,
                         icon: iconImage
-                        //icon: "img/icon_locationpin.png"
-                        //label: ""
                     });
-
-                    setTimeout(function() {
-                        //set center
-                        window.map.setCenter(myLatLng);
-                    }, 2000);
 
                 };
 
                 window.locationError = function(error) {
-                    //未開啟定位服務，位置固定在BenQ台北總部
-                    var pos = {
-                        lat: 25.0811469,
-                        lng: 121.56481370000006
-                    };
-                    getLocatedCityByLatLng(pos.lat, pos.lng);
                 };
-
 
                 navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {
                     enableHighAccuracy: true
