@@ -4,7 +4,6 @@ $("#viewQStoreMain").pagecontainer({
         window.myLocate;
         window.myLatLng;
         window.allMarker = [];
-        var qstoreMapFromLocal = [];
         var filterQStoreListByCity;
         var locatedCity = "";
         var cityList = ["所有縣市", "基隆市", "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
@@ -130,7 +129,7 @@ $("#viewQStoreMain").pagecontainer({
 
                         var title = item.title;
 
-                        $.each($(qstoreMapFromLocal), function(index, item) {
+                        $.each($(qstoreWidget.allQStoreList), function(index, item) {
                             if (this.Subject == title) {
                                 var imgURL = "/widget/widgetPage/viewQStoreMain/img/";
                                 var selectCategory = this.Category;
@@ -203,7 +202,7 @@ $("#viewQStoreMain").pagecontainer({
         $("#viewQStoreMain").one("pageshow", function(event, ui) {
 
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
-                qstoreMapFromLocal = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
+                qstoreWidget.allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
             } else {
                 //第一次進入
                 //將QStoreList按七種類別，存入localStorage
@@ -215,7 +214,7 @@ $("#viewQStoreMain").pagecontainer({
                     .then(qstoreWidget.QueryStoreList(5))
                     .then(qstoreWidget.QueryStoreList(6))
                     .then(qstoreWidget.QueryStoreList(7))
-                    .then(qstoreMapFromLocal = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey)));
+                    .then();
             }
 
         });
@@ -239,7 +238,7 @@ $("#viewQStoreMain").pagecontainer({
                     locatedCity = "台北市";
                 }
 
-                filterQStoreListByCity = qstoreMapFromLocal.filter(function(item, index, array) {
+                filterQStoreListByCity = qstoreWidget.allQStoreList.filter(function(item, index, array) {
                     if (item.County === locatedCity) {
                         return item;
                     }
@@ -337,15 +336,6 @@ $("#viewQStoreMain").pagecontainer({
                 console.log("---------2");
             }
         });
-
-        function callGeocodeAddress(index) {
-            return new Promise(function(resolve, reject) {
-                var endIndex = index + 10;
-                for (var i = index; i < endIndex; i++) {
-                    geocodeAddress(window.geocoder, window.map, allQStoreList[i].Address, allQStoreList[i].Subject);
-                }
-            });
-        }
 
         $("#viewQStoreMain").on("pagehide", function(event, ui) {
 
