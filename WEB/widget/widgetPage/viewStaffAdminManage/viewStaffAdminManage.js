@@ -86,7 +86,7 @@ $("#viewStaffAdminManage").pagecontainer({
             for(var i in arr) {
                 floorData["option"][j] = {};
                 floorData["option"][j]["value"] = i;
-                floorData["option"][j]["text"] = i + 'L';
+                floorData["option"][j]["text"] = i + 'F';
                 j++;
             }
 
