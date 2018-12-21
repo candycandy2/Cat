@@ -74,18 +74,6 @@ $("#viewContact").pagecontainer({
             }          
         } 
 
-        function scrollHeightContactInfoPage(viewName, className) {
-            var mainHeight = $('.'+ className +' > div').height();
-            var headHeight = $('#'+ viewName +' .page-header').height();
-            var totalHeight;
-            if (device.platform === "iOS") {
-                totalHeight = (mainHeight + headHeight + iOSFixedTopPX()).toString();
-            } else {
-                totalHeight = (mainHeight + headHeight).toString();
-            }
-            $('.'+ className +' > div').css('height', totalHeight + 'px'); 
-        }     
-
         /********************************** page event *************************************/
         $("#viewContact").on("pagebeforeshow", function(event, ui){
 

@@ -234,9 +234,9 @@ class EmpServiceTargetService
             array_push($serviceTypeList["service_type_list"],["service_type"=>$serviceType, "service_id_list"=>[]]);
             $index = 0;
             foreach ($targetItem as $serviceId => $targetList) {
-                $serviceTypeList["service_type_list"][0]["service_id_list"][] = ["service_id"=>$serviceId, "target_id_list"=>[]];
+                $serviceTypeList["service_type_list"][0]["service_id_list"][] = ["service_id"=>$serviceId, "target_list"=>[]];
                 foreach ($targetList as $target) {
-                   $serviceTypeList["service_type_list"][0]["service_id_list"][$index]["target_id_list"][] = $target;
+                   $serviceTypeList["service_type_list"][0]["service_id_list"][$index]["target_list"][] = $target;
                 }
                 $index++;
             }
