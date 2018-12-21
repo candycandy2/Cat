@@ -293,7 +293,6 @@ class QPayTradeService
 
                     //Send Push Message
                     $shopData = $this->qpayShopRepository->getShopInfoByShopID($shopID);
-                    date_default_timezone_set("Asia/Taipei");
                     $successTradeID = "T".str_pad($newTradeID, 6, "0", STR_PAD_LEFT);
 
                     $queryParam =  array(
@@ -307,7 +306,7 @@ class QPayTradeService
                         $shopData[0]->user_domain . "\\" . $shopData[0]->login_id
                     );
                     $title = trans("messages.MSG_QPAY_1");
-                    $text = str_replace("%0", date("m/d H:i"), trans("messages.MSG_QPAY_2"));
+                    $text = str_replace("%0", date("m/d H:i", time() + 8*3600), trans("messages.MSG_QPAY_2"));
                     $text = str_replace("%1", $price, $text);
                     $text = str_replace("%2", $successTradeID, $text);
                     $extra = [];
@@ -319,7 +318,7 @@ class QPayTradeService
                         PushUtil::getPushUserByEmpNo($empNO)
                     );
                     $title = trans("messages.MSG_QPAY_1");
-                    $text = str_replace("%0", date("m/d H:i"), trans("messages.MSG_QPAY_3"));
+                    $text = str_replace("%0", date("m/d H:i", time() + 8*3600), trans("messages.MSG_QPAY_3"));
                     $text = str_replace("%1", $price, $text);
                     $text = str_replace("%2", $shopData[0]->emp_name, $text);
                     $text = str_replace("%3", $successTradeID, $text);
