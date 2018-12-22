@@ -101,7 +101,24 @@ class EmpServiceReserveService
 
         return [ "result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
-                    "conent" => $result
+                    "conent" => ['record_list'=>$result]
+                ];
+    }
+
+    public function getTargetReserveData($targetIdRowId, $startDate, $endDate){
+
+        $result =  $this->serviceReserveRepository->getTargetReserveData($targetIdRowId, $startDate, $endDate);
+
+        foreach ($result as $key=> $value) {
+            if($value->complete == 'N'){
+                unset($result[$key]['complete_login_id']);
+                unset($result[$key]['complete_at']);
+            }
+        }
+
+        return [ "result_code" => ResultCode::_1_reponseSuccessful, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
+                    "conent" => ['data_list' => $result]
                 ];
     }
 }

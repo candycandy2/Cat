@@ -65,19 +65,19 @@ class ReserveController extends Controller
         $target = $this->targetService->getTargetByRowId($request->target_id_row_id);
 
         if(is_null($target)){
-            return ["result_code" => ResultCode::_052004_empServiceTargetNotExist, 
-                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052004_empServiceTargetNotExist)];
+            return response()->json(["result_code" => ResultCode::_052004_empServiceTargetNotExist, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052004_empServiceTargetNotExist)], 200);
         }
 
         if($request->start_date < $request->end_date){
-            return ["result_code" => ResultCode::_052005_empServiceDateRangeInvalid, 
-                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052005_empServiceDateRangeInvalid)];
+            return response()->json(["result_code" => ResultCode::_052005_empServiceDateRangeInvalid, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052005_empServiceDateRangeInvalid)], 200);
         }
 
         $pushSetting = [ '00', '01', '10', '11' ];
         if(!in_array($request->push, $pushSetting)){
-            return ["result_code" => ResultCode::_052006_empServicePushDataInvalid, 
-                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052006_empServicePushDataInvalid)];
+            return response()->json(["result_code" => ResultCode::_052006_empServicePushDataInvalid, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052006_empServicePushDataInvalid)], 200);
         }
 
         $data = [
@@ -141,17 +141,53 @@ class ReserveController extends Controller
         }
 
         if(is_null($this->empService->getServiceRowId($request->service_id))){
-            return ["result_code" => ResultCode::_052002_empServiceNotExist, 
-                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052002_empServiceNotExist)];
+            return response()->json(["result_code" => ResultCode::_052002_empServiceNotExist, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052002_empServiceNotExist)], 200);
         }
 
         if($request->start_date > $request->end_date){
-            return ["result_code" => ResultCode::_052005_empServiceDateRangeInvalid, 
-                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052005_empServiceDateRangeInvalid)];
+            return response()->json(["result_code" => ResultCode::_052005_empServiceDateRangeInvalid, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052005_empServiceDateRangeInvalid)], 200);
         }
 
         $result = $this->reserveService->getReserveRecord($request->service_id, $request->start_date, $request->end_date);
-        return $result;
+        return response()->json($result);
 
     }
+
+    public function getTargetReserveData(Request $request){
+
+        //parameter verify
+        $validator = Validator::make($request->all(),[ 
+                'target_id_row_id'  =>['required', 'numeric'],
+                'start_date'        =>['required', 'numeric', 'digits:10'],
+                'end_date'          =>['required', 'numeric', 'digits:10'],
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'size' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+        $target = $this->targetService->getTargetByRowId($request->target_id_row_id);
+
+        if(is_null($target)){
+            return response()->json(["result_code" => ResultCode::_052004_empServiceTargetNotExist, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052004_empServiceTargetNotExist)], 200);
+        }
+
+        if($request->start_date > $request->end_date){
+            return response()->json(["result_code" => ResultCode::_052005_empServiceDateRangeInvalid, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052005_empServiceDateRangeInvalid)], 200);
+        }
+
+        $result = $this->reserveService->getTargetReserveData($request->target_id_row_id, $request->start_date, $request->end_date);
+        return response()->json($result);
+    }   
 }
