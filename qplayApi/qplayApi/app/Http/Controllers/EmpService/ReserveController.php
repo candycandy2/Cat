@@ -115,5 +115,43 @@ class ReserveController extends Controller
         }
     }
 
+    /**
+     * Get reserve record
+     * @param  Request $request 
+     * @return json
+     */
+    public function getReserveRecord(Request $request){
 
+        //parameter verify
+        $validator = Validator::make($request->all(),[ 
+                'service_id'        =>'required',
+                'start_date'        =>['required', 'numeric', 'digits:10'],
+                'end_date'          =>['required', 'numeric', 'digits:10'],
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'size' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+        if(is_null($this->empService->getServiceRowId($request->service_id))){
+            return ["result_code" => ResultCode::_052002_empServiceNotExist, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052002_empServiceNotExist)];
+        }
+
+        if($request->start_date > $request->end_date){
+            return ["result_code" => ResultCode::_052005_empServiceDateRangeInvalid, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052005_empServiceDateRangeInvalid)];
+        }
+
+        $result = $this->reserveService->getReserveRecord($request->service_id, $request->start_date, $request->end_date);
+        return $result;
+
+    }
 }

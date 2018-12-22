@@ -80,4 +80,28 @@ class EmpServiceReserveService
 
         return [$result,$logData];
     }
+
+    /**
+     * Get formated Reserve Record List
+     * @param  string $serviceId service_id
+     * @param  int $startDate query start date
+     * @param  int $endDate   query end date
+     * @return array
+     */
+    public function getReserveRecord($serviceId, $startDate, $endDate){
+        
+        $result =  $this->serviceReserveRepository->getReserveRecord($serviceId, $startDate, $endDate);
+
+        foreach ($result as $key=> $value) {
+            if($value->complete == 'N'){
+                unset($result[$key]['complete_login_id']);
+                unset($result[$key]['complete_at']);
+            }
+        }
+
+        return [ "result_code" => ResultCode::_1_reponseSuccessful, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
+                    "conent" => $result
+                ];
+    }
 }
