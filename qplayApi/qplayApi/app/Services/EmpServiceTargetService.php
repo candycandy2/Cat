@@ -249,4 +249,9 @@ class EmpServiceTargetService
                       
         return $result;
     }
+
+    public function getTargetByRowId($targetRowId){
+        return $this->targetIDRepository->getTargetByRowId($targetRowId);
+    }
+    
 }

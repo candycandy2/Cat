@@ -144,4 +144,11 @@ class EmpServiceTargetIDRepository
                              'reserve_limit')
                     ->get();
     }
+
+    public function getTargetByRowId($targetRowId){
+            
+        return $this->targetId
+                ->where('row_id',$targetRowId)
+                ->first();
+    }
 }

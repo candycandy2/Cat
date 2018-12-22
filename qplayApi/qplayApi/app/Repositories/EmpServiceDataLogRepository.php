@@ -80,4 +80,5 @@ class EmpServiceDataLogRepository
                     ->orderby('created_at','desc')
                     ->first();
     }
+
 }
