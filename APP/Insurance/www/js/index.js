@@ -4,7 +4,7 @@ var initialAppName = "Insurance";
 var appKeyOriginal = "appinsurance";
 var appKey = "appinsurance";
 var appSecretKey = "e85c0c548016c12b5ef56244067ab616";
-var pageList = ["viewMain", "viewPanel", "viewContact", "viewFamilyData", "viewPersonalInsurance", "viewApplyInsurance"];
+var pageList = ["viewMain", "viewPanel", "viewFamilyData", "viewPersonalInsurance", "viewApplyInsurance"];
 var visitedPageList = ["viewMain"];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
 var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
@@ -25,9 +25,14 @@ window.initialSuccess = function() {
     if (device.platform === "iOS") {
         $('.page-main').css({'padding-top': '0.1vw'});
     }
+
+    //解除原本的事件监听
+    document.removeEventListener("backbutton", onBackKeyDown, false);
+    //监听本页自己的backkey logic
+    document.addEventListener("backbutton", onBackKeyDownSpecial, false);
 }
 
-function onBackKeyDown() {
+function onBackKeyDownSpecial() {
     var activePageID = visitedPageList[visitedPageList.length - 1];
     var prePageID = visitedPageList[visitedPageList.length - 2];
     if (checkPopupShown()) {
@@ -37,19 +42,19 @@ function onBackKeyDown() {
         $("#mypanel").panel("close");
     } else if ($("#applyRemark").is(":focus")) {
         $("#applyRemark").blur();
-    } else if ($("#backMain").css("display") == "block") {
+    } else if ($("#backMain").css("display") == "inline") {
         $("#backMain").click();
-    } else if ($("#backFamilyList").css("display") == "block") {
+    } else if ($("#backFamilyList").css("display") == "inline") {
         $("#backFamilyList").click();
-    } else if ($("#backContactInfo").css("display") == "block") {
+    } else if ($("#backContactInfo").css("display") == "inline") {
         $("#backContactInfo").click();
-    } else if ($("#backPersonalInsuranceFromApply").css("display") == "block") {
+    } else if ($("#backPersonalInsuranceFromApply").css("display") == "inline") {
         $("#backPersonalInsuranceFromApply").click();
-    } else if ($("#backPersonalInsuranceFromDetail").css("display") == "block") {
+    } else if ($("#backPersonalInsuranceFromDetail").css("display") == "inline") {
         $("#backPersonalInsuranceFromDetail").click();
-    } else if ($("#backApplyInsurance").css("display") == "block") {
+    } else if ($("#backApplyInsurance").css("display") == "inline") {
         $("#backApplyInsurance").click();
-    } else if ($("#backWithdrawDetail").css("display") == "block") {
+    } else if ($("#backWithdrawDetail").css("display") == "inline") {
         $("#backWithdrawDetail").click();
     } else if (activePageID === "viewMain") {
         if ($("#mainTab :radio:checked").val() == 'tab1') {
