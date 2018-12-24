@@ -80,7 +80,7 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
     Route::group(['namespace' => 'EmpService'], function()
     {   
         //for app
-        //Route::group(['middleware' => 'auth.token'], function () {
+        Route::group(['middleware' => 'auth.token'], function () {
             Route::post('/newEmpService', 'ServiceController@newEmpService');
             Route::post('/setEmpServiceTarget', 'TargetController@setEmpServiceTarget');
             Route::post('/getEmpServiceList', 'ServiceController@getEmpServiceList');
@@ -89,7 +89,7 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
             Route::post('/getReserveRecord', 'ReserveController@getReserveRecord');
             Route::post('/getTargetReserveData', 'ReserveController@getTargetReserveData');
             Route::post('/getMyReserve', 'ReserveController@getMyReserve');
-        //});
+        });
     });
 });
 
