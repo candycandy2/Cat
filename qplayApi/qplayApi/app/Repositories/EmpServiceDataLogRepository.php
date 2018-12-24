@@ -81,4 +81,18 @@ class EmpServiceDataLogRepository
                     ->first();
     }
 
+    /**
+     * Get table record last add user
+     * @param  string $tableName  table name
+     * @param  int $tableRowId    record row_id
+     * @return mixed
+     */
+    public static function getLastCreatedUser($tableName, $tableRowId){
+        $dataLog = new EmpService_Data_Log();
+        return $dataLog->where('table_name','service_id')
+                    ->where('table_row_id',$tableRowId)
+                    ->where('action','add')
+                    ->orderby('created_at','desc')
+                    ->first();
+    }
 }

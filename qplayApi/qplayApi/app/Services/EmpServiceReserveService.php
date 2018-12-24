@@ -28,8 +28,13 @@ class EmpServiceReserveService
         $this->serviceReserveRepository = $serviceReserveRepository;
     }
 
-
-    public function newReserve($data){
+    /**
+     * new a reserve
+     * @param  Array $data        reserve data
+     * @param  Array $managerInfo manager info
+     * @return array
+     */
+    public function newReserve($data, $managerInfo){
         
         $newReserveRowId = $this->serviceReserveRepository->newReserve($data);
         $logData = [];
@@ -40,6 +45,9 @@ class EmpServiceReserveService
         $pushTitle = $data['info_push_title'];
         $pushContent = $data['info_push_content'];
         $push = $data['push'];
+        $managerLoginId = $managerInfo['login_id'];
+        $managerDomain = $managerInfo['domain'];
+        $managerEmpNo = $managerInfo['emp_no'];
 
         $logData = EmpServiceLog::getLogData(self::TABLE, $newReserveRowId,
                                              self::ACTION_ADD,
@@ -49,8 +57,7 @@ class EmpServiceReserveService
         $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
                   ];
-        // Cleo - Todo sendPushMessage
-        /*
+
         //Push reserve message
         $title = $pushTitle;
         $text  = $pushContent;
@@ -60,14 +67,14 @@ class EmpServiceReserveService
                         );
 
         $pushList = [];
-        //add to push to admin
+        //add to push to manager
         if(substr($push, 0, 1)){
             array_push($pushList,['from'=>$domain . "\\" . $loginId,
-                                'to'=>$domain . "\\" . $loginId]);
+                                'to'=>$managerDomain . "\\" . $managerLoginId]);
         }
         //add to push to user
         if(substr($push, 1, 1)){
-            array_push($pushList,['from'=>$domain . "\\" . $loginId,
+            array_push($pushList,['from'=>$managerDomain . "\\" . $managerLoginId,
                                 'to'=>$domain . "\\" . $loginId]);
         }
 
@@ -76,8 +83,7 @@ class EmpServiceReserveService
             $to = $item['to'];
             PushUtil::sendPushMessage($from, $to, $title, $text, $extra, $queryParam);
         }
-        */
-
+        
         return [$result,$logData];
     }
 
@@ -105,6 +111,13 @@ class EmpServiceReserveService
                 ];
     }
 
+    /**
+     * Get Arranged reserve list by target_id_row_id 
+     * @param  int $targetIdRowId target_id_row_id
+     * @param  timestamp $startDate     start date
+     * @param  timestamp $endDate       end date
+     * @return Array
+     */
     public function getTargetReserveData($targetIdRowId, $startDate, $endDate){
 
         $result =  $this->serviceReserveRepository->getTargetReserveData($targetIdRowId, $startDate, $endDate);
@@ -120,5 +133,99 @@ class EmpServiceReserveService
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
                     "conent" => ['data_list' => $result]
                 ];
+    }
+    
+    /**
+     * get my all reserve by service type
+     * @param  string $serviceType seervice type
+     * @param  string $empNo       my emp_no
+     * @param  timestamp $startDate start date
+     * @param  timestamp $endDate   end date
+     * @return Array
+     */
+    public function getMyReserveByServiceType($serviceType, $empNo, $startDate, $endDate){
+
+        $serviceList = [];
+        $recordList = [];
+        $tmpArray = [];
+
+        $result =  $this->serviceReserveRepository->getMyReserveByServiceType($serviceType, $empNo, $startDate, $endDate);
+
+        foreach ($result as $index => $service) {
+           
+             $tmpArray[$service->service_id][] = ['target_id'=>$service->target_id,
+                                                'target_id_row_id'=>$service->target_id_row_id,
+                                                'reserve_id'=>$service->reserve_id,
+                                                'info_push_title'=>$service->info_push_title,
+                                                'info_push_content'=>$service->info_push_content,
+                                                'info_data'=>$service->info_data,
+                                                'start_date'=>$service->start_date,
+                                                'end_date'=>$service->end_date,
+                                                'complete'=>$service->complete,
+                                                'complete_login_id'=>$service->complete_login_id,
+                                                'complete_at'=>$service->complete_at,
+                                                ];
+            if($service->complete == 'N'){
+                unset($tmpArray[$service->service_id][$index]['complete_login_id']);
+                unset($tmpArray[$service->service_id][$index]['complete_at']);
+            }
+        }
+
+        foreach ($tmpArray as $key => $record) {
+            $recordList = ["service_id" => $key, "record_list" => $record];
+            $serviceList [] = $recordList;
+        }
+
+        return [ "result_code" => ResultCode::_1_reponseSuccessful, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
+                    "conent" => $serviceList
+                ];
+
+    }
+
+    /**
+     * Get my reserve by service id
+     * @param  string $serviceId service id
+     * @param  string $empNo     my emp_no
+     * @param  timestamp $startDate start date
+     * @param  timestamp $endDate   end date
+     * @return array
+     */
+    public function getMyReserveByServiceID($serviceId, $empNo, $startDate, $endDate){
+        
+        $serviceList = [];
+        $recordList = [];
+        $tmpArray = [];
+
+        $result =  $this->serviceReserveRepository->getMyReserveByServiceID($serviceId, $empNo, $startDate, $endDate);
+        foreach ($result as $index => $service) {
+           
+             $tmpArray[$service->service_id][] = ['target_id'=>$service->target_id,
+                                                'target_id_row_id'=>$service->target_id_row_id,
+                                                'reserve_id'=>$service->reserve_id,
+                                                'info_push_title'=>$service->info_push_title,
+                                                'info_push_content'=>$service->info_push_content,
+                                                'info_data'=>$service->info_data,
+                                                'start_date'=>$service->start_date,
+                                                'end_date'=>$service->end_date,
+                                                'complete'=>$service->complete,
+                                                'complete_login_id'=>$service->complete_login_id,
+                                                'complete_at'=>$service->complete_at,
+                                                ];
+            if($service->complete == 'N'){
+                unset($tmpArray[$service->service_id][$index]['complete_login_id']);
+                unset($tmpArray[$service->service_id][$index]['complete_at']);
+            }
+        }
+
+        foreach ($tmpArray as $key => $record) {
+            $recordList = ["service_id" => $key, "record_list" => $record];
+            $serviceList [] = $recordList;
+        }
+        return [ "result_code" => ResultCode::_1_reponseSuccessful, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
+                    "conent" => ['record_list' => $serviceList]
+                ];
+        
     }
 }
