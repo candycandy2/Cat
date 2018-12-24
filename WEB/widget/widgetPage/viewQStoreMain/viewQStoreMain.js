@@ -1,15 +1,12 @@
-
 $("#viewQStoreMain").pagecontainer({
-    create: function (event, ui) {
+    create: function(event, ui) {
 
         window.myLocate;
         window.myLatLng;
         window.allMarker = [];
-        var qstoreMapFromLocal = [];
-        var filterQStoreListByCity;
         var locatedCity = "";
         var cityList = ["所有縣市", "基隆市", "台北市", "新北市", "宜蘭縣", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
-        
+
 
         /********************************** function *************************************/
         function geocodeAddress(geocoder, resultsMap, address, name, category) {
@@ -17,7 +14,7 @@ $("#viewQStoreMain").pagecontainer({
             //var address = "台北市內湖區基湖路16號";
 
             (function(geocoder, resultsMap, address, name, category) {
-                geocoder.geocode({'address': address}, function(results, status) {
+                geocoder.geocode({ 'address': address }, function(results, status) {
 
                     if (status === 'OK') {
                         var categoryIconUrl = "";
@@ -57,7 +54,7 @@ $("#viewQStoreMain").pagecontainer({
                         }
 
                         var marker = new google.maps.Marker({
-                        //window.marker = new google.maps.Marker({
+                            //window.marker = new google.maps.Marker({
                             map: resultsMap,
                             position: results[0].geometry.location,
                             title: name,
@@ -70,7 +67,7 @@ $("#viewQStoreMain").pagecontainer({
                         window.allMarker.push(marker);
 
                         //Info Window
-                        var contentString = '<div id="content"> 這個地址是:' + address +'</div>';
+                        var contentString = '<div id="content"> 這個地址是:' + address + '</div>';
 
                         var infowindow = new google.maps.InfoWindow({
                             content: contentString
@@ -93,9 +90,9 @@ $("#viewQStoreMain").pagecontainer({
                             }, 500);
                         });*/
 
-                    } else if (status === 'OVER_QUERY_LIMIT'){
+                    } else if (status === 'OVER_QUERY_LIMIT') {
                         //alert('Geocode was not successful for the following reason: ' + status);
-                        //return new Promise(resolve => setTimeout(resolve, 2000));                 
+                        //return new Promise(resolve => setTimeout(resolve, 2000));
                     }
 
                 });
@@ -127,12 +124,12 @@ $("#viewQStoreMain").pagecontainer({
 
                 if (typeof nowMarker !== "undefined") {
 
-                    if (item.attribution.source == nowMarker.attribution.source) {  
+                    if (item.attribution.source == nowMarker.attribution.source) {
 
                         var title = item.title;
 
-                        $.each($(qstoreMapFromLocal), function (index, item) {
-                            if (this.Subject == title) {  
+                        $.each($(qstoreWidget.allQStoreList), function(index, item) {
+                            if (this.Subject == title) {
                                 var imgURL = "/widget/widgetPage/viewQStoreMain/img/";
                                 var selectCategory = this.Category;
                                 var categoryImgUrl = "";
@@ -188,7 +185,7 @@ $("#viewQStoreMain").pagecontainer({
                 }
             });
 
-            
+
 
             $("#qstoreInfoPopup").popup("open");
         };
@@ -201,10 +198,10 @@ $("#viewQStoreMain").pagecontainer({
 
         /********************************** page event ***********************************/
 
-        $("#viewQStoreMain").one("pageshow", function (event, ui) {
+        $("#viewQStoreMain").one("pageshow", function(event, ui) {
 
             if (localStorage.getItem(qstoreWidget.QStoreLocalStorageKey) !== null) {
-                qstoreMapFromLocal = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
+                qstoreWidget.allQStoreList = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey));
             } else {
                 //第一次進入
                 //將QStoreList按七種類別，存入localStorage
@@ -216,14 +213,14 @@ $("#viewQStoreMain").pagecontainer({
                     .then(qstoreWidget.QueryStoreList(5))
                     .then(qstoreWidget.QueryStoreList(6))
                     .then(qstoreWidget.QueryStoreList(7))
-                    .then(qstoreMapFromLocal = JSON.parse(localStorage.getItem(qstoreWidget.QStoreLocalStorageKey)));                    
+                    .then();
             }
 
         });
 
         function getLocatedCityByLatLng(lat, lng) {
             var latlng = new google.maps.LatLng(lat, lng);
-            geocoder.geocode({latLng: latlng}, function(results, status) {
+            geocoder.geocode({ latLng: latlng }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[1]) {
                         var arrAddress = results;
@@ -240,115 +237,107 @@ $("#viewQStoreMain").pagecontainer({
                     locatedCity = "台北市";
                 }
 
-                filterQStoreListByCity = qstoreMapFromLocal.filter(function(item, index, array) {
+                var filterQStoreListByCity = [];
+                filterQStoreListByCity = qstoreWidget.allQStoreList.filter(function(item, index, array) {
                     if (item.County === locatedCity) {
                         return item;
                     }
                 });
 
                 var cityStoreLength = filterQStoreListByCity.length;
-                var frequency = cityStoreLength/10;
+                var frequency = cityStoreLength / 10;
                 var count = 0;
 
                 if (frequency < 1) {
-                    for (var i=0; i<cityStoreLength; i++) {
-                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category); 
+                    for (var i = 0; i < cityStoreLength; i++) {
+                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);
                     }
                 } else {
-                    for (var i=0; i<10; i++) {
-                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);   
-                    } 
+                    for (var i = 0; i < 10; i++) {
+                        geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[i].Address, filterQStoreListByCity[i].Subject, filterQStoreListByCity[i].Category);
+                    }
 
                     var j = 10;
                     setInterval(function() {
                         if (j < 20) {
                             geocodeAddress(window.geocoder, window.map, filterQStoreListByCity[j].Address, filterQStoreListByCity[j].Subject, filterQStoreListByCity[j].Category);
                             j++;
-                        }                         
-                     }, 1000);
+                        }
+                    }, 1000);
                 }
 
             });
         }
 
-        $("#viewQStoreMain").on("pageshow", function (event, ui) {
-                   console.log("=========== ready");
+        $("#viewQStoreMain").on("pageshow", function(event, ui) {
+            console.log("=========== ready");
 
-                if (navigator.geolocation) {
-                    console.log("---------1");
+            if (navigator.geolocation) {
+                console.log("---------1");
 
-                    window.locationSuccess = function(position) {
-                        console.log("--------success");
+                window.locationSuccess = function(position) {
+                    console.log("--------success");
 
-                        var pos = {
-                          lat: position.coords.latitude,
-                          lng: position.coords.longitude
-                        };
-
-                        console.log(pos);
-
-                        getLocatedCityByLatLng(pos.lat, pos.lng);
-
-                        var iconImage = {
-                            url: "img/icon_locationpin.png",
-                            scaledSize: new google.maps.Size(34, 40),
-                            origin: new google.maps.Point(0, 0),
-                            anchor: new google.maps.Point(0, 40)
-                        }
-
-                        //Google Map Marker
-                        window.myLatLng = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-
-                        if (typeof myLocate !== "undefined") {
-                            myLocate.setMap(null);
-                        }
-
-                        window.myLocate = new google.maps.Marker({
-                            position: myLatLng,
-                            map: window.map,
-                            icon: iconImage
-                            //icon: "img/icon_locationpin.png"
-                            //label: ""
-                        });
-
-                        setTimeout(function(){
-                            //set center
-                            window.map.setCenter(myLatLng);
-                        }, 2000);
-
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
                     };
 
-                    window.locationError = function(error) {
-                        //未開啟定位服務，位置固定在BenQ台北總部
-                        var pos = {
-                          lat:  25.0811469,
-                          lng: 121.56481370000006
-                        };
-                        getLocatedCityByLatLng(pos.lat, pos.lng);
+                    console.log(pos);
+
+                    getLocatedCityByLatLng(pos.lat, pos.lng);
+
+                    var iconImage = {
+                        url: "img/icon_locationpin.png",
+                        scaledSize: new google.maps.Size(34, 40),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(0, 40)
+                    }
+
+                    //Google Map Marker
+                    window.myLatLng = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
                     };
 
-                   
-                    navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {       
-                        enableHighAccuracy: true
+                    if (typeof myLocate !== "undefined") {
+                        myLocate.setMap(null);
+                    }
+
+                    window.myLocate = new google.maps.Marker({
+                        position: myLatLng,
+                        map: window.map,
+                        icon: iconImage
+                        //icon: "img/icon_locationpin.png"
+                        //label: ""
                     });
-                } else {
-                    console.log("---------2");
-                }
+
+                    setTimeout(function() {
+                        //set center
+                        window.map.setCenter(myLatLng);
+                    }, 2000);
+
+                };
+
+                window.locationError = function(error) {
+                    //未開啟定位服務，位置固定在BenQ台北總部
+                    var pos = {
+                        lat: 25.0811469,
+                        lng: 121.56481370000006
+                    };
+                    getLocatedCityByLatLng(pos.lat, pos.lng);
+                };
+
+
+                navigator.geolocation.getCurrentPosition(locationSuccess, locationError, {
+                    enableHighAccuracy: true
+                });
+            } else {
+                console.log("---------2");
+            }
         });
 
-        function callGeocodeAddress(index) {
-            return new Promise(function(resolve, reject) {
-                var endIndex = index + 10;
-                for (var i=index; i<endIndex; i++) {
-                    geocodeAddress(window.geocoder, window.map, allQStoreList[i].Address, allQStoreList[i].Subject);   
-                } 
-            });
-        }
-
-        $("#viewQStoreMain").on("pagehide", function (event, ui) {
+        $("#viewQStoreMain").on("pagehide", function(event, ui) {
 
         });
 
