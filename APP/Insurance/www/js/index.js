@@ -42,19 +42,19 @@ function onBackKeyDownSpecial() {
         $("#mypanel").panel("close");
     } else if ($("#applyRemark").is(":focus")) {
         $("#applyRemark").blur();
-    } else if ($("#backMain").css("display") == "inline") {
+    } else if ($("#backMain").css("display") == "block") {
         $("#backMain").click();
-    } else if ($("#backFamilyList").css("display") == "inline") {
+    } else if ($("#backFamilyList").css("display") == "block") {
         $("#backFamilyList").click();
-    } else if ($("#backContactInfo").css("display") == "inline") {
+    } else if ($("#backContactInfo").css("display") == "block") {
         $("#backContactInfo").click();
-    } else if ($("#backPersonalInsuranceFromApply").css("display") == "inline") {
+    } else if ($("#backPersonalInsuranceFromApply").css("display") == "block") {
         $("#backPersonalInsuranceFromApply").click();
-    } else if ($("#backPersonalInsuranceFromDetail").css("display") == "inline") {
+    } else if ($("#backPersonalInsuranceFromDetail").css("display") == "block") {
         $("#backPersonalInsuranceFromDetail").click();
-    } else if ($("#backApplyInsurance").css("display") == "inline") {
+    } else if ($("#backApplyInsurance").css("display") == "block") {
         $("#backApplyInsurance").click();
-    } else if ($("#backWithdrawDetail").css("display") == "inline") {
+    } else if ($("#backWithdrawDetail").css("display") == "block") {
         $("#backWithdrawDetail").click();
     } else if (activePageID === "viewMain") {
         if ($("#mainTab :radio:checked").val() == 'tab1') {
