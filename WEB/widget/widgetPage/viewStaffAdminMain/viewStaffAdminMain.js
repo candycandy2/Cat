@@ -75,7 +75,7 @@ $("#viewStaffAdminMain").pagecontainer({
             }();
         }
 
-        //获取是否存在茶水服务
+        //获取是否存在茶水服务，或者
         function getStaffEmpService() {
             var self = this;
             let queryData = JSON.stringify({
@@ -88,7 +88,27 @@ $("#viewStaffAdminMain").pagecontainer({
                 if(data['result_code'] == '052002') {
                     newStaffEmpService();
                 } else if(data['result_code'] == '1') {
+                    let arr = data['content']['service_type_list'];
 
+                    //1. 先找到staff服务
+                    let staffArr = [];
+                    for(var i in arr) {
+                        if(arr[i]['service_type'] == staffServiceType) {
+                            staffArr = arr[i]['service_id_list'];
+                            break;
+                        }
+                    }
+
+                    //2. 再找到meetingroom服务
+                    let serviceArr = [];
+                    for(var i in staffArr) {
+                        if(staffArr[i]['service_id'] == staffServiceID) {
+                            serviceArr = staffArr[i]['target_list'];
+                            break;
+                        }
+                    }
+
+                    window.sessionStorage.setItem('meetingroomServiceTargetList', JSON.stringify(serviceArr));
                 }
             };
 
@@ -112,7 +132,8 @@ $("#viewStaffAdminMain").pagecontainer({
 
             this.successCallback = function(data) {
                 console.log(data);
-                
+                //新增茶水服务成功后，再获取一次serviceTargetList
+                getStaffEmpService();
             };
 
             this.failCallback = function(data) {};
