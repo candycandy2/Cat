@@ -149,7 +149,7 @@ var staffAdminWidget = {
         $('.staffAdminWidget').staffAdmin();
     },
     plugin: function() {
-        let dependency = ['QForumPlugin', 'QStoragePlugin'];
+        let dependency = ['QForumPlugin', 'QStoragePlugin', 'EmpServicePlugin'];
         widget.plugin(dependency);
     }
 }
