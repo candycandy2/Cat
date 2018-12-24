@@ -126,4 +126,12 @@ class EmpServiceServiceService
         return $this->serviceIDRepository->getServiceListByType($serviceType);
     }
 
+    /**
+     * Get service manager by service_id.row_id
+     * @param  int $serviceIdRowId service_id_row_id
+     * @return max
+     */
+    public function getServiceManager($serviceIdRowId){
+        return EmpServiceLog::getLastCreatedUser('service_id', $serviceIdRowId);
+    }
 }

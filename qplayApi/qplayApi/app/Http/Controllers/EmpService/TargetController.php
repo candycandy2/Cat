@@ -106,7 +106,7 @@ class TargetController extends Controller
         $validator = Validator::make($request->all(),
             [
             'service_id' => 'required_without:servuce_type',
-            'servuce_type' =>'required_without:service_id',
+            'service_type' =>'required_without:service_id',
             ],
             [
                 'required' => ResultCode::_999001_requestParameterLostOrIncorrect
