@@ -95,7 +95,7 @@ $("#viewStaffAdminMain").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                QPlayAPI("POST", "getEmpServiceTargetList", self.successCallback, self.failCallback, queryData, '');
+                EmpServicePlugin.QPlayAPI("POST", "getEmpServiceTargetList", self.successCallback, self.failCallback, queryData, '');
             }();
         }
 
@@ -118,7 +118,7 @@ $("#viewStaffAdminMain").pagecontainer({
             this.failCallback = function(data) {};
 
             var __construct = function() {
-                QPlayAPI("POST", "newEmpService", self.successCallback, self.failCallback, queryData, '');
+                EmpServicePlugin.QPlayAPI("POST", "newEmpService", self.successCallback, self.failCallback, queryData, '');
             }();
         }
 
