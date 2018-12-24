@@ -112,7 +112,7 @@ class ReserveController extends Controller
             $DBconn = DB::connection($this->connection);
             $DBconn->beginTransaction();
 
-            $result = $this->reserveService->newReserve($data, $managerInfo);
+            $result = $this->reserveService->newReserve($data, $managerInfo, $request->lang);
 
             if($result[0]['result_code'] == ResultCode::_1_reponseSuccessful){
 

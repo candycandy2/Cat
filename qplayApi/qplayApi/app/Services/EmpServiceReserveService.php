@@ -32,9 +32,10 @@ class EmpServiceReserveService
      * new a reserve
      * @param  Array $data        reserve data
      * @param  Array $managerInfo manager info
+     * @param  string $lang       push lang parameter
      * @return array
      */
-    public function newReserve($data, $managerInfo){
+    public function newReserve($data, $managerInfo, $lang){
         
         $newReserveRowId = $this->serviceReserveRepository->newReserve($data);
         $logData = [];
@@ -45,9 +46,11 @@ class EmpServiceReserveService
         $pushTitle = $data['info_push_title'];
         $pushContent = $data['info_push_content'];
         $push = $data['push'];
-        $managerLoginId = $managerInfo['login_id'];
-        $managerDomain = $managerInfo['domain'];
-        $managerEmpNo = $managerInfo['emp_no'];
+        
+        $managerLoginId = $managerInfo['manager_login_id'];
+        $managerDomain = $managerInfo['manager_domain'];
+        $managerEmpNo = $managerInfo['manager_emp_no'];
+
 
         $logData = EmpServiceLog::getLogData(self::TABLE, $newReserveRowId,
                                              self::ACTION_ADD,
@@ -80,7 +83,7 @@ class EmpServiceReserveService
 
         foreach ($pushList as $item) {
             $from = $item['from'];
-            $to = $item['to'];
+            $to = (array)$item['to'];
             PushUtil::sendPushMessage($from, $to, $title, $text, $extra, $queryParam);
         }
         
@@ -224,7 +227,7 @@ class EmpServiceReserveService
         }
         return [ "result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
-                    "conent" => ['record_list' => $serviceList]
+                    "conent" => ['service_list' => $serviceList]
                 ];
         
     }
