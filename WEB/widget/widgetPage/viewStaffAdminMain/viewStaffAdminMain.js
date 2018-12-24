@@ -2,6 +2,8 @@ $("#viewStaffAdminMain").pagecontainer({
     create: function(event, ui) {
 
         var imgURL = '/widget/widgetPage/viewStaffAdminMain/img/',
+            staffServiceID = 'meetingroomService',//茶水服务id
+            staffServiceType = 'staff',//茶水服务类型
             staffKey = 'appempservice',
             statusList = [
             {id: 1, item: '服務中'},
@@ -35,6 +37,7 @@ $("#viewStaffAdminMain").pagecontainer({
             //$('#adminSettingPopup-option-list .tpl-dropdown-list-selected').removeClass('tpl-dropdown-list-selected');
         }
 
+        //获取所有茶水相关讨论版
         function getBoardType() {
             let queryData = "<LayoutHeader><emp_no>" +
                 loginData["emp_no"] +
@@ -72,6 +75,54 @@ $("#viewStaffAdminMain").pagecontainer({
             }();
         }
 
+        //获取是否存在茶水服务
+        function getStaffEmpService() {
+            var self = this;
+            let queryData = JSON.stringify({
+                service_id: staffServiceID//hardcode
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+                //表示没有该服务052002，需要newEmpService:meetingroomService
+                if(data['result_code'] == '052002') {
+                    newStaffEmpService();
+                } else if(data['result_code'] == '1') {
+
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                QPlayAPI("POST", "getEmpServiceTargetList", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+        //新增茶水服务，just only once
+        function newStaffEmpService() {
+            var self = this;
+            let queryData = JSON.stringify({
+                service_id: staffServiceID,//hardcode
+                type: staffServiceType,//hardcode
+                login_id: loginData['loginid'],
+                domain: loginData['domain'],
+                emp_no: loginData['emp_no']
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+                
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                QPlayAPI("POST", "newEmpService", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+
         /********************************** page event ***********************************/
         $("#viewStaffAdminMain").on("pagebeforeshow", function(event, ui) {
 
@@ -83,6 +134,8 @@ $("#viewStaffAdminMain").pagecontainer({
             initAdminSetting();
             //获取所有staff的board主题
             getBoardType();
+            //是否有茶水服务
+            getStaffEmpService();
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
