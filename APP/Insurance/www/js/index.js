@@ -4,10 +4,10 @@ var initialAppName = "Insurance";
 var appKeyOriginal = "appinsurance";
 var appKey = "appinsurance";
 var appSecretKey = "e85c0c548016c12b5ef56244067ab616";
-var pageList = ["viewMain", "viewPanel", "viewFamilyData", "viewPersonalInsurance", "viewApplyInsurance"];
+var pageList = ["viewMain", "viewPanel", "viewPersonalInsurance", "viewApplyInsurance"];
 var visitedPageList = ["viewMain"];
 var addFamilyOrNot;    //眷屬資料是新增還是編輯
-var viewListInit = true, viewSignupInit = true, viewFamilyInit = true;
+var viewListInit = true, viewSignupInit = true;
 var clickEditSettingID = '';
 var clickFamilyID, clickInsID, clickAppID, clickFamilyName, clickRelation, clickAge, clickBirth, clickID; 
 var clickCanApply, clickDealwith, clickInsuredday, clickApplyday, clickDealday, clickReason, clickSubsidy, clickCerti, clickHealthcard;
