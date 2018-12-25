@@ -89,8 +89,8 @@ class EmpServiceDataLogRepository
      */
     public static function getLastCreatedUser($tableName, $tableRowId){
         $dataLog = new EmpService_Data_Log();
-        return $dataLog->where('table_name','service_id')
-                    ->where('table_row_id',$tableRowId)
+        return $dataLog->where('table_name', $tableName)
+                    ->where('table_row_id', $tableRowId)
                     ->where('action','add')
                     ->orderby('created_at','desc')
                     ->first();
