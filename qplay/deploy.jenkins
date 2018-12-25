@@ -1,3 +1,12 @@
+<strong>Dec-26-18 00:39:34</strong>
+- Reason : daily build, 695
+- Commit# : 
+0db4b74b0 - Darren Ti, 10 hours ago : [QPay]Update for API of check emp_no data type
+d0bdd8792 - CleoWChan, 10 hours ago : [EmpService] Phase1 add comment
+a9602b6f1 - CleoWChan, 11 hours ago : [EmpService] Add setReserveComplete and fix bug
+05692af4c - Darren Ti, 15 hours ago : [QPlayDoc]Update Doc
+e1850daca - CleoWChan, 16 hours ago : [EmpService] fix bug getLastCreatedUser
+
 <strong>Dec-25-18 00:35:54</strong>
 - Reason : daily build, 694
 - Commit# : 
