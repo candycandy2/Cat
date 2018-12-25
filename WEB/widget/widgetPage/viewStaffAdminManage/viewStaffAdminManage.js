@@ -127,12 +127,12 @@ $("#viewStaffAdminManage").pagecontainer({
         function getMyTargetMeetingRoom() {
             let content = '';
             for(var i in targetMeetingRoom) {
-                //剔除“BQT/”
-                let meetingRoomCode = targetMeetingRoom[i]['target_id'].split('/')[1];
-                //1.改变已管理会议室状态为open
+                //1.获取会议室及target_id
+                let meetingRoomCode = targetMeetingRoom[i]['target_id'];
+                //2.改变已管理会议室状态为open
                 $('.meeting-room-list[data-item="' + meetingRoomCode + '"]').find('.select-room-icon').attr('data-src', 'open');
                 $('.meeting-room-list[data-item="' + meetingRoomCode + '"]').find('img').attr('src', serverURL + imgURL +'switch_open.png');
-                //2.为我管理的会议室新增html
+                //3.为我管理的会议室新增html
                 content += '<li class="my-meeting-room-list" data-item="'+
                     meetingRoomCode +
                     '"><div>' +
@@ -159,13 +159,13 @@ $("#viewStaffAdminManage").pagecontainer({
             //根据status判断新增new还是删除delete
             let statusKey = (status == 'open' ? 'new' : 'delete');
             queryData[statusKey] = [{
-                target_id: 'BQT/' + code,
+                target_id: code,
                 life_type: 0,
                 reserve_limit: 1
             }];
 
             this.successCallback = function(data) {
-                console.log(code + statusKey + data);
+                console.log(code + statusKey + data['message']);
             };
 
             this.failCallback = function(data) {};
