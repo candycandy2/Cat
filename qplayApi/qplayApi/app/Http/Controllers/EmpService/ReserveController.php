@@ -268,4 +268,69 @@ class ReserveController extends Controller
         }
     }
 
+    public function setReserveComplete(Request $request){
+
+        //parameter verify
+        $validator = Validator::make($request->all(),[ 
+                'reserve_id' => ['required', 'numeric'],
+                'login_id' => 'required',
+                'domain' =>'required',
+                'emp_no' => 'required'
+                ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
+                'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect,
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+
+        $reserve = $this->reserveService->getReserveByRowID($request->reserve_id);
+        if(is_null($reserve)){
+            return ["result_code" => ResultCode::_052007_empServiceReserveNotExist, 
+                        "message" => CommonUtil::getMessageContentByCode(ResultCode::_052007_empServiceReserveNotExist)];
+        }
+
+        if(strtolower($reserve->complete) == 'y'){
+            return ["result_code" => ResultCode::_052008_empServiceReserveHasCompleted, 
+                        "message" => CommonUtil::getMessageContentByCode(ResultCode::_052008_empServiceReserveHasCompleted)];
+        }
+        
+        $reserveRowId = $request->reserve_id;
+        $loginId = $request->login_id;
+        $domain = $request->domain;
+        $empNO = $request->emp_no;
+        $completeSelf = 'N'; 
+
+        if($request->emp_no == $reserve->emp_no){
+            $completeSelf = 'Y';
+        }
+
+    
+        try {
+            
+            $DBconn = DB::connection($this->connection);
+            $DBconn->beginTransaction();
+
+            $result = $this->reserveService->setReserveComplete($reserveRowId, $loginId, $domain, $empNO, $completeSelf);
+
+            if($result[0]['result_code'] == ResultCode::_1_reponseSuccessful){
+
+                $this->empServiceLog->newDataLog($result[1]);
+
+            }
+
+            $DBconn->commit();
+            return response()->json($result[0]);
+        
+        } catch (\Exception $e) {
+            $DBconn->rollBack();
+            throw $e;
+        }
+
+    }
 }

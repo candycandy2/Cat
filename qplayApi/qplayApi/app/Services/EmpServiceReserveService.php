@@ -102,6 +102,7 @@ class EmpServiceReserveService
         $result =  $this->serviceReserveRepository->getReserveRecord($serviceId, $startDate, $endDate);
 
         foreach ($result as $key=> $value) {
+            $result[$key]['complete_at'] = strtotime($value->complete_at);
             if($value->complete == 'N'){
                 unset($result[$key]['complete_login_id']);
                 unset($result[$key]['complete_at']);
@@ -110,7 +111,7 @@ class EmpServiceReserveService
 
         return [ "result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
-                    "conent" => ['record_list'=>$result]
+                    "content" => ['record_list'=>$result]
                 ];
     }
 
@@ -126,6 +127,7 @@ class EmpServiceReserveService
         $result =  $this->serviceReserveRepository->getTargetReserveData($targetIdRowId, $startDate, $endDate);
 
         foreach ($result as $key=> $value) {
+            $result[$key]['complete_at'] = strtotime($value->complete_at);
             if($value->complete == 'N'){
                 unset($result[$key]['complete_login_id']);
                 unset($result[$key]['complete_at']);
@@ -134,7 +136,7 @@ class EmpServiceReserveService
 
         return [ "result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
-                    "conent" => ['data_list' => $result]
+                    "content" => ['data_list' => $result]
                 ];
     }
     
@@ -166,7 +168,7 @@ class EmpServiceReserveService
                                                 'end_date'=>$service->end_date,
                                                 'complete'=>$service->complete,
                                                 'complete_login_id'=>$service->complete_login_id,
-                                                'complete_at'=>$service->complete_at,
+                                                'complete_at'=>strtotime($service->complete_at),
                                                 ];
             if($service->complete == 'N'){
                 unset($tmpArray[$service->service_id][$index]['complete_login_id']);
@@ -181,7 +183,7 @@ class EmpServiceReserveService
 
         return [ "result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
-                    "conent" => $serviceList
+                    "content" => $serviceList
                 ];
 
     }
@@ -213,7 +215,7 @@ class EmpServiceReserveService
                                                 'end_date'=>$service->end_date,
                                                 'complete'=>$service->complete,
                                                 'complete_login_id'=>$service->complete_login_id,
-                                                'complete_at'=>$service->complete_at,
+                                                'complete_at'=>strtotime($service->complete_at),
                                                 ];
             if($service->complete == 'N'){
                 unset($tmpArray[$service->service_id][$index]['complete_login_id']);
@@ -227,8 +229,43 @@ class EmpServiceReserveService
         }
         return [ "result_code" => ResultCode::_1_reponseSuccessful, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
-                    "conent" => ['service_list' => $serviceList]
+                    "content" => ['service_list' => $serviceList]
                 ];
         
+    }
+
+    /**
+     * Get reserve data by reserve_record.row_id
+     * @param  int $reserveRowId reserve_record.row_id
+     * @return mixed
+     */
+    public function getReserveByRowID($reserveRowId){
+        return $this->serviceReserveRepository->getReserveByRowID($reserveRowId);
+    }
+
+    public function setReserveComplete($reserveRowId, $loginId, $domain, $empNO, $completeSelf){
+        
+        $logData = [];
+        $data = [];
+
+        $data['complete'] = 'Y';
+        $data['complete_self'] = $completeSelf;
+        $data['complete_login_id'] = $loginId;
+        $data['complete_domain'] = $domain;
+        $data['complete_emp_no'] = $empNO;
+        $data['complete_at'] = date('Y-m-d H:i:s',time());
+
+        $newReserveRowId = $this->serviceReserveRepository->updateReserveByRowId($reserveRowId, $data);
+
+        $logData = EmpServiceLog::getLogData(self::TABLE, $reserveRowId,
+                                             self::ACTION_UPDATE,
+                                             $loginId, $domain, $empNO,
+                                             $data);
+
+        $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
+            "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
+          ];
+
+       return [$result,$logData];
     }
 }
