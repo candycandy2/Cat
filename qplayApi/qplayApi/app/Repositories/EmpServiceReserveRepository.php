@@ -47,6 +47,13 @@ class EmpServiceReserveRepository
                     ->get();
     }
 
+    /**
+     * Get target reserve data by target row_id
+     * @param  int $targetIdRowId target_id.row_id
+     * @param  timestamp $startDate     start date
+     * @param  timestamp $endDate       end date
+     * @return mixed
+     */
     public function getTargetReserveData($targetIdRowId, $startDate, $endDate){
         return $this->reserveRecord
             ->join('target_id','reserve_record.target_id_row_id','=','target_id.row_id')
@@ -63,6 +70,14 @@ class EmpServiceReserveRepository
             ->get();
     }
 
+    /**
+     * Get my reserve by service id
+     * @param  string $serviceId service_id.service_id
+     * @param  string $empNo     emp_no
+     * @param  timestamp $startDate start date
+     * @param  timestamp $endDate   end date
+     * @return mixed
+     */
     public function getMyReserveByServiceID($serviceId, $empNo, $startDate, $endDate){
         return $this->reserveRecord
             ->join('target_id','reserve_record.target_id_row_id','=','target_id.row_id')
@@ -81,7 +96,14 @@ class EmpServiceReserveRepository
             ->get();
     }
 
-
+    /**
+     * get my reserve by service type
+     * @param  string $serviceType service_id.type
+     * @param  string $empNo       emp_no
+     * @param  timestamp $startDate   start date
+     * @param  timestamp $endDate     end date
+     * @return mixed
+     */
     public function getMyReserveByServiceType($serviceType, $empNo, $startDate, $endDate){
         return $this->reserveRecord
             ->join('target_id','reserve_record.target_id_row_id','=','target_id.row_id')
@@ -98,5 +120,26 @@ class EmpServiceReserveRepository
                       DB::raw("unix_timestamp(end_date) as end_date"), DB::raw("IF(complete IS NULL,'N','Y') AS complete"),
                       'complete_login_id','complete_at')
             ->get();
+    }
+
+    /**
+     * Get reserve data by reserve row_id
+     * @param  int $reserveRowId reserve_record.row_id
+     * @return mixed
+     */
+    public function getReserveByRowID($reserveRowId){
+        return $this->reserveRecord::find($reserveRowId);
+    }
+
+    /**
+     * update reserve by reserve row_id
+     * @param  int $reserveRowId reserve_record.row_id
+     * @param  Array  $data      update data
+     * @return int
+     */
+    public function updateReserveByRowId($reserveRowId, Array $data){
+        return $this->reserveRecord
+                    ->where('row_id', $reserveRowId)
+                    ->update($data);
     }
 }
