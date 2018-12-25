@@ -268,6 +268,11 @@ class ReserveController extends Controller
         }
     }
 
+    /**
+     * Set reserve to complete
+     * @param Request $request
+     * @return json
+     */
     public function setReserveComplete(Request $request){
 
         //parameter verify
