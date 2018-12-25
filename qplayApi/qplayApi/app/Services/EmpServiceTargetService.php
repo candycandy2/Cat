@@ -249,4 +249,14 @@ class EmpServiceTargetService
                       
         return $result;
     }
+
+    /**
+     * Get target info by target_id.row_id
+     * @param  int $targetRowId target_id.row_id
+     * @return array
+     */
+    public function getTargetByRowId($targetRowId){
+        return $this->targetIDRepository->getTargetByRowId($targetRowId);
+    }
+    
 }

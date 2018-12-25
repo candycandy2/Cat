@@ -85,6 +85,10 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
             Route::post('/setEmpServiceTarget', 'TargetController@setEmpServiceTarget');
             Route::post('/getEmpServiceList', 'ServiceController@getEmpServiceList');
             Route::post('/getEmpServiceTargetList', 'TargetController@getEmpServiceTargetList');
+            Route::post('/newReserve', 'ReserveController@newReserve');
+            Route::post('/getReserveRecord', 'ReserveController@getReserveRecord');
+            Route::post('/getTargetReserveData', 'ReserveController@getTargetReserveData');
+            Route::post('/getMyReserve', 'ReserveController@getMyReserve');
         });
     });
 });
