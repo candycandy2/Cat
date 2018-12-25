@@ -4,8 +4,7 @@ $("#viewStaffAdminManage").pagecontainer({
         var imgURL = '/widget/widgetPage/viewStaffAdminManage/img/',
             limitMeetingRoom = ['T00', 'T13'],//限制预定会议室
             siteMeetingRoom,//BQT所有会议室
-            targetMeetingRoom = JSON.parse(window.sessionStorage.getItem('meetingroomServiceTargetList')),//已选择的会议室，通过API获得
-            deleteMeetingRoom = [];//删除的会议室
+            targetMeetingRoom = JSON.parse(window.sessionStorage.getItem('meetingroomServiceTargetList'));//已选择的会议室，通过API获得
 
         function getMeetingRoom() {
             var self = this;
@@ -166,7 +165,7 @@ $("#viewStaffAdminManage").pagecontainer({
             }];
 
             this.successCallback = function(data) {
-                console.log(data);
+                console.log(code + statusKey + data);
             };
 
             this.failCallback = function(data) {};
@@ -185,7 +184,6 @@ $("#viewStaffAdminManage").pagecontainer({
         $("#viewStaffAdminManage").one("pageshow", function(event, ui) {
             var mainHeight = window.sessionStorage.getItem('pageMainHeight');
             $('#viewStaffAdminManage .page-main').css('height', mainHeight);
-            $('.editNoticePreviewBtn').show();
             //获取所有会议室
             getMeetingRoom();
         });
@@ -226,7 +224,7 @@ $("#viewStaffAdminManage").pagecontainer({
             $(this).attr('data-src', reverseSrc);
 
             //更新到我管理的会议室UI，open为append，close为remove
-            let meetingRoomCode = $(this).parent().prev().text();
+            let meetingRoomCode = $(this).parent().parent().data('item');
             if(reverseSrc == 'open') {
                 let content = '<li class="my-meeting-room-list" data-item="'+
                     meetingRoomCode +
@@ -247,7 +245,7 @@ $("#viewStaffAdminManage").pagecontainer({
 
         //我管理的会议室单选按钮
         $('.selected-meeting-room-ul').on('click', '.select-room-icon', function() {
-            let meetingRoomCode = $(this).parent().prev().text();
+            let meetingRoomCode = $(this).parent().parent().data('item');
             $('.meeting-room-list[data-item="' + meetingRoomCode + '"]').find('img').trigger('click');
         });
 
