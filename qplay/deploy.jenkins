@@ -1,3 +1,10 @@
+<strong>Dec-27-18 00:35:19</strong>
+- Reason : daily build, 696
+- Commit# : 
+a2f46511e - CleoWChan, 14 hours ago : [EmpService] fix bug of PR #3786
+1c0307a34 - CleoWChan, 15 hours ago : [EmpService] Phase1 add get reserve APIs order by
+f2918d7dd - CleoWChan, 16 hours ago : [EmpService] Phase1 fix start_date end_date validation
+
 <strong>Dec-26-18 00:39:34</strong>
 - Reason : daily build, 695
 - Commit# : 
