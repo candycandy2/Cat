@@ -3,7 +3,7 @@ var weatherWidget = {
     init: function(contentItem) {
 
         function createContent() {
-            $.get(serverURL + "/widget/weather/weather.html", function(data) {
+            $.get(serverURL + "/widget/widget/weather/weather.html", function(data) {
                 contentItem.html('').append(data);
                 setWeatherData();
 

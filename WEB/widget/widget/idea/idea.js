@@ -5,13 +5,13 @@ var ideaWidget = {
 
         function createContent(contentItem) {
 
-            $.get(serverURL + "/widget/idea/idea.html", function (data) {
+            $.get(serverURL + "/widget/widget/idea/idea.html", function (data) {
                 //1.html
                 contentItem.html('').append(data);
                 //2.img
-                var ideaImg = $('<img>').attr('src', serverURL + '/widget/idea/img/widget_idea.png');
+                var ideaImg = $('<img>').attr('src', serverURL + '/widget/widget/idea/img/widget_idea.png');
                 $('.idea-icon').html('').append(ideaImg);
-                var moreImg = $('<img>').attr('src', serverURL + '/widget/idea/img/more_green.png');
+                var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/idea/img/more_green.png');
                 $('.idea-more').html('').append(moreImg);
 
             }, "html");

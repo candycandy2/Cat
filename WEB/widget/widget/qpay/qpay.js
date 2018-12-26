@@ -4,13 +4,13 @@ var qpayWidget = {
     init: function(contentItem) {
 
         function createContent() {
-            $.get(serverURL + "/widget/qpay/qpay.html", function (data) {
+            $.get(serverURL + "/widget/widget/qpay/qpay.html", function (data) {
                 //1.html
                 contentItem.html('').append(data);
                 //2.img
-                var ideaImg = $('<img>').attr('src', serverURL + '/widget/qpay/img/widget_pay.png');
+                var ideaImg = $('<img>').attr('src', serverURL + '/widget/widget/qpay/img/widget_pay.png');
                 $('.qpay-icon').html('').append(ideaImg);
-                var moreImg = $('<img>').attr('src', serverURL + '/widget/qpay/img/more_green.png');
+                var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/qpay/img/more_green.png');
                 $('.qpay-more').html('').append(moreImg);
                 //3. due date
                 var dueDate = getDueDay();

@@ -8,18 +8,18 @@ var qstoreWidget = {
         var self = this;
 
         function createContent(key) {
-            $.get(serverURL + "/widget/qstore/qstore.html", function(data) {
+            $.get(serverURL + "/widget/widget/qstore/qstore.html", function(data) {
                 //1.html
                 contentItem.html('').append(data);
                 //2.lang
                 self.lang();
                 //3.img
-                var qstoreImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/widget_store.png');
+                var qstoreImg = $('<img>').attr('src', serverURL + '/widget/widget/qstore/img/widget_store.png');
                 $('.qstore-icon').html('').append(qstoreImg);
-                var qstoreallImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_all.png');
+                var qstoreallImg = $('<img>').attr('src', serverURL + '/widget/widget/qstore/img/store_all.png');
                 $('.store-all-img').html('').append(qstoreallImg);
-                //var qstorenearImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/store_near.png');
-                var qstorenearImg = $('<img>').attr('src', serverURL + '/widget/qstore/img/icon_store_disable.png');
+                //var qstorenearImg = $('<img>').attr('src', serverURL + '/widget/widget/qstore/img/store_near.png');
+                var qstorenearImg = $('<img>').attr('src', serverURL + '/widget/widget/qstore/img/icon_store_disable.png');
                 $('.store-near-img').html('').append(qstorenearImg);
 
             }, "html");

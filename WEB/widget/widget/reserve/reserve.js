@@ -61,9 +61,9 @@ var reserveWidget = {
 
         function createContent(contentItem) {
 
-            $.get(serverURL + "/widget/reserve/reserve.html", function(data) {
+            $.get(serverURL + "/widget/widget/reserve/reserve.html", function(data) {
                 contentItem.html('').append(data);
-                $img = $('<img>').attr('src', serverURL + '/widget/reserve/default_photo.png');
+                $img = $('<img>').attr('src', serverURL + '/widget/widget/reserve/default_photo.png');
                 $('.reserve-default-photo').html('').append($img);
                 //1.获取当天日期和用户名
                 getCurrentDate();

@@ -53,7 +53,7 @@ var widget = {
             var contentItem = $('<div class="' + widgetItem + '"></div>');
             div.append(contentItem);
 
-            $.getScript(serverURL + "/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
+            $.getScript(serverURL + "/widget/widget/" + this.list()[id].name + "/" + this.list()[id].name + ".js")
                 .done(function(script, textStatus) {
                     if (typeof window[widgetItem] != 'undefined') {
                         window[widgetItem].init(contentItem);

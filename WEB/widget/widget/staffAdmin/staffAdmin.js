@@ -4,13 +4,13 @@ var staffAdminWidget = {
     init: function(contentItem) {
 
         function createContent() {
-            $.get(serverURL + "/widget/staffAdmin/staffAdmin.html", function(data) {
+            $.get(serverURL + "/widget/widget/staffAdmin/staffAdmin.html", function(data) {
                 //1.html
                 contentItem.html('').append(data);
                 //2.img
-                var teaImg = $('<img>').attr('src', serverURL + '/widget/staffAdmin/img/widget_tea.png');
+                var teaImg = $('<img>').attr('src', serverURL + '/widget/widget/staffAdmin/img/widget_tea.png');
                 $('.staff-icon').html('').append(teaImg);
-                var moreImg = $('<img>').attr('src', serverURL + '/widget/staffAdmin/img/more_green.png');
+                var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/staffAdmin/img/more_green.png');
                 $('.staff-admin-more').html('').append(moreImg);
                 //3.update
                 $('.staff-update-time').text(updateTime());
@@ -24,7 +24,7 @@ var staffAdminWidget = {
             });
 
             //添加staff菜單
-            $.get(serverURL + "/widget/staffAdmin/menu.html", function(data) {
+            $.get(serverURL + "/widget/widget/staffAdmin/menu.html", function(data) {
                 $.mobile.pageContainer.append(data);
 
                 //ios top
