@@ -4,13 +4,13 @@ var accountingrateWidget = {
     init: function(contentItem) {
 
         function createContent() {
-            $.get(serverURL + "/widget/accountingrate/accountingrate.html", function(data) {
+            $.get(serverURL + "/widget/widget/accountingrate/accountingrate.html", function(data) {
                 //1.html
                 contentItem.html('').append(data);
                 //2.img
-                var rateImg = $('<img>').attr('src', serverURL + '/widget/accountingrate/img/widget_accountingrate.png');
+                var rateImg = $('<img>').attr('src', serverURL + '/widget/widget/accountingrate/img/widget_accountingrate.png');
                 $('.rate-icon').html('').append(rateImg);
-                var moreImg = $('<img>').attr('src', serverURL + '/widget/accountingrate/img/more_green.png');
+                var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/accountingrate/img/more_green.png');
                 $('.rate-more').html('').append(moreImg);
                 //3.list
                 getFavoriteRate();

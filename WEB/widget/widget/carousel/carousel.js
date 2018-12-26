@@ -8,20 +8,20 @@ var carouselWidget = {
 
         function createContent(contentItem) {
 
-            $.get(serverURL + "/widget/carousel/carousel.html", function(data) {
+            $.get(serverURL + "/widget/widget/carousel/carousel.html", function(data) {
                 contentItem.html('').append(data);
 
                 var allowUpdate = window.sessionStorage.getItem('allowUpdateAPP');
                 if (allowUpdate == 'Y') {
-                    $('.bulletin-close img').attr('src', serverURL + '/widget/carousel/img/close.png');
-                    $('.bulletin-icon img').attr('src', serverURL + '/widget/carousel/img/announce.png');
+                    $('.bulletin-close img').attr('src', serverURL + '/widget/widget/carousel/img/close.png');
+                    $('.bulletin-icon img').attr('src', serverURL + '/widget/widget/carousel/img/announce.png');
                     $('.bulletin-link div').text(langStr['wgt_072']);
                     $('.top-bulletin').show();
                 } else {
                     $('.top-bulletin').hide();
                 }
 
-                $.getJSON(serverURL + '/widget/carousel/link.json', function(data) {
+                $.getJSON(serverURL + '/widget/widget/carousel/link.json', function(data) {
 
                     for (var j = 0; j < carouselLength; j++) {
 
@@ -56,7 +56,7 @@ var carouselWidget = {
                 var content = '';
 
                 for (var i = 0; i < carouselLength; i++) {
-                    content += '<li id= "' + i + '" class="sw-slide"><img class="portal_' + (i + 1) + '" src="' + serverURL + '/widget/carousel/img/portal_' + (i + 1) + '.jpg"/></li>';
+                    content += '<li id= "' + i + '" class="sw-slide"><img class="portal_' + (i + 1) + '" src="' + serverURL + '/widget/widget/carousel/img/portal_' + (i + 1) + '.jpg"/></li>';
                 }
 
                 $('.swipslider ul').append(content);

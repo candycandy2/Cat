@@ -6,7 +6,7 @@ var applistWidget = {
         var favoriteApp = null;
 
         function createContent() {
-            $.get(serverURL + '/widget/applist/applist.html', function(data) {
+            $.get(serverURL + '/widget/widget/applist/applist.html', function(data) {
                 contentItem.html('').append(data);
                 getFavoriteApp();
             }, 'html');
@@ -85,9 +85,9 @@ var applistWidget = {
 
             //qpay icon & add favorite icon
             content += '<div class="applist-item qpay-enter" style="display:' + (otherLength == 1 ? 'none' : 'block') +
-                '"><a href="#"><img src="' + serverURL + '/widget/applist/img/qpay_icon.png" style="width:18vw;"></a>' +
+                '"><a href="#"><img src="' + serverURL + '/widget/widget/applist/img/qpay_icon.png" style="width:18vw;"></a>' +
                 '<p class="app-list-name">消費券支付</p></div><div class="applist-item add-favorite-list"><a href="#"><img src="' + serverURL + 
-                '/widget/applist/img/addfavorite.png" style="width:18vw;"></a><p class="app-list-name" style="opacity:0;">Add</p></div>';
+                '/widget/widget/applist/img/addfavorite.png" style="width:18vw;"></a><p class="app-list-name" style="opacity:0;">Add</p></div>';
 
             $('.applist-main-icon').css('width', contentWidth + 'vw').html('').append(content);
         }

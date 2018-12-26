@@ -8,13 +8,13 @@ var yellowpageWidget = {
         var _key = this.yellowPageKey;
 
         function createContent(key) {
-            $.get(serverURL + "/widget/yellowpage/yellowpage.html", function(data) {
+            $.get(serverURL + "/widget/widget/yellowpage/yellowpage.html", function(data) {
                 //1.html
                 contentItem.html('').append(data);
                 //2.img
-                var rateImg = $('<img>').attr('src', serverURL + '/widget/yellowpage/img/widget_yellowpage.png');
+                var rateImg = $('<img>').attr('src', serverURL + '/widget/widget/yellowpage/img/widget_yellowpage.png');
                 $('.yellowpage-icon').html('').append(rateImg);
-                var moreImg = $('<img>').attr('src', serverURL + '/widget/yellowpage/img/more_green.png');
+                var moreImg = $('<img>').attr('src', serverURL + '/widget/widget/yellowpage/img/more_green.png');
                 $('.phone-book-more').html('').append(moreImg);
 
             }, "html");
@@ -97,8 +97,8 @@ var yellowpageWidget = {
 
                         var content = '<li class="phone-book-li" data-index="' + i + '"><div class="phone-book-name"><div>' + $.trim(phoneList[i]['Name_EN']) +
                             '</div><div>' + $.trim(phoneList[i]['Name_CH']) + '</div></div><div><a href="' + (arr.length == 1 ? 'tel:' + arr[0] : '#') +
-                            '"><img src="' + serverURL + '/widget/yellowpage/img/phone.png"></a></div><div><a href="' + (arr.length == 1 ? 'tel:' + arr[0] : '#') +
-                            '">' + (typeof arr[0] != 'undefined' ? arr[0] : '') + '</a></div><div><img src="' + serverURL + '/widget/yellowpage/img/info.png" class="open-yellowpage"></div></li>';
+                            '"><img src="' + serverURL + '/widget/widget/yellowpage/img/phone.png"></a></div><div><a href="' + (arr.length == 1 ? 'tel:' + arr[0] : '#') +
+                            '">' + (typeof arr[0] != 'undefined' ? arr[0] : '') + '</a></div><div><img src="' + serverURL + '/widget/widget/yellowpage/img/info.png" class="open-yellowpage"></div></li>';
 
                         $('.phone-book-ul').append(content);
                         //bind data
@@ -116,7 +116,7 @@ var yellowpageWidget = {
                         //append html
                         var content = '';
                         for (var i in telArr) {
-                            content += '<li><img src="' + serverURL + '/widget/yellowpage/img/phone.png" style="width:4vw; height:auto;"><span>' +
+                            content += '<li><img src="' + serverURL + '/widget/widget/yellowpage/img/phone.png" style="width:4vw; height:auto;"><span>' +
                                 '<a href="tel:' + telArr[i] + '" style="text-decoration: none; font-weight: normal;">' + telArr[i] + '</a></span></li>';
                         }
                         $('#numSelectPopupWindow ul').html('').append(content);
