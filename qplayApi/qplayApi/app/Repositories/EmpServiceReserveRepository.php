@@ -36,14 +36,17 @@ class EmpServiceReserveRepository
                     ->where('target_id.active', 'Y')
                     ->where('service_id', $serviceId)
                     ->where('service_id.active', 'Y')
-                    -> where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
-                    -> where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
+                    ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.start_date)'),'>=', $startDate)
+                    ->where(DB::raw('UNIX_TIMESTAMP(reserve_record.end_date)'),'<=', $endDate)
                     ->select('target_id', 'target_id_row_id', 'reserve_record.row_id as reserve_id',
                              'reserve_record.login_id as reserve_login_id','reserve_record.domain as reserve_domain', 
                              'reserve_record.emp_no as reserve_emp_no',
                              'info_push_title', 'info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
                               DB::raw("unix_timestamp(end_date) as end_date"), DB::raw("IF(complete IS NULL,'N','Y') AS complete"),
                               'complete_login_id','complete_at')
+                    ->orderby('complete','asc')
+                    ->orderby('complete_at','desc')
+                    ->orderby('start_date','desc')
                     ->get();
     }
 
@@ -67,6 +70,9 @@ class EmpServiceReserveRepository
                      'info_push_title', 'info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
                       DB::raw("unix_timestamp(end_date) as end_date"), DB::raw("IF(complete IS NULL,'N','Y') AS complete"),
                       'complete_login_id','complete_at')
+            ->orderby('complete','asc')
+            ->orderby('complete_at','desc')
+            ->orderby('start_date','desc')
             ->get();
     }
 
@@ -93,6 +99,7 @@ class EmpServiceReserveRepository
                      'info_push_title', 'info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
                       DB::raw("unix_timestamp(end_date) as end_date"), DB::raw("IF(complete IS NULL,'N','Y') AS complete"),
                       'complete_login_id','complete_at')
+            ->orderby('start_date','asc')
             ->get();
     }
 
@@ -119,6 +126,7 @@ class EmpServiceReserveRepository
                      'info_push_title', 'info_push_content', 'info_data', DB::raw("unix_timestamp(start_date) as start_date"),
                       DB::raw("unix_timestamp(end_date) as end_date"), DB::raw("IF(complete IS NULL,'N','Y') AS complete"),
                       'complete_login_id','complete_at')
+            ->orderby('start_date','asc')
             ->get();
     }
 
