@@ -75,7 +75,7 @@ class ReserveController extends Controller
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_052004_empServiceTargetNotExist)], 200);
         }
 
-        if($request->start_date < $request->end_date){
+        if($request->start_date > $request->end_date){
             return response()->json(["result_code" => ResultCode::_052005_empServiceDateRangeInvalid, 
                     "message" => CommonUtil::getMessageContentByCode(ResultCode::_052005_empServiceDateRangeInvalid)], 200);
         }
@@ -237,6 +237,11 @@ class ReserveController extends Controller
         if ($validator->fails()) {
             return response()->json(['result_code'=>$validator->errors()->first(),
                                       'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+        if($request->start_date > $request->end_date){
+            return response()->json(["result_code" => ResultCode::_052005_empServiceDateRangeInvalid, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052005_empServiceDateRangeInvalid)], 200);
         }
 
         //between service_type and service_id chooese one to query.
