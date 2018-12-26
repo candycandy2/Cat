@@ -172,7 +172,7 @@ $("#viewStaffAdminMain").pagecontainer({
                         let noCompleteContent = '';
                         let completedContent = '';
                         for(var i in todayArr) {
-                            //先区分已完成和未完成部分
+                            //先区分未完成和已完成部分
                             if(todayArr[i]['complete'] == 'N') {
                                 noCompleteContent += '<li class="today-list"><div class="today-item">' +
                                     todayArr[i]['info_push_content'] +
@@ -180,11 +180,15 @@ $("#viewStaffAdminMain").pagecontainer({
                                     todayArr[i]['reserve_login_id'] +
                                     '</div><div class="today-handle"><div class="today-done-btn" data-id="' +
                                     todayArr[i]['reserve_id'] +
-                                    '"></div><div class="today-tel-btn"></div></div></li>';
+                                    '"></div><div class="today-tel-btn" data-name="' +
+                                    todayArr[i]['reserve_login_id'] +
+                                    '"></div></div></li>';
                             } else {
                                 completedContent += '<li class="complete-list"><div>' +
                                     todayArr[i]['info_push_content'] +
-                                    ' / Allen.Z.Yuan</div><div></div></li>';
+                                    ' / ' +
+                                    todayArr[i]['reserve_login_id'] +
+                                    '</div><div></div></li>';
                             }
                         }
 
@@ -272,19 +276,53 @@ $("#viewStaffAdminMain").pagecontainer({
             }();
         }
 
+        //查询电话yellowpage
+        function getTelephoneByName(name) {
+            let queryData = '<LayoutHeader><Company>' +
+                loginData['company'] +
+                '</Company><Name_EN>'+
+                name +
+                '</Name_EN></LayoutHeader>';
+            //let queryData = '<LayoutHeader><Company>Qisda</Company><Name_EN>sammi.yao</Name_EN></LayoutHeader>';
+
+            var successCallback = function(data) {
+                console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    //只取第一个电话号码
+                    let tel = $.trim(data['Content'][0]['Ext_No']).split(';')[0];
+                    $('.currentTelephone').html('').append('<a href="tel:' + tel + '">' + tel + '</a>');
+                    $('.currentTelephone a')[0].click();
+                    //Email测试
+                    // let mail = $.trim(data['Content'][0]['EMail']);
+                    // $('.currentTelephone').html('').append('<a href="mailto:' + mail + '?subject=會議室協調_12/26">' + mail + '</a>');
+                    // $('.currentTelephone a')[0].click();
+                } else {
+
+                }
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                YellowPagePlugin.CustomAPI("POST", false, "QueryEmployeeDataDetail", successCallback, failCallback, queryData, "");
+            }();
+        }
+
+
         //tese
         function newReserveTest() {
             var self = this;
             let queryData = JSON.stringify({
-                target_id_row_id: 15,//T01
+                target_id_row_id: 16,//T02
                 login_id: loginData['loginid'],
                 domain: loginData['domain'],
                 emp_no: loginData['emp_no'],
-                start_date: '1545796800',//12:30
-                end_date: '1545796800',//12:00
+                start_date: '1545886800',//09:00
+                end_date: '1545888600',//10:00
                 info_push_title: '茶水預約',
-                info_push_content: '12:00 T01 預約茶3杯水1杯',
-                info_data: '{"T01","12:00","3","1"}',
+                info_push_content: '13:00 T02 預約茶3杯水3杯',
+                info_data: '{"T02","13:00","3","3"}',
                 push: '11'
             });
 
@@ -366,8 +404,8 @@ $("#viewStaffAdminMain").pagecontainer({
 
         //点击电话
         $('.main-today-ul').on('click', '.today-tel-btn', function() {
-            let reserve_id = $(this).data('id');
-            //yellowpage or rrs
+            let en_name = $(this).data('name');
+            getTelephoneByName(en_name);
         });
 
         //setting admin status
