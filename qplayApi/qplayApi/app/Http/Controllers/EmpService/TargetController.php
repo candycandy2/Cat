@@ -105,14 +105,19 @@ class TargetController extends Controller
         //parameter verify
         $validator = Validator::make($request->all(),
             [
-            'service_id' => 'required_without:servuce_type',
+            'service_id' => 'required_without:service_type',
             'service_type' =>'required_without:service_id',
             ],
             [
-                'required' => ResultCode::_999001_requestParameterLostOrIncorrect
+                'required_without' => ResultCode::_999001_requestParameterLostOrIncorrect
             ]
         );
 
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+        
         //between service_type and service_id chooese one to query.
 
         if(isset($request->service_type)){
