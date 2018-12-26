@@ -94,7 +94,8 @@ $("#viewFamilyData").pagecontainer({
             var self = this;
             var queryData = '<empid>'+ myEmpNo +'</empid>';
             this.successCallback = function(data) { 
-                //replace (familyArr != null) to (data["ResultCode"] == "1")      
+                //replace (familyArr != null) to (data["ResultCode"] == "1")  
+                var imgURL = "/widget/widgetPage/viewFamilyData/img/";    
                 if (data["ResultCode"] == "1") {
                     familyArr = data["Content"].sort(sortByRelationship("relation", "name"));
                     var familyList = "";                   
@@ -122,7 +123,7 @@ $("#viewFamilyData").pagecontainer({
                             + familyArr[i]["birthday"]
                             + '</div><div>'
                             + familyArr[i]["idno"]
-                            + '</div></div><div><img src="img/info.png" class="family-edit"><img src="img/delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
+                            + '</div></div><div><img src="' + serverURL + imgURL + 'info.png" class="family-edit"><img src="' + serverURL + imgURL + 'delete.png" class="family-delete"></div></div><div class="activity-line"></div>';
                     }
                     $(".family-edit-btn").show();
                     $(".family-cancle-btn").hide();
@@ -518,6 +519,9 @@ $("#viewFamilyData").pagecontainer({
         
         /********************************** page event *************************************/
         $("#viewFamilyData").one("pageshow", function (event, ui) {
+            var imgURL = "/widget/widgetPage/viewFamilyData/img/";
+            $(".addInsuranceImg").attr("scr", serverURL + imgURL + 'btn_addfriend.png');
+            $(".family-add-conten").attr("scr", serverURL + imgURL + 'floating_add.png');
             setDropdownlistByFamily();
         });
 

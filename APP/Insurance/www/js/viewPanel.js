@@ -42,7 +42,8 @@ $(document).one("pagebeforeshow", function() {
     });
 
     $("#mypanel #mypanelviewFamilyData").on("click", function() {
-        changePageByPanel("viewFamilyData");
+        //changePageByPanel("viewFamilyData");
+        checkWidgetPage('viewFamilyData', visitedPageList);
     });
 
     $("#mypanel #mypanelviewContact").on("click", function() {
