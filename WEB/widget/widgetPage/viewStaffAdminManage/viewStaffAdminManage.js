@@ -21,7 +21,7 @@ $("#viewStaffAdminManage").pagecontainer({
                     };
                     window.localStorage.setItem('AllMeetingRoomData', JSON.stringify(meetingRoomObj));
 
-                    //1.获取BQT所有会议室
+                    //1.获取BQT所有会议室，代号2
                     siteMeetingRoom = getMeetingRoomBySite(meetingRoomArr, limitMeetingRoom, '2');
                     //2.根据楼层生成dropdownlist
                     createFloorSelect(siteMeetingRoom);
@@ -35,7 +35,7 @@ $("#viewStaffAdminManage").pagecontainer({
                 if(meetingRoomData == null || checkDataExpired(meetingRoomData['lastUpdateTime'], 7, 'dd')) {
                     CustomAPI("POST", true, "ListAllMeetingRoom", self.successCallback, self.failCallback, queryData, "");
                 } else {
-                    //1.获取BQT所有会议室
+                    //1.获取BQT所有会议室，代号2
                     siteMeetingRoom = getMeetingRoomBySite(meetingRoomData['content'], limitMeetingRoom, '2');
                     //2.根据楼层生成dropdownlist
                     createFloorSelect(siteMeetingRoom);
