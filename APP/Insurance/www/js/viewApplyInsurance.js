@@ -404,8 +404,15 @@ $("#viewApplyInsurance").pagecontainer({
         $("#viewApplyInsurance").on("pageshow", function (event, ui) {  
             $('.apply-insur-title').text("");   
             if (nextPage == "addDetail") {  
-                $('.apply-insur-title').text(langStr["str_111"]);   
-                $('#backPersonalInsuranceFromApply').show();
+                $('.apply-insur-title').text(langStr["str_111"]); 
+                activePageListID = visitedPageList[visitedPageList.length - 1];
+                if ( activePageListID == "viewFamilyData") {
+                    $('#backFamilyDataFromDetail').show();
+                    $('#backPersonalInsuranceFromApply').hide();
+                } else {
+                    $('#backPersonalInsuranceFromApply').show();
+                    $('#backFamilyDataFromDetail').hide();
+                }
                 $('#backPersonalInsuranceFromDetail').hide();
                 $('#viewInsurApplication').show();
                 $('#previewBtn').show();
@@ -512,6 +519,10 @@ $("#viewApplyInsurance").pagecontainer({
         //從保險申請頁面返回到個人保險現況，彈窗popup
         $("#backPersonalInsuranceFromApply").on("click", function () {
             popupMsgInit('.confirmCancelApply');
+        });
+
+        $("#backFamilyDataFromDetail").on("click", function () {
+            checkWidgetPage('viewFamilyData', 'viewApplyInsurance');
         });
 
         //從保險明細返回到個人保險現況，
