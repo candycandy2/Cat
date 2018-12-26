@@ -131,8 +131,6 @@
     position: fixed;
     bottom: 4.3vw;
     right: 6.727vw;
-    width: 13.848vw;
-    height: 13.848vw;
     z-index: 1;
 }
 
@@ -168,6 +166,56 @@
     color:#2e89bc;
     display: flex;
     margin-left: 25vw;
+}
+
+.addInsuranceImg { 
+    margin-right: 3.2vw; 
+    align-self:center; 
+    width: 13%;
+    display: none;
+}
+
+.addInsuranceStr {
+    display: none;
+}
+
+.family-input {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    background: #f9f9f9;
+    border: 1px solid #d6d6d6;
+    background-repeat: no-repeat;
+    background-position: 0 !important;
+}
+
+.family-input-dropdown {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../viewFamilyData/img/dropdown.png) no-repeat;
+    background-size: 4vw 2.36vw;
+    background-position: 50.5vw 4.25vw;
+}
+
+.family-input-calendar {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../viewFamilyData/img/calendar.png) no-repeat;
+    background-size: 4vw 4vw;
+    background-position: 50.5vw 3.25vw;
 }
 
 .activity-line {
@@ -213,9 +261,12 @@
 }
 
 .confirmCancelAddFamily .ui-content>.main,
-.familyErrorMsg .ui-content>.main,
-.beforeEditMsg .ui-content>.main {
+.familyErrorMsg .ui-content>.main {
     margin-top: 12%;
+}
+
+.beforeEditMsg .ui-content>.main {
+    margin-top: 6%;
 }
 
 .popup-msg-style {

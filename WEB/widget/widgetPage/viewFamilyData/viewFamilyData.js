@@ -519,9 +519,6 @@ $("#viewFamilyData").pagecontainer({
         
         /********************************** page event *************************************/
         $("#viewFamilyData").one("pageshow", function (event, ui) {
-            var imgURL = "/widget/widgetPage/viewFamilyData/img/";
-            $(".addInsuranceImg").attr("scr", serverURL + imgURL + 'btn_addfriend.png');
-            $(".family-add-conten").attr("scr", serverURL + imgURL + 'floating_add.png');
             setDropdownlistByFamily();
         });
 
@@ -529,6 +526,14 @@ $("#viewFamilyData").pagecontainer({
             loadingMask("show");
             activePageListID = visitedPageList[visitedPageList.length - 1];   
             scrollClassName = 'insur-family-scroll';
+            //去除上一頁菜單樣式
+            var prevPage = visitedPageList[visitedPageList.length - 2];
+            $("#mypanel" + " #mypanel" + prevPage).css("background", "#f6f6f6");
+            $("#mypanel" + " #mypanel" + prevPage).css("color", "#0f0f0f");
+            //此頁添加菜單樣式
+            var nowPage = visitedPageList[visitedPageList.length - 1];
+            $("#mypanel" + " #mypanel" + nowPage).css("background", "#503f81");
+            $("#mypanel" + " #mypanel" + nowPage).css("color", "#fff");
             QueryHealthInsuranceListForFamilyData(); 
         });
         
@@ -802,7 +807,10 @@ $("#viewFamilyData").pagecontainer({
             checkFormByFamily();
         });
 
-
+        $(document).on('click', '#viewFamilyData .insuranceMenu', function() {
+            $("#mypanel").panel("open");
+            $(".page-mask").show();
+        })
 
     }
 });
