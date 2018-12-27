@@ -405,8 +405,8 @@ $("#viewApplyInsurance").pagecontainer({
             $('.apply-insur-title').text("");   
             if (nextPage == "addDetail") {  
                 $('.apply-insur-title').text(langStr["str_111"]); 
-                activePageListID = visitedPageList[visitedPageList.length - 1];
-                if ( activePageListID == "viewFamilyData") {
+                var prevPage = visitedPageList[visitedPageList.length - 1];;
+                if ( prevPage == "viewFamilyData") {
                     $('#backFamilyDataFromDetail').show();
                     $('#backPersonalInsuranceFromApply').hide();
                 } else {
@@ -522,7 +522,7 @@ $("#viewApplyInsurance").pagecontainer({
         });
 
         $("#backFamilyDataFromDetail").on("click", function () {
-            checkWidgetPage('viewFamilyData', 'viewApplyInsurance');
+            checkWidgetPage('viewFamilyData', visitedPageList);
         });
 
         //從保險明細返回到個人保險現況，
@@ -533,11 +533,18 @@ $("#viewApplyInsurance").pagecontainer({
 
         //返回到保險申請，彈窗popup
         $("#backApplyInsurance").on("click", function () {
-            $('#backPersonalInsuranceFromApply').show();
             $("#viewInsurApplication").show();
             $("#previewBtn").show();
             $('#backApplyInsurance').hide();
             $("#viewPreviewApplication").hide();
+            var prevPage = visitedPageList[visitedPageList.length - 1] 
+            if (prevPage == "viewFamilyData") {
+                $('#backFamilyDataFromDetail').show();
+                $('#backPersonalInsuranceFromApply').hide();
+            } else {
+                $('#backPersonalInsuranceFromApply').show();
+                $('#backFamilyDataFromDetail').hide();
+            }
         });
 
         //返回到退保明細
@@ -594,6 +601,7 @@ $("#viewApplyInsurance").pagecontainer({
                 $('#insurBtn').hide();
                 $('#recoverBtn').hide();
                 $('#backPersonalInsuranceFromApply').hide();
+                $('#backFamilyDataFromDetail').hide();
                 $('#backWithdrawDetail').hide();
                 $('#viewInsurApplication').hide();
                 $('#previewBtn').hide();
