@@ -26,6 +26,7 @@
         </div>
         <script>
         var map;
+        var markers = [];
 
         function initMap() {
             var origin = { lat: 25.0811469, lng: 121.56481370000006 };
@@ -34,77 +35,54 @@
                 zoom: 11,
                 center: origin
             });
-
-            var clickHandler = new ClickEventHandler(map, origin);
-
             window.geocoder = new google.maps.Geocoder();
         }
 
-        /**
-         * @constructor
-         */
-        var ClickEventHandler = function(map, origin) {
-            this.origin = origin;
-            this.map = map;
-            this.directionsService = new google.maps.DirectionsService;
-            this.directionsDisplay = new google.maps.DirectionsRenderer;
-            this.directionsDisplay.setMap(map);
-            this.placesService = new google.maps.places.PlacesService(map);
-            this.infowindow = new google.maps.InfoWindow;
-            this.infowindowContent = document.getElementById('infowindow-content');
-            this.infowindow.setContent(this.infowindowContent);
+        // Adds a marker to the map and push to the array.
+        function addMarker(location_, map_, name_, iconImage_, address_) {
+            var marker = new google.maps.Marker({
+                map: map_,
+                position: location_,
+                title: name_,
+                attribution: {
+                    source: location_.toString()
+                },
+                icon: iconImage_
+            });
+            markers.push(marker);
 
-            // Listen for clicks on the map.
-            this.map.addListener('click', this.handleClick.bind(this));
-        };
+            var contentString = '<div id="content"> 這個地址是:' + address_ + '</div>';
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            marker.addListener('click', function() {
+                window.map.setCenter(marker.getPosition());
+                window.storeInfoPopup(marker);
+            });
+        }
 
-        ClickEventHandler.prototype.handleClick = function(event) {
-            console.log('You clicked on: ' + event.latLng);
-            // If the event has a placeId, use it.
-            if (event.placeId) {
-                console.log('You clicked on place:' + event.placeId);
-
-                // Calling e.stop() on the event prevents the default info window from
-                // showing.
-                // If you call stop here when there is no placeId you will prevent some
-                // other map click event handlers from receiving the event.
-                event.stop();
-                this.calculateAndDisplayRoute(event.placeId);
-                this.getPlaceInformation(event.placeId);
+        // Sets the map on all markers in the array.
+        function setMapOnAll(map) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
             }
-        };
+        }
 
-        ClickEventHandler.prototype.calculateAndDisplayRoute = function(placeId) {
-            var me = this;
-            this.directionsService.route({
-                origin: this.origin,
-                destination: { placeId: placeId },
-                travelMode: 'WALKING'
-            }, function(response, status) {
-                if (status === 'OK') {
-                    me.directionsDisplay.setDirections(response);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
-                }
-            });
-        };
+        // Removes the markers from the map, but keeps them in the array.
+        function clearMarkers() {
+            setMapOnAll(null);
+        }
 
-        ClickEventHandler.prototype.getPlaceInformation = function(placeId) {
-            var me = this;
-            this.placesService.getDetails({ placeId: placeId }, function(place, status) {
-                if (status === 'OK') {
-                    me.infowindow.close();
-                    me.infowindow.setPosition(place.geometry.location);
-                    me.infowindowContent.children['place-icon'].src = place.icon;
-                    me.infowindowContent.children['place-name'].textContent = place.name;
-                    me.infowindowContent.children['place-id'].textContent = place.place_id;
-                    me.infowindowContent.children['place-address'].textContent =
-                        place.formatted_address;
-                    me.infowindow.open(me.map);
-                }
-            });
-        };
+        // Shows any markers currently in the array.
+        function showMarkers() {
+            setMapOnAll(map);
+        }
 
+        // Deletes all markers in the array by removing references to them.
+        function deleteMarkers() {
+            clearMarkers();
+            markers = [];
+        }
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfNc3zYF_DVZRjsqJrkxU2-WbjYmPxEjg&libraries=places&callback=initMap">
         </script>
