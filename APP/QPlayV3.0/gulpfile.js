@@ -291,6 +291,7 @@ gulp.task('jenkinsinstall_android', ['copyRes'], shell.task([
     'cordova plugin add ../../plugins/cordova-plugin-appavailability --nofetch',
     'cordova plugin add ../../plugins/cordova-plugin-cache-clear --nofetch',
     'cordova plugin add ../../plugins/cordova-plugin-google-analytics',
+    'cordova plugin add cordova-plugin-debuggable-webview',
     'cordova plugin add ../../plugins/cordova-plugin-badge --nofetch'
     //'cordova plugin add cordova-plugin-file@4.3.1'
 ]));
