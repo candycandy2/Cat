@@ -137,6 +137,9 @@ var configContent =   '<?xml version="1.0" encoding="utf-8"?>' +
                         '<allow-intent href="appscheme20' + process.env.appNameDecorate + ':*" />' +
                         '<allow-intent href="qisdasesm:*" />' +
                         '<platform name="android">' +
+                            '<config-file parent="/manifest/application" target="AndroidManifest.xml">' +
+                              '<meta-data android:name="WebViewDebug" android:value="true" />' +
+                            '</config-file>' +
                             '<allow-intent href="market:*" />' +
                             '<preference name="AndroidLaunchMode" value="singleTask"/>' +
                             //'<preference name="AndroidPersistentFileLocation" value="Compatibility" />' +
