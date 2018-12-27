@@ -19,10 +19,8 @@
 .add-tea-title>div:nth-of-type(1){
     width: 17.2vw;
     position: relative;
-}
-
-.add-tea-title>div:nth-of-type(1) img{
-    width: 12.9vw;
+    background: url(img/default_photo.png) no-repeat;
+    background-size: 12.9vw 12.9vw;
 }
 
 .add-tea-title>div:nth-of-type(1) div{
@@ -89,6 +87,12 @@
     height: 5vw;
     font-size: 4.18vw;
     color: #253137;
+}
+
+.add-tea-room>div:nth-of-type(2)>div{
+    float: left;
+    width: 25vw;
+    height: 100%;
 }
 
 .add-tea-radio{
@@ -174,16 +178,26 @@
     width: 6vw;
 }
 
-.count-select>div:nth-of-type(1) img{
-    width: 4vw;
-    margin-top: 3vw;
-    margin-left: 1.16vw;
+.tea-subtraction,
+.water-subtraction{
+    background: url(img/subtraction_gray.png) no-repeat center;
+    background-size: 4vw 4vw;
 }
 
-.count-select>div:nth-of-type(3) img{
-    width: 4vw;
-    margin-top: 3vw;
-    margin-left: 0.84vw;
+.tea-addition,
+.water-addition{
+    background: url(img/addition_blue.png) no-repeat center;
+    background-size: 4vw 4vw;
+}
+
+.can-subtraction{
+    background: url(img/subtraction_blue.png) no-repeat center !important;
+    background-size: 4vw 4vw !important;
+}
+
+.cannot-addition{
+    background: url(img/addition_gray.png) no-repeat center !important;
+    background-size: 4vw 4vw !important;
 }
 
 .count-select>div:nth-of-type(2){
@@ -236,16 +250,14 @@
     color: #253137;
 }
 
-.today-room-title>span:nth-of-type(2){
+.today-room-title>span:last-of-type{
     display: inline-block;
     width: 5vw;
     height: 5vw;
     position: absolute;
     right: 5.4vw;
-}
-
-.today-room-title img{
-    width: 5vw;
+    background: url(img/loading.png);
+    background-size: 5vw 5vw;
 }
 
 .today-room-time{
@@ -333,4 +345,18 @@
     background: url(img/loading_blue.png) no-repeat;
     background-size: 6vw;
     background-position: 2vw;
+}
+
+#userChooseRoom{
+    padding: 0;
+}
+
+.dropdown-arrow {
+    background: url('img/dropdown_incline.png') right transparent;
+    background-size: 2vw 2vw;
+    background-repeat: no-repeat;
+}
+
+.visible-hide{
+    visibility: hidden;
 }
