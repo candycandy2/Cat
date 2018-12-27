@@ -5,8 +5,8 @@
         <div class="header-style">
             <h1 class="ui-title">
                 <div>
-                	<!--我附近的商店-->
-        		    <span class="langStr" data-id="wgt_103"></span>
+                    <!--我附近的商店-->
+                    <span class="langStr" data-id="wgt_103"></span>
                 </div>
             </h1>
         </div>
@@ -18,34 +18,73 @@
     </div>
     <div data-role="main" class="page-main" style="line-height: initial !important;">
         <div id="map" style="width:100vw; height:90vh;"></div>
+        <div id="infowindow-content">
+            <img id="place-icon" src="" height="16" width="16">
+            <span id="place-name"  class="title"></span><br>
+            Place ID <span id="place-id"></span><br>
+            <span id="place-address"></span>
+        </div>
         <script>
-            function initMap() {
-                var myStyles = [{
-                    featureType: "poi",
-                    elementType: "labels",
-                    stylers: [{
-                        visibility: "false"
-                    }]
-                }];
+        var map;
+        var markers = [];
 
-                var uluru = {lat: 25.0811469, lng: 121.56481370000006};
+        function initMap() {
+            var origin = { lat: 25.0811469, lng: 121.56481370000006 };
 
-                window.map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 11,
-                    center: uluru,
-                    mapTypeControl: false,
-                    streetViewControl: false,
-                    rotateControl: false,
-                    fullscreenControl: false,
-                    styles: myStyles
-                });
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 11,
+                center: origin
+            });
+            window.geocoder = new google.maps.Geocoder();
+        }
 
-                window.geocoder = new google.maps.Geocoder();
-                console.log(window.geocoder);
+        // Adds a marker to the map and push to the array.
+        function addMarker(location_, map_, name_, iconImage_, address_) {
+            var marker = new google.maps.Marker({
+                map: map_,
+                position: location_,
+                title: name_,
+                attribution: {
+                    source: location_.toString()
+                },
+                icon: iconImage_
+            });
+            markers.push(marker);
+
+            var contentString = '<div id="content"> 這個地址是:' + address_ + '</div>';
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            marker.addListener('click', function() {
+                window.map.setCenter(marker.getPosition());
+                window.storeInfoPopup(marker);
+            });
+        }
+
+        // Sets the map on all markers in the array.
+        function setMapOnAll(map) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
             }
+        }
+
+        // Removes the markers from the map, but keeps them in the array.
+        function clearMarkers() {
+            setMapOnAll(null);
+        }
+
+        // Shows any markers currently in the array.
+        function showMarkers() {
+            setMapOnAll(map);
+        }
+
+        // Deletes all markers in the array by removing references to them.
+        function deleteMarkers() {
+            clearMarkers();
+            markers = [];
+        }
         </script>
-        <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfNc3zYF_DVZRjsqJrkxU2-WbjYmPxEjg&callback=initMap">
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfNc3zYF_DVZRjsqJrkxU2-WbjYmPxEjg&libraries=places&callback=initMap">
         </script>
     </div>
     <!--popup-->
@@ -55,41 +94,41 @@
             <div class="close-popup">
                 <img src="img/component/close.png" width="9.6vw" height="9.6vw">
             </div>
-            <div class="basic-info font-style10">
-                <div>
-                    <img src="" class="detail-type-img">
+                <div class="basic-info font-style10">
+                    <div>
+                        <img src="" class="detail-type-img">
                 </div>
-                <div class="qstore-list-detail read-font-normal">
-                    <div>愛兒家產後護理之家</div>
+                        <div class="qstore-list-detail read-font-normal">
+                            <div>愛兒家產後護理之家</div>
+                        </div>
+                        <div class="qstore-distance">
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="address-info font-style10">
+                        <div>
+                            <img src="" class="pin-img">
                 </div>
-                <div class="qstore-distance">
-                    <div></div>
+                            <div class="address-detail">台北市大安區忠孝東路4段87號6樓</div>
+                        </div>
+                        <div class="phone-info font-style10">
+                            <div>
+                                <img src="" class="phone-img">
                 </div>
-            </div>
-            <div class="address-info font-style10">
-                <div>
-                    <img src="" class="pin-img">
-                </div>
-                <div class="address-detail">台北市大安區忠孝東路4段87號6樓</div>
-            </div>
-            <div class="phone-info font-style10">
-                <div>
-                    <img src="" class="phone-img">
-                </div>
-                <a class="phone-type" rel="external" href="">03-331-9931</a>
-            </div>
-        </div>
-        <div class="main">
-            <div class="summary-title font-style11">
-                <!--特約優惠-->
-                <span class="langStr" data-id="wgt_111"></span>
-            </div>
-            <div class="summary-content font-style7">享九折優惠</div>
-            <div class="date-title font-style11">
-                <!--特約優惠-->
-                <span class="langStr" data-id="wgt_112"></span>
-            </div>
-            <div class="date-content font-style7">無限期</div>
-        </div>
+                                <a class="phone-type" rel="external" href="">03-331-9931</a>
+                            </div>
+                        </div>
+                        <div class="main">
+                            <div class="summary-title font-style11">
+                                <!--特約優惠-->
+                                <span class="langStr" data-id="wgt_111"></span>
+                            </div>
+                            <div class="summary-content font-style7">享九折優惠</div>
+                            <div class="date-title font-style11">
+                                <!--特約優惠-->
+                                <span class="langStr" data-id="wgt_112"></span>
+                            </div>
+                            <div class="date-content font-style7">無限期</div>
+                        </div>
     </template>
 </div>
