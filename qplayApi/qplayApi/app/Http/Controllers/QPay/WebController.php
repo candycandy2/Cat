@@ -51,7 +51,7 @@ class WebController extends Controller
 
             //parameter verify
             $validator = Validator::make($request->all(), [
-                'emp_no' => 'required|numeric',
+                'emp_no' => 'required',
                 'trade_pwd' => 'required|digits:4'
             ], [
                 'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
@@ -121,7 +121,7 @@ class WebController extends Controller
                 'signature' => 'required',
                 'token' => 'required',
                 'token_valid' => 'required|numeric',
-                'emp_no' => 'required|numeric',
+                'emp_no' => 'required',
                 'old_trade_pwd' => 'required|digits:4',
                 'new_trade_pwd' => 'required|digits:4'
             ], [
@@ -213,7 +213,7 @@ class WebController extends Controller
                 'signature' => 'required',
                 'token' => 'required',
                 'token_valid' => 'required|numeric',
-                'emp_no' => 'required|numeric'
+                'emp_no' => 'required'
             ], [
                 'required' => ResultCode::_999001_requestParameterLostOrIncorrect,
                 'numeric' => ResultCode::_999001_requestParameterLostOrIncorrect
@@ -285,7 +285,7 @@ class WebController extends Controller
                 'signature' => 'required',
                 'token' => 'required',
                 'token_valid' => 'required|numeric',
-                'emp_no' => 'required|numeric',
+                'emp_no' => 'required',
                 'start_date' => 'required|digits:10',
                 'end_date' => 'required|digits:10'
             ], [

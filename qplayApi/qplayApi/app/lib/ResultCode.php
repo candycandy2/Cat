@@ -66,4 +66,9 @@ abstract class ResultCode
     const _052001_empServiceExist = "052001"; //emp service id 已經存在
     const _052002_empServiceNotExist = "052002"; //emp service id 不存在
     const _052003_empServiceTypeNotExist = "052003"; //emp service type 不存在
+    const _052004_empServiceTargetNotExist = "052004";//emp service target 不存在
+    const _052005_empServiceDateRangeInvalid = "052005"; //生命週期的日期範圍錯誤
+    const _052006_empServicePushDataInvalid = "052006"; //推播對象的設定資料格式錯誤
+    const _052007_empServiceReserveNotExist = "052007"; //預約不存在
+    const _052008_empServiceReserveHasCompleted = "052008";//預約已經完成
 }

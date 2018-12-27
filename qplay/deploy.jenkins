@@ -1,3 +1,39 @@
+<strong>Dec-27-18 00:35:19</strong>
+- Reason : daily build, 696
+- Commit# : 
+a2f46511e - CleoWChan, 14 hours ago : [EmpService] fix bug of PR #3786
+1c0307a34 - CleoWChan, 15 hours ago : [EmpService] Phase1 add get reserve APIs order by
+f2918d7dd - CleoWChan, 16 hours ago : [EmpService] Phase1 fix start_date end_date validation
+
+<strong>Dec-26-18 00:39:34</strong>
+- Reason : daily build, 695
+- Commit# : 
+0db4b74b0 - Darren Ti, 10 hours ago : [QPay]Update for API of check emp_no data type
+d0bdd8792 - CleoWChan, 10 hours ago : [EmpService] Phase1 add comment
+a9602b6f1 - CleoWChan, 11 hours ago : [EmpService] Add setReserveComplete and fix bug
+05692af4c - Darren Ti, 15 hours ago : [QPlayDoc]Update Doc
+e1850daca - CleoWChan, 16 hours ago : [EmpService] fix bug getLastCreatedUser
+
+<strong>Dec-25-18 00:35:54</strong>
+- Reason : daily build, 694
+- Commit# : 
+
+
+<strong>Dec-24-18 00:35:22</strong>
+- Reason : daily build, 693
+- Commit# : 
+
+
+<strong>Dec-23-18 00:36:04</strong>
+- Reason : daily build, 692
+- Commit# : 
+
+
+<strong>Dec-22-18 00:35:47</strong>
+- Reason : daily build, 691
+- Commit# : 
+e4b7f3eea - Darren Ti, 10 hours ago : [QPay]FixBug-set timezone by another way
+
 <strong>Dec-21-18 00:36:49</strong>
 - Reason : daily build, 690
 - Commit# : 

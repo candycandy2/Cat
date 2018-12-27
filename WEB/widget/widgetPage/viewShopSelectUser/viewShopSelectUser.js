@@ -131,7 +131,7 @@ $("#viewShopSelectUser").pagecontainer({
         $("#viewShopSelectUser").on("pagehide", function (event, ui) {
             //离开此页，初始化工号输入框和下一步按钮
             $('#inputEmpNo').val('');
-            $('.other-user-pwd').removeClass('button-active');
+            $('.other-user-pwd').removeClass('active-btn-green');
             //離開該頁面，取消refresh
             clearInterval(refreshInterval);
             refreshInterval = null;
@@ -177,21 +177,21 @@ $("#viewShopSelectUser").pagecontainer({
         $('#inputEmpNo').on('input', function () {
             var val = $.trim($(this).val());
             if (val != '') {
-                $('.other-user-pwd').addClass('button-active');
+                $('.other-user-pwd').addClass('active-btn-green');
             } else {
-                $('.other-user-pwd').removeClass('button-active');
+                $('.other-user-pwd').removeClass('active-btn-green');
             }
         });
 
         //清除工号
         $('#clearEmpNo').on('click', function () {
             $('#inputEmpNo').val('');
-            $('.other-user-pwd').removeClass('button-active');
+            $('.other-user-pwd').removeClass('active-btn-green');
         });
 
         //下一步
         $('.other-user-pwd').on('click', function () {
-            var has = $(this).hasClass('button-active');
+            var has = $(this).hasClass('active-btn-green');
             if (has) {
                 var emp_no = $.trim($('#inputEmpNo').val());
                 //API:获取员工资料及该员工消费券余额

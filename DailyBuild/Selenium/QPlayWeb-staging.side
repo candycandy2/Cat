@@ -164,6 +164,13 @@
       ],
       "value": ""
     }, {
+      "id": "2b1ae6bd-9765-43b1-a575-97472258cf7b",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'選單維護')]",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "a26a4dec-3a5d-4f0d-bb66-be4166e950c6",
       "comment": "",
       "command": "click",
@@ -451,6 +458,27 @@
       ],
       "value": ""
     }, {
+      "id": "b07eb6ff-8219-4feb-9479-934312d59865",
+      "comment": "",
+      "command": "click",
+      "target": "css=ul.nav.treeview-menu > li.active > a",
+      "targets": [
+        ["css=ul.nav.treeview-menu > li.active > a", "css"],
+        ["css=.active:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'點數儲值')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[18]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaytest.benq.com/qplay/public/QPayStoreMaintain/QPayStorePoint']", "xpath:href"],
+        ["xpath=//li[28]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bc83362f-c7d4-401d-a9a6-8e2bae851131",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'點數儲值')]",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "23ab1065-baa1-43d8-8c66-8e2f3ab3b557",
       "comment": "",
       "command": "click",
@@ -488,16 +516,78 @@
       ],
       "value": ""
     }, {
-      "id": "f09783f6-c545-4593-92e7-94f35f4c43bf",
+      "id": "2fb7ce40-2adc-4c07-b17c-2295ae02a711",
       "comment": "",
       "command": "click",
-      "target": "css=.menu-open a",
+      "target": "css=.menu-open > li:nth-child(1) > a",
       "targets": [
-        ["css=.menu-open a", "css:finder"],
+        ["css=.menu-open > li:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'財務請款')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[16]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaytest.benq.com/qplay/public/QPayReimburseMaintain/QPayReimburseFinance']", "xpath:href"],
+        ["xpath=//li[26]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9e85dbfc-00e3-4829-9216-b5c343c9591e",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'員工消費紀錄')]",
+      "targets": [
         ["xpath=//a[contains(text(),'員工消費紀錄')]", "xpath:link"],
-        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[19]", "xpath:idRelative"],
-        ["xpath=//a[@href='http://qplaydev.benq.com/qplay/public/QPayReimburseMaintain/QPayReimbursePurchase']", "xpath:href"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[2]/a)[5]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaytest.benq.com/qplay/public/QPayReimburseMaintain/QPayReimbursePurchase']", "xpath:href"],
+        ["xpath=//li[26]/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c48d5f7a-0024-48cc-834b-dcf1bc64e7d3",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=消費券管理-用戶管理",
+      "targets": [
+        ["linkText=消費券管理-用戶管理", "linkText"],
+        ["xpath=//a[contains(text(),'消費券管理-用戶管理')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/a)[12]", "xpath:idRelative"],
+        ["xpath=(//a[@href='http://qplaytest.benq.com/qplay/public/'])[6]", "xpath:href"],
+        ["xpath=//li[24]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2deb0fa2-902a-43cb-ba85-30e5721cc0bf",
+      "comment": "",
+      "command": "click",
+      "target": "css=.menu-open > li:nth-child(1) > a",
+      "targets": [
+        ["css=.menu-open > li:nth-child(1) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'員工資料')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li/a)[13]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaytest.benq.com/qplay/public/QPayUserMaintain/QPayUserEmployee']", "xpath:href"],
         ["xpath=//li[24]/ul/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "453e6db3-78b8-40f2-a3b3-3b8ccdfa995f",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'店家資料')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'店家資料')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[2]/a)[4]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaytest.benq.com/qplay/public/QPayUserMaintain/QPayUserShop']", "xpath:href"],
+        ["xpath=//li[24]/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "57dff10d-e7f4-469b-9b95-0bff50d38b46",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'消費券資料')]",
+      "targets": [
+        ["xpath=//a[contains(text(),'消費券資料')]", "xpath:link"],
+        ["xpath=(//li[@id='scrollspy-components']/ul/li[3]/a)[3]", "xpath:idRelative"],
+        ["xpath=//a[@href='http://qplaytest.benq.com/qplay/public/QPayUserMaintain/QPayUserPointType']", "xpath:href"],
+        ["xpath=//li[24]/ul/li[3]/a", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -523,6 +613,6 @@
     "timeout": 300,
     "tests": ["f6d8af61-1bbd-4ad2-8b78-361b698fd0f4"]
   }],
-  "urls": ["http://qplaydev.benq.com/"],
+  "urls": ["http://qplaydev.benq.com/", "http://qplaytest.benq.com/"],
   "plugins": []
 }

@@ -106,35 +106,29 @@
 
 .add-tea-radio>div:nth-of-type(2){
     width: 100%;
-    height: 5vw;
+    height: 5.5vw;
 }
 
-.add-tea-radio>div:nth-of-type(2)>div{
-    float: left;
-    height: 100%;
-}
-
-.radio-need-cup>span:nth-of-type(1),
-.radio-need-water>span:nth-of-type(1){
+#viewStaffUserMain input[type=radio] + label {
+    background: url('img/radio_false.png') no-repeat;
+    background-size: 5.5vw 5.5vw;
+    height: 5.5vw;
     display: inline-block;
-    width: 5vw;
-    height: 5vw;
-    vertical-align: middle;
+    padding: 0;
+    text-indent: 7vw;
 }
 
-.radio-need-cup>span:nth-of-type(2),
-.radio-need-water>span:nth-of-type(2){
-    color: #253137;
-    font-size: 4.18vw;
+#viewStaffUserMain input[type=radio] + label:nth-of-type(1) {
+    width: 28vw;
 }
 
-.radio-need-cup img,
-.radio-need-water img{
-    width: 4.5vw;
+#viewStaffUserMain input[type=radio] + label:nth-of-type(2) {
+    width: 60vw;
 }
 
-.radio-need-water{
-    margin-left: 8vw;
+#viewStaffUserMain input[type=radio]:checked + label {
+    background: url('img/radio_true.png') no-repeat;
+    background-size: 5.5vw 5.5vw;
 }
 
 .add-tea-count{

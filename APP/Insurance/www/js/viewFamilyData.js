@@ -517,11 +517,8 @@ $("#viewFamilyData").pagecontainer({
         }
         
         /********************************** page event *************************************/
-        $("#viewFamilyData").on("pagebeforeshow", function (event, ui) {
-            if (viewFamilyInit) {
-                setDropdownlistByFamily();
-                viewFamilyInit = false;
-            }
+        $("#viewFamilyData").one("pageshow", function (event, ui) {
+            setDropdownlistByFamily();
         });
 
         $("#viewFamilyData").on("pageshow", function (event, ui) {

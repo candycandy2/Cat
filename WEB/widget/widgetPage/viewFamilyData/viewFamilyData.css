@@ -1,0 +1,288 @@
+/********************************** viewFamilyData *************************************/
+
+.family-add-title { display:none;}
+
+#backFamilyList {
+    width: 4.934VW;
+    display: none;
+}
+
+#viewFamilyNone {
+    width: 100vw;
+    text-align: center;
+    line-height: 125vw;
+    margin: 0vw 0vw;
+    display: none;
+}
+
+.insur-family-scroll {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.family-save-btn {
+    opacity: 0.6;
+    display: inline-block;
+    position: absolute;
+    color: #ffffff !important;
+    top: 4.5vw;
+    right: 3.71vw;
+    display: none;
+}
+
+.family-cancle-btn {
+    color: #2d89bc;
+    padding: 5vw 3.71vw 2.14vw;
+    display: none;
+}
+
+.family-edit-btn {
+    color: #2d89bc;
+    right: 3.71vw;
+    padding: 5vw 3.71vw 2.14vw;
+    text-align: right;
+}
+
+#familyList { 
+    background: #ffffff;
+}
+
+.family-list {
+    width: 86.5vw;
+    height: 14.5vw;
+    padding: 3vw 6.71vw;
+}
+
+.family-list > div {
+    float: left;
+}
+
+.family-list ::after {
+    clear: both;
+}
+
+.family-list > div:nth-of-type(1) {
+    width: 65vw; 
+    height:14.5vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.family-list > div:nth-of-type(2) {
+    width: 21.5vw;
+    height: 10vw;
+    padding-top: 3.5vw;
+}
+
+.family-list > div:nth-of-type(1) > div:nth-of-type(2),
+.family-list > div:nth-of-type(1) > div:nth-of-type(3) {
+    margin-top: 1.16vw;
+}
+
+.family-edit {
+    width: 6.2vw;
+    height: 6.2vw;
+    margin-left: 14vw;
+    margin-top: 1vw;
+}
+
+.family-delete {
+    width: 5.2vw;
+    height: 5.2vw;
+    margin-left: 14vw;
+    margin-top: 1vw;
+    display: none;
+}
+
+.family-next, .family-add {
+    width: 7.5vw;
+    height: 7.5vw;
+    margin-left: 14vw;
+    margin-top: -1vw;
+}
+
+.family-text-img {
+    vertical-align: middle;
+    width: 7.5vw;
+    height: 7.5vw;
+    margin-left: 3vw;
+    margin-top: -1vw;
+}
+
+.family-notice {
+    width: 92.58vw;
+    min-height: 30vw;
+    margin-top: 4.3vw;
+    margin-left: 3.71vw;
+}
+
+.family-notice div {
+    line-height: 1.5;
+}
+
+.family-add-img {
+    position: fixed;
+    bottom: 4.3vw;
+    right: 6.727vw;
+    z-index: 1;
+}
+
+.family-add-img img {
+    width: 13.848vw;
+    height: 13.848vw;
+}
+
+#viewFamilyEdit {
+    width: 88.58vw;
+    height: 150vw;
+    margin-top: 10vw;
+    margin-left: 5.71vw;
+    display: none;
+}
+
+.family-input-div {
+    width: 92.58vw;
+    height: 16vw;
+    margin-bottom: 2vw;
+}
+
+.family-input-div label {
+    width: 20vw;
+    height: 10vw;
+    display: inline-block;
+    text-align: right;
+    line-height: 10vw;
+}
+
+.family-insur-apply-div {
+    margin-top: 10vw;
+    color:#2e89bc;
+    display: flex;
+    margin-left: 25vw;
+}
+
+.addInsuranceImg { 
+    margin-right: 3.2vw; 
+    align-self:center; 
+    width: 13%;
+    display: none;
+}
+
+.addInsuranceStr {
+    display: none;
+}
+
+.family-input {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    background: #f9f9f9;
+    border: 1px solid #d6d6d6;
+    background-repeat: no-repeat;
+    background-position: 0 !important;
+}
+
+.family-input-dropdown {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../viewFamilyData/img/dropdown.png) no-repeat;
+    background-size: 4vw 2.36vw;
+    background-position: 50.5vw 4.25vw;
+}
+
+.family-input-calendar {
+    width: 56.391vw;
+    height: 9.661vw;
+    margin-left: 3.2vw;
+    border-radius: 5px;
+    outline: none;
+    text-indent: 3.2vw;
+    border: 1px solid #d6d6d6;
+    background: url(../viewFamilyData/img/calendar.png) no-repeat;
+    background-size: 4vw 4vw;
+    background-position: 50.5vw 3.25vw;
+}
+
+.activity-line {
+    width: 100vw;
+    height: 1px;
+    background-color: #d6d6d6;
+    overflow: hidden;
+}
+
+.confirmDeleteFamily >.ui-content,
+.confirmCancelEditFamily >.ui-content,
+.familyAddCheckMsg >.ui-content {
+    padding: 0 !important;
+}
+
+.confirmDeleteFamily .ui-content>.header,
+.confirmCancelEditFamily .ui-content>.header {
+    margin-top: 10%;
+}
+
+.confirmDeleteFamily .ui-content>.main,
+.confirmCancelEditFamily .ui-content>.main {
+    margin-top: 4%;
+}
+
+.familyAddCheckMsg >.ui-content>.header { margin-top: 12%;}
+.familyAddCheckMsg >.ui-content>.main { margin-top: 10%;}
+
+.addInlineBlock { display:inline-block;}
+
+.confirmCancelAddFamily >.ui-content,
+.familyErrorMsg >.ui-content,
+.beforeEditMsg >.ui-content,
+.deleteErrorMsg >.ui-content {
+    padding: 0 !important;
+}
+
+.confirmCancelAddFamily .ui-content>.header,
+.familyErrorMsg .ui-content>.header,
+.beforeEditMsg .ui-content>.header,
+.deleteErrorMsg .ui-content>.header {
+    margin-top: 14%;
+}
+
+.confirmCancelAddFamily .ui-content>.main,
+.familyErrorMsg .ui-content>.main {
+    margin-top: 12%;
+}
+
+.beforeEditMsg .ui-content>.main {
+    margin-top: 6%;
+}
+
+.popup-msg-style {
+    width: 28VW;
+    height: 4VW;
+    margin: auto;
+    opacity: 0.9;
+    padding: 6.2VW 1VW 6.2VW 1VW;
+    position: fixed;
+    top: 70vw;
+    left: 36vw;
+    background-color: #666;
+    border-radius: 1.5px;
+    color: #F0F0F0;
+    font-size: 3.6VW;
+    text-align: center;
+    z-index: 2;
+    display: none;
+}

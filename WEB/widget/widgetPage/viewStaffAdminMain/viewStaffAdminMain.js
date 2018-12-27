@@ -2,6 +2,8 @@ $("#viewStaffAdminMain").pagecontainer({
     create: function(event, ui) {
 
         var imgURL = '/widget/widgetPage/viewStaffAdminMain/img/',
+            staffServiceID = 'meetingroomService',//茶水服务id
+            staffServiceType = 'staff',//茶水服务类型
             staffKey = 'appempservice',
             statusList = [
             {id: 1, item: '服務中'},
@@ -35,6 +37,7 @@ $("#viewStaffAdminMain").pagecontainer({
             //$('#adminSettingPopup-option-list .tpl-dropdown-list-selected').removeClass('tpl-dropdown-list-selected');
         }
 
+        //获取所有茶水相关讨论版
         function getBoardType() {
             let queryData = "<LayoutHeader><emp_no>" +
                 loginData["emp_no"] +
@@ -72,6 +75,273 @@ $("#viewStaffAdminMain").pagecontainer({
             }();
         }
 
+        //获取是否存在茶水服务，或者
+        function getStaffEmpService() {
+            var self = this;
+            let queryData = JSON.stringify({
+                service_id: staffServiceID//hardcode
+            });
+
+            this.successCallback = function(data) {
+                //console.log(data);
+                //表示没有该服务052002，需要newEmpService:meetingroomService
+                if(data['result_code'] == '052002') {
+                    newStaffEmpService();
+                } else if(data['result_code'] == '1') {
+                    let arr = data['content']['service_type_list'];
+
+                    //1. 先找到staff服务
+                    let staffArr = [];
+                    for(var i in arr) {
+                        if(arr[i]['service_type'] == staffServiceType) {
+                            staffArr = arr[i]['service_id_list'];
+                            break;
+                        }
+                    }
+
+                    //2. 再找到meetingroom服务
+                    let serviceArr = [];
+                    for(var i in staffArr) {
+                        if(staffArr[i]['service_id'] == staffServiceID) {
+                            serviceArr = staffArr[i]['target_list'];
+                            break;
+                        }
+                    }
+
+                    //3. save to session
+                    window.sessionStorage.setItem('meetingroomServiceTargetList', JSON.stringify(serviceArr));
+
+                    //4. 获取当日和明日所有预约
+                    getTodayAllReserve();
+                    getTomorrowAllReserve();
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                EmpServicePlugin.QPlayAPI("POST", "getEmpServiceTargetList", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+        //新增茶水服务，just only once
+        function newStaffEmpService() {
+            var self = this;
+            let queryData = JSON.stringify({
+                service_id: staffServiceID,//hardcode
+                type: staffServiceType,//hardcode
+                login_id: loginData['loginid'],
+                domain: loginData['domain'],
+                emp_no: loginData['emp_no']
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+                //新增茶水服务成功后，再获取一次serviceTargetList
+                getStaffEmpService();
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                EmpServicePlugin.QPlayAPI("POST", "newEmpService", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+        //获取当日该总机服务下所有会议室的茶水预约
+        function getTodayAllReserve() {
+            var self = this;
+            let queryData = JSON.stringify({
+                service_id: staffServiceID,
+                start_date: new Date(new Date().yyyymmdd("/") + " 00:00:00").getTime() / 1000,
+                end_date: new Date(new Date().yyyymmdd("/") + " 23:59:59").getTime() / 1000
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['result_code'] == '1') {
+                    let todayArr = data['content']['record_list'];
+                    if(todayArr.length == 0) {
+                        //本会议室今日暂无茶水预约
+                        $('.today-no-data').show();
+                        $('.main-today-ul').html('');
+                        $('.main-complete-ul').html('');
+                    } else {
+                        $('.today-no-data').hide();
+                        let noCompleteContent = '';
+                        let completedContent = '';
+                        for(var i in todayArr) {
+                            //先区分未完成和已完成部分
+                            if(todayArr[i]['complete'] == 'N') {
+                                noCompleteContent += '<li class="today-list"><div class="today-item">' +
+                                    todayArr[i]['info_push_content'] +
+                                    ' / ' +
+                                    todayArr[i]['reserve_login_id'] +
+                                    '</div><div class="today-handle"><div class="today-done-btn" data-id="' +
+                                    todayArr[i]['reserve_id'] +
+                                    '"></div><div class="today-tel-btn" data-name="' +
+                                    todayArr[i]['reserve_login_id'] +
+                                    '"></div></div></li>';
+                            } else {
+                                completedContent += '<li class="complete-list"><div>' +
+                                    todayArr[i]['info_push_content'] +
+                                    ' / ' +
+                                    todayArr[i]['reserve_login_id'] +
+                                    '</div><div></div></li>';
+                            }
+                        }
+
+                        $('.main-today-ul').html('').append(noCompleteContent);
+                        $('.main-complete-ul').html('').append(completedContent);
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                //更新时间
+                let nowTime = new Date().yyyymmdd('/') + ' ' + new Date().hhmm();
+                $('.admin-main-update-time').text(nowTime);
+                //API
+                EmpServicePlugin.QPlayAPI("POST", "getReserveRecord", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+        //获取明日该总机服务下所有会议室的茶水预约
+        function getTomorrowAllReserve() {
+            var self = this;
+            let queryData = JSON.stringify({
+                service_id: staffServiceID,
+                start_date: new Date(new Date().yyyymmdd("/") + " 00:00:00").getTime() / 1000 + 60 * 60 * 24,
+                end_date: new Date(new Date().yyyymmdd("/") + " 23:59:59").getTime() / 1000 + 60 * 60 * 24
+            });
+
+            this.successCallback = function(data) {
+                //console.log(data);
+
+                if(data['result_code'] == '1') {
+                    let tomorrowArr = data['content']['record_list'];
+                    if(tomorrowArr.length == 0) {
+                        //本会议室明日暂无茶水预约
+                        $('.tomorrow-no-data').show();
+                        $('.main-tomorrow-ul').html('');
+                    } else {
+                        $('.tomorrow-no-data').hide();
+                        let content = '';
+                        for(var i in tomorrowArr) {
+                            content += '<li class="tomorrow-list"><div>' +
+                                tomorrowArr[i]['info_push_content'] +
+                                ' / ' +
+                                tomorrowArr[i]['reserve_login_id'] +
+                                '</div></li>';
+                        }
+
+                        $('.main-tomorrow-ul').html('').append(content);
+                    }
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                EmpServicePlugin.QPlayAPI("POST", "getReserveRecord", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+        //完成某项茶水服务
+        function completeTodayReserve(id) {
+            var self = this;
+            let queryData = JSON.stringify({
+                reserve_id: id,
+                login_id: loginData['loginid'],
+                domain: loginData['domain'],
+                emp_no: loginData['emp_no']
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['result_code'] == '1') {
+                    //成功以后，重新捞取当日记录
+                    getTodayAllReserve();
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                EmpServicePlugin.QPlayAPI("POST", "setReserveComplete", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+        //查询电话yellowpage
+        function getTelephoneByName(name) {
+            let queryData = '<LayoutHeader><Company>' +
+                loginData['company'] +
+                '</Company><Name_EN>'+
+                name +
+                '</Name_EN></LayoutHeader>';
+            //let queryData = '<LayoutHeader><Company>Qisda</Company><Name_EN>sammi.yao</Name_EN></LayoutHeader>';
+
+            var successCallback = function(data) {
+                console.log(data);
+
+                if(data['ResultCode'] == '1') {
+                    //只取第一个电话号码
+                    let tel = $.trim(data['Content'][0]['Ext_No']).split(';')[0];
+                    $('.currentTelephone').html('').append('<a href="tel:' + tel + '">' + tel + '</a>');
+                    $('.currentTelephone a')[0].click();
+                    //Email测试
+                    // let mail = $.trim(data['Content'][0]['EMail']);
+                    // $('.currentTelephone').html('').append('<a href="mailto:' + mail + '?subject=會議室協調_12/26">' + mail + '</a>');
+                    // $('.currentTelephone a')[0].click();
+                } else {
+
+                }
+            };
+
+            var failCallback = function(data) {};
+
+            var __construct = function() {
+                YellowPagePlugin.CustomAPI("POST", false, "QueryEmployeeDataDetail", successCallback, failCallback, queryData, "");
+            }();
+        }
+
+
+        //tese
+        function newReserveTest() {
+            var self = this;
+            let queryData = JSON.stringify({
+                target_id_row_id: 16,//T02
+                login_id: loginData['loginid'],
+                domain: loginData['domain'],
+                emp_no: loginData['emp_no'],
+                start_date: '1545886800',//09:00
+                end_date: '1545888600',//10:00
+                info_push_title: '茶水預約',
+                info_push_content: '13:00 T02 預約茶3杯水3杯',
+                info_data: '{"T02","13:00","3","3"}',
+                push: '11'
+            });
+
+            this.successCallback = function(data) {
+                console.log(data);
+
+                if(data['result_code'] == '1') {
+
+                }
+            };
+
+            this.failCallback = function(data) {};
+
+            var __construct = function() {
+                EmpServicePlugin.QPlayAPI("POST", "newReserve", self.successCallback, self.failCallback, queryData, '');
+            }();
+        }
+
+
         /********************************** page event ***********************************/
         $("#viewStaffAdminMain").on("pagebeforeshow", function(event, ui) {
 
@@ -83,6 +353,9 @@ $("#viewStaffAdminMain").pagecontainer({
             initAdminSetting();
             //获取所有staff的board主题
             getBoardType();
+            //是否有茶水服务
+            getStaffEmpService();
+            //newReserveTest();
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
@@ -114,13 +387,25 @@ $("#viewStaffAdminMain").pagecontainer({
         });
 
         //左滑 打開handle
-        $('.today-item').on('swipeleft', function() {
+        $('.admin-main-today').on('swipeleft', '.today-item', function() {
             $(this).animate({left: '-40vw'}, 200, 'linear');
         });
 
         //右滑 關閉handle
-        $('.today-item').on('swiperight', function() {
+        $('.admin-main-today').on('swiperight', '.today-item', function() {
             $(this).animate({left: '0'}, 200, 'linear');
+        });
+
+        //点击完成
+        $('.main-today-ul').on('click', '.today-done-btn', function() {
+            let reserve_id = $(this).data('id');
+            completeTodayReserve(reserve_id);
+        });
+
+        //点击电话
+        $('.main-today-ul').on('click', '.today-tel-btn', function() {
+            let en_name = $(this).data('name');
+            getTelephoneByName(en_name);
         });
 
         //setting admin status

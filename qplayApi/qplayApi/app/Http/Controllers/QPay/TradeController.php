@@ -33,7 +33,7 @@ class TradeController extends Controller
 
         //parameter verify
         $validator = Validator::make($request->all(), [
-            'emp_no' => 'required|numeric',
+            'emp_no' => 'required',
             'price' => 'required|numeric|max:1000',
             'shop_id' => 'required|numeric',
             'trade_pwd' => 'required|size:4'
@@ -70,7 +70,7 @@ class TradeController extends Controller
 
         //parameter verify
         $validator = Validator::make($request->all(), [
-            'emp_no' => 'required|numeric',
+            'emp_no' => 'required',
             'price' => 'required|numeric|max:1000',
             'shop_id' => 'required|numeric',
             'trade_token' => 'required|string|size:44',

@@ -868,6 +868,91 @@
             "error_description": "service type 不存在"
           }
         ]
+      },
+      {
+        "error_code": "052004",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "service - target not exis."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "service - target 不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "service - target 不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "052005",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "life cycle date range invalid."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "生命週期的日期範圍錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "生命周期的日期范围错误"
+          }
+        ]
+      },
+      {
+        "error_code": "052006",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "push receiver setting data invalid."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "推播對象的設定資料格式錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "推播对象的设定资料格式错误"
+          }
+        ]
+      },
+      {
+        "error_code": "052007",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "reservation not exist."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "預約不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "预约不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "052008",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "reservation has completed."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "預約已經完成"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "预约已经完成"
+          }
+        ]
       }
     ]
   }
