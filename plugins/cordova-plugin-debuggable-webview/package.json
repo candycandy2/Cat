@@ -1,0 +1,64 @@
+{
+  "_from": "cordova-plugin-debuggable-webview",
+  "_id": "cordova-plugin-debuggable-webview@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-aWB95pAt9GeXoRPtHvOPMH3fnKRfhg0Fva9fF2nVbws6e2ZaQd62zC+VWY8qjwOYTfxaAnTDVEKHW9bUAGuhlw==",
+  "_location": "/cordova-plugin-debuggable-webview",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-debuggable-webview",
+    "name": "cordova-plugin-debuggable-webview",
+    "escapedName": "cordova-plugin-debuggable-webview",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-debuggable-webview/-/cordova-plugin-debuggable-webview-1.0.0.tgz",
+  "_shasum": "c495c6dae30844cd84df10c2645b72eba67b70ee",
+  "_spec": "cordova-plugin-debuggable-webview",
+  "_where": "/Users/qplay/Documents/GitHub/EnterpriseAPPPlatform/APP/QPlayV3.0",
+  "author": {
+    "name": "Jouri Fledderman",
+    "email": "jouri.fledderman@luminis.eu"
+  },
+  "bugs": {
+    "url": "https://github.com/JouriFledderman/cordova-plugin-debuggable-webview/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-debuggable-webview",
+    "platforms": [
+      "android"
+    ]
+  },
+  "deprecated": false,
+  "description": "An Android Cordova plugin that allows you to enable/disable the debuggable webview.",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "homepage": "https://github.com/JouriFledderman/cordova-plugin-debuggable-webview#readme",
+  "keywords": [
+    "Cordova",
+    "Android",
+    "Debuggable",
+    "Webview",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-debuggable-webview",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JouriFledderman/cordova-plugin-debuggable-webview.git"
+  },
+  "version": "1.0.0"
+}
