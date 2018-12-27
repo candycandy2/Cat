@@ -136,7 +136,7 @@ $("#viewStaffAdminMain").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
                 //新增茶水服务成功后，再获取一次serviceTargetList
                 getStaffEmpService();
             };
@@ -261,7 +261,7 @@ $("#viewStaffAdminMain").pagecontainer({
             });
 
             this.successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['result_code'] == '1') {
                     //成功以后，重新捞取当日记录
@@ -286,7 +286,7 @@ $("#viewStaffAdminMain").pagecontainer({
             //let queryData = '<LayoutHeader><Company>Qisda</Company><Name_EN>sammi.yao</Name_EN></LayoutHeader>';
 
             var successCallback = function(data) {
-                console.log(data);
+                //console.log(data);
 
                 if(data['ResultCode'] == '1') {
                     //只取第一个电话号码
@@ -310,38 +310,6 @@ $("#viewStaffAdminMain").pagecontainer({
         }
 
 
-        //tese
-        function newReserveTest() {
-            var self = this;
-            let queryData = JSON.stringify({
-                target_id_row_id: 16,//T02
-                login_id: loginData['loginid'],
-                domain: loginData['domain'],
-                emp_no: loginData['emp_no'],
-                start_date: '1545886800',//09:00
-                end_date: '1545888600',//10:00
-                info_push_title: '茶水預約',
-                info_push_content: '13:00 T02 預約茶3杯水3杯',
-                info_data: '{"T02","13:00","3","3"}',
-                push: '11'
-            });
-
-            this.successCallback = function(data) {
-                console.log(data);
-
-                if(data['result_code'] == '1') {
-
-                }
-            };
-
-            this.failCallback = function(data) {};
-
-            var __construct = function() {
-                EmpServicePlugin.QPlayAPI("POST", "newReserve", self.successCallback, self.failCallback, queryData, '');
-            }();
-        }
-
-
         /********************************** page event ***********************************/
         $("#viewStaffAdminMain").on("pagebeforeshow", function(event, ui) {
 
@@ -355,7 +323,6 @@ $("#viewStaffAdminMain").pagecontainer({
             getBoardType();
             //是否有茶水服务
             getStaffEmpService();
-            //newReserveTest();
         });
 
         $("#viewStaffAdminMain").on("pageshow", function(event, ui) {
