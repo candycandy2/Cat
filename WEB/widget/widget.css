@@ -940,11 +940,11 @@
 }
 
 .store-near-img>img {
-    width: 18vw;
-    height: 11.27vw;
-    /*width: 10.63vw;*/
-    /*margin-left: 50%;*/
-    margin-left: 40%;
+    /*width: 18vw;
+    height: 11.27vw;*/
+    width: 10.63vw;
+    margin-left: 50%;
+    /*margin-left: 40%;*/
     border-radius: 2px;
 }
 
@@ -961,8 +961,8 @@
 
 .store-near {
     margin-left: 35%;
-    /*color: #253137;*/
-    color: #dfdfdf;
+    color: #253137;
+    /*color: #dfdfdf;*/
     font-size: 3.768vw;
 }
 
