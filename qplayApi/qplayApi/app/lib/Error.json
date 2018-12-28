@@ -819,6 +819,108 @@
         ]
       },
       {
+        "error_code": "000933",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "this status_id already exist."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "status_id 已存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "status_id 已存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000934",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "this status_id not exist."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "status_id 不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "status_id 不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000935",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "this status type not exist."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "status type 不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "status type 不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000936",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "status life cycle date range invalid."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "status 生命週期的日期範圍錯誤"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "status 生命周期的日期范围错误"
+          }
+        ]
+      },
+      {
+        "error_code": "000937",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "status life cycle not exist."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "status 生命週期不存在"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "status 生命周期不存在"
+          }
+        ]
+      },
+      {
+        "error_code": "000938",
+        "language_list": [
+          {
+            "language": "en-us",
+            "error_description": "status life cycle can not be null."
+          },
+          {
+            "language": "zh-tw",
+            "error_description": "status 生命週期不可以為空值"
+          },
+          {
+            "language": "zh-cn",
+            "error_description": "status 生命周期不可以为空值"
+          }
+        ]
+      },
+      {
         "error_code": "052001",
         "language_list": [
           {
