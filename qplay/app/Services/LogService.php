@@ -9,8 +9,8 @@ use App\Repositories\PasswordLogRepository;
 
 class LogService
 {
-    
     const PWD_TYPE_QACCOUNT = 'qaccount';
+    const PWD_TYPE_TRADE = 'trade';
     const PWD_TYPE_QPAY = 'qpay';
     const PWD_ACTION_CHANGE = 'change';
     const PWD_ACTION_RESET = 'reset';

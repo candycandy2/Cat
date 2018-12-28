@@ -259,6 +259,7 @@ Route::group(['prefix' => 'QPayUserMaintain'], function () {
     Route::any('updateUserStatus', ['middleware' => 'auth','uses'=>'qpayController@updateUserStatus']);
     Route::any('updateTradeStatus', ['middleware' => 'auth','uses'=>'qpayController@updateTradeStatus']);
     Route::any('resetQAccountPwd', ['middleware' => 'auth','uses'=>'qpayController@resetQAccountPwd']);
+    Route::any('updateShopTradePwd', ['middleware' => 'auth','uses'=>'qpayController@updateShopTradePwd']);
     Route::any('updateShop', ['middleware' => 'auth','uses'=>'qpayController@updateShop']);
     Route::any('deleteShop', ['middleware' => 'auth','uses'=>'qpayController@deleteShop']);
     Route::any('QPayUserEmployee', ['middleware' => 'auth','uses'=>'qpayController@QPayUserEmployee']);

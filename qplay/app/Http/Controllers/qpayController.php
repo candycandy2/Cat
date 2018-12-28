@@ -266,14 +266,14 @@ class qpayController extends Controller
         $tel = (trim($request->tel) == "")?null:trim($request->tel);
         $loginId = (trim($request->loginId) == "")?null:trim($request->loginId);
         $pwd = (trim($request->pwd) == "")?null:trim($request->pwd);
-
+        $pwd_trade = (trim($request->pwd_trade) == "")?null:trim($request->pwd_trade);
 
         $existLoginId = CommonUtil::getUserInfoJustByUserID($loginId,'shop');
         if(!is_null($existLoginId)){
             $result["result_code"] = ResultCode::_000922_qpayShopAlreadyExist;
             return json_encode($result);
         }
-        $newShopRs = $this->qpayShopService->newQPayShop($name, $address, $tel, $loginId, $pwd);
+        $newShopRs = $this->qpayShopService->newQPayShop($name, $address, $tel, $loginId, $pwd, $pwd_trade);
 
         if ($newShopRs) {
             $result["result_code"] = ResultCode::_1_reponseSuccessful;
@@ -352,10 +352,57 @@ class qpayController extends Controller
             $nowTimestamp = time();
             $now = date('Y-m-d H:i:s',$nowTimestamp);
 
-            $updateRs = $this->qpayShopService->resetQAccountPwd($userId, $resetPwd,$now);
+            $updateRs = $this->qpayShopService->resetQAccountPwd($userId, $resetPwd, $now);
+
+            if ($resetPwd == null) {
+                $action = LogService::PWD_ACTION_RESET;
+            } else {
+                $action = LogService::PWD_ACTION_CHANGE;
+            }
+
             $this->logService->writePasswordLog($userId,
                                             LogService::PWD_TYPE_QACCOUNT,
-                                            LogService::PWD_ACTION_RESET,
+                                            $action,
+                                            Auth::user()->row_id,
+                                            $now);
+         DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        if(is_null($updateRs)){
+            $result["result_code"] = ResultCode::_000901_userNotExistError;
+        } else if ($updateRs) {
+            $result["result_code"] = ResultCode::_1_reponseSuccessful;
+        } else {
+            $result["result_code"] = ResultCode::_999999_unknownError;
+        }
+
+        return json_encode($result);
+    }
+
+    /**
+     * Change Shop Trade Password
+     * @param  Request $request
+     * @return json
+     */
+    public function updateShopTradePwd(Request $request){
+
+        $userId = trim($request->userId);
+        $resetPwd = (isset($request->resetTradePwd))?$request->resetTradePwd:null;
+
+        DB::beginTransaction();
+        try {
+
+            $nowTimestamp = time();
+            $now = date('Y-m-d H:i:s',$nowTimestamp);
+
+            $updateRs = $this->qpayShopService->updateTradePwd($userId, $resetPwd, $now);
+            $this->logService->writePasswordLog($userId,
+                                            LogService::PWD_TYPE_TRADE,
+                                            LogService::PWD_ACTION_CHANGE,
                                             Auth::user()->row_id,
                                             $now);
          DB::commit();
