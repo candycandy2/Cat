@@ -145,10 +145,32 @@ class EmpServiceTargetIDRepository
                     ->get();
     }
 
+    /**
+     * Get specific target by row_id
+     * @param  int $targetRowId target row_id
+     * @return mixed
+     */
     public function getTargetByRowId($targetRowId){
             
         return $this->targetId
                 ->where('row_id',$targetRowId)
                 ->first();
+    }
+
+    /**
+     * Delete target by row_id and get deleted row_id 
+     * @return mixed
+     */
+    public function deleteTarget($targetRowId){
+
+        $target = $this->targetId::find($targetRowId);
+        
+        if(is_null($target)){
+            return null;
+        }else{
+            $target->active = 'N';
+            $target->save();
+            return $target->row_id;
+        }
     }
 }
