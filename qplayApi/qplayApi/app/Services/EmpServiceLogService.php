@@ -23,9 +23,6 @@ class EmpServiceLogService
      * @return boolean
      */
     public function newDataLog($data){
-        
-        $data['created_at'] = date('Y-m-d H:i:s',time());
-
         return $this->dataLogRepository->newDataLog($data);
     }
 }

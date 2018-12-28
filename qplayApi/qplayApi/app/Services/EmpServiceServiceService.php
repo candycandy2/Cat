@@ -7,6 +7,7 @@ namespace App\Services;
 
 use App\Repositories\EmpServiceServiceIDRepository;
 use App\Repositories\EmpServiceDataLogRepository as EmpServiceLog;
+use App\Repositories\EmpServiceTargetIDRepository;
 use App\lib\ResultCode;
 use App\lib\CommonUtil;
 
@@ -15,16 +16,20 @@ class EmpServiceServiceService
 {
 
     const TABLE = 'service_id';
+    const TABLE_TARGET_ID = 'target_id';
 
     const ACTION_ADD = 'add';
     const ACTION_UPDATE = 'update';
     const ACTION_DELETE = 'delete';
     
     protected $serviceIDRepository;
+    protected $serviceTargetIDRepository;
 
-    public function __construct(EmpServiceServiceIDRepository $serviceIDRepository)
+    public function __construct(EmpServiceServiceIDRepository $serviceIDRepository,
+                                EmpServiceTargetIDRepository $serviceTargetIDRepository)
     {
         $this->serviceIDRepository = $serviceIDRepository;
+        $this->serviceTargetIDRepository = $serviceTargetIDRepository;
     }
 
     public function getServiceRowId($serviceId){
@@ -133,5 +138,39 @@ class EmpServiceServiceService
      */
     public function getServiceManager($serviceIdRowId){
         return EmpServiceLog::getLastCreatedUser('service_id', $serviceIdRowId);
+    }
+
+    /**
+     * Delete EmpService and associated target and get data to log 
+     * @param  string $serviceId service_id
+     * @param  string $loginId   user login_id
+     * @param  string $domain    user domain
+     * @param  string $empNo     user emp_no
+     * @return Array
+     */
+    public function deleteEmpService($serviceId, $loginId, $domain, $empNo){
+        $logData = [];
+        $serviceTargetList = $this->serviceTargetIDRepository->getTargetByServiceId($serviceId);
+        foreach ($serviceTargetList as $key => $value) {
+
+            if(!is_null($value['target_id_row_id'])){
+                $targetRowId = $this->serviceTargetIDRepository->deleteTarget($value['target_id_row_id']);
+                $logData[] = EmpServiceLog::getLogData(self::TABLE_TARGET_ID,$targetRowId,
+                                                 self::ACTION_DELETE,$loginId,
+                                                 $domain,$empNo,
+                                                 ['active'=>'N']);
+            }
+        }
+        $serviceRowId = $this->serviceIDRepository->deleteEmpService($serviceId);
+        $logData[] = EmpServiceLog::getLogData(self::TABLE,$serviceRowId,
+                                                 self::ACTION_DELETE,$loginId,
+                                                 $domain,$empNo,
+                                                 ['active'=>'N']);
+
+        $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
+                   "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful)
+                  ];
+
+        return [$result,$logData];
     }
 }

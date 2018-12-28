@@ -48,7 +48,8 @@ class EmpServiceDataLogRepository
                     "login_id" => $loginId,
                     "domain" => $domain,
                     "emp_no" => $empNo,
-                    "content" =>self::getFormatContent($content)
+                    "content" =>self::getFormatContent($content),
+                    "created_at" => date('Y-m-d H:i:s',time())
                 ];
     }
     
