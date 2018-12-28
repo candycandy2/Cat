@@ -109,5 +109,61 @@ class ServiceController extends Controller
         return $serviceList;
     }
 
+    /**
+     * Delete EmpService and associated target
+     * @param  Request $request
+     * @return json
+     */
+    public function deleteEmpService(Request $request){
+
+        //parameter verify
+        $validator = Validator::make($request->all(),
+            [
+            'service_id' => 'required',
+            'login_id'   => 'required',
+            'domain'     => 'required',
+            'emp_no'     =>'required'
+            ],
+            [
+                'required' => ResultCode::_999001_requestParameterLostOrIncorrect
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['result_code'=>$validator->errors()->first(),
+                                      'message'=>CommonUtil::getMessageContentByCode($validator->errors()->first())], 200);
+        }
+
+        if(is_null($this->empService->getServiceRowId($request->service_id))){
+                return response()->json(["result_code" => ResultCode::_052002_empServiceNotExist, 
+                    "message" => CommonUtil::getMessageContentByCode(ResultCode::_052002_empServiceNotExist)], 200);
+        }
+            
+        try {
+            
+            $DBconn = DB::connection($this->connection);
+            $DBconn->beginTransaction();
+            
+
+            $result = $this->empService->deleteEmpService($request->service_id,
+                                                $request->login_id,
+                                                $request->domain,
+                                                $request->emp_no);
+
+            if($result[0]['result_code'] == ResultCode::_1_reponseSuccessful){
+
+                $this->empServiceLog->newDataLog($result[1]);
+
+            }
+
+            $DBconn->commit();
+            return response()->json($result[0]);
+        
+        } catch (\Exception $e) {
+            $DBconn->rollBack();
+            throw $e;
+        }
+
+    }
 
 }

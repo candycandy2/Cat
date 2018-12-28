@@ -82,8 +82,9 @@ Route::group(['prefix' => 'v101/qplay','middleware' => ['log.api']], function ()
         //for app
         Route::group(['middleware' => 'auth.token'], function () {
             Route::post('/newEmpService', 'ServiceController@newEmpService');
-            Route::post('/setEmpServiceTarget', 'TargetController@setEmpServiceTarget');
+            Route::post('/deleteEmpService', 'ServiceController@deleteEmpService');
             Route::post('/getEmpServiceList', 'ServiceController@getEmpServiceList');
+            Route::post('/setEmpServiceTarget', 'TargetController@setEmpServiceTarget');
             Route::post('/getEmpServiceTargetList', 'TargetController@getEmpServiceTargetList');
             Route::post('/newReserve', 'ReserveController@newReserve');
             Route::post('/getReserveRecord', 'ReserveController@getReserveRecord');
