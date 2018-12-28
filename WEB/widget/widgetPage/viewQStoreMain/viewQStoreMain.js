@@ -290,6 +290,8 @@ $("#viewQStoreMain").pagecontainer({
         });
 
         /********************************** dom event *************************************/
-
+        $("#search").on("click", function () {
+            checkWidgetPage('viewQStoreSearchList', pageVisitedList);
+        });      
     }
 });
