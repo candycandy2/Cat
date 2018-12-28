@@ -165,4 +165,89 @@ class StatusService
 
         return [$result,$logData];
     }
+
+    /**
+     * Check statys type exist
+     * @param  string $statusType status type
+     * @return boolean
+     */
+    public function checkStatusTypeExist($statusType){
+        $statusTypeCount =  $this->statusIdRepository->getStatusTypeCount($statusType);
+        if($statusTypeCount > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Get life crontab by status id
+     * @param  string $statusId status_id
+     * @return array
+     */
+    public function getLifeCrontabByStatusID($statusId){
+
+        $lifeCrontabList = $this->statusLifeCrontabRepository->getLifeCrontabByStatusID($statusId);
+
+        return $this->arrangeLifeCrontab($lifeCrontabList);
+ 
+    }
+
+    /**
+     * Get life crontab by status type
+     * @param  string $statusType status type
+     * @return array
+     */
+    public function getLifeCrontabByStatusType($statusType){
+
+        $lifeCrontabList = $this->statusLifeCrontabRepository->getLifeCrontabByStatusType($statusType);
+        
+        return $this->arrangeLifeCrontab($lifeCrontabList);
+
+    }
+
+    /**
+     * Get arranged life
+     * @param  Array $lifeCrontabList life crontab list data
+     * @return Array
+     */
+    private function arrangeLifeCrontab($lifeCrontabList){
+
+         $statusList = ["status_list" => []];
+
+         $statusTypeArr = [];
+
+        foreach ($lifeCrontabList as $crontab) {
+
+            $updatedUser = StatusLog::getLastUpdatedUser(self::TABLE_STATUS_LIFE_CRONTAB,$crontab->life_crontab_row_id);
+            if(!is_null($updatedUser)){
+                
+                $statusTypeArr[$crontab->status_type][$crontab->status_id][] = ["status" => $crontab->status,
+                                                     "life_crontab_row_id" => $crontab->life_crontab_row_id,
+                                                     "life_type" => $crontab->life_type,
+                                                     "crontab" => $crontab->crontab,  
+                                                     "owner_login_id" => $updatedUser->login_id,
+                                                     "owner_domain" => $updatedUser->domain,
+                                                     "owner_emp_no" => $updatedUser->emp_no];
+            }
+        }
+
+        foreach ($statusTypeArr as $statusType => $statusIdArr) {
+            foreach ($statusIdArr as $statusId => $periodList) {
+              array_push($statusList["status_list"],
+                                  ["status_type" => $statusType,
+                                   "status_id" => $statusId,
+                                   "period_list" => $periodList]);
+            }
+
+        }
+
+        $result = ["result_code" => ResultCode::_1_reponseSuccessful, 
+                   "message" => CommonUtil::getMessageContentByCode(ResultCode::_1_reponseSuccessful),
+                   "content" => $statusList
+                  ];
+
+        return $result;
+    }
+    
 }

@@ -50,4 +50,15 @@ class StatusIDRepository
         $status->update($data);
         return $status->row_id;
     }
+
+    /**
+     * Get count of specific status type
+     * @param  string $statusType status type
+     * @return int
+     */
+    public function getStatusTypeCount($statusType){
+        return $this->statusId
+            ->where('type',$statusType)
+            ->count();
+    }
 }

@@ -54,5 +54,38 @@ class StatusLifeCrontabRepository
                     ->update($data);
     }
 
+    /**
+     * get specific id type assiocate life cron tab 
+     * @param  string $statusId   status id
+     * @return mixed
+     */
+    public function getLifeCrontabByStatusID($statusId){
+
+        return $this->statusLifeCrontab
+                    ->join('status_id', 'status_life_crontab.status_id_row_id', '=', 'status_id.row_id')
+                    ->where('status_id.status_id', $statusId)
+                    ->where('status_life_crontab.active', 'Y')
+                    ->where('status_id.active', 'Y')
+                    ->select('status_id as status_id','status_id.row_id as status_id_row_id','status_id.type as status_type', 'status_life_crontab.row_id as life_crontab_row_id',
+                            'status', 'life_type', 'life_start', 'life_end', 'crontab')
+                    ->get();
+    }
+
+    /**
+     * get specific status type assiocate life cron tab 
+     * @param  string $statusType status type
+     * @return mixed
+     */
+    public function getLifeCrontabByStatusType($statusType){
+
+         return $this->statusLifeCrontab
+                    ->join('status_id', 'status_life_crontab.status_id_row_id', '=', 'status_id.row_id')
+                    ->where('status_id.type',$statusType)
+                    ->where('status_life_crontab.active', 'Y')
+                    ->where('status_id.active', 'Y')
+                    ->select('status_id as status_id', 'status_id.row_id as status_id_row_id','status_id.type as status_type', 'status_life_crontab.row_id as life_crontab_row_id',
+                            'status', 'life_type', 'life_start', 'life_end', 'crontab')
+                    ->get();
+    }
 
 }
