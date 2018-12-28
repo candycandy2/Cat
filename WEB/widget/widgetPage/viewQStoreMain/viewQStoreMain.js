@@ -268,7 +268,11 @@ $("#viewQStoreMain").pagecontainer({
                     window.myLocate = new google.maps.Marker({
                         position: myLatLng,
                         map: window.map,
-                        icon: iconImage
+                        icon: iconImage,
+                        mapTypeControl: false,
+                        streetViewControl: false,
+                        rotateControl: false,
+                        fullscreenControl: false
                     });
 
                     window.map.setCenter(myLatLng);
