@@ -227,19 +227,19 @@ $("#viewStaffUserMain").pagecontainer({
         //加法-茶水
         function additionCount(type) {
             //1.加法是否可用，根据class判断
-            let has = $('.' + type + '-addition').hasClass('cannot-addition');
+            let has = $('.add-tea-count .' + type + '-addition').hasClass('cannot-addition');
             if(!has) {
                 let count = (type == 'tea' ? ++teaCount : ++waterCount);
-                $('.' + type + '-result').text(count);
+                $('.add-tea-count .' + type + '-result').text(count);
 
                 //当count>0时减法可用
                 if(count > 0) {
-                    $('.' + type + '-subtraction').addClass('can-subtraction');              
+                    $('.add-tea-count .' + type + '-subtraction').addClass('can-subtraction');              
                 }
 
                 //当count=20时加法不可用
                 if(count == 20) {
-                    $('.' + type + '-addition').addClass('cannot-addition');
+                    $('.add-tea-count .' + type + '-addition').addClass('cannot-addition');
                 }
             }
 
@@ -252,19 +252,19 @@ $("#viewStaffUserMain").pagecontainer({
         //减法-茶水
         function subtractionCount(type) {
             //1.加法是否可用，根据class判断
-            let has = $('.' + type + '-subtraction').hasClass('can-subtraction');
+            let has = $('.add-tea-count .' + type + '-subtraction').hasClass('can-subtraction');
             if(has) {
                 let count = (type == 'tea' ? --teaCount : --waterCount);
-                $('.' + type + '-result').text(count);
+                $('.add-tea-count .' + type + '-result').text(count);
 
                 //当count=0时减法不可用
                 if(count == 0) {
-                    $('.' + type + '-subtraction').removeClass('can-subtraction');
+                    $('.add-tea-count .' + type + '-subtraction').removeClass('can-subtraction');
                 }
 
                 //当count<20时加法可用
                 if(count < 20) {
-                    $('.' + type + '-addition').removeClass('cannot-addition');
+                    $('.add-tea-count .' + type + '-addition').removeClass('cannot-addition');
                 }
             }
 
@@ -279,12 +279,12 @@ $("#viewStaffUserMain").pagecontainer({
             teaCount = 0,
             waterCount = 0;
             $('.addTeaBtn').removeClass('active-btn-green');
-            $('.tea-addition').removeClass('cannot-addition');
-            $('.water-addition').removeClass('cannot-addition');
-            $('.tea-subtraction').removeClass('can-subtraction');
-            $('.water-subtraction').removeClass('can-subtraction');
-            $('.tea-result').text('0');
-            $('.water-result').text('0');
+            $('.add-tea-count .tea-addition').removeClass('cannot-addition');
+            $('.add-tea-count .water-addition').removeClass('cannot-addition');
+            $('.add-tea-count .tea-subtraction').removeClass('can-subtraction');
+            $('.add-tea-count .water-subtraction').removeClass('can-subtraction');
+            $('.add-tea-count .tea-result').text('0');
+            $('.add-tea-count .water-result').text('0');
             $('label[for="needTea"]').trigger('click');
         }
 
@@ -348,13 +348,13 @@ $("#viewStaffUserMain").pagecontainer({
         });
 
         //加法-茶水
-        $('.count-select').on('click', '.tea-addition, .water-addition', function() {
+        $('.add-tea-count .count-select').on('click', '.tea-addition, .water-addition', function() {
             let teaType = $(this).parent().data('type');
             additionCount(teaType);
         });
 
         //减法-茶水
-        $('.count-select').on('click', '.tea-subtraction, .water-subtraction', function() {
+        $('.add-tea-count .count-select').on('click', '.tea-subtraction, .water-subtraction', function() {
             let teaType = $(this).parent().data('type');
             subtractionCount(teaType);
         });

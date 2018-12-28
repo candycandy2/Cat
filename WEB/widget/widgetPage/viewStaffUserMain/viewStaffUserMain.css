@@ -120,6 +120,8 @@
     display: inline-block;
     padding: 0;
     text-indent: 7vw;
+    font-size: 4.18vw;
+    color: #253137;
 }
 
 #viewStaffUserMain input[type=radio] + label:nth-of-type(1) {
@@ -127,7 +129,7 @@
 }
 
 #viewStaffUserMain input[type=radio] + label:nth-of-type(2) {
-    width: 60vw;
+    width: 59vw;
 }
 
 #viewStaffUserMain input[type=radio]:checked + label {
@@ -294,13 +296,8 @@
 }
 
 .active-staff{
-    background: #009587 !important;
+    background: #0db6b7 !important;
     color: #fff !important;
-}
-
-.rest-staff,
-.checked-staff{
-    background: #DCDCDC !important;
 }
 
 .service-offline{
@@ -348,7 +345,8 @@
 }
 
 #userChooseRoom{
-    padding: 0;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .dropdown-arrow {
